@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-01-30T09:05:03.605Z\n"
-"PO-Revision-Date: 2023-01-30T09:05:03.605Z\n"
+"POT-Creation-Date: 2023-01-30T09:53:44.762Z\n"
+"PO-Revision-Date: 2023-01-30T09:53:44.762Z\n"
 
 msgid "Add"
 msgstr ""
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Welcome to UHC Policy Watch,"
 msgstr ""
 
-msgid "A platform for evidence on financial protection in Europe and Central Asia. "
+msgid "a platform for evidence on financial protection in Europe and Central Asia. "
 msgstr ""
 
 msgid ""
@@ -35,7 +35,24 @@ msgstr ""
 msgid "Compare progress across countries"
 msgstr ""
 
-msgid "Find out how to ensure access to health care is "
+msgid "Find out how to ensure access to health care is affordable for every one"
+msgstr ""
+
+msgid ""
+"In this platform, umbrelas are used to denote the financial protection "
+"status of a country."
+msgstr ""
+
+msgid "String financial protection"
+msgstr ""
+
+msgid "Gaps in financial protection"
+msgstr ""
+
+msgid "Weak financial protection"
+msgstr ""
+
+msgid "Switch to colour-blind friendly"
 msgstr ""
 
 msgid "Back"
