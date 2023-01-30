@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2021-08-25T12:21:36.218Z\n"
-"PO-Revision-Date: 2021-08-25T12:21:36.218Z\n"
+"POT-Creation-Date: 2023-01-30T09:05:03.605Z\n"
+"PO-Revision-Date: 2023-01-30T09:05:03.605Z\n"
 
 msgid "Add"
 msgstr ""
@@ -14,14 +14,32 @@ msgstr ""
 msgid "List"
 msgstr ""
 
+msgid "An error has ocurred loading countries"
+msgstr ""
+
+msgid "Welcome to UHC Policy Watch,"
+msgstr ""
+
+msgid "A platform for evidence on financial protection in Europe and Central Asia. "
+msgstr ""
+
+msgid ""
+"Financial protection is at the heart of universal health coverage (UHC). "
+"Without it, people face barries to access or experience finalcial hardship "
+"when using health servicea, undetermining progress towardsUHC."
+msgstr ""
+
+msgid "Access datam information and analysis for 50 countries"
+msgstr ""
+
+msgid "Compare progress across countries"
+msgstr ""
+
+msgid "Find out how to ensure access to health care is "
+msgstr ""
+
 msgid "Back"
 msgstr ""
 
 msgid "Help"
-msgstr ""
-
-msgid "Hello {{name}}"
-msgstr ""
-
-msgid "Detail page"
 msgstr ""
