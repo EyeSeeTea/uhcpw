@@ -2,9 +2,6 @@ import { FeedbackOptions } from "@eyeseetea/feedback-component";
 
 export const appConfig: AppConfig = {
     appKey: "dhis2-app-skeleton",
-    appearance: {
-        showShareButton: true,
-    },
     feedback: {
         repositories: {
             clickUp: {
@@ -21,8 +18,5 @@ export const appConfig: AppConfig = {
 
 export interface AppConfig {
     appKey: string;
-    appearance: {
-        showShareButton: boolean;
-    };
     feedback?: FeedbackOptions;
 }
