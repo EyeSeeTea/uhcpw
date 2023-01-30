@@ -2,6 +2,9 @@ import React, { useRef, useEffect } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { style } from "./style";
+import { useMap } from "./useMap";
+import { Grid, Typography } from "@material-ui/core";
+import { MapWellcome } from "../map-welcome/MapWelcome";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 // Fix bug in production build
@@ -10,89 +13,89 @@ mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3a
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
-type MarkerData = {
-    name: string;
-    description: string;
-    color: string;
-};
-
-const geoJson: GeoJSON.FeatureCollection<GeoJSON.Point, MarkerData> = {
-    type: "FeatureCollection",
-    features: [
-        {
-            type: "Feature",
-            properties: {
-                name: "Madrid",
-                description: "Madrid, Spain",
-                color: "red",
-            },
-            geometry: {
-                type: "Point",
-                coordinates: [-3.70256, 40.4165],
-            },
-        },
-        {
-            type: "Feature",
-            properties: {
-                name: "Lisbon",
-                description: "Lisbon, Portugal",
-                color: "green",
-            },
-            geometry: {
-                type: "Point",
-                coordinates: [-9.13333, 38.71667],
-            },
-        },
-    ],
-};
-
 export const Map: React.FC = () => {
-    const mapContainer = useRef<any>(null);
+    const mapContainerRef = useRef<any>(null);
+    const mapRef = useRef<any>(null);
+    const mapState = useMap();
 
     useEffect(() => {
-        if (mapContainer.current) {
+        if (mapContainerRef.current) {
             const map = new mapboxgl.Map({
-                container: mapContainer.current,
+                container: mapContainerRef.current,
                 style: style,
-                center: [1.675063, 47.751569], // { lat: 47.751569, lng: 1.675063 },
-                maxZoom: 3,
-                minZoom: 3,
-                zoom: 3,
+                center: mapState.initialData.center,
+                maxZoom: mapState.initialData.maxZoom,
+                minZoom: mapState.initialData.minZoom,
+                zoom: mapState.initialData.zoom,
                 maxBounds: undefined,
                 preserveDrawingBuffer: true,
             });
 
-            map.on("load", () => {
-                console.log("load");
+            mapRef.current = map;
+        }
+    }, [mapState.initialData, mapState.markers]);
 
-                geoJson.features.forEach(feature => {
-                    const marker = new mapboxgl.Marker({ color: feature.properties.color })
+    useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.on("load", () => {
+                mapState.markers.features.forEach(feature => {
+                    const el = document.createElement("div");
+                    el.className = "marker";
+
+                    const marker = new mapboxgl.Marker(el, { color: feature.properties.color })
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
-                        .setPopup(
-                            new mapboxgl.Popup({ offset: 25 }) // add popups
-                                .setHTML(`<h3>${feature.properties.name}</h3><p>${feature.properties.description}</p>`)
-                        )
-                        .addTo(map);
+                        .addTo(mapRef.current);
 
-                    marker.getElement().addEventListener("click", e => {
-                        console.log("marker");
+                    marker.getElement().addEventListener("mouseenter", () => {
+                        mapState.onSelectedCountryChange(feature.properties);
+                    });
+
+                    marker.getElement().addEventListener("mouseleave", () => {
+                        mapState.onSelectedCountryChange(undefined);
                     });
                 });
             });
-
-            map.on("click", e => {
-                console.log(e.lngLat);
-            });
         }
-    }, []);
+    }, [mapState]);
 
-    return <MapContainer ref={mapContainer} />;
+    return (
+        <MapContent container spacing={0}>
+            <Grid item xs={12} md={8}>
+                <MapContent ref={mapContainerRef} />
+            </Grid>
+            <Grid item xs={12} md={4}>
+                <MapSidePanel>
+                    {mapState.selectedCountry ? (
+                        <Typography>{mapState.selectedCountry.name}</Typography>
+                    ) : (
+                        <MapWellcome />
+                    )}
+                </MapSidePanel>
+            </Grid>
+        </MapContent>
+    );
 };
 
-const MapContainer = styled.div`
+const MapContent = styled(Grid)`
     overflow: hidden;
-    position: "absolute";
-    bottom: 0;
-    top: 0;
-    height: 90vh;
+    height: 100%;
+    .marker {
+        background-image: url("https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png");
+        background-size: cover;
+        width: 30px;
+        height: 30px;
+    }
+    .marker:hover {
+        width: 50px;
+        height: 50px;
+    }
+    .mapboxgl-ctrl-logo {
+        display: none !important;
+    }
+`;
+
+const MapSidePanel = styled.div`
+    height: 100%;
+    background: #f9bc44;
+    padding: 16px;
 `;
