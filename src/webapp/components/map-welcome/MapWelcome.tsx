@@ -57,6 +57,7 @@ const UmbrellaItemsContiner = styled.div`
 `;
 
 const UmbrellaItem = styled.div`
+    max-width: 170px;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -71,4 +72,7 @@ const Marker = styled.img`
 
 const SwitchColourButton = styled(Button)`
     margin-top: 32px;
+    background: white;
+    text-transform: none;
+    border-radius: 10px;
 `;

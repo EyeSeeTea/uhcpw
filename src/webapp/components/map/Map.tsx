@@ -3,8 +3,9 @@ import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { style } from "./style";
 import { useMap } from "./useMap";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { MapWellcome } from "../map-welcome/MapWelcome";
+import { MapCountry } from "../map-country/MapCountry";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 // Fix bug in production build
@@ -65,11 +66,7 @@ export const Map: React.FC = () => {
             </Grid>
             <Grid item xs={12} md={4}>
                 <MapSidePanel>
-                    {mapState.selectedCountry ? (
-                        <Typography>{mapState.selectedCountry.name}</Typography>
-                    ) : (
-                        <MapWellcome />
-                    )}
+                    {mapState.selectedCountry ? <MapCountry country={mapState.selectedCountry} /> : <MapWellcome />}
                 </MapSidePanel>
             </Grid>
         </MapContent>
