@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import i18n from "@eyeseetea/feedback-component/locales";
 import styled from "styled-components";
 

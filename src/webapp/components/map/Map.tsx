@@ -3,7 +3,6 @@ import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { style } from "./style";
 import { useMap } from "./useMap";
-import { Grid } from "@material-ui/core";
 import { MapWellcome } from "../map-welcome/MapWelcome";
 import { MapCountry } from "../map-country/MapCountry";
 import { colors } from "../../pages/app/themes/dhis2.theme";
