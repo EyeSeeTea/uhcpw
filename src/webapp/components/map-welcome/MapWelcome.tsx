@@ -2,7 +2,6 @@ import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import i18n from "@eyeseetea/feedback-component/locales";
 import styled from "styled-components";
-import VisibilityIcon from "@material-ui/icons/Visibility";
 
 export const MapWellcome: React.FC = () => {
     return (
@@ -43,9 +42,6 @@ export const MapWellcome: React.FC = () => {
                     {i18n.t("Weak financial protection")}
                 </UmbrellaItem>
             </UmbrellaItemsContiner>
-            <SwitchColourButton variant="contained" color="default" startIcon={<VisibilityIcon />}>
-                {i18n.t("Switch to colour-blind friendly")}
-            </SwitchColourButton>
         </>
     );
 };
@@ -68,11 +64,4 @@ const Marker = styled.img`
     background-image: url("https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png");
     background-size: cover;
     width: 100px;
-`;
-
-const SwitchColourButton = styled(Button)`
-    margin-top: 32px;
-    background: white;
-    text-transform: none;
-    border-radius: 10px;
 `;

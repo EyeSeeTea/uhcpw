@@ -1,6 +1,6 @@
 import React from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
-import { HomePage } from "./landing/HomePage";
+import { HomePage } from "./home/HomePage";
 
 export const Router: React.FC = React.memo(() => {
     return (
