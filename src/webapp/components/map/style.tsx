@@ -1,3 +1,5 @@
+import { colors } from "../../pages/app/themes/dhis2.theme";
+
 const mapTilesBaseUrl =
     "https://tiles.arcgis.com/tiles/5T5nSi527N4F7luB/arcgis/rest/services/WHO_Polygon_Basemap_with_labels_VTP/VectorTileServer";
 
@@ -21,7 +23,7 @@ export const style: mapboxgl.Style = {
             source: "esri",
             "source-layer": "Background_VTP",
             layout: {},
-            paint: { "fill-color": "#E8E9EC" },
+            paint: { "fill-color": colors.accentPrimary },
         },
         {
             id: "Land (ADM0)/1",
