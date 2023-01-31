@@ -6,27 +6,26 @@ import styled from "styled-components";
 export const MapWellcome: React.FC = () => {
     return (
         <>
-            <Typography variant="h5">{i18n.t("Welcome to UHC Policy Watch,")}</Typography>
+            <Typography variant="h3">{i18n.t("UHC Watch")}</Typography>
             <p>
-                <strong>
-                    {i18n.t("a platform for evidence on financial protection in Europe and Central Asia. ")}
-                </strong>
+                <strong>{i18n.t("Can people afford to play for health care?")}</strong>
+                <br />
+                <strong>{i18n.t("Evidence on financial protection in Europe and Central Asia")}</strong>
+            </p>
+            <p>
                 {i18n.t(
-                    "Financial protection is at the heart of universal health coverage (UHC). Without it, people face barries to access or experience finalcial hardship when using health servicea, undetermining progress towardsUHC."
+                    "Universal health coverage (UHC) means everyone can use the quality health care they need without financial hardship."
                 )}
             </p>
             <p>
-                <strong>{i18n.t("UHC Policy Watch allows  you to:")}</strong>
+                {i18n.t(
+                    "Without it, people face barries to access and experience financial hardship when using health care"
+                )}
                 <ul>
-                    <li>{i18n.t("Access datam information and analysis for 50 countries")}</li>
-                    <li>{i18n.t("Compare progress across countries")}</li>
-                    <li>{i18n.t("Find out how to ensure access to health care is affordable for every one")}</li>
+                    <li>{i18n.t("Explore data and analysis in financial protection")}</li>
+                    <li>{i18n.t("Compare country progress towards UHC")}</li>
+                    <li>{i18n.t("Find out how to make health care affordable for everyone")}</li>
                 </ul>
-            </p>
-            <p>
-                {i18n.t("In this platform, umbrelas are used to denote the financial protection status of a country.")}
-                <br />
-                {i18n.t("This is divided into three categories:")}
             </p>
             <UmbrellaItemsContiner>
                 <UmbrellaItem>

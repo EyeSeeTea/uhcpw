@@ -5,8 +5,41 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-01-30T10:41:30.718Z\n"
-"PO-Revision-Date: 2023-01-30T10:41:30.718Z\n"
+"POT-Creation-Date: 2023-01-31T12:59:05.274Z\n"
+"PO-Revision-Date: 2023-01-31T12:59:05.274Z\n"
+
+msgid "WHO Barcelona Office for Health Systems Financing"
+msgstr ""
+
+msgid "Glossary"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Switch to colour-blind friendly"
+msgstr ""
+
+msgid "Indicator Explorer"
+msgstr ""
+
+msgid "Policy Explorer"
+msgstr ""
+
+msgid "Countries"
+msgstr ""
+
+msgid "Regions"
+msgstr ""
+
+msgid "Methods"
+msgstr ""
+
+msgid "Resources"
+msgstr ""
+
+msgid "About us"
+msgstr ""
 
 msgid "Add"
 msgstr ""
@@ -57,30 +90,32 @@ msgstr ""
 msgid "Download the Bulgaria financial protection report"
 msgstr ""
 
-msgid "Welcome to UHC Policy Watch,"
+msgid "UHC Watch"
 msgstr ""
 
-msgid "a platform for evidence on financial protection in Europe and Central Asia. "
+msgid "Can people afford to play for health care?"
 msgstr ""
 
-msgid ""
-"Financial protection is at the heart of universal health coverage (UHC). "
-"Without it, people face barries to access or experience finalcial hardship "
-"when using health servicea, undetermining progress towardsUHC."
-msgstr ""
-
-msgid "Access datam information and analysis for 50 countries"
-msgstr ""
-
-msgid "Compare progress across countries"
-msgstr ""
-
-msgid "Find out how to ensure access to health care is affordable for every one"
+msgid "Evidence on financial protection in Europe and Central Asia"
 msgstr ""
 
 msgid ""
-"In this platform, umbrelas are used to denote the financial protection "
-"status of a country."
+"Universal health coverage (UHC) means everyone can use the quality health "
+"care they need without financial hardship."
+msgstr ""
+
+msgid ""
+"Without it, people face barries to access and experience financial hardship "
+"when using health care"
+msgstr ""
+
+msgid "Explore data and analysis in financial protection"
+msgstr ""
+
+msgid "Compare country progress towards UHC"
+msgstr ""
+
+msgid "Find out how to make health care affordable for everyone"
 msgstr ""
 
 msgid "String financial protection"
@@ -90,9 +125,6 @@ msgid "Gaps in financial protection"
 msgstr ""
 
 msgid "Weak financial protection"
-msgstr ""
-
-msgid "Switch to colour-blind friendly"
 msgstr ""
 
 msgid "Back"

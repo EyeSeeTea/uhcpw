@@ -6,6 +6,7 @@ import { useMap } from "./useMap";
 import { Grid } from "@material-ui/core";
 import { MapWellcome } from "../map-welcome/MapWelcome";
 import { MapCountry } from "../map-country/MapCountry";
+import { colors } from "../../pages/app/themes/dhis2.theme";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 // Fix bug in production build
@@ -60,20 +61,21 @@ export const Map: React.FC = () => {
     }, [mapState]);
 
     return (
-        <MapContent container spacing={0}>
-            <Grid item xs={12} md={8}>
-                <MapContent ref={mapContainerRef} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-                <MapSidePanel>
-                    {mapState.selectedCountry ? <MapCountry country={mapState.selectedCountry} /> : <MapWellcome />}
-                </MapSidePanel>
-            </Grid>
-        </MapContent>
+        <Container>
+            <MapContent ref={mapContainerRef} />
+            <MapSidePanel>
+                {mapState.selectedCountry ? <MapCountry country={mapState.selectedCountry} /> : <MapWellcome />}
+            </MapSidePanel>
+        </Container>
     );
 };
 
-const MapContent = styled(Grid)`
+const Container = styled.div`
+    height: 100%;
+    position: relative;
+`;
+
+const MapContent = styled.div`
     overflow: hidden;
     height: 100%;
     .marker {
@@ -92,7 +94,12 @@ const MapContent = styled(Grid)`
 `;
 
 const MapSidePanel = styled.div`
-    height: 100%;
-    background: #f9bc44;
-    padding: 16px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+    background: ${colors.accentPrimary};
+    color: white;
+    padding: 48px;
+    opacity: 0.9;
 `;
