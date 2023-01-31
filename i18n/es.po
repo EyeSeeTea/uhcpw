@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2023-01-30T09:53:44.762Z\n"
+"POT-Creation-Date: 2023-01-30T10:41:30.718Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -15,6 +15,46 @@ msgid "List"
 msgstr "Listar"
 
 msgid "An error has ocurred loading countries"
+msgstr ""
+
+msgid "Financial hardship (2018)"
+msgstr ""
+
+msgid ""
+"8% of households are improverished of futher improverished after out-of-"
+"pocket payments."
+msgstr ""
+
+msgid "19% of households experiences catastrophic health spending."
+msgstr ""
+
+msgid ""
+"Poorer households, older people and people in rural areas are most at risk "
+"of financial hardship."
+msgstr ""
+
+msgid ""
+"Financial hardship is generally driven by spending on outpatient medicines, "
+"medical products and inpatient care; outpatient medicines are the main "
+"driver for poorer households."
+msgstr ""
+
+msgid "Unmet need (2020)"
+msgstr ""
+
+msgid "1.4% of people report unmet need for health care"
+msgstr ""
+
+msgid "2.4% of people report unmet need for dental care"
+msgstr ""
+
+msgid "Find out"
+msgstr ""
+
+msgid "Go to the Bulgaria country page"
+msgstr ""
+
+msgid "Download the Bulgaria financial protection report"
 msgstr ""
 
 msgid "Welcome to UHC Policy Watch,"
