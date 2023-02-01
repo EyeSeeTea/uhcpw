@@ -1,4 +1,4 @@
-import { Country } from "../../../domain/entities/Country";
+import { Country } from "../../../../domain/entities/Country";
 
 export type InitialCoordinates = {
     center: [number, number];

@@ -1,8 +1,8 @@
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import { useCallback, useEffect, useState } from "react";
-import { Country } from "../../../domain/entities/Country";
-import i18n from "../../../locales";
-import { useAppContext } from "../../contexts/app-context";
+import { Country } from "../../../../domain/entities/Country";
+import i18n from "../../../../locales";
+import { useAppContext } from "../../../contexts/app-context";
 import { InitialCoordinates, MapState } from "./MapState";
 
 const initialData: InitialCoordinates = {

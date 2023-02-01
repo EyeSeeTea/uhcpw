@@ -3,11 +3,12 @@ import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { style } from "./style";
 import { useMap } from "./useMap";
-import { MapWellcome } from "../map-welcome/MapWelcome";
-import { MapCountry } from "../map-country/MapCountry";
-import { colors } from "../../pages/app/themes/dhis2.theme";
+import { WelcomePanel } from "../welcome-panel/WelcomePanel";
+import { CountryPanel } from "../country-panel/CountryPanel";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
+
 // Fix bug in production build
 // https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-750489778
 // @ts-ignore
@@ -63,7 +64,7 @@ export const Map: React.FC = () => {
         <Container>
             <MapContent ref={mapContainerRef} />
             <MapSidePanel>
-                {mapState.selectedCountry ? <MapCountry country={mapState.selectedCountry} /> : <MapWellcome />}
+                {mapState.selectedCountry ? <CountryPanel country={mapState.selectedCountry} /> : <WelcomePanel />}
             </MapSidePanel>
         </Container>
     );

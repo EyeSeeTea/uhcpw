@@ -2,13 +2,13 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import i18n from "@eyeseetea/feedback-component/locales";
 import styled from "styled-components";
-import { Country } from "../../../domain/entities/Country";
+import { Country } from "../../../../domain/entities/Country";
 
-export interface MapCountryProps {
+export interface CountryPanelProps {
     country: Country;
 }
 
-export const MapCountry: React.FC<MapCountryProps> = ({ country }) => {
+export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     return (
         <Container>
             <Typography variant="h5">{country.name}</Typography>

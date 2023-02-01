@@ -3,7 +3,7 @@ import { Typography } from "@material-ui/core";
 import i18n from "@eyeseetea/feedback-component/locales";
 import styled from "styled-components";
 
-export const MapWellcome: React.FC = () => {
+export const WelcomePanel: React.FC = () => {
     return (
         <>
             <Typography variant="h3">{i18n.t("UHC Watch")}</Typography>
