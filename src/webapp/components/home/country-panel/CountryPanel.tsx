@@ -14,7 +14,7 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
             <Typography variant="h5">{country.name}</Typography>
             <UmbrellaItem>
                 <Marker src="https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png" />
-                {i18n.t("Financial protection status: Weak")}
+                {i18n.t("Financial protection status: Weak", { nsSeparator: false })}
             </UmbrellaItem>
             <p>
                 <strong> {i18n.t("Financial hardship (2018)")}</strong>

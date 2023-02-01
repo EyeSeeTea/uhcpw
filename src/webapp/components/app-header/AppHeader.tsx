@@ -2,7 +2,7 @@ import React from "react";
 import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
-import whoLogo from "../../assets/who-logo.png";
+import whoLogoBlue from "../../assets/who-logo-blue.png";
 import { Box, Button, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export const AppBar: React.FC = () => {
+export const AppHeader: React.FC = () => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -76,7 +76,7 @@ export const AppBar: React.FC = () => {
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
                     <LogoContainer>
-                        <img src={whoLogo} width={150} alt="WHO logo" />;
+                        <img src={whoLogoBlue} width={150} alt="WHO logo" />;
                     </LogoContainer>
                     <Box className={classes.rest} />
                     <div>
