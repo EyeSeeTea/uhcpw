@@ -6,6 +6,7 @@ import { Analysis } from "../../components/home/analysis/Analysis";
 import { Explorers } from "../../components/home/explorers/Explorers";
 import { Map } from "../../components/home/map/Map";
 import { Methods } from "../../components/home/methods/Methods";
+import { Resources } from "../../components/home/resources/Resources";
 
 export const HomePage: React.FC = React.memo(() => {
     return (
@@ -26,6 +27,9 @@ export const HomePage: React.FC = React.memo(() => {
                 </section>
                 <section>
                     <Methods />
+                </section>
+                <section>
+                    <Resources />
                 </section>
             </main>
 
