@@ -15,7 +15,7 @@ const resources: Resource[] = [
     {
         title: "Bulgaria",
         date: "2022",
-        image: "https://picsum.photos/seed/example1/400/300",
+        image: "https://picsum.photos/seed/example111/400/300",
         tag: "Country Analysis",
     },
     {
@@ -27,7 +27,7 @@ const resources: Resource[] = [
     {
         title: "Spending on health in Europe: entering a new era",
         date: "2021",
-        image: "https://picsum.photos/seed/example3/400/300",
+        image: "https://picsum.photos/seed/example33/400/300",
         tag: "Comparative Analysis",
     },
     {

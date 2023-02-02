@@ -10,6 +10,7 @@ import i18n from "../../../locales";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import BookIcon from "@material-ui/icons/BookOutlined";
 import SearchIcon from "@material-ui/icons/Search";
+import { useCountryMenuItems } from "./useCountryMenuItems";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -45,6 +46,7 @@ export const AppHeader: React.FC = () => {
     const classes = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const countries = useCountryMenuItems();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -100,8 +102,13 @@ export const AppHeader: React.FC = () => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            <MenuItem onClick={handleClick}>Spain</MenuItem>
-                            <MenuItem onClick={handleClick}>portugal</MenuItem>
+                            {countries.map(country => {
+                                return (
+                                    <MenuItem key={country.name} onClick={handleClick}>
+                                        {country.name}
+                                    </MenuItem>
+                                );
+                            })}
                         </Menu>
                         <MenuButton
                             id="regions"

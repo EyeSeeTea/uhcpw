@@ -7,7 +7,7 @@ import { InitialCoordinates, MapState } from "./MapState";
 
 const initialData: InitialCoordinates = {
     center: [1.675063, 47.751569],
-    maxZoom: 3,
+    maxZoom: 8,
     minZoom: 3,
     zoom: 3,
 };
