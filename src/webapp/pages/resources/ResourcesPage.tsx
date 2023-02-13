@@ -5,13 +5,14 @@ import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
 import { ComparativeAnalysis } from "../../components/resources/comparative-analysis/ComparativeAnalysis";
 import { CountryAnalysis } from "../../components/resources/country-analysis/CountryAnalysis";
+import { News } from "../../components/resources/news/News";
 import { ResourcesFilters } from "../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../components/search-input/SearchInput";
 import { colors } from "../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {
-    const { countryAnalysis, filters, comparativeAnalysis } = useResources();
+    const { countryAnalysis, filters, comparativeAnalysis, news } = useResources();
 
     return (
         <Layout>
@@ -34,6 +35,11 @@ export const ResourcesPage: React.FC = React.memo(() => {
                     <ComparativeAnalysis comparativeAnalysis={comparativeAnalysis} />
                 </Container>
             </ComparativeAnalysisSection>
+            <NewsSection>
+                <Container maxWidth="xl">
+                    <News newsItems={news} />
+                </Container>
+            </NewsSection>
         </Layout>
     );
 });
@@ -45,6 +51,11 @@ const Content = styled.div`
 
 const ComparativeAnalysisSection = styled.div`
     background: ${colors.gradientPrimary2};
+    padding-bottom: 64px;
+`;
+
+const NewsSection = styled.div`
+    background: white;
     padding-bottom: 64px;
 `;
 

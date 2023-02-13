@@ -30,7 +30,7 @@ export const ComparativeAnalysis: React.FC<CountryAnalysisProps> = React.memo(({
             <Grid container spacing={5}>
                 {comparativeAnalysis.map((country, index) => {
                     return (
-                        <Grid key={index} item md={4} xs={6}>
+                        <Grid key={index} item lg={4} md={6} xs={12}>
                             <Center>
                                 <Item elevation={0}>
                                     <ItemRow>

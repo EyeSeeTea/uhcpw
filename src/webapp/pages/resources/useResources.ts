@@ -1,12 +1,12 @@
 import { DropdownItem } from "@eyeseetea/d2-ui-components";
 import { useCallback, useEffect, useState } from "react";
 import { useAppContext } from "../../contexts/app-context";
-import { CountryAnalysisState, ResourcesState } from "./ResourcesState";
+import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
     const { compositionRoot } = useAppContext();
 
-    const [countryAnalysis, setCountryAnalysis] = useState<CountryAnalysisState[]>(countryAnalysisOriginals);
+    const [countryAnalysis, setCountryAnalysis] = useState<CountryAnalysisItem[]>(countryAnalysisOriginals);
 
     const [countryFilters, setCountryFilters] = useState<DropdownItem[]>([]);
     const [selectedCountryFilter, setSelectedCountryFilter] = useState<string | undefined>();
@@ -59,7 +59,6 @@ export function useResources(): ResourcesState {
 
     return {
         countryAnalysis,
-        comparativeAnalysis,
         filters: {
             countryFilters,
             selectedCountryFilter,
@@ -74,6 +73,8 @@ export function useResources(): ResourcesState {
             selectedYearFilter,
             onChangeYearFilter,
         },
+        comparativeAnalysis,
+        news,
     };
 }
 
@@ -94,7 +95,7 @@ const years = [
     { value: "2020", text: "2020" },
 ];
 
-const countryAnalysisOriginals: CountryAnalysisState[] = [
+const countryAnalysisOriginals: CountryAnalysisItem[] = [
     {
         name: "Albania",
         image: "https://flagpedia.net/data/flags/h160/al.webp",
@@ -198,5 +199,23 @@ const comparativeAnalysis = [
         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
         language: "English",
         year: "2022",
+    },
+];
+
+const news = [
+    {
+        title: "text example 1 text example 1",
+        img: "https://picsum.photos/seed/example-news-1/400/300",
+        date: "2022",
+    },
+    {
+        title: "text example 2 text example 2",
+        img: "https://picsum.photos/seed/example-news-2/400/300",
+        date: "2022",
+    },
+    {
+        title: "text example 3 text example 3",
+        img: "https://picsum.photos/seed/example-news-3/400/300",
+        date: "2022",
     },
 ];

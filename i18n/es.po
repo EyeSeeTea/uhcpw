@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2023-02-08T13:44:34.166Z\n"
+"POT-Creation-Date: 2023-02-13T10:20:29.636Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -238,7 +238,15 @@ msgstr "Volver"
 msgid "Help"
 msgstr "Ayuda"
 
-msgid "Switch to colour-blind friendly"
+msgid "Comparative Analysis"
+msgstr ""
+
+msgid "Country analysis"
+msgstr ""
+
+msgid ""
+"Explore reports on financial protection for 21 countries. Also included are "
+"reports summaries and infographics"
 msgstr ""
 
 msgid "Category"
@@ -250,12 +258,10 @@ msgstr ""
 msgid "Year"
 msgstr ""
 
-msgid "Country analysis"
+msgid "See All"
 msgstr ""
 
-msgid ""
-"Explore reports on financial protection for 21 countries. Also included are "
-"reports summaries and infographics"
+msgid "Switch to colour-blind friendly"
 msgstr ""
 
 #~ msgid "Hello {{name}}"

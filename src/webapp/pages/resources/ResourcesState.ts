@@ -1,9 +1,10 @@
 import { DropdownItem } from "@eyeseetea/d2-ui-components";
 
 export type ResourcesState = {
-    countryAnalysis: CountryAnalysisState[];
-    comparativeAnalysis: ComparativeAnalysisState[];
+    countryAnalysis: CountryAnalysisItem[];
     filters: ResourcesFiltersState;
+    comparativeAnalysis: ComparativeAnalysisState[];
+    news: NewsItem[];
 };
 
 export type ResourcesFiltersState = {
@@ -21,7 +22,7 @@ export type ResourcesFiltersState = {
     onChangeYearFilter: (value: string | undefined) => void;
 };
 
-export type CountryAnalysisState = {
+export type CountryAnalysisItem = {
     name: string;
     image: string;
     code: string;
@@ -36,4 +37,10 @@ export type ComparativeAnalysisState = {
     image: string;
     language: string;
     year: string;
+};
+
+export type NewsItem = {
+    title: string;
+    img: string;
+    date: string;
 };
