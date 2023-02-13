@@ -5,11 +5,11 @@ import i18n from "../../../../locales";
 import { NewsItem } from "../../../pages/resources/ResourcesState";
 import { SeeAll } from "../../see-all/SeeAll";
 
-export interface CountryAnalysisProps {
+export interface NewsProps {
     newsItems: NewsItem[];
 }
 
-export const News: React.FC<CountryAnalysisProps> = React.memo(({ newsItems }) => {
+export const News: React.FC<NewsProps> = React.memo(({ newsItems }) => {
     return (
         <>
             <ItemsTitleContainer>
@@ -60,15 +60,6 @@ const Row = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-`;
-
-const Column = styled.div`
-    padding: 16px;
-    padding-bottom: 0px;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    align-items: start;
 `;
 
 const Item = styled.div`

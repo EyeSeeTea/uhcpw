@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-02-13T10:20:29.636Z\n"
-"PO-Revision-Date: 2023-02-13T10:20:29.636Z\n"
+"POT-Creation-Date: 2023-02-13T12:05:39.799Z\n"
+"PO-Revision-Date: 2023-02-13T12:05:39.799Z\n"
 
 msgid "Add"
 msgstr ""
@@ -246,6 +246,12 @@ msgstr ""
 msgid ""
 "Explore reports on financial protection for 21 countries. Also included are "
 "reports summaries and infographics"
+msgstr ""
+
+msgid "Multimedia"
+msgstr ""
+
+msgid "News"
 msgstr ""
 
 msgid "Category"

@@ -5,6 +5,7 @@ export type ResourcesState = {
     filters: ResourcesFiltersState;
     comparativeAnalysis: ComparativeAnalysisState[];
     news: NewsItem[];
+    multimedia: MultimediaItem[];
 };
 
 export type ResourcesFiltersState = {
@@ -40,6 +41,12 @@ export type ComparativeAnalysisState = {
 };
 
 export type NewsItem = {
+    title: string;
+    img: string;
+    date: string;
+};
+
+export type MultimediaItem = {
     title: string;
     img: string;
     date: string;

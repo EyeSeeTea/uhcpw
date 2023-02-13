@@ -75,6 +75,7 @@ export function useResources(): ResourcesState {
         },
         comparativeAnalysis,
         news,
+        multimedia,
     };
 }
 
@@ -216,6 +217,24 @@ const news = [
     {
         title: "text example 3 text example 3",
         img: "https://picsum.photos/seed/example-news-3/400/300",
+        date: "2022",
+    },
+];
+
+const multimedia = [
+    {
+        title: "text example 1 text example 1",
+        img: "https://picsum.photos/seed/example-multimedia-1/400/300",
+        date: "2022",
+    },
+    {
+        title: "text example 2 text example 2",
+        img: "https://picsum.photos/seed/example-multimedia-2/400/300",
+        date: "2022",
+    },
+    {
+        title: "text example 3 text example 3",
+        img: "https://picsum.photos/seed/example-multimedia-3/400/300",
         date: "2022",
     },
 ];
