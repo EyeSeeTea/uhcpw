@@ -29,6 +29,11 @@ export const ResourcesPage: React.FC = React.memo(() => {
                     <CountryAnalysis countryAnalysis={countryAnalysis} />
                 </Container>
             </Content>
+            <ComparativeAnalysisSection>
+                <Container maxWidth="xl">
+                    <ComparativeAnalysis comparativeAnalysis={comparativeAnalysis} />
+                </Container>
+            </ComparativeAnalysisSection>
         </Layout>
     );
 });
