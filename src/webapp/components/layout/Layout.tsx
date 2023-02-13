@@ -3,11 +3,15 @@ import styled from "styled-components";
 import { AppFooter } from "./app-footer/AppFooter";
 import { AppHeader } from "./app-header/AppHeader";
 
-export const Layout: React.FC = React.memo(({ children }) => {
+interface LayoutProps {
+    headerAction?: React.ReactNode;
+}
+
+export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, children }) => {
     return (
         <>
             <header>
-                <AppHeader />
+                <AppHeader action={headerAction} />
             </header>
 
             <Main>{children}</Main>
