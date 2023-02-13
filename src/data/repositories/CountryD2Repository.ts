@@ -22,6 +22,7 @@ export class CountryD2Repository implements CountryRepository {
         return orgUnits.map((orgUnit, index) => {
             return {
                 name: orgUnit.shortName,
+                code: orgUnit.code,
                 description: orgUnit.description,
                 coordinates: this.buildPoint(orgUnit.geometry),
                 color: index % 2 === 0 ? "orange" : index % 3 === 0 ? "red" : "green",
@@ -47,6 +48,7 @@ export class CountryD2Repository implements CountryRepository {
 const organisationUnitsFields = {
     id: true,
     shortName: true,
+    code: true,
     description: { id: true, name: true },
     geometry: true,
 } as const;
