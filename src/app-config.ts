@@ -11,7 +11,7 @@ export const appConfig: AppConfig = {
             },
         },
         layoutOptions: {
-            buttonPosition: "bottom-start",
+            buttonPosition: "bottom-end",
         },
     },
 };

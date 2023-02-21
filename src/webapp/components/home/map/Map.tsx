@@ -1,13 +1,17 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { style } from "./style";
 import { useMap } from "./useMap";
-import { Grid } from "@material-ui/core";
-import { MapWellcome } from "../map-welcome/MapWelcome";
-import { MapCountry } from "../map-country/MapCountry";
+import { WelcomePanel } from "../welcome-panel/WelcomePanel";
+import { CountryPanel } from "../country-panel/CountryPanel";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { Fab, Tooltip } from "@material-ui/core";
+import { Add as ZoomInIcon, Remove as ZoomOutIcon } from "@material-ui/icons";
+import i18n from "@eyeseetea/feedback-component/locales";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
+
 // Fix bug in production build
 // https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-750489778
 // @ts-ignore
@@ -43,7 +47,10 @@ export const Map: React.FC = () => {
                     const el = document.createElement("div");
                     el.className = "marker";
 
-                    const marker = new mapboxgl.Marker(el, { color: feature.properties.color })
+                    // const marker = new mapboxgl.Marker(el, { color: feature.properties.color })
+                    //     .setLngLat(feature.geometry.coordinates as LngLatLike)
+                    //     .addTo(mapRef.current);
+                    const marker = new mapboxgl.Marker({ color: feature.properties.color })
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
                         .addTo(mapRef.current);
 
@@ -59,21 +66,44 @@ export const Map: React.FC = () => {
         }
     }, [mapState]);
 
+    const zoomIn = useCallback(() => {
+        const newZoom = mapRef.current.getZoom() * 1.25;
+        mapRef.current.flyTo({ zoom: newZoom });
+    }, []);
+
+    const zoomOut = useCallback(() => {
+        const newZoom = mapRef.current.getZoom() * 0.8;
+        mapRef.current.flyTo({ zoom: newZoom });
+    }, []);
+
     return (
-        <MapContent container spacing={0}>
-            <Grid item xs={12} md={8}>
-                <MapContent ref={mapContainerRef} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-                <MapSidePanel>
-                    {mapState.selectedCountry ? <MapCountry country={mapState.selectedCountry} /> : <MapWellcome />}
-                </MapSidePanel>
-            </Grid>
-        </MapContent>
+        <Container>
+            <MapContent ref={mapContainerRef} />
+            <MapSidePanel>
+                {mapState.selectedCountry ? <CountryPanel country={mapState.selectedCountry} /> : <WelcomePanel />}
+            </MapSidePanel>
+            <MapControls>
+                <Tooltip title={i18n.t("Zoom in")}>
+                    <MapFab size="small" onClick={zoomIn}>
+                        <ZoomInIcon fontSize="small" />
+                    </MapFab>
+                </Tooltip>
+                <Tooltip title={i18n.t("Zoom out")}>
+                    <MapFab size="small" onClick={zoomOut}>
+                        <ZoomOutIcon fontSize="small" />
+                    </MapFab>
+                </Tooltip>
+            </MapControls>
+        </Container>
     );
 };
 
-const MapContent = styled(Grid)`
+const Container = styled.div`
+    height: 100%;
+    position: relative;
+`;
+
+const MapContent = styled.div`
     overflow: hidden;
     height: 100%;
     .marker {
@@ -92,7 +122,33 @@ const MapContent = styled(Grid)`
 `;
 
 const MapSidePanel = styled.div`
-    height: 100%;
-    background: #f9bc44;
-    padding: 16px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 400px;
+    background: ${colors.accentPrimary};
+    color: white;
+    padding: 48px;
+    opacity: 0.9;
+`;
+
+const MapControls = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+`;
+
+const MapFab = styled(Fab)`
+    background: #0360a6;
+    color: white;
+    margin: 4px;
+    min-height: 30px;
+    width: 30px;
+    height: 30px;
+    :hover {
+        background: #0360a6;
+    }
 `;
