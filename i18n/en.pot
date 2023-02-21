@@ -1,0 +1,235 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: i18next-conv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"POT-Creation-Date: 2023-02-01T12:33:26.149Z\n"
+"PO-Revision-Date: 2023-02-01T12:33:26.149Z\n"
+
+msgid "Funded by the European Union"
+msgstr ""
+
+msgid "About us"
+msgstr ""
+
+msgid "World Helath Organization"
+msgstr ""
+
+msgid "World Barcelona Office for Health Sytems Financing"
+msgstr ""
+
+msgid "Contact our office"
+msgstr ""
+
+msgid "San pau Art Nouveau Site (La Mercé pavilion)"
+msgstr ""
+
+msgid "San Antoni Maria Claret 167"
+msgstr ""
+
+msgid "08025 Barcelona, Spain"
+msgstr ""
+
+msgid "Tel: +34 673 290 861"
+msgstr ""
+
+msgid "Email: eubar@who.int"
+msgstr ""
+
+msgid "© 2022 WHO"
+msgstr ""
+
+msgid "Privacy legal notice"
+msgstr ""
+
+msgid "WHO Barcelona Office for Health Systems Financing"
+msgstr ""
+
+msgid "Glossary"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Switch to colour-blind friendly"
+msgstr ""
+
+msgid "Indicator Explorer"
+msgstr ""
+
+msgid "Policy Explorer"
+msgstr ""
+
+msgid "Countries"
+msgstr ""
+
+msgid "Regions"
+msgstr ""
+
+msgid "Methods"
+msgstr ""
+
+msgid "Resources"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "List"
+msgstr ""
+
+msgid ""
+"Find out about the current situation, changes over time and what can be "
+"done to strengthen financial protection"
+msgstr ""
+
+msgid ""
+"Compare health system performance, identify common gaps in coverage and "
+"explore good practice"
+msgstr ""
+
+msgid "Analysis"
+msgstr ""
+
+msgid "See a country in context"
+msgstr ""
+
+msgid "See the region at a glance"
+msgstr ""
+
+msgid "Financial protection status: Weak"
+msgstr ""
+
+msgid "Financial hardship (2018)"
+msgstr ""
+
+msgid ""
+"8% of households are improverished of futher improverished after "
+"out-of-pocket payments."
+msgstr ""
+
+msgid "19% of households experiences catastrophic health spending."
+msgstr ""
+
+msgid ""
+"Poorer households, older people and people in rural areas are most at risk "
+"of financial hardship."
+msgstr ""
+
+msgid ""
+"Financial hardship is generally driven by spending on outpatient medicines, "
+"medical products and inpatient care; outpatient medicines are the main "
+"driver for poorer households."
+msgstr ""
+
+msgid "Unmet need (2020)"
+msgstr ""
+
+msgid "1.4% of people report unmet need for health care"
+msgstr ""
+
+msgid "2.4% of people report unmet need for dental care"
+msgstr ""
+
+msgid "Find out"
+msgstr ""
+
+msgid "Go to the Bulgaria country page"
+msgstr ""
+
+msgid "Download the Bulgaria financial protection report"
+msgstr ""
+
+msgid "Impovershing out-of-pocket payments"
+msgstr ""
+
+msgid "Catastrophic out-of-pocket payments"
+msgstr ""
+
+msgid "Unmet need for health and dental care"
+msgstr ""
+
+msgid "Spending on health"
+msgstr ""
+
+msgid "Population coverage"
+msgstr ""
+
+msgid "Service coverage"
+msgstr ""
+
+msgid "User Charges (co-payments)"
+msgstr ""
+
+msgid "Voluntary health insurance"
+msgstr ""
+
+msgid "Administrative barries"
+msgstr ""
+
+msgid "Gasp in coverage"
+msgstr ""
+
+msgid "Explorers"
+msgstr ""
+
+msgid "An error has ocurred loading countries"
+msgstr ""
+
+msgid ""
+"The financial hardship indicators available on UHC Watch are based on a "
+"capacity to pay approach, making them sensitive to equity"
+msgstr ""
+
+msgid ""
+"Data on financial hardship are complemented by data on unmet need for "
+"health and dental care"
+msgstr ""
+
+msgid "Analysis of gaps in coverage enables concrete recommendations for policy"
+msgstr ""
+
+msgid "UHC Watch"
+msgstr ""
+
+msgid "Can people afford to play for health care?"
+msgstr ""
+
+msgid "Evidence on financial protection in Europe and Central Asia"
+msgstr ""
+
+msgid ""
+"Universal health coverage (UHC) means everyone can use the quality health "
+"care they need without financial hardship."
+msgstr ""
+
+msgid ""
+"Without it, people face barries to access and experience financial hardship "
+"when using health care"
+msgstr ""
+
+msgid "Explore data and analysis in financial protection"
+msgstr ""
+
+msgid "Compare country progress towards UHC"
+msgstr ""
+
+msgid "Find out how to make health care affordable for everyone"
+msgstr ""
+
+msgid "String financial protection"
+msgstr ""
+
+msgid "Gaps in financial protection"
+msgstr ""
+
+msgid "Weak financial protection"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Help"
+msgstr ""
