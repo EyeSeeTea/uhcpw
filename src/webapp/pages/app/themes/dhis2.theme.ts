@@ -1,6 +1,8 @@
 import { createTheme } from "@material-ui/core/styles";
 
 export const colors = {
+    gradientPrimary: "linear-gradient(90deg, rgba(10,160,244,1) 0%, rgba(240,247,252,1) 100%)",
+    gradientPrimary2: "linear-gradient(90deg, rgba(10,160,244,1) 0%, rgb(159,211,240) 100%)",
     accentPrimary: "#0089d6",
     accentPrimaryDark: "#004BA0",
     accentPrimaryLight: "#63A4FF",
@@ -36,7 +38,7 @@ export const palette = {
     },
     text: {
         primary: colors.black,
-        secondary: colors.greyBlack,
+        secondary: colors.white,
         disabled: colors.greyDisabled,
         hint: colors.grey,
     },

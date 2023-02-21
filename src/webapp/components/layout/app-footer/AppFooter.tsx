@@ -1,9 +1,9 @@
 import React from "react";
 import { Box, Container, Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import i18n from "../../../locales";
-import whoLogoWhite from "../../assets/who-logo-white.png";
-import europeFlag from "../../assets/europe-flag.png";
+import i18n from "../../../../locales";
+import whoLogoWhite from "../../../assets/who-logo-white.png";
+import europeFlag from "../../../assets/europe-flag.png";
 
 export const AppFooter: React.FC = () => {
     return (
