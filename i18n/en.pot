@@ -5,74 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-02-01T12:33:26.149Z\n"
-"PO-Revision-Date: 2023-02-01T12:33:26.149Z\n"
-
-msgid "Funded by the European Union"
-msgstr ""
-
-msgid "About us"
-msgstr ""
-
-msgid "World Helath Organization"
-msgstr ""
-
-msgid "World Barcelona Office for Health Sytems Financing"
-msgstr ""
-
-msgid "Contact our office"
-msgstr ""
-
-msgid "San pau Art Nouveau Site (La Mercé pavilion)"
-msgstr ""
-
-msgid "San Antoni Maria Claret 167"
-msgstr ""
-
-msgid "08025 Barcelona, Spain"
-msgstr ""
-
-msgid "Tel: +34 673 290 861"
-msgstr ""
-
-msgid "Email: eubar@who.int"
-msgstr ""
-
-msgid "© 2022 WHO"
-msgstr ""
-
-msgid "Privacy legal notice"
-msgstr ""
-
-msgid "WHO Barcelona Office for Health Systems Financing"
-msgstr ""
-
-msgid "Glossary"
-msgstr ""
-
-msgid "Search"
-msgstr ""
-
-msgid "Switch to colour-blind friendly"
-msgstr ""
-
-msgid "Indicator Explorer"
-msgstr ""
-
-msgid "Policy Explorer"
-msgstr ""
-
-msgid "Countries"
-msgstr ""
-
-msgid "Regions"
-msgstr ""
-
-msgid "Methods"
-msgstr ""
-
-msgid "Resources"
-msgstr ""
+"POT-Creation-Date: 2023-02-13T12:05:39.799Z\n"
+"PO-Revision-Date: 2023-02-13T12:05:39.799Z\n"
 
 msgid "Add"
 msgstr ""
@@ -175,6 +109,18 @@ msgstr ""
 msgid "Explorers"
 msgstr ""
 
+msgid "Indicator Explorer"
+msgstr ""
+
+msgid "Policy Explorer"
+msgstr ""
+
+msgid "Zoom in"
+msgstr ""
+
+msgid "Zoom out"
+msgstr ""
+
 msgid "An error has ocurred loading countries"
 msgstr ""
 
@@ -189,6 +135,12 @@ msgid ""
 msgstr ""
 
 msgid "Analysis of gaps in coverage enables concrete recommendations for policy"
+msgstr ""
+
+msgid "Methods"
+msgstr ""
+
+msgid "Resources"
 msgstr ""
 
 msgid "UHC Watch"
@@ -228,8 +180,91 @@ msgstr ""
 msgid "Weak financial protection"
 msgstr ""
 
+msgid "Funded by the European Union"
+msgstr ""
+
+msgid "About us"
+msgstr ""
+
+msgid "World Helath Organization"
+msgstr ""
+
+msgid "World Barcelona Office for Health Sytems Financing"
+msgstr ""
+
+msgid "Contact our office"
+msgstr ""
+
+msgid "San pau Art Nouveau Site (La Mercé pavilion)"
+msgstr ""
+
+msgid "San Antoni Maria Claret 167"
+msgstr ""
+
+msgid "08025 Barcelona, Spain"
+msgstr ""
+
+msgid "Tel: +34 673 290 861"
+msgstr ""
+
+msgid "Email: eubar@who.int"
+msgstr ""
+
+msgid "© 2022 WHO"
+msgstr ""
+
+msgid "Privacy legal notice"
+msgstr ""
+
+msgid "WHO Barcelona Office for Health Systems Financing"
+msgstr ""
+
+msgid "Glossary"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Countries"
+msgstr ""
+
+msgid "Regions"
+msgstr ""
+
 msgid "Back"
 msgstr ""
 
 msgid "Help"
+msgstr ""
+
+msgid "Comparative Analysis"
+msgstr ""
+
+msgid "Country analysis"
+msgstr ""
+
+msgid ""
+"Explore reports on financial protection for 21 countries. Also included are "
+"reports summaries and infographics"
+msgstr ""
+
+msgid "Multimedia"
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Theme"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "See All"
+msgstr ""
+
+msgid "Switch to colour-blind friendly"
 msgstr ""

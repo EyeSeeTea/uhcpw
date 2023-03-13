@@ -2,25 +2,24 @@ import React from "react";
 import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
-import whoLogoBlue from "../../assets/who-logo-blue.png";
+import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import { Box, Button, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import i18n from "../../../locales";
-import VisibilityIcon from "@material-ui/icons/Visibility";
+import i18n from "../../../../locales";
 import BookIcon from "@material-ui/icons/BookOutlined";
 import SearchIcon from "@material-ui/icons/Search";
 import { useCountryMenuItems } from "./useCountryMenuItems";
+import { useHistory } from "react-router";
+import { NavLink } from "react-router-dom";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
     toolbarTop: {
-        background: "linear-gradient(90deg, rgba(10,160,244,1) 0%, rgba(240,247,252,1) 100%)",
+        background: colors.gradientPrimary,
         minHeight: 20,
         alignItems: "center",
         paddingTop: theme.spacing(1.5),
@@ -40,10 +39,26 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         alignSelf: "flex-end",
     },
+    menuActive: {
+        color: theme.palette.primary.main,
+        //fontWeight: theme.typography.fontWeightMedium,
+        "& $icon": {
+            color: theme.palette.primary.main,
+        },
+    },
+    menu: {
+        margin: "16px 16px",
+        textTransform: "none",
+    },
 }));
 
-export const AppHeader: React.FC = () => {
+interface AppHeaderProps {
+    action?: React.ReactNode;
+}
+
+export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     const classes = useStyles();
+    const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const countries = useCountryMenuItems();
@@ -53,7 +68,15 @@ export const AppHeader: React.FC = () => {
     };
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        alert(event.currentTarget.innerText);
+        if (event.currentTarget.id === "resources") {
+            history.push("/resources");
+        } else {
+            alert(event.currentTarget.innerText);
+        }
+    };
+
+    const goToHome = () => {
+        history.push("/");
     };
 
     const handleClose = () => {
@@ -72,13 +95,11 @@ export const AppHeader: React.FC = () => {
                     <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
                         {i18n.t("Search")}
                     </MenuTopButton>
-                    <SwitchColourButton variant="contained" color="default" startIcon={<VisibilityIcon />}>
-                        {i18n.t("Switch to colour-blind friendly")}
-                    </SwitchColourButton>
+                    {action}
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
                     <LogoContainer>
-                        <img src={whoLogoBlue} width={150} alt="WHO logo" />;
+                        <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={goToHome} />;
                     </LogoContainer>
                     <Box className={classes.rest} />
                     <div>
@@ -152,7 +173,14 @@ export const AppHeader: React.FC = () => {
                             <MenuItem onClick={handleClick}>Method 1</MenuItem>
                             <MenuItem onClick={handleClick}>Method 2</MenuItem>
                         </Menu>
-                        <MenuButton onClick={handleClick}>{i18n.t("Resources")}</MenuButton>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/resources"}
+                        >
+                            {i18n.t("Resources")}
+                        </Button>
                         <MenuButton onClick={handleClick}>{i18n.t("About us")}</MenuButton>
                     </div>
                 </Toolbar>
@@ -160,13 +188,6 @@ export const AppHeader: React.FC = () => {
         </div>
     );
 };
-
-const SwitchColourButton = styled(Button)`
-    background: white;
-    text-transform: none;
-    border-radius: 20px;
-    margin-left: 48px;
-`;
 
 const MenuTopButton = styled(Button)`
     margin: 0px 16px;
@@ -180,4 +201,5 @@ const MenuButton = styled(Button)`
 
 const LogoContainer = styled.div`
     margin: 10px 10px;
+    cursor: pointer;
 `;
