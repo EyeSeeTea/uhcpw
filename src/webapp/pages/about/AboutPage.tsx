@@ -2,6 +2,7 @@ import { Container, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
+import { Header } from "../../components/about/header/Header";
 import { Team } from "../../components/about/team/Team";
 import { Layout } from "../../components/layout/Layout";
 
@@ -16,29 +17,31 @@ export const AboutPage: React.FC = React.memo(() => {
             <TitleContainer>
                 <Typography variant="h3">{i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
             </TitleContainer>
+
             <GradientDividerOrange />
+
+            <HeaderSection>
+                <Container maxWidth="xl">
+                    <Header />
+                </Container>
+            </HeaderSection>
 
             <TeamSection>
                 <Container maxWidth="xl">
                     <Team team={team} />
                 </Container>
             </TeamSection>
-            {/* <NewsSection>
-                <Container maxWidth="xl">
-                    <News newsItems={news} />
-                </Container>
-            </NewsSection> */}
         </Layout>
     );
 });
 
-const TeamSection = styled.div`
-    background: white;
+const HeaderSection = styled.div`
+    background: ${colors.gradientPrimary2};
     padding-bottom: 64px;
 `;
 
-const MultimediaSection = styled.div`
-    background: ${colors.gradientPrimary2};
+const TeamSection = styled.div`
+    background: white;
     padding-bottom: 64px;
 `;
 
