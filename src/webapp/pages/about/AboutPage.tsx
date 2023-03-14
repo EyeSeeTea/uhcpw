@@ -2,6 +2,7 @@ import { Container, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
+import { ExpertsNetwork } from "../../components/about/experts-network/ExpertsNetwork";
 import { Header } from "../../components/about/header/Header";
 import { Team } from "../../components/about/team/Team";
 import { Layout } from "../../components/layout/Layout";
@@ -10,7 +11,7 @@ import { colors } from "../app/themes/dhis2.theme";
 import { useAbout } from "./useAbout";
 
 export const AboutPage: React.FC = React.memo(() => {
-    const { team } = useAbout();
+    const { team, experts } = useAbout();
 
     return (
         <Layout>
@@ -26,11 +27,18 @@ export const AboutPage: React.FC = React.memo(() => {
                 </Container>
             </HeaderSection>
 
-            <TeamSection>
+            <PeopleSection>
                 <Container maxWidth="xl">
                     <Team team={team} />
                 </Container>
-            </TeamSection>
+            </PeopleSection>
+            <GradientDividerOrange />
+
+            <PeopleSection>
+                <Container maxWidth="xl">
+                    <ExpertsNetwork members={experts} />
+                </Container>
+            </PeopleSection>
         </Layout>
     );
 });
@@ -40,7 +48,7 @@ const HeaderSection = styled.div`
     padding-bottom: 64px;
 `;
 
-const TeamSection = styled.div`
+const PeopleSection = styled.div`
     background: white;
     padding-bottom: 64px;
 `;

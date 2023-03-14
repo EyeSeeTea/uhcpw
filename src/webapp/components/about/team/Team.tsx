@@ -2,14 +2,14 @@ import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
-import { TeamMember } from "../../../pages/about/AboutState";
-import { ItemTeam } from "./ItemTeam";
+import { Person } from "../../../pages/about/AboutState";
+import { ItemPerson } from "../person/ItemPerson";
 
-export interface NewsProps {
-    team: TeamMember[];
+export interface TeamProps {
+    team: Person[];
 }
 
-export const Team: React.FC<NewsProps> = React.memo(({ team }) => {
+export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
     return (
         <>
             <ItemsTitleContainer>
@@ -20,7 +20,7 @@ export const Team: React.FC<NewsProps> = React.memo(({ team }) => {
                 {team.map((item, index) => {
                     return (
                         <Grid key={index} item lg={4} md={6} xs={12}>
-                            <ItemTeam member={item} />
+                            <ItemPerson person={item} />
                         </Grid>
                     );
                 })}
