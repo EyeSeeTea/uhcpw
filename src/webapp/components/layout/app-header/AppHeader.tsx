@@ -181,7 +181,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         >
                             {i18n.t("Resources")}
                         </Button>
-                        <MenuButton onClick={handleClick}>{i18n.t("About us")}</MenuButton>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/about"}
+                        >
+                            {i18n.t("About us")}
+                        </Button>
                     </div>
                 </Toolbar>
             </MuiAppBar>
