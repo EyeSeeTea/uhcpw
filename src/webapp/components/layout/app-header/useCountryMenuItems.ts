@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Country } from "../../../../domain/entities/Country";
 import { useAppContext } from "../../../contexts/app-context";
 
-export function useCountryMenuItems() {
+export function useCountries() {
     const { compositionRoot } = useAppContext();
     const [countries, setCountries] = useState<Country[]>([]);
 

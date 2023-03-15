@@ -11,7 +11,16 @@ import { colors } from "../app/themes/dhis2.theme";
 import { useAbout } from "./useAbout";
 
 export const AboutPage: React.FC = React.memo(() => {
-    const { team, experts } = useAbout();
+    const {
+        team,
+        experts,
+        selectCountries,
+        selectedCountry,
+        onCountryChange,
+        filters,
+        selectedFilter,
+        onFilterChange,
+    } = useAbout();
 
     return (
         <Layout>
@@ -36,7 +45,15 @@ export const AboutPage: React.FC = React.memo(() => {
 
             <PeopleSection>
                 <Container maxWidth="xl">
-                    <ExpertsNetwork members={experts} />
+                    <ExpertsNetwork
+                        members={experts}
+                        selectCountries={selectCountries}
+                        selectedCountry={selectedCountry}
+                        onCountryChange={onCountryChange}
+                        filters={filters}
+                        selectedFilter={selectedFilter}
+                        onFilterChange={onFilterChange}
+                    />
                 </Container>
             </PeopleSection>
         </Layout>

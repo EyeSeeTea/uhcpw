@@ -1,43 +1,97 @@
+import { DropdownItem } from "@eyeseetea/d2-ui-components";
+import i18n from "@eyeseetea/feedback-component/locales";
+import { useCallback, useEffect, useState } from "react";
+import { useCountries } from "../../components/layout/app-header/useCountryMenuItems";
 import { ResourcesState, Person } from "./AboutState";
 
 export function useAbout(): ResourcesState {
+    const countries = useCountries();
+
+    const [selectCountries, setSelectCountries] = useState<DropdownItem<string>[]>([]);
+    const [selectedCountry, setSelectedCountry] = useState<string | undefined>(undefined);
+    const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
+    const [experts, setExperts] = useState<Person[]>(expertsMembers);
+
+    const onCountryChange = useCallback(
+        (country: string | undefined) => {
+            setSelectedCountry(country);
+            setExperts(filterExperts(country, selectedFilter));
+        },
+        [selectedFilter]
+    );
+
+    const onFilterChange = useCallback(
+        (value: string) => {
+            setSelectedFilter(value);
+            setExperts(filterExperts(selectedCountry, value));
+        },
+        [selectedCountry]
+    );
+
+    useEffect(() => {
+        setSelectCountries(countries.map(country => ({ value: country.code, text: country.name })));
+    }, [countries]);
+
     return {
         team: teamMembers,
-        experts: expertsMembers,
+        experts,
+        selectCountries,
+        selectedCountry,
+        onCountryChange,
+        filters,
+        selectedFilter,
+        onFilterChange,
     };
 }
 
+const filterExperts = (countryCode: string | undefined, letterFilter: string) => {
+    const d = expertsMembers.filter(
+        expert =>
+            (!countryCode || expert.countryCode === countryCode) &&
+            (letterFilter === allFilter || expert.lastName.toLowerCase().startsWith(letterFilter.toLowerCase()))
+    );
+
+    debugger;
+
+    return d;
+};
+
 const teamMembers: Person[] = [
     {
-        name: "Persona 1 Apellido Apellido",
+        firstName: "first name 1",
+        lastName: "last name 1",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
     },
     {
-        name: "Persona 2 Apellido Apellido",
+        firstName: "first name 2",
+        lastName: "last name 2",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
     },
     {
-        name: "Persona 3 Apellido Apellido",
+        firstName: "first name 3",
+        lastName: "last name 3",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
     },
     {
-        name: "Persona 4 Apellido Apellido",
+        firstName: "first name 4",
+        lastName: "last name 4",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
     },
     {
-        name: "Persona 5 Apellido Apellido",
+        firstName: "first name 5",
+        lastName: "last name 5",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
@@ -47,48 +101,90 @@ const teamMembers: Person[] = [
 
 const expertsMembers: Person[] = [
     {
-        name: "Persona 1 Apellido Apellido",
+        firstName: "first name 1",
+        lastName: "last name 1",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
         twitter: "https://twitter.com/EyeSeeTeaLtd",
+        countryCode: "ESP",
         country: "Spain",
     },
     {
-        name: "Persona 2 Apellido Apellido",
+        firstName: "first name 2",
+        lastName: "last name 2",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
         twitter: "https://twitter.com/EyeSeeTeaLtd",
+        countryCode: "IRL",
         country: "Ireland",
     },
     {
-        name: "Persona 3 Apellido Apellido",
+        firstName: "first name 3",
+        lastName: "last name 3",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
         twitter: "https://twitter.com/EyeSeeTeaLtd",
+        countryCode: "ESP",
         country: "Spain",
     },
     {
-        name: "Persona 4 Apellido Apellido",
+        firstName: "first name 4",
+        lastName: "last name 4",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
         twitter: "https://twitter.com/EyeSeeTeaLtd",
+        countryCode: "IRL",
         country: "Ireland",
     },
     {
-        name: "Persona 5 Apellido Apellido",
+        firstName: "first name 5",
+        lastName: "last name 5",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
         twitter: "https://twitter.com/EyeSeeTeaLtd",
+        countryCode: "IRL",
         country: "Ireland",
     },
+];
+
+const allFilter = i18n.t("All");
+
+const filters = [
+    allFilter,
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
 ];

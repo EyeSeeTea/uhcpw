@@ -14,11 +14,16 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => 
     return (
         <Center>
             <Item>
-                <img width="100%" src={person.image} alt={person.name} style={{ borderRadius: 10, marginBottom: 6 }} />
+                <img
+                    width="100%"
+                    src={person.image}
+                    alt={`${person.firstName} ${person.lastName}`}
+                    style={{ borderRadius: 10, marginBottom: 6 }}
+                />
                 <Row>
                     <div>
                         <Typography variant="body1" gutterBottom>
-                            {person.name}
+                            {`${person.firstName} ${person.lastName}`}
                         </Typography>
                         <Typography variant="body2" gutterBottom>
                             {person.position}

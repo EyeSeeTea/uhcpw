@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import i18n from "../../../../locales";
 import BookIcon from "@material-ui/icons/BookOutlined";
 import SearchIcon from "@material-ui/icons/Search";
-import { useCountryMenuItems } from "./useCountryMenuItems";
+import { useCountries } from "./useCountryMenuItems";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
@@ -61,7 +61,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const countries = useCountryMenuItems();
+    const countries = useCountries();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
