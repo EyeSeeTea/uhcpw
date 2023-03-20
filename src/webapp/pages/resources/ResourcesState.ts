@@ -1,4 +1,4 @@
-import { DropdownItem } from "@eyeseetea/d2-ui-components";
+import { Option } from "../../components/dropdown/Dropdown";
 
 export type ResourcesState = {
     countryAnalysis: CountryAnalysisItem[];
@@ -9,16 +9,16 @@ export type ResourcesState = {
 };
 
 export type ResourcesFiltersState = {
-    countryFilters: DropdownItem<string>[];
+    countryFilters: Option<string>[];
     selectedCountryFilter: string | undefined;
     onChangeCountryFilter: (value: string | undefined) => void;
-    categoryFilters: DropdownItem<string>[];
+    categoryFilters: Option<string>[];
     selectedCategoryFilter: string | undefined;
     onChangeCategoryFilter: (value: string | undefined) => void;
-    themeFilters: DropdownItem<string>[];
+    themeFilters: Option<string>[];
     selectedThemeFilter: string | undefined;
     onChangeThemeFilter: (value: string | undefined) => void;
-    yearFilters: DropdownItem<string>[];
+    yearFilters: Option<string>[];
     selectedYearFilter: string | undefined;
     onChangeYearFilter: (value: string | undefined) => void;
 };

@@ -1,13 +1,13 @@
-import { DropdownItem } from "@eyeseetea/d2-ui-components";
 import i18n from "@eyeseetea/feedback-component/locales";
 import { useCallback, useEffect, useState } from "react";
 import { useCountries } from "../../components/layout/app-header/useCountryMenuItems";
+import { Option } from "../../components/dropdown/Dropdown";
 import { ResourcesState, Person } from "./AboutState";
 
 export function useAbout(): ResourcesState {
     const countries = useCountries();
 
-    const [selectCountries, setSelectCountries] = useState<DropdownItem<string>[]>([]);
+    const [selectCountries, setSelectCountries] = useState<Option<string>[]>([]);
     const [selectedCountry, setSelectedCountry] = useState<string | undefined>(undefined);
     const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
     const [experts, setExperts] = useState<Person[]>(expertsMembers);
@@ -45,15 +45,11 @@ export function useAbout(): ResourcesState {
 }
 
 const filterExperts = (countryCode: string | undefined, letterFilter: string) => {
-    const d = expertsMembers.filter(
+    return expertsMembers.filter(
         expert =>
             (!countryCode || expert.countryCode === countryCode) &&
             (letterFilter === allFilter || expert.lastName.toLowerCase().startsWith(letterFilter.toLowerCase()))
     );
-
-    debugger;
-
-    return d;
 };
 
 const teamMembers: Person[] = [

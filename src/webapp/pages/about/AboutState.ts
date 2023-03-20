@@ -1,9 +1,9 @@
-import { DropdownItem } from "@eyeseetea/d2-ui-components";
+import { Option } from "../../components/dropdown/Dropdown";
 
 export type ResourcesState = {
     team: Person[];
     experts: Person[];
-    selectCountries: DropdownItem<string>[];
+    selectCountries: Option<string>[];
     selectedCountry: string | undefined;
     onCountryChange: (country: string | undefined) => void;
     filters: string[];
