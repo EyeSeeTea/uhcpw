@@ -3,9 +3,13 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
+import { PolicyExplorerFilters } from "../../components/policy-explorer/resources-filters/PolicyExplorerFilters";
 import { colors } from "../app/themes/dhis2.theme";
+import { usePolicyExplorer } from "./usePolicyExplorer";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
+    const { filters } = usePolicyExplorer();
+
     return (
         <Layout>
             <TitleContainer>
@@ -18,8 +22,8 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <Container maxWidth="xl">
-                    <div></div>
+                <Container maxWidth="lg">
+                    <PolicyExplorerFilters filters={filters} />
                 </Container>
             </MainSection>
         </Layout>
