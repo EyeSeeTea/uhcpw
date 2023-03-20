@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Option } from "../../components/dropdown/Dropdown";
+import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 

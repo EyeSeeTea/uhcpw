@@ -3,7 +3,8 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { Person } from "../../../pages/about/AboutState";
-import { Dropdown, Option } from "../../dropdown/Dropdown";
+import { Dropdown } from "../../dropdown/Dropdown";
+import { Option } from "../../dropdown/Option";
 import { ItemPerson } from "../person/ItemPerson";
 
 export interface ExpertsNetworkProps {

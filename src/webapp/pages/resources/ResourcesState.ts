@@ -1,4 +1,4 @@
-import { Option } from "../../components/dropdown/Dropdown";
+import { Option } from "../../components/dropdown/Option";
 
 export type ResourcesState = {
     countryAnalysis: CountryAnalysisItem[];

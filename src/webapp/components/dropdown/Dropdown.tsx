@@ -1,22 +1,17 @@
-import { TextField } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { useMemo } from "react";
-import styled from "styled-components";
-
-export type Option<T extends string = string> = {
-    value: T;
-    text: string;
-};
-
+import { DropdownTextField } from "./DropdownTextField";
+import { Option } from "./Option";
 interface DropdownProps<T extends string = string> {
     label: string;
     options: Option<T>[];
     value?: T;
     placeholder?: string;
-    onChange: (value?: string) => void;
+    fullWidth?: boolean;
+    onChange: (value?: T) => void;
 }
 
-export const Dropdown: React.FC<DropdownProps> = ({ label, options, value, placeholder, onChange }) => {
+export const Dropdown: React.FC<DropdownProps> = ({ label, options, value, placeholder, fullWidth, onChange }) => {
     const valueOption = useMemo(() => {
         return options.find(option => option.value === value);
     }, [options, value]);
@@ -36,38 +31,16 @@ export const Dropdown: React.FC<DropdownProps> = ({ label, options, value, place
 
     return (
         <Autocomplete
+            fullWidth={fullWidth}
             multiple={false}
             id="tags-filled"
             options={options}
             value={valueOption}
             getOptionLabel={option => option?.text}
             renderInput={params => (
-                <StyledTextField {...params} variant="standard" label={label} placeholder={placeholder} />
+                <DropdownTextField {...params} variant="standard" label={label} placeholder={placeholder} />
             )}
             onChange={handleChange}
         />
     );
 };
-
-const StyledTextField = styled(TextField)({
-    "& label, & label.Mui-focused": {
-        color: "grey",
-    },
-    label: {
-        transform: "none",
-        position: "initial",
-    },
-    "div.MuiInput-underline": {
-        background: "#f2f9fd",
-        borderRadius: "8px",
-        minWidth: "200px",
-        border: "1px solid #cfe9f7",
-        padding: "8px 16px",
-    },
-    "div.MuiInput-underline:before": {
-        border: "none !important",
-    },
-    "div.MuiInput-underline:after": {
-        border: "none !important",
-    },
-});
