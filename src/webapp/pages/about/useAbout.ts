@@ -1,13 +1,11 @@
 import i18n from "@eyeseetea/feedback-component/locales";
-import { useCallback, useEffect, useState } from "react";
-import { useCountries } from "../../components/layout/app-header/useCountryMenuItems";
-import { Option } from "../../components/dropdown/Dropdown";
+import { useCallback, useState } from "react";
 import { ResourcesState, Person } from "./AboutState";
+import { useCountryOptions } from "../../hooks/countries/useCountryOptions";
 
 export function useAbout(): ResourcesState {
-    const countries = useCountries();
+    const countryOptions = useCountryOptions();
 
-    const [selectCountries, setSelectCountries] = useState<Option<string>[]>([]);
     const [selectedCountry, setSelectedCountry] = useState<string | undefined>(undefined);
     const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
     const [experts, setExperts] = useState<Person[]>(expertsMembers);
@@ -28,14 +26,10 @@ export function useAbout(): ResourcesState {
         [selectedCountry]
     );
 
-    useEffect(() => {
-        setSelectCountries(countries.map(country => ({ value: country.code, text: country.name })));
-    }, [countries]);
-
     return {
         team: teamMembers,
         experts,
-        selectCountries,
+        selectCountries: countryOptions,
         selectedCountry,
         onCountryChange,
         filters,
