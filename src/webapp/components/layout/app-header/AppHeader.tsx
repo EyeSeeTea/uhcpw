@@ -104,7 +104,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <Box className={classes.rest} />
                     <div>
                         <MenuButton onClick={handleClick}>{i18n.t("Indicator Explorer")}</MenuButton>
-                        <MenuButton onClick={handleClick}>{i18n.t("Policy Explorer")}</MenuButton>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/policy-explorer"}
+                        >
+                            {i18n.t("Policy Explorer")}
+                        </Button>
                         <MenuButton
                             id="countries"
                             aria-controls="countries"
