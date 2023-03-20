@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2023-03-15T10:52:33.876Z\n"
+"POT-Creation-Date: 2023-03-20T10:45:06.512Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -298,10 +298,22 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+msgid "Select category"
+msgstr ""
+
 msgid "Theme"
 msgstr ""
 
+msgid "Select theme"
+msgstr ""
+
+msgid "Select countries"
+msgstr ""
+
 msgid "Year"
+msgstr ""
+
+msgid "Select year"
 msgstr ""
 
 msgid "See All"
@@ -311,6 +323,11 @@ msgid "All"
 msgstr ""
 
 msgid "Switch to colour-blind friendly"
+msgstr ""
+
+msgid ""
+"Track and compare policies on population coverage, service coverage, user "
+"charges and voluntary health insurance and explore gaps in coverage"
 msgstr ""
 
 #~ msgid "Hello {{name}}"
