@@ -8,6 +8,7 @@ export const DropdownTextField = styled(TextField)({
     label: {
         transform: "none",
         position: "initial",
+        marginTop: "3px",
     },
     "div.MuiInput-underline": {
         background: "#f2f9fd",
@@ -21,5 +22,8 @@ export const DropdownTextField = styled(TextField)({
     },
     "div.MuiInput-underline:after": {
         border: "none !important",
+    },
+    ".MuiAutocomplete-clearIndicator": {
+        display: "none",
     },
 });

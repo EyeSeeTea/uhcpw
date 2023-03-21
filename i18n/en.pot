@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-03-20T10:45:06.512Z\n"
-"PO-Revision-Date: 2023-03-20T10:45:06.512Z\n"
+"POT-Creation-Date: 2023-03-20T12:39:12.879Z\n"
+"PO-Revision-Date: 2023-03-20T12:39:12.879Z\n"
 
 msgid "Experts network"
 msgstr ""
@@ -277,6 +277,21 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+msgid "Category"
+msgstr ""
+
+msgid "Select category"
+msgstr ""
+
+msgid "Select countries"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Select year"
+msgstr ""
+
 msgid "Comparative Analysis"
 msgstr ""
 
@@ -294,25 +309,10 @@ msgstr ""
 msgid "News"
 msgstr ""
 
-msgid "Category"
-msgstr ""
-
-msgid "Select category"
-msgstr ""
-
 msgid "Theme"
 msgstr ""
 
 msgid "Select theme"
-msgstr ""
-
-msgid "Select countries"
-msgstr ""
-
-msgid "Year"
-msgstr ""
-
-msgid "Select year"
 msgstr ""
 
 msgid "See All"
