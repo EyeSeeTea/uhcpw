@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2023-03-21T07:32:24.427Z\n"
+"POT-Creation-Date: 2023-03-22T11:07:26.428Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -334,6 +334,21 @@ msgstr ""
 msgid ""
 "Track and compare policies on population coverage, service coverage, user "
 "charges and voluntary health insurance and explore gaps in coverage"
+msgstr ""
+
+msgid "Population Coverage"
+msgstr ""
+
+msgid "Switch row/column"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "WHO Barcelona Office for Health Systems Financing (2022)"
+msgstr ""
+
+msgid "15 June 2020"
 msgstr ""
 
 #~ msgid "Hello {{name}}"
