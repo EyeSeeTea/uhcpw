@@ -1,5 +1,4 @@
-import { Box, Card, Grid, Typography } from "@material-ui/core";
-import { Divider } from "material-ui";
+import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
