@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
-import { useMemo } from "react";
+
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { DropdownTextField } from "./DropdownTextField";
