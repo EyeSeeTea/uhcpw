@@ -1,19 +1,32 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
+import { useAppContext } from "../../contexts/app-context";
 import { useCountryOptions } from "../../hooks/countries/useCountryOptions";
 import { PolicyExplorerData, PolicyExplorerState } from "./PolicyExplorerState";
 
 export function usePolicyExplorer(): PolicyExplorerState {
+    const { compositionRoot } = useAppContext();
     const countryOptions = useCountryOptions();
     const [selectedCountryFilter, setSelectedCountryFilter] = useState<string[] | undefined>();
 
     const [categoryFilters] = useState<Option[]>(categoriesFilters);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
-    const [yearFilters] = useState<Option[]>(years);
+    const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
 
     const [data, setData] = useState<PolicyExplorerData>(initialData);
+
+    useEffect(() => {
+        compositionRoot.policyExplorer.getYears.execute().run(
+            years => {
+                setYearsFilters(years.map(year => ({ value: year.id, text: year.id })));
+            },
+            () => {
+                setYearsFilters([]);
+            }
+        );
+    }, [compositionRoot.countries]);
 
     const onChangeCountryFilter = useCallback((values: string[] | undefined) => {
         setSelectedCountryFilter(values);
@@ -28,7 +41,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, []);
 
     const onSwitchRowColumn = useCallback(() => {
-        debugger;
         if (data.columns.toString() === initialData.columns.toString()) {
             const newRows = data.columns.map((column, index) => {
                 const row = data.rows[0];
@@ -43,13 +55,9 @@ export function usePolicyExplorer(): PolicyExplorerState {
                 rows: newRows,
             };
 
-            console.log({ newData });
-
             setData(newData);
         } else {
             const newData = initialData;
-
-            console.log({ newData });
 
             setData(initialData);
         }
