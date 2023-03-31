@@ -11,7 +11,7 @@ export class GetPolicyExplorerYearsUseCase {
         return this.dataSetRepository.getById(qualitativeDataForUHCPW_ID).map(dataSet => {
             const currentYear = new Date().getFullYear();
 
-            const minYear = currentYear - 1 - 5;
+            const minYear = 1999;
             const maxYear = currentYear - 1 + dataSet.openFuturePeriods;
 
             return Array.from({ length: maxYear - minYear }, (_, i) => maxYear - i).map(year => ({

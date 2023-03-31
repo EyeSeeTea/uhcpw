@@ -12,7 +12,6 @@ describe("Get Policy Explorer Years", () => {
         const years = response.data || [];
 
         expect(years[0]?.id).toBe(getYearFromCurrent(-1));
-        expect(years[4]?.id).toBe(getYearFromCurrent(-5));
     });
     it("should return current 5 years previous to current if future open periods are zero", async () => {
         const useCase = givenADataSetWithFutureOpenPeriods(5);
@@ -21,7 +20,6 @@ describe("Get Policy Explorer Years", () => {
         const years = response.data || [];
 
         expect(years[0]?.id).toBe(getYearFromCurrent(4));
-        expect(years[9]?.id).toBe(getYearFromCurrent(-5));
     });
 });
 

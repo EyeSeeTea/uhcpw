@@ -26,7 +26,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
                 setYearsFilters([]);
             }
         );
-    }, [compositionRoot.countries]);
+    }, [compositionRoot.policyExplorer]);
 
     const onChangeCountryFilter = useCallback((values: string[] | undefined) => {
         setSelectedCountryFilter(values);
@@ -57,8 +57,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
 
             setData(newData);
         } else {
-            const newData = initialData;
-
             setData(initialData);
         }
     }, [data]);
@@ -83,13 +81,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
 const categoriesFilters = [
     { value: "1", text: "Category 1" },
     { value: "2", text: "Category 2" },
-];
-
-const years = [
-    { value: "2023", text: "2023" },
-    { value: "2022", text: "2022" },
-    { value: "2021", text: "2021" },
-    { value: "2020", text: "2020" },
 ];
 
 const initialData = {
