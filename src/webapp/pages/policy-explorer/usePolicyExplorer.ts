@@ -1,18 +1,31 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
+import { useAppContext } from "../../contexts/app-context";
 import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
 import { PolicyExplorerData, PolicyExplorerState } from "./PolicyExplorerState";
 
 export function usePolicyExplorer(): PolicyExplorerState {
+    const { compositionRoot } = useAppContext();
     const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
 
     const [categoryFilters] = useState<Option[]>(categoriesFilters);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
-    const [yearFilters] = useState<Option[]>(years);
+    const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
 
     const [data, setData] = useState<PolicyExplorerData>(initialData);
+
+    useEffect(() => {
+        compositionRoot.policyExplorer.getYears.execute().run(
+            years => {
+                setYearsFilters(years.map(year => ({ value: year.id, text: year.id })));
+            },
+            () => {
+                setYearsFilters([]);
+            }
+        );
+    }, [compositionRoot.policyExplorer]);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -63,13 +76,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
 const categoriesFilters = [
     { value: "1", text: "Category 1" },
     { value: "2", text: "Category 2" },
-];
-
-const years = [
-    { value: "2023", text: "2023" },
-    { value: "2022", text: "2022" },
-    { value: "2021", text: "2021" },
-    { value: "2020", text: "2020" },
 ];
 
 const initialData = {
