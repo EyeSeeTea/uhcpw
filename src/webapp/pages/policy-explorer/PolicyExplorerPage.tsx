@@ -13,12 +13,12 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
-import { PolicyExplorerFilters } from "../../components/policy-explorer/resources-filters/PolicyExplorerFilters";
 import { colors } from "../app/themes/dhis2.theme";
 import { usePolicyExplorer } from "./usePolicyExplorer";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import { PolicyExplorerFilters } from "../../components/policy-explorer/resources-filters/PolicyExplorerFilters";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
     const { filters, data, onSwitchRowColumn } = usePolicyExplorer();

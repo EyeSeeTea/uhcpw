@@ -103,7 +103,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     </LogoContainer>
                     <Box className={classes.rest} />
                     <div>
-                        <MenuButton onClick={handleClick}>{i18n.t("Indicator Explorer")}</MenuButton>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/indicator-explorer"}
+                        >
+                            {i18n.t("Indicator Explorer")}
+                        </Button>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}

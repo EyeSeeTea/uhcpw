@@ -28,7 +28,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, []);
 
     const onSwitchRowColumn = useCallback(() => {
-        debugger;
         if (data.columns.toString() === initialData.columns.toString()) {
             const newRows = data.columns.map((column, index) => {
                 const row = data.rows[0];
