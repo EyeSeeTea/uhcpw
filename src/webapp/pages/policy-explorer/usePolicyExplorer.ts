@@ -1,11 +1,10 @@
 import { useCallback, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
-import { useCountryOptions } from "../../hooks/countries/useCountryOptions";
+import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
 import { PolicyExplorerData, PolicyExplorerState } from "./PolicyExplorerState";
 
 export function usePolicyExplorer(): PolicyExplorerState {
-    const countryOptions = useCountryOptions();
-    const [selectedCountryFilter, setSelectedCountryFilter] = useState<string[] | undefined>();
+    const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
 
     const [categoryFilters] = useState<Option[]>(categoriesFilters);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
@@ -14,10 +13,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
 
     const [data, setData] = useState<PolicyExplorerData>(initialData);
-
-    const onChangeCountryFilter = useCallback((values: string[] | undefined) => {
-        setSelectedCountryFilter(values);
-    }, []);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -42,14 +37,8 @@ export function usePolicyExplorer(): PolicyExplorerState {
                 rows: newRows,
             };
 
-            console.log({ newData });
-
             setData(newData);
         } else {
-            const newData = initialData;
-
-            console.log({ newData });
-
             setData(initialData);
         }
     }, [data]);
@@ -57,8 +46,8 @@ export function usePolicyExplorer(): PolicyExplorerState {
     return {
         filters: {
             countryFilters: countryOptions,
-            selectedCountryFilter,
-            onChangeCountryFilter,
+            selectedCountryFilter: selectedCountry,
+            onChangeCountryFilter: onCountryChange,
             categoryFilters,
             selectedCategoryFilter,
             onChangeCategoryFilter,

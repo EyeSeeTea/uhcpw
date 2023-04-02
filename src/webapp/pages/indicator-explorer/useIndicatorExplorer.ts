@@ -1,21 +1,16 @@
 import { useCallback, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
-import { useCountryOptions } from "../../hooks/countries/useCountryOptions";
+import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
 import { IndicatorExplorerState } from "./IndicatorExplorerState";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
-    const countryOptions = useCountryOptions();
-    const [selectedCountryFilter, setSelectedCountryFilter] = useState<string[] | undefined>();
+    const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
 
     const [categoryFilters] = useState<Option[]>(categoriesFilters);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [yearFilters] = useState<Option[]>(years);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
-
-    const onChangeCountryFilter = useCallback((values: string[] | undefined) => {
-        setSelectedCountryFilter(values);
-    }, []);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -28,8 +23,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     return {
         filters: {
             countryFilters: countryOptions,
-            selectedCountryFilter,
-            onChangeCountryFilter,
+            selectedCountryFilter: selectedCountry,
+            onChangeCountryFilter: onCountryChange,
             categoryFilters,
             selectedCategoryFilter,
             onChangeCategoryFilter,
@@ -51,26 +46,3 @@ const years = [
     { value: "2021", text: "2021" },
     { value: "2020", text: "2020" },
 ];
-
-const initialData = {
-    columns: [
-        "Country",
-        "Year",
-        "Basis for entitlement to publicity financed health services",
-        "Share of the population covered (%)",
-        "Institution(s) monitoring population coverage",
-        "Characteristics of non-covered or 'uninsured' people",
-        "Publicly financed health to which non-covered in 'uninsured' people are",
-    ],
-    rows: [
-        [
-            "Spain",
-            "2022",
-            "Entitlement is based on residence. In 2018 residence was re-established as the basis for entitlement to health services covered by the National Health System (NHS) and delivered by providers owned or contracted by the NHS at regional level. Asylum seekers and foreigners legally reunited with relatives in Spain are entitled to the same benefits as residents. Undocumented migrants are also entitled to the same benefits as residents after being in Spain for 90 days or through a report from social services.",
-            "",
-            "",
-            "Undocumented migrants in Spain for less than 90 days.",
-            "",
-        ],
-    ],
-};
