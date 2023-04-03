@@ -10,7 +10,7 @@ export function useCountryOptions() {
     useEffect(() => {
         compositionRoot.countries.get.execute().run(
             countries => {
-                setCountriesOptions(countries.map(country => ({ value: country.code, text: country.name })));
+                setCountriesOptions(countries.map(country => ({ value: country.id, text: country.name })));
             },
             () => {
                 setCountriesOptions([]);
