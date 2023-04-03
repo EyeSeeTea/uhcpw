@@ -7,6 +7,7 @@ export interface AppContextState {
     api: D2Api;
     currentUser: User;
     compositionRoot: CompositionRoot;
+    isNodeDev: boolean;
 }
 
 export const AppContext = React.createContext<AppContextState | null>(null);

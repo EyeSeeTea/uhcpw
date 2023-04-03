@@ -29,8 +29,9 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
             const compositionRoot = getCompositionRoot(api, instance);
             const currentUser = (await compositionRoot.users.getCurrent.execute().runAsync()).data;
             if (!currentUser) throw new Error("User not logged in");
+            const isNodeDev = process.env.NODE_ENV === "development";
 
-            setAppContext({ api, currentUser, compositionRoot });
+            setAppContext({ api, currentUser, compositionRoot, isNodeDev });
             setLoading(false);
         }
         setup();

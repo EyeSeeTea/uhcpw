@@ -1,4 +1,4 @@
-import { Button, Paper, TableContainer, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -8,6 +8,7 @@ import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import { Chart } from "../../components/chart/Chart";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { filters } = useIndicatorExplorer();
@@ -26,7 +27,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} />
 
-                <TableHeader>
+                <DataHeader>
                     <Row>
                         <Row>
                             <Typography variant="h6" color="primary">
@@ -47,8 +48,15 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                             </CustomButton>
                         </Row>
                     </Row>
-                </TableHeader>
-                <TableContainer component={TablePaper}></TableContainer>
+                </DataHeader>
+                <div>
+                    {/* <Chart visualizationId={"Btaj2BbuLAF"} /> */}
+                    <Chart
+                        visualizationId={"s7MdJ2okiG5"}
+                        countryIds={filters.selectedCountryFilter}
+                        periods={filters.selectedYearFilter ? [filters.selectedYearFilter] : []}
+                    />
+                </div>
                 <span>
                     <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
                     <Link href="#">
@@ -82,18 +90,13 @@ const Row = styled.div`
     justify-content: space-between;
 `;
 
-const TableHeader = styled.div`
+const DataHeader = styled.div`
     padding: 48px 0px;
 `;
 
 const CustomButton = styled(Button)`
     border-radius: 10px;
     padding: 0px 16px;
-`;
-
-const TablePaper = styled(Paper)`
-    border-radius: 10px;
-    box-shadow: none;
 `;
 
 const CreditsText = styled(Typography)`
