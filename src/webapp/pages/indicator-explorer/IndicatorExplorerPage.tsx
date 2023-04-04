@@ -11,7 +11,7 @@ import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { Chart } from "../../components/chart/Chart";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters } = useIndicatorExplorer();
+    const { filters, visualization } = useIndicatorExplorer();
 
     return (
         <Layout>
@@ -50,12 +50,13 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     </Row>
                 </DataHeader>
                 <div>
-                    {/* <Chart visualizationId={"Btaj2BbuLAF"} /> */}
-                    <Chart
-                        visualizationId={"s7MdJ2okiG5"}
-                        countryIds={filters.selectedCountryFilter}
-                        periods={filters.selectedYearFilter ? [filters.selectedYearFilter] : []}
-                    />
+                    {visualization && (
+                        <Chart
+                            visualization={visualization}
+                            countryIds={filters.selectedCountryFilter}
+                            periods={filters.selectedYearFilter ? [filters.selectedYearFilter] : []}
+                        />
+                    )}
                 </div>
                 <span>
                     <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>

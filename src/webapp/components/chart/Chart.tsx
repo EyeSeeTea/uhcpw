@@ -1,43 +1,83 @@
+import _ from "lodash";
 import React from "react";
 import { Id, Ref } from "../../../domain/entities/Ref";
+import { Dimension, Visualization } from "../../../domain/entities/Visualization";
 import { useAppContext } from "../../contexts/app-context";
 
 export interface ChartProps {
-    visualizationId: string;
+    visualization: Visualization;
     countryIds?: string[];
     periods?: string[];
 }
 
-export const Chart: React.FC<ChartProps> = React.memo(({ visualizationId, countryIds, periods }) => {
-    //const { visualization, parentOrgUnit, period } = props;
+export const Chart: React.FC<ChartProps> = React.memo(({ visualization, countryIds, periods }) => {
     const { api, isNodeDev: isDev } = useAppContext();
-    const elementId = `visualization-${visualizationId}`;
+    const elementId = `visualization-${visualization.id}`;
 
     React.useEffect(() => {
         const url = isDev ? "/dhis2" : api.baseUrl;
 
-        debugger;
-
         const item: ReportItem = {
-            id: visualizationId,
+            id: visualization.id,
             el: elementId,
-            columns: countryIds
-                ? [{ dimension: "ou", items: countryIds?.map(countryId => ({ id: countryId })) }]
-                : undefined,
-            rows:
-                periods && periods.length > 0
-                    ? [{ dimension: "pe", items: periods?.map(period => ({ id: period })) }]
-                    : undefined,
+            columns: getDimensions(visualization, "columns", countryIds, periods),
+            rows: getDimensions(visualization, "rows", countryIds, periods),
+            filters: getDimensions(visualization, "filters", countryIds, periods),
         };
-
-        console.log({ item });
 
         window.chartPlugin.url = url;
         window.chartPlugin.load([item]);
-    }, [visualizationId, api, elementId, isDev, countryIds, periods]);
+    }, [visualization, api, elementId, isDev, countryIds, periods]);
 
     return <div id={elementId}></div>;
 });
+
+const getDimensions = (
+    visualization: Visualization,
+    prop: VisualizationProp,
+    countryIds?: string[],
+    periods?: string[]
+): ItemRef[] | undefined => {
+    debugger;
+    const existsOu = visualization[prop].some(vd => vd.id === "ou");
+    const existsPe = visualization[prop].some(vd => vd.id === "pe");
+    const existsDx = visualization[prop].some(vd => vd.id === "dx");
+
+    if (existsOu || existsPe || existsDx) {
+        const dimensionsOu =
+            existsOu && countryIds && countryIds.length > 0
+                ? [{ dimension: "ou" as const, items: countryIds?.map(countryId => ({ id: countryId })) }]
+                : [];
+
+        const dimensionsPe =
+            existsPe && periods && periods.length > 0
+                ? [{ dimension: "pe" as const, items: periods?.map(period => ({ id: period })) }]
+                : [];
+
+        const dimensionsDx =
+            (dimensionsOu.length > 0 || dimensionsPe.length > 0) &&
+            existsDx &&
+            visualization.dataDimensionItems &&
+            visualization.dataDimensionItems.length > 0
+                ? [
+                      {
+                          dimension: "dx" as const,
+                          items: visualization.dataDimensionItems?.map(
+                              dataDimensionItem => dataDimensionItem.dataElement
+                          ),
+                      },
+                  ]
+                : [undefined];
+
+        const dimensions = _.compact([...dimensionsOu, ...dimensionsPe, ...dimensionsDx]);
+
+        return dimensions.length > 0 ? dimensions : undefined;
+    } else {
+        return undefined;
+    }
+};
+
+export type VisualizationProp = "filters" | "rows" | "columns";
 
 declare global {
     interface Window {
@@ -59,7 +99,7 @@ interface ReportItem {
 }
 
 interface ItemRef {
-    dimension: "ou" | "pe" | "dx";
+    dimension: Dimension;
     items: Ref[];
 }
 
