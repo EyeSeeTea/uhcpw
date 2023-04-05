@@ -61,7 +61,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const countries = useCountryOptions();
+    const { countryOptions } = useCountryOptions();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -103,7 +103,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     </LogoContainer>
                     <Box className={classes.rest} />
                     <div>
-                        <MenuButton onClick={handleClick}>{i18n.t("Indicator Explorer")}</MenuButton>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/indicator-explorer"}
+                        >
+                            {i18n.t("Indicator Explorer")}
+                        </Button>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -130,7 +137,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            {countries.map(country => {
+                            {countryOptions.map(country => {
                                 return (
                                     <MenuItem key={country.value} onClick={handleClick}>
                                         {country.text}

@@ -21,6 +21,7 @@ export class CountryD2Repository implements CountryRepository {
     private buildCountries(orgUnits: D2OrgUnit[]): Country[] {
         return orgUnits.map((orgUnit, index) => {
             return {
+                id: orgUnit.id,
                 name: orgUnit.shortName,
                 code: orgUnit.code,
                 description: orgUnit.description,

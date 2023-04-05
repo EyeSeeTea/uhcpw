@@ -4,19 +4,10 @@ import { ResourcesState, Person } from "./AboutState";
 import { useCountryOptions } from "../../hooks/countries/useCountryOptions";
 
 export function useAbout(): ResourcesState {
-    const countryOptions = useCountryOptions();
+    const { countryOptions, selectedCountry, onCountryChange } = useCountryOptions();
 
-    const [selectedCountry, setSelectedCountry] = useState<string | undefined>(undefined);
     const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
     const [experts, setExperts] = useState<Person[]>(expertsMembers);
-
-    const onCountryChange = useCallback(
-        (country: string | undefined) => {
-            setSelectedCountry(country);
-            setExperts(filterExperts(country, selectedFilter));
-        },
-        [selectedFilter]
-    );
 
     const onFilterChange = useCallback(
         (value: string) => {
