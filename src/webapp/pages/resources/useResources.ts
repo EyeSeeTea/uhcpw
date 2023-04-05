@@ -1,5 +1,5 @@
-import { DropdownItem } from "@eyeseetea/d2-ui-components";
 import { useCallback, useEffect, useState } from "react";
+import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 
@@ -8,16 +8,16 @@ export function useResources(): ResourcesState {
 
     const [countryAnalysis, setCountryAnalysis] = useState<CountryAnalysisItem[]>(countryAnalysisOriginals);
 
-    const [countryFilters, setCountryFilters] = useState<DropdownItem[]>([]);
+    const [countryFilters, setCountryFilters] = useState<Option[]>([]);
     const [selectedCountryFilter, setSelectedCountryFilter] = useState<string | undefined>();
 
-    const [categoryFilters] = useState<DropdownItem[]>(categoriesFilters);
+    const [categoryFilters] = useState<Option[]>(categoriesFilters);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
-    const [themeFilters] = useState<DropdownItem[]>(themes);
+    const [themeFilters] = useState<Option[]>(themes);
     const [selectedThemeFilter, setSelectedThemeFilter] = useState<string | undefined>();
 
-    const [yearFilters] = useState<DropdownItem[]>(years);
+    const [yearFilters] = useState<Option[]>(years);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
 
     useEffect(() => {

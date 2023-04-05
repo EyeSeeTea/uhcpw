@@ -9,10 +9,10 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import i18n from "../../../../locales";
 import BookIcon from "@material-ui/icons/BookOutlined";
 import SearchIcon from "@material-ui/icons/Search";
-import { useCountries } from "./useCountryMenuItems";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { useCountryOptions } from "../../../hooks/countries/useCountryOptions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -61,7 +61,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const countries = useCountries();
+    const countries = useCountryOptions();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -104,7 +104,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <Box className={classes.rest} />
                     <div>
                         <MenuButton onClick={handleClick}>{i18n.t("Indicator Explorer")}</MenuButton>
-                        <MenuButton onClick={handleClick}>{i18n.t("Policy Explorer")}</MenuButton>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/policy-explorer"}
+                        >
+                            {i18n.t("Policy Explorer")}
+                        </Button>
                         <MenuButton
                             id="countries"
                             aria-controls="countries"
@@ -125,8 +132,8 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         >
                             {countries.map(country => {
                                 return (
-                                    <MenuItem key={country.name} onClick={handleClick}>
-                                        {country.name}
+                                    <MenuItem key={country.value} onClick={handleClick}>
+                                        {country.text}
                                     </MenuItem>
                                 );
                             })}

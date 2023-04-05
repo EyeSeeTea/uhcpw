@@ -1,15 +1,15 @@
-import { DropdownItem } from "@eyeseetea/d2-ui-components";
 import { Box, Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { Person } from "../../../pages/about/AboutState";
-import { SelectDropdown } from "../../select-dropdown/SelectDropdown";
+import { Dropdown } from "../../dropdown/Dropdown";
+import { Option } from "../../dropdown/Option";
 import { ItemPerson } from "../person/ItemPerson";
 
 export interface ExpertsNetworkProps {
     members: Person[];
-    selectCountries: DropdownItem<string>[];
+    selectCountries: Option<string>[];
     selectedCountry: string | undefined;
     onCountryChange: (value: string | undefined) => void;
     filters: string[];
@@ -26,9 +26,9 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                 </ItemsTitleContainer>
 
                 <Row>
-                    <SelectDropdown
+                    <Dropdown
                         label={i18n.t("Countries")}
-                        items={selectCountries}
+                        options={selectCountries}
                         value={selectedCountry}
                         onChange={onCountryChange}
                     />

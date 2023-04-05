@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-03-15T10:52:33.876Z\n"
-"PO-Revision-Date: 2023-03-15T10:52:33.876Z\n"
+"POT-Creation-Date: 2023-03-22T11:07:26.428Z\n"
+"PO-Revision-Date: 2023-03-22T11:07:26.428Z\n"
 
 msgid "Experts network"
 msgstr ""
@@ -55,6 +55,12 @@ msgid "Add"
 msgstr ""
 
 msgid "List"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Clear all"
 msgstr ""
 
 msgid ""
@@ -277,6 +283,21 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+msgid "Category"
+msgstr ""
+
+msgid "Select category"
+msgstr ""
+
+msgid "Select countries"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Select year"
+msgstr ""
+
 msgid "Comparative Analysis"
 msgstr ""
 
@@ -294,13 +315,10 @@ msgstr ""
 msgid "News"
 msgstr ""
 
-msgid "Category"
-msgstr ""
-
 msgid "Theme"
 msgstr ""
 
-msgid "Year"
+msgid "Select theme"
 msgstr ""
 
 msgid "See All"
@@ -310,4 +328,24 @@ msgid "All"
 msgstr ""
 
 msgid "Switch to colour-blind friendly"
+msgstr ""
+
+msgid ""
+"Track and compare policies on population coverage, service coverage, user "
+"charges and voluntary health insurance and explore gaps in coverage"
+msgstr ""
+
+msgid "Population Coverage"
+msgstr ""
+
+msgid "Switch row/column"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "WHO Barcelona Office for Health Systems Financing (2022)"
+msgstr ""
+
+msgid "15 June 2020"
 msgstr ""

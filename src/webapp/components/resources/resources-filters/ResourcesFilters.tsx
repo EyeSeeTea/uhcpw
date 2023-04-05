@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ResourcesFiltersState } from "../../../pages/resources/ResourcesState";
-import { SelectDropdown } from "../../select-dropdown/SelectDropdown";
+import { Dropdown } from "../../dropdown/Dropdown";
 
 export interface ResourcesFiltersProps {
     filters: ResourcesFiltersState;
@@ -14,9 +14,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
         <Grid container spacing={5}>
             <Grid item md={3} xs={6}>
                 <Center>
-                    <SelectDropdown
+                    <Dropdown
                         label={i18n.t("Category")}
-                        items={filters.categoryFilters}
+                        placeholder={i18n.t("Select category")}
+                        options={filters.categoryFilters}
                         value={filters.selectedCategoryFilter}
                         onChange={filters.onChangeCategoryFilter}
                     />
@@ -24,9 +25,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
             </Grid>
             <Grid item md={3} xs={6}>
                 <Center>
-                    <SelectDropdown
+                    <Dropdown
                         label={i18n.t("Theme")}
-                        items={filters.themeFilters}
+                        placeholder={i18n.t("Select theme")}
+                        options={filters.themeFilters}
                         value={filters.selectedThemeFilter}
                         onChange={filters.onChangeThemeFilter}
                     />
@@ -34,9 +36,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
             </Grid>
             <Grid item md={3} xs={6}>
                 <Center>
-                    <SelectDropdown
+                    <Dropdown
                         label={i18n.t("Countries")}
-                        items={filters.countryFilters}
+                        placeholder={i18n.t("Select countries")}
+                        options={filters.countryFilters}
                         value={filters.selectedCountryFilter}
                         onChange={filters.onChangeCountryFilter}
                     />
@@ -44,9 +47,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
             </Grid>
             <Grid item md={3} xs={6}>
                 <Center>
-                    <SelectDropdown
+                    <Dropdown
                         label={i18n.t("Year")}
-                        items={filters.yearFilters}
+                        placeholder={i18n.t("Select year")}
+                        options={filters.yearFilters}
                         value={filters.selectedYearFilter}
                         onChange={filters.onChangeYearFilter}
                     />
