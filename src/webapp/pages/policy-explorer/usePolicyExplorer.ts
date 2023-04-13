@@ -8,7 +8,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
     const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
 
-    const [categoryFilters] = useState<Option[]>(categoriesFilters);
+    const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
@@ -20,6 +20,17 @@ export function usePolicyExplorer(): PolicyExplorerState {
         compositionRoot.policyExplorer.getYears.execute().run(
             years => {
                 setYearsFilters(years.map(year => ({ value: year.id, text: year.id })));
+            },
+            () => {
+                setYearsFilters([]);
+            }
+        );
+    }, [compositionRoot.policyExplorer]);
+
+    useEffect(() => {
+        compositionRoot.policyExplorer.getCategories.execute().run(
+            categories => {
+                setCategoryFilters(categories.map(category => ({ value: category.id, text: category.name })));
             },
             () => {
                 setYearsFilters([]);
@@ -72,11 +83,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
         onSwitchRowColumn,
     };
 }
-
-const categoriesFilters = [
-    { value: "1", text: "Category 1" },
-    { value: "2", text: "Category 2" },
-];
 
 const initialData = {
     columns: [

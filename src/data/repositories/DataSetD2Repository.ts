@@ -37,6 +37,7 @@ const dataSetFields = {
     id: true,
     name: true,
     openFuturePeriods: true,
+    sections: { id: true, displayName: true },
 } as const;
 
 type D2DataSet = MetadataPick<{

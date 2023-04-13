@@ -1,5 +1,6 @@
 import _ from "lodash";
 import React from "react";
+import styled from "styled-components";
 import { Id, Ref } from "../../../domain/entities/Ref";
 import { Dimension, Visualization } from "../../../domain/entities/Visualization";
 import { useAppContext } from "../../contexts/app-context";
@@ -29,7 +30,7 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, countryI
         window.chartPlugin.load([item]);
     }, [visualization, api, elementId, isDev, countryIds, periods]);
 
-    return <div id={elementId}></div>;
+    return <Container id={elementId}></Container>;
 });
 
 const getDimensions = (
@@ -38,7 +39,6 @@ const getDimensions = (
     countryIds?: string[],
     periods?: string[]
 ): ItemRef[] | undefined => {
-    debugger;
     const existsOu = visualization[prop].some(vd => vd.id === "ou");
     const existsPe = visualization[prop].some(vd => vd.id === "pe");
     const existsDx = visualization[prop].some(vd => vd.id === "dx");
@@ -104,3 +104,9 @@ interface ItemRef {
 }
 
 type DOMSelectorId = string;
+
+const Container = styled.div`
+    .highcharts-container * {
+        font-family: "Roboto";
+    }
+`;
