@@ -9,7 +9,7 @@ import {
     TableRow,
     Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -22,6 +22,10 @@ import { PolicyExplorerFilters } from "../../components/policy-explorer/resource
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
     const { filters, data, onSwitchRowColumn } = usePolicyExplorer();
+
+    const category = useMemo(() => {
+        return filters.categoryFilters.find(cat => cat.value === filters.selectedCategoryFilter);
+    }, [filters.categoryFilters, filters.selectedCategoryFilter]);
 
     return (
         <Layout>
@@ -39,14 +43,16 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
 
                 <TableHeader>
                     <Row>
-                        <Row>
-                            <Typography variant="h6" color="primary">
-                                {i18n.t("Population Coverage")}
-                            </Typography>
-                            <Button>
-                                <InfoIcon color="primary" />
-                            </Button>
-                        </Row>
+                        {category && (
+                            <Row>
+                                <Typography variant="h6" color="primary">
+                                    {category.text}
+                                </Typography>
+                                <Button>
+                                    <InfoIcon color="primary" />
+                                </Button>
+                            </Row>
+                        )}
                         <Row>
                             <CustomButton
                                 variant="outlined"
@@ -68,24 +74,26 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                     </Row>
                 </TableHeader>
                 <TableContainer component={TablePaper}>
-                    <StyledTable aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                {data.columns.map(column => {
-                                    return <TableCell key={column}>{column}</TableCell>;
-                                })}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.rows.map(row => (
-                                <TableRow key={row.toString()}>
-                                    {row.map(cell => (
-                                        <TableCell key={cell}>{cell}</TableCell>
-                                    ))}
+                    {data && (
+                        <StyledTable aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    {data.columns.map(column => {
+                                        return <TableCell key={column}>{column}</TableCell>;
+                                    })}
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </StyledTable>
+                            </TableHead>
+                            <TableBody>
+                                {data.rows.map(row => (
+                                    <TableRow key={row.toString()}>
+                                        {row.map(cell => (
+                                            <TableCell key={cell}>{cell}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </StyledTable>
+                    )}
                 </TableContainer>
                 <span>
                     <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>

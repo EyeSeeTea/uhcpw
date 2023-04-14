@@ -1,8 +1,9 @@
+import { PolicyExplorer } from "../../../domain/entities/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 
 export type PolicyExplorerState = {
     filters: PolicyExplorerFiltersState;
-    data: PolicyExplorerData;
+    data?: PolicyExplorer;
     onSwitchRowColumn: () => void;
 };
 
@@ -16,9 +17,4 @@ export type PolicyExplorerFiltersState = {
     yearFilters: Option<string>[];
     selectedYearFilter: string | undefined;
     onChangeYearFilter: (value: string | undefined) => void;
-};
-
-export type PolicyExplorerData = {
-    columns: string[];
-    rows: string[][];
 };
