@@ -12,10 +12,9 @@ export class GetIndicatorExplorerYearsUseCase {
         return this.dataSetRepository.getById(quantitativeDataForUHCPW_ID).map(dataSet => {
             const currentYear = new Date().getFullYear();
 
-            const minYear = 1999;
             const maxYear = currentYear - 1 + dataSet.openFuturePeriods;
 
-            return generateYears(maxYear, minYear);
+            return generateYears(maxYear);
         });
     }
 }

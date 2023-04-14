@@ -2,6 +2,7 @@ import { Future, FutureData } from "../../entities/Future";
 import { PolicyExplorer } from "../../entities/PolicyExplorer";
 import { CountryRepository } from "../../repositories/CountryRepository";
 import { PolicyExplorerRepository } from "../../repositories/PolicyExplorerRepository";
+import { generateYears } from "../utils/generateYears";
 
 export class GetPolicyExplorerUseCase {
     constructor(
@@ -30,7 +31,6 @@ export class GetPolicyExplorerUseCase {
     private getYears(years: string[]): FutureData<string[]> {
         if (years.length > 0) return Future.success(years);
 
-        return Future.success(["2022", "2021"]);
-        //return this.countryRepository.get().map(countries => countries.map(country => country.id));
+        return Future.success(generateYears().map(years => years.id));
     }
 }
