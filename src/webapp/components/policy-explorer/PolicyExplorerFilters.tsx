@@ -1,10 +1,10 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import i18n from "../../../../locales";
-import { PolicyExplorerFiltersState } from "../../../pages/policy-explorer/PolicyExplorerState";
-import { Dropdown } from "../../dropdown/Dropdown";
-import { DropdownMultiple } from "../../dropdown/DropdownMultiple";
+import i18n from "../../../locales";
+import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
+import { Dropdown } from "../dropdown/Dropdown";
+import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 
 export interface ResourcesFiltersProps {
     filters: PolicyExplorerFiltersState;

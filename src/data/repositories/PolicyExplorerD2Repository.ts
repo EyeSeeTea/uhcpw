@@ -68,15 +68,15 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
             const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
-            return _.compact([
+            return [
                 orgUnitName,
-                period,
+                period || "",
                 ...dataElementsSection.map(de => {
                     const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
 
                     return dataValue?.value || "";
                 }),
-            ]);
+            ];
         });
     }
 

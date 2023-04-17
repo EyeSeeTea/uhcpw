@@ -18,7 +18,8 @@ import { usePolicyExplorer } from "./usePolicyExplorer";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
-import { PolicyExplorerFilters } from "../../components/policy-explorer/resources-filters/PolicyExplorerFilters";
+import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
+import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
     const { filters, data, onSwitchRowColumn } = usePolicyExplorer();
@@ -41,41 +42,43 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <PolicyExplorerFilters filters={filters} />
 
-                <TableHeader>
-                    <Row>
-                        {category && (
-                            <Row>
-                                <Typography variant="h6" color="primary">
-                                    {category.text}
-                                </Typography>
-                                <Button>
-                                    <InfoIcon color="primary" />
-                                </Button>
-                            </Row>
-                        )}
+                {data && (
+                    <TableHeader>
                         <Row>
-                            <CustomButton
-                                variant="outlined"
-                                startIcon={<SwitchIcon />}
-                                color="primary"
-                                onClick={onSwitchRowColumn}
-                            >
-                                {i18n.t("Switch row/column")}
-                            </CustomButton>
-                            <CustomButton
-                                variant="contained"
-                                startIcon={<DownloadIcon />}
-                                color="primary"
-                                style={{ marginLeft: 20 }}
-                            >
-                                {i18n.t("Download")}
-                            </CustomButton>
+                            {category && (
+                                <Row>
+                                    <Typography variant="h6" color="primary">
+                                        {category.text}
+                                    </Typography>
+                                    <Button>
+                                        <InfoIcon color="primary" />
+                                    </Button>
+                                </Row>
+                            )}
+                            <Row>
+                                <CustomButton
+                                    variant="outlined"
+                                    startIcon={<SwitchIcon />}
+                                    color="primary"
+                                    onClick={onSwitchRowColumn}
+                                >
+                                    {i18n.t("Switch row/column")}
+                                </CustomButton>
+                                <CustomButton
+                                    variant="contained"
+                                    startIcon={<DownloadIcon />}
+                                    color="primary"
+                                    style={{ marginLeft: 20 }}
+                                >
+                                    {i18n.t("Download")}
+                                </CustomButton>
+                            </Row>
                         </Row>
-                    </Row>
-                </TableHeader>
-                <TableContainer component={TablePaper}>
-                    {data && (
-                        <StyledTable aria-label="simple table">
+                    </TableHeader>
+                )}
+                {data ? (
+                    <TableContainer component={TablePaper}>
+                        <StyledTable normal={data.columns.length > 0}>
                             <TableHead>
                                 <TableRow>
                                     {data.columns.map(column => {
@@ -93,8 +96,10 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                                 ))}
                             </TableBody>
                         </StyledTable>
-                    )}
-                </TableContainer>
+                    </TableContainer>
+                ) : (
+                    <EmptyContent />
+                )}
                 <span>
                     <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
                     <Link href="#">
@@ -112,6 +117,14 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
         </Layout>
     );
 });
+
+export const StyledTable: React.FC<{ normal: boolean }> = ({ normal, children }) => {
+    return normal ? (
+        <StyledNormalTable aria-label="simple table">{children}</StyledNormalTable>
+    ) : (
+        <StyledInverseTable aria-label="simple table">{children}</StyledInverseTable>
+    );
+};
 
 const MainSection = styled.div`
     background: white;
@@ -144,7 +157,7 @@ const TablePaper = styled(Paper)`
     box-shadow: none;
 `;
 
-const StyledTable = styled(Table)`
+const StyledNormalTable = styled(Table)`
     tbody {
         background: #f2f9fd;
     }
@@ -159,6 +172,26 @@ const StyledTable = styled(Table)`
     }
     thead > tr > th {
         vertical-align: middle;
+    }
+    tbody > tr > td {
+        vertical-align: top;
+    }
+    margin-bottom: 64px;
+`;
+
+const StyledInverseTable = styled(Table)`
+    tbody {
+        background: #f2f9fd;
+    }
+    tbody > tr:nth-child(odd) > td:first-child {
+        background-color: #cce8f7;
+    }
+    tbody > tr:nth-child(even) > td:first-child {
+        background-color: #e7f3fc;
+    }
+    tbody > tr > td:first-child {
+        color: #0460a7;
+        font-weight: 500;
     }
     tbody > tr > td {
         vertical-align: top;

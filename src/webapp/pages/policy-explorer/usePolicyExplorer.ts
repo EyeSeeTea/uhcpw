@@ -73,15 +73,13 @@ export function usePolicyExplorer(): PolicyExplorerState {
 
         if (data.columns.toString() === initialData.columns.toString()) {
             const newRows = data.columns.map((column, index) => {
-                const row = data.rows[0];
+                const cells = data.rows.map(row => row[index] || "");
 
-                const cell = row ? row[index] || "" : "";
-
-                return [column, cell];
+                return [column, ...cells];
             });
 
             const newData = {
-                columns: ["Description", "Value"],
+                columns: [],
                 rows: newRows,
             };
 
