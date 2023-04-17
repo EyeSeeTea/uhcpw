@@ -11,16 +11,16 @@ export const AppFooter: React.FC = () => {
             <FooterTop>
                 <Container maxWidth="xl">
                     <Grid container spacing={6}>
-                        <Grid item lg={3} md={6} xs={12} alignItems="center">
+                        <Grid item lg={3} md={6} xs={12}>
                             <img src={whoLogoWhite} width={150} alt="WHO logo" />
                         </Grid>
-                        <Grid item lg={3} md={6} xs={12} justifyContent="center">
+                        <Grid item lg={3} md={6} xs={12}>
                             <EuropeContainer>
                                 <img src={europeFlag} width={100} alt="WHO logo" />
                                 <EuropeText variant="body2">{i18n.t("Funded by the European Union")}</EuropeText>
                             </EuropeContainer>
                         </Grid>
-                        <Grid item lg={3} md={6} xs={12} justifyContent="center">
+                        <Grid item lg={3} md={6} xs={12}>
                             <Typography variant="body1" gutterBottom>
                                 {i18n.t("About us")}
                             </Typography>
@@ -31,7 +31,7 @@ export const AppFooter: React.FC = () => {
                                 {i18n.t("World Barcelona Office for Health Sytems Financing")}
                             </Typography>
                         </Grid>
-                        <Grid item lg={3} md={6} xs={12} justifyContent="center">
+                        <Grid item lg={3} md={6} xs={12}>
                             <Typography variant="body1" gutterBottom>
                                 {i18n.t("Contact our office")}
                             </Typography>
