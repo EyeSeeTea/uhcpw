@@ -89,6 +89,12 @@ export function usePolicyExplorer(): PolicyExplorerState {
         }
     }, [data, initialData]);
 
+    const onDownload = useCallback(() => {
+        if (!data) return;
+
+        compositionRoot.policyExplorer.download.execute(data).runAsync();
+    }, [compositionRoot.policyExplorer, data]);
+
     return {
         filters: {
             countryFilters: countryOptions,
@@ -103,5 +109,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
         },
         data,
         onSwitchRowColumn,
+        onDownload,
     };
 }

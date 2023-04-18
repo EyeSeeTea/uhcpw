@@ -25,6 +25,7 @@
         "classnames": "2.3.1",
         "d2": "31.10.2",
         "d2-manifest": "1.0.0",
+        "file-saver": "^2.0.5",
         "fluture": "14.0.0",
         "font-awesome": "4.7.0",
         "isomorphic-fetch": "3.0.0",
@@ -39,7 +40,8 @@
         "react-scripts": "4.0.3",
         "styled-components": "5.3.5",
         "styled-jsx": "3.4.5",
-        "worker-loader": "3.0.8"
+        "worker-loader": "3.0.8",
+        "xlsx": "^0.18.5"
     },
     "devDependencies": {
         "@babel/core": "7.17.8",
@@ -48,6 +50,7 @@
         "@testing-library/jest-dom": "5.16.3",
         "@testing-library/react": "12.1.4",
         "@types/classnames": "2.3.1",
+        "@types/file-saver": "^2.0.5",
         "@types/jest": "26.0.24",
         "@types/lodash": "4.14.181",
         "@types/mapbox-gl": "^2.7.10",

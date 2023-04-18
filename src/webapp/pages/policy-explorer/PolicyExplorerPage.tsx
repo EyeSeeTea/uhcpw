@@ -22,7 +22,7 @@ import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyEx
 import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
-    const { filters, data, onSwitchRowColumn } = usePolicyExplorer();
+    const { filters, data, onSwitchRowColumn, onDownload } = usePolicyExplorer();
 
     const category = useMemo(() => {
         return filters.categoryFilters.find(cat => cat.value === filters.selectedCategoryFilter);
@@ -69,6 +69,7 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                                     startIcon={<DownloadIcon />}
                                     color="primary"
                                     style={{ marginLeft: 20 }}
+                                    onClick={onDownload}
                                 >
                                     {i18n.t("Download")}
                                 </CustomButton>

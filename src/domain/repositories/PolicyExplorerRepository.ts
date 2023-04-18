@@ -3,4 +3,5 @@ import { PolicyExplorer } from "../entities/PolicyExplorer";
 
 export interface PolicyExplorerRepository {
     get(policyExplorerCategoryId: string, countryIds: string[], years: string[]): FutureData<PolicyExplorer>;
+    saveToFile(policyExplorer: PolicyExplorer): FutureData<void>;
 }

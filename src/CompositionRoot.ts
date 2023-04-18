@@ -12,6 +12,7 @@ import { GetInstanceVersionUseCase } from "./domain/usecases/GetInstanceVersionU
 import { GetIndicatorExplorerYearsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerYearsUseCase";
 import { GetVisualizationByIdUseCase } from "./domain/usecases/indicator-explorer/GetVisualizationByIdUseCase";
 import { GetVisualizationsUseCase } from "./domain/usecases/indicator-explorer/GetVisualizationsUseCase";
+import { DownloadPolicyExplorerUseCase } from "./domain/usecases/policy-explorer/DownloadPolicyExplorerUseCase";
 import { GetPolicyExplorerCategoriesUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerCategoriesUseCase";
 import { GetPolicyExplorerUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerUseCase";
 import { GetPolicyExplorerYearsUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerYearsUseCase";
@@ -40,6 +41,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance) {
             getYears: new GetPolicyExplorerYearsUseCase(dataSetRepository),
             getCategories: new GetPolicyExplorerCategoriesUseCase(policyExplorerCategoryRepository),
             get: new GetPolicyExplorerUseCase(policyExplorerRepository, countryRepository),
+            download: new DownloadPolicyExplorerUseCase(policyExplorerRepository),
         },
         indicatorExplorer: {
             getYears: new GetIndicatorExplorerYearsUseCase(dataSetRepository),

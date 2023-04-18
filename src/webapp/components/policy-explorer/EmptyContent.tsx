@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";

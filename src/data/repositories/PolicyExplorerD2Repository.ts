@@ -5,6 +5,7 @@ import { PolicyExplorerRepository } from "../../domain/repositories/PolicyExplor
 import { policyExplorerDataSet_ID } from "../../domain/utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
+import { exportToCSV } from "../export/exportToCSV";
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
@@ -42,6 +43,22 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 ),
             };
         });
+    }
+
+    saveToFile(policyExplorer: PolicyExplorer): FutureData<void> {
+        exportToCSV(
+            [
+                {
+                    data:
+                        policyExplorer.columns.length > 0
+                            ? [policyExplorer.columns, ...policyExplorer.rows]
+                            : policyExplorer.rows,
+                    name: "Policy Explorer",
+                },
+            ],
+            "PolicyExplorer"
+        );
+        return Future.success(undefined);
     }
 
     private buildColumns(policyExplorerCategoryId: string, dataSet?: D2DataSet): string[] {

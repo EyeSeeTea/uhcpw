@@ -5,6 +5,7 @@ export type PolicyExplorerState = {
     filters: PolicyExplorerFiltersState;
     data?: PolicyExplorer;
     onSwitchRowColumn: () => void;
+    onDownload: () => void;
 };
 
 export type PolicyExplorerFiltersState = {
