@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { Future, FutureData } from "../../domain/entities/Future";
+import { FutureData } from "../../domain/entities/Future";
 import { ComparativeAnalysis, Resource, ResourceCategory } from "../../domain/entities/Resource";
 import { ResourceRepository } from "../../domain/repositories/ResourceRepository";
 import { D2Api } from "../../types/d2-api";

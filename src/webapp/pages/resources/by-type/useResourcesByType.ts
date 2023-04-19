@@ -46,7 +46,7 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
                 setItems([]);
             }
         );
-    }, [compositionRoot.resources]);
+    }, [compositionRoot.resources, type]);
 
     const onChangeCountryFilter = useCallback((value: string | undefined) => {
         setSelectedCountryFilter(value);
