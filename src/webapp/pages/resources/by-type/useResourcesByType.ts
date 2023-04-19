@@ -1,12 +1,19 @@
 import { useCallback, useEffect, useState } from "react";
-import { Resource } from "../../../../domain/entities/Resource";
+import { Resource, ResourceCategory } from "../../../../domain/entities/Resource";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
 import { ResourcesByTypeState } from "./ResourcesByTypeState";
 
-export type ResourceType = "news" | "multimedia" | "country-analysis" | "comparative-analysis";
+export type ResourceTypeParam = "news" | "multimedia" | "country-analysis" | "comparative-analysis";
 
-export function useResourcesByType(type: ResourceType): ResourcesByTypeState {
+const typeToCategory: Record<ResourceTypeParam, ResourceCategory> = {
+    news: "News",
+    multimedia: "Multimedia",
+    "comparative-analysis": "Comparative analysis",
+    "country-analysis": "Country analysis",
+};
+
+export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeState {
     const { compositionRoot } = useAppContext();
 
     const [items, setItems] = useState<Resource[]>([]);
@@ -33,13 +40,13 @@ export function useResourcesByType(type: ResourceType): ResourcesByTypeState {
     }, [compositionRoot.countries]);
 
     useEffect(() => {
-        compositionRoot.resources.get.execute(type).run(
+        compositionRoot.resources.get.execute(typeToCategory[type]).run(
             items => setItems(items),
             () => {
                 setItems([]);
             }
         );
-    }, [compositionRoot.countries]);
+    }, [compositionRoot.resources]);
 
     const onChangeCountryFilter = useCallback((value: string | undefined) => {
         setSelectedCountryFilter(value);

@@ -2,13 +2,13 @@ import { Box, Card, Typography } from "@material-ui/core";
 
 import React from "react";
 import styled from "styled-components";
-import { ComparativeAnalysis, ResourceTheme } from "../../../../domain/entities/Resource";
+import { ComparativeAnalysis } from "../../../../domain/entities/Resource";
 
-const themeColor: Record<ResourceTheme, string> = {
-    "Financial protection": "#008ad7",
+const themeColor: Record<string, string> = {
+    "Financial Protection": "#008ad7",
     "Resilience and financial sustainability": "#4fad56",
-    "Spending on health": "#0360a7",
-    "Voluntary health insurance": "#ff8d4e",
+    "Spending on Health": "#0360a7",
+    "Voluntary Health Insurance": "#ff8d4e",
 };
 
 export interface CountryAnalysisProps {
@@ -24,9 +24,14 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
                 <Row>
                     <Column>
                         <Typography variant="body2">{comparativeAnalysis.year}</Typography>
-                        <Typography variant="body2" color="primary">
-                            {comparativeAnalysis.languages}
-                        </Typography>
+
+                        <a href={comparativeAnalysis.links[0]?.url}>
+                            {
+                                <Typography variant="body2" color="primary">
+                                    {comparativeAnalysis.links[0]?.language}
+                                </Typography>
+                            }
+                        </a>
                     </Column>
 
                     <Tag background={themeColor[comparativeAnalysis.theme]}>
@@ -64,9 +69,9 @@ const Item = styled(Card)`
     flex-direction: column;
 `;
 
-const Tag = styled.div<{ background: string }>`
+const Tag = styled.div<{ background?: string }>`
     border-radius: 20px;
-    background: ${props => props.background};
+    background: ${props => props.background || "red"};
     color: #174587;
     padding: 4px 16px;
     display: inline-block;

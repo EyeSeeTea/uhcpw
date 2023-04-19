@@ -1,17 +1,11 @@
-export type ResourceTheme =
-    | "Resilience and financial sustainability"
-    | "Spending on health"
-    | "Voluntary health insurance"
-    | "Financial protection";
-
 export type ResourceCategory = "News" | "Multimedia" | "Country analysis" | "Comparative analysis";
 
 export interface ComparativeAnalysis {
     kind: "comparative-analysis";
     text: string;
-    theme: ResourceTheme;
+    theme: string;
     image: string;
-    languages: string[];
+    links: { language: string; url: string }[];
     year: string;
 }
 
