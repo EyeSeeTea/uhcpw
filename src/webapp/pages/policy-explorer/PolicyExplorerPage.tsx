@@ -9,7 +9,7 @@ import {
     TableRow,
     Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -18,10 +18,15 @@ import { usePolicyExplorer } from "./usePolicyExplorer";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
-import { PolicyExplorerFilters } from "../../components/policy-explorer/resources-filters/PolicyExplorerFilters";
+import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
+import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
-    const { filters, data, onSwitchRowColumn } = usePolicyExplorer();
+    const { filters, data, onSwitchRowColumn, onDownload } = usePolicyExplorer();
+
+    const category = useMemo(() => {
+        return filters.categoryFilters.find(cat => cat.value === filters.selectedCategoryFilter);
+    }, [filters.categoryFilters, filters.selectedCategoryFilter]);
 
     return (
         <Layout>
@@ -37,56 +42,65 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <PolicyExplorerFilters filters={filters} />
 
-                <TableHeader>
-                    <Row>
+                {data && (
+                    <TableHeader>
                         <Row>
-                            <Typography variant="h6" color="primary">
-                                {i18n.t("Population Coverage")}
-                            </Typography>
-                            <Button>
-                                <InfoIcon color="primary" />
-                            </Button>
+                            {category && (
+                                <Row>
+                                    <Typography variant="h6" color="primary">
+                                        {category.text}
+                                    </Typography>
+                                    <Button>
+                                        <InfoIcon color="primary" />
+                                    </Button>
+                                </Row>
+                            )}
+                            <Row>
+                                <CustomButton
+                                    variant="outlined"
+                                    startIcon={<SwitchIcon />}
+                                    color="primary"
+                                    onClick={onSwitchRowColumn}
+                                >
+                                    {i18n.t("Switch row/column")}
+                                </CustomButton>
+                                <CustomButton
+                                    variant="contained"
+                                    startIcon={<DownloadIcon />}
+                                    color="primary"
+                                    style={{ marginLeft: 20 }}
+                                    onClick={onDownload}
+                                >
+                                    {i18n.t("Download")}
+                                </CustomButton>
+                            </Row>
                         </Row>
-                        <Row>
-                            <CustomButton
-                                variant="outlined"
-                                startIcon={<SwitchIcon />}
-                                color="primary"
-                                onClick={onSwitchRowColumn}
-                            >
-                                {i18n.t("Switch row/column")}
-                            </CustomButton>
-                            <CustomButton
-                                variant="contained"
-                                startIcon={<DownloadIcon />}
-                                color="primary"
-                                style={{ marginLeft: 20 }}
-                            >
-                                {i18n.t("Download")}
-                            </CustomButton>
-                        </Row>
-                    </Row>
-                </TableHeader>
-                <TableContainer component={TablePaper}>
-                    <StyledTable aria-label="simple table">
-                        <TableHead>
-                            <TableRow>
-                                {data.columns.map(column => {
-                                    return <TableCell key={column}>{column}</TableCell>;
-                                })}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {data.rows.map(row => (
-                                <TableRow key={row.toString()}>
-                                    {row.map(cell => (
-                                        <TableCell key={cell}>{cell}</TableCell>
-                                    ))}
+                    </TableHeader>
+                )}
+                {data ? (
+                    <TableContainer component={TablePaper}>
+                        <StyledTable normal={data.columns.length > 0}>
+                            <TableHead>
+                                <TableRow>
+                                    {data.columns.map(column => {
+                                        return <TableCell key={column}>{column}</TableCell>;
+                                    })}
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </StyledTable>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {data.rows.map(row => (
+                                    <TableRow key={row.toString()}>
+                                        {row.map(cell => (
+                                            <TableCell key={cell}>{cell}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </StyledTable>
+                    </TableContainer>
+                ) : (
+                    <EmptyContent />
+                )}
                 <span>
                     <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
                     <Link href="#">
@@ -104,6 +118,14 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
         </Layout>
     );
 });
+
+export const StyledTable: React.FC<{ normal: boolean }> = ({ normal, children }) => {
+    return normal ? (
+        <StyledNormalTable aria-label="simple table">{children}</StyledNormalTable>
+    ) : (
+        <StyledInverseTable aria-label="simple table">{children}</StyledInverseTable>
+    );
+};
 
 const MainSection = styled.div`
     background: white;
@@ -136,7 +158,7 @@ const TablePaper = styled(Paper)`
     box-shadow: none;
 `;
 
-const StyledTable = styled(Table)`
+const StyledNormalTable = styled(Table)`
     tbody {
         background: #f2f9fd;
     }
@@ -151,6 +173,26 @@ const StyledTable = styled(Table)`
     }
     thead > tr > th {
         vertical-align: middle;
+    }
+    tbody > tr > td {
+        vertical-align: top;
+    }
+    margin-bottom: 64px;
+`;
+
+const StyledInverseTable = styled(Table)`
+    tbody {
+        background: #f2f9fd;
+    }
+    tbody > tr:nth-child(odd) > td:first-child {
+        background-color: #cce8f7;
+    }
+    tbody > tr:nth-child(even) > td:first-child {
+        background-color: #e7f3fc;
+    }
+    tbody > tr > td:first-child {
+        color: #0460a7;
+        font-weight: 500;
     }
     tbody > tr > td {
         vertical-align: top;
