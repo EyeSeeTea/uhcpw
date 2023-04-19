@@ -1,9 +1,9 @@
-import { ResourceElement } from "../../../../domain/entities/ResourceElement";
+import { Resource } from "../../../../domain/entities/Resource";
 import { Option } from "../../../components/dropdown/Option";
 
 export type ResourcesByTypeState = {
     filters: ResourcesFiltersState;
-    items: ResourceElement[];
+    items: Resource[];
 };
 
 export type ResourcesFiltersState = {

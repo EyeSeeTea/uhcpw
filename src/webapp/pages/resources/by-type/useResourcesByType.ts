@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { ResourceElement } from "../../../../domain/entities/ResourceElement";
+import { Resource } from "../../../../domain/entities/Resource";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
 import { ResourcesByTypeState } from "./ResourcesByTypeState";
@@ -9,7 +9,7 @@ export type ResourceType = "news" | "multimedia" | "country-analysis" | "compara
 export function useResourcesByType(type: ResourceType): ResourcesByTypeState {
     const { compositionRoot } = useAppContext();
 
-    const [items, setItems] = useState<ResourceElement[]>(comparativeAnalysis);
+    const [items, setItems] = useState<Resource[]>([]);
 
     const [countryFilters, setCountryFilters] = useState<Option[]>([]);
     const [selectedCountryFilter, setSelectedCountryFilter] = useState<string | undefined>();
@@ -28,6 +28,15 @@ export function useResourcesByType(type: ResourceType): ResourcesByTypeState {
             countries => setCountryFilters(countries.map(country => ({ value: country.code, text: country.name }))),
             () => {
                 setCountryFilters([]);
+            }
+        );
+    }, [compositionRoot.countries]);
+
+    useEffect(() => {
+        compositionRoot.resources.get.execute(type).run(
+            items => setItems(items),
+            () => {
+                setItems([]);
             }
         );
     }, [compositionRoot.countries]);
@@ -82,103 +91,4 @@ const years = [
     { value: "2022", text: "2022" },
     { value: "2021", text: "2021" },
     { value: "2020", text: "2020" },
-];
-
-const comparativeAnalysis: ResourceElement[] = [
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Spending on health",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Spending on health",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Spending on health",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Spending on health",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
-    {
-        kind: "comparative-analysis",
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        languages: ["English"],
-        year: "2022",
-    },
 ];

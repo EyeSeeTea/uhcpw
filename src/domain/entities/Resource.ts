@@ -4,6 +4,8 @@ export type ResourceTheme =
     | "Voluntary health insurance"
     | "Financial protection";
 
+export type ResourceCategory = "News" | "Multimedia" | "Country analysis" | "Comparative analysis";
+
 export interface ComparativeAnalysis {
     kind: "comparative-analysis";
     text: string;
@@ -25,4 +27,4 @@ export interface CountryAnaliysis {
     kind: "country-analysis";
 }
 
-export type ResourceElement = News | Multimedia | CountryAnaliysis | ComparativeAnalysis;
+export type Resource = News | Multimedia | CountryAnaliysis | ComparativeAnalysis;

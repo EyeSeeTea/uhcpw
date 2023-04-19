@@ -2,7 +2,7 @@ import { Container, Grid, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { ResourceElement } from "../../../../domain/entities/ResourceElement";
+import { Resource } from "../../../../domain/entities/Resource";
 import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
@@ -58,7 +58,7 @@ function getTitle(type: ResourceType): string {
     }
 }
 
-const Item: React.FC<{ resource: ResourceElement }> = React.memo(({ resource }) => {
+const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
     switch (resource.kind) {
         case "comparative-analysis":
             return <ComparativeAnalysisItem comparativeAnalysis={resource} />;
