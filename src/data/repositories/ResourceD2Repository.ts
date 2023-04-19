@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Future, FutureData } from "../../domain/entities/Future";
 import { ComparativeAnalysis, Resource, ResourceCategory } from "../../domain/entities/Resource";
 import { ResourceRepository } from "../../domain/repositories/ResourceRepository";
-import { D2Api, D2Event } from "../../types/d2-api";
+import { D2Api } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
 
 const resourceDataElements: Record<string, string> = {
@@ -23,7 +23,7 @@ export class ResourceD2Repository implements ResourceRepository {
         //return Future.success(comparativeAnalysis);
         return apiToFuture(
             this.api.events.get({
-                fields: { $all: true },
+                fields: eventsFields,
                 skipPaging: true,
                 program: resourcesProgram,
                 orgUnit: globalOrgUnit,
@@ -35,7 +35,6 @@ export class ResourceD2Repository implements ResourceRepository {
     private buildResources(events: D2Event[]): Resource[] {
         return _.compact(
             events.map(event => {
-                debugger;
                 const category = (event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)
                     ?.value || "") as ResourceCategory;
 
@@ -65,12 +64,21 @@ export class ResourceD2Repository implements ResourceRepository {
 }
 
 const eventsFields = {
-    id: true,
-    shortName: true,
-    code: true,
-    description: { id: true, name: true },
-    geometry: true,
+    event: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
 } as const;
+
+export interface D2Event {
+    event: string;
+    dataValues: DataValue[];
+    eventDate: string;
+}
+
+export interface DataValue {
+    dataElement: string;
+    value: string;
+}
 
 // const comparativeAnalysis: Resource[] = [
 //     {

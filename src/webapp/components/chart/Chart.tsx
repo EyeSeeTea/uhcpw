@@ -38,7 +38,6 @@ const getDimensions = (
     countryIds?: string[],
     periods?: string[]
 ): ItemRef[] | undefined => {
-    debugger;
     const existsOu = visualization[prop].some(vd => vd.id === "ou");
     const existsPe = visualization[prop].some(vd => vd.id === "pe");
     const existsDx = visualization[prop].some(vd => vd.id === "dx");
