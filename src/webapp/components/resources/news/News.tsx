@@ -2,7 +2,7 @@ import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
-import { NewsItem } from "../../../pages/resources/ResourcesState";
+import { NewsItem } from "../../../pages/resources/landing/ResourcesState";
 import { SeeAll } from "../../see-all/SeeAll";
 
 export interface NewsProps {

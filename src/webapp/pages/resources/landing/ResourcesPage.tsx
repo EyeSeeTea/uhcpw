@@ -1,15 +1,15 @@
 import { Container, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import i18n from "../../../locales";
-import { Layout } from "../../components/layout/Layout";
-import { ComparativeAnalysis } from "../../components/resources/comparative-analysis/ComparativeAnalysis";
-import { CountryAnalysis } from "../../components/resources/country-analysis/CountryAnalysis";
-import { Multimedia } from "../../components/resources/multimedia/Multimedia";
-import { News } from "../../components/resources/news/News";
-import { ResourcesFilters } from "../../components/resources/resources-filters/ResourcesFilters";
-import SearchInput from "../../components/search-input/SearchInput";
-import { colors } from "../app/themes/dhis2.theme";
+import i18n from "../../../../locales";
+import { Layout } from "../../../components/layout/Layout";
+import { ComparativeAnalysis } from "../../../components/resources/comparative-analysis/ComparativeAnalysis";
+import { CountryAnalysis } from "../../../components/resources/country-analysis/CountryAnalysis";
+import { Multimedia } from "../../../components/resources/multimedia/Multimedia";
+import { News } from "../../../components/resources/news/News";
+import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
+import SearchInput from "../../../components/search-input/SearchInput";
+import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {

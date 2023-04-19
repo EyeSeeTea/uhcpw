@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { Option } from "../../components/dropdown/Option";
-import { useAppContext } from "../../contexts/app-context";
+import { Option } from "../../../components/dropdown/Option";
+import { useAppContext } from "../../../contexts/app-context";
 import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
@@ -182,21 +182,21 @@ const countryAnalysisOriginals: CountryAnalysisItem[] = [
 const comparativeAnalysis = [
     {
         text: "text example 1 text example 1",
-        tag: "Resilience and financial sustainability",
+        theme: "Resilience and financial sustainability",
         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
         language: "English",
         year: "2022",
     },
     {
         text: "text example 1 text example 1",
-        tag: "Sprending on health",
+        theme: "Sprending on health",
         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
         language: "English",
         year: "2022",
     },
     {
         text: "text example 1 text example 1",
-        tag: "Resilience and financial sustainability",
+        theme: "Resilience and financial sustainability",
         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
         language: "English",
         year: "2022",

@@ -1,4 +1,4 @@
-import { Option } from "../../components/dropdown/Option";
+import { Option } from "../../../components/dropdown/Option";
 
 export type ResourcesState = {
     countryAnalysis: CountryAnalysisItem[];
@@ -34,7 +34,7 @@ export type CountryAnalysisItem = {
 
 export type ComparativeAnalysisState = {
     text: string;
-    tag: string;
+    theme: string;
     image: string;
     language: string;
     year: string;

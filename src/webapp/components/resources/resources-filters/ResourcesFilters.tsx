@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
-import { ResourcesFiltersState } from "../../../pages/resources/ResourcesState";
+import { ResourcesFiltersState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { Dropdown } from "../../dropdown/Dropdown";
 
 export interface ResourcesFiltersProps {

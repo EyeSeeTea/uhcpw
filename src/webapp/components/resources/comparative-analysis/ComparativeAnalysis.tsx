@@ -1,9 +1,10 @@
 import { Box, Card, Grid, Typography } from "@material-ui/core";
 import { Divider } from "material-ui";
-import React from "react";
+import React, { useCallback } from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import i18n from "../../../../locales";
-import { ComparativeAnalysisState } from "../../../pages/resources/ResourcesState";
+import { ComparativeAnalysisState } from "../../../pages/resources/landing/ResourcesState";
 import { SeeAll } from "../../see-all/SeeAll";
 
 export interface CountryAnalysisProps {
@@ -11,6 +12,12 @@ export interface CountryAnalysisProps {
 }
 
 export const ComparativeAnalysis: React.FC<CountryAnalysisProps> = React.memo(({ comparativeAnalysis }) => {
+    const history = useHistory();
+
+    const onSeeAll = useCallback(() => {
+        history.push("/resources/comparative-analysis");
+    }, [history]);
+
     return (
         <>
             <ItemsTitleContainer>
@@ -23,7 +30,7 @@ export const ComparativeAnalysis: React.FC<CountryAnalysisProps> = React.memo(({
                             "Find reports across the following thematic areas: financial protection, resilience and financial sustainability, voluntary health insurance, spending on health."
                         )}
                     </Typography>
-                    <SeeAll textColor="white" onClick={() => {}} />
+                    <SeeAll textColor="white" onClick={onSeeAll} />
                 </Row>
             </ItemsTitleContainer>
 
@@ -38,7 +45,7 @@ export const ComparativeAnalysis: React.FC<CountryAnalysisProps> = React.memo(({
                                         <Column>
                                             <Typography variant="body2">{country.text}</Typography>
                                             <Tag>
-                                                <Typography variant="body2">{country.tag}</Typography>
+                                                <Typography variant="body2">{country.theme}</Typography>
                                             </Tag>
                                             <Box flexGrow={1} />
 
