@@ -8,12 +8,14 @@ import { VisualizationD2Repository } from "./data/repositories/VisualizationD2Re
 import { GetCountriesUseCase } from "./domain/usecases/GetCountriesUseCase";
 import { GetCurrentUserUseCase } from "./domain/usecases/GetCurrentUserUseCase";
 import { GetInstanceVersionUseCase } from "./domain/usecases/GetInstanceVersionUseCase";
-import { GetResourcesUseCase } from "./domain/usecases/GetResourcesUseCase";
+import { GetResourcesUseCase } from "./domain/usecases/resources/GetResourcesUseCase";
 import { GetIndicatorExplorerYearsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerYearsUseCase";
 import { GetVisualizationByIdUseCase } from "./domain/usecases/indicator-explorer/GetVisualizationByIdUseCase";
 import { GetVisualizationsUseCase } from "./domain/usecases/indicator-explorer/GetVisualizationsUseCase";
 import { GetPolicyExplorerYearsUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerYearsUseCase";
 import { D2Api } from "./types/d2-api";
+import { GetResourceCategoriesUseCase } from "./domain/usecases/resources/GetResourceCategoriesUseCase";
+import { ResourceCategoryD2Repository } from "./data/repositories/ResourceCategoryD2Repository";
 
 export function getCompositionRoot(api: D2Api, instance: Instance) {
     const instanceRepository = new InstanceDefaultRepository(instance);
@@ -22,6 +24,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance) {
     const dataSetRepository = new DataSetD2Repository(api);
     const visualizationRepository = new VisualizationD2Repository(api);
     const resourceRepository = new ResourceD2Repository(api);
+    const resourceCategoryD2Repository = new ResourceCategoryD2Repository(api);
 
     return {
         instance: {
@@ -43,6 +46,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance) {
         },
         resources: {
             get: new GetResourcesUseCase(resourceRepository),
+            getCategories: new GetResourceCategoriesUseCase(resourceCategoryD2Repository),
         },
     };
 }

@@ -1,5 +1,3 @@
-export type ResourceCategory = "News" | "Multimedia" | "Country analysis" | "Comparative analysis";
-
 export interface ComparativeAnalysis {
     kind: "comparative-analysis";
     text: string;

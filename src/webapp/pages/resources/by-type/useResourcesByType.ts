@@ -1,17 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { Resource, ResourceCategory } from "../../../../domain/entities/Resource";
+import { Resource } from "../../../../domain/entities/Resource";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
 import { ResourcesByTypeState } from "./ResourcesByTypeState";
 
 export type ResourceTypeParam = "news" | "multimedia" | "country-analysis" | "comparative-analysis";
-
-const typeToCategory: Record<ResourceTypeParam, ResourceCategory> = {
-    news: "News",
-    multimedia: "Multimedia",
-    "comparative-analysis": "Comparative analysis",
-    "country-analysis": "Country analysis",
-};
 
 export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeState {
     const { compositionRoot } = useAppContext();
@@ -21,7 +14,7 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
     const [countryFilters, setCountryFilters] = useState<Option[]>([]);
     const [selectedCountryFilter, setSelectedCountryFilter] = useState<string | undefined>();
 
-    const [categoryFilters] = useState<Option[]>(categoriesFilters);
+    const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [themeFilters] = useState<Option[]>(themes);
@@ -40,10 +33,19 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
     }, [compositionRoot.countries]);
 
     useEffect(() => {
-        compositionRoot.resources.get.execute(typeToCategory[type]).run(
+        compositionRoot.resources.get.execute("Comparative analysis").run(
             items => setItems(items),
             () => {
                 setItems([]);
+            }
+        );
+    }, [compositionRoot.resources, type]);
+
+    useEffect(() => {
+        compositionRoot.resources.getCategories.execute().run(
+            categories => setCategoryFilters(categories.map(cat => ({ value: cat.code, text: cat.name }))),
+            () => {
+                setCategoryFilters([]);
             }
         );
     }, [compositionRoot.resources, type]);
@@ -82,11 +84,6 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
         items,
     };
 }
-
-const categoriesFilters = [
-    { value: "1", text: "Category 1" },
-    { value: "2", text: "Category 2" },
-];
 
 const themes = [
     { value: "1", text: "Theme 1" },

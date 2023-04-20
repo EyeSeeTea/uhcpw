@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { FutureData } from "../../domain/entities/Future";
-import { ComparativeAnalysis, Resource, ResourceCategory } from "../../domain/entities/Resource";
+import { ComparativeAnalysis, Resource } from "../../domain/entities/Resource";
 import { ResourceRepository } from "../../domain/repositories/ResourceRepository";
 import { D2Api } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
@@ -19,8 +19,7 @@ const globalOrgUnit = "H8RixfF8ugH";
 export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
-    public get(category: ResourceCategory): FutureData<Resource[]> {
-        //return Future.success(comparativeAnalysis);
+    public get(category: string): FutureData<Resource[]> {
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
@@ -35,8 +34,8 @@ export class ResourceD2Repository implements ResourceRepository {
     private buildResources(events: D2Event[]): Resource[] {
         return _.compact(
             events.map(event => {
-                const category = (event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)
-                    ?.value || "") as ResourceCategory;
+                const category =
+                    event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)?.value || "";
 
                 if (category === "Comparative analysis") {
                     return this.buildComparativeAnalysis(event);
@@ -79,102 +78,3 @@ export interface DataValue {
     dataElement: string;
     value: string;
 }
-
-// const comparativeAnalysis: Resource[] = [
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Spending on health",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Spending on health",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Spending on health",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Spending on health",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-//     {
-//         kind: "comparative-analysis",
-//         text: "text example 1 text example 1",
-//         theme: "Resilience and financial sustainability",
-//         image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-//         languages: ["English"],
-//         year: "2022",
-//     },
-// ];
