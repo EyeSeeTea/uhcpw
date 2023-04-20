@@ -1,5 +1,5 @@
 import { FutureData } from "../../entities/Future";
-import { ResourceCategory } from "../../entities/ResourceCategory";
+import { ResourceCategory } from "../../entities/resources/ResourceCategory";
 import { ResourceCategoryRepository } from "../../repositories/resources/ResourceCategoryRepository";
 
 export class GetResourceCategoriesUseCase {

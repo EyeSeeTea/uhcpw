@@ -17,7 +17,7 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
-    const [themeFilters] = useState<Option[]>(themes);
+    const [themeFilters, setThemeFilters] = useState<Option[]>([]);
     const [selectedThemeFilter, setSelectedThemeFilter] = useState<string | undefined>();
 
     const [yearFilters] = useState<Option[]>(years);
@@ -48,7 +48,16 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
                 setCategoryFilters([]);
             }
         );
-    }, [compositionRoot.resources, type]);
+    }, [compositionRoot.resources]);
+
+    useEffect(() => {
+        compositionRoot.resources.getThemes.execute().run(
+            themes => setThemeFilters(themes.map(theme => ({ value: theme.code, text: theme.name }))),
+            () => {
+                setThemeFilters([]);
+            }
+        );
+    }, [compositionRoot.resources]);
 
     const onChangeCountryFilter = useCallback((value: string | undefined) => {
         setSelectedCountryFilter(value);
@@ -84,11 +93,6 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
         items,
     };
 }
-
-const themes = [
-    { value: "1", text: "Theme 1" },
-    { value: "2", text: "Theme 2" },
-];
 
 const years = [
     { value: "2023", text: "2023" },

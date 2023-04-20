@@ -21,6 +21,8 @@ import { GetPolicyExplorerYearsUseCase } from "./domain/usecases/policy-explorer
 import { D2Api } from "./types/d2-api";
 import { GetResourceCategoriesUseCase } from "./domain/usecases/resources/GetResourceCategoriesUseCase";
 import { ResourceCategoryD2Repository } from "./data/repositories/resources/ResourceCategoryD2Repository";
+import { ResourceThemeD2Repository } from "./data/repositories/resources/ResourceThemeD2Repository";
+import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
 
 export function getCompositionRoot(api: D2Api, instance: Instance) {
     const instanceRepository = new InstanceDefaultRepository(instance);
@@ -32,6 +34,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance) {
     const visualizationRepository = new VisualizationD2Repository(api);
     const resourceRepository = new ResourceD2Repository(api);
     const resourceCategoryD2Repository = new ResourceCategoryD2Repository(api);
+    const resourceThemeD2Repository = new ResourceThemeD2Repository(api);
 
     return {
         instance: {
@@ -57,6 +60,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance) {
         resources: {
             get: new GetResourcesUseCase(resourceRepository),
             getCategories: new GetResourceCategoriesUseCase(resourceCategoryD2Repository),
+            getThemes: new GetResourceThemesUseCase(resourceThemeD2Repository),
         },
     };
 }
