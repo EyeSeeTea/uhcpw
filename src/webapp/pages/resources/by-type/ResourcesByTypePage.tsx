@@ -9,13 +9,11 @@ import { ComparativeAnalysisItem } from "../../../components/resources/comparati
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
-import { ResourceTypeParam, useResourcesByType } from "./useResourcesByType";
+import { useResourcesByType } from "./useResourcesByType";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
-    const { type } = useParams<{ type: ResourceTypeParam }>();
-    const { filters, items } = useResourcesByType(type);
-
-    const title = useMemo(() => getTitle(type), [type]);
+    const { category } = useParams<{ category: string }>();
+    const { title, filters, items } = useResourcesByType(category);
 
     return (
         <Layout>
@@ -44,19 +42,6 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         </Layout>
     );
 });
-
-function getTitle(type: ResourceTypeParam): string {
-    switch (type) {
-        case "comparative-analysis":
-            return i18n.t("Comparative Analysis");
-        case "country-analysis":
-            return i18n.t("Country Analysis");
-        case "news":
-            return i18n.t("News");
-        case "multimedia":
-            return i18n.t("Mutimedia");
-    }
-}
 
 const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
     switch (resource.kind) {

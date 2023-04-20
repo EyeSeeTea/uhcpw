@@ -15,7 +15,7 @@ export const Router: React.FC = React.memo(() => {
                 <Route path="/policy-explorer" render={() => <PolicyExplorerPage />} />
                 <Route path="/indicator-explorer" render={() => <IndicatorExplorerPage />} />
                 <Route
-                    path="/resources/:type(news|multimedia|country-analysis|comparative-analysis)"
+                    path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)"
                     render={() => <ResourcesByTypePage />}
                 />
                 <Route path="/resources" render={() => <ResourcesPage />} />

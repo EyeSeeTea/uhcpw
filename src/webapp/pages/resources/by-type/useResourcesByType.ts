@@ -4,24 +4,30 @@ import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
 import { ResourcesByTypeState } from "./ResourcesByTypeState";
 
-export type ResourceTypeParam = "news" | "multimedia" | "country-analysis" | "comparative-analysis";
-
-export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeState {
+export function useResourcesByType(category: string): ResourcesByTypeState {
     const { compositionRoot } = useAppContext();
 
     const [items, setItems] = useState<Resource[]>([]);
+
+    const [title, setTitle] = useState<string>("");
 
     const [countryFilters, setCountryFilters] = useState<Option[]>([]);
     const [selectedCountryFilter, setSelectedCountryFilter] = useState<string | undefined>();
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
-    const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
+    const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>(category);
 
     const [themeFilters, setThemeFilters] = useState<Option[]>([]);
     const [selectedThemeFilter, setSelectedThemeFilter] = useState<string | undefined>();
 
     const [yearFilters] = useState<Option[]>(years);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
+
+    useEffect(() => {
+        const title = categoryFilters.find(cat => cat.value === selectedCategoryFilter)?.text || "";
+
+        setTitle(title);
+    }, [categoryFilters, selectedCategoryFilter]);
 
     useEffect(() => {
         compositionRoot.countries.get.execute().run(
@@ -33,17 +39,17 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
     }, [compositionRoot.countries]);
 
     useEffect(() => {
-        compositionRoot.resources.get.execute("Comparative analysis").run(
+        compositionRoot.resources.get.execute(category).run(
             items => setItems(items),
             () => {
                 setItems([]);
             }
         );
-    }, [compositionRoot.resources, type]);
+    }, [compositionRoot.resources, category]);
 
     useEffect(() => {
         compositionRoot.resources.getCategories.execute().run(
-            categories => setCategoryFilters(categories.map(cat => ({ value: cat.code, text: cat.name }))),
+            categories => setCategoryFilters(categories.map(cat => ({ value: slugify(cat.code), text: cat.name }))),
             () => {
                 setCategoryFilters([]);
             }
@@ -76,6 +82,7 @@ export function useResourcesByType(type: ResourceTypeParam): ResourcesByTypeStat
     }, []);
 
     return {
+        title,
         filters: {
             countryFilters,
             selectedCountryFilter,
@@ -100,3 +107,9 @@ const years = [
     { value: "2021", text: "2021" },
     { value: "2020", text: "2020" },
 ];
+
+const slugify = (text: string) =>
+    text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)+/g, "");

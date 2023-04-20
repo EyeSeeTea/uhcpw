@@ -26,7 +26,7 @@ export class ResourceD2Repository implements ResourceRepository {
                 skipPaging: true,
                 program: resourcesProgram,
                 orgUnit: globalOrgUnit,
-                filter: `${resourceDataElements.category}:eq:${category}`,
+                filter: `${resourceDataElements.category}:eq:${category.replace("-", " ")}`,
             })
         ).map(response => this.buildResources(response.events));
     }
