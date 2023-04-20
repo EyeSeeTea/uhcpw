@@ -13,7 +13,9 @@ export function useResources(): ResourcesState {
                 item =>
                     (!filters.selectedCategoryFilter || item.category === filters.selectedCategoryFilter) &&
                     (!filters.selectedThemeFilter || item.theme === filters.selectedThemeFilter) &&
-                    (!filters.selectedCountryFilter || item.code === filters.selectedCountryFilter) &&
+                    (!filters.selectedCountryFilter ||
+                        filters.selectedCountryFilter?.length === 0 ||
+                        filters.selectedCountryFilter.includes(item.code)) &&
                     (!filters.selectedYearFilter || item.year === filters.selectedYearFilter)
             )
         );

@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
+import { useMultiCountryOptions } from "../../../hooks/countries/useMultiCountryOptions";
 import { ResourcesFiltersState } from "./ResourcesFiltersState";
 
 export function useResourcesFilters(category?: string): ResourcesFiltersState {
     const { compositionRoot } = useAppContext();
-
-    const [countryFilters, setCountryFilters] = useState<Option[]>([]);
-    const [selectedCountryFilter, setSelectedCountryFilter] = useState<string | undefined>();
+    const {
+        countryOptions: countryFilters,
+        selectedCountry: selectedCountryFilter,
+        onCountryChange: onChangeCountryFilter,
+    } = useMultiCountryOptions();
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>("");
@@ -21,15 +24,6 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
     useEffect(() => {
         setSelectedCategoryFilter(category);
     }, [categoryFilters, category]);
-
-    useEffect(() => {
-        compositionRoot.countries.get.execute().run(
-            countries => setCountryFilters(countries.map(country => ({ value: country.code, text: country.name }))),
-            () => {
-                setCountryFilters([]);
-            }
-        );
-    }, [compositionRoot.countries]);
 
     useEffect(() => {
         compositionRoot.resources.getCategories.execute().run(
@@ -48,10 +42,6 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
             }
         );
     }, [compositionRoot.resources]);
-
-    const onChangeCountryFilter = useCallback((value: string | undefined) => {
-        setSelectedCountryFilter(value);
-    }, []);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
