@@ -1,100 +1,37 @@
-import { useCallback, useEffect, useState } from "react";
-import { Option } from "../../../components/dropdown/Option";
-import { useAppContext } from "../../../contexts/app-context";
+import { useEffect, useState } from "react";
+import { useResourcesFilters } from "../common/useResourcesFilters";
 import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
-    const { compositionRoot } = useAppContext();
+    const filters = useResourcesFilters();
 
     const [countryAnalysis, setCountryAnalysis] = useState<CountryAnalysisItem[]>(countryAnalysisOriginals);
-
-    const [countryFilters, setCountryFilters] = useState<Option[]>([]);
-    const [selectedCountryFilter, setSelectedCountryFilter] = useState<string | undefined>();
-
-    const [categoryFilters] = useState<Option[]>(categoriesFilters);
-    const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
-
-    const [themeFilters] = useState<Option[]>(themes);
-    const [selectedThemeFilter, setSelectedThemeFilter] = useState<string | undefined>();
-
-    const [yearFilters] = useState<Option[]>(years);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
-
-    useEffect(() => {
-        compositionRoot.countries.get.execute().run(
-            countries => setCountryFilters(countries.map(country => ({ value: country.code, text: country.name }))),
-            () => {
-                setCountryFilters([]);
-            }
-        );
-    }, [compositionRoot.countries]);
 
     useEffect(() => {
         setCountryAnalysis(
             countryAnalysisOriginals.filter(
                 item =>
-                    (!selectedCategoryFilter || item.category === selectedCategoryFilter) &&
-                    (!selectedThemeFilter || item.theme === selectedThemeFilter) &&
-                    (!selectedCountryFilter || item.code === selectedCountryFilter) &&
-                    (!selectedYearFilter || item.year === selectedYearFilter)
+                    (!filters.selectedCategoryFilter || item.category === filters.selectedCategoryFilter) &&
+                    (!filters.selectedThemeFilter || item.theme === filters.selectedThemeFilter) &&
+                    (!filters.selectedCountryFilter || item.code === filters.selectedCountryFilter) &&
+                    (!filters.selectedYearFilter || item.year === filters.selectedYearFilter)
             )
         );
-    }, [selectedCategoryFilter, selectedThemeFilter, selectedCountryFilter, selectedYearFilter]);
-
-    const onChangeCountryFilter = useCallback((value: string | undefined) => {
-        setSelectedCountryFilter(value);
-    }, []);
-
-    const onChangeCategoryFilter = useCallback((value: string | undefined) => {
-        setSelectedCategoryFilter(value);
-    }, []);
-
-    const onChangeThemeFilter = useCallback((value: string | undefined) => {
-        setSelectedThemeFilter(value);
-    }, []);
-
-    const onChangeYearFilter = useCallback((value: string | undefined) => {
-        setSelectedYearFilter(value);
-    }, []);
+    }, [
+        filters.selectedCategoryFilter,
+        filters.selectedThemeFilter,
+        filters.selectedCountryFilter,
+        filters.selectedYearFilter,
+    ]);
 
     return {
         countryAnalysis,
-        filters: {
-            countryFilters,
-            selectedCountryFilter,
-            onChangeCountryFilter,
-            categoryFilters,
-            selectedCategoryFilter,
-            onChangeCategoryFilter,
-            themeFilters,
-            selectedThemeFilter,
-            onChangeThemeFilter,
-            yearFilters,
-            selectedYearFilter,
-            onChangeYearFilter,
-        },
+        filters,
         comparativeAnalysis,
         news,
         multimedia,
     };
 }
-
-const categoriesFilters = [
-    { value: "1", text: "Category 1" },
-    { value: "2", text: "Category 2" },
-];
-
-const themes = [
-    { value: "1", text: "Theme 1" },
-    { value: "2", text: "Theme 2" },
-];
-
-const years = [
-    { value: "2023", text: "2023" },
-    { value: "2022", text: "2022" },
-    { value: "2021", text: "2021" },
-    { value: "2020", text: "2020" },
-];
 
 const countryAnalysisOriginals: CountryAnalysisItem[] = [
     {
