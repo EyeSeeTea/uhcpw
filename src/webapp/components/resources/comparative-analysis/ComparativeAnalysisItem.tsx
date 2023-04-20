@@ -2,7 +2,7 @@ import { Box, Card, Typography } from "@material-ui/core";
 
 import React from "react";
 import styled from "styled-components";
-import { ComparativeAnalysis } from "../../../../domain/entities/Resource";
+import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
 
 const themeColor: Record<string, string> = {
     "Financial Protection": "#008ad7",

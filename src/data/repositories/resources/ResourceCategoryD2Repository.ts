@@ -1,8 +1,8 @@
-import { Future, FutureData } from "../../domain/entities/Future";
-import { ResourceCategory } from "../../domain/entities/ResourceCategory";
-import { ResourceCategoryRepository } from "../../domain/repositories/ResourceCategoryRepository";
-import { D2Api, MetadataPick } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
+import { Future, FutureData } from "../../../domain/entities/Future";
+import { ResourceCategory } from "../../../domain/entities/ResourceCategory";
+import { ResourceCategoryRepository } from "../../../domain/repositories/resources/ResourceCategoryRepository";
+import { D2Api, MetadataPick } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
 
 const resourceCategoryOptionSet = "TsAMVqUknEm";
 

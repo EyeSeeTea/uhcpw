@@ -2,7 +2,7 @@ import { Container, Grid, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { Resource } from "../../../../domain/entities/Resource";
+import { Resource } from "../../../../domain/entities/resources/Resource";
 import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";

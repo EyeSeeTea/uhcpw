@@ -1,9 +1,9 @@
 import _ from "lodash";
-import { FutureData } from "../../domain/entities/Future";
-import { ComparativeAnalysis, Resource } from "../../domain/entities/Resource";
-import { ResourceRepository } from "../../domain/repositories/ResourceRepository";
-import { D2Api } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
+import { FutureData } from "../../../domain/entities/Future";
+import { ComparativeAnalysis, Resource } from "../../../domain/entities/resources/Resource";
+import { ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
+import { D2Api } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
 
 const resourceDataElements: Record<string, string> = {
     category: "iO4ThHtWZ8M",

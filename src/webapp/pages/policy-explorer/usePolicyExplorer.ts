@@ -1,20 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
+import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
-import { PolicyExplorerData, PolicyExplorerState } from "./PolicyExplorerState";
+import { PolicyExplorerState } from "./PolicyExplorerState";
 
 export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
     const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
 
-    const [categoryFilters] = useState<Option[]>(categoriesFilters);
+    const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
 
-    const [data, setData] = useState<PolicyExplorerData>(initialData);
+    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ columns: [], rows: [] });
+    const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
 
     useEffect(() => {
         compositionRoot.policyExplorer.getYears.execute().run(
@@ -27,6 +29,37 @@ export function usePolicyExplorer(): PolicyExplorerState {
         );
     }, [compositionRoot.policyExplorer]);
 
+    useEffect(() => {
+        compositionRoot.policyExplorer.getCategories.execute().run(
+            categories => {
+                setCategoryFilters(categories.map(category => ({ value: category.id, text: category.name })));
+            },
+            () => {
+                setYearsFilters([]);
+            }
+        );
+    }, [compositionRoot.policyExplorer]);
+
+    useEffect(() => {
+        if (selectedCategoryFilter) {
+            compositionRoot.policyExplorer.get
+                .execute(selectedCategoryFilter, selectedCountry || [], selectedYearFilter ? [selectedYearFilter] : [])
+                .run(
+                    policyExplorer => {
+                        setInitialData(policyExplorer);
+                        setData(policyExplorer);
+                    },
+                    () => {
+                        setInitialData(undefined);
+                        setData(undefined);
+                    }
+                );
+        } else {
+            setInitialData(undefined);
+            setData(undefined);
+        }
+    }, [compositionRoot.policyExplorer, selectedCategoryFilter, selectedCountry, selectedYearFilter]);
+
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
     }, []);
@@ -36,17 +69,17 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, []);
 
     const onSwitchRowColumn = useCallback(() => {
+        if (!data || !initialData) return;
+
         if (data.columns.toString() === initialData.columns.toString()) {
             const newRows = data.columns.map((column, index) => {
-                const row = data.rows[0];
+                const cells = data.rows.map(row => row[index] || "");
 
-                const cell = row ? row[index] || "" : "";
-
-                return [column, cell];
+                return [column, ...cells];
             });
 
             const newData = {
-                columns: ["Description", "Value"],
+                columns: [],
                 rows: newRows,
             };
 
@@ -54,7 +87,13 @@ export function usePolicyExplorer(): PolicyExplorerState {
         } else {
             setData(initialData);
         }
-    }, [data]);
+    }, [data, initialData]);
+
+    const onDownload = useCallback(() => {
+        if (!data) return;
+
+        compositionRoot.policyExplorer.download.execute(data).runAsync();
+    }, [compositionRoot.policyExplorer, data]);
 
     return {
         filters: {
@@ -70,33 +109,6 @@ export function usePolicyExplorer(): PolicyExplorerState {
         },
         data,
         onSwitchRowColumn,
+        onDownload,
     };
 }
-
-const categoriesFilters = [
-    { value: "1", text: "Category 1" },
-    { value: "2", text: "Category 2" },
-];
-
-const initialData = {
-    columns: [
-        "Country",
-        "Year",
-        "Basis for entitlement to publicity financed health services",
-        "Share of the population covered (%)",
-        "Institution(s) monitoring population coverage",
-        "Characteristics of non-covered or 'uninsured' people",
-        "Publicly financed health to which non-covered in 'uninsured' people are",
-    ],
-    rows: [
-        [
-            "Spain",
-            "2022",
-            "Entitlement is based on residence. In 2018 residence was re-established as the basis for entitlement to health services covered by the National Health System (NHS) and delivered by providers owned or contracted by the NHS at regional level. Asylum seekers and foreigners legally reunited with relatives in Spain are entitled to the same benefits as residents. Undocumented migrants are also entitled to the same benefits as residents after being in Spain for 90 days or through a report from social services.",
-            "",
-            "",
-            "Undocumented migrants in Spain for less than 90 days.",
-            "",
-        ],
-    ],
-};

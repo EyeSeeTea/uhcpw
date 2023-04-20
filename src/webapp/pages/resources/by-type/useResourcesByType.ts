@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Resource } from "../../../../domain/entities/Resource";
+import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
 import { ResourcesByTypeState } from "./ResourcesByTypeState";

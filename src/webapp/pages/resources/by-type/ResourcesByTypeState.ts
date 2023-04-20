@@ -1,4 +1,4 @@
-import { Resource } from "../../../../domain/entities/Resource";
+import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Option } from "../../../components/dropdown/Option";
 
 export type ResourcesByTypeState = {
