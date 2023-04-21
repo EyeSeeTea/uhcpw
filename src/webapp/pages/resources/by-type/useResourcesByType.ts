@@ -8,6 +8,7 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
     const { compositionRoot } = useAppContext();
     const filters = useResourcesFilters(category);
 
+    const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<Resource[]>([]);
 
     const [title, setTitle] = useState<string>("");
@@ -19,6 +20,7 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
     }, [filters.categoryFilters, filters.selectedCategoryFilter]);
 
     useEffect(() => {
+        setLoading(true);
         compositionRoot.resources.get
             .execute({
                 searchTerm: filters.searchTerm,
@@ -27,8 +29,12 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
                 year: filters.selectedYearFilter,
             })
             .run(
-                items => setItems(items),
+                items => {
+                    setLoading(false);
+                    setItems(items);
+                },
                 () => {
+                    setLoading(false);
                     setItems([]);
                 }
             );
@@ -41,6 +47,7 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
     ]);
 
     return {
+        loading,
         title,
         filters,
         items,

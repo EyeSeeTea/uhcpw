@@ -1,8 +1,10 @@
-import { Container, Grid, Typography } from "@material-ui/core";
-import React from "react";
+import { useLoading } from "@eyeseetea/d2-ui-components";
+import { Backdrop, CircularProgress, Container, Grid, Typography } from "@material-ui/core";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
+import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
@@ -12,7 +14,7 @@ import { useResourcesByType } from "./useResourcesByType";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const { category } = useParams<{ category: string }>();
-    const { title, filters, items } = useResourcesByType(category);
+    const { loading, title, filters, items } = useResourcesByType(category);
 
     return (
         <Layout>
@@ -22,7 +24,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
             <SearchContainer>
                 <SearchInput value={filters.searchTerm} onChange={filters.onSearchTermChange} />
             </SearchContainer>
-            <CountryAnalysisSection>
+            <Content>
                 <SelectsContainer maxWidth="xl">
                     <ResourcesFilters filters={filters} />
                 </SelectsContainer>
@@ -37,7 +39,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                         })}
                     </Grid>
                 </Container>
-            </CountryAnalysisSection>
+
+                <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                    <CircularProgress color="primary" />
+                </Backdrop>
+            </Content>
         </Layout>
     );
 });
@@ -55,7 +61,7 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
     }
 });
 
-const CountryAnalysisSection = styled.div`
+const Content = styled.div`
     background: white;
     padding: 32px;
 `;
