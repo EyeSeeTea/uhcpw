@@ -1,5 +1,5 @@
 import { Future, FutureData } from "../../../domain/entities/Future";
-import { ResourceCategory } from "../../../domain/entities/ResourceCategory";
+import { ResourceCategory } from "../../../domain/entities/resources/ResourceCategory";
 import { ResourceCategoryRepository } from "../../../domain/repositories/resources/ResourceCategoryRepository";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
@@ -14,7 +14,6 @@ export class ResourceCategoryD2Repository implements ResourceCategoryRepository 
             this.api.models.optionSets.get({
                 fields: optionSetFields,
                 filter: { id: { eq: resourceCategoryOptionSet } },
-                level: 3,
             })
         ).flatMap(response => {
             const optionSet = response.objects[0];

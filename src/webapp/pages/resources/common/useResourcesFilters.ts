@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { generateYears } from "../../../../domain/usecases/utils/generateYears";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
 import { useMultiCountryOptions } from "../../../hooks/countries/useMultiCountryOptions";
@@ -18,7 +19,7 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
     const [themeFilters, setThemeFilters] = useState<Option[]>([]);
     const [selectedThemeFilter, setSelectedThemeFilter] = useState<string | undefined>();
 
-    const [yearFilters] = useState<Option[]>(years);
+    const [yearFilters, setYearFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
 
     useEffect(() => {
@@ -27,7 +28,7 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
 
     useEffect(() => {
         compositionRoot.resources.getCategories.execute().run(
-            categories => setCategoryFilters(categories.map(cat => ({ value: slugify(cat.code), text: cat.name }))),
+            categories => setCategoryFilters(categories.map(cat => ({ value: cat.code, text: cat.name }))),
             () => {
                 setCategoryFilters([]);
             }
@@ -42,6 +43,10 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
             }
         );
     }, [compositionRoot.resources]);
+
+    useEffect(() => {
+        setYearFilters(generateYears().map(year => ({ value: year.id, text: year.id })));
+    }, []);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -70,16 +75,3 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
         onChangeYearFilter,
     };
 }
-
-const years = [
-    { value: "2023", text: "2023" },
-    { value: "2022", text: "2022" },
-    { value: "2021", text: "2021" },
-    { value: "2020", text: "2020" },
-];
-
-const slugify = (text: string) =>
-    text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-|-$)+/g, "");

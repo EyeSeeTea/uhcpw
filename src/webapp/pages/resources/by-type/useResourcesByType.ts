@@ -19,13 +19,13 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
     }, [filters.categoryFilters, category]);
 
     useEffect(() => {
-        compositionRoot.resources.get.execute(category).run(
+        compositionRoot.resources.get.execute(category, filters.selectedThemeFilter, filters.selectedYearFilter).run(
             items => setItems(items),
             () => {
                 setItems([]);
             }
         );
-    }, [compositionRoot.resources, category]);
+    }, [compositionRoot.resources, category, filters.selectedThemeFilter, filters.selectedYearFilter]);
 
     return {
         title,

@@ -5,7 +5,7 @@ import { ResourceRepository } from "../../repositories/resources/ResourceReposit
 export class GetResourcesUseCase {
     constructor(private resourceRepository: ResourceRepository) {}
 
-    public execute(category: string): FutureData<Resource[]> {
-        return this.resourceRepository.get(category);
+    public execute(category: string, theme?: string, year?: string): FutureData<Resource[]> {
+        return this.resourceRepository.get(category, theme, year);
     }
 }

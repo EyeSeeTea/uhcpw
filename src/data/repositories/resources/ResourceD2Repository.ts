@@ -19,30 +19,43 @@ const globalOrgUnit = "H8RixfF8ugH";
 export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
-    public get(category: string): FutureData<Resource[]> {
+    public get(category: string, theme?: string, year?: string): FutureData<Resource[]> {
+        const filter = _([
+            `${resourceDataElements.category}:eq:${category.replace("-", " ")}`,
+            theme ? `${resourceDataElements.theme}:eq:${theme.replace("-", " ")}` : undefined,
+        ])
+            .compact()
+            .join(",");
+
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
                 skipPaging: true,
                 program: resourcesProgram,
                 orgUnit: globalOrgUnit,
-                filter: `${resourceDataElements.category}:eq:${category.replace("-", " ")}`,
+                startDate: year ? `${year}-01-01` : undefined,
+                endDate: year ? `${year}-01-31` : undefined,
+                filter,
             })
         ).map(response => this.buildResources(response.events));
     }
 
     private buildResources(events: D2Event[]): Resource[] {
         return _.compact(
-            events.map(event => {
-                const category =
-                    event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)?.value || "";
+            _(
+                events.map(event => {
+                    const category =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)?.value || "";
 
-                if (category === "Comparative analysis") {
-                    return this.buildComparativeAnalysis(event);
-                } else {
-                    return undefined;
-                }
-            })
+                    if (category === "comparative-analysis") {
+                        return this.buildComparativeAnalysis(event);
+                    } else {
+                        return undefined;
+                    }
+                })
+            )
+                .orderBy("year", "desc")
+                .value()
         );
     }
 
