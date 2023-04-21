@@ -62,6 +62,7 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
 const Content = styled.div`
     background: white;
     padding: 32px;
+    min-height: 100vh;
 `;
 
 const TitleContainer = styled.div`
