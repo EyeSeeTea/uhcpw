@@ -3,8 +3,13 @@ export interface ComparativeAnalysis {
     text: string;
     theme: string;
     image: string;
-    links: { language: string; url: string }[];
+    links: ComparativeAnalysisLink[];
     year: string;
+}
+
+export interface ComparativeAnalysisLink {
+    language: string;
+    url: string;
 }
 
 export interface News {

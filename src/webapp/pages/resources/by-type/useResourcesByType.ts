@@ -16,7 +16,7 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
         const title = filters.categoryFilters.find(cat => cat.value === filters.selectedCategoryFilter)?.text || "";
 
         setTitle(title);
-    }, [filters.categoryFilters, category]);
+    }, [filters.categoryFilters, filters.selectedCategoryFilter]);
 
     useEffect(() => {
         compositionRoot.resources.get.execute(category, filters.selectedThemeFilter, filters.selectedYearFilter).run(

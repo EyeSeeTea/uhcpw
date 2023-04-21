@@ -11,6 +11,12 @@ const resourceDataElements: Record<string, string> = {
     image: "uund7zjS1Yt",
     title: "iBxOUseHUtO",
     link: "WlAFwnRMskp",
+    link2: "nVhCDkoptRC",
+    link2Language: "rovY1LEqAPX",
+    link3: "egYRckQrYVj",
+    link3Language: "DQAOcVPEQTh",
+    link4: "yfKcdYARapH",
+    link4Language: "QlRpFiResvs",
 };
 
 const resourcesProgram = "wWo0lhm5GsY";
@@ -64,14 +70,35 @@ export class ResourceD2Repository implements ResourceRepository {
         const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
         const link = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
 
+        const link2 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link2)?.value || "";
+        const link2Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link2Language)?.value || "";
+        const link3 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
+        const link3Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3Language)?.value || "";
+        const link4 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
+        const link4Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4Language)?.value || "";
+
         return {
             kind: "comparative-analysis",
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             theme: theme,
-            links: [{ language: "English", url: link }],
+            links: _([
+                this.createLink(link),
+                this.createLink(link2, link2Language),
+                this.createLink(link3, link3Language),
+                this.createLink(link4, link4Language),
+            ])
+                .compact()
+                .value(),
             text: title,
             year: new Date(event.eventDate).getFullYear().toString(),
         };
+    }
+
+    private createLink(link?: string, language?: string) {
+        return link ? { url: link, language: language || "English" } : undefined;
     }
 }
 

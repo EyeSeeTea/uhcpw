@@ -25,13 +25,17 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
                     <Column>
                         <Typography variant="body2">{comparativeAnalysis.year}</Typography>
 
-                        <a href={comparativeAnalysis.links[0]?.url}>
-                            {
-                                <Typography variant="body2" color="primary">
-                                    {comparativeAnalysis.links[0]?.language}
-                                </Typography>
-                            }
-                        </a>
+                        {comparativeAnalysis.links.map(link => {
+                            return (
+                                <a key={link.url} href={link.url}>
+                                    {
+                                        <Typography variant="body2" color="primary">
+                                            {link.language}
+                                        </Typography>
+                                    }
+                                </a>
+                            );
+                        })}
                     </Column>
 
                     <Tag background={themeColor[comparativeAnalysis.theme]}>
@@ -47,6 +51,15 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
     );
 });
 
+const Item = styled(Card)`
+    border-radius: 10px;
+    padding: 16px;
+    flex-direction: column;
+    a {
+        text-decoration: none;
+    }
+`;
+
 const Row = styled.div`
     padding-top: 8px;
     display: flex;
@@ -61,12 +74,6 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
-`;
-
-const Item = styled(Card)`
-    border-radius: 10px;
-    padding: 16px;
-    flex-direction: column;
 `;
 
 const Tag = styled.div<{ background?: string }>`
