@@ -20,7 +20,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                 <Typography variant="h4">{title}</Typography>
             </TitleContainer>
             <SearchContainer>
-                <SearchInput value={""} />
+                <SearchInput value={filters.searchTerm} onChange={filters.onSearchTermChange} />
             </SearchContainer>
             <CountryAnalysisSection>
                 <SelectsContainer maxWidth="xl">

@@ -1,6 +1,8 @@
 import { Option } from "../../../components/dropdown/Option";
 
 export type ResourcesFiltersState = {
+    searchTerm: string;
+    onSearchTermChange: (value: string) => void;
     countryFilters: Option<string>[];
     selectedCountryFilter: string[] | undefined;
     onChangeCountryFilter: (value: string[] | undefined) => void;

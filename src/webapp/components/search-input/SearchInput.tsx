@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Paper, Input, Theme } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import i18n from "../../../locales";
+import _ from "lodash";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     icon: {
         marginRight: theme.spacing(1),
-        color: theme.palette.text.secondary,
+        color: theme.palette.text.primary,
     },
     input: {
         flexGrow: 1,
@@ -40,10 +41,11 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
     useEffect(() => updateStateValue(value), [value]);
 
     const onChangeDebounced = useCallback(
-        (value: string) =>
-            debounce(() => {
-                if (onChange) onChange(value);
-            }, 400),
+        _.debounce((value: string) => {
+            if (onChange) {
+                onChange(value);
+            }
+        }, 400),
         [onChange]
     );
 
@@ -58,7 +60,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
 
     return (
         <Paper className={clsx(classes.root, className)} style={style} elevation={0}>
-            <SearchIcon className={classes.icon} />
+            <SearchIcon className={classes.icon} htmlColor="black" />
             <Input
                 className={classes.input}
                 disableUnderline
@@ -71,17 +73,3 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
 };
 
 export default SearchInput;
-
-function debounce<F extends (...args: any[]) => any>(func: F, waitFor: number) {
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-
-    const debounced = (...args: Parameters<F>) => {
-        if (timeout !== null) {
-            clearTimeout(timeout);
-            timeout = null;
-        }
-        timeout = setTimeout(() => func(...args), waitFor);
-    };
-
-    return debounced as (...args: Parameters<F>) => ReturnType<F>;
-}

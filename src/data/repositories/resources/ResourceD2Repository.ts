@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { FutureData } from "../../../domain/entities/Future";
 import { ComparativeAnalysis, Resource } from "../../../domain/entities/resources/Resource";
-import { ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
+import { ResourceFilters, ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
@@ -25,10 +25,11 @@ const globalOrgUnit = "H8RixfF8ugH";
 export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
-    public get(category: string, theme?: string, year?: string): FutureData<Resource[]> {
+    public get(filters: ResourceFilters): FutureData<Resource[]> {
         const filter = _([
-            `${resourceDataElements.category}:eq:${category.replace("-", " ")}`,
-            theme ? `${resourceDataElements.theme}:eq:${theme.replace("-", " ")}` : undefined,
+            `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}`,
+            filters.theme ? `${resourceDataElements.theme}:eq:${filters.theme.replace("-", " ")}` : undefined,
+            filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
         ])
             .compact()
             .join(",");
@@ -39,8 +40,8 @@ export class ResourceD2Repository implements ResourceRepository {
                 skipPaging: true,
                 program: resourcesProgram,
                 orgUnit: globalOrgUnit,
-                startDate: year ? `${year}-01-01` : undefined,
-                endDate: year ? `${year}-01-31` : undefined,
+                startDate: filters.year ? `${filters.year}-01-01` : undefined,
+                endDate: filters.year ? `${filters.year}-01-31` : undefined,
                 filter,
             })
         ).map(response => this.buildResources(response.events));

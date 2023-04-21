@@ -19,13 +19,26 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
     }, [filters.categoryFilters, filters.selectedCategoryFilter]);
 
     useEffect(() => {
-        compositionRoot.resources.get.execute(category, filters.selectedThemeFilter, filters.selectedYearFilter).run(
-            items => setItems(items),
-            () => {
-                setItems([]);
-            }
-        );
-    }, [compositionRoot.resources, category, filters.selectedThemeFilter, filters.selectedYearFilter]);
+        compositionRoot.resources.get
+            .execute({
+                searchTerm: filters.searchTerm,
+                category,
+                theme: filters.selectedThemeFilter,
+                year: filters.selectedYearFilter,
+            })
+            .run(
+                items => setItems(items),
+                () => {
+                    setItems([]);
+                }
+            );
+    }, [
+        compositionRoot.resources,
+        category,
+        filters.selectedThemeFilter,
+        filters.selectedYearFilter,
+        filters.searchTerm,
+    ]);
 
     return {
         title,

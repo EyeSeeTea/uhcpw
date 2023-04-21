@@ -13,6 +13,8 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
         onCountryChange: onChangeCountryFilter,
     } = useMultiCountryOptions();
 
+    const [searchTerm, setSearchTerm] = useState<string>("");
+
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>("");
 
@@ -48,6 +50,10 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
         setYearFilters(generateYears().map(year => ({ value: year.id, text: year.id })));
     }, []);
 
+    const onSearchTermChange = useCallback((value: string) => {
+        setSearchTerm(value);
+    }, []);
+
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
     }, []);
@@ -61,6 +67,8 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
     }, []);
 
     return {
+        searchTerm,
+        onSearchTermChange,
         countryFilters,
         selectedCountryFilter,
         onChangeCountryFilter,
