@@ -11,6 +11,7 @@ const resourceDataElements: Record<string, string> = {
     image: "uund7zjS1Yt",
     title: "iBxOUseHUtO",
     link: "WlAFwnRMskp",
+    linkLanguage: "yKHkUZLIGc6",
     link2: "nVhCDkoptRC",
     link2Language: "rovY1LEqAPX",
     link3: "egYRckQrYVj",
@@ -70,6 +71,8 @@ export class ResourceD2Repository implements ResourceRepository {
         const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
         const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
         const link = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
+        const linkLanguage =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.linkLanguage)?.value || "";
 
         const link2 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link2)?.value || "";
         const link2Language =
@@ -86,7 +89,7 @@ export class ResourceD2Repository implements ResourceRepository {
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             theme: theme,
             links: _([
-                this.createLink(link),
+                this.createLink(link, linkLanguage),
                 this.createLink(link2, link2Language),
                 this.createLink(link3, link3Language),
                 this.createLink(link4, link4Language),
