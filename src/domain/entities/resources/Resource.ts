@@ -20,8 +20,8 @@ export interface Multimedia {
     kind: "multimedia";
 }
 
-export interface CountryAnaliysis {
+export interface CountryAnalysis {
     kind: "country-analysis";
 }
 
-export type Resource = News | Multimedia | CountryAnaliysis | ComparativeAnalysis;
+export type Resource = News | Multimedia | CountryAnalysis | ComparativeAnalysis;

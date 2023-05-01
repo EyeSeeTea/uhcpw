@@ -40,6 +40,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
     const [stateValue, updateStateValue] = useState(value);
     useEffect(() => updateStateValue(value), [value]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const onChangeDebounced = useCallback(
         _.debounce((value: string) => {
             if (onChange) {

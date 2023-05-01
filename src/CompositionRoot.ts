@@ -24,43 +24,51 @@ import { ResourceCategoryD2Repository } from "./data/repositories/resources/Reso
 import { ResourceThemeD2Repository } from "./data/repositories/resources/ResourceThemeD2Repository";
 import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
 
-export function getCompositionRoot(api: D2Api, instance: Instance) {
-    const instanceRepository = new InstanceDefaultRepository(instance);
-    const usersRepository = new UserD2Repository(api);
-    const countryRepository = new CountryD2Repository(api);
-    const dataSetRepository = new DataSetD2Repository(api);
-    const policyExplorerCategoryRepository = new PolicyExplorerCategoryD2Repository(api);
-    const policyExplorerRepository = new PolicyExplorerD2Repository(api);
-    const visualizationRepository = new VisualizationD2Repository(api);
-    const resourceRepository = new ResourceD2Repository(api);
-    const resourceCategoryD2Repository = new ResourceCategoryD2Repository(api);
-    const resourceThemeD2Repository = new ResourceThemeD2Repository(api);
+function initializeRepositories(api: D2Api, instance: Instance) {
+    return {
+        instance: new InstanceDefaultRepository(instance),
+        users: new UserD2Repository(api),
+        country: new CountryD2Repository(api),
+        dataSet: new DataSetD2Repository(api),
+        policyExplorerCategory: new PolicyExplorerCategoryD2Repository(api),
+        policyExplorer: new PolicyExplorerD2Repository(api),
+        visualization: new VisualizationD2Repository(api),
+        resource: new ResourceD2Repository(api),
+        resourceCategory: new ResourceCategoryD2Repository(api),
+        resourceTheme: new ResourceThemeD2Repository(api),
+    };
+}
+
+export type Repositories = Partial<ReturnType<typeof initializeRepositories>>;
+
+export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesToOverwrite?: Repositories) {
+    const repositories = { ...initializeRepositories(api, instance), ...repositoriesToOverwrite };
 
     return {
         instance: {
-            getVersion: new GetInstanceVersionUseCase(instanceRepository),
+            getVersion: new GetInstanceVersionUseCase(repositories.instance),
         },
         users: {
-            getCurrent: new GetCurrentUserUseCase(usersRepository),
+            getCurrent: new GetCurrentUserUseCase(repositories.users),
         },
         countries: {
-            get: new GetCountriesUseCase(countryRepository),
+            get: new GetCountriesUseCase(repositories.country),
         },
         policyExplorer: {
-            getYears: new GetPolicyExplorerYearsUseCase(dataSetRepository),
-            getCategories: new GetPolicyExplorerCategoriesUseCase(policyExplorerCategoryRepository),
-            get: new GetPolicyExplorerUseCase(policyExplorerRepository, countryRepository),
-            download: new DownloadPolicyExplorerUseCase(policyExplorerRepository),
+            getYears: new GetPolicyExplorerYearsUseCase(repositories.dataSet),
+            getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
+            get: new GetPolicyExplorerUseCase(repositories.policyExplorer, repositories.country),
+            download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
         indicatorExplorer: {
-            getYears: new GetIndicatorExplorerYearsUseCase(dataSetRepository),
-            getVisualizations: new GetVisualizationsUseCase(visualizationRepository),
-            getVisualization: new GetVisualizationByIdUseCase(visualizationRepository),
+            getYears: new GetIndicatorExplorerYearsUseCase(repositories.dataSet),
+            getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
+            getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
         },
         resources: {
-            get: new GetResourcesUseCase(resourceRepository),
-            getCategories: new GetResourceCategoriesUseCase(resourceCategoryD2Repository),
-            getThemes: new GetResourceThemesUseCase(resourceThemeD2Repository),
+            get: new GetResourcesUseCase(repositories.resource),
+            getCategories: new GetResourceCategoriesUseCase(repositories.resourceCategory),
+            getThemes: new GetResourceThemesUseCase(repositories.resourceTheme),
         },
     };
 }

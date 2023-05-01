@@ -20,4 +20,8 @@ module.exports = {
         navigator: true,
         Element: true,
     },
+    collectCoverage: true,
+    coverageReporters: ["json", "lcov", "text"],
+    collectCoverageFrom: ["**/*.ts", "**/*.tsx"],
+    coveragePathIgnorePatterns: ["<rootDir>/node_modules", "<rootDir>/cypress"],
 };

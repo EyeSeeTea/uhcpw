@@ -3,6 +3,7 @@ import { Box, Card, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 const themeColor: Record<string, string> = {
     "Financial Protection": "#008ad7",
@@ -17,7 +18,7 @@ export interface CountryAnalysisProps {
 
 export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ comparativeAnalysis }) => {
     return (
-        <Item elevation={0}>
+        <Item elevation={0} role="listitem">
             <Column>
                 <img width={"100%"} src={comparativeAnalysis.image} alt={comparativeAnalysis.text} />
                 <Box height={20} />
@@ -28,11 +29,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
                         {comparativeAnalysis.links.map(link => {
                             return (
                                 <a key={link.url} href={link.url}>
-                                    {
-                                        <Typography variant="body2" color="primary">
-                                            {link.language}
-                                        </Typography>
-                                    }
+                                    {link.language}
                                 </a>
                             );
                         })}
@@ -57,6 +54,8 @@ const Item = styled(Card)`
     flex-direction: column;
     a {
         text-decoration: none;
+        font-size: 14px;
+        color: ${colors.accentPrimary};
     }
 `;
 
