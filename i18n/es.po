@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2023-04-20T11:13:59.766Z\n"
+"POT-Creation-Date: 2023-05-02T10:20:40.292Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -346,9 +346,6 @@ msgstr ""
 msgid ""
 "Track and compare indicators on financial hardship, unmet need for health "
 "services and spending on health"
-msgstr ""
-
-msgid "Share of households with catastrophic spending by consumption quintile"
 msgstr ""
 
 msgid "Download"
