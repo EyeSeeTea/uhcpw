@@ -27,52 +27,65 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} />
 
-                <DataHeader>
+                <ChartContainer>
+                    <DataHeader>
+                        <Row>
+                            <Row>
+                                <Typography variant="h6" color="primary">
+                                    {visualization?.name}
+                                </Typography>
+                                <Button>
+                                    <InfoIcon color="primary" />
+                                </Button>
+                            </Row>
+                            <Row>
+                                <CustomButton
+                                    variant="contained"
+                                    startIcon={<DownloadIcon />}
+                                    color="primary"
+                                    style={{ marginLeft: 20 }}
+                                >
+                                    {i18n.t("Download")}
+                                </CustomButton>
+                            </Row>
+                        </Row>
+                    </DataHeader>
                     <Row>
-                        <Row>
-                            <Typography variant="h6" color="primary">
-                                {i18n.t("Share of households with catastrophic spending by consumption quintile")}
-                            </Typography>
-                            <Button>
-                                <InfoIcon color="primary" />
-                            </Button>
-                        </Row>
-                        <Row>
-                            <CustomButton
-                                variant="contained"
-                                startIcon={<DownloadIcon />}
-                                color="primary"
-                                style={{ marginLeft: 20 }}
-                            >
-                                {i18n.t("Download")}
-                            </CustomButton>
-                        </Row>
+                        <div style={{ width: "100%" }}>
+                            {visualization && (
+                                <Chart
+                                    visualization={visualization}
+                                    countryIds={filters.selectedCountryFilter}
+                                    periods={filters.selectedYearFilter ? [filters.selectedYearFilter] : []}
+                                />
+                            )}
+                        </div>
+
+                        <Column>
+                            <span>
+                                <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
+                                <Link href="#">
+                                    <Typography variant="caption">{i18n.t("Tambor and Pavlova (2020)")}</Typography>
+                                </Link>
+                            </span>
+                            <br />
+                            <span>
+                                <CreditsText variant="caption">{i18n.t("Last updated: ")}</CreditsText>
+                                <CreditsText variant="caption">{i18n.t("15 June 2020")}</CreditsText>
+                            </span>
+                        </Column>
                     </Row>
-                </DataHeader>
-                <div>
-                    {visualization && (
-                        <Chart
-                            visualization={visualization}
-                            countryIds={filters.selectedCountryFilter}
-                            periods={filters.selectedYearFilter ? [filters.selectedYearFilter] : []}
-                        />
-                    )}
-                </div>
-                <span>
-                    <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
-                    <Link href="#">
-                        <Typography variant="caption">{i18n.t("Tambor and Pavlova (2020)")}</Typography>
-                    </Link>
-                </span>
-                <br />
-                <span>
-                    <CreditsText variant="caption">{i18n.t("data last updated: ")}</CreditsText>
-                    <CreditsText variant="caption">{i18n.t("15 June 2020")}</CreditsText>
-                </span>
+                </ChartContainer>
             </MainSection>
         </Layout>
     );
 });
+
+const ChartContainer = styled.div`
+    margin-top: 48px;
+    background: #f1f9fc;
+    padding: 0px 32px 32px 32px;
+`;
 
 const MainSection = styled.div`
     background: white;
@@ -83,6 +96,12 @@ const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
     padding: 48px 64px;
+`;
+
+const Column = styled.div`
+    padding: 64px 30px 64px 64px;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Row = styled.div`

@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Id, Ref } from "../../../domain/entities/Ref";
 import { Dimension, Visualization } from "../../../domain/entities/Visualization";
 import { useAppContext } from "../../contexts/app-context";
@@ -105,8 +105,19 @@ interface ItemRef {
 
 type DOMSelectorId = string;
 
+const customCss = css`
+    .highcharts-grid-line {
+        opacity: 0;
+    }
+`;
+
 const Container = styled.div`
     .highcharts-container * {
         font-family: "Roboto";
     }
+    .highcharts-background {
+        fill: #f1f9fc;
+    }
+
+    ${customCss}
 `;
