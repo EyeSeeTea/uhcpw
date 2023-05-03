@@ -3,9 +3,7 @@ import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyE
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
-import { PolicyExplorerState } from "./PolicyExplorerState";
-
-type Orientation = "vertical" | "horizontal";
+import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
 
 export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
@@ -17,12 +15,12 @@ export function usePolicyExplorer(): PolicyExplorerState {
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
 
-    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ columns: [], rows: [] });
+    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ rows: [] });
     const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
-    const [dataOrientation, setDataOrientation] = useState<Orientation>("horizontal");
+    const [dataOrientation, setDataOrientation] = useState<DataOrientation>("normal");
 
     useEffect(() => {
-        setData(dataOrientation === "vertical" ? switchData(dataOrientation, initialData) : initialData);
+        setData(dataOrientation === "inverted" ? invertData(initialData) : initialData);
     }, [dataOrientation, initialData]);
 
     useEffect(() => {
@@ -54,7 +52,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
                 .run(
                     policyExplorer => {
                         setInitialData(policyExplorer);
-                        setDataOrientation("vertical");
+                        setDataOrientation("inverted");
                     },
                     () => {
                         setInitialData(undefined);
@@ -75,7 +73,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, []);
 
     const onSwitchRowColumn = useCallback(() => {
-        setDataOrientation(dataOrientation === "horizontal" ? "vertical" : "horizontal");
+        setDataOrientation(dataOrientation === "normal" ? "inverted" : "normal");
     }, [dataOrientation]);
 
     const onDownload = useCallback(() => {
@@ -97,28 +95,26 @@ export function usePolicyExplorer(): PolicyExplorerState {
             onChangeYearFilter,
         },
         data,
+        dataOrientation,
         onSwitchRowColumn,
         onDownload,
     };
 }
 
-function switchData(dataOrientation: Orientation, initialData: PolicyExplorer | undefined): PolicyExplorer | undefined {
+function invertData(initialData: PolicyExplorer | undefined): PolicyExplorer | undefined {
     if (!initialData) return undefined;
 
-    if (dataOrientation === "vertical") {
-        const newRows = initialData.columns.map((column, index) => {
-            const cells = initialData.rows.map(row => row[index] || "");
+    const columns = [...initialData.rows].shift() || [];
 
-            return [column, ...cells];
-        });
+    const newRows = columns.map((_, index) => {
+        const cells = initialData.rows.map(row => row[index] || "");
 
-        const newData = {
-            columns: [],
-            rows: newRows,
-        };
+        return [...cells];
+    });
 
-        return newData;
-    } else {
-        return initialData;
-    }
+    const newData = {
+        rows: newRows,
+    };
+
+    return newData;
 }

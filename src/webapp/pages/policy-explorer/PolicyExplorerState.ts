@@ -1,9 +1,13 @@
 import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 
+export type DataOrientation = "inverted" | "normal";
+
 export type PolicyExplorerState = {
     filters: PolicyExplorerFiltersState;
     data?: PolicyExplorer;
+
+    dataOrientation: DataOrientation;
     onSwitchRowColumn: () => void;
     onDownload: () => void;
 };
