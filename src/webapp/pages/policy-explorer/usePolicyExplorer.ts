@@ -5,6 +5,8 @@ import { useAppContext } from "../../contexts/app-context";
 import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
 import { PolicyExplorerState } from "./PolicyExplorerState";
 
+type Orientation = "vertical" | "horizontal";
+
 export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
     const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
@@ -17,6 +19,11 @@ export function usePolicyExplorer(): PolicyExplorerState {
 
     const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ columns: [], rows: [] });
     const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
+    const [dataOrientation, setDataOrientation] = useState<Orientation>("horizontal");
+
+    useEffect(() => {
+        setData(dataOrientation === "vertical" ? switchData(dataOrientation, initialData) : initialData);
+    }, [dataOrientation, initialData]);
 
     useEffect(() => {
         compositionRoot.policyExplorer.getYears.execute().run(
@@ -47,11 +54,10 @@ export function usePolicyExplorer(): PolicyExplorerState {
                 .run(
                     policyExplorer => {
                         setInitialData(policyExplorer);
-                        setData(policyExplorer);
+                        setDataOrientation("vertical");
                     },
                     () => {
                         setInitialData(undefined);
-                        setData(undefined);
                     }
                 );
         } else {
@@ -69,25 +75,8 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, []);
 
     const onSwitchRowColumn = useCallback(() => {
-        if (!data || !initialData) return;
-
-        if (data.columns.toString() === initialData.columns.toString()) {
-            const newRows = data.columns.map((column, index) => {
-                const cells = data.rows.map(row => row[index] || "");
-
-                return [column, ...cells];
-            });
-
-            const newData = {
-                columns: [],
-                rows: newRows,
-            };
-
-            setData(newData);
-        } else {
-            setData(initialData);
-        }
-    }, [data, initialData]);
+        setDataOrientation(dataOrientation === "horizontal" ? "vertical" : "horizontal");
+    }, [dataOrientation]);
 
     const onDownload = useCallback(() => {
         if (!data) return;
@@ -111,4 +100,25 @@ export function usePolicyExplorer(): PolicyExplorerState {
         onSwitchRowColumn,
         onDownload,
     };
+}
+
+function switchData(dataOrientation: Orientation, initialData: PolicyExplorer | undefined): PolicyExplorer | undefined {
+    if (!initialData) return undefined;
+
+    if (dataOrientation === "vertical") {
+        const newRows = initialData.columns.map((column, index) => {
+            const cells = initialData.rows.map(row => row[index] || "");
+
+            return [column, ...cells];
+        });
+
+        const newData = {
+            columns: [],
+            rows: newRows,
+        };
+
+        return newData;
+    } else {
+        return initialData;
+    }
 }
