@@ -20,9 +20,11 @@ import SwitchIcon from "@material-ui/icons/Cached";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
 import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
+import ReactMarkdown from "react-markdown";
+import { DataOrientation } from "./PolicyExplorerState";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
-    const { filters, data, onSwitchRowColumn, onDownload } = usePolicyExplorer();
+    const { filters, data, onSwitchRowColumn, onDownload, dataOrientation } = usePolicyExplorer();
 
     const category = useMemo(() => {
         return filters.categoryFilters.find(cat => cat.value === filters.selectedCategoryFilter);
@@ -79,19 +81,14 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                 )}
                 {data ? (
                     <TableContainer component={TablePaper}>
-                        <StyledTable normal={data.columns.length > 0}>
-                            <TableHead>
-                                <TableRow>
-                                    {data.columns.map(column => {
-                                        return <TableCell key={column}>{column}</TableCell>;
-                                    })}
-                                </TableRow>
-                            </TableHead>
+                        <StyledTable orientation={dataOrientation}>
                             <TableBody>
                                 {data.rows.map(row => (
                                     <TableRow key={row.toString()}>
                                         {row.map(cell => (
-                                            <TableCell key={cell}>{cell}</TableCell>
+                                            <TableCell key={cell}>
+                                                <ReactMarkdown>{cell}</ReactMarkdown>
+                                            </TableCell>
                                         ))}
                                     </TableRow>
                                 ))}
@@ -119,11 +116,11 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
     );
 });
 
-export const StyledTable: React.FC<{ normal: boolean }> = ({ normal, children }) => {
-    return normal ? (
+export const StyledTable: React.FC<{ orientation: DataOrientation }> = ({ orientation, children }) => {
+    return orientation === "normal" ? (
         <StyledNormalTable aria-label="simple table">{children}</StyledNormalTable>
     ) : (
-        <StyledInverseTable aria-label="simple table">{children}</StyledInverseTable>
+        <StyledInvertedTable aria-label="simple table">{children}</StyledInvertedTable>
     );
 };
 
@@ -162,16 +159,17 @@ const StyledNormalTable = styled(Table)`
     tbody {
         background: #f2f9fd;
     }
-    thead > tr > th:nth-child(odd) {
+    tbody > tr:first-child > td:nth-child(odd) {
         background-color: #cce8f7;
     }
-    thead > tr > th:nth-child(even) {
+    tbody > tr:first-child > td:nth-child(even) {
         background-color: #e7f3fc;
     }
-    thead > tr > th {
+    tbody > tr:first-child > td {
         color: #0460a7;
+        font-weight: 500;
     }
-    thead > tr > th {
+    tbody > tr:first-child > td {
         vertical-align: middle;
     }
     tbody > tr > td {
@@ -180,7 +178,7 @@ const StyledNormalTable = styled(Table)`
     margin-bottom: 64px;
 `;
 
-const StyledInverseTable = styled(Table)`
+const StyledInvertedTable = styled(Table)`
     tbody {
         background: #f2f9fd;
     }

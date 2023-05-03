@@ -34,13 +34,15 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             ),
         }).map(({ dataSetResponse, dataValuesResponse, orgUnitsResponse }) => {
             return {
-                columns: this.buildColumns(policyExplorerCategoryId, dataSetResponse.objects[0]),
-                rows: this.buildRows(
-                    policyExplorerCategoryId,
-                    dataValuesResponse.dataValues,
-                    orgUnitsResponse.objects,
-                    dataSetResponse.objects[0]
-                ),
+                rows: [
+                    ...this.buildColumns(policyExplorerCategoryId, dataSetResponse.objects[0]),
+                    ...this.buildRows(
+                        policyExplorerCategoryId,
+                        dataValuesResponse.dataValues,
+                        orgUnitsResponse.objects,
+                        dataSetResponse.objects[0]
+                    ),
+                ],
             };
         });
     }
@@ -49,10 +51,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         exportToCSV(
             [
                 {
-                    data:
-                        policyExplorer.columns.length > 0
-                            ? [policyExplorer.columns, ...policyExplorer.rows]
-                            : policyExplorer.rows,
+                    data: policyExplorer.rows,
                     name: "Policy Explorer",
                 },
             ],
@@ -61,10 +60,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return Future.success(undefined);
     }
 
-    private buildColumns(policyExplorerCategoryId: string, dataSet?: D2DataSet): string[] {
+    private buildColumns(policyExplorerCategoryId: string, dataSet?: D2DataSet): string[][] {
         const dataElementsSection = this.getDataElementsSection(policyExplorerCategoryId, dataSet);
 
-        return ["Country", "Period", ...dataElementsSection.map(de => de.displayName)];
+        return [["Country", "Period", ...dataElementsSection.map(de => de.displayName)]];
     }
 
     private buildRows(
