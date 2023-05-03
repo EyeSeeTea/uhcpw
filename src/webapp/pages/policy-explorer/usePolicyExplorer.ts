@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { PolicyExplorer } from "../../../domain/entities/PolicyExplorer";
+import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";

@@ -20,7 +20,7 @@ interface DropdownMultipleProps<T extends string = string> {
 export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
     ({ label, options, values, placeholder, fullWidth, onChange }) => {
         const valuesOption = useMemo(() => {
-            return options.filter(option => values?.includes(option.value));
+            return options.filter(option => values?.includes(option.value)) || [];
         }, [options, values]);
 
         const handleChange = (_e: React.ChangeEvent<{}>, values: Option<string>[] | null): void => {

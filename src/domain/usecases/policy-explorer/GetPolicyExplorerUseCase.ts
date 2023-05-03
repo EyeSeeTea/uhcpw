@@ -1,7 +1,7 @@
 import { Future, FutureData } from "../../entities/Future";
-import { PolicyExplorer } from "../../entities/PolicyExplorer";
+import { PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
 import { CountryRepository } from "../../repositories/CountryRepository";
-import { PolicyExplorerRepository } from "../../repositories/PolicyExplorerRepository";
+import { PolicyExplorerRepository } from "../../repositories/policy-explorer/PolicyExplorerRepository";
 import { generateYears } from "../utils/generateYears";
 
 export class GetPolicyExplorerUseCase {

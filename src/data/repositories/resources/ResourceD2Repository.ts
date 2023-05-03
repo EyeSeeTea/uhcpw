@@ -1,0 +1,124 @@
+import _ from "lodash";
+import { FutureData } from "../../../domain/entities/Future";
+import { ComparativeAnalysis, Resource } from "../../../domain/entities/resources/Resource";
+import { ResourceFilters, ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
+import { D2Api } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
+
+const resourceDataElements: Record<string, string> = {
+    category: "iO4ThHtWZ8M",
+    theme: "TTAQLTta8JS",
+    image: "uund7zjS1Yt",
+    title: "iBxOUseHUtO",
+    link: "WlAFwnRMskp",
+    linkLanguage: "yKHkUZLIGc6",
+    link2: "nVhCDkoptRC",
+    link2Language: "rovY1LEqAPX",
+    link3: "egYRckQrYVj",
+    link3Language: "DQAOcVPEQTh",
+    link4: "yfKcdYARapH",
+    link4Language: "QlRpFiResvs",
+};
+
+const resourcesProgram = "wWo0lhm5GsY";
+const globalOrgUnit = "H8RixfF8ugH";
+
+export class ResourceD2Repository implements ResourceRepository {
+    constructor(private api: D2Api) {}
+
+    public get(filters: ResourceFilters): FutureData<Resource[]> {
+        const filter = _([
+            `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}`,
+            filters.theme ? `${resourceDataElements.theme}:eq:${filters.theme.replace("-", " ")}` : undefined,
+            filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
+        ])
+            .compact()
+            .join(",");
+
+        return apiToFuture(
+            this.api.events.get({
+                fields: eventsFields,
+                skipPaging: true,
+                program: resourcesProgram,
+                orgUnit: globalOrgUnit,
+                startDate: filters.year ? `${filters.year}-01-01` : undefined,
+                endDate: filters.year ? `${filters.year}-01-31` : undefined,
+                filter,
+            })
+        ).map(response => this.buildResources(response.events));
+    }
+
+    private buildResources(events: D2Event[]): Resource[] {
+        return _.compact(
+            _(
+                events.map(event => {
+                    const category =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)?.value || "";
+
+                    if (category === "comparative-analysis") {
+                        return this.buildComparativeAnalysis(event);
+                    } else {
+                        return undefined;
+                    }
+                })
+            )
+                .orderBy("year", "desc")
+                .value()
+        );
+    }
+
+    private buildComparativeAnalysis(event: D2Event): ComparativeAnalysis {
+        const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
+        const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
+        const link = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
+        const linkLanguage =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.linkLanguage)?.value || "";
+
+        const link2 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link2)?.value || "";
+        const link2Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link2Language)?.value || "";
+        const link3 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
+        const link3Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3Language)?.value || "";
+        const link4 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
+        const link4Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4Language)?.value || "";
+
+        return {
+            kind: "comparative-analysis",
+            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            theme: theme,
+            links: _([
+                this.createLink(link, linkLanguage),
+                this.createLink(link2, link2Language),
+                this.createLink(link3, link3Language),
+                this.createLink(link4, link4Language),
+            ])
+                .compact()
+                .value(),
+            text: title,
+            year: new Date(event.eventDate).getFullYear().toString(),
+        };
+    }
+
+    private createLink(link?: string, language?: string) {
+        return link ? { url: link, language: language || "English" } : undefined;
+    }
+}
+
+const eventsFields = {
+    event: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
+} as const;
+
+export interface D2Event {
+    event: string;
+    dataValues: DataValue[];
+    eventDate: string;
+}
+
+export interface DataValue {
+    dataElement: string;
+    value: string;
+}

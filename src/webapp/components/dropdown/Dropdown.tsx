@@ -17,10 +17,10 @@ interface DropdownProps<T extends string = string> {
 
 export const Dropdown: React.FC<DropdownProps> = React.memo(
     ({ label, options, value, placeholder, fullWidth, onChange }) => {
-        const [valueOption, setValueOption] = useState<Option<string> | undefined>(undefined);
+        const [valueOption, setValueOption] = useState<Option<string> | null>(null);
 
         useEffect(() => {
-            setValueOption(options.find(option => option.value === value));
+            setValueOption(options.find(option => option.value === value) || null);
         }, [options, value]);
 
         const handleChange = (_e: React.ChangeEvent<{}>, value: Option<string> | null): void => {
@@ -35,7 +35,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
 
         const handleClear = (): void => {
             onChange(undefined);
-            setValueOption(undefined);
+            setValueOption(null);
         };
 
         return (
@@ -46,7 +46,6 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     id="tags-filled"
                     options={options}
                     value={valueOption || null}
-                    inputValue={valueOption?.text}
                     getOptionLabel={option => option?.text}
                     renderInput={params => (
                         <DropdownTextField {...params} variant="standard" label={label} placeholder={placeholder} />

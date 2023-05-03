@@ -1,11 +1,11 @@
 import _ from "lodash";
-import { Future, FutureData } from "../../domain/entities/Future";
-import { PolicyExplorer } from "../../domain/entities/PolicyExplorer";
-import { PolicyExplorerRepository } from "../../domain/repositories/PolicyExplorerRepository";
-import { policyExplorerDataSet_ID } from "../../domain/utils";
-import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
-import { exportToCSV } from "../export/exportToCSV";
+import { Future, FutureData } from "../../../domain/entities/Future";
+import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
+import { policyExplorerDataSet_ID } from "../../../domain/utils";
+import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
+import { exportToCSV } from "../../export/exportToCSV";
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}

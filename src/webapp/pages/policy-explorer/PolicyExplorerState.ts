@@ -1,4 +1,4 @@
-import { PolicyExplorer } from "../../../domain/entities/PolicyExplorer";
+import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 
 export type PolicyExplorerState = {

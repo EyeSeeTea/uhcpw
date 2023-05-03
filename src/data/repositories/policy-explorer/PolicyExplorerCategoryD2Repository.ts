@@ -1,9 +1,9 @@
-import { FutureData } from "../../domain/entities/Future";
-import { PolicyExplorerCategory } from "../../domain/entities/PolicyExplorerCategory";
-import { PolicyExplorerCategoryRepository } from "../../domain/repositories/PolicyExplorerCategoryRepository";
-import { policyExplorerDataSet_ID } from "../../domain/utils";
-import { D2Api, MetadataPick } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
+import { FutureData } from "../../../domain/entities/Future";
+import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
+import { policyExplorerDataSet_ID } from "../../../domain/utils";
+import { D2Api, MetadataPick } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     constructor(private api: D2Api) {}
