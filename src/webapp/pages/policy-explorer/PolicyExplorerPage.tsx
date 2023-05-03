@@ -20,6 +20,7 @@ import SwitchIcon from "@material-ui/icons/Cached";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
 import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
+import ReactMarkdown from "react-markdown";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
     const { filters, data, onSwitchRowColumn, onDownload } = usePolicyExplorer();
@@ -91,7 +92,9 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                                 {data.rows.map(row => (
                                     <TableRow key={row.toString()}>
                                         {row.map(cell => (
-                                            <TableCell key={cell}>{cell}</TableCell>
+                                            <TableCell key={cell}>
+                                                <ReactMarkdown>{cell}</ReactMarkdown>
+                                            </TableCell>
                                         ))}
                                     </TableRow>
                                 ))}
