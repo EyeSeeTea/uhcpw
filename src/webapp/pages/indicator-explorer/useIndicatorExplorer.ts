@@ -18,7 +18,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [analytics, setAnalytics] = useState<Analytics | undefined>();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
 
     const onChangeCategoryFilter = useCallback(
         (value: string | undefined) => {
@@ -40,18 +40,22 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         [compositionRoot.indicatorExplorer]
     );
 
-    useEffect(() => {
-        compositionRoot.indicatorExplorer.getAnalytics.execute().run(
-            analytics => {
-                setAnalytics(analytics);
-            },
-            () => {
-                setAnalytics(undefined);
-            }
-        );
-    }, [visualization]);
+    const onGetChart = useCallback(() => {
+        if (visualization && selectedYearFilter && selectedCountry) {
+            compositionRoot.indicatorExplorer.getAnalytics
+                .execute(visualization.id, selectedYearFilter, selectedCountry)
+                .run(
+                    analytics => {
+                        setAnalytics(analytics);
+                    },
+                    () => {
+                        setAnalytics(undefined);
+                    }
+                );
+        }
+    }, [visualization, compositionRoot.indicatorExplorer, selectedYearFilter, selectedCountry]);
 
-    const onChangeYearFilter = useCallback((value: string | undefined) => {
+    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
     }, []);
 
@@ -93,5 +97,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         },
         visualization,
         analytics,
+        onGetChart,
     };
 }

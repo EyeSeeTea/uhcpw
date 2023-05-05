@@ -67,7 +67,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesT
             getYears: new GetIndicatorExplorerYearsUseCase(repositories.dataSet),
             getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
             getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
-            getAnalytics: new GetAnalyticsUseCase(repositories.analytics),
+            getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),

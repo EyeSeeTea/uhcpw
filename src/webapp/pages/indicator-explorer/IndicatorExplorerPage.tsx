@@ -10,7 +10,7 @@ import { ChartWithPlugin } from "../../components/chart/ChartWithPlugin";
 import { Chart } from "../../components/chart/Chart";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, visualization, analytics } = useIndicatorExplorer();
+    const { filters, visualization, analytics, onGetChart } = useIndicatorExplorer();
 
     return (
         <Layout>
@@ -24,13 +24,13 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <IndicatorExplorerFilters filters={filters} />
+                <IndicatorExplorerFilters filters={filters} onGetChart={onGetChart} />
 
-                {visualization && (
+                {visualization && analytics && (
                     <ChartWithPlugin
                         visualization={visualization}
                         countryIds={filters.selectedCountryFilter}
-                        periods={filters.selectedYearFilter ? [filters.selectedYearFilter] : []}
+                        periods={filters.selectedYearFilter ? filters.selectedYearFilter : []}
                     />
                 )}
                 {visualization && analytics && <Chart visualization={visualization} analytics={analytics} />}

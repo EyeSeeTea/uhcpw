@@ -33,7 +33,6 @@ const colors: Record<string, string> = {
 
 export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytics }) => {
     const chartData = useMemo(() => {
-        debugger;
         const rawData = _(
             analytics.rows.map(row => {
                 const serieId = row[0] || "";
@@ -68,7 +67,7 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
             .value();
 
         return { series, categories: _.uniq(rawData.map(({ category }) => category)) };
-    }, []);
+    }, [analytics]);
 
     return (
         <ChartContainer>
