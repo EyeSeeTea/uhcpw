@@ -23,7 +23,6 @@ export class GetAnalyticsUseCase {
         periods: string[],
         orgUnits: string[]
     ): { dimension: string[]; filter?: string[] } {
-        debugger;
         const dataDimension = `dx:${visualization.dataDimensionItems.map(item => item.dataElement.id).join(";")}`;
         const orgUnitDimension = `ou:${orgUnits.join(";")}`;
         const categoryDimensions = visualization.categoryDimensions.map(

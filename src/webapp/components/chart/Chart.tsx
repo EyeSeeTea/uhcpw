@@ -9,27 +9,12 @@ import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
+import { visualizationCustomizations } from "./visualizationCustomizations";
 
 interface ChartProps {
     visualization: Visualization;
     analytics: Analytics;
 }
-
-const orders: Record<string, number> = {
-    Richest: 1,
-    "4th": 2,
-    "3rd": 3,
-    "2nd": 4,
-    Poorest: 5,
-};
-
-const colors: Record<string, string> = {
-    Richest: "#DCEDF9",
-    "4th": "#C2E3F5",
-    "3rd": "#79C3E8",
-    "2nd": "#018bd6",
-    Poorest: "#0360A6",
-};
 
 export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytics }) => {
     const chartData = useMemo(() => {
@@ -39,31 +24,33 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
 
                 const serieName = serieId ? analytics.metaData.items[serieId]?.name || "" : "";
 
-                return { serie: serieName, category: row[1] || "", value: row[2] || "" };
+                return { serieId, serieName, category: row[1] || "", value: row[2] || "" };
             })
         )
             .orderBy("category", "asc")
             .value();
 
         const dataGroups = _(rawData)
-            .groupBy(item => item.serie)
+            .groupBy(item => item.serieId)
             .value();
 
         const series = _(
-            Object.keys(dataGroups).map(group => {
-                const data = _(dataGroups[group] || [])
+            Object.keys(dataGroups).map(serieId => {
+                const groupItems = dataGroups[serieId] || [];
+                const data = _(dataGroups[serieId] || [])
                     .map(({ value }) => +value)
                     .value();
 
                 return {
                     type: "column",
-                    name: group,
-                    color: colors[group] || "000",
+                    id: serieId,
+                    name: groupItems[0]?.serieName || "",
+                    color: visualizationCustomizations[visualization.id]?.colors[serieId],
                     data,
                 };
             })
         )
-            .sortBy(serie => orders[serie.name])
+            .sortBy(serie => visualizationCustomizations[visualization.id]?.orders[serie.id])
             .value();
 
         return { series, categories: _.uniq(rawData.map(({ category }) => category)) };
@@ -102,12 +89,17 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
                 </div>
 
                 <Column>
-                    {Object.keys(colors).map(legend => {
+                    {Object.keys(visualizationCustomizations[visualization.id]?.colors || {}).map(id => {
                         return (
-                            <Row key={legend} justifyContent={"start"} marginBottom={"8px"}>
-                                <Box width={15} height={15} bgcolor={colors[legend]} borderColor={"red"} />
+                            <Row key={id} justifyContent={"start"} marginBottom={"8px"}>
+                                <Box
+                                    width={15}
+                                    height={15}
+                                    bgcolor={visualizationCustomizations[visualization.id]?.colors[id]}
+                                    borderColor={"red"}
+                                />
                                 <Box width={5} />
-                                <Typography variant="caption">{legend}</Typography>
+                                <Typography variant="caption">{analytics.metaData.items[id]?.name}</Typography>
                             </Row>
                         );
                     })}
