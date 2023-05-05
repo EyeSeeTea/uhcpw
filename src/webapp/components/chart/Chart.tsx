@@ -33,13 +33,18 @@ const colors: Record<string, string> = {
 
 export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytics }) => {
     const chartData = useMemo(() => {
-        const rawData = analytics.rows.map(row => {
-            const serieId = row[0] || "";
+        debugger;
+        const rawData = _(
+            analytics.rows.map(row => {
+                const serieId = row[0] || "";
 
-            const serieName = serieId ? analytics.metaData.items[serieId]?.name || "" : "";
+                const serieName = serieId ? analytics.metaData.items[serieId]?.name || "" : "";
 
-            return { serie: serieName, category: row[1] || "", value: row[2] || "" };
-        });
+                return { serie: serieName, category: row[1] || "", value: row[2] || "" };
+            })
+        )
+            .orderBy("category", "asc")
+            .value();
 
         const dataGroups = _(rawData)
             .groupBy(item => item.serie)
@@ -48,7 +53,6 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
         const series = _(
             Object.keys(dataGroups).map(group => {
                 const data = _(dataGroups[group] || [])
-                    .orderBy("category", "asc")
                     .map(({ value }) => +value)
                     .value();
 
