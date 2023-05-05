@@ -26,7 +26,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGetChart} />
 
-                {visualization && analytics && (
+                {visualization && !analytics && (
                     <ChartWithPlugin
                         visualization={visualization}
                         countryIds={filters.selectedCountryFilter}

@@ -9,7 +9,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
-import { visualizationCustomizations } from "./visualizationCustomizations";
+import { visualizationCustomizations } from "../../pages/indicator-explorer/visualizationCustomizations";
 
 interface ChartProps {
     visualization: Visualization;

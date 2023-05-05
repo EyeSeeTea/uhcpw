@@ -6,6 +6,7 @@ import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOpt
 import { IndicatorExplorerState } from "./IndicatorExplorerState";
 
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
+import { visualizationCustomizations } from "./visualizationCustomizations";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -20,40 +21,48 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
 
-    const onChangeCategoryFilter = useCallback(
-        (value: string | undefined) => {
-            setSelectedCategoryFilter(value);
-
-            if (value) {
-                compositionRoot.indicatorExplorer.getVisualization.execute(value).run(
-                    visualization => {
-                        setVisualization(visualization);
-                    },
-                    () => {
-                        setVisualization(undefined);
-                    }
-                );
-            } else {
-                setVisualization(undefined);
-            }
-        },
-        [compositionRoot.indicatorExplorer]
-    );
+    const onChangeCategoryFilter = useCallback((value: string | undefined) => {
+        setSelectedCategoryFilter(value);
+    }, []);
 
     const onGetChart = useCallback(() => {
-        if (visualization && selectedYearFilter && selectedCountry) {
-            compositionRoot.indicatorExplorer.getAnalytics
-                .execute(visualization.id, selectedYearFilter, selectedCountry)
-                .run(
-                    analytics => {
-                        setAnalytics(analytics);
-                    },
-                    () => {
+        if (selectedCategoryFilter) {
+            compositionRoot.indicatorExplorer.getVisualization.execute(selectedCategoryFilter).run(
+                visualization => {
+                    setVisualization(visualization);
+
+                    const customVisualization = visualizationCustomizations[visualization.id];
+
+                    if (visualization && customVisualization && selectedYearFilter && selectedCountry) {
+                        compositionRoot.indicatorExplorer.getAnalytics
+                            .execute(visualization.id, selectedYearFilter, selectedCountry)
+                            .run(
+                                analytics => {
+                                    setAnalytics(analytics);
+                                },
+                                () => {
+                                    setAnalytics(undefined);
+                                }
+                            );
+                    } else {
                         setAnalytics(undefined);
                     }
-                );
+                },
+                () => {
+                    setVisualization(undefined);
+                }
+            );
+        } else {
+            setVisualization(undefined);
         }
-    }, [visualization, compositionRoot.indicatorExplorer, selectedYearFilter, selectedCountry]);
+    }, [
+        visualization,
+        compositionRoot.indicatorExplorer,
+        selectedCategoryFilter,
+        compositionRoot.indicatorExplorer,
+        selectedYearFilter,
+        selectedCountry,
+    ]);
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);

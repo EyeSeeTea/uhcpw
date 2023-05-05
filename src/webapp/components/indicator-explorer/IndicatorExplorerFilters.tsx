@@ -61,7 +61,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     }
                     onClick={onGetChart}
                 >
-                    {i18n.t("Get Chart")}
+                    {i18n.t("Get chart")}
                 </GetChartButton>
             </Grid>
         </Grid>
@@ -78,4 +78,5 @@ const Center = styled.div`
 const GetChartButton = styled(Button)`
     border-radius: 20px;
     height: 50px;
+    text-transform: none;
 `;
