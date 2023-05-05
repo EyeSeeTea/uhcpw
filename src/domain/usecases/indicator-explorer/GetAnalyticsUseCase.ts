@@ -24,12 +24,16 @@ export class GetAnalyticsUseCase {
         orgUnits: string[]
     ): { dimension: string[]; filter?: string[] } {
         debugger;
+        const dataDimension = `dx:${visualization.dataDimensionItems.map(item => item.dataElement.id).join(";")}`;
+        const orgUnitDimension = `ou:${orgUnits.join(";")}`;
+        const categoryDimensions = visualization.categoryDimensions.map(
+            catDim => `${catDim.category.id}:${catDim.categoryOptions.map(catOp => catOp.id).join(";")}`
+        );
+        const periodDimension = `pe:${periods.join(";")}`;
+
         return {
-            dimension: [
-                `yooLFrJORoj:GuypYXqveWn;ii0MC8x9D7i;O0MXmTdpf4m;GeiKSyJLeKt;yiucIy5NIAw`,
-                `pe:${periods.join(";")}`,
-            ],
-            filter: [`dx:eEmQgI32ETw,ou:${orgUnits.join(";")}`],
+            dimension: [...categoryDimensions, periodDimension],
+            filter: [dataDimension, orgUnitDimension],
         };
     }
 }

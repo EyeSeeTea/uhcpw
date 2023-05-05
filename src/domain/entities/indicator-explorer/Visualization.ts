@@ -7,10 +7,16 @@ export interface Visualization {
     columns: VisualizationDimension[];
     filters: VisualizationDimension[];
     dataDimensionItems: DataDimensionItem[];
+    categoryDimensions: CategoryDimensionItem[];
 }
 export interface DataDimensionItem {
     dataDimensionItemType: string;
     dataElement: Ref;
+}
+
+export interface CategoryDimensionItem {
+    category: Ref;
+    categoryOptions: Ref[];
 }
 
 export type Dimension = "ou" | "pe" | "dx";
