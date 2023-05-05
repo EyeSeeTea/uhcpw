@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import data from "./visualizationData.json";
 import _ from "lodash";
 import styled from "styled-components";
 import { Box, Button, Typography } from "@material-ui/core";
@@ -9,9 +8,11 @@ import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { Visualization } from "../../../domain/entities/Visualization";
+import { Analytics } from "../../../domain/entities/Analytics";
 
 interface ChartProps {
     visualization: Visualization;
+    analytics: Analytics;
 }
 
 const orders: Record<string, number> = {
@@ -30,14 +31,12 @@ const colors: Record<string, string> = {
     Poorest: "#0360A6",
 };
 
-export const Chart: React.FC<ChartProps> = React.memo(({ visualization }) => {
+export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytics }) => {
     const chartData = useMemo(() => {
-        console.log({ visualization });
-        const rawData = data.rows.map(row => {
-            const serieId = row[0];
-            const metadataItems: Record<string, { uid: string; name: string }> = data.metaData.items;
+        const rawData = analytics.rows.map(row => {
+            const serieId = row[0] || "";
 
-            const serieName = serieId ? metadataItems[serieId]?.name || "" : "";
+            const serieName = serieId ? analytics.metaData.items[serieId]?.name || "" : "";
 
             return { serie: serieName, category: row[1] || "", value: row[2] || "" };
         });
