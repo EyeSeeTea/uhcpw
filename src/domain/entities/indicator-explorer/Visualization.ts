@@ -1,4 +1,4 @@
-import { Id, Ref } from "./Ref";
+import { Id, Ref } from "../Ref";
 
 export interface Visualization {
     id: Id;

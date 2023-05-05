@@ -3,7 +3,7 @@ import _ from "lodash";
 import React from "react";
 import styled, { css } from "styled-components";
 import { Id, Ref } from "../../../domain/entities/Ref";
-import { Dimension, Visualization } from "../../../domain/entities/Visualization";
+import { Dimension, Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { useAppContext } from "../../contexts/app-context";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";

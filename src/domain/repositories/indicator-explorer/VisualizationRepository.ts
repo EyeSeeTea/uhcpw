@@ -1,5 +1,5 @@
-import { FutureData } from "../entities/Future";
-import { Visualization } from "../entities/Visualization";
+import { FutureData } from "../../entities/Future";
+import { Visualization } from "../../entities/indicator-explorer/Visualization";
 
 export interface VisualizationRepository {
     getAll(): FutureData<Visualization[]>;

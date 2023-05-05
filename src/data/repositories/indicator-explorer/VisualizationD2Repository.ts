@@ -1,9 +1,13 @@
-import { FutureData } from "../../domain/entities/Future";
-import { DataDimensionItem, Visualization, VisualizationDimension } from "../../domain/entities/Visualization";
-import { VisualizationRepository } from "../../domain/repositories/VisualizationRepository";
-import { D2Api, MetadataPick } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
-import { InmemoryCache } from "../cache/InmemoryCache";
+import { FutureData } from "../../../domain/entities/Future";
+import {
+    DataDimensionItem,
+    Visualization,
+    VisualizationDimension,
+} from "../../../domain/entities/indicator-explorer/Visualization";
+import { VisualizationRepository } from "../../../domain/repositories/indicator-explorer/VisualizationRepository";
+import { D2Api, MetadataPick } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
+import { InmemoryCache } from "../../cache/InmemoryCache";
 
 export class VisualizationD2Repository implements VisualizationRepository {
     cache = new InmemoryCache();

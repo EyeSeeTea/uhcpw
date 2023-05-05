@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Visualization } from "../../../domain/entities/Visualization";
+import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
 import { IndicatorExplorerState } from "./IndicatorExplorerState";
+
+import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -13,6 +15,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [visualization, setVisualization] = useState<Visualization | undefined>();
+    const [analytics, setAnalytics] = useState<Analytics | undefined>();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
@@ -36,6 +39,17 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         },
         [compositionRoot.indicatorExplorer]
     );
+
+    useEffect(() => {
+        compositionRoot.indicatorExplorer.getAnalytics.execute().run(
+            analytics => {
+                setAnalytics(analytics);
+            },
+            () => {
+                setAnalytics(undefined);
+            }
+        );
+    }, [visualization]);
 
     const onChangeYearFilter = useCallback((value: string | undefined) => {
         setSelectedYearFilter(value);
@@ -78,5 +92,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             onChangeYearFilter,
         },
         visualization,
+        analytics,
     };
 }

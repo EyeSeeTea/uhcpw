@@ -8,11 +8,9 @@ import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import { ChartWithPlugin } from "../../components/chart/ChartWithPlugin";
 import { Chart } from "../../components/chart/Chart";
-import data from "../../components/chart/visualizationData.json";
-import { Analytics } from "../../../domain/entities/Analytics";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, visualization } = useIndicatorExplorer();
+    const { filters, visualization, analytics } = useIndicatorExplorer();
 
     return (
         <Layout>
@@ -35,7 +33,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         periods={filters.selectedYearFilter ? [filters.selectedYearFilter] : []}
                     />
                 )}
-                {visualization && <Chart visualization={visualization} analytics={data as unknown as Analytics} />}
+                {visualization && analytics && <Chart visualization={visualization} analytics={analytics} />}
             </MainSection>
         </Layout>
     );

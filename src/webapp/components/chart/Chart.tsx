@@ -7,8 +7,8 @@ import { Box, Button, Typography } from "@material-ui/core";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
-import { Visualization } from "../../../domain/entities/Visualization";
-import { Analytics } from "../../../domain/entities/Analytics";
+import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
+import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 
 interface ChartProps {
     visualization: Visualization;

@@ -1,9 +1,11 @@
-import { Visualization } from "../../../domain/entities/Visualization";
+import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
+import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Option } from "../../components/dropdown/Option";
 
 export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
     visualization?: Visualization;
+    analytics?: Analytics;
 };
 
 export type IndicatorExplorerFiltersState = {
