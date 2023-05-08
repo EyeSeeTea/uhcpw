@@ -7,6 +7,7 @@ import { IndicatorExplorerState } from "./IndicatorExplorerState";
 
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { visualizationCustomizations } from "./visualizationCustomizations";
+import { generateYears } from "../../../domain/usecases/utils/generateYears";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -55,14 +56,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         } else {
             setVisualization(undefined);
         }
-    }, [
-        visualization,
-        compositionRoot.indicatorExplorer,
-        selectedCategoryFilter,
-        compositionRoot.indicatorExplorer,
-        selectedYearFilter,
-        selectedCountry,
-    ]);
+    }, [compositionRoot.indicatorExplorer, selectedCategoryFilter, selectedYearFilter, selectedCountry]);
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
@@ -82,14 +76,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     }, [compositionRoot.indicatorExplorer]);
 
     useEffect(() => {
-        compositionRoot.indicatorExplorer.getYears.execute().run(
-            years => {
-                setYearsFilters(years.map(year => ({ value: year.id, text: year.id })));
-            },
-            () => {
-                setYearsFilters([]);
-            }
-        );
+        setYearsFilters(generateYears().map(year => ({ value: year.id, text: year.id })));
     }, [compositionRoot.indicatorExplorer]);
 
     return {

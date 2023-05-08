@@ -54,7 +54,7 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
             .value();
 
         return { series, categories: _.uniq(rawData.map(({ category }) => category)) };
-    }, [analytics]);
+    }, [analytics, visualization]);
 
     return (
         <ChartContainer>
