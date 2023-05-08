@@ -19,5 +19,5 @@ export interface CategoryDimensionItem {
     categoryOptions: Ref[];
 }
 
-export type Dimension = "ou" | "pe" | "dx";
+export type Dimension = "ou" | "pe" | "dx" | string;
 export type VisualizationDimension = { id: Dimension };

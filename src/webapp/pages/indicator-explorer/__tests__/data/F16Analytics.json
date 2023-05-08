@@ -1,0 +1,383 @@
+{
+    "headers": [
+        {
+            "name": "yooLFrJORoj",
+            "column": "quintile",
+            "valueType": "TEXT",
+            "type": "java.lang.String",
+            "hidden": false,
+            "meta": true
+        },
+        {
+            "name": "pe",
+            "column": "Period",
+            "valueType": "TEXT",
+            "type": "java.lang.String",
+            "hidden": false,
+            "meta": true
+        },
+        {
+            "name": "value",
+            "column": "Value",
+            "valueType": "NUMBER",
+            "type": "java.lang.Double",
+            "hidden": false,
+            "meta": false
+        }
+    ],
+    "metaData": {
+        "items": {
+            "2006": {
+                "uid": "2006",
+                "code": "2006",
+                "name": "2006",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2006-01-01T00:00:00.000",
+                "endDate": "2006-12-31T00:00:00.000"
+            },
+            "2007": {
+                "uid": "2007",
+                "code": "2007",
+                "name": "2007",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2007-01-01T00:00:00.000",
+                "endDate": "2007-12-31T00:00:00.000"
+            },
+            "2008": {
+                "uid": "2008",
+                "code": "2008",
+                "name": "2008",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2008-01-01T00:00:00.000",
+                "endDate": "2008-12-31T00:00:00.000"
+            },
+            "2009": {
+                "uid": "2009",
+                "code": "2009",
+                "name": "2009",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2009-01-01T00:00:00.000",
+                "endDate": "2009-12-31T00:00:00.000"
+            },
+            "2010": {
+                "uid": "2010",
+                "code": "2010",
+                "name": "2010",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2010-01-01T00:00:00.000",
+                "endDate": "2010-12-31T00:00:00.000"
+            },
+            "2011": {
+                "uid": "2011",
+                "code": "2011",
+                "name": "2011",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2011-01-01T00:00:00.000",
+                "endDate": "2011-12-31T00:00:00.000"
+            },
+            "2012": {
+                "uid": "2012",
+                "code": "2012",
+                "name": "2012",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2012-01-01T00:00:00.000",
+                "endDate": "2012-12-31T00:00:00.000"
+            },
+            "2013": {
+                "uid": "2013",
+                "code": "2013",
+                "name": "2013",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2013-01-01T00:00:00.000",
+                "endDate": "2013-12-31T00:00:00.000"
+            },
+            "2014": {
+                "uid": "2014",
+                "code": "2014",
+                "name": "2014",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2014-01-01T00:00:00.000",
+                "endDate": "2014-12-31T00:00:00.000"
+            },
+            "2015": {
+                "uid": "2015",
+                "code": "2015",
+                "name": "2015",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2015-01-01T00:00:00.000",
+                "endDate": "2015-12-31T00:00:00.000"
+            },
+            "2016": {
+                "uid": "2016",
+                "code": "2016",
+                "name": "2016",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2016-01-01T00:00:00.000",
+                "endDate": "2016-12-31T00:00:00.000"
+            },
+            "2017": {
+                "uid": "2017",
+                "code": "2017",
+                "name": "2017",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2017-01-01T00:00:00.000",
+                "endDate": "2017-12-31T00:00:00.000"
+            },
+            "2018": {
+                "uid": "2018",
+                "code": "2018",
+                "name": "2018",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2018-01-01T00:00:00.000",
+                "endDate": "2018-12-31T00:00:00.000"
+            },
+            "2019": {
+                "uid": "2019",
+                "code": "2019",
+                "name": "2019",
+                "dimensionItemType": "PERIOD",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM",
+                "startDate": "2019-01-01T00:00:00.000",
+                "endDate": "2019-12-31T00:00:00.000"
+            },
+            "yooLFrJORoj": {
+                "uid": "yooLFrJORoj",
+                "name": "quintile",
+                "dimensionType": "CATEGORY"
+            },
+            "RLofI9X8Pgl": {
+                "uid": "RLofI9X8Pgl",
+                "name": "4th",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "dx": {
+                "uid": "dx",
+                "name": "Data",
+                "dimensionType": "DATA_X"
+            },
+            "DVnpk4xiXGJ": {
+                "uid": "DVnpk4xiXGJ",
+                "code": "ESP",
+                "name": "Kingdom of Spain",
+                "dimensionItemType": "ORGANISATION_UNIT",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "KlRimmMdZ7l": {
+                "uid": "KlRimmMdZ7l",
+                "name": "Richest",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "yiucIy5NIAw": {
+                "uid": "yiucIy5NIAw",
+                "code": "Richest",
+                "name": "Richest",
+                "dimensionItemType": "CATEGORY_OPTION",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "CFaiDiKYWfp": {
+                "uid": "CFaiDiKYWfp",
+                "name": "3rd",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "ii0MC8x9D7i": {
+                "uid": "ii0MC8x9D7i",
+                "code": "3rd",
+                "name": "3rd",
+                "dimensionItemType": "CATEGORY_OPTION",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "GeiKSyJLeKt": {
+                "uid": "GeiKSyJLeKt",
+                "code": "Poorest",
+                "name": "Poorest",
+                "dimensionItemType": "CATEGORY_OPTION",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "eEmQgI32ETw": {
+                "uid": "eEmQgI32ETw",
+                "code": "cata_quintile",
+                "name": "Share of households with catastrophic health spending by consumption quintile",
+                "description": "Share of households with catastrophic health spending by consumption quintile",
+                "dimensionItemType": "DATA_ELEMENT",
+                "valueType": "NUMBER",
+                "aggregationType": "NONE",
+                "totalAggregationType": "SUM"
+            },
+            "KoycbPPMxMc": {
+                "uid": "KoycbPPMxMc",
+                "name": "2nd",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "ou": {
+                "uid": "ou",
+                "name": "Organisation unit",
+                "dimensionType": "ORGANISATION_UNIT"
+            },
+            "fcEivvOxZrY": {
+                "uid": "fcEivvOxZrY",
+                "name": "Poorest",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "gEWtgad4feW": {
+                "uid": "gEWtgad4feW",
+                "name": "Total",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "O0MXmTdpf4m": {
+                "uid": "O0MXmTdpf4m",
+                "code": "4th",
+                "name": "4th",
+                "dimensionItemType": "CATEGORY_OPTION",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "GuypYXqveWn": {
+                "uid": "GuypYXqveWn",
+                "code": "2nd",
+                "name": "2nd",
+                "dimensionItemType": "CATEGORY_OPTION",
+                "valueType": "NUMBER",
+                "totalAggregationType": "SUM"
+            },
+            "pe": {
+                "uid": "pe",
+                "name": "Period",
+                "dimensionType": "PERIOD"
+            }
+        },
+        "dimensions": {
+            "yooLFrJORoj": ["GuypYXqveWn", "ii0MC8x9D7i", "O0MXmTdpf4m", "GeiKSyJLeKt", "yiucIy5NIAw"],
+            "dx": ["eEmQgI32ETw"],
+            "pe": [
+                "2006",
+                "2007",
+                "2008",
+                "2009",
+                "2010",
+                "2011",
+                "2012",
+                "2013",
+                "2014",
+                "2015",
+                "2016",
+                "2017",
+                "2018",
+                "2019"
+            ],
+            "ou": ["DVnpk4xiXGJ"],
+            "co": ["KoycbPPMxMc", "RLofI9X8Pgl", "KlRimmMdZ7l", "fcEivvOxZrY", "gEWtgad4feW", "CFaiDiKYWfp"]
+        }
+    },
+    "rows": [
+        ["GeiKSyJLeKt", "2016", "1.1"],
+        ["GeiKSyJLeKt", "2017", "0.91"],
+        ["ii0MC8x9D7i", "2010", "0.09"],
+        ["GeiKSyJLeKt", "2014", "1.1"],
+        ["GuypYXqveWn", "2010", "0.13"],
+        ["GeiKSyJLeKt", "2015", "1.0"],
+        ["GeiKSyJLeKt", "2018", "1.3"],
+        ["GeiKSyJLeKt", "2019", "1.1"],
+        ["ii0MC8x9D7i", "2016", "0.08"],
+        ["O0MXmTdpf4m", "2011", "0.21"],
+        ["GuypYXqveWn", "2015", "0.12"],
+        ["GuypYXqveWn", "2016", "0.11"],
+        ["yiucIy5NIAw", "2009", "0.49"],
+        ["O0MXmTdpf4m", "2010", "0.12"],
+        ["ii0MC8x9D7i", "2015", "0.13"],
+        ["GuypYXqveWn", "2017", "0.11"],
+        ["ii0MC8x9D7i", "2018", "0.12"],
+        ["ii0MC8x9D7i", "2017", "0.11"],
+        ["GuypYXqveWn", "2018", "0.12"],
+        ["yiucIy5NIAw", "2006", "0.33"],
+        ["GuypYXqveWn", "2011", "0.07"],
+        ["GeiKSyJLeKt", "2012", "0.7"],
+        ["ii0MC8x9D7i", "2012", "0.13"],
+        ["O0MXmTdpf4m", "2015", "0.27"],
+        ["ii0MC8x9D7i", "2011", "0.13"],
+        ["GuypYXqveWn", "2012", "0.1"],
+        ["GeiKSyJLeKt", "2013", "0.71"],
+        ["O0MXmTdpf4m", "2014", "0.23"],
+        ["yiucIy5NIAw", "2008", "0.44"],
+        ["GeiKSyJLeKt", "2010", "0.74"],
+        ["GuypYXqveWn", "2013", "0.07"],
+        ["O0MXmTdpf4m", "2013", "0.13"],
+        ["ii0MC8x9D7i", "2014", "0.1"],
+        ["yiucIy5NIAw", "2007", "0.31"],
+        ["GeiKSyJLeKt", "2011", "0.61"],
+        ["O0MXmTdpf4m", "2012", "0.17"],
+        ["ii0MC8x9D7i", "2013", "0.09"],
+        ["GuypYXqveWn", "2014", "0.08"],
+        ["O0MXmTdpf4m", "2019", "0.13"],
+        ["O0MXmTdpf4m", "2018", "0.16"],
+        ["O0MXmTdpf4m", "2017", "0.17"],
+        ["O0MXmTdpf4m", "2016", "0.1"],
+        ["GuypYXqveWn", "2008", "0.06"],
+        ["ii0MC8x9D7i", "2019", "0.09"],
+        ["GuypYXqveWn", "2009", "0.1"],
+        ["yiucIy5NIAw", "2013", "0.45"],
+        ["GeiKSyJLeKt", "2006", "0.31"],
+        ["yiucIy5NIAw", "2012", "0.56"],
+        ["yiucIy5NIAw", "2015", "0.48"],
+        ["yiucIy5NIAw", "2014", "0.56"],
+        ["GeiKSyJLeKt", "2009", "0.43"],
+        ["GeiKSyJLeKt", "2007", "0.34"],
+        ["yiucIy5NIAw", "2011", "0.37"],
+        ["GeiKSyJLeKt", "2008", "0.38"],
+        ["yiucIy5NIAw", "2010", "0.38"],
+        ["yiucIy5NIAw", "2017", "0.24"],
+        ["yiucIy5NIAw", "2016", "0.27"],
+        ["yiucIy5NIAw", "2019", "0.16"],
+        ["yiucIy5NIAw", "2018", "0.19"],
+        ["GuypYXqveWn", "2019", "0.12"],
+        ["GuypYXqveWn", "2006", "0.09"],
+        ["ii0MC8x9D7i", "2007", "0.11"],
+        ["ii0MC8x9D7i", "2006", "0.14"],
+        ["GuypYXqveWn", "2007", "0.08"],
+        ["O0MXmTdpf4m", "2008", "0.2"],
+        ["O0MXmTdpf4m", "2007", "0.2"],
+        ["O0MXmTdpf4m", "2006", "0.15"],
+        ["ii0MC8x9D7i", "2009", "0.08"],
+        ["ii0MC8x9D7i", "2008", "0.08"],
+        ["O0MXmTdpf4m", "2009", "0.14"]
+    ],
+    "height": 70,
+    "width": 3,
+    "headerWidth": 3
+}
