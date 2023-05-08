@@ -1,14 +1,4 @@
-import {
-    Button,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-} from "@material-ui/core";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
