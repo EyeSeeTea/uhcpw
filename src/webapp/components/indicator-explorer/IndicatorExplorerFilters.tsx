@@ -42,8 +42,8 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                 <Center>
                     <DropdownMultiple
                         fullWidth
-                        label={i18n.t("Year")}
-                        placeholder={i18n.t("Select year")}
+                        label={i18n.t("Years")}
+                        placeholder={i18n.t("Select years")}
                         options={filters.yearFilters}
                         values={filters.selectedYearFilter}
                         onChange={filters.onChangeYearFilter}

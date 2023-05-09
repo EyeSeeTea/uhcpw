@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
+import { BoundFunctions, prettyDOM, queries, screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceThemeD2Repository } from "../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../domain/entities/Future";
@@ -33,14 +33,18 @@ describe("IndicatorExplorerPage", () => {
     });
 
     describe("F16 - Share of households with catastrohic spending by consumption quintile", () => {
-        // it("should render expected chart title", async () => {
-        //     const { visualizations, countries } = givenAFilters();
-        //     givenAnAnalytics();
-        //     renderPage();
-        //     await selectFiltersAndGetChart(visualizations[0]?.name || "", "Spain", "2006");
-        //     const chartTitle = await waitFor(() => screen.getByRole("heading", { name: visualizations[0]?.name }));
-        //     expect(chartTitle).toBeInTheDocument();
-        // });
+        it("should render expected chart title", async () => {
+            const { visualizations, countries } = givenAFilters();
+            givenAnAnalytics();
+
+            renderPage();
+
+            await selectFiltersAndGetChart(visualizations[0]?.name || "", countries[0]?.name || "", "2008");
+
+            const chartTitle = await waitFor(() => screen.getByRole("heading", { name: visualizations[0]?.name }));
+
+            expect(chartTitle).toBeInTheDocument();
+        });
     });
 });
 
@@ -131,29 +135,10 @@ async function selectFilter(scope: BoundFunctions<typeof queries>, name: string,
     const autocompleteInput = scope.getByRole("textbox", {
         name,
     });
+
     userEvent.click(autocompleteInput);
 
-    const targetItem = await waitFor(() => screen.getByText(value));
-    expect(screen.getByText(value)).toBeInTheDocument();
+    const targetItem = await waitFor(() => screen.getByRole("option", { name: value }));
 
     userEvent.click(targetItem);
-}
-
-async function selectMultiFilter(scope: BoundFunctions<typeof queries>, name: string, value: string) {
-    const textBox = scope.getByRole("textbox", {
-        name,
-    });
-
-    userEvent.click(textBox);
-
-    // wait for option to appear
-    await waitFor(() => {
-        screen.getByRole("listbox");
-    });
-    // grab option
-    const opt = screen.getByRole("option", {
-        name: value,
-    });
-    // select it
-    userEvent.click(opt);
 }
