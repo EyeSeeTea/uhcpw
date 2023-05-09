@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-05T11:16:55.076Z\n"
-"PO-Revision-Date: 2023-05-05T11:16:55.076Z\n"
+"POT-Creation-Date: 2023-05-09T05:12:11.617Z\n"
+"PO-Revision-Date: 2023-05-09T05:12:11.617Z\n"
 
 msgid "Experts network"
 msgstr ""
@@ -247,10 +247,10 @@ msgstr ""
 msgid "Select countries"
 msgstr ""
 
-msgid "Year"
+msgid "Years"
 msgstr ""
 
-msgid "Select year"
+msgid "Select years"
 msgstr ""
 
 msgid "Get chart"
@@ -320,6 +320,12 @@ msgid ""
 msgstr ""
 
 msgid "Category"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Select year"
 msgstr ""
 
 msgid "Comparative Analysis"

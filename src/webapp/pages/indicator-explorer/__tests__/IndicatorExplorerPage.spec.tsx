@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { BoundFunctions, prettyDOM, queries, screen, waitFor, within } from "@testing-library/react";
+import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceThemeD2Repository } from "../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../domain/entities/Future";
@@ -14,6 +14,7 @@ import F16Visualization from "./data/F16Visualization.json";
 import F16Analytics from "./data/F16Analytics.json";
 import { Analytics } from "../../../../domain/entities/indicator-explorer/Analytics";
 import userEvent from "@testing-library/user-event";
+import Highcharts from "highcharts";
 
 let visualizationRepository: VisualizationD2Repository;
 let analyticsRepository: AnalyticsD2Repository;
@@ -33,17 +34,31 @@ describe("IndicatorExplorerPage", () => {
     });
 
     describe("F16 - Share of households with catastrohic spending by consumption quintile", () => {
-        it("should render expected chart title", async () => {
+        it("should render expected chart", async () => {
             const { visualizations, countries } = givenAFilters();
-            givenAnAnalytics();
+            const analytics = givenAnAnalytics();
 
             renderPage();
 
             await selectFiltersAndGetChart(visualizations[0]?.name || "", countries[0]?.name || "", "2008");
 
             const chartTitle = await waitFor(() => screen.getByRole("heading", { name: visualizations[0]?.name }));
-
             expect(chartTitle).toBeInTheDocument();
+
+            expect(screen.getByText("Richest")).toBeInTheDocument();
+            expect(screen.getByText("4th")).toBeInTheDocument();
+            expect(screen.getByText("3rd")).toBeInTheDocument();
+            expect(screen.getByText("2nd")).toBeInTheDocument();
+            expect(screen.getByText("Poorest")).toBeInTheDocument();
+
+            expect(screen.getByText("Tambor and Pavlova (2020)")).toBeInTheDocument();
+            expect(screen.getByText("15 June 2020")).toBeInTheDocument();
+
+            const stackedBarsPerBar = Highcharts.charts[0]?.series.length;
+            expect(stackedBarsPerBar).toBe(5);
+
+            const bars = Highcharts.charts[0]?.series[0]?.data.length;
+            expect(bars).toBe(3);
         });
     });
 });
