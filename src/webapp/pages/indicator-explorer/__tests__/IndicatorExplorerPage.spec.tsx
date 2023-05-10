@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
+import { BoundFunctions, prettyDOM, queries, screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceThemeD2Repository } from "../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../domain/entities/Future";
@@ -119,6 +119,7 @@ function givenACountries(): Country[] {
             description: "description",
             color: "color",
             coordinates: [2982, 12] as [number, number],
+            parents: [{ id: "EUR", name: "Europe" }],
         },
     ];
 
@@ -134,7 +135,7 @@ async function selectFiltersAndGetChart(visualizationText: string, countryText: 
     const main = within(mainElement);
 
     await selectFilter(main, "Category and indicator", visualizationText);
-    await selectFilter(main, "Countries", countryText);
+    await selectCountry(main, countryText);
     await selectFilter(main, "Years", yearText);
 
     const getChartButton = main.getByRole("button", {
@@ -156,4 +157,19 @@ async function selectFilter(scope: BoundFunctions<typeof queries>, name: string,
     const targetItem = await waitFor(() => screen.getByRole("option", { name: value }));
 
     userEvent.click(targetItem);
+}
+
+async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
+    const countrySelector = scope.getByRole("textbox", {
+        name: /countries/i,
+    });
+
+    userEvent.click(countrySelector);
+
+    userEvent.click(await screen.findByText("All countries"));
+    userEvent.click(await screen.findByRole("checkbox", { name: value }));
+
+    userEvent.keyboard("{Escape}");
+
+    await screen.findByRole("main");
 }
