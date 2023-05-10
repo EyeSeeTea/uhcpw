@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen, waitFor } from "@testing-library/react";
+import { prettyDOM, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { customRender } from "../../../../utils/tests";
 import { CountryOption, CountrySelector } from "../CountrySelector";
@@ -76,6 +76,27 @@ describe("CountrySelector", () => {
             userEvent.click(leafParent1);
 
             waitFor(() => expect(leafParent2).toHaveAttribute("checked", true));
+        });
+        it("should filter country after search", async () => {
+            const countries = givenACountries();
+
+            renderComponent(countries);
+
+            focusComponent();
+
+            const child1Name = getChild(countries, 0);
+            userEvent.type(await screen.findByRole("searchbox"), child1Name);
+
+            const child1Parent1Name = getParentFromChild(countries, 0, 0);
+            userEvent.click(await screen.findByText(child1Parent1Name));
+
+            const child1Parent2Name = getParentFromChild(countries, 0, 1);
+            userEvent.click(await screen.findByText(child1Parent2Name));
+
+            const child2Name = getChild(countries, 1);
+
+            waitFor(() => expect(screen.queryAllByText(child1Name).length).toBe(2));
+            waitFor(() => expect(screen.queryAllByText(child2Name).length).toBe(0));
         });
     });
 });
