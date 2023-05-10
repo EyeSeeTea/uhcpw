@@ -12,33 +12,6 @@ export interface ResourcesFiltersProps {
     onGetChart: () => void;
 }
 
-const countries: CountryOption[] = [
-    {
-        id: "DVnpk4xiXGJ",
-        name: "Spain",
-        parents: [
-            { id: "1", name: "All countries" },
-            { id: "2", name: "Europe" },
-        ],
-    },
-    {
-        id: "AVnpk4xiXGJ",
-        name: "France",
-        parents: [
-            { id: "1", name: "All countries" },
-            { id: "2", name: "Europe" },
-        ],
-    },
-    {
-        id: "BVnpk4xiXGJ",
-        name: "China",
-        parents: [
-            { id: "1", name: "All countries" },
-            { id: "3", name: "Asia" },
-        ],
-    },
-];
-
 export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetChart }) => {
     return (
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
@@ -57,13 +30,9 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             <Grid item md={4} xs={6}>
                 <Center>
                     <CountrySelector
-                        countries={countries}
-                        //fullWidth
-                        //label={i18n.t("Countries")}
-                        //placeholder={i18n.t("Select countries")}
-                        //options={filters.countryFilters}
-                        //values={filters.selectedCountryFilter}
-                        //onChange={filters.onChangeCountryFilter}
+                        countries={filters.countryFilters}
+                        selectedIds={filters.selectedCountryFilter}
+                        onSelectedIdsChange={filters.onChangeCountryFilter}
                     />
                 </Center>
             </Grid>

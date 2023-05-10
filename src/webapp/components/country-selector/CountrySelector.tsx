@@ -1,5 +1,5 @@
 import { InputAdornment, Menu, Typography } from "@material-ui/core";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
 import SearchInput from "../search-input/SearchInput";
@@ -18,12 +18,18 @@ export type CountryOption = {
 
 interface CountrySelectorProps {
     countries: CountryOption[];
+    selectedIds?: string[];
+    onSelectedIdsChange?: (ids: string[]) => void;
 }
 
-export const CountrySelector: React.FC<CountrySelectorProps> = ({ countries }) => {
+export const CountrySelector: React.FC<CountrySelectorProps> = ({
+    countries,
+    selectedIds = [],
+    onSelectedIdsChange,
+}) => {
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+    const [selectedIdsState, setSelectedIdsState] = React.useState<string[]>(selectedIds);
     const [searchTerm, setSearchTerm] = React.useState<string>("");
 
     const handleClick = useCallback(
@@ -49,12 +55,23 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({ countries }) =
     const handleSelectedChange = useCallback(
         (nodeId: string, selected: boolean) => {
             if (selected) {
-                setSelectedIds([...selectedIds, nodeId]);
+                const selected = [...selectedIdsState, nodeId];
+                setSelectedIdsState(selected);
+
+                if (onSelectedIdsChange) {
+                    onSelectedIdsChange(selected);
+                }
             } else {
-                setSelectedIds(selectedIds.filter(id => id !== nodeId));
+                const selected = selectedIdsState.filter(id => id !== nodeId);
+
+                setSelectedIdsState(selected);
+
+                if (onSelectedIdsChange) {
+                    onSelectedIdsChange(selected);
+                }
             }
         },
-        [setSelectedIds, selectedIds]
+        [setSelectedIdsState, selectedIdsState]
     );
 
     const finalCountries = useMemo(() => {
@@ -117,12 +134,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({ countries }) =
                                 country.parents.some(p => p.id === parent.id)
                             );
                             const children = countries.filter(country => country.parents.some(p => p.id === parent.id));
-                            const selectedCount = children.filter(child => selectedIds.includes(child.id)).length;
+                            const selectedCount = children.filter(child => selectedIdsState.includes(child.id)).length;
 
                             return (
                                 <Node key={nindex} nodeId={parent.id} name={parent.name} selectedCount={selectedCount}>
                                     {finalChildren.map((child, lindex) => {
-                                        const selected = selectedIds.find(id => id === child.id) !== undefined;
+                                        const selected = selectedIdsState.find(id => id === child.id) !== undefined;
 
                                         return (
                                             <Leaf

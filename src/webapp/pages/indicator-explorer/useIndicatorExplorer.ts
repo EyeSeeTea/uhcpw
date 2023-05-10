@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
-import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
 import { IndicatorExplorerState } from "./IndicatorExplorerState";
 
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { visualizationCustomizations } from "./visualizationCustomizations";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
+import { useMultiCountryOptionsV2 } from "../../hooks/countries/useMultiCountryOptionsV2";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
-    const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
+    const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptionsV2();
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();

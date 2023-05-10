@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { prettyDOM, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { customRender } from "../../../../utils/tests";
 import { CountryOption, CountrySelector } from "../CountrySelector";
