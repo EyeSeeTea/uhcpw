@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -8,12 +8,13 @@ import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 
 export interface ResourcesFiltersProps {
     filters: IndicatorExplorerFiltersState;
+    onGetChart: () => void;
 }
 
-export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters }) => {
+export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetChart }) => {
     return (
-        <Grid container spacing={5}>
-            <Grid item md={5} xs={6}>
+        <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
+            <Grid item md={4} xs={6}>
                 <Center>
                     <Dropdown
                         fullWidth
@@ -39,15 +40,29 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             </Grid>
             <Grid item md={3} xs={6}>
                 <Center>
-                    <Dropdown
+                    <DropdownMultiple
                         fullWidth
-                        label={i18n.t("Year")}
-                        placeholder={i18n.t("Select year")}
+                        label={i18n.t("Years")}
+                        placeholder={i18n.t("Select years")}
                         options={filters.yearFilters}
-                        value={filters.selectedYearFilter}
+                        values={filters.selectedYearFilter}
                         onChange={filters.onChangeYearFilter}
                     />
                 </Center>
+            </Grid>
+            <Grid item md={1} xs={2}>
+                <GetChartButton
+                    variant="contained"
+                    color="primary"
+                    disabled={
+                        !filters.selectedCategoryFilter ||
+                        !filters.selectedCountryFilter?.length ||
+                        !filters.selectedYearFilter?.length
+                    }
+                    onClick={onGetChart}
+                >
+                    {i18n.t("Get chart")}
+                </GetChartButton>
             </Grid>
         </Grid>
     );
@@ -58,4 +73,10 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const GetChartButton = styled(Button)`
+    border-radius: 20px;
+    height: 50px;
+    text-transform: none;
 `;

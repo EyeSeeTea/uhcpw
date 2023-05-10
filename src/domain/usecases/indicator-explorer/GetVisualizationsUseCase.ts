@@ -1,6 +1,6 @@
 import { FutureData } from "../../entities/Future";
-import { Visualization } from "../../entities/Visualization";
-import { VisualizationRepository } from "../../repositories/VisualizationRepository";
+import { Visualization } from "../../entities/indicator-explorer/Visualization";
+import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
 
 export class GetVisualizationsUseCase {
     constructor(private visualizationRepository: VisualizationRepository) {}

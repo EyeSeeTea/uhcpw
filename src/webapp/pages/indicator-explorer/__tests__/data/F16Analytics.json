@@ -1,0 +1,119 @@
+{
+    "headers": [
+        {
+            "name": "yooLFrJORoj",
+            "column": "quintile",
+            "valueType": "TEXT",
+            "type": "java.lang.String",
+            "hidden": false,
+            "meta": true
+        },
+        {
+            "name": "pe",
+            "column": "Period",
+            "valueType": "TEXT",
+            "type": "java.lang.String",
+            "hidden": false,
+            "meta": true
+        },
+        {
+            "name": "value",
+            "column": "Value",
+            "valueType": "NUMBER",
+            "type": "java.lang.Double",
+            "hidden": false,
+            "meta": false
+        }
+    ],
+    "metaData": {
+        "items": {
+            "2006": {
+                "name": "2006"
+            },
+            "2007": {
+                "name": "2007"
+            },
+            "2008": {
+                "name": "2008"
+            },
+            "ii0MC8x9D7i": {
+                "name": "3rd"
+            },
+            "GeiKSyJLeKt": {
+                "name": "Poorest"
+            },
+            "eEmQgI32ETw": {
+                "name": "Share of households with catastrophic health spending by consumption quintile"
+            },
+            "KoycbPPMxMc": {
+                "name": "2nd"
+            },
+            "yooLFrJORoj": {
+                "name": "quintile"
+            },
+            "RLofI9X8Pgl": {
+                "name": "4th"
+            },
+            "ou": {
+                "name": "Organisation unit"
+            },
+            "fcEivvOxZrY": {
+                "name": "Poorest"
+            },
+            "gEWtgad4feW": {
+                "name": "Total"
+            },
+            "O0MXmTdpf4m": {
+                "name": "4th"
+            },
+            "GuypYXqveWn": {
+                "name": "2nd"
+            },
+            "dx": {
+                "name": "Data"
+            },
+            "DVnpk4xiXGJ": {
+                "name": "Kingdom of Spain"
+            },
+            "pe": {
+                "name": "Period"
+            },
+            "KlRimmMdZ7l": {
+                "name": "Richest"
+            },
+            "yiucIy5NIAw": {
+                "name": "Richest"
+            },
+            "CFaiDiKYWfp": {
+                "name": "3rd"
+            }
+        },
+        "dimensions": {
+            "yooLFrJORoj": ["GuypYXqveWn", "ii0MC8x9D7i", "O0MXmTdpf4m", "GeiKSyJLeKt", "yiucIy5NIAw"],
+            "dx": ["eEmQgI32ETw"],
+            "pe": ["2008", "2007", "2006"],
+            "ou": ["DVnpk4xiXGJ"],
+            "co": ["KoycbPPMxMc", "RLofI9X8Pgl", "KlRimmMdZ7l", "fcEivvOxZrY", "gEWtgad4feW", "CFaiDiKYWfp"]
+        }
+    },
+    "rows": [
+        ["GeiKSyJLeKt", "2006", "0.31"],
+        ["GeiKSyJLeKt", "2007", "0.34"],
+        ["GeiKSyJLeKt", "2008", "0.38"],
+        ["GuypYXqveWn", "2006", "0.09"],
+        ["ii0MC8x9D7i", "2007", "0.11"],
+        ["ii0MC8x9D7i", "2006", "0.14"],
+        ["GuypYXqveWn", "2007", "0.08"],
+        ["yiucIy5NIAw", "2006", "0.33"],
+        ["yiucIy5NIAw", "2008", "0.44"],
+        ["yiucIy5NIAw", "2007", "0.31"],
+        ["O0MXmTdpf4m", "2008", "0.2"],
+        ["O0MXmTdpf4m", "2007", "0.2"],
+        ["O0MXmTdpf4m", "2006", "0.15"],
+        ["GuypYXqveWn", "2008", "0.06"],
+        ["ii0MC8x9D7i", "2008", "0.08"]
+    ],
+    "height": 15,
+    "width": 3,
+    "headerWidth": 3
+}

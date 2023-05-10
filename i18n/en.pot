@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-02T10:20:40.292Z\n"
-"PO-Revision-Date: 2023-05-02T10:20:40.292Z\n"
+"POT-Creation-Date: 2023-05-09T05:12:11.617Z\n"
+"PO-Revision-Date: 2023-05-09T05:12:11.617Z\n"
 
 msgid "Experts network"
 msgstr ""
@@ -55,6 +55,15 @@ msgid "Add"
 msgstr ""
 
 msgid "List"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Tambor and Pavlova (2020)"
+msgstr ""
+
+msgid "15 June 2020"
 msgstr ""
 
 msgid "Clear"
@@ -238,10 +247,13 @@ msgstr ""
 msgid "Select countries"
 msgstr ""
 
-msgid "Year"
+msgid "Years"
 msgstr ""
 
-msgid "Select year"
+msgid "Select years"
+msgstr ""
+
+msgid "Get chart"
 msgstr ""
 
 msgid "Funded by the European Union"
@@ -310,6 +322,12 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+msgid "Year"
+msgstr ""
+
+msgid "Select year"
+msgstr ""
+
 msgid "Comparative Analysis"
 msgstr ""
 
@@ -345,15 +363,6 @@ msgstr ""
 msgid ""
 "Track and compare indicators on financial hardship, unmet need for health "
 "services and spending on health"
-msgstr ""
-
-msgid "Download"
-msgstr ""
-
-msgid "Tambor and Pavlova (2020)"
-msgstr ""
-
-msgid "15 June 2020"
 msgstr ""
 
 msgid ""

@@ -6,12 +6,11 @@ import { ResourceD2Repository } from "./data/repositories/resources/ResourceD2Re
 import { PolicyExplorerCategoryD2Repository } from "./data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { PolicyExplorerD2Repository } from "./data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { UserD2Repository } from "./data/repositories/UserD2Repository";
-import { VisualizationD2Repository } from "./data/repositories/VisualizationD2Repository";
+import { VisualizationD2Repository } from "./data/repositories/indicator-explorer/VisualizationD2Repository";
 import { GetCountriesUseCase } from "./domain/usecases/GetCountriesUseCase";
 import { GetCurrentUserUseCase } from "./domain/usecases/GetCurrentUserUseCase";
 import { GetInstanceVersionUseCase } from "./domain/usecases/GetInstanceVersionUseCase";
 import { GetResourcesUseCase } from "./domain/usecases/resources/GetResourcesUseCase";
-import { GetIndicatorExplorerYearsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerYearsUseCase";
 import { GetVisualizationByIdUseCase } from "./domain/usecases/indicator-explorer/GetVisualizationByIdUseCase";
 import { GetVisualizationsUseCase } from "./domain/usecases/indicator-explorer/GetVisualizationsUseCase";
 import { DownloadPolicyExplorerUseCase } from "./domain/usecases/policy-explorer/DownloadPolicyExplorerUseCase";
@@ -23,9 +22,12 @@ import { GetResourceCategoriesUseCase } from "./domain/usecases/resources/GetRes
 import { ResourceCategoryD2Repository } from "./data/repositories/resources/ResourceCategoryD2Repository";
 import { ResourceThemeD2Repository } from "./data/repositories/resources/ResourceThemeD2Repository";
 import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
+import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
+import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
 
 function initializeRepositories(api: D2Api, instance: Instance) {
     return {
+        analytics: new AnalyticsD2Repository(api),
         instance: new InstanceDefaultRepository(instance),
         users: new UserD2Repository(api),
         country: new CountryD2Repository(api),
@@ -61,9 +63,9 @@ export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesT
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
         indicatorExplorer: {
-            getYears: new GetIndicatorExplorerYearsUseCase(repositories.dataSet),
             getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
             getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
+            getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),

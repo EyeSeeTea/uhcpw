@@ -1,9 +1,14 @@
-import { FutureData } from "../../domain/entities/Future";
-import { DataDimensionItem, Visualization, VisualizationDimension } from "../../domain/entities/Visualization";
-import { VisualizationRepository } from "../../domain/repositories/VisualizationRepository";
-import { D2Api, MetadataPick } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
-import { InmemoryCache } from "../cache/InmemoryCache";
+import { FutureData } from "../../../domain/entities/Future";
+import {
+    CategoryDimensionItem,
+    DataDimensionItem,
+    Visualization,
+    VisualizationDimension,
+} from "../../../domain/entities/indicator-explorer/Visualization";
+import { VisualizationRepository } from "../../../domain/repositories/indicator-explorer/VisualizationRepository";
+import { D2Api, MetadataPick } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
+import { InmemoryCache } from "../../cache/InmemoryCache";
 
 export class VisualizationD2Repository implements VisualizationRepository {
     cache = new InmemoryCache();
@@ -40,6 +45,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
             columns: d2Visualization.columns as VisualizationDimension[],
             filters: d2Visualization.filters as VisualizationDimension[],
             dataDimensionItems: d2Visualization.dataDimensionItems as DataDimensionItem[],
+            categoryDimensions: d2Visualization.categoryDimensions as CategoryDimensionItem[],
         };
     }
 }
@@ -51,6 +57,7 @@ const visualizationFields = {
     columns: true,
     filters: true,
     dataDimensionItems: true,
+    categoryDimensions: { category: true, categoryOptions: true },
 } as const;
 
 type D2Visualization = MetadataPick<{

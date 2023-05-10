@@ -1,4 +1,4 @@
-import { Id, Ref } from "./Ref";
+import { Id, Ref } from "../Ref";
 
 export interface Visualization {
     id: Id;
@@ -7,11 +7,17 @@ export interface Visualization {
     columns: VisualizationDimension[];
     filters: VisualizationDimension[];
     dataDimensionItems: DataDimensionItem[];
+    categoryDimensions: CategoryDimensionItem[];
 }
 export interface DataDimensionItem {
     dataDimensionItemType: string;
     dataElement: Ref;
 }
 
-export type Dimension = "ou" | "pe" | "dx";
+export interface CategoryDimensionItem {
+    category: Ref;
+    categoryOptions: Ref[];
+}
+
+export type Dimension = "ou" | "pe" | "dx" | string;
 export type VisualizationDimension = { id: Dimension };
