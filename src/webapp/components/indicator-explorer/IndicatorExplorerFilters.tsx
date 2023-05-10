@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
+import { CountryOption, CountrySelector } from "../country-selector/CountrySelector";
 import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 
@@ -10,6 +11,33 @@ export interface ResourcesFiltersProps {
     filters: IndicatorExplorerFiltersState;
     onGetChart: () => void;
 }
+
+const countries: CountryOption[] = [
+    {
+        id: "DVnpk4xiXGJ",
+        name: "Spain",
+        parents: [
+            { id: "1", name: "All countries" },
+            { id: "2", name: "Europe" },
+        ],
+    },
+    {
+        id: "AVnpk4xiXGJ",
+        name: "France",
+        parents: [
+            { id: "1", name: "All countries" },
+            { id: "2", name: "Europe" },
+        ],
+    },
+    {
+        id: "BVnpk4xiXGJ",
+        name: "China",
+        parents: [
+            { id: "1", name: "All countries" },
+            { id: "3", name: "Asia" },
+        ],
+    },
+];
 
 export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetChart }) => {
     return (
@@ -28,13 +56,14 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             </Grid>
             <Grid item md={4} xs={6}>
                 <Center>
-                    <DropdownMultiple
-                        fullWidth
-                        label={i18n.t("Countries")}
-                        placeholder={i18n.t("Select countries")}
-                        options={filters.countryFilters}
-                        values={filters.selectedCountryFilter}
-                        onChange={filters.onChangeCountryFilter}
+                    <CountrySelector
+                        countries={countries}
+                        //fullWidth
+                        //label={i18n.t("Countries")}
+                        //placeholder={i18n.t("Select countries")}
+                        //options={filters.countryFilters}
+                        //values={filters.selectedCountryFilter}
+                        //onChange={filters.onChangeCountryFilter}
                     />
                 </Center>
             </Grid>

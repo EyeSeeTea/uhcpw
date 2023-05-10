@@ -8,7 +8,7 @@ import _ from "lodash";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
-        borderRadius: "10px",
+        borderRadius: "20px",
         alignItems: "center",
         padding: theme.spacing(1),
         display: "flex",
@@ -60,7 +60,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
     );
 
     return (
-        <Paper className={clsx(classes.root, className)} style={style} elevation={0}>
+        <Paper className={clsx(classes.root, className)} style={style} elevation={0} role="search">
             <SearchIcon className={classes.icon} htmlColor="black" />
             <Input
                 className={classes.input}
@@ -68,6 +68,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
                 onChange={onKeyUp}
                 placeholder={i18n.t("Search")}
                 value={stateValue}
+                role="searchbox"
             />
         </Paper>
     );
