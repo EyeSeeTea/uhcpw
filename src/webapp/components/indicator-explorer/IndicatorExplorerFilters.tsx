@@ -52,6 +52,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             </Grid>
             <Grid item md={1} xs={2}>
                 <GetChartButton
+                    aria-label="Get chart"
                     variant="contained"
                     color="primary"
                     disabled={

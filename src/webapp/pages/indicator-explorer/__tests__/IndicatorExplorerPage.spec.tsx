@@ -43,6 +43,7 @@ describe("IndicatorExplorerPage", () => {
             await selectFiltersAndGetChart(visualizations[0]?.name || "", countries[0]?.name || "", "2008");
 
             const chartTitle = await waitFor(() => screen.getByRole("heading", { name: visualizations[0]?.name }));
+
             expect(chartTitle).toBeInTheDocument();
 
             expect(screen.getByText("Richest")).toBeInTheDocument();
@@ -138,9 +139,7 @@ async function selectFiltersAndGetChart(visualizationText: string, countryText: 
     await selectCountry(main, countryText);
     await selectFilter(main, "Years", yearText);
 
-    const getChartButton = main.getByRole("button", {
-        name: /get chart/i,
-    });
+    const getChartButton = main.getByLabelText(/get chart/i);
 
     await waitFor(() => expect(getChartButton).not.toBeDisabled());
 
@@ -148,9 +147,7 @@ async function selectFiltersAndGetChart(visualizationText: string, countryText: 
 }
 
 async function selectFilter(scope: BoundFunctions<typeof queries>, name: string, value: string) {
-    const autocompleteInput = scope.getByRole("textbox", {
-        name,
-    });
+    const autocompleteInput = scope.getByLabelText(name);
 
     userEvent.click(autocompleteInput);
 
@@ -160,9 +157,7 @@ async function selectFilter(scope: BoundFunctions<typeof queries>, name: string,
 }
 
 async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
-    const countrySelector = scope.getByRole("textbox", {
-        name: /countries/i,
-    });
+    const countrySelector = scope.getByLabelText(/countries/i);
 
     userEvent.click(countrySelector);
 
@@ -171,5 +166,5 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
 
     userEvent.keyboard("{Escape}");
 
-    await screen.findByRole("main");
+    await screen.findByLabelText(/countries/i);
 }
