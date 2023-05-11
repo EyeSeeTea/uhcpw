@@ -12,6 +12,7 @@ import _ from "lodash";
 import { SelectedChip } from "../selected-chip/SelectedChip";
 import CloseIcon from "@material-ui/icons/Close";
 import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank";
+import styled from "styled-components";
 
 export type CountryOption = {
     id: string;
@@ -109,16 +110,20 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
                 disabled
                 fullWidth
                 InputProps={{
-                    startAdornment: selectedCountries.map(country => {
-                        return (
-                            <SelectedChip
-                                key={country.id}
-                                label={country.name}
-                                onDelete={() => handleSelectedChange(country.id, false)}
-                                deleteIcon={<CloseIcon fontSize="small" />}
-                            />
-                        );
-                    }),
+                    startAdornment: (
+                        <SelectedContainer>
+                            {selectedCountries.map(country => {
+                                return (
+                                    <SelectedChip
+                                        key={country.id}
+                                        label={country.name}
+                                        onDelete={() => handleSelectedChange(country.id, false)}
+                                        deleteIcon={<CloseIcon fontSize="small" />}
+                                    />
+                                );
+                            })}
+                        </SelectedContainer>
+                    ),
                     endAdornment: (
                         <InputAdornment
                             position="start"
@@ -199,3 +204,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
         </>
     );
 };
+
+const SelectedContainer = styled.div`
+    max-width: 100%;
+`;
