@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-10T15:35:31.915Z\n"
-"PO-Revision-Date: 2023-05-10T15:35:31.915Z\n"
+"POT-Creation-Date: 2023-05-11T14:46:59.205Z\n"
+"PO-Revision-Date: 2023-05-11T14:46:59.205Z\n"
 
 msgid "Experts network"
 msgstr ""
@@ -67,6 +67,9 @@ msgid "15 June 2020"
 msgstr ""
 
 msgid "Select country"
+msgstr ""
+
+msgid "I would like to see countries grouped by income bracket (LMIC/UMICHIC"
 msgstr ""
 
 msgid "({{count}} selected)"
