@@ -1,4 +1,4 @@
-import { Checkbox, Chip, Divider, FormControlLabel, InputAdornment, Menu, Typography } from "@material-ui/core";
+import { Checkbox, Divider, FormControlLabel, InputAdornment, Menu, Typography } from "@material-ui/core";
 import React, { useCallback, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";

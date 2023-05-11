@@ -314,6 +314,7 @@ function givenACountries(): Country[] {
             description: "description",
             color: "color",
             coordinates: [2982, 12] as [number, number],
+            parents: [{ id: "EUR", name: "Europe" }],
         },
     ];
 
