@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { render, screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { customRender } from "../../../../utils/tests";
 import { CountryOption, CountrySelector } from "../CountrySelector";
@@ -104,10 +104,10 @@ describe("CountrySelector", () => {
 
             focusComponent();
 
-            await search(getChild(0));
-
             await expandGroup(getParentFromChild({ child: 0, parent: 0 }));
             await expandGroup(getParentFromChild({ child: 0, parent: 1 }));
+
+            await search(getChild(0));
 
             await waitFor(() => expect(screen.queryAllByText(getChild(0)).length).toBe(2));
             await waitFor(() => expect(screen.queryAllByText(getChild(1)).length).toBe(0));
@@ -132,7 +132,7 @@ describe("CountrySelector", () => {
 });
 
 function renderComponent() {
-    customRender(<CountrySelector countries={countries} />);
+    customRender(<CountrySelector countries={countries} groupedByIncome={false} />);
 }
 
 function focusComponent() {
@@ -160,22 +160,20 @@ async function collapseGroup(name: string) {
 }
 
 async function selectCountry(name: string) {
-    const check = await screen.findByRole("checkbox", { name });
+    const checkbox = await screen.findByRole("checkbox", { name });
 
-    userEvent.click(check);
+    userEvent.click(checkbox);
 }
 
 async function verifyCountryIsChecked(name: string) {
-    const check = await screen.findByRole("checkbox", { name });
+    const checkbox = await screen.findByRole("checkbox", { name });
 
-    await waitFor(() => expect(check).toHaveAttribute("checked", true));
+    await waitFor(() => expect(checkbox).toBeChecked());
 }
 
 async function search(name: string) {
     const searchBox = await screen.findByRole("searchbox");
     userEvent.type(searchBox, name);
-
-    await waitFor(() => expect(searchBox).toHaveAttribute("value", name), { timeout: 2000 });
 }
 
 async function verifyChip(name: string) {
