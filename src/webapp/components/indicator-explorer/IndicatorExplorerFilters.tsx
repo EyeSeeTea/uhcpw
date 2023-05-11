@@ -33,6 +33,8 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         countries={filters.countryFilters}
                         selectedIds={filters.selectedCountryFilter}
                         onSelectedIdsChange={filters.onChangeCountryFilter}
+                        groupedByIncome={filters.groupedCountriesByIncome}
+                        onGroupedByIncomeChange={filters.onGroupedCountriesByIncomeChange}
                     />
                 </Center>
             </Grid>

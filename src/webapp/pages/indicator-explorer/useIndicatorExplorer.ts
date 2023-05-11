@@ -11,7 +11,8 @@ import { useMultiCountryOptionsV2 } from "../../hooks/countries/useMultiCountryO
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
-    const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptionsV2();
+    const { countryOptions, selectedCountry, onCountryChange, groupedByIncome, onGroupedByIncomeChange } =
+        useMultiCountryOptionsV2();
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
@@ -84,6 +85,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             countryFilters: countryOptions,
             selectedCountryFilter: selectedCountry,
             onChangeCountryFilter: onCountryChange,
+            groupedCountriesByIncome: groupedByIncome,
+            onGroupedCountriesByIncomeChange: onGroupedByIncomeChange,
             categoryFilters,
             selectedCategoryFilter,
             onChangeCategoryFilter,

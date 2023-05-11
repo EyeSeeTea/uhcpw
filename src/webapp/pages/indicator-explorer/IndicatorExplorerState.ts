@@ -14,6 +14,8 @@ export type IndicatorExplorerFiltersState = {
     countryFilters: CountryOption[];
     selectedCountryFilter: string[] | undefined;
     onChangeCountryFilter: (value: string[] | undefined) => void;
+    groupedCountriesByIncome: boolean;
+    onGroupedCountriesByIncomeChange: (value: boolean) => void;
     categoryFilters: Option<string>[];
     selectedCategoryFilter: string | undefined;
     onChangeCategoryFilter: (value: string | undefined) => void;

@@ -1,4 +1,4 @@
-import { Chip, InputAdornment, Menu, Typography } from "@material-ui/core";
+import { Checkbox, Chip, Divider, FormControlLabel, InputAdornment, Menu, Typography } from "@material-ui/core";
 import React, { useCallback, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
@@ -11,6 +11,7 @@ import { Leaf } from "./Leaf";
 import _ from "lodash";
 import { SelectedChip } from "../selected-chip/SelectedChip";
 import CloseIcon from "@material-ui/icons/Close";
+import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank";
 
 export type CountryOption = {
     id: string;
@@ -22,12 +23,16 @@ interface CountrySelectorProps {
     countries: CountryOption[];
     selectedIds?: string[];
     onSelectedIdsChange?: (ids: string[]) => void;
+    groupedByIncome: boolean;
+    onGroupedByIncomeChange?: (value: boolean) => void;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = ({
     countries,
     selectedIds = [],
     onSelectedIdsChange,
+    groupedByIncome,
+    onGroupedByIncomeChange,
 }) => {
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -53,6 +58,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
         },
         [setSearchTerm]
     );
+
+    const handleGroupedByIncome = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (onGroupedByIncomeChange) {
+            onGroupedByIncomeChange(event.target.checked);
+        }
+    };
 
     const selectedCountries = useMemo(() => {
         return countries.filter(country => selectedIdsState.includes(country.id));
@@ -171,6 +182,18 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
                             );
                         })}
                     </TreeView>
+                    <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                color="primary"
+                                checked={groupedByIncome}
+                                onChange={handleGroupedByIncome}
+                                icon={<UnCheckedIcon style={{ fill: "gray" }} />}
+                            />
+                        }
+                        label={i18n.t("I would like to see countries grouped by income bracket (LMIC/UMICHIC")}
+                    />
                 </div>
             </Menu>
         </>
