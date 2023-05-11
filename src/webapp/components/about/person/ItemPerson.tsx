@@ -14,16 +14,14 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => 
     return (
         <Center>
             <Item>
-                <img
-                    width="100%"
-                    src={person.image}
-                    alt={`${person.firstName} ${person.lastName}`}
-                    style={{ borderRadius: 10, marginBottom: 6 }}
-                />
+                <Image src={person.image} alt={`${person.firstName} ${person.lastName}`} />
                 <Row>
-                    <div>
-                        <Typography variant="body1" gutterBottom>
-                            {`${person.firstName} ${person.lastName}`}
+                    <InfoContainer>
+                        <Typography variant="body1" gutterBottom style={{ marginBottom: "-1px", fontWeight: "bold" }}>
+                            {person.firstName}
+                        </Typography>
+                        <Typography variant="body1" gutterBottom style={{ fontWeight: "bold" }}>
+                            {person.lastName}
                         </Typography>
                         <Typography variant="body2" gutterBottom>
                             {person.position}
@@ -33,9 +31,9 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => 
                                 {person.country}
                             </Typography>
                         }
-                    </div>
+                    </InfoContainer>
 
-                    <Row>
+                    <SocialRow>
                         <Link href={person.linkedin}>
                             <LinkedInIcon />
                         </Link>
@@ -50,7 +48,7 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => 
                                 <TwitterIcon />
                             </Link>
                         )}
-                    </Row>
+                    </SocialRow>
                 </Row>
             </Item>
         </Center>
@@ -59,6 +57,7 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => 
 
 const Center = styled.div`
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -71,13 +70,33 @@ const Row = styled.div`
     justify-content: space-between;
 `;
 
+const SocialRow = styled(Row)`
+    position: absolute;
+    right: 5px;
+    bottom: 50px;
+`;
+
 const Item = styled.div`
+    display: flex;
     border-radius: 10px;
     padding: 16px;
-    width: 450px;
     flex-direction: column;
+    align-items: center;
 `;
 
 const Link = styled.a`
     color: black;
+`;
+
+const Image = styled.img`
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+`;
+
+const InfoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
