@@ -7,6 +7,7 @@ import { Option } from "./Option";
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import i18n from "../../../locales";
+import { SelectedChip } from "../selected-chip/SelectedChip";
 
 interface DropdownMultipleProps<T extends string = string> {
     label: string;
@@ -44,7 +45,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                     )}
                     renderTags={(value: Option[], getTagProps) =>
                         value.map((option: Option, index: number) => (
-                            <StyledChip
+                            <SelectedChip
                                 key={option.value}
                                 variant="outlined"
                                 label={option.text}
@@ -64,13 +65,6 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
         );
     }
 );
-
-export const StyledChip = styled(Chip)`
-    border-radius: 8px;
-    background: #cfe9f7;
-    border: none;
-    margin: 1px;
-`;
 
 const ClearButton = styled(Button)`
     color: orange;

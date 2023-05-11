@@ -1,5 +1,5 @@
-import { InputAdornment, Menu, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Chip, InputAdornment, Menu, Typography } from "@material-ui/core";
+import React, { useCallback, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
 import SearchInput from "../search-input/SearchInput";
@@ -9,6 +9,8 @@ import { TreeView } from "@material-ui/lab";
 import { Node } from "./Node";
 import { Leaf } from "./Leaf";
 import _ from "lodash";
+import { SelectedChip } from "../selected-chip/SelectedChip";
+import CloseIcon from "@material-ui/icons/Close";
 
 export type CountryOption = {
     id: string;
@@ -52,6 +54,10 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
         [setSearchTerm]
     );
 
+    const selectedCountries = useMemo(() => {
+        return countries.filter(country => selectedIdsState.includes(country.id));
+    }, [countries, selectedIdsState]);
+
     const handleSelectedChange = useCallback(
         (nodeId: string, selected: boolean) => {
             if (selected) {
@@ -71,7 +77,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
                 }
             }
         },
-        [setSelectedIdsState, selectedIdsState]
+        [setSelectedIdsState, selectedIdsState, onSelectedIdsChange]
     );
 
     const finalCountries = useMemo(() => {
@@ -92,6 +98,16 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
                 disabled
                 fullWidth
                 InputProps={{
+                    startAdornment: selectedCountries.map(country => {
+                        return (
+                            <SelectedChip
+                                key={country.id}
+                                label={country.name}
+                                onDelete={() => handleSelectedChange(country.id, false)}
+                                deleteIcon={<CloseIcon fontSize="small" />}
+                            />
+                        );
+                    }),
                     endAdornment: (
                         <InputAdornment
                             position="start"
@@ -101,7 +117,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = ({
                         </InputAdornment>
                     ),
                 }}
-            />
+            ></DropdownTextField>
             <Menu
                 PaperProps={{ style: { width: "600px", padding: "16px" } }}
                 id="country-selector"

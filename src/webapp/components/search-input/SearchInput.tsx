@@ -50,7 +50,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
         [onChange]
     );
 
-    const onKeyUp = useCallback(
+    const handleChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             const value = event.target.value;
             onChangeDebounced(value);
@@ -65,7 +65,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
             <Input
                 className={classes.input}
                 disableUnderline
-                onChange={onKeyUp}
+                onChange={handleChange}
                 placeholder={i18n.t("Search")}
                 value={stateValue}
                 role="searchbox"

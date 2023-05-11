@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
-import { CountryOption, CountrySelector } from "../country-selector/CountrySelector";
+import { CountrySelector } from "../country-selector/CountrySelector";
 import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 

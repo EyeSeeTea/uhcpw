@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { customRender } from "../../../../utils/tests";
 import { CountryOption, CountrySelector } from "../CountrySelector";
@@ -10,7 +10,7 @@ const countries: CountryOption[] = [
         name: "China",
         parents: [
             { id: "1", name: "All countries" },
-            { id: "3", name: "Asia" },
+            { id: "2", name: "Asia" },
         ],
     },
     {
@@ -18,7 +18,7 @@ const countries: CountryOption[] = [
         name: "France",
         parents: [
             { id: "1", name: "All countries" },
-            { id: "2", name: "Europe" },
+            { id: "3", name: "Europe" },
         ],
     },
     {
@@ -26,7 +26,7 @@ const countries: CountryOption[] = [
         name: "Spain",
         parents: [
             { id: "1", name: "All countries" },
-            { id: "2", name: "Europe" },
+            { id: "3", name: "Europe" },
         ],
     },
 ];
@@ -109,8 +109,24 @@ describe("CountrySelector", () => {
             await expandGroup(getParentFromChild({ child: 0, parent: 0 }));
             await expandGroup(getParentFromChild({ child: 0, parent: 1 }));
 
-            waitFor(() => expect(screen.queryAllByText(getChild(0)).length).toBe(2));
-            waitFor(() => expect(screen.queryAllByText(getChild(1)).length).toBe(0));
+            await waitFor(() => expect(screen.queryAllByText(getChild(0)).length).toBe(2));
+            await waitFor(() => expect(screen.queryAllByText(getChild(1)).length).toBe(0));
+        });
+
+        it("should add chip for every selected country", async () => {
+            renderComponent();
+
+            focusComponent();
+
+            await expandGroup(getParentFromChild({ child: 0, parent: 0 }));
+
+            await selectCountry(getChild(0));
+            await selectCountry(getChild(1));
+
+            userEvent.keyboard("{Escape}");
+
+            await verifyChip(getChild(0));
+            await verifyChip(getChild(1));
         });
     });
 });
@@ -152,9 +168,20 @@ async function selectCountry(name: string) {
 async function verifyCountryIsChecked(name: string) {
     const check = await screen.findByRole("checkbox", { name });
 
-    waitFor(() => expect(check).toHaveAttribute("checked", true));
+    await waitFor(() => expect(check).toHaveAttribute("checked", true));
 }
 
 async function search(name: string) {
-    userEvent.type(await screen.findByRole("searchbox"), name);
+    const searchBox = await screen.findByRole("searchbox");
+    userEvent.type(searchBox, name);
+
+    await waitFor(() => expect(searchBox).toHaveAttribute("value", name), { timeout: 2000 });
+}
+
+async function verifyChip(name: string) {
+    const chip = await screen.findByRole("button", {
+        name: name,
+    });
+
+    expect(chip).toBeInTheDocument();
 }
