@@ -35,14 +35,18 @@ export class ResourceD2Repository implements ResourceRepository {
             .compact()
             .join(",");
 
+        const years = filters.years?.sort();
+        const startYear = years ? years[0] : undefined;
+        const endYear = years ? years[years.length - 1] : undefined;
+
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
                 skipPaging: true,
                 program: resourcesProgram,
                 orgUnit: globalOrgUnit,
-                startDate: filters.year ? `${filters.year}-01-01` : undefined,
-                endDate: filters.year ? `${filters.year}-01-31` : undefined,
+                startDate: startYear ? `${startYear}-01-01` : undefined,
+                endDate: endYear ? `${endYear}-01-31` : undefined,
                 filter,
             })
         ).map(response => this.buildResources(response.events));

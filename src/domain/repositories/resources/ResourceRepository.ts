@@ -5,7 +5,7 @@ export interface ResourceFilters {
     category: string;
     searchTerm?: string;
     theme?: string;
-    year?: string;
+    years?: string[];
 }
 
 export interface ResourceRepository {

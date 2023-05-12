@@ -1,18 +1,26 @@
+import { CountryFilterState, YearFilterState } from "../../../common/state/state";
 import { Option } from "../../../components/dropdown/Option";
 
 export type ResourcesFiltersState = {
-    searchTerm: string;
-    onSearchTermChange: (value: string) => void;
-    countryFilters: Option<string>[];
-    selectedCountryFilter: string[] | undefined;
-    onChangeCountryFilter: (value: string[] | undefined) => void;
-    categoryFilters: Option<string>[];
-    selectedCategoryFilter: string | undefined;
-    onChangeCategoryFilter: (value: string | undefined) => void;
-    themeFilters: Option<string>[];
-    selectedThemeFilter: string | undefined;
-    onChangeThemeFilter: (value: string | undefined) => void;
-    yearFilters: Option<string>[];
-    selectedYearFilter: string | undefined;
-    onChangeYearFilter: (value: string | undefined) => void;
+    search: {
+        term: string;
+        onTermChange: (value: string) => void;
+    };
+    country: CountryFilterState;
+    category: CategoryFilterState;
+    theme: ThemeFilterState;
+
+    year: YearFilterState;
+};
+
+export type CategoryFilterState = {
+    options: Option<string>[];
+    selected: string | undefined;
+    onSelectedChange: (value: string | undefined) => void;
+};
+
+export type ThemeFilterState = {
+    options: Option<string>[];
+    selected: string | undefined;
+    onSelectedChange: (value: string | undefined) => void;
 };

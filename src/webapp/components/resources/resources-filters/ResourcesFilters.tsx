@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ResourcesFiltersState } from "../../../pages/resources/common/ResourcesFiltersState";
+import { CountrySelector } from "../../country-selector/CountrySelector";
 import { Dropdown } from "../../dropdown/Dropdown";
 import { DropdownMultiple } from "../../dropdown/DropdownMultiple";
 
@@ -32,8 +33,8 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
                     <Dropdown
                         label={i18n.t("Category")}
                         placeholder={i18n.t("Select category")}
-                        options={filters.categoryFilters}
-                        value={filters.selectedCategoryFilter}
+                        options={filters.category.options}
+                        value={filters.category.selected}
                         onChange={onCategoryChange}
                     />
                 </Center>
@@ -43,31 +44,31 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
                     <Dropdown
                         label={i18n.t("Theme")}
                         placeholder={i18n.t("Select theme")}
-                        options={filters.themeFilters}
-                        value={filters.selectedThemeFilter}
-                        onChange={filters.onChangeThemeFilter}
+                        options={filters.theme.options}
+                        value={filters.theme.selected}
+                        onChange={filters.theme.onSelectedChange}
+                    />
+                </Center>
+            </Grid>
+            <Grid item md={3} xs={6}>
+                <Center>
+                    <CountrySelector
+                        countries={filters.country.options}
+                        selectedIds={filters.country.selected}
+                        onSelectedIdsChange={filters.country.onSelectedChange}
+                        groupedByIncome={filters.country.groupedByIncome}
+                        onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                     />
                 </Center>
             </Grid>
             <Grid item md={3} xs={6}>
                 <Center>
                     <DropdownMultiple
-                        label={i18n.t("Countries")}
-                        placeholder={i18n.t("Select countries")}
-                        options={filters.countryFilters}
-                        values={filters.selectedCountryFilter}
-                        onChange={filters.onChangeCountryFilter}
-                    />
-                </Center>
-            </Grid>
-            <Grid item md={3} xs={6}>
-                <Center>
-                    <Dropdown
                         label={i18n.t("Year")}
                         placeholder={i18n.t("Select year")}
-                        options={filters.yearFilters}
-                        value={filters.selectedYearFilter}
-                        onChange={filters.onChangeYearFilter}
+                        options={filters.year.options}
+                        values={filters.year.selected}
+                        onChange={filters.year.onSelectedChange}
                     />
                 </Center>
             </Grid>
