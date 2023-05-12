@@ -83,14 +83,14 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         filters: {
             country: countryFilter,
             category: {
-                categoryFilters,
-                selectedCategoryFilter,
-                onChangeCategoryFilter,
+                options: categoryFilters,
+                selected: selectedCategoryFilter,
+                onSelectedChange: onChangeCategoryFilter,
             },
             year: {
-                yearFilters,
-                selectedYearFilter,
-                onChangeYearFilter,
+                options: yearFilters,
+                selected: selectedYearFilter,
+                onSelectedChange: onChangeYearFilter,
             },
         },
         visualization,

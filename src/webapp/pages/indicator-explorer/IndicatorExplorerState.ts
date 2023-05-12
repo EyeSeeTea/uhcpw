@@ -19,13 +19,13 @@ export type IndicatorExplorerFiltersState = {
         onGroupedByIncomeChange: (value: boolean) => void;
     };
     category: {
-        categoryFilters: Option<string>[];
-        selectedCategoryFilter: string | undefined;
-        onChangeCategoryFilter: (value: string | undefined) => void;
+        options: Option<string>[];
+        selected: string | undefined;
+        onSelectedChange: (value: string | undefined) => void;
     };
     year: {
-        yearFilters: Option<string>[];
-        selectedYearFilter: string[] | undefined;
-        onChangeYearFilter: (value: string[] | undefined) => void;
+        options: Option<string>[];
+        selected: string[] | undefined;
+        onSelectedChange: (value: string[] | undefined) => void;
     };
 };
