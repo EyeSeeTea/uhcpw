@@ -5,8 +5,8 @@ import { useAppContext } from "../../contexts/app-context";
 
 export function useMultiCountryOptionsV2() {
     const { compositionRoot } = useAppContext();
-    const [countryOptions, setCountriesOptions] = useState<CountryOption[]>([]);
-    const [selectedCountry, setSelectedCountry] = useState<string[] | undefined>(undefined);
+    const [options, setOptions] = useState<CountryOption[]>([]);
+    const [selected, setSelected] = useState<string[] | undefined>(undefined);
     const [groupedByIncome, setGroupedByIncome] = useState(false);
 
     useEffect(() => {
@@ -23,21 +23,21 @@ export function useMultiCountryOptionsV2() {
                     ],
                 }));
 
-                setCountriesOptions(countryOptions);
+                setOptions(countryOptions);
             },
             () => {
-                setCountriesOptions([]);
+                setOptions([]);
             }
         );
     }, [compositionRoot.countries, groupedByIncome]);
 
-    const onCountryChange = useCallback((country: string[] | undefined) => {
-        setSelectedCountry(country);
+    const onSelectedChange = useCallback((country: string[] | undefined) => {
+        setSelected(country);
     }, []);
 
     const onGroupedByIncomeChange = useCallback((value: boolean) => {
         setGroupedByIncome(value);
     }, []);
 
-    return { countryOptions, selectedCountry, onCountryChange, groupedByIncome, onGroupedByIncomeChange };
+    return { options, selected, onSelectedChange, groupedByIncome, onGroupedByIncomeChange };
 }

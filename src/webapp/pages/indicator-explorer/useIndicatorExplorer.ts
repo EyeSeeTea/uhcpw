@@ -11,8 +11,7 @@ import { useMultiCountryOptionsV2 } from "../../hooks/countries/useMultiCountryO
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
-    const { countryOptions, selectedCountry, onCountryChange, groupedByIncome, onGroupedByIncomeChange } =
-        useMultiCountryOptionsV2();
+    const countryFilter = useMultiCountryOptionsV2();
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
@@ -35,9 +34,9 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
                     const customVisualization = visualizationCustomizations[visualization.id];
 
-                    if (visualization && customVisualization && selectedYearFilter && selectedCountry) {
+                    if (visualization && customVisualization && selectedYearFilter && countryFilter.selected) {
                         compositionRoot.indicatorExplorer.getAnalytics
-                            .execute(visualization.id, selectedYearFilter, selectedCountry)
+                            .execute(visualization.id, selectedYearFilter, countryFilter.selected)
                             .run(
                                 analytics => {
                                     setAnalytics(analytics);
@@ -57,7 +56,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         } else {
             setVisualization(undefined);
         }
-    }, [compositionRoot.indicatorExplorer, selectedCategoryFilter, selectedYearFilter, selectedCountry]);
+    }, [compositionRoot.indicatorExplorer, selectedCategoryFilter, selectedYearFilter, countryFilter.selected]);
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
@@ -82,13 +81,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     return {
         filters: {
-            country: {
-                countryFilters: countryOptions,
-                selectedCountryFilter: selectedCountry,
-                onChangeCountryFilter: onCountryChange,
-                groupedCountriesByIncome: groupedByIncome,
-                onGroupedCountriesByIncomeChange: onGroupedByIncomeChange,
-            },
+            country: countryFilter,
             category: {
                 categoryFilters,
                 selectedCategoryFilter,

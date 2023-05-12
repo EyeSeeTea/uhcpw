@@ -30,11 +30,11 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             <Grid item md={4} xs={6}>
                 <Center>
                     <CountrySelector
-                        countries={filters.country.countryFilters}
-                        selectedIds={filters.country.selectedCountryFilter}
-                        onSelectedIdsChange={filters.country.onChangeCountryFilter}
-                        groupedByIncome={filters.country.groupedCountriesByIncome}
-                        onGroupedByIncomeChange={filters.country.onGroupedCountriesByIncomeChange}
+                        countries={filters.country.options}
+                        selectedIds={filters.country.selected}
+                        onSelectedIdsChange={filters.country.onSelectedChange}
+                        groupedByIncome={filters.country.groupedByIncome}
+                        onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                     />
                 </Center>
             </Grid>
@@ -57,7 +57,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     color="primary"
                     disabled={
                         !filters.category.selectedCategoryFilter ||
-                        !filters.country.selectedCountryFilter?.length ||
+                        !filters.country.selected?.length ||
                         !filters.year.selectedYearFilter?.length
                     }
                     onClick={onGetChart}

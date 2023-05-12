@@ -12,11 +12,11 @@ export type IndicatorExplorerState = {
 
 export type IndicatorExplorerFiltersState = {
     country: {
-        countryFilters: CountryOption[];
-        selectedCountryFilter: string[] | undefined;
-        onChangeCountryFilter: (value: string[] | undefined) => void;
-        groupedCountriesByIncome: boolean;
-        onGroupedCountriesByIncomeChange: (value: boolean) => void;
+        options: CountryOption[];
+        selected: string[] | undefined;
+        onSelectedChange: (value: string[] | undefined) => void;
+        groupedByIncome: boolean;
+        onGroupedByIncomeChange: (value: boolean) => void;
     };
     category: {
         categoryFilters: Option<string>[];
