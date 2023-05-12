@@ -21,20 +21,20 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         fullWidth
                         label={i18n.t("Category and indicator")}
                         placeholder={i18n.t("Select category")}
-                        options={filters.categoryFilters}
-                        value={filters.selectedCategoryFilter}
-                        onChange={filters.onChangeCategoryFilter}
+                        options={filters.category.categoryFilters}
+                        value={filters.category.selectedCategoryFilter}
+                        onChange={filters.category.onChangeCategoryFilter}
                     />
                 </Center>
             </Grid>
             <Grid item md={4} xs={6}>
                 <Center>
                     <CountrySelector
-                        countries={filters.countryFilters}
-                        selectedIds={filters.selectedCountryFilter}
-                        onSelectedIdsChange={filters.onChangeCountryFilter}
-                        groupedByIncome={filters.groupedCountriesByIncome}
-                        onGroupedByIncomeChange={filters.onGroupedCountriesByIncomeChange}
+                        countries={filters.country.countryFilters}
+                        selectedIds={filters.country.selectedCountryFilter}
+                        onSelectedIdsChange={filters.country.onChangeCountryFilter}
+                        groupedByIncome={filters.country.groupedCountriesByIncome}
+                        onGroupedByIncomeChange={filters.country.onGroupedCountriesByIncomeChange}
                     />
                 </Center>
             </Grid>
@@ -44,9 +44,9 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         fullWidth
                         label={i18n.t("Years")}
                         placeholder={i18n.t("Select years")}
-                        options={filters.yearFilters}
-                        values={filters.selectedYearFilter}
-                        onChange={filters.onChangeYearFilter}
+                        options={filters.year.yearFilters}
+                        values={filters.year.selectedYearFilter}
+                        onChange={filters.year.onChangeYearFilter}
                     />
                 </Center>
             </Grid>
@@ -56,9 +56,9 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     variant="contained"
                     color="primary"
                     disabled={
-                        !filters.selectedCategoryFilter ||
-                        !filters.selectedCountryFilter?.length ||
-                        !filters.selectedYearFilter?.length
+                        !filters.category.selectedCategoryFilter ||
+                        !filters.country.selectedCountryFilter?.length ||
+                        !filters.year.selectedYearFilter?.length
                     }
                     onClick={onGetChart}
                 >

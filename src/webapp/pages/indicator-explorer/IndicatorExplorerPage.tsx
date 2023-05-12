@@ -29,8 +29,8 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                 {visualization && !analytics && (
                     <ChartWithPlugin
                         visualization={visualization}
-                        countryIds={filters.selectedCountryFilter}
-                        periods={filters.selectedYearFilter ? filters.selectedYearFilter : []}
+                        countryIds={filters.country.selectedCountryFilter}
+                        periods={filters.year.selectedYearFilter ? filters.year.selectedYearFilter : []}
                     />
                 )}
                 {visualization && analytics && <Chart visualization={visualization} analytics={analytics} />}

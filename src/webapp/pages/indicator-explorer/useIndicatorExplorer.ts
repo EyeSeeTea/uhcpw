@@ -82,17 +82,23 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     return {
         filters: {
-            countryFilters: countryOptions,
-            selectedCountryFilter: selectedCountry,
-            onChangeCountryFilter: onCountryChange,
-            groupedCountriesByIncome: groupedByIncome,
-            onGroupedCountriesByIncomeChange: onGroupedByIncomeChange,
-            categoryFilters,
-            selectedCategoryFilter,
-            onChangeCategoryFilter,
-            yearFilters,
-            selectedYearFilter,
-            onChangeYearFilter,
+            country: {
+                countryFilters: countryOptions,
+                selectedCountryFilter: selectedCountry,
+                onChangeCountryFilter: onCountryChange,
+                groupedCountriesByIncome: groupedByIncome,
+                onGroupedCountriesByIncomeChange: onGroupedByIncomeChange,
+            },
+            category: {
+                categoryFilters,
+                selectedCategoryFilter,
+                onChangeCategoryFilter,
+            },
+            year: {
+                yearFilters,
+                selectedYearFilter,
+                onChangeYearFilter,
+            },
         },
         visualization,
         analytics,
