@@ -1,7 +1,6 @@
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { CountryFilterState, YearFilterState } from "../../common/state/state";
-import { Option } from "../../components/dropdown/Option";
+import { CountryFilterState, OptionsFilterState, OptionsMultiFilterState } from "../../common/state/state";
 
 export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
@@ -12,12 +11,6 @@ export type IndicatorExplorerState = {
 
 export type IndicatorExplorerFiltersState = {
     country: CountryFilterState;
-    category: CategoryFilterState;
-    year: YearFilterState;
-};
-
-export type CategoryFilterState = {
-    options: Option<string>[];
-    selected: string | undefined;
-    onSelectedChange: (value: string | undefined) => void;
+    category: OptionsFilterState;
+    year: OptionsMultiFilterState;
 };

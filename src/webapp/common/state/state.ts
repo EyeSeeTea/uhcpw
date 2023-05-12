@@ -9,8 +9,14 @@ export type CountryFilterState = {
     onGroupedByIncomeChange: (value: boolean) => void;
 };
 
-export type YearFilterState = {
-    options: Option<string>[];
+export type OptionsFilterState<T extends string = string> = {
+    options: Option<T>[];
+    selected: string | undefined;
+    onSelectedChange: (value: string | undefined) => void;
+};
+
+export type OptionsMultiFilterState<T extends string = string> = {
+    options: Option<T>[];
     selected: string[] | undefined;
     onSelectedChange: (value: string[] | undefined) => void;
 };
