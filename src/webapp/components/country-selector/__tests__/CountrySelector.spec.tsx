@@ -62,10 +62,10 @@ describe("CountrySelector", () => {
             focusComponent();
 
             await screen.findByRole("listbox");
-            await screen.findByText(/select country/i);
+            screen.getByText(/select country/i);
 
-            countries[0]?.parents?.forEach(async parent => {
-                await screen.findByText(parent.name);
+            await waitFor(() => {
+                (countries[0]?.parents || []).forEach(parent => screen.getByText(parent.name));
             });
         });
 

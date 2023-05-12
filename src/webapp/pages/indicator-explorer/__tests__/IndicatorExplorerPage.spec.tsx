@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { BoundFunctions, prettyDOM, queries, screen, waitFor, within } from "@testing-library/react";
+import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceThemeD2Repository } from "../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../domain/entities/Future";
@@ -23,7 +23,7 @@ let countryRepository: CountryD2Repository;
 
 describe("IndicatorExplorerPage", () => {
     describe("to load page", () => {
-        it("should render indicator explorer title", async () => {
+        it("should render indicator explorer title", () => {
             givenAFilters();
             givenAnAnalytics();
 
