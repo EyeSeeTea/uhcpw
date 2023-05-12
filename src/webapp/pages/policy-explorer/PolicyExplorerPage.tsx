@@ -17,8 +17,8 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
     const { filters, data, onSwitchRowColumn, onDownload, dataOrientation } = usePolicyExplorer();
 
     const category = useMemo(() => {
-        return filters.categoryFilters.find(cat => cat.value === filters.selectedCategoryFilter);
-    }, [filters.categoryFilters, filters.selectedCategoryFilter]);
+        return filters.category.options.find(cat => cat.value === filters.category.selected);
+    }, [filters.category]);
 
     return (
         <Layout>

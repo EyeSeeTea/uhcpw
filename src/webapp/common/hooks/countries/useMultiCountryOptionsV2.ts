@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
-import i18n from "../../../locales";
-import { CountryOption } from "../../components/country-selector/CountrySelector";
-import { useAppContext } from "../../contexts/app-context";
+import i18n from "../../../../locales";
+import { CountryOption } from "../../../components/country-selector/CountrySelector";
+import { useAppContext } from "../../../contexts/app-context";
 
 export function useMultiCountryOptionsV2() {
     const { compositionRoot } = useAppContext();

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { generateYears } from "../../../../domain/usecases/utils/generateYears";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
-import { useMultiCountryOptions } from "../../../hooks/countries/useMultiCountryOptions";
+import { useMultiCountryOptions } from "../../../common/hooks/countries/useMultiCountryOptions";
 import { ResourcesFiltersState } from "./ResourcesFiltersState";
 
 export function useResourcesFilters(category?: string): ResourcesFiltersState {
