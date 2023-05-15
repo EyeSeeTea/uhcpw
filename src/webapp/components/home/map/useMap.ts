@@ -6,7 +6,7 @@ import { useAppContext } from "../../../contexts/app-context";
 import { InitialCoordinates, MapState } from "./MapState";
 
 const initialData: InitialCoordinates = {
-    center: [1.675063, 47.751569],
+    center: [13.675063, 51.751569],
     maxZoom: 8,
     minZoom: 3,
     zoom: 3,

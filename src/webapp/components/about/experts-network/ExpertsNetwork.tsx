@@ -6,6 +6,7 @@ import { Person } from "../../../pages/about/AboutState";
 import { Dropdown } from "../../dropdown/Dropdown";
 import { Option } from "../../dropdown/Option";
 import { ItemPerson } from "../person/ItemPerson";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 export interface ExpertsNetworkProps {
     members: Person[];
@@ -22,15 +23,22 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
         return (
             <>
                 <ItemsTitleContainer>
-                    <Title>{i18n.t("Experts network")}</Title>
+                    <Title>{i18n.t("Financial protection expert network")}</Title>
+                    <Subtitle style={{ maxWidth: "480px" }}>
+                        {i18n.t(
+                            "Experts working with the WHO Barcelona Office to access finantial protection and coverage policy at country level"
+                        )}
+                    </Subtitle>
                 </ItemsTitleContainer>
 
                 <Row>
-                    <Dropdown
+                    <StyledDropdown
+                        placeholder={i18n.t("Select Countries")}
                         label={i18n.t("Countries")}
                         options={selectCountries}
                         value={selectedCountry}
                         onChange={onCountryChange}
+                        width="250px"
                     />
 
                     <Box width={4} />
@@ -48,10 +56,10 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                     })}
                 </Row>
 
-                <Grid container spacing={5} style={{ marginBottom: 4 }}>
+                <Grid container spacing={8} style={{ marginBottom: 6 }}>
                     {members.map((item, index) => {
                         return (
-                            <Grid key={index} item lg={4} md={6} xs={12}>
+                            <Grid key={index} item>
                                 <ItemPerson person={item} />
                             </Grid>
                         );
@@ -67,8 +75,12 @@ const ItemsTitleContainer = styled.div`
 `;
 
 const Title = styled(Typography)`
-    font-size: 20px;
-    font-weight: normal;
+    font-size: 35px;
+`;
+
+const Subtitle = styled(Typography)`
+    font-size: 17px;
+    color: ${colors.grey};
 `;
 
 const Row = styled.div`
@@ -83,5 +95,9 @@ const FilterButton = styled(Button)<{ selected: boolean }>`
     color: ${props => (props.selected ? "#1150b8" : "black")};
     min-width: 40px;
     padding: 2px;
-    margin: 4px;
+    margin: 4px 4px 10px;
+`;
+
+const StyledDropdown = styled(Dropdown)`
+    max-width: 200px;
 `;
