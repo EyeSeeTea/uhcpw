@@ -28,182 +28,191 @@ interface CountrySelectorProps {
     onGroupedByIncomeChange?: (value: boolean) => void;
 }
 
-export const CountrySelector: React.FC<CountrySelectorProps> = ({
-    countries,
-    selectedIds = [],
-    onSelectedIdsChange,
-    groupedByIncome,
-    onGroupedByIncomeChange,
-}) => {
-    const [expanded, setExpanded] = useState(false);
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [selectedIdsState, setSelectedIdsState] = React.useState<string[]>(selectedIds);
-    const [searchTerm, setSearchTerm] = React.useState<string>("");
+export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
+    ({ countries, selectedIds = [], onSelectedIdsChange, groupedByIncome, onGroupedByIncomeChange }) => {
+        const [expanded, setExpanded] = useState(false);
+        const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+        const [selectedIdsState, setSelectedIdsState] = React.useState<string[]>(selectedIds);
+        const [searchTerm, setSearchTerm] = React.useState<string>("");
 
-    const handleClick = useCallback(
-        (event: React.MouseEvent<HTMLInputElement>) => {
-            setAnchorEl(event.currentTarget);
+        const handleClick = useCallback(
+            (event: React.MouseEvent<HTMLInputElement>) => {
+                setAnchorEl(event.currentTarget);
+                setExpanded(!expanded);
+            },
+            [expanded, setExpanded, setAnchorEl]
+        );
+
+        const handleClose = useCallback(() => {
+            setAnchorEl(null);
             setExpanded(!expanded);
-        },
-        [expanded, setExpanded, setAnchorEl]
-    );
+        }, [expanded, setExpanded, setAnchorEl]);
 
-    const handleClose = useCallback(() => {
-        setAnchorEl(null);
-        setExpanded(!expanded);
-    }, [expanded, setExpanded, setAnchorEl]);
+        const handleSearchChange = useCallback(
+            (term: string) => {
+                setSearchTerm(term);
+            },
+            [setSearchTerm]
+        );
 
-    const handleSearchChange = useCallback(
-        (term: string) => {
-            setSearchTerm(term);
-        },
-        [setSearchTerm]
-    );
-
-    const handleGroupedByIncome = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (onGroupedByIncomeChange) {
-            onGroupedByIncomeChange(event.target.checked);
-        }
-    };
-
-    const selectedCountries = useMemo(() => {
-        return countries.filter(country => selectedIdsState.includes(country.id));
-    }, [countries, selectedIdsState]);
-
-    const handleSelectedChange = useCallback(
-        (nodeId: string, selected: boolean) => {
-            if (selected) {
-                const selected = [...selectedIdsState, nodeId];
-                setSelectedIdsState(selected);
-
-                if (onSelectedIdsChange) {
-                    onSelectedIdsChange(selected);
-                }
-            } else {
-                const selected = selectedIdsState.filter(id => id !== nodeId);
-
-                setSelectedIdsState(selected);
-
-                if (onSelectedIdsChange) {
-                    onSelectedIdsChange(selected);
-                }
+        const handleGroupedByIncomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+            if (onGroupedByIncomeChange) {
+                onGroupedByIncomeChange(event.target.checked);
             }
-        },
-        [setSelectedIdsState, selectedIdsState, onSelectedIdsChange]
-    );
+        };
 
-    const finalCountries = useMemo(() => {
-        return countries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    }, [searchTerm, countries]);
+        const handleSelectedChange = useCallback(
+            (nodeId: string, selected: boolean) => {
+                if (selected) {
+                    const selected = [...selectedIdsState, nodeId];
+                    setSelectedIdsState(selected);
 
-    const parents = useMemo(() => {
-        return _.uniqBy(finalCountries.map(country => country.parents).flat(), "id");
-    }, [finalCountries]);
+                    if (onSelectedIdsChange) {
+                        onSelectedIdsChange(selected);
+                    }
+                } else {
+                    const selected = selectedIdsState.filter(id => id !== nodeId);
 
-    return (
-        <>
-            <DropdownTextField
-                label={i18n.t("Countries")}
-                onClick={handleClick}
-                aria-label="Countries"
-                role={"textbox"}
-                disabled
-                fullWidth
-                InputProps={{
-                    startAdornment: (
-                        <SelectedContainer>
-                            {selectedCountries.map(country => {
+                    setSelectedIdsState(selected);
+
+                    if (onSelectedIdsChange) {
+                        onSelectedIdsChange(selected);
+                    }
+                }
+            },
+            [setSelectedIdsState, selectedIdsState, onSelectedIdsChange]
+        );
+
+        const selectedCountries = useMemo(() => {
+            return countries.filter(country => selectedIdsState.includes(country.id));
+        }, [countries, selectedIdsState]);
+
+        const finalCountries = useMemo(() => {
+            return countries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        }, [searchTerm, countries]);
+
+        const parents = useMemo(() => {
+            return _.uniqBy(finalCountries.map(country => country.parents).flat(), "id");
+        }, [finalCountries]);
+
+        return (
+            <>
+                <DropdownTextField
+                    label={i18n.t("Countries")}
+                    onClick={handleClick}
+                    aria-label="Countries"
+                    role={"textbox"}
+                    disabled
+                    fullWidth
+                    InputProps={{
+                        startAdornment: (
+                            <SelectedContainer>
+                                {selectedCountries.map(country => {
+                                    return (
+                                        <SelectedChip
+                                            key={country.id}
+                                            label={country.name}
+                                            onDelete={() => handleSelectedChange(country.id, false)}
+                                            deleteIcon={<CloseIcon fontSize="small" />}
+                                        />
+                                    );
+                                })}
+                            </SelectedContainer>
+                        ),
+                        endAdornment: (
+                            <InputAdornment
+                                position="start"
+                                style={{ top: "calc(50% - 14px)", right: 0, position: "absolute", height: " 24px" }}
+                            >
+                                {expanded ? (
+                                    <ArrowDropUpIcon htmlColor="black" />
+                                ) : (
+                                    <ArrowDropDownIcon htmlColor="black" />
+                                )}
+                            </InputAdornment>
+                        ),
+                    }}
+                ></DropdownTextField>
+                <Menu
+                    PaperProps={{ style: { width: "600px", padding: "16px" } }}
+                    id="country-selector"
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+                    transformOrigin={{ vertical: "top", horizontal: "left" }}
+                    onClose={handleClose}
+                >
+                    <div role="listbox">
+                        <SearchInput
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            style={{ height: "20px", background: "#f2f9fd", border: "1px solid #cfe9f7" }}
+                        />
+                        <br />
+                        <Typography variant="body1" gutterBottom>
+                            {i18n.t("Select country")}
+                        </Typography>
+                        <TreeView
+                            disableSelection
+                            aria-label="file system navigator"
+                            defaultCollapseIcon={<ArrowDropUpIcon />}
+                            defaultExpandIcon={<ArrowDropDownIcon />}
+                            style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
+                        >
+                            {parents.map((parent, nindex) => {
+                                const finalChildren = finalCountries.filter(country =>
+                                    country.parents.some(p => p.id === parent.id)
+                                );
+                                const children = countries.filter(country =>
+                                    country.parents.some(p => p.id === parent.id)
+                                );
+                                const selectedCount = children.filter(child =>
+                                    selectedIdsState.includes(child.id)
+                                ).length;
+
                                 return (
-                                    <SelectedChip
-                                        key={country.id}
-                                        label={country.name}
-                                        onDelete={() => handleSelectedChange(country.id, false)}
-                                        deleteIcon={<CloseIcon fontSize="small" />}
-                                    />
+                                    <Node
+                                        key={nindex}
+                                        nodeId={parent.id}
+                                        name={parent.name}
+                                        selectedCount={selectedCount}
+                                    >
+                                        {finalChildren.map((child, lindex) => {
+                                            const selected = selectedIdsState.find(id => id === child.id) !== undefined;
+
+                                            return (
+                                                <Leaf
+                                                    key={lindex}
+                                                    nodeId={child.id}
+                                                    name={child.name}
+                                                    selected={selected}
+                                                    onSelectedChange={handleSelectedChange}
+                                                />
+                                            );
+                                        })}
+                                    </Node>
                                 );
                             })}
-                        </SelectedContainer>
-                    ),
-                    endAdornment: (
-                        <InputAdornment
-                            position="start"
-                            style={{ top: "calc(50% - 14px)", right: 0, position: "absolute", height: " 24px" }}
-                        >
-                            {expanded ? <ArrowDropUpIcon htmlColor="black" /> : <ArrowDropDownIcon htmlColor="black" />}
-                        </InputAdornment>
-                    ),
-                }}
-            ></DropdownTextField>
-            <Menu
-                PaperProps={{ style: { width: "600px", padding: "16px" } }}
-                id="country-selector"
-                anchorEl={anchorEl}
-                open={Boolean(anchorEl)}
-                getContentAnchorEl={null}
-                anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
-                transformOrigin={{ vertical: "top", horizontal: "left" }}
-                onClose={handleClose}
-            >
-                <div role="listbox">
-                    <SearchInput
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        style={{ height: "20px", background: "#f2f9fd", border: "1px solid #cfe9f7" }}
-                    />
-                    <br />
-                    <Typography variant="body1" gutterBottom>
-                        {i18n.t("Select country")}
-                    </Typography>
-                    <TreeView
-                        disableSelection
-                        aria-label="file system navigator"
-                        defaultCollapseIcon={<ArrowDropUpIcon />}
-                        defaultExpandIcon={<ArrowDropDownIcon />}
-                        style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
-                    >
-                        {parents.map((parent, nindex) => {
-                            const finalChildren = finalCountries.filter(country =>
-                                country.parents.some(p => p.id === parent.id)
-                            );
-                            const children = countries.filter(country => country.parents.some(p => p.id === parent.id));
-                            const selectedCount = children.filter(child => selectedIdsState.includes(child.id)).length;
-
-                            return (
-                                <Node key={nindex} nodeId={parent.id} name={parent.name} selectedCount={selectedCount}>
-                                    {finalChildren.map((child, lindex) => {
-                                        const selected = selectedIdsState.find(id => id === child.id) !== undefined;
-
-                                        return (
-                                            <Leaf
-                                                key={lindex}
-                                                nodeId={child.id}
-                                                name={child.name}
-                                                selected={selected}
-                                                onSelectedChange={handleSelectedChange}
-                                            />
-                                        );
-                                    })}
-                                </Node>
-                            );
-                        })}
-                    </TreeView>
-                    <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                color="primary"
-                                checked={groupedByIncome}
-                                onChange={handleGroupedByIncome}
-                                icon={<UnCheckedIcon style={{ fill: "gray" }} />}
-                            />
-                        }
-                        label={i18n.t("I would like to see countries grouped by income bracket (LMIC/UMICHIC")}
-                    />
-                </div>
-            </Menu>
-        </>
-    );
-};
+                        </TreeView>
+                        <Divider style={{ marginTop: 10, marginBottom: 10 }} />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color="primary"
+                                    checked={groupedByIncome}
+                                    onChange={handleGroupedByIncomeChange}
+                                    icon={<UnCheckedIcon style={{ fill: "gray" }} />}
+                                />
+                            }
+                            label={i18n.t("I would like to see countries grouped by income bracket (LMIC/UMICHIC")}
+                        />
+                    </div>
+                </Menu>
+            </>
+        );
+    }
+);
 
 const SelectedContainer = styled.div`
     max-width: 100%;
