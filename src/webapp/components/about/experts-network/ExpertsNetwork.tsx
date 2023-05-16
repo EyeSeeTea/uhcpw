@@ -29,7 +29,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                     </Subtitle>
                 </ItemsTitleContainer>
 
-                <Row>
+                <Row style={{ padding: "16px 32px" }}>
                     <CountrySelector
                         countries={countryFilter.options}
                         selectedIds={countryFilter.selected}
