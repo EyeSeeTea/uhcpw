@@ -7,8 +7,8 @@ import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repo
 import { Country } from "../../../../domain/entities/Country";
 import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
-import { Person } from "../AboutState";
 import { expertsMembers, teamMembers } from "../useAbout";
+import { Person } from "../../../../domain/entities/Person";
 
 let countryRepository: CountryD2Repository;
 

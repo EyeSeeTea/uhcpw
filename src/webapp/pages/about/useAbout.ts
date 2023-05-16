@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import { ResourcesState, Person } from "./AboutState";
+import { ResourcesState } from "./AboutState";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { CountryFilterState } from "../../common/state/state";
 import i18n from "../../../locales";
+import { Person } from "../../../domain/entities/Person";
 
 export function useAbout(): ResourcesState {
     const countryFilter = useMultiCountryOptionsV2();
