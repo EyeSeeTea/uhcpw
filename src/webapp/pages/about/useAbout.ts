@@ -4,15 +4,23 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import { CountryFilterState } from "../../common/state/state";
 import i18n from "../../../locales";
 import { Person } from "../../../domain/entities/Person";
+import { useAppContext } from "../../contexts/app-context";
 
 export function useAbout(): ResourcesState {
+    const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
+
+    const [officeTeam, setOfficeTeam] = useState<Person[]>([]);
 
     const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
     const [experts, setExperts] = useState<Person[]>(expertsMembers);
 
     useEffect(() => {
         setExperts(filterExperts(countryFilter, selectedFilter));
+    }, [countryFilter.selected, countryFilter.options]);
+
+    useEffect(() => {
+        compositionRoot.about.getOfficeTeam.execute().run(setOfficeTeam, () => setOfficeTeam([]));
     }, [countryFilter.selected, countryFilter.options]);
 
     const onFilterChange = useCallback(
@@ -25,7 +33,7 @@ export function useAbout(): ResourcesState {
     );
 
     return {
-        team: teamMembers,
+        team: officeTeam,
         experts,
         countryFilter,
         filters,
@@ -47,57 +55,6 @@ const filterExperts = (countryFilter: CountryFilterState, letterFilter: string) 
             (letterFilter === allFilter || expert.firstName.toLowerCase().startsWith(letterFilter.toLowerCase()))
     );
 };
-
-export const teamMembers: Person[] = [
-    {
-        firstName: "first name 1",
-        lastName: "last name 1",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-    },
-    {
-        firstName: "first name 2",
-        lastName: "last name 2",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-    },
-    {
-        firstName: "first name 3",
-        lastName: "last name 3",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-    },
-    {
-        firstName: "first name 4",
-        lastName: "last name 4",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-    },
-    {
-        firstName: "first name 5",
-        lastName: "last name 5",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-    },
-    {
-        firstName: "first name 6",
-        lastName: "last name 6",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-    },
-];
 
 export const expertsMembers: Person[] = [
     {
