@@ -27,14 +27,14 @@ export const AboutPage: React.FC = React.memo(() => {
                 </Container>
             </HeaderSection>
 
-            <PeopleSection>
+            <PeopleSection aria-label="Office team">
                 <Container maxWidth="xl">
                     <Team team={team} />
                 </Container>
             </PeopleSection>
             <GradientDividerOrange />
 
-            <PeopleSection>
+            <PeopleSection aria-label="Experts">
                 <Container maxWidth="xl">
                     <ExpertsNetwork
                         members={experts}

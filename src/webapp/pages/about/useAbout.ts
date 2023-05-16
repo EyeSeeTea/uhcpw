@@ -1,8 +1,8 @@
-import i18n from "@eyeseetea/feedback-component/locales";
 import { useCallback, useEffect, useState } from "react";
 import { ResourcesState, Person } from "./AboutState";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { CountryFilterState } from "../../common/state/state";
+import i18n from "../../../locales";
 
 export function useAbout(): ResourcesState {
     const countryFilter = useMultiCountryOptionsV2();
@@ -47,7 +47,7 @@ const filterExperts = (countryFilter: CountryFilterState, letterFilter: string) 
     );
 };
 
-const teamMembers: Person[] = [
+export const teamMembers: Person[] = [
     {
         firstName: "first name 1",
         lastName: "last name 1",
@@ -98,7 +98,7 @@ const teamMembers: Person[] = [
     },
 ];
 
-const expertsMembers: Person[] = [
+export const expertsMembers: Person[] = [
     {
         firstName: "first name 1",
         lastName: "last name 1",

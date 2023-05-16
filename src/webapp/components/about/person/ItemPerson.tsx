@@ -12,7 +12,7 @@ export interface ItemPersonProps {
 
 export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => {
     return (
-        <Center>
+        <Center role="listitem">
             <Item>
                 <Image src={person.image} alt={`${person.firstName} ${person.lastName}`} />
                 <Row>
