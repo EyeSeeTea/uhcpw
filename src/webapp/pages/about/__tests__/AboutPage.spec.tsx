@@ -37,6 +37,15 @@ describe("AboutPage", () => {
             )
         ).toBeInTheDocument();
     });
+    it("should render office header caption", () => {
+        givenAFilters();
+        givenAnOfficeTeam();
+        givenAnExperts();
+
+        renderPage();
+
+        expect(screen.getByText(/who Barcelona office for health systems stengthening/i)).toBeInTheDocument();
+    });
     it("should render office team", () => {
         givenAFilters();
         const officeTeam = givenAnOfficeTeam();
