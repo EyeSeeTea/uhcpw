@@ -60,7 +60,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                     {members.map((item, index) => {
                         return (
                             <Grid key={index} item>
-                                <ItemPerson person={item} />
+                                <ItemPerson person={item} isExpert />
                             </Grid>
                         );
                     })}

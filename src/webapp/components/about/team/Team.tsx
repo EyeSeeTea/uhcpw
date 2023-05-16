@@ -22,7 +22,7 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
                 {team.map((item, index) => {
                     return (
                         <Grid key={index} item>
-                            <ItemPerson person={item} />
+                            <ItemPerson person={item} isExpert={false} />
                         </Grid>
                     );
                 })}
