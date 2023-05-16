@@ -15,6 +15,7 @@ export function useMultiCountryOptionsV2() {
                 const countryOptions = countries.map(country => ({
                     id: country.id,
                     name: country.name,
+                    code: country.code,
                     parents: [
                         { id: "all", name: i18n.t("All countries") },
                         ...country.parents.filter(parent =>
@@ -32,6 +33,7 @@ export function useMultiCountryOptionsV2() {
     }, [compositionRoot.countries, groupedByIncome]);
 
     const onSelectedChange = useCallback((country: string[] | undefined) => {
+        debugger;
         setSelected(country);
     }, []);
 

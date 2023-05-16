@@ -1,11 +1,10 @@
+import { CountryFilterState } from "../../common/state/state";
 import { Option } from "../../components/dropdown/Option";
 
 export type ResourcesState = {
     team: Person[];
     experts: Person[];
-    selectCountries: Option<string>[];
-    selectedCountry: string | undefined;
-    onCountryChange: (country: string | undefined) => void;
+    countryFilter: CountryFilterState;
     filters: string[];
     selectedFilter: string;
     onFilterChange: (value: string) => void;

@@ -31,6 +31,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
             <Grid item md={3} xs={6}>
                 <Center>
                     <Dropdown
+                        fullWidth
                         label={i18n.t("Category")}
                         placeholder={i18n.t("Select category")}
                         options={filters.category.options}
@@ -53,6 +54,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
             <Grid item md={3} xs={6}>
                 <Center>
                     <CountrySelector
+                        fullWidth
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}

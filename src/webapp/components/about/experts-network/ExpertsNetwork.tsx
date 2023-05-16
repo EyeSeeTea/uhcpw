@@ -3,23 +3,21 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { Person } from "../../../pages/about/AboutState";
-import { Dropdown } from "../../dropdown/Dropdown";
-import { Option } from "../../dropdown/Option";
 import { ItemPerson } from "../person/ItemPerson";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { CountryFilterState } from "../../../common/state/state";
+import { CountrySelector } from "../../country-selector/CountrySelector";
 
 export interface ExpertsNetworkProps {
     members: Person[];
-    selectCountries: Option<string>[];
-    selectedCountry: string | undefined;
-    onCountryChange: (value: string | undefined) => void;
+    countryFilter: CountryFilterState;
     filters: string[];
     selectedFilter: string;
     onFilterChange: (value: string) => void;
 }
 
 export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
-    ({ members, selectCountries, selectedCountry, onCountryChange, filters, selectedFilter, onFilterChange }) => {
+    ({ members, countryFilter, filters, selectedFilter, onFilterChange }) => {
         return (
             <>
                 <ItemsTitleContainer>
@@ -32,13 +30,12 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                 </ItemsTitleContainer>
 
                 <Row>
-                    <StyledDropdown
-                        placeholder={i18n.t("Select Countries")}
-                        label={i18n.t("Countries")}
-                        options={selectCountries}
-                        value={selectedCountry}
-                        onChange={onCountryChange}
-                        width="250px"
+                    <CountrySelector
+                        countries={countryFilter.options}
+                        selectedIds={countryFilter.selected}
+                        onSelectedIdsChange={countryFilter.onSelectedChange}
+                        groupedByIncome={countryFilter.groupedByIncome}
+                        onGroupedByIncomeChange={countryFilter.onGroupedByIncomeChange}
                     />
 
                     <Box width={4} />
@@ -96,8 +93,4 @@ const FilterButton = styled(Button)<{ selected: boolean }>`
     min-width: 40px;
     padding: 2px;
     margin: 4px 4px 10px;
-`;
-
-const StyledDropdown = styled(Dropdown)`
-    max-width: 200px;
 `;

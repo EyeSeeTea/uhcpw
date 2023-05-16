@@ -1,39 +1,49 @@
 import i18n from "@eyeseetea/feedback-component/locales";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ResourcesState, Person } from "./AboutState";
-import { useCountryOptions } from "../../common/hooks/countries/useCountryOptions";
+import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
+import { CountryFilterState } from "../../common/state/state";
 
 export function useAbout(): ResourcesState {
-    const { countryOptions, selectedCountry, onCountryChange } = useCountryOptions();
+    const countryFilter = useMultiCountryOptionsV2();
 
     const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
     const [experts, setExperts] = useState<Person[]>(expertsMembers);
 
+    useEffect(() => {
+        setExperts(filterExperts(countryFilter, selectedFilter));
+    }, [countryFilter.selected, countryFilter.options]);
+
     const onFilterChange = useCallback(
         (value: string) => {
             setSelectedFilter(value);
-            setExperts(filterExperts(selectedCountry, value));
+
+            setExperts(filterExperts(countryFilter, value));
         },
-        [selectedCountry]
+        [countryFilter.selected, countryFilter.options]
     );
 
     return {
         team: teamMembers,
         experts,
-        selectCountries: countryOptions,
-        selectedCountry,
-        onCountryChange,
+        countryFilter,
         filters,
         selectedFilter,
         onFilterChange,
     };
 }
 
-const filterExperts = (countryCode: string | undefined, letterFilter: string) => {
+const filterExperts = (countryFilter: CountryFilterState, letterFilter: string) => {
+    const countryCodes = countryFilter.selected
+        ? countryFilter.options
+              .filter(country => countryFilter.selected?.includes(country.id))
+              .map(({ code }) => code || "")
+        : undefined;
+
     return expertsMembers.filter(
         expert =>
-            (!countryCode || expert.countryCode === countryCode) &&
-            (letterFilter === allFilter || expert.lastName.toLowerCase().startsWith(letterFilter.toLowerCase()))
+            (!countryCodes || countryCodes?.includes(expert.countryCode || "")) &&
+            (letterFilter === allFilter || expert.firstName.toLowerCase().startsWith(letterFilter.toLowerCase()))
     );
 };
 
