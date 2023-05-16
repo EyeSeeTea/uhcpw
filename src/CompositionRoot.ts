@@ -25,6 +25,7 @@ import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourc
 import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
 import { GetOfficeTeamUseCase } from "./domain/usecases/GetOfficeTeamUseCase";
+import { OfficeTeamInMemoryRepository } from "./data/repositories/OfficeTeamInMemoryRepository";
 
 function initializeRepositories(api: D2Api, instance: Instance) {
     return {
@@ -39,6 +40,7 @@ function initializeRepositories(api: D2Api, instance: Instance) {
         resource: new ResourceD2Repository(api),
         resourceCategory: new ResourceCategoryD2Repository(api),
         resourceTheme: new ResourceThemeD2Repository(api),
+        officeTeam: new OfficeTeamInMemoryRepository(),
     };
 }
 
@@ -74,7 +76,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesT
             getThemes: new GetResourceThemesUseCase(repositories.resourceTheme),
         },
         about: {
-            getOfficeTeam: new GetOfficeTeamUseCase(),
+            getOfficeTeam: new GetOfficeTeamUseCase(repositories.officeTeam),
         },
     };
 }
