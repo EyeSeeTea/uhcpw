@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { Person } from "../../../pages/about/AboutState";
+import { Person } from "../../../../domain/entities/Person";
 
 export interface ItemPersonProps {
     person: Person;
