@@ -9,9 +9,10 @@ import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
 import { expertsMembers } from "../useAbout";
 import { Person } from "../../../../domain/entities/Person";
-import { teamMembers } from "../../../../data/repositories/OfficeTeamInMemoryRepository";
+import { OfficeTeamInMemoryRepository } from "../../../../data/repositories/OfficeTeamInMemoryRepository";
 
 let countryRepository: CountryD2Repository;
+let officeTeamRepository: OfficeTeamInMemoryRepository;
 
 describe("AboutPage", () => {
     it("should render about title", () => {
@@ -114,6 +115,7 @@ function renderPage() {
         { path: "/about", route: `/about` },
         {
             country: countryRepository,
+            officeTeam: officeTeamRepository,
         }
     );
 }
@@ -196,7 +198,32 @@ function givenACountries(): Country[] {
 }
 
 function givenAnOfficeTeam(): Person[] {
-    return teamMembers;
+    const mockedRepository = mock(OfficeTeamInMemoryRepository);
+
+    const data = [
+        {
+            firstName: "first name 1",
+            lastName: "last name 1",
+            image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            position: "Position ABC",
+            linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
+            email: "hello@eyeseetea.com",
+        },
+        {
+            firstName: "first name 2",
+            lastName: "last name 2",
+            image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            position: "Position ABC",
+            linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
+            email: "hello@eyeseetea.com",
+        },
+    ];
+
+    when(mockedRepository.get()).thenReturn(Future.success(data));
+
+    officeTeamRepository = instance(mockedRepository);
+
+    return data;
 }
 
 function givenAnExperts(): Person[] {
