@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { screen, waitFor, within } from "@testing-library/react";
 import { instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";
-import { customRenderWithRouterMatch } from "../../../../utils/tests";
+import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
 import { Country } from "../../../../domain/entities/Country";
 import userEvent from "@testing-library/user-event";

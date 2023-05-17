@@ -4,7 +4,7 @@ import { OfficeTeamRepository } from "../../domain/repositories/OfficeTeamReposi
 import { D2Api } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
 
-const dataElements: Record<string, string> = {
+export const personDataElements: Record<string, string> = {
     image: "",
     firstName: "j70ChBwbiYb",
     lastName: "RGH57Cnanvg",
@@ -13,7 +13,7 @@ const dataElements: Record<string, string> = {
     role: "fh1bVZ8tXSw",
 };
 
-const program = "CPJ2fSvd8T5";
+export const personProgram = "CPJ2fSvd8T5";
 
 export class OfficeTeamD2Repository implements OfficeTeamRepository {
     constructor(private api: D2Api) {}
@@ -23,18 +23,18 @@ export class OfficeTeamD2Repository implements OfficeTeamRepository {
             this.api.events.get({
                 fields: eventsFields,
                 skipPaging: true,
-                program: program,
-                filter: `${dataElements.role}:eq:team`,
+                program: personProgram,
+                filter: `${personDataElements.role}:eq:team`,
             })
         ).map(response => this.buildPersons(response.events));
     }
 
     private buildPersons(events: D2Event[]): Person[] {
         return events.map(event => {
-            const firstName = event.dataValues.find(dv => dv.dataElement === dataElements.firstName)?.value || "";
-            const lastName = event.dataValues.find(dv => dv.dataElement === dataElements.lastName)?.value || "";
-            const position = event.dataValues.find(dv => dv.dataElement === dataElements.position)?.value || "";
-            const country = event.dataValues.find(dv => dv.dataElement === dataElements.country)?.value || "";
+            const firstName = event.dataValues.find(dv => dv.dataElement === personDataElements.firstName)?.value || "";
+            const lastName = event.dataValues.find(dv => dv.dataElement === personDataElements.lastName)?.value || "";
+            const position = event.dataValues.find(dv => dv.dataElement === personDataElements.position)?.value || "";
+            const country = event.dataValues.find(dv => dv.dataElement === personDataElements.country)?.value || "";
 
             return {
                 firstName,

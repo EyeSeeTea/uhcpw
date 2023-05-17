@@ -49,7 +49,9 @@ export class ResourceD2Repository implements ResourceRepository {
                 endDate: endYear ? `${endYear}-01-31` : undefined,
                 filter,
             })
-        ).map(response => this.buildResources(response.events));
+        ).map(response => {
+            return this.buildResources(response.events);
+        });
     }
 
     private buildResources(events: D2Event[]): Resource[] {

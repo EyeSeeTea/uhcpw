@@ -16,7 +16,7 @@ import {
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
 import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
-import { customRenderWithRouterMatch } from "../../../../../utils/tests";
+import { customRenderWithRouterMatch } from "../../../../../utils/tests-ui";
 import { ResourcesByTypePage } from "../ResourcesByTypePage";
 
 let resourceRepository: ResourceD2Repository;

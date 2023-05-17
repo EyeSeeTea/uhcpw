@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { ResourcesState } from "./AboutState";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
-import { CountryFilterState } from "../../common/state/state";
 import i18n from "../../../locales";
 import { Person } from "../../../domain/entities/Person";
 import { useAppContext } from "../../contexts/app-context";
+import { CountryOption } from "../../components/country-selector/CountrySelector";
 
 export function useAbout(): ResourcesState {
     const { compositionRoot } = useAppContext();
@@ -16,8 +16,8 @@ export function useAbout(): ResourcesState {
     const [experts, setExperts] = useState<Person[]>(expertsMembers);
 
     useEffect(() => {
-        setExperts(filterExperts(countryFilter, selectedFilter));
-    }, [countryFilter, selectedFilter]);
+        setExperts(filterExperts(selectedFilter, countryFilter.options, countryFilter.selected));
+    }, [countryFilter.selected, countryFilter.options, selectedFilter]);
 
     useEffect(() => {
         compositionRoot.about.getOfficeTeam.execute().run(setOfficeTeam, () => setOfficeTeam([]));
@@ -27,7 +27,7 @@ export function useAbout(): ResourcesState {
         (value: string) => {
             setSelectedFilter(value);
 
-            setExperts(filterExperts(countryFilter, value));
+            setExperts(filterExperts(value, countryFilter.options, countryFilter.selected));
         },
         [countryFilter]
     );
@@ -42,11 +42,9 @@ export function useAbout(): ResourcesState {
     };
 }
 
-const filterExperts = (countryFilter: CountryFilterState, letterFilter: string) => {
-    const countryNames = countryFilter.selected
-        ? countryFilter.options
-              .filter(country => countryFilter.selected?.includes(country.id))
-              .map(({ name }) => name || "")
+const filterExperts = (letterFilter: string, countryOptions: CountryOption[], countrySelected?: string[]) => {
+    const countryNames = countrySelected
+        ? countryOptions.filter(country => countrySelected?.includes(country.id)).map(({ name }) => name || "")
         : undefined;
 
     return expertsMembers.filter(
