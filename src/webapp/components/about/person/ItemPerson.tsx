@@ -81,4 +81,5 @@ const InfoContainer = styled.div`
 const NameContainer = styled.div<{ isExpert: boolean }>`
     display: flex;
     flex-direction: ${props => (props.isExpert ? "row" : "column")};
+    align-items: center;
 `;
