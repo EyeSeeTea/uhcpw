@@ -7,10 +7,10 @@ import { getD2APiFromInstance } from "../../../utils/d2-api";
 import officeTeam from "./data/officeTeam.json";
 import { Person } from "../../../domain/entities/Person";
 
-let mockWebServer = new MockWebServer();
+const mockWebServer = new MockWebServer();
 const instance = new Instance({ url: "/" });
 const api = getD2APiFromInstance(instance);
-let officeTeamRepository = new OfficeTeamD2Repository(api);
+const officeTeamRepository = new OfficeTeamD2Repository(api);
 
 describe("Resource repository", () => {
     beforeAll(() => mockWebServer.start());
