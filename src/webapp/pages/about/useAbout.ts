@@ -17,11 +17,11 @@ export function useAbout(): ResourcesState {
 
     useEffect(() => {
         setExperts(filterExperts(countryFilter, selectedFilter));
-    }, [countryFilter.selected, countryFilter.options]);
+    }, [countryFilter, selectedFilter]);
 
     useEffect(() => {
         compositionRoot.about.getOfficeTeam.execute().run(setOfficeTeam, () => setOfficeTeam([]));
-    }, [countryFilter.selected, countryFilter.options]);
+    }, [countryFilter.selected, countryFilter.options, compositionRoot.about]);
 
     const onFilterChange = useCallback(
         (value: string) => {
@@ -29,7 +29,7 @@ export function useAbout(): ResourcesState {
 
             setExperts(filterExperts(countryFilter, value));
         },
-        [countryFilter.selected, countryFilter.options]
+        [countryFilter]
     );
 
     return {
@@ -43,15 +43,15 @@ export function useAbout(): ResourcesState {
 }
 
 const filterExperts = (countryFilter: CountryFilterState, letterFilter: string) => {
-    const countryCodes = countryFilter.selected
+    const countryNames = countryFilter.selected
         ? countryFilter.options
               .filter(country => countryFilter.selected?.includes(country.id))
-              .map(({ code }) => code || "")
+              .map(({ name }) => name || "")
         : undefined;
 
     return expertsMembers.filter(
         expert =>
-            (!countryCodes || countryCodes?.includes(expert.countryCode || "")) &&
+            (!countryNames || countryNames?.includes(expert.country || "")) &&
             (letterFilter === allFilter || expert.firstName.toLowerCase().startsWith(letterFilter.toLowerCase()))
     );
 };
@@ -62,10 +62,6 @@ export const expertsMembers: Person[] = [
         lastName: "last name 1",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-        twitter: "https://twitter.com/EyeSeeTeaLtd",
-        countryCode: "ESP",
         country: "Spain",
     },
     {
@@ -73,10 +69,6 @@ export const expertsMembers: Person[] = [
         lastName: "last name 2",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-        twitter: "https://twitter.com/EyeSeeTeaLtd",
-        countryCode: "IRL",
         country: "Ireland",
     },
     {
@@ -84,10 +76,6 @@ export const expertsMembers: Person[] = [
         lastName: "last name 3",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-        twitter: "https://twitter.com/EyeSeeTeaLtd",
-        countryCode: "ESP",
         country: "Spain",
     },
     {
@@ -95,10 +83,6 @@ export const expertsMembers: Person[] = [
         lastName: "last name 4",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-        twitter: "https://twitter.com/EyeSeeTeaLtd",
-        countryCode: "IRL",
         country: "Ireland",
     },
     {
@@ -106,10 +90,6 @@ export const expertsMembers: Person[] = [
         lastName: "last name 5",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-        twitter: "https://twitter.com/EyeSeeTeaLtd",
-        countryCode: "IRL",
         country: "Ireland",
     },
     {
@@ -117,10 +97,6 @@ export const expertsMembers: Person[] = [
         lastName: "last name 6",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
-        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-        email: "hello@eyeseetea.com",
-        twitter: "https://twitter.com/EyeSeeTeaLtd",
-        countryCode: "IRL",
         country: "Ireland",
     },
 ];

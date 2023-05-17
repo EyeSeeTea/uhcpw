@@ -7,12 +7,12 @@ import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repo
 import { Country } from "../../../../domain/entities/Country";
 import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
-import { expertsMembers } from "../useAbout";
 import { Person } from "../../../../domain/entities/Person";
-import { OfficeTeamInMemoryRepository } from "../../../../data/repositories/OfficeTeamInMemoryRepository";
+import { OfficeTeamD2Repository } from "../../../../data/repositories/OfficeTeamD2Repository";
+import { expertsMembers } from "../useAbout";
 
 let countryRepository: CountryD2Repository;
-let officeTeamRepository: OfficeTeamInMemoryRepository;
+let officeTeamRepository: OfficeTeamD2Repository;
 
 describe("AboutPage", () => {
     it("should render about title", () => {
@@ -198,7 +198,7 @@ function givenACountries(): Country[] {
 }
 
 function givenAnOfficeTeam(): Person[] {
-    const mockedRepository = mock(OfficeTeamInMemoryRepository);
+    const mockedRepository = mock(OfficeTeamD2Repository);
 
     const data = [
         {

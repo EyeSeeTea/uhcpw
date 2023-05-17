@@ -25,7 +25,7 @@ import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourc
 import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
 import { GetOfficeTeamUseCase } from "./domain/usecases/GetOfficeTeamUseCase";
-import { OfficeTeamInMemoryRepository } from "./data/repositories/OfficeTeamInMemoryRepository";
+import { OfficeTeamD2Repository } from "./data/repositories/OfficeTeamD2Repository";
 
 function initializeRepositories(api: D2Api, instance: Instance) {
     return {
@@ -40,7 +40,7 @@ function initializeRepositories(api: D2Api, instance: Instance) {
         resource: new ResourceD2Repository(api),
         resourceCategory: new ResourceCategoryD2Repository(api),
         resourceTheme: new ResourceThemeD2Repository(api),
-        officeTeam: new OfficeTeamInMemoryRepository(),
+        officeTeam: new OfficeTeamD2Repository(api),
     };
 }
 

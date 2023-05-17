@@ -33,7 +33,6 @@ export function useMultiCountryOptionsV2() {
     }, [compositionRoot.countries, groupedByIncome]);
 
     const onSelectedChange = useCallback((country: string[] | undefined) => {
-        debugger;
         setSelected(country);
     }, []);
 
