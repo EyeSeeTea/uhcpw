@@ -2,16 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
-import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
 import { IndicatorExplorerState } from "./IndicatorExplorerState";
 
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { visualizationCustomizations } from "./visualizationCustomizations";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
+import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
-    const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
+    const countryFilter = useMultiCountryOptionsV2();
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
@@ -34,9 +34,9 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
                     const customVisualization = visualizationCustomizations[visualization.id];
 
-                    if (visualization && customVisualization && selectedYearFilter && selectedCountry) {
+                    if (visualization && customVisualization && selectedYearFilter && countryFilter.selected) {
                         compositionRoot.indicatorExplorer.getAnalytics
-                            .execute(visualization.id, selectedYearFilter, selectedCountry)
+                            .execute(visualization.id, selectedYearFilter, countryFilter.selected)
                             .run(
                                 analytics => {
                                     setAnalytics(analytics);
@@ -56,7 +56,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         } else {
             setVisualization(undefined);
         }
-    }, [compositionRoot.indicatorExplorer, selectedCategoryFilter, selectedYearFilter, selectedCountry]);
+    }, [compositionRoot.indicatorExplorer, selectedCategoryFilter, selectedYearFilter, countryFilter.selected]);
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
@@ -81,15 +81,17 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     return {
         filters: {
-            countryFilters: countryOptions,
-            selectedCountryFilter: selectedCountry,
-            onChangeCountryFilter: onCountryChange,
-            categoryFilters,
-            selectedCategoryFilter,
-            onChangeCategoryFilter,
-            yearFilters,
-            selectedYearFilter,
-            onChangeYearFilter,
+            country: countryFilter,
+            category: {
+                options: categoryFilters,
+                selected: selectedCategoryFilter,
+                onSelectedChange: onChangeCategoryFilter,
+            },
+            year: {
+                options: yearFilters,
+                selected: selectedYearFilter,
+                onSelectedChange: onChangeYearFilter,
+            },
         },
         visualization,
         analytics,

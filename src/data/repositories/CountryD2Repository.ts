@@ -27,6 +27,7 @@ export class CountryD2Repository implements CountryRepository {
                 description: orgUnit.description,
                 coordinates: this.buildPoint(orgUnit.geometry),
                 color: index % 2 === 0 ? "orange" : index % 3 === 0 ? "red" : "green",
+                parents: orgUnit.organisationUnitGroups.map(({ id, name }) => ({ id, name })),
             };
         });
     }
@@ -52,6 +53,7 @@ const organisationUnitsFields = {
     code: true,
     description: { id: true, name: true },
     geometry: true,
+    organisationUnitGroups: { id: true, name: true },
 } as const;
 
 type D2OrgUnit = MetadataPick<{

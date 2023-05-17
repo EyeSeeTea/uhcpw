@@ -12,7 +12,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { useCountryOptions } from "../../../hooks/countries/useCountryOptions";
+import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
 
 const useStyles = makeStyles(theme => ({
     root: {

@@ -14,19 +14,19 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
     const [title, setTitle] = useState<string>("");
 
     useEffect(() => {
-        const title = filters.categoryFilters.find(cat => cat.value === filters.selectedCategoryFilter)?.text || "";
+        const title = filters.category.options.find(cat => cat.value === filters.category.selected)?.text || "";
 
         setTitle(title);
-    }, [filters.categoryFilters, filters.selectedCategoryFilter]);
+    }, [filters.category.options, filters.category.selected]);
 
     useEffect(() => {
         setLoading(true);
         compositionRoot.resources.get
             .execute({
-                searchTerm: filters.searchTerm,
+                searchTerm: filters.search.term,
                 category,
-                theme: filters.selectedThemeFilter,
-                year: filters.selectedYearFilter,
+                theme: filters.theme.selected,
+                years: filters.year.selected,
             })
             .run(
                 items => {
@@ -38,13 +38,7 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
                     setItems([]);
                 }
             );
-    }, [
-        compositionRoot.resources,
-        category,
-        filters.selectedThemeFilter,
-        filters.selectedYearFilter,
-        filters.searchTerm,
-    ]);
+    }, [compositionRoot.resources, category, filters.theme.selected, filters.year.selected, filters.search.term]);
 
     return {
         loading,

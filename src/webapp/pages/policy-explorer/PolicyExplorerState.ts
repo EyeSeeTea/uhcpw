@@ -1,5 +1,5 @@
 import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
-import { Option } from "../../components/dropdown/Option";
+import { CountryFilterState, OptionsFilterState, OptionsMultiFilterState } from "../../common/state/state";
 
 export type DataOrientation = "inverted" | "normal";
 
@@ -13,13 +13,7 @@ export type PolicyExplorerState = {
 };
 
 export type PolicyExplorerFiltersState = {
-    countryFilters: Option<string>[];
-    selectedCountryFilter: string[] | undefined;
-    onChangeCountryFilter: (value: string[] | undefined) => void;
-    categoryFilters: Option<string>[];
-    selectedCategoryFilter: string | undefined;
-    onChangeCategoryFilter: (value: string | undefined) => void;
-    yearFilters: Option<string>[];
-    selectedYearFilter: string | undefined;
-    onChangeYearFilter: (value: string | undefined) => void;
+    country: CountryFilterState;
+    category: OptionsFilterState;
+    year: OptionsMultiFilterState;
 };
