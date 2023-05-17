@@ -9,12 +9,8 @@ export const Header: React.FC = React.memo(() => {
     return (
         <HeaderGrid container spacing={5} alignItems="center">
             <Grid item md={6} xs={12}>
-                <HeaderTitle>
-                    {i18n.t(
-                        "❝ The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage ❞"
-                    )}
-                </HeaderTitle>
                 <img width="100%" alt="WHO Barcelona Office" src={WhoBarcelonaOffice} />
+                <Caption>{i18n.t("WHO Barcelona Office for Health Systems Stengthening")}</Caption>
             </Grid>
             <Grid item md={6} xs={12}>
                 <Container maxWidth="sm">
@@ -57,10 +53,10 @@ const HeaderGrid = styled(Grid)`
     padding: 32px;
 `;
 
-const HeaderTitle = styled(Typography)`
-    font-size: 25px;
+const Caption = styled(Typography)`
+    font-size: 16px;
     font-weight: 300;
-    margin-bottom: 24px;
+    margin-top: 20px;
 `;
 
 const Text = styled(Typography)`
