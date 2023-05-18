@@ -5,6 +5,7 @@ import { OfficeTeamD2Repository, personDataElements, personProgram } from "../Of
 import { getD2APiFromInstance } from "../../../utils/d2-api";
 
 import officeTeam from "./data/officeTeam.json";
+import experts from "./data/experts.json";
 import { Person } from "../../../domain/entities/Person";
 
 const mockWebServer = new MockWebServer();
@@ -12,12 +13,12 @@ const instance = new Instance({ url: "/" });
 const api = getD2APiFromInstance(instance);
 const officeTeamRepository = new OfficeTeamD2Repository(api);
 
-describe("Resource repository", () => {
+describe("Person repository", () => {
     beforeAll(() => mockWebServer.start());
     afterEach(() => mockWebServer.resetHandlers());
     afterAll(() => mockWebServer.close());
 
-    it("should return comparative analysis properly", async () => {
+    it("should return office team", async () => {
         mockWebServer.addRequestHandlers([
             {
                 method: "get",
@@ -27,13 +28,30 @@ describe("Resource repository", () => {
             },
         ]);
 
-        const response = await officeTeamRepository.get().runAsync();
+        const response = await officeTeamRepository.get(true).runAsync();
 
         const persons = response.data || [];
 
         expect(persons.length).toBe(2);
         verifyPersonIsParsed(persons[0]);
     });
+    /* it("should return experts", async () => {
+        mockWebServer.addRequestHandlers([
+            {
+                method: "get",
+                endpoint: `/api/events`,
+                httpStatusCode: 200,
+                response: experts,
+            },
+        ]);
+
+        const response = await officeTeamRepository.get(false).runAsync();
+
+        const persons = response.data || [];
+
+        expect(persons.length).toBe(2);
+        verifyPersonIsParsed(persons[0]);
+    }); */
 
     it("should send filter by role equal to team and expected program", async () => {
         mockWebServer.addRequestHandlers([
@@ -45,7 +63,7 @@ describe("Resource repository", () => {
             },
         ]);
 
-        await officeTeamRepository.get().runAsync();
+        await officeTeamRepository.get(true).runAsync();
 
         const filter = mockWebServer.lastRequest?.params.get("filter");
         const program = mockWebServer.lastRequest?.params.get("program");
