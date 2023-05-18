@@ -59,6 +59,10 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
         [onChangeDebounced, updateStateValue]
     );
 
+    const handleKeydown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
+        event.stopPropagation();
+    }, []);
+
     return (
         <Paper className={clsx(classes.root, className)} style={style} elevation={0} role="search">
             <SearchIcon className={classes.icon} htmlColor="black" />
@@ -69,6 +73,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
                 placeholder={i18n.t("Search")}
                 value={stateValue}
                 role="searchbox"
+                onKeyDown={handleKeydown}
             />
         </Paper>
     );
