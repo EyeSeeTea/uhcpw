@@ -2,5 +2,5 @@ import { FutureData } from "../entities/Future";
 import { Person } from "../entities/Person";
 
 export interface OfficeTeamRepository {
-    get(): FutureData<Person[]>;
+    get(isOfficeTeam: boolean): FutureData<Person[]>;
 }
