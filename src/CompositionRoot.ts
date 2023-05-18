@@ -24,7 +24,7 @@ import { ResourceThemeD2Repository } from "./data/repositories/resources/Resourc
 import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
 import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
-import { GetOfficeTeamUseCase } from "./domain/usecases/GetOfficeTeamUseCase";
+import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
 import { OfficeTeamD2Repository } from "./data/repositories/OfficeTeamD2Repository";
 
 function initializeRepositories(api: D2Api, instance: Instance) {
@@ -76,7 +76,7 @@ export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesT
             getThemes: new GetResourceThemesUseCase(repositories.resourceTheme),
         },
         about: {
-            getOfficeTeam: new GetOfficeTeamUseCase(repositories.officeTeam),
+            getPersons: new GetPersonsUseCase(repositories.officeTeam),
         },
     };
 }

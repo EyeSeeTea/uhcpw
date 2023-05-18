@@ -9,7 +9,7 @@ import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
 import { Person } from "../../../../domain/entities/Person";
 import { OfficeTeamD2Repository } from "../../../../data/repositories/OfficeTeamD2Repository";
-import { expertsMembers } from "../useAbout";
+import { expertsMembers } from "../../../../domain/usecases/GetPersonsUseCase";
 
 let countryRepository: CountryD2Repository;
 let officeTeamRepository: OfficeTeamD2Repository;
