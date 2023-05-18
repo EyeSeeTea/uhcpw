@@ -1,4 +1,4 @@
-import { Future, FutureData } from "../../domain/entities/Future";
+import { FutureData } from "../../domain/entities/Future";
 import { Person } from "../../domain/entities/Person";
 import { PersonRepository } from "../../domain/repositories/PersonRepository";
 import { D2Api } from "../../types/d2-api";
