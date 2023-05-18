@@ -5,10 +5,9 @@ import { Instance } from "../../../entities/Instance";
 import { ResourceD2Repository, resourceDataElements, resourcesProgram } from "../ResourceD2Repository";
 import comparativeAnalysis from "./data/ComparativeAnalysis.json";
 
-let mockWebServer = new MockWebServer();
-const instance = new Instance({ url: "/" });
-const api = getD2APiFromInstance(instance);
-let resourceRepository = new ResourceD2Repository(api);
+const mockWebServer = new MockWebServer();
+const api = getD2APiFromInstance(new Instance({ url: "/" }));
+const resourceRepository = new ResourceD2Repository(api);
 
 describe("Resource repository", () => {
     beforeAll(() => mockWebServer.start());
