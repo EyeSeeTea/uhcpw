@@ -1,30 +1,32 @@
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Person } from "../../../pages/about/AboutState";
-import EmailIcon from "@material-ui/icons/Email";
-import LinkedInIcon from "@material-ui/icons/LinkedIn";
-import TwitterIcon from "@material-ui/icons//Twitter";
 
 export interface ItemPersonProps {
     person: Person;
+    isExpert: boolean;
 }
 
-export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => {
+export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExpert }) => {
     return (
         <Center>
             <Item>
-                <img
-                    width="100%"
-                    src={person.image}
-                    alt={`${person.firstName} ${person.lastName}`}
-                    style={{ borderRadius: 10, marginBottom: 6 }}
-                />
+                <Image src={person.image} alt={`${person.firstName} ${person.lastName}`} />
                 <Row>
-                    <div>
-                        <Typography variant="body1" gutterBottom>
-                            {`${person.firstName} ${person.lastName}`}
-                        </Typography>
+                    <InfoContainer>
+                        <NameContainer isExpert={isExpert}>
+                            <Typography
+                                variant="body1"
+                                gutterBottom
+                                style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: 500 }}
+                            >
+                                {person.firstName}
+                            </Typography>
+                            <Typography variant="body1" gutterBottom style={{ fontWeight: 500 }}>
+                                {person.lastName}
+                            </Typography>
+                        </NameContainer>
                         <Typography variant="body2" gutterBottom>
                             {person.position}
                         </Typography>
@@ -33,24 +35,7 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => 
                                 {person.country}
                             </Typography>
                         }
-                    </div>
-
-                    <Row>
-                        <Link href={person.linkedin}>
-                            <LinkedInIcon />
-                        </Link>
-                        <Box width={4} />
-                        <Link href={person.email}>
-                            <EmailIcon />
-                        </Link>
-                        <Box width={4} />
-
-                        {person.twitter && (
-                            <Link href={person.twitter}>
-                                <TwitterIcon />
-                            </Link>
-                        )}
-                    </Row>
+                    </InfoContainer>
                 </Row>
             </Item>
         </Center>
@@ -59,6 +44,7 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person }) => 
 
 const Center = styled.div`
     display: flex;
+    position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -72,12 +58,27 @@ const Row = styled.div`
 `;
 
 const Item = styled.div`
+    display: flex;
     border-radius: 10px;
     padding: 16px;
-    width: 450px;
     flex-direction: column;
+    align-items: center;
 `;
 
-const Link = styled.a`
-    color: black;
+const Image = styled.img`
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+`;
+
+const InfoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const NameContainer = styled.div<{ isExpert: boolean }>`
+    display: flex;
+    flex-direction: ${props => (props.isExpert ? "row" : "column")};
 `;

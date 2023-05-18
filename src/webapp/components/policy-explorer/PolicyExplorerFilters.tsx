@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
+import { CountrySelector } from "../country-selector/CountrySelector";
 import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 
@@ -19,33 +20,32 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         fullWidth
                         label={i18n.t("Category")}
                         placeholder={i18n.t("Select category")}
-                        options={filters.categoryFilters}
-                        value={filters.selectedCategoryFilter}
-                        onChange={filters.onChangeCategoryFilter}
+                        options={filters.category.options}
+                        value={filters.category.selected}
+                        onChange={filters.category.onSelectedChange}
                     />
                 </Center>
             </Grid>
             <Grid item md={4} xs={6}>
                 <Center>
-                    <DropdownMultiple
-                        fullWidth
-                        label={i18n.t("Countries")}
-                        placeholder={i18n.t("Select countries")}
-                        options={filters.countryFilters}
-                        values={filters.selectedCountryFilter}
-                        onChange={filters.onChangeCountryFilter}
+                    <CountrySelector
+                        countries={filters.country.options}
+                        selectedIds={filters.country.selected}
+                        onSelectedIdsChange={filters.country.onSelectedChange}
+                        groupedByIncome={filters.country.groupedByIncome}
+                        onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                     />
                 </Center>
             </Grid>
             <Grid item md={3} xs={6}>
                 <Center>
-                    <Dropdown
+                    <DropdownMultiple
                         fullWidth
                         label={i18n.t("Year")}
                         placeholder={i18n.t("Select year")}
-                        options={filters.yearFilters}
-                        value={filters.selectedYearFilter}
-                        onChange={filters.onChangeYearFilter}
+                        options={filters.year.options}
+                        values={filters.year.selected}
+                        onChange={filters.year.onSelectedChange}
                     />
                 </Center>
             </Grid>

@@ -1,7 +1,7 @@
 import i18n from "@eyeseetea/feedback-component/locales";
 import { useCallback, useState } from "react";
 import { ResourcesState, Person } from "./AboutState";
-import { useCountryOptions } from "../../hooks/countries/useCountryOptions";
+import { useCountryOptions } from "../../common/hooks/countries/useCountryOptions";
 
 export function useAbout(): ResourcesState {
     const { countryOptions, selectedCountry, onCountryChange } = useCountryOptions();
@@ -78,6 +78,14 @@ const teamMembers: Person[] = [
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
         email: "hello@eyeseetea.com",
     },
+    {
+        firstName: "first name 6",
+        lastName: "last name 6",
+        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+        position: "Position ABC",
+        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
+        email: "hello@eyeseetea.com",
+    },
 ];
 
 const expertsMembers: Person[] = [
@@ -128,6 +136,17 @@ const expertsMembers: Person[] = [
     {
         firstName: "first name 5",
         lastName: "last name 5",
+        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+        position: "Position ABC",
+        linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
+        email: "hello@eyeseetea.com",
+        twitter: "https://twitter.com/EyeSeeTeaLtd",
+        countryCode: "IRL",
+        country: "Ireland",
+    },
+    {
+        firstName: "first name 6",
+        lastName: "last name 6",
         image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
         position: "Position ABC",
         linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",

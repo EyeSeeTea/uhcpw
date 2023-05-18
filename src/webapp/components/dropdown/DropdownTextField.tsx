@@ -12,9 +12,9 @@ export const DropdownTextField = styled(TextField)({
     },
     "div.MuiInput-underline": {
         background: "#f2f9fd",
+        border: "1px solid #cfe9f7",
         borderRadius: "8px",
         minWidth: "200px",
-        border: "1px solid #cfe9f7",
         padding: "8px 16px",
     },
     "div.MuiInput-underline:before": {

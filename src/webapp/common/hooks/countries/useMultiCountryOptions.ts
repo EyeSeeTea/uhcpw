@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { Option } from "../../components/dropdown/Option";
-import { useAppContext } from "../../contexts/app-context";
+import { Option } from "../../../components/dropdown/Option";
+import { useAppContext } from "../../../contexts/app-context";
 
-export function useCountryOptions() {
+export function useMultiCountryOptions() {
     const { compositionRoot } = useAppContext();
     const [countryOptions, setCountriesOptions] = useState<Option<string>[]>([]);
-    const [selectedCountry, setSelectedCountry] = useState<string | undefined>(undefined);
+    const [selectedCountry, setSelectedCountry] = useState<string[] | undefined>(undefined);
 
     useEffect(() => {
         compositionRoot.countries.get.execute().run(
@@ -18,7 +18,7 @@ export function useCountryOptions() {
         );
     }, [compositionRoot.countries]);
 
-    const onCountryChange = useCallback((country: string | undefined) => {
+    const onCountryChange = useCallback((country: string[] | undefined) => {
         setSelectedCountry(country);
     }, []);
 

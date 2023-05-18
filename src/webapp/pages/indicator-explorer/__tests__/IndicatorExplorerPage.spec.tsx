@@ -23,7 +23,7 @@ let countryRepository: CountryD2Repository;
 
 describe("IndicatorExplorerPage", () => {
     describe("to load page", () => {
-        it("should render indicator explorer title", async () => {
+        it("should render indicator explorer title", () => {
             givenAFilters();
             givenAnAnalytics();
 
@@ -43,6 +43,7 @@ describe("IndicatorExplorerPage", () => {
             await selectFiltersAndGetChart(visualizations[0]?.name || "", countries[0]?.name || "", "2008");
 
             const chartTitle = await waitFor(() => screen.getByRole("heading", { name: visualizations[0]?.name }));
+
             expect(chartTitle).toBeInTheDocument();
 
             expect(screen.getByText("Richest")).toBeInTheDocument();
@@ -119,6 +120,7 @@ function givenACountries(): Country[] {
             description: "description",
             color: "color",
             coordinates: [2982, 12] as [number, number],
+            parents: [{ id: "EUR", name: "Europe" }],
         },
     ];
 
@@ -134,12 +136,10 @@ async function selectFiltersAndGetChart(visualizationText: string, countryText: 
     const main = within(mainElement);
 
     await selectFilter(main, "Category and indicator", visualizationText);
-    await selectFilter(main, "Countries", countryText);
+    await selectCountry(main, countryText);
     await selectFilter(main, "Years", yearText);
 
-    const getChartButton = main.getByRole("button", {
-        name: /get chart/i,
-    });
+    const getChartButton = main.getByLabelText(/get chart/i);
 
     await waitFor(() => expect(getChartButton).not.toBeDisabled());
 
@@ -147,13 +147,24 @@ async function selectFiltersAndGetChart(visualizationText: string, countryText: 
 }
 
 async function selectFilter(scope: BoundFunctions<typeof queries>, name: string, value: string) {
-    const autocompleteInput = scope.getByRole("textbox", {
-        name,
-    });
+    const autocompleteInput = scope.getByLabelText(name);
 
     userEvent.click(autocompleteInput);
 
     const targetItem = await waitFor(() => screen.getByRole("option", { name: value }));
 
     userEvent.click(targetItem);
+}
+
+async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
+    const countrySelector = scope.getByLabelText(/countries/i);
+
+    userEvent.click(countrySelector);
+
+    userEvent.click(await screen.findByText("All countries"));
+    userEvent.click(await screen.findByRole("checkbox", { name: value }));
+
+    userEvent.keyboard("{Escape}");
+
+    await screen.findByLabelText(/countries/i);
 }

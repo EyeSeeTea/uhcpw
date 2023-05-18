@@ -2,18 +2,19 @@ import { useCallback, useEffect, useState } from "react";
 import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
-import { useMultiCountryOptions } from "../../hooks/countries/useMultiCountryOptions";
+
+import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
 
 export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
-    const { countryOptions, selectedCountry, onCountryChange } = useMultiCountryOptions();
+    const countryFilter = useMultiCountryOptionsV2();
 
-    const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
+    const [categoryFilters, setCategoryFilters] = useState<Option<string>[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
 
     const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ rows: [] });
     const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
@@ -48,7 +49,11 @@ export function usePolicyExplorer(): PolicyExplorerState {
     useEffect(() => {
         if (selectedCategoryFilter) {
             compositionRoot.policyExplorer.get
-                .execute(selectedCategoryFilter, selectedCountry || [], selectedYearFilter ? [selectedYearFilter] : [])
+                .execute(
+                    selectedCategoryFilter,
+                    countryFilter.selected || [],
+                    selectedYearFilter ? selectedYearFilter : []
+                )
                 .run(
                     policyExplorer => {
                         setInitialData(policyExplorer);
@@ -62,13 +67,13 @@ export function usePolicyExplorer(): PolicyExplorerState {
             setInitialData(undefined);
             setData(undefined);
         }
-    }, [compositionRoot.policyExplorer, selectedCategoryFilter, selectedCountry, selectedYearFilter]);
+    }, [compositionRoot.policyExplorer, selectedCategoryFilter, countryFilter.selected, selectedYearFilter]);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
     }, []);
 
-    const onChangeYearFilter = useCallback((value: string | undefined) => {
+    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
     }, []);
 
@@ -84,15 +89,17 @@ export function usePolicyExplorer(): PolicyExplorerState {
 
     return {
         filters: {
-            countryFilters: countryOptions,
-            selectedCountryFilter: selectedCountry,
-            onChangeCountryFilter: onCountryChange,
-            categoryFilters,
-            selectedCategoryFilter,
-            onChangeCategoryFilter,
-            yearFilters,
-            selectedYearFilter,
-            onChangeYearFilter,
+            country: countryFilter,
+            category: {
+                options: categoryFilters,
+                selected: selectedCategoryFilter,
+                onSelectedChange: onChangeCategoryFilter,
+            },
+            year: {
+                options: yearFilters,
+                selected: selectedYearFilter,
+                onSelectedChange: onChangeYearFilter,
+            },
         },
         data,
         dataOrientation,

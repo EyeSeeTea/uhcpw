@@ -13,10 +13,15 @@ interface DropdownProps<T extends string = string> {
     placeholder?: string;
     fullWidth?: boolean;
     onChange: (value?: T) => void;
+    width?: string;
+}
+
+interface ContainerProps {
+    width: string;
 }
 
 export const Dropdown: React.FC<DropdownProps> = React.memo(
-    ({ label, options, value, placeholder, fullWidth, onChange }) => {
+    ({ label, options, value, placeholder, fullWidth, onChange, width = "100%" }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
 
         useEffect(() => {
@@ -39,7 +44,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
         };
 
         return (
-            <Container>
+            <Container width={width}>
                 <Autocomplete
                     fullWidth={fullWidth}
                     multiple={false}
@@ -48,7 +53,13 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     value={valueOption || null}
                     getOptionLabel={option => option?.text}
                     renderInput={params => (
-                        <DropdownTextField {...params} variant="standard" label={label} placeholder={placeholder} />
+                        <DropdownTextField
+                            {...params}
+                            variant="standard"
+                            label={label}
+                            placeholder={placeholder}
+                            InputLabelProps={{ shrink: true }}
+                        />
                     )}
                     onChange={handleChange}
                 />
@@ -72,7 +83,7 @@ const ClearButton = styled(Button)`
     font-weight: 400;
 `;
 
-const Container = styled.div`
+const Container = styled.div<ContainerProps>`
     position: relative;
-    width: 100%;
+    width: ${props => props.width || "100%"};
 `;

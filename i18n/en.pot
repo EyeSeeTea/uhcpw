@@ -5,8 +5,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-09T05:12:11.617Z\n"
-"PO-Revision-Date: 2023-05-09T05:12:11.617Z\n"
+"POT-Creation-Date: 2023-05-12T08:09:42.040Z\n"
+"PO-Revision-Date: 2023-05-12T08:09:42.040Z\n"
+
+msgid "All countries"
+msgstr ""
 
 msgid "Experts network"
 msgstr ""
@@ -65,6 +68,17 @@ msgstr ""
 
 msgid "15 June 2020"
 msgstr ""
+
+msgid "Select country"
+msgstr ""
+
+msgid "I would like to see countries grouped by income bracket (LMIC/UMICHIC"
+msgstr ""
+
+msgid "({{count}} selected)"
+msgid_plural "({{count}} selected)"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "Clear"
 msgstr ""
@@ -242,9 +256,6 @@ msgid "Category and indicator"
 msgstr ""
 
 msgid "Select category"
-msgstr ""
-
-msgid "Select countries"
 msgstr ""
 
 msgid "Years"

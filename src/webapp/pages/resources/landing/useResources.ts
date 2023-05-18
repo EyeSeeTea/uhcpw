@@ -11,20 +11,17 @@ export function useResources(): ResourcesState {
         setCountryAnalysis(
             countryAnalysisOriginals.filter(
                 item =>
-                    (!filters.selectedCategoryFilter || item.category === filters.selectedCategoryFilter) &&
-                    (!filters.selectedThemeFilter || item.theme === filters.selectedThemeFilter) &&
-                    (!filters.selectedCountryFilter ||
-                        filters.selectedCountryFilter?.length === 0 ||
-                        filters.selectedCountryFilter.includes(item.code)) &&
-                    (!filters.selectedYearFilter || item.year === filters.selectedYearFilter)
+                    (!filters.category.selected || item.category === filters.category.selected) &&
+                    (!filters.theme.selected || item.theme === filters.theme.selected) &&
+                    (!filters.country.selected ||
+                        filters.country.selected?.length === 0 ||
+                        filters.country.selected.includes(item.code)) &&
+                    (!filters.year.selected ||
+                        filters.year.selected?.length === 0 ||
+                        filters.year.selected.includes(item.year))
             )
         );
-    }, [
-        filters.selectedCategoryFilter,
-        filters.selectedThemeFilter,
-        filters.selectedCountryFilter,
-        filters.selectedYearFilter,
-    ]);
+    }, [filters.category.selected, filters.theme.selected, filters.country.selected, filters.year.selected]);
 
     return {
         countryAnalysis,

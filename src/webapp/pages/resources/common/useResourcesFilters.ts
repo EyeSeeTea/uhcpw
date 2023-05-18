@@ -2,16 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { generateYears } from "../../../../domain/usecases/utils/generateYears";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
-import { useMultiCountryOptions } from "../../../hooks/countries/useMultiCountryOptions";
 import { ResourcesFiltersState } from "./ResourcesFiltersState";
+import { useMultiCountryOptionsV2 } from "../../../common/hooks/countries/useMultiCountryOptionsV2";
 
 export function useResourcesFilters(category?: string): ResourcesFiltersState {
     const { compositionRoot } = useAppContext();
-    const {
-        countryOptions: countryFilters,
-        selectedCountry: selectedCountryFilter,
-        onCountryChange: onChangeCountryFilter,
-    } = useMultiCountryOptions();
+    const countryFilter = useMultiCountryOptionsV2();
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -22,7 +18,7 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
     const [selectedThemeFilter, setSelectedThemeFilter] = useState<string | undefined>();
 
     const [yearFilters, setYearFilters] = useState<Option[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string | undefined>();
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
 
     useEffect(() => {
         setSelectedCategoryFilter(category);
@@ -62,24 +58,30 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
         setSelectedThemeFilter(value);
     }, []);
 
-    const onChangeYearFilter = useCallback((value: string | undefined) => {
+    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
     }, []);
 
     return {
-        searchTerm,
-        onSearchTermChange,
-        countryFilters,
-        selectedCountryFilter,
-        onChangeCountryFilter,
-        categoryFilters,
-        selectedCategoryFilter,
-        onChangeCategoryFilter,
-        themeFilters,
-        selectedThemeFilter,
-        onChangeThemeFilter,
-        yearFilters,
-        selectedYearFilter,
-        onChangeYearFilter,
+        search: {
+            term: searchTerm,
+            onTermChange: onSearchTermChange,
+        },
+        country: countryFilter,
+        category: {
+            options: categoryFilters,
+            selected: selectedCategoryFilter,
+            onSelectedChange: onChangeCategoryFilter,
+        },
+        theme: {
+            options: themeFilters,
+            selected: selectedThemeFilter,
+            onSelectedChange: onChangeThemeFilter,
+        },
+        year: {
+            options: yearFilters,
+            selected: selectedYearFilter,
+            onSelectedChange: onChangeYearFilter,
+        },
     };
 }

@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
+import { CountrySelector } from "../country-selector/CountrySelector";
 import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 
@@ -20,21 +21,20 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         fullWidth
                         label={i18n.t("Category and indicator")}
                         placeholder={i18n.t("Select category")}
-                        options={filters.categoryFilters}
-                        value={filters.selectedCategoryFilter}
-                        onChange={filters.onChangeCategoryFilter}
+                        options={filters.category.options}
+                        value={filters.category.selected}
+                        onChange={filters.category.onSelectedChange}
                     />
                 </Center>
             </Grid>
             <Grid item md={4} xs={6}>
                 <Center>
-                    <DropdownMultiple
-                        fullWidth
-                        label={i18n.t("Countries")}
-                        placeholder={i18n.t("Select countries")}
-                        options={filters.countryFilters}
-                        values={filters.selectedCountryFilter}
-                        onChange={filters.onChangeCountryFilter}
+                    <CountrySelector
+                        countries={filters.country.options}
+                        selectedIds={filters.country.selected}
+                        onSelectedIdsChange={filters.country.onSelectedChange}
+                        groupedByIncome={filters.country.groupedByIncome}
+                        onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                     />
                 </Center>
             </Grid>
@@ -44,20 +44,21 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         fullWidth
                         label={i18n.t("Years")}
                         placeholder={i18n.t("Select years")}
-                        options={filters.yearFilters}
-                        values={filters.selectedYearFilter}
-                        onChange={filters.onChangeYearFilter}
+                        options={filters.year.options}
+                        values={filters.year.selected}
+                        onChange={filters.year.onSelectedChange}
                     />
                 </Center>
             </Grid>
             <Grid item md={1} xs={2}>
                 <GetChartButton
+                    aria-label="Get chart"
                     variant="contained"
                     color="primary"
                     disabled={
-                        !filters.selectedCategoryFilter ||
-                        !filters.selectedCountryFilter?.length ||
-                        !filters.selectedYearFilter?.length
+                        !filters.category.selected ||
+                        !filters.country.selected?.length ||
+                        !filters.year.selected?.length
                     }
                     onClick={onGetChart}
                 >

@@ -38,7 +38,7 @@ export function getTestContext(repositoriesToOverwrite?: Repositories) {
     return context;
 }
 
-export function customRender(children: ReactNode, repositoriesToOverwrite: Repositories): RenderResult {
+export function customRender(children: ReactNode, repositoriesToOverwrite?: Repositories): RenderResult {
     const context = getTestContext(repositoriesToOverwrite);
 
     return render(
@@ -60,7 +60,7 @@ type RouterConfig = {
 export function customRenderWithRouterMatch(
     children: ReactNode,
     config: RouterConfig,
-    overwriteRepositories: Repositories
+    overwriteRepositories?: Repositories
 ) {
     const node = (
         <Router history={createMemoryHistory({ initialEntries: [config.route] })}>
