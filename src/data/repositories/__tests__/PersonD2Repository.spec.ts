@@ -1,4 +1,3 @@
-import { D2Api } from "@eyeseetea/d2-api/2.36";
 import { MockWebServer } from "../../../utils/MockWebServer";
 import { Instance } from "../../entities/Instance";
 import { PersonD2Repository, personDataElements, personProgram } from "../PersonD2Repository";
@@ -35,7 +34,7 @@ describe("Person repository", () => {
         expect(persons.length).toBe(2);
         verifyPersonIsParsed(persons[0]);
     });
-    /* it("should return experts", async () => {
+    it("should return experts", async () => {
         mockWebServer.addRequestHandlers([
             {
                 method: "get",
@@ -51,7 +50,7 @@ describe("Person repository", () => {
 
         expect(persons.length).toBe(2);
         verifyPersonIsParsed(persons[0]);
-    }); */
+    });
 
     it("should send filter by role equal to team and expected program", async () => {
         mockWebServer.addRequestHandlers([
