@@ -3,9 +3,10 @@ import { Person } from "../../domain/entities/Person";
 import { PersonRepository } from "../../domain/repositories/PersonRepository";
 import { D2Api } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
+import avatarEmpty from "../../webapp/assets/avatar-empty.png";
 
 export const personDataElements: Record<string, string> = {
-    image: "",
+    image: "qftOoaAVxOr",
     firstName: "j70ChBwbiYb",
     lastName: "RGH57Cnanvg",
     position: "r6uQvsaezay",
@@ -35,11 +36,14 @@ export class PersonD2Repository implements PersonRepository {
             const lastName = event.dataValues.find(dv => dv.dataElement === personDataElements.lastName)?.value || "";
             const position = event.dataValues.find(dv => dv.dataElement === personDataElements.position)?.value || "";
             const country = event.dataValues.find(dv => dv.dataElement === personDataElements.country)?.value || "";
+            const image = event.dataValues.find(dv => dv.dataElement === personDataElements.image)?.value;
 
             return {
                 firstName,
                 lastName,
-                image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+                image: image
+                    ? `${this.api.baseUrl}/api/events/files?dataElementUid=${personDataElements.image}&eventUid=${event.event}`
+                    : avatarEmpty,
                 position,
                 country,
             };
