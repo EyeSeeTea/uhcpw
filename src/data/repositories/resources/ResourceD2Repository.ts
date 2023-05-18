@@ -5,7 +5,7 @@ import { ResourceFilters, ResourceRepository } from "../../../domain/repositorie
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
-const resourceDataElements: Record<string, string> = {
+export const resourceDataElements: Record<string, string> = {
     category: "iO4ThHtWZ8M",
     theme: "TTAQLTta8JS",
     image: "uund7zjS1Yt",
@@ -20,8 +20,7 @@ const resourceDataElements: Record<string, string> = {
     link4Language: "QlRpFiResvs",
 };
 
-const resourcesProgram = "wWo0lhm5GsY";
-const globalOrgUnit = "H8RixfF8ugH";
+export const resourcesProgram = "wWo0lhm5GsY";
 
 export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
@@ -44,9 +43,8 @@ export class ResourceD2Repository implements ResourceRepository {
                 fields: eventsFields,
                 skipPaging: true,
                 program: resourcesProgram,
-                orgUnit: globalOrgUnit,
                 startDate: startYear ? `${startYear}-01-01` : undefined,
-                endDate: endYear ? `${endYear}-01-31` : undefined,
+                endDate: endYear ? `${endYear}-12-31` : undefined,
                 filter,
             })
         ).map(response => {

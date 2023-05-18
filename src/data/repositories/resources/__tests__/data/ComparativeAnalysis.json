@@ -1,0 +1,77 @@
+{
+    "events": [
+        {
+            "event": "bT2PACV80QO",
+            "eventDate": "2019-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345512/WHO-EURO-2019-3439-431980-60514-eng.pdf?sequence=1&isAllowed=y"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345523/WHO-EURO-2019-3439-431980-60516-ger.pdf?sequence=1&isAllowed=y"
+                },
+                { "dataElement": "rovY1LEqAPX", "value": "Deutsch" },
+                {
+                    "dataElement": "yfKcdYARapH",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345515/WHO-EURO-2019-3439-431980-60515-fre.pdf?sequence=1&isAllowed=y"
+                },
+                { "dataElement": "DQAOcVPEQTh", "value": "Castellano" },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Können sich die Menschen ihre Gesundheitsversorgung leisten? Neue Erkenntnisse über finanzielle Absicherung in der Europäischen Region: Zusammenfassung"
+                },
+                { "dataElement": "lW90bnEXAFI", "value": "Article" },
+                {
+                    "dataElement": "YeINoY1RwMh",
+                    "value": "¿Se puede permitir la gente pagar por la atención sanitaria? Nueva evidencia sobre la protección financiera en Europa: resumen"
+                },
+                { "dataElement": "yKHkUZLIGc6", "value": "English" },
+                {
+                    "dataElement": "JMPD3IdDAcv",
+                    "value": "2.3.1.2.4 Les soins de santé sont-ils abordables ? De nouvelles bases factuelles sur la protection financière en Europe; résumé"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
+                },
+                {
+                    "dataElement": "egYRckQrYVj",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345524/WHO-EURO-2019-3439-431980-60517-spa.pdf?sequence=1&isAllowed=y"
+                },
+                { "dataElement": "iO4ThHtWZ8M", "value": "comparative-analysis" },
+                { "dataElement": "PC9lIDo5x8m", "value": "DVnpk4xiXGJ" },
+                { "dataElement": "TTAQLTta8JS", "value": "Financial Protection" },
+                { "dataElement": "QlRpFiResvs", "value": "Français" },
+                { "dataElement": "uund7zjS1Yt", "value": "THq3Odg09pD" }
+            ]
+        },
+        {
+            "event": "DGTisRwoFZk",
+            "eventDate": "2016-01-01T00:00:00.000",
+            "dataValues": [
+                { "dataElement": "lW90bnEXAFI", "value": "Article" },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/326316/9789289050388-%20eng.pdf?sequence=1&isAllowed=y"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/332111/9789289050449-rus.pdf?sequence=1&isAllowed=y"
+                },
+                { "dataElement": "yKHkUZLIGc6", "value": "English" },
+                { "dataElement": "iBxOUseHUtO", "value": "Voluntary health insurance in Europe: role and regulation" },
+                { "dataElement": "iO4ThHtWZ8M", "value": "comparative-analysis" },
+                { "dataElement": "rovY1LEqAPX", "value": "русский" },
+                { "dataElement": "PC9lIDo5x8m", "value": "DVnpk4xiXGJ" },
+                { "dataElement": "TTAQLTta8JS", "value": "Financial Protection" },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Добровольное медицинское страхование в Европе: роль и регулирование"
+                },
+                { "dataElement": "uund7zjS1Yt", "value": "pBQO14Es7oA" }
+            ]
+        }
+    ]
+}
