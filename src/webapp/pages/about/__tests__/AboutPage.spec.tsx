@@ -8,10 +8,10 @@ import { Country } from "../../../../domain/entities/Country";
 import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
 import { Person } from "../../../../domain/entities/Person";
-import { OfficeTeamD2Repository, expertsMembers } from "../../../../data/repositories/OfficeTeamD2Repository";
+import { PersonD2Repository } from "../../../../data/repositories/PersonD2Repository";
 
 let countryRepository: CountryD2Repository;
-let officeTeamRepository: OfficeTeamD2Repository;
+let personRepository: PersonD2Repository;
 
 describe("AboutPage", () => {
     it("should render about title", () => {
@@ -107,7 +107,7 @@ function renderPage() {
         { path: "/about", route: `/about` },
         {
             country: countryRepository,
-            officeTeam: officeTeamRepository,
+            person: personRepository,
         }
     );
 }
@@ -207,7 +207,7 @@ function givenAPersons(): {
         email: string;
     }[];
 } {
-    const mockedRepository = mock(OfficeTeamD2Repository);
+    const mockedRepository = mock(PersonD2Repository);
 
     const officeTeam = [
         {
@@ -261,13 +261,9 @@ function givenAPersons(): {
     when(mockedRepository.get(true)).thenReturn(Future.success(officeTeam));
     when(mockedRepository.get(false)).thenReturn(Future.success(experts));
 
-    officeTeamRepository = instance(mockedRepository);
+    personRepository = instance(mockedRepository);
 
     return { officeTeam, experts };
-}
-
-function givenAnExperts(): Person[] {
-    return expertsMembers;
 }
 
 async function selectLetterFilter(letter: string) {

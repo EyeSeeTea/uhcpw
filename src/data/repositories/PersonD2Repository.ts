@@ -1,6 +1,6 @@
 import { Future, FutureData } from "../../domain/entities/Future";
 import { Person } from "../../domain/entities/Person";
-import { OfficeTeamRepository } from "../../domain/repositories/OfficeTeamRepository";
+import { PersonRepository } from "../../domain/repositories/PersonRepository";
 import { D2Api } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
 
@@ -60,7 +60,7 @@ export const personDataElements: Record<string, string> = {
 
 export const personProgram = "CPJ2fSvd8T5";
 
-export class OfficeTeamD2Repository implements OfficeTeamRepository {
+export class PersonD2Repository implements PersonRepository {
     constructor(private api: D2Api) {}
 
     get(isOfficeTeam: boolean): FutureData<Person[]> {

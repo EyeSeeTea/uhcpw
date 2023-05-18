@@ -1,7 +1,7 @@
 import { D2Api } from "@eyeseetea/d2-api/2.36";
 import { MockWebServer } from "../../../utils/MockWebServer";
 import { Instance } from "../../entities/Instance";
-import { OfficeTeamD2Repository, personDataElements, personProgram } from "../OfficeTeamD2Repository";
+import { PersonD2Repository, personDataElements, personProgram } from "../PersonD2Repository";
 import { getD2APiFromInstance } from "../../../utils/d2-api";
 
 import officeTeam from "./data/officeTeam.json";
@@ -11,7 +11,7 @@ import { Person } from "../../../domain/entities/Person";
 const mockWebServer = new MockWebServer();
 const instance = new Instance({ url: "/" });
 const api = getD2APiFromInstance(instance);
-const officeTeamRepository = new OfficeTeamD2Repository(api);
+const officeTeamRepository = new PersonD2Repository(api);
 
 describe("Person repository", () => {
     beforeAll(() => mockWebServer.start());
