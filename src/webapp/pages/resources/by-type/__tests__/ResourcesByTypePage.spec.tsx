@@ -230,6 +230,13 @@ async function verifyNewsItems(resources: News[]) {
         const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
         expect(image.src).toContain(resource.image);
 
+        const links = itemScope.queryAllByRole("link");
+        expect(itemScope.queryAllByRole("link").length).toBeGreaterThan(0);
+
+        links.forEach(link => {
+            expect(link).toHaveAttribute("href", resource.url);
+        });
+
         itemScope.getByText(resource.date);
     });
 }

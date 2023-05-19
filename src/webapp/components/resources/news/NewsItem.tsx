@@ -12,12 +12,18 @@ export const NewsItem: React.FC<CountryAnalysisProps> = React.memo(({ news }) =>
     return (
         <Item elevation={0} role="listitem">
             <Column>
-                <Image src={news.image} alt={news.title} />
+                <a href={news.url} style={{ width: "100%" }}>
+                    <Image src={news.image} alt={news.title} />
+                </a>
+
                 <Box height={20} />
+
                 <Text variant="body1" gutterBottom>
                     {news.date}
                 </Text>
-                <Text variant="body1">{news.title}</Text>
+                <a href={news.url} style={{ textDecoration: "none", color: "black" }}>
+                    <Text variant="body1">{news.title}</Text>
+                </a>
             </Column>
         </Item>
     );
