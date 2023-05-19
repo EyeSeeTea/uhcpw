@@ -12,7 +12,7 @@ import { useResourcesByType } from "./useResourcesByType";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const { category } = useParams<{ category: string }>();
-    const { loading, title, filters, items } = useResourcesByType(category);
+    const { loading, title, filters, items, onGetResources } = useResourcesByType(category);
 
     return (
         <Layout>
@@ -24,7 +24,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
             </SearchContainer>
             <Content>
                 <SelectsContainer maxWidth="xl">
-                    <ResourcesFilters filters={filters} />
+                    <ResourcesFilters filters={filters} onGetResources={onGetResources} />
                 </SelectsContainer>
                 <Container maxWidth="xl">
                     <Grid container spacing={5}>

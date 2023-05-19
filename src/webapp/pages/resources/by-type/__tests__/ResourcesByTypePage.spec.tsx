@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
-import { screen, within } from "@testing-library/react";
+import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { anything, instance, mock, when } from "ts-mockito";
 import { CountryD2Repository } from "../../../../../data/repositories/CountryD2Repository";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
@@ -42,6 +43,8 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("comparative-analysis");
 
+            selectFiltersAndSearch();
+
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
         it("should render any items if get resources fail", async () => {
@@ -49,12 +52,16 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("comparative-analysis");
 
+            selectFiltersAndSearch();
+
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
         it("should render expected item count", async () => {
             givenAComparativeAnalysisResources(5);
 
             renderPage("comparative-analysis");
+
+            selectFiltersAndSearch();
 
             await screen.findAllByRole("listitem");
 
@@ -65,7 +72,20 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("comparative-analysis");
 
+            selectFiltersAndSearch();
+
             await verifyComparativeAnalysisItems(resources);
+        });
+        it("should render expected items content filtering by theme", async () => {
+            givenAComparativeAnalysisResources(5);
+
+            renderPage("comparative-analysis");
+
+            selectFiltersAndSearch();
+
+            await screen.findAllByRole("listitem");
+
+            expect(await screen.findAllByRole("listitem")).toHaveLength(5);
         });
     });
     describe("country analysis", () => {
@@ -74,6 +94,8 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("country-analysis");
 
+            selectFiltersAndSearch();
+
             expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
         });
         it("should render any items if there not resources", async () => {
@@ -81,12 +103,16 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("country-analysis");
 
+            selectFiltersAndSearch();
+
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
         it("should render any items if get resources fail", async () => {
             givenAnErrorToGetResources();
 
             renderPage("country-analysis");
+
+            selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -98,6 +124,8 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
+            selectFiltersAndSearch();
+
             expect(screen.getByRole("heading", { name: /news/i })).toBeInTheDocument();
         });
         it("should render any items if there not resources", async () => {
@@ -105,12 +133,16 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
+            selectFiltersAndSearch();
+
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
         it("should render any items if get resources fail", async () => {
             givenAnErrorToGetResources();
 
             renderPage("news");
+
+            selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -122,6 +154,8 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
+            selectFiltersAndSearch();
+
             expect(screen.getByRole("heading", { name: /multimedia/i })).toBeInTheDocument();
         });
         it("should render any items if there not resources", async () => {
@@ -129,12 +163,16 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
+            selectFiltersAndSearch();
+
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
         it("should render any items if get resources fail", async () => {
             givenAnErrorToGetResources();
 
             renderPage("multimedia");
+
+            selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -182,12 +220,13 @@ function renderPage(category: string) {
 
 function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[] {
     const mockedRepository = mock(ResourceD2Repository);
+    const themes = givenAResourcesThemes();
 
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "comparative-analysis" as const,
             image: `http://image${index}.png`,
-            theme: "financial protection",
+            theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
             links: [
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
                 { url: `http://link${Math.random()}.pdf`, language: "Spain" },
@@ -323,4 +362,48 @@ function givenACountries(): Country[] {
     countryRepository = instance(mockedRepository);
 
     return data;
+}
+
+async function selectFiltersAndSearch(theme?: string, country?: string, year?: string) {
+    const mainElement = screen.getByRole("main");
+    const main = within(mainElement);
+
+    if (theme) {
+        await selectFilter(main, "theme", theme);
+    }
+
+    if (country) {
+        await selectCountry(main, country);
+    }
+
+    if (year) {
+        await selectFilter(main, "Years", year);
+    }
+
+    const searchButton = main.getByLabelText(/search/i);
+
+    userEvent.click(searchButton);
+}
+
+async function selectFilter(scope: BoundFunctions<typeof queries>, name: string, value: string) {
+    const autocompleteInput = scope.getByLabelText(name);
+
+    userEvent.click(autocompleteInput);
+
+    const targetItem = await waitFor(() => screen.getByRole("option", { name: value }));
+
+    userEvent.click(targetItem);
+}
+
+async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
+    const countrySelector = scope.getByLabelText(/countries/i);
+
+    userEvent.click(countrySelector);
+
+    userEvent.click(await screen.findByText("All countries"));
+    userEvent.click(await screen.findByRole("checkbox", { name: value }));
+
+    userEvent.keyboard("{Escape}");
+
+    await screen.findByLabelText(/countries/i);
 }
