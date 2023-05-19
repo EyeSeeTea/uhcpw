@@ -82,15 +82,13 @@ describe("Resource repository", () => {
 
             verifyNews(news[0]);
         });
-        // it("should send expected filter for comparative-analysis", async () => {
-        //     givenAComparativeAnalysis();
+        it("should send expected filter for news", async () => {
+            givenANews();
 
-        //     await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
+            await resourceRepository.get({ category: "news" }).runAsync();
 
-        //     expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-        //         `${resourceDataElements.category}:eq:comparative analysis`
-        //     );
-        // });
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(`${resourceDataElements.category}:eq:news`);
+        });
     });
 });
 
