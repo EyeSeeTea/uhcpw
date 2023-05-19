@@ -56,7 +56,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                 <Grid container spacing={8} style={{ marginBottom: 6 }}>
                     {members.map((item, index) => {
                         return (
-                            <Grid key={index} item>
+                            <Grid key={index} item lg={3} md={4} xs={6}>
                                 <ItemPerson person={item} isExpert />
                             </Grid>
                         );

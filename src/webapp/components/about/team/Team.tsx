@@ -21,7 +21,7 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
             <Grid container spacing={8}>
                 {team.map((item, index) => {
                     return (
-                        <Grid key={index} item>
+                        <Grid key={index} item lg={3} md={4} xs={6}>
                             <ItemPerson person={item} isExpert={false} />
                         </Grid>
                     );
