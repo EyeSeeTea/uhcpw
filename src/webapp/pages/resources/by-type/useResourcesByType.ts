@@ -14,6 +14,10 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
     const [title, setTitle] = useState<string>("");
 
     useEffect(() => {
+        setItems([]);
+    }, [filters.category.selected]);
+
+    useEffect(() => {
         const title = filters.category.options.find(cat => cat.value === filters.category.selected)?.text || "";
 
         setTitle(title);
