@@ -44,6 +44,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
             <Grid item md={2} xs={6}>
                 <Center>
                     <Dropdown
+                        fullWidth
                         label={i18n.t("Theme")}
                         placeholder={i18n.t("Select theme")}
                         options={filters.theme.options}
@@ -67,8 +68,8 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
             <Grid item md={3} xs={6}>
                 <Center>
                     <DropdownMultiple
-                        label={i18n.t("Year")}
-                        placeholder={i18n.t("Select year")}
+                        label={i18n.t("Years")}
+                        placeholder={i18n.t("Select years")}
                         options={filters.year.options}
                         values={filters.year.selected}
                         onChange={filters.year.onSelectedChange}

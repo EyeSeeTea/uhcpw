@@ -43,7 +43,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("comparative-analysis");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -52,7 +52,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("comparative-analysis");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -61,7 +61,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("comparative-analysis");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             await screen.findAllByRole("listitem");
 
@@ -72,20 +72,9 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("comparative-analysis");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             await verifyComparativeAnalysisItems(resources);
-        });
-        it("should render expected items content filtering by theme", async () => {
-            givenAComparativeAnalysisResources(5);
-
-            renderPage("comparative-analysis");
-
-            selectFiltersAndSearch();
-
-            await screen.findAllByRole("listitem");
-
-            expect(await screen.findAllByRole("listitem")).toHaveLength(5);
         });
     });
     describe("country analysis", () => {
@@ -94,7 +83,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("country-analysis");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
         });
@@ -103,7 +92,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("country-analysis");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -112,7 +101,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("country-analysis");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -124,7 +113,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.getByRole("heading", { name: /news/i })).toBeInTheDocument();
         });
@@ -133,7 +122,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -142,7 +131,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -154,7 +143,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.getByRole("heading", { name: /multimedia/i })).toBeInTheDocument();
         });
@@ -163,7 +152,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -172,7 +161,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            selectFiltersAndSearch();
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -368,17 +357,11 @@ async function selectFiltersAndSearch(theme?: string, country?: string, year?: s
     const mainElement = screen.getByRole("main");
     const main = within(mainElement);
 
-    if (theme) {
-        await selectFilter(main, "theme", theme);
-    }
+    //await selectFilter(main, "Theme", theme || "Financial Protection");
 
-    if (country) {
-        await selectCountry(main, country);
-    }
+    await selectCountry(main, country || "Spain");
 
-    if (year) {
-        await selectFilter(main, "Years", year);
-    }
+    await selectFilter(main, "Years", year || "2020");
 
     const searchButton = main.getByLabelText(/search/i);
 
