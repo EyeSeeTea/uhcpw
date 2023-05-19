@@ -77,35 +77,6 @@ describe("ResourcesByTypePage for ", () => {
             await verifyComparativeAnalysisItems(resources);
         });
     });
-    describe("country analysis", () => {
-        it("should render comparative analysis title", async () => {
-            givenACountryAnalysisResources(0);
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
-        });
-        it("should render any items if there not resources", async () => {
-            givenACountryAnalysisResources(0);
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
-        });
-        it("should render any items if get resources fail", async () => {
-            givenAnErrorToGetResources();
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
-        });
-    });
 
     describe("news", () => {
         it("should render news title", async () => {
@@ -130,6 +101,47 @@ describe("ResourcesByTypePage for ", () => {
             givenAnErrorToGetResources();
 
             renderPage("news");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        });
+        it("should render expected item count", async () => {
+            givenANews(5);
+
+            renderPage("news");
+
+            await selectFiltersAndSearch();
+
+            await screen.findAllByRole("listitem");
+
+            expect(await screen.findAllByRole("listitem")).toHaveLength(5);
+        });
+    });
+
+    describe("country analysis", () => {
+        it("should render comparative analysis title", async () => {
+            givenACountryAnalysisResources(0);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
+        });
+        it("should render any items if there not resources", async () => {
+            givenACountryAnalysisResources(0);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        });
+        it("should render any items if get resources fail", async () => {
+            givenAnErrorToGetResources();
+
+            renderPage("country-analysis");
 
             await selectFiltersAndSearch();
 
@@ -222,6 +234,22 @@ function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[
             ],
             text: `title ${index}`,
             year: (new Date().getFullYear() - index).toString(),
+        };
+    });
+
+    when(mockedRepository.get(anything())).thenReturn(Future.success(data));
+
+    resourceRepository = instance(mockedRepository);
+
+    return data;
+}
+
+function givenANews(count: number): News[] {
+    const mockedRepository = mock(ResourceD2Repository);
+
+    const data = [...Array(count).keys()].map(index => {
+        return {
+            kind: "news" as const,
         };
     });
 
