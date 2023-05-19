@@ -12,11 +12,12 @@ export const NewsItem: React.FC<CountryAnalysisProps> = React.memo(({ news }) =>
     return (
         <Item elevation={0} role="listitem">
             <Column>
-                <img width={"100%"} src={news.image} alt={news.title} />
+                <Image src={news.image} alt={news.title} />
                 <Box height={20} />
-                <Typography variant="body2">{news.date}</Typography>
-                <Box height={20} />
-                <Typography variant="body2">{news.title}</Typography>
+                <Text variant="body1" gutterBottom>
+                    {news.date}
+                </Text>
+                <Text variant="body1">{news.title}</Text>
             </Column>
         </Item>
     );
@@ -33,4 +34,13 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
+`;
+
+const Text = styled(Typography)`
+    font-weight: normal;
+`;
+
+const Image = styled.img`
+    width: 100%;
+    height: 300px;
 `;

@@ -1,5 +1,5 @@
-import { Backdrop, CircularProgress, Container, Grid, Typography } from "@material-ui/core";
-import React from "react";
+import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
+import React, { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
@@ -30,8 +30,10 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                 <Container maxWidth="xl">
                     <Grid container spacing={5}>
                         {items.map((item, index) => {
+                            const sizes = getSizes(item);
+
                             return (
-                                <Grid key={index} item lg={2} md={3} xs={6}>
+                                <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
                                     <Item resource={item} />
                                 </Grid>
                             );
@@ -59,6 +61,19 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
             return <div></div>;
     }
 });
+
+const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSize } => {
+    switch (resource.kind) {
+        case "comparative-analysis":
+            return { lg: 2, md: 3, xs: 6 };
+        case "country-analysis":
+            return { lg: 2, md: 3, xs: 6 };
+        case "news":
+            return { lg: 4, md: 6, xs: 12 };
+        case "multimedia":
+            return { lg: 2, md: 3, xs: 6 };
+    }
+};
 
 const Content = styled.div`
     background: white;
