@@ -297,6 +297,7 @@ function givenANewsResources(count: number): News[] {
             image: `http://image${index}.png`,
             title: `title ${index}`,
             date: `${index} January 2023`,
+            url: `http://news-${index}.html`,
         };
     });
 
