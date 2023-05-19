@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
+import { NewsItem } from "../../../components/resources/news/NewsItem";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
@@ -53,7 +54,7 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
         case "country-analysis":
             return <div></div>;
         case "news":
-            return <div role="listitem"></div>;
+            return <NewsItem news={resource} />;
         case "multimedia":
             return <div></div>;
     }

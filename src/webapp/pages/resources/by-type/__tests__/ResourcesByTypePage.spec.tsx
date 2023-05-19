@@ -107,7 +107,7 @@ describe("ResourcesByTypePage for ", () => {
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
         it("should render expected item count", async () => {
-            givenANews(5);
+            givenANewsResources(5);
 
             renderPage("news");
 
@@ -116,6 +116,15 @@ describe("ResourcesByTypePage for ", () => {
             await screen.findAllByRole("listitem");
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(5);
+        });
+        it("should render expected items content", async () => {
+            const resources = givenANewsResources(5);
+
+            renderPage("news");
+
+            await selectFiltersAndSearch();
+
+            await verifyNewsItems(resources);
         });
     });
 
@@ -206,6 +215,25 @@ async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) 
     });
 }
 
+async function verifyNewsItems(resources: News[]) {
+    const items = await screen.findAllByRole("listitem");
+
+    resources.forEach((resource, index) => {
+        const item = items[index];
+
+        if (item === undefined) {
+            throw new Error(`Index ${index} not found in items`);
+        }
+
+        const itemScope = within(item);
+
+        const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
+        expect(image.src).toContain(resource.image);
+
+        itemScope.getByText(resource.date);
+    });
+}
+
 function renderPage(category: string) {
     customRenderWithRouterMatch(
         <ResourcesByTypePage />,
@@ -244,22 +272,6 @@ function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[
     return data;
 }
 
-function givenANews(count: number): News[] {
-    const mockedRepository = mock(ResourceD2Repository);
-
-    const data = [...Array(count).keys()].map(index => {
-        return {
-            kind: "news" as const,
-        };
-    });
-
-    when(mockedRepository.get(anything())).thenReturn(Future.success(data));
-
-    resourceRepository = instance(mockedRepository);
-
-    return data;
-}
-
 function givenACountryAnalysisResources(count: number): CountryAnalysis[] {
     const mockedRepository = mock(ResourceD2Repository);
 
@@ -282,6 +294,9 @@ function givenANewsResources(count: number): News[] {
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "news" as const,
+            image: `http://image${index}.png`,
+            title: `title ${index}`,
+            date: `${index} January 2023`,
         };
     });
 

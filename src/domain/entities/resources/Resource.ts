@@ -14,6 +14,9 @@ export interface ComparativeAnalysisLink {
 
 export interface News {
     kind: "news";
+    title: string;
+    image: string;
+    date: string;
 }
 
 export interface Multimedia {
