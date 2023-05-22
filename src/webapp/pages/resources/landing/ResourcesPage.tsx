@@ -1,19 +1,20 @@
-import { Container, Typography } from "@material-ui/core";
+import { Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
-import { ComparativeAnalysis } from "../../../components/resources/comparative-analysis/ComparativeAnalysis";
+import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
 import { CountryAnalysis } from "../../../components/resources/country-analysis/CountryAnalysis";
 import { Multimedia } from "../../../components/resources/multimedia/Multimedia";
 import { News } from "../../../components/resources/news/News";
+import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {
-    const { countryAnalysis, filters, comparativeAnalysis, news, multimedia } = useResources();
+    const { countryAnalysis, filters, comparativeAnalysis, news, multimedia, onGetResources } = useResources();
 
     return (
         <Layout>
@@ -23,58 +24,38 @@ export const ResourcesPage: React.FC = React.memo(() => {
             <SearchContainer>
                 <SearchInput value={""} />
             </SearchContainer>
-            <CountryAnalysisSection>
-                <SelectsContainer maxWidth="xl">
-                    <ResourcesFilters filters={filters} onGetResources={() => {}} />
-                </SelectsContainer>
-                <Container maxWidth="xl">
-                    <CountryAnalysis countryAnalysis={countryAnalysis} />
-                </Container>
-            </CountryAnalysisSection>
-            <GradientDividerBlue />
-            <ComparativeAnalysisSection>
-                <Container maxWidth="xl">
-                    <ComparativeAnalysis comparativeAnalysis={comparativeAnalysis} />
-                </Container>
-            </ComparativeAnalysisSection>
-            <NewsSection>
-                <Container maxWidth="xl">
-                    <News newsItems={news} />
-                </Container>
-            </NewsSection>
+            <SelectsContainer maxWidth="xl">
+                <Grid container>
+                    <ResourcesFilters filters={filters} onGetResources={onGetResources} />
 
-            <GradientDividerBlue />
-
-            <MultimediaSection>
-                <Container maxWidth="xl">
-                    <Multimedia multimediaItems={multimedia} />
-                </Container>
-            </MultimediaSection>
-
-            <GradientDividerOrange />
+                    <Grid item md={6} xs={12}>
+                        <CountryAnalysis countryAnalysis={countryAnalysis} />
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <ResourceGroup
+                            title={i18n.t("Comparative Analysis")}
+                            seeAllUrl={"/resources/comparative-analysis"}
+                        >
+                            {comparativeAnalysis.map(comparativeItem => {
+                                return (
+                                    <Grid item xs={3} key={comparativeItem.id}>
+                                        <ComparativeAnalysisItem comparativeAnalysis={comparativeItem} minimalVersion />
+                                    </Grid>
+                                );
+                            })}
+                        </ResourceGroup>
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <News newsItems={news} />
+                    </Grid>
+                    <Grid item md={6} xs={12}>
+                        <Multimedia multimediaItems={multimedia} />
+                    </Grid>
+                </Grid>
+            </SelectsContainer>
         </Layout>
     );
 });
-
-const CountryAnalysisSection = styled.div`
-    background: white;
-    padding-bottom: 64px;
-`;
-
-const ComparativeAnalysisSection = styled.div`
-    background: ${colors.gradientPrimary2};
-    padding-bottom: 64px;
-`;
-
-const NewsSection = styled.div`
-    background: white;
-    padding-bottom: 64px;
-`;
-
-const MultimediaSection = styled.div`
-    background: ${colors.gradientPrimary2};
-    padding-bottom: 64px;
-`;
 
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
@@ -92,14 +73,4 @@ const SearchContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-`;
-
-const GradientDividerBlue = styled.div`
-    background: linear-gradient(90deg, rgb(4, 96, 167) 0%, #cee1f0 100%);
-    height: 20px;
-`;
-
-const GradientDividerOrange = styled.div`
-    background: linear-gradient(90deg, rgb(255, 141, 78) 0%, rgb(255, 223, 190) 100%);
-    height: 20px;
 `;

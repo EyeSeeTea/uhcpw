@@ -4,7 +4,7 @@ import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { ResourcesByTypeState } from "./ResourcesByTypeState";
 
-export function useResourcesByType(category: string): ResourcesByTypeState {
+export function useResourcesByType(category?: string): ResourcesByTypeState {
     const { compositionRoot } = useAppContext();
     const filters = useResourcesFilters(category);
 

@@ -1,11 +1,13 @@
+import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
 import { ResourcesFiltersState } from "../common/ResourcesFiltersState";
 
 export type ResourcesState = {
     countryAnalysis: CountryAnalysisItem[];
     filters: ResourcesFiltersState;
-    comparativeAnalysis: ComparativeAnalysisState[];
+    comparativeAnalysis: ComparativeAnalysis[];
     news: NewsItem[];
     multimedia: MultimediaItem[];
+    onGetResources: () => void;
 };
 
 export type CountryAnalysisItem = {

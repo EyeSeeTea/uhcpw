@@ -1,5 +1,6 @@
 export interface ComparativeAnalysis {
     kind: "comparative-analysis";
+    id: string;
     text: string;
     theme: string;
     image: string;
@@ -14,6 +15,7 @@ export interface ComparativeAnalysisLink {
 
 export interface News {
     kind: "news";
+    id: string;
     title: string;
     url: string;
     image: string;

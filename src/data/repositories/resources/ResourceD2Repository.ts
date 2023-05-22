@@ -28,7 +28,7 @@ export class ResourceD2Repository implements ResourceRepository {
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
         const filter = _([
-            `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}`,
+            filters.category ? `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}` : undefined,
             filters.theme ? `${resourceDataElements.theme}:eq:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
         ])
@@ -94,6 +94,7 @@ export class ResourceD2Repository implements ResourceRepository {
 
         return {
             kind: "comparative-analysis",
+            id: event.event,
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             theme: theme,
             links: _([
@@ -115,6 +116,7 @@ export class ResourceD2Repository implements ResourceRepository {
 
         return {
             kind: "news",
+            id: event.event,
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             title,
             url,

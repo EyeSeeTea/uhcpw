@@ -1,5 +1,5 @@
 import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";

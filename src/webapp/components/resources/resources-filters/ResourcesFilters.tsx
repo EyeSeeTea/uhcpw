@@ -77,13 +77,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(({ f
                 </Center>
             </Grid>
             <Grid item md={1} xs={2}>
-                <SearchButton
-                    aria-label="Search"
-                    variant="contained"
-                    color="primary"
-                    disabled={!filters.category.selected}
-                    onClick={onGetResources}
-                >
+                <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetResources}>
                     {i18n.t("Search")}
                 </SearchButton>
             </Grid>

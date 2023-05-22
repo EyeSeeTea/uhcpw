@@ -1,27 +1,32 @@
-import { useEffect, useState } from "react";
-import { useResourcesFilters } from "../common/useResourcesFilters";
+import { useMemo } from "react";
+import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
+import { useResourcesByType } from "../by-type/useResourcesByType";
 import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
-    const filters = useResourcesFilters();
+    const { filters, items, onGetResources } = useResourcesByType();
 
-    const [countryAnalysis, setCountryAnalysis] = useState<CountryAnalysisItem[]>(countryAnalysisOriginals);
+    const comparativeAnalysis = useMemo(() => {
+        return items.filter(item => item.kind === "comparative-analysis").slice(0, 4) as ComparativeAnalysis[];
+    }, [items]);
 
-    useEffect(() => {
-        setCountryAnalysis(
-            countryAnalysisOriginals.filter(
-                item =>
-                    (!filters.category.selected || item.category === filters.category.selected) &&
-                    (!filters.theme.selected || item.theme === filters.theme.selected) &&
-                    (!filters.country.selected ||
-                        filters.country.selected?.length === 0 ||
-                        filters.country.selected.includes(item.code)) &&
-                    (!filters.year.selected ||
-                        filters.year.selected?.length === 0 ||
-                        filters.year.selected.includes(item.year))
-            )
-        );
-    }, [filters.category.selected, filters.theme.selected, filters.country.selected, filters.year.selected]);
+    console.log({ comparativeAnalysis });
+
+    // useEffect(() => {
+    //     setCountryAnalysis(
+    //         countryAnalysisOriginals.filter(
+    //             item =>
+    //                 (!filters.category.selected || item.category === filters.category.selected) &&
+    //                 (!filters.theme.selected || item.theme === filters.theme.selected) &&
+    //                 (!filters.country.selected ||
+    //                     filters.country.selected?.length === 0 ||
+    //                     filters.country.selected.includes(item.code)) &&
+    //                 (!filters.year.selected ||
+    //                     filters.year.selected?.length === 0 ||
+    //                     filters.year.selected.includes(item.year))
+    //         )
+    //     );
+    // }, [filters.category.selected, filters.theme.selected, filters.country.selected, filters.year.selected]);
 
     return {
         countryAnalysis,
@@ -29,10 +34,11 @@ export function useResources(): ResourcesState {
         comparativeAnalysis,
         news,
         multimedia,
+        onGetResources,
     };
 }
 
-const countryAnalysisOriginals: CountryAnalysisItem[] = [
+const countryAnalysis: CountryAnalysisItem[] = [
     {
         name: "Albania",
         image: "https://flagpedia.net/data/flags/h160/al.webp",
@@ -112,30 +118,6 @@ const countryAnalysisOriginals: CountryAnalysisItem[] = [
         category: "2",
         theme: "1",
         year: "2020",
-    },
-];
-
-const comparativeAnalysis = [
-    {
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        language: "English",
-        year: "2022",
-    },
-    {
-        text: "text example 1 text example 1",
-        theme: "Sprending on health",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        language: "English",
-        year: "2022",
-    },
-    {
-        text: "text example 1 text example 1",
-        theme: "Resilience and financial sustainability",
-        image: "https://apps.who.int/iris/bitstream/handle/10665/44846/9789241564472_eng.pdf.jpg",
-        language: "English",
-        year: "2022",
     },
 ];
 
