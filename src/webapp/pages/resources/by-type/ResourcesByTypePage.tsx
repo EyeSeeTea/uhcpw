@@ -10,6 +10,7 @@ import { ResourcesFilters } from "../../../components/resources/resources-filter
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
+import { MultimediaItem } from "../../../components/resources/multimedia/MultimediaItem";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const { category } = useParams<{ category: string }>();
@@ -58,7 +59,7 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
         case "news":
             return <NewsItem news={resource} />;
         case "multimedia":
-            return <div role="listitem"></div>;
+            return <MultimediaItem multimedia={resource} />;
     }
 });
 
