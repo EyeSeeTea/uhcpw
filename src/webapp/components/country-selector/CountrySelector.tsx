@@ -17,6 +17,7 @@ import styled from "styled-components";
 export type CountryOption = {
     id: string;
     name: string;
+    code?: string;
     parents: { id: string; name: string }[];
 };
 
@@ -26,10 +27,11 @@ interface CountrySelectorProps {
     onSelectedIdsChange?: (ids: string[]) => void;
     groupedByIncome: boolean;
     onGroupedByIncomeChange?: (value: boolean) => void;
+    fullWidth?: boolean;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
-    ({ countries, selectedIds = [], onSelectedIdsChange, groupedByIncome, onGroupedByIncomeChange }) => {
+    ({ countries, selectedIds = [], onSelectedIdsChange, groupedByIncome, onGroupedByIncomeChange, fullWidth }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [selectedIdsState, setSelectedIdsState] = React.useState<string[]>(selectedIds);
@@ -103,7 +105,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     aria-label="Countries"
                     role={"textbox"}
                     disabled
-                    fullWidth
+                    fullWidth={fullWidth}
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>

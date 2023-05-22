@@ -2,9 +2,9 @@ import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
-import { Person } from "../../../pages/about/AboutState";
 import { ItemPerson } from "../person/ItemPerson";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { Person } from "../../../../domain/entities/Person";
 
 export interface TeamProps {
     team: Person[];
@@ -21,7 +21,7 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
             <Grid container spacing={8}>
                 {team.map((item, index) => {
                     return (
-                        <Grid key={index} item>
+                        <Grid key={index} item lg={3} md={4} xs={6}>
                             <ItemPerson person={item} isExpert={false} />
                         </Grid>
                     );
