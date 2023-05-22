@@ -132,6 +132,7 @@ export class ResourceD2Repository implements ResourceRepository {
 
         return {
             kind: "multimedia",
+            id: event.event,
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             title,
             url,

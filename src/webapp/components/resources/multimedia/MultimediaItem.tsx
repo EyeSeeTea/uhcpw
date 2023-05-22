@@ -53,6 +53,7 @@ const Text = styled(Typography)`
 const Image = styled.img`
     width: 100%;
     height: 300px;
+    object-fit: cover;
 `;
 
 const Row = styled.div`

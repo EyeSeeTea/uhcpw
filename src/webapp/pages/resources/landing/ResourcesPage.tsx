@@ -5,8 +5,7 @@ import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
 import { CountryAnalysis } from "../../../components/resources/country-analysis/CountryAnalysis";
-import { Multimedia } from "../../../components/resources/multimedia/Multimedia";
-import { News } from "../../../components/resources/news/News";
+import { MultimediaItem } from "../../../components/resources/multimedia/MultimediaItem";
 import { NewsItem } from "../../../components/resources/news/NewsItem";
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
@@ -15,8 +14,9 @@ import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {
-    const { countryAnalysis, filters, comparativeAnalysis, news, multimedia, onGetResources } = useResources();
+    const { filters, resources, onGetResources } = useResources();
 
+    console.log({ resources });
     return (
         <Layout>
             <TitleContainer>
@@ -29,45 +29,52 @@ export const ResourcesPage: React.FC = React.memo(() => {
                 <Grid container>
                     <ResourcesFilters filters={filters} onGetResources={onGetResources} />
 
-                    <Grid item md={6} xs={12}>
-                        <CountryAnalysis countryAnalysis={countryAnalysis} />
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                        <ResourceGroup
-                            title={i18n.t("Comparative Analysis")}
-                            seeAllUrl={"/resources/comparative-analysis"}
-                        >
-                            {comparativeAnalysis.map(comparativeItem => {
-                                return (
-                                    <Grid item xs={6} md={3} key={comparativeItem.id}>
-                                        <ComparativeAnalysisItem comparativeAnalysis={comparativeItem} minimalVersion />
-                                    </Grid>
-                                );
-                            })}
-                        </ResourceGroup>
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                        <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/mutimedia"}>
-                            {news.map(newsItem => {
-                                return (
-                                    <Grid item xs={12} key={newsItem.id}>
-                                        <NewsItem news={newsItem} />
-                                    </Grid>
-                                );
-                            })}
-                        </ResourceGroup>
-                    </Grid>
-                    <Grid item md={6} xs={12}>
-                        <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
-                            {news.map(newsItem => {
-                                return (
-                                    <Grid item xs={12} key={newsItem.id}>
-                                        <NewsItem news={newsItem} />
-                                    </Grid>
-                                );
-                            })}
-                        </ResourceGroup>
-                    </Grid>
+                    {resources && (
+                        <>
+                            <Grid item md={6} xs={12}>
+                                <CountryAnalysis countryAnalysis={resources.countryAnalysis} />
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <ResourceGroup
+                                    title={i18n.t("Comparative Analysis")}
+                                    seeAllUrl={"/resources/comparative-analysis"}
+                                >
+                                    {resources.comparativeAnalysis.map(comparativeItem => {
+                                        return (
+                                            <Grid item xs={6} md={3} key={comparativeItem.id}>
+                                                <ComparativeAnalysisItem
+                                                    comparativeAnalysis={comparativeItem}
+                                                    minimalVersion
+                                                />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
+                                    {resources.multimedia.map(multimediaItem => {
+                                        return (
+                                            <Grid item xs={12} key={multimediaItem.id}>
+                                                <MultimediaItem multimedia={multimediaItem} />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
+                                    {resources.news.map(newsItem => {
+                                        return (
+                                            <Grid item xs={12} key={newsItem.id}>
+                                                <NewsItem news={newsItem} />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
+                            </Grid>
+                        </>
+                    )}
                 </Grid>
             </SelectsContainer>
         </Layout>

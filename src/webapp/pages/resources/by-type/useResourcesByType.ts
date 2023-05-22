@@ -9,12 +9,14 @@ export function useResourcesByType(category?: string): ResourcesByTypeState {
     const filters = useResourcesFilters(category);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [items, setItems] = useState<Resource[]>([]);
+    const [items, setItems] = useState<Resource[] | undefined>(undefined);
 
     const [title, setTitle] = useState<string>("");
 
     useEffect(() => {
-        setItems([]);
+        if (filters.category.selected) {
+            setItems([]);
+        }
     }, [filters.category.selected]);
 
     useEffect(() => {

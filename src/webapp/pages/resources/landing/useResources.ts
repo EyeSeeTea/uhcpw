@@ -1,41 +1,27 @@
 import { useMemo } from "react";
-import { ComparativeAnalysis, News } from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { useResourcesByType } from "../by-type/useResourcesByType";
 import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
     const { filters, items, onGetResources } = useResourcesByType();
 
-    const comparativeAnalysis = useMemo(() => {
-        return items.filter(item => item.kind === "comparative-analysis").slice(0, 4) as ComparativeAnalysis[];
+    const resources = useMemo(() => {
+        return items
+            ? {
+                  countryAnalysis,
+                  comparativeAnalysis: items
+                      .filter(item => item.kind === "comparative-analysis")
+                      .slice(0, 4) as ComparativeAnalysis[],
+                  news: items.filter(item => item.kind === "news").slice(0, 1) as News[],
+                  multimedia: items.filter(item => item.kind === "multimedia").slice(0, 1) as Multimedia[],
+              }
+            : undefined;
     }, [items]);
-
-    const news = useMemo(() => {
-        return items.filter(item => item.kind === "news").slice(0, 1) as News[];
-    }, [items]);
-
-    // useEffect(() => {
-    //     setCountryAnalysis(
-    //         countryAnalysisOriginals.filter(
-    //             item =>
-    //                 (!filters.category.selected || item.category === filters.category.selected) &&
-    //                 (!filters.theme.selected || item.theme === filters.theme.selected) &&
-    //                 (!filters.country.selected ||
-    //                     filters.country.selected?.length === 0 ||
-    //                     filters.country.selected.includes(item.code)) &&
-    //                 (!filters.year.selected ||
-    //                     filters.year.selected?.length === 0 ||
-    //                     filters.year.selected.includes(item.year))
-    //         )
-    //     );
-    // }, [filters.category.selected, filters.theme.selected, filters.country.selected, filters.year.selected]);
 
     return {
-        countryAnalysis,
         filters,
-        comparativeAnalysis,
-        news,
-        multimedia,
+        resources,
         onGetResources,
     };
 }
@@ -120,23 +106,5 @@ const countryAnalysis: CountryAnalysisItem[] = [
         category: "2",
         theme: "1",
         year: "2020",
-    },
-];
-
-const multimedia = [
-    {
-        title: "text example 1 text example 1",
-        img: "https://picsum.photos/seed/example-multimedia-1/400/300",
-        date: "2022",
-    },
-    {
-        title: "text example 2 text example 2",
-        img: "https://picsum.photos/seed/example-multimedia-2/400/300",
-        date: "2022",
-    },
-    {
-        title: "text example 3 text example 3",
-        img: "https://picsum.photos/seed/example-multimedia-3/400/300",
-        date: "2022",
     },
 ];

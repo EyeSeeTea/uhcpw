@@ -1,10 +1,8 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Box, Fab, Grid, Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
-import { Avatar } from "material-ui";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 export interface ResourceGroupProps {
     title: string;
@@ -22,9 +20,15 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(({ title, 
         <Container>
             <Row>
                 <Typography variant="h5">{title}</Typography>
-                <Avatar backgroundColor={colors.accentPrimary} size={22} style={{ marginLeft: 20 }}>
+                <Box width={2} />
+                <Fab
+                    aria-label={`go to ${title}`}
+                    color="primary"
+                    size="small"
+                    style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                >
                     <ChevronRightSharpIcon onClick={onSeeAll} />
-                </Avatar>
+                </Fab>
             </Row>
             <Grid container spacing={0}>
                 {children}

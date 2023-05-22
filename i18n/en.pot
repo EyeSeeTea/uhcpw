@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-16T09:37:31.277Z\n"
-"PO-Revision-Date: 2023-05-16T09:37:31.277Z\n"
+"POT-Creation-Date: 2023-05-22T09:55:42.107Z\n"
+"PO-Revision-Date: 2023-05-22T09:55:42.107Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -345,15 +345,7 @@ msgstr ""
 msgid "Select year"
 msgstr ""
 
-msgid "Comparative Analysis"
-msgstr ""
-
-msgid "Country analysis"
-msgstr ""
-
-msgid ""
-"Explore reports on financial protection for 21 countries. Also included are "
-"reports summaries and infographics"
+msgid "Country Analysis"
 msgstr ""
 
 msgid "Multimedia"
@@ -366,9 +358,6 @@ msgid "Theme"
 msgstr ""
 
 msgid "Select theme"
-msgstr ""
-
-msgid "See All"
 msgstr ""
 
 msgid "All"
@@ -391,4 +380,7 @@ msgid "Switch row/column"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2022)"
+msgstr ""
+
+msgid "Comparative Analysis"
 msgstr ""

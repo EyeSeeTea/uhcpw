@@ -24,6 +24,7 @@ export interface News {
 
 export interface Multimedia {
     kind: "multimedia";
+    id: string;
     title: string;
     url: string;
     image: string;

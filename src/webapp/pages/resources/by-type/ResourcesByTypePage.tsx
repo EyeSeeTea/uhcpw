@@ -29,17 +29,20 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                     <ResourcesFilters filters={filters} onGetResources={onGetResources} />
                 </SelectsContainer>
                 <Container maxWidth="xl">
-                    <Grid container spacing={5}>
-                        {items.map((item, index) => {
-                            const sizes = getSizes(item);
+                    {
+                        <Grid container spacing={5}>
+                            {items &&
+                                items.map((item, index) => {
+                                    const sizes = getSizes(item);
 
-                            return (
-                                <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
-                                    <Item resource={item} />
-                                </Grid>
-                            );
-                        })}
-                    </Grid>
+                                    return (
+                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
+                                            <Item resource={item} />
+                                        </Grid>
+                                    );
+                                })}
+                        </Grid>
+                    }
                 </Container>
 
                 <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
