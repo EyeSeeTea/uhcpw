@@ -307,6 +307,7 @@ function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "comparative-analysis" as const,
+            id: `id${index}`,
             image: `http://image${index}.png`,
             theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
             links: [
@@ -347,6 +348,7 @@ function givenANewsResources(count: number): News[] {
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "news" as const,
+            id: `id${index}`,
             image: `http://image${index}.png`,
             title: `title ${index}`,
             date: `${index} January 2023`,
@@ -367,6 +369,7 @@ function givenAMultimediaResources(count: number): Multimedia[] {
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "multimedia" as const,
+            id: `id${index}`,
             image: `http://image${index}.png`,
             title: `title ${index}`,
             date: `${index} January 2023`,
