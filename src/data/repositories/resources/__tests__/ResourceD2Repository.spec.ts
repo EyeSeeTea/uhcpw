@@ -1,10 +1,11 @@
-import { ComparativeAnalysis, News } from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
 import { ResourceD2Repository, resourceDataElements, resourcesProgram } from "../ResourceD2Repository";
 import comparativeAnalysis from "./data/ComparativeAnalysis.json";
 import news from "./data/News.json";
+import multimedia from "./data/Multimedia.json";
 
 const mockWebServer = new MockWebServer();
 const api = getD2APiFromInstance(new Instance({ url: "/" }));
@@ -90,6 +91,17 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(`${resourceDataElements.category}:eq:news`);
         });
     });
+    describe("Multimedia", () => {
+        it("should return multimedia properly", async () => {
+            givenAMultimedia();
+
+            const response = await resourceRepository.get({ category: "multimedia" }).runAsync();
+
+            const multimedia = (response.data || []) as Multimedia[];
+
+            verifyMultimedia(multimedia[0]);
+        });
+    });
 });
 
 function givenAComparativeAnalysis() {
@@ -110,6 +122,17 @@ function givenANews() {
             endpoint: `/api/events`,
             httpStatusCode: 200,
             response: news,
+        },
+    ]);
+}
+
+function givenAMultimedia() {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/events`,
+            httpStatusCode: 200,
+            response: multimedia,
         },
     ]);
 }
@@ -164,4 +187,15 @@ function verifyNews(newsItem?: News) {
         "https://www.who.int/europe/news/item/03-05-2023-countries-hosting-ukrainian-refugees-reaffirm-their-commitment-to-meeting-their-health-needs"
     );
     expect(newsItem.date).toBe("03 May 2023");
+}
+
+function verifyMultimedia(multimediaItem?: Multimedia) {
+    if (!multimediaItem) fail("Multimedia is undefined");
+
+    expect(multimediaItem.kind).toBe("multimedia");
+    expect(multimediaItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=pqv58NbllXi");
+    expect(multimediaItem.title).toBe("Financial protection in Spain: a pillar of universal health coverage");
+    expect(multimediaItem.url).toBe("https://www.youtube.com/watch?v=LcltHPiuHqY");
+    expect(multimediaItem.date).toBe("09 May 2021");
+    expect(multimediaItem.theme).toBe("Financial Protection");
 }
