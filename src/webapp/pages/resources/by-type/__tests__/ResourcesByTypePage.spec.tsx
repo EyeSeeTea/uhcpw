@@ -186,6 +186,17 @@ describe("ResourcesByTypePage for ", () => {
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
+        it("should render expected item count", async () => {
+            givenAMultimediaResources(5);
+
+            renderPage("multimedia");
+
+            await selectFiltersAndSearch();
+
+            await screen.findAllByRole("listitem");
+
+            expect(await screen.findAllByRole("listitem")).toHaveLength(5);
+        });
     });
 });
 

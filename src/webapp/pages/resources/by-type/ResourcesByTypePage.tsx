@@ -58,7 +58,7 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
         case "news":
             return <NewsItem news={resource} />;
         case "multimedia":
-            return <div></div>;
+            return <div role="listitem"></div>;
     }
 });
 
