@@ -25,7 +25,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
             </SearchContainer>
             <CountryAnalysisSection>
                 <SelectsContainer maxWidth="xl">
-                    <ResourcesFilters filters={filters} />
+                    <ResourcesFilters filters={filters} onGetResources={() => {}} />
                 </SelectsContainer>
                 <Container maxWidth="xl">
                     <CountryAnalysis countryAnalysis={countryAnalysis} />

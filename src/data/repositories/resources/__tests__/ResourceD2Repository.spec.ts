@@ -1,9 +1,10 @@
-import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, News } from "../../../../domain/entities/resources/Resource";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
 import { ResourceD2Repository, resourceDataElements, resourcesProgram } from "../ResourceD2Repository";
 import comparativeAnalysis from "./data/ComparativeAnalysis.json";
+import news from "./data/News.json";
 
 const mockWebServer = new MockWebServer();
 const api = getD2APiFromInstance(new Instance({ url: "/" }));
@@ -71,6 +72,24 @@ describe("Resource repository", () => {
             );
         });
     });
+    describe("News", () => {
+        it("should return comparative analysis properly", async () => {
+            givenANews();
+
+            const response = await resourceRepository.get({ category: "news" }).runAsync();
+
+            const news = (response.data || []) as News[];
+
+            verifyNews(news[0]);
+        });
+        it("should send expected filter for news", async () => {
+            givenANews();
+
+            await resourceRepository.get({ category: "news" }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(`${resourceDataElements.category}:eq:news`);
+        });
+    });
 });
 
 function givenAComparativeAnalysis() {
@@ -80,6 +99,17 @@ function givenAComparativeAnalysis() {
             endpoint: `/api/events`,
             httpStatusCode: 200,
             response: comparativeAnalysis,
+        },
+    ]);
+}
+
+function givenANews() {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/events`,
+            httpStatusCode: 200,
+            response: news,
         },
     ]);
 }
@@ -120,4 +150,18 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
         expect(link.language).toBe(expectedLink?.language);
         expect(link.url).toBe(expectedLink?.url);
     });
+}
+
+function verifyNews(newsItem?: News) {
+    if (!newsItem) fail("News is undefined");
+
+    expect(newsItem.kind).toBe("news");
+    expect(newsItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=L7pJLhVhB1W");
+    expect(newsItem.title).toBe(
+        "Countries hosting Ukrainian refugees reaffirm their commitment to meeting their health needs"
+    );
+    expect(newsItem.url).toBe(
+        "https://www.who.int/europe/news/item/03-05-2023-countries-hosting-ukrainian-refugees-reaffirm-their-commitment-to-meeting-their-health-needs"
+    );
+    expect(newsItem.date).toBe("03 May 2023");
 }
