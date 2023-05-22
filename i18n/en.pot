@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-22T09:55:42.107Z\n"
-"PO-Revision-Date: 2023-05-22T09:55:42.107Z\n"
+"POT-Creation-Date: 2023-05-22T11:06:40.944Z\n"
+"PO-Revision-Date: 2023-05-22T11:06:40.944Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -348,9 +348,6 @@ msgstr ""
 msgid "Country Analysis"
 msgstr ""
 
-msgid "Multimedia"
-msgstr ""
-
 msgid "News"
 msgstr ""
 
@@ -383,4 +380,7 @@ msgid "WHO Barcelona Office for Health Systems Financing (2022)"
 msgstr ""
 
 msgid "Comparative Analysis"
+msgstr ""
+
+msgid "Multimedia"
 msgstr ""
