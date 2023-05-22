@@ -186,6 +186,26 @@ describe("ResourcesByTypePage for ", () => {
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
+        it("should render expected item count", async () => {
+            givenAMultimediaResources(5);
+
+            renderPage("multimedia");
+
+            await selectFiltersAndSearch();
+
+            await screen.findAllByRole("listitem");
+
+            expect(await screen.findAllByRole("listitem")).toHaveLength(5);
+        });
+        it("should render expected items content", async () => {
+            const resources = givenAMultimediaResources(5);
+
+            renderPage("multimedia");
+
+            await selectFiltersAndSearch();
+
+            await verifyMultimediaItems(resources);
+        });
     });
 });
 
@@ -216,6 +236,32 @@ async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) 
 }
 
 async function verifyNewsItems(resources: News[]) {
+    const items = await screen.findAllByRole("listitem");
+
+    resources.forEach((resource, index) => {
+        const item = items[index];
+
+        if (item === undefined) {
+            throw new Error(`Index ${index} not found in items`);
+        }
+
+        const itemScope = within(item);
+
+        const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
+        expect(image.src).toContain(resource.image);
+
+        const links = itemScope.queryAllByRole("link");
+        expect(itemScope.queryAllByRole("link").length).toBeGreaterThan(0);
+
+        links.forEach(link => {
+            expect(link).toHaveAttribute("href", resource.url);
+        });
+
+        itemScope.getByText(resource.date);
+    });
+}
+
+async function verifyMultimediaItems(resources: Multimedia[]) {
     const items = await screen.findAllByRole("listitem");
 
     resources.forEach((resource, index) => {
@@ -321,6 +367,11 @@ function givenAMultimediaResources(count: number): Multimedia[] {
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "multimedia" as const,
+            image: `http://image${index}.png`,
+            title: `title ${index}`,
+            date: `${index} January 2023`,
+            url: `http://news-${index}.html`,
+            theme: `test theme`,
         };
     });
 
