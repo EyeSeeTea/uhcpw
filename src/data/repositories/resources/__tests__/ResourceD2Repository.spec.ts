@@ -101,6 +101,15 @@ describe("Resource repository", () => {
 
             verifyMultimedia(multimedia[0]);
         });
+        it("should send expected filter for multimedia", async () => {
+            givenAMultimedia();
+
+            await resourceRepository.get({ category: "multimedia" }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
+                `${resourceDataElements.category}:eq:multimedia`
+            );
+        });
     });
 });
 
