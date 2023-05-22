@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2023-05-12T08:09:42.040Z\n"
+"POT-Creation-Date: 2023-05-22T14:22:51.359Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -11,15 +11,21 @@ msgstr ""
 msgid "All countries"
 msgstr ""
 
-msgid "Experts network"
+msgid "Financial protection expert network"
+msgstr ""
+
+msgid ""
+"Experts working with the WHO Barcelona Office to access finantial protection "
+"and coverage policy at country level"
+msgstr ""
+
+msgid "Select Countries"
 msgstr ""
 
 msgid "Countries"
 msgstr ""
 
-msgid ""
-"❝ The WHO Barcelona Office is a centre of excellence in health financing for "
-"universal health coverage ❞"
+msgid "WHO Barcelona Office for Health Systems Stengthening"
 msgstr ""
 
 msgid ""
@@ -51,7 +57,10 @@ msgid ""
 "Country Health Policies and Systems of the WHO Region Office for Europe."
 msgstr ""
 
-msgid "Our Team"
+msgid "The WHO Barcelona Office team"
+msgstr ""
+
+msgid "Staff and consultants"
 msgstr ""
 
 msgid "Add"
@@ -314,6 +323,9 @@ msgid "Search"
 msgstr ""
 
 msgid "Regions"
+msgstr ""
+
+msgid "Glossary of terms"
 msgstr ""
 
 msgid "Back"

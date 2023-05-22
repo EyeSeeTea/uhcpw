@@ -1,23 +1,23 @@
 import React, { useCallback, useEffect, useState } from "react";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/styles";
-import { Paper, Input, Theme } from "@material-ui/core";
+import { Paper, Input } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 import i18n from "../../../locales";
 import _ from "lodash";
 
-const useStyles = makeStyles((theme: Theme) => ({
+const useStyles = makeStyles(() => ({
     root: {
         borderRadius: "20px",
         alignItems: "center",
-        padding: theme.spacing(1),
+        padding: "10px",
         display: "flex",
         flexBasis: 420,
         border: "1px solid #d6d3d3",
     },
     icon: {
-        marginRight: theme.spacing(1),
-        color: theme.palette.text.primary,
+        marginRight: "10px",
+        color: "gray",
     },
     input: {
         flexGrow: 1,

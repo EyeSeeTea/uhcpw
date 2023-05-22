@@ -1,0 +1,118 @@
+[
+    {
+        "title": "Ability to pay for health care",
+        "text": "Ability to pay refers to all the financial resources at a household’s disposal. When monitoring financial protection, an ability to pay approach assumes that all of a household’s resources are available to pay for health care, in contrast to a capacity to pay approach (see below), which assumes that some of a household’s resources must go towards meeting basic needs. In practice, measures of ability to pay are often derived from household survey data on reported levels of consumption expenditure or income over a given time period. The available data rarely capture all of the financial resources available to a household – for example, resources in the form of savings and investments."
+    },
+    {
+        "title": "Basic needs",
+        "text": "The minimum resources needed for sustenance, often understood as the consumption of goods such as food, clothing and shelter."
+    },
+    {
+        "title": "Basic needs line",
+        "text": "A measure of the level of personal or household income or consumption required to meet basic needs such as food, housing and utilities. Basic needs lines, like poverty lines, can be defined in different ways. They are used to measure impoverishing out-of-pocket payments. In this study the basic needs line is defined as the average amount spent on food, housing and utilities by households between the 25th and 35th percentiles of the household consumption distribution, adjusted for household size and composition. Basic needs line and poverty line are used interchangeably. See poverty line."
+    },
+    {
+        "title": "Budget",
+        "text": "See household budget."
+    },
+    {
+        "title": "Cap on benefits",
+        "text": "A mechanism to protect third party payers such as the government, a health insurance fund or a private insurance company. A cap on benefits is a maximum amount a third party payer is required to cover per item or service or in a given period of time. It is usually defined as an absolute amount. After the amount is reached, the user must pay all remaining costs. Sometimes referred to as a benefit maximum or ceiling."
+    },
+    {
+        "title": "Cap on user charges (co-payments)",
+        "text": "A mechanism to protect people from out-of-pocket payments. A cap on user charges is a maximum amount a person or household is required to pay out of pocket through user charges per item or service or in a given period of time. It can be defined as an absolute amount or as a share of a person’s income. Sometimes referred to as an out of pocket maximum or ceiling."
+    },
+    {
+        "title": "Capacity to pay for health care",
+        "text": "In this study capacity to pay is measured as a household’s consumption minus a normative (standard) amount to cover basic needs such as food, housing and utilities. This amount is deducted consistently for all households. It is referred to as a poverty line or basic needs line."
+    },
+    {
+        "title": "Catastrophic out-of-pocket payments",
+        "text": "Also referred to as catastrophic health spending. An indicator of financial protection. Catastrophic out-of-pocket payments can be measured in different ways. This study defines them as out-of-pocket payments that exceed 40% of a household’s capacity to pay for health care. The incidence of catastrophic health spending includes households who are impoverished and households who are further impoverished."
+    },
+    {
+        "title": "Consumption",
+        "text": "Also referred to as consumption expenditure. Total household consumption is the monetary value of all items consumed by a household during a given period. It includes the imputed value of items that are not purchased but are procured for consumption in other ways (for example, home-grown produce)."
+    },
+    {
+        "title": "Co-payments (user charges or user fees)",
+        "text": "Money people are required to pay at the point of using health services covered by a third party such as the government, a health insurance fund or a private insurance company. Fixed co-payments are a flat amount per good or service; percentage co-payments (also referred to as co-insurance) require the user to pay a share of the good or service price; deductibles require users to pay up to a fixed amount first, before the third party will cover any costs. Other types of user charges include balance billing (a system in which providers are allowed to charge patients more than the price or tariff determined by the third party payer), extra billing (billing for services that are not included in the benefits package) and reference pricing (a system in which people are required to pay any difference between the price or tariff determined by the third party payer – the reference price – and the retail price)."
+    },
+    {
+        "title": "Equivalent person",
+        "text": "To ensure comparisons of household spending account for differences in household size and composition, equivalence scales are used to calculate spending levels per equivalent adult in a household. This review uses the Oxford scale (also known as the Organisation for Economic Co-operation and Development equivalence scale), in which the first adult in a household counts as one equivalent adult, subsequent household members aged 13 years or over count as 0.7 equivalent adults and children under 13 count as 0.5 equivalent adults."
+    },
+    {
+        "title": "Exemption from user charges (co-payments)",
+        "text": "A mechanism to protect people from out-of-pocket payments. Exemptions can apply to groups of people, conditions, diseases, goods or services."
+    },
+    {
+        "title": "Financial hardship",
+        "text": "People experience financial hardship when out-of-pocket payments are large in relation to their ability to pay for health care."
+    },
+    {
+        "title": "Financial protection",
+        "text": "The absence of financial hardship when using health services. Where health systems fail to provide adequate financial protection, households may not have enough money to pay for health care or to meet other basic needs. Lack of financial protection can lead to a range of negative health and economic consequences, potentially reducing access to health care, undermining health status, deepening poverty and exacerbating health and socioeconomic inequalities."
+    },
+    {
+        "title": "Further impoverished households",
+        "text": "Poor households (those whose equivalent person total consumption is below the poverty line or basic needs line) who incur out-of-pocket payments."
+    },
+    {
+        "title": "Health services",
+        "text": "Any good or service delivered in the health system, including medicines, medical products, diagnostic tests, dental care, outpatient care and inpatient care. Used interchangeably with health care."
+    },
+    {
+        "title": "Household budget",
+        "text": "Also referred to as total household consumption. The sum of the monetary value of all items consumed by the household during a given period and the imputed value of items that are not purchased but are procured for consumption in other ways."
+    },
+    {
+        "title": "Household budget survey",
+        "text": "Usually national sample surveys, often carried out by national statistical offices, to measure household consumption over a given period of time. Sometimes referred to as household consumption expenditure or household expenditure surveys. European Union countries are required to carry out a household budget survey at least once every five years."
+    },
+    {
+        "title": "Impoverished households",
+        "text": "Households who were non-poor before out-of-pocket payments, but are pushed below the poverty line or basic needs line after out-of-pocket payments."
+    },
+    {
+        "title": "Impoverishing out-of-pocket payments",
+        "text": "Also referred to as impoverishing health spending. An indicator of financial protection. Out-of-pocket payments that push people into poverty or deepen their poverty. A household is measured as being impoverished if its total consumption was above the national or international poverty line or basic needs line before out-of-pocket payments and falls below the line after out-of-pocket payments."
+    },
+    {
+        "title": "Informal payment",
+        "text": "a direct contribution made in addition to any contribution determined by the terms of entitlement, in cash or in kind, by patients or others acting on their behalf, to health care providers for services to which patients are entitled."
+    },
+    {
+        "title": "Out-of-pocket payments",
+        "text": "Also referred to as household expenditure (spending) on health. Any payment made by people at the time of using any health good or service provided by any type of provider. Out-of-pocket payments include: formal co-payments (user charges or user fees) for covered goods and services; formal payments for the private purchase of goods and services; and informal payments for covered or privately purchased goods and services. They exclude pre-payment (for example, taxes, contributions or premiums) and reimbursement of the household by a third party such as the government, a health insurance fund or a private insurance company."
+    },
+    {
+        "title": "Poverty line",
+        "text": "A level of personal or household income or consumption below which a person or household is classified as poor. Poverty lines are defined in different ways. This study uses basic needs line and poverty line interchangeably. See basic needs line."
+    },
+    {
+        "title": "Quintile",
+        "text": "One of five equal groups (fifths) of a population. This study commonly divides households into quintiles based on per equivalent person household consumption. The first quintile is the fifth of households with the lowest consumption, referred to in the study as the poorest quintile; the fifth quintile has the highest consumption, referred to in the study as the richest quintile."
+    },
+    {
+        "title": "Risk of impoverishment after out-of-pocket payments",
+        "text": "After paying out of pocket for health care, a household may be further impoverished, impoverished, at risk of impoverishment or not at risk of impoverishment. A household is at risk of impoverishment (or not at risk of impoverishment) if its total spending after out-of-pocket payments comes close to (or does not come close to) the poverty line or basic needs line."
+    },
+    {
+        "title": "Universal health coverage",
+        "text": "Everyone can use the quality health services they need without experiencing financial hardship."
+    },
+    {
+        "title": "Unmet need for health care",
+        "text": "An indicator of access to health care. Instances in which people need health care but do not receive it due to access barriers."
+    },
+    {
+        "title": "User charges",
+        "text": "Also referred to as user fees. See co-payments."
+    },
+    {
+        "title": "Utilities",
+        "text": "Water, electricity and fuels used for cooking and heating."
+    }
+]
