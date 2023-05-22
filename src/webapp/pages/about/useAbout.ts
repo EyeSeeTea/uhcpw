@@ -1,7 +1,7 @@
-import i18n from "@eyeseetea/feedback-component/locales";
 import { useCallback, useState } from "react";
 import { ResourcesState, Person } from "./AboutState";
 import { useCountryOptions } from "../../common/hooks/countries/useCountryOptions";
+import i18n from "../../../locales";
 
 export function useAbout(): ResourcesState {
     const { countryOptions, selectedCountry, onCountryChange } = useCountryOptions();
