@@ -7,6 +7,7 @@ import { ComparativeAnalysisItem } from "../../../components/resources/comparati
 import { CountryAnalysis } from "../../../components/resources/country-analysis/CountryAnalysis";
 import { Multimedia } from "../../../components/resources/multimedia/Multimedia";
 import { News } from "../../../components/resources/news/News";
+import { NewsItem } from "../../../components/resources/news/NewsItem";
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
@@ -38,7 +39,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                         >
                             {comparativeAnalysis.map(comparativeItem => {
                                 return (
-                                    <Grid item xs={3} key={comparativeItem.id}>
+                                    <Grid item xs={6} md={3} key={comparativeItem.id}>
                                         <ComparativeAnalysisItem comparativeAnalysis={comparativeItem} minimalVersion />
                                     </Grid>
                                 );
@@ -46,10 +47,26 @@ export const ResourcesPage: React.FC = React.memo(() => {
                         </ResourceGroup>
                     </Grid>
                     <Grid item md={6} xs={12}>
-                        <News newsItems={news} />
+                        <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/mutimedia"}>
+                            {news.map(newsItem => {
+                                return (
+                                    <Grid item xs={12} key={newsItem.id}>
+                                        <NewsItem news={newsItem} />
+                                    </Grid>
+                                );
+                            })}
+                        </ResourceGroup>
                     </Grid>
                     <Grid item md={6} xs={12}>
-                        <Multimedia multimediaItems={multimedia} />
+                        <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
+                            {news.map(newsItem => {
+                                return (
+                                    <Grid item xs={12} key={newsItem.id}>
+                                        <NewsItem news={newsItem} />
+                                    </Grid>
+                                );
+                            })}
+                        </ResourceGroup>
                     </Grid>
                 </Grid>
             </SelectsContainer>

@@ -1,11 +1,11 @@
-import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, News } from "../../../../domain/entities/resources/Resource";
 import { ResourcesFiltersState } from "../common/ResourcesFiltersState";
 
 export type ResourcesState = {
     countryAnalysis: CountryAnalysisItem[];
     filters: ResourcesFiltersState;
     comparativeAnalysis: ComparativeAnalysis[];
-    news: NewsItem[];
+    news: News[];
     multimedia: MultimediaItem[];
     onGetResources: () => void;
 };
@@ -25,12 +25,6 @@ export type ComparativeAnalysisState = {
     image: string;
     language: string;
     year: string;
-};
-
-export type NewsItem = {
-    title: string;
-    img: string;
-    date: string;
 };
 
 export type MultimediaItem = {

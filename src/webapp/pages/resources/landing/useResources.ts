@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, News } from "../../../../domain/entities/resources/Resource";
 import { useResourcesByType } from "../by-type/useResourcesByType";
 import { CountryAnalysisItem, ResourcesState } from "./ResourcesState";
 
@@ -10,7 +10,9 @@ export function useResources(): ResourcesState {
         return items.filter(item => item.kind === "comparative-analysis").slice(0, 4) as ComparativeAnalysis[];
     }, [items]);
 
-    console.log({ comparativeAnalysis });
+    const news = useMemo(() => {
+        return items.filter(item => item.kind === "news").slice(0, 1) as News[];
+    }, [items]);
 
     // useEffect(() => {
     //     setCountryAnalysis(
@@ -118,24 +120,6 @@ const countryAnalysis: CountryAnalysisItem[] = [
         category: "2",
         theme: "1",
         year: "2020",
-    },
-];
-
-const news = [
-    {
-        title: "text example 1 text example 1",
-        img: "https://picsum.photos/seed/example-news-1/400/300",
-        date: "2022",
-    },
-    {
-        title: "text example 2 text example 2",
-        img: "https://picsum.photos/seed/example-news-2/400/300",
-        date: "2022",
-    },
-    {
-        title: "text example 3 text example 3",
-        img: "https://picsum.photos/seed/example-news-3/400/300",
-        date: "2022",
     },
 ];
 

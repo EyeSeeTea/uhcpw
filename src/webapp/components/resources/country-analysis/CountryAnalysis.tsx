@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { CountryAnalysisItem } from "../../../pages/resources/landing/ResourcesState";
-import { SeeAll } from "../../see-all/SeeAll";
+import { ResourceGroup } from "../resource-group/ResourceGroup";
 
 export interface CountryAnalysisProps {
     countryAnalysis: CountryAnalysisItem[];
@@ -11,19 +11,7 @@ export interface CountryAnalysisProps {
 
 export const CountryAnalysis: React.FC<CountryAnalysisProps> = React.memo(({ countryAnalysis }) => {
     return (
-        <>
-            <ItemsTitleContainer>
-                <Typography variant="h6">{i18n.t("Country analysis")}</Typography>
-                <Row>
-                    <Typography variant="body2">
-                        {i18n.t(
-                            "Explore reports on financial protection for 21 countries. Also included are reports summaries and infographics"
-                        )}
-                    </Typography>
-                    <SeeAll textColor="blue" onClick={() => {}} />
-                </Row>
-            </ItemsTitleContainer>
-
+        <ResourceGroup title={i18n.t("Country Analysis")} seeAllUrl={"/resources/country-analysis"}>
             <Grid container spacing={5}>
                 {countryAnalysis.map((country, index) => {
                     return (
@@ -39,7 +27,7 @@ export const CountryAnalysis: React.FC<CountryAnalysisProps> = React.memo(({ cou
                     );
                 })}
             </Grid>
-        </>
+        </ResourceGroup>
     );
 });
 
@@ -48,19 +36,9 @@ const Flag = styled.img`
     border-radius: 10px;
 `;
 
-const ItemsTitleContainer = styled.div`
-    padding: 32px;
-`;
-
 const Center = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-`;
-
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
 `;
