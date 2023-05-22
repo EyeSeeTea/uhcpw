@@ -1,5 +1,5 @@
 import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
@@ -72,7 +72,7 @@ const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSiz
         case "news":
             return { lg: 4, md: 6, xs: 12 };
         case "multimedia":
-            return { lg: 2, md: 3, xs: 6 };
+            return { lg: 4, md: 6, xs: 12 };
     }
 };
 

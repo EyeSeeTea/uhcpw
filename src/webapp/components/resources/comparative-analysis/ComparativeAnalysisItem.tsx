@@ -4,13 +4,7 @@ import React from "react";
 import styled from "styled-components";
 import { ComparativeAnalysis } from "../../../../domain/entities/resources/Resource";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-
-const themeColor: Record<string, string> = {
-    "Financial Protection": "#008ad7",
-    "Resilience and financial sustainability": "#4fad56",
-    "Spending on Health": "#0360a7",
-    "Voluntary Health Insurance": "#ff8d4e",
-};
+import { Theme } from "../theme/Theme";
 
 export interface CountryAnalysisProps {
     comparativeAnalysis: ComparativeAnalysis;
@@ -34,12 +28,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
                             );
                         })}
                     </Column>
-
-                    <Tag background={themeColor[comparativeAnalysis.theme]}>
-                        <Typography variant="body2" style={{ color: "white" }} align="center">
-                            {comparativeAnalysis.theme}
-                        </Typography>
-                    </Tag>
+                    <Theme theme={comparativeAnalysis.theme} />
                 </Row>
                 <Box height={6} />
                 <Typography variant="body2">{comparativeAnalysis.text}</Typography>
@@ -73,13 +62,4 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
-`;
-
-const Tag = styled.div<{ background?: string }>`
-    border-radius: 20px;
-    background: ${props => props.background || "red"};
-    color: #174587;
-    padding: 4px 16px;
-    display: inline-block;
-    margin-left: 16px;
 `;

@@ -133,7 +133,7 @@ export class ResourceD2Repository implements ResourceRepository {
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             title,
             url,
-            date: moment(new Date(event.eventDate)).format("DD MMMM YYYY"),
+            date: moment(new Date(event.eventDate)).format("YYYY"),
             theme,
         };
     }

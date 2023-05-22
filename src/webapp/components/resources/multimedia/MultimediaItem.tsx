@@ -3,6 +3,7 @@ import { Box, Card, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { Multimedia } from "../../../../domain/entities/resources/Resource";
+import { Theme } from "../theme/Theme";
 
 export interface CountryAnalysisProps {
     multimedia: Multimedia;
@@ -18,7 +19,7 @@ export const MultimediaItem: React.FC<CountryAnalysisProps> = React.memo(({ mult
 
                 <Box height={20} />
                 <Row>
-                    <Typography>{news.theme}</Typography>
+                    <Theme theme={news.theme} />
                     <Text variant="body1" gutterBottom>
                         {news.date}
                     </Text>
