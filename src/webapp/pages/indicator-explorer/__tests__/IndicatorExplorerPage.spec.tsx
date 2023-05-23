@@ -3,7 +3,7 @@ import { BoundFunctions, queries, screen, waitFor, within } from "@testing-libra
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceThemeD2Repository } from "../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../domain/entities/Future";
-import { customRenderWithRouterMatch } from "../../../../utils/tests";
+import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
 import { IndicatorExplorerPage } from "../IndicatorExplorerPage";
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";

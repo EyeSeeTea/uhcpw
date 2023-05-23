@@ -15,6 +15,7 @@ export function useMultiCountryOptionsV2() {
                 const countryOptions = countries.map(country => ({
                     id: country.id,
                     name: country.name,
+                    code: country.code,
                     parents: [
                         { id: "all", name: i18n.t("All countries") },
                         ...country.parents.filter(parent =>

@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { customRender } from "../../../../utils/tests";
+import { customRender } from "../../../../utils/tests-ui";
 import { CountryOption, CountrySelector } from "../CountrySelector";
 
 const countries: CountryOption[] = [

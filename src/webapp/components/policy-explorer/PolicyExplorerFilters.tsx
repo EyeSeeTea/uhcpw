@@ -29,6 +29,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
             <Grid item md={4} xs={6}>
                 <Center>
                     <CountrySelector
+                        fullWidth
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}

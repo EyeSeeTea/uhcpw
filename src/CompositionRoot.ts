@@ -24,6 +24,8 @@ import { ResourceThemeD2Repository } from "./data/repositories/resources/Resourc
 import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
 import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
+import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
+import { PersonD2Repository } from "./data/repositories/PersonD2Repository";
 
 function initializeRepositories(api: D2Api, instance: Instance) {
     return {
@@ -38,6 +40,7 @@ function initializeRepositories(api: D2Api, instance: Instance) {
         resource: new ResourceD2Repository(api),
         resourceCategory: new ResourceCategoryD2Repository(api),
         resourceTheme: new ResourceThemeD2Repository(api),
+        person: new PersonD2Repository(api),
     };
 }
 
@@ -71,6 +74,9 @@ export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesT
             get: new GetResourcesUseCase(repositories.resource),
             getCategories: new GetResourceCategoriesUseCase(repositories.resourceCategory),
             getThemes: new GetResourceThemesUseCase(repositories.resourceTheme),
+        },
+        about: {
+            getPersons: new GetPersonsUseCase(repositories.person),
         },
     };
 }

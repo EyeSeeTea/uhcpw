@@ -1,24 +1,11 @@
-import { Option } from "../../components/dropdown/Option";
+import { Person } from "../../../domain/entities/Person";
+import { CountryFilterState } from "../../common/state/state";
 
 export type ResourcesState = {
     team: Person[];
     experts: Person[];
-    selectCountries: Option<string>[];
-    selectedCountry: string | undefined;
-    onCountryChange: (country: string | undefined) => void;
+    countryFilter: CountryFilterState;
     filters: string[];
     selectedFilter: string;
     onFilterChange: (value: string) => void;
-};
-
-export type Person = {
-    image: string;
-    firstName: string;
-    lastName: string;
-    position: string;
-    linkedin: string;
-    email: string;
-    twitter?: string;
-    countryCode?: string;
-    country?: string;
 };

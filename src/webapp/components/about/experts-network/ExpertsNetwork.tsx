@@ -2,24 +2,22 @@ import { Box, Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
-import { Person } from "../../../pages/about/AboutState";
-import { Dropdown } from "../../dropdown/Dropdown";
-import { Option } from "../../dropdown/Option";
 import { ItemPerson } from "../person/ItemPerson";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { CountryFilterState } from "../../../common/state/state";
+import { CountrySelector } from "../../country-selector/CountrySelector";
+import { Person } from "../../../../domain/entities/Person";
 
 export interface ExpertsNetworkProps {
     members: Person[];
-    selectCountries: Option<string>[];
-    selectedCountry: string | undefined;
-    onCountryChange: (value: string | undefined) => void;
+    countryFilter: CountryFilterState;
     filters: string[];
     selectedFilter: string;
     onFilterChange: (value: string) => void;
 }
 
 export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
-    ({ members, selectCountries, selectedCountry, onCountryChange, filters, selectedFilter, onFilterChange }) => {
+    ({ members, countryFilter, filters, selectedFilter, onFilterChange }) => {
         return (
             <>
                 <ItemsTitleContainer>
@@ -31,14 +29,13 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                     </Subtitle>
                 </ItemsTitleContainer>
 
-                <Row>
-                    <StyledDropdown
-                        placeholder={i18n.t("Select Countries")}
-                        label={i18n.t("Countries")}
-                        options={selectCountries}
-                        value={selectedCountry}
-                        onChange={onCountryChange}
-                        width="250px"
+                <Row style={{ padding: "16px 32px" }}>
+                    <CountrySelector
+                        countries={countryFilter.options}
+                        selectedIds={countryFilter.selected}
+                        onSelectedIdsChange={countryFilter.onSelectedChange}
+                        groupedByIncome={countryFilter.groupedByIncome}
+                        onGroupedByIncomeChange={countryFilter.onGroupedByIncomeChange}
                     />
 
                     <Box width={4} />
@@ -59,7 +56,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                 <Grid container spacing={8} style={{ marginBottom: 6 }}>
                     {members.map((item, index) => {
                         return (
-                            <Grid key={index} item>
+                            <Grid key={index} item lg={3} md={4} xs={6}>
                                 <ItemPerson person={item} isExpert />
                             </Grid>
                         );
@@ -96,8 +93,4 @@ export const FilterButton = styled(Button)<{ selected: boolean }>`
     min-width: 40px;
     padding: 2px;
     margin: 4px 4px 10px;
-`;
-
-const StyledDropdown = styled(Dropdown)`
-    max-width: 200px;
 `;

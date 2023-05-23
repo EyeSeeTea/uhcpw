@@ -6,4 +6,5 @@ export type ResourcesByTypeState = {
     title: string;
     filters: ResourcesFiltersState;
     items: Resource[];
+    onGetResources: () => void;
 };

@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { Person } from "../../../pages/about/AboutState";
+import { Person } from "../../../../domain/entities/Person";
 
 export interface ItemPersonProps {
     person: Person;
@@ -10,7 +10,7 @@ export interface ItemPersonProps {
 
 export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExpert }) => {
     return (
-        <Center>
+        <Center role="listitem">
             <Item>
                 <Image src={person.image} alt={`${person.firstName} ${person.lastName}`} />
                 <Row>
@@ -30,11 +30,9 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                         <Typography variant="body2" gutterBottom>
                             {person.position}
                         </Typography>
-                        {
-                            <Typography variant="body2" gutterBottom>
-                                {person.country}
-                            </Typography>
-                        }
+                        <Typography variant="body2" gutterBottom>
+                            {person.country}
+                        </Typography>
                     </InfoContainer>
                 </Row>
             </Item>
@@ -66,8 +64,8 @@ const Item = styled.div`
 `;
 
 const Image = styled.img`
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     margin-bottom: 6px;
 `;
@@ -81,4 +79,5 @@ const InfoContainer = styled.div`
 const NameContainer = styled.div<{ isExpert: boolean }>`
     display: flex;
     flex-direction: ${props => (props.isExpert ? "row" : "column")};
+    align-items: ${props => (props.isExpert ? "flex-start" : "center")};
 `;

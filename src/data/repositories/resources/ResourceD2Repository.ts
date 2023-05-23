@@ -1,11 +1,12 @@
 import _ from "lodash";
+import moment from "moment";
 import { FutureData } from "../../../domain/entities/Future";
-import { ComparativeAnalysis, Resource } from "../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, Multimedia, News, Resource } from "../../../domain/entities/resources/Resource";
 import { ResourceFilters, ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
-const resourceDataElements: Record<string, string> = {
+export const resourceDataElements: Record<string, string> = {
     category: "iO4ThHtWZ8M",
     theme: "TTAQLTta8JS",
     image: "uund7zjS1Yt",
@@ -20,8 +21,7 @@ const resourceDataElements: Record<string, string> = {
     link4Language: "QlRpFiResvs",
 };
 
-const resourcesProgram = "wWo0lhm5GsY";
-const globalOrgUnit = "H8RixfF8ugH";
+export const resourcesProgram = "wWo0lhm5GsY";
 
 export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
@@ -44,12 +44,13 @@ export class ResourceD2Repository implements ResourceRepository {
                 fields: eventsFields,
                 skipPaging: true,
                 program: resourcesProgram,
-                orgUnit: globalOrgUnit,
                 startDate: startYear ? `${startYear}-01-01` : undefined,
-                endDate: endYear ? `${endYear}-01-31` : undefined,
+                endDate: endYear ? `${endYear}-12-31` : undefined,
                 filter,
             })
-        ).map(response => this.buildResources(response.events));
+        ).map(response => {
+            return this.buildResources(response.events);
+        });
     }
 
     private buildResources(events: D2Event[]): Resource[] {
@@ -61,6 +62,10 @@ export class ResourceD2Repository implements ResourceRepository {
 
                     if (category === "comparative-analysis") {
                         return this.buildComparativeAnalysis(event);
+                    } else if (category === "news") {
+                        return this.buildNews(event);
+                    } else if (category === "multimedia") {
+                        return this.buildMultimedia(event);
                     } else {
                         return undefined;
                     }
@@ -102,6 +107,34 @@ export class ResourceD2Repository implements ResourceRepository {
                 .value(),
             text: title,
             year: new Date(event.eventDate).getFullYear().toString(),
+        };
+    }
+
+    private buildNews(event: D2Event): News {
+        const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
+        const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
+
+        return {
+            kind: "news",
+            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            title,
+            url,
+            date: moment(new Date(event.eventDate)).format("DD MMMM YYYY"),
+        };
+    }
+
+    private buildMultimedia(event: D2Event): Multimedia {
+        const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
+        const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
+        const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
+
+        return {
+            kind: "multimedia",
+            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            title,
+            url,
+            date: moment(new Date(event.eventDate)).format("YYYY"),
+            theme,
         };
     }
 

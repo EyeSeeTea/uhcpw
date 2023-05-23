@@ -78,6 +78,9 @@ msgstr ""
 msgid "15 June 2020"
 msgstr ""
 
+msgid "Countries"
+msgstr ""
+
 msgid "Select country"
 msgstr ""
 
