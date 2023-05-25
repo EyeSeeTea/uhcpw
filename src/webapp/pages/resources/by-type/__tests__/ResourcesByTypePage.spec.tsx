@@ -128,36 +128,6 @@ describe("ResourcesByTypePage for ", () => {
         });
     });
 
-    describe("country analysis", () => {
-        it("should render comparative analysis title", async () => {
-            givenACountryAnalysisResources(0);
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
-        });
-        it("should render any items if there not resources", async () => {
-            givenACountryAnalysisResources(0);
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
-        });
-        it("should render any items if get resources fail", async () => {
-            givenAnErrorToGetResources();
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
-        });
-    });
-
     describe("multimedia", () => {
         it("should render multimedia title", async () => {
             givenAMultimediaResources(0);
@@ -205,6 +175,47 @@ describe("ResourcesByTypePage for ", () => {
             await selectFiltersAndSearch();
 
             await verifyMultimediaItems(resources);
+        });
+    });
+
+    describe("country analysis", () => {
+        it("should render comparative analysis title", async () => {
+            givenACountryAnalysisResources(0);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
+        });
+        it("should render any items if there not resources", async () => {
+            givenACountryAnalysisResources(0);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        });
+        it("should render any items if get resources fail", async () => {
+            givenAnErrorToGetResources();
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        });
+        it("should render expected item count", async () => {
+            givenACountryAnalysisResources(5);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            await screen.findAllByRole("listitem");
+
+            expect(await screen.findAllByRole("listitem")).toHaveLength(5);
         });
     });
 });
