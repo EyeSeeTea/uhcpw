@@ -1,4 +1,4 @@
-import { Container, Typography } from "@material-ui/core";
+import { Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
@@ -23,62 +23,61 @@ export const ResourcesPage: React.FC = React.memo(() => {
             <SearchContainer>
                 <SearchInput value={""} />
             </SearchContainer>
-            <CountryAnalysisSection>
-                <SelectsContainer maxWidth="xl">
-                    <ResourcesFilters filters={filters} onGetResources={() => {}} />
-                </SelectsContainer>
-                <Container maxWidth="xl">
-                    <CountryAnalysis countryAnalysis={countryAnalysis} />
-                </Container>
-            </CountryAnalysisSection>
-            <GradientDividerBlue />
-            <ComparativeAnalysisSection>
-                <Container maxWidth="xl">
-                    <ComparativeAnalysis comparativeAnalysis={comparativeAnalysis} />
-                </Container>
-            </ComparativeAnalysisSection>
-            <NewsSection>
-                <Container maxWidth="xl">
-                    <News newsItems={news} />
-                </Container>
-            </NewsSection>
-
-            <GradientDividerBlue />
-
-            <MultimediaSection>
-                <Container maxWidth="xl">
-                    <Multimedia multimediaItems={multimedia} />
-                </Container>
-            </MultimediaSection>
-
-            <GradientDividerOrange />
+            <SelectsContainer maxWidth="xl">
+                <ResourcesFilters filters={filters} onGetResources={() => {}} />
+            </SelectsContainer>
+            <Grid container style={{ backgroundColor: "white" }}>
+                <Grid item md={6} xs={12}>
+                    <CountryAnalysisSection>
+                        <Container maxWidth="xl">
+                            <CountryAnalysis countryAnalysis={countryAnalysis} />
+                        </Container>
+                    </CountryAnalysisSection>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                    <ComparativeAnalysisSection>
+                        <Container maxWidth="xl">
+                            <ComparativeAnalysis comparativeAnalysis={comparativeAnalysis} />
+                        </Container>
+                    </ComparativeAnalysisSection>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                    <MultimediaSection>
+                        <Container maxWidth="xl">
+                            <Multimedia multimediaItems={multimedia} />
+                        </Container>
+                    </MultimediaSection>
+                </Grid>
+                <Grid item md={6} xs={12}>
+                    <NewsSection>
+                        <Container maxWidth="xl">
+                            <News newsItems={news} />
+                        </Container>
+                    </NewsSection>
+                </Grid>
+            </Grid>
         </Layout>
     );
 });
 
 const CountryAnalysisSection = styled.div`
-    background: white;
     padding-bottom: 64px;
 `;
 
 const ComparativeAnalysisSection = styled.div`
-    background: ${colors.gradientPrimary2};
     padding-bottom: 64px;
 `;
 
 const NewsSection = styled.div`
-    background: white;
     padding-bottom: 64px;
 `;
 
 const MultimediaSection = styled.div`
-    background: ${colors.gradientPrimary2};
     padding-bottom: 64px;
 `;
 
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
-    color: white;
     padding: 32px 64px;
 `;
 
@@ -92,14 +91,4 @@ const SearchContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-`;
-
-const GradientDividerBlue = styled.div`
-    background: linear-gradient(90deg, rgb(4, 96, 167) 0%, #cee1f0 100%);
-    height: 20px;
-`;
-
-const GradientDividerOrange = styled.div`
-    background: linear-gradient(90deg, rgb(255, 141, 78) 0%, rgb(255, 223, 190) 100%);
-    height: 20px;
 `;
