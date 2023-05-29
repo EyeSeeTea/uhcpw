@@ -23,7 +23,7 @@ export const ComparativeAnalysis: React.FC<CountryAnalysisProps> = React.memo(({
             <Grid container spacing={5}>
                 {comparativeAnalysis.map((country, index) => {
                     return (
-                        <Grid key={index} item lg={3} md={4} xs={6}>
+                        <Grid key={index} item lg={3} md={3} xs={6}>
                             <Column>
                                 <Image src={country.image} alt={country.text} />
                                 <Theme theme={country.theme} />

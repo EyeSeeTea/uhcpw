@@ -16,19 +16,24 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
             <Column>
                 <img width={"100%"} src={comparativeAnalysis.image} alt={comparativeAnalysis.text} />
                 <Box height={20} />
+                <Theme theme={comparativeAnalysis.theme} />
                 <Row>
-                    <Column>
-                        <Typography variant="body2">{comparativeAnalysis.year}</Typography>
-
-                        {comparativeAnalysis.links.map(link => {
-                            return (
+                    <Typography variant="body1">{comparativeAnalysis.year}</Typography>
+                    <TextDivider>|</TextDivider>
+                    {comparativeAnalysis.links.map((link, i) => {
+                        return (
+                            <>
                                 <a key={link.url} href={link.url}>
-                                    {link.language}
+                                    <Typography variant="body1">{link.language}</Typography>
                                 </a>
-                            );
-                        })}
-                    </Column>
-                    <Theme theme={comparativeAnalysis.theme} />
+                                {i < comparativeAnalysis.links.length - 1 && (
+                                    <Typography variant="body1" style={{ marginRight: "4px" }}>
+                                        ,
+                                    </Typography>
+                                )}
+                            </>
+                        );
+                    })}
                 </Row>
                 <Box height={6} />
                 <Typography variant="body2">{comparativeAnalysis.text}</Typography>
@@ -52,9 +57,8 @@ const Row = styled.div`
     padding-top: 8px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: start;
-    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
 `;
 
 const Column = styled.div`
@@ -62,4 +66,8 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
+`;
+
+const TextDivider = styled(Typography)`
+    margin: 0 4px;
 `;

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-16T09:37:31.277Z\n"
-"PO-Revision-Date: 2023-05-16T09:37:31.277Z\n"
+"POT-Creation-Date: 2023-05-29T08:49:30.534Z\n"
+"PO-Revision-Date: 2023-05-29T08:49:30.534Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -70,9 +70,6 @@ msgid "Tambor and Pavlova (2020)"
 msgstr ""
 
 msgid "15 June 2020"
-msgstr ""
-
-msgid "Countries"
 msgstr ""
 
 msgid "Select country"
@@ -318,6 +315,9 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Countries"
+msgstr ""
+
 msgid "Regions"
 msgstr ""
 
@@ -351,18 +351,10 @@ msgstr ""
 msgid "Country analysis"
 msgstr ""
 
-msgid ""
-"Explore reports on financial protection for 21 countries. Also included are "
-"reports summaries and infographics"
-msgstr ""
-
 msgid "Multimedia"
 msgstr ""
 
 msgid "News"
-msgstr ""
-
-msgid "Theme"
 msgstr ""
 
 msgid "Select theme"
