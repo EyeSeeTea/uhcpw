@@ -87,7 +87,7 @@ const Row = styled.div`
     flex-wrap: wrap;
 `;
 
-const FilterButton = styled(Button)<{ selected: boolean }>`
+export const FilterButton = styled(Button)<{ selected: boolean }>`
     background: ${props => (props.selected ? "#e7f3fc" : undefined)};
     color: ${props => (props.selected ? "#1150b8" : "black")};
     min-width: 40px;

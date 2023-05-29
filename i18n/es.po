@@ -19,6 +19,12 @@ msgid ""
 "and coverage policy at country level"
 msgstr ""
 
+msgid "Select Countries"
+msgstr ""
+
+msgid "Countries"
+msgstr ""
+
 msgid "WHO Barcelona Office for Health Systems Stengthening"
 msgstr ""
 
@@ -320,6 +326,9 @@ msgid "Countries"
 msgstr ""
 
 msgid "Regions"
+msgstr ""
+
+msgid "Glossary of terms"
 msgstr ""
 
 msgid "Back"
