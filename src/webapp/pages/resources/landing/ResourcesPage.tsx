@@ -8,7 +8,7 @@ import { CountryAnalysis } from "../../../components/resources/country-analysis/
 import { Multimedia } from "../../../components/resources/multimedia/Multimedia";
 import { News } from "../../../components/resources/news/News";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
-import SearchInput from "../../../components/search-input/SearchInput";
+//import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
@@ -20,9 +20,9 @@ export const ResourcesPage: React.FC = React.memo(() => {
             <TitleContainer>
                 <Typography variant="h4">{i18n.t("Resources")}</Typography>
             </TitleContainer>
-            <SearchContainer>
+            {/*             <SearchContainer>
                 <SearchInput value={""} />
-            </SearchContainer>
+            </SearchContainer> */}
             <CountryAnalysisSection>
                 <SelectsContainer maxWidth="xl">
                     <ResourcesFilters filters={filters} onGetResources={() => {}} />
@@ -87,12 +87,12 @@ const SelectsContainer = styled(Container)`
     padding-bottom: 32px;
 `;
 
-const SearchContainer = styled.div`
+/* const SearchContainer = styled.div`
     margin: -24px;
     display: flex;
     flex-direction: row;
     justify-content: center;
-`;
+`; */
 
 const GradientDividerBlue = styled.div`
     background: linear-gradient(90deg, rgb(4, 96, 167) 0%, #cee1f0 100%);
