@@ -1,10 +1,4 @@
-import {
-    ComparativeAnalysis,
-    CountryAnalysis,
-    Multimedia,
-    News,
-    Resource,
-} from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { ResourcesFiltersState } from "../common/ResourcesFiltersState";
 
 export type ResourcesByTypeState = {
