@@ -10,7 +10,7 @@ export interface MediaResource {
     title: string;
     url: string;
     image: string;
-    date: string;
+    date: Date;
 }
 
 export interface News extends MediaResource {

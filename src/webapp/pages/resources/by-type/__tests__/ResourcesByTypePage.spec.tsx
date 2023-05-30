@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import moment from "moment";
 import { anything, instance, mock, when } from "ts-mockito";
 import { CountryD2Repository } from "../../../../../data/repositories/CountryD2Repository";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
@@ -290,7 +291,7 @@ async function verifyNewsItems(resources: News[]) {
             expect(link).toHaveAttribute("href", resource.url);
         });
 
-        itemScope.getByText(resource.date);
+        itemScope.getByText(moment(resource.date).format("DD MMMM YYYY"));
     });
 }
 
@@ -316,7 +317,7 @@ async function verifyMultimediaItems(resources: Multimedia[]) {
             expect(link).toHaveAttribute("href", resource.url);
         });
 
-        itemScope.getByText(resource.date);
+        itemScope.getByText(resource.date.getFullYear());
     });
 }
 
@@ -412,7 +413,7 @@ function givenANewsResources(count: number): News[] {
             kind: "news" as const,
             image: `http://image${index}.png`,
             title: `title ${index}`,
-            date: `${index} January 2023`,
+            date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,
         };
     });
@@ -432,7 +433,7 @@ function givenAMultimediaResources(count: number): Multimedia[] {
             kind: "multimedia" as const,
             image: `http://image${index}.png`,
             title: `title ${index}`,
-            date: `${index} January 2023`,
+            date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,
             theme: `test theme`,
         };
