@@ -5,6 +5,7 @@ export interface ResourceFilters {
     category?: string;
     searchTerm?: string;
     theme?: string;
+    countries?: string[];
     years?: string[];
 }
 

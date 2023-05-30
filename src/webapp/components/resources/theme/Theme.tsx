@@ -28,6 +28,6 @@ const Container = styled.div<{ background?: string }>`
     color: #174587;
     padding: 4px 16px;
     display: inline-block;
-    margin-bottom: 16px;
-    width: 100%;
+    margin-right: 16px;
+    margin-bottom: 8px;
 `;
