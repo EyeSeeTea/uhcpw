@@ -13,28 +13,33 @@ export function useAbout(): ResourcesState {
     const [officeTeam, setOfficeTeam] = useState<Person[]>([]);
 
     const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
-    const [experts, setExperts] = useState<Person[]>(expertsMembers);
+    const [experts, setExperts] = useState<Person[]>([]);
+    const [filteredExperts, setFilteredExperts] = useState<Person[]>([]);
 
     useEffect(() => {
-        setExperts(filterExperts(selectedFilter, countryFilter.options, countryFilter.selected));
-    }, [countryFilter.selected, countryFilter.options, selectedFilter]);
+        setFilteredExperts(filterExperts(experts, selectedFilter, countryFilter.options, countryFilter.selected));
+    }, [countryFilter.options, countryFilter.selected, experts, selectedFilter]);
 
     useEffect(() => {
-        compositionRoot.about.getOfficeTeam.execute().run(setOfficeTeam, () => setOfficeTeam([]));
-    }, [countryFilter.selected, countryFilter.options, compositionRoot.about]);
+        compositionRoot.about.getPersons.execute(true).run(setOfficeTeam, () => setOfficeTeam([]));
+    }, [compositionRoot.about]);
+
+    useEffect(() => {
+        compositionRoot.about.getPersons.execute(false).run(setExperts, () => setExperts([]));
+    }, [compositionRoot.about.getPersons]);
 
     const onFilterChange = useCallback(
         (value: string) => {
             setSelectedFilter(value);
 
-            setExperts(filterExperts(value, countryFilter.options, countryFilter.selected));
+            setFilteredExperts(filterExperts(experts, value, countryFilter.options, countryFilter.selected));
         },
-        [countryFilter]
+        [countryFilter.options, countryFilter.selected, experts]
     );
 
     return {
         team: officeTeam,
-        experts,
+        experts: filteredExperts,
         countryFilter,
         filters,
         selectedFilter,
@@ -42,62 +47,22 @@ export function useAbout(): ResourcesState {
     };
 }
 
-const filterExperts = (letterFilter: string, countryOptions: CountryOption[], countrySelected?: string[]) => {
+const filterExperts = (
+    expertMembers: Person[],
+    letterFilter: string,
+    countryOptions: CountryOption[],
+    countrySelected?: string[]
+) => {
     const countryNames = countrySelected
         ? countryOptions.filter(country => countrySelected?.includes(country.id)).map(({ name }) => name || "")
         : undefined;
 
-    return expertsMembers.filter(
+    return expertMembers.filter(
         expert =>
-            (!countryNames || countryNames?.includes(expert.country || "")) &&
+            (!countryNames || countryNames.length === 0 || countryNames?.includes(expert.country || "")) &&
             (letterFilter === allFilter || expert.firstName.toLowerCase().startsWith(letterFilter.toLowerCase()))
     );
 };
-
-export const expertsMembers: Person[] = [
-    {
-        firstName: "first name 1",
-        lastName: "last name 1",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        country: "Spain",
-    },
-    {
-        firstName: "first name 2",
-        lastName: "last name 2",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        country: "Ireland",
-    },
-    {
-        firstName: "first name 3",
-        lastName: "last name 3",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        country: "Spain",
-    },
-    {
-        firstName: "first name 4",
-        lastName: "last name 4",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        country: "Ireland",
-    },
-    {
-        firstName: "first name 5",
-        lastName: "last name 5",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        country: "Ireland",
-    },
-    {
-        firstName: "first name 6",
-        lastName: "last name 6",
-        image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        position: "Position ABC",
-        country: "Ireland",
-    },
-];
 
 const allFilter = i18n.t("All");
 

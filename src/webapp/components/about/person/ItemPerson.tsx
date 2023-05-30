@@ -30,11 +30,9 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                         <Typography variant="body2" gutterBottom>
                             {person.position}
                         </Typography>
-                        {
-                            <Typography variant="body2" gutterBottom>
-                                {person.country}
-                            </Typography>
-                        }
+                        <Typography variant="body2" gutterBottom>
+                            {person.country}
+                        </Typography>
                     </InfoContainer>
                 </Row>
             </Item>
@@ -66,8 +64,8 @@ const Item = styled.div`
 `;
 
 const Image = styled.img`
-    width: 250px;
-    height: 250px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
     margin-bottom: 6px;
 `;
@@ -81,5 +79,5 @@ const InfoContainer = styled.div`
 const NameContainer = styled.div<{ isExpert: boolean }>`
     display: flex;
     flex-direction: ${props => (props.isExpert ? "row" : "column")};
-    align-items: center;
+    align-items: ${props => (props.isExpert ? "flex-start" : "center")};
 `;

@@ -8,17 +8,15 @@ import { Country } from "../../../../domain/entities/Country";
 import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
 import { Person } from "../../../../domain/entities/Person";
-import { OfficeTeamD2Repository } from "../../../../data/repositories/OfficeTeamD2Repository";
-import { expertsMembers } from "../useAbout";
+import { PersonD2Repository } from "../../../../data/repositories/PersonD2Repository";
 
 let countryRepository: CountryD2Repository;
-let officeTeamRepository: OfficeTeamD2Repository;
+let personRepository: PersonD2Repository;
 
 describe("AboutPage", () => {
     it("should render about title", () => {
         givenAFilters();
-        givenAnOfficeTeam();
-        givenAnExperts();
+        givenAPersons();
 
         renderPage();
 
@@ -28,8 +26,7 @@ describe("AboutPage", () => {
     });
     it("should render office description", () => {
         givenAFilters();
-        givenAnOfficeTeam();
-        givenAnExperts();
+        givenAPersons();
 
         renderPage();
 
@@ -41,8 +38,7 @@ describe("AboutPage", () => {
     });
     it("should render office header caption", () => {
         givenAFilters();
-        givenAnOfficeTeam();
-        givenAnExperts();
+        givenAPersons();
 
         renderPage();
 
@@ -50,8 +46,7 @@ describe("AboutPage", () => {
     });
     it("should render office team", () => {
         givenAFilters();
-        const officeTeam = givenAnOfficeTeam();
-        givenAnExperts();
+        const { officeTeam } = givenAPersons();
 
         renderPage();
 
@@ -63,8 +58,7 @@ describe("AboutPage", () => {
 
     it("should render experts", () => {
         givenAFilters();
-        givenAnOfficeTeam();
-        const expertsMembers = givenAnExperts();
+        const { experts } = givenAPersons();
 
         renderPage();
 
@@ -75,13 +69,12 @@ describe("AboutPage", () => {
             )
         ).toBeInTheDocument();
 
-        verifyExpertMembers(expertsMembers);
+        verifyExpertMembers(experts);
     });
 
     it("should filter experts by country", async () => {
         givenAFilters();
-        givenAnOfficeTeam();
-        givenAnExperts();
+        givenAPersons();
 
         renderPage();
 
@@ -95,8 +88,7 @@ describe("AboutPage", () => {
 
     it("should filter experts by inicial letter name", async () => {
         givenAFilters();
-        givenAnOfficeTeam();
-        givenAnExperts();
+        givenAPersons();
 
         renderPage();
 
@@ -105,7 +97,7 @@ describe("AboutPage", () => {
         const scope = within(screen.getByLabelText(/experts/i));
         const items = scope.queryAllByRole("listitem");
 
-        await waitFor(() => expect(items).toHaveLength(6));
+        await waitFor(() => expect(items).toHaveLength(3));
     });
 });
 
@@ -115,7 +107,7 @@ function renderPage() {
         { path: "/about", route: `/about` },
         {
             country: countryRepository,
-            officeTeam: officeTeamRepository,
+            person: personRepository,
         }
     );
 }
@@ -197,10 +189,27 @@ function givenACountries(): Country[] {
     return data;
 }
 
-function givenAnOfficeTeam(): Person[] {
-    const mockedRepository = mock(OfficeTeamD2Repository);
+function givenAPersons(): {
+    officeTeam: {
+        firstName: string;
+        lastName: string;
+        image: string;
+        position: string;
+        linkedin: string;
+        email: string;
+    }[];
+    experts: {
+        firstName: string;
+        lastName: string;
+        image: string;
+        position: string;
+        linkedin: string;
+        email: string;
+    }[];
+} {
+    const mockedRepository = mock(PersonD2Repository);
 
-    const data = [
+    const officeTeam = [
         {
             firstName: "first name 1",
             lastName: "last name 1",
@@ -219,15 +228,42 @@ function givenAnOfficeTeam(): Person[] {
         },
     ];
 
-    when(mockedRepository.get()).thenReturn(Future.success(data));
+    const experts = [
+        {
+            firstName: "first name 1",
+            lastName: "last name 1",
+            image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            position: "Position ABC",
+            linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
+            email: "hello@eyeseetea.com",
+            country: "Spain",
+        },
+        {
+            firstName: "first name 1",
+            lastName: "last name 1",
+            image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            position: "Position ABC",
+            linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
+            email: "hello@eyeseetea.com",
+            country: "Spain",
+        },
+        {
+            firstName: "first name 2",
+            lastName: "last name 2",
+            image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            position: "Position ABC",
+            linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
+            email: "hello@eyeseetea.com",
+            country: "Portugal",
+        },
+    ];
 
-    officeTeamRepository = instance(mockedRepository);
+    when(mockedRepository.get(true)).thenReturn(Future.success(officeTeam));
+    when(mockedRepository.get(false)).thenReturn(Future.success(experts));
 
-    return data;
-}
+    personRepository = instance(mockedRepository);
 
-function givenAnExperts(): Person[] {
-    return expertsMembers;
+    return { officeTeam, experts };
 }
 
 async function selectLetterFilter(letter: string) {

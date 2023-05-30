@@ -13,6 +13,7 @@ import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
+import { Glossary } from "./Glossary";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -61,6 +62,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [isGlossaryOpen, setIsGlossaryOpen] = React.useState(false);
     const { countryOptions } = useCountryOptions();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -89,7 +91,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                 <Toolbar className={classes.toolbarTop}>
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
-                    <MenuTopButton onClick={handleClick} startIcon={<BookIcon />}>
+                    <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
                     </MenuTopButton>
                     <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
@@ -206,6 +208,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     </div>
                 </Toolbar>
             </MuiAppBar>
+            <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
         </div>
     );
 };
