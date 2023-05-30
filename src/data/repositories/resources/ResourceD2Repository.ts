@@ -1,5 +1,4 @@
 import _ from "lodash";
-import moment from "moment";
 import { FutureData } from "../../../domain/entities/Future";
 import {
     AnalysisResource,

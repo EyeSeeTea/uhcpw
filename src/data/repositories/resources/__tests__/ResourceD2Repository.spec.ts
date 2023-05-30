@@ -248,7 +248,7 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
     expect(multimediaItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=pqv58NbllXi");
     expect(multimediaItem.title).toBe("Financial protection in Spain: a pillar of universal health coverage");
     expect(multimediaItem.url).toBe("https://www.youtube.com/watch?v=LcltHPiuHqY");
-    expect(multimediaItem.date.toISOString()).toBe(new Date("2021-05-08T22:00:00.000Z").toISOString());
+    expect(multimediaItem.date.toISOString()).toBe(new Date("2021-05-09T00:00:00.000").toISOString());
     expect(multimediaItem.theme).toBe("Financial Protection");
 }
 
