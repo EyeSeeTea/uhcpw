@@ -1,4 +1,4 @@
-import { Box, Card, Typography } from "@material-ui/core";
+import { Box, Card, Divider, Typography } from "@material-ui/core";
 
 import React from "react";
 import styled from "styled-components";
@@ -14,24 +14,29 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
     return (
         <Item elevation={0} role="listitem">
             <Column>
-                <img width={"100%"} src={comparativeAnalysis.image} alt={comparativeAnalysis.text} />
+                <Cover width={"100%"} src={comparativeAnalysis.image} alt={comparativeAnalysis.text} />
                 <Box height={20} />
+                <Theme theme={comparativeAnalysis.theme} />
                 <Row>
-                    <Column>
-                        <Typography variant="body2">{comparativeAnalysis.year}</Typography>
+                    <Typography variant="body1">{comparativeAnalysis.year}</Typography>
 
-                        {comparativeAnalysis.links.map(link => {
-                            return (
-                                <a key={link.url} href={link.url}>
+                    <StyledDivider orientation="vertical" flexItem />
+
+                    {comparativeAnalysis.links.map((link, index) => {
+                        return (
+                            <>
+                                <a key={link.url} href={link.url} style={{ fontSize: "16px" }}>
                                     {link.language}
                                 </a>
-                            );
-                        })}
-                    </Column>
-                    <Theme theme={comparativeAnalysis.theme} />
+                                {index < comparativeAnalysis.links.length - 1 && (
+                                    <StyledDivider orientation="vertical" flexItem />
+                                )}
+                            </>
+                        );
+                    })}
                 </Row>
                 <Box height={6} />
-                <Typography variant="body2">{comparativeAnalysis.text}</Typography>
+                <Typography variant="body1">{comparativeAnalysis.text}</Typography>
             </Column>
         </Item>
     );
@@ -52,9 +57,13 @@ const Row = styled.div`
     padding-top: 8px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: start;
-    width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+`;
+
+const StyledDivider = styled(Divider)`
+    margin: 0px 8px 0px 4px;
 `;
 
 const Column = styled.div`
@@ -62,4 +71,8 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
+`;
+
+const Cover = styled.img`
+    border: 1px solid #c3bfbf;
 `;

@@ -6,4 +6,5 @@ export type Country = {
     color: string;
     coordinates: [number, number];
     parents: { id: string; name: string }[];
+    flag?: string;
 };

@@ -29,5 +29,5 @@ const Container = styled.div<{ background?: string }>`
     padding: 4px 16px;
     display: inline-block;
     margin-right: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
 `;

@@ -11,6 +11,8 @@ import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
 import { MultimediaItem } from "../../../components/resources/multimedia/MultimediaItem";
+import { CountryAnalysisItem } from "../../../components/resources/country-analysis/CountryAnalysisItem";
+import { ResourceState } from "./ResourcesByTypeState";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const { category } = useParams<{ category: string }>();
@@ -50,12 +52,12 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     );
 });
 
-const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
+const Item: React.FC<{ resource: ResourceState }> = React.memo(({ resource }) => {
     switch (resource.kind) {
         case "comparative-analysis":
             return <ComparativeAnalysisItem comparativeAnalysis={resource} />;
         case "country-analysis":
-            return <div role="listitem"></div>;
+            return <CountryAnalysisItem countryAnalysis={resource} />;
         case "news":
             return <NewsItem news={resource} />;
         case "multimedia":

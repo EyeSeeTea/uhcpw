@@ -217,8 +217,30 @@ describe("ResourcesByTypePage for ", () => {
 
             expect(await screen.findAllByRole("listitem")).toHaveLength(5);
         });
+        it("should render expected items content", async () => {
+            const resources = givenACountryAnalysisResources(5);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            await verifyCountryAnalysisItems(resources);
+        });
     });
 });
+
+function renderPage(category: string) {
+    customRenderWithRouterMatch(
+        <ResourcesByTypePage />,
+        { path: "/resources/:category", route: `/resources/${category}` },
+        {
+            resource: resourceRepository,
+            resourceCategory: resourceCategoryRepository,
+            resourceTheme: resourceThemeRepository,
+            country: countryRepository,
+        }
+    );
+}
 
 async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) {
     const items = await screen.findAllByRole("listitem");
@@ -298,17 +320,37 @@ async function verifyMultimediaItems(resources: Multimedia[]) {
     });
 }
 
-function renderPage(category: string) {
-    customRenderWithRouterMatch(
-        <ResourcesByTypePage />,
-        { path: "/resources/:category", route: `/resources/${category}` },
-        {
-            resource: resourceRepository,
-            resourceCategory: resourceCategoryRepository,
-            resourceTheme: resourceThemeRepository,
-            country: countryRepository,
+async function verifyCountryAnalysisItems(resources: CountryAnalysis[]) {
+    const items = await screen.findAllByRole("listitem");
+
+    const countries = givenACountries();
+    const country = countries[0];
+
+    resources.forEach((resource, index) => {
+        const item = items[index];
+
+        if (item === undefined) {
+            throw new Error(`Index ${index} not found in items`);
         }
-    );
+
+        const itemScope = within(item);
+
+        const flag = itemScope.getByAltText(country?.name || "") as HTMLImageElement;
+        expect(flag.src).toContain(country?.flag);
+        itemScope.getByText(country?.name || "", { exact: true });
+
+        const image = itemScope.getByAltText(resource.text) as HTMLImageElement;
+        expect(image.src).toContain(resource.image);
+
+        itemScope.getByText(resource.year);
+        itemScope.getByText(resource.theme);
+
+        resource.links.forEach(link => {
+            expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
+        });
+
+        itemScope.getByText(resource.text);
+    });
 }
 
 function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[] {
@@ -338,10 +380,20 @@ function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[
 
 function givenACountryAnalysisResources(count: number): CountryAnalysis[] {
     const mockedRepository = mock(ResourceD2Repository);
+    const themes = givenAResourcesThemes();
 
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "country-analysis" as const,
+            image: `http://image${index}.png`,
+            theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
+            links: [
+                { url: `http://link${Math.random()}.pdf`, language: "English" },
+                { url: `http://link${Math.random()}.pdf`, language: "Castellano" },
+            ],
+            text: `title ${index}`,
+            year: (new Date().getFullYear() - index).toString(),
+            countryId: "DVnpk4xiXGJ",
         };
     });
 
@@ -456,6 +508,7 @@ function givenACountries(): Country[] {
             color: "color",
             coordinates: [2982, 12] as [number, number],
             parents: [{ id: "EUR", name: "Europe" }],
+            flag: "http://es.png",
         },
     ];
 

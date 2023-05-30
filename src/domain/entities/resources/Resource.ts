@@ -3,11 +3,11 @@ export interface ComparativeAnalysis {
     text: string;
     theme: string;
     image: string;
-    links: ComparativeAnalysisLink[];
+    links: ResourceLink[];
     year: string;
 }
 
-export interface ComparativeAnalysisLink {
+export interface ResourceLink {
     language: string;
     url: string;
 }
@@ -31,6 +31,12 @@ export interface Multimedia {
 
 export interface CountryAnalysis {
     kind: "country-analysis";
+    text: string;
+    theme: string;
+    image: string;
+    links: ResourceLink[];
+    year: string;
+    countryId: string;
 }
 
 export type Resource = News | Multimedia | CountryAnalysis | ComparativeAnalysis;

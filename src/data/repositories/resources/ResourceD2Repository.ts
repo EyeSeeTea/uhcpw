@@ -1,7 +1,13 @@
 import _ from "lodash";
 import moment from "moment";
 import { FutureData } from "../../../domain/entities/Future";
-import { ComparativeAnalysis, Multimedia, News, Resource } from "../../../domain/entities/resources/Resource";
+import {
+    ComparativeAnalysis,
+    CountryAnalysis,
+    Multimedia,
+    News,
+    Resource,
+} from "../../../domain/entities/resources/Resource";
 import { ResourceFilters, ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
@@ -19,6 +25,7 @@ export const resourceDataElements: Record<string, string> = {
     link3Language: "DQAOcVPEQTh",
     link4: "yfKcdYARapH",
     link4Language: "QlRpFiResvs",
+    countryId: "PC9lIDo5x8m",
 };
 
 export const resourcesProgram = "wWo0lhm5GsY";
@@ -31,6 +38,9 @@ export class ResourceD2Repository implements ResourceRepository {
             `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}`,
             filters.theme ? `${resourceDataElements.theme}:eq:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
+            filters.countries && filters.countries?.length > 0
+                ? `${resourceDataElements.countryId}:in:${filters.countries.join(";")}`
+                : undefined,
         ])
             .compact()
             .join(",");
@@ -66,6 +76,8 @@ export class ResourceD2Repository implements ResourceRepository {
                         return this.buildNews(event);
                     } else if (category === "multimedia") {
                         return this.buildMultimedia(event);
+                    } else if (category === "country-analysis") {
+                        return this.buildCountryAnalysis(event);
                     } else {
                         return undefined;
                     }
@@ -135,6 +147,43 @@ export class ResourceD2Repository implements ResourceRepository {
             url,
             date: moment(new Date(event.eventDate)).format("YYYY"),
             theme,
+        };
+    }
+
+    private buildCountryAnalysis(event: D2Event): CountryAnalysis {
+        const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
+        const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
+        const link = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
+        const linkLanguage =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.linkLanguage)?.value || "";
+
+        const link2 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link2)?.value || "";
+        const link2Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link2Language)?.value || "";
+        const link3 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
+        const link3Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3Language)?.value || "";
+        const link4 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
+        const link4Language =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4Language)?.value || "";
+
+        const countryId = event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryId)?.value || "";
+
+        return {
+            kind: "country-analysis",
+            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            theme: theme,
+            links: _([
+                this.createLink(link, linkLanguage),
+                this.createLink(link2, link2Language),
+                this.createLink(link3, link3Language),
+                this.createLink(link4, link4Language),
+            ])
+                .compact()
+                .value(),
+            text: title,
+            year: new Date(event.eventDate).getFullYear().toString(),
+            countryId,
         };
     }
 
