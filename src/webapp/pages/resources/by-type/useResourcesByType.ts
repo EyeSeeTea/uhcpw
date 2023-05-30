@@ -1,19 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
-import { Country } from "../../../../domain/entities/Country";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
 
-export function useResourcesByType(category?: string): ResourcesByTypeState {
-    const { compositionRoot } = useAppContext();
-    const filters = useResourcesFilters(category);
+export function useResourcesByType(category?: string, countriesFilter?: string[]): ResourcesByTypeState {
+    const { compositionRoot, countries } = useAppContext();
+    const filters = useResourcesFilters(category, countriesFilter);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[]>([]);
 
     const [title, setTitle] = useState<string>("");
-
-    const [countries, setCountries] = useState<Country[]>([]);
 
     useEffect(() => {
         if (filters.category.selected) {
@@ -26,20 +23,6 @@ export function useResourcesByType(category?: string): ResourcesByTypeState {
 
         setTitle(title);
     }, [filters.category.options, filters.category.selected]);
-
-    useEffect(() => {
-        setLoading(true);
-        compositionRoot.countries.get.execute().run(
-            countries => {
-                setLoading(false);
-                setCountries(countries);
-            },
-            () => {
-                setLoading(false);
-                setCountries([]);
-            }
-        );
-    }, [compositionRoot.countries.get]);
 
     const onGetResources = useCallback(() => {
         setLoading(true);
