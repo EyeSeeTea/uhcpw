@@ -1,6 +1,6 @@
 import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useMemo } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Layout } from "../../../components/layout/Layout";
@@ -15,8 +15,19 @@ import { CountryAnalysisItem } from "../../../components/resources/country-analy
 import { ResourceState } from "./ResourcesByTypeState";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
+    const history = useHistory();
     const { category } = useParams<{ category: string }>();
-    const { loading, title, filters, items, onGetResources } = useResourcesByType(category);
+    const filterInParams = useMemo(() => {
+        const searchParams = new URLSearchParams(history.location.search);
+
+        const country = searchParams.get("country");
+
+        return {
+            country: country ? [country] : undefined,
+        };
+    }, [history]);
+
+    const { loading, title, filters, items, onGetResources } = useResourcesByType(category, filterInParams.country);
 
     return (
         <Layout>

@@ -5,7 +5,7 @@ import { useAppContext } from "../../../contexts/app-context";
 import { ResourcesFiltersState } from "./ResourcesFiltersState";
 import { useMultiCountryOptionsV2 } from "../../../common/hooks/countries/useMultiCountryOptionsV2";
 
-export function useResourcesFilters(category?: string): ResourcesFiltersState {
+export function useResourcesFilters(category?: string, countries?: string[]): ResourcesFiltersState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
 
@@ -23,6 +23,10 @@ export function useResourcesFilters(category?: string): ResourcesFiltersState {
     useEffect(() => {
         setSelectedCategoryFilter(category);
     }, [categoryFilters, category]);
+
+    useEffect(() => {
+        countryFilter.onSelectedChange(countries);
+    }, [categoryFilters, countries, countryFilter]);
 
     useEffect(() => {
         compositionRoot.resources.getCategories.execute().run(

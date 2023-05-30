@@ -1,5 +1,5 @@
 import { Checkbox, Divider, FormControlLabel, InputAdornment, Menu, Typography } from "@material-ui/core";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
 import SearchInput from "../search-input/SearchInput";
@@ -36,6 +36,8 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [selectedIdsState, setSelectedIdsState] = React.useState<string[]>(selectedIds);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
+
+        useEffect(() => setSelectedIdsState(selectedIds), [selectedIds]);
 
         const handleClick = useCallback(
             (event: React.MouseEvent<HTMLInputElement>) => {

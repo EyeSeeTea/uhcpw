@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-22T14:22:51.359Z\n"
-"PO-Revision-Date: 2023-05-22T14:22:51.359Z\n"
+"POT-Creation-Date: 2023-05-30T10:09:30.813Z\n"
+"PO-Revision-Date: 2023-05-30T10:09:30.813Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -17,12 +17,6 @@ msgstr ""
 msgid ""
 "Experts working with the WHO Barcelona Office to access finantial "
 "protection and coverage policy at country level"
-msgstr ""
-
-msgid "Select Countries"
-msgstr ""
-
-msgid "Countries"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Stengthening"
@@ -357,9 +351,6 @@ msgstr ""
 msgid "Country Analysis"
 msgstr ""
 
-msgid "News"
-msgstr ""
-
 msgid "Theme"
 msgstr ""
 
@@ -392,4 +383,7 @@ msgid "Comparative Analysis"
 msgstr ""
 
 msgid "Multimedia"
+msgstr ""
+
+msgid "News"
 msgstr ""

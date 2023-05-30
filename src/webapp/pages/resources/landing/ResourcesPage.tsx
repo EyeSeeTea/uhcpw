@@ -1,10 +1,11 @@
 import { Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
-import { CountryAnalysis } from "../../../components/resources/country-analysis/CountryAnalysis";
+
 import { MultimediaItem } from "../../../components/resources/multimedia/MultimediaItem";
 import { NewsItem } from "../../../components/resources/news/NewsItem";
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
@@ -14,9 +15,9 @@ import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {
+    const history = useHistory();
     const { filters, resources, onGetResources } = useResources();
 
-    console.log({ resources });
     return (
         <Layout>
             <TitleContainer>
@@ -32,7 +33,26 @@ export const ResourcesPage: React.FC = React.memo(() => {
                     {resources && (
                         <>
                             <Grid item md={6} xs={12}>
-                                <CountryAnalysis countryAnalysis={resources.countryAnalysis} />
+                                <ResourceGroup
+                                    title={i18n.t("Country Analysis")}
+                                    seeAllUrl={"/resources/country-analysis"}
+                                >
+                                    {resources.countryAnalysisByCountry.map(country => {
+                                        return (
+                                            <Grid item xs={2} key={country.countryId}>
+                                                <Flag
+                                                    width={"90%"}
+                                                    src={country.flag}
+                                                    onClick={() =>
+                                                        history.push(
+                                                            `/resources/country-analysis?country=${country.countryId}`
+                                                        )
+                                                    }
+                                                />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
                             </Grid>
                             <Grid item md={6} xs={12}>
                                 <ResourceGroup
@@ -97,4 +117,10 @@ const SearchContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+`;
+
+const Flag = styled.img`
+    border: 1px solid #c5c3c3;
+    margin: 16px;
+    cursor: pointer;
 `;
