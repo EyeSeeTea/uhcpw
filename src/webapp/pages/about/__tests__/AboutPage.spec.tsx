@@ -4,18 +4,15 @@ import { instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
-import { Country } from "../../../../domain/entities/Country";
 import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
 import { Person } from "../../../../domain/entities/Person";
 import { PersonD2Repository } from "../../../../data/repositories/PersonD2Repository";
 
-let countryRepository: CountryD2Repository;
 let personRepository: PersonD2Repository;
 
 describe("AboutPage", () => {
     it("should render about title", () => {
-        givenAFilters();
         givenAPersons();
 
         renderPage();
@@ -25,7 +22,6 @@ describe("AboutPage", () => {
         ).toBeInTheDocument();
     });
     it("should render office description", () => {
-        givenAFilters();
         givenAPersons();
 
         renderPage();
@@ -37,7 +33,6 @@ describe("AboutPage", () => {
         ).toBeInTheDocument();
     });
     it("should render office header caption", () => {
-        givenAFilters();
         givenAPersons();
 
         renderPage();
@@ -45,7 +40,6 @@ describe("AboutPage", () => {
         expect(screen.getByText(/who Barcelona office for health systems stengthening/i)).toBeInTheDocument();
     });
     it("should render office team", () => {
-        givenAFilters();
         const { officeTeam } = givenAPersons();
 
         renderPage();
@@ -57,7 +51,6 @@ describe("AboutPage", () => {
     });
 
     it("should render experts", () => {
-        givenAFilters();
         const { experts } = givenAPersons();
 
         renderPage();
@@ -73,7 +66,6 @@ describe("AboutPage", () => {
     });
 
     it("should filter experts by country", async () => {
-        givenAFilters();
         givenAPersons();
 
         renderPage();
@@ -87,7 +79,6 @@ describe("AboutPage", () => {
     });
 
     it("should filter experts by inicial letter name", async () => {
-        givenAFilters();
         givenAPersons();
 
         renderPage();
@@ -106,7 +97,6 @@ function renderPage() {
         <AboutPage />,
         { path: "/about", route: `/about` },
         {
-            country: countryRepository,
             person: personRepository,
         }
     );
@@ -159,34 +149,6 @@ function verifyExpertMembers(experts: Person[]) {
         itemScope.getByText(expert.position);
         itemScope.getByText(expert.country || "");
     });
-}
-
-function givenAFilters() {
-    return {
-        countries: givenACountries(),
-    };
-}
-
-function givenACountries(): Country[] {
-    const mockedRepository = mock(CountryD2Repository);
-
-    const data = [
-        {
-            id: "DVnpk4xiXGJ",
-            name: "Spain",
-            code: "ESP",
-            description: "description",
-            color: "color",
-            coordinates: [2982, 12] as [number, number],
-            parents: [{ id: "EUR", name: "Europe" }],
-        },
-    ];
-
-    when(mockedRepository.get()).thenReturn(Future.success(data));
-
-    countryRepository = instance(mockedRepository);
-
-    return data;
 }
 
 function givenAPersons(): {

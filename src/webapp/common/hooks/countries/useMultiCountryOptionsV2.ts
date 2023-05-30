@@ -3,34 +3,31 @@ import i18n from "../../../../locales";
 import { CountryOption } from "../../../components/country-selector/CountrySelector";
 import { useAppContext } from "../../../contexts/app-context";
 
-export function useMultiCountryOptionsV2() {
-    const { compositionRoot } = useAppContext();
+export function useMultiCountryOptionsV2(selectedCountries?: string[]) {
+    const { countries } = useAppContext();
     const [options, setOptions] = useState<CountryOption[]>([]);
-    const [selected, setSelected] = useState<string[] | undefined>(undefined);
+    const [selected, setSelected] = useState<string[] | undefined>([]);
     const [groupedByIncome, setGroupedByIncome] = useState(false);
 
     useEffect(() => {
-        compositionRoot.countries.get.execute().run(
-            countries => {
-                const countryOptions = countries.map(country => ({
-                    id: country.id,
-                    name: country.name,
-                    code: country.code,
-                    parents: [
-                        { id: "all", name: i18n.t("All countries") },
-                        ...country.parents.filter(parent =>
-                            groupedByIncome ? parent.name.includes("income") : !parent.name.includes("income")
-                        ),
-                    ],
-                }));
+        setSelected(selectedCountries);
+    }, [selectedCountries]);
 
-                setOptions(countryOptions);
-            },
-            () => {
-                setOptions([]);
-            }
-        );
-    }, [compositionRoot.countries, groupedByIncome]);
+    useEffect(() => {
+        const countryOptions = countries.map(country => ({
+            id: country.id,
+            name: country.name,
+            code: country.code,
+            parents: [
+                { id: "all", name: i18n.t("All countries") },
+                ...country.parents.filter(parent =>
+                    groupedByIncome ? parent.name.includes("income") : !parent.name.includes("income")
+                ),
+            ],
+        }));
+
+        setOptions(countryOptions);
+    }, [countries, groupedByIncome]);
 
     const onSelectedChange = useCallback((country: string[] | undefined) => {
         setSelected(country);

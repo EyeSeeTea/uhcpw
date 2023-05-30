@@ -7,7 +7,7 @@ import { useMultiCountryOptionsV2 } from "../../../common/hooks/countries/useMul
 
 export function useResourcesFilters(category?: string, countries?: string[]): ResourcesFiltersState {
     const { compositionRoot } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2();
+    const countryFilter = useMultiCountryOptionsV2(countries);
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -22,11 +22,7 @@ export function useResourcesFilters(category?: string, countries?: string[]): Re
 
     useEffect(() => {
         setSelectedCategoryFilter(category);
-    }, [categoryFilters, category]);
-
-    useEffect(() => {
-        countryFilter.onSelectedChange(countries);
-    }, [categoryFilters, countries, countryFilter]);
+    }, [category]);
 
     useEffect(() => {
         compositionRoot.resources.getCategories.execute().run(

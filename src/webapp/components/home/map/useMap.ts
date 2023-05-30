@@ -1,7 +1,6 @@
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import { useCallback, useEffect, useState } from "react";
 import { Country } from "../../../../domain/entities/Country";
-import i18n from "../../../../locales";
 import { useAppContext } from "../../../contexts/app-context";
 import { InitialCoordinates, MapState } from "./MapState";
 
@@ -19,19 +18,12 @@ export function useMap(): MapState {
     });
 
     const [selectedCountry, setSelectedCountry] = useState<Country>();
-    const { compositionRoot } = useAppContext();
+    const { countries } = useAppContext();
     const snackbar = useSnackbar();
 
     useEffect(() => {
-        compositionRoot.countries.get.execute().run(
-            countries => {
-                setMarkers(countriesToGeoJson(countries));
-            },
-            () => {
-                snackbar.error(i18n.t("An error has ocurred loading countries"));
-            }
-        );
-    }, [compositionRoot.countries, snackbar]);
+        setMarkers(countriesToGeoJson(countries));
+    }, [countries, snackbar]);
 
     const onSelectedCountryChange = useCallback((country?: Country) => {
         setSelectedCountry(country);

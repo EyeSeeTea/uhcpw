@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import React, { useCallback } from "react";
 import { customRender } from "../../../../utils/tests-ui";
 import { CountryOption, CountrySelector } from "../CountrySelector";
 
@@ -132,7 +133,24 @@ describe("CountrySelector", () => {
 });
 
 function renderComponent() {
-    customRender(<CountrySelector countries={countries} groupedByIncome={false} />);
+    customRender(<CountrySelectorContainer />);
+}
+
+function CountrySelectorContainer() {
+    const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+
+    const handleSelectedChange = useCallback((ids: string[]) => {
+        setSelectedIds(ids);
+    }, []);
+
+    return (
+        <CountrySelector
+            countries={countries}
+            groupedByIncome={false}
+            selectedIds={selectedIds}
+            onSelectedIdsChange={handleSelectedChange}
+        />
+    );
 }
 
 function focusComponent() {

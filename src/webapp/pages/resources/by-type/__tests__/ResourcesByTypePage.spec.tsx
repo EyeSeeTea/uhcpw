@@ -3,11 +3,9 @@ import { BoundFunctions, queries, screen, waitFor, within } from "@testing-libra
 import userEvent from "@testing-library/user-event";
 import moment from "moment";
 import { anything, instance, mock, when } from "ts-mockito";
-import { CountryD2Repository } from "../../../../../data/repositories/CountryD2Repository";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
 import { ResourceD2Repository } from "../../../../../data/repositories/resources/ResourceD2Repository";
 import { ResourceThemeD2Repository } from "../../../../../data/repositories/resources/ResourceThemeD2Repository";
-import { Country } from "../../../../../domain/entities/Country";
 import { Future } from "../../../../../domain/entities/Future";
 import {
     ComparativeAnalysis,
@@ -18,13 +16,12 @@ import {
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
 import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
-import { customRenderWithRouterMatch } from "../../../../../utils/tests-ui";
+import { customRenderWithRouterMatch, givenACountries } from "../../../../../utils/tests-ui";
 import { ResourcesByTypePage } from "../ResourcesByTypePage";
 
 let resourceRepository: ResourceD2Repository;
 let resourceCategoryRepository: ResourceCategoryD2Repository;
 let resourceThemeRepository: ResourceThemeD2Repository;
-let countryRepository: CountryD2Repository;
 
 describe("ResourcesByTypePage for ", () => {
     beforeEach(() => {
@@ -238,7 +235,6 @@ function renderPage(category: string) {
             resource: resourceRepository,
             resourceCategory: resourceCategoryRepository,
             resourceTheme: resourceThemeRepository,
-            country: countryRepository,
         }
     );
 }
@@ -464,7 +460,6 @@ function givenAFilters() {
     return {
         categories: givenAResourceCategories(),
         themes: givenAResourcesThemes(),
-        countries: givenACountries(),
     };
 }
 
@@ -497,29 +492,6 @@ function givenAResourcesThemes(): ResourceTheme[] {
     when(mockedRepository.getAll()).thenReturn(Future.success(data));
 
     resourceThemeRepository = instance(mockedRepository);
-
-    return data;
-}
-
-function givenACountries(): Country[] {
-    const mockedRepository = mock(CountryD2Repository);
-
-    const data = [
-        {
-            id: "DVnpk4xiXGJ",
-            name: "Spain",
-            code: "ESP",
-            description: "description",
-            color: "color",
-            coordinates: [2982, 12] as [number, number],
-            parents: [{ id: "EUR", name: "Europe" }],
-            flag: "http://es.png",
-        },
-    ];
-
-    when(mockedRepository.get()).thenReturn(Future.success(data));
-
-    countryRepository = instance(mockedRepository);
 
     return data;
 }
