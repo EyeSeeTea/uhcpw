@@ -17,7 +17,7 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(({ title, 
     }, [history, seeAllUrl]);
 
     return (
-        <Container>
+        <Container aria-label={title}>
             <Row>
                 <Typography variant="h5">{title}</Typography>
                 <Box width={2} />

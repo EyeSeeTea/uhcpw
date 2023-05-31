@@ -41,6 +41,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                         return (
                                             <Grid item xs={2} key={country.countryId}>
                                                 <Flag
+                                                    role="listitem"
                                                     width={"90%"}
                                                     src={country.flag}
                                                     onClick={() =>

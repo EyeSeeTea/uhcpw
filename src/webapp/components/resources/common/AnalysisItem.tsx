@@ -13,7 +13,10 @@ export interface CountryAnalysisProps {
 export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion }) => {
     return (
         <Column>
-            <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.text} />
+            <a href={analysisResource.links[0]?.url}>
+                <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.text} />
+            </a>
+
             <Box height={20} />
             <Theme theme={analysisResource.theme} />
             {!minimalVersion && (
