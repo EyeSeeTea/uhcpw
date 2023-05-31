@@ -1,0 +1,23 @@
+import { Id, Ref } from "../Ref";
+
+export interface Visualization {
+    id: Id;
+    name: string;
+    rows: VisualizationDimension[];
+    columns: VisualizationDimension[];
+    filters: VisualizationDimension[];
+    dataDimensionItems: DataDimensionItem[];
+    categoryDimensions: CategoryDimensionItem[];
+}
+export interface DataDimensionItem {
+    dataDimensionItemType: string;
+    dataElement: Ref;
+}
+
+export interface CategoryDimensionItem {
+    category: Ref;
+    categoryOptions: Ref[];
+}
+
+export type Dimension = "ou" | "pe" | "dx" | string;
+export type VisualizationDimension = { id: Dimension };

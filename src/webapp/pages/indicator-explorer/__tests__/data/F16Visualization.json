@@ -1,0 +1,51 @@
+{
+    "id": "xEPgElBSAjK",
+    "name": "F16 - Share of households with catastrohic spending by consumption quintile",
+    "rows": [
+        {
+            "id": "pe"
+        }
+    ],
+    "columns": [
+        {
+            "id": "yooLFrJORoj"
+        }
+    ],
+    "filters": [
+        {
+            "id": "pe"
+        }
+    ],
+    "dataDimensionItems": [
+        {
+            "dataDimensionItemType": "DATA_ELEMENT",
+            "dataElement": {
+                "id": "eEmQgI32ETw"
+            }
+        }
+    ],
+    "categoryDimensions": [
+        {
+            "category": {
+                "id": "yooLFrJORoj"
+            },
+            "categoryOptions": [
+                {
+                    "id": "GuypYXqveWn"
+                },
+                {
+                    "id": "ii0MC8x9D7i"
+                },
+                {
+                    "id": "O0MXmTdpf4m"
+                },
+                {
+                    "id": "GeiKSyJLeKt"
+                },
+                {
+                    "id": "yiucIy5NIAw"
+                }
+            ]
+        }
+    ]
+}
