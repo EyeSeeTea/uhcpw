@@ -1,19 +1,28 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
 import bubblePattern from "../../../assets/bubble-pattern.svg";
+import { ChevronRightIcon } from "../../icons/ChevronRightIcon";
 
 export interface SectionHeaderProps {
     header: string;
     subheader?: string;
     isBackgroundOnRight?: boolean;
+    hasArrowIcon?: boolean;
 }
 
-export const SectionHeader: React.FC<SectionHeaderProps> = ({ header, subheader, isBackgroundOnRight }) => {
+export const SectionHeader: React.FC<SectionHeaderProps> = ({
+    header,
+    subheader,
+    isBackgroundOnRight,
+    hasArrowIcon,
+}) => {
     return (
         <Header isBackgroundOnRight={isBackgroundOnRight}>
-            <Title variant="h3">{header}</Title>
+            <Row>
+                <Title variant="h3">{header}</Title>
+                {hasArrowIcon && <ChevronRightIcon />}
+            </Row>
             {subheader && <SubTitle variant="h5">{subheader}</SubTitle>}
         </Header>
     );
@@ -40,4 +49,10 @@ const SubTitle = styled(Typography)`
     color: dimgrey;
     font-weight: 400;
     margin-top: 10px;
+`;
+
+const Row = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 `;

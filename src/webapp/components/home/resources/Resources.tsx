@@ -54,7 +54,7 @@ const resources: Resource[] = [
 export const Resources: React.FC = () => {
     return (
         <Content>
-            <SectionHeader header={i18n.t("Resources")} />
+            <SectionHeader header={i18n.t("Resources")} hasArrowIcon />
             <Body maxWidth="lg">
                 <Grid container spacing={4}>
                     {resources.map((resource, index) => {
