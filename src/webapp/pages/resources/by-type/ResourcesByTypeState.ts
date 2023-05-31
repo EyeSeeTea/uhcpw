@@ -5,7 +5,7 @@ export type ResourcesByTypeState = {
     loading: boolean;
     title: string;
     filters: ResourcesFiltersState;
-    items: ResourceState[];
+    items?: ResourceState[];
     onGetResources: () => void;
 };
 

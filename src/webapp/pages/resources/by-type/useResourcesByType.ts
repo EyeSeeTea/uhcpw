@@ -8,7 +8,7 @@ export function useResourcesByType(category?: string, countriesFilter?: string[]
     const filters = useResourcesFilters(category, countriesFilter);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [items, setItems] = useState<ResourceState[]>([]);
+    const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
 
     const [title, setTitle] = useState<string>("");
 
