@@ -3,6 +3,7 @@ import { SectionHeader } from "../section-header/SectionHeader";
 import i18n from "../../../../locales";
 import { Container, Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 type Resource = {
     tag: string;
@@ -13,22 +14,16 @@ type Resource = {
 
 const resources: Resource[] = [
     {
-        title: "Bulgaria",
-        date: "2022",
-        image: "https://picsum.photos/seed/example111/400/300",
-        tag: "Country Analysis",
-    },
-    {
         title: "Can people afford to pay for health care? New evidence on financial protection in bulgaria",
-        date: "2022",
+        date: "2021",
         image: "https://picsum.photos/seed/example2/400/300",
         tag: "Country Profile",
     },
     {
-        title: "Spending on health in Europe: entering a new era",
-        date: "2021",
-        image: "https://picsum.photos/seed/example33/400/300",
-        tag: "Comparative Analysis",
+        title: "Co-payment policy: considerations for Ukraine",
+        date: "2022",
+        image: "https://picsum.photos/seed/example111/400/300",
+        tag: "Country Analysis",
     },
     {
         title: "Financial protection in Spain: a pilar of universal health coverage",
@@ -42,29 +37,37 @@ const resources: Resource[] = [
         image: "https://picsum.photos/seed/example6/400/300",
         tag: "News",
     },
+    {
+        title: "Spending on health in Europe: entering a new era",
+        date: "2021",
+        image: "https://picsum.photos/seed/example33/400/300",
+        tag: "Country analysis",
+    },
+    {
+        title: "Universal health coverage: everyone, everywhere",
+        date: "2019",
+        image: "https://picsum.photos/seed/example6/400/300",
+        tag: "Multimedia",
+    },
 ];
 
 export const Resources: React.FC = () => {
     return (
         <Content>
-            <SectionHeader text={i18n.t("Resources")} />
+            <SectionHeader header={i18n.t("Resources")} hasArrowIcon />
             <Body maxWidth="lg">
-                <Grid container spacing={5}>
+                <Grid container spacing={4}>
                     {resources.map((resource, index) => {
                         return (
-                            <Grid key={index} item md={4} xs={12}>
-                                <ImageContainer>
-                                    <Image src={resource.image} />
-                                    <TitleContainer>
-                                        <Typography variant="caption" display="block">
-                                            {resource.title}
-                                        </Typography>
-                                        <Typography variant="caption">{resource.date}</Typography>
-                                    </TitleContainer>
-                                </ImageContainer>
-                                <Tag>
-                                    <Typography variant="body2">{resource.tag}</Typography>
-                                </Tag>
+                            <Grid item key={index} xs={12} sm={6} md={6} lg={4}>
+                                <Image src={resource.image} />
+                                <Row>
+                                    <Tag>
+                                        <Typography variant="caption">{resource.tag}</Typography>
+                                    </Tag>
+                                    <Typography variant="body1">{resource.date}</Typography>
+                                </Row>
+                                <Typography variant="body1">{resource.title}</Typography>
                             </Grid>
                         );
                     })}
@@ -82,36 +85,24 @@ const Body = styled(Container)`
     padding-bottom: 48px;
 `;
 
-const ImageContainer = styled.div`
-    position: relative;
-`;
-
-const TitleContainer = styled.div`
-    background: linear-gradient(to top, #4d90fe, rgba(255, 0, 0, 0));
-    position: absolute;
-    height: 40%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    opacity: 0.8;
-    margin-bottom: 5px;
-    color: white;
-    padding: 16px;
-    display: flex;
-    flex-direction: column;
-    justify-content: end;
-`;
-
 const Image = styled.img`
-    width: 100%;
-    border-radius: 5px;
+    //width: 100%;
 `;
 
 const Tag = styled.div`
     border-radius: 20px;
     background: #efefef;
-    color: #174587;
-    padding: 8px 16px;
+    background-color: ${colors.accentPrimaryDark};
+    color: white;
+    padding: 4px 16px;
     margin-top: 8px;
     display: inline-block;
+`;
+
+const Row = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 15px;
 `;
