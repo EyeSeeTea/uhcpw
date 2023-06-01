@@ -28,10 +28,19 @@ interface CountrySelectorProps {
     groupedByIncome: boolean;
     onGroupedByIncomeChange?: (value: boolean) => void;
     fullWidth?: boolean;
+    placeholder?: string;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
-    ({ countries, selectedIds = [], onSelectedIdsChange, groupedByIncome, onGroupedByIncomeChange, fullWidth }) => {
+    ({
+        countries,
+        selectedIds = [],
+        onSelectedIdsChange,
+        groupedByIncome,
+        onGroupedByIncomeChange,
+        fullWidth,
+        placeholder,
+    }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
@@ -95,10 +104,10 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
 
         return (
             <>
-                <DropdownTextField
-                    label={i18n.t("Countries")}
+                <StyledDropdownTextField
                     onClick={handleClick}
                     aria-label="Countries"
+                    placeholder={placeholder}
                     role={"textbox"}
                     disabled
                     fullWidth={fullWidth}
@@ -123,15 +132,15 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                 style={{ top: "calc(50% - 14px)", right: 0, position: "absolute", height: " 24px" }}
                             >
                                 {expanded ? (
-                                    <ArrowDropUpIcon htmlColor="black" />
+                                    <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
                                 ) : (
-                                    <ArrowDropDownIcon htmlColor="black" />
+                                    <ArrowDropDownIcon htmlColor="black" style={{ cursor: "pointer" }} />
                                 )}
                             </InputAdornment>
                         ),
                     }}
-                ></DropdownTextField>
-                <Menu
+                ></StyledDropdownTextField>
+                <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}
                     id="country-selector"
                     anchorEl={anchorEl}
@@ -145,7 +154,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         <SearchInput
                             value={searchTerm}
                             onChange={handleSearchChange}
-                            style={{ height: "20px", background: "#f2f9fd", border: "1px solid #cfe9f7" }}
+                            style={{
+                                height: "20px",
+                                background: "#f2f9fd",
+                                border: "1px solid #cfe9f7",
+                                borderRadius: "20px",
+                            }}
                         />
                         <br />
                         <Typography variant="body1" gutterBottom>
@@ -204,7 +218,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             label={i18n.t("I would like to see countries grouped by income bracket (LMIC/UMICHIC")}
                         />
                     </div>
-                </Menu>
+                </StyledMenu>
             </>
         );
     }
@@ -212,4 +226,18 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
 
 const SelectedContainer = styled.div`
     max-width: 100%;
+    display: flow-root;
+`;
+
+const StyledMenu = styled(Menu)`
+    .MuiInputBase-root {
+        border-radius: 20px;
+    }
+`;
+
+const StyledDropdownTextField = styled(DropdownTextField)`
+    .MuiInputBase-root {
+        border-radius: 20px !important;
+        color: black;
+    }
 `;

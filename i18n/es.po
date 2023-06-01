@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2023-05-22T14:22:51.359Z\n"
+"POT-Creation-Date: 2023-05-29T08:49:30.534Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,9 +76,6 @@ msgid "Tambor and Pavlova (2020)"
 msgstr ""
 
 msgid "15 June 2020"
-msgstr ""
-
-msgid "Countries"
 msgstr ""
 
 msgid "Select country"
@@ -325,6 +322,9 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Countries"
+msgstr ""
+
 msgid "Regions"
 msgstr ""
 
@@ -359,9 +359,6 @@ msgid "Country Analysis"
 msgstr ""
 
 msgid "News"
-msgstr ""
-
-msgid "Theme"
 msgstr ""
 
 msgid "Select theme"

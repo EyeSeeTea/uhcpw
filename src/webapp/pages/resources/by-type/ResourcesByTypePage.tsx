@@ -82,7 +82,7 @@ const Item: React.FC<{ resource: ResourceState }> = React.memo(({ resource }) =>
 const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSize } => {
     switch (resource.kind) {
         case "comparative-analysis":
-            return { lg: 2, md: 3, xs: 6 };
+            return { lg: 3, md: 3, xs: 6 };
         case "country-analysis":
             return { lg: 2, md: 3, xs: 6 };
         case "news":
