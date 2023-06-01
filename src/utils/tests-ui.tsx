@@ -32,7 +32,7 @@ export function givenACountries(): Country[] {
             name: "Spain",
             code: "ESP",
             description: "description",
-            color: "color",
+            status: "Weak",
             coordinates: [2982, 12] as [number, number],
             parents: [{ id: "EUR", name: "Europe" }],
             flag: "http://es.png",

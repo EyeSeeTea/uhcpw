@@ -3,9 +3,11 @@ export type Country = {
     name: string;
     code: string;
     description: string;
-    color: string;
+    status: CountryStatus;
     coordinates: [number, number];
     parents: { id: string; name: string }[];
     flag: string;
     summary: string;
 };
+
+export type CountryStatus = "Strong" | "Gaps" | "Weak";

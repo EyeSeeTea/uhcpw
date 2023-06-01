@@ -9,6 +9,9 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as ZoomInIcon, Remove as ZoomOutIcon } from "@material-ui/icons";
 import i18n from "@eyeseetea/feedback-component/locales";
+import weakIcon from "../../../assets/map/icon-weak.svg";
+import strongIcon from "../../../assets/map/icon-strong.svg";
+import gapsIcon from "../../../assets/map/icon-normal.svg";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -45,14 +48,20 @@ export const Map: React.FC = () => {
             mapRef.current.on("load", () => {
                 mapState.markers.features.forEach(feature => {
                     const el = document.createElement("div");
-                    el.className = "marker";
+                    el.className = `marker ${
+                        feature.properties.status === "Strong"
+                            ? "marker-strong"
+                            : feature.properties.status === "Weak"
+                            ? "marker-weak"
+                            : "marker-gaps"
+                    }`;
 
-                    // const marker = new mapboxgl.Marker(el, { color: feature.properties.color })
-                    //     .setLngLat(feature.geometry.coordinates as LngLatLike)
-                    //     .addTo(mapRef.current);
-                    const marker = new mapboxgl.Marker({ color: feature.properties.color })
+                    const marker = new mapboxgl.Marker(el)
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
                         .addTo(mapRef.current);
+                    // const marker = new mapboxgl.Marker({ color: feature.properties.color })
+                    //     .setLngLat(feature.geometry.coordinates as LngLatLike)
+                    //     .addTo(mapRef.current);
 
                     marker.getElement().addEventListener("mouseenter", () => {
                         mapState.onSelectedCountryChange(feature.properties);
@@ -106,8 +115,16 @@ const Container = styled.div`
 const MapContent = styled.div`
     overflow: hidden;
     height: 100%;
+    .marker-weak {
+        background-image: url(${() => weakIcon});
+    }
+    .marker-strong {
+        background-image: url(${() => strongIcon});
+    }
+    .marker-gaps {
+        background-image: url(${() => gapsIcon});
+    }
     .marker {
-        background-image: url("https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png");
         background-size: cover;
         width: 30px;
         height: 30px;
@@ -115,6 +132,7 @@ const MapContent = styled.div`
     .marker:hover {
         width: 50px;
         height: 50px;
+        cursor: pointer;
     }
     .mapboxgl-ctrl-logo {
         display: none !important;
@@ -125,7 +143,7 @@ const MapSidePanel = styled.div`
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 400px;
+    width: 500px;
     background: ${colors.accentPrimary};
     color: white;
     padding: 48px;

@@ -1,10 +1,12 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
-import i18n from "@eyeseetea/feedback-component/locales";
 import styled from "styled-components";
 import { Country } from "../../../../domain/entities/Country";
 import ReactMarkdown from "react-markdown";
-
+import weakIcon from "../../../assets/map/icon-weak.svg";
+import strongIcon from "../../../assets/map/icon-strong.svg";
+import gapsIcon from "../../../assets/map/icon-normal.svg";
+import { Divider } from "material-ui";
 export interface CountryPanelProps {
     country: Country;
 }
@@ -12,11 +14,18 @@ export interface CountryPanelProps {
 export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     return (
         <Container>
-            <Typography variant="h5">{country.name}</Typography>
-            <UmbrellaItem>
-                <Marker src="https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png" />
-                {i18n.t("Financial protection status: Weak", { nsSeparator: false })}
-            </UmbrellaItem>
+            <Row>
+                <UmbrellaItem>
+                    <Marker
+                        src={country.status === "Strong" ? strongIcon : country.status === "Weak" ? weakIcon : gapsIcon}
+                    />
+                </UmbrellaItem>
+                <Typography variant="h2" style={{ fontWeight: 400 }}>
+                    {country.name}
+                </Typography>
+            </Row>
+            <Divider style={{ backgroundColor: "white", margin: "38px 0px" }} />
+
             <ReactMarkdown>{country.summary}</ReactMarkdown>
         </Container>
     );
@@ -27,6 +36,11 @@ const Container = styled.div`
     font-size: 16px;
 `;
 
+const Row = styled.div`
+    display: flex;
+    flex-direction: row;
+`;
+
 const UmbrellaItem = styled.div`
     display: flex;
     flex-direction: row;
@@ -35,7 +49,8 @@ const UmbrellaItem = styled.div`
 `;
 
 const Marker = styled.img`
-    background-image: url("https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png");
     background-size: cover;
-    width: 50px;
+    width: 80px;
+    margin-right: 24px;
+    margin-bottom: 32px;
 `;
