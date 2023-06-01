@@ -58,4 +58,7 @@ const Image = styled.img`
 const Row = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 15px;
 `;

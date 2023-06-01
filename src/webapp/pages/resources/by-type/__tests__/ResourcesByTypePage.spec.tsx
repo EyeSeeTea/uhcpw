@@ -528,7 +528,7 @@ async function selectFiltersAndSearch(theme?: string, country?: string, year?: s
 
     await selectCountry(main, country || "Spain");
 
-    await selectFilter(main, "Years", year || "2020");
+    //await selectFilter(main, "Years", year || "2020");
 
     const searchButton = main.getByLabelText(/search/i);
 

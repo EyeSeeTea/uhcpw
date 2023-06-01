@@ -1,9 +1,9 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { MultimediaItem } from "../../../pages/resources/landing/ResourcesState";
-import { SeeAll } from "../../see-all/SeeAll";
+import { ChevronRightIcon } from "../../icons/ChevronRightIcon";
 
 export interface MultimediaProps {
     multimediaItems: MultimediaItem[];
@@ -14,36 +14,20 @@ export const Multimedia: React.FC<MultimediaProps> = React.memo(({ multimediaIte
         <>
             <ItemsTitleContainer>
                 <Row>
-                    <Typography variant="h6" color="textSecondary">
-                        {i18n.t("Multimedia")}
-                    </Typography>
-                    <SeeAll textColor="white" onClick={() => {}} />
+                    <Typography variant="h4">{i18n.t("Multimedia")}</Typography>
+                    <ChevronRightIcon />
                 </Row>
             </ItemsTitleContainer>
 
-            <Grid container spacing={5}>
-                {multimediaItems.map((item, index) => {
-                    return (
-                        <Grid key={index} item lg={4} md={6} xs={12}>
-                            <Center>
-                                <Item>
-                                    <img
-                                        src={item.img}
-                                        alt={item.title}
-                                        style={{ borderRadius: 10, marginBottom: 6 }}
-                                    />
-                                    <Typography variant="body2" gutterBottom color="textSecondary">
-                                        {item.title}
-                                    </Typography>
-                                    <Typography variant="body2" color="textSecondary">
-                                        {item.date}
-                                    </Typography>
-                                </Item>
-                            </Center>
-                        </Grid>
-                    );
-                })}
-            </Grid>
+            <Item>
+                <Image src={multimediaItems[0]?.img} alt={multimediaItems[0]?.title} />
+                <Typography variant="body1" style={{ marginBottom: "10px" }}>
+                    {multimediaItems[0]?.date}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                    {multimediaItems[0]?.title}
+                </Typography>
+            </Item>
         </>
     );
 });
@@ -52,23 +36,22 @@ const ItemsTitleContainer = styled.div`
     padding: 32px;
 `;
 
-const Center = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
 const Row = styled.div`
     padding-top: 8px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
 `;
 
 const Item = styled.div`
     border-radius: 10px;
     padding: 16px;
-    width: 450px;
     flex-direction: column;
+`;
+
+const Image = styled.img`
+    width: 100%;
+    height: 235px;
+    margin-bottom: 12px;
+    object-fit: cover;
 `;
