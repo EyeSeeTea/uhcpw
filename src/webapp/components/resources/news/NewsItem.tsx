@@ -1,4 +1,5 @@
 import { Box, Card, Typography } from "@material-ui/core";
+import moment from "moment";
 
 import React from "react";
 import styled from "styled-components";
@@ -19,7 +20,7 @@ export const NewsItem: React.FC<CountryAnalysisProps> = React.memo(({ news }) =>
                 <Box height={20} />
 
                 <Text variant="body1" gutterBottom>
-                    {news.date}
+                    {moment(news.date).format("DD MMMM YYYY")}
                 </Text>
                 <a href={news.url} style={{ textDecoration: "none", color: "black" }}>
                     <Text variant="body1">{news.title}</Text>
