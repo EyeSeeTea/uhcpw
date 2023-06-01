@@ -36,6 +36,7 @@ export function givenACountries(): Country[] {
             coordinates: [2982, 12] as [number, number],
             parents: [{ id: "EUR", name: "Europe" }],
             flag: "http://es.png",
+            summary: "**Financial hardship (2018)**",
         },
     ];
 }

@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 export const WelcomePanel: React.FC = () => {
     return (
-        <>
+        <Container>
             <Typography variant="h3">{i18n.t("UHC Watch")}</Typography>
             <p>
                 <strong>{i18n.t("Can people afford to play for health care?")}</strong>
@@ -41,9 +41,14 @@ export const WelcomePanel: React.FC = () => {
                     {i18n.t("Weak financial protection")}
                 </UmbrellaItem>
             </UmbrellaItemsContiner>
-        </>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    overflow-y: auto;
+    font-size: 16px;
+`;
 
 const UmbrellaItemsContiner = styled.div`
     display: flex;

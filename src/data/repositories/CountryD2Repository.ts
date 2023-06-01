@@ -9,6 +9,7 @@ export const countryInfoProgram = "xgaF9UtfrzK";
 
 export const countryInfoDataElements: Record<string, string> = {
     flag: "RCQZDELfNQJ",
+    summary: "B6gzpUbzpW3",
 };
 
 export class CountryD2Repository implements CountryRepository {
@@ -40,6 +41,10 @@ export class CountryD2Repository implements CountryRepository {
                 event => event.orgUnit === orgUnit.id
             );
 
+            const summary =
+                aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)
+                    ?.value || "";
+
             return {
                 id: orgUnit.id,
                 name: orgUnit.shortName,
@@ -49,6 +54,7 @@ export class CountryD2Repository implements CountryRepository {
                 color: index % 2 === 0 ? "orange" : index % 3 === 0 ? "red" : "green",
                 parents: orgUnit.organisationUnitGroups.map(({ id, name }) => ({ id, name })),
                 flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
+                summary,
             };
         });
     }
