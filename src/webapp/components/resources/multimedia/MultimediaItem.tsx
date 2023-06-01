@@ -21,6 +21,7 @@ export const MultimediaItem: React.FC<CountryAnalysisProps> = React.memo(({ mult
                 <Box height={20} />
                 <Row>
                     <Theme theme={news.theme} />
+                    <Box width={20} />
                     <Text variant="body1" gutterBottom>
                         {moment(news.date).format("YYYY")}
                     </Text>
@@ -53,6 +54,7 @@ const Text = styled(Typography)`
 const Image = styled.img`
     width: 100%;
     height: 300px;
+    object-fit: cover;
 `;
 
 const Row = styled.div`

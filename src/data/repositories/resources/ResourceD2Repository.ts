@@ -36,7 +36,7 @@ export class ResourceD2Repository implements ResourceRepository {
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
         const filter = _([
-            `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}`,
+            filters.category ? `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}` : undefined,
             filters.theme ? `${resourceDataElements.theme}:eq:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
             filters.countries && filters.countries?.length > 0
@@ -115,6 +115,7 @@ export class ResourceD2Repository implements ResourceRepository {
         const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
 
         return {
+            id: event.event,
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             title,
             url,
@@ -162,6 +163,7 @@ export class ResourceD2Repository implements ResourceRepository {
 
         return {
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            id: event.event,
             theme: theme,
             links: _([
                 this.createLink(link, linkLanguage),

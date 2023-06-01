@@ -1,4 +1,5 @@
 export interface AnalysisResource {
+    id: string;
     text: string;
     theme: string;
     image: string;
@@ -7,6 +8,7 @@ export interface AnalysisResource {
 }
 
 export interface MediaResource {
+    id: string;
     title: string;
     url: string;
     image: string;

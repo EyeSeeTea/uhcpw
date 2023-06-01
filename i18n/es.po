@@ -355,22 +355,13 @@ msgstr ""
 msgid "Select year"
 msgstr ""
 
-msgid "Comparative Analysis"
-msgstr ""
-
-msgid "Country analysis"
-msgstr ""
-
-msgid "Multimedia"
+msgid "Country Analysis"
 msgstr ""
 
 msgid "News"
 msgstr ""
 
 msgid "Select theme"
-msgstr ""
-
-msgid "See All"
 msgstr ""
 
 msgid "All"
@@ -393,6 +384,12 @@ msgid "Switch row/column"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2022)"
+msgstr ""
+
+msgid "Comparative Analysis"
+msgstr ""
+
+msgid "Multimedia"
 msgstr ""
 
 #~ msgid "Hello {{name}}"

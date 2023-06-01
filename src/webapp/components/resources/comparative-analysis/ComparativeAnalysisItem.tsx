@@ -8,15 +8,18 @@ import { AnalysisItem } from "../common/AnalysisItem";
 
 export interface CountryAnalysisProps {
     comparativeAnalysis: ComparativeAnalysis;
+    minimalVersion?: boolean;
 }
 
-export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ comparativeAnalysis }) => {
-    return (
-        <Item elevation={0} role="listitem">
-            <AnalysisItem analysisResource={comparativeAnalysis} />
-        </Item>
-    );
-});
+export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
+    ({ comparativeAnalysis, minimalVersion }) => {
+        return (
+            <Item elevation={0} role="listitem">
+                <AnalysisItem analysisResource={comparativeAnalysis} minimalVersion={minimalVersion} />
+            </Item>
+        );
+    }
+);
 
 const Item = styled(Card)`
     border-radius: 10px;

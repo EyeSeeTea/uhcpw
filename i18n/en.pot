@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-01T04:56:56.276Z\n"
-"PO-Revision-Date: 2023-06-01T04:56:56.276Z\n"
+"POT-Creation-Date: 2023-06-01T05:02:38.902Z\n"
+"PO-Revision-Date: 2023-06-01T05:02:38.902Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -197,9 +197,6 @@ msgstr ""
 msgid "Zoom out"
 msgstr ""
 
-msgid "An error has ocurred loading countries"
-msgstr ""
-
 msgid "Methods"
 msgstr ""
 
@@ -369,22 +366,7 @@ msgstr ""
 msgid "Select year"
 msgstr ""
 
-msgid "Comparative Analysis"
-msgstr ""
-
-msgid "Country analysis"
-msgstr ""
-
-msgid "Multimedia"
-msgstr ""
-
-msgid "News"
-msgstr ""
-
 msgid "Select theme"
-msgstr ""
-
-msgid "See All"
 msgstr ""
 
 msgid "All"
@@ -407,4 +389,16 @@ msgid "Switch row/column"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2022)"
+msgstr ""
+
+msgid "Country Analysis"
+msgstr ""
+
+msgid "Comparative Analysis"
+msgstr ""
+
+msgid "Multimedia"
+msgstr ""
+
+msgid "News"
 msgstr ""
