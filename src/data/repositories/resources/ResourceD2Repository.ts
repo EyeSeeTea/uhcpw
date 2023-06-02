@@ -85,9 +85,7 @@ export class ResourceD2Repository implements ResourceRepository {
                         return undefined;
                     }
                 })
-            )
-                .orderBy("year", "desc")
-                .value()
+            ).value()
         );
     }
 

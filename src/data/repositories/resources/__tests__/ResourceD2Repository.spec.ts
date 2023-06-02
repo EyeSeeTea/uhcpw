@@ -114,7 +114,7 @@ describe("Resource repository", () => {
         });
     });
     describe("News", () => {
-        it("should return comparative analysis properly", async () => {
+        it("should return news properly", async () => {
             givenANews();
 
             const response = await resourceRepository.get({ category: "news" }).runAsync();
@@ -226,7 +226,8 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
         "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
     );
     expect(comparativeAnalysis.theme).toBe("Financial Protection");
-    expect(comparativeAnalysis.date.toISOString()).toBe("2018-12-31T23:00:00.000Z");
+
+    expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2019-01-01T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
@@ -266,7 +267,7 @@ function verifyNews(newsItem?: News) {
     expect(newsItem.url).toBe(
         "https://www.who.int/europe/news/item/03-05-2023-countries-hosting-ukrainian-refugees-reaffirm-their-commitment-to-meeting-their-health-needs"
     );
-    expect(newsItem.date.toISOString()).toBe("2023-05-02T22:00:00.000Z");
+    expect(newsItem.date.toISOString()).toBe(new Date("2023-05-03T00:00:00.000").toISOString());
 }
 
 function verifyMultimedia(multimediaItem?: Multimedia) {
@@ -276,7 +277,9 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
     expect(multimediaItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=pqv58NbllXi");
     expect(multimediaItem.title).toBe("Financial protection in Spain: a pillar of universal health coverage");
     expect(multimediaItem.url).toBe("https://www.youtube.com/watch?v=LcltHPiuHqY");
-    expect(multimediaItem.date.toISOString()).toBe("2021-05-08T22:00:00.000Z");
+
+    expect(multimediaItem.date.toISOString()).toBe(new Date("2021-05-09T00:00:00.000").toISOString());
+
     expect(multimediaItem.theme).toBe("Financial Protection");
 }
 
@@ -289,7 +292,7 @@ function verifCountryAnalysis(countryAnalysis?: CountryAnalysis) {
         "Can people afford to pay for health care? New evidence on financial protection in Spain"
     );
     expect(countryAnalysis.theme).toBe("Financial Protection");
-    expect(countryAnalysis.date.toISOString()).toBe("2020-12-31T23:00:00.000Z");
+    expect(countryAnalysis.date.toISOString()).toBe(new Date("2021-01-01T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
