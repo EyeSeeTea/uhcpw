@@ -12,6 +12,7 @@ import i18n from "@eyeseetea/feedback-component/locales";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
+import { MapState } from "./MapState";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -21,10 +22,13 @@ mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3a
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
-export const Map: React.FC = () => {
+export interface MapProps {
+    mapState: MapState;
+}
+
+export const Map: React.FC<MapProps> = ({ mapState }) => {
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
-    const mapState = useMap();
 
     useEffect(() => {
         if (mapContainerRef.current) {
