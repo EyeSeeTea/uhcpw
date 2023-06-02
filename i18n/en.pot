@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-01T16:25:24.502Z\n"
-"PO-Revision-Date: 2023-06-01T16:25:24.502Z\n"
+"POT-Creation-Date: 2023-06-02T08:11:20.515Z\n"
+"PO-Revision-Date: 2023-06-02T08:11:20.515Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -175,6 +175,18 @@ msgstr ""
 msgid "Resources"
 msgstr ""
 
+msgid "Comparative analysis"
+msgstr ""
+
+msgid "Country analysis"
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "Multimedia"
+msgstr ""
+
 msgid "UHC Watch"
 msgstr ""
 
@@ -325,10 +337,4 @@ msgid "Country Analysis"
 msgstr ""
 
 msgid "Comparative Analysis"
-msgstr ""
-
-msgid "Multimedia"
-msgstr ""
-
-msgid "News"
 msgstr ""
