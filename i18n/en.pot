@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-02T08:11:20.515Z\n"
-"PO-Revision-Date: 2023-06-02T08:11:20.515Z\n"
+"POT-Creation-Date: 2023-06-02T10:39:02.246Z\n"
+"PO-Revision-Date: 2023-06-02T10:39:02.246Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -115,36 +115,6 @@ msgid ""
 msgstr ""
 
 msgid "Regional page"
-msgstr ""
-
-msgid "Impovershing out-of-pocket payments"
-msgstr ""
-
-msgid "Catastrophic out-of-pocket payments"
-msgstr ""
-
-msgid "Unmet need for health and dental care"
-msgstr ""
-
-msgid "Spending on health"
-msgstr ""
-
-msgid "Population coverage"
-msgstr ""
-
-msgid "Service coverage"
-msgstr ""
-
-msgid "User Charges (co-payments)"
-msgstr ""
-
-msgid "Voluntary health insurance"
-msgstr ""
-
-msgid "Administrative barries"
-msgstr ""
-
-msgid "Gasp in coverage"
 msgstr ""
 
 msgid "Explorers"
