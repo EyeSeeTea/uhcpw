@@ -36,20 +36,20 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
         case "comparative-analysis":
             return (
                 <SimpleResourceItem
-                    title={resource.text}
+                    title={resource.title}
                     url={resource.links[0]?.url || ""}
                     image={resource.image}
-                    date={new Date(resource.year)}
+                    date={resource.date}
                     tag={i18n.t("Comparative analysis")}
                 />
             );
         case "country-analysis":
             return (
                 <SimpleResourceItem
-                    title={resource.text}
+                    title={resource.title}
                     url={resource.links[0]?.url || ""}
                     image={resource.image}
-                    date={new Date(resource.year)}
+                    date={resource.date}
                     tag={i18n.t("Country analysis")}
                 />
             );
@@ -60,7 +60,6 @@ const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
                     url={resource.url}
                     image={resource.image}
                     date={resource.date}
-                    dateFormat={"DD MMMM YYYY"}
                     tag={i18n.t("News")}
                 />
             );

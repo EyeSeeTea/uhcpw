@@ -21,7 +21,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
     return (
         <Column>
             <a href={analysisResource.links[0]?.url}>
-                <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.text} />
+                <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.title} />
             </a>
 
             <Box height={20} />
@@ -29,7 +29,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
             {!minimalVersion && (
                 <>
                     <Row>
-                        <Typography variant="body1">{analysisResource.year}</Typography>
+                        <Typography variant="body1">{analysisResource.date.getFullYear()}</Typography>
 
                         <StyledDivider orientation="vertical" flexItem />
 
@@ -47,7 +47,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
                         })}
                     </Row>
                     <Box height={6} />
-                    <Typography variant="body1">{analysisResource.text}</Typography>
+                    <Typography variant="body1">{analysisResource.title}</Typography>
                 </>
             )}
         </Column>

@@ -175,8 +175,8 @@ export class ResourceD2Repository implements ResourceRepository {
             ])
                 .compact()
                 .value(),
-            text: title,
-            year: new Date(event.eventDate).getFullYear().toString(),
+            title: title,
+            date: new Date(event.eventDate),
         };
     }
 

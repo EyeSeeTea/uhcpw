@@ -20,8 +20,8 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
                 { url: `http://link${Math.random()}.pdf`, language: "Spain" },
             ],
-            text: `title ${index}`,
-            year: (new Date().getFullYear() - index).toString(),
+            title: `title ${index}`,
+            date: new Date(new Date().getFullYear() - index),
         };
     });
 
@@ -41,8 +41,8 @@ export function createCountryAnalysisResources(count: number): CountryAnalysis[]
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
                 { url: `http://link${Math.random()}.pdf`, language: "Castellano" },
             ],
-            text: `title ${index}`,
-            year: (new Date().getFullYear() - index).toString(),
+            title: `title ${index}`,
+            date: new Date(new Date().getFullYear() - index),
             countryId: "DVnpk4xiXGJ",
         };
     });
