@@ -53,11 +53,13 @@ export class ResourceD2Repository implements ResourceRepository {
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
-                skipPaging: true,
                 program: resourcesProgram,
                 startDate: startYear ? `${startYear}-01-01` : undefined,
                 endDate: endYear ? `${endYear}-12-31` : undefined,
+                skipPaging: filters.count ? false : true,
+                pageSize: filters.count,
                 filter,
+                order: "eventDate:desc",
             })
         ).map(response => {
             return this.buildResources(response.events);
