@@ -63,6 +63,34 @@ describe("Resource repository", () => {
                 `${resourceDataElements.countryId}:in:country1;country2`
             );
         });
+        it("order in filter", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("order")).toContain("eventDate:desc");
+        });
+        it("skipPaging equal to true if count is not passed", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("true");
+        });
+        it("skipPaging equal to false if count is passed", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("false");
+        });
+        it("pageSize equal to count", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("pageSize")).toContain("6");
+        });
     });
 
     describe("Comparative analysis", () => {
@@ -86,7 +114,7 @@ describe("Resource repository", () => {
         });
     });
     describe("News", () => {
-        it("should return comparative analysis properly", async () => {
+        it("should return news properly", async () => {
             givenANews();
 
             const response = await resourceRepository.get({ category: "news" }).runAsync();
@@ -194,11 +222,12 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
 
     expect(comparativeAnalysis.kind).toBe("comparative-analysis");
     expect(comparativeAnalysis.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=bT2PACV80QO");
-    expect(comparativeAnalysis.text).toBe(
+    expect(comparativeAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
     );
     expect(comparativeAnalysis.theme).toBe("Financial Protection");
-    expect(comparativeAnalysis.year).toBe("2019");
+
+    expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2019-01-01T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
@@ -248,7 +277,9 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
     expect(multimediaItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=pqv58NbllXi");
     expect(multimediaItem.title).toBe("Financial protection in Spain: a pillar of universal health coverage");
     expect(multimediaItem.url).toBe("https://www.youtube.com/watch?v=LcltHPiuHqY");
+
     expect(multimediaItem.date.toISOString()).toBe(new Date("2021-05-09T00:00:00.000").toISOString());
+
     expect(multimediaItem.theme).toBe("Financial Protection");
 }
 
@@ -257,11 +288,11 @@ function verifCountryAnalysis(countryAnalysis?: CountryAnalysis) {
 
     expect(countryAnalysis.kind).toBe("country-analysis");
     expect(countryAnalysis.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=FoBYCO3UUnU");
-    expect(countryAnalysis.text).toBe(
+    expect(countryAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Spain"
     );
     expect(countryAnalysis.theme).toBe("Financial Protection");
-    expect(countryAnalysis.year).toBe("2021");
+    expect(countryAnalysis.date.toISOString()).toBe(new Date("2021-01-01T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {

@@ -5,9 +5,7 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
-
-import { MultimediaItem } from "../../../components/resources/multimedia/MultimediaItem";
-import { NewsItem } from "../../../components/resources/news/NewsItem";
+import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
@@ -77,7 +75,12 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                     {resources.multimedia.map(multimediaItem => {
                                         return (
                                             <Grid item xs={12} key={multimediaItem.id}>
-                                                <MultimediaItem multimedia={multimediaItem} />
+                                                <SimpleResourceItem
+                                                    title={multimediaItem.title}
+                                                    url={multimediaItem.url}
+                                                    image={multimediaItem.image}
+                                                    date={multimediaItem.date}
+                                                />
                                             </Grid>
                                         );
                                     })}
@@ -88,7 +91,12 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                     {resources.news.map(newsItem => {
                                         return (
                                             <Grid item xs={12} key={newsItem.id}>
-                                                <NewsItem news={newsItem} />
+                                                <SimpleResourceItem
+                                                    title={newsItem.title}
+                                                    url={newsItem.url}
+                                                    image={newsItem.image}
+                                                    date={newsItem.date}
+                                                />
                                             </Grid>
                                         );
                                     })}

@@ -42,7 +42,9 @@ export const countriesToGeoJson = (countries: Country[]): GeoJSON.FeatureCollect
         type: "FeatureCollection",
         features: countries.map(country => ({
             type: "Feature",
-            properties: country,
+            properties: {
+                ...country,
+            },
             geometry: {
                 type: "Point",
                 coordinates: country.coordinates,

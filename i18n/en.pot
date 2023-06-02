@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-01T05:02:38.902Z\n"
-"PO-Revision-Date: 2023-06-01T05:02:38.902Z\n"
+"POT-Creation-Date: 2023-06-02T10:39:02.246Z\n"
+"PO-Revision-Date: 2023-06-02T10:39:02.246Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -117,49 +117,6 @@ msgstr ""
 msgid "Regional page"
 msgstr ""
 
-msgid "Financial protection status: Weak"
-msgstr ""
-
-msgid "Financial hardship (2018)"
-msgstr ""
-
-msgid ""
-"8% of households are improverished of futher improverished after "
-"out-of-pocket payments."
-msgstr ""
-
-msgid "19% of households experiences catastrophic health spending."
-msgstr ""
-
-msgid ""
-"Poorer households, older people and people in rural areas are most at risk "
-"of financial hardship."
-msgstr ""
-
-msgid ""
-"Financial hardship is generally driven by spending on outpatient medicines, "
-"medical products and inpatient care; outpatient medicines are the main "
-"driver for poorer households."
-msgstr ""
-
-msgid "Unmet need (2020)"
-msgstr ""
-
-msgid "1.4% of people report unmet need for health care"
-msgstr ""
-
-msgid "2.4% of people report unmet need for dental care"
-msgstr ""
-
-msgid "Find out"
-msgstr ""
-
-msgid "Go to the Bulgaria country page"
-msgstr ""
-
-msgid "Download the Bulgaria financial protection report"
-msgstr ""
-
 msgid "Explorers"
 msgstr ""
 
@@ -230,13 +187,19 @@ msgstr ""
 msgid "Resources"
 msgstr ""
 
+msgid "Comparative analysis"
+msgstr ""
+
+msgid "Country analysis"
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "Multimedia"
+msgstr ""
+
 msgid "UHC Watch"
-msgstr ""
-
-msgid "Can people afford to play for health care?"
-msgstr ""
-
-msgid "Evidence on financial protection in Europe and Central Asia"
 msgstr ""
 
 msgid ""
@@ -245,26 +208,23 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Without it, people face barries to access and experience financial hardship "
-"when using health care"
+"Financial protection - affordable access to health care - is at the heart "
+"of UHC"
 msgstr ""
 
-msgid "Explore data and analysis in financial protection"
+msgid "Can people afford to pay for health care?"
 msgstr ""
 
-msgid "Compare country progress towards UHC"
+msgid "Explore new evidence on financial protection in Europe and Central Asia"
 msgstr ""
 
-msgid "Find out how to make health care affordable for everyone"
-msgstr ""
-
-msgid "String financial protection"
+msgid "Stronger financial protection"
 msgstr ""
 
 msgid "Gaps in financial protection"
 msgstr ""
 
-msgid "Weak financial protection"
+msgid "Weaker financial protection"
 msgstr ""
 
 msgid "Category and indicator"
@@ -395,10 +355,4 @@ msgid "Country Analysis"
 msgstr ""
 
 msgid "Comparative Analysis"
-msgstr ""
-
-msgid "Multimedia"
-msgstr ""
-
-msgid "News"
 msgstr ""

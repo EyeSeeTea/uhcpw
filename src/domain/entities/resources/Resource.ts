@@ -1,18 +1,17 @@
-export interface AnalysisResource {
-    id: string;
-    text: string;
-    theme: string;
-    image: string;
-    links: ResourceLink[];
-    year: string;
-}
-
-export interface MediaResource {
+export interface BasicResource {
     id: string;
     title: string;
-    url: string;
     image: string;
     date: Date;
+}
+
+export interface AnalysisResource extends BasicResource {
+    links: ResourceLink[];
+    theme: string;
+}
+
+export interface MediaResource extends BasicResource {
+    url: string;
 }
 
 export interface News extends MediaResource {

@@ -2,13 +2,20 @@ import React, { useRef, useEffect, useCallback } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { style } from "./style";
-import { useMap } from "./useMap";
 import { WelcomePanel } from "../welcome-panel/WelcomePanel";
 import { CountryPanel } from "../country-panel/CountryPanel";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as ZoomInIcon, Remove as ZoomOutIcon } from "@material-ui/icons";
 import i18n from "@eyeseetea/feedback-component/locales";
+import weakHoverPin from "../../../assets/map/pin-weak-hover.svg";
+import weakPin from "../../../assets/map/pin-weak.svg";
+import strongHoverPin from "../../../assets/map/pin-strong-hover.svg";
+import strongPin from "../../../assets/map/pin-strong.svg";
+import gapsHoverPin from "../../../assets/map/pin-gaps-hover.svg";
+import gapsPin from "../../../assets/map/pin-gaps.svg";
+
+import { MapState } from "./MapState";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -18,10 +25,13 @@ mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3a
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
-export const Map: React.FC = () => {
+export interface MapProps {
+    mapState: MapState;
+}
+
+export const Map: React.FC<MapProps> = ({ mapState }) => {
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
-    const mapState = useMap();
 
     useEffect(() => {
         if (mapContainerRef.current) {
@@ -45,14 +55,20 @@ export const Map: React.FC = () => {
             mapRef.current.on("load", () => {
                 mapState.markers.features.forEach(feature => {
                     const el = document.createElement("div");
-                    el.className = "marker";
+                    el.className = `marker ${
+                        feature.properties.status === "Strong"
+                            ? "marker-strong"
+                            : feature.properties.status === "Weak"
+                            ? "marker-weak"
+                            : "marker-gaps"
+                    }`;
 
-                    // const marker = new mapboxgl.Marker(el, { color: feature.properties.color })
-                    //     .setLngLat(feature.geometry.coordinates as LngLatLike)
-                    //     .addTo(mapRef.current);
-                    const marker = new mapboxgl.Marker({ color: feature.properties.color })
+                    const marker = new mapboxgl.Marker(el)
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
                         .addTo(mapRef.current);
+                    // const marker = new mapboxgl.Marker({ color: feature.properties.color })
+                    //     .setLngLat(feature.geometry.coordinates as LngLatLike)
+                    //     .addTo(mapRef.current);
 
                     marker.getElement().addEventListener("mouseenter", () => {
                         mapState.onSelectedCountryChange(feature.properties);
@@ -106,15 +122,33 @@ const Container = styled.div`
 const MapContent = styled.div`
     overflow: hidden;
     height: 100%;
+    .marker-weak {
+        background-image: url(${() => weakPin});
+    }
+    .marker-weak:hover {
+        background-image: url(${() => weakHoverPin});
+    }
+    .marker-strong {
+        background-image: url(${() => strongPin});
+    }
+    .marker-strong:hover {
+        background-image: url(${() => strongHoverPin});
+    }
+    .marker-gaps {
+        background-image: url(${() => gapsPin});
+    }
+    .marker-gaps:hover {
+        background-image: url(${() => gapsHoverPin});
+    }
     .marker {
-        background-image: url("https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png");
         background-size: cover;
-        width: 30px;
-        height: 30px;
+        width: 15px;
+        height: 20px;
     }
     .marker:hover {
-        width: 50px;
-        height: 50px;
+        width: 35px;
+        height: 48px;
+        cursor: pointer;
     }
     .mapboxgl-ctrl-logo {
         display: none !important;
@@ -125,7 +159,7 @@ const MapSidePanel = styled.div`
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 400px;
+    width: 500px;
     background: ${colors.accentPrimary};
     color: white;
     padding: 48px;

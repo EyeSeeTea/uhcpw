@@ -3,9 +3,13 @@ import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
 
-export function useResourcesByType(category?: string, countriesFilter?: string[]): ResourcesByTypeState {
+export function useResourcesByType(params: {
+    category?: string;
+    countriesFilter?: string[];
+    count?: number;
+}): ResourcesByTypeState {
     const { compositionRoot, countries } = useAppContext();
-    const filters = useResourcesFilters(category, countriesFilter);
+    const filters = useResourcesFilters(params.category, params.countriesFilter);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
@@ -29,10 +33,11 @@ export function useResourcesByType(category?: string, countriesFilter?: string[]
         compositionRoot.resources.get
             .execute({
                 searchTerm: filters.search.term,
-                category,
+                category: params.category,
                 theme: filters.theme.selected,
                 countries: filters.country.selected,
                 years: filters.year.selected,
+                count: params.count,
             })
             .run(
                 items => {
@@ -61,7 +66,8 @@ export function useResourcesByType(category?: string, countriesFilter?: string[]
         filters.theme.selected,
         filters.country.selected,
         filters.year.selected,
-        category,
+        params.category,
+        params.count,
         countries,
     ]);
 

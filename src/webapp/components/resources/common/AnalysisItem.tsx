@@ -3,26 +3,33 @@ import { Box, Divider, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import { AnalysisResource } from "../../../../domain/entities/resources/Resource";
-import { Theme } from "../theme/Theme";
+import { Tag } from "../tag/Tag";
 
 export interface CountryAnalysisProps {
     analysisResource: AnalysisResource;
     minimalVersion?: boolean;
 }
 
+const themeColor: Record<string, string> = {
+    "Financial Protection": "#008ad7",
+    "Resilience and financial sustainability": "#4fad56",
+    "Spending on Health": "#0360a7",
+    "Voluntary Health Insurance": "#ff8d4e",
+};
+
 export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion }) => {
     return (
         <Column>
             <a href={analysisResource.links[0]?.url}>
-                <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.text} />
+                <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.title} />
             </a>
 
             <Box height={20} />
-            <Theme theme={analysisResource.theme} />
+            <Tag theme={analysisResource.theme} color={themeColor[analysisResource.theme]} />
             {!minimalVersion && (
                 <>
                     <Row>
-                        <Typography variant="body1">{analysisResource.year}</Typography>
+                        <Typography variant="body1">{analysisResource.date.getFullYear()}</Typography>
 
                         <StyledDivider orientation="vertical" flexItem />
 
@@ -40,7 +47,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
                         })}
                     </Row>
                     <Box height={6} />
-                    <Typography variant="body1">{analysisResource.text}</Typography>
+                    <Typography variant="body1">{analysisResource.title}</Typography>
                 </>
             )}
         </Column>

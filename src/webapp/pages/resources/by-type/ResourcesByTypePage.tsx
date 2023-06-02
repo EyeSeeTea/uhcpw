@@ -5,12 +5,11 @@ import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
-import { NewsItem } from "../../../components/resources/news/NewsItem";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
-import { MultimediaItem } from "../../../components/resources/multimedia/MultimediaItem";
+import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
 import { CountryAnalysisItem } from "../../../components/resources/country-analysis/CountryAnalysisItem";
 import { ResourceState } from "./ResourcesByTypeState";
 
@@ -27,7 +26,10 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         };
     }, [history]);
 
-    const { loading, title, filters, items, onGetResources } = useResourcesByType(category, filterInParams.country);
+    const { loading, title, filters, items, onGetResources } = useResourcesByType({
+        category,
+        countriesFilter: filterInParams.country,
+    });
 
     return (
         <Layout>
@@ -67,15 +69,40 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
 });
 
 const Item: React.FC<{ resource: ResourceState }> = React.memo(({ resource }) => {
+    const themeColor: Record<string, string> = {
+        "Financial Protection": "#008ad7",
+        "Resilience and financial sustainability": "#4fad56",
+        "Spending on Health": "#0360a7",
+        "Voluntary Health Insurance": "#ff8d4e",
+    };
+
     switch (resource.kind) {
         case "comparative-analysis":
             return <ComparativeAnalysisItem comparativeAnalysis={resource} />;
         case "country-analysis":
             return <CountryAnalysisItem countryAnalysis={resource} />;
         case "news":
-            return <NewsItem news={resource} />;
-        case "multimedia":
-            return <MultimediaItem multimedia={resource} />;
+            return (
+                <SimpleResourceItem
+                    title={resource.title}
+                    url={resource.url}
+                    image={resource.image}
+                    date={resource.date}
+                    dateFormat={"DD MMMM YYYY"}
+                />
+            );
+        case "multimedia": {
+            return (
+                <SimpleResourceItem
+                    title={resource.title}
+                    url={resource.url}
+                    image={resource.image}
+                    date={resource.date}
+                    tag={resource.theme}
+                    tagColor={themeColor[resource.theme]}
+                />
+            );
+        }
     }
 });
 

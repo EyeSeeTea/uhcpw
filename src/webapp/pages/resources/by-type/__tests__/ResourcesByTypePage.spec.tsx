@@ -259,17 +259,17 @@ async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) 
 
         const itemScope = within(item);
 
-        const image = itemScope.getByAltText(resource.text) as HTMLImageElement;
+        const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
         expect(image.src).toContain(resource.image);
 
-        itemScope.getByText(resource.year);
+        itemScope.getByText(resource.date.getFullYear());
         itemScope.getByText(resource.theme);
 
         resource.links.forEach(link => {
             expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
         });
 
-        itemScope.getByText(resource.text);
+        itemScope.getByText(resource.title);
     });
 }
 
@@ -344,17 +344,17 @@ async function verifyCountryAnalysisItems(resources: CountryAnalysis[]) {
         expect(flag.src).toContain(country?.flag);
         itemScope.getByText(country?.name || "", { exact: true });
 
-        const image = itemScope.getByAltText(resource.text) as HTMLImageElement;
+        const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
         expect(image.src).toContain(resource.image);
 
-        itemScope.getByText(resource.year);
+        itemScope.getByText(resource.date.getFullYear());
         itemScope.getByText(resource.theme);
 
         resource.links.forEach(link => {
             expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
         });
 
-        itemScope.getByText(resource.text);
+        itemScope.getByText(resource.title);
     });
 }
 
