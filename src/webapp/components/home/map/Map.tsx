@@ -12,6 +12,13 @@ import i18n from "@eyeseetea/feedback-component/locales";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
+import weakHoverPin from "../../../assets/map/pin-weak-hover.svg";
+import weakPin from "../../../assets/map/pin-weak.svg";
+import strongHoverPin from "../../../assets/map/pin-strong-hover.svg";
+import strongPin from "../../../assets/map/pin-strong.svg";
+import gapsHoverPin from "../../../assets/map/pin-gaps-hover.svg";
+import gapsPin from "../../../assets/map/pin-gaps.svg";
+
 import { MapState } from "./MapState";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
@@ -120,22 +127,41 @@ const MapContent = styled.div`
     overflow: hidden;
     height: 100%;
     .marker-weak {
-        background-image: url(${() => weakIcon});
+        //background-image: url(${() => weakIcon});
+        background-image: url(${() => weakPin});
+    }
+    .marker-weak:hover {
+        // background-image: url(${() => weakIcon});
+        background-image: url(${() => weakHoverPin});
     }
     .marker-strong {
-        background-image: url(${() => strongIcon});
+        // background-image: url(${() => strongIcon});
+        background-image: url(${() => strongPin});
+    }
+    .marker-strong:hover {
+        //  background-image: url(${() => strongIcon});
+        background-image: url(${() => strongHoverPin});
     }
     .marker-gaps {
-        background-image: url(${() => gapsIcon});
+        // background-image: url(${() => gapsIcon});
+        background-image: url(${() => gapsPin});
+    }
+    .marker-gaps:hover {
+        // background-image: url(${() => gapsIcon});
+        background-image: url(${() => gapsHoverPin});
     }
     .marker {
         background-size: cover;
-        width: 30px;
-        height: 30px;
+        /* width: 30px;
+        height: 30px; */
+        width: 15px;
+        height: 20px;
     }
     .marker:hover {
-        width: 50px;
-        height: 50px;
+        /* width: 50px;
+        height: 50px; */
+        width: 35px;
+        height: 48px;
         cursor: pointer;
     }
     .mapboxgl-ctrl-logo {
