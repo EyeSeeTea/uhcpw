@@ -7,7 +7,7 @@ import i18n from "../../../locales";
 import { DropdownTextField } from "./DropdownTextField";
 import { Option } from "./Option";
 interface DropdownProps<T extends string = string> {
-    label: string;
+    label?: string;
     options: Option<T>[];
     value?: T;
     placeholder?: string;
@@ -20,6 +20,11 @@ interface ContainerProps {
     width: string;
 }
 
+type OptionLabel = {
+    value: string;
+    text: string;
+};
+
 export const Dropdown: React.FC<DropdownProps> = React.memo(
     ({ label, options, value, placeholder, fullWidth, onChange, width = "100%" }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
@@ -28,7 +33,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
             setValueOption(options.find(option => option.value === value) || null);
         }, [options, value]);
 
-        const handleChange = (_e: React.ChangeEvent<{}>, value: Option<string> | null): void => {
+        const handleChange = (e: React.ChangeEvent<{}>, value: Option<string> | null): void => {
             if (!Array.isArray(value)) {
                 if (typeof value === "string") {
                     onChange(value);
@@ -45,13 +50,13 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
 
         return (
             <Container width={width}>
-                <Autocomplete
+                <StyledAutocomplete
                     fullWidth={fullWidth}
                     multiple={false}
                     id="tags-filled"
                     options={options}
                     value={valueOption || null}
-                    getOptionLabel={option => option?.text}
+                    getOptionLabel={option => (option as OptionLabel)?.text}
                     renderInput={params => (
                         <DropdownTextField
                             {...params}
@@ -61,7 +66,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                             InputLabelProps={{ shrink: true }}
                         />
                     )}
-                    onChange={handleChange}
+                    onChange={(e, value) => handleChange(e, value as Option<string> | null)}
                 />
                 {value && (
                     <ClearButton variant="text" onClick={handleClear}>
@@ -86,4 +91,13 @@ const ClearButton = styled(Button)`
 const Container = styled.div<ContainerProps>`
     position: relative;
     width: ${props => props.width || "100%"};
+`;
+
+const StyledAutocomplete = styled(Autocomplete)`
+    .MuiInputBase-root {
+        border-radius: 20px !important;
+    }
+    .MuiAutocomplete-popupIndicator {
+        margin-right: 5px;
+    }
 `;

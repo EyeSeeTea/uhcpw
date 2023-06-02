@@ -4,31 +4,26 @@ import styled from "styled-components";
 
 export interface SectionBlockProps {
     title: string;
-    textList: string[];
+    text: string;
 }
 
-export const SectionBlock: React.FC<SectionBlockProps> = ({ title, textList }) => {
+export const SectionBlock: React.FC<SectionBlockProps> = ({ title, text }) => {
     return (
         <ItemContent>
-            <Title variant="h6" gutterBottom>
+            <Typography variant="h4" gutterBottom>
                 {title}
-            </Title>
-            {textList.map((text, index) => {
-                return (
-                    <Typography key={index} gutterBottom>
-                        {text}
-                    </Typography>
-                );
-            })}
+            </Typography>
+            <Description variant="body1" gutterBottom>
+                {text}
+            </Description>
         </ItemContent>
     );
 };
 
-const Title = styled(Typography)`
-    font-weight: bold;
+const Description = styled(Typography)`
+    font-weight: 300;
 `;
 
 const ItemContent = styled(Grid)`
-    width: 430px;
-    margin: 64px 80px;
+    width: 400px;
 `;

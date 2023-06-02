@@ -10,13 +10,18 @@ import i18n from "../../../locales";
 import { SelectedChip } from "../selected-chip/SelectedChip";
 
 interface DropdownMultipleProps<T extends string = string> {
-    label: string;
+    label?: string;
     options: Option<T>[];
     values?: T[];
     placeholder?: string;
     fullWidth?: boolean;
     onChange: (value?: T[]) => void;
 }
+
+type OptionLabel = {
+    value: string;
+    text: string;
+};
 
 export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
     ({ label, options, values, placeholder, fullWidth, onChange }) => {
@@ -34,27 +39,27 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
 
         return (
             <Container>
-                <Autocomplete
+                <StyledAutocomplete
                     fullWidth={fullWidth}
                     multiple={true}
                     options={options}
                     value={valuesOption}
-                    getOptionLabel={option => option?.text}
+                    getOptionLabel={option => (option as OptionLabel)?.text}
                     renderInput={params => (
                         <DropdownTextField {...params} variant="standard" label={label} placeholder={placeholder} />
                     )}
-                    renderTags={(value: Option[], getTagProps) =>
-                        value.map((option: Option, index: number) => (
+                    renderTags={(value: unknown[], getTagProps) =>
+                        value.map((option: unknown, index: number) => (
                             <SelectedChip
-                                key={option.value}
+                                key={(option as Option).value}
                                 variant="outlined"
-                                label={option.text}
+                                label={(option as Option).text}
                                 {...getTagProps({ index })}
                                 deleteIcon={<CloseIcon fontSize="small" />}
                             />
                         ))
                     }
-                    onChange={handleChange}
+                    onChange={(e, value) => handleChange(e, value as Option<string>[] | null)}
                 />
                 {(values || []).length > 0 && (
                     <ClearButton variant="text" onClick={handleClear}>
@@ -79,4 +84,13 @@ const ClearButton = styled(Button)`
 const Container = styled.div`
     position: relative;
     width: 100%;
+`;
+
+const StyledAutocomplete = styled(Autocomplete)`
+    .MuiInputBase-root {
+        border-radius: 20px !important;
+    }
+    .MuiAutocomplete-popupIndicator {
+        margin-right: 5px;
+    }
 `;

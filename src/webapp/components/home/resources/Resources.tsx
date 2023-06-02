@@ -14,7 +14,7 @@ export interface ResourcesProps {
 export const Resources: React.FC<ResourcesProps> = ({ resources }) => {
     return (
         <Content>
-            <SectionHeader text={i18n.t("Resources")} />
+            <SectionHeader header={i18n.t("Resources")} />
             <Container>
                 <Grid container spacing={5}>
                     {resources &&
