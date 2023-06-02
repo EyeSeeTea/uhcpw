@@ -9,7 +9,7 @@ import { ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
     const { countries } = useAppContext();
-    const { filters, items, onGetResources } = useResourcesByType();
+    const { filters, items, onGetResources } = useResourcesByType({});
 
     const resources = useMemo(() => {
         return items
