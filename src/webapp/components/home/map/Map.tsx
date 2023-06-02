@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useCallback } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { style } from "./style";
-import { useMap } from "./useMap";
 import { WelcomePanel } from "../welcome-panel/WelcomePanel";
 import { CountryPanel } from "../country-panel/CountryPanel";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
@@ -127,39 +126,29 @@ const MapContent = styled.div`
     overflow: hidden;
     height: 100%;
     .marker-weak {
-        //background-image: url(${() => weakIcon});
         background-image: url(${() => weakPin});
     }
     .marker-weak:hover {
-        // background-image: url(${() => weakIcon});
         background-image: url(${() => weakHoverPin});
     }
     .marker-strong {
-        // background-image: url(${() => strongIcon});
         background-image: url(${() => strongPin});
     }
     .marker-strong:hover {
-        //  background-image: url(${() => strongIcon});
         background-image: url(${() => strongHoverPin});
     }
     .marker-gaps {
-        // background-image: url(${() => gapsIcon});
         background-image: url(${() => gapsPin});
     }
     .marker-gaps:hover {
-        // background-image: url(${() => gapsIcon});
         background-image: url(${() => gapsHoverPin});
     }
     .marker {
         background-size: cover;
-        /* width: 30px;
-        height: 30px; */
         width: 15px;
         height: 20px;
     }
     .marker:hover {
-        /* width: 50px;
-        height: 50px; */
         width: 35px;
         height: 48px;
         cursor: pointer;
