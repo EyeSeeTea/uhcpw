@@ -1,36 +1,40 @@
-export interface ComparativeAnalysis {
-    kind: "comparative-analysis";
-    text: string;
-    theme: string;
+export interface BasicResource {
+    id: string;
+    title: string;
     image: string;
-    links: ComparativeAnalysisLink[];
-    year: string;
+    date: Date;
 }
 
-export interface ComparativeAnalysisLink {
+export interface AnalysisResource extends BasicResource {
+    links: ResourceLink[];
+    theme: string;
+}
+
+export interface MediaResource extends BasicResource {
+    url: string;
+}
+
+export interface News extends MediaResource {
+    kind: "news";
+}
+
+export interface Multimedia extends MediaResource {
+    kind: "multimedia";
+    theme: string;
+}
+
+export interface ResourceLink {
     language: string;
     url: string;
 }
 
-export interface News {
-    kind: "news";
-    title: string;
-    url: string;
-    image: string;
-    date: string;
+export interface ComparativeAnalysis extends AnalysisResource {
+    kind: "comparative-analysis";
 }
 
-export interface Multimedia {
-    kind: "multimedia";
-    title: string;
-    url: string;
-    image: string;
-    date: string;
-    theme: string;
-}
-
-export interface CountryAnalysis {
+export interface CountryAnalysis extends AnalysisResource {
     kind: "country-analysis";
+    countryId: string;
 }
 
 export type Resource = News | Multimedia | CountryAnalysis | ComparativeAnalysis;

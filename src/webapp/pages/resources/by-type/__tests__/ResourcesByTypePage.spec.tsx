@@ -1,12 +1,11 @@
 import "@testing-library/jest-dom";
 import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import moment from "moment";
 import { anything, instance, mock, when } from "ts-mockito";
-import { CountryD2Repository } from "../../../../../data/repositories/CountryD2Repository";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
 import { ResourceD2Repository } from "../../../../../data/repositories/resources/ResourceD2Repository";
 import { ResourceThemeD2Repository } from "../../../../../data/repositories/resources/ResourceThemeD2Repository";
-import { Country } from "../../../../../domain/entities/Country";
 import { Future } from "../../../../../domain/entities/Future";
 import {
     ComparativeAnalysis,
@@ -17,13 +16,20 @@ import {
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
 import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
-import { customRenderWithRouterMatch } from "../../../../../utils/tests-ui";
+import { customRenderWithRouterMatch, givenACountries } from "../../../../../utils/tests-ui";
+import {
+    createComparativeAnalysisResources,
+    createCountryAnalysisResources,
+    createMultimediaResources,
+    createNewsResources,
+    createResourceCategories,
+    createResourcesThemes,
+} from "../../common/__tests__/helpers";
 import { ResourcesByTypePage } from "../ResourcesByTypePage";
 
 let resourceRepository: ResourceD2Repository;
 let resourceCategoryRepository: ResourceCategoryD2Repository;
 let resourceThemeRepository: ResourceThemeD2Repository;
-let countryRepository: CountryD2Repository;
 
 describe("ResourcesByTypePage for ", () => {
     beforeEach(() => {
@@ -128,36 +134,6 @@ describe("ResourcesByTypePage for ", () => {
         });
     });
 
-    describe("country analysis", () => {
-        it("should render comparative analysis title", async () => {
-            givenACountryAnalysisResources(0);
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
-        });
-        it("should render any items if there not resources", async () => {
-            givenACountryAnalysisResources(0);
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
-        });
-        it("should render any items if get resources fail", async () => {
-            givenAnErrorToGetResources();
-
-            renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
-
-            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
-        });
-    });
-
     describe("multimedia", () => {
         it("should render multimedia title", async () => {
             givenAMultimediaResources(0);
@@ -207,7 +183,69 @@ describe("ResourcesByTypePage for ", () => {
             await verifyMultimediaItems(resources);
         });
     });
+
+    describe("country analysis", () => {
+        it("should render comparative analysis title", async () => {
+            givenACountryAnalysisResources(0);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
+        });
+        it("should render any items if there not resources", async () => {
+            givenACountryAnalysisResources(0);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        });
+        it("should render any items if get resources fail", async () => {
+            givenAnErrorToGetResources();
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        });
+        it("should render expected item count", async () => {
+            givenACountryAnalysisResources(5);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            await screen.findAllByRole("listitem");
+
+            expect(await screen.findAllByRole("listitem")).toHaveLength(5);
+        });
+        it("should render expected items content", async () => {
+            const resources = givenACountryAnalysisResources(5);
+
+            renderPage("country-analysis");
+
+            await selectFiltersAndSearch();
+
+            await verifyCountryAnalysisItems(resources);
+        });
+    });
 });
+
+function renderPage(category: string) {
+    customRenderWithRouterMatch(
+        <ResourcesByTypePage />,
+        { path: "/resources/:category", route: `/resources/${category}` },
+        {
+            resource: resourceRepository,
+            resourceCategory: resourceCategoryRepository,
+            resourceTheme: resourceThemeRepository,
+        }
+    );
+}
 
 async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) {
     const items = await screen.findAllByRole("listitem");
@@ -221,17 +259,17 @@ async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) 
 
         const itemScope = within(item);
 
-        const image = itemScope.getByAltText(resource.text) as HTMLImageElement;
+        const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
         expect(image.src).toContain(resource.image);
 
-        itemScope.getByText(resource.year);
+        itemScope.getByText(resource.date.getFullYear());
         itemScope.getByText(resource.theme);
 
         resource.links.forEach(link => {
             expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
         });
 
-        itemScope.getByText(resource.text);
+        itemScope.getByText(resource.title);
     });
 }
 
@@ -257,7 +295,7 @@ async function verifyNewsItems(resources: News[]) {
             expect(link).toHaveAttribute("href", resource.url);
         });
 
-        itemScope.getByText(resource.date);
+        itemScope.getByText(moment(resource.date).format("DD MMMM YYYY"));
     });
 }
 
@@ -283,40 +321,47 @@ async function verifyMultimediaItems(resources: Multimedia[]) {
             expect(link).toHaveAttribute("href", resource.url);
         });
 
-        itemScope.getByText(resource.date);
+        itemScope.getByText(resource.date.getFullYear());
     });
 }
 
-function renderPage(category: string) {
-    customRenderWithRouterMatch(
-        <ResourcesByTypePage />,
-        { path: "/resources/:category", route: `/resources/${category}` },
-        {
-            resource: resourceRepository,
-            resourceCategory: resourceCategoryRepository,
-            resourceTheme: resourceThemeRepository,
-            country: countryRepository,
+async function verifyCountryAnalysisItems(resources: CountryAnalysis[]) {
+    const items = await screen.findAllByRole("listitem");
+
+    const countries = givenACountries();
+    const country = countries[0];
+
+    resources.forEach((resource, index) => {
+        const item = items[index];
+
+        if (item === undefined) {
+            throw new Error(`Index ${index} not found in items`);
         }
-    );
+
+        const itemScope = within(item);
+
+        const flag = itemScope.getByAltText(country?.name || "") as HTMLImageElement;
+        expect(flag.src).toContain(country?.flag);
+        itemScope.getByText(country?.name || "", { exact: true });
+
+        const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
+        expect(image.src).toContain(resource.image);
+
+        itemScope.getByText(resource.date.getFullYear());
+        itemScope.getByText(resource.theme);
+
+        resource.links.forEach(link => {
+            expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
+        });
+
+        itemScope.getByText(resource.title);
+    });
 }
 
 function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[] {
     const mockedRepository = mock(ResourceD2Repository);
-    const themes = givenAResourcesThemes();
 
-    const data = [...Array(count).keys()].map(index => {
-        return {
-            kind: "comparative-analysis" as const,
-            image: `http://image${index}.png`,
-            theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
-            links: [
-                { url: `http://link${Math.random()}.pdf`, language: "English" },
-                { url: `http://link${Math.random()}.pdf`, language: "Spain" },
-            ],
-            text: `title ${index}`,
-            year: (new Date().getFullYear() - index).toString(),
-        };
-    });
+    const data = createComparativeAnalysisResources(count);
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
 
@@ -328,11 +373,7 @@ function givenAComparativeAnalysisResources(count: number): ComparativeAnalysis[
 function givenACountryAnalysisResources(count: number): CountryAnalysis[] {
     const mockedRepository = mock(ResourceD2Repository);
 
-    const data = [...Array(count).keys()].map(index => {
-        return {
-            kind: "country-analysis" as const,
-        };
-    });
+    const data = createCountryAnalysisResources(count);
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
 
@@ -344,15 +385,7 @@ function givenACountryAnalysisResources(count: number): CountryAnalysis[] {
 function givenANewsResources(count: number): News[] {
     const mockedRepository = mock(ResourceD2Repository);
 
-    const data = [...Array(count).keys()].map(index => {
-        return {
-            kind: "news" as const,
-            image: `http://image${index}.png`,
-            title: `title ${index}`,
-            date: `${index} January 2023`,
-            url: `http://news-${index}.html`,
-        };
-    });
+    const data = createNewsResources(count);
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
 
@@ -364,16 +397,7 @@ function givenANewsResources(count: number): News[] {
 function givenAMultimediaResources(count: number): Multimedia[] {
     const mockedRepository = mock(ResourceD2Repository);
 
-    const data = [...Array(count).keys()].map(index => {
-        return {
-            kind: "multimedia" as const,
-            image: `http://image${index}.png`,
-            title: `title ${index}`,
-            date: `${index} January 2023`,
-            url: `http://news-${index}.html`,
-            theme: `test theme`,
-        };
-    });
+    const data = createMultimediaResources(count);
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
 
@@ -396,19 +420,13 @@ function givenAFilters() {
     return {
         categories: givenAResourceCategories(),
         themes: givenAResourcesThemes(),
-        countries: givenACountries(),
     };
 }
 
 function givenAResourceCategories(): ResourceCategory[] {
     const mockedRepository = mock(ResourceCategoryD2Repository);
 
-    const data = [
-        { id: "bcMc7kD0M98", name: "Comparative Analysis", code: "comparative-analysis" },
-        { id: "lQ4chDNdjkA", name: "news", code: "news" },
-        { id: "MXKMGulj2KF", name: "multimedia", code: "multimedia" },
-        { id: "bkO3SJzKQeD", name: "Country Analysis", code: "country-analysis" },
-    ];
+    const data = createResourceCategories();
 
     when(mockedRepository.getAll()).thenReturn(Future.success(data));
 
@@ -420,37 +438,11 @@ function givenAResourceCategories(): ResourceCategory[] {
 function givenAResourcesThemes(): ResourceTheme[] {
     const mockedRepository = mock(ResourceThemeD2Repository);
 
-    const data = [
-        { id: "QQMVsTNPJbB", name: "Spending on Health", code: "Spending on Health" },
-        { id: "XtkFOVtkBtT", name: "Financial Protection", code: "Financial Protection" },
-        { id: "nyzMcROMpmY", name: "Voluntary Health Insurance", code: "Voluntary Health Insurance" },
-    ];
+    const data = createResourcesThemes();
 
     when(mockedRepository.getAll()).thenReturn(Future.success(data));
 
     resourceThemeRepository = instance(mockedRepository);
-
-    return data;
-}
-
-function givenACountries(): Country[] {
-    const mockedRepository = mock(CountryD2Repository);
-
-    const data = [
-        {
-            id: "DVnpk4xiXGJ",
-            name: "Spain",
-            code: "ESP",
-            description: "description",
-            color: "color",
-            coordinates: [2982, 12] as [number, number],
-            parents: [{ id: "EUR", name: "Europe" }],
-        },
-    ];
-
-    when(mockedRepository.get()).thenReturn(Future.success(data));
-
-    countryRepository = instance(mockedRepository);
 
     return data;
 }

@@ -43,7 +43,6 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-        const [selectedIdsState, setSelectedIdsState] = React.useState<string[]>(selectedIds);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
 
         const handleClick = useCallback(
@@ -75,28 +74,25 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const handleSelectedChange = useCallback(
             (nodeId: string, selected: boolean) => {
                 if (selected) {
-                    const selected = [...selectedIdsState, nodeId];
-                    setSelectedIdsState(selected);
+                    const selected = [...selectedIds, nodeId];
 
                     if (onSelectedIdsChange) {
                         onSelectedIdsChange(selected);
                     }
                 } else {
-                    const selected = selectedIdsState.filter(id => id !== nodeId);
-
-                    setSelectedIdsState(selected);
+                    const selected = selectedIds.filter(id => id !== nodeId);
 
                     if (onSelectedIdsChange) {
                         onSelectedIdsChange(selected);
                     }
                 }
             },
-            [setSelectedIdsState, selectedIdsState, onSelectedIdsChange]
+            [selectedIds, onSelectedIdsChange]
         );
 
         const selectedCountries = useMemo(() => {
-            return countries.filter(country => selectedIdsState.includes(country.id));
-        }, [countries, selectedIdsState]);
+            return countries.filter(country => selectedIds.includes(country.id));
+        }, [countries, selectedIds]);
 
         const finalCountries = useMemo(() => {
             return countries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase()));
@@ -183,9 +179,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                 const children = countries.filter(country =>
                                     country.parents.some(p => p.id === parent.id)
                                 );
-                                const selectedCount = children.filter(child =>
-                                    selectedIdsState.includes(child.id)
-                                ).length;
+                                const selectedCount = children.filter(child => selectedIds.includes(child.id)).length;
 
                                 return (
                                     <Node
@@ -195,7 +189,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                         selectedCount={selectedCount}
                                     >
                                         {finalChildren.map((child, lindex) => {
-                                            const selected = selectedIdsState.find(id => id === child.id) !== undefined;
+                                            const selected = selectedIds.find(id => id === child.id) !== undefined;
 
                                             return (
                                                 <Leaf

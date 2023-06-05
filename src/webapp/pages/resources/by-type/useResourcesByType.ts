@@ -1,20 +1,25 @@
 import { useCallback, useEffect, useState } from "react";
-import { Resource } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
-import { ResourcesByTypeState } from "./ResourcesByTypeState";
+import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
 
-export function useResourcesByType(category: string): ResourcesByTypeState {
-    const { compositionRoot } = useAppContext();
-    const filters = useResourcesFilters(category);
+export function useResourcesByType(params: {
+    category?: string;
+    countriesFilter?: string[];
+    count?: number;
+}): ResourcesByTypeState {
+    const { compositionRoot, countries } = useAppContext();
+    const filters = useResourcesFilters(params.category, params.countriesFilter);
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [items, setItems] = useState<Resource[]>([]);
+    const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
 
     const [title, setTitle] = useState<string>("");
 
     useEffect(() => {
-        setItems([]);
+        if (filters.category.selected) {
+            setItems([]);
+        }
     }, [filters.category.selected]);
 
     useEffect(() => {
@@ -28,21 +33,43 @@ export function useResourcesByType(category: string): ResourcesByTypeState {
         compositionRoot.resources.get
             .execute({
                 searchTerm: filters.search.term,
-                category,
+                category: params.category,
                 theme: filters.theme.selected,
+                countries: filters.country.selected,
                 years: filters.year.selected,
+                count: params.count,
             })
             .run(
                 items => {
                     setLoading(false);
-                    setItems(items);
+
+                    const finalItems = items.map(item => {
+                        if (item.kind === "country-analysis") {
+                            const country = countries.find(country => country.id === item.countryId);
+
+                            return { ...item, countryName: country?.name || "", countryFlag: country?.flag || "" };
+                        } else {
+                            return item;
+                        }
+                    });
+
+                    setItems(finalItems);
                 },
                 () => {
                     setLoading(false);
                     setItems([]);
                 }
             );
-    }, [compositionRoot.resources, category, filters.theme.selected, filters.year.selected, filters.search.term]);
+    }, [
+        compositionRoot.resources.get,
+        filters.search.term,
+        filters.theme.selected,
+        filters.country.selected,
+        filters.year.selected,
+        params.category,
+        params.count,
+        countries,
+    ]);
 
     return {
         loading,

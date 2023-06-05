@@ -1,0 +1,155 @@
+import "@testing-library/jest-dom";
+import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { anything, instance, mock, when } from "ts-mockito";
+import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
+import { ResourceD2Repository } from "../../../../../data/repositories/resources/ResourceD2Repository";
+import { ResourceThemeD2Repository } from "../../../../../data/repositories/resources/ResourceThemeD2Repository";
+import { Future } from "../../../../../domain/entities/Future";
+import { Resource } from "../../../../../domain/entities/resources/Resource";
+import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
+import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
+import { customRenderWithRouterMatch } from "../../../../../utils/tests-ui";
+import {
+    createComparativeAnalysisResources,
+    createCountryAnalysisResources,
+    createMultimediaResources,
+    createNewsResources,
+    createResourceCategories,
+    createResourcesThemes,
+} from "../../common/__tests__/helpers";
+import { ResourcesPage } from "../ResourcesPage";
+
+let resourceRepository: ResourceD2Repository;
+let resourceCategoryRepository: ResourceCategoryD2Repository;
+let resourceThemeRepository: ResourceThemeD2Repository;
+
+describe("ResourcesPage", () => {
+    beforeEach(() => {
+        givenAFilters();
+    });
+
+    it("should render comparative analysis title", async () => {
+        givenAResources(0);
+
+        renderPage();
+
+        expect(screen.getByRole("heading", { name: /resources/i })).toBeInTheDocument();
+    });
+    it("should render any items if there not resources", async () => {
+        givenAResources(0);
+
+        renderPage();
+
+        search();
+
+        expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+    });
+    it("should render any items if get resources fail", async () => {
+        givenAnErrorToGetResources();
+
+        renderPage();
+
+        search();
+
+        expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+    });
+    it("should render expected items content", async () => {
+        givenAResources(5);
+
+        renderPage();
+
+        search();
+
+        await verifyElementsInGroup("News", 1);
+        await verifyElementsInGroup("Multimedia", 1);
+        await verifyElementsInGroup("Country Analysis", 1);
+        await verifyElementsInGroup("Comparative Analysis", 4);
+    });
+});
+
+function renderPage(queryString?: string) {
+    customRenderWithRouterMatch(
+        <ResourcesPage />,
+        { path: "/resources", route: `/resources/${queryString}` },
+        {
+            resource: resourceRepository,
+            resourceCategory: resourceCategoryRepository,
+            resourceTheme: resourceThemeRepository,
+        }
+    );
+}
+
+function givenAFilters() {
+    return {
+        categories: givenAResourceCategories(),
+        themes: givenAResourcesThemes(),
+    };
+}
+
+function givenAResources(countByType: number): Resource[] {
+    const mockedRepository = mock(ResourceD2Repository);
+
+    const data = [
+        ...createMultimediaResources(countByType),
+        ...createNewsResources(countByType),
+        ...createComparativeAnalysisResources(countByType),
+        ...createCountryAnalysisResources(countByType),
+    ];
+
+    when(mockedRepository.get(anything())).thenReturn(Future.success(data));
+
+    resourceRepository = instance(mockedRepository);
+
+    return data;
+}
+
+function givenAnErrorToGetResources(): Resource[] {
+    const mockedRepository = mock(ResourceD2Repository);
+
+    when(mockedRepository.get(anything())).thenReturn(Future.error("An error has ocurred retrieving resources"));
+
+    resourceRepository = instance(mockedRepository);
+
+    return [];
+}
+
+function givenAResourceCategories(): ResourceCategory[] {
+    const mockedRepository = mock(ResourceCategoryD2Repository);
+
+    const data = createResourceCategories();
+
+    when(mockedRepository.getAll()).thenReturn(Future.success(data));
+
+    resourceCategoryRepository = instance(mockedRepository);
+
+    return data;
+}
+
+function givenAResourcesThemes(): ResourceTheme[] {
+    const mockedRepository = mock(ResourceThemeD2Repository);
+
+    const data = createResourcesThemes();
+
+    when(mockedRepository.getAll()).thenReturn(Future.success(data));
+
+    resourceThemeRepository = instance(mockedRepository);
+
+    return data;
+}
+
+function search() {
+    const searchButton = screen.getByLabelText(/search/i);
+
+    userEvent.click(searchButton);
+}
+
+async function verifyElementsInGroup(groupName: string, count: number) {
+    const group = await screen.findByLabelText(groupName);
+
+    const scope = within(group);
+
+    const items = await scope.findAllByRole("listitem");
+
+    expect(items.length).toBe(count);
+}

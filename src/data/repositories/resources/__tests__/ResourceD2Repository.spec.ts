@@ -1,4 +1,4 @@
-import { ComparativeAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
@@ -6,6 +6,7 @@ import { ResourceD2Repository, resourceDataElements, resourcesProgram } from "..
 import comparativeAnalysis from "./data/ComparativeAnalysis.json";
 import news from "./data/News.json";
 import multimedia from "./data/Multimedia.json";
+import countryAnalysis from "./data/CountryAnalysis.json";
 
 const mockWebServer = new MockWebServer();
 const api = getD2APiFromInstance(new Instance({ url: "/" }));
@@ -51,6 +52,45 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("startDate")).toBe("2020-01-01");
             expect(mockWebServer.lastRequest?.params.get("endDate")).toBe("2022-12-31");
         });
+        it("countries in filter", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository
+                .get({ category: "comparative-analysis", countries: ["country1", "country2"] })
+                .runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
+                `${resourceDataElements.countryId}:in:country1;country2`
+            );
+        });
+        it("order in filter", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("order")).toContain("eventDate:desc");
+        });
+        it("skipPaging equal to true if count is not passed", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("true");
+        });
+        it("skipPaging equal to false if count is passed", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("false");
+        });
+        it("pageSize equal to count", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("pageSize")).toContain("6");
+        });
     });
 
     describe("Comparative analysis", () => {
@@ -74,7 +114,7 @@ describe("Resource repository", () => {
         });
     });
     describe("News", () => {
-        it("should return comparative analysis properly", async () => {
+        it("should return news properly", async () => {
             givenANews();
 
             const response = await resourceRepository.get({ category: "news" }).runAsync();
@@ -108,6 +148,26 @@ describe("Resource repository", () => {
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
                 `${resourceDataElements.category}:eq:multimedia`
+            );
+        });
+    });
+    describe("Country Analysis", () => {
+        it("should return country analysis properly", async () => {
+            givenACountryAnalysis();
+
+            const response = await resourceRepository.get({ category: "country-analysis" }).runAsync();
+
+            const countryAnalysis = (response.data || []) as CountryAnalysis[];
+
+            verifCountryAnalysis(countryAnalysis[0]);
+        });
+        it("should send expected filter for multimedia", async () => {
+            givenACountryAnalysis();
+
+            await resourceRepository.get({ category: "country-analysis" }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
+                `${resourceDataElements.category}:eq:country analysis`
             );
         });
     });
@@ -146,16 +206,28 @@ function givenAMultimedia() {
     ]);
 }
 
+function givenACountryAnalysis() {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/events`,
+            httpStatusCode: 200,
+            response: countryAnalysis,
+        },
+    ]);
+}
+
 function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
     if (!comparativeAnalysis) fail("Person is undefined");
 
     expect(comparativeAnalysis.kind).toBe("comparative-analysis");
     expect(comparativeAnalysis.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=bT2PACV80QO");
-    expect(comparativeAnalysis.text).toBe(
+    expect(comparativeAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
     );
     expect(comparativeAnalysis.theme).toBe("Financial Protection");
-    expect(comparativeAnalysis.year).toBe("2019");
+
+    expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2019-01-01T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
@@ -195,7 +267,7 @@ function verifyNews(newsItem?: News) {
     expect(newsItem.url).toBe(
         "https://www.who.int/europe/news/item/03-05-2023-countries-hosting-ukrainian-refugees-reaffirm-their-commitment-to-meeting-their-health-needs"
     );
-    expect(newsItem.date).toBe("03 May 2023");
+    expect(newsItem.date.toISOString()).toBe(new Date("2023-05-03T00:00:00.000").toISOString());
 }
 
 function verifyMultimedia(multimediaItem?: Multimedia) {
@@ -205,6 +277,40 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
     expect(multimediaItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=pqv58NbllXi");
     expect(multimediaItem.title).toBe("Financial protection in Spain: a pillar of universal health coverage");
     expect(multimediaItem.url).toBe("https://www.youtube.com/watch?v=LcltHPiuHqY");
-    expect(multimediaItem.date).toBe("2021");
+
+    expect(multimediaItem.date.toISOString()).toBe(new Date("2021-05-09T00:00:00.000").toISOString());
+
     expect(multimediaItem.theme).toBe("Financial Protection");
+}
+
+function verifCountryAnalysis(countryAnalysis?: CountryAnalysis) {
+    if (!countryAnalysis) fail("countryAnalysis is undefined");
+
+    expect(countryAnalysis.kind).toBe("country-analysis");
+    expect(countryAnalysis.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=FoBYCO3UUnU");
+    expect(countryAnalysis.title).toBe(
+        "Can people afford to pay for health care? New evidence on financial protection in Spain"
+    );
+    expect(countryAnalysis.theme).toBe("Financial Protection");
+    expect(countryAnalysis.date.toISOString()).toBe(new Date("2021-01-01T00:00:00.000").toISOString());
+
+    const expectedLinks = [
+        {
+            language: "English",
+            url: "https://apps.who.int/iris/bitstream/handle/10665/347403/9789289056182-eng.pdf?sequence=1&isAllowed=y",
+        },
+        {
+            language: "Castellano",
+            url: "https://apps.who.int/iris/bitstream/handle/10665/347895/WHO-EURO-2021-3996-43755-61568-spa.pdf?sequence=1&isAllowed=y",
+        },
+    ];
+
+    countryAnalysis.links.forEach((link, index) => {
+        const expectedLink = expectedLinks[index];
+
+        expect(link.language).toBe(expectedLink?.language);
+        expect(link.url).toBe(expectedLink?.url);
+    });
+
+    expect(countryAnalysis.countryId).toBe("DVnpk4xiXGJ");
 }

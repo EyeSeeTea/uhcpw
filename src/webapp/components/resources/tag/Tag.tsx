@@ -1,20 +1,14 @@
 import { Typography } from "@material-ui/core";
 import styled from "styled-components";
 
-type ThemeProps = {
+type TagProps = {
     theme: string;
+    color?: string;
 };
 
-const themeColor: Record<string, string> = {
-    "Financial Protection": "#008ad7",
-    "Resilience and financial sustainability": "#4fad56",
-    "Spending on Health": "#0360a7",
-    "Voluntary Health Insurance": "#ff8d4e",
-};
-
-export const Theme: React.FC<ThemeProps> = ({ theme }) => {
+export const Tag: React.FC<TagProps> = ({ theme, color }) => {
     return (
-        <Container background={themeColor[theme]}>
+        <Container background={color}>
             <Typography variant="body2" style={{ color: "white" }} align="center">
                 {theme}
             </Typography>
@@ -24,8 +18,10 @@ export const Theme: React.FC<ThemeProps> = ({ theme }) => {
 
 const Container = styled.div<{ background?: string }>`
     border-radius: 20px;
-    background: ${props => props.background || "red"};
+    background: ${props => props.background || "#185698"};
     color: #174587;
     padding: 4px 16px;
     display: inline-block;
+    margin-right: 16px;
+    margin-bottom: 8px;
 `;

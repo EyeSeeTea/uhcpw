@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-01T22:11:38.781Z\n"
-"PO-Revision-Date: 2023-06-01T22:11:38.781Z\n"
+"POT-Creation-Date: 2023-06-02T10:39:02.246Z\n"
+"PO-Revision-Date: 2023-06-02T10:39:02.246Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -151,16 +151,19 @@ msgid "Financial protection status: Weak"
 msgstr ""
 
 msgid ""
-"8% of households are improverished of futher improverished after "
-"out-of-pocket payments."
+"Find out about the health system factors that strengthen and undermine "
+"financial protection at country level"
 msgstr ""
 
-msgid "19% of households experiences catastrophic health spending."
+msgid "Country page"
+msgstr ""
+
+msgid "The region at a glance"
 msgstr ""
 
 msgid ""
-"Poorer households, older people and people in rural areas are most at risk "
-"of financial hardship."
+"Compare financial protection indicators, identify faps in coverage, explore "
+"good practice"
 msgstr ""
 
 msgid ""
@@ -260,13 +263,19 @@ msgstr ""
 msgid "Resources"
 msgstr ""
 
+msgid "Comparative analysis"
+msgstr ""
+
+msgid "Country analysis"
+msgstr ""
+
+msgid "News"
+msgstr ""
+
+msgid "Multimedia"
+msgstr ""
+
 msgid "UHC Watch"
-msgstr ""
-
-msgid "Can people afford to play for health care?"
-msgstr ""
-
-msgid "Evidence on financial protection in Europe and Central Asia"
 msgstr ""
 
 msgid ""
@@ -275,26 +284,23 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Without it, people face barries to access and experience financial hardship "
-"when using health care"
+"Financial protection - affordable access to health care - is at the heart "
+"of UHC"
 msgstr ""
 
-msgid "Explore data and analysis in financial protection"
+msgid "Can people afford to pay for health care?"
 msgstr ""
 
-msgid "Compare country progress towards UHC"
+msgid "Explore new evidence on financial protection in Europe and Central Asia"
 msgstr ""
 
-msgid "Find out how to make health care affordable for everyone"
-msgstr ""
-
-msgid "String financial protection"
+msgid "Stronger financial protection"
 msgstr ""
 
 msgid "Gaps in financial protection"
 msgstr ""
 
-msgid "Weak financial protection"
+msgid "Weaker financial protection"
 msgstr ""
 
 msgid "Category and indicator"
@@ -396,22 +402,7 @@ msgstr ""
 msgid "Select year"
 msgstr ""
 
-msgid "Comparative Analysis"
-msgstr ""
-
-msgid "Country analysis"
-msgstr ""
-
-msgid "Multimedia"
-msgstr ""
-
-msgid "News"
-msgstr ""
-
 msgid "Select theme"
-msgstr ""
-
-msgid "See All"
 msgstr ""
 
 msgid "All"
@@ -443,4 +434,10 @@ msgid "Switch row/column"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2022)"
+msgstr ""
+
+msgid "Country Analysis"
+msgstr ""
+
+msgid "Comparative Analysis"
 msgstr ""

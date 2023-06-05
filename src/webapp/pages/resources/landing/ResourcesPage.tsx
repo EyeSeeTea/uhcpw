@@ -1,19 +1,20 @@
 import { Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
-import { ComparativeAnalysis } from "../../../components/resources/comparative-analysis/ComparativeAnalysis";
-import { CountryAnalysis } from "../../../components/resources/country-analysis/CountryAnalysis";
-import { Multimedia } from "../../../components/resources/multimedia/Multimedia";
-import { News } from "../../../components/resources/news/News";
+import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
+import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
+import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {
-    const { countryAnalysis, filters, comparativeAnalysis, news, multimedia } = useResources();
+    const history = useHistory();
+    const { filters, resources, onGetResources } = useResources();
 
     return (
         <Layout>
@@ -24,60 +25,94 @@ export const ResourcesPage: React.FC = React.memo(() => {
                 <SearchInput value={""} />
             </SearchContainer>
             <SelectsContainer maxWidth="xl">
-                <ResourcesFilters filters={filters} onGetResources={() => {}} />
+                <Grid container>
+                    <ResourcesFilters filters={filters} onGetResources={onGetResources} />
+
+                    {resources && (
+                        <>
+                            <Grid item md={6} xs={12}>
+                                <ResourceGroup
+                                    title={i18n.t("Country Analysis")}
+                                    seeAllUrl={"/resources/country-analysis"}
+                                >
+                                    {resources.countryAnalysisByCountry.map(country => {
+                                        return (
+                                            <Grid item xs={2} key={country.countryId}>
+                                                <Flag
+                                                    role="listitem"
+                                                    width={"90%"}
+                                                    src={country.flag}
+                                                    onClick={() =>
+                                                        history.push(
+                                                            `/resources/country-analysis?country=${country.countryId}`
+                                                        )
+                                                    }
+                                                />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <ResourceGroup
+                                    title={i18n.t("Comparative Analysis")}
+                                    seeAllUrl={"/resources/comparative-analysis"}
+                                >
+                                    {resources.comparativeAnalysis.map(comparativeItem => {
+                                        return (
+                                            <Grid item xs={6} md={3} key={comparativeItem.id}>
+                                                <ComparativeAnalysisItem
+                                                    comparativeAnalysis={comparativeItem}
+                                                    minimalVersion
+                                                />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
+                                    {resources.multimedia.map(multimediaItem => {
+                                        return (
+                                            <Grid item xs={12} key={multimediaItem.id}>
+                                                <SimpleResourceItem
+                                                    title={multimediaItem.title}
+                                                    url={multimediaItem.url}
+                                                    image={multimediaItem.image}
+                                                    date={multimediaItem.date}
+                                                />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
+                                    {resources.news.map(newsItem => {
+                                        return (
+                                            <Grid item xs={12} key={newsItem.id}>
+                                                <SimpleResourceItem
+                                                    title={newsItem.title}
+                                                    url={newsItem.url}
+                                                    image={newsItem.image}
+                                                    date={newsItem.date}
+                                                />
+                                            </Grid>
+                                        );
+                                    })}
+                                </ResourceGroup>
+                            </Grid>
+                        </>
+                    )}
+                </Grid>
             </SelectsContainer>
-            <Grid container style={{ backgroundColor: "white" }}>
-                <Grid item md={6} xs={12}>
-                    <CountryAnalysisSection>
-                        <Container maxWidth="xl">
-                            <CountryAnalysis countryAnalysis={countryAnalysis} />
-                        </Container>
-                    </CountryAnalysisSection>
-                </Grid>
-                <Grid item md={6} xs={12}>
-                    <ComparativeAnalysisSection>
-                        <Container maxWidth="xl">
-                            <ComparativeAnalysis comparativeAnalysis={comparativeAnalysis} />
-                        </Container>
-                    </ComparativeAnalysisSection>
-                </Grid>
-                <Grid item md={6} xs={12}>
-                    <MultimediaSection>
-                        <Container maxWidth="xl">
-                            <Multimedia multimediaItems={multimedia} />
-                        </Container>
-                    </MultimediaSection>
-                </Grid>
-                <Grid item md={6} xs={12}>
-                    <NewsSection>
-                        <Container maxWidth="xl">
-                            <News newsItems={news} />
-                        </Container>
-                    </NewsSection>
-                </Grid>
-            </Grid>
         </Layout>
     );
 });
 
-const CountryAnalysisSection = styled.div`
-    padding-bottom: 64px;
-`;
-
-const ComparativeAnalysisSection = styled.div`
-    padding-bottom: 64px;
-`;
-
-const NewsSection = styled.div`
-    padding-bottom: 64px;
-`;
-
-const MultimediaSection = styled.div`
-    padding-bottom: 64px;
-`;
-
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
+    color: white;
     padding: 32px 64px;
 `;
 
@@ -91,4 +126,10 @@ const SearchContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+`;
+
+const Flag = styled.img`
+    border: 1px solid #c5c3c3;
+    margin: 16px;
+    cursor: pointer;
 `;

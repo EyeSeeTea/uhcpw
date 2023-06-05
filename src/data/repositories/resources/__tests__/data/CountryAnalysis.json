@@ -1,0 +1,100 @@
+{
+    "events": [
+        {
+            "event": "FoBYCO3UUnU",
+            "eventDate": "2021-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/347403/9789289056182-eng.pdf?sequence=1&isAllowed=y"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/347895/WHO-EURO-2021-3996-43755-61568-spa.pdf?sequence=1&isAllowed=y"
+                },
+                {
+                    "dataElement": "yKHkUZLIGc6",
+                    "value": "English"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Spain"
+                },
+                {
+                    "dataElement": "iO4ThHtWZ8M",
+                    "value": "country-analysis"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "Castellano"
+                },
+                {
+                    "dataElement": "PC9lIDo5x8m",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "¿Se puede permitir la gente pagar por la atención sanitaria? Nueva evidencia sobre la protección financiera en España"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "dabMJBJjuwL"
+                }
+            ]
+        },
+        {
+            "event": "Ln1nd0LBOxu",
+            "eventDate": "2019-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/346328/WHO-EURO-2019-3618-43377-60851-eng.pdf?sequence=1&isAllowed=y"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/bitstream/handle/10665/346329/WHO-EURO-2019-3618-43377-60852-ukr.pdf?sequence=1&isAllowed=y"
+                },
+                {
+                    "dataElement": "yKHkUZLIGc6",
+                    "value": "English"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Ukraine: review of health financing reforms 2016-2019"
+                },
+                {
+                    "dataElement": "iO4ThHtWZ8M",
+                    "value": "country-analysis"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "українська"
+                },
+                {
+                    "dataElement": "PC9lIDo5x8m",
+                    "value": "VJrTuNXAg9G"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Україна: огляд реформи фінансування системи охорони здоров’я 2016–2019: спільний звіт ВООЗ та Світового банку"
+                }
+            ]
+        }
+    ]
+}

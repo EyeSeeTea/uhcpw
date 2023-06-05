@@ -1,20 +1,35 @@
 import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useMemo } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Layout } from "../../../components/layout/Layout";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
-import { NewsItem } from "../../../components/resources/news/NewsItem";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
-import { MultimediaItem } from "../../../components/resources/multimedia/MultimediaItem";
+import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
+import { CountryAnalysisItem } from "../../../components/resources/country-analysis/CountryAnalysisItem";
+import { ResourceState } from "./ResourcesByTypeState";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
+    const history = useHistory();
     const { category } = useParams<{ category: string }>();
-    const { loading, title, filters, items, onGetResources } = useResourcesByType(category);
+    const filterInParams = useMemo(() => {
+        const searchParams = new URLSearchParams(history.location.search);
+
+        const country = searchParams.get("country");
+
+        return {
+            country: country ? [country] : undefined,
+        };
+    }, [history]);
+
+    const { loading, title, filters, items, onGetResources } = useResourcesByType({
+        category,
+        countriesFilter: filterInParams.country,
+    });
 
     return (
         <Layout>
@@ -29,17 +44,20 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                     <ResourcesFilters filters={filters} onGetResources={onGetResources} />
                 </SelectsContainer>
                 <Container maxWidth="xl">
-                    <Grid container spacing={5}>
-                        {items.map((item, index) => {
-                            const sizes = getSizes(item);
+                    {
+                        <Grid container spacing={5}>
+                            {items &&
+                                items.map((item, index) => {
+                                    const sizes = getSizes(item);
 
-                            return (
-                                <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
-                                    <Item resource={item} />
-                                </Grid>
-                            );
-                        })}
-                    </Grid>
+                                    return (
+                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
+                                            <Item resource={item} />
+                                        </Grid>
+                                    );
+                                })}
+                        </Grid>
+                    }
                 </Container>
 
                 <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
@@ -50,23 +68,48 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     );
 });
 
-const Item: React.FC<{ resource: Resource }> = React.memo(({ resource }) => {
+const Item: React.FC<{ resource: ResourceState }> = React.memo(({ resource }) => {
+    const themeColor: Record<string, string> = {
+        "Financial Protection": "#008ad7",
+        "Resilience and financial sustainability": "#4fad56",
+        "Spending on Health": "#0360a7",
+        "Voluntary Health Insurance": "#ff8d4e",
+    };
+
     switch (resource.kind) {
         case "comparative-analysis":
             return <ComparativeAnalysisItem comparativeAnalysis={resource} />;
         case "country-analysis":
-            return <div></div>;
+            return <CountryAnalysisItem countryAnalysis={resource} />;
         case "news":
-            return <NewsItem news={resource} />;
-        case "multimedia":
-            return <MultimediaItem multimedia={resource} />;
+            return (
+                <SimpleResourceItem
+                    title={resource.title}
+                    url={resource.url}
+                    image={resource.image}
+                    date={resource.date}
+                    dateFormat={"DD MMMM YYYY"}
+                />
+            );
+        case "multimedia": {
+            return (
+                <SimpleResourceItem
+                    title={resource.title}
+                    url={resource.url}
+                    image={resource.image}
+                    date={resource.date}
+                    tag={resource.theme}
+                    tagColor={themeColor[resource.theme]}
+                />
+            );
+        }
     }
 });
 
 const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSize } => {
     switch (resource.kind) {
         case "comparative-analysis":
-            return { lg: 3, md: 3, xs: 6 };
+            return { lg: 2, md: 3, xs: 6 };
         case "country-analysis":
             return { lg: 2, md: 3, xs: 6 };
         case "news":

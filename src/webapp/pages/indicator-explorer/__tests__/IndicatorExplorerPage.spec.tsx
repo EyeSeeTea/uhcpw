@@ -4,11 +4,9 @@ import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceThemeD2Repository } from "../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
-import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
 import { IndicatorExplorerPage } from "../IndicatorExplorerPage";
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { VisualizationD2Repository } from "../../../../data/repositories/indicator-explorer/VisualizationD2Repository";
-import { Country } from "../../../../domain/entities/Country";
 import { AnalyticsD2Repository } from "../../../../data/repositories/indicator-explorer/AnalyticsD2Repository";
 import F16Visualization from "./data/F16Visualization.json";
 import F16Analytics from "./data/F16Analytics.json";
@@ -19,7 +17,6 @@ import Highcharts from "highcharts";
 let visualizationRepository: VisualizationD2Repository;
 let analyticsRepository: AnalyticsD2Repository;
 let resourceThemeRepository: ResourceThemeD2Repository;
-let countryRepository: CountryD2Repository;
 
 describe("IndicatorExplorerPage", () => {
     describe("to load page", () => {
@@ -35,12 +32,12 @@ describe("IndicatorExplorerPage", () => {
 
     describe("F16 - Share of households with catastrohic spending by consumption quintile", () => {
         it("should render expected chart", async () => {
-            const { visualizations, countries } = givenAFilters();
-            const analytics = givenAnAnalytics();
+            const { visualizations } = givenAFilters();
+            givenAnAnalytics();
 
             renderPage();
 
-            await selectFiltersAndGetChart(visualizations[0]?.name || "", countries[0]?.name || "", "2008");
+            await selectFiltersAndGetChart(visualizations[0]?.name || "", "Spain", "2008");
 
             const chartTitle = await waitFor(() => screen.getByRole("heading", { name: visualizations[0]?.name }));
 
@@ -72,7 +69,6 @@ function renderPage() {
             visualization: visualizationRepository,
             analytics: analyticsRepository,
             resourceTheme: resourceThemeRepository,
-            country: countryRepository,
         }
     );
 }
@@ -105,30 +101,7 @@ function givenAnAnalytics(): Analytics {
 function givenAFilters() {
     return {
         visualizations: givenAVisualizations(),
-        countries: givenACountries(),
     };
-}
-
-function givenACountries(): Country[] {
-    const mockedRepository = mock(CountryD2Repository);
-
-    const data = [
-        {
-            id: "DVnpk4xiXGJ",
-            name: "Spain",
-            code: "ESP",
-            description: "description",
-            color: "color",
-            coordinates: [2982, 12] as [number, number],
-            parents: [{ id: "EUR", name: "Europe" }],
-        },
-    ];
-
-    when(mockedRepository.get()).thenReturn(Future.success(data));
-
-    countryRepository = instance(mockedRepository);
-
-    return data;
 }
 
 async function selectFiltersAndGetChart(visualizationText: string, countryText: string, yearText: string) {

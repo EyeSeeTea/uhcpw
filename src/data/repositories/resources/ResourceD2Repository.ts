@@ -1,7 +1,14 @@
 import _ from "lodash";
-import moment from "moment";
 import { FutureData } from "../../../domain/entities/Future";
-import { ComparativeAnalysis, Multimedia, News, Resource } from "../../../domain/entities/resources/Resource";
+import {
+    AnalysisResource,
+    ComparativeAnalysis,
+    CountryAnalysis,
+    MediaResource,
+    Multimedia,
+    News,
+    Resource,
+} from "../../../domain/entities/resources/Resource";
 import { ResourceFilters, ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
@@ -19,6 +26,7 @@ export const resourceDataElements: Record<string, string> = {
     link3Language: "DQAOcVPEQTh",
     link4: "yfKcdYARapH",
     link4Language: "QlRpFiResvs",
+    countryId: "PC9lIDo5x8m",
 };
 
 export const resourcesProgram = "wWo0lhm5GsY";
@@ -28,9 +36,12 @@ export class ResourceD2Repository implements ResourceRepository {
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
         const filter = _([
-            `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}`,
+            filters.category ? `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}` : undefined,
             filters.theme ? `${resourceDataElements.theme}:eq:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
+            filters.countries && filters.countries?.length > 0
+                ? `${resourceDataElements.countryId}:in:${filters.countries.join(";")}`
+                : undefined,
         ])
             .compact()
             .join(",");
@@ -42,11 +53,13 @@ export class ResourceD2Repository implements ResourceRepository {
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
-                skipPaging: true,
                 program: resourcesProgram,
                 startDate: startYear ? `${startYear}-01-01` : undefined,
                 endDate: endYear ? `${endYear}-12-31` : undefined,
+                skipPaging: filters.count ? false : true,
+                pageSize: filters.count,
                 filter,
+                order: "eventDate:desc",
             })
         ).map(response => {
             return this.buildResources(response.events);
@@ -66,17 +79,72 @@ export class ResourceD2Repository implements ResourceRepository {
                         return this.buildNews(event);
                     } else if (category === "multimedia") {
                         return this.buildMultimedia(event);
+                    } else if (category === "country-analysis") {
+                        return this.buildCountryAnalysis(event);
                     } else {
                         return undefined;
                     }
                 })
-            )
-                .orderBy("year", "desc")
-                .value()
+            ).value()
         );
     }
 
+    private buildNews(event: D2Event): News {
+        const media = this.buildMedia(event);
+
+        return {
+            kind: "news",
+            ...media,
+        };
+    }
+
+    private buildMultimedia(event: D2Event): Multimedia {
+        const media = this.buildMedia(event);
+
+        const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
+
+        return {
+            kind: "multimedia",
+            ...media,
+            theme,
+        };
+    }
+
+    private buildMedia(event: D2Event): MediaResource {
+        const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
+        const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
+
+        return {
+            id: event.event,
+            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            title,
+            url,
+            date: new Date(event.eventDate),
+        };
+    }
+
     private buildComparativeAnalysis(event: D2Event): ComparativeAnalysis {
+        const analysis = this.buildAnalysis(event);
+
+        return {
+            kind: "comparative-analysis",
+            ...analysis,
+        };
+    }
+
+    private buildCountryAnalysis(event: D2Event): CountryAnalysis {
+        const analysis = this.buildAnalysis(event);
+
+        const countryId = event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryId)?.value || "";
+
+        return {
+            kind: "country-analysis",
+            ...analysis,
+            countryId,
+        };
+    }
+
+    private buildAnalysis(event: D2Event): AnalysisResource {
         const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
         const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
         const link = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
@@ -94,8 +162,8 @@ export class ResourceD2Repository implements ResourceRepository {
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4Language)?.value || "";
 
         return {
-            kind: "comparative-analysis",
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            id: event.event,
             theme: theme,
             links: _([
                 this.createLink(link, linkLanguage),
@@ -105,36 +173,8 @@ export class ResourceD2Repository implements ResourceRepository {
             ])
                 .compact()
                 .value(),
-            text: title,
-            year: new Date(event.eventDate).getFullYear().toString(),
-        };
-    }
-
-    private buildNews(event: D2Event): News {
-        const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
-        const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
-
-        return {
-            kind: "news",
-            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
-            title,
-            url,
-            date: moment(new Date(event.eventDate)).format("DD MMMM YYYY"),
-        };
-    }
-
-    private buildMultimedia(event: D2Event): Multimedia {
-        const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
-        const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
-        const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
-
-        return {
-            kind: "multimedia",
-            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
-            title,
-            url,
-            date: moment(new Date(event.eventDate)).format("YYYY"),
-            theme,
+            title: title,
+            date: new Date(event.eventDate),
         };
     }
 
