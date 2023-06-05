@@ -53,7 +53,7 @@ export class CountryD2Repository implements CountryRepository {
                 aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value ||
                 "";
 
-            const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Green" ? "Weak" : "Gaps";
+            const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
 
             return {
                 id: orgUnit.id,
