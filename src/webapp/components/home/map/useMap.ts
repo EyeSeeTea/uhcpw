@@ -22,7 +22,9 @@ export function useMap(): MapState {
     const snackbar = useSnackbar();
 
     useEffect(() => {
-        setMarkers(countriesToGeoJson(countries));
+        const countriesWithSummary = countries.filter(country => country.summary);
+
+        setMarkers(countriesToGeoJson(countriesWithSummary));
     }, [countries, snackbar]);
 
     const onSelectedCountryChange = useCallback((country?: Country) => {
