@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-05-29T08:49:30.534Z\n"
-"PO-Revision-Date: 2023-05-29T08:49:30.534Z\n"
+"POT-Creation-Date: 2023-06-01T22:11:38.781Z\n"
+"PO-Revision-Date: 2023-06-01T22:11:38.781Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -17,12 +17,6 @@ msgstr ""
 msgid ""
 "Experts working with the WHO Barcelona Office to access finantial "
 "protection and coverage policy at country level"
-msgstr ""
-
-msgid "Select Countries"
-msgstr ""
-
-msgid "Countries"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Stengthening"
@@ -78,6 +72,36 @@ msgstr ""
 msgid "15 June 2020"
 msgstr ""
 
+msgid "Country expert"
+msgstr ""
+
+msgid "Antoniya Dimova"
+msgstr ""
+
+msgid "Professor"
+msgstr ""
+
+msgid "Medical University - Professor Dr Paraskev Stoyanov - Varna"
+msgstr ""
+
+msgid "Bulgaria"
+msgstr ""
+
+msgid "Country Resources"
+msgstr ""
+
+msgid "Financial hardship (2018)"
+msgstr ""
+
+msgid "Unmet need (2021)"
+msgstr ""
+
+msgid ""
+"Households with catastrophic health spending and out-of-pocket payments as "
+"a share of current spending on health, 2019 or latest available year before "
+"COVID-19"
+msgstr ""
+
 msgid "Select country"
 msgstr ""
 
@@ -95,29 +119,35 @@ msgstr ""
 msgid "Clear all"
 msgstr ""
 
-msgid ""
-"Find out about the current situation, changes over time and what can be "
-"done to strengthen financial protection"
-msgstr ""
-
-msgid ""
-"Compare health system performance, identify common gaps in coverage and "
-"explore good practice"
-msgstr ""
-
 msgid "Analysis"
 msgstr ""
 
-msgid "See a country in context"
+msgid "Country-level and comparative analysis of financial protection"
 msgstr ""
 
-msgid "See the region at a glance"
+msgid "Countries in context"
+msgstr ""
+
+msgid ""
+"Find out about the health system factors that strengthen and undermine "
+"financial protection at country level"
+msgstr ""
+
+msgid "Country page"
+msgstr ""
+
+msgid "The region at a glance"
+msgstr ""
+
+msgid ""
+"Compare financial protection indicators, identify faps in coverage, explore "
+"good practice"
+msgstr ""
+
+msgid "Regional page"
 msgstr ""
 
 msgid "Financial protection status: Weak"
-msgstr ""
-
-msgid "Financial hardship (2018)"
 msgstr ""
 
 msgid ""
@@ -157,43 +187,35 @@ msgstr ""
 msgid "Download the Bulgaria financial protection report"
 msgstr ""
 
-msgid "Impovershing out-of-pocket payments"
-msgstr ""
-
-msgid "Catastrophic out-of-pocket payments"
-msgstr ""
-
-msgid "Unmet need for health and dental care"
-msgstr ""
-
-msgid "Spending on health"
-msgstr ""
-
-msgid "Population coverage"
-msgstr ""
-
-msgid "Service coverage"
-msgstr ""
-
-msgid "User Charges (co-payments)"
-msgstr ""
-
-msgid "Voluntary health insurance"
-msgstr ""
-
-msgid "Administrative barries"
-msgstr ""
-
-msgid "Gasp in coverage"
-msgstr ""
-
 msgid "Explorers"
 msgstr ""
 
-msgid "Indicator Explorer"
+msgid "Assess the current situation, monitor trends, compare countries"
 msgstr ""
 
-msgid "Policy Explorer"
+msgid "Indicator explorer"
+msgstr ""
+
+msgid ""
+"Over 50 indicators of financial hardship, unmet need for health care and "
+"spending on health"
+msgstr ""
+
+msgid "Explore data"
+msgstr ""
+
+msgid "indicator explorer"
+msgstr ""
+
+msgid "Policy explorer"
+msgstr ""
+
+msgid ""
+"Information on population coverage, service coverage, user charges and "
+"voluntary health insurance"
+msgstr ""
+
+msgid "policy explorer"
 msgstr ""
 
 msgid "Zoom in"
@@ -205,20 +227,34 @@ msgstr ""
 msgid "An error has ocurred loading countries"
 msgstr ""
 
-msgid ""
-"The financial hardship indicators available on UHC Watch are based on a "
-"capacity to pay approach, making them sensitive to equity"
-msgstr ""
-
-msgid ""
-"Data on financial hardship are complemented by data on unmet need for "
-"health and dental care"
-msgstr ""
-
-msgid "Analysis of gaps in coverage enables concrete recommendations for policy"
-msgstr ""
-
 msgid "Methods"
+msgstr ""
+
+msgid "How financial protection is monitored matters"
+msgstr ""
+
+msgid "A focus on equity"
+msgstr ""
+
+msgid ""
+"We measure financial hardship using an approach that accounts for people's "
+"capacity to pay for health care"
+msgstr ""
+
+msgid "Numbers and stories"
+msgstr ""
+
+msgid ""
+"UHC Watch identifies the factors that influence financial protection at "
+"country level, drawing on insights from comparative analysis"
+msgstr ""
+
+msgid "Actionable evidence"
+msgstr ""
+
+msgid ""
+"UHC Watch provides clear guidance for policy by identifying who lacks "
+"financial protection, driven by which health services and why"
 msgstr ""
 
 msgid "Resources"
@@ -321,6 +357,12 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Indicator Explorer"
+msgstr ""
+
+msgid "Policy Explorer"
+msgstr ""
+
 msgid "Countries"
 msgstr ""
 
@@ -373,6 +415,15 @@ msgid "See All"
 msgstr ""
 
 msgid "All"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "In detail"
+msgstr ""
+
+msgid "Country resources"
 msgstr ""
 
 msgid "Switch to colour-blind friendly"

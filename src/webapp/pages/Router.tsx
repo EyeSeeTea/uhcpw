@@ -6,6 +6,7 @@ import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPag
 import { PolicyExplorerPage } from "./policy-explorer/PolicyExplorerPage";
 import { ResourcesByTypePage } from "./resources/by-type/ResourcesByTypePage";
 import { ResourcesPage } from "./resources/landing/ResourcesPage";
+import { CountryPage } from "./country/CountryPage";
 
 export const Router: React.FC = React.memo(() => {
     return (
@@ -18,6 +19,7 @@ export const Router: React.FC = React.memo(() => {
                     path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)"
                     render={() => <ResourcesByTypePage />}
                 />
+                <Route path="/country/:name" render={() => <CountryPage />} />
                 <Route path="/resources" render={() => <ResourcesPage />} />
 
                 {/* Default route */}
