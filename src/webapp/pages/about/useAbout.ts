@@ -1,40 +1,50 @@
 import { useCallback, useEffect, useState } from "react";
-import { ResourcesState } from "./AboutState";
+import { PersonState, ResourcesState } from "./AboutState";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import i18n from "../../../locales";
-import { Person } from "../../../domain/entities/Person";
 import { useAppContext } from "../../contexts/app-context";
-import { CountryOption } from "../../components/country-selector/CountrySelector";
+import { Country } from "../../../domain/entities/Country";
+import { Person } from "../../../domain/entities/Person";
 
 export function useAbout(): ResourcesState {
-    const { compositionRoot } = useAppContext();
+    const { compositionRoot, countries } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
 
-    const [officeTeam, setOfficeTeam] = useState<Person[]>([]);
+    const [officeTeam, setOfficeTeam] = useState<PersonState[]>([]);
 
     const [selectedFilter, setSelectedFilter] = useState<string>(allFilter);
-    const [experts, setExperts] = useState<Person[]>([]);
-    const [filteredExperts, setFilteredExperts] = useState<Person[]>([]);
+    const [experts, setExperts] = useState<PersonState[]>([]);
+    const [filteredExperts, setFilteredExperts] = useState<PersonState[]>([]);
 
     useEffect(() => {
-        setFilteredExperts(filterExperts(experts, selectedFilter, countryFilter.options, countryFilter.selected));
+        setFilteredExperts(filterExperts(experts, selectedFilter, countryFilter.selected));
     }, [countryFilter.options, countryFilter.selected, experts, selectedFilter]);
 
     useEffect(() => {
-        compositionRoot.about.getPersons.execute(true).run(setOfficeTeam, () => setOfficeTeam([]));
-    }, [compositionRoot.about]);
+        compositionRoot.about.getPersons.execute(true).run(
+            persons => {
+                setOfficeTeam(persons.map(person => mapPersonToExpertState(person, countries)));
+            },
+            () => setOfficeTeam([])
+        );
+    }, [compositionRoot.about, countries]);
 
     useEffect(() => {
-        compositionRoot.about.getPersons.execute(false).run(setExperts, () => setExperts([]));
-    }, [compositionRoot.about.getPersons]);
+        compositionRoot.about.getPersons.execute(false).run(
+            persons => {
+                setExperts(persons.map(person => mapPersonToExpertState(person, countries)));
+            },
+            () => setExperts([])
+        );
+    }, [compositionRoot.about.getPersons, countries]);
 
     const onFilterChange = useCallback(
         (value: string) => {
             setSelectedFilter(value);
 
-            setFilteredExperts(filterExperts(experts, value, countryFilter.options, countryFilter.selected));
+            setFilteredExperts(filterExperts(experts, value, countryFilter.selected));
         },
-        [countryFilter.options, countryFilter.selected, experts]
+        [countryFilter.selected, experts]
     );
 
     return {
@@ -47,22 +57,19 @@ export function useAbout(): ResourcesState {
     };
 }
 
-const filterExperts = (
-    expertMembers: Person[],
-    letterFilter: string,
-    countryOptions: CountryOption[],
-    countrySelected?: string[]
-) => {
-    const countryNames = countrySelected
-        ? countryOptions.filter(country => countrySelected?.includes(country.id)).map(({ name }) => name || "")
-        : undefined;
-
+const filterExperts = (expertMembers: PersonState[], letterFilter: string, countrySelected?: string[]) => {
     return expertMembers.filter(
         expert =>
-            (!countryNames || countryNames.length === 0 || countryNames?.includes(expert.country || "")) &&
+            (!countrySelected || countrySelected.length === 0 || countrySelected?.includes(expert.countryId || "")) &&
             (letterFilter === allFilter || expert.firstName.toLowerCase().startsWith(letterFilter.toLowerCase()))
     );
 };
+
+function mapPersonToExpertState(person: Person, countries: Country[]): PersonState {
+    const country = countries.find(country => country.id === person.countryId);
+
+    return { ...person, countryName: country?.name || "" };
+}
 
 const allFilter = i18n.t("All");
 

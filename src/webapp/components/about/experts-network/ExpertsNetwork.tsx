@@ -6,10 +6,10 @@ import { ItemPerson } from "../person/ItemPerson";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { CountryFilterState } from "../../../common/state/state";
 import { CountrySelector } from "../../country-selector/CountrySelector";
-import { Person } from "../../../../domain/entities/Person";
+import { PersonState } from "../../../pages/about/AboutState";
 
 export interface ExpertsNetworkProps {
-    members: Person[];
+    members: PersonState[];
     countryFilter: CountryFilterState;
     filters: string[];
     selectedFilter: string;

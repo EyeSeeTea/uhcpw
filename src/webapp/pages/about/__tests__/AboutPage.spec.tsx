@@ -3,7 +3,6 @@ import { screen, waitFor, within } from "@testing-library/react";
 import { instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
-import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
 import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
 import { Person } from "../../../../domain/entities/Person";
@@ -88,7 +87,7 @@ describe("AboutPage", () => {
         const scope = within(screen.getByLabelText(/experts/i));
         const items = scope.queryAllByRole("listitem");
 
-        await waitFor(() => expect(items).toHaveLength(3));
+        await waitFor(() => expect(items).toHaveLength(2));
     });
 });
 
@@ -147,7 +146,7 @@ function verifyExpertMembers(experts: Person[]) {
         itemScope.getByText(expert.firstName);
         itemScope.getByText(expert.lastName);
         itemScope.getByText(expert.position);
-        itemScope.getByText(expert.country || "");
+        itemScope.getByText("Spain");
     });
 }
 
@@ -198,16 +197,7 @@ function givenAPersons(): {
             position: "Position ABC",
             linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
             email: "hello@eyeseetea.com",
-            country: "Spain",
-        },
-        {
-            firstName: "first name 1",
-            lastName: "last name 1",
-            image: "https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-            position: "Position ABC",
-            linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
-            email: "hello@eyeseetea.com",
-            country: "Spain",
+            countryId: "DVnpk4xiXGJ",
         },
         {
             firstName: "first name 2",
@@ -216,7 +206,7 @@ function givenAPersons(): {
             position: "Position ABC",
             linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
             email: "hello@eyeseetea.com",
-            country: "Portugal",
+            countryId: "DVnpk4xiXGJ",
         },
     ];
 

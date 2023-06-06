@@ -70,6 +70,20 @@ describe("Person repository", () => {
         expect(program).toBe(personProgram);
         expect(filter).toBe(`${personDataElements.role}:like:team`);
     });
+    it("order in filter", async () => {
+        mockWebServer.addRequestHandlers([
+            {
+                method: "get",
+                endpoint: `/api/events`,
+                httpStatusCode: 200,
+                response: officeTeam,
+            },
+        ]);
+
+        await officeTeamRepository.get(true).runAsync();
+
+        expect(mockWebServer.lastRequest?.params.get("order")).toContain(`${personDataElements.firstName}:asc`);
+    });
 });
 
 function verifyPersonIsParsed(person?: Person) {
@@ -80,7 +94,7 @@ function verifyPersonIsParsed(person?: Person) {
     //TODO: image pending
     //expect(person.image).toBe("Riabtseva")
     expect(person.position).toBe("Co-founder");
-    expect(person.country).toBe("Ukraine");
+    expect(person.countryId).toBe("Ukraine");
 }
 
 export {};
