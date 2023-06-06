@@ -13,7 +13,7 @@ export interface ResourcesFiltersProps {
 
 export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters }) => {
     return (
-        <Grid container spacing={5}>
+        <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
             <Grid item md={5} xs={6}>
                 <Center>
                     <Dropdown
