@@ -3,6 +3,7 @@ import { Option } from "../../../components/dropdown/Option";
 import { IndicatorExplorerFakeState } from "./IndicatorExplorerFakeState";
 import React from "react";
 import { useMultiCountryOptionsFake } from "../../../common/hooks/countries/useMultiCountryOptionsFake";
+import { categoriesConfig, CategoryConfig } from "./categoriesConfig";
 
 export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
     const countryFilter = useMultiCountryOptionsFake(undefined, ["DVnpk4xiXGJ", "AjeCGGb8H76", "KwgjnBBpe5b"]);
@@ -79,53 +80,3 @@ export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
         onGetChart,
     };
 }
-
-/**
- * ESP = DVnpk4xiXGJ
- * BUL = AjeCGGb8H76
- * BEL = KwgjnBBpe5b
- */
-
-type CategoryConfig = {
-    metadata: { filterByCountry: boolean; chartName: string };
-    data: ChartData[];
-};
-
-type ChartData = {
-    countryId?: string;
-    image: string;
-};
-
-const categoriesConfig: Record<string, CategoryConfig> = {
-    "Financial Hardship: Households with catastrophic health spending by consumption quintile": {
-        metadata: {
-            filterByCountry: true,
-            chartName: "Households with catastrophic health spending by consumption quintile",
-        },
-        data: [
-            {
-                countryId: "DVnpk4xiXGJ",
-                image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.highcharts.com%2Fforum%2Fviewtopic.php%3Ft%3D30042&psig=AOvVaw2IlYDDR1LCgSMxUCeghk2X&ust=1686049947503000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCIDOl9P_q_8CFQAAAAAdAAAAABAb",
-            },
-            {
-                countryId: "AjeCGGb8H76",
-                image: "https://phppot.com/wp-content/uploads/2017/02/highcharts-compare-data-using-column-chart.png",
-            },
-            {
-                countryId: "KwgjnBBpe5b",
-                image: "https://static.packt-cdn.com/products/9781783983964/graphics/3964OS_02_06.jpg",
-            },
-        ],
-    },
-    "Comparative charts: Households with catastrophic health spending, 2019 or latest available year before COVID-19": {
-        metadata: {
-            filterByCountry: false,
-            chartName: "Households with catastrophic health spending, 2019 or latest available year before COVID-19",
-        },
-        data: [
-            {
-                image: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.highcharts.com%2Fdemo&psig=AOvVaw2IlYDDR1LCgSMxUCeghk2X&ust=1686049947503000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCIDOl9P_q_8CFQAAAAAdAAAAABAt",
-            },
-        ],
-    },
-};
