@@ -21,10 +21,10 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
         return (
             <>
                 <ItemsTitleContainer>
-                    <Title>{i18n.t("Financial protection expert network")}</Title>
-                    <Subtitle style={{ maxWidth: "480px" }}>
+                    <Title>{i18n.t("The Financial Protection Expert Network")}</Title>
+                    <Subtitle style={{ maxWidth: "40%" }}>
                         {i18n.t(
-                            "Experts working with the WHO Barcelona Office to access finantial protection and coverage policy at country level"
+                            "Experts working with the WHO Barcelona Office to assess financial protection and coverage policy at country level"
                         )}
                     </Subtitle>
                 </ItemsTitleContainer>
@@ -36,6 +36,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                         onSelectedIdsChange={countryFilter.onSelectedChange}
                         groupedByIncome={countryFilter.groupedByIncome}
                         onGroupedByIncomeChange={countryFilter.onGroupedByIncomeChange}
+                        placeholder="Select country"
                     />
 
                     <Box width={4} />
@@ -56,7 +57,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                 <Grid container spacing={8} style={{ marginBottom: 6 }}>
                     {members.map((item, index) => {
                         return (
-                            <Grid key={index} item lg={3} md={4} xs={6}>
+                            <Grid key={index} item xs={6} md>
                                 <ItemPerson person={item} isExpert />
                             </Grid>
                         );
@@ -72,12 +73,13 @@ const ItemsTitleContainer = styled.div`
 `;
 
 const Title = styled(Typography)`
-    font-size: 35px;
+    font-size: 48px;
+    font-weight: 500;
 `;
 
 const Subtitle = styled(Typography)`
-    font-size: 17px;
-    color: ${colors.grey};
+    font-size: 26px;
+    color: rgba(36, 38, 38, 0.7);
 `;
 
 const Row = styled.div`

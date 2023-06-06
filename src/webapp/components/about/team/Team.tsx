@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ItemPerson } from "../person/ItemPerson";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { PersonState } from "../../../pages/about/AboutState";
 
 export interface TeamProps {
@@ -18,10 +17,10 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
                 <Subtitle>{i18n.t("Staff and consultants")}</Subtitle>
             </ItemsTitleContainer>
 
-            <Grid container spacing={8}>
+            <Grid container spacing={10}>
                 {team.map((item, index) => {
                     return (
-                        <Grid key={index} item lg={3} md={4} xs={6}>
+                        <Grid key={index} item xs={6} md>
                             <ItemPerson person={item} isExpert={false} />
                         </Grid>
                     );
@@ -36,10 +35,11 @@ const ItemsTitleContainer = styled.div`
 `;
 
 const Title = styled(Typography)`
-    font-size: 35px;
+    font-size: 48px;
+    font-weight: 500;
 `;
 
 const Subtitle = styled(Typography)`
-    font-size: 17px;
-    color: ${colors.grey};
+    font-size: 26px;
+    color: rgba(36, 38, 38, 0.7);
 `;
