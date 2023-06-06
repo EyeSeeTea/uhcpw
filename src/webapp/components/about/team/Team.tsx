@@ -4,10 +4,10 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ItemPerson } from "../person/ItemPerson";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { Person } from "../../../../domain/entities/Person";
+import { PersonState } from "../../../pages/about/AboutState";
 
 export interface TeamProps {
-    team: Person[];
+    team: PersonState[];
 }
 
 export const Team: React.FC<TeamProps> = React.memo(({ team }) => {

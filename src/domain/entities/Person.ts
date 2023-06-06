@@ -3,5 +3,5 @@ export type Person = {
     firstName: string;
     lastName: string;
     position: string;
-    country?: string;
+    countryId?: string;
 };

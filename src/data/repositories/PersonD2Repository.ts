@@ -8,7 +8,7 @@ import avatarEmpty from "../../webapp/assets/avatar-empty.png";
 export const personDataElements: Record<string, string> = {
     image: "qftOoaAVxOr",
     firstName: "j70ChBwbiYb",
-    lastName: "RGH57Cnanvg",
+    lastName: "uurvrpEppNr",
     position: "r6uQvsaezay",
     country: "Cc5CRlEhngk",
     role: "fh1bVZ8tXSw",
@@ -27,6 +27,7 @@ export class PersonD2Repository implements PersonRepository {
                 skipPaging: true,
                 program: personProgram,
                 filter: `${personDataElements.role}:like:${isOfficeTeam ? "team" : "expert"}`,
+                order: `${personDataElements.firstName}:asc`,
             })
         ).map(response => this.buildPersons(response.events));
     }
@@ -36,7 +37,7 @@ export class PersonD2Repository implements PersonRepository {
             const firstName = event.dataValues.find(dv => dv.dataElement === personDataElements.firstName)?.value || "";
             const lastName = event.dataValues.find(dv => dv.dataElement === personDataElements.lastName)?.value || "";
             const position = event.dataValues.find(dv => dv.dataElement === personDataElements.position)?.value || "";
-            const country = event.dataValues.find(dv => dv.dataElement === personDataElements.country)?.value || "";
+            const countryId = event.dataValues.find(dv => dv.dataElement === personDataElements.country)?.value || "";
             const image = event.dataValues.find(dv => dv.dataElement === personDataElements.image)?.value;
 
             return {
@@ -46,7 +47,7 @@ export class PersonD2Repository implements PersonRepository {
                     ? `${this.api.baseUrl}/api/events/files?dataElementUid=${personDataElements.image}&eventUid=${event.event}`
                     : avatarEmpty,
                 position,
-                country,
+                countryId,
             };
         });
     }

@@ -1,10 +1,10 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { Person } from "../../../../domain/entities/Person";
+import { PersonState } from "../../../pages/about/AboutState";
 
 export interface ItemPersonProps {
-    person: Person;
+    person: PersonState;
     isExpert: boolean;
 }
 
@@ -31,7 +31,7 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                             {person.position}
                         </Typography>
                         <Typography variant="body2" gutterBottom>
-                            {person.country}
+                            {person.countryName}
                         </Typography>
                     </InfoContainer>
                 </Row>
