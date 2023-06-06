@@ -35,9 +35,12 @@ export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
+        //2:38 has a bug filtering events by data element value using eq operator. Like works!
         const filter = _([
-            filters.category ? `${resourceDataElements.category}:eq:${filters.category.replace("-", " ")}` : undefined,
-            filters.theme ? `${resourceDataElements.theme}:eq:${filters.theme.replace("-", " ")}` : undefined,
+            filters.category
+                ? `${resourceDataElements.category}:like:${filters.category.replace("-", " ")}`
+                : undefined,
+            filters.theme ? `${resourceDataElements.theme}:like:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
             filters.countries && filters.countries?.length > 0
                 ? `${resourceDataElements.countryId}:in:${filters.countries.join(";")}`

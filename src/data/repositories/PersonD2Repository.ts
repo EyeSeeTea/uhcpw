@@ -20,12 +20,13 @@ export class PersonD2Repository implements PersonRepository {
     constructor(private api: D2Api) {}
 
     get(isOfficeTeam: boolean): FutureData<Person[]> {
+        //2:38 has a bug filtering events by data element value using eq operator. Like works!
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
                 skipPaging: true,
                 program: personProgram,
-                filter: `${personDataElements.role}:eq:${isOfficeTeam ? "team" : "expert"}`,
+                filter: `${personDataElements.role}:like:${isOfficeTeam ? "team" : "expert"}`,
             })
         ).map(response => this.buildPersons(response.events));
     }
