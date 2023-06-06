@@ -34,7 +34,7 @@ describe("Resource repository", () => {
                 .runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.theme}:eq:Financial Protection`
+                `${resourceDataElements.theme}:like:Financial Protection`
             );
         });
         it("searchTerm in filter", async () => {
@@ -109,7 +109,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:eq:comparative analysis`
+                `${resourceDataElements.category}:like:comparative analysis`
             );
         });
     });
@@ -128,7 +128,7 @@ describe("Resource repository", () => {
 
             await resourceRepository.get({ category: "news" }).runAsync();
 
-            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(`${resourceDataElements.category}:eq:news`);
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(`${resourceDataElements.category}:like:news`);
         });
     });
     describe("Multimedia", () => {
@@ -147,7 +147,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "multimedia" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:eq:multimedia`
+                `${resourceDataElements.category}:like:multimedia`
             );
         });
     });
@@ -167,7 +167,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "country-analysis" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:eq:country analysis`
+                `${resourceDataElements.category}:like:country analysis`
             );
         });
     });

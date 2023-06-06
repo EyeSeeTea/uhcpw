@@ -68,7 +68,7 @@ describe("Person repository", () => {
         const program = mockWebServer.lastRequest?.params.get("program");
 
         expect(program).toBe(personProgram);
-        expect(filter).toBe(`${personDataElements.role}:eq:team`);
+        expect(filter).toBe(`${personDataElements.role}:like:team`);
     });
 });
 
