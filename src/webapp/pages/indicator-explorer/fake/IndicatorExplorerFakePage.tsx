@@ -45,9 +45,3 @@ const TitleContainer = styled.div`
     color: white;
     padding: 48px 64px;
 `;
-
-const Column = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-`;

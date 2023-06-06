@@ -3,7 +3,6 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 import { AboutPage } from "./about/AboutPage";
 import { HomePage } from "./home/HomePage";
 import { IndicatorExplorerFakePage } from "./indicator-explorer/fake/IndicatorExplorerFakePage";
-import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPage";
 import { PolicyExplorerPage } from "./policy-explorer/PolicyExplorerPage";
 import { ResourcesByTypePage } from "./resources/by-type/ResourcesByTypePage";
 import { ResourcesPage } from "./resources/landing/ResourcesPage";

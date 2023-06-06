@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
 import { Button, Typography } from "@material-ui/core";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 
 interface ChartProps {
     name: string;
@@ -11,8 +12,18 @@ interface ChartProps {
 }
 
 export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
+    const ref = useRef<HTMLDivElement>(null);
+
+    const handleDownload = React.useCallback(() => {
+        if (ref.current)
+            downloadHtmlElement(ref.current, name, {
+                backgroundColor: "#f1f9fc",
+                exclusionClasses: ["download-button"],
+            });
+    }, [ref, name]);
+
     return (
-        <ChartContainer>
+        <ChartContainer ref={ref}>
             <DataHeader>
                 <Row>
                     <Row>
@@ -29,6 +40,8 @@ export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
                             startIcon={<DownloadIcon />}
                             color="primary"
                             style={{ marginLeft: 20 }}
+                            onClick={handleDownload}
+                            className="download-button"
                         >
                             {i18n.t("Download")}
                         </CustomButton>
@@ -86,19 +99,19 @@ const CustomButton = styled(Button)`
     padding: 0px 16px;
 `;
 
-const CreditsText = styled(Typography)`
-    color: black;
-`;
+// const CreditsText = styled(Typography)`
+//     color: black;
+// `;
 
-const Link = styled.a`
-    text-decoration: none;
-`;
+// const Link = styled.a`
+//     text-decoration: none;
+// `;
 
-const Column = styled.div`
-    padding: 64px 30px 64px 64px;
-    display: flex;
-    flex-direction: column;
-`;
+// const Column = styled.div`
+//     padding: 64px 30px 64px 64px;
+//     display: flex;
+//     flex-direction: column;
+// `;
 
 const Row = styled.div<{ justifyContent?: string; marginBottom?: string }>`
     display: flex;
