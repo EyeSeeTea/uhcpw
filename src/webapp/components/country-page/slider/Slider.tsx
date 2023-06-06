@@ -52,6 +52,7 @@ const useStyles = makeStyles(theme => ({
         maxWidth: "30px",
         minWidth: "30px",
         marginTop: "50px",
+        paddingBottom: "50px",
     },
     tab: {
         borderRight: `10px solid ${colors.accentPrimary}`,

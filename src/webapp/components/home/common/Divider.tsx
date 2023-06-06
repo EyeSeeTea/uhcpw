@@ -12,6 +12,6 @@ const StyledDivider = styled(DividerComponent)<{ isOrange: boolean }>`
     height: 20px !important;
     background: ${props =>
         props.isOrange
-            ? "linear-gradient(90deg, rgba(255, 140, 0, 1) 0%, rgba(255, 191, 113, 1) 100%)"
-            : "linear-gradient(90deg, rgba(0,61,255,1) 0%, rgba(74,117,255,1) 100%)"};
+            ? "linear-gradient(90deg, #FF9355 1.8%, #FFBC88 100%)"
+            : "linear-gradient(89.98deg, #008AD7 66.78%, rgba(0, 138, 215, 0.3) 115.99%)"};
 `;

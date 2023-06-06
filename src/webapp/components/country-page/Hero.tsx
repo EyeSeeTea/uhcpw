@@ -99,6 +99,7 @@ const Column = styled.div`
 const Text = styled(Typography)`
     color: white;
     font-weight: 300;
+    max-width: 55%;
 `;
 
 const Row = styled.div`

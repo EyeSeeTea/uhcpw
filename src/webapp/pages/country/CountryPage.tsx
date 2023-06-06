@@ -74,7 +74,7 @@ const Header = styled.div`
     justify-content: space-between;
     height: 80px;
     align-items: center;
-    background: linear-gradient(90deg, rgba(255, 60, 60, 1) 0%, rgba(252, 210, 210, 1) 92%);
+    background: linear-gradient(90deg, #c42929 0%, #ffe1d0 60.94%);
     padding: 0px 40px;
 `;
 

@@ -22,13 +22,13 @@ type SlideGraphType = {
 export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo }) => {
     return (
         <Container>
-            <Typography variant="h2" style={{ marginBottom: "50px", maxWidth: "70%" }}>
+            <Typography variant="h3" style={{ marginBottom: "50px", maxWidth: "80%", fontWeight: 500 }}>
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={4}>
                     <Column>
-                        <Typography>{i18n.t(graphOne.title)}</Typography>
+                        <Typography style={{ maxWidth: "80%" }}>{i18n.t(graphOne.title)}</Typography>
                         <Row>
                             <Tag>{graphOne.theme}</Tag>
                             <div style={{ marginTop: "5px", marginLeft: "20px" }}>
@@ -56,15 +56,15 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         </Row>
                     </Column>
                 </Grid>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={8}>
                     <Image src={graphOne.image} />
                 </Grid>
             </GraphGrid>
             {graphTwo && (
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={4}>
                         <Column>
-                            <Typography>{i18n.t(graphTwo.title)}</Typography>
+                            <Typography style={{ maxWidth: "80%" }}>{i18n.t(graphTwo.title)}</Typography>
                             <Row>
                                 <Tag>{graphTwo.theme}</Tag>
                                 <div style={{ marginTop: "5px", marginLeft: "20px" }}>
@@ -92,7 +92,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             </Row>
                         </Column>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={8}>
                         <Image src={graphTwo.image} />
                     </Grid>
                 </GraphGrid>
@@ -102,7 +102,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
 };
 
 const Container = styled.div`
-    padding: 40px 10px 20px 30px;
+    padding: 15px 10px 20px 30px;
 `;
 
 const GraphGrid = styled(Grid)``;
@@ -129,9 +129,9 @@ const Row = styled.div`
 `;
 
 const Image = styled.img`
-    width: 100%;
+    width: 70%;
     height: auto;
-    @media (min-width: 1440px) {
+    /*     @media (min-width: 1440px) {
         width: 900px;
-    }
+    } */
 `;
