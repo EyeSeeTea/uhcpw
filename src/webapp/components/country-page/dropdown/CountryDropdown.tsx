@@ -1,10 +1,7 @@
-import { Button } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
-import { Option } from "../../dropdown/Option";
 
 import styled from "styled-components";
-import i18n from "../../../../locales";
 import { CountryOption } from "../../country-selector/CountrySelector";
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 interface DropdownProps<T extends string = string> {
@@ -22,22 +19,12 @@ interface ContainerProps {
 }
 
 export const CountryDropdown: React.FC<DropdownProps> = React.memo(
-    ({ label, options, value, placeholder, fullWidth, onChange, width = "100%" }) => {
+    ({ label, options, value, placeholder, fullWidth, width = "100%" }) => {
         const [valueOption, setValueOption] = useState<CountryOption | null>(null);
 
         useEffect(() => {
             setValueOption(options.find(option => option.id === value) || null);
         }, [options, value]);
-
-        const handleChange = (e: React.ChangeEvent<{}>, value: Option<string> | null): void => {
-            if (!Array.isArray(value)) {
-                if (typeof value === "string") {
-                    onChange(value);
-                } else {
-                    onChange(value?.value || undefined);
-                }
-            }
-        };
 
         return (
             <Container width={width}>
@@ -57,7 +44,7 @@ export const CountryDropdown: React.FC<DropdownProps> = React.memo(
                             InputLabelProps={{ shrink: true }}
                         />
                     )}
-                    onChange={(e, value) => {}}
+                    onChange={() => {}}
                 />
             </Container>
         );

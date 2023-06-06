@@ -70,11 +70,6 @@ const Column = styled.div`
     gap: 15px;
 `;
 
-const Row = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
 const Image = styled.img`
     width: 100%;
     height: auto;

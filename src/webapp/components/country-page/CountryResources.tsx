@@ -5,7 +5,6 @@ import { ChevronRightIcon } from "../icons/ChevronRightIcon";
 import bulgariaReport from "../../assets/country-page/bulgaria-report.jpg";
 import bulgariaInfographic from "../../assets/country-page/bulgaria-infographic.jpg";
 import bulgariaSummary from "../../assets/country-page/bulgaria-summary.jpg";
-import { Theme } from "../resources/theme/Theme";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 
 const countryResources = [

@@ -1,4 +1,4 @@
-import { Grid, IconButton, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import Umbrella from "../../../assets/country-page/umbrella-3.svg";
