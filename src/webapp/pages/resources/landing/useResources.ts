@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Country } from "../../../../domain/entities/Country";
 import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
@@ -10,6 +10,8 @@ import { ResourcesState } from "./ResourcesState";
 export function useResources(): ResourcesState {
     const { countries } = useAppContext();
     const { filters, items, onGetResources } = useResourcesByType({});
+
+    useEffect(() => onGetResources(), [onGetResources]);
 
     const resources = useMemo(() => {
         return items
