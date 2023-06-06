@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ItemPerson } from "../person/ItemPerson";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { CountryFilterState } from "../../../common/state/state";
 import { CountrySelector } from "../../country-selector/CountrySelector";
 import { PersonState } from "../../../pages/about/AboutState";
