@@ -12,7 +12,7 @@ export const Header: React.FC = React.memo(() => {
                 <a href="https://www.youtube.com/watch?v=k8OQYkjgERk&t=4s" target="_blank" rel="noreferrer">
                     <img width="100%" alt="WHO Barcelona Office" src={WhoBarcelona} />
                 </a>
-                <Caption>{i18n.t("WHO Barcelona Office for Health Systems Financing")}</Caption>
+                <Caption role="caption">{i18n.t("WHO Barcelona Office for Health Systems Financing")}</Caption>
             </Grid>
             <Grid item md={6} xs={12}>
                 <Container maxWidth="sm">

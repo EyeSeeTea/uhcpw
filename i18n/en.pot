@@ -19,7 +19,7 @@ msgid ""
 "protection and coverage policy at country level"
 msgstr ""
 
-msgid "WHO Barcelona Office for Health Systems Stengthening"
+msgid "WHO Barcelona Office for Health Systems Financing"
 msgstr ""
 
 msgid ""
