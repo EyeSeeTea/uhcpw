@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-06T15:44:45.434Z\n"
-"PO-Revision-Date: 2023-06-06T15:44:45.434Z\n"
+"POT-Creation-Date: 2023-06-07T12:28:19.384Z\n"
+"PO-Revision-Date: 2023-06-07T12:28:19.384Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -341,12 +341,6 @@ msgstr ""
 msgid "About us"
 msgstr ""
 
-msgid "World Helath Organization"
-msgstr ""
-
-msgid "World Barcelona Office for Health Sytems Financing"
-msgstr ""
-
 msgid "Contact our office"
 msgstr ""
 
@@ -429,9 +423,6 @@ msgid "In detail"
 msgstr ""
 
 msgid "Country resources"
-msgstr ""
-
-msgid "Switch to colour-blind friendly"
 msgstr ""
 
 msgid ""
