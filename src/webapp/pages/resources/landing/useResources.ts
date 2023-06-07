@@ -34,13 +34,16 @@ export function useResources(): ResourcesState {
 }
 function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
     return _.unionBy(
-        items
-            .filter(item => item.kind === "country-analysis")
-            .map(countryAnalysis => {
-                const countryId = (countryAnalysis as CountryAnalysis).countryId;
-                const country = countries.find(country => country.id === countryId);
-                return { countryId, flag: country?.flag || "" };
-            }),
+        _.orderBy(
+            items
+                .filter(item => item.kind === "country-analysis")
+                .map(countryAnalysis => {
+                    const countryId = (countryAnalysis as CountryAnalysis).countryId;
+                    const country = countries.find(country => country.id === countryId);
+                    return { countryId, countryName: country?.name, flag: country?.flag || "" };
+                }),
+            "countryName"
+        ),
         country => country.countryId
     );
 }
