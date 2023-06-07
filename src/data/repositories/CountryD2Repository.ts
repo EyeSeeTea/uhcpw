@@ -26,6 +26,7 @@ export class CountryD2Repository implements CountryRepository {
                     paging: false,
                     level: 3,
                     filter: { path: { like: euroOrgUnit } },
+                    order: "shortName:asc",
                 })
             ),
             aditionalCountriesInfo: apiToFuture(
