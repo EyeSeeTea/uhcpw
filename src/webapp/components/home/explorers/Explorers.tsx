@@ -29,7 +29,7 @@ export const Explorers: React.FC = () => {
                                 )}
                             />
                             <ButtonContainer>
-                                <CTA text={i18n.t("Explore data")} link="#" />
+                                <CTA text={i18n.t("Explore data")} link="/indicator-explorer" />
                             </ButtonContainer>
                         </Grid>
                         <Grid item>
@@ -47,7 +47,7 @@ export const Explorers: React.FC = () => {
                                 )}
                             />
                             <ButtonContainer>
-                                <CTA text={i18n.t("Explore data")} link="#" />
+                                <CTA text={i18n.t("Explore data")} link="/policy-explorer" />
                             </ButtonContainer>
                         </Grid>
                         <Grid item>

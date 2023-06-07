@@ -1,5 +1,5 @@
-import React from "react";
-import { HashRouter, Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { HashRouter, Route, Switch, useLocation } from "react-router-dom";
 import { AboutPage } from "./about/AboutPage";
 import { HomePage } from "./home/HomePage";
 import { IndicatorExplorerFakePage } from "./indicator-explorer/fake/IndicatorExplorerFakePage";
@@ -7,9 +7,20 @@ import { PolicyExplorerPage } from "./policy-explorer/PolicyExplorerPage";
 import { ResourcesByTypePage } from "./resources/by-type/ResourcesByTypePage";
 import { ResourcesPage } from "./resources/landing/ResourcesPage";
 
+const ScrollToTop = (): JSX.Element | null => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+};
+
 export const Router: React.FC = React.memo(() => {
     return (
         <HashRouter>
+            <ScrollToTop />
             <Switch>
                 <Route path="/about" render={() => <AboutPage />} />
                 <Route path="/policy-explorer" render={() => <PolicyExplorerPage />} />

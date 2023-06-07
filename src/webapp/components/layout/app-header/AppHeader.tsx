@@ -97,6 +97,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
                         {i18n.t("Search")}
                     </MenuTopButton>
+                    <Tag>Beta version</Tag>
                     {action}
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
@@ -147,48 +148,22 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                 );
                             })}
                         </Menu>
-                        <MenuButton
-                            id="regions"
-                            aria-controls="regions"
-                            aria-haspopup="true"
-                            onClick={handleParentMenuClick}
-                            endIcon={<ExpandMoreIcon />}
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/regions"}
                         >
                             {i18n.t("Regions")}
-                        </MenuButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={anchorEl?.id === "regions"}
-                            onClose={handleClose}
-                            getContentAnchorEl={null}
-                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                            transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        >
-                            <MenuItem onClick={handleClick}>Europe</MenuItem>
-                            <MenuItem onClick={handleClick}>Asian</MenuItem>
-                        </Menu>
-                        <MenuButton
-                            id="methods"
-                            aria-controls="methods"
-                            aria-haspopup="true"
-                            onClick={handleParentMenuClick}
-                            endIcon={<ExpandMoreIcon />}
+                        </Button>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/methods"}
                         >
                             {i18n.t("Methods")}
-                        </MenuButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={anchorEl?.id === "methods"}
-                            onClose={handleClose}
-                            getContentAnchorEl={null}
-                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                            transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        >
-                            <MenuItem onClick={handleClick}>Method 1</MenuItem>
-                            <MenuItem onClick={handleClick}>Method 2</MenuItem>
-                        </Menu>
+                        </Button>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -226,4 +201,15 @@ const MenuButton = styled(Button)`
 const LogoContainer = styled.div`
     margin: 10px 10px;
     cursor: pointer;
+`;
+
+const Tag = styled.div`
+    display: flex;
+    justify-content: center;
+    min-width: 100px;
+    background-color: ${colors.greyBlack};
+    color: white;
+    font-size: 15px;
+    border-radius: 30px;
+    padding: 5px 10px;
 `;

@@ -25,10 +25,7 @@ export const AppFooter: React.FC = () => {
                                 {i18n.t("About us")}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {i18n.t("World Helath Organization")}
-                            </Typography>
-                            <Typography variant="body2" gutterBottom>
-                                {i18n.t("World Barcelona Office for Health Sytems Financing")}
+                                {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                             </Typography>
                         </Grid>
                         <Grid item lg={3} md={6} xs={12}>
