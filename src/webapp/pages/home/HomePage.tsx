@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Analysis } from "../../components/home/analysis/Analysis";
@@ -10,15 +10,11 @@ import { Layout } from "../../components/layout/Layout";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import { Button } from "@material-ui/core";
 import { useMap } from "../../components/home/map/useMap";
-import { useResourcesByType } from "../resources/by-type/useResourcesByType";
+import { useHomeResources } from "./useHomeResources";
 
 export const HomePage: React.FC = React.memo(() => {
     const mapState = useMap();
-    const { items, onGetResources } = useResourcesByType({ count: 6 });
-
-    useEffect(() => {
-        onGetResources();
-    }, [onGetResources]);
+    const { resources } = useHomeResources();
 
     return (
         <Layout
@@ -41,7 +37,7 @@ export const HomePage: React.FC = React.memo(() => {
                 <Methods />
             </section>
             <section>
-                <Resources resources={items} />
+                <Resources resources={resources} />
             </section>
         </Layout>
     );

@@ -71,7 +71,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
 const Item: React.FC<{ resource: ResourceState }> = React.memo(({ resource }) => {
     const themeColor: Record<string, string> = {
         "Financial Protection": "#008ad7",
-        "Resilience and financial sustainability": "#4fad56",
+        Resilience: "#4fad56",
         "Spending on Health": "#0360a7",
         "Voluntary Health Insurance": "#ff8d4e",
     };

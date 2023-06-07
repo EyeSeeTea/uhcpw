@@ -27,6 +27,10 @@ export const resourceDataElements: Record<string, string> = {
     link4: "yfKcdYARapH",
     link4Language: "QlRpFiResvs",
     countryId: "PC9lIDo5x8m",
+    favourite: "aP3GIoQRvDt",
+    favouriteOrder: "G9DVX5SjoA2",
+    favouriteSection: "XxXz056LMCO",
+    favouriteSectionOrder: "EqiRrE4nz7c",
 };
 
 export const resourcesProgram = "wWo0lhm5GsY";
@@ -117,12 +121,15 @@ export class ResourceD2Repository implements ResourceRepository {
         const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
         const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
 
+        const favouriteData = this.buildFavourite(event);
+
         return {
             id: event.event,
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             title,
             url,
             date: new Date(event.eventDate),
+            ...favouriteData,
         };
     }
 
@@ -164,6 +171,8 @@ export class ResourceD2Repository implements ResourceRepository {
         const link4Language =
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4Language)?.value || "";
 
+        const favouriteData = this.buildFavourite(event);
+
         return {
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
             id: event.event,
@@ -178,6 +187,26 @@ export class ResourceD2Repository implements ResourceRepository {
                 .value(),
             title: title,
             date: new Date(event.eventDate),
+            ...favouriteData,
+        };
+    }
+
+    private buildFavourite(event: D2Event) {
+        const favourite =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favourite)?.value === "true" || false;
+        const favouriteOrder =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteOrder)?.value || 0;
+        const favouriteSection =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteSection)?.value === "true" ||
+            false;
+        const favouriteSectionOrder =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteSectionOrder)?.value || 0;
+
+        return {
+            favourite,
+            favouriteOrder: +favouriteOrder,
+            favouriteSection,
+            favouriteSectionOrder: +favouriteSectionOrder,
         };
     }
 
