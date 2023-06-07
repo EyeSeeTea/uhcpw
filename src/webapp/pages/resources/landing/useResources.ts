@@ -11,8 +11,6 @@ export function useResources(): ResourcesState {
     const { countries } = useAppContext();
     const { filters, items, onGetResources } = useResourcesByType({});
 
-    useEffect(() => onGetResources(), [onGetResources]);
-
     const resources = useMemo(() => {
         return items
             ? {
