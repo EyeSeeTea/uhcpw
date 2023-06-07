@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import i18n from "../../../locales";
 import { Analysis } from "../../components/home/analysis/Analysis";
 import { Explorers } from "../../components/home/explorers/Explorers";
 import { Map } from "../../components/home/map/Map";

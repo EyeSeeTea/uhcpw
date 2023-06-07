@@ -131,7 +131,4 @@ const Row = styled.div`
 const Image = styled.img`
     width: 70%;
     height: auto;
-    /*     @media (min-width: 1440px) {
-        width: 900px;
-    } */
 `;

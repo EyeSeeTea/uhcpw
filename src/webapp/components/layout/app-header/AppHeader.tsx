@@ -91,13 +91,13 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                 <Toolbar className={classes.toolbarTop}>
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
+                    <Tag>Beta version</Tag>
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
                     </MenuTopButton>
                     <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
                         {i18n.t("Search")}
                     </MenuTopButton>
-                    <Tag>Beta version</Tag>
                     {action}
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
@@ -210,9 +210,10 @@ const Tag = styled.div`
     display: flex;
     justify-content: center;
     min-width: 100px;
-    background-color: ${colors.greyBlack};
+    background-color: #4fad56;
     color: white;
-    font-size: 15px;
+    font-size: 13px;
     border-radius: 30px;
     padding: 5px 10px;
+    margin-right: 16px;
 `;

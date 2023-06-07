@@ -24,7 +24,7 @@ export const AppFooter: React.FC = () => {
                             <Typography variant="body1" gutterBottom>
                                 {i18n.t("About us")}
                             </Typography>
-                            <Typography variant="body2" gutterBottom>
+                            <Typography variant="body2" gutterBottom style={{ maxWidth: "60%" }}>
                                 {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                             </Typography>
                         </Grid>
