@@ -16,23 +16,23 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                 <Row>
                     <InfoContainer>
                         <NameContainer isExpert={isExpert}>
-                            <Typography
+                            <Text
                                 variant="body1"
                                 gutterBottom
                                 style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: 500 }}
                             >
                                 {person.firstName}
-                            </Typography>
-                            <Typography variant="body1" gutterBottom style={{ fontWeight: 500 }}>
+                            </Text>
+                            <Text variant="body1" gutterBottom style={{ fontWeight: 500 }}>
                                 {person.lastName}
-                            </Typography>
+                            </Text>
                         </NameContainer>
-                        <Typography variant="body2" gutterBottom>
+                        <Text variant="body2" gutterBottom>
                             {person.position}
-                        </Typography>
-                        <Typography variant="body2" gutterBottom>
+                        </Text>
+                        <Text variant="body2" gutterBottom>
                             {person.countryName}
-                        </Typography>
+                        </Text>
                     </InfoContainer>
                 </Row>
             </Item>
@@ -79,5 +79,9 @@ const InfoContainer = styled.div`
 const NameContainer = styled.div<{ isExpert: boolean }>`
     display: flex;
     flex-direction: ${props => (props.isExpert ? "row" : "column")};
-    align-items: ${props => (props.isExpert ? "flex-start" : "center")};
+    align-items: "${props => (props.isExpert ? "flex-start" : "center")}";
+`;
+
+const Text = styled(Typography)`
+    text-align: center;
 `;
