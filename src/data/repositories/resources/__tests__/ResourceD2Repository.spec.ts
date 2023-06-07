@@ -1,4 +1,10 @@
-import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
+import {
+    BasicResource,
+    ComparativeAnalysis,
+    CountryAnalysis,
+    Multimedia,
+    News,
+} from "../../../../domain/entities/resources/Resource";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
@@ -254,6 +260,8 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
         expect(link.language).toBe(expectedLink?.language);
         expect(link.url).toBe(expectedLink?.url);
     });
+
+    verifyFavourite(comparativeAnalysis);
 }
 
 function verifyNews(newsItem?: News) {
@@ -268,6 +276,8 @@ function verifyNews(newsItem?: News) {
         "https://www.who.int/europe/news/item/03-05-2023-countries-hosting-ukrainian-refugees-reaffirm-their-commitment-to-meeting-their-health-needs"
     );
     expect(newsItem.date.toISOString()).toBe(new Date("2023-05-03T00:00:00.000").toISOString());
+
+    verifyFavourite(newsItem);
 }
 
 function verifyMultimedia(multimediaItem?: Multimedia) {
@@ -281,6 +291,8 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
     expect(multimediaItem.date.toISOString()).toBe(new Date("2021-05-09T00:00:00.000").toISOString());
 
     expect(multimediaItem.theme).toBe("Financial Protection");
+
+    verifyFavourite(multimediaItem);
 }
 
 function verifCountryAnalysis(countryAnalysis?: CountryAnalysis) {
@@ -313,4 +325,15 @@ function verifCountryAnalysis(countryAnalysis?: CountryAnalysis) {
     });
 
     expect(countryAnalysis.countryId).toBe("DVnpk4xiXGJ");
+
+    verifyFavourite(countryAnalysis);
+}
+
+function verifyFavourite(item?: BasicResource) {
+    if (!item) fail("Resource is undefined");
+
+    expect(item.favourite).toBe(true);
+    expect(item.favouriteOrder).toBe(1);
+    expect(item.favouriteSection).toBe(true);
+    expect(item.favouriteSectionOrder).toBe(1);
 }
