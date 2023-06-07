@@ -1,4 +1,4 @@
-import { DefaultBodyType, MockedRequest, PathParams, rest, RestRequest } from "msw";
+import { DefaultBodyType, MockedRequest, rest } from "msw";
 import { SetupServer, setupServer } from "msw/node";
 
 export type Method = "get" | "post" | "put";
@@ -19,6 +19,7 @@ export class MockWebServer {
     server: SetupServer;
 
     lastRequest?: Request;
+    allRequests?: Request[] = [];
 
     constructor() {
         this.server = setupServer();
@@ -27,6 +28,7 @@ export class MockWebServer {
             const request = this.mapRequest(req);
 
             this.lastRequest = request;
+            this.allRequests?.push(request);
         });
     }
 

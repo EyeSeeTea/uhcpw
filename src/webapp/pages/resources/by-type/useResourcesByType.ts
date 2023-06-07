@@ -71,6 +71,8 @@ export function useResourcesByType(params: {
         countries,
     ]);
 
+    useEffect(() => onGetResources(), [onGetResources]);
+
     return {
         loading,
         title,

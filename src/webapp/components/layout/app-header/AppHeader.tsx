@@ -142,7 +142,10 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         >
                             {countryOptions.map(country => {
                                 return (
-                                    <MenuItem key={country.value} onClick={handleClick}>
+                                    <MenuItem
+                                        key={country.value}
+                                        onClick={() => history.push(`country/${country.text.toLowerCase()}`)}
+                                    >
                                         {country.text}
                                     </MenuItem>
                                 );

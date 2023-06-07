@@ -22,6 +22,10 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
             ],
             title: `title ${index}`,
             date: new Date(new Date().getFullYear() - index),
+            favourite: true,
+            favouriteOrder: index,
+            favouriteSection: true,
+            favouriteSectionOrder: index,
         };
     });
 
@@ -44,6 +48,10 @@ export function createCountryAnalysisResources(count: number): CountryAnalysis[]
             title: `title ${index}`,
             date: new Date(new Date().getFullYear() - index),
             countryId: "DVnpk4xiXGJ",
+            favourite: true,
+            favouriteOrder: index,
+            favouriteSection: true,
+            favouriteSectionOrder: index,
         };
     });
 
@@ -59,6 +67,10 @@ export function createNewsResources(count: number): News[] {
             title: `title ${index}`,
             date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,
+            favourite: true,
+            favouriteOrder: index,
+            favouriteSection: true,
+            favouriteSectionOrder: index,
         };
     });
 
@@ -75,6 +87,10 @@ export function createMultimediaResources(count: number): Multimedia[] {
             date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,
             theme: `test theme`,
+            favourite: true,
+            favouriteOrder: index,
+            favouriteSection: true,
+            favouriteSectionOrder: index,
         };
     });
 

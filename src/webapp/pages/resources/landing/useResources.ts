@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Country } from "../../../../domain/entities/Country";
 import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
@@ -11,20 +11,18 @@ export function useResources(): ResourcesState {
     const { countries } = useAppContext();
     const { filters, items, onGetResources } = useResourcesByType({});
 
-    useEffect(() => onGetResources(), [onGetResources]);
-
     const resources = useMemo(() => {
         return items
             ? {
                   countryAnalysisByCountry: getAnalysisCountries(items, countries),
-                  comparativeAnalysis: items
-                      .filter(item => item.kind === "comparative-analysis")
-                      .slice(0, 4) as ComparativeAnalysis[],
-                  news: items.filter(item => item.kind === "news").slice(0, 1) as News[],
-                  multimedia: items.filter(item => item.kind === "multimedia").slice(0, 1) as Multimedia[],
+                  comparativeAnalysis: getComparativeAnalysis(items),
+                  news: getNews(items),
+                  multimedia: getMultimedia(items),
               }
             : undefined;
     }, [countries, items]);
+
+    console.log({ resources });
 
     return {
         filters,
@@ -34,13 +32,37 @@ export function useResources(): ResourcesState {
 }
 function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
     return _.unionBy(
-        items
-            .filter(item => item.kind === "country-analysis")
-            .map(countryAnalysis => {
-                const countryId = (countryAnalysis as CountryAnalysis).countryId;
-                const country = countries.find(country => country.id === countryId);
-                return { countryId, flag: country?.flag || "" };
-            }),
+        _.orderBy(
+            items
+                .filter(item => item.kind === "country-analysis")
+                .map(countryAnalysis => {
+                    const countryId = (countryAnalysis as CountryAnalysis).countryId;
+                    const country = countries.find(country => country.id === countryId);
+                    return { countryId, countryName: country?.name, flag: country?.flag || "" };
+                }),
+            "countryName"
+        ),
         country => country.countryId
     );
+}
+
+function getNews(items: ResourceState[]): News[] {
+    return _.orderBy(
+        items.filter(item => item.kind === "news" && item.favouriteSection),
+        "favouriteSectionOrder"
+    ).slice(0, 1) as News[];
+}
+
+function getMultimedia(items: ResourceState[]): Multimedia[] {
+    return _.orderBy(
+        items.filter(item => item.kind === "multimedia" && item.favouriteSection),
+        "favouriteSectionOrder"
+    ).slice(0, 1) as Multimedia[];
+}
+
+function getComparativeAnalysis(items: ResourceState[]): ComparativeAnalysis[] {
+    return _.orderBy(
+        items.filter(item => item.kind === "comparative-analysis" && item.favouriteSection),
+        "favouriteSectionOrder"
+    ).slice(0, 4) as ComparativeAnalysis[];
 }

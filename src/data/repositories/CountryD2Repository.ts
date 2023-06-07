@@ -15,6 +15,17 @@ export const countryInfoDataElements: Record<string, string> = {
 
 const euroOrgUnit = "svSQSBLTVz6";
 
+const validOrgUnitGroups = [
+    "e7I4gDX3g5k",
+    "FMCN2ZG9AEj",
+    "KJm1Af6dksd",
+    "dqMsarWCWk6",
+    "yuNkB9H6l3A",
+    "r3pNdEobfnS",
+    "tuJjq1LSoCL",
+    "A1BdaIwDheX",
+];
+
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
 
@@ -26,6 +37,7 @@ export class CountryD2Repository implements CountryRepository {
                     paging: false,
                     level: 3,
                     filter: { path: { like: euroOrgUnit } },
+                    order: "shortName:asc",
                 })
             ),
             aditionalCountriesInfo: apiToFuture(
@@ -62,7 +74,9 @@ export class CountryD2Repository implements CountryRepository {
                 description: orgUnit.description,
                 coordinates: this.buildPoint(orgUnit.geometry),
                 status,
-                parents: orgUnit.organisationUnitGroups.map(({ id, name }) => ({ id, name })),
+                parents: orgUnit.organisationUnitGroups
+                    .map(({ id, name }) => ({ id, name }))
+                    .filter(oug => validOrgUnitGroups.includes(oug.id)),
                 flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
                 summary,
             };

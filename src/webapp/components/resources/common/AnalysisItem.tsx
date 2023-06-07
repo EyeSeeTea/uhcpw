@@ -12,7 +12,7 @@ export interface CountryAnalysisProps {
 
 const themeColor: Record<string, string> = {
     "Financial Protection": "#008ad7",
-    "Resilience and financial sustainability": "#4fad56",
+    Resilience: "#4fad56",
     "Spending on Health": "#0360a7",
     "Voluntary Health Insurance": "#ff8d4e",
 };

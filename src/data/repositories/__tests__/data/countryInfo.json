@@ -1,0 +1,33 @@
+{
+    "pager": {
+        "page": 1,
+        "pageCount": 1,
+        "total": 0,
+        "pageSize": 50
+    },
+    "events": [
+        {
+            "orgUnit": "DVnpk4xiXGJ",
+            "event": "FCuiVk73pT3",
+            "eventDate": "2023-05-28T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "OkgVl21E3JI",
+                    "value": "Euro"
+                },
+                {
+                    "dataElement": "B6gzpUbzpW3",
+                    "value": "**Financial hardship (2018)**\n\n* Impoverishing Health spending: 8% of households\n* Catastrophic health spending: 19% of households\n* Most at risk: poorer households, older people, people in rural areas\n* Main driver: outpatient medicines, especially for lower-income households\n\n**Unmet need (2021)**\n\n* Health care: 1% of people\n* Dental care: 1.7% of people"
+                },
+                {
+                    "dataElement": "btOzN3badgN",
+                    "value": "Green"
+                },
+                {
+                    "dataElement": "RCQZDELfNQJ",
+                    "value": "QbXfru9ISkk"
+                }
+            ]
+        }
+    ]
+}

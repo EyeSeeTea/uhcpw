@@ -3,6 +3,10 @@ export interface BasicResource {
     title: string;
     image: string;
     date: Date;
+    favourite: boolean;
+    favouriteOrder: number;
+    favouriteSection: boolean;
+    favouriteSectionOrder: number;
 }
 
 export interface AnalysisResource extends BasicResource {
