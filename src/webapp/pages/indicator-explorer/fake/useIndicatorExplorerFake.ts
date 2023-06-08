@@ -6,7 +6,7 @@ import { useMultiCountryOptionsFake } from "../../../common/hooks/countries/useM
 import { categoriesConfig, CategoryConfig } from "./categoriesConfig";
 
 export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
-    const countryFilter = useMultiCountryOptionsFake(undefined, ["DVnpk4xiXGJ", "AjeCGGb8H76", "KwgjnBBpe5b"]);
+    const countryFilter = useMultiCountryOptionsFake(undefined, ["DVnpk4xiXGJ", "AjeCGGb8H76", "KwgjnBBpe5b"], 1);
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
