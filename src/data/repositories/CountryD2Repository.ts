@@ -4,6 +4,7 @@ import { Future, FutureData } from "../../domain/entities/Future";
 import { CountryRepository } from "../../domain/repositories/CountryRepository";
 import { D2Api, D2Geometry, MetadataPick } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
+import { coordinatesFromString } from "./countries/coordinatesFromString";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -11,6 +12,7 @@ export const countryInfoDataElements: Record<string, string> = {
     flag: "RCQZDELfNQJ",
     summary: "B6gzpUbzpW3",
     status: "btOzN3badgN",
+    geometry: "YNMHjDxsci9",
 };
 
 const euroOrgUnit = "svSQSBLTVz6";
@@ -67,12 +69,16 @@ export class CountryD2Repository implements CountryRepository {
 
             const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
 
+            const customGeometry = aditionalCountryInfo?.dataValues.find(
+                dv => dv.dataElement === countryInfoDataElements.geometry
+            )?.value as unknown as D2Geometry;
+
             return {
                 id: orgUnit.id,
                 name: orgUnit.shortName,
                 code: orgUnit.code,
                 description: orgUnit.description,
-                coordinates: this.buildPoint(orgUnit.geometry),
+                coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
                 status,
                 parents: orgUnit.organisationUnitGroups
                     .map(({ id, name }) => ({ id, name }))
@@ -83,8 +89,10 @@ export class CountryD2Repository implements CountryRepository {
         });
     }
 
-    private buildPoint(geometry: D2Geometry): [number, number] {
-        if (geometry.type === "Point") {
+    private buildPoint(geometry: D2Geometry | string): [number, number] {
+        if (typeof geometry === "string") {
+            return coordinatesFromString(geometry);
+        } else if (geometry.type === "Point") {
             return geometry.coordinates;
         } else if (geometry.type === "Polygon") {
             const coor = polylabel(geometry.coordinates, 1.0);
