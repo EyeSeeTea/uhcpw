@@ -11,6 +11,7 @@ export const countryInfoDataElements: Record<string, string> = {
     flag: "RCQZDELfNQJ",
     summary: "B6gzpUbzpW3",
     status: "btOzN3badgN",
+    geometry: "",
 };
 
 const euroOrgUnit = "svSQSBLTVz6";
@@ -67,12 +68,16 @@ export class CountryD2Repository implements CountryRepository {
 
             const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
 
+            const customGeometry = aditionalCountryInfo?.dataValues.find(
+                dv => dv.dataElement === countryInfoDataElements.geometry
+            )?.value as unknown as D2Geometry;
+
             return {
                 id: orgUnit.id,
                 name: orgUnit.shortName,
                 code: orgUnit.code,
                 description: orgUnit.description,
-                coordinates: this.buildPoint(orgUnit.geometry),
+                coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
                 status,
                 parents: orgUnit.organisationUnitGroups
                     .map(({ id, name }) => ({ id, name }))
