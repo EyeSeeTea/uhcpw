@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { Button, Typography } from "@material-ui/core";
+import { Box, Button, Typography } from "@material-ui/core";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
@@ -18,7 +18,7 @@ export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
         if (ref.current)
             downloadHtmlElement(ref.current, name, {
                 backgroundColor: "#f1f9fc",
-                exclusionClasses: ["download-button"],
+                exclusionClasses: ["download-button", "info-button"],
             });
     }, [ref, name]);
 
@@ -31,11 +31,12 @@ export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
                             {name}
                         </Typography>
                         <Button>
-                            <InfoIcon color="primary" />
+                            <CustomInfoIcon color="primary" className="info-button" htmlColor="#185698" />
                         </Button>
                     </Row>
+
                     <Row>
-                        <CustomButton
+                        <DownloadButton
                             variant="contained"
                             startIcon={<DownloadIcon />}
                             color="primary"
@@ -44,42 +45,14 @@ export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
                             className="download-button"
                         >
                             {i18n.t("Download")}
-                        </CustomButton>
+                        </DownloadButton>
                     </Row>
                 </Row>
             </DataHeader>
-            <Row>
-                <img src={image} alt={name} />
-
-                {/* <Column>
-                    {Object.keys(visualizationCustomizations[visualization.id]?.colors || {}).map(id => {
-                        return (
-                            <Row key={id} justifyContent={"start"} marginBottom={"8px"}>
-                                <Box
-                                    width={15}
-                                    height={15}
-                                    bgcolor={visualizationCustomizations[visualization.id]?.colors[id]}
-                                    borderColor={"red"}
-                                />
-                                <Box width={5} />
-                                <Typography variant="caption">{analytics.metaData.items[id]?.name}</Typography>
-                            </Row>
-                        );
-                    })}
-                    <br />
-                    <span>
-                        <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
-                        <Link href="#">
-                            <Typography variant="caption">{i18n.t("Tambor and Pavlova (2020)")}</Typography>
-                        </Link>
-                    </span>
-                    <br />
-                    <span>
-                        <CreditsText variant="caption">{i18n.t("Last updated: ")}</CreditsText>
-                        <CreditsText variant="caption">{i18n.t("15 June 2020")}</CreditsText>
-                    </span>
-                </Column> */}
-            </Row>
+            <div>
+                <img width={"100%"} src={image} alt={name} />
+                <Box height={32} />
+            </div>
         </ChartContainer>
     );
 });
@@ -94,9 +67,15 @@ const DataHeader = styled.div`
     padding: 48px 0px;
 `;
 
-const CustomButton = styled(Button)`
-    border-radius: 10px;
-    padding: 0px 16px;
+const DownloadButton = styled(Button)`
+    border-radius: 20px;
+    padding: 0px 32px;
+    height: 42px;
+    background: #185698;
+`;
+
+const CustomInfoIcon = styled(InfoIcon)`
+    color: #185698;
 `;
 
 // const CreditsText = styled(Typography)`
@@ -117,5 +96,6 @@ const Row = styled.div<{ justifyContent?: string; marginBottom?: string }>`
     display: flex;
     flex-direction: row;
     justify-content: ${props => props.justifyContent || "space-between"}};
-    margin-bottom: ${props => props.marginBottom || "0px"}};
+    margin-bottom: ${props => props.marginBottom || "0px"};
+    align-items:center;
 `;
