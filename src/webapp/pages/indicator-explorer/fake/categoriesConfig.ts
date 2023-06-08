@@ -1,6 +1,57 @@
-import chart_2Qnv967WkE_BUL from "../../../assets/charts/2Qnv967WkE_BUL.jpg";
-import chart_2Qnv967WkE_BEL from "../../../assets/charts/2Qnv967WkE_BEL.jpg";
-import chart_2Qnv967WkE_SPA from "../../../assets/charts/2Qnv967WkE_SPA.jpg";
+import chart_0_BUL from "../../../assets/charts/bulgaria/0.png";
+import chart_0_BEL from "../../../assets/charts/belgium/0.png";
+import chart_0_SPA from "../../../assets/charts/spain/0.png";
+import chart_1_BUL from "../../../assets/charts/bulgaria/1.png";
+import chart_1_BEL from "../../../assets/charts/belgium/1.png";
+import chart_1_SPA from "../../../assets/charts/spain/1.png";
+import chart_2_BUL from "../../../assets/charts/bulgaria/2.png";
+import chart_2_BEL from "../../../assets/charts/belgium/2.png";
+import chart_2_SPA from "../../../assets/charts/spain/2.png";
+import chart_3_BUL from "../../../assets/charts/bulgaria/3.png";
+import chart_3_BEL from "../../../assets/charts/belgium/3.png";
+import chart_3_SPA from "../../../assets/charts/spain/3.png";
+import chart_4_BUL from "../../../assets/charts/bulgaria/4.png";
+import chart_4_BEL from "../../../assets/charts/belgium/4.png";
+import chart_4_SPA from "../../../assets/charts/spain/4.png";
+import chart_5_BUL from "../../../assets/charts/bulgaria/5.png";
+import chart_5_BEL from "../../../assets/charts/belgium/5.png";
+import chart_5_SPA from "../../../assets/charts/spain/5.png";
+import chart_6_BUL from "../../../assets/charts/bulgaria/6.png";
+import chart_6_BEL from "../../../assets/charts/belgium/6.png";
+import chart_6_SPA from "../../../assets/charts/spain/6.png";
+import chart_7_BUL from "../../../assets/charts/bulgaria/7.png";
+import chart_7_BEL from "../../../assets/charts/belgium/7.png";
+import chart_7_SPA from "../../../assets/charts/spain/7.png";
+import chart_8_BUL from "../../../assets/charts/bulgaria/8.png";
+import chart_8_BEL from "../../../assets/charts/belgium/8.png";
+import chart_8_SPA from "../../../assets/charts/spain/8.png";
+import chart_9_BUL from "../../../assets/charts/bulgaria/9.png";
+import chart_9_BEL from "../../../assets/charts/belgium/9.png";
+import chart_9_SPA from "../../../assets/charts/spain/9.png";
+import chart_10_BUL from "../../../assets/charts/bulgaria/10.png";
+import chart_10_BEL from "../../../assets/charts/belgium/10.png";
+import chart_10_SPA from "../../../assets/charts/spain/10.png";
+import chart_11_BUL from "../../../assets/charts/bulgaria/11.png";
+import chart_11_BEL from "../../../assets/charts/belgium/11.png";
+import chart_11_SPA from "../../../assets/charts/spain/11.png";
+import chart_12_BUL from "../../../assets/charts/bulgaria/12.png";
+import chart_12_BEL from "../../../assets/charts/belgium/12.png";
+import chart_12_SPA from "../../../assets/charts/spain/12.png";
+import chart_13_BUL from "../../../assets/charts/bulgaria/13.png";
+import chart_13_BEL from "../../../assets/charts/belgium/13.png";
+import chart_13_SPA from "../../../assets/charts/spain/13.png";
+import chart_14_BUL from "../../../assets/charts/bulgaria/14.png";
+import chart_14_BEL from "../../../assets/charts/belgium/14.png";
+import chart_14_SPA from "../../../assets/charts/spain/14.png";
+import chart_15_BUL from "../../../assets/charts/bulgaria/15.png";
+import chart_15_BEL from "../../../assets/charts/belgium/15.png";
+import chart_15_SPA from "../../../assets/charts/spain/15.png";
+import chart_16_BUL from "../../../assets/charts/bulgaria/16.png";
+import chart_16_BEL from "../../../assets/charts/belgium/16.png";
+import chart_16_SPA from "../../../assets/charts/spain/16.png";
+import chart_17_BUL from "../../../assets/charts/bulgaria/17.png";
+import chart_17_BEL from "../../../assets/charts/belgium/17.png";
+import chart_17_SPA from "../../../assets/charts/spain/17.png";
 
 /**
  * ESP = DVnpk4xiXGJ
@@ -21,7 +72,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
     "Comparative charts: Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19":
         {
             metadata: {
-                id: "2Qnv967WkE",
+                id: "0",
                 filterByCountry: true,
                 chartName:
                     "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19",
@@ -29,43 +80,43 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
             data: [
                 {
                     countryId: "DVnpk4xiXGJ",
-                    image: chart_2Qnv967WkE_SPA,
+                    image: chart_0_SPA,
                 },
                 {
                     countryId: "AjeCGGb8H76",
-                    image: chart_2Qnv967WkE_BUL,
+                    image: chart_0_BUL,
                 },
                 {
                     countryId: "KwgjnBBpe5b",
-                    image: chart_2Qnv967WkE_BEL,
+                    image: chart_0_BEL,
                 },
             ],
         },
     "Financial Hardship: Households with impoverishing health spending": {
         metadata: {
-            id: "88R6utPDh9",
+            id: "1",
             filterByCountry: true,
             chartName: "Households with impoverishing health spending",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_1_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_1_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_1_BEL,
             },
         ],
     },
     "Comparative charts: Households with impoverishing health spending, 2019 or latest available year before COVID-19":
         {
             metadata: {
-                id: "jy92CR3z4H",
+                id: "2",
                 filterByCountry: true,
                 chartName:
                     "Households with impoverishing health spending, 2019 or latest available year before COVID-19",
@@ -73,85 +124,85 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
             data: [
                 {
                     countryId: "DVnpk4xiXGJ",
-                    image: chart_2Qnv967WkE_SPA,
+                    image: chart_2_SPA,
                 },
                 {
                     countryId: "AjeCGGb8H76",
-                    image: chart_2Qnv967WkE_BUL,
+                    image: chart_2_BUL,
                 },
                 {
                     countryId: "KwgjnBBpe5b",
-                    image: chart_2Qnv967WkE_BEL,
+                    image: chart_2_BEL,
                 },
             ],
         },
     "Financial Hardship: Households with catastrophic health spending": {
         metadata: {
-            id: "q3m76dKRQ5",
+            id: "3",
             filterByCountry: true,
             chartName: "Households with catastrophic health spending",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_3_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_3_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_3_BEL,
             },
         ],
     },
     "Comparative charts: Households with catastrophic health spending, 2019 or latest available year before COVID-19": {
         metadata: {
-            id: "ps949KmT6M",
+            id: "4",
             filterByCountry: true,
             chartName: "Households with catastrophic health spending, 2019 or latest available year before COVID-19",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_4_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_4_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_4_BEL,
             },
         ],
     },
     "Financial Hardship: Households with catastrophic health spending by consumption quintile": {
         metadata: {
-            id: "757dmNMgM7",
+            id: "5",
             filterByCountry: true,
             chartName: "Households with catastrophic health spending by consumption quintile",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_5_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_5_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_5_BEL,
             },
         ],
     },
     "Financial Hardship: Households with catastrophic health spending by consumption quintile, 2019 or latest available year before COVID -19":
         {
             metadata: {
-                id: "WuD8L39mp7",
+                id: "6",
                 filterByCountry: true,
                 chartName:
                     "Households with catastrophic health spending by consumption quintile, 2019 or latest available year before COVID -19",
@@ -159,64 +210,64 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
             data: [
                 {
                     countryId: "DVnpk4xiXGJ",
-                    image: chart_2Qnv967WkE_SPA,
+                    image: chart_6_SPA,
                 },
                 {
                     countryId: "AjeCGGb8H76",
-                    image: chart_2Qnv967WkE_BUL,
+                    image: chart_6_BUL,
                 },
                 {
                     countryId: "KwgjnBBpe5b",
-                    image: chart_2Qnv967WkE_BEL,
+                    image: chart_6_BEL,
                 },
             ],
         },
     "Financial Hardship: Breakdown of catastrophic health spending by type of care": {
         metadata: {
-            id: "X9cyD87H3w",
+            id: "7",
             filterByCountry: true,
             chartName: "Breakdown of catastrophic health spending by type of care",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_7_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_7_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_7_BEL,
             },
         ],
     },
     "Financial Hardship: Breakdown of catastrophic health spending by type of care and consumption quintile": {
         metadata: {
-            id: "4n385EvQZj",
+            id: "8",
             filterByCountry: true,
             chartName: "Breakdown of catastrophic health spending by type of care and consumption quintile",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_8_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_8_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_8_BEL,
             },
         ],
     },
     "Comparative charts: Breakdown of catastrophic health spending by type of care, 2019 or latest available year before COVID-19":
         {
             metadata: {
-                id: "y5gB3Pk37J",
+                id: "9",
                 filterByCountry: true,
                 chartName:
                     "Breakdown of catastrophic health spending by type of care, 2019 or latest available year before COVID-19",
@@ -224,183 +275,183 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
             data: [
                 {
                     countryId: "DVnpk4xiXGJ",
-                    image: chart_2Qnv967WkE_SPA,
+                    image: chart_9_SPA,
                 },
                 {
                     countryId: "AjeCGGb8H76",
-                    image: chart_2Qnv967WkE_BUL,
+                    image: chart_9_BUL,
                 },
                 {
                     countryId: "KwgjnBBpe5b",
-                    image: chart_2Qnv967WkE_BEL,
+                    image: chart_9_BEL,
                 },
             ],
         },
     "Unmet need: Unmet need for health care due to cost, distance and waiting time": {
         metadata: {
-            id: "V88z59uTfS",
+            id: "10",
             filterByCountry: true,
             chartName: "Unmet need for health care due to cost, distance and waiting time",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_10_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_10_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_10_BEL,
             },
         ],
     },
     "Unmet need: Unmet need for dental care due to cost, distance and waiting time": {
         metadata: {
-            id: "5Nx5c8r3NN",
+            id: "11",
             filterByCountry: true,
             chartName: "Unmet need for dental care due to cost, distance and waiting time",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_11_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_11_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_11_BEL,
             },
         ],
     },
     "Unmet need: Unmet need for health care due to cost, distance and waiting time by income quintile": {
         metadata: {
-            id: "n77BC7Xu6m",
+            id: "12",
             filterByCountry: true,
             chartName: "Unmet need for health care due to cost, distance and waiting time by income quintile",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_12_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_12_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_12_BEL,
             },
         ],
     },
     "Unmet need: Unmet need for dental care due to cost, distance and waiting time by income quintile": {
         metadata: {
-            id: "X8yAq2E7m9",
+            id: "13",
             filterByCountry: true,
             chartName: "Unmet need for dental care due to cost, distance and waiting time by income quintile",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_13_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_13_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_13_BEL,
             },
         ],
     },
     "Spending on health (health accounts): Current spending on health per person by financing scheme": {
         metadata: {
-            id: "icS6Us849A",
+            id: "14",
             filterByCountry: true,
             chartName: "Current spending on health per person by financing scheme",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_14_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_14_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_14_BEL,
             },
         ],
     },
     "Spending on health (health accounts): Out-of-pocket payments as a share of current spending on health": {
         metadata: {
-            id: "8T35Y6xyjP",
+            id: "15",
             filterByCountry: true,
             chartName: "Out-of-pocket payments as a share of current spending on health",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_15_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_15_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_15_BEL,
             },
         ],
     },
     "Spending on health (health accounts): Public spending on health as a share of government spending, 2019": {
         metadata: {
-            id: "FM9je6gR93",
+            id: "16",
             filterByCountry: true,
             chartName: "Public spending on health as a share of government spending, 2019",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_16_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_16_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_16_BEL,
             },
         ],
     },
     "Spending on health (health accounts): Public spending on health as a share of GDP": {
         metadata: {
-            id: "5XwwF47T4b",
+            id: "17",
             filterByCountry: true,
             chartName: "Public spending on health as a share of GDP",
         },
         data: [
             {
                 countryId: "DVnpk4xiXGJ",
-                image: chart_2Qnv967WkE_SPA,
+                image: chart_17_SPA,
             },
             {
                 countryId: "AjeCGGb8H76",
-                image: chart_2Qnv967WkE_BUL,
+                image: chart_17_BUL,
             },
             {
                 countryId: "KwgjnBBpe5b",
-                image: chart_2Qnv967WkE_BEL,
+                image: chart_17_BEL,
             },
         ],
     },
