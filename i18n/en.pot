@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-09T06:27:43.591Z\n"
-"PO-Revision-Date: 2023-06-09T06:27:43.591Z\n"
+"POT-Creation-Date: 2023-06-09T10:51:49.137Z\n"
+"PO-Revision-Date: 2023-06-09T10:51:49.137Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -163,6 +163,9 @@ msgid ""
 "Support these policy changes by increasing the level of government budget "
 "transfers to the National Health Insurance Fund over time. Use additional "
 "resources carefully to meet equity and efficiency goals."
+msgstr ""
+
+msgid "Countries"
 msgstr ""
 
 msgid "Select country"
@@ -377,9 +380,6 @@ msgstr ""
 msgid "Policy Explorer"
 msgstr ""
 
-msgid "Countries"
-msgstr ""
-
 msgid "Regions"
 msgstr ""
 
@@ -410,6 +410,9 @@ msgstr ""
 msgid "Select year"
 msgstr ""
 
+msgid "Get table"
+msgstr ""
+
 msgid "Select theme"
 msgstr ""
 
@@ -438,7 +441,7 @@ msgstr ""
 msgid "Switch row/column"
 msgstr ""
 
-msgid "WHO Barcelona Office for Health Systems Financing (2022)"
+msgid "WHO Barcelona Office for Health Systems Financing (2023)"
 msgstr ""
 
 msgid "Latest avalaible year"

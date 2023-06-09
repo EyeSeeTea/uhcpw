@@ -12,6 +12,7 @@ const generalDataElements: Record<string, string> = {
     countryExperts: "mCEsfMPByf5",
     editors: "iyYnyNfyrfs",
     lastUpdate: "VDRInyNx7fG",
+    references: "DsWWAKomY4Z",
 };
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
@@ -72,7 +73,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         dataValues: DataValueSetsDataValue[],
         organisationUnits: D2OrgUnit[]
     ): PolicyExplorerGeneralInfo[] {
-        debugger;
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
@@ -125,13 +125,19 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
             const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
+            const references =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnit && dv.dataElement.includes(generalDataElements.references || "")
+                )?.value || "";
+
             return [
                 orgUnitName,
                 period || "",
                 ...dataElementsSection.map(de => {
                     const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
 
-                    return dataValue?.value || "";
+                    return `${dataValue?.value || ""}
+                    ${references}`;
                 }),
             ];
         });
