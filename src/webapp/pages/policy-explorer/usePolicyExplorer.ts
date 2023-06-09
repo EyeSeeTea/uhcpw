@@ -5,6 +5,7 @@ import { useAppContext } from "../../contexts/app-context";
 
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
+import i18n from "../../../locales";
 
 export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
@@ -14,9 +15,11 @@ export function usePolicyExplorer(): PolicyExplorerState {
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([
+        new Date().getFullYear().toString(),
+    ]);
 
-    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ rows: [] });
+    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>();
     const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
     const [dataOrientation, setDataOrientation] = useState<DataOrientation>("normal");
 
@@ -27,7 +30,12 @@ export function usePolicyExplorer(): PolicyExplorerState {
     useEffect(() => {
         compositionRoot.policyExplorer.getYears.execute().run(
             years => {
-                setYearsFilters(years.map(year => ({ value: year.id, text: year.id })));
+                setYearsFilters(
+                    years.map(year => {
+                        const isCurrentYear = new Date().getFullYear().toString() === year.id;
+                        return { value: year.id, text: isCurrentYear ? i18n.t("Latest avalaible year") : year.id };
+                    })
+                );
             },
             () => {
                 setYearsFilters([]);
@@ -46,7 +54,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
         );
     }, [compositionRoot.policyExplorer]);
 
-    useEffect(() => {
+    const onGetTable = useCallback(() => {
         if (selectedCategoryFilter) {
             compositionRoot.policyExplorer.get
                 .execute(
@@ -67,7 +75,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
             setInitialData(undefined);
             setData(undefined);
         }
-    }, [compositionRoot.policyExplorer, selectedCategoryFilter, countryFilter.selected, selectedYearFilter]);
+    }, [compositionRoot.policyExplorer.get, countryFilter.selected, selectedCategoryFilter, selectedYearFilter]);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -103,6 +111,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
         },
         data,
         dataOrientation,
+        onGetTable,
         onSwitchRowColumn,
         onDownload,
     };
@@ -120,6 +129,8 @@ function invertData(initialData: PolicyExplorer | undefined): PolicyExplorer | u
     });
 
     const newData = {
+        ...initialData,
+        columns: undefined,
         rows: newRows,
     };
 

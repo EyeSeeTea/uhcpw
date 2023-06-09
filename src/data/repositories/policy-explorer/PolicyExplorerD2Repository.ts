@@ -1,11 +1,18 @@
 import _ from "lodash";
 import { Future, FutureData } from "../../../domain/entities/Future";
-import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { PolicyExplorer, PolicyExplorerGeneralInfo } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { exportToCSV } from "../../export/exportToCSV";
+
+const generalDataElements: Record<string, string> = {
+    source: "pDEHTRpRL8X",
+    countryExperts: "mCEsfMPByf5",
+    editors: "iyYnyNfyrfs",
+    lastUpdate: "VDRInyNx7fG",
+};
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
@@ -43,6 +50,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         dataSetResponse.objects[0]
                     ),
                 ],
+                generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, orgUnitsResponse.objects),
             };
         });
     }
@@ -58,6 +66,39 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             "PolicyExplorer"
         );
         return Future.success(undefined);
+    }
+
+    private buildGeneralInfo(
+        dataValues: DataValueSetsDataValue[],
+        organisationUnits: D2OrgUnit[]
+    ): PolicyExplorerGeneralInfo[] {
+        debugger;
+        const dataValuesByOrgUnit = _(dataValues)
+            .groupBy(dataValue => dataValue.orgUnit)
+            .value();
+
+        return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
+            const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
+
+            const source =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.source || "")
+                )?.value || "";
+            const countryExperts =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.countryExperts || "")
+                )?.value || "";
+            const editors =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.editors || "")
+                )?.value || "";
+            const lastUpdate =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.lastUpdate || "")
+                )?.value || "";
+
+            return { country, source, countryExperts, editors, lastUpdate: new Date(lastUpdate) };
+        });
     }
 
     private buildColumns(policyExplorerCategoryId: string, dataSet?: D2DataSet): string[][] {
