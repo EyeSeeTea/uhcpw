@@ -1,18 +1,26 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { Box, Button, Typography } from "@material-ui/core";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
+import { NotesDialog } from "../dialog/NotesDialog";
 
 interface ChartProps {
     name: string;
     image: string;
+    dialogInfo: {
+        title?: string;
+        infoNotes: string[];
+        sourceName: string;
+        sourceLink: string;
+    };
 }
 
-export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
+export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image, dialogInfo }) => {
     const ref = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleDownload = React.useCallback(() => {
         if (ref.current)
@@ -30,7 +38,7 @@ export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
                         <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
                             {name}
                         </Typography>
-                        <Button>
+                        <Button onClick={() => setIsOpen(true)}>
                             <CustomInfoIcon color="primary" className="info-button" htmlColor="#185698" />
                         </Button>
                     </Row>
@@ -53,6 +61,7 @@ export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image }) => {
                 <img width={"100%"} src={image} alt={name} />
                 <Box height={32} />
             </div>
+            <NotesDialog isOpen={isOpen} setIsOpen={setIsOpen} dialogInfo={dialogInfo} />
         </ChartContainer>
     );
 });
@@ -95,7 +104,7 @@ const CustomInfoIcon = styled(InfoIcon)`
 const Row = styled.div<{ justifyContent?: string; marginBottom?: string }>`
     display: flex;
     flex-direction: row;
-    justify-content: ${props => props.justifyContent || "space-between"}};
+    justify-content: ${props => props.justifyContent || "space-between"};
     margin-bottom: ${props => props.marginBottom || "0px"};
-    align-items:center;
+    align-items: center;
 `;
