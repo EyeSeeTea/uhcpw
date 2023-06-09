@@ -31,6 +31,9 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                             {person.position}
                         </Text>
                         <Text variant="body2" gutterBottom>
+                            {person.institution}
+                        </Text>
+                        <Text variant="body2" gutterBottom>
                             {person.countryName}
                         </Text>
                     </InfoContainer>

@@ -146,6 +146,7 @@ function verifyExpertMembers(experts: Person[]) {
         itemScope.getByText(expert.firstName);
         itemScope.getByText(expert.lastName);
         itemScope.getByText(expert.position);
+        itemScope.getByText(expert.institution || "");
         itemScope.getByText("Spain");
     });
 }
@@ -198,6 +199,7 @@ function givenAPersons(): {
             linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
             email: "hello@eyeseetea.com",
             countryId: "DVnpk4xiXGJ",
+            institution: "institution",
         },
         {
             firstName: "first name 2",
@@ -207,6 +209,7 @@ function givenAPersons(): {
             linkedin: "https://www.linkedin.com/company/eyeseetea-ltd",
             email: "hello@eyeseetea.com",
             countryId: "DVnpk4xiXGJ",
+            institution: "institution",
         },
     ];
 
