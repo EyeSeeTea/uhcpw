@@ -182,14 +182,12 @@ const TablePaper = styled(Paper)`
 
 const StyledNormalTable = styled(Table)`
     tbody {
-        background: #f2f9fd;
+        background: #f4f8fc;
     }
-    tbody > tr:first-child > td:nth-child(odd) {
-        background-color: #cce8f7;
+    tbody > tr:first-child > td {
+        background-color: #d3e5f5;
     }
-    tbody > tr:first-child > td:nth-child(even) {
-        background-color: #e7f3fc;
-    }
+
     tbody > tr:first-child > td {
         color: #0460a7;
         font-weight: 500;
@@ -205,13 +203,11 @@ const StyledNormalTable = styled(Table)`
 
 const StyledInvertedTable = styled(Table)`
     tbody {
-        background: #f2f9fd;
+        background: #f4f8fc;
     }
-    tbody > tr:nth-child(odd) > td:first-child {
-        background-color: #cce8f7;
-    }
-    tbody > tr:nth-child(even) > td:first-child {
-        background-color: #e7f3fc;
+
+    tbody > tr > td:first-child {
+        background-color: #d3e5f5;
     }
     tbody > tr > td:first-child {
         color: #0460a7;
