@@ -17,7 +17,7 @@ export const AppFooter: React.FC = () => {
                         <Grid item lg={3} md={6} xs={12}>
                             <EuropeContainer>
                                 <img src={europeFlag} width={100} alt="WHO logo" />
-                                <EuropeText variant="body2">{i18n.t("Funded by the European Union")}</EuropeText>
+                                <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
                             </EuropeContainer>
                         </Grid>
                         <Grid item lg={3} md={6} xs={12}>
@@ -33,10 +33,10 @@ export const AppFooter: React.FC = () => {
                                 {i18n.t("Contact our office")}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {i18n.t("San pau Art Nouveau Site (La Mercé pavilion)")}
+                                {i18n.t("Sant Pau Art Nouveau Site (La Mercè pavillon)")}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {i18n.t("San Antoni Maria Claret 167")}
+                                {i18n.t("Sant Antoni Maria Claret 167")}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
                                 {i18n.t("08025 Barcelona, Spain")}
@@ -45,7 +45,7 @@ export const AppFooter: React.FC = () => {
                                 {i18n.t("Tel: +34 673 290 861", { nsSeparator: false })}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {i18n.t("Email: eubar@who.int", { nsSeparator: false })}
+                                {i18n.t("Email: uhcwatch@who.int", { nsSeparator: false })}
                             </Typography>
                         </Grid>
                     </Grid>
