@@ -22,8 +22,6 @@ export function useResources(): ResourcesState {
             : undefined;
     }, [countries, items]);
 
-    console.log({ resources });
-
     return {
         filters,
         resources,

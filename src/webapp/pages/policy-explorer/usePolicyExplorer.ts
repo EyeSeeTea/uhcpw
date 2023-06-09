@@ -5,6 +5,7 @@ import { useAppContext } from "../../contexts/app-context";
 
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
+import i18n from "../../../locales";
 
 export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
@@ -14,7 +15,9 @@ export function usePolicyExplorer(): PolicyExplorerState {
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([
+        new Date().getFullYear().toString(),
+    ]);
 
     const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ rows: [] });
     const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
@@ -27,7 +30,12 @@ export function usePolicyExplorer(): PolicyExplorerState {
     useEffect(() => {
         compositionRoot.policyExplorer.getYears.execute().run(
             years => {
-                setYearsFilters(years.map(year => ({ value: year.id, text: year.id })));
+                setYearsFilters(
+                    years.map(year => {
+                        const isCurrentYear = new Date().getFullYear().toString() === year.id;
+                        return { value: year.id, text: isCurrentYear ? i18n.t("Latest avalaible year") : year.id };
+                    })
+                );
             },
             () => {
                 setYearsFilters([]);

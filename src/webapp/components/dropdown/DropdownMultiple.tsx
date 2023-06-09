@@ -16,6 +16,7 @@ interface DropdownMultipleProps<T extends string = string> {
     placeholder?: string;
     fullWidth?: boolean;
     onChange: (value?: T[]) => void;
+    disabled?: boolean;
 }
 
 type OptionLabel = {
@@ -24,7 +25,7 @@ type OptionLabel = {
 };
 
 export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
-    ({ label, options, values, placeholder, fullWidth, onChange }) => {
+    ({ label, options, values, placeholder, fullWidth, onChange, disabled }) => {
         const valuesOption = useMemo(() => {
             return options.filter(option => values?.includes(option.value)) || [];
         }, [options, values]);
@@ -40,6 +41,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
         return (
             <Container>
                 <StyledAutocomplete
+                    disabled={disabled}
                     fullWidth={fullWidth}
                     multiple={true}
                     options={options}
@@ -62,7 +64,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                     onChange={(e, value) => handleChange(e, value as Option<string>[] | null)}
                 />
                 {(values || []).length > 0 && (
-                    <ClearButton variant="text" onClick={handleClear}>
+                    <ClearButton variant="text" onClick={handleClear} disabled={disabled}>
                         {i18n.t("Clear all")}
                     </ClearButton>
                 )}
