@@ -9,7 +9,7 @@ import { IndicatorExplorerFiltersFake } from "../../../components/indicator-expl
 import { ChartFake } from "../../../components/chart/ChartFake";
 
 export const IndicatorExplorerFakePage: React.FC = React.memo(() => {
-    const { filters, chartImage, chartName, onGetChart } = useIndicatorExplorerFake();
+    const { filters, chartImage, chartName, dialogInfo, onGetChart } = useIndicatorExplorerFake();
 
     return (
         <Layout>
@@ -25,9 +25,9 @@ export const IndicatorExplorerFakePage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFiltersFake filters={filters} onGetChart={onGetChart} />
 
-                {chartName && chartImage && (
+                {chartName && chartImage && dialogInfo && (
                     <Container maxWidth="lg">
-                        <ChartFake name={chartName} image={chartImage} />
+                        <ChartFake name={chartName} image={chartImage} dialogInfo={dialogInfo} />
                     </Container>
                 )}
             </MainSection>

@@ -77,6 +77,12 @@ export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
         },
         chartName: categoryConfig?.metadata.chartName || "",
         chartImage,
+        dialogInfo: {
+            title: categoryConfig?.metadata.dialogInfo.title,
+            infoNotes: categoryConfig?.metadata.dialogInfo.infoNotes || [],
+            sourceName: categoryConfig?.metadata.dialogInfo.sourceName || "",
+            sourceLink: categoryConfig?.metadata.dialogInfo.sourceLink || "",
+        },
         onGetChart,
     };
 }

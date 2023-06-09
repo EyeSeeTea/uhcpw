@@ -5,6 +5,12 @@ export type IndicatorExplorerFakeState = {
     filters: IndicatorExplorerFiltersFakeState;
     chartName?: string;
     chartImage?: string;
+    dialogInfo: {
+        title?: string;
+        infoNotes: string[];
+        sourceName: string;
+        sourceLink: string;
+    };
     onGetChart: () => void;
 };
 
