@@ -105,6 +105,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         return (
             <>
                 <StyledDropdownTextField
+                    label={i18n.t("Countries")}
                     onClick={handleClick}
                     aria-label="Countries"
                     placeholder={placeholder}
