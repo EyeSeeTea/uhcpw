@@ -136,8 +136,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 ...dataElementsSection.map(de => {
                     const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
 
-                    return `${dataValue?.value || ""}
-                    ${references}`;
+                    return `${dataValue?.value || ""}\n\n${references}`;
                 }),
             ];
         });
