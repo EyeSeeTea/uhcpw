@@ -2,7 +2,11 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import i18n from "../../../../locales";
 import { useAppContext } from "../../../contexts/app-context";
 
-export function useMultiCountryOptionsFake(selectedCountries?: string[], countryFilterIds?: string[]) {
+export function useMultiCountryOptionsFake(
+    selectedCountries?: string[],
+    countryFilterIds?: string[],
+    maxCountriesToSelect?: number
+) {
     const { countries } = useAppContext();
     const [selected, setSelected] = useState<string[] | undefined>([]);
     const [groupedByIncome, setGroupedByIncome] = useState(false);
@@ -31,9 +35,15 @@ export function useMultiCountryOptionsFake(selectedCountries?: string[], country
         return countryOptions;
     }, [countries, countryFilterIds, groupedByIncome]);
 
-    const onSelectedChange = useCallback((country: string[] | undefined) => {
-        setSelected(country);
-    }, []);
+    const onSelectedChange = useCallback(
+        (toSelect: string[] | undefined) => {
+            if (toSelect !== undefined && maxCountriesToSelect !== undefined && toSelect?.length > maxCountriesToSelect)
+                return;
+
+            setSelected(toSelect);
+        },
+        [maxCountriesToSelect]
+    );
 
     const onGroupedByIncomeChange = useCallback((value: boolean) => {
         setGroupedByIncome(value);

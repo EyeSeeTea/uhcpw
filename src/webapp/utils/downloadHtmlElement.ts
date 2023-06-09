@@ -19,7 +19,6 @@ export function downloadHtmlElement(
     toPng(element, {
         backgroundColor: options.backgroundColor,
         filter: filter,
-        style: { marginBottom: "50px", paddingBottom: "50px" },
     }).then(dataUrl => {
         const link = document.createElement("a");
         link.download = name;
