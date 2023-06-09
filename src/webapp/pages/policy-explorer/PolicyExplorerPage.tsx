@@ -15,7 +15,7 @@ import { DataOrientation } from "./PolicyExplorerState";
 import moment from "moment";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
-    const { filters, data, onSwitchRowColumn, onDownload, dataOrientation } = usePolicyExplorer();
+    const { filters, data, onGetTable, onSwitchRowColumn, onDownload, dataOrientation } = usePolicyExplorer();
 
     const category = useMemo(() => {
         return filters.category.options.find(cat => cat.value === filters.category.selected);
@@ -33,7 +33,7 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <PolicyExplorerFilters filters={filters} />
+                <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} />
 
                 {data && (
                     <TableHeader>

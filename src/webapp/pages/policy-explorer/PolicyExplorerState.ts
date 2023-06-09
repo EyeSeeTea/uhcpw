@@ -8,6 +8,7 @@ export type PolicyExplorerState = {
     data?: PolicyExplorer;
 
     dataOrientation: DataOrientation;
+    onGetTable: () => void;
     onSwitchRowColumn: () => void;
     onDownload: () => void;
 };

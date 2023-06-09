@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -9,12 +9,13 @@ import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 
 export interface ResourcesFiltersProps {
     filters: PolicyExplorerFiltersState;
+    onGetTable: () => void;
 }
 
-export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters }) => {
+export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetTable }) => {
     return (
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
-            <Grid item md={5} xs={6}>
+            <Grid item md={4} xs={6}>
                 <Center>
                     <Dropdown
                         fullWidth
@@ -51,6 +52,21 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Center>
             </Grid>
+            <Grid item md={1} xs={2}>
+                <GetTableButton
+                    aria-label="Get table"
+                    variant="contained"
+                    color="primary"
+                    disabled={
+                        !filters.category.selected ||
+                        !filters.country.selected?.length ||
+                        !filters.year.selected?.length
+                    }
+                    onClick={onGetTable}
+                >
+                    {i18n.t("Get table")}
+                </GetTableButton>
+            </Grid>
         </Grid>
     );
 });
@@ -60,4 +76,10 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const GetTableButton = styled(Button)`
+    border-radius: 20px;
+    height: 50px;
+    text-transform: none;
 `;

@@ -54,7 +54,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
         );
     }, [compositionRoot.policyExplorer]);
 
-    useEffect(() => {
+    const onGetTable = useCallback(() => {
         if (selectedCategoryFilter) {
             compositionRoot.policyExplorer.get
                 .execute(
@@ -75,7 +75,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
             setInitialData(undefined);
             setData(undefined);
         }
-    }, [compositionRoot.policyExplorer, selectedCategoryFilter, countryFilter.selected, selectedYearFilter]);
+    }, [compositionRoot.policyExplorer.get, countryFilter.selected, selectedCategoryFilter, selectedYearFilter]);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -111,6 +111,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
         },
         data,
         dataOrientation,
+        onGetTable,
         onSwitchRowColumn,
         onDownload,
     };
