@@ -12,6 +12,7 @@ export const personDataElements: Record<string, string> = {
     position: "r6uQvsaezay",
     country: "Cc5CRlEhngk",
     role: "fh1bVZ8tXSw",
+    institution: "lRCUBf6ubH6",
 };
 
 export const personProgram = "CPJ2fSvd8T5";
@@ -39,6 +40,8 @@ export class PersonD2Repository implements PersonRepository {
             const position = event.dataValues.find(dv => dv.dataElement === personDataElements.position)?.value || "";
             const countryId = event.dataValues.find(dv => dv.dataElement === personDataElements.country)?.value || "";
             const image = event.dataValues.find(dv => dv.dataElement === personDataElements.image)?.value;
+            const institution =
+                event.dataValues.find(dv => dv.dataElement === personDataElements.institution)?.value || "";
 
             return {
                 firstName,
@@ -47,6 +50,7 @@ export class PersonD2Repository implements PersonRepository {
                     ? `${this.api.baseUrl}/api/events/files?dataElementUid=${personDataElements.image}&eventUid=${event.event}`
                     : avatarEmpty,
                 position,
+                institution,
                 countryId,
             };
         });
