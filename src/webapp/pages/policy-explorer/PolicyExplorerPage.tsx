@@ -12,6 +12,7 @@ import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyEx
 import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
 import ReactMarkdown from "react-markdown";
 import { DataOrientation } from "./PolicyExplorerState";
+import moment from "moment";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
     const { filters, data, onSwitchRowColumn, onDownload, dataOrientation } = usePolicyExplorer();
@@ -88,19 +89,42 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                 ) : (
                     <EmptyContent />
                 )}
-                <span>
-                    <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
-                    <Link href="#">
-                        <Typography variant="caption">
-                            {i18n.t("WHO Barcelona Office for Health Systems Financing (2022)")}
-                        </Typography>
-                    </Link>
-                </span>
-                <br />
-                <span>
-                    <CreditsText variant="caption">{i18n.t("data last updated: ")}</CreditsText>
-                    <CreditsText variant="caption">{i18n.t("15 June 2020")}</CreditsText>
-                </span>
+
+                {data?.generalInfo.map(info => {
+                    return (
+                        <GeneralDataContainer key={info.country}>
+                            <GeneralRow>
+                                <CreditsText style={{ fontWeight: 500 }}>{`${info.country} (2023)`}</CreditsText>
+                            </GeneralRow>
+
+                            <GeneralRow>
+                                <CreditsText>{i18n.t("Source: ")}</CreditsText>
+                                &nbsp;
+                                <Link href={info.source} style={{ fontSize: "16px", color: colors.accentPrimary }}>
+                                    {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
+                                </Link>
+                            </GeneralRow>
+
+                            <GeneralRow>
+                                <CreditsText>{i18n.t("Country experts: ")}</CreditsText>
+                                &nbsp;
+                                <CreditsText>{info.countryExperts}</CreditsText>
+                            </GeneralRow>
+
+                            <GeneralRow>
+                                <CreditsText>{i18n.t("Editors: ")}</CreditsText>
+                                &nbsp;
+                                <CreditsText>{info.editors}</CreditsText>
+                            </GeneralRow>
+
+                            <GeneralRow>
+                                <CreditsText>{i18n.t("Last updated: ")}</CreditsText>
+                                &nbsp;
+                                <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
+                            </GeneralRow>
+                        </GeneralDataContainer>
+                    );
+                })}
             </MainSection>
         </Layout>
     );
@@ -113,6 +137,11 @@ export const StyledTable: React.FC<{ orientation: DataOrientation }> = ({ orient
         <StyledInvertedTable aria-label="simple table">{children}</StyledInvertedTable>
     );
 };
+
+const GeneralDataContainer = styled.div`
+    font-size: 16px;
+    margin-bottom: 24px;
+`;
 
 const MainSection = styled.div`
     background: white;
@@ -129,6 +158,12 @@ const Row = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+`;
+const GeneralRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 12px;
 `;
 
 const TableHeader = styled.div`
@@ -189,7 +224,8 @@ const StyledInvertedTable = styled(Table)`
 `;
 
 const CreditsText = styled(Typography)`
-    color: grey;
+    color: black;
+    font-weight: 300;
 `;
 
 const Link = styled.a`

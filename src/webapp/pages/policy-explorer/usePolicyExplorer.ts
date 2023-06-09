@@ -19,7 +19,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
         new Date().getFullYear().toString(),
     ]);
 
-    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>({ rows: [] });
+    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>();
     const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
     const [dataOrientation, setDataOrientation] = useState<DataOrientation>("normal");
 
@@ -128,6 +128,8 @@ function invertData(initialData: PolicyExplorer | undefined): PolicyExplorer | u
     });
 
     const newData = {
+        ...initialData,
+        columns: undefined,
         rows: newRows,
     };
 
