@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-12T10:13:59.045Z\n"
-"PO-Revision-Date: 2023-06-12T10:13:59.045Z\n"
+"POT-Creation-Date: 2023-06-12T10:47:44.494Z\n"
+"PO-Revision-Date: 2023-06-12T10:47:44.494Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -163,9 +163,6 @@ msgid ""
 "Support these policy changes by increasing the level of government budget "
 "transfers to the National Health Insurance Fund over time. Use additional "
 "resources carefully to meet equity and efficiency goals."
-msgstr ""
-
-msgid "Countries"
 msgstr ""
 
 msgid "Select country"
@@ -339,6 +336,9 @@ msgid "Select years"
 msgstr ""
 
 msgid "Get chart"
+msgstr ""
+
+msgid "Countries"
 msgstr ""
 
 msgid "Co-funded by the European Union"
