@@ -7,7 +7,7 @@ import bubblePattern from "../../../assets/bubble-pattern.svg";
 export const SlideInfoTwo: React.FC = () => {
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "25px", maxWidth: "70%", fontWeight: 500 }}>
+            <Typography variant="h3" style={{ marginBottom: "25px", fontWeight: 500 }}>
                 {i18n.t("How can Bulgaria strengthen financial protection?")}
             </Typography>
             <InfoGrid container alignItems="center">

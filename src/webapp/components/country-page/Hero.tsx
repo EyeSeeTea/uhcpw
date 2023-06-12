@@ -44,9 +44,9 @@ export const Hero: React.FC = () => {
                         <IconButton style={{ color: "#035fa7" }}>
                             <InfoIcon />
                         </IconButton>
-                        <IconButton style={{ padding: "5px" }}>
+                        {/* <IconButton style={{ padding: "5px" }}>
                             <img src={ExpandIcon} alt="expand icon" />
-                        </IconButton>
+                        </IconButton> */}
                         <a href={DashboardGraph} download>
                             <IconButton style={{ color: "#035fa7" }}>
                                 <GetAppIcon

@@ -2,13 +2,13 @@ import { Grid, Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import Umbrella from "../../../assets/country-page/umbrella-3.svg";
-import UmbrellaWeak from "../../../assets/country-page/umbrella-weak.svg";
+import UmbrellaWeak from "../../../assets/country-page/umbrella-red-icon.svg";
 import bubblePattern from "../../../assets/bubble-pattern.svg";
 
 export const SlideInfoOne: React.FC = () => {
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "5px", maxWidth: "70%", fontWeight: 500 }}>
+            <Typography variant="h3" style={{ marginBottom: "5px", fontWeight: 500 }}>
                 {i18n.t("What are the main gaps in publicly financed coverage?")}
             </Typography>
             <InfoGrid container alignItems="center">
@@ -18,7 +18,7 @@ export const SlideInfoOne: React.FC = () => {
                 <Grid item xs={12} md={6}>
                     <Column>
                         <Row>
-                            <img src={UmbrellaWeak} width={100} alt={"umbrella"} />
+                            <img src={UmbrellaWeak} width={40} alt={"umbrella"} />
                             <Typography variant="h5">{i18n.t("Main gaps in coverage")}</Typography>
                         </Row>
 
@@ -64,15 +64,17 @@ const Column = styled.div`
     flex-direction: column;
     align-items: start;
     gap: 15px;
+    max-width: 85%;
 `;
 
 const Row = styled.div`
     display: flex;
     align-items: center;
+    gap: 15px;
 `;
 
 const Image = styled.img`
-    width: 100%;
+    width: 80%;
     height: auto;
     @media (min-width: 1440px) {
         width: 500px;

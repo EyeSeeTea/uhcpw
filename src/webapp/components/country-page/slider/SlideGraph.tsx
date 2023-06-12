@@ -3,7 +3,7 @@ import i18n from "../../../../locales";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import ExpandIcon from "../../../assets/country-page/expand-icon.svg";
+//import ExpandIcon from "../../../assets/country-page/expand-icon.svg";
 
 type SlideGraphType = {
     title: string;
@@ -22,7 +22,7 @@ type SlideGraphType = {
 export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo }) => {
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "50px", maxWidth: "80%", fontWeight: 500 }}>
+            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500 }}>
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
@@ -35,9 +35,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                                 <IconButton style={{ padding: "5px" }}>
                                     <InfoIcon color="primary" style={{ color: "#035fa7" }} />
                                 </IconButton>
-                                <IconButton style={{ padding: "5px" }}>
+                                {/* <IconButton style={{ padding: "5px" }}>
                                     <img src={ExpandIcon} alt="expand icon" />
-                                </IconButton>
+                                </IconButton> */}
                                 <a href={graphOne.image} download>
                                     <IconButton style={{ padding: "5px" }}>
                                         <GetAppIcon
@@ -47,7 +47,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                                                 backgroundColor: "#035fa7",
                                                 borderRadius: "50%",
                                                 padding: "4px",
-                                                fontSize: "13px",
+                                                fontSize: "12px",
                                             }}
                                         />
                                     </IconButton>
@@ -71,9 +71,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                                     <IconButton style={{ padding: "5px" }}>
                                         <InfoIcon style={{ color: "#035fa7" }} />
                                     </IconButton>
-                                    <IconButton style={{ padding: "5px" }}>
+                                    {/* <IconButton style={{ padding: "5px" }}>
                                         <img src={ExpandIcon} alt="expand icon" />
-                                    </IconButton>
+                                    </IconButton> */}
                                     <a href={graphTwo.image} download>
                                         <IconButton style={{ padding: "5px" }}>
                                             <GetAppIcon
@@ -83,7 +83,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                                                     backgroundColor: "#035fa7",
                                                     borderRadius: "50%",
                                                     padding: "4px",
-                                                    fontSize: "13px",
+                                                    fontSize: "12px",
                                                 }}
                                             />
                                         </IconButton>

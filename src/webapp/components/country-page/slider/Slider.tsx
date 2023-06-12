@@ -168,7 +168,7 @@ export const Slider: React.FC = () => {
             </TabPanel>
             <TabPanel value={value} index={4}>
                 <SlideGraph
-                    title="Which health services are responsivle for financial hardship? International comparison"
+                    title="Which health services are responsible for financial hardship? International comparison"
                     graphOne={{
                         title: "Breakdown of catastrophic health spending by type of care, 2019 or latest available year before COVID-19",
                         theme: "International comparison",
