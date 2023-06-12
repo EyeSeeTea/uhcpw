@@ -3,7 +3,9 @@ import i18n from "../../../../locales";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import GetAppIcon from "@material-ui/icons/GetApp";
-import ExpandIcon from "../../../assets/country-page/expand-icon.svg";
+import { useState } from "react";
+import { NotesDialog } from "../../dialog/NotesDialog";
+//import ExpandIcon from "../../../assets/country-page/expand-icon.svg";
 
 type SlideGraphType = {
     title: string;
@@ -11,18 +13,32 @@ type SlideGraphType = {
         title: string;
         theme: string;
         image: string;
+        dialogInfo: {
+            title?: string;
+            infoNotes: string[];
+            sourceName: string;
+            sourceLink: string;
+        };
     };
     graphTwo?: {
         title: string;
         theme: string;
         image: string;
+        dialogInfo: {
+            title?: string;
+            infoNotes: string[];
+            sourceName: string;
+            sourceLink: string;
+        };
     };
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo }) => {
+    const [isGraphOneOpen, setIsGraphOneOpen] = useState(false);
+    const [isGraphTwoOpen, setIsGraphTwoOpen] = useState(false);
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "50px", maxWidth: "80%", fontWeight: 500 }}>
+            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500 }}>
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
@@ -32,12 +48,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         <Row>
                             <Tag>{graphOne.theme}</Tag>
                             <div style={{ marginTop: "5px", marginLeft: "20px" }}>
-                                <IconButton style={{ padding: "5px" }}>
+                                <IconButton style={{ padding: "5px" }} onClick={() => setIsGraphOneOpen(true)}>
                                     <InfoIcon color="primary" style={{ color: "#035fa7" }} />
                                 </IconButton>
-                                <IconButton style={{ padding: "5px" }}>
+                                {/* <IconButton style={{ padding: "5px" }}>
                                     <img src={ExpandIcon} alt="expand icon" />
-                                </IconButton>
+                                </IconButton> */}
                                 <a href={graphOne.image} download>
                                     <IconButton style={{ padding: "5px" }}>
                                         <GetAppIcon
@@ -47,7 +63,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                                                 backgroundColor: "#035fa7",
                                                 borderRadius: "50%",
                                                 padding: "4px",
-                                                fontSize: "13px",
+                                                fontSize: "12px",
                                             }}
                                         />
                                     </IconButton>
@@ -68,12 +84,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             <Row>
                                 <Tag>{graphTwo.theme}</Tag>
                                 <div style={{ marginTop: "5px", marginLeft: "20px" }}>
-                                    <IconButton style={{ padding: "5px" }}>
+                                    <IconButton style={{ padding: "5px" }} onClick={() => setIsGraphTwoOpen(true)}>
                                         <InfoIcon style={{ color: "#035fa7" }} />
                                     </IconButton>
-                                    <IconButton style={{ padding: "5px" }}>
+                                    {/* <IconButton style={{ padding: "5px" }}>
                                         <img src={ExpandIcon} alt="expand icon" />
-                                    </IconButton>
+                                    </IconButton> */}
                                     <a href={graphTwo.image} download>
                                         <IconButton style={{ padding: "5px" }}>
                                             <GetAppIcon
@@ -83,7 +99,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                                                     backgroundColor: "#035fa7",
                                                     borderRadius: "50%",
                                                     padding: "4px",
-                                                    fontSize: "13px",
+                                                    fontSize: "12px",
                                                 }}
                                             />
                                         </IconButton>
@@ -96,6 +112,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         <Image src={graphTwo.image} />
                     </Grid>
                 </GraphGrid>
+            )}
+            <NotesDialog isOpen={isGraphOneOpen} setIsOpen={setIsGraphOneOpen} dialogInfo={graphOne.dialogInfo} />
+            {graphTwo && (
+                <NotesDialog isOpen={isGraphTwoOpen} setIsOpen={setIsGraphTwoOpen} dialogInfo={graphTwo.dialogInfo} />
             )}
         </Container>
     );

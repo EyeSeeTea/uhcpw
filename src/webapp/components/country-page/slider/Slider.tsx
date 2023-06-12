@@ -113,11 +113,25 @@ export const Slider: React.FC = () => {
                         title: "Households with impoverishing health spending",
                         theme: "Bulgaria",
                         image: oneOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "A household is impoverished if its total spending (consumption) is below the basic needs line after out-of-pocket payments (i.e. it can no longer afford to meet its basic needs) and further impoverished if its total spending is below the basic needs line (i.e. it is already unable to meet its basic needs) and it incurs out-of-pocket payments.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Households with impoverishing health spending, 2019 or latest available year before COVID-19",
                         theme: "International comparison",
                         image: oneTwo,
+                        dialogInfo: {
+                            infoNotes: [
+                                "A household is impoverished if its total spending (consumption) is below the basic needs line after out-of-pocket payments (i.e. it can no longer afford to meet its basic needs) and further impoverished if its total spending is below the basic needs line (i.e. it is already unable to meet its basic needs) and it incurs out-of-pocket payments. The Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
@@ -128,11 +142,25 @@ export const Slider: React.FC = () => {
                         title: "Households with catastrophic health spending",
                         theme: "Bulgaria",
                         image: twoOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Households with catastrophic health spending, 2019 or latest available year before COVID-19",
                         theme: "International comparison",
                         image: twoTwo,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care. The Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
@@ -143,11 +171,25 @@ export const Slider: React.FC = () => {
                         title: "Households with catastrophic health spending by consumption quintile",
                         theme: "Bulgaria",
                         image: threeOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care. Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Households with catastrophic health spending by consumption quintile, 2019 or latest available year before COVID-19",
                         theme: "International comparison",
                         image: threeTwo,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care. Consumption quintiles are based on per person consumption using OECD equivalence scales. The Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
@@ -158,21 +200,40 @@ export const Slider: React.FC = () => {
                         title: "Breakdown of catastrophic health spending by type of care",
                         theme: "Bulgaria",
                         image: fourOne,
+                        dialogInfo: {
+                            infoNotes: ["aa"],
+                            sourceName: "",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Breakdown of catastrophic health spending by type of care and consumption quintile",
                         theme: "Bulgaria",
                         image: fourTwo,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
             <TabPanel value={value} index={4}>
                 <SlideGraph
-                    title="Which health services are responsivle for financial hardship? International comparison"
+                    title="Which health services are responsible for financial hardship? International comparison"
                     graphOne={{
                         title: "Breakdown of catastrophic health spending by type of care, 2019 or latest available year before COVID-19",
                         theme: "International comparison",
                         image: fiveOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "the different types of health care are sorted by the incidence of catastrophic health spending and the unweighted average across countries. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). In Spain dentures are classified as medical products in the household budget survey; in most other countries they are classified as dental care. In Ukraine the medicines category includes inpatient medicines; in most other countries the medicines category refers to outpatient medicines only. The Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
@@ -183,11 +244,25 @@ export const Slider: React.FC = () => {
                         title: "Unmet need for health care due to cost, distance and waiting time",
                         theme: "International comparison",
                         image: sixOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Health care refers to ‘medical examination or treatment’. Break in series for Belgium in 2011 and 2019.",
+                            ],
+                            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Unmet need for dental care due to cost, distance and waiting time",
                         theme: "International comparison",
                         image: sixTwo,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Dental care refers to ‘dental examination or treatment’. Break in series for Belgium in 2011 and 2019.",
+                            ],
+                            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
@@ -198,11 +273,25 @@ export const Slider: React.FC = () => {
                         title: "Unmet need for health care due to cost, distance and waiting time by income quintile",
                         theme: "Bulgaria",
                         image: sevenOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Income quintiles are based on the equivalized disposable income of each household member. Break in series in 2011 and 2019.",
+                            ],
+                            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Unmet need for dental care due to cost, distance and waiting time by quintile",
                         theme: "Bulgaria",
                         image: sevenTwo,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Income quintiles are based on the equivalized disposable income of each household member. Break in series in 2011 and 2019.",
+                            ],
+                            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
@@ -213,11 +302,23 @@ export const Slider: React.FC = () => {
                         title: "Current spending on health per person by financing scheme",
                         theme: "Bulgaria",
                         image: eightOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment.",
+                            ],
+                            sourceName: "WHO Global Health Expenditure Database",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Out-of-pocket payments as a share of current spending on health",
                         theme: "International comparison",
                         image: eightTwo,
+                        dialogInfo: {
+                            infoNotes: ["EU average include the United Kingdom up to and including 2019."],
+                            sourceName: "WHO Global Health Expenditure Database",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>
@@ -228,11 +329,25 @@ export const Slider: React.FC = () => {
                         title: "Public spending on health as a share of government spending, 2019",
                         theme: "International comparison",
                         image: nineOne,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. It excludes San Marino.  EU average include the United Kingdom up to and including 2019.",
+                            ],
+                            sourceName: "WHO Global Health Expenditure Database",
+                            sourceLink: "",
+                        },
                     }}
                     graphTwo={{
                         title: "Public spending on health as a share of GDP",
                         theme: "International comparison",
                         image: nineTwo,
+                        dialogInfo: {
+                            infoNotes: [
+                                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. EU average include the United Kingdom up to and including 2019.",
+                            ],
+                            sourceName: "WHO Global Health Expenditure Database",
+                            sourceLink: "",
+                        },
                     }}
                 />
             </TabPanel>

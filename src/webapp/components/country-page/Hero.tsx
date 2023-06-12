@@ -6,9 +6,12 @@ import { IconButton } from "material-ui";
 import InfoIcon from "@material-ui/icons/Info";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import DashboardGraph from "../../assets/country-page/dashboard-graph.jpg";
-import ExpandIcon from "../../assets/country-page/expand-icon.svg";
+//import ExpandIcon from "../../assets/country-page/expand-icon.svg";
+import { useState } from "react";
+import { NotesDialog } from "../dialog/NotesDialog";
 
 export const Hero: React.FC = () => {
+    const [isOpen, setIsOpen] = useState(false);
     return (
         <Grid container>
             <InfoGrid item md={5} lg={4} xs={12}>
@@ -19,18 +22,18 @@ export const Hero: React.FC = () => {
                     <Text style={{ marginTop: "10px" }}>
                         {i18n.t("Impoverishing health spending: 8% of households")}
                     </Text>
-                    <Text>{i18n.t("Catastrophic health spending: 19% of households")}</Text>
+                    <Text>{i18n.t("Catastrophic health spending: 19.2% of households")}</Text>
                     <Text>
-                        {i18n.t("Most at rish: lower-income households, older people, people living in rural areas")}
+                        {i18n.t("Most at risk: lower-income households, older people and people in rural areas")}
                     </Text>
-                    <Text>{i18n.t("Main driver: outpatient medicines, medical products, impatient care")}</Text>
+                    <Text>{i18n.t("Main driver: outpatient medicines especially for low-income households")}</Text>
                 </Column>
                 <Column style={{ marginTop: "40px" }}>
                     <Typography variant="h5" color="textSecondary" style={{ fontWeight: 500 }}>
-                        {i18n.t("Unmet need (2021)")}
+                        {i18n.t("Unmet need (2022)")}
                     </Typography>
-                    <Text>{i18n.t("Health care: 1% of people")}</Text>
-                    <Text>{i18n.t("Dental care: 1.7% of people")}</Text>
+                    <Text>{i18n.t("1% of people report unmet need for health care")}</Text>
+                    <Text>{i18n.t("2% of people report unmet need for dental care")}</Text>
                 </Column>
             </InfoGrid>
             <GraphGrid item xs={12} md={7} lg={8}>
@@ -41,12 +44,12 @@ export const Hero: React.FC = () => {
                                 "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19"
                             )}
                         </Typography>
-                        <IconButton style={{ color: "#035fa7" }}>
+                        <IconButton style={{ color: "#035fa7" }} onClick={() => setIsOpen(true)}>
                             <InfoIcon />
                         </IconButton>
-                        <IconButton style={{ padding: "5px" }}>
+                        {/* <IconButton style={{ padding: "5px" }}>
                             <img src={ExpandIcon} alt="expand icon" />
-                        </IconButton>
+                        </IconButton> */}
                         <a href={DashboardGraph} download>
                             <IconButton style={{ color: "#035fa7" }}>
                                 <GetAppIcon
@@ -64,6 +67,17 @@ export const Hero: React.FC = () => {
                     <Image src={DashboardGraph} />
                 </Column>
             </GraphGrid>
+            <NotesDialog
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                dialogInfo={{
+                    infoNotes: [
+                        "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+                    ],
+                    sourceName: "WHO Barcelona Office for Health Systems Financing",
+                    sourceLink: "",
+                }}
+            />
         </Grid>
     );
 };

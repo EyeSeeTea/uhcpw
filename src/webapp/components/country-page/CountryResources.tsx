@@ -9,24 +9,43 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 
 const countryResources = [
     {
-        title: "Can people affor to pay for health care? New evidence on financial protection in Bulgaria",
+        title: "Can people afford to pay for health care? New evidence on financial protection in Bulgaria",
         image: bulgariaReport,
         year: "2022",
-        languages: ["English", "болгарски"],
+        languages: [
+            {
+                name: "English",
+                link: "https://apps.who.int/iris/handle/10665/349200",
+            },
+        ],
         theme: "Financial protection",
     },
     {
-        title: "Summary",
+        title: "Can people afford to pay for health care? New evidence on financial protection in Bulgaria",
         image: bulgariaSummary,
         year: "2022",
-        languages: ["English", "болгарски"],
+        languages: [
+            {
+                name: "English",
+                link: "https://cdn.who.int/media/docs/librariesprovider2/country-sites/bulgaria-a4-brochure-eng---who.pdf?sfvrsn=e7d052f4_1&download=true",
+            },
+            {
+                name: "болгарски",
+                link: "https://cdn.who.int/media/docs/librariesprovider2/country-sites/bulgaria-a4-brochure-bul4---who-(1).pdf?sfvrsn=29c15926_1&download=true",
+            },
+        ],
         theme: "Financial protection",
     },
     {
-        title: "Infographic",
+        title: "Financial protection in Bulgaria",
         image: bulgariaInfographic,
         year: "2022",
-        languages: ["English", "болгарски"],
+        languages: [
+            {
+                name: "English",
+                link: "https://who.canto.global/s/Q9PJ8?column=document&id=1ujduedca53rb5keb9hu9d316i&viewIndex=0",
+            },
+        ],
         theme: "Financial protection",
     },
 ];
@@ -36,7 +55,7 @@ export const CountryResources: React.FC = () => {
         <Container>
             <Row>
                 <Typography variant="h3">{i18n.t("Country Resources")}</Typography>
-                <ChevronRightIcon />
+                <ChevronRightIcon link="/resources" />
             </Row>
             <Grid container spacing={5}>
                 {countryResources.map((resource, i) => {
@@ -50,12 +69,27 @@ export const CountryResources: React.FC = () => {
                                 <ContentColumn>
                                     <Row>
                                         <Typography style={{ marginRight: "4px" }}>{resource.year} | </Typography>
-                                        <Typography style={{ marginRight: "4px", color: colors.accentPrimary }}>
-                                            {resource.languages[0]}
-                                        </Typography>
-                                        <Typography style={{ color: colors.accentPrimary }}>
-                                            | {resource.languages[1]}
-                                        </Typography>
+                                        {resource.languages.map((language, i) => (
+                                            <>
+                                                <a
+                                                    key={language.name}
+                                                    href={language.link}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
+                                                    <Typography
+                                                        style={{
+                                                            marginRight: "4px",
+                                                            marginLeft: "4px",
+                                                            color: colors.accentPrimary,
+                                                        }}
+                                                    >
+                                                        {language.name}
+                                                    </Typography>
+                                                </a>
+                                                {i + 1 < resource.languages.length && <Typography>,</Typography>}
+                                            </>
+                                        ))}
                                     </Row>
                                     <Typography style={{ marginTop: "10px" }}>{resource.title}</Typography>
                                 </ContentColumn>
@@ -69,13 +103,14 @@ export const CountryResources: React.FC = () => {
 };
 
 const Container = styled.div`
-    padding: 40px 0px 40px 20px;
+    padding: 40px 0px 40px 60px;
     max-width: 80%;
 `;
 
 const Row = styled.div`
     display: flex;
     align-items: center;
+    margin-bottom: 25px;
 `;
 
 const Column = styled.div`
