@@ -170,7 +170,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            <CommingSoonTagContainer><Tag>{i18n.t("Comming soon")}</Tag></CommingSoonTagContainer>
+                            <ComingSoonTagContainer><Tag>{i18n.t("Coming soon")}</Tag></ComingSoonTagContainer>
                         </MenuContainer>
                         <MenuButton
                             id="methods"
@@ -190,7 +190,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            <CommingSoonTagContainer><Tag>{i18n.t("Comming soon")}</Tag></CommingSoonTagContainer>
+                            <ComingSoonTagContainer><Tag>{i18n.t("Coming soon")}</Tag></ComingSoonTagContainer>
                         </MenuContainer>
                         <Button
                             className={classes.menu}
@@ -235,7 +235,7 @@ const BetaVersionTagContainer = styled.div`
     margin-right: 16px;
 `;
 
-const CommingSoonTagContainer = styled.div`
+const ComingSoonTagContainer = styled.div`
     margin: 22px 10px;
 `;
 
