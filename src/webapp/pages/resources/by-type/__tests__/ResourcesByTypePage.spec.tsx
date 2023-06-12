@@ -453,7 +453,7 @@ async function selectFiltersAndSearch(theme?: string, country?: string, year?: s
 
     //await selectFilter(main, "Theme", theme || "Financial Protection");
 
-    await selectCountry(main, country || "Spain");
+    //await selectCountry(main, country || "Spain");
 
     //await selectFilter(main, "Years", year || "2020");
 
