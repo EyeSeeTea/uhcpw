@@ -15,7 +15,7 @@ const countryResources = [
         languages: [
             {
                 name: "English",
-                link: "https://who.canto.global/s/Q9PJ8?column=document&id=1ujduedca53rb5keb9hu9d316i&viewIndex=0",
+                link: "https://apps.who.int/iris/handle/10665/349200",
             },
         ],
         theme: "Financial protection",
