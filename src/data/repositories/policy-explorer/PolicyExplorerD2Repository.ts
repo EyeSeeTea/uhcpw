@@ -104,7 +104,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private buildColumns(policyExplorerCategoryId: string, dataSet?: D2DataSet): string[][] {
         const dataElementsSection = this.getDataElementsSection(policyExplorerCategoryId, dataSet);
 
-        return [["Country", "Period", ...dataElementsSection.map(de => de.displayName)]];
+        return [["Country", "Period", ...dataElementsSection.map(de => de.formName)]];
     }
 
     private buildRows(
@@ -147,7 +147,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 }
 
 const dataSetFields = {
-    sections: { id: true, displayName: true, dataElements: { id: true, displayName: true, valueType: true } },
+    sections: { id: true, displayName: true, dataElements: { id: true, formName: true, valueType: true } },
 } as const;
 
 type D2DataSet = MetadataPick<{

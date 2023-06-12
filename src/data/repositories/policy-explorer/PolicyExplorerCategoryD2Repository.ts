@@ -24,7 +24,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
         const sections = data?.sections.filter(section => section.id !== generalDataSetSectionId) || [];
 
-        return sections.map(section => ({ id: section.id, name: section.displayName }));
+        return sections.map(section => ({ id: section.id, name: section.displayName.replace("UHCW_", "") }));
     }
 }
 
