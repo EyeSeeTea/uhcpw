@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-12T10:47:44.494Z\n"
-"PO-Revision-Date: 2023-06-12T10:47:44.494Z\n"
+"POT-Creation-Date: 2023-06-12T13:54:28.924Z\n"
+"PO-Revision-Date: 2023-06-12T13:54:28.924Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -86,7 +86,13 @@ msgstr ""
 msgid "Financial hardship (2018)"
 msgstr ""
 
-msgid "Unmet need (2021)"
+msgid "Unmet need (2022)"
+msgstr ""
+
+msgid "1% of people report unmet need for health care"
+msgstr ""
+
+msgid "2% of people report unmet need for dental care"
 msgstr ""
 
 msgid ""

@@ -5,7 +5,7 @@ export type IndicatorExplorerFakeState = {
     filters: IndicatorExplorerFiltersFakeState;
     chartName?: string;
     chartImage?: string;
-    dialogInfo: {
+    dialogInfo?: {
         title?: string;
         infoNotes: string[];
         sourceName: string;
