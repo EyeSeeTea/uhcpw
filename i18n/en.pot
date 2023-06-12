@@ -338,7 +338,7 @@ msgstr ""
 msgid "Get chart"
 msgstr ""
 
-msgid "Funded by the European Union"
+msgid "Co-funded by the European Union"
 msgstr ""
 
 msgid "About us"
@@ -347,10 +347,10 @@ msgstr ""
 msgid "Contact our office"
 msgstr ""
 
-msgid "San pau Art Nouveau Site (La Mercé pavilion)"
+msgid "Sant Pau Art Nouveau Site (La Mercè pavillon)"
 msgstr ""
 
-msgid "San Antoni Maria Claret 167"
+msgid "Sant Antoni Maria Claret 167"
 msgstr ""
 
 msgid "08025 Barcelona, Spain"
@@ -359,7 +359,7 @@ msgstr ""
 msgid "Tel: +34 673 290 861"
 msgstr ""
 
-msgid "Email: eubar@who.int"
+msgid "Email: uhcwatch@who.int"
 msgstr ""
 
 msgid "© 2022 WHO"

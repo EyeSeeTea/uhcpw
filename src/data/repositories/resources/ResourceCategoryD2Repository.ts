@@ -30,7 +30,7 @@ export class ResourceCategoryD2Repository implements ResourceCategoryRepository 
         return optionSet.options.map(option => {
             return {
                 id: option.id,
-                name: option.displayName,
+                name: option.displayName.replace("UHCW_", ""),
                 code: option.code,
             };
         });

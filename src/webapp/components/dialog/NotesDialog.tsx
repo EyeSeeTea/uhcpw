@@ -18,7 +18,7 @@ type DialogType = {
 export const NotesDialog: React.FC<DialogType> = ({
     isOpen,
     setIsOpen,
-    dialogInfo: { title = "Notes:", infoNotes, sourceName, sourceLink },
+    dialogInfo: { title = "Notes:", infoNotes, sourceName },
 }) => {
     return (
         <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
@@ -31,7 +31,10 @@ export const NotesDialog: React.FC<DialogType> = ({
                         </Typography>
                     ))}
                     <Typography style={{ color: "#242626", marginTop: "10px" }}>
-                        Source: <a style={{ color: colors.accentPrimary, textDecoration: "none" }}>{sourceName}</a>
+                        Source:{" "}
+                        <a href={"/"} style={{ color: colors.accentPrimary, textDecoration: "none" }}>
+                            {sourceName}
+                        </a>
                     </Typography>
                 </DialogContent>
                 <CloseIconButton onClick={() => setIsOpen(false)}>
