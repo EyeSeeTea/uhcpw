@@ -96,9 +96,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
                     </MenuTopButton>
-                    <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
+                    {/* <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
                         {i18n.t("Search")}
-                    </MenuTopButton>
+                    </MenuTopButton> */}
                     {action}
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
