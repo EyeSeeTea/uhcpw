@@ -9,6 +9,7 @@ export interface SectionHeaderProps {
     subheader?: string;
     isBackgroundOnRight?: boolean;
     hasArrowIcon?: boolean;
+    tag?: string;
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -16,11 +17,13 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     subheader,
     isBackgroundOnRight,
     hasArrowIcon,
+    tag,
 }) => {
     return (
         <Header isBackgroundOnRight={isBackgroundOnRight}>
             <Row>
                 <Title variant="h3">{header}</Title>
+                {tag && <TagContainer><Tag>{tag}</Tag></TagContainer>}
                 {hasArrowIcon && <ChevronRightIcon />}
             </Row>
             {subheader && <SubTitle variant="h5">{subheader}</SubTitle>}
@@ -55,4 +58,19 @@ const Row = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+`;
+
+const TagContainer = styled.div`
+    margin-left: 15px;
+`;
+
+const Tag = styled.div`
+    display: flex;
+    justify-content: center;
+    min-width: 100px;
+    background-color: #4fad56;
+    color: white;
+    font-size: 15px;
+    border-radius: 30px;
+    padding: 5px 10px;
 `;

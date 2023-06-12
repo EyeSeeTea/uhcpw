@@ -6,13 +6,14 @@ import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import { Box, Button, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import i18n from "../../../../locales";
 import BookIcon from "@material-ui/icons/BookOutlined";
 import SearchIcon from "@material-ui/icons/Search";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
+import { useCountryOptionsOnlyBulgaria } from "../../../common/hooks/countries/useCountryOptionsOnlyBulgaria";
 import { Glossary } from "./Glossary";
 
 const useStyles = makeStyles(theme => ({
@@ -63,7 +64,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [isGlossaryOpen, setIsGlossaryOpen] = React.useState(false);
-    const { countryOptions } = useCountryOptions();
+    const { countryOptions } = useCountryOptionsOnlyBulgaria();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -91,7 +92,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                 <Toolbar className={classes.toolbarTop}>
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
-                    <Tag>Beta version</Tag>
+                    <BetaVersionTagContainer><Tag>Beta version</Tag></BetaVersionTagContainer>
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
                     </MenuTopButton>
@@ -112,7 +113,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             component={NavLink}
                             to={"/indicator-explorer"}
                         >
-                            {i18n.t("Indicator Explorer")}
+                            {i18n.t("Indicator explorer")}
                         </Button>
                         <Button
                             className={classes.menu}
@@ -120,14 +121,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             component={NavLink}
                             to={"/policy-explorer"}
                         >
-                            {i18n.t("Policy Explorer")}
+                            {i18n.t("Policy explorer")}
                         </Button>
                         <MenuButton
                             id="countries"
                             aria-controls="countries"
                             aria-haspopup="true"
                             onClick={handleParentMenuClick}
-                            endIcon={<ExpandMoreIcon />}
+                            endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         >
                             {i18n.t("Countries")}
                         </MenuButton>
@@ -151,22 +152,46 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                 );
                             })}
                         </Menu>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
-                            to={"/regions"}
+                        <MenuButton
+                            id="regions"
+                            aria-controls="regions"
+                            aria-haspopup="true"
+                            onClick={handleParentMenuClick}
+                            endIcon={anchorEl?.id === "regions" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         >
                             {i18n.t("Regions")}
-                        </Button>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
-                            to={"/methods"}
+                        </MenuButton>
+                        <MenuContainer
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={anchorEl?.id === "regions"}
+                            onClose={handleClose}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                            transformOrigin={{ vertical: "top", horizontal: "center" }}
+                        >
+                            <CommingSoonTagContainer><Tag>{i18n.t("Comming soon")}</Tag></CommingSoonTagContainer>
+                        </MenuContainer>
+                        <MenuButton
+                            id="methods"
+                            aria-controls="methods"
+                            aria-haspopup="true"
+                            onClick={handleParentMenuClick}
+                            endIcon={anchorEl?.id === "methods" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         >
                             {i18n.t("Methods")}
-                        </Button>
+                        </MenuButton>
+                        <MenuContainer
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={anchorEl?.id === "methods"}
+                            onClose={handleClose}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                            transformOrigin={{ vertical: "top", horizontal: "center" }}
+                        >
+                            <CommingSoonTagContainer><Tag>{i18n.t("Comming soon")}</Tag></CommingSoonTagContainer>
+                        </MenuContainer>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -206,14 +231,28 @@ const LogoContainer = styled.div`
     cursor: pointer;
 `;
 
+const BetaVersionTagContainer = styled.div`
+    margin-right: 16px;
+`;
+
+const CommingSoonTagContainer = styled.div`
+    margin: 22px 10px;
+`;
+
 const Tag = styled.div`
     display: flex;
     justify-content: center;
     min-width: 100px;
     background-color: #4fad56;
     color: white;
-    font-size: 13px;
+    font-size: 15px;
     border-radius: 30px;
     padding: 5px 10px;
-    margin-right: 16px;
+`;
+
+const MenuContainer = styled(Menu)`
+    .MuiPaper-rounded {
+        border-radius: 15px;
+        border: 1px solid rgba(36, 38, 38, 0.3);
+    }
 `;

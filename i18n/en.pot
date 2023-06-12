@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-09T10:51:49.137Z\n"
-"PO-Revision-Date: 2023-06-09T10:51:49.137Z\n"
+"POT-Creation-Date: 2023-06-12T09:55:17.447Z\n"
+"PO-Revision-Date: 2023-06-12T09:55:17.447Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -256,6 +256,9 @@ msgstr ""
 msgid "How financial protection is monitored matters"
 msgstr ""
 
+msgid "Comming soon"
+msgstr ""
+
 msgid "A focus on equity"
 msgstr ""
 
@@ -374,12 +377,6 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-msgid "Indicator Explorer"
-msgstr ""
-
-msgid "Policy Explorer"
-msgstr ""
-
 msgid "Regions"
 msgstr ""
 
@@ -428,9 +425,15 @@ msgstr ""
 msgid "Country resources"
 msgstr ""
 
+msgid "Indicator Explorer"
+msgstr ""
+
 msgid ""
 "Track and compare indicators on financial hardship, unmet need for health "
 "services and spending on health"
+msgstr ""
+
+msgid "Policy Explorer"
 msgstr ""
 
 msgid ""
