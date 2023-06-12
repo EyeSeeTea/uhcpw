@@ -5,6 +5,13 @@ import React from "react";
 import { useMultiCountryOptionsFake } from "../../../common/hooks/countries/useMultiCountryOptionsFake";
 import { categoriesConfig, CategoryConfig } from "./categoriesConfig";
 
+type DialogInfoType = {
+    title?: string;
+    infoNotes: string[];
+    sourceName: string;
+    sourceLink: string;
+};
+
 export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
     const countryFilter = useMultiCountryOptionsFake(undefined, ["DVnpk4xiXGJ", "AjeCGGb8H76", "KwgjnBBpe5b"], 1);
 
@@ -12,6 +19,7 @@ export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
     const [chartImage, setChartImage] = useState<string | undefined>();
+    const [chartNotes, setChartNotes] = useState<DialogInfoType>();
 
     const [categoryConfig, setCategoryConfig] = useState<CategoryConfig | undefined>();
 
@@ -53,10 +61,12 @@ export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
                 );
 
                 setChartImage(countryChart[0]?.image || undefined);
+                setChartNotes(countryChart[0]?.dialogInfo || undefined);
             } else {
                 const categoryCharts = categoryConfig?.data || [];
 
                 setChartImage(categoryCharts[0]?.image || undefined);
+                setChartNotes(categoryCharts[0]?.dialogInfo || undefined);
             }
         }
     }, [
@@ -77,12 +87,7 @@ export function useIndicatorExplorerFake(): IndicatorExplorerFakeState {
         },
         chartName: categoryConfig?.metadata.chartName || "",
         chartImage,
-        dialogInfo: {
-            title: categoryConfig?.metadata.dialogInfo.title,
-            infoNotes: categoryConfig?.metadata.dialogInfo.infoNotes || [],
-            sourceName: categoryConfig?.metadata.dialogInfo.sourceName || "",
-            sourceLink: categoryConfig?.metadata.dialogInfo.sourceLink || "",
-        },
+        dialogInfo: chartNotes,
         onGetChart,
     };
 }
