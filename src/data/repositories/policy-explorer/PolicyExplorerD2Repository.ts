@@ -72,7 +72,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         dataValues: DataValueSetsDataValue[],
         organisationUnits: D2OrgUnit[]
     ): PolicyExplorerGeneralInfo[] {
-        debugger;
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
