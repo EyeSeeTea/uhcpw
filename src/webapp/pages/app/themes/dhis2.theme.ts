@@ -79,7 +79,7 @@ export const muiTheme = createTheme({
     // colors,
     palette,
     typography: {
-        fontFamily: "Roboto, Helvetica, Arial, sans-serif",
+        fontFamily: ["Lato", "Roboto", "Helvetica", "Arial", "sans-serif"].join(","),
         // useNextVariants: true,
     },
     overrides: {
@@ -88,5 +88,6 @@ export const muiTheme = createTheme({
                 backgroundColor: palette.divider, // No light dividers for now
             },
         },
+        MuiCssBaseline: {},
     },
 });
