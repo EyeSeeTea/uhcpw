@@ -5,7 +5,7 @@ import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
-const generalDataSetSectionId = "u2iKsuZFteu";
+const sectionsList = ["uG2PbDfOc0w", "W4CqlzcDPB1", "uImM4yTeeV3", "e6cfI6vWYEF"];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     constructor(private api: D2Api) {}
@@ -22,9 +22,9 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     }
 
     private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
-        const sections = data?.sections.filter(section => section.id !== generalDataSetSectionId) || [];
+        const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
 
-        return sections.map(section => ({ id: section.id, name: section.displayName }));
+        return sections.map(section => ({ id: section.id, name: section.displayName.replace("UHCW_", "") }));
     }
 }
 
