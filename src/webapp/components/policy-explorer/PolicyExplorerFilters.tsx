@@ -31,6 +31,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                 <Center>
                     <CountrySelector
                         fullWidth
+                        label={i18n.t("Countries")}
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}

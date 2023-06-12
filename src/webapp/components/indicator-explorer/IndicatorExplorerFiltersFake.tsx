@@ -38,6 +38,7 @@ export const IndicatorExplorerFiltersFake: React.FC<ResourcesFiltersProps> = Rea
                     <Center>
                         <CountrySelector
                             fullWidth
+                            label={i18n.t("Countries")}
                             countries={filters.country.options}
                             selectedIds={filters.country.selected}
                             onSelectedIdsChange={filters.country.onSelectedChange}

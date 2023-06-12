@@ -19,8 +19,11 @@ export function useResourcesByType(params: {
     useEffect(() => {
         if (filters.category.selected) {
             setItems([]);
+
+            filters.country.onSelectedChange([]);
         }
-    }, [filters.category.selected]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filters.category.selected, filters.country.onSelectedChange]);
 
     useEffect(() => {
         const title = filters.category.options.find(cat => cat.value === filters.category.selected)?.text || "";
