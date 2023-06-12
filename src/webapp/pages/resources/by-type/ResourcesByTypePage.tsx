@@ -31,6 +31,10 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         countriesFilter: filterInParams.country,
     });
 
+    const disabledCountryFilter = useMemo(() => {
+        return category === "comparative-analysis" || category === "news" || category === "multimedia";
+    }, [category]);
+
     return (
         <Layout>
             <TitleContainer>
@@ -41,7 +45,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
             </SearchContainer>
             <Content>
                 <SelectsContainer maxWidth="xl">
-                    <ResourcesFilters filters={filters} onGetResources={onGetResources} />
+                    <ResourcesFilters
+                        filters={filters}
+                        onGetResources={onGetResources}
+                        disabledCountryFilter={disabledCountryFilter}
+                    />
                 </SelectsContainer>
                 <Container maxWidth="xl">
                     {

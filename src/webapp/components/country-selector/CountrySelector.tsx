@@ -29,6 +29,8 @@ interface CountrySelectorProps {
     onGroupedByIncomeChange?: (value: boolean) => void;
     fullWidth?: boolean;
     placeholder?: string;
+    disabled?: boolean;
+    label?: string;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
@@ -40,6 +42,8 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         onGroupedByIncomeChange,
         fullWidth,
         placeholder,
+        disabled,
+        label,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -47,10 +51,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
 
         const handleClick = useCallback(
             (event: React.MouseEvent<HTMLInputElement>) => {
-                setAnchorEl(event.currentTarget);
-                setExpanded(!expanded);
+                if (disabled !== true) {
+                    setAnchorEl(event.currentTarget);
+                    setExpanded(!expanded);
+                }
             },
-            [expanded, setExpanded, setAnchorEl]
+            [disabled, expanded]
         );
 
         const handleClose = useCallback(() => {
@@ -105,7 +111,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         return (
             <>
                 <StyledDropdownTextField
-                    label={i18n.t("Countries")}
+                    label={label}
                     onClick={handleClick}
                     aria-label="Countries"
                     placeholder={placeholder}
