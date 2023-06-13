@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-13T07:27:13.679Z\n"
-"PO-Revision-Date: 2023-06-13T07:27:13.679Z\n"
+"POT-Creation-Date: 2023-06-13T08:06:34.034Z\n"
+"PO-Revision-Date: 2023-06-13T08:06:34.034Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -213,7 +213,7 @@ msgid ""
 "good practice"
 msgstr ""
 
-msgid "Regional page"
+msgid "Coming soon"
 msgstr ""
 
 msgid "Explorers"
@@ -257,9 +257,6 @@ msgid "Methods"
 msgstr ""
 
 msgid "How financial protection is monitored matters"
-msgstr ""
-
-msgid "Coming soon"
 msgstr ""
 
 msgid "A focus on equity"

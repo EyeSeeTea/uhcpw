@@ -12,7 +12,7 @@ export const CTA: React.FC<CTAProps> = ({ text, link }) => {
         <Button
             component={NavLink}
             to={link}
-            style={{ borderRadius: "30px", background: "white", color: colors.accentPrimary, padding: "10px 40px" }}
+            style={{ borderRadius: "30px", background: "white", color: colors.accentPrimary, padding: "10px 40px", textTransform: "none" }}
         >
             {text}
         </Button>

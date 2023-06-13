@@ -24,7 +24,7 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <CTA text={i18n.t("Country page")} link="#" />
+                        <CTA text={i18n.t("Country page")} link="/country/bulgaria" />
                     </ButtonContainer>
                 </CountryContext>
                 <Region item md={6} xs={12}>
@@ -35,7 +35,7 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <CTA text={i18n.t("Regional page")} link="#" />
+                        <Tag>{i18n.t("Coming soon")}</Tag>
                     </ButtonContainer>
                 </Region>
             </Content>
@@ -60,4 +60,16 @@ const Region = styled(Grid)`
 
 const ButtonContainer = styled.div`
     margin-top: 30px;
+`;
+
+const Tag = styled.div`
+    color: #4fad56;
+    background-color: white;
+    font-size: 14px;
+    border-radius: 30px;
+    padding: 10px 40px;
+    width: fit-content;
+    height: 25px;
+    display: flex;
+    align-items: center;
 `;
