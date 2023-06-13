@@ -23,7 +23,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         <Header isBackgroundOnRight={isBackgroundOnRight}>
             <Row>
                 <Title variant="h3">{header}</Title>
-                {tag && <TagContainer><Tag>{tag}</Tag></TagContainer>}
+                {tag && (
+                    <TagContainer>
+                        <Tag>{tag}</Tag>
+                    </TagContainer>
+                )}
                 {hasArrowIcon && <ChevronRightIcon />}
             </Row>
             {subheader && <SubTitle variant="h5">{subheader}</SubTitle>}

@@ -174,7 +174,7 @@ msgstr ""
 msgid "Select country"
 msgstr ""
 
-msgid "I would like to see countries grouped by income bracket (LMIC/UMICHIC"
+msgid "I would like to see countries grouped by income bracket (LMIC/UMIC/HIC)"
 msgstr ""
 
 msgid "({{count}} selected)"

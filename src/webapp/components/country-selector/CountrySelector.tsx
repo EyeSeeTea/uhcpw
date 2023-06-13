@@ -222,7 +222,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                     icon={<UnCheckedIcon style={{ fill: "gray" }} />}
                                 />
                             }
-                            label={i18n.t("I would like to see countries grouped by income bracket (LMIC/UMICHIC")}
+                            label={i18n.t("I would like to see countries grouped by income bracket (LMIC/UMIC/HIC)")}
                         />
                     </div>
                 </StyledMenu>

@@ -10,7 +10,11 @@ export function useCountryOptionsOnlyBulgaria() {
     const [selectedCountry, setSelectedCountry] = useState<string | undefined>(undefined);
 
     useEffect(() => {
-        setCountriesOptions(countries.filter(country => country.id === ID_BULGARIA).map(country => ({ value: country.id, text: country.name })));
+        setCountriesOptions(
+            countries
+                .filter(country => country.id === ID_BULGARIA)
+                .map(country => ({ value: country.id, text: country.name }))
+        );
     }, [countries]);
 
     const onCountryChange = useCallback((country: string | undefined) => {

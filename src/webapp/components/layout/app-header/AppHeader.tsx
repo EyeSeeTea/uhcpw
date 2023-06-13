@@ -9,7 +9,6 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import i18n from "../../../../locales";
 import BookIcon from "@material-ui/icons/BookOutlined";
-import SearchIcon from "@material-ui/icons/Search";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
@@ -70,14 +69,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        if (event.currentTarget.id === "resources") {
-            history.push("/resources");
-        } else {
-            alert(event.currentTarget.innerText);
-        }
-    };
-
     const goToHome = () => {
         history.push("/");
     };
@@ -92,7 +83,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                 <Toolbar className={classes.toolbarTop}>
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
-                    <BetaVersionTagContainer><Tag>Beta version</Tag></BetaVersionTagContainer>
+                    <BetaVersionTagContainer>
+                        <Tag>Beta version</Tag>
+                    </BetaVersionTagContainer>
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
                     </MenuTopButton>
@@ -170,7 +163,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            <ComingSoonTagContainer><Tag>{i18n.t("Coming soon")}</Tag></ComingSoonTagContainer>
+                            <ComingSoonTagContainer>
+                                <Tag>{i18n.t("Coming soon")}</Tag>
+                            </ComingSoonTagContainer>
                         </MenuContainer>
                         <MenuButton
                             id="methods"
@@ -190,7 +185,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            <ComingSoonTagContainer><Tag>{i18n.t("Coming soon")}</Tag></ComingSoonTagContainer>
+                            <ComingSoonTagContainer>
+                                <Tag>{i18n.t("Coming soon")}</Tag>
+                            </ComingSoonTagContainer>
                         </MenuContainer>
                         <Button
                             className={classes.menu}
