@@ -78,7 +78,7 @@ const EuropeContainer = styled.div`
 `;
 
 const EuropeText = styled(Typography)`
-    width: 100px;
+    width: 150px;
     margin-left: 16px;
 `;
 
