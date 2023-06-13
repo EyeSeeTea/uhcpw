@@ -8,6 +8,7 @@ export interface ResourceFilters {
     countries?: string[];
     years?: string[];
     count?: number;
+    favourite?: boolean;
 }
 
 export interface ResourceRepository {

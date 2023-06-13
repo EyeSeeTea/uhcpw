@@ -49,6 +49,7 @@ export class ResourceD2Repository implements ResourceRepository {
             filters.countries && filters.countries?.length > 0
                 ? `${resourceDataElements.countryId}:in:${filters.countries.join(";")}`
                 : undefined,
+            filters.favourite !== undefined ? `${resourceDataElements.favourite}:eq:${filters.favourite}` : undefined,
         ])
             .compact()
             .join(",");

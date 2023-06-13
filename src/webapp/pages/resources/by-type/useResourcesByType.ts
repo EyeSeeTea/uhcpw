@@ -7,6 +7,7 @@ export function useResourcesByType(params: {
     category?: string;
     countriesFilter?: string[];
     count?: number;
+    favourite?: boolean;
 }): ResourcesByTypeState {
     const { compositionRoot, countries } = useAppContext();
     const filters = useResourcesFilters(params.category, params.countriesFilter);
@@ -41,6 +42,7 @@ export function useResourcesByType(params: {
                 countries: filters.country.selected,
                 years: filters.year.selected,
                 count: params.count,
+                favourite: params.favourite,
             })
             .run(
                 items => {
@@ -71,6 +73,7 @@ export function useResourcesByType(params: {
         filters.year.selected,
         params.category,
         params.count,
+        params.favourite,
         countries,
     ]);
 
