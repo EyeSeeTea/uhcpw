@@ -111,7 +111,7 @@ export const Slider: React.FC = () => {
                     title="How many people experience financial hardship: impoverishing health spending?"
                     graphOne={{
                         title: "Households with impoverishing health spending",
-                        theme: "Bulgaria",
+                        theme: "Financial Hardship",
                         image: oneOne,
                         dialogInfo: {
                             infoNotes: [
@@ -123,7 +123,7 @@ export const Slider: React.FC = () => {
                     }}
                     graphTwo={{
                         title: "Households with impoverishing health spending, 2019 or latest available year before COVID-19",
-                        theme: "International comparison",
+                        theme: "Comparative charts",
                         image: oneTwo,
                         dialogInfo: {
                             infoNotes: [
@@ -140,7 +140,7 @@ export const Slider: React.FC = () => {
                     title="How many people experience financial hardship: catastrophic health spending?"
                     graphOne={{
                         title: "Households with catastrophic health spending",
-                        theme: "Bulgaria",
+                        theme: "Financial Hardship",
                         image: twoOne,
                         dialogInfo: {
                             infoNotes: [
@@ -152,7 +152,7 @@ export const Slider: React.FC = () => {
                     }}
                     graphTwo={{
                         title: "Households with catastrophic health spending, 2019 or latest available year before COVID-19",
-                        theme: "International comparison",
+                        theme: "Comparative charts",
                         image: twoTwo,
                         dialogInfo: {
                             infoNotes: [
@@ -169,7 +169,7 @@ export const Slider: React.FC = () => {
                     title="Who experiences financial hardship?"
                     graphOne={{
                         title: "Households with catastrophic health spending by consumption quintile",
-                        theme: "Bulgaria",
+                        theme: "Financial Hardship",
                         image: threeOne,
                         dialogInfo: {
                             infoNotes: [
@@ -198,21 +198,23 @@ export const Slider: React.FC = () => {
                     title="Which health services are responsible for financial hardship?"
                     graphOne={{
                         title: "Breakdown of catastrophic health spending by type of care",
-                        theme: "Bulgaria",
+                        theme: "Financial Hardship",
                         image: fourOne,
                         dialogInfo: {
-                            infoNotes: ["aa"],
-                            sourceName: "",
+                            infoNotes: [
+                                "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs).",
+                            ],
+                            sourceName: "WHO Barcelona Office for Health Systems Financing",
                             sourceLink: "",
                         },
                     }}
                     graphTwo={{
                         title: "Breakdown of catastrophic health spending by type of care and consumption quintile",
-                        theme: "Bulgaria",
+                        theme: "Financial Hardship",
                         image: fourTwo,
                         dialogInfo: {
                             infoNotes: [
-                                "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+                                "Analysis as of 2018. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
                             ],
                             sourceName: "WHO Barcelona Office for Health Systems Financing",
                             sourceLink: "",
@@ -225,11 +227,11 @@ export const Slider: React.FC = () => {
                     title="Which health services are responsible for financial hardship? International comparison"
                     graphOne={{
                         title: "Breakdown of catastrophic health spending by type of care, 2019 or latest available year before COVID-19",
-                        theme: "International comparison",
+                        theme: "Comparative charts",
                         image: fiveOne,
                         dialogInfo: {
                             infoNotes: [
-                                "the different types of health care are sorted by the incidence of catastrophic health spending and the unweighted average across countries. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). In Spain dentures are classified as medical products in the household budget survey; in most other countries they are classified as dental care. In Ukraine the medicines category includes inpatient medicines; in most other countries the medicines category refers to outpatient medicines only. The Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+                                "The different types of health care are sorted by the incidence of catastrophic health spending and the unweighted average across countries. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). In Spain dentures are classified as medical products in the household budget survey; in most other countries they are classified as dental care. In Ukraine the medicines category includes inpatient medicines; in most other countries the medicines category refers to outpatient medicines only. The Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
                             ],
                             sourceName: "WHO Barcelona Office for Health Systems Financing",
                             sourceLink: "",
@@ -242,24 +244,20 @@ export const Slider: React.FC = () => {
                     title="How many people experience unmet need?"
                     graphOne={{
                         title: "Unmet need for health care due to cost, distance and waiting time",
-                        theme: "International comparison",
+                        theme: "Unmet need",
                         image: sixOne,
                         dialogInfo: {
-                            infoNotes: [
-                                "Health care refers to ‘medical examination or treatment’. Break in series for Belgium in 2011 and 2019.",
-                            ],
+                            infoNotes: ["Health care refers to ‘medical examination or treatment’."],
                             sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                             sourceLink: "",
                         },
                     }}
                     graphTwo={{
                         title: "Unmet need for dental care due to cost, distance and waiting time",
-                        theme: "International comparison",
+                        theme: "Unmet need",
                         image: sixTwo,
                         dialogInfo: {
-                            infoNotes: [
-                                "Dental care refers to ‘dental examination or treatment’. Break in series for Belgium in 2011 and 2019.",
-                            ],
+                            infoNotes: ["Dental care refers to ‘dental examination or treatment’."],
                             sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                             sourceLink: "",
                         },
@@ -271,11 +269,11 @@ export const Slider: React.FC = () => {
                     title="Who experiences unmet need?"
                     graphOne={{
                         title: "Unmet need for health care due to cost, distance and waiting time by income quintile",
-                        theme: "Bulgaria",
+                        theme: "Unmet need",
                         image: sevenOne,
                         dialogInfo: {
                             infoNotes: [
-                                "Income quintiles are based on the equivalized disposable income of each household member. Break in series in 2011 and 2019.",
+                                "Income quintiles are based on the equivalized disposable income of each household member.",
                             ],
                             sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                             sourceLink: "",
@@ -283,11 +281,11 @@ export const Slider: React.FC = () => {
                     }}
                     graphTwo={{
                         title: "Unmet need for dental care due to cost, distance and waiting time by quintile",
-                        theme: "Bulgaria",
+                        theme: "Unmet need",
                         image: sevenTwo,
                         dialogInfo: {
                             infoNotes: [
-                                "Income quintiles are based on the equivalized disposable income of each household member. Break in series in 2011 and 2019.",
+                                "Income quintiles are based on the equivalized disposable income of each household member.",
                             ],
                             sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                             sourceLink: "",
@@ -300,11 +298,11 @@ export const Slider: React.FC = () => {
                     title="How much does Bulgaria spend on health?"
                     graphOne={{
                         title: "Current spending on health per person by financing scheme",
-                        theme: "Bulgaria",
+                        theme: "Spending on health (health accounts)",
                         image: eightOne,
                         dialogInfo: {
                             infoNotes: [
-                                "public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment.",
+                                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment.",
                             ],
                             sourceName: "WHO Global Health Expenditure Database",
                             sourceLink: "",
@@ -312,7 +310,7 @@ export const Slider: React.FC = () => {
                     }}
                     graphTwo={{
                         title: "Out-of-pocket payments as a share of current spending on health",
-                        theme: "International comparison",
+                        theme: "Spending on health (health accounts)",
                         image: eightTwo,
                         dialogInfo: {
                             infoNotes: ["EU average include the United Kingdom up to and including 2019."],
@@ -327,7 +325,7 @@ export const Slider: React.FC = () => {
                     title="How much does Bulgaria spend on health? International comparison"
                     graphOne={{
                         title: "Public spending on health as a share of government spending, 2019",
-                        theme: "International comparison",
+                        theme: "Comparative",
                         image: nineOne,
                         dialogInfo: {
                             infoNotes: [
@@ -339,7 +337,7 @@ export const Slider: React.FC = () => {
                     }}
                     graphTwo={{
                         title: "Public spending on health as a share of GDP",
-                        theme: "International comparison",
+                        theme: "Spending on health (health accounts)",
                         image: nineTwo,
                         dialogInfo: {
                             infoNotes: [
