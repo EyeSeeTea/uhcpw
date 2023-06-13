@@ -65,7 +65,7 @@ const ButtonContainer = styled.div`
 const Tag = styled.div`
     color: #4fad56;
     background-color: white;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 30px;
     padding: 10px 40px;
     width: fit-content;
