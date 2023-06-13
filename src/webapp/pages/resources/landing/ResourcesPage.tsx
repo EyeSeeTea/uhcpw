@@ -121,12 +121,12 @@ const SelectsContainer = styled(Container)`
     padding-bottom: 32px;
 `;
 
-const SearchContainer = styled.div`
-    margin: -24px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-`;
+// const SearchContainer = styled.div`
+//     margin: -24px;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+// `;
 
 const Flag = styled.img`
     border: 1px solid #c5c3c3;
