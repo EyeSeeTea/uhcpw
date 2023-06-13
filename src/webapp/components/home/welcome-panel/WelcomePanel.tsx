@@ -10,7 +10,7 @@ export const WelcomePanel: React.FC = () => {
     return (
         <Container>
             <Typography variant="h2" style={{ fontWeight: 400 }}>
-                {i18n.t("UHC Watch")}
+                {i18n.t("UHC watch")}
             </Typography>
 
             <p>
