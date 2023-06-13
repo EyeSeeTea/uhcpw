@@ -5,7 +5,7 @@ import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
-const sectionsList = ["uG2PbDfOc0w", "W4CqlzcDPB1", "uImM4yTeeV3", "e6cfI6vWYEF"];
+const sectionsList = ["uG2PbDfOc0w", "W4CqlzcDPB1", "uImM4yTeeV3", "e6cfI6vWYEF", "mCMVwmnGWJF"];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     constructor(private api: D2Api) {}
