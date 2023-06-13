@@ -6,7 +6,8 @@ import whoLogoWhite from "../../../assets/who-logo-white.png";
 import europeFlag from "../../../assets/europe-flag.png";
 import { NavLink } from "react-router-dom";
 
-const URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING = "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)";
+const URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING =
+    "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)";
 
 export const AppFooter: React.FC = () => {
     return (
@@ -24,9 +25,7 @@ export const AppFooter: React.FC = () => {
                             </EuropeContainer>
                         </Grid>
                         <Grid item lg={3} md={6} xs={12}>
-                            <StyledNavLink
-                                to={"/about"}
-                            >
+                            <StyledNavLink to={"/about"}>
                                 <Typography variant="body1" gutterBottom>
                                     {i18n.t("About us")}
                                 </Typography>
