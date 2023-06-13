@@ -8,6 +8,7 @@ import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import { ChartWithPlugin } from "../../components/chart/ChartWithPlugin";
 import { Chart } from "../../components/chart/Chart";
+import indicatorExplorer from "../../assets/indicator-explorer.svg";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { filters, visualization, analytics, onGetChart } = useIndicatorExplorer();
@@ -15,12 +16,8 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{i18n.t("Indicator Explorer")}</Typography>
-                <Typography variant="body1" style={{ maxWidth: "600px", padding: "8px 0px" }}>
-                    {i18n.t(
-                        "Track and compare indicators on financial hardship, unmet need for health services and spending on health"
-                    )}
-                </Typography>
+                <Typography variant="h4">{i18n.t("Indicator explorer")}</Typography>
+                <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
             </TitleContainer>
 
             <MainSection>
@@ -47,5 +44,13 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 48px 64px;
+    padding: 48px 200px 48px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const Image = styled.img`
+    width: 160px;
+    height: 160px;
 `;
