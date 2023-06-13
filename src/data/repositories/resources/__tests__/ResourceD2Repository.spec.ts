@@ -69,6 +69,27 @@ describe("Resource repository", () => {
                 `${resourceDataElements.countryId}:in:country1;country2`
             );
         });
+
+        it("favourite true in filter", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", favourite: true }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
+                `${resourceDataElements.favourite}:eq:true`
+            );
+        });
+
+        it("favourite false in filter", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", favourite: false }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
+                `${resourceDataElements.favourite}:eq:false`
+            );
+        });
+
         it("order in filter", async () => {
             givenAComparativeAnalysis();
 
@@ -76,6 +97,7 @@ describe("Resource repository", () => {
 
             expect(mockWebServer.lastRequest?.params.get("order")).toContain("eventDate:desc");
         });
+
         it("skipPaging equal to true if count is not passed", async () => {
             givenAComparativeAnalysis();
 

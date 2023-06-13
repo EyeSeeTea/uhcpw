@@ -4,15 +4,10 @@ import { useMemo } from "react";
 import { useResourcesByType } from "../resources/by-type/useResourcesByType";
 
 export function useHomeResources() {
-    const { items } = useResourcesByType({});
+    const { items } = useResourcesByType({ favourite: true });
 
     const resources = useMemo(() => {
-        return items
-            ? _.orderBy(
-                  items.filter(item => item.favourite),
-                  "favouriteOrder"
-              ).slice(0, 6)
-            : [];
+        return items ? _.orderBy(items, "favouriteOrder").slice(0, 6) : [];
     }, [items]);
 
     return {
