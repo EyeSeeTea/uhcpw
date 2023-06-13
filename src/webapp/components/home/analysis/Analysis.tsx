@@ -24,7 +24,7 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <CTA text={i18n.t("Country page")} link="#" />
+                        <CTA text={i18n.t("Country page")} link="/country/bulgaria" />
                     </ButtonContainer>
                 </CountryContext>
                 <Region item md={6} xs={12}>
