@@ -371,7 +371,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
                 image: chart_8_SPA,
                 dialogInfo: {
                     infoNotes: [
-                        "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+                        "Analysis as of 2020. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
                     ],
                     sourceName: "WHO Barcelona Office for Health Systems Financing",
                     sourceLink: "",
@@ -382,7 +382,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
                 image: chart_8_BUL,
                 dialogInfo: {
                     infoNotes: [
-                        "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+                        "Analysis as of 2018. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
                     ],
                     sourceName: "WHO Barcelona Office for Health Systems Financing",
                     sourceLink: "",
@@ -393,7 +393,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
                 image: chart_8_BEL,
                 dialogInfo: {
                     infoNotes: [
-                        "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+                        "Analysis as of 2020. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person consumption using OECD equivalence scales.",
                     ],
                     sourceName: "WHO Barcelona Office for Health Systems Financing",
                     sourceLink: "",
@@ -551,7 +551,9 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
                 countryId: "KwgjnBBpe5b",
                 image: chart_10_BEL,
                 dialogInfo: {
-                    infoNotes: ["Health care refers to ‘medical examination or treatment’."],
+                    infoNotes: [
+                        "Health care refers to ‘medical examination or treatment’. Break in series for Belgium in 2011 and 2019.",
+                    ],
                     sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                     sourceLink: "",
                 },
@@ -590,7 +592,9 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
                 image: chart_11_BEL,
                 dialogInfo: {
                     title: "Info:",
-                    infoNotes: ["Dental care refers to ‘dental examination or treatment’."],
+                    infoNotes: [
+                        "Dental care refers to ‘dental examination or treatment’. Break in series for Belgium in 2011 and 2019.",
+                    ],
                     sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                     sourceLink: "",
                 },
@@ -631,7 +635,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
                 image: chart_12_BEL,
                 dialogInfo: {
                     infoNotes: [
-                        "Income quintiles are based on the equivalized disposable income of each household member.",
+                        "Income quintiles are based on the equivalized disposable income of each household member. Break in series in 2011 and 2019.",
                     ],
                     sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                     sourceLink: "",
@@ -673,7 +677,7 @@ export const categoriesConfig: Record<string, CategoryConfig> = {
                 image: chart_13_BEL,
                 dialogInfo: {
                     infoNotes: [
-                        "Income quintiles are based on the equivalized disposable income of each household member.",
+                        "Income quintiles are based on the equivalized disposable income of each household member. Break in series in 2011 and 2019.",
                     ],
                     sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
                     sourceLink: "",
