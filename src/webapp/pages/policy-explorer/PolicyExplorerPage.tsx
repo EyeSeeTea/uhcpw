@@ -13,6 +13,7 @@ import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
 import ReactMarkdown from "react-markdown";
 import { DataOrientation } from "./PolicyExplorerState";
 import moment from "moment";
+import policyExplorer from "../../assets/policy-explorer.svg";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
     const { filters, data, onGetTable, onSwitchRowColumn, onDownload, dataOrientation } = usePolicyExplorer();
@@ -24,12 +25,8 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{i18n.t("Policy Explorer")}</Typography>
-                <Typography variant="body1" style={{ maxWidth: "600px", padding: "8px 0px" }}>
-                    {i18n.t(
-                        "Track and compare policies on population coverage, service coverage, user charges and voluntary health insurance and explore gaps in coverage"
-                    )}
-                </Typography>
+                <Typography variant="h4">{i18n.t("Policy explorer")}</Typography>
+                <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
             </TitleContainer>
 
             <MainSection>
@@ -151,7 +148,15 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 48px 64px;
+    padding: 48px 200px 48px 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
+const Image = styled.img`
+    width: 160px;
+    height: 160px;
 `;
 
 const Row = styled.div`
