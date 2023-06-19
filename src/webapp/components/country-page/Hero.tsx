@@ -13,7 +13,7 @@ import { NotesDialog } from "../dialog/NotesDialog";
 export const Hero: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <Grid container>
+        <Grid container aria-label="country-page-hero">
             <InfoGrid item md={5} lg={4} xs={12}>
                 <Column>
                     <Typography variant="h5" color="textSecondary" style={{ fontWeight: 500 }}>
@@ -64,7 +64,7 @@ export const Hero: React.FC = () => {
                             </IconButton>
                         </a>
                     </Row>
-                    <Image src={DashboardGraph} />
+                    <Image src={DashboardGraph} alt="hero-graph" />
                 </Column>
             </GraphGrid>
             <NotesDialog

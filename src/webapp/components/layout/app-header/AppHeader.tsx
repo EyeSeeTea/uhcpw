@@ -138,7 +138,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                 return (
                                     <MenuItem
                                         key={country.value}
-                                        onClick={() => history.push(`country/${country.text.toLowerCase()}`)}
+                                        onClick={() => history.push(`/country-page?country=${country.value}`)}
                                     >
                                         {country.text}
                                     </MenuItem>

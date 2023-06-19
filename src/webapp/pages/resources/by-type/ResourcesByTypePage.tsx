@@ -4,14 +4,11 @@ import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Layout } from "../../../components/layout/Layout";
-import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
-import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
-import { CountryAnalysisItem } from "../../../components/resources/country-analysis/CountryAnalysisItem";
-import { ResourceState } from "./ResourcesByTypeState";
+import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const history = useHistory();
@@ -60,7 +57,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
 
                                     return (
                                         <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
-                                            <Item resource={item} />
+                                            <ResourceItem resource={item} />
                                         </Grid>
                                     );
                                 })}
@@ -74,44 +71,6 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
             </Content>
         </Layout>
     );
-});
-
-const Item: React.FC<{ resource: ResourceState }> = React.memo(({ resource }) => {
-    const themeColor: Record<string, string> = {
-        "Financial Protection": "#008ad7",
-        Resilience: "#4fad56",
-        "Spending on Health": "#0360a7",
-        "Voluntary Health Insurance": "#ff8d4e",
-    };
-
-    switch (resource.kind) {
-        case "comparative-analysis":
-            return <ComparativeAnalysisItem comparativeAnalysis={resource} />;
-        case "country-analysis":
-            return <CountryAnalysisItem countryAnalysis={resource} />;
-        case "news":
-            return (
-                <SimpleResourceItem
-                    title={resource.title}
-                    url={resource.url}
-                    image={resource.image}
-                    date={resource.date}
-                    dateFormat={"DD MMMM YYYY"}
-                />
-            );
-        case "multimedia": {
-            return (
-                <SimpleResourceItem
-                    title={resource.title}
-                    url={resource.url}
-                    image={resource.image}
-                    date={resource.date}
-                    tag={resource.theme}
-                    tagColor={themeColor[resource.theme]}
-                />
-            );
-        }
-    }
 });
 
 const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSize } => {

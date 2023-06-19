@@ -5,4 +5,5 @@ export type Person = {
     position: string;
     institution?: string;
     countryId?: string;
+    countryName?: string;
 };
