@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-13T10:03:44.774Z\n"
-"PO-Revision-Date: 2023-06-13T10:03:44.774Z\n"
+"POT-Creation-Date: 2023-06-19T10:43:25.353Z\n"
+"PO-Revision-Date: 2023-06-19T10:43:25.353Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -68,19 +68,19 @@ msgstr ""
 msgid "Country expert"
 msgstr ""
 
-msgid "Antoniya Dimova"
-msgstr ""
-
-msgid "Professor"
-msgstr ""
-
-msgid "Medical University - Professor Dr Paraskev Stoyanov - Varna"
-msgstr ""
-
-msgid "Bulgaria"
-msgstr ""
-
 msgid "Country Resources"
+msgstr ""
+
+msgid "Select country"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "In detail"
+msgstr ""
+
+msgid "Country resources"
 msgstr ""
 
 msgid "Financial hardship (2018)"
@@ -169,9 +169,6 @@ msgid ""
 "Support these policy changes by increasing the level of government budget "
 "transfers to the National Health Insurance Fund over time. Use additional "
 "resources carefully to meet equity and efficiency goals."
-msgstr ""
-
-msgid "Select country"
 msgstr ""
 
 msgid "I would like to see countries grouped by income bracket (LMIC/UMIC/HIC)"
@@ -417,15 +414,6 @@ msgid "Select theme"
 msgstr ""
 
 msgid "All"
-msgstr ""
-
-msgid "Dashboard"
-msgstr ""
-
-msgid "In detail"
-msgstr ""
-
-msgid "Country resources"
 msgstr ""
 
 msgid "Switch row/column"
