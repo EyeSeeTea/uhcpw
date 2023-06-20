@@ -9,6 +9,7 @@ export interface ResourceFilters {
     years?: string[];
     count?: number;
     favourite?: boolean;
+    favouriteSection?: boolean;
 }
 
 export interface ResourceRepository {
