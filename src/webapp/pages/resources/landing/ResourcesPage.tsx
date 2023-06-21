@@ -64,6 +64,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                                 <ComparativeAnalysisItem
                                                     comparativeAnalysis={comparativeItem}
                                                     minimalVersion
+                                                    filters={filters}
                                                 />
                                             </Grid>
                                         );
