@@ -15,17 +15,15 @@ export function useResourcesByType(params: {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
+    const [selectedCountry, setSelectedCountry] = useState<string[] | undefined>([""]);
 
     const [title, setTitle] = useState<string>("");
 
     useEffect(() => {
-        if (filters.category.selected) {
-            setItems([]);
-
-            filters.country.onSelectedChange([]);
+        if (filters.country.selected) {
+            setSelectedCountry(filters.country.selected);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters.category.selected, filters.country.onSelectedChange]);
+    }, [filters.country.selected]);
 
     useEffect(() => {
         const title = filters.category.options.find(cat => cat.value === filters.category.selected)?.text || "";
@@ -40,7 +38,7 @@ export function useResourcesByType(params: {
                 searchTerm: filters.search.term,
                 category: params.category,
                 theme: filters.theme.selected,
-                countries: filters.country.selected,
+                countries: selectedCountry,
                 years: filters.year.selected,
                 count: params.count,
                 favourite: params.favourite,
@@ -69,14 +67,15 @@ export function useResourcesByType(params: {
             );
     }, [
         compositionRoot.resources.get,
+        countries,
+        selectedCountry,
         filters.search.term,
         filters.theme.selected,
-        filters.country.selected,
         filters.year.selected,
         params.category,
         params.count,
         params.favourite,
-        countries,
+        params.favouriteSection,
     ]);
 
     useEffect(() => onGetResources(), [onGetResources]);

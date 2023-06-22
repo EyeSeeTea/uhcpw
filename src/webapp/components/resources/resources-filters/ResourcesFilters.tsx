@@ -20,13 +20,14 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
 
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
+                filters.country.onSelectedChange([]);
                 if (value) {
                     history.push(`/resources/${value}`);
                 } else {
                     history.push("/resources");
                 }
             },
-            [history]
+            [filters.country, history]
         );
 
         return (
