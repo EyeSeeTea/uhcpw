@@ -69,7 +69,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     onChange={(e, value) => handleChange(e, value as Option<string> | null)}
                 />
                 {value && (
-                    <ClearButton variant="text" onClick={handleClear} hasLabel={!!label}>
+                    <ClearButton variant="text" onClick={handleClear} top={label ? "0" : "-30px"}>
                         {i18n.t("Clear")}
                     </ClearButton>
                 )}
@@ -78,15 +78,14 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
     }
 );
 
-const ClearButton = styled(Button)<{ hasLabel: boolean }>`
+const ClearButton = styled(Button)<{ top: string }>`
     color: orange;
     text-transform: none;
     position: absolute;
-    top: 0;
     right: 0;
     padding: 0px;
     font-weight: 400;
-    top: ${props => !props.hasLabel && "-30px"};
+    top: ${props => props.top};
 `;
 
 const Container = styled.div<ContainerProps>`
