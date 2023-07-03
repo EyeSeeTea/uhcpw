@@ -25,9 +25,8 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
         const history = useHistory();
 
         const handleTagClick = () => {
-            filters.theme.selected = analysisResource.theme;
             filters.theme.onSelectedChange(analysisResource.theme);
-            history.push("/resources");
+            history.push(`/resources/comparative-analysis?theme=${analysisResource.theme}`);
         };
 
         return (
