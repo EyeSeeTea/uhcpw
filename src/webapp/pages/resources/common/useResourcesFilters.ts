@@ -22,7 +22,13 @@ export function useResourcesFilters(category?: string, countries?: string[]): Re
 
     useEffect(() => {
         setSelectedCategoryFilter(category);
-    }, [category]);
+
+        if (countries?.length === 0) {
+            countryFilter.onSelectedChange([]);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [category, countries, countryFilter.onSelectedChange]);
 
     useEffect(() => {
         compositionRoot.resources.getCategories.execute().run(
