@@ -15,6 +15,7 @@ import {
     createNewsResources,
 } from "../../resources/common/__tests__/helpers";
 import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
+import { PersonState } from "../../about/AboutState";
 
 let personRepository: PersonD2Repository;
 let resourceRepository: ResourceD2Repository;
@@ -100,7 +101,7 @@ function renderPage() {
     );
 }
 
-async function verifyExpertMembers(experts: Person[]) {
+async function verifyExpertMembers(experts: PersonState[]) {
     const scope = within(screen.getByLabelText(/experts/i));
     const items = scope.queryAllByRole("listitem");
 
@@ -158,6 +159,7 @@ function givenAPersons(): {
         lastName: string;
         image: string;
         position: string;
+        countryName: string;
     }[];
 } {
     const mockedRepository = mock(PersonD2Repository);
