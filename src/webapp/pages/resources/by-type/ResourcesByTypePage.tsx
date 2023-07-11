@@ -22,7 +22,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         const country = searchParams.get("country");
 
         return {
-            country: country ? [country] : undefined,
+            country: country ? country.split(",") : undefined,
         };
     }, [history.location]);
 

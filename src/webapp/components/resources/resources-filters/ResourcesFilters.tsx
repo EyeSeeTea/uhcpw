@@ -1,6 +1,6 @@
 import { Button, Grid } from "@material-ui/core";
 import React, { useCallback } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ResourcesFiltersState } from "../../../pages/resources/common/ResourcesFiltersState";
@@ -17,6 +17,7 @@ export interface ResourcesFiltersProps {
 export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
     ({ filters, onGetResources, disabledCountryFilter }) => {
         const history = useHistory();
+        const location = useLocation();
 
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
@@ -27,6 +28,21 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                 }
             },
             [history]
+        );
+
+        const onCountryChange = useCallback(
+            (value: string[] | undefined) => {
+                const queryParameters = new URLSearchParams(location.search);
+
+                if (value && value.length > 0) {
+                    queryParameters.set("country", value?.join(","));
+                } else {
+                    queryParameters.delete("country");
+                }
+
+                history.replace({ search: queryParameters.toString() });
+            },
+            [history, location.search]
         );
 
         return (
@@ -60,10 +76,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             placeholder={i18n.t("Select country")}
                             countries={filters.country.options}
                             selectedIds={filters.country.selected}
-                            onSelectedIdsChange={filters.country.onSelectedChange}
                             groupedByIncome={filters.country.groupedByIncome}
                             onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                             disabled={disabledCountryFilter}
+                            onSelectedIdsChange={onCountryChange}
                         />
                     </Center>
                 </Grid>
