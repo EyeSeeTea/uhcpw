@@ -3,7 +3,7 @@ import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import whoLogoBlue from "../../../assets/who-logo-blue.png";
-import { Box, Button, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -14,7 +14,6 @@ import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useCountryOptionsOnlyBulgaria } from "../../../common/hooks/countries/useCountryOptionsOnlyBulgaria";
 import { Glossary } from "./Glossary";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { MobileMenu } from "./MobileMenu";
 
 const useStyles = makeStyles(theme => ({
@@ -62,7 +61,6 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     const classes = useStyles();
     const history = useHistory();
-    const isLessThan768 = useMediaQuery("(max-width:768px)");
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [isGlossaryOpen, setIsGlossaryOpen] = React.useState(false);
@@ -105,117 +103,116 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={goToHome} />;
                     </LogoContainer>
                     <Box className={classes.rest} />
-                    {isLessThan768 ? (
+                    <Hidden mdUp>
                         <MobileMenu />
-                    ) : (
-                        <div>
-                            <Button
-                                className={classes.menu}
-                                activeClassName={classes.menuActive}
-                                component={NavLink}
-                                to={"/indicator-explorer"}
-                            >
-                                {i18n.t("Indicator explorer")}
-                            </Button>
-                            <Button
-                                className={classes.menu}
-                                activeClassName={classes.menuActive}
-                                component={NavLink}
-                                to={"/policy-explorer"}
-                            >
-                                {i18n.t("Policy explorer")}
-                            </Button>
-                            <MenuButton
-                                id="countries"
-                                aria-controls="countries"
-                                aria-haspopup="true"
-                                onClick={handleParentMenuClick}
-                                endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            >
-                                {i18n.t("Countries")}
-                            </MenuButton>
-                            <Menu
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={anchorEl?.id === "countries"}
-                                onClose={handleClose}
-                                getContentAnchorEl={null}
-                                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                                transformOrigin={{ vertical: "top", horizontal: "center" }}
-                            >
-                                {countryOptions.map(country => {
-                                    return (
-                                        <MenuItem
-                                            key={country.value}
-                                            onClick={() => history.push(`country/${country.text.toLowerCase()}`)}
-                                        >
-                                            {country.text}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </Menu>
-                            <MenuButton
-                                id="regions"
-                                aria-controls="regions"
-                                aria-haspopup="true"
-                                onClick={handleParentMenuClick}
-                                endIcon={anchorEl?.id === "regions" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            >
-                                {i18n.t("Regions")}
-                            </MenuButton>
-                            <MenuContainer
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={anchorEl?.id === "regions"}
-                                onClose={handleClose}
-                                getContentAnchorEl={null}
-                                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                                transformOrigin={{ vertical: "top", horizontal: "center" }}
-                            >
-                                <ComingSoonTagContainer>
-                                    <Tag>{i18n.t("Coming soon")}</Tag>
-                                </ComingSoonTagContainer>
-                            </MenuContainer>
-                            <MenuButton
-                                id="methods"
-                                aria-controls="methods"
-                                aria-haspopup="true"
-                                onClick={handleParentMenuClick}
-                                endIcon={anchorEl?.id === "methods" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                            >
-                                {i18n.t("Methods")}
-                            </MenuButton>
-                            <MenuContainer
-                                anchorEl={anchorEl}
-                                keepMounted
-                                open={anchorEl?.id === "methods"}
-                                onClose={handleClose}
-                                getContentAnchorEl={null}
-                                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                                transformOrigin={{ vertical: "top", horizontal: "center" }}
-                            >
-                                <ComingSoonTagContainer>
-                                    <Tag>{i18n.t("Coming soon")}</Tag>
-                                </ComingSoonTagContainer>
-                            </MenuContainer>
-                            <Button
-                                className={classes.menu}
-                                activeClassName={classes.menuActive}
-                                component={NavLink}
-                                to={"/resources"}
-                            >
-                                {i18n.t("Resources")}
-                            </Button>
-                            <Button
-                                className={classes.menu}
-                                activeClassName={classes.menuActive}
-                                component={NavLink}
-                                to={"/about"}
-                            >
-                                {i18n.t("About us")}
-                            </Button>
-                        </div>
-                    )}
+                    </Hidden>
+                    <Hidden mdDown>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/indicator-explorer"}
+                        >
+                            {i18n.t("Indicator explorer")}
+                        </Button>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/policy-explorer"}
+                        >
+                            {i18n.t("Policy explorer")}
+                        </Button>
+                        <MenuButton
+                            id="countries"
+                            aria-controls="countries"
+                            aria-haspopup="true"
+                            onClick={handleParentMenuClick}
+                            endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        >
+                            {i18n.t("Countries")}
+                        </MenuButton>
+                        <Menu
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={anchorEl?.id === "countries"}
+                            onClose={handleClose}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                            transformOrigin={{ vertical: "top", horizontal: "center" }}
+                        >
+                            {countryOptions.map(country => {
+                                return (
+                                    <MenuItem
+                                        key={country.value}
+                                        onClick={() => history.push(`country/${country.text.toLowerCase()}`)}
+                                    >
+                                        {country.text}
+                                    </MenuItem>
+                                );
+                            })}
+                        </Menu>
+                        <MenuButton
+                            id="regions"
+                            aria-controls="regions"
+                            aria-haspopup="true"
+                            onClick={handleParentMenuClick}
+                            endIcon={anchorEl?.id === "regions" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        >
+                            {i18n.t("Regions")}
+                        </MenuButton>
+                        <MenuContainer
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={anchorEl?.id === "regions"}
+                            onClose={handleClose}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                            transformOrigin={{ vertical: "top", horizontal: "center" }}
+                        >
+                            <ComingSoonTagContainer>
+                                <Tag>{i18n.t("Coming soon")}</Tag>
+                            </ComingSoonTagContainer>
+                        </MenuContainer>
+                        <MenuButton
+                            id="methods"
+                            aria-controls="methods"
+                            aria-haspopup="true"
+                            onClick={handleParentMenuClick}
+                            endIcon={anchorEl?.id === "methods" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        >
+                            {i18n.t("Methods")}
+                        </MenuButton>
+                        <MenuContainer
+                            anchorEl={anchorEl}
+                            keepMounted
+                            open={anchorEl?.id === "methods"}
+                            onClose={handleClose}
+                            getContentAnchorEl={null}
+                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                            transformOrigin={{ vertical: "top", horizontal: "center" }}
+                        >
+                            <ComingSoonTagContainer>
+                                <Tag>{i18n.t("Coming soon")}</Tag>
+                            </ComingSoonTagContainer>
+                        </MenuContainer>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/resources"}
+                        >
+                            {i18n.t("Resources")}
+                        </Button>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/about"}
+                        >
+                            {i18n.t("About us")}
+                        </Button>
+                    </Hidden>
                 </Toolbar>
             </MuiAppBar>
             <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
