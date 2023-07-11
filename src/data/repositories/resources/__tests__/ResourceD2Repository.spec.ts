@@ -90,6 +90,26 @@ describe("Resource repository", () => {
             );
         });
 
+        it("favouriteSection true in filter", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", favouriteSection: true }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
+                `${resourceDataElements.favouriteSection}:eq:true`
+            );
+        });
+
+        it("favouriteSection false in filter", async () => {
+            givenAComparativeAnalysis();
+
+            await resourceRepository.get({ category: "comparative-analysis", favouriteSection: false }).runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
+                `${resourceDataElements.favouriteSection}:eq:false`
+            );
+        });
+
         it("order in filter", async () => {
             givenAComparativeAnalysis();
 

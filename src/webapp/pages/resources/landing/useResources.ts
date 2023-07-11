@@ -9,7 +9,7 @@ import { ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
     const { countries } = useAppContext();
-    const { filters, items, onGetResources } = useResourcesByType({});
+    const { filters, items, onGetResources } = useResourcesByType({ favouriteSection: true });
 
     const resources = useMemo(() => {
         return items
@@ -46,21 +46,21 @@ function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
 
 function getNews(items: ResourceState[]): News[] {
     return _.orderBy(
-        items.filter(item => item.kind === "news" && item.favouriteSection),
+        items.filter(item => item.kind === "news"),
         "favouriteSectionOrder"
     ).slice(0, 1) as News[];
 }
 
 function getMultimedia(items: ResourceState[]): Multimedia[] {
     return _.orderBy(
-        items.filter(item => item.kind === "multimedia" && item.favouriteSection),
+        items.filter(item => item.kind === "multimedia"),
         "favouriteSectionOrder"
     ).slice(0, 1) as Multimedia[];
 }
 
 function getComparativeAnalysis(items: ResourceState[]): ComparativeAnalysis[] {
     return _.orderBy(
-        items.filter(item => item.kind === "comparative-analysis" && item.favouriteSection),
+        items.filter(item => item.kind === "comparative-analysis"),
         "favouriteSectionOrder"
     ).slice(0, 4) as ComparativeAnalysis[];
 }

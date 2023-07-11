@@ -84,7 +84,10 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
                     <BetaVersionTagContainer>
-                        <Tag>Beta version</Tag>
+                        <Tag>{i18n.t("Beta version")}</Tag>
+                    </BetaVersionTagContainer>
+                    <BetaVersionTagContainer>
+                        <Tag>{i18n.t("Mobile-friendly version coming soon")}</Tag>
                     </BetaVersionTagContainer>
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
