@@ -15,15 +15,14 @@ export function useResourcesByType(params: {
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
-    const [selectedCountry, setSelectedCountry] = useState<string[] | undefined>([""]);
 
     const [title, setTitle] = useState<string>("");
 
     useEffect(() => {
-        if (filters.country.selected) {
-            setSelectedCountry(filters.country.selected);
+        if (filters.category.selected) {
+            setItems([]);
         }
-    }, [filters.country.selected]);
+    }, [filters.category.selected]);
 
     useEffect(() => {
         const title = filters.category.options.find(cat => cat.value === filters.category.selected)?.text || "";
@@ -39,7 +38,7 @@ export function useResourcesByType(params: {
                 searchTerm: filters.search.term,
                 category: params.category,
                 theme: filters.theme.selected,
-                countries: selectedCountry,
+                countries: filters.country.selected,
                 years: filters.year.selected,
                 count: params.count,
                 favourite: params.favourite,
@@ -70,15 +69,15 @@ export function useResourcesByType(params: {
         return cancel;
     }, [
         compositionRoot.resources.get,
-        countries,
-        selectedCountry,
         filters.search.term,
         filters.theme.selected,
+        filters.country.selected,
         filters.year.selected,
         params.category,
         params.count,
         params.favourite,
         params.favouriteSection,
+        countries,
     ]);
 
     useEffect(() => onGetResources(), [onGetResources]);
