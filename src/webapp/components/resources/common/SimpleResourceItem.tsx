@@ -28,12 +28,10 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
                     <Row>
                         {tag && <Tag theme={tag} color={tagColor} />}
 
-                        <Text variant="body1" gutterBottom>
-                            {moment(date).format(dateFormat || "YYYY")}
-                        </Text>
+                        <Text gutterBottom>{moment(date).format(dateFormat || "YYYY")}</Text>
                     </Row>
                     <a href={url} style={{ textDecoration: "none", color: "black" }}>
-                        <Text variant="body1">{title}</Text>
+                        <Text>{title}</Text>
                     </a>
                 </Column>
             </Item>
@@ -67,4 +65,5 @@ const Image = styled.img`
 const Row = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
 `;

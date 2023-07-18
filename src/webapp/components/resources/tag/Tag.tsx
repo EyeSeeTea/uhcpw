@@ -9,7 +9,7 @@ type TagProps = {
 export const Tag: React.FC<TagProps> = ({ theme, color }) => {
     return (
         <Container background={color}>
-            <Typography variant="body2" style={{ color: "white" }} align="center">
+            <Typography style={{ color: "white" }} align="center">
                 {theme}
             </Typography>
         </Container>
