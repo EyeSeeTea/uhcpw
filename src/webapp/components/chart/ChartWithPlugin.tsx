@@ -53,7 +53,7 @@ export const ChartWithPlugin: React.FC<ChartProps> = React.memo(({ visualization
                             color="primary"
                             style={{ marginLeft: 20 }}
                         >
-                            {i18n.t("Download")}
+                            <Typography>{i18n.t("Download")}</Typography>
                         </CustomButton>
                     </Row>
                 </Row>
@@ -181,6 +181,7 @@ const DataHeader = styled.div`
 const CustomButton = styled(Button)`
     border-radius: 10px;
     padding: 0px 16px;
+    text-transform: initial;
 `;
 
 const CreditsText = styled(Typography)`
