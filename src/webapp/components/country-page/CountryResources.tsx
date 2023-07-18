@@ -64,10 +64,10 @@ export const CountryResources: React.FC = () => {
                             <Column>
                                 <Image src={resource.image} alt={resource.title} />
                                 <Tag>
-                                    <Typography variant="body2">{resource.theme}</Typography>
+                                    <Typography>{resource.theme}</Typography>
                                 </Tag>
                                 <ContentColumn>
-                                    <Row>
+                                    <TextRow>
                                         <Typography style={{ marginRight: "4px" }}>{resource.year} | </Typography>
                                         {resource.languages.map((language, i) => (
                                             <>
@@ -90,7 +90,7 @@ export const CountryResources: React.FC = () => {
                                                 {i + 1 < resource.languages.length && <Typography>,</Typography>}
                                             </>
                                         ))}
-                                    </Row>
+                                    </TextRow>
                                     <Typography style={{ marginTop: "10px" }}>{resource.title}</Typography>
                                 </ContentColumn>
                             </Column>
@@ -111,6 +111,10 @@ const Row = styled.div`
     display: flex;
     align-items: center;
     margin-bottom: 25px;
+`;
+
+const TextRow = styled(Row)`
+    margin-bottom: 10px;
 `;
 
 const Column = styled.div`
