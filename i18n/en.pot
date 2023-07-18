@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-13T10:03:44.774Z\n"
-"PO-Revision-Date: 2023-06-13T10:03:44.774Z\n"
+"POT-Creation-Date: 2023-07-17T15:38:30.175Z\n"
+"PO-Revision-Date: 2023-07-17T15:38:30.175Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -372,6 +372,12 @@ msgid "© 2022 WHO"
 msgstr ""
 
 msgid "Privacy legal notice"
+msgstr ""
+
+msgid "Beta version"
+msgstr ""
+
+msgid "Mobile-friendly version coming soon"
 msgstr ""
 
 msgid "Glossary"
