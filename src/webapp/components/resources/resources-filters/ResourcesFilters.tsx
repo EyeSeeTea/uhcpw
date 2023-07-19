@@ -31,7 +31,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
 
         return (
             <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
-                <Grid item md={3} xs={6}>
+                <Grid item md={3} sm={6}>
                     <Center>
                         <Dropdown
                             fullWidth
@@ -42,7 +42,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={2} xs={6}>
+                <Grid item md={2} sm={6}>
                     <Center>
                         <Dropdown
                             fullWidth
@@ -53,7 +53,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} xs={6}>
+                <Grid item md={3} sm={6}>
                     <Center>
                         <CountrySelector
                             fullWidth
@@ -67,7 +67,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} xs={6}>
+                <Grid item md={3} sm={6}>
                     <Center>
                         <DropdownMultiple
                             placeholder={i18n.t("Select years")}
@@ -77,7 +77,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={1} xs={2}>
+                <Grid item md={1} sm={2} xs={6}>
                     <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetResources}>
                         {i18n.t("Search")}
                     </SearchButton>

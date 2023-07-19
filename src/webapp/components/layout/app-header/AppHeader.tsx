@@ -27,6 +27,11 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(1.5),
         paddingLeft: theme.spacing(8),
         paddingRight: theme.spacing(8),
+        "@media (max-width: 500px)": {
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
+            gap: 4,
+        },
     },
     toolbarBottom: {
         background: "white",
