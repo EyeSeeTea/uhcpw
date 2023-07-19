@@ -20,55 +20,48 @@ const themeColor: Record<string, string> = {
     "Voluntary Health Insurance": "#ff8d4e",
 };
 
-export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
-    ({ analysisResource, minimalVersion, filters }) => {
-        const history = useHistory();
+export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion }) => {
+    const history = useHistory();
 
-        const handleTagClick = () => {
-            filters.theme.onSelectedChange(analysisResource.theme);
-            history.push(`/resources/comparative-analysis?theme=${analysisResource.theme}`);
-        };
+    const handleTagClick = () => {
+        history.push(`/resources/comparative-analysis?theme=${analysisResource.theme}`);
+    };
 
-        return (
-            <Column>
-                <a href={analysisResource.links[0]?.url}>
-                    <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.title} />
-                </a>
+    return (
+        <Column>
+            <a href={analysisResource.links[0]?.url}>
+                <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.title} />
+            </a>
 
-                <Box height={20} />
-                <Tag
-                    theme={analysisResource.theme}
-                    color={themeColor[analysisResource.theme]}
-                    onClick={handleTagClick}
-                />
-                {!minimalVersion && (
-                    <>
-                        <Row>
-                            <Typography variant="body1">{analysisResource.date.getFullYear()}</Typography>
+            <Box height={20} />
+            <Tag theme={analysisResource.theme} color={themeColor[analysisResource.theme]} onClick={handleTagClick} />
+            {!minimalVersion && (
+                <>
+                    <Row>
+                        <Typography variant="body1">{analysisResource.date.getFullYear()}</Typography>
 
-                            <StyledDivider orientation="vertical" flexItem />
+                        <StyledDivider orientation="vertical" flexItem />
 
-                            {analysisResource.links.map((link, index) => {
-                                return (
-                                    <>
-                                        <a key={link.url} href={link.url} style={{ fontSize: "16px" }}>
-                                            {link.language}
-                                        </a>
-                                        {index < analysisResource.links.length - 1 && (
-                                            <StyledDivider orientation="vertical" flexItem />
-                                        )}
-                                    </>
-                                );
-                            })}
-                        </Row>
-                        <Box height={6} />
-                        <Typography variant="body1">{analysisResource.title}</Typography>
-                    </>
-                )}
-            </Column>
-        );
-    }
-);
+                        {analysisResource.links.map((link, index) => {
+                            return (
+                                <>
+                                    <a key={link.url} href={link.url} style={{ fontSize: "16px" }}>
+                                        {link.language}
+                                    </a>
+                                    {index < analysisResource.links.length - 1 && (
+                                        <StyledDivider orientation="vertical" flexItem />
+                                    )}
+                                </>
+                            );
+                        })}
+                    </Row>
+                    <Box height={6} />
+                    <Typography variant="body1">{analysisResource.title}</Typography>
+                </>
+            )}
+        </Column>
+    );
+});
 
 const Row = styled.div`
     padding-top: 8px;
