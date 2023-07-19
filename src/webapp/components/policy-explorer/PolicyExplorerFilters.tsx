@@ -1,4 +1,4 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -65,7 +65,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     }
                     onClick={onGetTable}
                 >
-                    {i18n.t("Get table")}
+                    <Typography>{i18n.t("Get table")}</Typography>
                 </GetTableButton>
             </Grid>
         </Grid>
@@ -83,4 +83,5 @@ const GetTableButton = styled(Button)`
     border-radius: 20px;
     height: 50px;
     text-transform: none;
+    white-space: nowrap;
 `;

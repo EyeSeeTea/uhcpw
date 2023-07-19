@@ -1,7 +1,7 @@
 import React from "react";
 import { SectionHeader } from "../section-header/SectionHeader";
 import i18n from "../../../../locales";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { SectionBlock } from "../section-block/SectionBlock";
 import { CTA } from "../buttons/CTA";
@@ -35,7 +35,9 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <Tag>{i18n.t("Coming soon")}</Tag>
+                        <Tag>
+                            <Typography>{i18n.t("Coming soon")}</Typography>
+                        </Tag>
                     </ButtonContainer>
                 </Region>
             </Content>

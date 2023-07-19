@@ -64,7 +64,7 @@ export const CountryResources: React.FC = () => {
                             <Column>
                                 <Image src={resource.image} alt={resource.title} />
                                 <Tag>
-                                    <Typography>{resource.theme}</Typography>
+                                    <Typography variant="body2">{resource.theme}</Typography>
                                 </Tag>
                                 <ContentColumn>
                                     <TextRow>

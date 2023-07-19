@@ -1,4 +1,4 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -79,7 +79,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                 </Grid>
                 <Grid item md={1} xs={2}>
                     <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetResources}>
-                        {i18n.t("Search")}
+                        <Typography>{i18n.t("Search")}</Typography>
                     </SearchButton>
                 </Grid>
             </Grid>
