@@ -75,16 +75,15 @@ export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
                                     : entry)
                             );
                         })
-                        .map(entry => (
-                            <>
+                        .map((entry, i) => (
+                            <div key={i} style={{ marginBottom: "20px" }}>
                                 <StyledEntryTitle>
-                                    {" "}
                                     <Typography variant="h6">{i18n.t(entry.title)}</Typography>
                                 </StyledEntryTitle>
                                 <StyledEntryText>
                                     <Typography>{i18n.t(entry.text)}</Typography>
                                 </StyledEntryText>
-                            </>
+                            </div>
                         ))}
                 </EntriesContainer>
                 <StyledIconButton onClick={onClose}>
@@ -117,6 +116,7 @@ const FilterContainer = styled.div`
 
 const StyledEntryTitle = styled(DialogContentText)`
     color: ${colors.greyBlack};
+    margin-bottom: 5px;
 `;
 
 const StyledEntryText = styled(DialogContentText)`
