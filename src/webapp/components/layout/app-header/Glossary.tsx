@@ -1,4 +1,4 @@
-import { DialogContent, DialogContentText, DialogTitle } from "@material-ui/core";
+import { DialogContent, DialogContentText, DialogTitle, Typography } from "@material-ui/core";
 import { Dialog, IconButton } from "material-ui";
 import styled from "styled-components";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
@@ -20,18 +20,44 @@ export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
     const [selectedFilter, setSelectedFilter] = useState("All");
     const { filters } = useAbout();
 
+    const onClose = () => {
+        setSearchTerm("");
+        setSelectedFilter("All");
+        setIsOpen(false);
+    };
+
+    const onTextSearchChange = (filter: string) => {
+        setSearchTerm(filter);
+        if (selectedFilter !== "All") {
+            setSelectedFilter("All");
+        }
+    };
+
+    const onLetterFilterChange = (filter: string) => {
+        setSelectedFilter(filter);
+        if (searchTerm) {
+            setSearchTerm("");
+        }
+    };
+
     return (
-        <Dialog open={isOpen} onRequestClose={() => setIsOpen(false)}>
-            <StyledDialogTitle disableTypography>{i18n.t("Glossary of terms")}</StyledDialogTitle>
+        <Dialog open={isOpen} onRequestClose={onClose}>
+            <StyledDialogTitle disableTypography>
+                <Typography variant="h4">{i18n.t("Glossary of terms")}</Typography>
+            </StyledDialogTitle>
             <DialogContent>
                 <FilterContainer>
-                    <SearchInput value={searchTerm} onChange={e => setSearchTerm(e)} style={{ marginBottom: "15px" }} />
+                    <SearchInput
+                        value={searchTerm}
+                        onChange={filter => onTextSearchChange(filter)}
+                        style={{ marginBottom: "15px" }}
+                    />
                     {filters.map(filter => {
                         return (
                             <FilterButton
                                 key={filter}
                                 selected={filter === selectedFilter}
-                                onClick={() => setSelectedFilter(filter)}
+                                onClick={() => onLetterFilterChange(filter)}
                             >
                                 {filter}
                             </FilterButton>
@@ -51,12 +77,17 @@ export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
                         })
                         .map(entry => (
                             <>
-                                <StyledEntryTitle>{i18n.t(entry.title)}</StyledEntryTitle>
-                                <StyledEntryText>{i18n.t(entry.text)}</StyledEntryText>
+                                <StyledEntryTitle>
+                                    {" "}
+                                    <Typography variant="h6">{i18n.t(entry.title)}</Typography>
+                                </StyledEntryTitle>
+                                <StyledEntryText>
+                                    <Typography>{i18n.t(entry.text)}</Typography>
+                                </StyledEntryText>
                             </>
                         ))}
                 </EntriesContainer>
-                <StyledIconButton onClick={() => setIsOpen(false)}>
+                <StyledIconButton onClick={onClose}>
                     <CloseIcon />
                 </StyledIconButton>
             </DialogContent>
@@ -65,7 +96,6 @@ export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
 };
 
 const StyledDialogTitle = styled(DialogTitle)`
-    font-size: 30px;
     margin-bottom: 15px;
     color: ${colors.greyBlack};
 `;
@@ -86,11 +116,9 @@ const FilterContainer = styled.div`
 `;
 
 const StyledEntryTitle = styled(DialogContentText)`
-    font-size: large;
     color: ${colors.greyBlack};
 `;
 
 const StyledEntryText = styled(DialogContentText)`
-    font-size: medium;
-    ${colors.gradientPrimary};
+    color: ${colors.gradientPrimary};
 `;
