@@ -16,20 +16,20 @@ type GlossaryProps = {
 };
 
 export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
+    const { filters, allFilter } = useAbout();
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedFilter, setSelectedFilter] = useState("All");
-    const { filters } = useAbout();
+    const [selectedFilter, setSelectedFilter] = useState(allFilter);
 
     const onClose = () => {
         setSearchTerm("");
-        setSelectedFilter("All");
+        setSelectedFilter(allFilter);
         setIsOpen(false);
     };
 
     const onTextSearchChange = (filter: string) => {
         setSearchTerm(filter);
-        if (selectedFilter !== "All") {
-            setSelectedFilter("All");
+        if (selectedFilter !== allFilter) {
+            setSelectedFilter(allFilter);
         }
     };
 
@@ -70,7 +70,7 @@ export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
                             return (
                                 (entry.text.toLowerCase().includes(searchTerm.toLowerCase()) ||
                                     entry.title.toLowerCase().includes(searchTerm.toLowerCase())) &&
-                                (selectedFilter !== "All"
+                                (selectedFilter !== allFilter
                                     ? entry.title.charAt(0).toLowerCase() === selectedFilter.toLowerCase()
                                     : entry)
                             );
