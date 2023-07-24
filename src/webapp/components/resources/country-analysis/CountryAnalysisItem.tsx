@@ -22,7 +22,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
                 </Typography>
             </Row>
             <Box height={8} />
-            <AnalysisItem analysisResource={countryAnalysis} filters={filters} />
+            <AnalysisItem analysisResource={countryAnalysis} filters={filters} type="country-analysis" />
         </Item>
     );
 });

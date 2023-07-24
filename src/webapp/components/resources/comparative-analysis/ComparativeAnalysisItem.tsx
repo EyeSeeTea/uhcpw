@@ -21,6 +21,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
                     analysisResource={comparativeAnalysis}
                     minimalVersion={minimalVersion}
                     filters={filters}
+                    type="comparative-analysis"
                 />
             </Item>
         );

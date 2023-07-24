@@ -27,7 +27,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
             country: country ? [country] : undefined,
             theme: theme ? theme : undefined,
         };
-    }, [history]);
+    }, [history.location.search]);
 
     const { loading, title, filters, items, onGetResources } = useResourcesByType({
         category,

@@ -11,6 +11,7 @@ export interface CountryAnalysisProps {
     analysisResource: AnalysisResource;
     minimalVersion?: boolean;
     filters: ResourcesFiltersState;
+    type: "country-analysis" | "comparative-analysis";
 }
 
 const themeColor: Record<string, string> = {
@@ -20,11 +21,11 @@ const themeColor: Record<string, string> = {
     "Voluntary Health Insurance": "#ff8d4e",
 };
 
-export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion }) => {
+export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion, type }) => {
     const history = useHistory();
 
     const handleTagClick = () => {
-        history.push(`/resources/comparative-analysis?theme=${analysisResource.theme}`);
+        history.push(`/resources/${type}?theme=${analysisResource.theme}`);
     };
 
     return (
