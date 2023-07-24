@@ -5,13 +5,13 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-07-24T11:38:38.368Z\n"
-"PO-Revision-Date: 2023-07-24T11:38:38.368Z\n"
+"POT-Creation-Date: 2023-07-24T14:05:10.501Z\n"
+"PO-Revision-Date: 2023-07-24T14:05:10.501Z\n"
 
 msgid "All countries"
 msgstr ""
 
-msgid "The Financial Protection Expert Network"
+msgid "The European Financial Protection Network"
 msgstr ""
 
 msgid ""
@@ -317,13 +317,13 @@ msgstr ""
 msgid "Explore new evidence on financial protection in Europe and Central Asia"
 msgstr ""
 
-msgid "Weaker financial protection"
+msgid "Stronger financial protection"
 msgstr ""
 
 msgid "Gaps in financial protection"
 msgstr ""
 
-msgid "Stronger financial protection"
+msgid "Weaker financial protection"
 msgstr ""
 
 msgid "Category and indicator"
