@@ -20,7 +20,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
         return (
             <>
                 <ItemsTitleContainer>
-                    <Title>{i18n.t("The Financial Protection Expert Network")}</Title>
+                    <Title>{i18n.t("The European Financial Protection Network")}</Title>
                     <Subtitle style={{ maxWidth: "40%" }}>
                         {i18n.t(
                             "Experts working with the WHO Barcelona Office to assess financial protection and coverage policy at country level"
