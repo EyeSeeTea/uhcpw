@@ -73,11 +73,10 @@ export const Map: React.FC<MapProps> = ({ mapState }) => {
                     marker.getElement().addEventListener("mouseenter", () => {
                         mapState.onSelectedCountryChange(feature.properties);
                     });
-
-                    marker.getElement().addEventListener("mouseleave", () => {
-                        mapState.onSelectedCountryChange(undefined);
-                    });
                 });
+            });
+            mapContainerRef.current.addEventListener("mouseleave", () => {
+                mapState.onSelectedCountryChange(undefined);
             });
         }
     }, [mapState]);
