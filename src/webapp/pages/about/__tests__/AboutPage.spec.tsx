@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen, waitFor, within } from "@testing-library/react";
+import { screen, waitFor, within, fireEvent } from "@testing-library/react";
 import { instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
@@ -222,18 +222,17 @@ function givenAPersons(): {
 }
 
 async function selectLetterFilter(letter: string) {
-    userEvent.click(await screen.findByRole("button", { name: letter }));
+    await userEvent.click(await screen.findByRole("button", { name: letter }));
 }
 
 async function selectCountry(value: string) {
     const countrySelector = screen.getByLabelText(/countries/i);
 
-    userEvent.click(countrySelector);
+    await userEvent.click(countrySelector);
+    await userEvent.click(screen.getByLabelText("testttt0"));
+    //await userEvent.click(screen.getByRole("checkbox") as Element);
 
-    userEvent.click(await screen.findByText("All countries"));
-    userEvent.click(await screen.findByRole("checkbox", { name: value }));
-
-    userEvent.keyboard("{Escape}");
+    await userEvent.keyboard("{Escape}");
 
     await screen.findByLabelText(/countries/i);
 }

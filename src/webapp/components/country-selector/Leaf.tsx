@@ -19,7 +19,7 @@ export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedCh
         <StyledTreeItem
             nodeId={nodeId}
             label={
-                <Row>
+                <Row role="checkbox">
                     <Checkbox
                         color="primary"
                         style={{ padding: "2px" }}

@@ -7,7 +7,6 @@ export function useMultiCountryOptionsV2(selectedCountries?: string[]) {
     const { countries } = useAppContext();
     const [options, setOptions] = useState<CountryOption[]>([]);
     const [selected, setSelected] = useState<string[] | undefined>([]);
-    const [groupedByIncome, setGroupedByIncome] = useState(false);
 
     useEffect(() => {
         setSelected(selectedCountries);
@@ -20,22 +19,16 @@ export function useMultiCountryOptionsV2(selectedCountries?: string[]) {
             code: country.code,
             parents: [
                 { id: "all", name: i18n.t("All countries") },
-                ...country.parents.filter(parent =>
-                    groupedByIncome ? parent.name.includes("income") : !parent.name.includes("income")
-                ),
+                ...country.parents.filter(parent => !parent.name.includes("income")),
             ],
         }));
 
         setOptions(countryOptions);
-    }, [countries, groupedByIncome]);
+    }, [countries]);
 
     const onSelectedChange = useCallback((country: string[] | undefined) => {
         setSelected(country);
     }, []);
 
-    const onGroupedByIncomeChange = useCallback((value: boolean) => {
-        setGroupedByIncome(value);
-    }, []);
-
-    return { options, selected, onSelectedChange, groupedByIncome, onGroupedByIncomeChange };
+    return { options, selected, onSelectedChange };
 }

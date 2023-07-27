@@ -5,8 +5,6 @@ export type CountryFilterState = {
     options: CountryOption[];
     selected: string[] | undefined;
     onSelectedChange: (value: string[] | undefined) => void;
-    groupedByIncome: boolean;
-    onGroupedByIncomeChange: (value: boolean) => void;
 };
 
 export type OptionsFilterState<T extends string = string> = {

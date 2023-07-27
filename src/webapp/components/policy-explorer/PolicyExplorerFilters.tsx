@@ -35,8 +35,6 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}
-                        groupedByIncome={filters.country.groupedByIncome}
-                        onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                     />
                 </Center>
             </Grid>

@@ -144,12 +144,7 @@ function CountrySelectorContainer() {
     }, []);
 
     return (
-        <CountrySelector
-            countries={countries}
-            groupedByIncome={false}
-            selectedIds={selectedIds}
-            onSelectedIdsChange={handleSelectedChange}
-        />
+        <CountrySelector countries={countries} selectedIds={selectedIds} onSelectedIdsChange={handleSelectedChange} />
     );
 }
 
