@@ -30,6 +30,7 @@ export interface MapProps {
 }
 
 export const Map: React.FC<MapProps> = ({ mapState }) => {
+    const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
 
@@ -75,7 +76,7 @@ export const Map: React.FC<MapProps> = ({ mapState }) => {
                     });
                 });
             });
-            mapContainerRef.current.addEventListener("mouseleave", () => {
+            mainContainerRef.current.addEventListener("mouseleave", () => {
                 mapState.onSelectedCountryChange(undefined);
             });
         }
@@ -92,7 +93,7 @@ export const Map: React.FC<MapProps> = ({ mapState }) => {
     }, []);
 
     return (
-        <Container>
+        <Container ref={mainContainerRef}>
             <MapContent ref={mapContainerRef} />
             <MapSidePanel>
                 {mapState.selectedCountry ? <CountryPanel country={mapState.selectedCountry} /> : <WelcomePanel />}
