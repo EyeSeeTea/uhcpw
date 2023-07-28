@@ -111,7 +111,7 @@ export const Slider: React.FC = () => {
                     title="How many people experience financial hardship: impoverishing health spending?"
                     graphOne={{
                         title: "Households with impoverishing health spending",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: oneOne,
                         dialogInfo: {
                             infoNotes: [
@@ -123,7 +123,7 @@ export const Slider: React.FC = () => {
                     }}
                     graphTwo={{
                         title: "Households with impoverishing health spending, 2019 or latest available year before COVID-19",
-                        theme: "Comparative charts",
+                        theme: "Comparative chart",
                         image: oneTwo,
                         dialogInfo: {
                             infoNotes: [
@@ -140,7 +140,7 @@ export const Slider: React.FC = () => {
                     title="How many people experience financial hardship: catastrophic health spending?"
                     graphOne={{
                         title: "Households with catastrophic health spending",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: twoOne,
                         dialogInfo: {
                             infoNotes: [
@@ -169,7 +169,7 @@ export const Slider: React.FC = () => {
                     title="Who experiences financial hardship?"
                     graphOne={{
                         title: "Households with catastrophic health spending by consumption quintile",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: threeOne,
                         dialogInfo: {
                             infoNotes: [
@@ -198,7 +198,7 @@ export const Slider: React.FC = () => {
                     title="Which health services are responsible for financial hardship?"
                     graphOne={{
                         title: "Breakdown of catastrophic health spending by type of care",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: fourOne,
                         dialogInfo: {
                             infoNotes: [
@@ -325,7 +325,7 @@ export const Slider: React.FC = () => {
                     title="How much does Bulgaria spend on health? International comparison"
                     graphOne={{
                         title: "Public spending on health as a share of government spending, 2019",
-                        theme: "Comparative",
+                        theme: "Comparative chart",
                         image: nineOne,
                         dialogInfo: {
                             infoNotes: [
