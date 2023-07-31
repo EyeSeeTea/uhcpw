@@ -209,7 +209,7 @@ msgid "The region at a glance"
 msgstr ""
 
 msgid ""
-"Compare financial protection indicators, identify faps in coverage, explore "
+"Compare financial protection indicators, identify gaps in coverage, explore "
 "good practice"
 msgstr ""
 
