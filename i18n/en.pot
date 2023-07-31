@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-19T10:43:25.353Z\n"
-"PO-Revision-Date: 2023-06-19T10:43:25.353Z\n"
+"POT-Creation-Date: 2023-07-31T16:03:29.210Z\n"
+"PO-Revision-Date: 2023-07-31T16:03:29.210Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -199,14 +199,14 @@ msgid ""
 "financial protection at country level"
 msgstr ""
 
-msgid "Country page"
+msgid "Country pages"
 msgstr ""
 
 msgid "The region at a glance"
 msgstr ""
 
 msgid ""
-"Compare financial protection indicators, identify faps in coverage, explore "
+"Compare financial protection indicators, identify gaps in coverage, explore "
 "good practice"
 msgstr ""
 
@@ -369,6 +369,12 @@ msgid "© 2022 WHO"
 msgstr ""
 
 msgid "Privacy legal notice"
+msgstr ""
+
+msgid "Beta version"
+msgstr ""
+
+msgid "Mobile-friendly version coming soon"
 msgstr ""
 
 msgid "Glossary"
