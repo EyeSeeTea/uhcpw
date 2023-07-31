@@ -110,14 +110,10 @@ export const Slider: React.FC = () => {
 
     const onWheel = useCallback(
         (e: React.WheelEvent<HTMLButtonElement>) => {
-            if (e.deltaY > 10) {
-                if (value < 10) {
-                    setTimeout(() => setValue(value + 1), 800);
-                }
-            } else if (e.deltaY < -10) {
-                if (value > 0) {
-                    setTimeout(() => setValue(value - 1), 800);
-                }
+            if (e.deltaY > 10 && value < 10) {
+                setTimeout(() => setValue(value + 1), 800);
+            } else if (e.deltaY < -10 && value > 0) {
+                setTimeout(() => setValue(value - 1), 800);
             }
         },
         [value]
