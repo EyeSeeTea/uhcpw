@@ -30,7 +30,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
 
     return (
         <Column>
-            <a href={analysisResource.links[0]?.url}>
+            <a href={analysisResource.links[0]?.url} target="_blank" rel="noreferrer">
                 <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.title} />
             </a>
 
@@ -46,7 +46,13 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
                         {analysisResource.links.map((link, index) => {
                             return (
                                 <>
-                                    <a key={link.url} href={link.url} style={{ fontSize: "16px" }}>
+                                    <a
+                                        key={link.url}
+                                        href={link.url}
+                                        style={{ fontSize: "16px" }}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
                                         {link.language}
                                     </a>
                                     {index < analysisResource.links.length - 1 && (
