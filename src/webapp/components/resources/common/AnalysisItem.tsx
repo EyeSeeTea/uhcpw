@@ -4,10 +4,14 @@ import React from "react";
 import styled from "styled-components";
 import { AnalysisResource } from "../../../../domain/entities/resources/Resource";
 import { Tag } from "../tag/Tag";
+import { useHistory } from "react-router-dom";
+import { ResourcesFiltersState } from "../../../pages/resources/common/ResourcesFiltersState";
 
 export interface CountryAnalysisProps {
     analysisResource: AnalysisResource;
     minimalVersion?: boolean;
+    filters: ResourcesFiltersState;
+    type: "country-analysis" | "comparative-analysis";
 }
 
 const themeColor: Record<string, string> = {
@@ -17,7 +21,13 @@ const themeColor: Record<string, string> = {
     "Voluntary Health Insurance": "#ff8d4e",
 };
 
-export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion }) => {
+export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion, type }) => {
+    const history = useHistory();
+
+    const handleTagClick = () => {
+        history.push(`/resources/${type}?theme=${analysisResource.theme}`);
+    };
+
     return (
         <Column>
             <a href={analysisResource.links[0]?.url}>
@@ -25,7 +35,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
             </a>
 
             <Box height={20} />
-            <Tag theme={analysisResource.theme} color={themeColor[analysisResource.theme]} />
+            <Tag theme={analysisResource.theme} color={themeColor[analysisResource.theme]} onClick={handleTagClick} />
             {!minimalVersion && (
                 <>
                     <Row>
