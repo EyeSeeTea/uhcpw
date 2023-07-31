@@ -30,6 +30,21 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
             [history]
         );
 
+        const onCountryChange = useCallback(
+            (value: string[] | undefined) => {
+                const queryParameters = new URLSearchParams(location.search);
+
+                if (value && value.length > 0) {
+                    queryParameters.set("country", value?.join(","));
+                } else {
+                    queryParameters.delete("country");
+                }
+
+                history.replace({ search: queryParameters.toString() });
+            },
+            [history, location.search]
+        );
+
         const onThemeChange = useCallback(
             (value: string | undefined) => {
                 const queryParameters = new URLSearchParams(location.search);
@@ -76,10 +91,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             placeholder={i18n.t("Select country")}
                             countries={filters.country.options}
                             selectedIds={filters.country.selected}
-                            onSelectedIdsChange={filters.country.onSelectedChange}
                             groupedByIncome={filters.country.groupedByIncome}
                             onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                             disabled={disabledCountryFilter}
+                            onSelectedIdsChange={onCountryChange}
                         />
                     </Center>
                 </Grid>
