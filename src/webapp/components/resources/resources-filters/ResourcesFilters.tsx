@@ -45,6 +45,21 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
             [history, location.search]
         );
 
+        const onThemeChange = useCallback(
+            (value: string | undefined) => {
+                const queryParameters = new URLSearchParams(location.search);
+
+                if (value) {
+                    queryParameters.set("theme", value);
+                } else {
+                    queryParameters.delete("theme");
+                }
+
+                history.replace({ search: queryParameters.toString() });
+            },
+            [history, location.search]
+        );
+
         return (
             <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
                 <Grid item md={3} xs={6}>
@@ -65,7 +80,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             placeholder={i18n.t("Select theme")}
                             options={filters.theme.options}
                             value={filters.theme.selected}
-                            onChange={filters.theme.onSelectedChange}
+                            onChange={onThemeChange}
                         />
                     </Center>
                 </Grid>

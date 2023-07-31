@@ -8,10 +8,11 @@ export function useResourcesByType(params: {
     countriesFilter?: string[];
     count?: number;
     favourite?: boolean;
+    themeFilter?: string;
     favouriteSection?: boolean;
 }): ResourcesByTypeState {
     const { compositionRoot, countries } = useAppContext();
-    const filters = useResourcesFilters(params.category, params.countriesFilter);
+    const filters = useResourcesFilters(params.category, params.countriesFilter, params.themeFilter);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
