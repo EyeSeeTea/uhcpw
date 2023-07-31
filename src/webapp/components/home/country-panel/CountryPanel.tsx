@@ -34,6 +34,9 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
 const Container = styled.div`
     overflow-y: auto;
     font-size: 16px;
+    ul {
+        padding-inline-start: 14px;
+    }
 `;
 
 const Row = styled.div`
