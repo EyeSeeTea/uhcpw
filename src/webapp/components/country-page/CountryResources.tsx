@@ -71,22 +71,16 @@ export const CountryResources: React.FC = () => {
                                         <Typography style={{ marginRight: "4px" }}>{resource.year} | </Typography>
                                         {resource.languages.map((language, i) => (
                                             <>
-                                                <a
+                                                <LanguageLink
                                                     key={language.name}
                                                     href={language.link}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                 >
-                                                    <Typography
-                                                        style={{
-                                                            marginRight: "4px",
-                                                            marginLeft: "4px",
-                                                            color: colors.accentPrimary,
-                                                        }}
-                                                    >
+                                                    <StyledTypography style={{ color: colors.accentPrimary }}>
                                                         {language.name}
-                                                    </Typography>
-                                                </a>
+                                                    </StyledTypography>
+                                                </LanguageLink>
                                                 {i + 1 < resource.languages.length && <Typography>,</Typography>}
                                             </>
                                         ))}
@@ -137,4 +131,13 @@ const Tag = styled.div`
     padding: 4px 16px;
     margin-top: 8px;
     display: inline-block;
+`;
+
+const LanguageLink = styled.a`
+    display: "inline-block";
+`;
+
+const StyledTypography = styled(Typography)`
+    margin-left: 4px;
+    display: "inline-block";
 `;
