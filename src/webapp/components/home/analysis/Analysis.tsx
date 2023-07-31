@@ -24,14 +24,14 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <CTA text={i18n.t("Country page")} link="/country/bulgaria" />
+                        <CTA text={i18n.t("Country pages")} link="/country/bulgaria" />
                     </ButtonContainer>
                 </CountryContext>
                 <Region item md={6} xs={12}>
                     <SectionBlock
                         title={i18n.t("The region at a glance")}
                         text={i18n.t(
-                            "Compare financial protection indicators, identify faps in coverage, explore good practice"
+                            "Compare financial protection indicators, identify gaps in coverage, explore good practice"
                         )}
                     />
                     <ButtonContainer>
