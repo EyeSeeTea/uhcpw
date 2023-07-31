@@ -8,10 +8,11 @@ export function useResourcesByType(params: {
     countriesFilter?: string[];
     count?: number;
     favourite?: boolean;
+    themeFilter?: string;
     favouriteSection?: boolean;
 }): ResourcesByTypeState {
     const { compositionRoot, countries } = useAppContext();
-    const filters = useResourcesFilters(params.category, params.countriesFilter);
+    const filters = useResourcesFilters(params.category, params.countriesFilter, params.themeFilter);
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
@@ -35,7 +36,8 @@ export function useResourcesByType(params: {
 
     const onGetResources = useCallback(() => {
         setLoading(true);
-        compositionRoot.resources.get
+
+        const cancel = compositionRoot.resources.get
             .execute({
                 searchTerm: filters.search.term,
                 category: params.category,
@@ -67,6 +69,8 @@ export function useResourcesByType(params: {
                     setItems([]);
                 }
             );
+
+        return cancel;
     }, [
         compositionRoot.resources.get,
         filters.search.term,
