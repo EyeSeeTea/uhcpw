@@ -16,6 +16,7 @@ import { MutableRefObject, useRef } from "react";
 export const CountryPage: React.FC = () => {
     //const { country } = useParams<{ country: string }>();
     const { filters } = useResources();
+    const headerRef = useRef(null);
     const sliderRef = useRef(null);
     const resourcesRef = useRef(null);
     const expertRef = useRef(null);
@@ -26,32 +27,36 @@ export const CountryPage: React.FC = () => {
 
     return (
         <Layout>
-            <Header>
-                <ButtonsContainer>
-                    <CountryDropdown
-                        fullWidth
-                        placeholder={i18n.t("Select country")}
-                        options={filters.country.options}
-                        value={"AjeCGGb8H76"}
-                        onChange={() => {}}
-                    />
-                    <img src={UmbrellaWeak} width={100} alt={"umbrella"} />
-                </ButtonsContainer>
-                <ButtonsContainer>
-                    <Button>
-                        <ButtonText>{i18n.t("Dashboard")}</ButtonText>
-                    </Button>
-                    <Button>
-                        <ButtonText onClick={() => handleClick(sliderRef)}>{i18n.t("In detail")}</ButtonText>
-                    </Button>
-                    <Button>
-                        <ButtonText onClick={() => handleClick(resourcesRef)}>{i18n.t("Country resources")}</ButtonText>
-                    </Button>
-                    <Button>
-                        <ButtonText onClick={() => handleClick(expertRef)}>{i18n.t("Country expert")}</ButtonText>
-                    </Button>
-                </ButtonsContainer>
-            </Header>
+            <div ref={headerRef}>
+                <Header>
+                    <ButtonsContainer>
+                        <CountryDropdown
+                            fullWidth
+                            placeholder={i18n.t("Select country")}
+                            options={filters.country.options}
+                            value={"AjeCGGb8H76"}
+                            onChange={() => {}}
+                        />
+                        <img src={UmbrellaWeak} width={100} alt={"umbrella"} />
+                    </ButtonsContainer>
+                    <ButtonsContainer>
+                        <Button>
+                            <ButtonText onClick={() => handleClick(headerRef)}>{i18n.t("Dashboard")}</ButtonText>
+                        </Button>
+                        <Button>
+                            <ButtonText onClick={() => handleClick(sliderRef)}>{i18n.t("In detail")}</ButtonText>
+                        </Button>
+                        <Button>
+                            <ButtonText onClick={() => handleClick(resourcesRef)}>
+                                {i18n.t("Country resources")}
+                            </ButtonText>
+                        </Button>
+                        <Button>
+                            <ButtonText onClick={() => handleClick(expertRef)}>{i18n.t("Country expert")}</ButtonText>
+                        </Button>
+                    </ButtonsContainer>
+                </Header>
+            </div>
             <Hero />
             <Divider />
             <div ref={sliderRef}>

@@ -97,7 +97,12 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                             <GeneralRow>
                                 <CreditsText>{i18n.t("Source: ")}</CreditsText>
                                 &nbsp;
-                                <Link href={info.source} style={{ fontSize: "16px", color: colors.accentPrimary }}>
+                                <Link
+                                    href={info.source}
+                                    style={{ fontSize: "16px", color: colors.accentPrimary }}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
                                 </Link>
                             </GeneralRow>
