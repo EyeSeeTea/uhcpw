@@ -39,7 +39,6 @@ export interface ComparativeAnalysis extends AnalysisResource {
 export interface CountryAnalysis extends AnalysisResource {
     kind: "country-analysis";
     countryId: string;
-    countryName: string;
 }
 
 export type Resource = News | Multimedia | CountryAnalysis | ComparativeAnalysis;

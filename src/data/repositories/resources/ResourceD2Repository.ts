@@ -150,14 +150,11 @@ export class ResourceD2Repository implements ResourceRepository {
         const analysis = this.buildAnalysis(event);
 
         const countryId = event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryId)?.value || "";
-        const countryName =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryName)?.value || "";
 
         return {
             kind: "country-analysis",
             ...analysis,
             countryId,
-            countryName,
         };
     }
 
