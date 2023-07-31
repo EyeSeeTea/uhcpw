@@ -122,7 +122,7 @@
         "script-example": "npx ts-node src/scripts/example.ts"
     },
     "manifest.webapp": {
-        "name": "uhcpw App",
+        "name": "UHC watch",
         "description": "App for the Universal Health Coverage in the WHO European Region",
         "icons": {
             "48": "icon.png"
