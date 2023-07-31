@@ -111,4 +111,7 @@ const SearchContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
+    @media (max-width: 450px) {
+        padding: 0 25px;
+    }
 `;

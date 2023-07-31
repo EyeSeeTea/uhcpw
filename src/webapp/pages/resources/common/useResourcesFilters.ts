@@ -23,7 +23,11 @@ export function useResourcesFilters(category?: string, countries?: string[], the
     useEffect(() => {
         setSelectedCategoryFilter(category);
         setSelectedThemeFilter(theme);
-    }, [category, theme]);
+
+        if (countries?.length === 0) {
+            countryFilter.onSelectedChange([]);
+        }
+    }, [category, countries, countryFilter, theme]);
 
     useEffect(() => {
         compositionRoot.resources.getCategories.execute().run(
