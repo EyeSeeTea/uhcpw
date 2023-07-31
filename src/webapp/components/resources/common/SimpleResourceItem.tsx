@@ -20,7 +20,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         return (
             <Item elevation={0} role="listitem">
                 <Column>
-                    <a href={url} style={{ width: "100%" }}>
+                    <a href={url} style={{ width: "100%" }} target="_blank" rel="noreferrer">
                         <Image src={image} alt={title} />
                     </a>
 
@@ -32,7 +32,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
                             {moment(date).format(dateFormat || "YYYY")}
                         </Text>
                     </Row>
-                    <a href={url} style={{ textDecoration: "none", color: "black" }}>
+                    <a href={url} style={{ textDecoration: "none", color: "black" }} target="_blank" rel="noreferrer">
                         <Text variant="body1">{title}</Text>
                     </a>
                 </Column>
