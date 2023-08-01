@@ -42,7 +42,7 @@ const Container = styled.div`
 const Content = styled.div`
     border-radius: 10px;
     background: #cce8f7;
-    width: 550px;
+    max-width: 550px;
     padding: 48px 32px;
     MuiSvgIcon-fontSizeLarge {
         font-size: 10rem;
@@ -54,6 +54,6 @@ const Title = styled(Typography)`
 `;
 
 const Text = styled(Typography)`
-    width: 340px;
+    max-width: 340px;
     margin-top: 16px;
 `;

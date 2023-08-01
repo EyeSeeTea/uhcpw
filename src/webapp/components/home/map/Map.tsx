@@ -159,7 +159,7 @@ const MapSidePanel = styled.div`
     position: absolute;
     top: 0;
     bottom: 0;
-    width: 500px;
+    max-width: 500px;
     background: ${colors.accentPrimary};
     color: white;
     padding: 48px;
