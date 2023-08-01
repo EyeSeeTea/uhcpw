@@ -20,8 +20,8 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
         return (
             <>
                 <ItemsTitleContainer>
-                    <Title>{i18n.t("The European Financial Protection Network")}</Title>
-                    <Subtitle style={{ maxWidth: "40%" }}>
+                    <Title variant="h3">{i18n.t("The European Financial Protection Network")}</Title>
+                    <Subtitle variant="h5">
                         {i18n.t(
                             "Experts working with the WHO Barcelona Office to assess financial protection and coverage policy at country level"
                         )}
@@ -72,13 +72,13 @@ const ItemsTitleContainer = styled.div`
 `;
 
 const Title = styled(Typography)`
-    font-size: 48px;
     font-weight: 500;
 `;
 
 const Subtitle = styled(Typography)`
-    font-size: 26px;
     color: rgba(36, 38, 38, 0.7);
+    max-width: 50%;
+    margin-top: 10px;
 `;
 
 const Row = styled.div`
@@ -94,4 +94,5 @@ export const FilterButton = styled(Button)<{ selected: boolean }>`
     min-width: 40px;
     padding: 2px;
     margin: 4px 4px 10px;
+    font-size: 16px;
 `;
