@@ -54,7 +54,7 @@ describe("AboutPage", () => {
 
         renderPage();
 
-        expect(screen.getByText(/the financial protection expert network/i)).toBeInTheDocument();
+        expect(screen.getByText(/the european financial protection network/i)).toBeInTheDocument();
         /* expect(
             screen.getByText(
                 /experts working with the who barcelona office to access financial protection and coverage policy at country level/i
