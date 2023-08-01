@@ -35,5 +35,8 @@ export const HomePage: React.FC = React.memo(() => {
 });
 
 const MapSection = styled.section`
+    @media (max-width: 500px) {
+        height: 110vh;
+    }
     height: 80vh;
 `;

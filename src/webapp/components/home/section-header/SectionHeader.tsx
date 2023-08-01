@@ -45,7 +45,7 @@ const Header = styled.div<{ isBackgroundOnRight?: boolean }>`
     background-image: ${props => props.isBackgroundOnRight !== undefined && `url(${bubblePattern})`};
     background-repeat: no-repeat;
     background-position: ${props => (props.isBackgroundOnRight ? "right" : "-200px")};
-    padding: 40px 0px;
+    padding: 40px 5px;
 `;
 
 const Title = styled(Typography)`

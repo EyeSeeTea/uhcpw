@@ -28,16 +28,16 @@ export const WelcomePanel: React.FC = () => {
             </Typography>
             <UmbrellaItemsContiner>
                 <UmbrellaItem>
-                    <Marker src={strongIcon} />
-                    <span>{i18n.t("Stronger financial protection")}</span>
+                    <Marker src={weakIcon} />
+                    {i18n.t("Weaker financial protection")}
                 </UmbrellaItem>
                 <UmbrellaItem>
                     <Marker src={gapsIcon} />
                     {/* {i18n.t("Gaps in financial protection")} */}
                 </UmbrellaItem>
                 <UmbrellaItem>
-                    <Marker src={weakIcon} />
-                    {i18n.t("Weaker financial protection")}
+                    <Marker src={strongIcon} />
+                    <span>{i18n.t("Stronger financial protection")}</span>
                 </UmbrellaItem>
             </UmbrellaItemsContiner>
             <VideoLink href={youtubeVideoLink} target="_blank" rel="noreferrer">

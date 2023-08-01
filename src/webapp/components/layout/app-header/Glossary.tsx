@@ -22,7 +22,7 @@ export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
 
     return (
         <Dialog open={isOpen} onRequestClose={() => setIsOpen(false)}>
-            <StyledDialogTitle disableTypography>{i18n.t("Glossary of terms")}</StyledDialogTitle>
+            <StyledDialogTitle disableTypography>{i18n.t("Glossary")}</StyledDialogTitle>
             <DialogContent>
                 <FilterContainer>
                     <SearchInput value={searchTerm} onChange={e => setSearchTerm(e)} style={{ marginBottom: "15px" }} />

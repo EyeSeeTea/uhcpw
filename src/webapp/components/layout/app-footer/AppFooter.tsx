@@ -61,7 +61,7 @@ export const AppFooter: React.FC = () => {
             </FooterTop>
 
             <FooterBottom>
-                <Typography variant="body2">{i18n.t("© 2022 WHO")}</Typography>
+                <Typography variant="body2">{i18n.t(`© ${new Date().getFullYear()} WHO`)}</Typography>
                 <Box width={20} />
                 <Typography variant="body2" display="inline">
                     {i18n.t("Privacy legal notice")}
