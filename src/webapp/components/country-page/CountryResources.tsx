@@ -54,7 +54,7 @@ export const CountryResources: React.FC = () => {
     return (
         <Container>
             <Row>
-                <Typography variant="h3">{i18n.t("Country Resources")}</Typography>
+                <Typography variant="h3">{i18n.t("Country resources")}</Typography>
                 <ChevronRightIcon link="/resources" />
             </Row>
             <Grid container spacing={5}>
@@ -67,30 +67,24 @@ export const CountryResources: React.FC = () => {
                                     <Typography variant="body2">{resource.theme}</Typography>
                                 </Tag>
                                 <ContentColumn>
-                                    <Row>
+                                    <TextRow>
                                         <Typography style={{ marginRight: "4px" }}>{resource.year} | </Typography>
                                         {resource.languages.map((language, i) => (
                                             <>
-                                                <a
+                                                <LanguageLink
                                                     key={language.name}
                                                     href={language.link}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                 >
-                                                    <Typography
-                                                        style={{
-                                                            marginRight: "4px",
-                                                            marginLeft: "4px",
-                                                            color: colors.accentPrimary,
-                                                        }}
-                                                    >
+                                                    <StyledTypography style={{ color: colors.accentPrimary }}>
                                                         {language.name}
-                                                    </Typography>
-                                                </a>
+                                                    </StyledTypography>
+                                                </LanguageLink>
                                                 {i + 1 < resource.languages.length && <Typography>,</Typography>}
                                             </>
                                         ))}
-                                    </Row>
+                                    </TextRow>
                                     <Typography style={{ marginTop: "10px" }}>{resource.title}</Typography>
                                 </ContentColumn>
                             </Column>
@@ -111,6 +105,10 @@ const Row = styled.div`
     display: flex;
     align-items: center;
     margin-bottom: 25px;
+`;
+
+const TextRow = styled(Row)`
+    margin-bottom: 10px;
 `;
 
 const Column = styled.div`
@@ -137,4 +135,13 @@ const Tag = styled.div`
     padding: 4px 16px;
     margin-top: 8px;
     display: inline-block;
+`;
+
+const LanguageLink = styled.a`
+    display: "inline-block";
+`;
+
+const StyledTypography = styled(Typography)`
+    margin-left: 4px;
+    display: "inline-block";
 `;

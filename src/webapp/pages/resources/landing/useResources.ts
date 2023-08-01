@@ -36,7 +36,7 @@ function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
                 .map(countryAnalysis => {
                     const countryId = (countryAnalysis as CountryAnalysis).countryId;
                     const country = countries.find(country => country.id === countryId);
-                    return { countryId, countryName: country?.name, flag: country?.flag || "" };
+                    return { countryId, countryName: country?.name || "", flag: country?.flag || "" };
                 }),
             "countryName"
         ),

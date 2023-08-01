@@ -15,4 +15,5 @@ export type ResourcesState = {
 interface CountryAnalysisCountry {
     flag: string;
     countryId: string;
+    countryName: string;
 }

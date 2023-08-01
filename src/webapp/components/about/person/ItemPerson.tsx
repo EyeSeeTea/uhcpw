@@ -17,23 +17,22 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                     <InfoContainer>
                         <NameContainer isExpert={isExpert}>
                             <Text
-                                variant="body1"
                                 gutterBottom
-                                style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: 500 }}
+                                style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: "bold" }}
                             >
                                 {person.firstName}
                             </Text>
-                            <Text variant="body1" gutterBottom style={{ fontWeight: 500 }}>
+                            <Text gutterBottom style={{ fontWeight: "bold" }}>
                                 {person.lastName}
                             </Text>
                         </NameContainer>
-                        <Text variant="body2" gutterBottom>
+                        <Text variant="body1" gutterBottom>
                             {person.position}
                         </Text>
-                        <Text variant="body2" gutterBottom>
+                        <Text variant="body1" gutterBottom>
                             {person.institution}
                         </Text>
-                        <Text variant="body2" gutterBottom>
+                        <Text variant="body1" gutterBottom>
                             {person.countryName}
                         </Text>
                     </InfoContainer>
@@ -71,6 +70,8 @@ const Image = styled.img`
     height: 200px;
     border-radius: 50%;
     margin-bottom: 6px;
+    object-fit: cover;
+    object-position: 50% 0%;
 `;
 
 const InfoContainer = styled.div`

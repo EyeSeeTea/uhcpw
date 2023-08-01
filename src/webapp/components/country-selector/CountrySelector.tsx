@@ -48,6 +48,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
+        const [expandedParents, setExpandedParents] = React.useState<string[]>([]);
 
         const handleClick = useCallback(
             (event: React.MouseEvent<HTMLInputElement>) => {
@@ -63,13 +64,6 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             setAnchorEl(null);
             setExpanded(!expanded);
         }, [expanded, setExpanded, setAnchorEl]);
-
-        const handleSearchChange = useCallback(
-            (term: string) => {
-                setSearchTerm(term);
-            },
-            [setSearchTerm]
-        );
 
         const handleGroupedByIncomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             if (onGroupedByIncomeChange) {
@@ -100,6 +94,27 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             return countries.filter(country => selectedIds.includes(country.id));
         }, [countries, selectedIds]);
 
+        const handleSearchChange = useCallback(
+            (term: string) => {
+                if (term) {
+                    const parentsToExpand: string[] = [];
+                    const filterCountries = countries.filter(country =>
+                        country.name.toLowerCase().includes(term.toLowerCase())
+                    );
+                    const filterParents = _.uniqBy(filterCountries.map(country => country.parents).flat(), "id");
+                    filterParents.forEach(({ id }) => {
+                        const finalChildren = filterCountries.filter(country =>
+                            country.parents.some(parent => parent.id === id)
+                        );
+                        if (finalChildren.length) parentsToExpand.push(id);
+                    });
+                    setExpandedParents(parentsToExpand);
+                }
+                setSearchTerm(term);
+            },
+            [countries, setSearchTerm, setExpandedParents]
+        );
+
         const finalCountries = useMemo(() => {
             return countries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase()));
         }, [searchTerm, countries]);
@@ -107,6 +122,10 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const parents = useMemo(() => {
             return _.uniqBy(finalCountries.map(country => country.parents).flat(), "id");
         }, [finalCountries]);
+
+        const handleToggle = useCallback((_event: React.ChangeEvent<{}>, nodeIds: string[]) => {
+            setExpandedParents(nodeIds);
+        }, []);
 
         return (
             <>
@@ -177,6 +196,8 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             aria-label="file system navigator"
                             defaultCollapseIcon={<ArrowDropUpIcon />}
                             defaultExpandIcon={<ArrowDropDownIcon />}
+                            onNodeToggle={handleToggle}
+                            expanded={expandedParents}
                             style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
                         >
                             {parents.map((parent, nindex) => {
