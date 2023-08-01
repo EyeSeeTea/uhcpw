@@ -43,7 +43,7 @@ export const Glossary: React.FC<GlossaryProps> = ({ isOpen, setIsOpen }) => {
     return (
         <Dialog open={isOpen} onRequestClose={onClose}>
             <StyledDialogTitle disableTypography>
-                <Typography variant="h4">{i18n.t("Glossary of terms")}</Typography>
+                <Typography variant="h4">{i18n.t("Glossary")}</Typography>
             </StyledDialogTitle>
             <DialogContent>
                 <FilterContainer>
