@@ -25,5 +25,5 @@ const Description = styled(Typography)`
 `;
 
 const ItemContent = styled(Grid)`
-    width: 400px;
+    max-width: 400px;
 `;
