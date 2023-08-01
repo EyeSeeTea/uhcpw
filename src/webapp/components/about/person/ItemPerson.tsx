@@ -70,6 +70,8 @@ const Image = styled.img`
     height: 200px;
     border-radius: 50%;
     margin-bottom: 6px;
+    object-fit: cover;
+    object-position: 50% 0%;
 `;
 
 const InfoContainer = styled.div`

@@ -38,6 +38,10 @@ const Row = styled.div`
     align-items: center;
     gap: 40px;
     margin-top: 30px;
+    margin-right: 10px;
+    @media (max-width: 600px) {
+        flex-direction: column;
+    }
 `;
 
 const ExpertDetailsContainer = styled.div`

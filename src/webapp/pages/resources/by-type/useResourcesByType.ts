@@ -22,11 +22,8 @@ export function useResourcesByType(params: {
     useEffect(() => {
         if (filters.category.selected) {
             setItems([]);
-
-            filters.country.onSelectedChange([]);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filters.category.selected, filters.country.onSelectedChange]);
+    }, [filters.category.selected]);
 
     useEffect(() => {
         const title = filters.category.options.find(cat => cat.value === filters.category.selected)?.text || "";
@@ -80,6 +77,7 @@ export function useResourcesByType(params: {
         params.category,
         params.count,
         params.favourite,
+        params.favouriteSection,
         countries,
     ]);
 

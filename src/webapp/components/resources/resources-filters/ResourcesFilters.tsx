@@ -30,6 +30,21 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
             [history]
         );
 
+        const onCountryChange = useCallback(
+            (value: string[] | undefined) => {
+                const queryParameters = new URLSearchParams(location.search);
+
+                if (value && value.length > 0) {
+                    queryParameters.set("country", value?.join(","));
+                } else {
+                    queryParameters.delete("country");
+                }
+
+                history.replace({ search: queryParameters.toString() });
+            },
+            [history, location.search]
+        );
+
         const onThemeChange = useCallback(
             (value: string | undefined) => {
                 const queryParameters = new URLSearchParams(location.search);
@@ -47,7 +62,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
 
         return (
             <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
-                <Grid item md={3} xs={6}>
+                <Grid item md={3} sm={6}>
                     <Center>
                         <Dropdown
                             fullWidth
@@ -58,7 +73,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={2} xs={6}>
+                <Grid item md={2} sm={6}>
                     <Center>
                         <Dropdown
                             fullWidth
@@ -69,21 +84,21 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} xs={6}>
+                <Grid item md={3} sm={6}>
                     <Center>
                         <CountrySelector
                             fullWidth
                             placeholder={i18n.t("Select country")}
                             countries={filters.country.options}
                             selectedIds={filters.country.selected}
-                            onSelectedIdsChange={filters.country.onSelectedChange}
                             groupedByIncome={filters.country.groupedByIncome}
                             onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                             disabled={disabledCountryFilter}
+                            onSelectedIdsChange={onCountryChange}
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} xs={6}>
+                <Grid item md={3} sm={6}>
                     <Center>
                         <DropdownMultiple
                             placeholder={i18n.t("Select years")}
@@ -93,7 +108,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={1} xs={2}>
+                <Grid item md={1} sm={2} xs={6}>
                     <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetResources}>
                         <Typography>{i18n.t("Search")}</Typography>
                     </SearchButton>
