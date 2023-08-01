@@ -15,7 +15,7 @@ export interface ResourcesFiltersProps {
 export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetTable }) => {
     return (
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
-            <Grid item md={4} xs={6}>
+            <Grid item md={4} sm={6}>
                 <Center>
                     <Dropdown
                         fullWidth
@@ -27,7 +27,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Center>
             </Grid>
-            <Grid item md={4} xs={6}>
+            <Grid item md={4} sm={6}>
                 <Center>
                     <CountrySelector
                         fullWidth
@@ -38,7 +38,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Center>
             </Grid>
-            <Grid item md={3} xs={6}>
+            <Grid item md={3} sm={6}>
                 <Center>
                     <DropdownMultiple
                         fullWidth
@@ -51,7 +51,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Center>
             </Grid>
-            <Grid item md={1} xs={2}>
+            <Grid item md={1} sm={2}>
                 <GetTableButton
                     aria-label="Get table"
                     variant="contained"

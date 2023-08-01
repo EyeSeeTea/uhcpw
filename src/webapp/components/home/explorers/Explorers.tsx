@@ -81,6 +81,7 @@ const ContentSectionGrid = styled(Grid)`
     width: 100%;
     padding: 65px 55px;
     justify-content: space-between;
+    gap: 5px;
 `;
 
 const Image = styled.img`

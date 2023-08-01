@@ -3,7 +3,7 @@ import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import whoLogoBlue from "../../../assets/who-logo-blue.png";
-import { Box, Button, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -14,6 +14,7 @@ import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useCountryOptionsOnlyBulgaria } from "../../../common/hooks/countries/useCountryOptionsOnlyBulgaria";
 import { Glossary } from "./Glossary";
+import { MobileMenu } from "./MobileMenu";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -27,6 +28,11 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(1.5),
         paddingLeft: theme.spacing(8),
         paddingRight: theme.spacing(8),
+        "@media (max-width: 500px)": {
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
+            gap: 4,
+        },
     },
     toolbarBottom: {
         background: "white",
@@ -102,7 +108,10 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={goToHome} />;
                     </LogoContainer>
                     <Box className={classes.rest} />
-                    <div>
+                    <Hidden mdUp>
+                        <MobileMenu />
+                    </Hidden>
+                    <Hidden mdDown>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -208,7 +217,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         >
                             {i18n.t("About us")}
                         </Button>
-                    </div>
+                    </Hidden>
                 </Toolbar>
             </MuiAppBar>
             <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
