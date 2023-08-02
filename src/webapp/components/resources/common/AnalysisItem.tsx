@@ -5,12 +5,10 @@ import styled from "styled-components";
 import { AnalysisResource } from "../../../../domain/entities/resources/Resource";
 import { Tag } from "../tag/Tag";
 import { useHistory } from "react-router-dom";
-import { ResourcesFiltersState } from "../../../pages/resources/common/ResourcesFiltersState";
 
 export interface CountryAnalysisProps {
     analysisResource: AnalysisResource;
     minimalVersion?: boolean;
-    filters: ResourcesFiltersState;
     type: "country-analysis" | "comparative-analysis";
 }
 

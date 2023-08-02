@@ -120,7 +120,7 @@ export const Slider: React.FC = () => {
     );
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} aria-label="country-page-slider">
             <Tabs
                 orientation="vertical"
                 value={value}

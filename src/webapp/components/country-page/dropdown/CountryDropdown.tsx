@@ -27,7 +27,7 @@ export const CountryDropdown: React.FC<DropdownProps> = React.memo(
         }, [options, value]);
 
         return (
-            <Container width={width}>
+            <Container width={width} aria-label="country-dropdown">
                 <StyledAutocomplete
                     fullWidth={fullWidth}
                     multiple={false}
