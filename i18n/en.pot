@@ -11,7 +11,7 @@ msgstr ""
 msgid "All countries"
 msgstr ""
 
-msgid "The Financial Protection Expert Network"
+msgid "The European Financial Protection Network"
 msgstr ""
 
 msgid ""
@@ -368,10 +368,13 @@ msgstr ""
 msgid "Email: uhcwatch@who.int"
 msgstr ""
 
-msgid "© 2022 WHO"
+msgid "Privacy legal notice"
 msgstr ""
 
-msgid "Privacy legal notice"
+msgid "Beta version"
+msgstr ""
+
+msgid "Mobile-friendly version coming soon"
 msgstr ""
 
 msgid "Beta version"

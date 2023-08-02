@@ -23,7 +23,7 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{i18n.t("Policy explorer")}</Typography>
+                <Typography variant="h3">{i18n.t("Policy explorer")}</Typography>
                 <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
             </TitleContainer>
 

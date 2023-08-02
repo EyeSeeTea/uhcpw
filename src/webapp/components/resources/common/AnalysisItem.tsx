@@ -45,20 +45,15 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
 
                         {analysisResource.links.map((link, index) => {
                             return (
-                                <>
-                                    <a
-                                        key={link.url}
-                                        href={link.url}
-                                        style={{ fontSize: "16px" }}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
+                                <React.Fragment key={link.url}>
+                                    <a href={link.url} style={{ fontSize: "16px" }}>
+
                                         {link.language}
                                     </a>
                                     {index < analysisResource.links.length - 1 && (
                                         <StyledDivider orientation="vertical" flexItem />
                                     )}
-                                </>
+                                </React.Fragment>
                             );
                         })}
                     </Row>

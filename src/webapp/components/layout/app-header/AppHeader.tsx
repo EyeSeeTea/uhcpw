@@ -90,10 +90,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
                     <BetaVersionTagContainer>
-                        <Tag>{i18n.t("Beta version")}</Tag>
+                        <Tag>
+                            <Typography variant="body2">{i18n.t("Beta version")}</Typography>
+                        </Tag>
                     </BetaVersionTagContainer>
                     <BetaVersionTagContainer>
-                        <Tag>{i18n.t("Mobile-friendly version coming soon")}</Tag>
+                        <Tag>
+                            <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
+                        </Tag>
                     </BetaVersionTagContainer>
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
@@ -254,7 +258,6 @@ const Tag = styled.div`
     min-width: 100px;
     background-color: #4fad56;
     color: white;
-    font-size: 15px;
     border-radius: 30px;
     padding: 5px 10px;
 `;

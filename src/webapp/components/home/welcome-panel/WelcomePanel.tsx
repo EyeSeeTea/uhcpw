@@ -5,34 +5,27 @@ import styled from "styled-components";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+
+const youtubeVideoLink = "https://www.youtube.com/watch?v=JTJmji04Iy4";
 
 export const WelcomePanel: React.FC = () => {
     return (
         <Container>
-            <Typography variant="h2" style={{ fontWeight: 400 }}>
+            <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
                 {i18n.t("UHC watch")}
             </Typography>
-
-            <p>
-                <Typography variant="body1">
-                    {i18n.t(
-                        "Universal health coverage (UHC) means everyone can use the quality health care they need without financial hardship."
-                    )}
-                </Typography>
-            </p>
-            <p>
-                <Typography variant="body1">
-                    {i18n.t("Financial protection - affordable access to health care - is at the heart of UHC")}{" "}
-                </Typography>
-            </p>
-            <p>
-                <Typography variant="body1">{i18n.t("Can people afford to pay for health care?")} </Typography>
-            </p>
-            <p>
-                <Typography variant="body1">
-                    {i18n.t("Explore new evidence on financial protection in Europe and Central Asia")}{" "}
-                </Typography>
-            </p>
+            <Typography paragraph>
+                {i18n.t("Tracking progress on affordable access to health care in Europe and Central Asia")}
+            </Typography>
+            <Typography paragraph>
+                {i18n.t(
+                    "Affordable access to health care - financial protection - is at the heart of universal health coverage (UHC)"
+                )}
+            </Typography>
+            <Typography paragraph>
+                {i18n.t("UHC means everyone can use quality health care without financial hardship")}{" "}
+            </Typography>
             <UmbrellaItemsContiner>
                 <UmbrellaItem>
                     <Marker src={weakIcon} />
@@ -47,6 +40,10 @@ export const WelcomePanel: React.FC = () => {
                     <span>{i18n.t("Stronger financial protection")}</span>
                 </UmbrellaItem>
             </UmbrellaItemsContiner>
+            <VideoLink href={youtubeVideoLink} target="_blank" rel="noreferrer">
+                <PlayCircleFilledIcon style={{ color: "white" }} />
+                <Typography>{i18n.t("UHC watch")}</Typography>
+            </VideoLink>
         </Container>
     );
 };
@@ -61,7 +58,7 @@ const UmbrellaItemsContiner = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 48px;
+    margin: 48px 0px 35px;
 `;
 
 const UmbrellaItem = styled.div`
@@ -76,4 +73,18 @@ const Marker = styled.img`
     background-size: cover;
     width: 80px;
     margin-bottom: 16px;
+`;
+
+const VideoLink = styled.a`
+    display: flex;
+    gap: 5px;
+    width: fit-content;
+    text-decoration: none;
+    p {
+        color: white;
+    }
+    &:hover {
+        text-decoration: underline;
+        text-decoration-color: white;
+    }
 `;

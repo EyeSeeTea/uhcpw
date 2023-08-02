@@ -129,6 +129,16 @@ describe("CountrySelector", () => {
             await verifyChip(getChild(0));
             await verifyChip(getChild(1));
         });
+
+        it("should expand parents with countries after search", async () => {
+            renderComponent();
+
+            focusComponent();
+
+            await search(getChild(1));
+
+            await verifyTotalExpandedGroups(2);
+        });
     });
 });
 
@@ -200,4 +210,9 @@ async function verifyChip(name: string) {
     });
 
     expect(chip).toBeInTheDocument();
+}
+
+async function verifyTotalExpandedGroups(total: number) {
+    const groups = await screen.findAllByRole("treeitem", { expanded: true });
+    expect(groups).toHaveLength(total);
 }
