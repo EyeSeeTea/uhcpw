@@ -1,5 +1,6 @@
 import { CountryOption } from "../../components/country-selector/CountrySelector";
 import { Option } from "../../components/dropdown/Option";
+import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 
 export type CountryFilterState = {
     options: CountryOption[];
@@ -7,6 +8,12 @@ export type CountryFilterState = {
     onSelectedChange: (value: string[] | undefined) => void;
     groupedByIncome: boolean;
     onGroupedByIncomeChange: (value: boolean) => void;
+};
+
+export type PolicyExplorerCategoriesFilterState = {
+    options: CategoryOption[];
+    selected: Record<string, string[]> | undefined;
+    onSelectedChange: (value: Record<string, string[]> | undefined) => void;
 };
 
 export type OptionsFilterState<T extends string = string> = {
