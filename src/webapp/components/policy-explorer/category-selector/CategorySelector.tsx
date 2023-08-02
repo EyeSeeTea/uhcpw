@@ -38,10 +38,10 @@ export const CategorySelector = React.memo(
         categoryOptions,
         selectedCategoriesWithSubcategories,
         onSelect,
-        fullWidth,
-        placeholder,
-        disabled,
-        label,
+        fullWidth = false,
+        placeholder = "",
+        disabled = false,
+        label = "",
     }: CategorySelectorProps) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -226,7 +226,6 @@ export const CategorySelector = React.memo(
                                 border: "1px solid #cfe9f7",
                                 borderRadius: "20px",
                             }}
-                            autoFocus
                         />
                         <br />
                         <Typography variant="body1" gutterBottom>
@@ -234,7 +233,7 @@ export const CategorySelector = React.memo(
                         </Typography>
                         <TreeView
                             disableSelection
-                            aria-label="file system navigator"
+                            aria-label="Categories tree"
                             defaultCollapseIcon={<ArrowDropUpIcon />}
                             defaultExpandIcon={<ArrowDropDownIcon />}
                             style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
