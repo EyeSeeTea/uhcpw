@@ -43,20 +43,15 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
 
                         {analysisResource.links.map((link, index) => {
                             return (
-                                <>
-                                    <a
-                                        key={link.url}
-                                        href={link.url}
-                                        style={{ fontSize: "16px" }}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
+                                <React.Fragment key={link.url}>
+                                    <a href={link.url} style={{ fontSize: "16px" }}>
+
                                         {link.language}
                                     </a>
                                     {index < analysisResource.links.length - 1 && (
                                         <StyledDivider orientation="vertical" flexItem />
                                     )}
-                                </>
+                                </React.Fragment>
                             );
                         })}
                     </Row>
@@ -90,4 +85,10 @@ const Column = styled.div`
 
 const Cover = styled.img`
     border: 1px solid #c3bfbf;
+    min-height: 14rem;
+    max-height: 14rem;
+    @media (max-width: 960px) {
+        min-height: 19rem;
+        max-height: 19rem;
+    }
 `;

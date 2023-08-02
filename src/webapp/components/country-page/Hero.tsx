@@ -2,13 +2,10 @@ import { Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { colors } from "../../pages/app/themes/dhis2.theme";
-import { IconButton } from "material-ui";
-import InfoIcon from "@material-ui/icons/Info";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import DashboardGraph from "../../assets/country-page/dashboard-graph.jpg";
-//import ExpandIcon from "../../assets/country-page/expand-icon.svg";
 import { useState } from "react";
 import { NotesDialog } from "../dialog/NotesDialog";
+import { ActionButtons } from "./graphs/ActionButtons";
 
 export const Hero: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -44,25 +41,7 @@ export const Hero: React.FC = () => {
                                 "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19"
                             )}
                         </Typography>
-                        <IconButton style={{ color: "#035fa7" }} onClick={() => setIsOpen(true)}>
-                            <InfoIcon />
-                        </IconButton>
-                        {/* <IconButton style={{ padding: "5px" }}>
-                            <img src={ExpandIcon} alt="expand icon" />
-                        </IconButton> */}
-                        <a href={DashboardGraph} download>
-                            <IconButton style={{ color: "#035fa7" }}>
-                                <GetAppIcon
-                                    style={{
-                                        color: "white",
-                                        backgroundColor: "#035fa7",
-                                        borderRadius: "50%",
-                                        padding: "4px",
-                                        fontSize: "14px",
-                                    }}
-                                />
-                            </IconButton>
-                        </a>
+                        <ActionButtons onIconButtonClick={() => setIsOpen(true)} graphImage={DashboardGraph} />
                     </Row>
                     <Image src={DashboardGraph} alt="hero-graph" />
                 </Column>

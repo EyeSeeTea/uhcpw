@@ -1,4 +1,4 @@
-import { Container, Grid, Typography } from "@material-ui/core";
+import { Container, Grid, Tooltip, Typography } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
@@ -38,16 +38,18 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                     {resources.countryAnalysisByCountry.map(country => {
                                         return (
                                             <Grid item xs={2} key={country.countryId}>
-                                                <Flag
-                                                    role="listitem"
-                                                    width={"90%"}
-                                                    src={country.flag}
-                                                    onClick={() =>
-                                                        history.push(
-                                                            `/resources/country-analysis?country=${country.countryId}`
-                                                        )
-                                                    }
-                                                />
+                                                <Tooltip title={country.countryName} placement="top" arrow>
+                                                    <Flag
+                                                        role="listitem"
+                                                        width={"90%"}
+                                                        src={country.flag}
+                                                        onClick={() =>
+                                                            history.push(
+                                                                `/resources/country-analysis?country=${country.countryId}`
+                                                            )
+                                                        }
+                                                    />
+                                                </Tooltip>
                                             </Grid>
                                         );
                                     })}

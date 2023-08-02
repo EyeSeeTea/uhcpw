@@ -16,7 +16,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{i18n.t("Indicator explorer")}</Typography>
+                <Typography variant="h3">{i18n.t("Indicator explorer")}</Typography>
                 <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
             </TitleContainer>
 

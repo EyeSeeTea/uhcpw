@@ -12,7 +12,7 @@ export const CountryResources: React.FC<{ country?: string[] }> = ({ country }) 
     return (
         <Container aria-label="country-page-resources">
             <Row>
-                <Typography variant="h3">{i18n.t("Country Resources")}</Typography>
+                <Typography variant="h3">{i18n.t("Country resources")}</Typography>
                 <ChevronRightIcon link="/resources" />
             </Row>
             <Grid container spacing={5}>

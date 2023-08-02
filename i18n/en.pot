@@ -11,7 +11,7 @@ msgstr ""
 msgid "All countries"
 msgstr ""
 
-msgid "The Financial Protection Expert Network"
+msgid "The European Financial Protection Network"
 msgstr ""
 
 msgid ""
