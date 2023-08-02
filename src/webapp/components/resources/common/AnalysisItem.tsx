@@ -87,4 +87,10 @@ const Column = styled.div`
 
 const Cover = styled.img`
     border: 1px solid #c3bfbf;
+    min-height: 14rem;
+    max-height: 14rem;
+    @media (max-width: 960px) {
+        min-height: 19rem;
+        max-height: 19rem;
+    }
 `;
