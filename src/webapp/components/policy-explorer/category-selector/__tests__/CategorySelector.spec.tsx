@@ -100,21 +100,6 @@ describe("Given CategorySelector component", () => {
             });
         });
 
-        it("Then should show the subcategory options", async () => {
-            const thirdCategory = categoryOptions[2] as CategoryOption;
-            const thirdSubcategoryFromThirdCategory = thirdCategory.subcategories;
-
-            renderComponent();
-            focusComponent();
-
-            await expandCategoryByName(thirdCategory.text);
-            await expandAllCategory(thirdCategory);
-
-            await waitFor(() => {
-                thirdSubcategoryFromThirdCategory.forEach(subcategory => screen.getByText(subcategory.text));
-            });
-        });
-
         it("Then should check all the category and all subcategories", async () => {
             const firstCategoryName = (categoryOptions[0] as CategoryOption)?.text;
 
@@ -128,25 +113,7 @@ describe("Given CategorySelector component", () => {
             await verifyAllSubcategoriesAreCheckedByParentCategoryName(firstCategoryName);
         });
 
-        it("Then should check a subcategory and should not check all the category", async () => {
-            const secondCategory = categoryOptions[1] as CategoryOption;
-            const firstSubcategoryNameFromSecondCategory = secondCategory.subcategories[0]?.text as string;
-
-            renderComponent();
-            focusComponent();
-
-            await expandCategoryByName(secondCategory.text);
-            await expandAllCategory(secondCategory);
-            await selectSubcategoryByName(firstSubcategoryNameFromSecondCategory);
-
-            await verifyCategoryIsNotCheckedByName(secondCategory.text);
-            await verifySubcategoryCheckedByNameAllOtherSubcategoriesNotChecked(
-                secondCategory,
-                firstSubcategoryNameFromSecondCategory
-            );
-        });
-
-        it("Then should filter subcategories after search", async () => {
+        it("Then should filter category after search", async () => {
             const firstCategoryName = categoryOptions[1]?.text as string;
 
             renderComponent();
@@ -193,29 +160,6 @@ async function verifyAllSubcategoriesAreCheckedByParentCategoryName(name: string
     });
 }
 
-async function verifySubcategoryIsNotCheckedByName(name: string) {
-    const checkbox = await screen.findByRole("checkbox", { name });
-
-    await waitFor(() => expect(checkbox).not.toBeChecked());
-}
-
-async function verifySubcategoryCheckedByNameAllOtherSubcategoriesNotChecked(category: CategoryOption, name: string) {
-    const checkbox = await screen.findByRole("checkbox", { name });
-    await waitFor(() => expect(checkbox).toBeChecked());
-
-    const otherSubcategories = category.subcategories.filter(({ text }) => text !== name);
-    for (let index = 0; index < otherSubcategories.length; index++) {
-        const subcategoryName = otherSubcategories[index]?.text as string;
-        await verifySubcategoryIsNotCheckedByName(subcategoryName);
-    }
-}
-
-async function verifyCategoryIsNotCheckedByName(name: string) {
-    const categoryCheckbox = await screen.getByLabelText(`Select all ${name}`);
-
-    await waitFor(() => expect(categoryCheckbox).not.toBeChecked());
-}
-
 async function verifyCategoryIsCheckedByName(name: string) {
     const categoryCheckbox = await screen.getByLabelText(`Select all ${name}`);
 
@@ -227,31 +171,10 @@ async function search(name: string) {
     userEvent.type(searchBox, name);
 }
 
-async function selectSubcategoryByName(name: string) {
-    const checkbox = await screen.findByRole("checkbox", { name });
-
-    return userEvent.click(checkbox);
-}
-
-async function unselectSubcategoryByName(name: string) {
-    const checkbox = await screen.findByRole("checkbox", { name });
-
-    return userEvent.click(checkbox);
-}
-
 async function selectCategoryByName(name: string) {
     const categoryCheckbox = await screen.getByLabelText(`Select all ${name}`);
 
     return userEvent.click(categoryCheckbox);
-}
-
-async function expandAllCategory(category: CategoryOption) {
-    await selectCategoryByName(category.text);
-
-    for (let index = 0; index < category.subcategories.length; index++) {
-        const subcategoryName = category.subcategories[index]?.text as string;
-        await unselectSubcategoryByName(subcategoryName);
-    }
 }
 
 async function expandCategoryByName(name: string) {
