@@ -12,10 +12,12 @@ export interface ResourcesFiltersProps {
     filters: ResourcesFiltersState;
     onGetResources: () => void;
     disabledCountryFilter?: boolean;
+    disabledYearFilter?: boolean;
+    disabledThemeFilter?: boolean;
 }
 
 export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
-    ({ filters, onGetResources, disabledCountryFilter }) => {
+    ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
         const history = useHistory();
         const location = useLocation();
 
@@ -81,6 +83,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             options={filters.theme.options}
                             value={filters.theme.selected}
                             onChange={onThemeChange}
+                            disabled={disabledThemeFilter}
                         />
                     </Center>
                 </Grid>
@@ -105,6 +108,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             options={filters.year.options}
                             values={filters.year.selected}
                             onChange={filters.year.onSelectedChange}
+                            disabled={disabledYearFilter}
                         />
                     </Center>
                 </Grid>

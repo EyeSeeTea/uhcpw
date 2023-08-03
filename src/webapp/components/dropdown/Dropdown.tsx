@@ -13,6 +13,7 @@ interface DropdownProps<T extends string = string> {
     placeholder?: string;
     fullWidth?: boolean;
     onChange: (value?: T) => void;
+    disabled?: boolean;
     width?: string;
 }
 
@@ -26,7 +27,7 @@ type OptionLabel = {
 };
 
 export const Dropdown: React.FC<DropdownProps> = React.memo(
-    ({ label, options, value, placeholder, fullWidth, onChange, width = "100%" }) => {
+    ({ label, options, value, placeholder, fullWidth, onChange, disabled = false, width = "100%" }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
 
         useEffect(() => {
@@ -67,6 +68,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                         />
                     )}
                     onChange={(e, value) => handleChange(e, value as Option<string> | null)}
+                    disabled={disabled}
                 />
                 {value && (
                     <ClearButton variant="text" onClick={handleClear} top={label ? "0" : "-30px"}>

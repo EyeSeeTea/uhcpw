@@ -165,6 +165,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             </InputAdornment>
                         ),
                     }}
+                    $isDisabled={disabled}
                 ></StyledDropdownTextField>
                 <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}

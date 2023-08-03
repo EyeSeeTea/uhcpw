@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import styled from "styled-components";
 
-export const DropdownTextField = styled(TextField)({
+export const DropdownTextField = styled(TextField)<{ $isDisabled?: boolean }>(props => ({
     "& label, & label.Mui-focused": {
         color: "grey",
     },
@@ -26,4 +26,7 @@ export const DropdownTextField = styled(TextField)({
     ".MuiAutocomplete-clearIndicator": {
         display: "none",
     },
-});
+    ".MuiInput-input": {
+        color: props.$isDisabled ? "#8b8b8b" : undefined,
+    },
+}));
