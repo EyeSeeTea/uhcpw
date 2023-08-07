@@ -229,8 +229,13 @@ async function selectCountry(value: string) {
     const countrySelector = screen.getByLabelText(/countries/i);
 
     await userEvent.click(countrySelector);
-    await userEvent.click(screen.getByLabelText("testttt0"));
-    //await userEvent.click(screen.getByRole("checkbox") as Element);
+
+    await userEvent.click(await screen.findByText("All countries"));
+
+    const treeitem = await screen.findByRole("treeitem", { expanded: true });
+    const treeScope = within(treeitem);
+
+    await userEvent.click(treeScope.getByRole("checkbox", { name: `${value} ${value}` }));
 
     await userEvent.keyboard("{Escape}");
 

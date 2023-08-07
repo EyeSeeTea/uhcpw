@@ -169,7 +169,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                 const selectedCount = children.filter(child => selectedIds.includes(child.id)).length;
 
                                 return (
-                                    <div key={nindex} aria-label={`testttt${nindex}`}>
+                                    <div key={nindex}>
                                         <Node nodeId={parent.id} name={parent.name} selectedCount={selectedCount}>
                                             {finalChildren.map((child, lindex) => {
                                                 const selected = selectedIds.find(id => id === child.id) !== undefined;
