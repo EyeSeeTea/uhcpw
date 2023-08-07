@@ -5,14 +5,12 @@ import styled from "styled-components";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { CountryAnalysisState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { AnalysisItem } from "../common/AnalysisItem";
-import { ResourcesFiltersState } from "../../../pages/resources/common/ResourcesFiltersState";
 
 export interface CountryAnalysisItemProps {
     countryAnalysis: CountryAnalysisState;
-    filters: ResourcesFiltersState;
 }
 
-export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.memo(({ countryAnalysis, filters }) => {
+export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.memo(({ countryAnalysis }) => {
     return (
         <Item elevation={0} role="listitem">
             <Row>
@@ -22,7 +20,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
                 </Typography>
             </Row>
             <Box height={8} />
-            <AnalysisItem analysisResource={countryAnalysis} filters={filters} type="country-analysis" />
+            <AnalysisItem analysisResource={countryAnalysis} type="country-analysis" />
         </Item>
     );
 });

@@ -17,7 +17,7 @@ export const Header: React.FC = React.memo(() => {
             <Grid item md={6} xs={12}>
                 <Container maxWidth="sm">
                     <p>
-                        <Text gutterBottom variant="body2">
+                        <Text gutterBottom>
                             {i18n.t(
                                 "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). The Office works with Member States across WHO’s European Region to promote evidence-informed policy making. It is also the home for WHO training courses on health financing."
                             )}
@@ -25,14 +25,14 @@ export const Header: React.FC = React.memo(() => {
                     </p>
 
                     <p>
-                        <Text gutterBottom variant="body2">
+                        <Text gutterBottom>
                             {i18n.t(
                                 "A key part of the work of the Office is to assess country and regional progress towards UHC by monitoring financial protection – affordable access to health care. The Office also supports countries to strengthen financial protection through tailored technical assistance, including analysis of country-specific policy options, high-level policy dialogue and the sharing of international experience."
                             )}
                         </Text>
                     </p>
                     <p>
-                        <Text gutterBottom variant="body2">
+                        <Text gutterBottom>
                             {i18n.t(
                                 "Established in 1999, the Office is supported by the Government of the Autonomous Community of Catalonia, Spain. It is part of the Division of Country Health Policies and Systems of the WHO Regional Office for Europe."
                             )}
@@ -51,12 +51,10 @@ const HeaderGrid = styled(Grid)`
 `;
 
 const Caption = styled(Typography)`
-    font-size: 16px;
     font-weight: 300;
     margin-top: 20px;
 `;
 
 const Text = styled(Typography)`
-    font-size: 17px;
     font-weight: 300;
 `;

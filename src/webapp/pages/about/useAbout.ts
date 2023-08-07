@@ -54,6 +54,7 @@ export function useAbout(): ResourcesState {
         filters,
         selectedFilter,
         onFilterChange,
+        allFilter,
     };
 }
 

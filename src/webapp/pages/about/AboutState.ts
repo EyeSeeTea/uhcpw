@@ -8,6 +8,7 @@ export type ResourcesState = {
     filters: string[];
     selectedFilter: string;
     onFilterChange: (value: string) => void;
+    allFilter: string;
 };
 
 export interface PersonState extends Person {

@@ -13,8 +13,8 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
     return (
         <>
             <ItemsTitleContainer>
-                <Title>{i18n.t("The WHO Barcelona Office team")}</Title>
-                <Subtitle>{i18n.t("Staff and consultants")}</Subtitle>
+                <Title variant="h3">{i18n.t("The WHO Barcelona Office team")}</Title>
+                <Subtitle variant="h5">{i18n.t("Staff and consultants")}</Subtitle>
             </ItemsTitleContainer>
 
             <Grid container spacing={10}>
@@ -35,11 +35,10 @@ const ItemsTitleContainer = styled.div`
 `;
 
 const Title = styled(Typography)`
-    font-size: 48px;
     font-weight: 500;
 `;
 
 const Subtitle = styled(Typography)`
-    font-size: 26px;
     color: rgba(36, 38, 38, 0.7);
+    margin-top: 10px;
 `;

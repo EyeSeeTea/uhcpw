@@ -292,7 +292,7 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
         },
         {
             language: "Français",
-            url: "https://apps.who.int/iris/bitstream/handle/10665/345524/WHO-EURO-2019-3439-431980-60517-spa.pdf?sequence=1&isAllowed=y",
+            url: "https://apps.who.int/iris/bitstream/handle/10665/345515/WHO-EURO-2019-3439-431980-60515-fre.pdf?sequence=1&isAllowed=y",
         },
     ];
 

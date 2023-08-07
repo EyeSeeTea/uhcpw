@@ -1,4 +1,4 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -66,7 +66,7 @@ export const IndicatorExplorerFiltersFake: React.FC<ResourcesFiltersProps> = Rea
                     disabled={!enabledGetChart}
                     onClick={onGetChart}
                 >
-                    {i18n.t("Get chart")}
+                    <Typography>{i18n.t("Get chart")}</Typography>
                 </GetChartButton>
             </Grid>
         </Grid>
@@ -84,4 +84,5 @@ const GetChartButton = styled(Button)`
     border-radius: 20px;
     height: 50px;
     text-transform: none;
+    white-space: nowrap;
 `;

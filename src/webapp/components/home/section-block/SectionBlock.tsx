@@ -13,9 +13,7 @@ export const SectionBlock: React.FC<SectionBlockProps> = ({ title, text }) => {
             <Typography variant="h4" gutterBottom>
                 {title}
             </Typography>
-            <Description variant="body1" gutterBottom>
-                {text}
-            </Description>
+            <Description gutterBottom>{text}</Description>
         </ItemContent>
     );
 };
