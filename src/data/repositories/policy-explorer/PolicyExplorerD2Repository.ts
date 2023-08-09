@@ -246,6 +246,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             }
 
             return [
+                ...accMain,
                 [
                     orgUnitName,
                     period || "",
