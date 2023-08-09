@@ -15,6 +15,106 @@ const generalDataElements: Record<string, string> = {
     references: "DsWWAKomY4Z",
 };
 
+const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY = "u800TAhsIBY";
+
+const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS = [
+    "Type of health care",
+    "User charges apply",
+    "Type of user charge",
+    "Reduced user charges",
+    "Exemptions from user charges",
+    "Cap on user charges",
+];
+
+const TYPE_OF_HEALTHCARE_VALUES = [
+    "Primary Care",
+    "Specialist Visits",
+    "Emergency Visits",
+    "Outpatient Medicines",
+    "Inpatient Medicines",
+    "Medical Products",
+    "Diagnostics Tests",
+    "Dental Visits",
+    "Dental Care Treatment",
+    "Inpatient Care",
+];
+
+const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
+    "User charges apply": [
+        "giUCPiCe745",
+        "SWX96A7gnpA",
+        "WTtArv6Xvsy",
+        "gMAYqfQ5xAD",
+        "NJ8zBQdwnd2",
+        "VroSbngmebX",
+        "OjTsewAuevP",
+        "rZlHlitEiFp",
+        "RtLyOZpUtqO",
+        "TaS7d80ciTe",
+    ],
+    "Type of user charge": [
+        "mTB12rvpJWd",
+        "wDQRlBezRAs",
+        "ibq7wtqnsns",
+        "EruJIoPKO1s",
+        "KfHkuuRZdBh",
+        "CpMWBaXJ91P",
+        "L2sCkhEbSfM",
+        "PUXn0hz2JFX",
+        "Py0PrMRPlUj",
+        "L6ly0Y1uCe2",
+    ],
+    "Reduced user charges": [
+        "b29bW9mc9C7",
+        "ZkElvtoVJSd",
+        "n8jFYyMKDaV",
+        "KBW3D8lOlpg",
+        "lj174orsYYW",
+        "P7qWfL7oluy",
+        "NkHvpG471tm",
+        "lXBWfAv1EJE",
+        "Bwx3a0w5orN",
+        "syr5O2Mj2vL",
+    ],
+    "Exemptions from user charges": [
+        "tu36CFgEoh8",
+        "zsiuJlUSvAW",
+        "SiNpgO1L5bG",
+        "a67cjmP423S",
+        "eRfuZtUFbPK",
+        "yhSc51DOubT",
+        "Cm6ngZTrVQR",
+        "M228fF4qKsx",
+        "KQVn9LNZPlq",
+        "Urb1llvnJV4",
+    ],
+    "Cap on user charges": [
+        "mSgmJhjn4Bi",
+        "o6d3FfwRVj7",
+        "sASANfdEGUR",
+        "sk9g2PsK7vD",
+        "Ut93noOXsdK",
+        "olgegohqR8l",
+        "JLSGrrzqrW9",
+        "wZ9JynvumSQ",
+        "SINKYu3EMgX",
+        "Ai7ziQeOU53",
+    ],
+};
+
+const TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
+    "Primary Care": ["giUCPiCe745", "mTB12rvpJWd", "b29bW9mc9C7", "tu36CFgEoh8", "mSgmJhjn4Bi"],
+    "Specialist Visits": ["SWX96A7gnpA", "wDQRlBezRAs", "ZkElvtoVJSd", "zsiuJlUSvAW", "o6d3FfwRVj7"],
+    "Emergency Visits": ["WTtArv6Xvsy", "ibq7wtqnsns", "n8jFYyMKDaV", "SiNpgO1L5bG", "sASANfdEGUR"],
+    "Outpatient Medicines": ["gMAYqfQ5xAD", "EruJIoPKO1s", "KBW3D8lOlpg", "a67cjmP423S", "sk9g2PsK7vD"],
+    "Inpatient Medicines": ["NJ8zBQdwnd2", "KfHkuuRZdBh", "lj174orsYYW", "eRfuZtUFbPK", "Ut93noOXsdK"],
+    "Medical Products": ["VroSbngmebX", "CpMWBaXJ91P", "P7qWfL7oluy", "yhSc51DOubT", "olgegohqR8l"],
+    "Diagnostics Tests": ["OjTsewAuevP", "L2sCkhEbSfM", "NkHvpG471tm", "Cm6ngZTrVQR", "JLSGrrzqrW9"],
+    "Dental Visits": ["rZlHlitEiFp", "PUXn0hz2JFX", "lXBWfAv1EJE", "M228fF4qKsx", "wZ9JynvumSQ"],
+    "Dental Care Treatment": ["RtLyOZpUtqO", "Py0PrMRPlUj", "Bwx3a0w5orN", "KQVn9LNZPlq", "SINKYu3EMgX"],
+    "Inpatient Care": ["TaS7d80ciTe", "L6ly0Y1uCe2", "syr5O2Mj2vL", "Urb1llvnJV4", "Ai7ziQeOU53"],
+};
+
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
@@ -103,8 +203,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private buildColumns(policyExplorerCategoryId: string, dataSet?: D2DataSet): string[][] {
         const dataElementsSection = this.getDataElementsSection(policyExplorerCategoryId, dataSet);
+        const columns =
+            policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY
+                ? this.getUserChargeByTypeOfHealthcareColumns()
+                : ["Country", "Period", ...dataElementsSection.map(de => de.formName)];
 
-        return [["Country", "Period", ...dataElementsSection.map(de => de.formName)]];
+        return [columns];
     }
 
     private buildRows(
@@ -119,7 +223,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
             .value();
 
-        return Object.keys(dataValuesByCountryAndYear).map(group => {
+        return Object.keys(dataValuesByCountryAndYear).reduce((accMain: string[][], group): string[][] => {
             const [orgUnit, period] = group.split("-");
 
             const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
@@ -130,16 +234,29 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dv => dv.orgUnit === orgUnit && dv.dataElement.includes(generalDataElements.references || "")
                 )?.value || "";
 
-            return [
-                orgUnitName,
-                period || "",
-                ...dataElementsSection.map(de => {
-                    const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
+            if (policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY) {
+                const rows = this.getUserChargeByTypeOfHealthcareRowsUsingIds({
+                    dataValuesByGroup,
+                    orgUnitName,
+                    period,
+                    references,
+                });
 
-                    return `${dataValue?.value || ""}\n\n${references}`;
-                }),
+                return [...accMain, ...rows];
+            }
+
+            return [
+                [
+                    orgUnitName,
+                    period || "",
+                    ...dataElementsSection.map(de => {
+                        const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
+
+                        return `${dataValue?.value || ""}\n\n${references}`;
+                    }),
+                ],
             ];
-        });
+        }, []);
     }
 
     private getDataElementsSection(policyExplorerCategoryId: string, dataSet?: D2DataSet) {
@@ -148,6 +265,86 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 .find(section => section.id === policyExplorerCategoryId)
                 ?.dataElements.filter(de => de.valueType === "LONG_TEXT") || []
         );
+    }
+
+    private getUserChargeByTypeOfHealthcareColumns() {
+        return [
+            "Country",
+            "Period",
+            "Type of health care",
+            ...Object.keys(USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS),
+        ];
+    }
+
+    private getUserChargeByTypeOfHealthcareRowsUsingIds(params: {
+        dataValuesByGroup: DataValueSetsDataValue[];
+        orgUnitName: string;
+        period?: string;
+        references: string;
+    }) {
+        const { dataValuesByGroup, orgUnitName, period, references } = params;
+
+        const rows = Object.entries(TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS).reduce(
+            (acc: string[][], [healthcareType, dataElementsSectionIdsInType], index) => {
+                const initRow = index === 0 ? [orgUnitName, period || "", healthcareType] : ["", "", healthcareType];
+                const restRow = Object.values(USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS).map(
+                    dataElementsSectionIdsInColumn => {
+                        const dataElementsSectionId = dataElementsSectionIdsInColumn.find(item =>
+                            dataElementsSectionIdsInType.includes(item)
+                        );
+
+                        const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementsSectionId);
+                        return `${dataValue?.value || ""}\n\n${references}`;
+                    }
+                );
+                const row = [...initRow, ...restRow];
+                return [...acc, row];
+            },
+            []
+        );
+        return rows;
+    }
+
+    // Other way using formName
+    private getUserChargeByTypeOfHealthcareRowsUsingFormName(params: {
+        dataElementsSection: Record<string, string>[];
+        dataValuesByGroup: DataValueSetsDataValue[];
+        orgUnitName: string;
+        period?: string;
+        references: string;
+    }) {
+        const { dataElementsSection, dataValuesByGroup, orgUnitName, period, references } = params;
+
+        const values: string[][] = USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS.reduce(
+            (acc, columnName) => {
+                if (columnName !== "Type of health care") {
+                    const columnValues: string[] = TYPE_OF_HEALTHCARE_VALUES.reduce(
+                        (accValues: string[], type: string) => {
+                            const dataElementSection = dataElementsSection.find(
+                                de => de.formName && de.formName.includes(columnName, 0) && de.formName.includes(type)
+                            );
+
+                            const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementSection?.id);
+
+                            return [...accValues, `${dataValue?.value || ""}\n\n${references}`];
+                        },
+                        []
+                    );
+                    acc = [...acc, columnValues];
+                }
+                return acc;
+            },
+            [TYPE_OF_HEALTHCARE_VALUES]
+        );
+
+        const rows: string[][] = TYPE_OF_HEALTHCARE_VALUES.reduce((acc: string[][], _, index) => {
+            const initRow = index === 0 ? [orgUnitName, period || ""] : ["", ""];
+            const restRow: string[] = values.map(val => val[index] || "");
+            const row = [...initRow, ...restRow];
+            return [...acc, row];
+        }, []);
+
+        return rows;
     }
 }
 
