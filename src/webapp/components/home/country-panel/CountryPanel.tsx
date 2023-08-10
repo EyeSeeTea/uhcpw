@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { Country } from "../../../../domain/entities/Country";
 import ReactMarkdown from "react-markdown";
@@ -7,9 +7,23 @@ import weakIcon from "../../../assets/map/icon-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
 import { Divider } from "material-ui";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 export interface CountryPanelProps {
     country: Country;
 }
+
+type ButtonItemType = {
+    href?: string | undefined;
+    children: React.ReactNode;
+};
+
+const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
+    return (
+        <a href={href} target="_blank" rel="noreferrer">
+            <StyledButton>{children}</StyledButton>
+        </a>
+    );
+};
 
 export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     return (
@@ -26,7 +40,13 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
             </Row>
             <Divider style={{ backgroundColor: "white", margin: "38px 0px" }} />
 
-            <ReactMarkdown>{country.summary}</ReactMarkdown>
+            <ReactMarkdown
+                components={{
+                    a: ({ ...props }) => <ButtonItem {...props} />,
+                }}
+            >
+                {country.summary}
+            </ReactMarkdown>
         </Container>
     );
 };
@@ -34,6 +54,9 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
 const Container = styled.div`
     overflow-y: auto;
     font-size: 16px;
+    ul {
+        padding-inline-start: 14px;
+    }
 `;
 
 const Row = styled.div`
@@ -53,4 +76,15 @@ const Marker = styled.img`
     width: 80px;
     margin-right: 24px;
     margin-bottom: 32px;
+`;
+
+const StyledButton = styled(Button)`
+    background-color: white;
+    padding: 5px 30px;
+    color: ${colors.accentPrimary};
+    text-transform: initial;
+    border-radius: 40px;
+    &:hover {
+        background-color: ${colors.greyLight};
+    }
 `;

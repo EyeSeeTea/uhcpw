@@ -322,7 +322,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
             .value();
 
-        return Object.keys(dataValuesByCountryAndYear).reduce((accMain: string[][], group): string[][] => {
+        return Object.keys(dataValuesByCountryAndYear).reduce((accRows: string[][], group): string[][] => {
             const [orgUnit, period] = group.split("-");
 
             const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
@@ -336,7 +336,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             switch (policyExplorerCategoryId) {
                 case USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY:
                     return [
-                        ...accMain,
+                        ...accRows,
                         ...this.getRowsByTypeOfHealthcareUsingIds({
                             policyExplorerCategoryId,
                             dataValuesByGroup,
@@ -347,7 +347,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     ];
                 case TYPES_OF_USER_CHARGE_CATEGORY:
                     return [
-                        ...accMain,
+                        ...accRows,
                         ...this.getRowsByTypeOfHealthcareUsingIds({
                             policyExplorerCategoryId,
                             dataValuesByGroup,
@@ -358,7 +358,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     ];
                 default:
                     return [
-                        ...accMain,
+                        ...accRows,
                         [
                             orgUnitName,
                             period || "",

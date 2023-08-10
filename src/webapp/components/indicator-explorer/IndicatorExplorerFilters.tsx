@@ -1,4 +1,4 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -63,7 +63,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     }
                     onClick={onGetChart}
                 >
-                    {i18n.t("Get chart")}
+                    <Typography>{i18n.t("Get chart")}</Typography>
                 </GetChartButton>
             </Grid>
         </Grid>
@@ -81,4 +81,5 @@ const GetChartButton = styled(Button)`
     border-radius: 20px;
     height: 50px;
     text-transform: none;
+    white-space: nowrap;
 `;

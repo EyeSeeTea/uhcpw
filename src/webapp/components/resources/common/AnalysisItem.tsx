@@ -4,10 +4,12 @@ import React from "react";
 import styled from "styled-components";
 import { AnalysisResource } from "../../../../domain/entities/resources/Resource";
 import { Tag } from "../tag/Tag";
+import { useHistory } from "react-router-dom";
 
 export interface CountryAnalysisProps {
     analysisResource: AnalysisResource;
     minimalVersion?: boolean;
+    type: "country-analysis" | "comparative-analysis";
 }
 
 const themeColor: Record<string, string> = {
@@ -17,15 +19,21 @@ const themeColor: Record<string, string> = {
     "Voluntary Health Insurance": "#ff8d4e",
 };
 
-export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion }) => {
+export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analysisResource, minimalVersion, type }) => {
+    const history = useHistory();
+
+    const handleTagClick = () => {
+        history.push(`/resources/${type}?theme=${analysisResource.theme}`);
+    };
+
     return (
         <Column>
-            <a href={analysisResource.links[0]?.url}>
+            <a href={analysisResource.links[0]?.url} target="_blank" rel="noreferrer">
                 <Cover width={"100%"} src={analysisResource.image} alt={analysisResource.title} />
             </a>
 
             <Box height={20} />
-            <Tag theme={analysisResource.theme} color={themeColor[analysisResource.theme]} />
+            <Tag theme={analysisResource.theme} color={themeColor[analysisResource.theme]} onClick={handleTagClick} />
             {!minimalVersion && (
                 <>
                     <Row>
@@ -35,14 +43,15 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
 
                         {analysisResource.links.map((link, index) => {
                             return (
-                                <>
-                                    <a key={link.url} href={link.url} style={{ fontSize: "16px" }}>
+                                <React.Fragment key={link.url}>
+                                    <a href={link.url} style={{ fontSize: "16px" }}>
+
                                         {link.language}
                                     </a>
                                     {index < analysisResource.links.length - 1 && (
                                         <StyledDivider orientation="vertical" flexItem />
                                     )}
-                                </>
+                                </React.Fragment>
                             );
                         })}
                     </Row>
@@ -76,4 +85,10 @@ const Column = styled.div`
 
 const Cover = styled.img`
     border: 1px solid #c3bfbf;
+    min-height: 14rem;
+    max-height: 14rem;
+    @media (max-width: 960px) {
+        min-height: 19rem;
+        max-height: 19rem;
+    }
 `;

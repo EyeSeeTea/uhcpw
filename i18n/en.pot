@@ -5,13 +5,13 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-06-13T10:03:44.774Z\n"
-"PO-Revision-Date: 2023-06-13T10:03:44.774Z\n"
+"POT-Creation-Date: 2023-07-31T16:25:57.388Z\n"
+"PO-Revision-Date: 2023-07-31T16:25:57.388Z\n"
 
 msgid "All countries"
 msgstr ""
 
-msgid "The Financial Protection Expert Network"
+msgid "The European Financial Protection Network"
 msgstr ""
 
 msgid ""
@@ -68,19 +68,19 @@ msgstr ""
 msgid "Country expert"
 msgstr ""
 
-msgid "Antoniya Dimova"
-msgstr ""
-
-msgid "Professor"
-msgstr ""
-
-msgid "Medical University - Professor Dr Paraskev Stoyanov - Varna"
-msgstr ""
-
-msgid "Bulgaria"
-msgstr ""
-
 msgid "Country Resources"
+msgstr ""
+
+msgid "Select country"
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "In detail"
+msgstr ""
+
+msgid "Country resources"
 msgstr ""
 
 msgid "Financial hardship (2018)"
@@ -171,9 +171,6 @@ msgid ""
 "resources carefully to meet equity and efficiency goals."
 msgstr ""
 
-msgid "Select country"
-msgstr ""
-
 msgid "I would like to see countries grouped by income bracket (LMIC/UMIC/HIC)"
 msgstr ""
 
@@ -202,14 +199,14 @@ msgid ""
 "financial protection at country level"
 msgstr ""
 
-msgid "Country page"
+msgid "Country pages"
 msgstr ""
 
 msgid "The region at a glance"
 msgstr ""
 
 msgid ""
-"Compare financial protection indicators, identify faps in coverage, explore "
+"Compare financial protection indicators, identify gaps in coverage, explore "
 "good practice"
 msgstr ""
 
@@ -317,13 +314,13 @@ msgstr ""
 msgid "Explore new evidence on financial protection in Europe and Central Asia"
 msgstr ""
 
-msgid "Stronger financial protection"
+msgid "Weaker financial protection"
 msgstr ""
 
 msgid "Gaps in financial protection"
 msgstr ""
 
-msgid "Weaker financial protection"
+msgid "Stronger financial protection"
 msgstr ""
 
 msgid "Category and indicator"
@@ -368,10 +365,13 @@ msgstr ""
 msgid "Email: uhcwatch@who.int"
 msgstr ""
 
-msgid "© 2022 WHO"
+msgid "Privacy legal notice"
 msgstr ""
 
-msgid "Privacy legal notice"
+msgid "Beta version"
+msgstr ""
+
+msgid "Mobile-friendly version coming soon"
 msgstr ""
 
 msgid "Glossary"
@@ -381,9 +381,6 @@ msgid "Search"
 msgstr ""
 
 msgid "Regions"
-msgstr ""
-
-msgid "Glossary of terms"
 msgstr ""
 
 msgid "Back"
@@ -417,15 +414,6 @@ msgid "Select theme"
 msgstr ""
 
 msgid "All"
-msgstr ""
-
-msgid "Dashboard"
-msgstr ""
-
-msgid "In detail"
-msgstr ""
-
-msgid "Country resources"
 msgstr ""
 
 msgid "Switch row/column"

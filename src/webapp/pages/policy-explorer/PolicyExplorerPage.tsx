@@ -25,7 +25,7 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{i18n.t("Policy explorer")}</Typography>
+                <Typography variant="h3">{i18n.t("Policy explorer")}</Typography>
                 <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
             </TitleContainer>
 
@@ -52,7 +52,9 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                                     color="primary"
                                     onClick={onSwitchRowColumn}
                                 >
-                                    {i18n.t("Switch row/column")}
+                                    <Typography style={{ textTransform: "initial" }}>
+                                        {i18n.t("Switch row/column")}
+                                    </Typography>
                                 </CustomButton>
                                 <CustomButton
                                     variant="contained"
@@ -61,7 +63,7 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                                     style={{ marginLeft: 20 }}
                                     onClick={onDownload}
                                 >
-                                    {i18n.t("Download")}
+                                    <Typography style={{ textTransform: "initial" }}>{i18n.t("Download")}</Typography>
                                 </CustomButton>
                             </Row>
                         </Row>
@@ -97,7 +99,12 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                             <GeneralRow>
                                 <CreditsText>{i18n.t("Source: ")}</CreditsText>
                                 &nbsp;
-                                <Link href={info.source} style={{ fontSize: "16px", color: colors.accentPrimary }}>
+                                <Link
+                                    href={info.source}
+                                    style={{ fontSize: "16px", color: colors.accentPrimary }}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
                                     {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
                                 </Link>
                             </GeneralRow>

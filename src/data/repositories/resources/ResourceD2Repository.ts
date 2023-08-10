@@ -171,7 +171,7 @@ export class ResourceD2Repository implements ResourceRepository {
         const link3 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
         const link3Language =
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3Language)?.value || "";
-        const link4 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link3)?.value || "";
+        const link4 = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4)?.value || "";
         const link4Language =
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4Language)?.value || "";
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { SectionHeader } from "../section-header/SectionHeader";
 import i18n from "../../../../locales";
-import { Grid } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { SectionBlock } from "../section-block/SectionBlock";
 import { CTA } from "../buttons/CTA";
@@ -24,18 +24,20 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <CTA text={i18n.t("Country page")} link="/country/bulgaria" />
+                        <CTA text={i18n.t("Country pages")} link="/country/bulgaria" />
                     </ButtonContainer>
                 </CountryContext>
                 <Region item md={6} xs={12}>
                     <SectionBlock
                         title={i18n.t("The region at a glance")}
                         text={i18n.t(
-                            "Compare financial protection indicators, identify faps in coverage, explore good practice"
+                            "Compare financial protection indicators, identify gaps in coverage, explore good practice"
                         )}
                     />
                     <ButtonContainer>
-                        <Tag>{i18n.t("Coming soon")}</Tag>
+                        <Tag>
+                            <Typography>{i18n.t("Coming soon")}</Typography>
+                        </Tag>
                     </ButtonContainer>
                 </Region>
             </Content>

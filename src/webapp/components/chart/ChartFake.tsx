@@ -52,7 +52,7 @@ export const ChartFake: React.FC<ChartProps> = React.memo(({ name, image, dialog
                             onClick={handleDownload}
                             className="download-button"
                         >
-                            {i18n.t("Download")}
+                            <Typography>{i18n.t("Download")}</Typography>
                         </DownloadButton>
                     </Row>
                 </Row>
@@ -81,6 +81,7 @@ const DownloadButton = styled(Button)`
     padding: 0px 32px;
     height: 42px;
     background: #185698;
+    text-transform: initial;
 `;
 
 const CustomInfoIcon = styled(InfoIcon)`

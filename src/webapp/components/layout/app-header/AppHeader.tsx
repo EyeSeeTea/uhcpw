@@ -3,7 +3,7 @@ import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
 import whoLogoBlue from "../../../assets/who-logo-blue.png";
-import { Box, Button, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -14,6 +14,7 @@ import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useCountryOptionsOnlyBulgaria } from "../../../common/hooks/countries/useCountryOptionsOnlyBulgaria";
 import { Glossary } from "./Glossary";
+import { MobileMenu } from "./MobileMenu";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -27,6 +28,11 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(1.5),
         paddingLeft: theme.spacing(8),
         paddingRight: theme.spacing(8),
+        "@media (max-width: 500px)": {
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
+            gap: 4,
+        },
     },
     toolbarBottom: {
         background: "white",
@@ -84,10 +90,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
                     <BetaVersionTagContainer>
-                        <Tag>{i18n.t("Beta version")}</Tag>
+                        <Tag>
+                            <Typography variant="body2">{i18n.t("Beta version")}</Typography>
+                        </Tag>
                     </BetaVersionTagContainer>
                     <BetaVersionTagContainer>
-                        <Tag>{i18n.t("Mobile-friendly version coming soon")}</Tag>
+                        <Tag>
+                            <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
+                        </Tag>
                     </BetaVersionTagContainer>
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
@@ -102,7 +112,10 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={goToHome} />;
                     </LogoContainer>
                     <Box className={classes.rest} />
-                    <div>
+                    <Hidden mdUp>
+                        <MobileMenu />
+                    </Hidden>
+                    <Hidden mdDown>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -141,7 +154,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                 return (
                                     <MenuItem
                                         key={country.value}
-                                        onClick={() => history.push(`country/${country.text.toLowerCase()}`)}
+                                        onClick={() => history.push(`/country-page?country=${country.value}`)}
                                     >
                                         {country.text}
                                     </MenuItem>
@@ -208,7 +221,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         >
                             {i18n.t("About us")}
                         </Button>
-                    </div>
+                    </Hidden>
                 </Toolbar>
             </MuiAppBar>
             <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
@@ -245,7 +258,6 @@ const Tag = styled.div`
     min-width: 100px;
     background-color: #4fad56;
     color: white;
-    font-size: 15px;
     border-radius: 30px;
     padding: 5px 10px;
 `;
