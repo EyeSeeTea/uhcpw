@@ -73,8 +73,8 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
                             <TableBody>
                                 {data.rows.map(row => (
                                     <TableRow key={row.toString()}>
-                                        {row.map(cell => (
-                                            <TableCell key={cell}>
+                                        {row.map((cell, index) => (
+                                            <TableCell key={`${index}_${cell}`}>
                                                 <ReactMarkdown>{cell}</ReactMarkdown>
                                             </TableCell>
                                         ))}
