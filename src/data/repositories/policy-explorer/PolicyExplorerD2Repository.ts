@@ -16,7 +16,7 @@ const generalDataElements: Record<string, string> = {
 };
 
 const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY = "u800TAhsIBY";
-const TYPES_OF_USER_CHARGE = "lHk8jtKonPh";
+const TYPES_OF_USER_CHARGE_CATEGORY = "lHk8jtKonPh";
 
 const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS = [
     "Type of health care",
@@ -303,7 +303,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         switch (policyExplorerCategoryId) {
             case USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY:
                 return this.getUserChargeByTypeOfHealthcareColumns();
-            case TYPES_OF_USER_CHARGE:
+            case TYPES_OF_USER_CHARGE_CATEGORY:
                 return this.getTypeOfUserChargeColumns();
             default:
                 return [["Country", "Period", ...dataElementsSection.map(de => de.formName)]];
@@ -345,7 +345,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             references,
                         }),
                     ];
-                case TYPES_OF_USER_CHARGE:
+                case TYPES_OF_USER_CHARGE_CATEGORY:
                     return [
                         ...accMain,
                         ...this.getRowsByTypeOfHealthcareUsingIds({
