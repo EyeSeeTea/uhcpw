@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 
@@ -20,7 +20,7 @@ export const CTA: React.FC<CTAProps> = ({ text, link }) => {
                 textTransform: "none",
             }}
         >
-            {text}
+            <Typography>{text}</Typography>
         </Button>
     );
 };

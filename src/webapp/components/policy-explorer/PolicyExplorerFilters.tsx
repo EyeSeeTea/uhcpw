@@ -1,4 +1,4 @@
-import { Button, Grid } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -15,7 +15,7 @@ export interface ResourcesFiltersProps {
 export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetTable }) => {
     return (
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
-            <Grid item md={4} xs={6}>
+            <Grid item md={4} sm={6}>
                 <Center>
                     <Dropdown
                         fullWidth
@@ -27,7 +27,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Center>
             </Grid>
-            <Grid item md={4} xs={6}>
+            <Grid item md={4} sm={6}>
                 <Center>
                     <CountrySelector
                         fullWidth
@@ -40,7 +40,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Center>
             </Grid>
-            <Grid item md={3} xs={6}>
+            <Grid item md={3} sm={6}>
                 <Center>
                     <DropdownMultiple
                         fullWidth
@@ -53,7 +53,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Center>
             </Grid>
-            <Grid item md={1} xs={2}>
+            <Grid item md={1} sm={2}>
                 <GetTableButton
                     aria-label="Get table"
                     variant="contained"
@@ -65,7 +65,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     }
                     onClick={onGetTable}
                 >
-                    {i18n.t("Get table")}
+                    <Typography>{i18n.t("Get table")}</Typography>
                 </GetTableButton>
             </Grid>
         </Grid>
@@ -83,4 +83,5 @@ const GetTableButton = styled(Button)`
     border-radius: 20px;
     height: 50px;
     text-transform: none;
+    white-space: nowrap;
 `;

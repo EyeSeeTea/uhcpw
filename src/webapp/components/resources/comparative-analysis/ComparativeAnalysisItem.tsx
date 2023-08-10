@@ -15,7 +15,11 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
     ({ comparativeAnalysis, minimalVersion }) => {
         return (
             <Item elevation={0} role="listitem">
-                <AnalysisItem analysisResource={comparativeAnalysis} minimalVersion={minimalVersion} />
+                <AnalysisItem
+                    analysisResource={comparativeAnalysis}
+                    minimalVersion={minimalVersion}
+                    type="comparative-analysis"
+                />
             </Item>
         );
     }

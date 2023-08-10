@@ -1,4 +1,4 @@
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useCallback, useState } from "react";
 import { Box, Tab, Tabs, Typography, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
@@ -21,6 +21,17 @@ import nineOne from "../../../assets/country-page/slider/9-1.jpg";
 import nineTwo from "../../../assets/country-page/slider/9-2.jpg";
 import { SlideInfoOne } from "./SlideInfoOne";
 import { SlideInfoTwo } from "./SlideInfoTwo";
+
+interface EventListenerArgs {
+    capture?: boolean;
+}
+
+interface AddEventListenerArgs extends EventListenerArgs {
+    passive?: boolean;
+    once?: boolean;
+}
+
+type AddEventListener = (type: string, listener: (event: Event) => void, options?: AddEventListenerArgs) => void;
 
 function TabPanel(props: { [x: string]: any; children: any; value: any; index: any }) {
     const { children, value, index, ...other } = props;
@@ -80,8 +91,36 @@ export const Slider: React.FC = () => {
         setValue(newValue);
     };
 
+    const preventDefault = (e: any) => {
+        if (e.preventDefault) {
+            e.preventDefault();
+        }
+        e.returnValue = false;
+    };
+
+    const enableScroll = useCallback(() => {
+        (document.removeEventListener as AddEventListener)("wheel", preventDefault, { passive: false });
+    }, []);
+
+    const disableScroll = useCallback(() => {
+        document.addEventListener("wheel", preventDefault, {
+            passive: false,
+        });
+    }, []);
+
+    const onWheel = useCallback(
+        (e: React.WheelEvent<HTMLButtonElement>) => {
+            if (e.deltaY > 10 && value < 10) {
+                setTimeout(() => setValue(value + 1), 800);
+            } else if (e.deltaY < -10 && value > 0) {
+                setTimeout(() => setValue(value - 1), 800);
+            }
+        },
+        [value]
+    );
+
     return (
-        <div className={classes.root}>
+        <div className={classes.root} aria-label="country-page-slider">
             <Tabs
                 orientation="vertical"
                 value={value}
@@ -93,6 +132,9 @@ export const Slider: React.FC = () => {
                         width: "10px",
                     },
                 }}
+                onWheel={onWheel}
+                onMouseEnter={disableScroll}
+                onMouseLeave={enableScroll}
             >
                 <Tab className={classes.tab} {...a11yProps(0)} />
                 <Tab className={classes.tab} {...a11yProps(1)} />
@@ -111,7 +153,7 @@ export const Slider: React.FC = () => {
                     title="How many people experience financial hardship: impoverishing health spending?"
                     graphOne={{
                         title: "Households with impoverishing health spending",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: oneOne,
                         dialogInfo: {
                             infoNotes: [
@@ -123,7 +165,7 @@ export const Slider: React.FC = () => {
                     }}
                     graphTwo={{
                         title: "Households with impoverishing health spending, 2019 or latest available year before COVID-19",
-                        theme: "Comparative charts",
+                        theme: "Comparative chart",
                         image: oneTwo,
                         dialogInfo: {
                             infoNotes: [
@@ -140,7 +182,7 @@ export const Slider: React.FC = () => {
                     title="How many people experience financial hardship: catastrophic health spending?"
                     graphOne={{
                         title: "Households with catastrophic health spending",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: twoOne,
                         dialogInfo: {
                             infoNotes: [
@@ -169,7 +211,7 @@ export const Slider: React.FC = () => {
                     title="Who experiences financial hardship?"
                     graphOne={{
                         title: "Households with catastrophic health spending by consumption quintile",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: threeOne,
                         dialogInfo: {
                             infoNotes: [
@@ -198,7 +240,7 @@ export const Slider: React.FC = () => {
                     title="Which health services are responsible for financial hardship?"
                     graphOne={{
                         title: "Breakdown of catastrophic health spending by type of care",
-                        theme: "Financial Hardship",
+                        theme: "Financial hardship",
                         image: fourOne,
                         dialogInfo: {
                             infoNotes: [
@@ -325,7 +367,7 @@ export const Slider: React.FC = () => {
                     title="How much does Bulgaria spend on health? International comparison"
                     graphOne={{
                         title: "Public spending on health as a share of government spending, 2019",
-                        theme: "Comparative",
+                        theme: "Comparative chart",
                         image: nineOne,
                         dialogInfo: {
                             infoNotes: [

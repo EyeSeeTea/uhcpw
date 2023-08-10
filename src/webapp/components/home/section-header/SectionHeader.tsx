@@ -25,7 +25,9 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
                 <Title variant="h3">{header}</Title>
                 {tag && (
                     <TagContainer>
-                        <Tag>{tag}</Tag>
+                        <Tag>
+                            <Typography>{tag}</Typography>
+                        </Tag>
                     </TagContainer>
                 )}
                 {hasArrowIcon && <ChevronRightIcon />}
@@ -45,7 +47,7 @@ const Header = styled.div<{ isBackgroundOnRight?: boolean }>`
     background-image: ${props => props.isBackgroundOnRight !== undefined && `url(${bubblePattern})`};
     background-repeat: no-repeat;
     background-position: ${props => (props.isBackgroundOnRight ? "right" : "-200px")};
-    padding: 40px 0px;
+    padding: 40px 0px 0px;
 `;
 
 const Title = styled(Typography)`
@@ -74,7 +76,6 @@ const Tag = styled.div`
     min-width: 100px;
     background-color: #4fad56;
     color: white;
-    font-size: 15px;
     border-radius: 30px;
     padding: 5px 10px;
 `;

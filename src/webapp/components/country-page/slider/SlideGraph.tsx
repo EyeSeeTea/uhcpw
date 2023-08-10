@@ -1,11 +1,9 @@
-import { Grid, IconButton, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled from "styled-components";
-import InfoIcon from "@material-ui/icons/Info";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import { useState } from "react";
 import { NotesDialog } from "../../dialog/NotesDialog";
-//import ExpandIcon from "../../../assets/country-page/expand-icon.svg";
+import { ActionButtons } from "../graphs/ActionButtons";
 
 type SlideGraphType = {
     title: string;
@@ -48,26 +46,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         <Row>
                             <Tag>{graphOne.theme}</Tag>
                             <div style={{ marginTop: "5px", marginLeft: "20px" }}>
-                                <IconButton style={{ padding: "5px" }} onClick={() => setIsGraphOneOpen(true)}>
-                                    <InfoIcon color="primary" style={{ color: "#035fa7" }} />
-                                </IconButton>
-                                {/* <IconButton style={{ padding: "5px" }}>
-                                    <img src={ExpandIcon} alt="expand icon" />
-                                </IconButton> */}
-                                <a href={graphOne.image} download>
-                                    <IconButton style={{ padding: "5px" }}>
-                                        <GetAppIcon
-                                            color="primary"
-                                            style={{
-                                                color: "white",
-                                                backgroundColor: "#035fa7",
-                                                borderRadius: "50%",
-                                                padding: "4px",
-                                                fontSize: "12px",
-                                            }}
-                                        />
-                                    </IconButton>
-                                </a>
+                                <ActionButtons
+                                    onIconButtonClick={() => setIsGraphOneOpen(true)}
+                                    graphImage={graphOne.image}
+                                />
                             </div>
                         </Row>
                     </Column>
@@ -84,26 +66,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             <Row>
                                 <Tag>{graphTwo.theme}</Tag>
                                 <div style={{ marginTop: "5px", marginLeft: "20px" }}>
-                                    <IconButton style={{ padding: "5px" }} onClick={() => setIsGraphTwoOpen(true)}>
-                                        <InfoIcon style={{ color: "#035fa7" }} />
-                                    </IconButton>
-                                    {/* <IconButton style={{ padding: "5px" }}>
-                                        <img src={ExpandIcon} alt="expand icon" />
-                                    </IconButton> */}
-                                    <a href={graphTwo.image} download>
-                                        <IconButton style={{ padding: "5px" }}>
-                                            <GetAppIcon
-                                                color="primary"
-                                                style={{
-                                                    color: "white",
-                                                    backgroundColor: "#035fa7",
-                                                    borderRadius: "50%",
-                                                    padding: "4px",
-                                                    fontSize: "12px",
-                                                }}
-                                            />
-                                        </IconButton>
-                                    </a>
+                                    <ActionButtons
+                                        onIconButtonClick={() => setIsGraphTwoOpen(true)}
+                                        graphImage={graphTwo.image}
+                                    />
                                 </div>
                             </Row>
                         </Column>

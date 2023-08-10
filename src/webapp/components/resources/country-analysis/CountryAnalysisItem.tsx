@@ -20,7 +20,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
                 </Typography>
             </Row>
             <Box height={8} />
-            <AnalysisItem analysisResource={countryAnalysis} />
+            <AnalysisItem analysisResource={countryAnalysis} type="country-analysis" />
         </Item>
     );
 });
