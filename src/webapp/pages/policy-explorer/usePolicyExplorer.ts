@@ -24,8 +24,9 @@ export function usePolicyExplorer(): PolicyExplorerState {
     const [dataOrientation, setDataOrientation] = useState<DataOrientation>("normal");
 
     useEffect(() => {
-        setData(dataOrientation === "inverted" ? invertData(initialData) : initialData);
-    }, [dataOrientation, initialData]);
+        setData(invertData(initialData));
+        setDataOrientation("inverted");
+    }, [initialData]);
 
     useEffect(() => {
         compositionRoot.policyExplorer.getYears.execute().run(
@@ -55,6 +56,8 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, [compositionRoot.policyExplorer]);
 
     const onGetTable = useCallback(() => {
+        setInitialData(undefined);
+        setData(undefined);
         if (selectedCategoryFilter) {
             compositionRoot.policyExplorer.get
                 .execute(
@@ -65,15 +68,11 @@ export function usePolicyExplorer(): PolicyExplorerState {
                 .run(
                     policyExplorer => {
                         setInitialData(policyExplorer);
-                        setDataOrientation("inverted");
                     },
                     () => {
                         setInitialData(undefined);
                     }
                 );
-        } else {
-            setInitialData(undefined);
-            setData(undefined);
         }
     }, [compositionRoot.policyExplorer.get, countryFilter.selected, selectedCategoryFilter, selectedYearFilter]);
 
@@ -86,8 +85,11 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, []);
 
     const onSwitchRowColumn = useCallback(() => {
-        setDataOrientation(dataOrientation === "normal" ? "inverted" : "normal");
-    }, [dataOrientation]);
+        const newDataorientation = dataOrientation === "normal" ? "inverted" : "normal";
+        setDataOrientation(newDataorientation);
+        const newData = newDataorientation === "inverted" ? invertData(initialData) : initialData;
+        setData(newData);
+    }, [dataOrientation, initialData]);
 
     const onDownload = useCallback(() => {
         if (!data) return;

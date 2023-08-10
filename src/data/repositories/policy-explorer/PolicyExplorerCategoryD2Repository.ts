@@ -13,6 +13,8 @@ const sectionsList = [
     "mCMVwmnGWJF",
     "u800TAhsIBY",
     "lHk8jtKonPh",
+    "FtRwT2aBET4",
+    "Dg4b8bTfEIr",
 ];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {

@@ -317,15 +317,23 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         dataSet?: D2DataSet
     ): string[][] {
         const dataElementsSection = this.getDataElementsSection(policyExplorerCategoryId, dataSet);
-
-        const dataValuesByCountryAndYear = _(dataValues)
+        const dataValuesOrderByYear = _.orderBy(dataValues, ["orgUnit", "period"], "asc");
+        const dataValuesByCountryAndYear = _(dataValuesOrderByYear)
             .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
             .value();
 
+        const countriesAlreadyInRows: string[] = [];
         return Object.keys(dataValuesByCountryAndYear).reduce((accRows: string[][], group): string[][] => {
             const [orgUnit, period] = group.split("-");
 
-            const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
+            let orgUnitName;
+            if (orgUnit && countriesAlreadyInRows.includes(orgUnit)) {
+                orgUnitName = "";
+            } else {
+                orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
+                orgUnit && countriesAlreadyInRows.push(orgUnit);
+            }
+
             const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
             const references =
@@ -377,7 +385,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return (
             dataSet?.sections
                 .find(section => section.id === policyExplorerCategoryId)
-                ?.dataElements.filter(de => de.valueType === "LONG_TEXT") || []
+                ?.dataElements.filter(de => de.valueType === "LONG_TEXT" || de.valueType === "TEXT") || []
         );
     }
 
