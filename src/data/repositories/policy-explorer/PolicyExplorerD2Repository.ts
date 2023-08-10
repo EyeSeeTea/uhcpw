@@ -223,7 +223,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
             .value();
 
-        return Object.keys(dataValuesByCountryAndYear).reduce((accMain: string[][], group): string[][] => {
+        return Object.keys(dataValuesByCountryAndYear).reduce((accRows: string[][], group): string[][] => {
             const [orgUnit, period] = group.split("-");
 
             const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
@@ -242,11 +242,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     references,
                 });
 
-                return [...accMain, ...rows];
+                return [...accRows, ...rows];
             }
 
             return [
-                ...accMain,
+                ...accRows,
                 [
                     orgUnitName,
                     period || "",
