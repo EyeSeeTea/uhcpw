@@ -72,6 +72,8 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             options={filters.category.options}
                             value={filters.category.selected}
                             onChange={onCategoryChange}
+                            label={i18n.t("Select category")}
+                            hideLabel
                         />
                     </Center>
                 </Grid>
@@ -84,6 +86,8 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             value={filters.theme.selected}
                             onChange={onThemeChange}
                             disabled={disabledThemeFilter}
+                            label={i18n.t("Select theme")}
+                            hideLabel
                         />
                     </Center>
                 </Grid>
@@ -109,6 +113,8 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             values={filters.year.selected}
                             onChange={filters.year.onSelectedChange}
                             disabled={disabledYearFilter}
+                            label={i18n.t("Select years")}
+                            hideLabel
                         />
                     </Center>
                 </Grid>

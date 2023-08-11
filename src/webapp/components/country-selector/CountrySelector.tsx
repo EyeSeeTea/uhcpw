@@ -137,6 +137,9 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     role={"textbox"}
                     disabled
                     fullWidth={fullWidth}
+                    inputProps={{
+                        "aria-label": "Select countries",
+                    }}
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>

@@ -15,6 +15,7 @@ interface DropdownProps<T extends string = string> {
     onChange: (value?: T) => void;
     disabled?: boolean;
     width?: string;
+    hideLabel?: boolean;
 }
 
 interface ContainerProps {
@@ -27,7 +28,17 @@ type OptionLabel = {
 };
 
 export const Dropdown: React.FC<DropdownProps> = React.memo(
-    ({ label, options, value, placeholder, fullWidth, onChange, disabled = false, width = "100%" }) => {
+    ({
+        label,
+        options,
+        value,
+        placeholder,
+        fullWidth,
+        onChange,
+        disabled = false,
+        width = "100%",
+        hideLabel = false,
+    }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
 
         useEffect(() => {
@@ -54,13 +65,13 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                 <StyledAutocomplete
                     fullWidth={fullWidth}
                     multiple={false}
-                    id="tags-filled"
                     options={options}
                     value={valueOption || null}
                     getOptionLabel={option => (option as OptionLabel)?.text}
                     renderInput={params => (
-                        <DropdownTextField
+                        <StyledDropdownTextField
                             {...params}
+                            className={`${hideLabel ? "hide-label" : ""}`}
                             variant="standard"
                             label={label}
                             placeholder={placeholder}
@@ -71,7 +82,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     disabled={disabled}
                 />
                 {value && (
-                    <ClearButton variant="text" onClick={handleClear} top={label ? "0" : "-30px"}>
+                    <ClearButton variant="text" onClick={handleClear} top={label && !hideLabel ? "0" : "-20px"}>
                         {i18n.t("Clear")}
                     </ClearButton>
                 )}
@@ -101,5 +112,18 @@ const StyledAutocomplete = styled(Autocomplete)`
     }
     .MuiAutocomplete-popupIndicator {
         margin-right: 5px;
+    }
+`;
+
+const StyledDropdownTextField = styled(DropdownTextField)`
+    &.hide-label {
+        label {
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
     }
 `;
