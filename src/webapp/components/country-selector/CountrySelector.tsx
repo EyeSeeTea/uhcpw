@@ -132,7 +132,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                 <StyledDropdownTextField
                     label={label}
                     onClick={handleClick}
-                    aria-label="Countries"
+                    aria-label="Country selector"
                     placeholder={placeholder}
                     role={"textbox"}
                     disabled

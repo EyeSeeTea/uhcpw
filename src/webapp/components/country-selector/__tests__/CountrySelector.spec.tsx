@@ -165,7 +165,7 @@ function CountrySelectorContainer() {
 
 function focusComponent() {
     const autocompleteInput = screen.getByRole("textbox", {
-        name: /countries/i,
+        name: /Country selector/i,
     });
 
     userEvent.click(autocompleteInput);
