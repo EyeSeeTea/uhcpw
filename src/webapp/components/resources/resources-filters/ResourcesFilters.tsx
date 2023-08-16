@@ -91,8 +91,6 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             placeholder={i18n.t("Select country")}
                             countries={filters.country.options}
                             selectedIds={filters.country.selected}
-                            groupedByIncome={filters.country.groupedByIncome}
-                            onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                             disabled={disabledCountryFilter}
                             onSelectedIdsChange={onCountryChange}
                         />
