@@ -12,6 +12,8 @@ import { D2Api } from "./types/d2-api";
 declare global {
     interface Window {
         api: D2Api;
+        gtag: (...args: any[]) => void;
+        dataLayer: any[];
     }
 }
 
