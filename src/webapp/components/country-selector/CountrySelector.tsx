@@ -113,11 +113,14 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                 <StyledDropdownTextField
                     label={label}
                     onClick={handleClick}
-                    aria-label="Countries"
+                    aria-label="Country selector"
                     placeholder={placeholder}
                     role={"textbox"}
                     disabled
                     fullWidth={fullWidth}
+                    inputProps={{
+                        "aria-label": "Select countries",
+                    }}
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>
@@ -146,6 +149,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             </InputAdornment>
                         ),
                     }}
+                    $isDisabled={disabled}
                 ></StyledDropdownTextField>
                 <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}

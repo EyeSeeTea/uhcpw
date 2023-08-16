@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
@@ -65,6 +65,26 @@ describe("ResourcesPage", () => {
         await verifyElementsInGroup("Multimedia", 1);
         await verifyElementsInGroup("Country Analysis", 1);
         await verifyElementsInGroup("Comparative Analysis", 4);
+    });
+    it("should render enabled category filter", async () => {
+        renderPage();
+
+        expect(screen.getByRole("textbox", { name: /select category/i })).not.toBeDisabled();
+    });
+    it("should render disabled theme filter", async () => {
+        renderPage();
+
+        expect(screen.getByRole("textbox", { name: /select theme/i })).toBeDisabled();
+    });
+    it("should render disabled country filter", async () => {
+        renderPage();
+
+        expect(screen.getByRole("textbox", { name: /select countries/i })).toBeDisabled();
+    });
+    it("should render disabled years filter", async () => {
+        renderPage();
+
+        expect(screen.getByRole("textbox", { name: /select years/i })).toBeDisabled();
     });
 });
 

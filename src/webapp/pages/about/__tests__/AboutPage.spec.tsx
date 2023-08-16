@@ -226,7 +226,7 @@ async function selectLetterFilter(letter: string) {
 }
 
 async function selectCountry(value: string) {
-    const countrySelector = screen.getByLabelText(/countries/i);
+    const countrySelector = screen.getByLabelText(/country selector/i);
 
     await userEvent.click(countrySelector);
 
