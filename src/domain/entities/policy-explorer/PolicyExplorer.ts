@@ -1,5 +1,5 @@
 export type PolicyExplorer = {
-    rows: string[][];
+    tables: Record<string, string[][]>;
     generalInfo: PolicyExplorerGeneralInfo[];
 };
 

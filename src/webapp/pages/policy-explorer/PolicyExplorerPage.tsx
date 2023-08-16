@@ -1,25 +1,23 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
 import { usePolicyExplorer } from "./usePolicyExplorer";
-import InfoIcon from "@material-ui/icons/Info";
-import SwitchIcon from "@material-ui/icons/Cached";
-import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
 import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
-import ReactMarkdown from "react-markdown";
-import { DataOrientation } from "./PolicyExplorerState";
 import moment from "moment";
 import policyExplorer from "../../assets/policy-explorer.svg";
+import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
 export const PolicyExplorerPage: React.FC = React.memo(() => {
-    const { filters, data, onGetTable, onSwitchRowColumn, onDownload, dataOrientation } = usePolicyExplorer();
+    const { filters, data, onGetTable, onSwitchRowColumn, onDownload, dataOrientationByTable } = usePolicyExplorer();
 
-    const category = useMemo(() => {
-        return filters.category.options.find(cat => cat.value === filters.category.selected);
+    const categories = useMemo(() => {
+        return filters.category.options.filter(
+            category => filters.category.selected && Object.keys(filters.category.selected)?.includes(category.value)
+        );
     }, [filters.category]);
 
     return (
@@ -32,59 +30,17 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} />
 
-                {data && (
-                    <TableHeader>
-                        <Row>
-                            {category && (
-                                <Row>
-                                    <Typography variant="h6" color="primary">
-                                        {category.text}
-                                    </Typography>
-                                    <Button>
-                                        <InfoIcon color="primary" />
-                                    </Button>
-                                </Row>
-                            )}
-                            <Row>
-                                <CustomButton
-                                    variant="outlined"
-                                    startIcon={<SwitchIcon />}
-                                    color="primary"
-                                    onClick={onSwitchRowColumn}
-                                >
-                                    <Typography style={{ textTransform: "initial" }}>
-                                        {i18n.t("Switch row/column")}
-                                    </Typography>
-                                </CustomButton>
-                                <CustomButton
-                                    variant="contained"
-                                    startIcon={<DownloadIcon />}
-                                    color="primary"
-                                    style={{ marginLeft: 20 }}
-                                    onClick={onDownload}
-                                >
-                                    <Typography style={{ textTransform: "initial" }}>{i18n.t("Download")}</Typography>
-                                </CustomButton>
-                            </Row>
-                        </Row>
-                    </TableHeader>
-                )}
-                {data ? (
-                    <TableContainer component={TablePaper}>
-                        <StyledTable orientation={dataOrientation}>
-                            <TableBody>
-                                {data.rows.map(row => (
-                                    <TableRow key={row.toString()}>
-                                        {row.map(cell => (
-                                            <TableCell key={cell}>
-                                                <ReactMarkdown>{cell}</ReactMarkdown>
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </StyledTable>
-                    </TableContainer>
+                {data && dataOrientationByTable ? (
+                    categories.map(category => (
+                        <PolicyExplorerTable
+                            key={category.value}
+                            category={category}
+                            rows={data.tables[category.value]}
+                            onSwitchRowColumn={onSwitchRowColumn}
+                            onDownload={onDownload}
+                            dataOrientation={dataOrientationByTable[category.value]}
+                        />
+                    ))
                 ) : (
                     <EmptyContent />
                 )}
@@ -134,14 +90,6 @@ export const PolicyExplorerPage: React.FC = React.memo(() => {
     );
 });
 
-export const StyledTable: React.FC<{ orientation: DataOrientation }> = ({ orientation, children }) => {
-    return orientation === "normal" ? (
-        <StyledNormalTable aria-label="simple table">{children}</StyledNormalTable>
-    ) : (
-        <StyledInvertedTable aria-label="simple table">{children}</StyledInvertedTable>
-    );
-};
-
 const GeneralDataContainer = styled.div`
     font-size: 16px;
     margin-bottom: 24px;
@@ -166,69 +114,11 @@ const Image = styled.img`
     height: 160px;
 `;
 
-const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-`;
 const GeneralRow = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     margin-bottom: 12px;
-`;
-
-const TableHeader = styled.div`
-    padding: 48px 0px;
-`;
-
-const CustomButton = styled(Button)`
-    border-radius: 10px;
-    padding: 0px 16px;
-`;
-
-const TablePaper = styled(Paper)`
-    border-radius: 10px;
-    box-shadow: none;
-`;
-
-const StyledNormalTable = styled(Table)`
-    tbody {
-        background: #f4f8fc;
-    }
-    tbody > tr:first-child > td {
-        background-color: #d3e5f5;
-    }
-
-    tbody > tr:first-child > td {
-        color: #0460a7;
-        font-weight: 500;
-    }
-    tbody > tr:first-child > td {
-        vertical-align: middle;
-    }
-    tbody > tr > td {
-        vertical-align: top;
-    }
-    margin-bottom: 64px;
-`;
-
-const StyledInvertedTable = styled(Table)`
-    tbody {
-        background: #f4f8fc;
-    }
-
-    tbody > tr > td:first-child {
-        background-color: #d3e5f5;
-    }
-    tbody > tr > td:first-child {
-        color: #0460a7;
-        font-weight: 500;
-    }
-    tbody > tr > td {
-        vertical-align: top;
-    }
-    margin-bottom: 64px;
 `;
 
 const CreditsText = styled(Typography)`

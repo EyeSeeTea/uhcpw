@@ -18,7 +18,11 @@ const generalDataElements: Record<string, string> = {
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
-    get(policyExplorerCategoryId: string, countries: string[], years: string[]): FutureData<PolicyExplorer> {
+    get(
+        policyExplorerCategories: Record<string, string[]>,
+        countries: string[],
+        years: string[]
+    ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
                 this.api.models.dataSets.get({
@@ -42,30 +46,30 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             ),
         }).map(({ dataSetResponse, dataValuesResponse, orgUnitsResponse }) => {
             return {
-                rows: [
-                    ...this.buildColumns(policyExplorerCategoryId, dataSetResponse.objects[0]),
-                    ...this.buildRows(
-                        policyExplorerCategoryId,
-                        dataValuesResponse.dataValues,
-                        orgUnitsResponse.objects,
-                        dataSetResponse.objects[0]
-                    ),
-                ],
+                tables: this.buildTables(
+                    policyExplorerCategories,
+                    dataValuesResponse.dataValues,
+                    orgUnitsResponse.objects,
+                    dataSetResponse.objects[0]
+                ),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, orgUnitsResponse.objects),
             };
         });
     }
 
-    saveToFile(policyExplorer: PolicyExplorer): FutureData<void> {
-        exportToCSV(
-            [
-                {
-                    data: policyExplorer.rows,
-                    name: "Policy Explorer",
-                },
-            ],
-            "PolicyExplorer"
-        );
+    saveToFile(policyExplorer: PolicyExplorer, categoryId: string): FutureData<void> {
+        const data = policyExplorer.tables[categoryId];
+        if (data) {
+            exportToCSV(
+                [
+                    {
+                        data,
+                        name: "Policy Explorer",
+                    },
+                ],
+                "PolicyExplorer"
+            );
+        }
         return Future.success(undefined);
     }
 
@@ -101,19 +105,32 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    private buildColumns(policyExplorerCategoryId: string, dataSet?: D2DataSet): string[][] {
-        const dataElementsSection = this.getDataElementsSection(policyExplorerCategoryId, dataSet);
+    private buildColumns(
+        policyExplorerCategoryId: string,
+        policyExplorerSubcategoriesIds: string[],
+        dataSet?: D2DataSet
+    ): string[][] {
+        const dataElementsSection = this.getDataElementsSection(
+            policyExplorerCategoryId,
+            policyExplorerSubcategoriesIds,
+            dataSet
+        );
 
         return [["Country", "Period", ...dataElementsSection.map(de => de.formName)]];
     }
 
     private buildRows(
         policyExplorerCategoryId: string,
+        policyExplorerSubcategoriesIds: string[],
         dataValues: DataValueSetsDataValue[],
         organisationUnits: D2OrgUnit[],
         dataSet?: D2DataSet
     ): string[][] {
-        const dataElementsSection = this.getDataElementsSection(policyExplorerCategoryId, dataSet);
+        const dataElementsSection = this.getDataElementsSection(
+            policyExplorerCategoryId,
+            policyExplorerSubcategoriesIds,
+            dataSet
+        );
 
         const dataValuesByCountryAndYear = _(dataValues)
             .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
@@ -142,11 +159,42 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    private getDataElementsSection(policyExplorerCategoryId: string, dataSet?: D2DataSet) {
+    private buildTables(
+        policyExplorerCategories: Record<string, string[]>,
+        dataValues: DataValueSetsDataValue[],
+        organisationUnits: D2OrgUnit[],
+        dataSet?: D2DataSet
+    ): Record<string, string[][]> {
+        const tables = {};
+        return Object.entries(policyExplorerCategories).reduce(
+            (acc, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => ({
+                ...acc,
+                [policyExplorerCategoryId]: [
+                    ...this.buildColumns(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet),
+                    ...this.buildRows(
+                        policyExplorerCategoryId,
+                        policyExplorerSubcategoriesIds,
+                        dataValues,
+                        organisationUnits,
+                        dataSet
+                    ),
+                ],
+            }),
+            tables
+        );
+    }
+
+    private getDataElementsSection(
+        policyExplorerCategoryId: string,
+        policyExplorerSubcategoriesIds: string[],
+        dataSet?: D2DataSet
+    ) {
         return (
             dataSet?.sections
                 .find(section => section.id === policyExplorerCategoryId)
-                ?.dataElements.filter(de => de.valueType === "LONG_TEXT") || []
+                ?.dataElements.filter(
+                    de => de.valueType === "LONG_TEXT" && policyExplorerSubcategoriesIds.includes(de.id)
+                ) || []
         );
     }
 }

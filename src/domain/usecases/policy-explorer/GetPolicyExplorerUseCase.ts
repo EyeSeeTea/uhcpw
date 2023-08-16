@@ -11,13 +11,13 @@ export class GetPolicyExplorerUseCase {
     ) {}
 
     public execute(
-        policyExplorerCategoryId: string,
+        policyExplorerCategories: Record<string, string[]>,
         countryIds: string[],
         years: string[]
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({ countries: this.getCountries(countryIds), years: this.getYears(years) }).flatMap(
             ({ countries, years }) => {
-                return this.policyExplorerRepository.get(policyExplorerCategoryId, countries, years);
+                return this.policyExplorerRepository.get(policyExplorerCategories, countries, years);
             }
         );
     }
