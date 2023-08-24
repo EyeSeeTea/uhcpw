@@ -58,10 +58,10 @@ export const PolicyExplorerTable = React.memo(
                 <TableContainer component={TablePaper}>
                     <StyledTable orientation={dataOrientation}>
                         <TableBody>
-                            {rows.map(row => (
-                                <TableRow key={`${category.value}_${row.toString()}`}>
-                                    {row.map(cell => (
-                                        <TableCell key={`${category.value}_${cell}`}>
+                            {rows.map((row, index) => (
+                                <TableRow key={`${category.value}_${index}_${row.toString()}`}>
+                                    {row.map((cell, i) => (
+                                        <TableCell key={`${category.value}_${i}_${cell}`}>
                                             <ReactMarkdown>{cell}</ReactMarkdown>
                                         </TableCell>
                                     ))}

@@ -217,7 +217,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         );
         const columns =
             policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY
-                ? this.getUserChargeByTypeOfHealthcareColumns()
+                ? this.getUserChargeByTypeOfHealthcareColumns(policyExplorerSubcategoriesIds)
                 : ["Country", "Period", ...dataElementsSection.map(de => de.formName)];
 
         return [columns];
@@ -253,6 +253,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
             if (policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY) {
                 const rows = this.getUserChargeByTypeOfHealthcareRowsUsingIds({
+                    policyExplorerSubcategoriesIds,
                     dataValuesByGroup,
                     orgUnitName,
                     period,
@@ -316,25 +317,29 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         );
     }
 
-    private getUserChargeByTypeOfHealthcareColumns() {
-        return [
-            "Country",
-            "Period",
-            "Type of health care",
-            ...Object.keys(USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS),
-        ];
+    private getUserChargeByTypeOfHealthcareColumns(policyExplorerSubcategoriesIds: string[]) {
+        const columns = Object.entries(USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS)
+            .filter(([_columnName, dataElementIds]) => {
+                return policyExplorerSubcategoriesIds.some(subcategoryId => dataElementIds.includes(subcategoryId));
+            })
+            .map(([columnName, _dataElementIds]) => columnName);
+        return ["Country", "Period", "Type of health care", ...columns];
     }
 
     private getUserChargeByTypeOfHealthcareRowsUsingIds(params: {
+        policyExplorerSubcategoriesIds: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
         references: string;
     }) {
-        const { dataValuesByGroup, orgUnitName, period, references } = params;
+        const { dataValuesByGroup, orgUnitName, period, references, policyExplorerSubcategoriesIds } = params;
 
-        const rows = Object.entries(TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS).reduce(
-            (acc: string[][], [healthcareType, dataElementsSectionIdsInType], index) => {
+        const rows = Object.entries(TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS)
+            .filter(([_columnName, dataElementIds]) => {
+                return policyExplorerSubcategoriesIds.some(subcategoryId => dataElementIds.includes(subcategoryId));
+            })
+            .reduce((acc: string[][], [healthcareType, dataElementsSectionIdsInType], index) => {
                 const initRow = index === 0 ? [orgUnitName, period || "", healthcareType] : ["", "", healthcareType];
                 const restRow = Object.values(USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS).map(
                     dataElementsSectionIdsInColumn => {
@@ -348,9 +353,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 );
                 const row = [...initRow, ...restRow];
                 return [...acc, row];
-            },
-            []
-        );
+            }, []);
         return rows;
     }
 

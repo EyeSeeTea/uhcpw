@@ -26,7 +26,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
 
     private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
         const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
-        console.log("sections", sections);
+
         return sections.map(section => ({
             id: section.id,
             name: section.displayName.replace("UHCW_", ""),
@@ -37,7 +37,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     private getSubcategories(dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
         return (
             dataElements
-                ?.filter(de => de.valueType === "LONG_TEXT" || de.valueType === "TEXT")
+                ?.filter(de => de.valueType === "LONG_TEXT")
                 .map(subcategory => ({
                     id: subcategory.id,
                     name: subcategory.formName,
