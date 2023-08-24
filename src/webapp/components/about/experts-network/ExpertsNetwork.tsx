@@ -33,8 +33,6 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                         countries={countryFilter.options}
                         selectedIds={countryFilter.selected}
                         onSelectedIdsChange={countryFilter.onSelectedChange}
-                        groupedByIncome={countryFilter.groupedByIncome}
-                        onGroupedByIncomeChange={countryFilter.onGroupedByIncomeChange}
                         placeholder="Select country"
                     />
 

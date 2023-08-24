@@ -34,6 +34,19 @@
         <script src="%PUBLIC_URL%/feedback-tool/feedback-github.min.js"></script>
         <script src="%PUBLIC_URL%/feedback-tool/feedback-dhis2.min.js"></script>
 
+        <script
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_ANALYTICS_4%"
+        ></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+              dataLayer.push(arguments);
+          }
+          gtag("js", new Date());
+          gtag("config", "%REACT_APP_GOOGLE_ANALYTICS_4%");
+        </script>
+
         <link rel="stylesheet" href="%PUBLIC_URL%/feedback-tool/feedback.min.css" />
     </head>
     <body>

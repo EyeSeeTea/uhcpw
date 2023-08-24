@@ -32,9 +32,10 @@ interface SearchInputProps {
     className?: string;
     onChange?: (value: string) => void;
     style?: React.CSSProperties;
+    autoFocus?: boolean;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, style }) => {
+const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, style, autoFocus = false }) => {
     const classes = useStyles();
 
     const [stateValue, updateStateValue] = useState(value);
@@ -74,6 +75,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
                 value={stateValue}
                 role="searchbox"
                 onKeyDown={handleKeydown}
+                autoFocus={autoFocus}
             />
         </Paper>
     );

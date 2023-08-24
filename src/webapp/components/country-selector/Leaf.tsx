@@ -15,11 +15,15 @@ export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedCh
         onSelectedChange(nodeId, event.target.checked);
     };
 
+    const handleClick = () => {
+        onSelectedChange(nodeId, !selected);
+    };
+
     return (
         <StyledTreeItem
             nodeId={nodeId}
             label={
-                <Row>
+                <Row role="checkbox">
                     <Checkbox
                         color="primary"
                         style={{ padding: "2px" }}
@@ -28,7 +32,7 @@ export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedCh
                         onChange={handleChange}
                         inputProps={{ "aria-label": name }}
                     />
-                    <Text>{name}</Text>
+                    <Text onClick={handleClick}>{name}</Text>
                 </Row>
             }
         />

@@ -1,5 +1,8 @@
 import { FutureData } from "../../../domain/entities/Future";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import {
+    PolicyExplorerCategory,
+    PolicyExplorerSubcategory,
+} from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
@@ -32,13 +35,38 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
         const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
 
-        return sections.map(section => ({ id: section.id, name: section.displayName.replace("UHCW_", "") }));
+        return sections.map(section => ({
+            id: section.id,
+            name: section.displayName.replace("UHCW_", ""),
+            subcategories: this.getSubcategories(section.dataElements),
+        }));
+    }
+
+    private getSubcategories(dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
+        return (
+            dataElements
+                ?.filter(de => de.valueType === "LONG_TEXT")
+                .map(subcategory => ({
+                    id: subcategory.id,
+                    name: subcategory.formName,
+                })) || []
+        );
     }
 }
 
-const dataSetFields = {
-    sections: { id: true, displayName: true },
+const dataElementsFields = {
+    id: true,
+    formName: true,
+    valueType: true,
 } as const;
+
+const dataSetFields = {
+    sections: { id: true, displayName: true, dataElements: dataElementsFields },
+} as const;
+
+type D2DataElements = MetadataPick<{
+    dataElements: { fields: typeof dataElementsFields };
+}>["dataElements"][number];
 
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };

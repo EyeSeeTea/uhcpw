@@ -4,8 +4,8 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
 import { CountrySelector } from "../country-selector/CountrySelector";
-import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
+import { CategorySelector } from "./category-selector/CategorySelector";
 
 export interface ResourcesFiltersProps {
     filters: PolicyExplorerFiltersState;
@@ -17,13 +17,13 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
             <Grid item md={4} sm={6}>
                 <Center>
-                    <Dropdown
+                    <CategorySelector
                         fullWidth
                         label={i18n.t("Category")}
                         placeholder={i18n.t("Select category")}
-                        options={filters.category.options}
-                        value={filters.category.selected}
-                        onChange={filters.category.onSelectedChange}
+                        categoryOptions={filters.category.options}
+                        selectedCategoriesWithSubcategories={filters.category.selected}
+                        onSelect={filters.category.onSelectedChange}
                     />
                 </Center>
             </Grid>
@@ -35,8 +35,6 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}
-                        groupedByIncome={filters.country.groupedByIncome}
-                        onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                     />
                 </Center>
             </Grid>
@@ -60,6 +58,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     color="primary"
                     disabled={
                         !filters.category.selected ||
+                        !Object.keys(filters.category.selected)?.length ||
                         !filters.country.selected?.length ||
                         !filters.year.selected?.length
                     }
