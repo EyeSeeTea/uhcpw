@@ -12,10 +12,12 @@ export interface ResourcesFiltersProps {
     filters: ResourcesFiltersState;
     onGetResources: () => void;
     disabledCountryFilter?: boolean;
+    disabledYearFilter?: boolean;
+    disabledThemeFilter?: boolean;
 }
 
 export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
-    ({ filters, onGetResources, disabledCountryFilter }) => {
+    ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
         const history = useHistory();
         const location = useLocation();
 
@@ -70,6 +72,8 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             options={filters.category.options}
                             value={filters.category.selected}
                             onChange={onCategoryChange}
+                            label={i18n.t("Select category")}
+                            hideLabel
                         />
                     </Center>
                 </Grid>
@@ -81,6 +85,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             options={filters.theme.options}
                             value={filters.theme.selected}
                             onChange={onThemeChange}
+                            disabled={disabledThemeFilter}
+                            label={i18n.t("Select theme")}
+                            hideLabel
                         />
                     </Center>
                 </Grid>
@@ -91,8 +98,6 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             placeholder={i18n.t("Select country")}
                             countries={filters.country.options}
                             selectedIds={filters.country.selected}
-                            groupedByIncome={filters.country.groupedByIncome}
-                            onGroupedByIncomeChange={filters.country.onGroupedByIncomeChange}
                             disabled={disabledCountryFilter}
                             onSelectedIdsChange={onCountryChange}
                         />
@@ -105,6 +110,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             options={filters.year.options}
                             values={filters.year.selected}
                             onChange={filters.year.onSelectedChange}
+                            disabled={disabledYearFilter}
+                            label={i18n.t("Select years")}
+                            hideLabel
                         />
                     </Center>
                 </Grid>

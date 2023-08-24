@@ -20,7 +20,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         const theme = searchParams.get("theme");
 
         return {
-            country: country ? [country] : undefined,
+            country: country ? country.split(",") : undefined,
             theme: theme ? theme : undefined,
         };
     }, [history.location.search]);

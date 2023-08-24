@@ -3,29 +3,37 @@ import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyE
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 
+import i18n from "../../../locales";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
-import i18n from "../../../locales";
+import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
+import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export function usePolicyExplorer(): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
 
-    const [categoryFilters, setCategoryFilters] = useState<Option<string>[]>([]);
-    const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
+    const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
+    const [selectedCategoriesWithSubcategoriesFilter, setSelectedCategoriesWithSubcategoriesFilter] = useState<
+        Record<string, string[]> | undefined
+    >();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([
         new Date().getFullYear().toString(),
     ]);
 
-    const [initialData, setInitialData] = useState<PolicyExplorer | undefined>();
-    const [data, setData] = useState<PolicyExplorer | undefined>(initialData);
-    const [dataOrientation, setDataOrientation] = useState<DataOrientation>("normal");
+    const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
+    const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
+    const [dataOrientationByTable, setDataOrientationByTable] = useState<Record<string, DataOrientation> | undefined>();
 
     useEffect(() => {
-        setData(dataOrientation === "inverted" ? invertData(initialData) : initialData);
-    }, [dataOrientation, initialData]);
+        if (!countryFilter.selected?.length) {
+            setInitialDataByTable(undefined);
+            setDataByTable(undefined);
+            setDataOrientationByTable(undefined);
+        }
+    }, [countryFilter.selected?.length]);
 
     useEffect(() => {
         compositionRoot.policyExplorer.getYears.execute().run(
@@ -46,7 +54,7 @@ export function usePolicyExplorer(): PolicyExplorerState {
     useEffect(() => {
         compositionRoot.policyExplorer.getCategories.execute().run(
             categories => {
-                setCategoryFilters(categories.map(category => ({ value: category.id, text: category.name })));
+                setCategoryFilters(buildCategoryFilterOptions(categories));
             },
             () => {
                 setYearsFilters([]);
@@ -55,52 +63,83 @@ export function usePolicyExplorer(): PolicyExplorerState {
     }, [compositionRoot.policyExplorer]);
 
     const onGetTable = useCallback(() => {
-        if (selectedCategoryFilter) {
+        if (
+            selectedCategoriesWithSubcategoriesFilter &&
+            Object.keys(selectedCategoriesWithSubcategoriesFilter)?.length
+        ) {
             compositionRoot.policyExplorer.get
                 .execute(
-                    selectedCategoryFilter,
+                    selectedCategoriesWithSubcategoriesFilter,
                     countryFilter.selected || [],
                     selectedYearFilter ? selectedYearFilter : []
                 )
                 .run(
                     policyExplorer => {
-                        setInitialData(policyExplorer);
-                        setDataOrientation("inverted");
+                        setInitialDataByTable(policyExplorer);
+
+                        const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
+                        setDataByTable(invertAllData(policyExplorer, categoriesIds));
+                        setDataOrientationByTable(getInitialDataOrientationByTable(categoriesIds));
                     },
                     () => {
-                        setInitialData(undefined);
+                        setInitialDataByTable(undefined);
+                        setDataByTable(undefined);
+                        setDataOrientationByTable(undefined);
                     }
                 );
         } else {
-            setInitialData(undefined);
-            setData(undefined);
+            setInitialDataByTable(undefined);
+            setDataByTable(undefined);
+            setDataOrientationByTable(undefined);
         }
-    }, [compositionRoot.policyExplorer.get, countryFilter.selected, selectedCategoryFilter, selectedYearFilter]);
+    }, [
+        compositionRoot.policyExplorer.get,
+        countryFilter.selected,
+        selectedCategoriesWithSubcategoriesFilter,
+        selectedYearFilter,
+    ]);
 
-    const onChangeCategoryFilter = useCallback((value: string | undefined) => {
-        setSelectedCategoryFilter(value);
+    const onChangeCategoryFilter = useCallback((value: Record<string, string[]> | undefined) => {
+        setSelectedCategoriesWithSubcategoriesFilter(value);
+        if (!value) {
+            setInitialDataByTable(undefined);
+            setDataByTable(undefined);
+            setDataOrientationByTable(undefined);
+        }
     }, []);
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
     }, []);
 
-    const onSwitchRowColumn = useCallback(() => {
-        setDataOrientation(dataOrientation === "normal" ? "inverted" : "normal");
-    }, [dataOrientation]);
+    const onSwitchRowColumn = useCallback(
+        (categoryId: string) => {
+            const newDataorientation =
+                dataOrientationByTable && dataOrientationByTable[categoryId] === "normal" ? "inverted" : "normal";
+            setDataOrientationByTable({ ...dataOrientationByTable, [categoryId]: newDataorientation });
 
-    const onDownload = useCallback(() => {
-        if (!data) return;
+            const newData =
+                newDataorientation === "inverted" ? invertData(initialDataByTable, categoryId) : initialDataByTable;
+            setDataByTable(newData);
+        },
+        [dataOrientationByTable, initialDataByTable]
+    );
 
-        compositionRoot.policyExplorer.download.execute(data).runAsync();
-    }, [compositionRoot.policyExplorer, data]);
+    const onDownload = useCallback(
+        (categoryId: string) => {
+            if (!dataByTable) return;
+
+            compositionRoot.policyExplorer.download.execute(dataByTable, categoryId).runAsync();
+        },
+        [compositionRoot.policyExplorer, dataByTable]
+    );
 
     return {
         filters: {
             country: countryFilter,
             category: {
                 options: categoryFilters,
-                selected: selectedCategoryFilter,
+                selected: selectedCategoriesWithSubcategoriesFilter,
                 onSelectedChange: onChangeCategoryFilter,
             },
             year: {
@@ -109,30 +148,77 @@ export function usePolicyExplorer(): PolicyExplorerState {
                 onSelectedChange: onChangeYearFilter,
             },
         },
-        data,
-        dataOrientation,
+        data: dataByTable,
+        dataOrientationByTable,
         onGetTable,
         onSwitchRowColumn,
         onDownload,
     };
 }
 
-function invertData(initialData: PolicyExplorer | undefined): PolicyExplorer | undefined {
-    if (!initialData) return undefined;
+function invertData(initialDataByTable: PolicyExplorer | undefined, categoryId: string): PolicyExplorer | undefined {
+    if (!initialDataByTable || !categoryId) return undefined;
 
-    const columns = [...initialData.rows].shift() || [];
+    const rows = initialDataByTable.tables[categoryId] || [];
+    const columns = [...rows].shift() || [];
 
     const newRows = columns.map((_, index) => {
-        const cells = initialData.rows.map(row => row[index] || "");
-
+        const cells = rows.map(row => row[index] || "");
         return [...cells];
     });
 
     const newData = {
-        ...initialData,
-        columns: undefined,
-        rows: newRows,
+        ...initialDataByTable,
+        tables: {
+            ...initialDataByTable.tables,
+            [categoryId]: newRows,
+        },
     };
 
     return newData;
+}
+
+function invertAllData(
+    initialDataByTable: PolicyExplorer | undefined,
+    selectedCategoriesIds: string[]
+): PolicyExplorer | undefined {
+    if (!initialDataByTable || !selectedCategoriesIds.length) return undefined;
+
+    const data = { ...initialDataByTable };
+    return selectedCategoriesIds.reduce((acc, categoryId) => {
+        const rows = initialDataByTable.tables[categoryId] || [];
+        const columns = [...rows].shift() || [];
+
+        const newRows = columns.map((_, index) => {
+            const cells = rows.map(row => row[index] || "");
+            return [...cells];
+        });
+
+        return {
+            ...acc,
+            tables: {
+                ...acc.tables,
+                [categoryId]: newRows,
+            },
+        };
+    }, data);
+}
+
+function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Record<string, DataOrientation> {
+    const dataOrientation = {};
+    return selectedCategoriesIds.reduce(
+        (acc, categoryId) => ({
+            ...acc,
+            [categoryId]: "inverted",
+        }),
+        dataOrientation
+    );
+}
+
+function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): CategoryOption[] {
+    return categories.map(category => ({
+        value: category.id,
+        text: category.name,
+        subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
+    }));
 }

@@ -55,7 +55,8 @@ const Container = styled.div`
     overflow-y: auto;
     font-size: 16px;
     ul {
-        padding-inline-start: 14px;
+        list-style-position: inside;
+        padding-left: 0;
     }
 `;
 

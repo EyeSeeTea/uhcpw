@@ -154,18 +154,13 @@ function CountrySelectorContainer() {
     }, []);
 
     return (
-        <CountrySelector
-            countries={countries}
-            groupedByIncome={false}
-            selectedIds={selectedIds}
-            onSelectedIdsChange={handleSelectedChange}
-        />
+        <CountrySelector countries={countries} selectedIds={selectedIds} onSelectedIdsChange={handleSelectedChange} />
     );
 }
 
 function focusComponent() {
     const autocompleteInput = screen.getByRole("textbox", {
-        name: /countries/i,
+        name: /Country selector/i,
     });
 
     userEvent.click(autocompleteInput);

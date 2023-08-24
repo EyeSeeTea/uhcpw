@@ -39,4 +39,5 @@ const MapSection = styled.section`
         height: 110vh;
     }
     height: 80vh;
+    min-height: 620px;
 `;

@@ -1,4 +1,4 @@
-import { Checkbox, Divider, FormControlLabel, InputAdornment, Menu, Typography } from "@material-ui/core";
+import { InputAdornment, Menu, Typography } from "@material-ui/core";
 import React, { useCallback, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
@@ -11,7 +11,6 @@ import { Leaf } from "./Leaf";
 import _ from "lodash";
 import { SelectedChip } from "../selected-chip/SelectedChip";
 import CloseIcon from "@material-ui/icons/Close";
-import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank";
 import styled from "styled-components";
 
 export type CountryOption = {
@@ -25,8 +24,6 @@ interface CountrySelectorProps {
     countries: CountryOption[];
     selectedIds?: string[];
     onSelectedIdsChange?: (ids: string[]) => void;
-    groupedByIncome: boolean;
-    onGroupedByIncomeChange?: (value: boolean) => void;
     fullWidth?: boolean;
     placeholder?: string;
     disabled?: boolean;
@@ -34,17 +31,7 @@ interface CountrySelectorProps {
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
-    ({
-        countries,
-        selectedIds = [],
-        onSelectedIdsChange,
-        groupedByIncome,
-        onGroupedByIncomeChange,
-        fullWidth,
-        placeholder,
-        disabled,
-        label,
-    }) => {
+    ({ countries, selectedIds = [], onSelectedIdsChange, fullWidth, placeholder, disabled, label }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
@@ -64,12 +51,6 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             setAnchorEl(null);
             setExpanded(!expanded);
         }, [expanded, setExpanded, setAnchorEl]);
-
-        const handleGroupedByIncomeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-            if (onGroupedByIncomeChange) {
-                onGroupedByIncomeChange(event.target.checked);
-            }
-        };
 
         const handleSelectedChange = useCallback(
             (nodeId: string, selected: boolean) => {
@@ -132,11 +113,14 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                 <StyledDropdownTextField
                     label={label}
                     onClick={handleClick}
-                    aria-label="Countries"
+                    aria-label="Country selector"
                     placeholder={placeholder}
                     role={"textbox"}
                     disabled
                     fullWidth={fullWidth}
+                    inputProps={{
+                        "aria-label": "Select countries",
+                    }}
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>
@@ -165,6 +149,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             </InputAdornment>
                         ),
                     }}
+                    $isDisabled={disabled}
                 ></StyledDropdownTextField>
                 <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}
@@ -193,7 +178,6 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         </Typography>
                         <TreeView
                             disableSelection
-                            aria-label="file system navigator"
                             defaultCollapseIcon={<ArrowDropUpIcon />}
                             defaultExpandIcon={<ArrowDropDownIcon />}
                             onNodeToggle={handleToggle}
@@ -210,41 +194,26 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                 const selectedCount = children.filter(child => selectedIds.includes(child.id)).length;
 
                                 return (
-                                    <Node
-                                        key={nindex}
-                                        nodeId={parent.id}
-                                        name={parent.name}
-                                        selectedCount={selectedCount}
-                                    >
-                                        {finalChildren.map((child, lindex) => {
-                                            const selected = selectedIds.find(id => id === child.id) !== undefined;
+                                    <div key={nindex}>
+                                        <Node nodeId={parent.id} name={parent.name} selectedCount={selectedCount}>
+                                            {finalChildren.map((child, lindex) => {
+                                                const selected = selectedIds.find(id => id === child.id) !== undefined;
 
-                                            return (
-                                                <Leaf
-                                                    key={lindex}
-                                                    nodeId={child.id}
-                                                    name={child.name}
-                                                    selected={selected}
-                                                    onSelectedChange={handleSelectedChange}
-                                                />
-                                            );
-                                        })}
-                                    </Node>
+                                                return (
+                                                    <Leaf
+                                                        key={lindex}
+                                                        nodeId={child.id}
+                                                        name={child.name}
+                                                        selected={selected}
+                                                        onSelectedChange={handleSelectedChange}
+                                                    />
+                                                );
+                                            })}
+                                        </Node>
+                                    </div>
                                 );
                             })}
                         </TreeView>
-                        <Divider style={{ marginTop: 10, marginBottom: 10 }} />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    color="primary"
-                                    checked={groupedByIncome}
-                                    onChange={handleGroupedByIncomeChange}
-                                    icon={<UnCheckedIcon style={{ fill: "gray" }} />}
-                                />
-                            }
-                            label={i18n.t("I would like to see countries grouped by income bracket (LMIC/UMIC/HIC)")}
-                        />
                     </div>
                 </StyledMenu>
             </>
