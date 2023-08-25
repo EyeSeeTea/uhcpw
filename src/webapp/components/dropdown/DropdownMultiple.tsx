@@ -17,6 +17,7 @@ interface DropdownMultipleProps<T extends string = string> {
     fullWidth?: boolean;
     onChange: (value?: T[]) => void;
     disabled?: boolean;
+    hideLabel?: boolean;
 }
 
 type OptionLabel = {
@@ -25,7 +26,7 @@ type OptionLabel = {
 };
 
 export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
-    ({ label, options, values, placeholder, fullWidth, onChange, disabled }) => {
+    ({ label, options, values, placeholder, fullWidth, onChange, disabled, hideLabel = false }) => {
         const valuesOption = useMemo(() => {
             return options.filter(option => values?.includes(option.value)) || [];
         }, [options, values]);
@@ -48,7 +49,13 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                     value={valuesOption}
                     getOptionLabel={option => (option as OptionLabel)?.text}
                     renderInput={params => (
-                        <DropdownTextField {...params} variant="standard" label={label} placeholder={placeholder} />
+                        <StyledDropdownTextField
+                            {...params}
+                            className={`${hideLabel ? "hide-label" : ""}`}
+                            variant="standard"
+                            label={label}
+                            placeholder={placeholder}
+                        />
                     )}
                     renderTags={(value: unknown[], getTagProps) =>
                         value.map((option: unknown, index: number) => (
@@ -64,7 +71,12 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                     onChange={(e, value) => handleChange(e, value as Option<string>[] | null)}
                 />
                 {(values || []).length > 0 && (
-                    <ClearButton variant="text" onClick={handleClear} disabled={disabled}>
+                    <ClearButton
+                        variant="text"
+                        onClick={handleClear}
+                        disabled={disabled}
+                        top={label && !hideLabel ? "0" : "-20px"}
+                    >
                         {i18n.t("Clear all")}
                     </ClearButton>
                 )}
@@ -73,11 +85,11 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
     }
 );
 
-const ClearButton = styled(Button)`
+const ClearButton = styled(Button)<{ top: string }>`
     color: orange;
     text-transform: none;
     position: absolute;
-    top: 0;
+    top: ${props => props.top};
     right: 0;
     padding: 0px;
     font-weight: 400;
@@ -94,5 +106,18 @@ const StyledAutocomplete = styled(Autocomplete)`
     }
     .MuiAutocomplete-popupIndicator {
         margin-right: 5px;
+    }
+`;
+
+const StyledDropdownTextField = styled(DropdownTextField)`
+    &.hide-label {
+        label {
+            position: absolute;
+            left: -10000px;
+            top: auto;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+        }
     }
 `;

@@ -1,5 +1,9 @@
 import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
-import { CountryFilterState, OptionsFilterState, OptionsMultiFilterState } from "../../common/state/state";
+import {
+    CountryFilterState,
+    OptionsMultiFilterState,
+    PolicyExplorerCategoriesFilterState,
+} from "../../common/state/state";
 
 export type DataOrientation = "inverted" | "normal";
 
@@ -7,14 +11,14 @@ export type PolicyExplorerState = {
     filters: PolicyExplorerFiltersState;
     data?: PolicyExplorer;
 
-    dataOrientation: DataOrientation;
+    dataOrientationByTable?: Record<string, DataOrientation>;
     onGetTable: () => void;
-    onSwitchRowColumn: () => void;
-    onDownload: () => void;
+    onSwitchRowColumn: (categoryId: string) => void;
+    onDownload: (categoryId: string) => void;
 };
 
 export type PolicyExplorerFiltersState = {
     country: CountryFilterState;
-    category: OptionsFilterState;
+    category: PolicyExplorerCategoriesFilterState;
     year: OptionsMultiFilterState;
 };

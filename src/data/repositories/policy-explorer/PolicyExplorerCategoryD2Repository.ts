@@ -1,9 +1,14 @@
 import { FutureData } from "../../../domain/entities/Future";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import {
+    PolicyExplorerCategory,
+    PolicyExplorerSubcategory,
+} from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+
+const sectionsWithValueTypeText = ["FtRwT2aBET4", "Dg4b8bTfEIr"];
 
 const sectionsList = [
     "uG2PbDfOc0w",
@@ -13,8 +18,7 @@ const sectionsList = [
     "mCMVwmnGWJF",
     "u800TAhsIBY",
     "lHk8jtKonPh",
-    "FtRwT2aBET4",
-    "Dg4b8bTfEIr",
+    ...sectionsWithValueTypeText,
 ];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
@@ -34,13 +38,42 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
         const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
 
-        return sections.map(section => ({ id: section.id, name: section.displayName.replace("UHCW_", "") }));
+        return sections.map(section => ({
+            id: section.id,
+            name: section.displayName.replace("UHCW_", ""),
+            subcategories: this.getSubcategories(section.id, section.dataElements),
+        }));
+    }
+
+    private getSubcategories(sectionId: string, dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
+        return (
+            dataElements
+                ?.filter(
+                    de =>
+                        de.valueType === "LONG_TEXT" ||
+                        (sectionsWithValueTypeText.includes(sectionId) && de.valueType === "TEXT")
+                )
+                .map(subcategory => ({
+                    id: subcategory.id,
+                    name: subcategory.formName,
+                })) || []
+        );
     }
 }
 
-const dataSetFields = {
-    sections: { id: true, displayName: true },
+const dataElementsFields = {
+    id: true,
+    formName: true,
+    valueType: true,
 } as const;
+
+const dataSetFields = {
+    sections: { id: true, displayName: true, dataElements: dataElementsFields },
+} as const;
+
+type D2DataElements = MetadataPick<{
+    dataElements: { fields: typeof dataElementsFields };
+}>["dataElements"][number];
 
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };

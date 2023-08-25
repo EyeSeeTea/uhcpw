@@ -26,7 +26,13 @@ export const ResourcesPage: React.FC = React.memo(() => {
             </SearchContainer> */}
             <SelectsContainer maxWidth="xl">
                 <Grid container>
-                    <ResourcesFilters filters={filters} onGetResources={onGetResources} />
+                    <ResourcesFilters
+                        filters={filters}
+                        onGetResources={onGetResources}
+                        disabledCountryFilter
+                        disabledYearFilter
+                        disabledThemeFilter
+                    />
 
                     {resources && (
                         <>
