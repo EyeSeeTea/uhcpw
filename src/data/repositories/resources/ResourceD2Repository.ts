@@ -27,6 +27,46 @@ export const resourceDataElements: Record<string, string> = {
     link4: "yfKcdYARapH",
     link4Language: "QlRpFiResvs",
     countryId: "PC9lIDo5x8m",
+    relatedCountry1: "s4rejJAHkEj",
+    relatedCountry2: "oQ6Qi6faNK5",
+    relatedCountry3: "LpvSstI1qkv",
+    relatedCountry4: "XqOzgOaLYIC",
+    relatedCountry5: "W1rJkxxdsf7",
+    relatedCountry6: "s9VZRkTRnok",
+    relatedCountry7: "wR829irugl9",
+    relatedCountry8: "x6PpqgIH0Rt",
+    relatedCountry9: "wkH2AyYFqOc",
+    relatedCountry10: "PF1BSn79hgT",
+    relatedCountry11: "uc0QAtItg9A",
+    relatedCountry12: "JypkjZAQmnM",
+    relatedCountry13: "AlLQaVQtjDw",
+    relatedCountry14: "Vc55KzffRaY",
+    relatedCountry15: "txupFIjcJxc",
+    relatedCountry16: "i51gDVomugt",
+    relatedCountry17: "NrdV87QJt9S",
+    relatedCountry18: "hbPjqVnjly5",
+    relatedCountry19: "y74nWeCoAdH",
+    relatedCountry20: "sqqJNJDwN1F",
+    relatedCountry21: "QlBdXGOdz4x",
+    relatedCountry22: "jc3d0ZSupHK",
+    relatedCountry23: "Jh00i19RF91",
+    relatedCountry24: "EJAYWps6wm0",
+    relatedCountry25: "a61IrOb5leV",
+    relatedCountry26: "BFFlxznLkZv",
+    relatedCountry27: "vLdkDy58YqQ",
+    relatedCountry28: "ffndxAozKG5",
+    relatedCountry29: "tYbQcw47cQZ",
+    relatedCountry30: "TVsjP1VoGsA",
+    relatedCountry31: "ZEDLsKyJcib",
+    relatedCountry32: "vJqqddnRCsW",
+    relatedCountry33: "POJAv84qfrq",
+    relatedCountry34: "HvuwOxCfiN4",
+    relatedCountry35: "ZwP1hA1cpmK",
+    relatedCountry36: "zxVo1DM7JnD",
+    relatedCountry37: "mCH3sabJvqA",
+    relatedCountry38: "yhFTBkdmwv0",
+    relatedCountry39: "qQRNZQTY9VN",
+    relatedCountry40: "Uyvm6flgZiw",
     favourite: "aP3GIoQRvDt",
     favouriteOrder: "G9DVX5SjoA2",
     favouriteSection: "XxXz056LMCO",
@@ -46,9 +86,6 @@ export class ResourceD2Repository implements ResourceRepository {
                 : undefined,
             filters.theme ? `${resourceDataElements.theme}:like:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
-            filters.countries && filters.countries?.length > 0
-                ? `${resourceDataElements.countryId}:in:${filters.countries.join(";")}`
-                : undefined,
             filters.favourite !== undefined ? `${resourceDataElements.favourite}:eq:${filters.favourite}` : undefined,
             filters.favouriteSection !== undefined
                 ? `${resourceDataElements.favouriteSection}:eq:${filters.favouriteSection}`
@@ -73,7 +110,13 @@ export class ResourceD2Repository implements ResourceRepository {
                 order: "eventDate:desc",
             })
         ).map(response => {
-            return this.buildResources(response.events);
+            let events = response.events;
+
+            if (filters.countries && filters.countries.length > 0) {
+                events = this.filterCountries(response.events, filters);
+            }
+
+            return this.buildResources(events);
         });
     }
 
@@ -140,9 +183,136 @@ export class ResourceD2Repository implements ResourceRepository {
     private buildComparativeAnalysis(event: D2Event): ComparativeAnalysis {
         const analysis = this.buildAnalysis(event);
 
+        const relatedCountry1 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry1)?.value || "";
+        const relatedCountry2 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry2)?.value || "";
+        const relatedCountry3 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry3)?.value || "";
+        const relatedCountry4 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry4)?.value || "";
+        const relatedCountry5 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry5)?.value || "";
+        const relatedCountry6 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry6)?.value || "";
+        const relatedCountry7 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry7)?.value || "";
+        const relatedCountry8 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry8)?.value || "";
+        const relatedCountry9 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry9)?.value || "";
+        const relatedCountry10 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry10)?.value || "";
+        const relatedCountry11 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry11)?.value || "";
+        const relatedCountry12 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry12)?.value || "";
+        const relatedCountry13 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry13)?.value || "";
+        const relatedCountry14 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry14)?.value || "";
+        const relatedCountry15 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry15)?.value || "";
+        const relatedCountry16 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry16)?.value || "";
+        const relatedCountry17 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry17)?.value || "";
+        const relatedCountry18 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry18)?.value || "";
+        const relatedCountry19 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry19)?.value || "";
+        const relatedCountry20 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry20)?.value || "";
+        const relatedCountry21 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry21)?.value || "";
+        const relatedCountry22 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry22)?.value || "";
+        const relatedCountry23 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry23)?.value || "";
+        const relatedCountry24 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry24)?.value || "";
+        const relatedCountry25 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry25)?.value || "";
+        const relatedCountry26 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry26)?.value || "";
+        const relatedCountry27 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry27)?.value || "";
+        const relatedCountry28 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry28)?.value || "";
+        const relatedCountry29 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry29)?.value || "";
+        const relatedCountry30 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry30)?.value || "";
+        const relatedCountry31 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry31)?.value || "";
+        const relatedCountry32 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry32)?.value || "";
+        const relatedCountry33 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry33)?.value || "";
+        const relatedCountry34 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry34)?.value || "";
+        const relatedCountry35 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry35)?.value || "";
+        const relatedCountry36 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry36)?.value || "";
+        const relatedCountry37 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry37)?.value || "";
+        const relatedCountry38 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry38)?.value || "";
+        const relatedCountry39 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry39)?.value || "";
+        const relatedCountry40 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry40)?.value || "";
+
+        const relatedCountries: string[] = _([
+            relatedCountry1,
+            relatedCountry2,
+            relatedCountry3,
+            relatedCountry4,
+            relatedCountry5,
+            relatedCountry6,
+            relatedCountry7,
+            relatedCountry8,
+            relatedCountry9,
+            relatedCountry10,
+            relatedCountry11,
+            relatedCountry12,
+            relatedCountry13,
+            relatedCountry14,
+            relatedCountry15,
+            relatedCountry16,
+            relatedCountry17,
+            relatedCountry18,
+            relatedCountry19,
+            relatedCountry20,
+            relatedCountry21,
+            relatedCountry22,
+            relatedCountry23,
+            relatedCountry24,
+            relatedCountry25,
+            relatedCountry26,
+            relatedCountry27,
+            relatedCountry28,
+            relatedCountry29,
+            relatedCountry30,
+            relatedCountry31,
+            relatedCountry32,
+            relatedCountry33,
+            relatedCountry34,
+            relatedCountry35,
+            relatedCountry36,
+            relatedCountry37,
+            relatedCountry38,
+            relatedCountry39,
+            relatedCountry40,
+        ])
+            .compact()
+            .value();
+
         return {
             kind: "comparative-analysis",
             ...analysis,
+            relatedCountries,
         };
     }
 
@@ -212,6 +382,104 @@ export class ResourceD2Repository implements ResourceRepository {
             favouriteSection,
             favouriteSectionOrder: +favouriteSectionOrder,
         };
+    }
+
+    private filterCountries(events: D2Event[], filters: ResourceFilters) {
+        if (filters.category === "comparative-analysis") {
+            return events.filter(el =>
+                el.dataValues.some(el => {
+                    return (
+                        (el.dataElement === resourceDataElements.countryId && filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry1 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry2 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry3 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry4 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry5 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry6 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry7 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry8 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry9 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry10 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry11 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry12 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry13 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry14 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry15 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry16 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry17 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry18 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry19 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry20 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry21 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry22 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry23 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry24 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry25 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry26 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry27 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry28 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry29 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry30 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry31 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry32 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry33 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry34 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry35 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry36 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry37 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry38 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry39 &&
+                            filters.countries?.includes(el.value)) ||
+                        (el.dataElement === resourceDataElements.relatedCountry40 &&
+                            filters.countries?.includes(el.value))
+                    );
+                })
+            );
+        } else {
+            return events.filter(el =>
+                el.dataValues.some(
+                    el => el.dataElement === resourceDataElements.countryId && filters.countries?.includes(el.value)
+                )
+            );
+        }
     }
 
     private createLink(link?: string, language?: string) {
