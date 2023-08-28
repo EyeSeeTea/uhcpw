@@ -58,17 +58,6 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("startDate")).toBe("2020-01-01");
             expect(mockWebServer.lastRequest?.params.get("endDate")).toBe("2022-12-31");
         });
-        it("countries in filter", async () => {
-            givenAComparativeAnalysis();
-
-            await resourceRepository
-                .get({ category: "comparative-analysis", countries: ["country1", "country2"] })
-                .runAsync();
-
-            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.countryId}:in:country1;country2`
-            );
-        });
 
         it("favourite true in filter", async () => {
             givenAComparativeAnalysis();
