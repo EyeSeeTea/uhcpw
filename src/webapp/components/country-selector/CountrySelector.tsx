@@ -139,6 +139,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         endAdornment: (
                             <InputAdornment
                                 position="start"
+                                aria-label="expand"
                                 style={{ top: "calc(50% - 14px)", right: 0, position: "absolute", height: " 24px" }}
                             >
                                 {expanded ? (

@@ -37,24 +37,23 @@ describe("PolicyExplorerPage", () => {
         });
     });
 
-    // describe("User charges (co-payments) by type of health care category", () => {
-    //     it("should render expected table", async () => {
-    //         const { policyExplorerCategories } = getPolicyExplorerCategories();
-    //         givenADataSet();
-    //         givenCountries();
-    //         givenAPolicyExplorer();
+    describe("Population Coverage category table", () => {
+        it("should render expected table", async () => {
+            const { policyExplorerCategories } = getPolicyExplorerCategories();
+            givenADataSet();
+            givenCountries();
+            givenAPolicyExplorer();
 
-    //         renderPage();
+            renderPage();
+            await selectFiltersAndGetTable(policyExplorerCategories[0]?.name || "", "Spain");
 
-    //         await selectFiltersAndGetTable(policyExplorerCategories[0]?.name || "", "Spain");
+            const tableTitle = await waitFor(() =>
+                screen.getByRole("heading", { name: policyExplorerCategories[0]?.name })
+            );
 
-    //         const tableTitle = await waitFor(() =>
-    //             screen.getByRole("heading", { name: policyExplorerCategories[0]?.name })
-    //         );
-
-    //         expect(tableTitle).toBeInTheDocument();
-    //     });
-    // });
+            expect(tableTitle).toBeInTheDocument();
+        });
+    });
 });
 
 function renderPage() {
@@ -124,40 +123,53 @@ function getPolicyExplorerCategories() {
     };
 }
 
-// async function selectFiltersAndGetTable(categoryText: string, countryText: string, yearText = "2023") {
-//     const mainElement = screen.getByRole("main");
-//     const main = within(mainElement);
+async function selectFiltersAndGetTable(categoryText: string, countryText: string) {
+    const mainElement = screen.getByRole("main");
+    const main = within(mainElement);
 
-//     await selectFilter(main, "Category", categoryText);
-//     await selectCountry(main, countryText);
-//     await selectFilter(main, "Year", yearText);
+    await selectCategoryFilter(categoryText);
+    await selectCountry(main, countryText);
 
-//     const getTableButton = main.getByLabelText(/get table/i);
+    const getTableButton = main.getByText(/get table/i);
 
-//     await waitFor(() => expect(getTableButton).not.toBeDisabled());
+    await waitFor(() => expect(getTableButton).not.toBeDisabled());
 
-//     userEvent.click(getTableButton);
-// }
+    await userEvent.click(getTableButton);
+}
 
-// async function selectFilter(scope: BoundFunctions<typeof queries>, name: string, value: string) {
-//     const autocompleteInput = scope.getByLabelText(name);
+async function expandCategoryByName(name: string) {
+    return userEvent.click(await screen.findByText(name));
+}
 
-//     userEvent.click(autocompleteInput);
+async function selectCategoryByName(name: string) {
+    const categoryCheckbox = await screen.getByLabelText(`Select all ${name}`);
 
-//     const targetItem = await waitFor(() => screen.getByRole("option", { name: value }));
+    return userEvent.click(categoryCheckbox);
+}
 
-//     userEvent.click(targetItem);
-// }
+async function selectCategoryFilter(categoryName: string) {
+    const categorySelectorToFocus = screen.getByRole("textbox", {
+        name: /categories/i,
+    });
+    userEvent.click(categorySelectorToFocus);
 
-// async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
-//     const countrySelector = scope.getByLabelText(/countries/i);
+    await expandCategoryByName(categoryName);
+    await selectCategoryByName(categoryName);
+    await userEvent.keyboard("{Escape}");
 
-//     userEvent.click(countrySelector);
+    await screen.findByRole("textbox", {
+        name: /categories/i,
+    });
+}
 
-//     userEvent.click(await screen.findByText("All countries"));
-//     userEvent.click(await screen.findByRole("checkbox", { name: value }));
+async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
+    const countrySelector = scope.getByLabelText(/expand/i);
 
-//     userEvent.keyboard("{Escape}");
+    await userEvent.click(countrySelector);
 
-//     await screen.findByLabelText(/countries/i);
-// }
+    userEvent.click(await screen.findByText("All countries"));
+    userEvent.click(await screen.findByRole("checkbox", { name: value }));
+    await userEvent.keyboard("{Escape}");
+
+    await scope.findByLabelText(/countries/i);
+}
