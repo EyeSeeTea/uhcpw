@@ -1,0 +1,422 @@
+[
+    {
+        "id": "uG2PbDfOc0w",
+        "name": "Population Coverage",
+        "subcategories": [
+            {
+                "id": "SQQ3ZDRbxGT",
+                "name": "Basis for entitlement to publicly financed health services"
+            },
+            {
+                "id": "CgM1uTO6z3p",
+                "name": "Entitlements for refugees, asylum seekers, and undocumented migrants"
+            },
+            {
+                "id": "qqoP7DlH4FC",
+                "name": "Characteristics and number of non-covered people"
+            },
+            {
+                "id": "y8qYx7ndhg0",
+                "name": "Publicly financed health services to which non-covered people are entitled"
+            },
+            {
+                "id": "aOAdLksfSsA",
+                "name": "Administrative requirements and documentation needed to access publicly financed health services"
+            },
+            {
+                "id": "Swqe3nzvYdB",
+                "name": "Institutions responsible for defining population coverage"
+            },
+            {
+                "id": "eQO6YBDAeFf",
+                "name": "Institutions monitoring population coverage"
+            },
+            {
+                "id": "eSyCsKNBnD2",
+                "name": "Main gaps in population coverage"
+            },
+            {
+                "id": "aUK2KCRN9Kx",
+                "name": "VHI role in filling gaps in population coverage"
+            }
+        ]
+    },
+    {
+        "id": "W4CqlzcDPB1",
+        "name": "Service Coverage",
+        "subcategories": [
+            {
+                "id": "ie6trn3DrnP",
+                "name": "Institutions and processes involved in defining the publicly financed benefits package"
+            },
+            {
+                "id": "eGacPe1ouIu",
+                "name": "Variation in the publicly financed benefits package across the country"
+            },
+            {
+                "id": "u4CY8PmaMRp",
+                "name": "Types of health care not so well covered by the publicly financed benefits package"
+            },
+            {
+                "id": "q8WrIpkXQuR",
+                "name": "Use of retrospective reimbursement"
+            },
+            {
+                "id": "OWmAsT2I3O4",
+                "name": "User pathway for covered services"
+            },
+            {
+                "id": "jo2xNZq4N7b",
+                "name": "Waiting times are an issue"
+            },
+            {
+                "id": "mOsFKwOX1z0",
+                "name": "Waiting time guarantees or targets"
+            },
+            {
+                "id": "Go2bbi3kiLv",
+                "name": "Other policies to reduce waiting times"
+            },
+            {
+                "id": "CgIb9itB4sH",
+                "name": "Institutions monitoring waiting times"
+            },
+            {
+                "id": "NzHSCCHysv6",
+                "name": "Informal payments are an issue"
+            },
+            {
+                "id": "GMI7vM07khc",
+                "name": "Reasons for informal payments"
+            },
+            {
+                "id": "aAwj3aB5ysQ",
+                "name": "Policies to reduce informal payments"
+            },
+            {
+                "id": "GW8CL6T8YnA",
+                "name": "Institutions monitoring informal payments"
+            },
+            {
+                "id": "quWuCSNKLM3",
+                "name": "Other access issues"
+            },
+            {
+                "id": "iAgF9SHMfcB",
+                "name": "Main gaps in service coverage"
+            },
+            {
+                "id": "Om86yyWLAaM",
+                "name": "VHI role in filling gaps in service coverage"
+            }
+        ]
+    },
+    {
+        "id": "mCMVwmnGWJF",
+        "name": "User Charges (co-payments)",
+        "subcategories": [
+            {
+                "id": "eAa8alKgk7f",
+                "name": "Role and nature of user charges"
+            },
+            {
+                "id": "ySKqnU1oG8a",
+                "name": "Mechanisms to protect people from user charges"
+            },
+            {
+                "id": "CWauALI1UTx",
+                "name": "Protection mechanisms are applied automatically"
+            },
+            {
+                "id": "lZg59TLmgoz",
+                "name": "Protection mechanisms target people with low incomes"
+            },
+            {
+                "id": "OSWuAIBIg1A",
+                "name": "Institutions responsible for defining user charges"
+            },
+            {
+                "id": "eq8lKfyq8jT",
+                "name": "Variation in user charges across the country"
+            },
+            {
+                "id": "e8wFwCV7zsz",
+                "name": "Main gaps caused by user charges"
+            },
+            {
+                "id": "ekIncD2R5o7",
+                "name": "VHI role in covering user charges"
+            }
+        ]
+    },
+    {
+        "id": "uImM4yTeeV3",
+        "name": "Voluntary Health Insurance",
+        "subcategories": [
+            {
+                "id": "OKGIXiFYHNQ",
+                "name": "VHI role"
+            },
+            {
+                "id": "KWqoxvn1jVH",
+                "name": "Share of the population with VHI (%)"
+            },
+            {
+                "id": "qGWmS9ZiGly",
+                "name": "VHI share of current spending on health (%)"
+            },
+            {
+                "id": "OWMvZQgo9dV",
+                "name": "Institutions responsible for oversight or regulation of VHI"
+            },
+            {
+                "id": "GISip3HaUqt",
+                "name": "Characteristics of people with VHI"
+            },
+            {
+                "id": "uYGS0yaH6ir",
+                "name": "Policies to make VHI accessible"
+            },
+            {
+                "id": "agSA2qB7hfy",
+                "name": "Policies to make VHI affordable"
+            },
+            {
+                "id": "SsssZUWxGZt",
+                "name": "Entities selling VHI"
+            },
+            {
+                "id": "KsOe4RGYdU8",
+                "name": "Entities buying VHI"
+            },
+            {
+                "id": "G04CNOCKHDC",
+                "name": "Tax incentives or disincentives for selling or buying VHI"
+            }
+        ]
+    },
+    {
+        "id": "e6cfI6vWYEF",
+        "name": "Gaps in coverage",
+        "subcategories": [
+            {
+                "id": "Oc0RJz88pBV",
+                "name": "Population entitlement: Main gaps in publicly financed coverage"
+            },
+            {
+                "id": "Cqe4z39igTX",
+                "name": "Service coverage: Main gaps in publicly financed coverage"
+            },
+            {
+                "id": "CCIzcBhaqCZ",
+                "name": "User charges (co-payments): Main gaps in publicly financed coverage"
+            }
+        ]
+    },
+    {
+        "id": "u800TAhsIBY",
+        "name": "User charges (co-payments) by type of health care",
+        "subcategories": [
+            {
+                "id": "mTB12rvpJWd",
+                "name": "Type of user charge  (Primary Care)"
+            },
+            {
+                "id": "giUCPiCe745",
+                "name": "User charges apply (Primary Care)"
+            },
+            {
+                "id": "b29bW9mc9C7",
+                "name": "Reduced user charges (Primary Care)"
+            },
+            {
+                "id": "tu36CFgEoh8",
+                "name": "Exemptions from user charges (Primary Care)"
+            },
+            {
+                "id": "mSgmJhjn4Bi",
+                "name": "Cap on user charges (Primary Care)"
+            },
+            {
+                "id": "wDQRlBezRAs",
+                "name": "Type of user charge (Specialist Visits)"
+            },
+            {
+                "id": "SWX96A7gnpA",
+                "name": "User charges apply (Specialist Visits)"
+            },
+            {
+                "id": "ZkElvtoVJSd",
+                "name": "Reduced user charges (Specialist Visits)"
+            },
+            {
+                "id": "zsiuJlUSvAW",
+                "name": "Exemptions from user charges (Specialist Visits)"
+            },
+            {
+                "id": "o6d3FfwRVj7",
+                "name": "Cap on user charges (Specialist Visits)"
+            },
+            {
+                "id": "ibq7wtqnsns",
+                "name": "Type of user charge (Emergency Visits)"
+            },
+            {
+                "id": "WTtArv6Xvsy",
+                "name": "User charges apply (Emergency Visits)"
+            },
+            {
+                "id": "n8jFYyMKDaV",
+                "name": "Reduced user charges (Emergency Visits)"
+            },
+            {
+                "id": "SiNpgO1L5bG",
+                "name": "Exemptions from user charges (Emergency Visits)"
+            },
+            {
+                "id": "sASANfdEGUR",
+                "name": "Cap on user charges (Emergency Visits)"
+            },
+            {
+                "id": "EruJIoPKO1s",
+                "name": "Type of user charge  (Outpatient Medicines)"
+            },
+            {
+                "id": "gMAYqfQ5xAD",
+                "name": "User charges apply (Outpatient Medicines)"
+            },
+            {
+                "id": "KBW3D8lOlpg",
+                "name": "Reduced user charges (Outpatient Medicines)"
+            },
+            {
+                "id": "a67cjmP423S",
+                "name": "Exemptions from user charges (Outpatient Medicines)"
+            },
+            {
+                "id": "sk9g2PsK7vD",
+                "name": "Cap on user charges (Outpatient Medicines)"
+            },
+            {
+                "id": "KfHkuuRZdBh",
+                "name": "Type of user charge  (Inpatient Medicines)"
+            },
+            {
+                "id": "NJ8zBQdwnd2",
+                "name": "User charges apply (Inpatient Medicines)"
+            },
+            {
+                "id": "lj174orsYYW",
+                "name": "Reduced user charges (Inpatient Medicines)"
+            },
+            {
+                "id": "eRfuZtUFbPK",
+                "name": "Exemptions from user charges (Inpatient Medicines)"
+            },
+            {
+                "id": "Ut93noOXsdK",
+                "name": "Cap on user charges (Inpatient Medicines)"
+            },
+            {
+                "id": "CpMWBaXJ91P",
+                "name": "Type of user charge (Medical Products)"
+            },
+            {
+                "id": "VroSbngmebX",
+                "name": "User charges apply (Medical Products)"
+            },
+            {
+                "id": "P7qWfL7oluy",
+                "name": "Reduced user charges (Medical Products)"
+            },
+            {
+                "id": "yhSc51DOubT",
+                "name": "Exemptions from user charges (Medical Products)"
+            },
+            {
+                "id": "olgegohqR8l",
+                "name": "Cap on user charges (Medical Products)"
+            },
+            {
+                "id": "L2sCkhEbSfM",
+                "name": "Type of user charge (Diagnostics Tests)"
+            },
+            {
+                "id": "OjTsewAuevP",
+                "name": "User charges apply (Diagnostics Tests)"
+            },
+            {
+                "id": "NkHvpG471tm",
+                "name": "Reduced user charges (Diagnostics Tests)"
+            },
+            {
+                "id": "Cm6ngZTrVQR",
+                "name": "Exemptions from user charges (Diagnostics Tests)"
+            },
+            {
+                "id": "JLSGrrzqrW9",
+                "name": "Cap on user charges (Diagnostics Tests)"
+            },
+            {
+                "id": "PUXn0hz2JFX",
+                "name": "Type of user charge (Dental Visits)"
+            },
+            {
+                "id": "rZlHlitEiFp",
+                "name": "User charges apply (Dental Visits)"
+            },
+            {
+                "id": "lXBWfAv1EJE",
+                "name": "Reduced user charges (Dental Visits)"
+            },
+            {
+                "id": "M228fF4qKsx",
+                "name": "Exemptions from user charges (Dental Visits)"
+            },
+            {
+                "id": "wZ9JynvumSQ",
+                "name": "Cap on user charges (Dental Visits)"
+            },
+            {
+                "id": "Py0PrMRPlUj",
+                "name": "Type of user charge (Dental Care Treatment)"
+            },
+            {
+                "id": "RtLyOZpUtqO",
+                "name": "User charges apply (Dental Care Treatment)"
+            },
+            {
+                "id": "Bwx3a0w5orN",
+                "name": "Reduced user charges (Dental Care Treatment)"
+            },
+            {
+                "id": "KQVn9LNZPlq",
+                "name": "Exemptions from user charges (Dental Care Treatment)"
+            },
+            {
+                "id": "SINKYu3EMgX",
+                "name": "Cap on user charges (Dental Care Treatment)"
+            },
+            {
+                "id": "TaS7d80ciTe",
+                "name": "User charges apply (Inpatient Care)"
+            },
+            {
+                "id": "syr5O2Mj2vL",
+                "name": "Reduced user charges (Inpatient Care)"
+            },
+            {
+                "id": "Urb1llvnJV4",
+                "name": "Exemptions from user charges (Inpatient Care)"
+            },
+            {
+                "id": "Ai7ziQeOU53",
+                "name": "Cap on user charges (Inpatient Care)"
+            },
+            {
+                "id": "L6ly0Y1uCe2",
+                "name": "Type of user charge  (Inpatient Care)"
+            }
+        ]
+    }
+]
