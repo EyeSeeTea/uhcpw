@@ -31,12 +31,12 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
   
                 )}
                 {{visualization && analytics && <Chart visualization={visualization} analytics={analytics} />} } */}
-                {visualization && analytics && (
+                {visualization && analytics && analytics.rows.length > 0 && (
                     <ChartWithAnalytics
-                        //responses={analytics}
+                        responses={[analytics]}
                         extraOptions={{ dashboard: false }}
                         legendSets={[]}
-                        //visualization={visualization}
+                        visualization={visualization}
                         style={{
                             alignItems: "flex-start",
                             display: "flex",
