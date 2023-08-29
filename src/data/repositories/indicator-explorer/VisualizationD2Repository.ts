@@ -2,6 +2,7 @@ import { FutureData } from "../../../domain/entities/Future";
 import {
     CategoryDimensionItem,
     DataDimensionItem,
+    LegendOptions,
     Visualization,
     VisualizationDimension,
 } from "../../../domain/entities/indicator-explorer/Visualization";
@@ -19,7 +20,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
         return apiToFuture(
             this.api.models.visualizations.get({
                 fields: visualizationFields,
-                filter: { type: { "!eq": "PIVOT_TABLE" } },
+                filter: { type: { "!eq": "PIVOT_TABLE" }, name: { like: "UHCW_" } },
             })
         ).map(response => response.objects.map(object => this.buildUser(object)));
     }
@@ -46,6 +47,21 @@ export class VisualizationD2Repository implements VisualizationRepository {
             filters: d2Visualization.filters as VisualizationDimension[],
             dataDimensionItems: d2Visualization.dataDimensionItems as DataDimensionItem[],
             categoryDimensions: d2Visualization.categoryDimensions as CategoryDimensionItem[],
+            showData: d2Visualization.showData,
+            regressionType: d2Visualization.regressionType,
+            type: d2Visualization.type,
+            cumulativeValues: d2Visualization.cumulativeValues,
+            sortOrder: d2Visualization.sortOrder,
+            fontSize: d2Visualization.fontSize,
+            aggregationType: d2Visualization.aggregationType,
+            hideSubtitle: d2Visualization.hideSubtitle,
+            percentStackedValues: d2Visualization.percentStackedValues,
+            noSpaceBetweenColumns: d2Visualization.noSpaceBetweenColumns,
+            hideTitle: d2Visualization.hideTitle,
+            regression: d2Visualization.regression,
+            skipRounding: d2Visualization.skipRounding,
+            legend: d2Visualization.legend as LegendOptions,
+            yearlySeries: d2Visualization.yearlySeries,
         };
     }
 }
@@ -58,6 +74,23 @@ const visualizationFields = {
     filters: true,
     dataDimensionItems: true,
     categoryDimensions: { category: true, categoryOptions: true },
+    showData: true,
+    regressionType: true,
+    type: true,
+    cumulativeValues: true,
+    sortOrder: true,
+    fontSize: true,
+    aggregationType: true,
+    hideSubtitle: true,
+    percentStackedValues: true,
+    noSpaceBetweenColumns: true,
+    hideTitle: true,
+    regression: true,
+    skipRounding: true,
+    legend: {
+        showKey: true,
+    },
+    yearlySeries: true,
 } as const;
 
 type D2Visualization = MetadataPick<{
