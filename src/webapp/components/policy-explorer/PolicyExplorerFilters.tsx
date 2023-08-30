@@ -1,11 +1,12 @@
 import { Button, Grid, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
 import { CountrySelector } from "../country-selector/CountrySelector";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 import { CategorySelector } from "./category-selector/CategorySelector";
+import { useHistory, useLocation } from "react-router-dom";
 
 export interface ResourcesFiltersProps {
     filters: PolicyExplorerFiltersState;
@@ -13,6 +14,56 @@ export interface ResourcesFiltersProps {
 }
 
 export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetTable }) => {
+    const history = useHistory();
+    const location = useLocation();
+
+    const onCategoryChange = useCallback(
+        (value: Record<string, string[]> | undefined) => {
+            const queryParameters = new URLSearchParams(location.search);
+
+            if (value) {
+                queryParameters.set("category", JSON.stringify(value));
+            } else if (value == null) {
+                queryParameters.delete("category");
+            }
+            filters.category.onSelectedChange(value);
+            history.replace({ search: queryParameters.toString() });
+        },
+        [filters.category, history, location.search]
+    );
+
+    const onCountryChange = useCallback(
+        (value: string[] | undefined) => {
+            const queryParameters = new URLSearchParams(location.search);
+
+            if (value && value.length > 0) {
+                queryParameters.set("country", value?.join(","));
+            } else {
+                queryParameters.delete("country");
+            }
+
+            filters.country.onSelectedChange(value);
+            history.replace({ search: queryParameters.toString() });
+        },
+        [filters.country, history, location.search]
+    );
+
+    const onYearsChange = useCallback(
+        (value: string[] | undefined) => {
+            const queryParameters = new URLSearchParams(location.search);
+
+            if (value && value.length > 0) {
+                queryParameters.set("years", value?.join(","));
+            } else {
+                queryParameters.delete("years");
+            }
+
+            filters.year.onSelectedChange(value);
+            history.replace({ search: queryParameters.toString() });
+        },
+        [filters.year, history, location.search]
+    );
+
     return (
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
             <Grid item md={4} sm={6}>
@@ -23,7 +74,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         placeholder={i18n.t("Select category")}
                         categoryOptions={filters.category.options}
                         selectedCategoriesWithSubcategories={filters.category.selected}
-                        onSelect={filters.category.onSelectedChange}
+                        onSelect={onCategoryChange}
                     />
                 </Center>
             </Grid>
@@ -34,7 +85,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         label={i18n.t("Countries")}
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
-                        onSelectedIdsChange={filters.country.onSelectedChange}
+                        onSelectedIdsChange={onCountryChange}
                     />
                 </Center>
             </Grid>
@@ -46,7 +97,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         placeholder={i18n.t("Select year")}
                         options={filters.year.options}
                         values={filters.year.selected}
-                        onChange={filters.year.onSelectedChange}
+                        onChange={onYearsChange}
                         disabled
                     />
                 </Center>

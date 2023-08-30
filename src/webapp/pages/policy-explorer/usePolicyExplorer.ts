@@ -9,9 +9,17 @@ import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
-export function usePolicyExplorer(): PolicyExplorerState {
+export function usePolicyExplorer({
+    categories,
+    countriesFilter,
+    yearsFilter,
+}: {
+    categories?: Record<string, string[]>;
+    countriesFilter?: string[];
+    yearsFilter?: string[];
+}): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2();
+    const countryFilter = useMultiCountryOptionsV2(countriesFilter);
 
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
     const [selectedCategoriesWithSubcategoriesFilter, setSelectedCategoriesWithSubcategoriesFilter] = useState<
@@ -26,6 +34,11 @@ export function usePolicyExplorer(): PolicyExplorerState {
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataOrientationByTable, setDataOrientationByTable] = useState<Record<string, DataOrientation> | undefined>();
+
+    useEffect(() => {
+        setSelectedCategoriesWithSubcategoriesFilter(categories);
+        setSelectedYearFilter(yearsFilter);
+    }, [categories, yearsFilter]);
 
     useEffect(() => {
         if (!countryFilter.selected?.length) {
