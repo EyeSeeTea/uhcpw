@@ -29,7 +29,7 @@
         "file-saver": "^2.0.5",
         "fluture": "14.0.0",
         "font-awesome": "4.7.0",
-        "highcharts": "^11.0.0",
+        "highcharts": "^10.3.3",
         "highcharts-react-official": "^3.2.0",
         "html-to-image": "^1.11.11",
         "isomorphic-fetch": "3.0.0",

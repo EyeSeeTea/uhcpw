@@ -5,7 +5,6 @@ import { useAppContext } from "../../contexts/app-context";
 import { IndicatorExplorerState } from "./IndicatorExplorerState";
 
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
-import { visualizationCustomizations } from "./visualizationCustomizations";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 
@@ -32,16 +31,16 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 visualization => {
                     setVisualization(visualization);
 
-                    const customVisualization = visualizationCustomizations[visualization.id];
+                    //const customVisualization = visualizationCustomizations[visualization.id];
 
-                    if (visualization && customVisualization && selectedYearFilter && countryFilter.selected) {
+                    if (visualization && selectedYearFilter && countryFilter.selected) {
                         compositionRoot.indicatorExplorer.getAnalytics
                             .execute(visualization.id, selectedYearFilter, countryFilter.selected)
                             .run(
                                 analytics => {
                                     setAnalytics(analytics);
                                 },
-                                () => {
+                                error => {
                                     setAnalytics(undefined);
                                 }
                             );

@@ -1,4 +1,4 @@
-import { FutureData } from "../../../domain/entities/Future";
+import { Future, FutureData } from "../../../domain/entities/Future";
 import {
     CategoryDimensionItem,
     DataDimensionItem,
@@ -22,23 +22,25 @@ export class VisualizationD2Repository implements VisualizationRepository {
                 fields: visualizationFields,
                 filter: { type: { "!eq": "PIVOT_TABLE" }, name: { like: "UHCW_" } },
             })
-        ).map(response => response.objects.map(object => this.buildUser(object)));
+        ).map(response => response.objects.map(object => this.buildVisualization(object)));
     }
 
     public getById(id: string): FutureData<Visualization> {
-        return this.cache.getOrFuture(
-            id,
-            apiToFuture(
-                this.api.get<D2Visualization>(`/visualizations/${id}`, {
-                    fields: Object.keys(visualizationFields).join(","),
-                })
-            ).map(visualization => {
-                return this.buildUser(visualization);
-            })
-        );
+        // return this.cache.getOrFuture(
+        //     id,
+        //     apiToFuture(
+        //         this.api.get<D2Visualization>(`/visualizations/${id}`, {
+        //             fields: Object.keys(visualizationFields).join(","),
+        //         })
+        //     ).map(visualization => {
+        //         return this.buildVisualization(visualization);
+        //     })
+        // );
+
+        return Future.success(hardCodedVisualization as unknown as Visualization);
     }
 
-    private buildUser(d2Visualization: D2Visualization): Visualization {
+    private buildVisualization(d2Visualization: D2Visualization): Visualization {
         return {
             id: d2Visualization.id,
             name: d2Visualization.displayName,
@@ -96,3 +98,131 @@ const visualizationFields = {
 type D2Visualization = MetadataPick<{
     visualizations: { fields: typeof visualizationFields };
 }>["visualizations"][number];
+
+const hardCodedVisualization = {
+    id: "DkPKc1EUmC2",
+    name: "ANC: 1-3 trend lines last 12 months",
+    showData: false,
+    type: "LINE",
+    regressionType: "NONE",
+    cumulativeValues: false,
+    sortOrder: 0,
+    fontSize: "NORMAL",
+    aggregationType: "DEFAULT",
+    displayName: "ANC: 1-3 trend lines last 12 months",
+    hideSubtitle: false,
+    percentStackedValues: false,
+    noSpaceBetweenColumns: false,
+    hideTitle: false,
+    regression: false,
+    skipRounding: false,
+    legend: {
+        showKey: false,
+    },
+    seriesKey: {
+        hidden: false,
+    },
+    yearlySeries: [],
+    interpretations: [
+        {
+            created: "2023-04-16T11:07:06.528",
+            id: "MC8iaQ5ojv6",
+        },
+    ],
+    columns: [
+        {
+            dimension: "dx",
+            items: [
+                {
+                    name: "ANC 1 Coverage",
+                    id: "Uvn6LCg7dVU",
+                    displayName: "ANC 1 Coverage",
+                    displayShortName: "ANC 1 Coverage",
+                    dimensionItemType: "INDICATOR",
+                    access: {
+                        read: true,
+                        update: true,
+                        externalize: false,
+                        delete: true,
+                        write: true,
+                        manage: true,
+                    },
+                },
+                {
+                    name: "ANC 2 Coverage",
+                    id: "OdiHJayrsKo",
+                    displayName: "ANC 2 Coverage",
+                    displayShortName: "ANC 2 Coverage",
+                    dimensionItemType: "INDICATOR",
+                    access: {
+                        read: true,
+                        update: true,
+                        externalize: false,
+                        delete: true,
+                        write: true,
+                        manage: true,
+                    },
+                },
+                {
+                    name: "ANC 3 Coverage",
+                    id: "sB79w2hiLp8",
+                    displayName: "ANC 3 Coverage",
+                    displayShortName: "ANC 3 Coverage",
+                    dimensionItemType: "INDICATOR",
+                    access: {
+                        read: true,
+                        update: true,
+                        externalize: false,
+                        delete: true,
+                        write: true,
+                        manage: true,
+                    },
+                },
+            ],
+        },
+    ],
+    filters: [
+        {
+            dimension: "ou",
+            items: [
+                {
+                    name: "Sierra Leone",
+                    id: "ImspTQPwCqd",
+                    displayName: "Sierra Leone",
+                    displayShortName: "Sierra Leone",
+                    dimensionItemType: "ORGANISATION_UNIT",
+                    access: {
+                        read: true,
+                        update: true,
+                        externalize: false,
+                        delete: true,
+                        write: true,
+                        manage: true,
+                    },
+                },
+            ],
+        },
+    ],
+    rows: [
+        {
+            dimension: "pe",
+            items: [
+                {
+                    name: "LAST_12_MONTHS",
+                    id: "LAST_12_MONTHS",
+                    displayName: "LAST_12_MONTHS",
+                    displayShortName: "LAST_12_MONTHS",
+                    dimensionItemType: "PERIOD",
+                    access: {
+                        read: true,
+                        update: true,
+                        externalize: false,
+                        delete: true,
+                        write: true,
+                        manage: true,
+                    },
+                },
+            ],
+        },
+    ],
+};

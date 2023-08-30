@@ -6,6 +6,9 @@ export type Analytics = {
         type: "java.lang.String" | "java.lang.Double";
         hidden: boolean;
         meta: boolean;
+        isPrefix?: boolean;
+        isCollect?: boolean;
+        index?: number;
     }>;
     metaData: {
         items: Record<string, AnalyticsMetadataItem>;
@@ -16,11 +19,11 @@ export type Analytics = {
 
 export type AnalyticsMetadataItem = {
     uid: string;
-    code: string;
+    code?: string;
     name: string;
     dimensionItemType: "PERIOD" | "ORGANISATION_UNIT" | "CATEGORY_OPTION" | "DATA_ELEMENT";
     valueType: string;
     totalAggregationType: "SUM";
-    startDate: string;
-    endDate: string;
+    startDate?: string;
+    endDate?: string;
 };

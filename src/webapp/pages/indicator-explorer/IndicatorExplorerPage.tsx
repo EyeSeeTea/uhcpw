@@ -7,7 +7,7 @@ import { IndicatorExplorerFilters } from "../../components/indicator-explorer/In
 import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
-import ChartWithAnalytics from "../../components/chart/ChartWithAnalytics";
+import { ChartPlugin } from "../../components/chart/ChartPlugin";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { filters, visualization, analytics, onGetChart } = useIndicatorExplorer();
@@ -31,11 +31,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
   
                 )}
                 {{visualization && analytics && <Chart visualization={visualization} analytics={analytics} />} } */}
-                {visualization && analytics && analytics.rows.length > 0 && (
-                    <ChartWithAnalytics
-                        responses={[analytics]}
-                        extraOptions={{ dashboard: false }}
-                        legendSets={[]}
+                {visualization && analytics && (
+                    <ChartPlugin
+                        analytics={analytics ? [analytics] : []}
                         visualization={visualization}
                         style={{
                             alignItems: "flex-start",
