@@ -7,7 +7,7 @@ import { PolicyExplorerPage } from "../PolicyExplorerPage";
 import policyExplorerCategoriesData from "./data/policyExplorerCategories.json";
 import dataSetData from "./data/dataSet.json";
 import countriesData from "./data/countries.json";
-import policyExplorerData from "./data/policyExplorer.json";
+import policyExplorerSimple from "./data/policyExplorerSimple.json";
 import userEvent from "@testing-library/user-event";
 import { DataSetD2Repository } from "../../../../data/repositories/DataSetD2Repository";
 import { PolicyExplorerCategoryD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
@@ -29,7 +29,7 @@ describe("PolicyExplorerPage", () => {
             getPolicyExplorerCategories();
             givenADataSet();
             givenCountries();
-            givenAPolicyExplorer();
+            givenASimplePolicyExplorer();
 
             renderPage();
 
@@ -38,11 +38,11 @@ describe("PolicyExplorerPage", () => {
     });
 
     describe("Population Coverage category table", () => {
-        it("should render expected table", async () => {
+        it("should render expected table title", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
             givenADataSet();
             givenCountries();
-            givenAPolicyExplorer();
+            givenASimplePolicyExplorer();
 
             renderPage();
             await selectFiltersAndGetTable(policyExplorerCategories[0]?.name || "", "Spain");
@@ -52,6 +52,43 @@ describe("PolicyExplorerPage", () => {
             );
 
             expect(tableTitle).toBeInTheDocument();
+        });
+        it("should render a table", async () => {
+            const { policyExplorerCategories } = getPolicyExplorerCategories();
+            givenADataSet();
+            givenCountries();
+            givenASimplePolicyExplorer();
+
+            renderPage();
+            await selectFiltersAndGetTable(policyExplorerCategories[0]?.name || "", "Spain");
+
+            const table = await waitFor(() => screen.getByRole("table", { name: /simple table/i }));
+
+            expect(table).toBeInTheDocument();
+        });
+        it("should render expected total rows in the table", async () => {
+            const { policyExplorerCategories } = getPolicyExplorerCategories();
+            givenADataSet();
+            givenCountries();
+            const policyExplorer = givenASimplePolicyExplorer();
+
+            renderPage();
+            await selectFiltersAndGetTable(policyExplorerCategories[0]?.name || "", "Spain");
+            await switchToColumns();
+
+            await verifyTotalRows(policyExplorer, policyExplorerCategories[0]?.id);
+        });
+        it("should render expected columns in the table", async () => {
+            const { policyExplorerCategories } = getPolicyExplorerCategories();
+            givenADataSet();
+            givenCountries();
+            const policyExplorer = givenASimplePolicyExplorer();
+
+            renderPage();
+            await selectFiltersAndGetTable(policyExplorerCategories[0]?.name || "", "Spain");
+            await switchToColumns();
+
+            await verifyColumns(policyExplorer, policyExplorerCategories[0]?.id);
         });
     });
 });
@@ -105,10 +142,10 @@ function givenCountries(): Country[] {
     return items;
 }
 
-function givenAPolicyExplorer(): PolicyExplorer {
+function givenASimplePolicyExplorer(): PolicyExplorer {
     const mockedRepository = mock(PolicyExplorerD2Repository);
 
-    const items: PolicyExplorer = policyExplorerData as unknown as PolicyExplorer;
+    const items: PolicyExplorer = policyExplorerSimple as unknown as PolicyExplorer;
 
     when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(items));
 
@@ -172,4 +209,46 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
     await userEvent.keyboard("{Escape}");
 
     await scope.findByLabelText(/countries/i);
+}
+
+async function switchToColumns() {
+    const switchRowColumnButton = await screen.getByRole("button", {
+        name: /switch row\/column/i,
+    });
+    await userEvent.click(switchRowColumnButton);
+}
+
+function getTableByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
+    return categoryId ? policyExplorer.tables[categoryId] : [];
+}
+
+function getTableColumnsByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
+    const table = getTableByPolicyExplorerCategoryId(policyExplorer, categoryId);
+    return table ? table[0] : [];
+}
+
+async function verifyTotalRows(policyExplorer: PolicyExplorer, categoryId?: string) {
+    const rows = await screen.findAllByRole("row");
+
+    const table = getTableByPolicyExplorerCategoryId(policyExplorer, categoryId);
+    expect(rows.length).toBe(table?.length);
+}
+
+async function verifyCell(cellName: string) {
+    const cell = await screen.getByRole("cell", {
+        name: cellName,
+    });
+    expect(cell).toBeInTheDocument();
+}
+
+async function verifyColumns(policyExplorer: PolicyExplorer, categoryId?: string) {
+    const tableColumns = getTableColumnsByPolicyExplorerCategoryId(policyExplorer, categoryId);
+
+    if (tableColumns === undefined) {
+        throw new Error(`Table columns not found`);
+    }
+
+    for (const column of tableColumns) {
+        await verifyCell(column.value);
+    }
 }
