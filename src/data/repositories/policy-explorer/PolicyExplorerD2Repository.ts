@@ -301,7 +301,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         policyExplorerCategoryId: string,
         policyExplorerSubcategoriesIds: string[],
         dataSet?: D2DataSet
-    ): PolicyExplorerCell[][] {
+    ): PolicyExplorerCell[] {
         const dataElementsSection = this.getDataElementsSection(
             policyExplorerCategoryId,
             policyExplorerSubcategoriesIds,
@@ -315,11 +315,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 return this.getTypeOfUserChargeColumns(policyExplorerSubcategoriesIds);
             default:
                 return [
-                    [
-                        { type: PolicyExplorerCellType.HEADER, value: "Country" },
-                        { type: PolicyExplorerCellType.HEADER, value: "Period" },
-                        ...dataElementsSection.map(de => ({ type: PolicyExplorerCellType.HEADER, value: de.formName })),
-                    ],
+                    { type: PolicyExplorerCellType.HEADER, value: "Country" },
+                    { type: PolicyExplorerCellType.HEADER, value: "Period" },
+                    ...dataElementsSection.map(de => ({ type: PolicyExplorerCellType.HEADER, value: de.formName })),
                 ];
         }
     }
@@ -444,22 +442,38 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const tables = {};
 
         return Object.entries(policyExplorerCategories).reduce(
-            (acc, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => ({
-                ...acc,
-                [policyExplorerCategoryId]: [
-                    ...this.buildColumns(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet),
-                    ...this.buildRows({
-                        policyExplorerCategoryId,
-                        policyExplorerSubcategoriesIds,
-                        dataValues,
-                        organisationUnits,
-                        yearsByCategory,
-                        dataSet,
-                    }),
-                ],
-            }),
+            (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
+                const columns = this.buildColumns(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet);
+                const rows = this.buildRows({
+                    policyExplorerCategoryId,
+                    policyExplorerSubcategoriesIds,
+                    dataValues,
+                    organisationUnits,
+                    yearsByCategory,
+                    dataSet,
+                });
+
+                const tableWithFilteredColumns = this.filterColumnsWithNoData(columns, rows);
+
+                return {
+                    ...accTables,
+                    [policyExplorerCategoryId]: tableWithFilteredColumns,
+                };
+            },
             tables
         );
+    }
+
+    private filterColumnsWithNoData(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]) {
+        const indexesToRemove = columns.reduce((accIndexesToRemove: number[], _column, columnIndex) => {
+            const hasRowsWithoutData = rows.every(row => !row[columnIndex]?.value);
+            return hasRowsWithoutData ? [...accIndexesToRemove, columnIndex] : accIndexesToRemove;
+        }, []);
+
+        const filteredColumns = columns.filter((_column, index) => !indexesToRemove.includes(index));
+        const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
+
+        return [filteredColumns, ...filteredRows];
     }
 
     private getDataElementsSection(
@@ -488,12 +502,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 value: columnName,
             }));
         return [
-            [
-                { type: PolicyExplorerCellType.HEADER, value: "Country" },
-                { type: PolicyExplorerCellType.HEADER, value: "Period" },
-                { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
-                ...columns,
-            ],
+            { type: PolicyExplorerCellType.HEADER, value: "Country" },
+            { type: PolicyExplorerCellType.HEADER, value: "Period" },
+            { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
+            ...columns,
         ];
     }
 
@@ -507,12 +519,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 value: columnName,
             }));
         return [
-            [
-                { type: PolicyExplorerCellType.HEADER, value: "Country" },
-                { type: PolicyExplorerCellType.HEADER, value: "Period" },
-                { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
-                ...columns,
-            ],
+            { type: PolicyExplorerCellType.HEADER, value: "Country" },
+            { type: PolicyExplorerCellType.HEADER, value: "Period" },
+            { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
+            ...columns,
         ];
     }
 
