@@ -7,7 +7,9 @@ import { ChartData, IndicatorExplorerState } from "./IndicatorExplorerState";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
-import { Future } from "../../../domain/entities/Future";
+import { Future, FutureData } from "../../../domain/entities/Future";
+import { CompositionRoot } from "../../../CompositionRoot";
+import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -29,38 +31,26 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         if (selectedCategoryFilter) {
             setChartData({ kind: "Loading" });
 
-            Future.joinObj({
-                visualization: compositionRoot.indicatorExplorer.getVisualization.execute(selectedCategoryFilter),
-                analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
-                    selectedCategoryFilter,
-                    selectedYearFilter || [],
-                    countryFilter.selected || []
-                ),
-            })
-                .flatMap(({ visualization, analytics }) => {
-                    const legendSetIds = getLegendSetIds(visualization, analytics);
-
-                    return Future.joinObj({
-                        visualization: Future.success(visualization),
-                        analytics: Future.success(analytics),
-                        legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+            getChartData(
+                compositionRoot,
+                selectedCategoryFilter,
+                selectedYearFilter || [],
+                countryFilter.selected || []
+            ).run(
+                ({ visualization, analytics, legendSets }) => {
+                    setChartData({ kind: "Loaded", visualization, analytics, legendSets });
+                },
+                error => {
+                    setChartData({
+                        kind: "Error",
+                        message: "An error has ocurred to loading chart data: " + error,
                     });
-                })
-                .run(
-                    ({ visualization, analytics, legendSets }) => {
-                        setChartData({ kind: "Loaded", visualization, analytics, legendSets });
-                    },
-                    error => {
-                        setChartData({
-                            kind: "Error",
-                            message: "An error has ocurred to loading chart data: " + error,
-                        });
-                    }
-                );
+                }
+            );
         } else {
             setChartData(undefined);
         }
-    }, [compositionRoot.indicatorExplorer, selectedCategoryFilter, selectedYearFilter, countryFilter.selected]);
+    }, [selectedCategoryFilter, compositionRoot, selectedYearFilter, countryFilter.selected]);
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
         setSelectedYearFilter(value);
@@ -100,6 +90,34 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         chartData,
         onGetChart,
     };
+}
+
+function getChartData(
+    compositionRoot: CompositionRoot,
+    visualizationId: string,
+    years: string[],
+    countries: string[]
+): FutureData<{
+    visualization: Visualization;
+    analytics: Analytics;
+    legendSets: LegendSet[];
+}> {
+    return Future.joinObj({
+        visualization: compositionRoot.indicatorExplorer.getVisualization.execute(visualizationId),
+        analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
+            visualizationId,
+            years || [],
+            countries || []
+        ),
+    }).flatMap(({ visualization, analytics }) => {
+        const legendSetIds = getLegendSetIds(visualization, analytics);
+
+        return Future.joinObj({
+            visualization: Future.success(visualization),
+            analytics: Future.success(analytics),
+            legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+        });
+    });
 }
 
 function getLegendSetIds(visualization: Visualization, analytics: Analytics) {
