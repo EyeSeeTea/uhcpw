@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
-import { IndicatorExplorerState } from "./IndicatorExplorerState";
+import { ChartData, IndicatorExplorerState } from "./IndicatorExplorerState";
 
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
-import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
+import { Future } from "../../../domain/entities/Future";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -16,13 +16,10 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
 
-    const [visualization, setVisualization] = useState<Visualization | undefined>();
-    const [analytics, setAnalytics] = useState<Analytics | undefined>();
-
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
 
-    const [legendSets, setLegendSets] = useState<LegendSet[]>([]);
+    const [chartData, setChartData] = useState<ChartData | undefined>();
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -30,44 +27,38 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const onGetChart = useCallback(() => {
         if (selectedCategoryFilter) {
-            compositionRoot.indicatorExplorer.getVisualization.execute(selectedCategoryFilter).run(
-                visualization => {
-                    setVisualization(visualization);
+            setChartData({ kind: "Loading" });
 
-                    //const customVisualization = visualizationCustomizations[visualization.id];
+            Future.joinObj({
+                visualization: compositionRoot.indicatorExplorer.getVisualization.execute(selectedCategoryFilter),
+                analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
+                    selectedCategoryFilter,
+                    selectedYearFilter || [],
+                    countryFilter.selected || []
+                ),
+            })
+                .flatMap(({ visualization, analytics }) => {
+                    const legendSetIds = getLegendSetIds(visualization, analytics);
 
-                    if (visualization && selectedYearFilter && countryFilter.selected) {
-                        compositionRoot.indicatorExplorer.getAnalytics
-                            .execute(visualization.id, selectedYearFilter, countryFilter.selected)
-                            .run(
-                                analytics => {
-                                    setAnalytics(analytics);
-
-                                    const legendSetIds = getLegendSetIds(visualization, analytics);
-
-                                    compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds).run(
-                                        legendSets => {
-                                            setLegendSets(legendSets);
-                                        },
-                                        () => {
-                                            setLegendSets([]);
-                                        }
-                                    );
-                                },
-                                () => {
-                                    setAnalytics(undefined);
-                                }
-                            );
-                    } else {
-                        setAnalytics(undefined);
+                    return Future.joinObj({
+                        visualization: Future.success(visualization),
+                        analytics: Future.success(analytics),
+                        legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+                    });
+                })
+                .run(
+                    ({ visualization, analytics, legendSets }) => {
+                        setChartData({ kind: "Loaded", visualization, analytics, legendSets });
+                    },
+                    error => {
+                        setChartData({
+                            kind: "Error",
+                            message: "An error has ocurred to loading chart data: " + error,
+                        });
                     }
-                },
-                () => {
-                    setVisualization(undefined);
-                }
-            );
+                );
         } else {
-            setVisualization(undefined);
+            setChartData(undefined);
         }
     }, [compositionRoot.indicatorExplorer, selectedCategoryFilter, selectedYearFilter, countryFilter.selected]);
 
@@ -106,9 +97,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 onSelectedChange: onChangeYearFilter,
             },
         },
-        visualization,
-        analytics,
-        legendSets,
+        chartData,
         onGetChart,
     };
 }

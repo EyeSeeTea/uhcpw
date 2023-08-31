@@ -5,11 +5,27 @@ import { CountryFilterState, OptionsFilterState, OptionsMultiFilterState } from 
 
 export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
-    visualization?: Visualization;
-    analytics?: Analytics;
-    legendSets: LegendSet[];
+    chartData?: ChartData;
     onGetChart: () => void;
 };
+
+export type ChartDataLoaded = {
+    kind: "Loaded";
+    visualization: Visualization;
+    analytics: Analytics;
+    legendSets: LegendSet[];
+};
+
+export type ChartDataLoading = {
+    kind: "Loading";
+};
+
+export type ChartDataError = {
+    kind: "Error";
+    message: string;
+};
+
+export type ChartData = ChartDataLoaded | ChartDataLoading | ChartDataError;
 
 export type IndicatorExplorerFiltersState = {
     country: CountryFilterState;

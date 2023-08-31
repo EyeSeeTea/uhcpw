@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { CircularProgress, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -10,7 +10,7 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { ChartPlugin } from "../../components/chart/ChartPlugin";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, visualization, analytics, legendSets, onGetChart } = useIndicatorExplorer();
+    const { filters, onGetChart, chartData } = useIndicatorExplorer();
 
     return (
         <Layout>
@@ -31,25 +31,34 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
   
                 )}
                 {{visualization && analytics && <Chart visualization={visualization} analytics={analytics} />} } */}
-                {visualization && analytics && (
-                    <ChartPlugin
-                        analytics={analytics ? [analytics] : []}
-                        visualization={visualization}
-                        legendSets={legendSets}
-                        style={{
-                            alignItems: "flex-start",
-                            display: "flex",
-                            height: "100%",
-                            justifyContent: "flex-start",
-                        }}
-                        animation={200}
-                    />
-                )}
-                {analytics && analytics.rows.length === 0 && (
-                    <Center>
-                        <Typography variant="subtitle1">{i18n.t("There may be no data")}</Typography>
-                    </Center>
-                )}
+
+                {chartData &&
+                    (chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
+                        <ChartPlugin
+                            analytics={[chartData.analytics]}
+                            visualization={chartData.visualization}
+                            legendSets={chartData.legendSets}
+                            style={{
+                                alignItems: "flex-start",
+                                display: "flex",
+                                height: "100%",
+                                justifyContent: "flex-start",
+                            }}
+                            animation={200}
+                        />
+                    ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
+                        <Center>
+                            <Typography variant="subtitle1">{i18n.t("There may be no data")}</Typography>
+                        </Center>
+                    ) : chartData.kind === "Error" ? (
+                        <Center>
+                            <Typography variant="subtitle1">{chartData.message}</Typography>
+                        </Center>
+                    ) : (
+                        <Center>
+                            <CircularProgress />
+                        </Center>
+                    ))}
             </MainSection>
         </Layout>
     );
