@@ -31,7 +31,7 @@ declare module "@dhis2/analytics" {
         data: AnalyticsResponse[],
         layout: Visualization,
         el: MutableRefObject,
-        extraOptions: { dashboard: boolean; animation: number; legendSets: []; onToggleContextualMenu: any },
+        extraOptions: { dashboard: boolean; animation: number; legendSets: any[]; onToggleContextualMenu: any },
         error?: (error: any) => never,
         warning?: (warning: any) => void,
         outputFormat: "dhis" | "highcharts"

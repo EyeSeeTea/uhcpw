@@ -2,11 +2,13 @@ import { isSingleValue, createVisualization } from "@dhis2/analytics";
 import React, { useRef, useCallback, useEffect, CSSProperties } from "react";
 import styled, { css } from "styled-components";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
+import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
     visualization: Visualization;
+    legendSets: LegendSet[];
     periods?: string[];
     style?: CSSProperties;
     onChartGenerated?: (visualization: any) => void;
@@ -19,7 +21,7 @@ export interface ChartPluginProps {
  * https://github.com/dhis2/data-visualizer-app/blob/dev/src/components/VisualizationPlugin/ChartPlugin.js
  */
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
-    ({ analytics, visualization, style, animation = 200, onToggleContextualMenu }) => {
+    ({ analytics, visualization, legendSets, style, animation = 200, onToggleContextualMenu }) => {
         const canvasRef = useRef(null);
         const prevStyle = useRef(style);
         //const prevRenderCounter = useRef(undefined);
@@ -38,7 +40,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                     {
                         dashboard: false,
                         animation,
-                        legendSets: [],
+                        legendSets: legendSets,
                         onToggleContextualMenu,
                     },
                     undefined,
@@ -59,7 +61,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 //     }
                 // }
             },
-            [analytics, onToggleContextualMenu, visualization]
+            [analytics, legendSets, onToggleContextualMenu, visualization]
         );
 
         useEffect(() => {

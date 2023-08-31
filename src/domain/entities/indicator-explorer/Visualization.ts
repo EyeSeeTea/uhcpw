@@ -98,4 +98,6 @@ export type DimensionItem = {
 
 export type LegendOptions = {
     showKey: boolean;
+    strategy: "BY_DATA_ITEM" | "FIXED";
+    set: Ref;
 };

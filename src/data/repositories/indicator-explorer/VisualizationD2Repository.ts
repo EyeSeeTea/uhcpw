@@ -96,6 +96,8 @@ const visualizationFields = {
     skipRounding: true,
     legend: {
         showKey: true,
+        strategy: true,
+        set: true,
     },
     yearlySeries: true,
     title: true,

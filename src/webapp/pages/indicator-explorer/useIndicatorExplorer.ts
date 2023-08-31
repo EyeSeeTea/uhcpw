@@ -7,6 +7,7 @@ import { IndicatorExplorerState } from "./IndicatorExplorerState";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
+import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -20,6 +21,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
+
+    const [legendSets, setLegendSets] = useState<LegendSet[]>([]);
 
     const onChangeCategoryFilter = useCallback((value: string | undefined) => {
         setSelectedCategoryFilter(value);
@@ -39,6 +42,17 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                             .run(
                                 analytics => {
                                     setAnalytics(analytics);
+
+                                    const legendSetIds = getLegendSetIds(visualization, analytics);
+
+                                    compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds).run(
+                                        legendSets => {
+                                            setLegendSets(legendSets);
+                                        },
+                                        () => {
+                                            setLegendSets([]);
+                                        }
+                                    );
                                 },
                                 () => {
                                     setAnalytics(undefined);
@@ -94,6 +108,38 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         },
         visualization,
         analytics,
+        legendSets,
         onGetChart,
     };
+}
+
+function getLegendSetIds(visualization: Visualization, analytics: Analytics) {
+    // parse responses to extract dx ids from metaData
+    // multiple responses are only for YOY which does not support legends or custom icon
+    // safe to use only the 1st
+    // dx dimensions might not be present, the empty array covers that case
+    const dxIds = analytics.metaData.dimensions.dx || [];
+
+    const legendSetIds = [];
+
+    switch (visualization.legend?.strategy) {
+        case "FIXED":
+            if (visualization.legend?.set?.id) {
+                legendSetIds.push(visualization.legend.set.id);
+            }
+            break;
+        case "BY_DATA_ITEM": {
+            dxIds.forEach(dxId => {
+                const legendSetId = analytics.metaData.items[dxId]?.legendSet;
+
+                if (legendSetId) {
+                    legendSetIds.push(legendSetId);
+                }
+            });
+
+            break;
+        }
+    }
+
+    return legendSetIds;
 }

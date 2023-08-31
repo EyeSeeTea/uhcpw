@@ -10,7 +10,7 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { ChartPlugin } from "../../components/chart/ChartPlugin";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, visualization, analytics, onGetChart } = useIndicatorExplorer();
+    const { filters, visualization, analytics, legendSets, onGetChart } = useIndicatorExplorer();
 
     return (
         <Layout>
@@ -35,6 +35,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     <ChartPlugin
                         analytics={analytics ? [analytics] : []}
                         visualization={visualization}
+                        legendSets={legendSets}
                         style={{
                             alignItems: "flex-start",
                             display: "flex",

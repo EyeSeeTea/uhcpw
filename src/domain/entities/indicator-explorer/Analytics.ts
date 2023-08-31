@@ -26,4 +26,5 @@ export type AnalyticsMetadataItem = {
     totalAggregationType: "SUM";
     startDate?: string;
     endDate?: string;
+    legendSet?: string;
 };
