@@ -1,5 +1,6 @@
 import { isSingleValue, createVisualization } from "@dhis2/analytics";
 import React, { useRef, useCallback, useEffect, CSSProperties } from "react";
+import styled, { css } from "styled-components";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 
@@ -83,6 +84,23 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             /* eslint-disable-next-line react-hooks/exhaustive-deps */
         }, [style]);
 
-        return <div ref={canvasRef} style={style} />;
+        return <Container ref={canvasRef} style={style} />;
     }
 );
+
+const customCss = css`
+    .highcharts-grid-line {
+        opacity: 0;
+    }
+`;
+
+const Container = styled.div`
+    .highcharts-container * {
+        font-family: "Roboto";
+    }
+    .highcharts-background {
+        //fill: #f1f9fc;
+    }
+
+    ${customCss}
+`;
