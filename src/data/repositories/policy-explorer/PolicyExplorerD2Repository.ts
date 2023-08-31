@@ -389,25 +389,48 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             }),
                         ];
                     default:
-                        return [
-                            ...accRows,
-                            [
-                                { type: PolicyExplorerCellType.DATA, value: orgUnitName },
-                                { type: PolicyExplorerCellType.DATA, value: period || "" },
-                                ...dataElementsSection.map(de => {
-                                    const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
-
-                                    return {
-                                        type: PolicyExplorerCellType.DATA,
-                                        value: `${dataValue?.value || ""}\n\n${references}`,
-                                    };
-                                }),
-                            ],
-                        ];
+                        return this.getRows({
+                            currentRows: accRows,
+                            dataElementsSection,
+                            dataValuesByGroup,
+                            orgUnitName,
+                            period,
+                            references,
+                        });
                 }
             },
             []
         );
+    }
+
+    private getRows(params: {
+        currentRows: PolicyExplorerCell[][];
+        dataElementsSection: Record<string, string>[];
+        dataValuesByGroup: DataValueSetsDataValue[];
+        orgUnitName: string;
+        period?: string;
+        references: string;
+    }) {
+        const { currentRows, dataElementsSection, dataValuesByGroup, orgUnitName, period, references } = params;
+
+        const restRow = dataElementsSection.map(de => {
+            const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
+            return {
+                type: PolicyExplorerCellType.DATA,
+                value: dataValue?.value ? `${dataValue?.value}\n\n${references}` : "",
+            };
+        });
+
+        return restRow.every(row => !row.value)
+            ? currentRows
+            : [
+                  ...currentRows,
+                  [
+                      { type: PolicyExplorerCellType.DATA, value: orgUnitName },
+                      { type: PolicyExplorerCellType.DATA, value: period || "" },
+                      ...restRow,
+                  ],
+              ];
     }
 
     private buildTables(params: {
@@ -573,10 +596,15 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementsSectionId);
                         return {
                             type: PolicyExplorerCellType.DATA,
-                            value: `${dataValue?.value || ""}\n\n${references}`,
+                            value: dataValue?.value ? `${dataValue?.value}\n\n${references}` : "",
                         };
                     }
                 );
+
+                if (restRow.every(row => !row.value)) {
+                    return acc;
+                }
+
                 const row = [...initRow, ...restRow];
                 return [...acc, row];
             },
