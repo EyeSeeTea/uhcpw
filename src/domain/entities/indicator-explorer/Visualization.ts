@@ -3,6 +3,8 @@ import { Id, Ref } from "../Ref";
 export interface Visualization {
     id: Id;
     name: string;
+    title: string;
+    subtitle: string;
     rows: VisualizationDimension[];
     columns: VisualizationDimension[];
     filters: VisualizationDimension[];
@@ -56,7 +58,12 @@ export interface Visualization {
     skipRounding: boolean;
     legend: LegendOptions;
     yearlySeries: string[];
+    seriesKey: VisualizationSeriesKey;
 }
+
+export type VisualizationSeriesKey = {
+    hidden: boolean;
+};
 export interface DataDimensionItem {
     dataDimensionItemType: string;
     dataElement: Ref;
@@ -68,7 +75,7 @@ export interface CategoryDimensionItem {
 }
 
 export type Dimension = "ou" | "pe" | "dx" | string;
-export type VisualizationDimension = { id: Dimension; items: DimensionItem };
+export type VisualizationDimension = { id: Dimension; dimension: Dimension; items: DimensionItem[] };
 export type DimensionItem = {
     name: string;
     id: string;

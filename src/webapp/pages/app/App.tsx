@@ -1,3 +1,4 @@
+import { useDataEngine } from "@dhis2/app-runtime";
 import { SnackbarProvider } from "@eyeseetea/d2-ui-components";
 import { Feedback } from "@eyeseetea/feedback-component";
 import { MuiThemeProvider } from "@material-ui/core/styles";
@@ -23,10 +24,11 @@ export interface AppProps {
 export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instance }) {
     const [loading, setLoading] = useState(true);
     const [appContext, setAppContext] = useState<AppContextState | null>(null);
+    const dataEngine = useDataEngine();
 
     useEffect(() => {
         async function setup() {
-            const compositionRoot = getCompositionRoot(api, instance);
+            const compositionRoot = getCompositionRoot(api, dataEngine, instance);
             const currentUser = (await compositionRoot.users.getCurrent.execute().runAsync()).data;
             if (!currentUser) throw new Error("User not logged in");
             const isNodeDev = process.env.NODE_ENV === "development";
@@ -37,7 +39,7 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
             setLoading(false);
         }
         setup();
-    }, [d2, api, instance]);
+    }, [d2, api, instance, dataEngine]);
 
     if (loading) return null;
 

@@ -1,4 +1,5 @@
-import { Future, FutureData } from "../../../domain/entities/Future";
+import { getFieldsAsString } from "@eyeseetea/d2-api/api/common";
+import { FutureData } from "../../../domain/entities/Future";
 import {
     CategoryDimensionItem,
     DataDimensionItem,
@@ -20,30 +21,28 @@ export class VisualizationD2Repository implements VisualizationRepository {
         return apiToFuture(
             this.api.models.visualizations.get({
                 fields: visualizationFields,
-                filter: { type: { "!eq": "PIVOT_TABLE" }, name: { like: "UHCW_" } },
+                filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: ["WaznCszwnj7", "D240hYLRs1P", "SKJkOTlS8vN"] } }, //, name: { like: "UHCW_" } },
             })
         ).map(response => response.objects.map(object => this.buildVisualization(object)));
     }
 
     public getById(id: string): FutureData<Visualization> {
-        // return this.cache.getOrFuture(
-        //     id,
-        //     apiToFuture(
-        //         this.api.get<D2Visualization>(`/visualizations/${id}`, {
-        //             fields: Object.keys(visualizationFields).join(","),
-        //         })
-        //     ).map(visualization => {
-        //         return this.buildVisualization(visualization);
-        //     })
-        // );
-
-        return Future.success(hardCodedVisualization as unknown as Visualization);
+        return this.cache.getOrFuture(
+            id,
+            apiToFuture(
+                this.api.get<D2Visualization>(`/visualizations/${id}`, {
+                    fields: getFieldsAsString(visualizationFields),
+                })
+            ).map(visualization => {
+                return this.buildVisualization(visualization);
+            })
+        );
     }
 
     private buildVisualization(d2Visualization: D2Visualization): Visualization {
         return {
             id: d2Visualization.id,
-            name: d2Visualization.displayName,
+            name: d2Visualization.name,
             rows: d2Visualization.rows as VisualizationDimension[],
             columns: d2Visualization.columns as VisualizationDimension[],
             filters: d2Visualization.filters as VisualizationDimension[],
@@ -64,16 +63,22 @@ export class VisualizationD2Repository implements VisualizationRepository {
             skipRounding: d2Visualization.skipRounding,
             legend: d2Visualization.legend as LegendOptions,
             yearlySeries: d2Visualization.yearlySeries,
+            title: d2Visualization.title,
+            subtitle: d2Visualization.subtitle,
+            // necessary to avoid bug in analytics to create chart
+            // TypeError: item.legendItem.getBBox is not a function
+            // but is not in d2api schemas
+            seriesKey: { hidden: true },
         };
     }
 }
 
 const visualizationFields = {
     id: true,
-    displayName: true,
-    rows: true,
-    columns: true,
-    filters: true,
+    name: true,
+    rows: { id: true, dimension: true, items: true },
+    columns: { id: true, dimension: true, items: true },
+    filters: { id: true, dimension: true, items: true },
     dataDimensionItems: true,
     categoryDimensions: { category: true, categoryOptions: true },
     showData: true,
@@ -93,136 +98,11 @@ const visualizationFields = {
         showKey: true,
     },
     yearlySeries: true,
+    title: true,
+    subtitle: true,
+    seriesKey: true,
 } as const;
 
-type D2Visualization = MetadataPick<{
+export type D2Visualization = MetadataPick<{
     visualizations: { fields: typeof visualizationFields };
 }>["visualizations"][number];
-
-const hardCodedVisualization = {
-    id: "DkPKc1EUmC2",
-    name: "ANC: 1-3 trend lines last 12 months",
-    showData: false,
-    type: "LINE",
-    regressionType: "NONE",
-    cumulativeValues: false,
-    sortOrder: 0,
-    fontSize: "NORMAL",
-    aggregationType: "DEFAULT",
-    displayName: "ANC: 1-3 trend lines last 12 months",
-    hideSubtitle: false,
-    percentStackedValues: false,
-    noSpaceBetweenColumns: false,
-    hideTitle: false,
-    regression: false,
-    skipRounding: false,
-    legend: {
-        showKey: false,
-    },
-    seriesKey: {
-        hidden: false,
-    },
-    yearlySeries: [],
-    interpretations: [
-        {
-            created: "2023-04-16T11:07:06.528",
-            id: "MC8iaQ5ojv6",
-        },
-    ],
-    columns: [
-        {
-            dimension: "dx",
-            items: [
-                {
-                    name: "ANC 1 Coverage",
-                    id: "Uvn6LCg7dVU",
-                    displayName: "ANC 1 Coverage",
-                    displayShortName: "ANC 1 Coverage",
-                    dimensionItemType: "INDICATOR",
-                    access: {
-                        read: true,
-                        update: true,
-                        externalize: false,
-                        delete: true,
-                        write: true,
-                        manage: true,
-                    },
-                },
-                {
-                    name: "ANC 2 Coverage",
-                    id: "OdiHJayrsKo",
-                    displayName: "ANC 2 Coverage",
-                    displayShortName: "ANC 2 Coverage",
-                    dimensionItemType: "INDICATOR",
-                    access: {
-                        read: true,
-                        update: true,
-                        externalize: false,
-                        delete: true,
-                        write: true,
-                        manage: true,
-                    },
-                },
-                {
-                    name: "ANC 3 Coverage",
-                    id: "sB79w2hiLp8",
-                    displayName: "ANC 3 Coverage",
-                    displayShortName: "ANC 3 Coverage",
-                    dimensionItemType: "INDICATOR",
-                    access: {
-                        read: true,
-                        update: true,
-                        externalize: false,
-                        delete: true,
-                        write: true,
-                        manage: true,
-                    },
-                },
-            ],
-        },
-    ],
-    filters: [
-        {
-            dimension: "ou",
-            items: [
-                {
-                    name: "Sierra Leone",
-                    id: "ImspTQPwCqd",
-                    displayName: "Sierra Leone",
-                    displayShortName: "Sierra Leone",
-                    dimensionItemType: "ORGANISATION_UNIT",
-                    access: {
-                        read: true,
-                        update: true,
-                        externalize: false,
-                        delete: true,
-                        write: true,
-                        manage: true,
-                    },
-                },
-            ],
-        },
-    ],
-    rows: [
-        {
-            dimension: "pe",
-            items: [
-                {
-                    name: "LAST_12_MONTHS",
-                    id: "LAST_12_MONTHS",
-                    displayName: "LAST_12_MONTHS",
-                    displayShortName: "LAST_12_MONTHS",
-                    dimensionItemType: "PERIOD",
-                    access: {
-                        read: true,
-                        update: true,
-                        externalize: false,
-                        delete: true,
-                        write: true,
-                        manage: true,
-                    },
-                },
-            ],
-        },
-    ],
-};

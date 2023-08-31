@@ -27,9 +27,9 @@ import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/An
 import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
 import { PersonD2Repository } from "./data/repositories/PersonD2Repository";
 
-function initializeRepositories(api: D2Api, instance: Instance) {
+function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
-        analytics: new AnalyticsD2Repository(api),
+        analytics: new AnalyticsD2Repository(api, d2DataEngine),
         instance: new InstanceDefaultRepository(instance),
         users: new UserD2Repository(api),
         country: new CountryD2Repository(api),
@@ -46,8 +46,13 @@ function initializeRepositories(api: D2Api, instance: Instance) {
 
 export type Repositories = Partial<ReturnType<typeof initializeRepositories>>;
 
-export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesToOverwrite?: Repositories) {
-    const repositories = { ...initializeRepositories(api, instance), ...repositoriesToOverwrite };
+export function getCompositionRoot(
+    api: D2Api,
+    d2DataEngine: unknown,
+    instance: Instance,
+    repositoriesToOverwrite?: Repositories
+) {
+    const repositories = { ...initializeRepositories(api, d2DataEngine, instance), ...repositoriesToOverwrite };
 
     return {
         instance: {

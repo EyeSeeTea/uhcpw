@@ -40,7 +40,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                                 analytics => {
                                     setAnalytics(analytics);
                                 },
-                                error => {
+                                () => {
                                     setAnalytics(undefined);
                                 }
                             );
