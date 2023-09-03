@@ -37,7 +37,9 @@ export function usePolicyExplorer({
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
-        setSelectedYearFilter(yearsFilter);
+        if (yearsFilter) {
+            setSelectedYearFilter(yearsFilter);
+        }
     }, [categories, yearsFilter]);
 
     useEffect(() => {
