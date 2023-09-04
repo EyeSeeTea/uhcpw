@@ -5,6 +5,7 @@ import {
     DataDimensionItem,
     LegendOptions,
     Visualization,
+    VisualizationAxes,
     VisualizationDimension,
 } from "../../../domain/entities/indicator-explorer/Visualization";
 import { VisualizationRepository } from "../../../domain/repositories/indicator-explorer/VisualizationRepository";
@@ -65,10 +66,12 @@ export class VisualizationD2Repository implements VisualizationRepository {
             yearlySeries: d2Visualization.yearlySeries,
             title: d2Visualization.title,
             subtitle: d2Visualization.subtitle,
+            hideEmptyRowItems: d2Visualization.hideEmptyRowItems,
+            axes: d2Visualization.axes as VisualizationAxes[],
             // necessary to avoid bug in analytics to create chart
             // TypeError: item.legendItem.getBBox is not a function
             // but is not in d2api schemas
-            seriesKey: { hidden: true },
+            seriesKey: { hidden: false },
         };
     }
 }
@@ -102,7 +105,9 @@ const visualizationFields = {
     yearlySeries: true,
     title: true,
     subtitle: true,
-    seriesKey: true,
+    seriesKey: { hidden: true },
+    hideEmptyRowItems: true,
+    axes: true,
 } as const;
 
 export type D2Visualization = MetadataPick<{

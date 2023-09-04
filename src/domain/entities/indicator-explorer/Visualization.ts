@@ -59,7 +59,18 @@ export interface Visualization {
     legend: LegendOptions;
     yearlySeries: string[];
     seriesKey: VisualizationSeriesKey;
+    hideEmptyRowItems: "NONE" | "BEFORE_FIRST" | "AFTER_LAST" | "BEFORE_FIRST_AFTER_LAST" | "ALL";
+    axes: VisualizationAxes[];
 }
+
+export type VisualizationAxes = {
+    decimals: number;
+    index: number;
+    type: string;
+    title: {
+        text: string;
+    };
+};
 
 export type VisualizationSeriesKey = {
     hidden: boolean;
