@@ -4379,12 +4379,12 @@
     classnames "^2.3.1"
     prop-types "^15.7.2"
 
-"@dhis2/analytics@^26.0.16":
-  version "26.0.16"
-  resolved "https://registry.yarnpkg.com/@dhis2/analytics/-/analytics-26.0.16.tgz#e283edd13797af2a3d5303ae7995a462f8b8af49"
-  integrity sha512-d5+VORl564sl4erdbf5tCyjnqqvDaI7SuNoiqUAqKdaCn+9N74nGOZQU45G6h8UEPA1AAYZbcRdNHNXUHN07gQ==
+"@dhis2/analytics@26.0.7":
+  version "26.0.7"
+  resolved "https://registry.yarnpkg.com/@dhis2/analytics/-/analytics-26.0.7.tgz#d0883c74fc909359d1ce01e82c267ba99e8186a5"
+  integrity sha512-NJ//FeWWn6yy1bDK3lcMPdwOWVhLBQyh1vmj+S0/k86iKRfF+8tmZwinZLVLebzV3DRjSoWSPCzwU6zVDedjWg==
   dependencies:
-    "@dhis2/d2-ui-rich-text" "^7.4.1"
+    "@dhis2/d2-ui-rich-text" "^7.4.0"
     "@dhis2/multi-calendar-dates" "1.0.0"
     "@dnd-kit/core" "^6.0.7"
     "@dnd-kit/sortable" "^7.0.2"
@@ -4394,13 +4394,13 @@
     crypto-js "^4.1.1"
     d2-utilizr "^0.2.16"
     d3-color "^1.2.3"
-    highcharts "^10.3.3"
+    highcharts "^10.2.0"
     lodash "^4.17.21"
     mathjs "^9.4.2"
     react-beautiful-dnd "^10.1.1"
     resize-observer-polyfill "^1.5.1"
 
-"@dhis2/app-runtime@^3.9.4":
+"@dhis2/app-runtime@3.9.4":
   version "3.9.4"
   resolved "https://registry.yarnpkg.com/@dhis2/app-runtime/-/app-runtime-3.9.4.tgz#88243dbb9a4a805be744a61cffd13a4c3d2d031d"
   integrity sha512-CBwMXer5/Kcxf6MgfwPgpEaUSXbDXzwItCkH3i0nsjmkD0KIaEOZ6Y1pQL+/5RYnziZ5glYCFWsCKn0eCJrdJg==
@@ -4491,7 +4491,7 @@
     material-ui "^0.20.0"
     rxjs "^5.5.7"
 
-"@dhis2/d2-ui-rich-text@^7.4.1":
+"@dhis2/d2-ui-rich-text@^7.4.0":
   version "7.4.3"
   resolved "https://registry.yarnpkg.com/@dhis2/d2-ui-rich-text/-/d2-ui-rich-text-7.4.3.tgz#a42c8e231bcc05186dd432dac86b33aed4ddc10d"
   integrity sha512-60k/6CO2I8f4t3jU1nAic7uWONME1rckM8RcLnelhwUG20EZWq45OnDDdSfHgOWTwVDtxFnG3wspInkG/530KA==
@@ -12337,15 +12337,20 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-highcharts-react-official@^3.2.0:
+highcharts-react-official@3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/highcharts-react-official/-/highcharts-react-official-3.2.0.tgz#42f8f237d73eec6791318efb41237067000cf815"
   integrity sha512-71IJZsLmEboYFjONpwC3NRsg6JKvtKYtS5Si3e6s6MLRSOFNOY8KILTkzvO36kjpeR/A0X3/kvvewE+GMPpkjw==
 
-highcharts@^10.3.3:
-  version "10.3.3"
-  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-10.3.3.tgz#b8acca24f2d4b1f2f726540734166e59e07b35c4"
-  integrity sha512-r7wgUPQI9tr3jFDn3XT36qsNwEIZYcfgz4mkKEA6E4nn5p86y+u1EZjazIG4TRkl5/gmGRtkBUiZW81g029RIw==
+highcharts@10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-10.2.0.tgz#646b1c80fb4add9e35e5813bd87419ccdf1fc6b7"
+  integrity sha512-MvLo4dzR2Vo7Y85dsqJ07uabBXSSIRKRRdW4l9IGP55h2jYWNm/m9JBszVVxySH5Lda6g+Ins9NdGppZJpjNCA==
+
+highcharts@^10.2.0:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/highcharts/-/highcharts-10.2.0.tgz#646b1c80fb4add9e35e5813bd87419ccdf1fc6b7"
+  integrity sha512-MvLo4dzR2Vo7Y85dsqJ07uabBXSSIRKRRdW4l9IGP55h2jYWNm/m9JBszVVxySH5Lda6g+Ins9NdGppZJpjNCA==
 
 history@^4.9.0:
   version "4.10.1"
