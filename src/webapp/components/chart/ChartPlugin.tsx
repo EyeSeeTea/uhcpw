@@ -1,5 +1,7 @@
-import { isSingleValue, createVisualization } from "@dhis2/analytics";
-import React, { useRef, useCallback, useEffect, CSSProperties } from "react";
+import { createVisualization } from "@dhis2/analytics";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
+import React, { useRef, useCallback, useEffect, CSSProperties, useState } from "react";
 import styled, { css } from "styled-components";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
@@ -21,10 +23,10 @@ export interface ChartPluginProps {
  * https://github.com/dhis2/data-visualizer-app/blob/dev/src/components/VisualizationPlugin/ChartPlugin.js
  */
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
-    ({ analytics, visualization, legendSets, style, animation = 200, onToggleContextualMenu }) => {
-        const canvasRef = useRef(null);
+    ({ analytics, visualization, legendSets, style, animation = 200 }) => {
+        const canvasRef = useRef<HTMLDivElement>(null);
         const prevStyle = useRef(style);
-        //const prevRenderCounter = useRef(undefined);
+        const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
 
         const renderVisualization = useCallback(
             animation => {
@@ -33,7 +35,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                     ...item,
                 }));
 
-                createVisualization(
+                const analyticsConfig = createVisualization(
                     analyticsResponse,
                     visualization,
                     canvasRef.current,
@@ -41,12 +43,47 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         dashboard: false,
                         animation,
                         legendSets: legendSets,
-                        onToggleContextualMenu,
+                        onToggleContextualMenu: undefined,
                     },
                     undefined,
                     undefined,
-                    isSingleValue(visualization.type) ? "dhis" : "highcharts" // output format
+                    "highcharts"
                 );
+
+                const originalChartOptions = { ...analyticsConfig.visualization.options };
+
+                const newOptions = {
+                    chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
+                    legend: {
+                        enabled: true,
+                        align: "right",
+                        verticalAlign: "middle",
+                        layout: "vertical",
+                    },
+                    title: originalChartOptions.title,
+                    subtitle: originalChartOptions.subtitle,
+                    xAxis: originalChartOptions.xAxis,
+                    yAxis: originalChartOptions.yAxis,
+                    series: originalChartOptions.series,
+                    lang: originalChartOptions.lang,
+                    noData: originalChartOptions.noData,
+                    credits: { enabled: false },
+                    exporting: { enabled: false },
+                };
+
+                analyticsConfig.visualization.update({
+                    legend: {
+                        enabled: true,
+                        align: "right",
+                        verticalAlign: "middle",
+                        layout: "vertical",
+                    },
+                });
+
+                // TODO: This is a workaround, if to update chart we have problems
+                setChartOptions(newOptions as Highcharts.Options);
+                //analyticsConfig.visualization.destroy();
+                //canvasRef.current?.remove();
 
                 // if (onChartGenerated) {
                 //     if (isSingleValue(visualization.type)) {
@@ -61,7 +98,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 //     }
                 // }
             },
-            [analytics, legendSets, onToggleContextualMenu, visualization]
+            [analytics, legendSets, visualization]
         );
 
         useEffect(() => {
@@ -86,13 +123,20 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             /* eslint-disable-next-line react-hooks/exhaustive-deps */
         }, [style]);
 
-        return <Container ref={canvasRef} style={style} />;
+        return (
+            <div>
+                <div ref={canvasRef} style={style} />
+                <Container style={{ width: "100%", marginTop: "100px" }}>
+                    <HighchartsReact highcharts={Highcharts} options={chartOptions} />
+                </Container>
+            </div>
+        );
     }
 );
 
 const customCss = css`
     .highcharts-grid-line {
-        opacity: 0;
+        //opacity: 0;
     }
 `;
 

@@ -46,7 +46,8 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                             }}
                             animation={200}
                         />
-                    ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
+                    ) : // <Chart visualization={chartData.visualization} analytics={chartData.analytics} />
+                    chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
                         <Center>
                             <Typography variant="subtitle1">{i18n.t("There may be no data")}</Typography>
                         </Center>
