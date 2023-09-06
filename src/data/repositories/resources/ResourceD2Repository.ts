@@ -386,93 +386,17 @@ export class ResourceD2Repository implements ResourceRepository {
 
     private filterCountries(events: D2Event[], filters: ResourceFilters) {
         if (filters.category === "comparative-analysis") {
-            return events.filter(el =>
-                el.dataValues.some(el => {
-                    return (
-                        (el.dataElement === resourceDataElements.countryId && filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry1 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry2 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry3 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry4 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry5 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry6 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry7 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry8 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry9 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry10 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry11 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry12 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry13 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry14 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry15 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry16 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry17 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry18 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry19 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry20 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry21 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry22 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry23 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry24 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry25 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry26 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry27 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry28 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry29 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry30 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry31 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry32 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry33 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry34 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry35 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry36 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry37 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry38 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry39 &&
-                            filters.countries?.includes(el.value)) ||
-                        (el.dataElement === resourceDataElements.relatedCountry40 &&
-                            filters.countries?.includes(el.value))
-                    );
-                })
-            );
+            return events.filter(event => {
+                const country = event.dataValues.find(
+                    dataValue => dataValue.dataElement === resourceDataElements.countryId
+                )?.value;
+                const relatedCountries = this.getRelatedCountries(event);
+
+                return (
+                    (country && filters.countries?.includes(country)) ||
+                    relatedCountries?.some(country => filters.countries?.includes(country))
+                );
+            });
         } else {
             return events.filter(el =>
                 el.dataValues.some(
@@ -484,6 +408,54 @@ export class ResourceD2Repository implements ResourceRepository {
 
     private createLink(link?: string, language?: string) {
         return link ? { url: link, language: language || "English" } : undefined;
+    }
+
+    private getRelatedCountries(event: D2Event) {
+        return event.dataValues
+            .filter(
+                dataValue =>
+                    dataValue.dataElement === resourceDataElements.relatedCountry1 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry2 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry3 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry4 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry5 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry6 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry7 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry8 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry9 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry10 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry11 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry12 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry13 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry14 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry15 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry16 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry17 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry18 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry19 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry20 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry21 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry22 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry23 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry24 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry25 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry26 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry27 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry28 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry29 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry30 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry31 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry32 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry33 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry34 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry35 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry36 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry37 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry38 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry39 ||
+                    dataValue.dataElement === resourceDataElements.relatedCountry40
+            )
+            .map(dataValue => dataValue.value);
     }
 }
 

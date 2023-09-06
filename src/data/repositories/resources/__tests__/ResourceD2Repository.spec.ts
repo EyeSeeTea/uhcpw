@@ -285,6 +285,8 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
         },
     ];
 
+    expect(comparativeAnalysis.relatedCountries).toStrictEqual(["PevCwH17M73", "jXQq22U4Y2e"]);
+
     comparativeAnalysis.links.forEach((link, index) => {
         const expectedLink = expectedLinks[index];
 
