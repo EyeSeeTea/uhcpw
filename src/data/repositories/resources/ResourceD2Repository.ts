@@ -387,15 +387,9 @@ export class ResourceD2Repository implements ResourceRepository {
     private filterCountries(events: D2Event[], filters: ResourceFilters) {
         if (filters.category === "comparative-analysis") {
             return events.filter(event => {
-                const country = event.dataValues.find(
-                    dataValue => dataValue.dataElement === resourceDataElements.countryId
-                )?.value;
                 const relatedCountries = this.getRelatedCountries(event);
 
-                return (
-                    (country && filters.countries?.includes(country)) ||
-                    relatedCountries?.some(country => filters.countries?.includes(country))
-                );
+                return relatedCountries?.some(country => filters.countries?.includes(country));
             });
         } else {
             return events.filter(el =>
@@ -414,6 +408,7 @@ export class ResourceD2Repository implements ResourceRepository {
         return event.dataValues
             .filter(
                 dataValue =>
+                    dataValue.dataElement === resourceDataElements.countryId ||
                     dataValue.dataElement === resourceDataElements.relatedCountry1 ||
                     dataValue.dataElement === resourceDataElements.relatedCountry2 ||
                     dataValue.dataElement === resourceDataElements.relatedCountry3 ||
