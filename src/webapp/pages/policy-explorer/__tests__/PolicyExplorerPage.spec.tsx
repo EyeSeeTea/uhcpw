@@ -44,6 +44,27 @@ describe("Given PolicyExplorerPage", () => {
             expect(screen.getByRole("heading", { name: /policy explorer/i })).toBeInTheDocument();
         });
     });
+    describe("When setting filters", () => {
+        it("The URL should change accordingly", async () => {
+            const { policyExplorerCategories } = getPolicyExplorerCategories();
+            givenADataSet();
+            givenCountries();
+            givenASimplePolicyExplorer();
+
+            renderPage();
+
+            if (policyExplorerCategories[0]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
+
+            expect(JSON.stringify(window.location.search)).toBe(
+                JSON.stringify(`?category=${policyExplorerCategories[0]?.id}&country=DVnpk4xiXGJ`)
+            );
+        });
+    });
 
     describe("When get Population Coverage category table", () => {
         it("Then should render expected table title", async () => {
@@ -53,7 +74,12 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+            if (policyExplorerCategories[0]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             const tableTitle = await waitFor(() =>
                 screen.getByRole("heading", { name: policyExplorerCategories[0]?.name })
@@ -68,7 +94,12 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+            if (policyExplorerCategories[0]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             const table = await waitFor(() => screen.getByRole("table", { name: /simple table/i }));
 
@@ -81,7 +112,12 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+            if (policyExplorerCategories[0]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
             await switchToColumns();
 
             await verifyTotalRows(policyExplorer, policyExplorerCategories[0]?.id);
@@ -93,7 +129,12 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+            if (policyExplorerCategories[0]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
             await switchToColumns();
 
             await verifyColumns(policyExplorer, policyExplorerCategories[0]?.id);
@@ -105,7 +146,12 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+            if (policyExplorerCategories[0]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
             await switchToColumns();
 
             await verifyRows(policyExplorer, policyExplorerCategories[0]?.id);
@@ -120,7 +166,12 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
+            if (policyExplorerCategories[6]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[6].id, name: policyExplorerCategories[6].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             const tableTitle = await waitFor(() =>
                 screen.getByRole("heading", { name: policyExplorerCategories[6]?.name })
@@ -135,7 +186,12 @@ describe("Given PolicyExplorerPage", () => {
             givenAnEmptyPolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
+            if (policyExplorerCategories[0]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
             const cells = await screen.queryAllByRole("cell");
             expect(cells.length).toBe(0);
         });
@@ -149,7 +205,12 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenAPolicyExplorerWithMultiplePeriods();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[8]?.name || ""], "Spain");
+            if (policyExplorerCategories[6]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[6].id, name: policyExplorerCategories[6].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             await verifyMoreThanOnePeriodData(policyExplorer, policyExplorerCategories[8]?.id);
         });
@@ -163,10 +224,15 @@ describe("Given PolicyExplorerPage", () => {
             givenAPolicyExplorerWithMoreThanOneTable();
 
             renderPage();
-            await selectFiltersAndGetTable(
-                [policyExplorerCategories[0]?.name || "", policyExplorerCategories[1]?.name || ""],
-                "Spain"
-            );
+            if (policyExplorerCategories[0] && policyExplorerCategories[1]) {
+                await selectFiltersAndGetTable({
+                    categories: [
+                        { id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name },
+                        { id: policyExplorerCategories[1].id, name: policyExplorerCategories[1].name },
+                    ],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             const tableTitleOne = await waitFor(() =>
                 screen.getByRole("heading", { name: policyExplorerCategories[0]?.name })
@@ -186,10 +252,15 @@ describe("Given PolicyExplorerPage", () => {
             givenAPolicyExplorerWithMoreThanOneTable();
 
             renderPage();
-            await selectFiltersAndGetTable(
-                [policyExplorerCategories[0]?.name || "", policyExplorerCategories[1]?.name || ""],
-                "Spain"
-            );
+            if (policyExplorerCategories[0] && policyExplorerCategories[1]) {
+                await selectFiltersAndGetTable({
+                    categories: [
+                        { id: policyExplorerCategories[0].id, name: policyExplorerCategories[0].name },
+                        { id: policyExplorerCategories[1].id, name: policyExplorerCategories[1].name },
+                    ],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             const tables = await waitFor(() => screen.getAllByRole("table", { name: /simple table/i }));
             expect(tables.length).toBe(2);
@@ -204,7 +275,12 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[5]?.name || ""], "Spain");
+            if (policyExplorerCategories[5]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[5].id, name: policyExplorerCategories[5].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             await verifyTypeOfHealthcareColumn(policyExplorer, policyExplorerCategories[5]?.id);
         });
@@ -215,7 +291,12 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[5]?.name || ""], "Spain");
+            if (policyExplorerCategories[5]) {
+                await selectFiltersAndGetTable({
+                    categories: [{ id: policyExplorerCategories[5].id, name: policyExplorerCategories[5].name }],
+                    country: { id: "DVnpk4xiXGJ", name: "Spain" },
+                });
+            }
 
             await verifyTypeOfHealthcareColumnHeaderType(policyExplorer, policyExplorerCategories[5]?.id);
         });
@@ -337,12 +418,23 @@ function getPolicyExplorerCategories() {
     };
 }
 
-async function selectFiltersAndGetTable(categoryriesNames: string[], countryText: string) {
+async function selectFiltersAndGetTable({
+    categories,
+    country,
+}: {
+    categories: { id: string; name: string }[];
+    country: { id: string; name: string };
+}) {
     const mainElement = screen.getByRole("main");
     const main = within(mainElement);
 
-    await selectCategoryFilter(categoryriesNames);
-    await selectCountry(main, countryText);
+    await selectCategoryFilter(categories.map(category => category.name));
+    await selectCountry(main, country.name);
+    window.history.pushState(
+        {},
+        "",
+        `?category=${categories.map(category => category.id).join(",")}&country=${country.id}`
+    );
 
     const getTableButton = main.getByText(/get table/i);
 
