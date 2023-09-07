@@ -37,10 +37,13 @@ export function usePolicyExplorer({
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
+    }, [categories]);
+
+    useEffect(() => {
         if (yearsFilter) {
             setSelectedYearFilter(yearsFilter);
         }
-    }, [categories, yearsFilter]);
+    }, [yearsFilter]);
 
     useEffect(() => {
         if (!countryFilter.selected?.length) {
