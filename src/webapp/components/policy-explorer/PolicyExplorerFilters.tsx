@@ -27,13 +27,14 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                 queryParameters.delete("category");
             }
             filters.category.onSelectedChange(value);
-            history.replace({ search: queryParameters.toString() });
+            history.push({ search: queryParameters.toString() });
         },
         [filters.category, history, location.search]
     );
 
     const onCountryChange = useCallback(
         (value: string[] | undefined) => {
+            console.log("tesht");
             const queryParameters = new URLSearchParams(location.search);
 
             if (value && value.length > 0) {
@@ -43,7 +44,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
             }
 
             filters.country.onSelectedChange(value);
-            history.replace({ search: queryParameters.toString() });
+            history.push({ search: queryParameters.toString() });
         },
         [filters.country, history, location.search]
     );
@@ -59,7 +60,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
             }
 
             filters.year.onSelectedChange(value);
-            history.replace({ search: queryParameters.toString() });
+            history.push({ search: queryParameters.toString() });
         },
         [filters.year, history, location.search]
     );
