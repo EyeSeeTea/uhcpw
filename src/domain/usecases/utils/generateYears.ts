@@ -11,3 +11,13 @@ function generate(maxYear: number, minYear: number): Year[] {
         id: year.toString(),
     }));
 }
+
+export function generateRangeOfYears(startYear: number, endYear?: number): Year[] {
+    const end = endYear ?? new Date().getFullYear();
+    if (startYear > end) {
+        return [];
+    }
+    return Array.from({ length: end - startYear + 1 }, (_, i) => startYear + i).map(year => ({
+        id: year.toString(),
+    }));
+}

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { PolicyExplorer, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 
@@ -134,10 +134,19 @@ export function usePolicyExplorer({
             setDataOrientationByTable({ ...dataOrientationByTable, [categoryId]: newDataorientation });
 
             const newData =
-                newDataorientation === "inverted" ? invertData(initialDataByTable, categoryId) : initialDataByTable;
-            setDataByTable(newData);
+                newDataorientation === "inverted"
+                    ? invertDataByCategoryId(dataByTable, categoryId)
+                    : {
+                          ...dataByTable,
+                          tables: {
+                              ...dataByTable?.tables,
+                              [categoryId]: initialDataByTable?.tables[categoryId],
+                          },
+                      };
+
+            setDataByTable(newData as PolicyExplorer);
         },
-        [dataOrientationByTable, initialDataByTable]
+        [dataByTable, dataOrientationByTable, initialDataByTable]
     );
 
     const onDownload = useCallback(
@@ -171,21 +180,27 @@ export function usePolicyExplorer({
     };
 }
 
-function invertData(initialDataByTable: PolicyExplorer | undefined, categoryId: string): PolicyExplorer | undefined {
-    if (!initialDataByTable || !categoryId) return undefined;
+function invertDataByCategoryId(
+    dataByTable: PolicyExplorer | undefined,
+    categoryId: string
+): PolicyExplorer | undefined {
+    if (!dataByTable || !categoryId) return undefined;
 
-    const rows = initialDataByTable.tables[categoryId] || [];
+    const rows = dataByTable.tables[categoryId] || [];
     const columns = [...rows].shift() || [];
 
     const newRows = columns.map((_, index) => {
-        const cells = rows.map(row => row[index] || "");
+        const cells = rows.map(row => ({
+            type: row[index]?.type || PolicyExplorerCellType.DATA,
+            value: row[index]?.value || "",
+        }));
         return [...cells];
     });
 
     const newData = {
-        ...initialDataByTable,
+        ...dataByTable,
         tables: {
-            ...initialDataByTable.tables,
+            ...dataByTable.tables,
             [categoryId]: newRows,
         },
     };
@@ -205,7 +220,10 @@ function invertAllData(
         const columns = [...rows].shift() || [];
 
         const newRows = columns.map((_, index) => {
-            const cells = rows.map(row => row[index] || "");
+            const cells = rows.map(row => ({
+                type: row[index]?.type || PolicyExplorerCellType.DATA,
+                value: row[index]?.value || "",
+            }));
             return [...cells];
         });
 
