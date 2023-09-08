@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-07-31T16:25:57.388Z\n"
-"PO-Revision-Date: 2023-07-31T16:25:57.388Z\n"
+"POT-Creation-Date: 2023-09-08T10:08:52.598Z\n"
+"PO-Revision-Date: 2023-09-08T10:08:52.598Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -68,7 +68,7 @@ msgstr ""
 msgid "Country expert"
 msgstr ""
 
-msgid "Country Resources"
+msgid "Country resources"
 msgstr ""
 
 msgid "Select country"
@@ -78,9 +78,6 @@ msgid "Dashboard"
 msgstr ""
 
 msgid "In detail"
-msgstr ""
-
-msgid "Country resources"
 msgstr ""
 
 msgid "Financial hardship (2018)"
@@ -169,9 +166,6 @@ msgid ""
 "Support these policy changes by increasing the level of government budget "
 "transfers to the National Health Insurance Fund over time. Use additional "
 "resources carefully to meet equity and efficiency goals."
-msgstr ""
-
-msgid "I would like to see countries grouped by income bracket (LMIC/UMIC/HIC)"
 msgstr ""
 
 msgid "({{count}} selected)"
@@ -299,19 +293,16 @@ msgid "UHC watch"
 msgstr ""
 
 msgid ""
-"Universal health coverage (UHC) means everyone can use the quality health "
-"care they need without financial hardship."
+"Tracking progress on affordable access to health care in Europe and Central "
+"Asia"
 msgstr ""
 
 msgid ""
-"Financial protection - affordable access to health care - is at the heart "
-"of UHC"
+"Affordable access to health care - financial protection - is at the heart "
+"of universal health coverage (UHC)"
 msgstr ""
 
-msgid "Can people afford to pay for health care?"
-msgstr ""
-
-msgid "Explore new evidence on financial protection in Europe and Central Asia"
+msgid "UHC means everyone can use quality health care without financial hardship"
 msgstr ""
 
 msgid "Weaker financial protection"
@@ -416,10 +407,10 @@ msgstr ""
 msgid "All"
 msgstr ""
 
-msgid "Switch row/column"
+msgid "WHO Barcelona Office for Health Systems Financing (2023)"
 msgstr ""
 
-msgid "WHO Barcelona Office for Health Systems Financing (2023)"
+msgid "Switch row/column"
 msgstr ""
 
 msgid "Latest avalaible year"

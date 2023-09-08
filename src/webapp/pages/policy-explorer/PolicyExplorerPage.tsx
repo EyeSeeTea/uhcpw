@@ -10,12 +10,10 @@ import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
 import moment from "moment";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
-import { useHistory } from "react-router-dom";
 
-export const PolicyExplorerPage: React.FC<{ searchParams: string }> = React.memo(() => {
-    const history = useHistory();
+export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const filterInParams = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
+        const searchParams = new URLSearchParams(props.searchParams);
 
         const paramsCategory = searchParams.get("category");
         const country = searchParams.get("country");
@@ -28,7 +26,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams: string }> = React.memo
             country: country ? country.split(",") : undefined,
             year: year ? year.split(",") : undefined,
         };
-    }, [history.location.search]);
+    }, [props.searchParams]);
 
     const { filters, data, onGetTable, onSwitchRowColumn, onDownload, dataOrientationByTable } = usePolicyExplorer({
         countriesFilter: filterInParams.country,
