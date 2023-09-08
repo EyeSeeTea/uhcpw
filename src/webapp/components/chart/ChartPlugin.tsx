@@ -78,10 +78,14 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         verticalAlign: "middle",
                         layout: "vertical",
                     },
+                    series: newOptions.series?.map(serie => ({ ...serie, color: "lightblue" })),
                 });
 
                 // TODO: This is a workaround, if to update chart we have problems
-                setChartOptions(newOptions as Highcharts.Options);
+                setChartOptions({
+                    ...newOptions,
+                    series: newOptions.series?.map(serie => ({ ...serie, color: "lightblue" })),
+                } as Highcharts.Options);
                 //analyticsConfig.visualization.destroy();
                 //canvasRef.current?.remove();
 
