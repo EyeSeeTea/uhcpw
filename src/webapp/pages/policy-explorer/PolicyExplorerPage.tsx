@@ -12,7 +12,7 @@ import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 import { useHistory } from "react-router-dom";
 
-export const PolicyExplorerPage: React.FC<{ searchParams: string }> = React.memo(() => {
+export const PolicyExplorerPage: React.FC = React.memo(() => {
     const history = useHistory();
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);

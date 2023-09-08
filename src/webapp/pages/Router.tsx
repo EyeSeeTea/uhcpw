@@ -24,10 +24,7 @@ export const Router: React.FC = React.memo(() => {
             <ScrollToTop />
             <Switch>
                 <Route path="/about" render={() => <AboutPage />} />
-                <Route
-                    path="/policy-explorer"
-                    render={props => <PolicyExplorerPage searchParams={props.location.search} />}
-                />
+                <Route path="/policy-explorer" render={() => <PolicyExplorerPage />} />
                 <Route path="/indicator-explorer" render={() => <IndicatorExplorerFakePage />} />
                 <Route
                     path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)"
