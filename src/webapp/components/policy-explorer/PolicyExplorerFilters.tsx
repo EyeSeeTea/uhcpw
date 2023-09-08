@@ -34,7 +34,6 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
 
     const onCountryChange = useCallback(
         (value: string[] | undefined) => {
-            console.log("tesht");
             const queryParameters = new URLSearchParams(location.search);
 
             if (value && value.length > 0) {
