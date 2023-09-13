@@ -21,6 +21,7 @@ const generalDataElements: Record<string, string> = {
 };
 
 const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY = "u800TAhsIBY";
+const TYPES_OF_USER_CHARGE_CATEGORY = "lHk8jtKonPh";
 
 const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
     "User charges apply": [
@@ -85,7 +86,7 @@ const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
     ],
 };
 
-const TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
+const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
     "Primary Care": ["giUCPiCe745", "mTB12rvpJWd", "b29bW9mc9C7", "tu36CFgEoh8", "mSgmJhjn4Bi"],
     "Specialist Visits": ["SWX96A7gnpA", "wDQRlBezRAs", "ZkElvtoVJSd", "zsiuJlUSvAW", "o6d3FfwRVj7"],
     "Emergency Visits": ["WTtArv6Xvsy", "ibq7wtqnsns", "n8jFYyMKDaV", "SiNpgO1L5bG", "sASANfdEGUR"],
@@ -96,6 +97,101 @@ const TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
     "Dental Visits": ["rZlHlitEiFp", "PUXn0hz2JFX", "lXBWfAv1EJE", "M228fF4qKsx", "wZ9JynvumSQ"],
     "Dental Care Treatment": ["RtLyOZpUtqO", "Py0PrMRPlUj", "Bwx3a0w5orN", "KQVn9LNZPlq", "SINKYu3EMgX"],
     "Inpatient Care": ["TaS7d80ciTe", "L6ly0Y1uCe2", "syr5O2Mj2vL", "Urb1llvnJV4", "Ai7ziQeOU53"],
+};
+
+const TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
+    "Fixed co-payment": [
+        "EboejH0zPz9",
+        "oHXaoGjuNBz",
+        "NnTynkwUOLd",
+        "FPWimBd7wCe",
+        "SgGPLj9ftfg",
+        "KGrh7f4UdO2",
+        "zZ0IhJeGF3G",
+        "sAxdNOgcV3H",
+        "UfpRQ2Ijiyb",
+        "KR7sMncAKlz",
+    ],
+    "Percentage co-payment": [
+        "cBXErExkfsP",
+        "mXKLWeQblWM",
+        "AumlNzFYLzS",
+        "c6VoqBpnpxd",
+        "AA6Ye2mqJHR",
+        "jgb82HFCuoF",
+        "G68kPZZ43zG",
+        "rajdlRWxCX4",
+        "WdF9ezTBVNb",
+        "q5cIxEo3MPq",
+    ],
+    "Reference pricing": [
+        "uFiUQKJhltM",
+        "iho7qMihBEN",
+        "RnRU6QWQtFO",
+        "asegoCEvyrS",
+        "xmaBfCQrnvo",
+        "z21e4xo33Gq",
+        "MDvxRjDZvDj",
+        "eUtTI5WTx9F",
+        "BnI3YDe3flm",
+        "ZqAbKQHqhLR",
+    ],
+    Deductible: [
+        "xvfbvuNow1z",
+        "H2f0XhUerVj",
+        "y1ZQGX2JSfk",
+        "mik8Xg9vOeV",
+        "SAdCPb1pzvB",
+        "yACvBd3ApA0",
+        "U9QK3B63xKo",
+        "r0iKZc6gEdK",
+        "ccDqDzq4b0x",
+        "Dgg4Jc9U7Jn",
+    ],
+    "Balance billing": [
+        "BuXscQqeqt3",
+        "gxOwKGHM5uM",
+        "ZVvNouUFwSj",
+        "phzaWpXIfni",
+        "rRtvOQKWekP",
+        "bC0ASJpuYnX",
+        "VplpY1Yy1lR",
+        "GaGhir32y1U",
+        "u1Eguha8n2H",
+        "SUBFUbBNE8g",
+    ],
+    "Extra billing/full price": [
+        "AenLLMXSR2j",
+        "OVMONRywtGy",
+        "U3EM7x9wA7q",
+        "ngo9UfDawgI",
+        "ZhPZvGqaolU",
+        "cMmiVU55Byh",
+        "McgI8vrnFw6",
+        "DNTGpXo6buK",
+        "UUi5TUqljop",
+        "IpwrxmI5FU7",
+    ],
+};
+
+const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
+    "Primary Care": ["EboejH0zPz9", "cBXErExkfsP", "uFiUQKJhltM", "xvfbvuNow1z", "BuXscQqeqt3", "AenLLMXSR2j"],
+    "Specialist Visits": ["oHXaoGjuNBz", "mXKLWeQblWM", "iho7qMihBEN", "H2f0XhUerVj", "gxOwKGHM5uM", "OVMONRywtGy"],
+    "Emergency Visits": ["NnTynkwUOLd", "AumlNzFYLzS", "RnRU6QWQtFO", "y1ZQGX2JSfk", "ZVvNouUFwSj", "U3EM7x9wA7q"],
+    "Outpatient prescribed medicines": [
+        "FPWimBd7wCe",
+        "c6VoqBpnpxd",
+        "asegoCEvyrS",
+        "mik8Xg9vOeV",
+        "phzaWpXIfni",
+        "ngo9UfDawgI",
+    ],
+    "Medical Products": ["SgGPLj9ftfg", "AA6Ye2mqJHR", "xmaBfCQrnvo", "SAdCPb1pzvB", "rRtvOQKWekP", "ZhPZvGqaolU"],
+    "Diagnostics Tests": ["KGrh7f4UdO2", "jgb82HFCuoF", "z21e4xo33Gq", "yACvBd3ApA0", "bC0ASJpuYnX", "cMmiVU55Byh"],
+    "Dental Visits": ["zZ0IhJeGF3G", "G68kPZZ43zG", "MDvxRjDZvDj", "U9QK3B63xKo", "VplpY1Yy1lR", "McgI8vrnFw6"],
+    "Dental Care Treatment": ["sAxdNOgcV3H", "rajdlRWxCX4", "eUtTI5WTx9F", "r0iKZc6gEdK", "GaGhir32y1U", "DNTGpXo6buK"],
+    "Inpatient Care": ["UfpRQ2Ijiyb", "WdF9ezTBVNb", "BnI3YDe3flm", "ccDqDzq4b0x", "u1Eguha8n2H", "UUi5TUqljop"],
+    "Inpatient Medicines": ["KR7sMncAKlz", "q5cIxEo3MPq", "ZqAbKQHqhLR", "Dgg4Jc9U7Jn", "SUBFUbBNE8g", "IpwrxmI5FU7"],
 };
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
@@ -205,16 +301,21 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             policyExplorerSubcategoriesIds,
             dataSet
         );
-        const columns =
-            policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY
-                ? this.getUserChargeByTypeOfHealthcareColumns(policyExplorerSubcategoriesIds)
-                : [
-                      { type: PolicyExplorerCellType.HEADER, value: "Country" },
-                      { type: PolicyExplorerCellType.HEADER, value: "Period" },
-                      ...dataElementsSection.map(de => ({ type: PolicyExplorerCellType.HEADER, value: de.formName })),
-                  ];
 
-        return [columns];
+        switch (policyExplorerCategoryId) {
+            case USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY:
+                return this.getUserChargeByTypeOfHealthcareColumns(policyExplorerSubcategoriesIds);
+            case TYPES_OF_USER_CHARGE_CATEGORY:
+                return this.getTypeOfUserChargeColumns(policyExplorerSubcategoriesIds);
+            default:
+                return [
+                    [
+                        { type: PolicyExplorerCellType.HEADER, value: "Country" },
+                        { type: PolicyExplorerCellType.HEADER, value: "Period" },
+                        ...dataElementsSection.map(de => ({ type: PolicyExplorerCellType.HEADER, value: de.formName })),
+                    ],
+                ];
+        }
     }
 
     private buildRows(
@@ -246,33 +347,37 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         dv => dv.orgUnit === orgUnit && dv.dataElement.includes(generalDataElements.references || "")
                     )?.value || "";
 
-                if (policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY) {
-                    const rows = this.getUserChargeByTypeOfHealthcareRowsUsingIds({
-                        policyExplorerSubcategoriesIds,
-                        dataValuesByGroup,
-                        orgUnitName,
-                        period,
-                        references,
-                    });
+                switch (policyExplorerCategoryId) {
+                    case USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY:
+                    case TYPES_OF_USER_CHARGE_CATEGORY:
+                        return [
+                            ...accRows,
+                            ...this.getRowsByTypeOfHealthcareUsingIds({
+                                policyExplorerCategoryId,
+                                policyExplorerSubcategoriesIds,
+                                dataValuesByGroup,
+                                orgUnitName,
+                                period,
+                                references,
+                            }),
+                        ];
+                    default:
+                        return [
+                            ...accRows,
+                            [
+                                { type: PolicyExplorerCellType.DATA, value: orgUnitName },
+                                { type: PolicyExplorerCellType.DATA, value: period || "" },
+                                ...dataElementsSection.map(de => {
+                                    const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
 
-                    return [...accRows, ...rows];
+                                    return {
+                                        type: PolicyExplorerCellType.DATA,
+                                        value: `${dataValue?.value || ""}\n\n${references}`,
+                                    };
+                                }),
+                            ],
+                        ];
                 }
-
-                return [
-                    ...accRows,
-                    [
-                        { type: PolicyExplorerCellType.DATA, value: orgUnitName },
-                        { type: PolicyExplorerCellType.DATA, value: period || "" },
-                        ...dataElementsSection.map(de => {
-                            const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
-
-                            return {
-                                type: PolicyExplorerCellType.DATA,
-                                value: `${dataValue?.value || ""}\n\n${references}`,
-                            };
-                        }),
-                    ],
-                ];
             },
             []
         );
@@ -326,29 +431,94 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 type: PolicyExplorerCellType.HEADER,
                 value: columnName,
             }));
-
         return [
-            { type: PolicyExplorerCellType.HEADER, value: "Country" },
-            { type: PolicyExplorerCellType.HEADER, value: "Period" },
-            { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
-            ...columns,
+            [
+                { type: PolicyExplorerCellType.HEADER, value: "Country" },
+                { type: PolicyExplorerCellType.HEADER, value: "Period" },
+                { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
+                ...columns,
+            ],
         ];
     }
 
-    private getUserChargeByTypeOfHealthcareRowsUsingIds(params: {
+    private getTypeOfUserChargeColumns(policyExplorerSubcategoriesIds: string[]) {
+        const columns = Object.entries(TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS)
+            .filter(([_columnName, dataElementIds]) => {
+                return policyExplorerSubcategoriesIds.some(subcategoryId => dataElementIds.includes(subcategoryId));
+            })
+            .map(([columnName, _dataElementIds]) => ({
+                type: PolicyExplorerCellType.HEADER,
+                value: columnName,
+            }));
+        return [
+            [
+                { type: PolicyExplorerCellType.HEADER, value: "Country" },
+                { type: PolicyExplorerCellType.HEADER, value: "Period" },
+                { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
+                ...columns,
+            ],
+        ];
+    }
+
+    private filterGroupedDataElementIdsByPolicyExplorerSubcategoriesIds(
+        groupedDataElementIds: Record<string, string[]>,
+        policyExplorerSubcategoriesIds: string[]
+    ) {
+        const filteredData: Record<string, string[]> = {};
+
+        for (const key in groupedDataElementIds) {
+            const filteredArray = groupedDataElementIds[key]?.filter((item: string) =>
+                policyExplorerSubcategoriesIds.includes(item)
+            );
+            if (filteredArray?.length) {
+                filteredData[key] = filteredArray;
+            }
+        }
+
+        return filteredData;
+    }
+
+    private getRowsByTypeOfHealthcareUsingIds(params: {
+        policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
         references: string;
     }) {
-        const { dataValuesByGroup, orgUnitName, period, references, policyExplorerSubcategoriesIds } = params;
+        const {
+            policyExplorerCategoryId,
+            policyExplorerSubcategoriesIds,
+            dataValuesByGroup,
+            orgUnitName,
+            period,
+            references,
+        } = params;
 
-        const rows = Object.entries(TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS)
-            .filter(([_columnName, dataElementIds]) => {
-                return policyExplorerSubcategoriesIds.some(subcategoryId => dataElementIds.includes(subcategoryId));
-            })
-            .reduce((acc: PolicyExplorerCell[][], [healthcareType, dataElementsSectionIdsInType], index) => {
+        const idsByTypeOfHealthcare =
+            policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY
+                ? USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS
+                : TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS;
+
+        const idsByColumn =
+            policyExplorerCategoryId === USER_CHARGE_BY_TYPE_OF_HEALTHCARE_CATEGORY
+                ? USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS
+                : TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS;
+
+        const idsByTypeOfHealthcareByPolicyExplorerSubcategoriesIdsSelected =
+            this.filterGroupedDataElementIdsByPolicyExplorerSubcategoriesIds(
+                idsByTypeOfHealthcare,
+                policyExplorerSubcategoriesIds
+            );
+
+        const idsByColumnByPolicyExplorerSubcategoriesIdsSelected =
+            this.filterGroupedDataElementIdsByPolicyExplorerSubcategoriesIds(
+                idsByColumn,
+                policyExplorerSubcategoriesIds
+            );
+
+        const rows = Object.entries(idsByTypeOfHealthcareByPolicyExplorerSubcategoriesIdsSelected).reduce(
+            (acc: PolicyExplorerCell[][], [healthcareType, dataElementsSectionIdsInType], index) => {
                 const initRow: PolicyExplorerCell[] =
                     index === 0
                         ? [
@@ -361,7 +531,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                               { type: PolicyExplorerCellType.DATA, value: "" },
                               { type: PolicyExplorerCellType.HEADER, value: healthcareType },
                           ];
-                const restRow = Object.values(USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS).map(
+                const restRow = Object.values(idsByColumnByPolicyExplorerSubcategoriesIdsSelected).map(
                     dataElementsSectionIdsInColumn => {
                         const dataElementsSectionId = dataElementsSectionIdsInColumn.find(item =>
                             dataElementsSectionIdsInType.includes(item)
@@ -376,7 +546,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 );
                 const row = [...initRow, ...restRow];
                 return [...acc, row];
-            }, []);
+            },
+            []
+        );
+
         return rows;
     }
 }
