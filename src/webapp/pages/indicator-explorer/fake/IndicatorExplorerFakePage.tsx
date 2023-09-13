@@ -6,7 +6,7 @@ import { Layout } from "../../../components/layout/Layout";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useIndicatorExplorerFake } from "./useIndicatorExplorerFake";
 import { IndicatorExplorerFiltersFake } from "../../../components/indicator-explorer/IndicatorExplorerFiltersFake";
-import { ChartFake } from "../../../components/chart/ChartFake";
+import { ChartFake } from "../../../components/visualization/ChartFake";
 import indicatorExplorer from "../../../assets/indicator-explorer.svg";
 
 export const IndicatorExplorerFakePage: React.FC = React.memo(() => {

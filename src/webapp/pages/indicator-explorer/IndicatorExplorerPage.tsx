@@ -1,4 +1,4 @@
-import { CircularProgress, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -7,10 +7,10 @@ import { IndicatorExplorerFilters } from "../../components/indicator-explorer/In
 import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
-import { ChartPlugin } from "../../components/chart/ChartPlugin";
+import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGetChart, chartData } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization } = useIndicatorExplorer();
 
     return (
         <Layout>
@@ -20,7 +20,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <IndicatorExplorerFilters filters={filters} onGetChart={onGetChart} />
+                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
 
                 {/* {visualization && analytics && (
                     <ChartWithPlugin
@@ -32,34 +32,13 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                 )}
                 {{visualization && analytics && <Chart visualization={visualization} analytics={analytics} />} } */}
 
-                {chartData &&
-                    (chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
-                        <ChartPlugin
-                            analytics={[chartData.analytics]}
-                            visualization={chartData.visualization}
-                            legendSets={chartData.legendSets}
-                            style={{
-                                alignItems: "flex-start",
-                                display: "flex",
-                                height: "100%",
-                                justifyContent: "flex-start",
-                            }}
-                            animation={200}
-                        />
-                    ) : // <Chart visualization={chartData.visualization} analytics={chartData.analytics} />
-                    chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
-                        <Center>
-                            <Typography variant="subtitle1">{i18n.t("There may be no data")}</Typography>
-                        </Center>
-                    ) : chartData.kind === "Error" ? (
-                        <Center>
-                            <Typography variant="subtitle1">{chartData.message}</Typography>
-                        </Center>
-                    ) : (
-                        <Center>
-                            <CircularProgress />
-                        </Center>
-                    ))}
+                {showVisualization && filters.category.selected && (
+                    <VisualizationPlugin
+                        visualizationId={filters.category.selected}
+                        years={filters.year.selected || []}
+                        countries={filters.country.selected || []}
+                    />
+                )}
             </MainSection>
         </Layout>
     );
