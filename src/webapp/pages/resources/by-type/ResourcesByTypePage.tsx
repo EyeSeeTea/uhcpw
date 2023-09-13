@@ -31,8 +31,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         themeFilter: filterInParams.theme,
     });
 
+    /* console.log("items:", items);
+    console.log("filters:", filters); */
+
     const disabledCountryFilter = useMemo(() => {
-        return category === "comparative-analysis" || category === "news" || category === "multimedia";
+        return category === "news" || category === "multimedia";
     }, [category]);
 
     return (
