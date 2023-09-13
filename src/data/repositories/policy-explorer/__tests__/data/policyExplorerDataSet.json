@@ -1,0 +1,1681 @@
+{
+    "pager": {
+        "page": 1,
+        "pageCount": 1,
+        "total": 1,
+        "pageSize": 50
+    },
+    "dataSets": [
+        {
+            "sections": [
+                {
+                    "id": "u2iKsuZFteu",
+                    "displayName": "General",
+                    "dataElements": [
+                        {
+                            "id": "mCEsfMPByf5",
+                            "formName": "Country experts",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "iyYnyNfyrfs",
+                            "formName": "Editors ",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "coUVQe1snBi",
+                            "formName": "Reviewers",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "VDRInyNx7fG",
+                            "formName": "Date updated",
+                            "valueType": "DATE"
+                        },
+                        {
+                            "id": "pDEHTRpRL8X",
+                            "formName": "Policy Data Source",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "DsWWAKomY4Z",
+                            "formName": "References",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "uG2PbDfOc0w",
+                    "displayName": "Population Coverage",
+                    "dataElements": [
+                        {
+                            "id": "SQQ3ZDRbxGT",
+                            "formName": "Basis for entitlement to publicly financed health services",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "CgM1uTO6z3p",
+                            "formName": "Entitlements for refugees, asylum seekers, and undocumented migrants",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qqoP7DlH4FC",
+                            "formName": "Characteristics and number of non-covered people",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "y8qYx7ndhg0",
+                            "formName": "Publicly financed health services to which non-covered people are entitled",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "aOAdLksfSsA",
+                            "formName": "Administrative requirements and documentation needed to access publicly financed health services",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Swqe3nzvYdB",
+                            "formName": "Institutions responsible for defining population coverage",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eQO6YBDAeFf",
+                            "formName": "Institutions monitoring population coverage",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eSyCsKNBnD2",
+                            "formName": "Main gaps in population coverage",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "aUK2KCRN9Kx",
+                            "formName": "VHI role in filling gaps in population coverage",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "ahZpR6k18zY",
+                    "displayName": "Population coverage - Basis for entitlement to publicly financed health services",
+                    "dataElements": [
+                        {
+                            "id": "TKq3zGVr1vj",
+                            "formName": "Residence",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "SzV6QPF0jry",
+                            "formName": "Citizenship",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "BAuD3jhIXTY",
+                            "formName": "Payment of contributions ('health insutance' status)",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "cGVdD0BdykT",
+                            "formName": "Income",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "u9XjGxht8YJ",
+                            "formName": "Age",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "cS5QuHdvQFy",
+                            "formName": "Health status (e.g. diabetes) or condition (e.g. pregnancy)",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "qawZeXSE6d8",
+                            "formName": "Other",
+                            "valueType": "TRUE_ONLY"
+                        }
+                    ]
+                },
+                {
+                    "id": "MpAvEpKGlz4",
+                    "displayName": "Population coverage - Publicly financed health services to which non-covered people are entitled",
+                    "dataElements": [
+                        {
+                            "id": "rq5B4Bx9v0a",
+                            "formName": "Same entitlement as residents, citizens or insured people",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "iRHxJ4rqOzJ",
+                            "formName": "Entitlement to some degree of primary and outpatient specialist care",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "CEWQV3FjN6m",
+                            "formName": "Entitlement to selected treatment (e.g. for communicable diseases)",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "k9lBydWRewE",
+                            "formName": "Emergency care only ",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "IJ0XaBypr9H",
+                            "formName": "No entitlements",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "gHRzKDUv6gb",
+                            "formName": "Not applicable/no information",
+                            "valueType": "TRUE_ONLY"
+                        }
+                    ]
+                },
+                {
+                    "id": "W4CqlzcDPB1",
+                    "displayName": "Service Coverage",
+                    "dataElements": [
+                        {
+                            "id": "ie6trn3DrnP",
+                            "formName": "Institutions and processes involved in defining the publicly financed benefits package",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eGacPe1ouIu",
+                            "formName": "Variation in the publicly financed benefits package across the country",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "u4CY8PmaMRp",
+                            "formName": "Types of health care not so well covered by the publicly financed benefits package",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "q8WrIpkXQuR",
+                            "formName": "Use of retrospective reimbursement",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "OWmAsT2I3O4",
+                            "formName": "User pathway for covered services",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "K8yotzYmNSK",
+                            "formName": "Waiting times are an issue",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "jo2xNZq4N7b",
+                            "formName": "Waiting times are an issue",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "mOsFKwOX1z0",
+                            "formName": "Waiting time guarantees or targets",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Go2bbi3kiLv",
+                            "formName": "Other policies to reduce waiting times",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "CgIb9itB4sH",
+                            "formName": "Institutions monitoring waiting times",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "aUuqhvxv36E",
+                            "formName": "Informal payments are an issue",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "NzHSCCHysv6",
+                            "formName": "Informal payments are an issue",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "GMI7vM07khc",
+                            "formName": "Reasons for informal payments",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "aAwj3aB5ysQ",
+                            "formName": "Policies to reduce informal payments",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "GW8CL6T8YnA",
+                            "formName": "Institutions monitoring informal payments",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "quWuCSNKLM3",
+                            "formName": "Other access issues",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "iAgF9SHMfcB",
+                            "formName": "Main gaps in service coverage",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Om86yyWLAaM",
+                            "formName": "VHI role in filling gaps in service coverage",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "mCMVwmnGWJF",
+                    "displayName": "User Charges (co-payments)",
+                    "dataElements": [
+                        {
+                            "id": "eAa8alKgk7f",
+                            "formName": "Role and nature of user charges",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ySKqnU1oG8a",
+                            "formName": "Mechanisms to protect people from user charges",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "CWauALI1UTx",
+                            "formName": "Protection mechanisms are applied automatically",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "b7c9Gvf2uJo",
+                            "formName": "Protection mechanisms target people with low incomes",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "lZg59TLmgoz",
+                            "formName": "Protection mechanisms target people with low incomes",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "OSWuAIBIg1A",
+                            "formName": "Institutions responsible for defining user charges",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eq8lKfyq8jT",
+                            "formName": "Variation in user charges across the country",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "e8wFwCV7zsz",
+                            "formName": "Main gaps caused by user charges",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ekIncD2R5o7",
+                            "formName": "VHI role in covering user charges",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "uImM4yTeeV3",
+                    "displayName": "Voluntary Health Insurance",
+                    "dataElements": [
+                        {
+                            "id": "OKGIXiFYHNQ",
+                            "formName": "VHI role",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "KWqoxvn1jVH",
+                            "formName": "Share of the population with VHI (%)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qGWmS9ZiGly",
+                            "formName": "VHI share of current spending on health (%)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "OWMvZQgo9dV",
+                            "formName": "Institutions responsible for oversight or regulation of VHI",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "GISip3HaUqt",
+                            "formName": "Characteristics of people with VHI",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "uYGS0yaH6ir",
+                            "formName": "Policies to make VHI accessible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "agSA2qB7hfy",
+                            "formName": "Policies to make VHI affordable",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "SsssZUWxGZt",
+                            "formName": "Entities selling VHI",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "KsOe4RGYdU8",
+                            "formName": "Entities buying VHI",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "G04CNOCKHDC",
+                            "formName": "Tax incentives or disincentives for selling or buying VHI",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "e6cfI6vWYEF",
+                    "displayName": "Gaps in coverage",
+                    "dataElements": [
+                        {
+                            "id": "Oc0RJz88pBV",
+                            "formName": "Population entitlement: Main gaps in publicly financed coverage",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Cqe4z39igTX",
+                            "formName": "Service coverage: Main gaps in publicly financed coverage",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "CCIzcBhaqCZ",
+                            "formName": "User charges (co-payments): Main gaps in publicly financed coverage",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "u800TAhsIBY",
+                    "displayName": "User charges (co-payments) by type of health care",
+                    "dataElements": [
+                        {
+                            "id": "q2Q3iwrGu0O",
+                            "formName": "User charges apply (Primary Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "mTB12rvpJWd",
+                            "formName": "Type of user charge  (Primary Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "giUCPiCe745",
+                            "formName": "User charges apply (Primary Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "aUWGoeflYTg",
+                            "formName": "Reduced user charges (Primary Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "b29bW9mc9C7",
+                            "formName": "Reduced user charges (Primary Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "S6ctrSmWGVu",
+                            "formName": "Exemptions from user charges (Primary Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "tu36CFgEoh8",
+                            "formName": "Exemptions from user charges (Primary Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "yQ09hqmF2al",
+                            "formName": "Cap on user charges (Primary Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "mSgmJhjn4Bi",
+                            "formName": "Cap on user charges (Primary Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "O4qsWEa3bS6",
+                            "formName": "User charges apply (Specialist Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "wDQRlBezRAs",
+                            "formName": "Type of user charge (Specialist Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "SWX96A7gnpA",
+                            "formName": "User charges apply (Specialist Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "yoKu9FVy06Y",
+                            "formName": "Reduced user charges (Specialist Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "ZkElvtoVJSd",
+                            "formName": "Reduced user charges (Specialist Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ykYB1KTvUpD",
+                            "formName": "Exemptions from user charges (Specialist Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "zsiuJlUSvAW",
+                            "formName": "Exemptions from user charges (Specialist Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Sq41GuwMrJT",
+                            "formName": "Cap on user charges (Specialist Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "o6d3FfwRVj7",
+                            "formName": "Cap on user charges (Specialist Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qcw1buhHOjf",
+                            "formName": "User charges apply (Emergency Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "ibq7wtqnsns",
+                            "formName": "Type of user charge (Emergency Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "WTtArv6Xvsy",
+                            "formName": "User charges apply (Emergency Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Gcc5WSXtV51",
+                            "formName": "Reduced user charges (Emergency Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "n8jFYyMKDaV",
+                            "formName": "Reduced user charges (Emergency Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "iAes2NnDEO9",
+                            "formName": "Exemptions from user charges (Emergency Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "SiNpgO1L5bG",
+                            "formName": "Exemptions from user charges (Emergency Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "yY8XtmlQwJr",
+                            "formName": "Cap on user charges (Emergency Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "sASANfdEGUR",
+                            "formName": "Cap on user charges (Emergency Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "EruJIoPKO1s",
+                            "formName": "Type of user charge  (Outpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "gMAYqfQ5xAD",
+                            "formName": "User charges apply (Outpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "KBW3D8lOlpg",
+                            "formName": "Reduced user charges (Outpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "a67cjmP423S",
+                            "formName": "Exemptions from user charges (Outpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "sk9g2PsK7vD",
+                            "formName": "Cap on user charges (Outpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "G4K6dugnvys",
+                            "formName": "User charges apply (Inpatient Medicines)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "KfHkuuRZdBh",
+                            "formName": "Type of user charge  (Inpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "NJ8zBQdwnd2",
+                            "formName": "User charges apply (Inpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "u660bZ9Hokg",
+                            "formName": "Reduced user charges (Inpatient Medicines)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "lj174orsYYW",
+                            "formName": "Reduced user charges (Inpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qAiA1L599P7",
+                            "formName": "Exemptions from user charges (Inpatient Medicines)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "eRfuZtUFbPK",
+                            "formName": "Exemptions from user charges (Inpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eO2NKviCumM",
+                            "formName": "Cap on user charges (Inpatient Medicines)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Ut93noOXsdK",
+                            "formName": "Cap on user charges (Inpatient Medicines)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Wie0b5v1MvN",
+                            "formName": "User charges apply (Medical Products)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "CpMWBaXJ91P",
+                            "formName": "Type of user charge (Medical Products)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "VroSbngmebX",
+                            "formName": "User charges apply (Medical Products)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "yAYFb3rt0MX",
+                            "formName": "Reduced user charges (Medical Products)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "P7qWfL7oluy",
+                            "formName": "Reduced user charges (Medical Products)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eyknTrFgwwk",
+                            "formName": "Exemptions from user charges (Medical Products)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "yhSc51DOubT",
+                            "formName": "Exemptions from user charges (Medical Products)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "uUmwEETUETZ",
+                            "formName": "Cap on user charges (Medical Products)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "olgegohqR8l",
+                            "formName": "Cap on user charges (Medical Products)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "uoyYFskbl1n",
+                            "formName": "User charges apply (Diagnostics Tests)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "L2sCkhEbSfM",
+                            "formName": "Type of user charge (Diagnostics Tests)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "OjTsewAuevP",
+                            "formName": "User charges apply (Diagnostics Tests)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "SYagldpybP7",
+                            "formName": "Reduced user charges (Diagnostics Tests)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "NkHvpG471tm",
+                            "formName": "Reduced user charges (Diagnostics Tests)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eSCE81VqVCK",
+                            "formName": "Exemptions from user charges (Diagnostics Tests)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Cm6ngZTrVQR",
+                            "formName": "Exemptions from user charges (Diagnostics Tests)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "muAh8Qih9cC",
+                            "formName": "Cap on user charges (Diagnostics Tests)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "JLSGrrzqrW9",
+                            "formName": "Cap on user charges (Diagnostics Tests)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "C0s9QXe5V1q",
+                            "formName": "User charges apply (Dental Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "PUXn0hz2JFX",
+                            "formName": "Type of user charge (Dental Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "rZlHlitEiFp",
+                            "formName": "User charges apply (Dental Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "SqSMUOpgAPZ",
+                            "formName": "Reduced user charges (Dental Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "lXBWfAv1EJE",
+                            "formName": "Reduced user charges (Dental Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "es4orTPTNJN",
+                            "formName": "Exemptions from user charges (Dental Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "M228fF4qKsx",
+                            "formName": "Exemptions from user charges (Dental Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "mqonl7yukQP",
+                            "formName": "Cap on user charges (Dental Visits)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "wZ9JynvumSQ",
+                            "formName": "Cap on user charges (Dental Visits)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "WGeiJg8qs8l",
+                            "formName": "User charges apply (Dental Care Treatment)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Py0PrMRPlUj",
+                            "formName": "Type of user charge (Dental Care Treatment)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "RtLyOZpUtqO",
+                            "formName": "User charges apply (Dental Care Treatment)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "C6iGws3AAVd",
+                            "formName": "Reduced user charges (Dental Care Treatment)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Bwx3a0w5orN",
+                            "formName": "Reduced user charges (Dental Care Treatment)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "WsWAHjxsJD4",
+                            "formName": "Exemptions from user charges (Dental Care Treatment)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "KQVn9LNZPlq",
+                            "formName": "Exemptions from user charges (Dental Care Treatment)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qyuMKBfKRCJ",
+                            "formName": "Cap on user charges (Dental Care Treatment)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "SINKYu3EMgX",
+                            "formName": "Cap on user charges (Dental Care Treatment)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "GWwXTTIKpHv",
+                            "formName": "User charges apply (Inpatient Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "TaS7d80ciTe",
+                            "formName": "User charges apply (Inpatient Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "CCWKWFGrB7V",
+                            "formName": "Reduced user charges (Inpatient Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "syr5O2Mj2vL",
+                            "formName": "Reduced user charges (Inpatient Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "WEmmZ4PBVWF",
+                            "formName": "Exemptions from user charges (Inpatient Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Urb1llvnJV4",
+                            "formName": "Exemptions from user charges (Inpatient Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qwxkM2wBSzz",
+                            "formName": "Cap on user charges (Inpatient Care)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Ai7ziQeOU53",
+                            "formName": "Cap on user charges (Inpatient Care)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "L6ly0Y1uCe2",
+                            "formName": "Type of user charge  (Inpatient Care)",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "FtRwT2aBET4",
+                    "displayName": "Changes in coverage policy up to and including 2019",
+                    "dataElements": [
+                        {
+                            "id": "KDsEXYarBTu",
+                            "formName": "Area of change in coverage policy pre2019 (1)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "ewpOQ5y97nj",
+                            "formName": "Area of change in coverage policy pre2019 (2)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "hDGqtzIFTAg",
+                            "formName": "Area of change in coverage policy pre2019 (3)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Ed553tXFkcC",
+                            "formName": "Area of change in coverage policy pre2019 (4)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "G90HxQdY44N",
+                            "formName": "Area of change in coverage policy pre2019 (5)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "gOtySPsOkmn",
+                            "formName": "Health services targeted in change in coverage policy pre2019 (1)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "ueyZG15lJNe",
+                            "formName": "Health services targeted in change in coverage policy pre2019 (2)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "oR85dLJrBWB",
+                            "formName": "Health services targeted in change in coverage policy pre2019 (3)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "GMqwcTkBm5u",
+                            "formName": "Health services targeted in change in coverage policy pre2019 (4)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "GwYOC7auTo3",
+                            "formName": "Health services targeted in change in coverage policy pre2019 (5)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "CnlZeapVRTA",
+                            "formName": "People targeted in change in coverage policy pre2019 (1)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Dg9FyroZ53d",
+                            "formName": "People targeted in change in coverage policy pre2019 (2)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Ak3h87SXFws",
+                            "formName": "People targeted in change in coverage policy pre2019 (3)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "OAFiKkIj9AV",
+                            "formName": "People targeted in change in coverage policy pre2019 (4)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "VqZfgxa6KhX",
+                            "formName": "People targeted in change in coverage policy pre2019 (5)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "u50ywFZ6gum",
+                            "formName": "Policy of change in coverage policy pre2019 (1)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "pnUIywtp441",
+                            "formName": "Policy of change in coverage policy pre2019 (2)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "fVrKY8v7ZRy",
+                            "formName": "Policy of change in coverage policy pre2019 (3)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "xZjl72SoX34",
+                            "formName": "Policy of change in coverage policy pre2019 (4)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "RPDIUoT8kU7",
+                            "formName": "Policy of change in coverage policy pre2019 (5)",
+                            "valueType": "TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "lHk8jtKonPh",
+                    "displayName": "Type of user charge",
+                    "dataElements": [
+                        {
+                            "id": "N6VffecAJQs",
+                            "formName": "Primary Care - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "EboejH0zPz9",
+                            "formName": "Primary Care - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "SfEj8HMJJjb",
+                            "formName": "Primary Care - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "cBXErExkfsP",
+                            "formName": "Primary Care - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "SpZM5ecTDKZ",
+                            "formName": "Primary Care - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "uFiUQKJhltM",
+                            "formName": "Primary Care - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "yoZlGvQzsBX",
+                            "formName": "Primary Care - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "xvfbvuNow1z",
+                            "formName": "Primary Care - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "dz6UBD1vHXY",
+                            "formName": "Primary Care - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "BuXscQqeqt3",
+                            "formName": "Primary Care - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "NCBNHk6P4H7",
+                            "formName": "Primary Care - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "AenLLMXSR2j",
+                            "formName": "Primary Care - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qlWDSFx4PBK",
+                            "formName": "Specialist Visits - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "oHXaoGjuNBz",
+                            "formName": "Specialist Visits - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "hMpELPXoN6g",
+                            "formName": "Specialist Visits - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "mXKLWeQblWM",
+                            "formName": "Specialist Visits - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "N4hB8nMnSBw",
+                            "formName": "Specialist Visits - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "iho7qMihBEN",
+                            "formName": "Specialist Visits - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "okjICJLSI7j",
+                            "formName": "Specialist Visits - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "H2f0XhUerVj",
+                            "formName": "Specialist Visits - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Ll3tAYWjcLe",
+                            "formName": "Specialist Visits - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "gxOwKGHM5uM",
+                            "formName": "Specialist Visits - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "aB9db4gIBEc",
+                            "formName": "Specialist Visits - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "OVMONRywtGy",
+                            "formName": "Specialist Visits - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "reExaane8iy",
+                            "formName": "Emergency Visits - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "NnTynkwUOLd",
+                            "formName": "Emergency Visits - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "itJxDe2dMtO",
+                            "formName": "Emergency Visits - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "AumlNzFYLzS",
+                            "formName": "Emergency Visits - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "lGLZR1jonrj",
+                            "formName": "Emergency Visits - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "RnRU6QWQtFO",
+                            "formName": "Emergency Visits - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "NkZRolygk5H",
+                            "formName": "Emergency Visits - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "y1ZQGX2JSfk",
+                            "formName": "Emergency Visits - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qd0GCQno8p4",
+                            "formName": "Emergency Visits - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "ZVvNouUFwSj",
+                            "formName": "Emergency Visits - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "j44KZa3YVDK",
+                            "formName": "Emergency Visits - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "U3EM7x9wA7q",
+                            "formName": "Emergency Visits - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "VDqCjYDuuuo",
+                            "formName": "Outpatient prescribed medicines - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "FPWimBd7wCe",
+                            "formName": "Outpatient prescribed medicines - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ayCBYIouen8",
+                            "formName": "Outpatient prescribed medicines - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "c6VoqBpnpxd",
+                            "formName": "Outpatient prescribed medicines - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "RBxVTdmVuxt",
+                            "formName": "Outpatient prescribed medicines - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "asegoCEvyrS",
+                            "formName": "Outpatient prescribed medicines - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "xFdjlag34Yn",
+                            "formName": "Outpatient prescribed medicines - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "mik8Xg9vOeV",
+                            "formName": "Outpatient prescribed medicines - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "OKqddgb3ZNE",
+                            "formName": "Outpatient prescribed medicines - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "phzaWpXIfni",
+                            "formName": "Outpatient prescribed medicines - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "DkKtqDBjdX1",
+                            "formName": "Outpatient prescribed medicines - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "ngo9UfDawgI",
+                            "formName": "Outpatient prescribed medicines - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ZpVMpcR94DR",
+                            "formName": "Medical Products - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "SgGPLj9ftfg",
+                            "formName": "Medical Products - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "t7hswYojnTB",
+                            "formName": "Medical Products - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "AA6Ye2mqJHR",
+                            "formName": "Medical Products - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Zp37C6eqEw2",
+                            "formName": "Medical Products - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "xmaBfCQrnvo",
+                            "formName": "Medical Products - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Kl1tjXTo7rz",
+                            "formName": "Medical Products - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "SAdCPb1pzvB",
+                            "formName": "Medical Products - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Sm93rdMgDRf",
+                            "formName": "Medical Products - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "rRtvOQKWekP",
+                            "formName": "Medical Products - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qdVea5sGMEs",
+                            "formName": "Medical Products - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "ZhPZvGqaolU",
+                            "formName": "Medical Products - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "nip2YphFn80",
+                            "formName": "Diagnostic Tests - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "KGrh7f4UdO2",
+                            "formName": "Diagnostic Tests - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "mSWNF8ZwvjV",
+                            "formName": "Diagnostic Tests - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "jgb82HFCuoF",
+                            "formName": "Diagnostic Tests - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "VaIuAZLCllP",
+                            "formName": "Diagnostic Tests - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "z21e4xo33Gq",
+                            "formName": "Diagnostic Tests - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "LyjI5mmwuP3",
+                            "formName": "Diagnostic Tests - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "yACvBd3ApA0",
+                            "formName": "Diagnostic Tests - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "zcJGPqMvk3F",
+                            "formName": "Diagnostic Tests - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "bC0ASJpuYnX",
+                            "formName": "Diagnostic Tests - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "uurnqw1KnVh",
+                            "formName": "Diagnostic Tests - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "cMmiVU55Byh",
+                            "formName": "Diagnostic Tests - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "K0wWOHwDKMB",
+                            "formName": "Dental Visits - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "zZ0IhJeGF3G",
+                            "formName": "Dental Visits - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ywUxwOxAUvO",
+                            "formName": "Dental Visits - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "G68kPZZ43zG",
+                            "formName": "Dental Visits - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Ij6Ma0J7MN6",
+                            "formName": "Dental Visits - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "MDvxRjDZvDj",
+                            "formName": "Dental Visits - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "LGeIA5lNKeX",
+                            "formName": "Dental Visits - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "U9QK3B63xKo",
+                            "formName": "Dental Visits - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "HBi0i6FQYu1",
+                            "formName": "Dental Visits - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "VplpY1Yy1lR",
+                            "formName": "Dental Visits - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "PTqBmTbooot",
+                            "formName": "Dental Visits - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "McgI8vrnFw6",
+                            "formName": "Dental Visits - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "eHtqIQ48Lcc",
+                            "formName": "Dental Care Treatment - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "sAxdNOgcV3H",
+                            "formName": "Dental Care Treatment - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "p2k9jTxAaBO",
+                            "formName": "Dental Care Treatment - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "rajdlRWxCX4",
+                            "formName": "Dental Care Treatment - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Z0TMM3qBmTn",
+                            "formName": "Dental Care Treatment - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "eUtTI5WTx9F",
+                            "formName": "Dental Care Treatment - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "KD3lCW1OSZS",
+                            "formName": "Dental Care Treatment - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "r0iKZc6gEdK",
+                            "formName": "Dental Care Treatment - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "JeBrkboI23R",
+                            "formName": "Dental Care Treatment - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "GaGhir32y1U",
+                            "formName": "Dental Care Treatment - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "N8SPwfxsPHJ",
+                            "formName": "Dental Care Treatment - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "DNTGpXo6buK",
+                            "formName": "Dental Care Treatment - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "IQd9wZTjVGh",
+                            "formName": "Inpatient Care - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "UfpRQ2Ijiyb",
+                            "formName": "Inpatient Care - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "yObhubFbSI2",
+                            "formName": "Inpatient Care - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "WdF9ezTBVNb",
+                            "formName": "Inpatient Care - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "WWsq8ZPtaJE",
+                            "formName": "Inpatient Care - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "BnI3YDe3flm",
+                            "formName": "Inpatient Care - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "LhQI2vNy3yz",
+                            "formName": "Inpatient Care - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "ccDqDzq4b0x",
+                            "formName": "Inpatient Care - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "LMvd4Vzkqc9",
+                            "formName": "Inpatient Care - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "u1Eguha8n2H",
+                            "formName": "Inpatient Care - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ieZx32KIwcd",
+                            "formName": "Inpatient Care - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "UUi5TUqljop",
+                            "formName": "Inpatient Care - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "WatsX8D0MIl",
+                            "formName": "Inpatient Medicines - Fixed co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "KR7sMncAKlz",
+                            "formName": "Inpatient Medicines - Fixed co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "JVKhVb54lwc",
+                            "formName": "Inpatient Medicines - Percentage co-payment",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "q5cIxEo3MPq",
+                            "formName": "Inpatient Medicines - Percentage co-payment",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "p2nno93609Y",
+                            "formName": "Inpatient Medicines - Reference pricing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "ZqAbKQHqhLR",
+                            "formName": "Inpatient Medicines - Reference pricing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "VvF5pe6rh76",
+                            "formName": "Inpatient Medicines - Deductible",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "Dgg4Jc9U7Jn",
+                            "formName": "Inpatient Medicines - Deductible",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "MoSYlm80O7X",
+                            "formName": "Inpatient Medicines - Balance billing",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "SUBFUbBNE8g",
+                            "formName": "Inpatient Medicines - Balance billing",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "swITfVQ4qIr",
+                            "formName": "Inpatient Medicines - Extra billing/full price",
+                            "valueType": "TRUE_ONLY"
+                        },
+                        {
+                            "id": "IpwrxmI5FU7",
+                            "formName": "Inpatient Medicines - Extra billing/full price",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                },
+                {
+                    "id": "Dg4b8bTfEIr",
+                    "displayName": "Changes in coverage policy since 2020",
+                    "dataElements": [
+                        {
+                            "id": "AFxIxVuvvsZ",
+                            "formName": "Area of change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "JMYOe9wMIoE",
+                            "formName": "Policy of change in coverage policy",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "FKBHFNqiFM4",
+                            "formName": "Health services targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "fgsOChZT1Yp",
+                            "formName": "People targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "qJ9dWNT1HU1",
+                            "formName": "Was this a response to the COVID-19 pandemic?",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "IjpUXUVF9bn",
+                            "formName": "Area of change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "dfWsuiDvDlR",
+                            "formName": "Policy of change in coverage policy",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "AZgRUJmVPNi",
+                            "formName": "Health services targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "M90TwNwsXjY",
+                            "formName": "People targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "rxDjH7GshzX",
+                            "formName": "Was this a response to the COVID-19 pandemic?",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "Soj201VJFWL",
+                            "formName": "Area of change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "tdlh9Z0uktG",
+                            "formName": "Policy of change in coverage policy",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "jq0sGqVVTNW",
+                            "formName": "Health services targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "XZbHFY1652W",
+                            "formName": "People targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "BYbKtpEB0Hn",
+                            "formName": "Was this a response to the COVID-19 pandemic?",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "JfqWVc1eCJl",
+                            "formName": "Area of change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "PyBU3BkN3oQ",
+                            "formName": "Policy of change in coverage policy",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "zvBP5xebI2D",
+                            "formName": "Health services targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "b5kKyrRkcHG",
+                            "formName": "People targeted in change in coverage policy",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "L9klgnq75d8",
+                            "formName": "Was this a response to the COVID-19 pandemic?",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "xP4nCc5rpV4",
+                            "formName": "Area of change in coverage policy (1)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "mQYv2QxdflF",
+                            "formName": "Policy of change in coverage policy (1)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "peIML3XRBaN",
+                            "formName": "Health services targeted in change in coverage policy (1)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "CUSj5kPkJ0W",
+                            "formName": "People targeted in change in coverage policy (1)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "mdnjNf5baYj",
+                            "formName": "Was this a response to the COVID-19 pandemic? (1)",
+                            "valueType": "LONG_TEXT"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

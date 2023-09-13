@@ -58,17 +58,6 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("startDate")).toBe("2020-01-01");
             expect(mockWebServer.lastRequest?.params.get("endDate")).toBe("2022-12-31");
         });
-        it("countries in filter", async () => {
-            givenAComparativeAnalysis();
-
-            await resourceRepository
-                .get({ category: "comparative-analysis", countries: ["country1", "country2"] })
-                .runAsync();
-
-            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.countryId}:in:country1;country2`
-            );
-        });
 
         it("favourite true in filter", async () => {
             givenAComparativeAnalysis();
@@ -295,6 +284,49 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
             url: "https://apps.who.int/iris/bitstream/handle/10665/345515/WHO-EURO-2019-3439-431980-60515-fre.pdf?sequence=1&isAllowed=y",
         },
     ];
+
+    expect(comparativeAnalysis.relatedCountries).toStrictEqual([
+        "PevCwH17M73",
+        "jXQq22U4Y2e",
+        "pP1WlCSYejH",
+        "qAmRvjY8kVd",
+        "IyO9ICB0WIn",
+        "Yvrvqzpb59w",
+        "IWK3HDhXMyK",
+        "fX0oY3wvF3N",
+        "WnVzqXGTSUW",
+        "xloTsC6lk5Q",
+        "DrRI1gAgp5i",
+        "uceyvAirxHE",
+        "uDBXvALekyM",
+        "KQZWODjf6lc",
+        "AKHUgj34AuC",
+        "xEf8zHPDMBf",
+        "TBc9iqbtrzB",
+        "Dyo0QYSfPUQ",
+        "ev358tR1o4a",
+        "mA5X0hfEgzA",
+        "JHRPRIyWYIl",
+        "wJ6Rhjej5Gv",
+        "O6hDdHQsQEB",
+        "h1H7oFkAIFE",
+        "j1Fovj5I0gc",
+        "ijJ8gnHagIP",
+        "aqmqNhhHJf0",
+        "jFHht0qBr1e",
+        "yyIcczRsUnC",
+        "ZmFDfUckZA6",
+        "xfEdpe91K5z",
+        "GqpxsBJRLbf",
+        "ytkCRkD480w",
+        "sP69rtJgvbT",
+        "UKdVDx5CfZd",
+        "JKaMsaxznQx",
+        "EJco8S7Qjk0",
+        "J0GOGzNpFHU",
+        "jAHjx4Eyevv",
+        "PbDWLB5gXr2",
+    ]);
 
     comparativeAnalysis.links.forEach((link, index) => {
         const expectedLink = expectedLinks[index];

@@ -26,6 +26,7 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
             favouriteOrder: index,
             favouriteSection: true,
             favouriteSectionOrder: index,
+            relatedCountries: [],
         };
     });
 
