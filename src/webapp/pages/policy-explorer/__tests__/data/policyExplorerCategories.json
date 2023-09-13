@@ -418,5 +418,443 @@
                 "name": "Type of user charge  (Inpatient Care)"
             }
         ]
+    },
+    {
+        "id": "FtRwT2aBET4",
+        "name": "Changes in coverage policy up to and including 2019",
+        "subcategories": [
+            {
+                "id": "KDsEXYarBTu",
+                "name": "Area of change in coverage policy pre2019 (1)"
+            },
+            {
+                "id": "ewpOQ5y97nj",
+                "name": "Area of change in coverage policy pre2019 (2)"
+            },
+            {
+                "id": "hDGqtzIFTAg",
+                "name": "Area of change in coverage policy pre2019 (3)"
+            },
+            {
+                "id": "Ed553tXFkcC",
+                "name": "Area of change in coverage policy pre2019 (4)"
+            },
+            {
+                "id": "G90HxQdY44N",
+                "name": "Area of change in coverage policy pre2019 (5)"
+            },
+            {
+                "id": "gOtySPsOkmn",
+                "name": "Health services targeted in change in coverage policy pre2019 (1)"
+            },
+            {
+                "id": "ueyZG15lJNe",
+                "name": "Health services targeted in change in coverage policy pre2019 (2)"
+            },
+            {
+                "id": "oR85dLJrBWB",
+                "name": "Health services targeted in change in coverage policy pre2019 (3)"
+            },
+            {
+                "id": "GMqwcTkBm5u",
+                "name": "Health services targeted in change in coverage policy pre2019 (4)"
+            },
+            {
+                "id": "GwYOC7auTo3",
+                "name": "Health services targeted in change in coverage policy pre2019 (5)"
+            },
+            {
+                "id": "CnlZeapVRTA",
+                "name": "People targeted in change in coverage policy pre2019 (1)"
+            },
+            {
+                "id": "Dg9FyroZ53d",
+                "name": "People targeted in change in coverage policy pre2019 (2)"
+            },
+            {
+                "id": "Ak3h87SXFws",
+                "name": "People targeted in change in coverage policy pre2019 (3)"
+            },
+            {
+                "id": "OAFiKkIj9AV",
+                "name": "People targeted in change in coverage policy pre2019 (4)"
+            },
+            {
+                "id": "VqZfgxa6KhX",
+                "name": "People targeted in change in coverage policy pre2019 (5)"
+            },
+            {
+                "id": "u50ywFZ6gum",
+                "name": "Policy of change in coverage policy pre2019 (1)"
+            },
+            {
+                "id": "pnUIywtp441",
+                "name": "Policy of change in coverage policy pre2019 (2)"
+            },
+            {
+                "id": "fVrKY8v7ZRy",
+                "name": "Policy of change in coverage policy pre2019 (3)"
+            },
+            {
+                "id": "xZjl72SoX34",
+                "name": "Policy of change in coverage policy pre2019 (4)"
+            },
+            {
+                "id": "RPDIUoT8kU7",
+                "name": "Policy of change in coverage policy pre2019 (5)"
+            }
+        ]
+    },
+    {
+        "id": "lHk8jtKonPh",
+        "name": "Type of user charge",
+        "subcategories": [
+            {
+                "id": "EboejH0zPz9",
+                "name": "Primary Care - Fixed co-payment"
+            },
+            {
+                "id": "cBXErExkfsP",
+                "name": "Primary Care - Percentage co-payment"
+            },
+            {
+                "id": "uFiUQKJhltM",
+                "name": "Primary Care - Reference pricing"
+            },
+            {
+                "id": "xvfbvuNow1z",
+                "name": "Primary Care - Deductible"
+            },
+            {
+                "id": "BuXscQqeqt3",
+                "name": "Primary Care - Balance billing"
+            },
+            {
+                "id": "AenLLMXSR2j",
+                "name": "Primary Care - Extra billing/full price"
+            },
+            {
+                "id": "oHXaoGjuNBz",
+                "name": "Specialist Visits - Fixed co-payment"
+            },
+            {
+                "id": "mXKLWeQblWM",
+                "name": "Specialist Visits - Percentage co-payment"
+            },
+            {
+                "id": "iho7qMihBEN",
+                "name": "Specialist Visits - Reference pricing"
+            },
+            {
+                "id": "H2f0XhUerVj",
+                "name": "Specialist Visits - Deductible"
+            },
+            {
+                "id": "gxOwKGHM5uM",
+                "name": "Specialist Visits - Balance billing"
+            },
+            {
+                "id": "OVMONRywtGy",
+                "name": "Specialist Visits - Extra billing/full price"
+            },
+            {
+                "id": "NnTynkwUOLd",
+                "name": "Emergency Visits - Fixed co-payment"
+            },
+            {
+                "id": "AumlNzFYLzS",
+                "name": "Emergency Visits - Percentage co-payment"
+            },
+            {
+                "id": "RnRU6QWQtFO",
+                "name": "Emergency Visits - Reference pricing"
+            },
+            {
+                "id": "y1ZQGX2JSfk",
+                "name": "Emergency Visits - Deductible"
+            },
+            {
+                "id": "ZVvNouUFwSj",
+                "name": "Emergency Visits - Balance billing"
+            },
+            {
+                "id": "U3EM7x9wA7q",
+                "name": "Emergency Visits - Extra billing/full price"
+            },
+            {
+                "id": "FPWimBd7wCe",
+                "name": "Outpatient prescribed medicines - Fixed co-payment"
+            },
+            {
+                "id": "c6VoqBpnpxd",
+                "name": "Outpatient prescribed medicines - Percentage co-payment"
+            },
+            {
+                "id": "asegoCEvyrS",
+                "name": "Outpatient prescribed medicines - Reference pricing"
+            },
+            {
+                "id": "mik8Xg9vOeV",
+                "name": "Outpatient prescribed medicines - Deductible"
+            },
+            {
+                "id": "phzaWpXIfni",
+                "name": "Outpatient prescribed medicines - Balance billing"
+            },
+            {
+                "id": "ngo9UfDawgI",
+                "name": "Outpatient prescribed medicines - Extra billing/full price"
+            },
+            {
+                "id": "SgGPLj9ftfg",
+                "name": "Medical Products - Fixed co-payment"
+            },
+            {
+                "id": "AA6Ye2mqJHR",
+                "name": "Medical Products - Percentage co-payment"
+            },
+            {
+                "id": "xmaBfCQrnvo",
+                "name": "Medical Products - Reference pricing"
+            },
+            {
+                "id": "SAdCPb1pzvB",
+                "name": "Medical Products - Deductible"
+            },
+            {
+                "id": "rRtvOQKWekP",
+                "name": "Medical Products - Balance billing"
+            },
+            {
+                "id": "ZhPZvGqaolU",
+                "name": "Medical Products - Extra billing/full price"
+            },
+            {
+                "id": "KGrh7f4UdO2",
+                "name": "Diagnostic Tests - Fixed co-payment"
+            },
+            {
+                "id": "jgb82HFCuoF",
+                "name": "Diagnostic Tests - Percentage co-payment"
+            },
+            {
+                "id": "z21e4xo33Gq",
+                "name": "Diagnostic Tests - Reference pricing"
+            },
+            {
+                "id": "yACvBd3ApA0",
+                "name": "Diagnostic Tests - Deductible"
+            },
+            {
+                "id": "bC0ASJpuYnX",
+                "name": "Diagnostic Tests - Balance billing"
+            },
+            {
+                "id": "cMmiVU55Byh",
+                "name": "Diagnostic Tests - Extra billing/full price"
+            },
+            {
+                "id": "zZ0IhJeGF3G",
+                "name": "Dental Visits - Fixed co-payment"
+            },
+            {
+                "id": "G68kPZZ43zG",
+                "name": "Dental Visits - Percentage co-payment"
+            },
+            {
+                "id": "MDvxRjDZvDj",
+                "name": "Dental Visits - Reference pricing"
+            },
+            {
+                "id": "U9QK3B63xKo",
+                "name": "Dental Visits - Deductible"
+            },
+            {
+                "id": "VplpY1Yy1lR",
+                "name": "Dental Visits - Balance billing"
+            },
+            {
+                "id": "McgI8vrnFw6",
+                "name": "Dental Visits - Extra billing/full price"
+            },
+            {
+                "id": "sAxdNOgcV3H",
+                "name": "Dental Care Treatment - Fixed co-payment"
+            },
+            {
+                "id": "rajdlRWxCX4",
+                "name": "Dental Care Treatment - Percentage co-payment"
+            },
+            {
+                "id": "eUtTI5WTx9F",
+                "name": "Dental Care Treatment - Reference pricing"
+            },
+            {
+                "id": "r0iKZc6gEdK",
+                "name": "Dental Care Treatment - Deductible"
+            },
+            {
+                "id": "GaGhir32y1U",
+                "name": "Dental Care Treatment - Balance billing"
+            },
+            {
+                "id": "DNTGpXo6buK",
+                "name": "Dental Care Treatment - Extra billing/full price"
+            },
+            {
+                "id": "UfpRQ2Ijiyb",
+                "name": "Inpatient Care - Fixed co-payment"
+            },
+            {
+                "id": "WdF9ezTBVNb",
+                "name": "Inpatient Care - Percentage co-payment"
+            },
+            {
+                "id": "BnI3YDe3flm",
+                "name": "Inpatient Care - Reference pricing"
+            },
+            {
+                "id": "ccDqDzq4b0x",
+                "name": "Inpatient Care - Deductible"
+            },
+            {
+                "id": "u1Eguha8n2H",
+                "name": "Inpatient Care - Balance billing"
+            },
+            {
+                "id": "UUi5TUqljop",
+                "name": "Inpatient Care - Extra billing/full price"
+            },
+            {
+                "id": "KR7sMncAKlz",
+                "name": "Inpatient Medicines - Fixed co-payment"
+            },
+            {
+                "id": "q5cIxEo3MPq",
+                "name": "Inpatient Medicines - Percentage co-payment"
+            },
+            {
+                "id": "ZqAbKQHqhLR",
+                "name": "Inpatient Medicines - Reference pricing"
+            },
+            {
+                "id": "Dgg4Jc9U7Jn",
+                "name": "Inpatient Medicines - Deductible"
+            },
+            {
+                "id": "SUBFUbBNE8g",
+                "name": "Inpatient Medicines - Balance billing"
+            },
+            {
+                "id": "IpwrxmI5FU7",
+                "name": "Inpatient Medicines - Extra billing/full price"
+            }
+        ]
+    },
+    {
+        "id": "Dg4b8bTfEIr",
+        "name": "Changes in coverage policy since 2020",
+        "subcategories": [
+            {
+                "id": "AFxIxVuvvsZ",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "JMYOe9wMIoE",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "FKBHFNqiFM4",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "fgsOChZT1Yp",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "qJ9dWNT1HU1",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "IjpUXUVF9bn",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "dfWsuiDvDlR",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "AZgRUJmVPNi",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "M90TwNwsXjY",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "rxDjH7GshzX",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "Soj201VJFWL",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "tdlh9Z0uktG",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "jq0sGqVVTNW",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "XZbHFY1652W",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "BYbKtpEB0Hn",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "JfqWVc1eCJl",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "PyBU3BkN3oQ",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "zvBP5xebI2D",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "b5kKyrRkcHG",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "L9klgnq75d8",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "xP4nCc5rpV4",
+                "name": "Area of change in coverage policy (1)"
+            },
+            {
+                "id": "mQYv2QxdflF",
+                "name": "Policy of change in coverage policy (1)"
+            },
+            {
+                "id": "peIML3XRBaN",
+                "name": "Health services targeted in change in coverage policy (1)"
+            },
+            {
+                "id": "CUSj5kPkJ0W",
+                "name": "People targeted in change in coverage policy (1)"
+            },
+            {
+                "id": "mdnjNf5baYj",
+                "name": "Was this a response to the COVID-19 pandemic? (1)"
+            }
+        ]
     }
 ]

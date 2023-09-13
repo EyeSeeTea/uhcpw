@@ -8,6 +8,8 @@ import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
+const sectionsWithValueTypeText = ["FtRwT2aBET4", "Dg4b8bTfEIr"];
+
 const sectionsList = [
     "uG2PbDfOc0w",
     "W4CqlzcDPB1",
@@ -16,6 +18,7 @@ const sectionsList = [
     "mCMVwmnGWJF",
     "u800TAhsIBY",
     "lHk8jtKonPh",
+    ...sectionsWithValueTypeText,
 ];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
@@ -38,14 +41,18 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         return sections.map(section => ({
             id: section.id,
             name: section.displayName.replace("UHCW_", ""),
-            subcategories: this.getSubcategories(section.dataElements),
+            subcategories: this.getSubcategories(section.id, section.dataElements),
         }));
     }
 
-    private getSubcategories(dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
+    private getSubcategories(sectionId: string, dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
         return (
             dataElements
-                ?.filter(de => de.valueType === "LONG_TEXT")
+                ?.filter(
+                    de =>
+                        de.valueType === "LONG_TEXT" ||
+                        (sectionsWithValueTypeText.includes(sectionId) && de.valueType === "TEXT")
+                )
                 .map(subcategory => ({
                     id: subcategory.id,
                     name: subcategory.formName,
