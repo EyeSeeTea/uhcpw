@@ -1,6 +1,16 @@
 export type PolicyExplorer = {
-    tables: Record<string, string[][]>;
+    tables: Record<string, PolicyExplorerCell[][]>;
     generalInfo: PolicyExplorerGeneralInfo[];
+};
+
+export enum PolicyExplorerCellType {
+    HEADER = "HEADER",
+    DATA = "DATA",
+}
+
+export type PolicyExplorerCell = {
+    type: PolicyExplorerCellType;
+    value: string;
 };
 
 export type PolicyExplorerGeneralInfo = {

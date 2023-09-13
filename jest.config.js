@@ -7,6 +7,7 @@ module.exports = {
     moduleNameMapper: {
         "\\.(css|scss)$": "<rootDir>/config/styleMock.js",
         "\\.(jpg|jpeg|png|svg)$": "<rootDir>/config/fileMock.js",
+        "react-markdown": "<rootDir>/config/reactMarkdownMock.js",
     },
     setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
     transform: {

@@ -8,10 +8,11 @@ import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ReactMarkdown from "react-markdown";
 import { DataOrientation } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
+import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
-    rows?: string[][];
+    rows?: PolicyExplorerCell[][];
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;
     onDownload: (categoryId: string) => void;
@@ -58,12 +59,12 @@ export const PolicyExplorerTable = React.memo(
                 <TableContainer component={TablePaper}>
                     <StyledTable orientation={dataOrientation}>
                         <TableBody>
-                            {rows.map(row => (
-                                <TableRow key={`${category.value}_${row.toString()}`}>
-                                    {row.map(cell => (
-                                        <TableCell key={`${category.value}_${cell}`}>
-                                            <ReactMarkdown>{cell}</ReactMarkdown>
-                                        </TableCell>
+                            {rows.map((row, index) => (
+                                <TableRow key={`${category.value}_${index}_${row.toString()}`}>
+                                    {row.map((cell, i) => (
+                                        <StyledTableCell key={`${category.value}_${i}_${cell.value}`} type={cell.type}>
+                                            <ReactMarkdown>{cell.value}</ReactMarkdown>
+                                        </StyledTableCell>
                                     ))}
                                 </TableRow>
                             ))}
@@ -104,17 +105,8 @@ const TablePaper = styled(Paper)`
 `;
 
 const StyledNormalTable = styled(Table)`
-    tbody {
-        background: #f4f8fc;
-    }
-    tbody > tr:first-child > td {
-        background-color: #d3e5f5;
-    }
-
-    tbody > tr:first-child > td {
-        color: #0460a7;
-        font-weight: 500;
-    }
+    border-spacing: 0.8px;
+    border-collapse: initial;
     tbody > tr:first-child > td {
         vertical-align: middle;
     }
@@ -124,18 +116,16 @@ const StyledNormalTable = styled(Table)`
     margin-bottom: 64px;
 `;
 
-const StyledInvertedTable = styled(Table)`
-    tbody {
-        background: #f4f8fc;
-    }
+const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType }>`
+    color: #0460a7;
+    font-weight: 500;
+    background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
+    color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
+`;
 
-    tbody > tr > td:first-child {
-        background-color: #d3e5f5;
-    }
-    tbody > tr > td:first-child {
-        color: #0460a7;
-        font-weight: 500;
-    }
+const StyledInvertedTable = styled(Table)`
+    border-spacing: 0.8px;
+    border-collapse: initial;
     tbody > tr > td {
         vertical-align: top;
     }
