@@ -90,7 +90,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(({ analytics, 
 
     return (
         <div>
-            <Container style={{ width: "100%", marginTop: "100px" }}>
+            <Container style={{ width: "100%" }}>
                 <div ref={canvasRef} />
                 {chartOptions && <HighchartsReact highcharts={Highcharts} options={chartOptions} />}
             </Container>

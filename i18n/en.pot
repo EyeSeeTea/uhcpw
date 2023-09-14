@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-08-30T06:26:36.262Z\n"
-"PO-Revision-Date: 2023-08-30T06:26:36.262Z\n"
+"POT-Creation-Date: 2023-09-13T09:10:09.721Z\n"
+"PO-Revision-Date: 2023-09-13T09:10:09.721Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -54,15 +54,6 @@ msgid "Add"
 msgstr ""
 
 msgid "List"
-msgstr ""
-
-msgid "Download"
-msgstr ""
-
-msgid "Tambor and Pavlova (2020)"
-msgstr ""
-
-msgid "15 June 2020"
 msgstr ""
 
 msgid "Country expert"
@@ -404,10 +395,19 @@ msgstr ""
 msgid "Select theme"
 msgstr ""
 
-msgid "All"
+msgid "Download"
+msgstr ""
+
+msgid "Tambor and Pavlova (2020)"
+msgstr ""
+
+msgid "15 June 2020"
 msgstr ""
 
 msgid "There may be no data"
+msgstr ""
+
+msgid "All"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"
