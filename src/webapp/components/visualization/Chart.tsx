@@ -9,7 +9,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
-import { visualizationCustomizations } from "../../pages/indicator-explorer/visualizationCustomizations";
+import { visualizationCustomizations } from "./visualizationCustomizations";
 
 interface ChartProps {
     visualization: Visualization;
@@ -45,16 +45,23 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
                     type: "column",
                     id: serieId,
                     name: groupItems[0]?.serieName || "",
-                    color: visualizationCustomizations[visualization.id]?.colors[serieId],
+                    color: visualizationCustomizations[visualization.id]?.series[serieId]?.color,
                     data,
                 };
             })
         )
-            .sortBy(serie => visualizationCustomizations[visualization.id]?.orders[serie.id])
+            .sortBy(serie => visualizationCustomizations[visualization.id]?.series[serie.id]?.order)
             .value();
 
         return { series, categories: _.uniq(rawData.map(({ category }) => category)) };
     }, [analytics, visualization]);
+
+    const serieIds = useMemo(() => {
+        const customization = visualizationCustomizations[visualization.id];
+        const series = customization ? Object.keys(customization?.series) : [];
+
+        return series;
+    }, [visualization.id]);
 
     return (
         <ChartContainer>
@@ -89,17 +96,17 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
                 </div>
 
                 <Column>
-                    {Object.keys(visualizationCustomizations[visualization.id]?.colors || {}).map(id => {
+                    {serieIds.map(serieId => {
                         return (
-                            <Row key={id} justifyContent={"start"} marginBottom={"8px"}>
+                            <Row key={serieId} justifyContent={"start"} marginBottom={"8px"}>
                                 <Box
                                     width={15}
                                     height={15}
-                                    bgcolor={visualizationCustomizations[visualization.id]?.colors[id]}
+                                    bgcolor={visualizationCustomizations[visualization.id]?.series[serieId]?.color}
                                     borderColor={"red"}
                                 />
                                 <Box width={5} />
-                                <Typography variant="caption">{analytics.metaData.items[id]?.name}</Typography>
+                                <Typography variant="caption">{analytics.metaData.items[serieId]?.name}</Typography>
                             </Row>
                         );
                     })}

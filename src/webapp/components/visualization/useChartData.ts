@@ -7,6 +7,7 @@ import { Future, FutureData } from "../../../domain/entities/Future";
 import { CompositionRoot } from "../../../CompositionRoot";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { ChartData } from "./ChartData";
+import { visualizationCustomizations } from "./visualizationCustomizations";
 
 export function useChartData(visualizationId: string, years: string[], countries: string[]): ChartData {
     const { compositionRoot } = useAppContext();
@@ -17,7 +18,13 @@ export function useChartData(visualizationId: string, years: string[], countries
         if (visualizationId) {
             getChartData(compositionRoot, visualizationId, years, countries).run(
                 ({ visualization, analytics, legendSets }) => {
-                    setChartData({ kind: "Loaded", visualization, analytics, legendSets });
+                    setChartData({
+                        kind: "Loaded",
+                        visualization,
+                        analytics,
+                        legendSets,
+                        customization: visualizationCustomizations[visualizationId],
+                    });
                 },
                 error => {
                     setChartData({
