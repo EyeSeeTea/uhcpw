@@ -2,7 +2,7 @@ import "@testing-library/jest-dom";
 import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";
-import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
+import { createHistory, customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { PolicyExplorerPage } from "../PolicyExplorerPage";
 import policyExplorerCategoriesData from "./data/policyExplorerCategories.json";
 import dataSetData from "./data/dataSet.json";
@@ -44,6 +44,20 @@ describe("Given PolicyExplorerPage", () => {
             expect(screen.getByRole("heading", { name: /policy explorer/i })).toBeInTheDocument();
         });
     });
+    describe("When setting filters", () => {
+        it("The URL should change accordingly", async () => {
+            const { policyExplorerCategories } = getPolicyExplorerCategories();
+            givenADataSet();
+            givenCountries();
+            givenASimplePolicyExplorer();
+
+            const { history } = renderPage();
+
+            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+
+            verifySearchParamsInUrl(history.location.search, policyExplorerCategories);
+        });
+    });
 
     describe("When get Population Coverage category table", () => {
         it("Then should render expected table title", async () => {
@@ -53,6 +67,7 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
+
             await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
 
             const tableTitle = await waitFor(() =>
@@ -68,6 +83,7 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
+
             await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
 
             const table = await waitFor(() => screen.getByRole("table", { name: /simple table/i }));
@@ -81,7 +97,9 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenASimplePolicyExplorer();
 
             renderPage();
+
             await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+
             await switchToColumns();
 
             await verifyTotalRows(policyExplorer, policyExplorerCategories[0]?.id);
@@ -93,6 +111,7 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenASimplePolicyExplorer();
 
             renderPage();
+
             await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
             await switchToColumns();
 
@@ -105,6 +124,7 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenASimplePolicyExplorer();
 
             renderPage();
+
             await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
             await switchToColumns();
 
@@ -135,7 +155,9 @@ describe("Given PolicyExplorerPage", () => {
             givenAnEmptyPolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
+
+            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
+
             const cells = await screen.queryAllByRole("cell");
             expect(cells.length).toBe(0);
         });
@@ -149,7 +171,8 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenAPolicyExplorerWithMultiplePeriods();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[8]?.name || ""], "Spain");
+
+            await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
 
             await verifyMoreThanOnePeriodData(policyExplorer, policyExplorerCategories[8]?.id);
         });
@@ -163,6 +186,7 @@ describe("Given PolicyExplorerPage", () => {
             givenAPolicyExplorerWithMoreThanOneTable();
 
             renderPage();
+
             await selectFiltersAndGetTable(
                 [policyExplorerCategories[0]?.name || "", policyExplorerCategories[1]?.name || ""],
                 "Spain"
@@ -186,6 +210,7 @@ describe("Given PolicyExplorerPage", () => {
             givenAPolicyExplorerWithMoreThanOneTable();
 
             renderPage();
+
             await selectFiltersAndGetTable(
                 [policyExplorerCategories[0]?.name || "", policyExplorerCategories[1]?.name || ""],
                 "Spain"
@@ -204,6 +229,7 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
             renderPage();
+
             await selectFiltersAndGetTable([policyExplorerCategories[5]?.name || ""], "Spain");
 
             await verifyTypeOfHealthcareColumn(policyExplorer, policyExplorerCategories[5]?.id);
@@ -215,6 +241,7 @@ describe("Given PolicyExplorerPage", () => {
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
             renderPage();
+
             await selectFiltersAndGetTable([policyExplorerCategories[5]?.name || ""], "Spain");
 
             await verifyTypeOfHealthcareColumnHeaderType(policyExplorer, policyExplorerCategories[5]?.id);
@@ -222,17 +249,37 @@ describe("Given PolicyExplorerPage", () => {
     });
 });
 
+function verifySearchParamsInUrl(search: string, policyExplorerCategories: PolicyExplorerCategory[]) {
+    const searchParams = new URLSearchParams(search);
+    const categoryParam = searchParams.get("category");
+    const countryParam = searchParams.get("country");
+
+    expect(categoryParam).toBe(
+        `{"${policyExplorerCategories[0]?.id}":[${policyExplorerCategories[0]?.subcategories
+            .map(sub => `"${sub.id}"`)
+            .join(",")}]}`
+    );
+    expect(countryParam).toBe("DVnpk4xiXGJ");
+}
+
 function renderPage() {
+    const config = { path: "/policy-explorer", route: `/policy-explorer` };
+
+    const history = createHistory(config);
+
     customRenderWithRouterMatch(
         <PolicyExplorerPage />,
-        { path: "/policy-explorer", route: `/policy-explorer` },
+        config,
         {
             dataSet: dataSetRepository,
             policyExplorerCategory: policyExplorerCategoryRepository,
             country: countryRepository,
             policyExplorer: policyExplorerRepository,
-        }
+        },
+        history
     );
+
+    return { history };
 }
 
 function givenADataSet(): DataSet {
