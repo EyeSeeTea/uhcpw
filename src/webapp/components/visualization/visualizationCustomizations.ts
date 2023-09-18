@@ -1,34 +1,50 @@
 export type VisualizationCustomization = Record<string, ChartCustomization>;
 
-export interface ChartCustomization {
-    series: Record<string, SerieCustomization>;
-}
+export type ChartCustomization = {
+    legend: LegendCustomization;
+    series: SerieCustomization[];
+};
 
-export interface SerieCustomization {
-    order?: number;
-    color?: string;
-}
+export type LegendCustomization = {
+    enabled: boolean;
+    align: "center" | "left" | "right";
+    verticalAlign: "bottom" | "middle" | "top";
+    layout: "horizontal" | "proximate" | "vertical";
+};
+
+export type SerieCustomization = {
+    id: string;
+    color: string;
+};
+
+const baseLegend = {
+    enabled: true,
+    align: "right",
+    verticalAlign: "middle",
+    layout: "vertical",
+} as LegendCustomization;
 
 export const visualizationCustomizations: VisualizationCustomization = {
     xEPgElBSAjK: {
-        series: {
-            yiucIy5NIAw: { order: 1, color: "#DCEDF9" },
-            O0MXmTdpf4m: { order: 2, color: "#C2E3F5" },
-            ii0MC8x9D7i: { order: 3, color: "#79C3E8" },
-            GuypYXqveWn: { order: 4, color: "#018bd6" },
-            GeiKSyJLeKt: { order: 5, color: "#0360A6" },
-        },
+        legend: { ...baseLegend },
+        series: [
+            { id: "yiucIy5NIAw", color: "#DCEDF9" },
+            { id: "O0MXmTdpf4m", color: "#79C3E8" },
+            { id: "ii0MC8x9D7i", color: "#018bd6" },
+            { id: "GuypYXqveWn", color: "#0360A6" },
+        ],
     },
     D240hYLRs1P: {
-        series: {
-            H8RixfF8ugH: { color: "lightblue" },
-            seHJdofSPcM: { color: "lightblue" },
-            wP2zKq0dDpw: { color: "lightblue" },
-            yWc1CTszR3s: { color: "lightblue" },
-            zXAaAXzwt4M: { color: "lightblue" },
-            afomkmfy9xk: { color: "lightblue" },
-            RA5zxsbittk: { color: "lightblue" },
-            svSQSBLTVz6: { color: "lightblue" },
-        },
+        legend: { ...baseLegend },
+        series: [
+            { id: "H8RixfF8ugH", color: "lightblue" },
+            { id: "seHJdofSPcM", color: "lightblue" },
+            { id: "wP2zKq0dDpw", color: "lightblue" },
+            { id: "yWc1CTszR3s", color: "lightblue" },
+            { id: "zXAaAXzwt4M", color: "lightblue" },
+            { id: "afomkmfy9xk", color: "lightblue" },
+            { id: "RA5zxsbittk", color: "lightblue" },
+            { id: "svSQSBLTVz6", color: "lightblue" },
+        ],
     },
 };

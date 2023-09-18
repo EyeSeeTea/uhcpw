@@ -36,7 +36,12 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
 
         const series = _(
             Object.keys(dataGroups).map(serieId => {
+                const serieCustomization = visualizationCustomizations[visualization.id]?.series?.find(
+                    serie => serie.id === serieId
+                );
+
                 const groupItems = dataGroups[serieId] || [];
+
                 const data = _(dataGroups[serieId] || [])
                     .map(({ value }) => +value)
                     .value();
@@ -45,12 +50,20 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
                     type: "column",
                     id: serieId,
                     name: groupItems[0]?.serieName || "",
-                    color: visualizationCustomizations[visualization.id]?.series[serieId]?.color,
+                    color: serieCustomization?.color,
                     data,
                 };
             })
         )
-            .sortBy(serie => visualizationCustomizations[visualization.id]?.series[serie.id]?.order)
+            .sortBy(serie => {
+                const serieCustomization = visualizationCustomizations[visualization.id]?.series?.find(
+                    customSerie => serie.id === customSerie.id
+                );
+
+                return serieCustomization
+                    ? visualizationCustomizations[visualization.id]?.series?.indexOf(serieCustomization)
+                    : 0;
+            })
             .value();
 
         return { series, categories: _.uniq(rawData.map(({ category }) => category)) };
@@ -58,9 +71,8 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
 
     const serieIds = useMemo(() => {
         const customization = visualizationCustomizations[visualization.id];
-        const series = customization ? Object.keys(customization?.series) : [];
 
-        return series;
+        return customization?.series?.map(serie => serie.id || "") || [];
     }, [visualization.id]);
 
     return (
@@ -97,14 +109,13 @@ export const Chart: React.FC<ChartProps> = React.memo(({ visualization, analytic
 
                 <Column>
                     {serieIds.map(serieId => {
+                        const serieCustomization = visualizationCustomizations[visualization.id]?.series?.find(
+                            serie => serie.id === serieId
+                        );
+
                         return (
                             <Row key={serieId} justifyContent={"start"} marginBottom={"8px"}>
-                                <Box
-                                    width={15}
-                                    height={15}
-                                    bgcolor={visualizationCustomizations[visualization.id]?.series[serieId]?.color}
-                                    borderColor={"red"}
-                                />
+                                <Box width={15} height={15} bgcolor={serieCustomization?.color} borderColor={"red"} />
                                 <Box width={5} />
                                 <Typography variant="caption">{analytics.metaData.items[serieId]?.name}</Typography>
                             </Row>

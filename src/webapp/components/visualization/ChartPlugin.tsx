@@ -12,7 +12,7 @@ export interface ChartPluginProps {
     analytics: Analytics[];
     visualization: Visualization;
     legendSets: LegendSet[];
-    customization?: ChartCustomization;
+    customizedOptions?: ChartCustomization;
     periods?: string[];
 }
 
@@ -21,7 +21,7 @@ export interface ChartPluginProps {
  * https://github.com/dhis2/data-visualizer-app/blob/dev/src/components/VisualizationPlugin/ChartPlugin.js
  */
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
-    ({ analytics, visualization, legendSets, customization }) => {
+    ({ analytics, visualization, legendSets, customizedOptions }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
 
@@ -51,20 +51,19 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             const newOptions = {
                 chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
                 legend: {
-                    enabled: true,
-                    align: "right",
-                    verticalAlign: "middle",
-                    layout: "vertical",
+                    ...originalChartOptions.legend,
+                    ...customizedOptions?.legend,
                 },
                 title: originalChartOptions.title,
                 subtitle: originalChartOptions.subtitle,
                 xAxis: originalChartOptions.xAxis,
                 yAxis: originalChartOptions.yAxis,
                 series: originalChartOptions.series?.map(serie => {
-                    const serieCustomization = customization?.series[serie.id || ""];
-                    debugger;
+                    const serieCustomization = customizedOptions?.series?.find(
+                        customSerie => serie.id === customSerie.id
+                    );
 
-                    return { ...serie, color: serieCustomization?.color || serie.color };
+                    return serieCustomization ? { ...serie, ...serieCustomization } : serie;
                 }),
                 lang: originalChartOptions.lang,
                 noData: originalChartOptions.noData,

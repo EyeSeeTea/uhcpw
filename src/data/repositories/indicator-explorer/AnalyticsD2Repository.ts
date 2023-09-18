@@ -11,7 +11,7 @@ import { D2Visualization } from "./VisualizationD2Repository";
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown) {}
 
-    public get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics> {
+    public get(visualization: Visualization, _periods: string[], _orgUnits: string[]): FutureData<Analytics> {
         const overwrittenVisualization = visualization as unknown as D2Visualization;
         // = {
         //     ...visualization,

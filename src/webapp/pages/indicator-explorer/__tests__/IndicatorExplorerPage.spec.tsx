@@ -82,10 +82,10 @@ function renderPage() {
 function givenAVisualizations(): Visualization[] {
     const mockedRepository = mock(VisualizationD2Repository);
 
-    const dataItems = [F16Visualization];
+    const dataItems = [F16Visualization] as Visualization[];
 
     when(mockedRepository.getAll()).thenReturn(Future.success(dataItems));
-    when(mockedRepository.getById(anything())).thenReturn(Future.success(F16Visualization));
+    when(mockedRepository.getById(anything())).thenReturn(Future.success(F16Visualization as Visualization));
 
     visualizationRepository = instance(mockedRepository);
 
@@ -97,7 +97,7 @@ function givenAnAnalytics(): Analytics {
 
     const item: Analytics = F16Analytics as unknown as Analytics;
 
-    when(mockedRepository.get(anything(), anything())).thenReturn(Future.success(item));
+    when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(item));
 
     analyticsRepository = instance(mockedRepository);
 
