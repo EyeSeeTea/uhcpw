@@ -48,7 +48,7 @@ export function useResourcesFilters(category?: string, countries?: string[], the
     }, [compositionRoot.resources]);
 
     useEffect(() => {
-        setYearFilters(generateYears().map(year => ({ value: year.id, text: year.id })));
+        setYearFilters(generateYears(new Date().getFullYear()).map(year => ({ value: year.id, text: year.id })));
     }, []);
 
     const onSearchTermChange = useCallback((value: string) => {

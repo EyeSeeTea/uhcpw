@@ -45,7 +45,6 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(({ analys
                             return (
                                 <React.Fragment key={link.url}>
                                     <a href={link.url} style={{ fontSize: "16px" }}>
-
                                         {link.language}
                                     </a>
                                     {index < analysisResource.links.length - 1 && (
