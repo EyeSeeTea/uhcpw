@@ -16,7 +16,7 @@ const sectionsList = [
     "uImM4yTeeV3",
     "e6cfI6vWYEF",
     "mCMVwmnGWJF",
-    "u800TAhsIBY",
+    //"u800TAhsIBY",
     "lHk8jtKonPh",
     ...sectionsWithValueTypeText,
 ];
