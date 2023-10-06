@@ -4,6 +4,8 @@ import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/e
 import { D2DataSet, EMPTY_DATA } from "../PolicyExplorerD2Repository";
 
 export class TableBuilderDefault implements TableBuilder {
+    constructor(private isPeriodColumnHeaderType?: boolean) {}
+
     buildColumns(
         policyExplorerCategoryId: string,
         policyExplorerSubcategoriesIds: string[],
@@ -51,7 +53,10 @@ export class TableBuilderDefault implements TableBuilder {
 
         const commonCellsInRow = [
             { type: PolicyExplorerCellType.DATA, value: orgUnitName },
-            { type: PolicyExplorerCellType.DATA, value: period || EMPTY_DATA },
+            {
+                type: this.isPeriodColumnHeaderType ? PolicyExplorerCellType.HEADER : PolicyExplorerCellType.DATA,
+                value: period || EMPTY_DATA,
+            },
         ];
 
         const restCellsInRow = dataElementsSection.map(de => {

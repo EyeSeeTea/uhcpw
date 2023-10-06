@@ -8,6 +8,15 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import {
+    CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+} from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+
+const INITIAL_NORMAL_ORIENTED_TABLES = [
+    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+];
 
 export function usePolicyExplorer({
     categories,
@@ -96,7 +105,7 @@ export function usePolicyExplorer({
                         setInitialDataByTable(policyExplorer);
 
                         const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
-                        setDataByTable(invertAllData(policyExplorer, categoriesIds));
+                        setDataByTable(getInitialDataByTable(policyExplorer, categoriesIds));
                         setDataOrientationByTable(getInitialDataOrientationByTable(categoriesIds));
                     },
                     () => {
@@ -211,7 +220,21 @@ function invertDataByCategoryId(
     return newData;
 }
 
-function invertAllData(
+function getInitialDataByTable(
+    initialDataByTable: PolicyExplorer | undefined,
+    selectedCategoriesIds: string[]
+): PolicyExplorer | undefined {
+    if (!initialDataByTable || !selectedCategoriesIds.length) return undefined;
+    const initialInvertedCategoriesIds = selectedCategoriesIds.filter(
+        categoryId => !INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId)
+    );
+
+    return initialInvertedCategoriesIds.length
+        ? invertDataOfCategoriesIds(initialDataByTable, initialInvertedCategoriesIds)
+        : initialDataByTable;
+}
+
+function invertDataOfCategoriesIds(
     initialDataByTable: PolicyExplorer | undefined,
     selectedCategoriesIds: string[]
 ): PolicyExplorer | undefined {
@@ -245,7 +268,7 @@ function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Reco
     return selectedCategoriesIds.reduce(
         (acc, categoryId) => ({
             ...acc,
-            [categoryId]: "inverted",
+            [categoryId]: INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId) ? "normal" : "inverted",
         }),
         dataOrientation
     );

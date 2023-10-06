@@ -8,17 +8,36 @@ import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
-const sectionsWithValueTypeText = ["FtRwT2aBET4", "Dg4b8bTfEIr"];
+export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
+    UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
+    SINCE_2020: "Dg4b8bTfEIr",
+};
+
+const sectionsWithValueTypeText = [
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020,
+];
+
+export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
+    USER_CHARGES: "u800TAhsIBY",
+    TYPES_OF_USER_CHARGES: "lHk8jtKonPh",
+};
+
+const POPULATION_COVERAGE_CATEGORY = "uG2PbDfOc0w";
+const SERVICE_COVERAGE_CATEGORY = "W4CqlzcDPB1";
+const VOLUNTARY_HEALTH_INSURANCE_CATEGORY = "uImM4yTeeV3";
+const GAPS_IN_COVERAGE_CATEGORY = "e6cfI6vWYEF";
+const USER_CHARGES_COPAYMENTS_CATEGORY = "mCMVwmnGWJF";
 
 const sectionsList = [
-    "uG2PbDfOc0w",
-    "W4CqlzcDPB1",
-    "uImM4yTeeV3",
-    "e6cfI6vWYEF",
-    "mCMVwmnGWJF",
-    "u800TAhsIBY",
-    //"lHk8jtKonPh",
-    ...sectionsWithValueTypeText,
+    POPULATION_COVERAGE_CATEGORY,
+    SERVICE_COVERAGE_CATEGORY,
+    USER_CHARGES_COPAYMENTS_CATEGORY,
+    GAPS_IN_COVERAGE_CATEGORY,
+    VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
+    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
+    // CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
+    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
 ];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
