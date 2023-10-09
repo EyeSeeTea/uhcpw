@@ -772,8 +772,7 @@ function verifyPolicyExplorerEmptyTable(tables: Record<string, PolicyExplorerCel
     Object.keys(tables).forEach(tableId => {
         const table = tables[tableId] as PolicyExplorerCell[][];
 
-        expect(table?.length).toBe(1);
-        expect(table[0]?.length).toBe(0);
+        expect(table?.length).toBe(0);
     });
 }
 

@@ -215,7 +215,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const filteredColumns = columns.filter((_column, index) => !indexesToRemove.includes(index));
         const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
 
-        return [filteredColumns, ...filteredRows];
+        return filteredColumns.length ? [filteredColumns, ...filteredRows] : [];
     }
 }
 

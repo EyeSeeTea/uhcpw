@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { PolicyExplorer, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
@@ -14,6 +14,11 @@ import {
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
+    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+];
+
+const CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION = [
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
@@ -170,13 +175,41 @@ export function usePolicyExplorer({
         [compositionRoot.policyExplorer, dataByTable]
     );
 
+    const disabledCategories = useMemo(() => {
+        const isMoreThanOneCountrySelected = countryFilter?.selected?.length && countryFilter?.selected?.length > 1;
+        return isMoreThanOneCountrySelected ? CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION : [];
+    }, [countryFilter?.selected?.length]);
+
+    const disabledCountries = useMemo(() => {
+        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
+            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
+            : [];
+
+        if (
+            isOneCountrySelectedAndACategoryWithSpecialCountryVisualization(
+                countryFilter?.selected?.length,
+                selectedCategories
+            )
+        ) {
+            const restCountries = countryFilter.options
+                .map(c => c.id)
+                .filter(cId => countryFilter?.selected && !countryFilter?.selected.includes(cId));
+            return restCountries;
+        }
+        return [];
+    }, [countryFilter.options, countryFilter?.selected, selectedCategoriesWithSubcategoriesFilter]);
+
     return {
         filters: {
-            country: countryFilter,
+            country: {
+                ...countryFilter,
+                disabledCountries,
+            },
             category: {
                 options: categoryFilters,
                 selected: selectedCategoriesWithSubcategoriesFilter,
                 onSelectedChange: onChangeCategoryFilter,
+                disabledCategories,
             },
             year: {
                 options: yearFilters,
@@ -280,4 +313,15 @@ function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): Categ
         text: category.name,
         subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
     }));
+}
+
+function isOneCountrySelectedAndACategoryWithSpecialCountryVisualization(
+    totalCountrySelected: number | undefined,
+    selectedCategories: string[]
+) {
+    const hasCategoryWithCountryVisualizationSeparated = selectedCategories.some(category =>
+        CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category)
+    );
+
+    return totalCountrySelected && totalCountrySelected === 1 && hasCategoryWithCountryVisualizationSeparated;
 }
