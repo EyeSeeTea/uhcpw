@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useState } from "react";
-import { Box, Tab, Tabs as MuiTabs, Typography, makeStyles } from "@material-ui/core";
+import { Box, Tab as MuiTab, Tabs as MuiTabs, Typography, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
 import oneOne from "../../../assets/country-page/slider/1-1.jpg";
@@ -71,9 +71,6 @@ const useStyles = makeStyles(theme => ({
         marginBottom: "4px",
         maxWidth: "30px",
         minWidth: "30px",
-        /* "&.Mui-selected": {
-            backgroundColor: colors.accentPrimaryLight,
-        }, */
     },
 }));
 
@@ -130,7 +127,7 @@ export const Slider: React.FC = () => {
                 TabIndicatorProps={{
                     style: {
                         backgroundColor: colors.accentPrimaryDark,
-                        // width: "10px",
+                        width: "10px",
                     },
                 }}
                 onWheel={onWheel}
@@ -404,6 +401,14 @@ export const Slider: React.FC = () => {
 
 const Tabs = styled(MuiTabs)`
     @media (min-width: 960px) {
-        min-width: 40%;
+        min-width: 35%;
+    }
+`;
+
+const Tab = styled(MuiTab)`
+    @media (min-width: 960px) {
+        width: 100%;
+        max-width: unset;
+        background-color: ${colors.accentPrimary};
     }
 `;
