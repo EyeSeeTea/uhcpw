@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useState } from "react";
-import { Box, Tab, Tabs, Typography, makeStyles } from "@material-ui/core";
+import { Box, Tab, Tabs as MuiTabs, Typography, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
 import oneOne from "../../../assets/country-page/slider/1-1.jpg";
@@ -21,6 +21,7 @@ import nineOne from "../../../assets/country-page/slider/9-1.jpg";
 import nineTwo from "../../../assets/country-page/slider/9-2.jpg";
 import { SlideInfoOne } from "./SlideInfoOne";
 import { SlideInfoTwo } from "./SlideInfoTwo";
+import styled from "styled-components";
 
 interface EventListenerArgs {
     capture?: boolean;
@@ -129,7 +130,7 @@ export const Slider: React.FC = () => {
                 TabIndicatorProps={{
                     style: {
                         backgroundColor: colors.accentPrimaryDark,
-                        width: "10px",
+                        // width: "10px",
                     },
                 }}
                 onWheel={onWheel}
@@ -400,3 +401,9 @@ export const Slider: React.FC = () => {
         </div>
     );
 };
+
+const Tabs = styled(MuiTabs)`
+    @media (min-width: 960px) {
+        min-width: 40%;
+    }
+`;
