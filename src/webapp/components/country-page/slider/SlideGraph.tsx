@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography as Title } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import { useState } from "react";
@@ -117,4 +117,10 @@ const Row = styled.div`
 const Image = styled.img`
     width: 70%;
     height: auto;
+`;
+
+const Typography = styled(Title)`
+    @media (min-width: 960px) {
+        display: none;
+    }
 `;
