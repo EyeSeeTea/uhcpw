@@ -71,6 +71,7 @@ const useStyles = makeStyles(theme => ({
         marginBottom: "4px",
         maxWidth: "30px",
         minWidth: "30px",
+        textTransform: "none",
     },
 }));
 
@@ -134,21 +135,59 @@ export const Slider: React.FC = () => {
                 onMouseEnter={disableScroll}
                 onMouseLeave={enableScroll}
             >
-                <Tab className={classes.tab} {...a11yProps(0)} />
-                <Tab className={classes.tab} {...a11yProps(1)} />
-                <Tab className={classes.tab} {...a11yProps(2)} />
-                <Tab className={classes.tab} {...a11yProps(3)} />
-                <Tab className={classes.tab} {...a11yProps(4)} />
-                <Tab className={classes.tab} {...a11yProps(5)} />
-                <Tab className={classes.tab} {...a11yProps(6)} />
-                <Tab className={classes.tab} {...a11yProps(7)} />
-                <Tab className={classes.tab} {...a11yProps(8)} />
-                <Tab className={classes.tab} {...a11yProps(9)} />
-                <Tab className={classes.tab} {...a11yProps(10)} />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(0)}
+                    label="Impoverishing health spending. 
+How many people experience financial hardship?
+"
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(1)}
+                    label="Catastrophic health spending. 
+How many people experience financial hardship?
+"
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(2)}
+                    label="Who experiences financial hardship?
+"
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(3)}
+                    label="Which health services are responsible for financial hardship?"
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(4)}
+                    label="Which health services are responsible for financial hardship? International comparison"
+                />
+                <Tab className={classes.tab} {...a11yProps(5)} label="How many people experience unmet need?" />
+                <Tab className={classes.tab} {...a11yProps(6)} label="Who experiences unmet need?" />
+                <Tab className={classes.tab} {...a11yProps(7)} label="How much does Bulgaria spend on health?" />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(8)}
+                    label="How much does Bulgaria spend on health? International comparison"
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(9)}
+                    label="What are the main gaps in publicly financed coverage?"
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(10)}
+                    label="How can Bulgaria strengthen financial protection?"
+                />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <SlideGraph
-                    title="How many people experience financial hardship: impoverishing health spending?"
+                    title="Impoverishing health spending. 
+                    How many people experience financial hardship?"
                     graphOne={{
                         title: "Households with impoverishing health spending",
                         theme: "Financial hardship",
@@ -177,7 +216,8 @@ export const Slider: React.FC = () => {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <SlideGraph
-                    title="How many people experience financial hardship: catastrophic health spending?"
+                    title="Catastrophic health spending. 
+                    How many people experience financial hardship?"
                     graphOne={{
                         title: "Households with catastrophic health spending",
                         theme: "Financial hardship",
@@ -406,9 +446,17 @@ const Tabs = styled(MuiTabs)`
 `;
 
 const Tab = styled(MuiTab)`
+    color: ${colors.white};
+    > span {
+        display: none;
+    }
     @media (min-width: 960px) {
         width: 100%;
         max-width: unset;
         background-color: ${colors.accentPrimary};
+        > span {
+            display: inline;
+            text-align: start;
+        }
     }
 `;
