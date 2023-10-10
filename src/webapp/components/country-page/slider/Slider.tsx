@@ -59,13 +59,11 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
         display: "flex",
-        alignItems: "center",
     },
     tabs: {
         maxWidth: "30px",
         minWidth: "30px",
-        marginTop: "50px",
-        paddingBottom: "50px",
+        paddingBlock: "24px",
     },
     tab: {
         borderRight: `10px solid ${colors.accentPrimary}`,
@@ -443,6 +441,7 @@ How many people experience financial hardship?
 const Tabs = styled(MuiTabs)`
     @media (min-width: 960px) {
         min-width: 35%;
+        padding-inline-start: 24px;
     }
 `;
 
