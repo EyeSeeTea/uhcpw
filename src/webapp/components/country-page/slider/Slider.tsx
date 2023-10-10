@@ -63,12 +63,15 @@ const useStyles = makeStyles(theme => ({
         maxWidth: "30px",
         minWidth: "30px",
         paddingBlock: "24px",
+        "& .MuiTabs-flexContainer": {
+            height: "100%",
+        },
         [theme.breakpoints.up("md")]: {
             minWidth: "35%",
             paddingInlineStart: "24px",
-        },
-        "& .MuiTabs-flexContainer": {
-            height: "100%",
+            "& .MuiTabs-indicator": {
+                display: "none",
+            },
         },
     },
     tab: {
@@ -84,11 +87,16 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.up("md")]: {
             width: "100%",
             maxWidth: "unset",
+            borderRight: "unset",
+            transition: "background-color 0.3s ease-in-out",
             backgroundColor: `${colors.accentPrimary}`,
             flex: "1",
             "& span": {
                 display: "inline",
                 textAlign: "start",
+            },
+            '&[aria-selected="true"]': {
+                backgroundColor: `${colors.accentPrimaryDark}`,
             },
         },
     },
