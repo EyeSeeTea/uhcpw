@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useState } from "react";
-import { Box, Tab as MuiTab, Tabs as MuiTabs, Typography, makeStyles } from "@material-ui/core";
+import { Box, Tab, Tabs, Typography, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
 import oneOne from "../../../assets/country-page/slider/1-1.jpg";
@@ -21,7 +21,6 @@ import nineOne from "../../../assets/country-page/slider/9-1.jpg";
 import nineTwo from "../../../assets/country-page/slider/9-2.jpg";
 import { SlideInfoOne } from "./SlideInfoOne";
 import { SlideInfoTwo } from "./SlideInfoTwo";
-import styled from "styled-components";
 
 interface EventListenerArgs {
     capture?: boolean;
@@ -64,6 +63,10 @@ const useStyles = makeStyles(theme => ({
         maxWidth: "30px",
         minWidth: "30px",
         paddingBlock: "24px",
+        [theme.breakpoints.up("md")]: {
+            minWidth: "35%",
+            paddingInlineStart: "24px",
+        },
     },
     tab: {
         borderRight: `10px solid ${colors.accentPrimary}`,
@@ -71,6 +74,19 @@ const useStyles = makeStyles(theme => ({
         maxWidth: "30px",
         minWidth: "30px",
         textTransform: "none",
+        color: `${colors.white}`,
+        "& span": {
+            display: "none",
+        },
+        [theme.breakpoints.up("md")]: {
+            width: "100%",
+            maxWidth: "unset",
+            backgroundColor: `${colors.accentPrimary}`,
+            "& span": {
+                display: "inline",
+                textAlign: "start",
+            },
+        },
     },
 }));
 
@@ -437,26 +453,3 @@ How many people experience financial hardship?
         </div>
     );
 };
-
-const Tabs = styled(MuiTabs)`
-    @media (min-width: 960px) {
-        min-width: 35%;
-        padding-inline-start: 24px;
-    }
-`;
-
-const Tab = styled(MuiTab)`
-    color: ${colors.white};
-    > span {
-        display: none;
-    }
-    @media (min-width: 960px) {
-        width: 100%;
-        max-width: unset;
-        background-color: ${colors.accentPrimary};
-        > span {
-            display: inline;
-            text-align: start;
-        }
-    }
-`;
