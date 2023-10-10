@@ -40,7 +40,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
-                <Grid item xs={12} md={4}>
+                <Grid item>
                     <Column>
                         <Typography variant="h4" style={{ maxWidth: "80%" }}>
                             {i18n.t(graphOne.title)}
@@ -56,13 +56,13 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         </Row>
                     </Column>
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item>
                     <Image src={graphOne.image} />
                 </Grid>
             </GraphGrid>
             {graphTwo && (
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
-                    <Grid item xs={12} md={4}>
+                    <Grid item>
                         <Column>
                             <Typography variant="h4" style={{ maxWidth: "80%" }}>
                                 {i18n.t(graphTwo.title)}
@@ -78,7 +78,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             </Row>
                         </Column>
                     </Grid>
-                    <Grid item xs={12} md={8}>
+                    <Grid item>
                         <Image src={graphTwo.image} />
                     </Grid>
                 </GraphGrid>
@@ -93,6 +93,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
 
 const Container = styled.div`
     padding: 15px 10px 20px 30px;
+    > h3 {
+        @media (min-width: 960px) {
+            display: none;
+        }
+    }
 `;
 
 const GraphGrid = styled(Grid)``;
@@ -105,26 +110,30 @@ const Tag = styled.div`
     padding: 4px 16px;
     margin-top: 8px;
     display: inline-block;
+    white-space: nowrap;
 `;
 
 const Column = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: start;
+    @media (min-width: 960px) {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 15px;
+    }
 `;
 
 const Row = styled.div`
     display: flex;
     align-items: center;
+    @media (min-width: 960px) {
+        flex: 1;
+    }
 `;
 
 const Image = styled.img`
-    width: 70%;
     height: auto;
+    width: 100%;
 `;
 
-const Typography = styled(Title)`
-    @media (min-width: 960px) {
-        display: none;
-    }
-`;
+const Typography = styled(Title)``;
