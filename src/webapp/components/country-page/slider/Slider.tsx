@@ -59,6 +59,7 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
         backgroundColor: theme.palette.background.paper,
         display: "flex",
+        alignItems: "center",
     },
     tabs: {
         maxWidth: "30px",

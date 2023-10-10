@@ -28,9 +28,9 @@ export const CountryPage: React.FC = () => {
             <Header sliderRef={sliderRef} resourcesRef={resourcesRef} expertRef={expertRef} />
             <Hero />
             <Divider />
-            <div ref={sliderRef}>
+            <section ref={sliderRef}>
                 <Slider />
-            </div>
+            </section>
             <Divider isOrange={false} />
             <div ref={resourcesRef}>
                 <CountryResources country={filterInParams.country} />

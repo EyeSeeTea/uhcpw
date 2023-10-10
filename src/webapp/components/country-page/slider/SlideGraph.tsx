@@ -42,7 +42,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
             <GraphGrid container alignItems="center">
                 <Grid item xs={12} md={4}>
                     <Column>
-                        <Typography style={{ maxWidth: "80%" }}>{i18n.t(graphOne.title)}</Typography>
+                        <Typography variant="h4" style={{ maxWidth: "80%" }}>
+                            {i18n.t(graphOne.title)}
+                        </Typography>
                         <Row>
                             <Tag>{graphOne.theme}</Tag>
                             <div style={{ marginTop: "5px", marginLeft: "20px" }}>
@@ -62,7 +64,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
                     <Grid item xs={12} md={4}>
                         <Column>
-                            <Typography style={{ maxWidth: "80%" }}>{i18n.t(graphTwo.title)}</Typography>
+                            <Typography variant="h4" style={{ maxWidth: "80%" }}>
+                                {i18n.t(graphTwo.title)}
+                            </Typography>
                             <Row>
                                 <Tag>{graphTwo.theme}</Tag>
                                 <div style={{ marginTop: "5px", marginLeft: "20px" }}>
