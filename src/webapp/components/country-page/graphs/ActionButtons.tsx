@@ -1,7 +1,6 @@
 import { IconButton } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import GetAppIcon from "@material-ui/icons/GetApp";
-//import ExpandIcon from "../../assets/country-page/expand-icon.svg";
 import styled from "styled-components";
 import { MouseEventHandler } from "react";
 
@@ -16,9 +15,6 @@ export const ActionButtons: React.FC<ActionButtonType> = ({ onIconButtonClick, g
             <IconButton style={{ padding: "5px", color: "#035fa7" }} onClick={onIconButtonClick}>
                 <StyledInfoIcon />
             </IconButton>
-            {/* <IconButton style={{ padding: "5px" }}>
-                  <img src={ExpandIcon} alt="expand icon" />
-                </IconButton> */}
             <a href={graphImage} download>
                 <IconButton style={{ padding: "10px" }}>
                     <StyledGetAppIcon />
