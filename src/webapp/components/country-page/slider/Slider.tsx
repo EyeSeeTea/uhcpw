@@ -67,6 +67,9 @@ const useStyles = makeStyles(theme => ({
             minWidth: "35%",
             paddingInlineStart: "24px",
         },
+        "& .MuiTabs-flexContainer": {
+            height: "100%",
+        },
     },
     tab: {
         borderRight: `10px solid ${colors.accentPrimary}`,
@@ -82,6 +85,7 @@ const useStyles = makeStyles(theme => ({
             width: "100%",
             maxWidth: "unset",
             backgroundColor: `${colors.accentPrimary}`,
+            flex: "1",
             "& span": {
                 display: "inline",
                 textAlign: "start",
