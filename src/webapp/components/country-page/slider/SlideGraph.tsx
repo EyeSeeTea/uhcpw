@@ -40,7 +40,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
-                <Grid item style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                <Grid item xs={12} style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                     <Column>
                         <Typography variant="h4" style={{ fontSize: "20px" }}>
                             {i18n.t(graphOne.title)}
@@ -56,13 +56,13 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         </Row>
                     </Column>
                 </Grid>
-                <Grid item>
+                <Grid item xs={12}>
                     <Image src={graphOne.image} />
                 </Grid>
             </GraphGrid>
             {graphTwo && (
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
-                    <Grid item>
+                    <Grid item xs={12}>
                         <Column>
                             <Typography variant="h4" style={{ fontSize: "20px" }}>
                                 {i18n.t(graphTwo.title)}
@@ -78,7 +78,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             </Row>
                         </Column>
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={12}>
                         <Image src={graphTwo.image} />
                     </Grid>
                 </GraphGrid>
