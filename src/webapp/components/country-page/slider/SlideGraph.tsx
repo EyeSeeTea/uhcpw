@@ -36,11 +36,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
     const [isGraphTwoOpen, setIsGraphTwoOpen] = useState(false);
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500 }}>
+            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
-                <Grid item>
+                <Grid item style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                     <Column>
                         <Typography variant="h4" style={{ fontSize: "20px" }}>
                             {i18n.t(graphOne.title)}
@@ -92,9 +92,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
 };
 
 const Container = styled.div`
-    padding: 15px 10px 20px 30px;
-    > h3 {
-        @media (min-width: 960px) {
+    @media (min-width: 960px) {
+        padding: 30px;
+        max-width: 900px;
+        > h3 {
             display: none;
         }
     }
@@ -115,12 +116,14 @@ const Tag = styled.div`
 const Column = styled.div`
     display: flex;
     flex-direction: column;
+    padding-block-end: 15px;
     @media (min-width: 960px) {
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
-        gap: 15px;
-        padding-block-end: 15px;
+        gap: 30px;
+        padding-block-end: 30px;
+        width: 100%;
     }
 `;
 
@@ -129,6 +132,7 @@ const Row = styled.div`
     align-items: center;
     @media (min-width: 960px) {
         flex: 1;
+        justify-content: flex-end;
     }
 `;
 
