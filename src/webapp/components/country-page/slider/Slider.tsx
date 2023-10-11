@@ -165,8 +165,7 @@ export const Slider: React.FC = () => {
                 <Tab
                     className={classes.tab}
                     {...a11yProps(0)}
-                    label="Impoverishing health spending. 
-How many people experience financial hardship?
+                    label="How many people experience financial hardship: impoverishing health spending?
 "
                 />
                 <Tab
@@ -213,8 +212,7 @@ How many people experience financial hardship?
             </Tabs>
             <TabPanel value={value} index={0}>
                 <SlideGraph
-                    title="Impoverishing health spending. 
-                    How many people experience financial hardship?"
+                    title="How many people experience financial hardship: impoverishing health spending?"
                     graphOne={{
                         title: "Households with impoverishing health spending",
                         theme: "Financial hardship",
