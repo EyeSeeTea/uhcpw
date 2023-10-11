@@ -1,6 +1,6 @@
-import { Grid, Typography as Title } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useState } from "react";
 import { NotesDialog } from "../../dialog/NotesDialog";
 import { ActionButtons } from "../graphs/ActionButtons";
@@ -40,7 +40,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
-                <Grid item xs={12} style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
+                <Grid item xs={12} md={12} style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                     <Column>
                         <Typography variant="h4" style={{ fontSize: "20px" }}>
                             {i18n.t(graphOne.title)}
@@ -56,13 +56,13 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         </Row>
                     </Column>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} md={12}>
                     <Image src={graphOne.image} />
                 </Grid>
             </GraphGrid>
             {graphTwo && (
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={12}>
                         <Column>
                             <Typography variant="h4" style={{ fontSize: "20px" }}>
                                 {i18n.t(graphTwo.title)}
@@ -78,7 +78,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             </Row>
                         </Column>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={12}>
                         <Image src={graphTwo.image} />
                     </Grid>
                 </GraphGrid>
@@ -91,12 +91,22 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
     );
 };
 
+const visuallyHidden = css`
+    position: absolute;
+    width: 0.0625rem;
+    height: 0.0625rem;
+    overflow: hidden;
+    white-space: nowrap;
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+`;
+
 const Container = styled.div`
     @media (min-width: 960px) {
         padding: 30px;
         max-width: 900px;
         > h3 {
-            display: none;
+            ${visuallyHidden};
         }
     }
 `;
@@ -140,5 +150,3 @@ const Image = styled.img`
     height: auto;
     width: 100%;
 `;
-
-const Typography = styled(Title)``;
