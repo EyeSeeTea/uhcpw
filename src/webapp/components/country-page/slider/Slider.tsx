@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useState } from "react";
-import { Box, Tab, Tabs, Typography, makeStyles } from "@material-ui/core";
+import { Box, Tab, Tabs, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
 import oneOne from "../../../assets/country-page/slider/1-1.jpg";
@@ -46,7 +46,7 @@ function TabPanel(props: { [x: string]: any; children: any; value: any; index: a
         >
             {value === index && (
                 <Box p={3}>
-                    <Typography>{children}</Typography>
+                    <div>{children}</div>
                 </Box>
             )}
         </div>
