@@ -42,12 +42,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
             <GraphGrid container alignItems="center">
                 <Grid item>
                     <Column>
-                        <Typography variant="h4" style={{ maxWidth: "80%" }}>
+                        <Typography variant="h4" style={{ fontSize: "20px" }}>
                             {i18n.t(graphOne.title)}
                         </Typography>
                         <Row>
                             <Tag>{graphOne.theme}</Tag>
-                            <div style={{ marginTop: "5px", marginLeft: "20px" }}>
+                            <div style={{ marginLeft: "20px" }}>
                                 <ActionButtons
                                     onIconButtonClick={() => setIsGraphOneOpen(true)}
                                     graphImage={graphOne.image}
@@ -64,12 +64,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
                     <Grid item>
                         <Column>
-                            <Typography variant="h4" style={{ maxWidth: "80%" }}>
+                            <Typography variant="h4" style={{ fontSize: "20px" }}>
                                 {i18n.t(graphTwo.title)}
                             </Typography>
                             <Row>
                                 <Tag>{graphTwo.theme}</Tag>
-                                <div style={{ marginTop: "5px", marginLeft: "20px" }}>
+                                <div style={{ marginLeft: "20px" }}>
                                     <ActionButtons
                                         onIconButtonClick={() => setIsGraphTwoOpen(true)}
                                         graphImage={graphTwo.image}
@@ -108,7 +108,6 @@ const Tag = styled.div`
     background-color: #621e1e;
     color: white;
     padding: 4px 16px;
-    margin-top: 8px;
     display: inline-block;
     white-space: nowrap;
 `;
@@ -119,7 +118,9 @@ const Column = styled.div`
     @media (min-width: 960px) {
         flex-direction: row;
         justify-content: space-between;
+        align-items: flex-start;
         gap: 15px;
+        padding-block-end: 15px;
     }
 `;
 
