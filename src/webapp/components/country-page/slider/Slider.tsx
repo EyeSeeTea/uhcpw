@@ -21,6 +21,7 @@ import nineOne from "../../../assets/country-page/slider/9-1.jpg";
 import nineTwo from "../../../assets/country-page/slider/9-2.jpg";
 import { SlideInfoOne } from "./SlideInfoOne";
 import { SlideInfoTwo } from "./SlideInfoTwo";
+import i18n from "../../../../locales";
 
 interface EventListenerArgs {
     capture?: boolean;
@@ -165,31 +166,25 @@ export const Slider: React.FC = () => {
                 <Tab
                     className={classes.tab}
                     {...a11yProps(0)}
-                    label="How many people experience financial hardship: impoverishing health spending?
-"
+                    label={i18n.t("How many people experience financial hardship: impoverishing health spending?")}
                 />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(1)}
-                    label="Catastrophic health spending. 
-How many people experience financial hardship?
-"
+                    label={i18n.t("Catastrophic health spending. How many people experience financial hardship?")}
                 />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(2)}
-                    label="Who experiences financial hardship?
-"
-                />
+                <Tab className={classes.tab} {...a11yProps(2)} label={i18n.t("Who experiences financial hardship?")} />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(3)}
-                    label="Which health services are responsible for financial hardship?"
+                    label={i18n.t("Which health services are responsible for financial hardship?")}
                 />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(4)}
-                    label="Which health services are responsible for financial hardship? International comparison"
+                    label={i18n.t(
+                        "Which health services are responsible for financial hardship? International comparison"
+                    )}
                 />
                 <Tab className={classes.tab} {...a11yProps(5)} label="How many people experience unmet need?" />
                 <Tab className={classes.tab} {...a11yProps(6)} label="Who experiences unmet need?" />
@@ -197,17 +192,17 @@ How many people experience financial hardship?
                 <Tab
                     className={classes.tab}
                     {...a11yProps(8)}
-                    label="How much does Bulgaria spend on health? International comparison"
+                    label={i18n.t("How much does Bulgaria spend on health? International comparison")}
                 />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(9)}
-                    label="What are the main gaps in publicly financed coverage?"
+                    label={i18n.t("What are the main gaps in publicly financed coverage?")}
                 />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(10)}
-                    label="How can Bulgaria strengthen financial protection?"
+                    label={i18n.t("How can Bulgaria strengthen financial protection?")}
                 />
             </Tabs>
             <TabPanel value={value} index={0}>
