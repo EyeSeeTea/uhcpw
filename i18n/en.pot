@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-09-03T14:54:56.177Z\n"
-"PO-Revision-Date: 2023-09-03T14:54:56.177Z\n"
+"POT-Creation-Date: 2023-10-13T08:33:46.273Z\n"
+"PO-Revision-Date: 2023-10-13T08:33:46.273Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -166,6 +166,23 @@ msgid ""
 "Support these policy changes by increasing the level of government budget "
 "transfers to the National Health Insurance Fund over time. Use additional "
 "resources carefully to meet equity and efficiency goals."
+msgstr ""
+
+msgid "Catastrophic health spending. How many people experience financial hardship?"
+msgstr ""
+
+msgid "Who experiences financial hardship?"
+msgstr ""
+
+msgid "Which health services are responsible for financial hardship?"
+msgstr ""
+
+msgid ""
+"Which health services are responsible for financial hardship? International "
+"comparison"
+msgstr ""
+
+msgid "How much does Bulgaria spend on health? International comparison"
 msgstr ""
 
 msgid "({{count}} selected)"
