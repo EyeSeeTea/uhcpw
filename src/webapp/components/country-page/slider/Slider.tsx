@@ -91,7 +91,8 @@ const useStyles = makeStyles(theme => ({
             borderRight: "unset",
             transition: "background-color 0.3s ease-in-out",
             backgroundColor: `${colors.accentPrimary}`,
-            flex: "1",
+            minHeight: "60px",
+            padding: "15px 25px",
             "& span": {
                 display: "inline",
                 textAlign: "start",
