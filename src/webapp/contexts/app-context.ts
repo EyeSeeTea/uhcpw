@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { CompositionRoot } from "../../CompositionRoot";
 import { Country } from "../../domain/entities/Country";
+import { ResourceTheme } from "../../domain/entities/resources/ResourceTheme";
 import { User } from "../../domain/entities/User";
 import { D2Api } from "../../types/d2-api";
 
@@ -10,6 +11,7 @@ export interface AppContextState {
     compositionRoot: CompositionRoot;
     isNodeDev: boolean;
     countries: Country[];
+    themes: ResourceTheme[];
 }
 
 export const AppContext = React.createContext<AppContextState | null>(null);

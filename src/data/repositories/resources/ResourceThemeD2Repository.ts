@@ -3,27 +3,33 @@ import { ResourceTheme } from "../../../domain/entities/resources/ResourceTheme"
 import { ResourceCategoryRepository } from "../../../domain/repositories/resources/ResourceCategoryRepository";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+import { InmemoryCache } from "../../cache/InmemoryCache";
 
 const resourceThemeOptionSet = "ie8po5iPlaw";
 
 export class ResourceThemeD2Repository implements ResourceCategoryRepository {
+    cache = new InmemoryCache();
+
     constructor(private api: D2Api) {}
 
     public getAll(): FutureData<ResourceTheme[]> {
-        return apiToFuture(
-            this.api.models.optionSets.get({
-                fields: optionSetFields,
-                filter: { id: { eq: resourceThemeOptionSet } },
-            })
-        ).flatMap(response => {
-            const optionSet = response.objects[0];
+        return this.cache.getOrFuture(
+            "themes",
+            apiToFuture(
+                this.api.models.optionSets.get({
+                    fields: optionSetFields,
+                    filter: { id: { eq: resourceThemeOptionSet } },
+                })
+            ).flatMap(response => {
+                const optionSet = response.objects[0];
 
-            if (!optionSet) {
-                return Future.error("An error has ocurred retrieving resource Categories");
-            } else {
-                return Future.success(this.buildResourceCategories(optionSet));
-            }
-        });
+                if (!optionSet) {
+                    return Future.error("An error has ocurred retrieving resource Categories");
+                } else {
+                    return Future.success(this.buildResourceCategories(optionSet));
+                }
+            })
+        );
     }
 
     private buildResourceCategories(optionSet: D2OptionSet): ResourceTheme[] {
