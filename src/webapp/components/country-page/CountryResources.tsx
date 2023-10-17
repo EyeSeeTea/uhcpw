@@ -6,8 +6,8 @@ import { useCountryResources } from "../../pages/country/useCountryResources";
 import React from "react";
 import { ResourceItem } from "../resources/common/ResourceItem";
 
-export const CountryResources: React.FC<{ country?: string[] }> = ({ country }) => {
-    const { loading, items } = useCountryResources(country);
+export const CountryResources: React.FC<{ countryId: string }> = ({ countryId }) => {
+    const { loading, items } = useCountryResources(countryId);
 
     return (
         <Container aria-label="country-page-resources">

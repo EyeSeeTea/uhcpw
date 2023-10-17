@@ -7,7 +7,7 @@ type CountryResourcesType = {
     items?: ResourceState[];
 };
 
-export function useCountryResources(country?: string[]): CountryResourcesType {
+export function useCountryResources(country: string): CountryResourcesType {
     const { compositionRoot, countries } = useAppContext();
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -18,7 +18,7 @@ export function useCountryResources(country?: string[]): CountryResourcesType {
 
         compositionRoot.resources.get
             .execute({
-                countries: country,
+                countries: [country],
             })
             .run(
                 items => {
