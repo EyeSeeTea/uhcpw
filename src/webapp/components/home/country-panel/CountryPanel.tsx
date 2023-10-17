@@ -17,7 +17,7 @@ type ButtonItemType = {
     children: React.ReactNode;
 };
 
-const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
+export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
     return (
         <a href={href} target="_blank" rel="noreferrer">
             <StyledButton>{children}</StyledButton>

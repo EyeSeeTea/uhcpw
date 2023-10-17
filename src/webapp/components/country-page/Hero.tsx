@@ -6,33 +6,30 @@ import DashboardGraph from "../../assets/country-page/dashboard-graph.jpg";
 import { useState } from "react";
 import { NotesDialog } from "../dialog/NotesDialog";
 import { ActionButtons } from "./graphs/ActionButtons";
+import { useCountryInfo } from "../../pages/country/useCountryInfo";
+import ReactMarkdown from "react-markdown";
+import { ButtonItem } from "../home/country-panel/CountryPanel";
 
-export const Hero: React.FC = () => {
+type HeroProps = {
+    countryId: string;
+};
+
+export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const country = useCountryInfo(countryId);
     return (
         <Grid container aria-label="country-page-hero">
-            <InfoGrid item md={5} lg={4} xs={12}>
-                <Column>
-                    <Typography variant="h5" color="textSecondary" style={{ fontWeight: 500 }}>
-                        {i18n.t("Financial hardship (2018)")}
-                    </Typography>
-                    <Text style={{ marginTop: "10px" }}>
-                        {i18n.t("Impoverishing health spending: 8% of households")}
-                    </Text>
-                    <Text>{i18n.t("Catastrophic health spending: 19.2% of households")}</Text>
-                    <Text>
-                        {i18n.t("Most at risk: lower-income households, older people and people in rural areas")}
-                    </Text>
-                    <Text>{i18n.t("Main driver: outpatient medicines especially for low-income households")}</Text>
-                </Column>
-                <Column style={{ marginTop: "40px" }}>
-                    <Typography variant="h5" color="textSecondary" style={{ fontWeight: 500 }}>
-                        {i18n.t("Unmet need (2022)")}
-                    </Typography>
-                    <Text>{i18n.t("1% of people report unmet need for health care")}</Text>
-                    <Text>{i18n.t("2% of people report unmet need for dental care")}</Text>
-                </Column>
-            </InfoGrid>
+            {country && (
+                <InfoGrid item md={5} lg={4} xs={12}>
+                    <ReactMarkdown
+                        components={{
+                            a: ({ ...props }) => <ButtonItem {...props} />,
+                        }}
+                    >
+                        {country.summary}
+                    </ReactMarkdown>
+                </InfoGrid>
+            )}
             <GraphGrid item xs={12} md={7} lg={8}>
                 <Column>
                     <Row>
@@ -72,6 +69,13 @@ const Image = styled.img`
 const InfoGrid = styled(Grid)`
     background-color: ${colors.accentPrimary};
     padding: 40px 30px 60px 30px;
+    color: white;
+    overflow-y: auto;
+    font-size: 16px;
+    ul {
+        list-style-position: inside;
+        padding-left: 0;
+    }
 `;
 
 const GraphGrid = styled(Grid)`
@@ -87,12 +91,6 @@ const Column = styled.div`
     max-width: 100%;
     align-items: start;
     gap: 10px;
-`;
-
-const Text = styled(Typography)`
-    color: white;
-    font-weight: 300;
-    max-width: 55%;
 `;
 
 const Row = styled.div`

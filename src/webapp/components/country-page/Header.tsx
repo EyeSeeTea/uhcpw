@@ -4,32 +4,61 @@ import { CountryDropdown } from "./dropdown/CountryDropdown";
 import { useResources } from "../../pages/resources/landing/useResources";
 import i18n from "../../../locales";
 import UmbrellaWeak from "../../assets/country-page/umbrella-weak.svg";
+import UmbrellaGap from "../../assets/country-page/umbrella-normal.png";
+import UmbrellaStrong from "../../assets/country-page/umbrella-strong.png";
 import { FC, MutableRefObject } from "react";
+import { useCountryInfo } from "../../pages/country/useCountryInfo";
+import { CountryStatus } from "../../../domain/entities/Country";
 
 type HeaderType = {
+    countryId: string;
+    onCountryChange: (value: string) => void;
     sliderRef: MutableRefObject<null>;
     resourcesRef: MutableRefObject<null>;
     expertRef: MutableRefObject<null>;
 };
 
-export const Header: FC<HeaderType> = ({ sliderRef, resourcesRef, expertRef }) => {
+const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
+    switch (status) {
+        case "Weak":
+            return <img src={UmbrellaWeak} width={100} alt={"umbrella weak"} />;
+        case "Gaps":
+            return <img src={UmbrellaGap} width={100} alt={"umbrella gap"} />;
+        case "Strong":
+            return <img src={UmbrellaStrong} width={100} alt={"umbrella strong"} />;
+    }
+};
+
+const handleBackgroundColor = (status?: CountryStatus) => {
+    switch (status) {
+        case "Weak":
+            return "linear-gradient(90deg, #c42929 0%, #ffe1d0 60.94%)";
+        case "Gaps":
+            return "linear-gradient(90deg, #ff8d4e 0%, #ffe1d0 60.94%)";
+        case "Strong":
+            return "linear-gradient(90deg, #50ad56 0%, #c8cfa9 60.94%)";
+    }
+};
+
+export const Header: FC<HeaderType> = ({ countryId, onCountryChange, sliderRef, resourcesRef, expertRef }) => {
     const { filters } = useResources();
+    const country = useCountryInfo(countryId);
 
     const handleClick = (ref: MutableRefObject<any>) => {
         ref.current?.scrollIntoView({ behavior: "smooth" });
     };
 
     return (
-        <Container aria-label="country-page-header">
+        <Container aria-label="country-page-header" status={country?.status}>
             <ButtonsContainer>
                 <CountryDropdown
                     fullWidth
                     placeholder={i18n.t("Select country")}
                     options={filters.country.options}
-                    value={"AjeCGGb8H76"}
-                    onChange={() => {}}
+                    value={countryId}
+                    onChange={onCountryChange}
                 />
-                <img src={UmbrellaWeak} width={100} alt={"umbrella"} />
+                {country && <UmbrellaIcon status={country?.status} />}
             </ButtonsContainer>
             <ButtonsContainer>
                 <Button>
@@ -49,12 +78,12 @@ export const Header: FC<HeaderType> = ({ sliderRef, resourcesRef, expertRef }) =
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ status: CountryStatus | undefined }>`
     display: flex;
     justify-content: space-between;
     height: 80px;
     align-items: center;
-    background: linear-gradient(90deg, #c42929 0%, #ffe1d0 60.94%);
+    background: ${props => handleBackgroundColor(props.status)};
     padding: 0px 40px;
 `;
 
