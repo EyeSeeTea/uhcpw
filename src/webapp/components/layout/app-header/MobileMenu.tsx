@@ -4,14 +4,14 @@ import { Menu as MenuIcon, CloseOutlined as CloseOutlinedIcon } from "@material-
 import styled from "styled-components";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import i18n from "../../../../locales";
-import { useCountryOptionsOnlyBulgaria } from "../../../common/hooks/countries/useCountryOptionsOnlyBulgaria";
 import { useHistory } from "react-router-dom";
 import { MobileMenuSubItem } from "./MobileMenuSubItem";
+import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
 
 export const MobileMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const { countryOptions } = useCountryOptionsOnlyBulgaria();
+    const { countryOptions } = useCountryOptions();
     const history = useHistory();
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -72,7 +72,7 @@ export const MobileMenu = () => {
                                 return (
                                     <MenuItem
                                         key={country.value}
-                                        onClick={() => history.push(`country/${country.text.toLowerCase()}`)}
+                                        onClick={() => history.push(`/country-page?country=${country.value}`)}
                                     >
                                         {country.text}
                                     </MenuItem>
