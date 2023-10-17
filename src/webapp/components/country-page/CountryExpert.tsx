@@ -1,12 +1,11 @@
 import { Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import i18n from "../../../locales";
-import countryExpertImage from "../../assets/country-page/antoniya-dimova.png";
 import bubblePattern from "../../assets/bubble-pattern.svg";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
 
-export const CountryExpert: React.FC<{ country?: string[] }> = ({ country }) => {
-    const { experts } = useCountryExpert(country);
+export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) => {
+    const { experts } = useCountryExpert(countryId);
 
     return (
         <Container aria-label="experts">
@@ -15,7 +14,7 @@ export const CountryExpert: React.FC<{ country?: string[] }> = ({ country }) => 
                 {experts.map((expert, i) => (
                     <Grid key={i} xs={12} md={6} role="listitem">
                         <Row>
-                            <img src={countryExpertImage} alt={`${expert.firstName} ${expert.lastName}`} />
+                            <img src={expert.image} alt={`${expert.firstName} ${expert.lastName}`} />
                             <ExpertDetailsContainer>
                                 <Typography variant="body1" style={{ fontWeight: "bold" }}>
                                     {i18n.t(`${expert.firstName} ${expert.lastName}`)}
@@ -48,8 +47,7 @@ const Row = styled.div`
     display: flex;
     align-items: center;
     gap: 40px;
-    margin-top: 30px;
-    margin-right: 10px;
+    margin: 30px 10px 30px 0px;
     @media (max-width: 600px) {
         flex-direction: column;
     }
