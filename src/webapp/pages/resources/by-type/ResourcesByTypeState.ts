@@ -9,9 +9,18 @@ export type ResourcesByTypeState = {
     onGetResources: () => void;
 };
 
-export type ResourceState = News | Multimedia | CountryAnalysisState | ComparativeAnalysis;
+export type ResourceState = News | MultimediaState | CountryAnalysisState | ComparativeAnalysisState;
 
 export interface CountryAnalysisState extends CountryAnalysis {
     countryName: string;
     countryFlag: string;
+    themeName: string;
+}
+
+export interface ComparativeAnalysisState extends ComparativeAnalysis {
+    themeName: string;
+}
+
+export interface MultimediaState extends Multimedia {
+    themeName: string;
 }

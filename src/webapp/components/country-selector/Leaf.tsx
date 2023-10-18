@@ -8,15 +8,16 @@ interface LeafProps {
     name: string;
     selected: boolean;
     onSelectedChange: (nodeId: string, selected: boolean) => void;
+    disabled?: boolean;
 }
 
-export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedChange }) => {
+export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedChange, disabled = false }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         onSelectedChange(nodeId, event.target.checked);
     };
 
     const handleClick = () => {
-        onSelectedChange(nodeId, !selected);
+        !disabled && onSelectedChange(nodeId, !selected);
     };
 
     return (
@@ -24,15 +25,20 @@ export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedCh
             nodeId={nodeId}
             label={
                 <Row role="checkbox">
-                    <Checkbox
-                        color="primary"
-                        style={{ padding: "2px" }}
-                        icon={<UnCheckedIcon style={{ fill: "gray" }} />}
-                        checked={selected}
-                        onChange={handleChange}
-                        inputProps={{ "aria-label": name }}
-                    />
-                    <Text onClick={handleClick}>{name}</Text>
+                    {!disabled && (
+                        <Checkbox
+                            color="primary"
+                            style={{ padding: "2px" }}
+                            icon={<UnCheckedIcon style={{ fill: "gray" }} />}
+                            checked={selected}
+                            onChange={handleChange}
+                            inputProps={{ "aria-label": name }}
+                            disabled={disabled}
+                        />
+                    )}
+                    <StyledTypography onClick={handleClick} $disabled={disabled}>
+                        {name}
+                    </StyledTypography>
                 </Row>
             }
         />
@@ -48,8 +54,9 @@ const StyledTreeItem = styled(TreeItem)`
     }
 `;
 
-const Text = styled(Typography)``;
-
+const StyledTypography = styled(Typography)<{ $disabled?: boolean }>`
+    color: ${props => (props.$disabled ? "#8e8e8e" : undefined)};
+`;
 const Row = styled.div`
     display: flex;
     flex-direction: row;

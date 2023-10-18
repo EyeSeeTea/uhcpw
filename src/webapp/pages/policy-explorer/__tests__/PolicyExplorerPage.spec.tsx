@@ -140,10 +140,10 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
+            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
 
             const tableTitle = await waitFor(() =>
-                screen.getByRole("heading", { name: policyExplorerCategories[6]?.name })
+                screen.getByRole("heading", { name: policyExplorerCategories[0]?.name })
             );
 
             expect(tableTitle).toBeInTheDocument();
@@ -161,6 +161,7 @@ describe("Given PolicyExplorerPage", () => {
             const cells = await screen.queryAllByRole("cell");
             expect(cells.length).toBe(0);
         });
+        it("Then should render a message", async () => {});
     });
 
     describe("When get a category with multiple periods table", () => {

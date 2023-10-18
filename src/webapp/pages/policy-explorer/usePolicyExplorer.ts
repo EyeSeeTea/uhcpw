@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { PolicyExplorer, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
@@ -8,6 +8,20 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import {
+    CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+} from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+
+const INITIAL_NORMAL_ORIENTED_TABLES = [
+    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+];
+
+const CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION = [
+    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+];
 
 export function usePolicyExplorer({
     categories,
@@ -96,7 +110,7 @@ export function usePolicyExplorer({
                         setInitialDataByTable(policyExplorer);
 
                         const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
-                        setDataByTable(invertAllData(policyExplorer, categoriesIds));
+                        setDataByTable(getInitialDataByTable(policyExplorer, categoriesIds));
                         setDataOrientationByTable(getInitialDataOrientationByTable(categoriesIds));
                     },
                     () => {
@@ -161,13 +175,41 @@ export function usePolicyExplorer({
         [compositionRoot.policyExplorer, dataByTable]
     );
 
+    const disabledCategories = useMemo(() => {
+        const isMoreThanOneCountrySelected = countryFilter?.selected?.length && countryFilter?.selected?.length > 1;
+        return isMoreThanOneCountrySelected ? CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION : [];
+    }, [countryFilter?.selected?.length]);
+
+    const disabledCountries = useMemo(() => {
+        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
+            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
+            : [];
+
+        if (
+            isOneCountrySelectedAndACategoryWithSpecialCountryVisualization(
+                countryFilter?.selected?.length,
+                selectedCategories
+            )
+        ) {
+            const restCountries = countryFilter.options
+                .map(c => c.id)
+                .filter(cId => countryFilter?.selected && !countryFilter?.selected.includes(cId));
+            return restCountries;
+        }
+        return [];
+    }, [countryFilter.options, countryFilter?.selected, selectedCategoriesWithSubcategoriesFilter]);
+
     return {
         filters: {
-            country: countryFilter,
+            country: {
+                ...countryFilter,
+                disabledCountries,
+            },
             category: {
                 options: categoryFilters,
                 selected: selectedCategoriesWithSubcategoriesFilter,
                 onSelectedChange: onChangeCategoryFilter,
+                disabledCategories,
             },
             year: {
                 options: yearFilters,
@@ -211,7 +253,21 @@ function invertDataByCategoryId(
     return newData;
 }
 
-function invertAllData(
+function getInitialDataByTable(
+    initialDataByTable: PolicyExplorer | undefined,
+    selectedCategoriesIds: string[]
+): PolicyExplorer | undefined {
+    if (!initialDataByTable || !selectedCategoriesIds.length) return undefined;
+    const initialInvertedCategoriesIds = selectedCategoriesIds.filter(
+        categoryId => !INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId)
+    );
+
+    return initialInvertedCategoriesIds.length
+        ? invertDataOfCategoriesIds(initialDataByTable, initialInvertedCategoriesIds)
+        : initialDataByTable;
+}
+
+function invertDataOfCategoriesIds(
     initialDataByTable: PolicyExplorer | undefined,
     selectedCategoriesIds: string[]
 ): PolicyExplorer | undefined {
@@ -245,7 +301,7 @@ function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Reco
     return selectedCategoriesIds.reduce(
         (acc, categoryId) => ({
             ...acc,
-            [categoryId]: "inverted",
+            [categoryId]: INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId) ? "normal" : "inverted",
         }),
         dataOrientation
     );
@@ -257,4 +313,15 @@ function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): Categ
         text: category.name,
         subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
     }));
+}
+
+function isOneCountrySelectedAndACategoryWithSpecialCountryVisualization(
+    totalCountrySelected: number | undefined,
+    selectedCategories: string[]
+) {
+    const hasCategoryWithCountryVisualizationSeparated = selectedCategories.some(category =>
+        CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category)
+    );
+
+    return totalCountrySelected && totalCountrySelected === 1 && hasCategoryWithCountryVisualizationSeparated;
 }

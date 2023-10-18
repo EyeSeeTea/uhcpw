@@ -75,6 +75,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         categoryOptions={filters.category.options}
                         selectedCategoriesWithSubcategories={filters.category.selected}
                         onSelect={onCategoryChange}
+                        disabledCategories={filters.category.disabledCategories}
                     />
                 </Center>
             </Grid>
@@ -86,6 +87,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={onCountryChange}
+                        disabledCountries={filters.country.disabledCountries}
                     />
                 </Center>
             </Grid>

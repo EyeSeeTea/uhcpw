@@ -772,8 +772,7 @@ function verifyPolicyExplorerEmptyTable(tables: Record<string, PolicyExplorerCel
     Object.keys(tables).forEach(tableId => {
         const table = tables[tableId] as PolicyExplorerCell[][];
 
-        expect(table?.length).toBe(1);
-        expect(table[0]?.length).toBe(0);
+        expect(table?.length).toBe(0);
     });
 }
 
@@ -826,7 +825,7 @@ function verifyMoreThanOnePeriodData(table: PolicyExplorerCell[][]) {
             ?.reduce((acc, row) => {
                 return row[periodRowsIndex] ? ([...acc, row[periodRowsIndex]] as PolicyExplorerCell[]) : acc;
             }, [])
-            .filter(row => row.type !== PolicyExplorerCellType.HEADER);
+            .filter(row => row.value !== "Period");
         expect(periodColumn?.length).toBeGreaterThan(1);
     } else {
         throw new Error(`Period column not found`);
