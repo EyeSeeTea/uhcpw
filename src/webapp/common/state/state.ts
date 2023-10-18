@@ -12,6 +12,7 @@ export type PolicyExplorerCategoriesFilterState = {
     options: CategoryOption[];
     selected: Record<string, string[]> | undefined;
     onSelectedChange: (value: Record<string, string[]> | undefined) => void;
+    disabledCategories: string[];
 };
 
 export type OptionsFilterState<T extends string = string> = {

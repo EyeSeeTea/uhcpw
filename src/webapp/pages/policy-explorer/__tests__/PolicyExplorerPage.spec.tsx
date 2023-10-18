@@ -161,6 +161,7 @@ describe("Given PolicyExplorerPage", () => {
             const cells = await screen.queryAllByRole("cell");
             expect(cells.length).toBe(0);
         });
+        it("Then should render a message", async () => {});
     });
 
     describe("When get a category with multiple periods table", () => {

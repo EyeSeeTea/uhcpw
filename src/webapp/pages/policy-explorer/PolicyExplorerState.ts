@@ -10,15 +10,18 @@ export type DataOrientation = "inverted" | "normal";
 export type PolicyExplorerState = {
     filters: PolicyExplorerFiltersState;
     data?: PolicyExplorer;
-
     dataOrientationByTable?: Record<string, DataOrientation>;
     onGetTable: () => void;
     onSwitchRowColumn: (categoryId: string) => void;
     onDownload: (categoryId: string) => void;
 };
 
+type CountryFilterStateDisabled = {
+    disabledCountries: string[];
+};
+
 export type PolicyExplorerFiltersState = {
-    country: CountryFilterState;
+    country: CountryFilterState & CountryFilterStateDisabled;
     category: PolicyExplorerCategoriesFilterState;
     year: OptionsMultiFilterState;
 };
