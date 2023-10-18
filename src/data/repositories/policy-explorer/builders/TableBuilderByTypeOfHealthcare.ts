@@ -1,7 +1,8 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
-import { CATEGORY_BY_TYPE_OF_HEALTHCARE, TableBuilder } from "./TableBuilder";
+import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { EMPTY_DATA } from "../PolicyExplorerD2Repository";
+import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
 
 const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
     "User charges apply": [

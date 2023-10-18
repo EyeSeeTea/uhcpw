@@ -140,10 +140,10 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
+            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
 
             const tableTitle = await waitFor(() =>
-                screen.getByRole("heading", { name: policyExplorerCategories[6]?.name })
+                screen.getByRole("heading", { name: policyExplorerCategories[0]?.name })
             );
 
             expect(tableTitle).toBeInTheDocument();
