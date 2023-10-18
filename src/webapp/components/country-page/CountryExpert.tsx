@@ -14,7 +14,7 @@ export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) =>
                 {experts.map((expert, i) => (
                     <Grid key={i} xs={12} md={6} role="listitem">
                         <Row>
-                            <img src={expert.image} alt={`${expert.firstName} ${expert.lastName}`} />
+                            <Image src={expert.image} alt={`${expert.firstName} ${expert.lastName}`} />
                             <ExpertDetailsContainer>
                                 <Typography variant="body1" style={{ fontWeight: "bold" }}>
                                     {i18n.t(`${expert.firstName} ${expert.lastName}`)}
@@ -57,4 +57,13 @@ const ExpertDetailsContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 20px;
+`;
+
+const Image = styled.img`
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-bottom: 6px;
+    object-fit: cover;
+    object-position: 50% 0%;
 `;
