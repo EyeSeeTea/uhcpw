@@ -4,11 +4,9 @@ import userEvent from "@testing-library/user-event";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
 import { ResourceD2Repository } from "../../../../../data/repositories/resources/ResourceD2Repository";
-import { ResourceThemeD2Repository } from "../../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../../domain/entities/Future";
 import { Resource } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
-import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
 import { customRenderWithRouterMatch } from "../../../../../utils/tests-ui";
 import {
     createComparativeAnalysisResources,
@@ -16,13 +14,11 @@ import {
     createMultimediaResources,
     createNewsResources,
     createResourceCategories,
-    createResourcesThemes,
 } from "../../common/__tests__/helpers";
 import { ResourcesPage } from "../ResourcesPage";
 
 let resourceRepository: ResourceD2Repository;
 let resourceCategoryRepository: ResourceCategoryD2Repository;
-let resourceThemeRepository: ResourceThemeD2Repository;
 
 describe("ResourcesPage", () => {
     beforeEach(() => {
@@ -95,7 +91,6 @@ function renderPage(queryString?: string) {
         {
             resource: resourceRepository,
             resourceCategory: resourceCategoryRepository,
-            resourceTheme: resourceThemeRepository,
         }
     );
 }
@@ -103,7 +98,6 @@ function renderPage(queryString?: string) {
 function givenAFilters() {
     return {
         categories: givenAResourceCategories(),
-        themes: givenAResourcesThemes(),
     };
 }
 
@@ -142,18 +136,6 @@ function givenAResourceCategories(): ResourceCategory[] {
     when(mockedRepository.getAll()).thenReturn(Future.success(data));
 
     resourceCategoryRepository = instance(mockedRepository);
-
-    return data;
-}
-
-function givenAResourcesThemes(): ResourceTheme[] {
-    const mockedRepository = mock(ResourceThemeD2Repository);
-
-    const data = createResourcesThemes();
-
-    when(mockedRepository.getAll()).thenReturn(Future.success(data));
-
-    resourceThemeRepository = instance(mockedRepository);
 
     return data;
 }

@@ -6,7 +6,7 @@ import { ResourcesFiltersState } from "./ResourcesFiltersState";
 import { useMultiCountryOptionsV2 } from "../../../common/hooks/countries/useMultiCountryOptionsV2";
 
 export function useResourcesFilters(category?: string, countries?: string[], theme?: string): ResourcesFiltersState {
-    const { compositionRoot } = useAppContext();
+    const { compositionRoot, themes } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2(countries);
 
     const [searchTerm, setSearchTerm] = useState<string>("");
@@ -39,13 +39,8 @@ export function useResourcesFilters(category?: string, countries?: string[], the
     }, [compositionRoot.resources]);
 
     useEffect(() => {
-        compositionRoot.resources.getThemes.execute().run(
-            themes => setThemeFilters(themes.map(theme => ({ value: theme.code, text: theme.name }))),
-            () => {
-                setThemeFilters([]);
-            }
-        );
-    }, [compositionRoot.resources]);
+        setThemeFilters(themes.map(theme => ({ value: theme.code, text: theme.name })));
+    }, [themes]);
 
     useEffect(() => {
         setYearFilters(generateYears(new Date().getFullYear()).map(year => ({ value: year.id, text: year.id })));

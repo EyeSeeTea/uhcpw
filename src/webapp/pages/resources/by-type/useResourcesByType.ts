@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { getThemeName } from "../../../../domain/entities/resources/ResourceTheme";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
@@ -11,7 +12,7 @@ export function useResourcesByType(params: {
     themeFilter?: string;
     favouriteSection?: boolean;
 }): ResourcesByTypeState {
-    const { compositionRoot, countries } = useAppContext();
+    const { compositionRoot, countries, themes } = useAppContext();
     const filters = useResourcesFilters(params.category, params.countriesFilter, params.themeFilter);
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -46,16 +47,26 @@ export function useResourcesByType(params: {
                 favouriteSection: params.favouriteSection,
             })
             .run(
-                items => {
+                resources => {
                     setLoading(false);
 
-                    const finalItems = items.map(item => {
-                        if (item.kind === "country-analysis") {
+                    const finalItems = resources.map(item => {
+                        if (item.kind === "news") {
+                            return item;
+                        } else if (item.kind === "country-analysis") {
                             const country = countries.find(country => country.id === item.countryId);
 
-                            return { ...item, countryName: country?.name || "", countryFlag: country?.flag || "" };
+                            return {
+                                ...item,
+                                countryName: country?.name || "",
+                                countryFlag: country?.flag || "",
+                                themeName: getThemeName(themes, item.theme),
+                            };
                         } else {
-                            return item;
+                            return {
+                                ...item,
+                                themeName: getThemeName(themes, item.theme),
+                            };
                         }
                     });
 
@@ -79,6 +90,7 @@ export function useResourcesByType(params: {
         params.favourite,
         params.favouriteSection,
         countries,
+        themes,
     ]);
 
     useEffect(() => onGetResources(), [onGetResources]);
