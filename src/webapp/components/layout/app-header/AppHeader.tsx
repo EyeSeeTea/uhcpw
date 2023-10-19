@@ -12,9 +12,10 @@ import BookIcon from "@material-ui/icons/BookOutlined";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { useCountryOptionsOnlyBulgaria } from "../../../common/hooks/countries/useCountryOptionsOnlyBulgaria";
 import { Glossary } from "./Glossary";
 import { MobileMenu } from "./MobileMenu";
+import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
+import { Option } from "../../dropdown/Option";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -69,7 +70,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [isGlossaryOpen, setIsGlossaryOpen] = React.useState(false);
-    const { countryOptions } = useCountryOptionsOnlyBulgaria();
+    const { countryOptions } = useCountryOptions();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -81,6 +82,11 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+
+    const handleCountryClick = (country: Option<string>) => {
+        history.push(`/country-page?country=${country.value}`);
+        handleClose();
     };
 
     return (
@@ -152,10 +158,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         >
                             {countryOptions.map(country => {
                                 return (
-                                    <MenuItem
-                                        key={country.value}
-                                        onClick={() => history.push(`/country-page?country=${country.value}`)}
-                                    >
+                                    <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
                                         {country.text}
                                     </MenuItem>
                                 );
