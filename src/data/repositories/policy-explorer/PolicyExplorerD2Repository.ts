@@ -4,6 +4,7 @@ import {
     PolicyExplorer,
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
+    PolicyExplorerReferences,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
@@ -61,6 +62,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dataSet: dataSetResponse.objects[0],
                 }),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, orgUnitsResponse.objects),
+                references: this.buildReferences(dataValuesResponse.dataValues, orgUnitsResponse.objects),
             };
         });
     }
@@ -216,6 +218,28 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
 
         return filteredColumns.length ? [filteredColumns, ...filteredRows] : [];
+    }
+
+    private buildReferences(
+        dataValues: DataValueSetsDataValue[],
+        organisationUnits: D2OrgUnit[]
+    ): PolicyExplorerReferences[] {
+        const dataValuesByOrgUnit = _(dataValues)
+            .groupBy(dataValue => dataValue.orgUnit)
+            .value();
+
+        return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
+            const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
+
+            const references =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.references || "")
+                )?.value || EMPTY_DATA;
+
+            const referencesArray = references.match(/\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g) as string[];
+
+            return { country, references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) };
+        });
     }
 }
 
