@@ -20,7 +20,6 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
     ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
         const history = useHistory();
         const location = useLocation();
-
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
                 if (value) {
@@ -69,7 +68,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         <Dropdown
                             fullWidth
                             placeholder={i18n.t("Select category")}
-                            options={filters.category.options}
+                            options={filters.category.options.sort((opt1, opt2) => opt1.text.localeCompare(opt2.text))}
                             value={filters.category.selected}
                             onChange={onCategoryChange}
                             label={i18n.t("Select category")}
