@@ -63,7 +63,8 @@ export class TableBuilderDefault implements TableBuilder {
             const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
             return {
                 type: PolicyExplorerCellType.DATA,
-                value: dataValue?.value ? `${dataValue?.value}\n\n${references}` : EMPTY_DATA,
+                value: dataValue?.value || EMPTY_DATA,
+                references,
             };
         });
 
