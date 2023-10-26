@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -12,6 +12,8 @@ import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
+    const referencesRef = useRef<HTMLDivElement>(null);
+
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(props.searchParams);
 
@@ -59,6 +61,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             onSwitchRowColumn={onSwitchRowColumn}
                             onDownload={onDownload}
                             dataOrientation={dataOrientationByTable[category.value]}
+                            referencesRef={referencesRef}
                         />
                     ))
                 ) : (
@@ -67,7 +70,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                 {data?.generalInfo.map(info => {
                     return (
-                        <React.Fragment key={info.country}>
+                        <div key={info.country} ref={referencesRef}>
                             <GeneralDataContainer>
                                 <GeneralRow>
                                     <CreditsText style={{ fontWeight: 500 }}>{`${info.country} (2023)`}</CreditsText>
@@ -111,7 +114,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         <ReferenceText key={reference}>{reference}</ReferenceText>
                                     ))}
                             </ReferencesContainer>
-                        </React.Fragment>
+                        </div>
                     );
                 })}
             </MainSection>
