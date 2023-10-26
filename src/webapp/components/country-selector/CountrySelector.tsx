@@ -29,6 +29,7 @@ interface CountrySelectorProps {
     disabled?: boolean;
     label?: string;
     disabledCountries?: string[];
+    disabledTextfield?: boolean;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
@@ -41,6 +42,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         disabled,
         label,
         disabledCountries,
+        disabledTextfield = true,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -126,7 +128,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     aria-label="Country selector"
                     placeholder={placeholder}
                     role={"textbox"}
-                    disabled
+                    disabled={disabledTextfield}
                     fullWidth={fullWidth}
                     inputProps={{
                         "aria-label": "Select countries",
@@ -150,7 +152,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             <InputAdornment
                                 position="start"
                                 aria-label="expand"
-                                style={{ top: "calc(50% - 14px)", right: 0, position: "absolute", height: " 24px" }}
+                                style={{
+                                    top: "calc(50% - 14px)",
+                                    right: 0,
+                                    position: "absolute",
+                                    height: "24px",
+                                }}
                             >
                                 {expanded ? (
                                     <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
@@ -161,7 +168,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         ),
                     }}
                     $isDisabled={disabled}
-                ></StyledDropdownTextField>
+                />
                 <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}
                     id="country-selector"
