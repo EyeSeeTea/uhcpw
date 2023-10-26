@@ -95,7 +95,7 @@ export const PolicyExplorerTable = React.memo(
                                                 components={{
                                                     a: ({ href, children, ...props }) => {
                                                         return href === EMPTY_URL ? (
-                                                            <a href={href} onClick={handleClickEmptyUrl} {...props}>
+                                                            <a href={href} {...props} onClick={handleClickEmptyUrl}>
                                                                 {children}
                                                             </a>
                                                         ) : (
