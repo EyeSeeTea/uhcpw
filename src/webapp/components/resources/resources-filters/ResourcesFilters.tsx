@@ -68,7 +68,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         <Dropdown
                             fullWidth
                             placeholder={i18n.t("Select category")}
-                            options={filters.category.options.sort((opt1, opt2) => opt1.text.localeCompare(opt2.text))}
+                            options={filters.category.options}
                             value={filters.category.selected}
                             onChange={onCategoryChange}
                             label={i18n.t("Select category")}
