@@ -29,7 +29,6 @@ interface CountrySelectorProps {
     disabled?: boolean;
     label?: string;
     disabledCountries?: string[];
-    disabledTextfield?: boolean;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
@@ -42,7 +41,6 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         disabled,
         label,
         disabledCountries,
-        disabledTextfield = true,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -128,8 +126,8 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     aria-label="Country selector"
                     placeholder={placeholder}
                     role={"textbox"}
-                    disabled={disabledTextfield}
                     fullWidth={fullWidth}
+                    disabled
                     inputProps={{
                         "aria-label": "Select countries",
                     }}

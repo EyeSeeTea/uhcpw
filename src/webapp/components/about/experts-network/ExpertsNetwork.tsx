@@ -34,7 +34,6 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
                         selectedIds={countryFilter.selected}
                         onSelectedIdsChange={countryFilter.onSelectedChange}
                         placeholder="Select country"
-                        disabledTextfield={false}
                     />
 
                     <Box width={4} />
