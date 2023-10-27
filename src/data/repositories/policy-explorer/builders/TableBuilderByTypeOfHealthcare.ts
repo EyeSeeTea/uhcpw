@@ -267,7 +267,8 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
                         const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementsSectionId);
                         return {
                             type: PolicyExplorerCellType.DATA,
-                            value: dataValue?.value ? `${dataValue?.value}\n\n${references}` : EMPTY_DATA,
+                            value: dataValue?.value || EMPTY_DATA,
+                            references,
                         };
                     }
                 );

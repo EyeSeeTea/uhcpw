@@ -106,7 +106,7 @@ export const PolicyExplorerTable = React.memo(
                                                     },
                                                 }}
                                             >
-                                                {cell.value}
+                                                {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
                                             </ReactMarkdown>
                                         </StyledTableCell>
                                     ))}

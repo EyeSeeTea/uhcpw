@@ -261,6 +261,7 @@ function invertDataByCategoryId(
         const cells = rows.map(row => ({
             type: row[index]?.type || PolicyExplorerCellType.DATA,
             value: row[index]?.value || "",
+            references: row[index]?.references || "",
         }));
         return [...cells];
     });
@@ -305,6 +306,7 @@ function invertDataOfCategoriesIds(
             const cells = rows.map(row => ({
                 type: row[index]?.type || PolicyExplorerCellType.DATA,
                 value: row[index]?.value || "",
+                references: row[index]?.references || "",
             }));
             return [...cells];
         });

@@ -68,55 +68,59 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                     <EmptyContent />
                 )}
 
-                {data?.generalInfo.map(info => {
-                    return (
-                        <div key={info.country} ref={referencesRef}>
-                            <GeneralDataContainer>
-                                <GeneralRow>
-                                    <CreditsText style={{ fontWeight: 500 }}>{`${info.country} (2023)`}</CreditsText>
-                                </GeneralRow>
+                <div ref={referencesRef}>
+                    {data?.generalInfo.map(info => {
+                        return (
+                            <div key={info.country}>
+                                <GeneralDataContainer>
+                                    <GeneralRow>
+                                        <CreditsText
+                                            style={{ fontWeight: 500 }}
+                                        >{`${info.country} (2023)`}</CreditsText>
+                                    </GeneralRow>
 
-                                <GeneralRow>
-                                    <CreditsText>{i18n.t("Source: ")}</CreditsText>
-                                    &nbsp;
-                                    <Link
-                                        href={info.source}
-                                        style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                    >
-                                        {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
-                                    </Link>
-                                </GeneralRow>
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Source: ")}</CreditsText>
+                                        &nbsp;
+                                        <Link
+                                            href={info.source}
+                                            style={{ fontSize: "16px", color: colors.accentPrimary }}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
+                                        </Link>
+                                    </GeneralRow>
 
-                                <GeneralRow>
-                                    <CreditsText>{i18n.t("Country experts: ")}</CreditsText>
-                                    &nbsp;
-                                    <CreditsText>{info.countryExperts}</CreditsText>
-                                </GeneralRow>
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Country experts: ")}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{info.countryExperts}</CreditsText>
+                                    </GeneralRow>
 
-                                <GeneralRow>
-                                    <CreditsText>{i18n.t("Editors: ")}</CreditsText>
-                                    &nbsp;
-                                    <CreditsText>{info.editors}</CreditsText>
-                                </GeneralRow>
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Editors: ")}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{info.editors}</CreditsText>
+                                    </GeneralRow>
 
-                                <GeneralRow>
-                                    <CreditsText>{i18n.t("Last updated: ")}</CreditsText>
-                                    &nbsp;
-                                    <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
-                                </GeneralRow>
-                            </GeneralDataContainer>
-                            <ReferencesContainer>
-                                {data?.references
-                                    ?.find(references => references.country === info.country)
-                                    ?.references?.map(reference => (
-                                        <ReferenceText key={reference}>{reference}</ReferenceText>
-                                    ))}
-                            </ReferencesContainer>
-                        </div>
-                    );
-                })}
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Last updated: ")}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
+                                    </GeneralRow>
+                                </GeneralDataContainer>
+                                <ReferencesContainer>
+                                    {data?.references
+                                        ?.find(references => references.country === info.country)
+                                        ?.references?.map(reference => (
+                                            <ReferenceText key={reference}>{reference}</ReferenceText>
+                                        ))}
+                                </ReferencesContainer>
+                            </div>
+                        );
+                    })}
+                </div>
             </MainSection>
         </Layout>
     );

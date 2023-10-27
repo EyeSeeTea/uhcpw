@@ -12,6 +12,7 @@ export enum PolicyExplorerCellType {
 export type PolicyExplorerCell = {
     type: PolicyExplorerCellType;
     value: string;
+    references?: string;
 };
 
 export type PolicyExplorerGeneralInfo = {
