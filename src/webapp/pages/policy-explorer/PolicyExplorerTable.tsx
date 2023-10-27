@@ -80,7 +80,11 @@ export const PolicyExplorerTable = React.memo(
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
                                     {row.map((cell, i) => (
                                         <StyledTableCell key={`${category.value}_${i}_${cell.value}`} type={cell.type}>
-                                            <ReactMarkdown>{cell.value}</ReactMarkdown>
+                                            {cell.references ? (
+                                                <ReactMarkdown>{`${cell.value}\n\n${cell.references}`}</ReactMarkdown>
+                                            ) : (
+                                                <ReactMarkdown>{cell.value}</ReactMarkdown>
+                                            )}
                                         </StyledTableCell>
                                     ))}
                                 </TableRow>
