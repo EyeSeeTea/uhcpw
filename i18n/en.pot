@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-09-03T14:54:56.177Z\n"
-"PO-Revision-Date: 2023-09-03T14:54:56.177Z\n"
+"POT-Creation-Date: 2023-10-27T17:16:15.204Z\n"
+"PO-Revision-Date: 2023-10-27T17:16:15.205Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -78,18 +78,6 @@ msgid "Dashboard"
 msgstr ""
 
 msgid "In detail"
-msgstr ""
-
-msgid "Financial hardship (2018)"
-msgstr ""
-
-msgid "Unmet need (2022)"
-msgstr ""
-
-msgid "1% of people report unmet need for health care"
-msgstr ""
-
-msgid "2% of people report unmet need for dental care"
 msgstr ""
 
 msgid ""
@@ -408,6 +396,9 @@ msgid "All"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"
+msgstr ""
+
+msgid "No data found"
 msgstr ""
 
 msgid "Switch row/column"
