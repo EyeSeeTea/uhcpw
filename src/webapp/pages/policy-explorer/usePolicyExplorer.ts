@@ -177,17 +177,40 @@ export function usePolicyExplorer({
 
     const disabledCategories = useMemo(() => {
         const isMoreThanOneCountrySelected = countryFilter?.selected?.length && countryFilter?.selected?.length > 1;
-        return isMoreThanOneCountrySelected ? CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION : [];
-    }, [countryFilter?.selected?.length]);
+        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
+            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
+            : [];
+
+        const normalCategories = categoryFilters
+            .map(({ value }) => value)
+            .filter(category => !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category));
+
+        const isSomeCategoryWithSpecialVisualizationSelected = CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.some(
+            category => selectedCategories.includes(category)
+        );
+
+        if (isMoreThanOneCountrySelected && isSomeCategoryWithSpecialVisualizationSelected) {
+            return normalCategories;
+        }
+
+        const isSomeNormalCategorySelected = normalCategories.some(category => selectedCategories.includes(category));
+
+        if (isMoreThanOneCountrySelected && isSomeNormalCategorySelected) {
+            return CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION;
+        }
+        return [];
+    }, [categoryFilters, countryFilter?.selected?.length, selectedCategoriesWithSubcategoriesFilter]);
 
     const disabledCountries = useMemo(() => {
         const selectedCategories = selectedCategoriesWithSubcategoriesFilter
             ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
             : [];
 
+        const allCategories = categoryFilters.map(({ value }) => value);
         if (
-            isOneCountrySelectedAndACategoryWithSpecialCountryVisualization(
+            isOneCountrySelectedAndAllCategoriesSelected(
                 countryFilter?.selected?.length,
+                allCategories,
                 selectedCategories
             )
         ) {
@@ -197,7 +220,7 @@ export function usePolicyExplorer({
             return restCountries;
         }
         return [];
-    }, [countryFilter.options, countryFilter?.selected, selectedCategoriesWithSubcategoriesFilter]);
+    }, [categoryFilters, countryFilter.options, countryFilter?.selected, selectedCategoriesWithSubcategoriesFilter]);
 
     return {
         filters: {
@@ -315,13 +338,12 @@ function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): Categ
     }));
 }
 
-function isOneCountrySelectedAndACategoryWithSpecialCountryVisualization(
+function isOneCountrySelectedAndAllCategoriesSelected(
     totalCountrySelected: number | undefined,
+    allCategories: string[],
     selectedCategories: string[]
 ) {
-    const hasCategoryWithCountryVisualizationSeparated = selectedCategories.some(category =>
-        CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category)
-    );
+    const areAllCategoriesSelected = allCategories.every(category => selectedCategories.includes(category));
 
-    return totalCountrySelected && totalCountrySelected === 1 && hasCategoryWithCountryVisualizationSeparated;
+    return totalCountrySelected && totalCountrySelected === 1 && areAllCategoriesSelected;
 }
