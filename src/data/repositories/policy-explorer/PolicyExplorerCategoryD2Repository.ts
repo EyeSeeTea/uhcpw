@@ -74,7 +74,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                 )
                 .map(subcategory => ({
                     id: subcategory.id,
-                    name: subcategory.formName,
+                    name: subcategory.description || subcategory.formName,
                 })) || []
         );
     }
@@ -84,6 +84,7 @@ const dataElementsFields = {
     id: true,
     formName: true,
     valueType: true,
+    description: true,
 } as const;
 
 const dataSetFields = {
