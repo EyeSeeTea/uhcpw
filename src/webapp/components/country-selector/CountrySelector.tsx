@@ -127,7 +127,8 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     placeholder={placeholder}
                     role={"textbox"}
                     fullWidth={fullWidth}
-                    disabled
+                    value={""}
+                    disabled={disabled}
                     inputProps={{
                         "aria-label": "Select countries",
                     }}
@@ -253,5 +254,8 @@ const StyledDropdownTextField = styled(DropdownTextField)`
     .MuiInputBase-root {
         border-radius: 20px !important;
         color: black;
+    }
+    .MuiInputBase-input {
+        caret-color: transparent;
     }
 `;
