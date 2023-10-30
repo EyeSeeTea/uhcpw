@@ -22,7 +22,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                 <Typography variant="h4">{i18n.t("Resources")}</Typography>
             </TitleContainer>
             <SearchContainer>
-                <SearchInput value={""} />
+                <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
             </SearchContainer>
             <SelectsContainer maxWidth="xl">
                 <Grid container>
