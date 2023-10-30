@@ -120,55 +120,53 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
 
         return (
             <>
-                <ClickCaptureWrapper onClick={handleClick}>
-                    <StyledDropdownTextField
-                        label={label}
-                        aria-label="Country selector"
-                        onClick={handleClick}
-                        placeholder={placeholder}
-                        role={"textbox"}
-                        fullWidth={fullWidth}
-                        disabled
-                        inputProps={{
-                            "aria-label": "Select countries",
-                        }}
-                        InputProps={{
-                            startAdornment: (
-                                <SelectedContainer>
-                                    {selectedCountries.map(country => {
-                                        return (
-                                            <SelectedChip
-                                                key={country.id}
-                                                label={country.name}
-                                                onDelete={() => handleSelectedChange(country.id, false)}
-                                                deleteIcon={<CloseIcon fontSize="small" />}
-                                            />
-                                        );
-                                    })}
-                                </SelectedContainer>
-                            ),
-                            endAdornment: (
-                                <InputAdornment
-                                    position="start"
-                                    aria-label="expand"
-                                    style={{
-                                        top: "calc(50% - 14px)",
-                                        right: 0,
-                                        position: "absolute",
-                                        height: "24px",
-                                    }}
-                                >
-                                    {expanded ? (
-                                        <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                                    ) : (
-                                        <ArrowDropDownIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                                    )}
-                                </InputAdornment>
-                            ),
-                        }}
-                        $isDisabled={disabled}
-                    />
-                </ClickCaptureWrapper>
+                <StyledDropdownTextField
+                    label={label}
+                    aria-label="Country selector"
+                    onClick={handleClick}
+                    placeholder={placeholder}
+                    role={"textbox"}
+                    fullWidth={fullWidth}
+                    disabled
+                    inputProps={{
+                        "aria-label": "Select countries",
+                    }}
+                    InputProps={{
+                        startAdornment: (
+                            <SelectedContainer>
+                                {selectedCountries.map(country => {
+                                    return (
+                                        <SelectedChip
+                                            key={country.id}
+                                            label={country.name}
+                                            onDelete={() => handleSelectedChange(country.id, false)}
+                                            deleteIcon={<CloseIcon fontSize="small" />}
+                                        />
+                                    );
+                                })}
+                            </SelectedContainer>
+                        ),
+                        endAdornment: (
+                            <InputAdornment
+                                position="start"
+                                aria-label="expand"
+                                style={{
+                                    top: "calc(50% - 14px)",
+                                    right: 0,
+                                    position: "absolute",
+                                    height: "24px",
+                                }}
+                            >
+                                {expanded ? (
+                                    <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
+                                ) : (
+                                    <ArrowDropDownIcon htmlColor="black" style={{ cursor: "pointer" }} />
+                                )}
+                            </InputAdornment>
+                        ),
+                    }}
+                    $isDisabled={disabled}
+                />
                 <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}
                     id="country-selector"
@@ -249,10 +247,6 @@ const StyledMenu = styled(Menu)`
     .MuiInputBase-root {
         border-radius: 20px;
     }
-`;
-
-const ClickCaptureWrapper = styled.div`
-    cursor: pointer;
 `;
 
 const StyledDropdownTextField = styled(DropdownTextField)`
