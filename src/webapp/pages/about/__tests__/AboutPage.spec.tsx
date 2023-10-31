@@ -230,8 +230,6 @@ async function selectCountry(value: string) {
 
     await userEvent.click(countrySelector);
 
-    await userEvent.click(await screen.findByText("All countries"));
-
     const treeitem = await screen.findByRole("treeitem", { expanded: true });
     const treeScope = within(treeitem);
 
