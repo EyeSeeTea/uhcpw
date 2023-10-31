@@ -45,7 +45,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
-        const [expandedParents, setExpandedParents] = React.useState<string[]>([]);
+        const [expandedParents, setExpandedParents] = React.useState<string[]>(["all"]);
 
         const handleClick = useCallback(
             (event: React.MouseEvent<HTMLInputElement>) => {
