@@ -20,7 +20,10 @@ export class TableBuilderDefault implements TableBuilder {
         return [
             { type: PolicyExplorerCellType.HEADER, value: "Country" },
             { type: PolicyExplorerCellType.HEADER, value: "Period" },
-            ...dataElementsSection.map(de => ({ type: PolicyExplorerCellType.HEADER, value: de.formName })),
+            ...dataElementsSection.map(de => ({
+                type: PolicyExplorerCellType.HEADER,
+                value: de.description || de.formName,
+            })),
         ];
     }
 

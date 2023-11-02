@@ -295,7 +295,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 }
 
 const dataSetFields = {
-    sections: { id: true, displayName: true, dataElements: { id: true, formName: true, valueType: true } },
+    sections: {
+        id: true,
+        displayName: true,
+        dataElements: { id: true, formName: true, valueType: true, description: true },
+    },
 } as const;
 
 export type D2DataSet = MetadataPick<{
