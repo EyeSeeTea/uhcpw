@@ -38,7 +38,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                         <>
                             <Grid item md={6} xs={12}>
                                 <ResourceGroup
-                                    title={i18n.t("Country Analysis")}
+                                    title={i18n.t("Country analysis")}
                                     seeAllUrl={"/resources/country-analysis"}
                                 >
                                     {resources.countryAnalysisByCountry.map(country => {
@@ -63,7 +63,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                             </Grid>
                             <Grid item md={6} xs={12}>
                                 <ResourceGroup
-                                    title={i18n.t("Comparative Analysis")}
+                                    title={i18n.t("Comparative analysis")}
                                     seeAllUrl={"/resources/comparative-analysis"}
                                 >
                                     {resources.comparativeAnalysis.map(comparativeItem => {

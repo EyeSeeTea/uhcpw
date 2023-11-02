@@ -59,8 +59,8 @@ describe("ResourcesPage", () => {
 
         await verifyElementsInGroup("News", 1);
         await verifyElementsInGroup("Multimedia", 1);
-        await verifyElementsInGroup("Country Analysis", 1);
-        await verifyElementsInGroup("Comparative Analysis", 4);
+        await verifyElementsInGroup("Country analysis", 1);
+        await verifyElementsInGroup("Comparative analysis", 4);
     });
     it("should render enabled category filter", async () => {
         renderPage();

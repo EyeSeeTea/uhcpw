@@ -34,7 +34,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
 
         return (
             <Column>
-                <a href={links[0]?.url} target="_blank" rel="noreferrer">
+                <a href={links[0]?.url} target="_blank" rel="noopener noreferrer">
                     <Cover width={"100%"} src={image} alt={title} />
                 </a>
 
@@ -50,7 +50,12 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
                             {links.map((link, index) => {
                                 return (
                                     <React.Fragment key={link.url}>
-                                        <a href={link.url} style={{ fontSize: "16px" }}>
+                                        <a
+                                            href={link.url}
+                                            style={{ fontSize: "16px" }}
+                                            target="_blank"
+                                            rel="oopener noreferrer"
+                                        >
                                             {link.language}
                                         </a>
                                         {index < links.length - 1 && <StyledDivider orientation="vertical" flexItem />}

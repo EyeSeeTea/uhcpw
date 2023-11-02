@@ -19,7 +19,7 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(({ title, 
     return (
         <Container aria-label={title}>
             <Row>
-                <Typography variant="h5">{title}</Typography>
+                <Title variant="h5">{title}</Title>
                 <Box width={2} />
                 <Fab
                     aria-label={`go to ${title}`}
@@ -46,4 +46,11 @@ const Row = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+`;
+
+const Title = styled(Typography)`
+    text-transform: lowercase;
+    :first-letter {
+        text-transform: uppercase;
+    }
 `;
