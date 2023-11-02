@@ -1,6 +1,7 @@
 import React from "react";
 import { Dialog, Button, DialogContent, DialogTitle, Typography } from "@material-ui/core";
 import styled from "styled-components";
+import i18n from "../../../locales";
 
 export default function FeedbackDialog() {
     const [open, setOpen] = React.useState(false);
@@ -24,11 +25,12 @@ export default function FeedbackDialog() {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Send feedback</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{i18n.t("Send feedback")}</DialogTitle>
                 <StyledDialogContent>
                     <Typography component={"p"} id="alert-dialog-description">
-                        We are eager to hear how you use UHCW and how we can improve the platform for all its users. To
-                        contact the team, uhcwatch@who.int
+                        {i18n.t(
+                            "We are eager to hear how you use UHCW and how we can improve the platform for all its users. To contact the team, uhcwatch@who.int"
+                        )}
                     </Typography>
                 </StyledDialogContent>
             </Dialog>
