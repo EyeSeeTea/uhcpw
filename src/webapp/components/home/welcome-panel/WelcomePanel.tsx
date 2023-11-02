@@ -15,18 +15,20 @@ export const WelcomePanel: React.FC = () => {
             <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
                 {i18n.t("UHC watch")}
             </Typography>
-            <Typography paragraph>
-                {i18n.t("Tracking progress on affordable access to health care in Europe and Central Asia")}
-            </Typography>
-            <Typography paragraph>
-                {i18n.t(
-                    "Affordable access to health care - financial protection - is at the heart of universal health coverage (UHC)"
-                )}
-            </Typography>
-            <Typography paragraph>
-                {i18n.t("UHC means everyone can use quality health care without financial hardship")}{" "}
-            </Typography>
-            <UmbrellaItemsContiner>
+            <ParagraphContainer>
+                <Typography paragraph>
+                    {i18n.t("Tracking progress on affordable access to health care in Europe and Central Asia")}
+                </Typography>
+                <Typography paragraph>
+                    {i18n.t(
+                        "Affordable access to health care - financial protection - is at the heart of universal health coverage (UHC)"
+                    )}
+                </Typography>
+                <Typography paragraph>
+                    {i18n.t("UHC means everyone can use quality health care without financial hardship")}{" "}
+                </Typography>
+            </ParagraphContainer>
+            <UmbrellaItemsContainer>
                 <UmbrellaItem>
                     <Marker src={weakIcon} />
                     {i18n.t("Weaker financial protection")}
@@ -39,7 +41,7 @@ export const WelcomePanel: React.FC = () => {
                     <Marker src={strongIcon} />
                     <span>{i18n.t("Stronger financial protection")}</span>
                 </UmbrellaItem>
-            </UmbrellaItemsContiner>
+            </UmbrellaItemsContainer>
             <VideoLink href={youtubeVideoLink} target="_blank" rel="noreferrer">
                 <PlayCircleFilledIcon style={{ color: "white" }} />
                 <Typography>{i18n.t("UHC watch")}</Typography>
@@ -54,15 +56,18 @@ const Container = styled.div`
     padding: 16px;
 `;
 
-const UmbrellaItemsContiner = styled.div`
+const ParagraphContainer = styled.div`
+    max-width: 46ch;
+`;
+
+const UmbrellaItemsContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin: 48px 0px 35px;
+    justify-content: space-between;
+    margin-block: 48px 35px;
 `;
 
 const UmbrellaItem = styled.div`
-    max-width: 170px;
+    max-width: 150px;
     display: flex;
     flex-direction: column;
     text-align: center;

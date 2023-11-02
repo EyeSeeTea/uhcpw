@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
-import React from "react";
+import React, { RefObject, useCallback } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
@@ -16,10 +16,21 @@ interface PolicyExplorerTableProps {
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;
     onDownload: (categoryId: string) => void;
+    referencesRef: RefObject<HTMLDivElement>;
 }
 
+const EMPTY_URL = "/";
+
 export const PolicyExplorerTable = React.memo(
-    ({ category, rows, onSwitchRowColumn, onDownload, dataOrientation }: PolicyExplorerTableProps) => {
+    ({ category, rows, onSwitchRowColumn, onDownload, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
+        const handleClickEmptyUrl = useCallback(
+            event => {
+                event.preventDefault();
+                referencesRef.current?.scrollIntoView({ behavior: "smooth" });
+            },
+            [referencesRef]
+        );
+
         return !rows?.length || !dataOrientation ? (
             category && (
                 <NoDataContainer>
@@ -80,11 +91,23 @@ export const PolicyExplorerTable = React.memo(
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
                                     {row.map((cell, i) => (
                                         <StyledTableCell key={`${category.value}_${i}_${cell.value}`} type={cell.type}>
-                                            {cell.references ? (
-                                                <ReactMarkdown>{`${cell.value}\n\n${cell.references}`}</ReactMarkdown>
-                                            ) : (
-                                                <ReactMarkdown>{cell.value}</ReactMarkdown>
-                                            )}
+                                            <ReactMarkdown
+                                                components={{
+                                                    a: ({ href, children, ...props }) => {
+                                                        return href === EMPTY_URL ? (
+                                                            <a href={href} {...props} onClick={handleClickEmptyUrl}>
+                                                                {children}
+                                                            </a>
+                                                        ) : (
+                                                            <a href={href} {...props}>
+                                                                {children}
+                                                            </a>
+                                                        );
+                                                    },
+                                                }}
+                                            >
+                                                {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
+                                            </ReactMarkdown>
                                         </StyledTableCell>
                                     ))}
                                 </TableRow>

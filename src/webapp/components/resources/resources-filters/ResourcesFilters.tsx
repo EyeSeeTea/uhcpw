@@ -20,7 +20,6 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
     ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
         const history = useHistory();
         const location = useLocation();
-
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
                 if (value) {

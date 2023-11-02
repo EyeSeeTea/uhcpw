@@ -67,6 +67,26 @@ export const resourceDataElements: Record<string, string> = {
     relatedCountry38: "yhFTBkdmwv0",
     relatedCountry39: "qQRNZQTY9VN",
     relatedCountry40: "Uyvm6flgZiw",
+    relatedCountry41: "ILEnJeyeLoq",
+    relatedCountry42: "xqIqiIeXTTn",
+    relatedCountry43: "Z3dx2oHFuX0",
+    relatedCountry44: "JznDPih1PSU",
+    relatedCountry45: "n7TlGYb7dym",
+    relatedCountry46: "QJT7OLzr03U",
+    relatedCountry47: "ECnmaEiTUvR",
+    relatedCountry48: "cU3KtOc1ITE",
+    relatedCountry49: "HuEm6ea7BOF",
+    relatedCountry50: "EHvTTWUmkol",
+    relatedCountry51: "YxV0WQp3VAl",
+    relatedCountry52: "DdN4ILfxL3C",
+    relatedCountry53: "lNV1ALwvpIw",
+    relatedCountry54: "XJwfD9RRdjD",
+    relatedCountry55: "iT9uyIe9YzS",
+    relatedCountry56: "WwRZaRKfWRd",
+    relatedCountry57: "bxQaM4K8tNl",
+    relatedCountry58: "CrBYPANirHP",
+    relatedCountry59: "fol5rrUU53I",
+    relatedCountry60: "rk5OFNGLSdK",
     favourite: "aP3GIoQRvDt",
     favouriteOrder: "G9DVX5SjoA2",
     favouriteSection: "XxXz056LMCO",
@@ -361,6 +381,46 @@ export class ResourceD2Repository implements ResourceRepository {
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry39)?.value || "";
         const relatedCountry40 =
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry40)?.value || "";
+        const relatedCountry41 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry41)?.value || "";
+        const relatedCountry42 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry42)?.value || "";
+        const relatedCountry43 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry43)?.value || "";
+        const relatedCountry44 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry44)?.value || "";
+        const relatedCountry45 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry45)?.value || "";
+        const relatedCountry46 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry46)?.value || "";
+        const relatedCountry47 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry47)?.value || "";
+        const relatedCountry48 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry48)?.value || "";
+        const relatedCountry49 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry49)?.value || "";
+        const relatedCountry50 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry50)?.value || "";
+        const relatedCountry51 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry51)?.value || "";
+        const relatedCountry52 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry52)?.value || "";
+        const relatedCountry53 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry53)?.value || "";
+        const relatedCountry54 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry54)?.value || "";
+        const relatedCountry55 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry55)?.value || "";
+        const relatedCountry56 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry56)?.value || "";
+        const relatedCountry57 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry57)?.value || "";
+        const relatedCountry58 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry58)?.value || "";
+        const relatedCountry59 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry59)?.value || "";
+        const relatedCountry60 =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry60)?.value || "";
 
         return _([
             relatedCountry1,
@@ -403,6 +463,26 @@ export class ResourceD2Repository implements ResourceRepository {
             relatedCountry38,
             relatedCountry39,
             relatedCountry40,
+            relatedCountry41,
+            relatedCountry42,
+            relatedCountry43,
+            relatedCountry44,
+            relatedCountry45,
+            relatedCountry46,
+            relatedCountry47,
+            relatedCountry48,
+            relatedCountry49,
+            relatedCountry50,
+            relatedCountry51,
+            relatedCountry52,
+            relatedCountry53,
+            relatedCountry54,
+            relatedCountry55,
+            relatedCountry56,
+            relatedCountry57,
+            relatedCountry58,
+            relatedCountry59,
+            relatedCountry60,
         ])
             .compact()
             .value();

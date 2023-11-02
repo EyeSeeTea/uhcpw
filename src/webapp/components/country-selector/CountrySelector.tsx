@@ -45,7 +45,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
-        const [expandedParents, setExpandedParents] = React.useState<string[]>([]);
+        const [expandedParents, setExpandedParents] = React.useState<string[]>(["all"]);
 
         const handleClick = useCallback(
             (event: React.MouseEvent<HTMLInputElement>) => {
@@ -122,12 +122,13 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             <>
                 <StyledDropdownTextField
                     label={label}
-                    onClick={handleClick}
                     aria-label="Country selector"
+                    onClick={handleClick}
                     placeholder={placeholder}
                     role={"textbox"}
-                    disabled
                     fullWidth={fullWidth}
+                    value={""}
+                    disabled={disabled}
                     inputProps={{
                         "aria-label": "Select countries",
                     }}
@@ -150,7 +151,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             <InputAdornment
                                 position="start"
                                 aria-label="expand"
-                                style={{ top: "calc(50% - 14px)", right: 0, position: "absolute", height: " 24px" }}
+                                style={{
+                                    top: "calc(50% - 14px)",
+                                    right: 0,
+                                    position: "absolute",
+                                    height: "24px",
+                                }}
                             >
                                 {expanded ? (
                                     <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
@@ -161,7 +167,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         ),
                     }}
                     $isDisabled={disabled}
-                ></StyledDropdownTextField>
+                />
                 <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}
                     id="country-selector"
@@ -248,5 +254,8 @@ const StyledDropdownTextField = styled(DropdownTextField)`
     .MuiInputBase-root {
         border-radius: 20px !important;
         color: black;
+    }
+    .MuiInputBase-input {
+        caret-color: transparent;
     }
 `;
