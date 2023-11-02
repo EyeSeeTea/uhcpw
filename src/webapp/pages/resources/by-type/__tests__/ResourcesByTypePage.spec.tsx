@@ -459,7 +459,6 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
 
     userEvent.click(countrySelector);
 
-    userEvent.click(await screen.findByText("All countries"));
     userEvent.click(await screen.findByRole("checkbox", { name: value }));
 
     userEvent.keyboard("{Escape}");
