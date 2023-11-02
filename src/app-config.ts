@@ -1,24 +1,9 @@
-import { FeedbackOptions } from "@eyeseetea/feedback-component";
-
 export const appConfig: AppConfig = {
     appKey: "uhcpw-app",
     gaTagId: "G-NMLFDE4DY7",
-    feedback: {
-        repositories: {
-            clickUp: {
-                listId: "176458462",
-                title: "[User feedback] {title}",
-                body: "## dhis2\n\nUsername: {username}\n\n{body}",
-            },
-        },
-        layoutOptions: {
-            buttonPosition: "bottom-end",
-        },
-    },
 };
 
 export interface AppConfig {
     appKey: string;
     gaTagId: string;
-    feedback?: FeedbackOptions;
 }

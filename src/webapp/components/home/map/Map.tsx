@@ -7,7 +7,6 @@ import { CountryPanel } from "../country-panel/CountryPanel";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { Fab, Tooltip } from "@material-ui/core";
 import { Add as ZoomInIcon, Remove as ZoomOutIcon } from "@material-ui/icons";
-import i18n from "@eyeseetea/feedback-component/locales";
 import weakHoverPin from "../../../assets/map/pin-weak-hover.svg";
 import weakPin from "../../../assets/map/pin-weak.svg";
 import strongHoverPin from "../../../assets/map/pin-strong-hover.svg";
@@ -16,6 +15,7 @@ import gapsHoverPin from "../../../assets/map/pin-gaps-hover.svg";
 import gapsPin from "../../../assets/map/pin-gaps.svg";
 
 import { MapState } from "./MapState";
+import i18n from "../../../../locales";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 

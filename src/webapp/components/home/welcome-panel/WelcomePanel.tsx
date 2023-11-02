@@ -1,11 +1,11 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
-import i18n from "@eyeseetea/feedback-component/locales";
 import styled from "styled-components";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
+import i18n from "../../../../locales";
 
 const youtubeVideoLink = "https://www.youtube.com/watch?v=JTJmji04Iy4";
 
