@@ -367,7 +367,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-msgid "Regions"
+msgid "Regional report"
 msgstr ""
 
 msgid "Back"
@@ -413,10 +413,4 @@ msgid "Switch row/column"
 msgstr ""
 
 msgid "Latest avalaible year"
-msgstr ""
-
-msgid "Country Analysis"
-msgstr ""
-
-msgid "Comparative Analysis"
 msgstr ""

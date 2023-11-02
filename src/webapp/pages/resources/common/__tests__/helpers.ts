@@ -5,7 +5,6 @@ import {
     News,
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
-import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
 import { givenAThemes } from "../../../../../utils/tests-ui";
 
 export function createComparativeAnalysisResources(count: number): ComparativeAnalysis[] {
