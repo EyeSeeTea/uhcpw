@@ -13,10 +13,10 @@ import { apiToFuture } from "../../../utils/futures";
 import { exportToCSV } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
     CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
-} from "./PolicyExplorerCategoryD2Repository";
+} from "./builders/TableBuilderChangesInCoveragePolicy";
+import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "./PolicyExplorerCategoryD2Repository";
 
 export const generalDataElements: Record<string, string> = {
     source: "pDEHTRpRL8X",
@@ -155,11 +155,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
                 const tableBuilder = getTableBuilder(policyExplorerCategoryId);
 
-                const columns = tableBuilder.buildColumns(
+                const columns = tableBuilder.buildColumns({
                     policyExplorerCategoryId,
                     policyExplorerSubcategoriesIds,
-                    dataSet
-                );
+                    dataSet,
+                });
 
                 const countriesAlreadyInRows: string[] = [];
 

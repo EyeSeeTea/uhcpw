@@ -176,9 +176,11 @@ const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = 
 };
 
 export class TableBuilderByTypeOfHealthcare implements TableBuilder {
-    constructor(private policyExplorerCategoryId: string) {}
-
-    buildColumns(policyExplorerCategoryId: string, policyExplorerSubcategoriesIds: string[]): PolicyExplorerCell[] {
+    buildColumns(params: {
+        policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds: string[];
+    }): PolicyExplorerCell[] {
+        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds } = params;
         const columnsDataElementSectionIds =
             policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES
                 ? USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS
