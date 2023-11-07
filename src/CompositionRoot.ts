@@ -26,6 +26,8 @@ import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAna
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
 import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
 import { PersonD2Repository } from "./data/repositories/PersonD2Repository";
+import { MethodD2Repository } from "./data/repositories/MethodD2Repository";
+import { GetMethodsUseCase } from "./domain/usecases/GetMethodsUseCase";
 
 function initializeRepositories(api: D2Api, instance: Instance) {
     return {
@@ -41,6 +43,7 @@ function initializeRepositories(api: D2Api, instance: Instance) {
         resourceCategory: new ResourceCategoryD2Repository(api),
         resourceTheme: new ResourceThemeD2Repository(api),
         person: new PersonD2Repository(api),
+        method: new MethodD2Repository(api),
     };
 }
 
@@ -77,6 +80,9 @@ export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesT
         },
         about: {
             getPersons: new GetPersonsUseCase(repositories.person),
+        },
+        method: {
+            get: new GetMethodsUseCase(repositories.method),
         },
     };
 }
