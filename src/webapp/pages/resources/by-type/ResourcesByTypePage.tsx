@@ -38,7 +38,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{title}</Typography>
+                <Title variant="h4">{title}</Title>
             </TitleContainer>
             <SearchContainer>
                 <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
@@ -99,6 +99,13 @@ const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
     padding: 32px 64px;
+`;
+
+const Title = styled(Typography)`
+    text-transform: lowercase;
+    :first-letter {
+        text-transform: uppercase;
+    }
 `;
 
 const SelectsContainer = styled(Container)`
