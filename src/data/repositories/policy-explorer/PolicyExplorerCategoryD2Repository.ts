@@ -7,6 +7,10 @@ import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/p
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+import {
+    CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
+    CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
+} from "./builders/TableBuilderChangesInCoveragePolicy";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
     UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
@@ -65,18 +69,43 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     }
 
     private getSubcategories(sectionId: string, dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
-        return (
-            dataElements
-                ?.filter(
-                    de =>
-                        de.valueType === "LONG_TEXT" ||
-                        (sectionsWithValueTypeText.includes(sectionId) && de.valueType === "TEXT")
-                )
-                .map(subcategory => ({
-                    id: subcategory.id,
-                    name: subcategory.formName,
-                })) || []
+        const subcategories = dataElements
+            ?.filter(
+                de =>
+                    de.valueType === "LONG_TEXT" ||
+                    (sectionsWithValueTypeText.includes(sectionId) && de.valueType === "TEXT")
+            )
+            .map(subcategory => {
+                return sectionId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019 ||
+                    sectionId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020
+                    ? this.getFirstSubcategoryOfGroup(sectionId, subcategory)
+                    : {
+                          id: subcategory.id,
+                          name: subcategory.description || subcategory.formName,
+                      };
+            })
+            .filter(Boolean);
+        return (subcategories as PolicyExplorerSubcategory[]) || [];
+    }
+
+    private getFirstSubcategoryOfGroup(
+        sectionId: string,
+        subcategory: D2DataElements
+    ): PolicyExplorerSubcategory | undefined {
+        const changesInCoveragePolicyGroupedSubcategories =
+            sectionId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
+                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
+                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
+
+        const subcategoryFound = Object.values(changesInCoveragePolicyGroupedSubcategories).some(
+            subcategoryIds => subcategoryIds.includes(subcategory.id) && subcategoryIds[0] === subcategory.id
         );
+        if (subcategoryFound) {
+            return {
+                id: subcategory.id,
+                name: subcategory.description || subcategory.formName,
+            };
+        }
     }
 }
 
@@ -84,6 +113,7 @@ const dataElementsFields = {
     id: true,
     formName: true,
     valueType: true,
+    description: true,
 } as const;
 
 const dataSetFields = {

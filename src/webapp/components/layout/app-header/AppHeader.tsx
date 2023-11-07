@@ -164,28 +164,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                 );
                             })}
                         </Menu>
-                        <MenuButton
-                            id="regions"
-                            aria-controls="regions"
-                            aria-haspopup="true"
-                            onClick={handleParentMenuClick}
-                            endIcon={anchorEl?.id === "regions" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                        >
-                            {i18n.t("Regions")}
+                        <MenuButton id="regions" aria-controls="regions" aria-haspopup="true" disabled>
+                            {i18n.t("Regional report")}
                         </MenuButton>
-                        <MenuContainer
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={anchorEl?.id === "regions"}
-                            onClose={handleClose}
-                            getContentAnchorEl={null}
-                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                            transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        >
-                            <ComingSoonTagContainer>
-                                <Tag>{i18n.t("Coming soon")}</Tag>
-                            </ComingSoonTagContainer>
-                        </MenuContainer>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}

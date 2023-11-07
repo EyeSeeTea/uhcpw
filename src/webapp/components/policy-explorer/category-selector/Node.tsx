@@ -20,7 +20,7 @@ export const Node: React.FC<NodeProps> = ({ nodeId, name, selected, onSelectedCh
         <StyledTreeItem
             nodeId={nodeId}
             label={
-                <Row>
+                <Row onClick={e => e.stopPropagation()}>
                     {!disabled && (
                         <Checkbox
                             color="primary"
