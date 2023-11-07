@@ -46,7 +46,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Primary Care"
+                    "value": "Primary care"
                 },
                 {
                     "type": "DATA",
@@ -80,7 +80,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Specialist Visits"
+                    "value": "Specialist visits"
                 },
                 {
                     "type": "DATA",
@@ -114,7 +114,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Emergency Visits"
+                    "value": "Emergency visits"
                 },
                 {
                     "type": "DATA",
@@ -148,7 +148,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Outpatient Medicines"
+                    "value": "Outpatient medicines"
                 },
                 {
                     "type": "DATA",
@@ -182,7 +182,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Inpatient Medicines"
+                    "value": "Inpatient medicines"
                 },
                 {
                     "type": "DATA",
@@ -216,7 +216,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Medical Products"
+                    "value": "Medical products"
                 },
                 {
                     "type": "DATA",
@@ -250,7 +250,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Diagnostics Tests"
+                    "value": "Diagnostics tests"
                 },
                 {
                     "type": "DATA",
@@ -284,7 +284,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Dental Visits"
+                    "value": "Dental visits"
                 },
                 {
                     "type": "DATA",
@@ -318,7 +318,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Dental Care Treatment"
+                    "value": "Dental care treatment"
                 },
                 {
                     "type": "DATA",
@@ -352,7 +352,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Inpatient Care"
+                    "value": "Inpatient care"
                 },
                 {
                     "type": "DATA",
