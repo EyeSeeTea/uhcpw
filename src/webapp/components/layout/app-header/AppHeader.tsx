@@ -186,28 +186,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                 <Tag>{i18n.t("Coming soon")}</Tag>
                             </ComingSoonTagContainer>
                         </MenuContainer>
-                        <MenuButton
-                            id="methods"
-                            aria-controls="methods"
-                            aria-haspopup="true"
-                            onClick={handleParentMenuClick}
-                            endIcon={anchorEl?.id === "methods" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/methods"}
                         >
                             {i18n.t("Methods")}
-                        </MenuButton>
-                        <MenuContainer
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={anchorEl?.id === "methods"}
-                            onClose={handleClose}
-                            getContentAnchorEl={null}
-                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                            transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        >
-                            <ComingSoonTagContainer>
-                                <Tag>{i18n.t("Coming soon")}</Tag>
-                            </ComingSoonTagContainer>
-                        </MenuContainer>
+                        </Button>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}

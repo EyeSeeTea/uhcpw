@@ -7,6 +7,7 @@ import { PolicyExplorerPage } from "./policy-explorer/PolicyExplorerPage";
 import { ResourcesByTypePage } from "./resources/by-type/ResourcesByTypePage";
 import { ResourcesPage } from "./resources/landing/ResourcesPage";
 import { CountryPage } from "./country/CountryPage";
+import { MethodsPage } from "./methods/MethodsPage";
 
 const ScrollToTop = (): JSX.Element | null => {
     const { pathname } = useLocation();
@@ -35,6 +36,7 @@ export const Router: React.FC = React.memo(() => {
                 />
                 <Route path="/country-page" render={() => <CountryPage />} />
                 <Route path="/resources" render={() => <ResourcesPage />} />
+                <Route path="/methods" render={() => <MethodsPage />} />
 
                 {/* Default route */}
                 <Route render={() => <HomePage />} />
