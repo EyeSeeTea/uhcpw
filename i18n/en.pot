@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-02T08:12:14.956Z\n"
-"PO-Revision-Date: 2023-11-02T08:12:14.957Z\n"
+"POT-Creation-Date: 2023-11-07T16:03:48.696Z\n"
+"PO-Revision-Date: 2023-11-07T16:03:48.696Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -401,6 +401,18 @@ msgid "Select theme"
 msgstr ""
 
 msgid "All"
+msgstr ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "Read less"
+msgstr ""
+
+msgid "Country abbreviations"
+msgstr ""
+
+msgid "Error fetching Methods"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"
