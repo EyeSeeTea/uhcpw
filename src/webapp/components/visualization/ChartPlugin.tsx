@@ -89,7 +89,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             } as Highcharts.Options);
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();
-        }, [analytics, legendSets, visualization]);
+        }, [analytics, customizedOptions, legendSets, visualization]);
 
         useEffect(() => {
             renderVisualization();

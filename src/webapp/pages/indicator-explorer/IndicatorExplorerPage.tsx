@@ -55,12 +55,3 @@ const Image = styled.img`
     width: 160px;
     height: 160px;
 `;
-
-const Center = styled.div`
-    height: 200px;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
