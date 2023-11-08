@@ -22,9 +22,6 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
 
-                {/* 
-                {{visualization && analytics && <Chart visualization={visualization} analytics={analytics} />} } */}
-
                 {showVisualization && filters.category.selected && (
                     <VisualizationPlugin
                         visualizationId={filters.category.selected}
