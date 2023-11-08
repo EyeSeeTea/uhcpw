@@ -1,0 +1,389 @@
+{
+    "tables": {
+        "u800TAhsIBY": [
+            [
+                {
+                    "type": "HEADER",
+                    "value": "Country"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Period"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Type of health care"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "User charges apply"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Type of user charge"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Reduced user charges"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Exemptions from user charges"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Cap on user charges"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Spain"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2023"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Primary Care"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Specialist Visits"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Emergency Visits"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Outpatient Medicines"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Yes"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Most medicines for chronic conditions: percentage co-payment of 10% of the retail price up to a maximum amount of €4.24 per prescription item (updated annually in line with inflation)\n\nAll other medicines:\npensioners with an annual income < €100 000: 10%\npensioners with an annual income > €100 000: 60%\npeople covered by mutual funds (MUFACE, MUGEJU and ISFAS): 30%\nall others with an annual income < €18 000: 40%\nall others with an annual income €18 000–100 000: 50%\nall others with an annual income > €100 000: 60%"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "People\n\nIncome\npeople receiving non-contributory pensions or the minimum vital income\nunemployed people who have exhausted their unemployment benefits\npensioners with annual income < €5 635 (or €11 200 if they are not obliged to pay personal income tax)\n\nHealth status\npeople with toxic shock syndrome\na very small number of people with disabilities\nmoderately and severely disabled children"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Yes, for all pensioners except those covered by mutual funds (MUFACE, MUGEJU and ISFAS):\nannual income < €18 000: €8.23 a month\nannual income €18 000–100 000: €18.52 a month\nannual income > €100 000: €61.75 a month"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Inpatient Medicines"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Yes"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "People\n\nIncome\n    • people receiving non-contributory pensions or the minimum vital income\n    • unemployed people who have exhausted their unemployment benefits\n    • pensioners with annual income < €5 635 (or €11 200 if they are not obliged to pay personal income tax)\n\nHealth status\n    • people with toxic shock syndrome\n    • a very small number of people with disabilities\n    • moderately and severely disabled children\n    • people receiving benefits for a dependent child or minor in a permanent family foster care scheme\n\nOther\n    • people requiring treatment due to occupational illness or injury"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Yes, for all pensioners except those covered by mutual funds (MUFACE, MUGEJU and ISFAS):\n    • annual income < €18 000: €8.23 a month\n    • annual income €18 000–100 000: €18.52 a month\n    • annual income > €100 000: €61.75 a month"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Medical Products"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Yes"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Most medicines for chronic conditions: percentage co-payment of 10% of the retail price up to a maximum amount of €4.24 per prescription item (updated annually in line with inflation)\n\nAll other medicines: \n- pensioners with an annual income < €100 000: 10% \n- pensioners with an annual income > €100 000: 60% \n- people covered by mutual funds (MUFACE, MUGEJU and ISFAS): 30% \n- all others with an annual income < €18 000: 40% \n- all others with an annual income €18 000–100 000: 50%\n- all others with an annual income > €100 000: 60% Ortho-prosthetic devices (e.g. supportive braces and splints, prostheses, wheelchairs, crutches and hearing aids):\n- pensioners with an annual income < €100 000: 10% \n- pensioners with an annual income > €100 000: 60% \n- people covered by mutual funds (MUFACE, MUGEJU and ISFAS): 30% \n- all others with an annual income < €18 000: 40% \n- all others with an annual income €18 000–100 000: 50% \n- all others with an annual income > €100 000: 60%\n\nA cap per item varies from €0 to €36 per item and is not linked to income"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "People (for ortho-prosthetic devices)\n\nIncome\n    • people receiving non-contributory pensions\n    • unemployed people who have exhausted their unemployment benefits\n\nHealth status\n    • people with toxic shock syndrome\n    • a very small number of people with disabilities (with further exemptions for people with disabilities in some regions)\n\nOther\n    • people requiring treatment due to occupational illness or injury\n\nServices\n\nProstheses for breasts and upper and lower limbs, wheelchairs and wheelchair accessories are exempt from co-payment"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Diagnostics Tests"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Dental Visits"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Dental Care Treatment"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Inpatient Care"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                },
+                {
+                    "type": "DATA",
+                    "value": "NA"
+                }
+            ]
+        ]
+    },
+    "generalInfo": [
+        {
+            "country": "Spain",
+            "source": "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)",
+            "countryExperts": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)Rosa Urbanos-Garrido (Complutense University of Madrid, Spain) and Enrique Bernal-Delgado (Aragon Institute for Health Sciences, Spain)",
+            "editors": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)",
+            "lastUpdate": "2023-04-01T00:00:00.000Z"
+        }
+    ]
+}

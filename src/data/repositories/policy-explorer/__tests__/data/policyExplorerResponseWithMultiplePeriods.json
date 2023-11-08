@@ -1,0 +1,105 @@
+{
+    "tables": {
+        "Dg4b8bTfEIr": [
+            [
+                {
+                    "type": "HEADER",
+                    "value": "Country"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Period"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Area of change in coverage policy (1)"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Policy of change in coverage policy (1)"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Health services targeted in change in coverage policy (1)"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "People targeted in change in coverage policy (1)"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Was this a response to the COVID-19 pandemic? (1)"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Spain"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2020"
+                },
+                {
+                    "type": "DATA",
+                    "value": "User charges"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Exemption from co-payments for outpatient prescribed medicines extended to people benefiting from the minimum vital income scheme."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Outpatient medicines"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Coverage status (all covered people)"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Planned before COVID-19 but implemented with more speed or intensity than planned due to COVID-19"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": "2021"
+                },
+                {
+                    "type": "DATA",
+                    "value": "User charges"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Exemption from co-payments for outpatient prescribed medicines extended to pensioners with low incomes, moderately and severely disabled children and households receiving child benefits."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Outpatient medicines"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Coverage status (all covered people)"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Defined by the authorities as a response to COVID-19"
+                }
+            ]
+        ]
+    },
+    "generalInfo": [
+        {
+            "country": "Spain",
+            "source": "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)",
+            "countryExperts": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)Rosa Urbanos-Garrido (Complutense University of Madrid, Spain) and Enrique Bernal-Delgado (Aragon Institute for Health Sciences, Spain)",
+            "editors": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)",
+            "lastUpdate": "2023-04-01T00:00:00.000Z"
+        }
+    ]
+}

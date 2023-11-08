@@ -1,0 +1,88 @@
+{
+    "tables": {
+        "e6cfI6vWYEF": [
+            [
+                {
+                    "type": "HEADER",
+                    "value": "Country"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Period"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Population entitlement: Main gaps in publicly financed coverage"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Service coverage: Main gaps in publicly financed coverage"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "User charges (co-payments): Main gaps in publicly financed coverage"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Spain"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2023"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None for residents, but administrative barriers can hinder access to entitlements for undocumented migrants, asylum seekers and foreigners legally reunited with relatives in Spain."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Limited coverage of dental care, optical care and hearing aids, especially for adults. Waiting times are an issue for elective surgery, outpatient specialist visits, diagnostic tests and mental health services."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Percentage co-payments are applied to outpatient prescribed medicines and medical products (ortho-prosthetic devices such as supportive braces and splints, prostheses, wheelchairs, crutches and hearing aids). Several protection mechanisms are in place – for example, a monthly cap on co-payments for pensioners and exemptions from co-payments for several groups of disadvantaged people, including some people with low incomes. However, there are no exemptions from co-payments for children or for many low-income households and there is no cap for non-pensioners.\n\nAccess to protection mechanisms may be hindered by administrative barriers when there is an application process in place (for example, for beneficiaries of the minimum vital income scheme) or delayed until the beginning of the following year because the user database collecting data on income and working status is only updated once a year."
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Belgium"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2023"
+                },
+                {
+                    "type": "DATA",
+                    "value": "At least 1% of the population is not covered (uninsured), rising to at least 2% in Brussels and among younger adults (25–40 years) and self-employed people."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Social health insurance (SHI) coverage of dental care and medical products (e.g. hearing aids and optical care such as glasses and contact lenses) is limited and SHI does not cover over-the-counter medicines.\n\nAlthough mandatory complementary health insurance (CHI) provided by sickness funds covers services like orthodontics and optical care (glasses and contact lenses), it is financed through flat-rate contributions, which are regressive.\n\nBenefits in kind (third-party payment) do not automatically apply to all outpatient care, only to inpatient care and outpatient medicines."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Heavy and complex co-payments are applied to almost all health services, including primary care visits.\n\nThere are very few exemptions from co-payments and no general exemption for people with low incomes.\n\nReduced co-payments are not automatically granted to low-income households and there are major gaps in take-up.\n\nBalance billing is widespread in hospitals (‘fee supplements’) and also occurs in outpatient care.\n\nCo-payment protection mechanisms do not apply to balance billing.\n\nMost outpatient care is subject to retrospective reimbursement."
+                }
+            ]
+        ]
+    },
+    "generalInfo": [
+        {
+            "country": "Belgium",
+            "source": "<a href=”https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)”>WHO Barcelona Office for Health Systems Financing (Spain)</a>",
+            "countryExperts": "Nicolas Bouckaert, Charline Maertens de Noordhout, Carine Van de Voorde (Belgian Health Care Knowledge Centre)",
+            "editors": "Marcos Gallardo Martínez, Sarah Thomson (WHO Barcelona Office for Health Systems Financing)",
+            "lastUpdate": "2023-04-01T00:00:00.000Z"
+        },
+        {
+            "country": "Spain",
+            "source": "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)",
+            "countryExperts": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)Rosa Urbanos-Garrido (Complutense University of Madrid, Spain) and Enrique Bernal-Delgado (Aragon Institute for Health Sciences, Spain)",
+            "editors": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)",
+            "lastUpdate": "2023-04-01T00:00:00.000Z"
+        }
+    ]
+}

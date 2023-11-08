@@ -1,0 +1,105 @@
+{
+    "tables": {
+        "uG2PbDfOc0w": [
+            [
+                {
+                    "type": "HEADER",
+                    "value": "Country"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Period"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Basis for entitlement to publicly financed health services"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Entitlements for refugees, asylum seekers, and undocumented migrants"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Characteristics and number of non-covered people"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Spain"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2023"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Entitlement is based on residence. In 2018 residence was re-established as the basis for entitlement to health services covered by the National Health System (NHS) and delivered by providers owned or contracted by the NHS at a regional level. Asylum seekers and refugees are entitled to the same benefits as residents. Undocumented migrants are also entitled to the same benefits as residents after being in Spain for 90 days or through a report from social services."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Asylum seekers and refugees are entitled to the same benefits as residents. Undocumented migrants are also entitled to the same benefits as residents after being in Spain for 90 days or through a report from social services."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Foreigners granted temporary residence for family reunification and undocumented migrants who have been in Spain for less than 90 days and who do not have a report from social services."
+                }
+            ]
+        ],
+        "W4CqlzcDPB1": [
+            [
+                {
+                    "type": "HEADER",
+                    "value": "Country"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Period"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Institutions and processes involved in defining the publicly financed benefits package"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Variation in the publicly financed benefits package across the country"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Types of health care not so well covered by the publicly financed benefits package"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Spain"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2023"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Coverage policy is governed centrally by the national Ministry of Health and the highest governing body of the National Health System (NHS) – the Interterritorial Council – a collegiate governance body comprising the 17 regional health ministers and the national Minister of Health.\n\nThe definition of the benefits package (common and complementary) and the methods used to change it are regulated by a royal decree (Ministry of Health, 2006) [2], which is regularly updated.\n\nThe Interterritorial Council defines the common package based on proposals submitted by the Commission on Benefits, Insurance and Financing and technical advice from the Spanish Network of Agencies for Health Technology Assessment and Benefits. This Network develops an annual joint program of health technology assessment reports and provides advice on the inclusion or exclusion of health technologies before any decision is made by the Interterritorial Council.\n\nEach region (Autonomous Community) can define an additional complementary package if they have the resources needed to finance them and can meet three further conditions: justification for the need; allocation of sufficient financial resources to the common package; and adherence to the budgetary stability criteria established by the national Ministry of Finance. In practice, regional variation in publicly financed services is negligible.\n\nFor medicines and medical products, the Spanish Agency for Medicines and Medical Products (AEMPS in Spanish) is responsible for market authorization of medicines and medical products approved by the European Medicines Agency. Pricing and coverage decisions are carried out by the Ministry of Health’s Commission on Benefits, Insurance and Financing and the Interministerial Commission for Medicine Pricing (CIPM in Spanish) based on therapeutic reports (Informes de Posicionamiento Terapéutico in Spanish). These reports were introduced in 2013 and are the reference instrument for evaluating the cost-effectiveness of medicines in the NHS. In 2020 the Ministry of Health approved a “Plan for the consolidation of therapeutic reports in the NHS”, which aims to improve the prioritization, follow up and governance of the reports."
+                },
+                {
+                    "type": "DATA",
+                    "value": "The National Health System provides a single, national benefits package (the common package). Regions (known as Autonomous Communities) can provide additional benefits if they have the resources needed to finance them (the complementary package) [Ministry of the Presidency, 2012] [3]. In practice, regional variations are negligible. The trend is to extend the common package to meet changing population needs and to move towards even greater nation-wide uniformity."
+                },
+                {
+                    "type": "DATA",
+                    "value": "The National Health System (NHS) does not cover optical care for children or adults or hearing aids for people aged over 26. The range of dental services covered by the NHS is very limited for adults (tooth extraction and treatment of infections or inflammation only). Preventive dental services are only covered for children, pregnant women and people with dental issues caused by cancer treatment or congenital malformations."
+                }
+            ]
+        ]
+    },
+    "generalInfo": [
+        {
+            "country": "Spain",
+            "source": "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)",
+            "countryExperts": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)Rosa Urbanos-Garrido (Complutense University of Madrid, Spain) and Enrique Bernal-Delgado (Aragon Institute for Health Sciences, Spain)",
+            "editors": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)",
+            "lastUpdate": "2023-04-01T00:00:00.000Z"
+        }
+    ]
+}

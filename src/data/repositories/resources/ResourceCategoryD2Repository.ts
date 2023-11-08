@@ -27,13 +27,15 @@ export class ResourceCategoryD2Repository implements ResourceCategoryRepository 
     }
 
     private buildResourceCategories(optionSet: D2OptionSet): ResourceCategory[] {
-        return optionSet.options.map(option => {
-            return {
-                id: option.id,
-                name: option.displayName.replace("UHCW_", ""),
-                code: option.code,
-            };
-        });
+        return optionSet.options
+            .map(option => {
+                return {
+                    id: option.id,
+                    name: option.displayName.replace("UHCW_", ""),
+                    code: option.code,
+                };
+            })
+            .sort((opt1, opt2) => opt1.name.localeCompare(opt2.name));
     }
 }
 

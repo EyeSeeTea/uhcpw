@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-09-13T09:10:09.721Z\n"
-"PO-Revision-Date: 2023-09-13T09:10:09.721Z\n"
+"POT-Creation-Date: 2023-11-08T05:49:47.376Z\n"
+"PO-Revision-Date: 2023-11-08T05:49:47.376Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -69,18 +69,6 @@ msgid "Dashboard"
 msgstr ""
 
 msgid "In detail"
-msgstr ""
-
-msgid "Financial hardship (2018)"
-msgstr ""
-
-msgid "Unmet need (2022)"
-msgstr ""
-
-msgid "1% of people report unmet need for health care"
-msgstr ""
-
-msgid "2% of people report unmet need for dental care"
 msgstr ""
 
 msgid ""
@@ -163,6 +151,14 @@ msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
 msgstr[1] ""
+
+msgid "Send feedback"
+msgstr ""
+
+msgid ""
+"We are eager to hear how you use UHCW and how we can improve the platform "
+"for all its users. To contact the team, uhcwatch@who.int"
+msgstr ""
 
 msgid "Clear"
 msgstr ""
@@ -362,7 +358,7 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-msgid "Regions"
+msgid "Regional report"
 msgstr ""
 
 msgid "Back"
@@ -413,14 +409,11 @@ msgstr ""
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"
 msgstr ""
 
+msgid "No data found"
+msgstr ""
+
 msgid "Switch row/column"
 msgstr ""
 
 msgid "Latest avalaible year"
-msgstr ""
-
-msgid "Country Analysis"
-msgstr ""
-
-msgid "Comparative Analysis"
 msgstr ""

@@ -1,0 +1,1076 @@
+{
+    "organisationUnits": [
+        {
+            "id": "VYVKdqiXo4b",
+            "shortName": "American Samoa"
+        },
+        {
+            "id": "f4ZFD2aswys",
+            "shortName": "Anguilla"
+        },
+        {
+            "id": "pfhvgmllA9M",
+            "shortName": "Antigua and Barbuda"
+        },
+        {
+            "id": "JIr15Xt3EQn",
+            "shortName": "Egypt"
+        },
+        {
+            "id": "AZdPnw0b1lm",
+            "shortName": "Argentina"
+        },
+        {
+            "id": "lKZR6UK0afN",
+            "shortName": "Aruba"
+        },
+        {
+            "id": "LbWpsX1FJcC",
+            "shortName": "Australia"
+        },
+        {
+            "id": "iNT35p3jsEM",
+            "shortName": "Barbados"
+        },
+        {
+            "id": "Nrnay4JA8Ga",
+            "shortName": "Belize"
+        },
+        {
+            "id": "ZzoDfdWIt6z",
+            "shortName": "Bermuda"
+        },
+        {
+            "id": "fkrzFaeuYDn",
+            "shortName": "Venezuela (Bolivarian Republic of)"
+        },
+        {
+            "id": "wyKC2eWRH3y",
+            "shortName": "Bonaire, Saint Eustatius and Saba"
+        },
+        {
+            "id": "n8iofJiiX4T",
+            "shortName": "Bosnia and Herzegovina"
+        },
+        {
+            "id": "sg5v6c9tCZ3",
+            "shortName": "Bouvet Island"
+        },
+        {
+            "id": "PFAtPR87fHs",
+            "shortName": "British Indian Ocean Territory"
+        },
+        {
+            "id": "u7H4MyT2Y0A",
+            "shortName": "British Virgin Islands"
+        },
+        {
+            "id": "MJEntShoQVK",
+            "shortName": "Brunei Darussalam"
+        },
+        {
+            "id": "hmZE3mVAZFf",
+            "shortName": "Burkina Faso"
+        },
+        {
+            "id": "AJBfDthkySs",
+            "shortName": "Canada"
+        },
+        {
+            "id": "u3GOCB1Hu01",
+            "shortName": "Cayman Islands"
+        },
+        {
+            "id": "ZcrjvJaYQb7",
+            "shortName": "Central African Republic"
+        },
+        {
+            "id": "myv7amOYTHn",
+            "shortName": "China, Hong Kong SAR"
+        },
+        {
+            "id": "y582ESg0Vjo",
+            "shortName": "China, Macao SAR"
+        },
+        {
+            "id": "lGN2n7pZ6Ua",
+            "shortName": "China, Province of Taiwan"
+        },
+        {
+            "id": "a0Tb0vzKk1m",
+            "shortName": "China: Province of Taiwan only"
+        },
+        {
+            "id": "XjHXb0aFH5w",
+            "shortName": "Christmas Island"
+        },
+        {
+            "id": "AFIorEPU00q",
+            "shortName": "Cocos (Keeling) Islands"
+        },
+        {
+            "id": "s1mzBU7YOaZ",
+            "shortName": "Dominica"
+        },
+        {
+            "id": "VbbSe7wgS9s",
+            "shortName": "Bahamas"
+        },
+        {
+            "id": "TldYkeCwb5r",
+            "shortName": "Cook Islands"
+        },
+        {
+            "id": "QSpLidCdqMU",
+            "shortName": "Curaçao"
+        },
+        {
+            "id": "XKKI1hhyFxk",
+            "shortName": "Czechia"
+        },
+        {
+            "id": "NhuW760cOQG",
+            "shortName": "Czechoslovakia, Former"
+        },
+        {
+            "id": "OFXJXWnOG0R",
+            "shortName": "Democratic People's Republic of Korea"
+        },
+        {
+            "id": "FNduj2N3e8s",
+            "shortName": "Sao Tome and Principe"
+        },
+        {
+            "id": "EDHO4qOyY88",
+            "shortName": "Democratic Republic of the Congo"
+        },
+        {
+            "id": "cJU4qStc9QT",
+            "shortName": "Timor-Leste"
+        },
+        {
+            "id": "er7MPiN3tdH",
+            "shortName": "Sri Lanka"
+        },
+        {
+            "id": "PpjdOoVUc7k",
+            "shortName": "Dominican Republic"
+        },
+        {
+            "id": "PJS910L8KtX",
+            "shortName": "Uruguay"
+        },
+        {
+            "id": "PRrdILmQQb3",
+            "shortName": "Falkland Islands (Malvinas)"
+        },
+        {
+            "id": "ngUSWwX0Oby",
+            "shortName": "Faroe Islands"
+        },
+        {
+            "id": "zEYrsiNUGIo",
+            "shortName": "Ethiopia"
+        },
+        {
+            "id": "pZZriU4sY0l",
+            "shortName": "Nepal"
+        },
+        {
+            "id": "Ri2tb7LBVtP",
+            "shortName": "Germany"
+        },
+        {
+            "id": "I3NxIqG7bD4",
+            "shortName": "Nigeria"
+        },
+        {
+            "id": "oWNF4d3PK8C",
+            "shortName": "Somalia"
+        },
+        {
+            "id": "lnvESj20mWZ",
+            "shortName": "Micronesia (Federated States of)"
+        },
+        {
+            "id": "dpcvWc01CeN",
+            "shortName": "Brazil"
+        },
+        {
+            "id": "UJVEh0g7qOo",
+            "shortName": "French Guiana"
+        },
+        {
+            "id": "QLERXr2o7IE",
+            "shortName": "French Polynesia"
+        },
+        {
+            "id": "VnTycSnraEY",
+            "shortName": "France"
+        },
+        {
+            "id": "BLpPqpMtgQY",
+            "shortName": "French Southern Territories"
+        },
+        {
+            "id": "EGLpIMSAWhx",
+            "shortName": "Gabon"
+        },
+        {
+            "id": "fg8TSIHSGHX",
+            "shortName": "Georgia"
+        },
+        {
+            "id": "hgGOTFYZxMO",
+            "shortName": "Germany, Former Democratic Republic"
+        },
+        {
+            "id": "E9G2aQpCs1A",
+            "shortName": "Germany, Former Federal Republic"
+        },
+        {
+            "id": "Fq9qs6Kn6wN",
+            "shortName": "Germany, West Berlin"
+        },
+        {
+            "id": "BVzmce6DVeS",
+            "shortName": "Gibraltar"
+        },
+        {
+            "id": "mmJUi0PpvGi",
+            "shortName": "Luxembourg"
+        },
+        {
+            "id": "IZy3ESdFnp5",
+            "shortName": "Greenland"
+        },
+        {
+            "id": "gg9DH7dvdeD",
+            "shortName": "Grenada"
+        },
+        {
+            "id": "cRWrIpjzvVl",
+            "shortName": "Guadeloupe"
+        },
+        {
+            "id": "q9u7nkNkuGy",
+            "shortName": "Guam"
+        },
+        {
+            "id": "NUkOvK4bnj2",
+            "shortName": "Guernsey"
+        },
+        {
+            "id": "GWQBgBHdbbp",
+            "shortName": "Jordan"
+        },
+        {
+            "id": "apVWLKfARpb",
+            "shortName": "Heard Island and McDonald Islands"
+        },
+        {
+            "id": "eyvitcZL4ex",
+            "shortName": "Greece"
+        },
+        {
+            "id": "jZOt27rWre8",
+            "shortName": "Holy See"
+        },
+        {
+            "id": "g49fuSiB623",
+            "shortName": "Hungary"
+        },
+        {
+            "id": "Zav7juzGmEo",
+            "shortName": "Papua New Guinea"
+        },
+        {
+            "id": "hpXoMVtJpT3",
+            "shortName": "Samoa"
+        },
+        {
+            "id": "uvTw0Kus5KZ",
+            "shortName": "Ireland"
+        },
+        {
+            "id": "oofyLUJJ6Vy",
+            "shortName": "Afghanistan"
+        },
+        {
+            "id": "SsAjVE1S87E",
+            "shortName": "Iran (Islamic Republic of)"
+        },
+        {
+            "id": "XYpsN5j30R9",
+            "shortName": "Mauritania"
+        },
+        {
+            "id": "yzAMOdV0Pmr",
+            "shortName": "Pakistan"
+        },
+        {
+            "id": "ehNfKt5LpG9",
+            "shortName": "Isle of Man"
+        },
+        {
+            "id": "x6DVvicRjYC",
+            "shortName": "Jamaica"
+        },
+        {
+            "id": "JI5lagoUJR4",
+            "shortName": "Japan"
+        },
+        {
+            "id": "XJscL6IuHpd",
+            "shortName": "Jersey"
+        },
+        {
+            "id": "T7tKHiW1Db1",
+            "shortName": "Bahrain"
+        },
+        {
+            "id": "KwgjnBBpe5b",
+            "shortName": "Belgium"
+        },
+        {
+            "id": "JQ5qF3mRCMe",
+            "shortName": "Bhutan"
+        },
+        {
+            "id": "dscgTvwyCw8",
+            "shortName": "Cambodia"
+        },
+        {
+            "id": "CCl7hAqlrmE",
+            "shortName": "Denmark"
+        },
+        {
+            "id": "G3thRWUQAX9",
+            "shortName": "Eswatini"
+        },
+        {
+            "id": "D4JnxOsqwE4",
+            "shortName": "Lesotho"
+        },
+        {
+            "id": "WuQvgvXKamv",
+            "shortName": "Morocco"
+        },
+        {
+            "id": "oy494aJtjTB",
+            "shortName": "Norway"
+        },
+        {
+            "id": "xB6nQN5Wtpg",
+            "shortName": "Saudi Arabia"
+        },
+        {
+            "id": "DVnpk4xiXGJ",
+            "shortName": "Spain"
+        },
+        {
+            "id": "IFAb1JUZ0Fz",
+            "shortName": "Sweden"
+        },
+        {
+            "id": "vboedbUs1As",
+            "shortName": "Thailand"
+        },
+        {
+            "id": "rEQqufy2KNi",
+            "shortName": "Netherlands"
+        },
+        {
+            "id": "zYQqFxQw5jj",
+            "shortName": "Tonga"
+        },
+        {
+            "id": "tDFavWinSwr",
+            "shortName": "Kyrgyzstan"
+        },
+        {
+            "id": "bvyjEfI0d2V",
+            "shortName": "Lao People's Democratic Republic"
+        },
+        {
+            "id": "ACalScnrl2I",
+            "shortName": "Lebanon"
+        },
+        {
+            "id": "gMz0MxjZcEt",
+            "shortName": "Liechtenstein"
+        },
+        {
+            "id": "BmTVMvJHVBO",
+            "shortName": "Malaysia"
+        },
+        {
+            "id": "v2B5AtYQV8H",
+            "shortName": "Martinique"
+        },
+        {
+            "id": "Bon3xyAAWKf",
+            "shortName": "Mayotte"
+        },
+        {
+            "id": "IZSm5iPKkDg",
+            "shortName": "Mongolia"
+        },
+        {
+            "id": "JX7HJfPfbog",
+            "shortName": "Montenegro"
+        },
+        {
+            "id": "B4iWc3gcDcn",
+            "shortName": "Montserrat"
+        },
+        {
+            "id": "COs48yLdDvg",
+            "shortName": "Netherlands Antilles"
+        },
+        {
+            "id": "jMGr96nGwHN",
+            "shortName": "New Caledonia"
+        },
+        {
+            "id": "hG1CNbw8wSF",
+            "shortName": "New Zealand"
+        },
+        {
+            "id": "O7BGyJhV2Tc",
+            "shortName": "Norfolk Island"
+        },
+        {
+            "id": "vPoFz9J1v6Y",
+            "shortName": "Northern Mariana Islands"
+        },
+        {
+            "id": "juBxu3AprlM",
+            "shortName": "West Bank and Gaza Strip"
+        },
+        {
+            "id": "mNa42CHbkO7",
+            "shortName": "Algeria"
+        },
+        {
+            "id": "dNLjKwsVjod",
+            "shortName": "Bangladesh"
+        },
+        {
+            "id": "q23bFLr2E5D",
+            "shortName": "China"
+        },
+        {
+            "id": "fHaKXfcKthe",
+            "shortName": "Pitcairn"
+        },
+        {
+            "id": "cpmmPDsQ3uG",
+            "shortName": "Bolivia (Plurinational State of)"
+        },
+        {
+            "id": "PevCwH17M73",
+            "shortName": "Portugal"
+        },
+        {
+            "id": "Rmy6DbwekE1",
+            "shortName": "Andorra"
+        },
+        {
+            "id": "cZ8823L0fLJ",
+            "shortName": "Monaco"
+        },
+        {
+            "id": "w3IJVQhc8Rm",
+            "shortName": "Puerto Rico"
+        },
+        {
+            "id": "VGOzFKfSazN",
+            "shortName": "Albania"
+        },
+        {
+            "id": "jFOZHDZpjPL",
+            "shortName": "Angola"
+        },
+        {
+            "id": "cWrL45je7mw",
+            "shortName": "Armenia"
+        },
+        {
+            "id": "e9IoKRAkYLO",
+            "shortName": "Austria"
+        },
+        {
+            "id": "ST86paYjRHP",
+            "shortName": "Azerbaijan"
+        },
+        {
+            "id": "Tr4i6jeDDqj",
+            "shortName": "Belarus"
+        },
+        {
+            "id": "DzAOqCf0ots",
+            "shortName": "Benin"
+        },
+        {
+            "id": "c82mDnhUQly",
+            "shortName": "Botswana"
+        },
+        {
+            "id": "AjeCGGb8H76",
+            "shortName": "Bulgaria"
+        },
+        {
+            "id": "Xz7rnovuiOx",
+            "shortName": "Burundi"
+        },
+        {
+            "id": "bGWaeVBrOcc",
+            "shortName": "Cabo Verde"
+        },
+        {
+            "id": "VPesUmegQpP",
+            "shortName": "Cameroon"
+        },
+        {
+            "id": "tV0rWhHr9cj",
+            "shortName": "Chad"
+        },
+        {
+            "id": "zFInPJBZVbN",
+            "shortName": "Chile"
+        },
+        {
+            "id": "jXQq22U4Y2e",
+            "shortName": "Colombia"
+        },
+        {
+            "id": "pbH6bmcioGw",
+            "shortName": "Costa Rica"
+        },
+        {
+            "id": "lbMrRSBsXh3",
+            "shortName": "Croatia"
+        },
+        {
+            "id": "Zdl3ad7PayF",
+            "shortName": "Cuba"
+        },
+        {
+            "id": "Mb9IYOFZYCv",
+            "shortName": "Cyprus"
+        },
+        {
+            "id": "WXGcnQWJ0Qd",
+            "shortName": "Côte d'Ivoire"
+        },
+        {
+            "id": "Yg9QkNQk9p7",
+            "shortName": "Djibouti"
+        },
+        {
+            "id": "LAPR4Iu2NVS",
+            "shortName": "Ecuador"
+        },
+        {
+            "id": "Mk7P920hkBa",
+            "shortName": "El Salvador"
+        },
+        {
+            "id": "Fi5lLVwe1Th",
+            "shortName": "Equatorial Guinea"
+        },
+        {
+            "id": "XeWqwCw9G5s",
+            "shortName": "Estonia"
+        },
+        {
+            "id": "sSIYRwB1r74",
+            "shortName": "Fiji"
+        },
+        {
+            "id": "bnQX2QIuIY9",
+            "shortName": "Finland"
+        },
+        {
+            "id": "z51rgcc5R8V",
+            "shortName": "Gambia"
+        },
+        {
+            "id": "WC5rU5fLMzY",
+            "shortName": "Ghana"
+        },
+        {
+            "id": "bhkJDAiqVKX",
+            "shortName": "Guatemala"
+        },
+        {
+            "id": "quQpOfBIDFC",
+            "shortName": "Guinea"
+        },
+        {
+            "id": "G9o5ad4oJJX",
+            "shortName": "Guinea-Bissau"
+        },
+        {
+            "id": "AUStREIxT4s",
+            "shortName": "Guyana"
+        },
+        {
+            "id": "ipe4pT2TW7G",
+            "shortName": "Haiti"
+        },
+        {
+            "id": "mDSuyD9lOM5",
+            "shortName": "Honduras"
+        },
+        {
+            "id": "Bc3mYAhlY1a",
+            "shortName": "Iceland"
+        },
+        {
+            "id": "WApLDd37Yj2",
+            "shortName": "India"
+        },
+        {
+            "id": "jVqoXv7rFns",
+            "shortName": "Indonesia"
+        },
+        {
+            "id": "fHXW26zg2U6",
+            "shortName": "Iraq"
+        },
+        {
+            "id": "ElwEWppmGgv",
+            "shortName": "Italy"
+        },
+        {
+            "id": "ibGsqmiVkoU",
+            "shortName": "Kazakhstan"
+        },
+        {
+            "id": "HfVjCurKxh2",
+            "shortName": "Kenya"
+        },
+        {
+            "id": "Nlv8oKkoAwp",
+            "shortName": "Kiribati"
+        },
+        {
+            "id": "IbGbsybdeou",
+            "shortName": "Republic of Korea"
+        },
+        {
+            "id": "gxi9jcBYyrL",
+            "shortName": "Latvia"
+        },
+        {
+            "id": "JEHwU064LAj",
+            "shortName": "Liberia"
+        },
+        {
+            "id": "T1irZBQ9gNW",
+            "shortName": "Lithuania"
+        },
+        {
+            "id": "bcy4159FETR",
+            "shortName": "Madagascar"
+        },
+        {
+            "id": "G037PAPU5dO",
+            "shortName": "Malawi"
+        },
+        {
+            "id": "FOJUXD6f6lB",
+            "shortName": "Maldives"
+        },
+        {
+            "id": "EubjsxqlA4d",
+            "shortName": "Mali"
+        },
+        {
+            "id": "TIhakAVsQwM",
+            "shortName": "Malta"
+        },
+        {
+            "id": "EB4aSZN0eQr",
+            "shortName": "Mauritius"
+        },
+        {
+            "id": "yBqy4nxuOCA",
+            "shortName": "Republic of Moldova"
+        },
+        {
+            "id": "Gan3VYicAWe",
+            "shortName": "Mozambique"
+        },
+        {
+            "id": "rtLnlu4GUI2",
+            "shortName": "Namibia"
+        },
+        {
+            "id": "Pz0LCggcqES",
+            "shortName": "Nauru"
+        },
+        {
+            "id": "wnuoeS9sVZR",
+            "shortName": "Nicaragua"
+        },
+        {
+            "id": "KqaTbKanCG3",
+            "shortName": "Niue"
+        },
+        {
+            "id": "cfBaKMnsXd1",
+            "shortName": "North Macedonia"
+        },
+        {
+            "id": "iFaKKDtb7nf",
+            "shortName": "Palau"
+        },
+        {
+            "id": "wUBWZEHJm6Q",
+            "shortName": "Panama"
+        },
+        {
+            "id": "Wpzccx0vjIP",
+            "shortName": "Paraguay"
+        },
+        {
+            "id": "vkXlj7ZPkGi",
+            "shortName": "Peru"
+        },
+        {
+            "id": "QkOClVdLto1",
+            "shortName": "Philippines"
+        },
+        {
+            "id": "wMTP4GblKr8",
+            "shortName": "Poland"
+        },
+        {
+            "id": "UlQiEogy3wG",
+            "shortName": "Rwanda"
+        },
+        {
+            "id": "SAsS1Kwc4iW",
+            "shortName": "San Marino"
+        },
+        {
+            "id": "wj7iV08dvFq",
+            "shortName": "Senegal"
+        },
+        {
+            "id": "oroMC4mMzMq",
+            "shortName": "Serbia"
+        },
+        {
+            "id": "wimH12ukPK5",
+            "shortName": "Seychelles"
+        },
+        {
+            "id": "qbqrFLCJewu",
+            "shortName": "Sierra Leone"
+        },
+        {
+            "id": "rb6V38jgfFc",
+            "shortName": "Singapore"
+        },
+        {
+            "id": "PY4aKgi30fr",
+            "shortName": "Slovenia"
+        },
+        {
+            "id": "lVPoUAKCdmU",
+            "shortName": "South Africa"
+        },
+        {
+            "id": "mhWSEv79IJW",
+            "shortName": "South Sudan"
+        },
+        {
+            "id": "jkyBvNzcTLl",
+            "shortName": "Suriname"
+        },
+        {
+            "id": "xb2ezJcUoSR",
+            "shortName": "Tajikistan"
+        },
+        {
+            "id": "shRXArPWh8H",
+            "shortName": "Congo"
+        },
+        {
+            "id": "Ajnw1b8m6eL",
+            "shortName": "Marshall Islands"
+        },
+        {
+            "id": "O0hWoXlHhIS",
+            "shortName": "Niger"
+        },
+        {
+            "id": "QqAzWHtJ8VC",
+            "shortName": "Sudan"
+        },
+        {
+            "id": "YOL13ptz4ef",
+            "shortName": "Myanmar"
+        },
+        {
+            "id": "fYeClLy8K2x",
+            "shortName": "Trinidad and Tobago"
+        },
+        {
+            "id": "pMukkUmnnkh",
+            "shortName": "Tunisia"
+        },
+        {
+            "id": "eVEK7djdWqV",
+            "shortName": "Türkiye"
+        },
+        {
+            "id": "SnYHrnchKjL",
+            "shortName": "Uganda"
+        },
+        {
+            "id": "kpFgAwwSjCZ",
+            "shortName": "Uzbekistan"
+        },
+        {
+            "id": "xqjIL1cGrl1",
+            "shortName": "Vanuatu"
+        },
+        {
+            "id": "HX7fBSMCCbL",
+            "shortName": "Yemen"
+        },
+        {
+            "id": "gb7vWtO7Wjp",
+            "shortName": "Zambia"
+        },
+        {
+            "id": "buSEeeViTo3",
+            "shortName": "Zimbabwe"
+        },
+        {
+            "id": "ZRxKEGQmkWI",
+            "shortName": "Rodrigues"
+        },
+        {
+            "id": "N9i1v07Ro0E",
+            "shortName": "Romania"
+        },
+        {
+            "id": "i3v8r9XNls2",
+            "shortName": "Russian Federation"
+        },
+        {
+            "id": "LTLHCOHyyWS",
+            "shortName": "Ryu Kyu Islands"
+        },
+        {
+            "id": "VwqhqUCaMgk",
+            "shortName": "Réunion"
+        },
+        {
+            "id": "GPyOOoIby8R",
+            "shortName": "Saint Barthélemy"
+        },
+        {
+            "id": "aZ7Bm5L90rn",
+            "shortName": "Saint Helena"
+        },
+        {
+            "id": "BlC8wOVHBlb",
+            "shortName": "Saint Kitts and Nevis"
+        },
+        {
+            "id": "RyAd6laKg3U",
+            "shortName": "Saint Lucia"
+        },
+        {
+            "id": "tSBEjAHKj9V",
+            "shortName": "Saint Martin (French part)"
+        },
+        {
+            "id": "HYEuE8zV74t",
+            "shortName": "Saint Pierre and Miquelon"
+        },
+        {
+            "id": "ZgsdoEiTlLq",
+            "shortName": "Saint Vincent and the Grenadines"
+        },
+        {
+            "id": "HizhPCC5Ps5",
+            "shortName": "Serbia and Montenegro, Former"
+        },
+        {
+            "id": "cCgL3J7Lsgn",
+            "shortName": "Sint Maarten (Dutch part)"
+        },
+        {
+            "id": "RDiXMdNXg16",
+            "shortName": "Slovakia"
+        },
+        {
+            "id": "av3fkpFxEXj",
+            "shortName": "Viet Nam"
+        },
+        {
+            "id": "FUieyovDec8",
+            "shortName": "Solomon Islands"
+        },
+        {
+            "id": "z5ouOuycTPO",
+            "shortName": "South Georgia and the South Sandwich Islands"
+        },
+        {
+            "id": "vnbnnSZXGTv",
+            "shortName": "Eritrea"
+        },
+        {
+            "id": "XebDUbuPqVx",
+            "shortName": "Israel"
+        },
+        {
+            "id": "tnTRnfd2aVs",
+            "shortName": "Kuwait"
+        },
+        {
+            "id": "zaluKz5Llai",
+            "shortName": "Libya"
+        },
+        {
+            "id": "jCtFxm8aADJ",
+            "shortName": "Qatar"
+        },
+        {
+            "id": "IjLnDADGraQ",
+            "shortName": "Sudan (former)"
+        },
+        {
+            "id": "G8FCnT37gyb",
+            "shortName": "Oman"
+        },
+        {
+            "id": "TWyMjVaaxmT",
+            "shortName": "Svalbard and Jan Mayen"
+        },
+        {
+            "id": "q2HqXV5OO3z",
+            "shortName": "Switzerland"
+        },
+        {
+            "id": "HDN85xUGB65",
+            "shortName": "Syrian Arab Republic"
+        },
+        {
+            "id": "pGLy2Zj2lVg",
+            "shortName": "The former state union Serbia and Montenegro"
+        },
+        {
+            "id": "WtcZBCTspgM",
+            "shortName": "Togo"
+        },
+        {
+            "id": "VMqDEughMuP",
+            "shortName": "Tokelau"
+        },
+        {
+            "id": "cBzMRZBkc26",
+            "shortName": "toremove"
+        },
+        {
+            "id": "HwqfuL9pQz5",
+            "shortName": "Turkmenistan"
+        },
+        {
+            "id": "vg4b11FL2Gl",
+            "shortName": "Turks and Caicos Islands"
+        },
+        {
+            "id": "GrU8zQv510v",
+            "shortName": "Tuvalu"
+        },
+        {
+            "id": "VJrTuNXAg9G",
+            "shortName": "Ukraine"
+        },
+        {
+            "id": "RTdjvXHJdnH",
+            "shortName": "Comoros"
+        },
+        {
+            "id": "aNIrqpwcKXv",
+            "shortName": "United Arab Emirates"
+        },
+        {
+            "id": "Gnz4lqrVEMf",
+            "shortName": "United Kingdom"
+        },
+        {
+            "id": "TpDwlm2Spev",
+            "shortName": "United Kingdom, England and Wales"
+        },
+        {
+            "id": "Q8De2VxoKXS",
+            "shortName": "United Kingdom, Northern Ireland"
+        },
+        {
+            "id": "Gvox4WmLiYC",
+            "shortName": "United Kingdom, Scotland"
+        },
+        {
+            "id": "KAUSOoBq5Ft",
+            "shortName": "Mexico"
+        },
+        {
+            "id": "S52uSY3lb8V",
+            "shortName": "United Republic of Tanzania"
+        },
+        {
+            "id": "m0frOspS7JY",
+            "shortName": "United Republic of Tanzania (Mainland)"
+        },
+        {
+            "id": "Gt3i5Yp8o4b",
+            "shortName": "United Republic of Tanzania (Zanzibar)"
+        },
+        {
+            "id": "KOUhvjWIy6V",
+            "shortName": "United States Minor Outlying Islands"
+        },
+        {
+            "id": "AYWCbVecRKQ",
+            "shortName": "United States of America"
+        },
+        {
+            "id": "M9HrCkIwaKy",
+            "shortName": "US Virgin Islands"
+        },
+        {
+            "id": "wFkq5oB0dFS",
+            "shortName": "USSR, Former"
+        },
+        {
+            "id": "eVp1pvRfPKS",
+            "shortName": "Wallis and Futuna"
+        },
+        {
+            "id": "KrU8C1YTdao",
+            "shortName": "West Bank"
+        },
+        {
+            "id": "PvrMV4NjbtR",
+            "shortName": "Western Sahara"
+        },
+        {
+            "id": "fIlPGTXBCUm",
+            "shortName": "Yugoslavia, Former"
+        },
+        {
+            "id": "Adzexk8xbzD",
+            "shortName": "Åland Islands"
+        }
+    ]
+}

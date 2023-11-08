@@ -5,7 +5,7 @@ export interface PolicyExplorerRepository {
     get(
         policyExplorerCategories: Record<string, string[]>,
         countryIds: string[],
-        years: string[]
+        yearsByCategory: Record<string, string[]>
     ): FutureData<PolicyExplorer>;
     saveToFile(policyExplorer: PolicyExplorer, categoryId: string): FutureData<void>;
 }

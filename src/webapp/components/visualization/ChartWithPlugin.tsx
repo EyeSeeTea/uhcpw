@@ -64,7 +64,7 @@ export const ChartWithPlugin: React.FC<ChartProps> = React.memo(({ visualization
                 <Column>
                     <span>
                         <CreditsText variant="caption">{i18n.t("Source: ")}</CreditsText>
-                        <Link href="#">
+                        <Link href="#" target="_blank" rel="noopener noreferrer">
                             <Typography variant="caption">{i18n.t("Tambor and Pavlova (2020)")}</Typography>
                         </Link>
                     </span>

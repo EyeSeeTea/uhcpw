@@ -1,0 +1,59 @@
+{
+    "tables": {
+        "e6cfI6vWYEF": [
+            [
+                {
+                    "type": "HEADER",
+                    "value": "Country"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Period"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Population entitlement: Main gaps in publicly financed coverage"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Service coverage: Main gaps in publicly financed coverage"
+                },
+                {
+                    "type": "HEADER",
+                    "value": "User charges (co-payments): Main gaps in publicly financed coverage"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Spain"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2023"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None for residents, but administrative barriers can hinder access to entitlements for undocumented migrants, asylum seekers and foreigners legally reunited with relatives in Spain."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Limited coverage of dental care, optical care and hearing aids, especially for adults. Waiting times are an issue for elective surgery, outpatient specialist visits, diagnostic tests and mental health services."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Percentage co-payments are applied to outpatient prescribed medicines and medical products (ortho-prosthetic devices such as supportive braces and splints, prostheses, wheelchairs, crutches and hearing aids). Several protection mechanisms are in place – for example, a monthly cap on co-payments for pensioners and exemptions from co-payments for several groups of disadvantaged people, including some people with low incomes. However, there are no exemptions from co-payments for children or for many low-income households and there is no cap for non-pensioners.\n\nAccess to protection mechanisms may be hindered by administrative barriers when there is an application process in place (for example, for beneficiaries of the minimum vital income scheme) or delayed until the beginning of the following year because the user database collecting data on income and working status is only updated once a year."
+                }
+            ]
+        ]
+    },
+    "generalInfo": [
+        {
+            "country": "Spain",
+            "source": "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)",
+            "countryExperts": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)Rosa Urbanos-Garrido (Complutense University of Madrid, Spain) and Enrique Bernal-Delgado (Aragon Institute for Health Sciences, Spain)",
+            "editors": "José Cerezo Cerezo, María Serrano Gregori and Sarah Thomson (WHO Barcelona Office for Health Systems Financing)",
+            "lastUpdate": "2023-04-01T00:00:00.000Z"
+        }
+    ]
+}

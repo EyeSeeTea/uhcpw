@@ -41,8 +41,11 @@ describe("Country Page", () => {
 
         const scope = within(screen.getByLabelText(/country-page-hero/i));
 
-        expect(scope.getByText("Financial hardship (2018)")).toBeInTheDocument();
-        expect(scope.getByText("Unmet need (2022)")).toBeInTheDocument();
+        expect(
+            scope.getByText(
+                "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19"
+            )
+        ).toBeInTheDocument();
     });
 
     it("should render slider", () => {

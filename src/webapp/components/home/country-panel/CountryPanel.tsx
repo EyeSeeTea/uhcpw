@@ -17,7 +17,7 @@ type ButtonItemType = {
     children: React.ReactNode;
 };
 
-const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
+export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
     return (
         <a href={href} target="_blank" rel="noreferrer">
             <StyledButton>{children}</StyledButton>
@@ -55,8 +55,11 @@ const Container = styled.div`
     overflow-y: auto;
     font-size: 16px;
     ul {
-        list-style-position: inside;
-        padding-left: 0;
+        list-style-position: outside;
+        padding-inline-start: 16px;
+        > li {
+            padding-inline-start: 7px;
+        }
     }
 `;
 

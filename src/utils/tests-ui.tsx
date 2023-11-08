@@ -7,13 +7,14 @@ import { AppContext, AppContextState } from "../webapp/contexts/app-context";
 import { Instance } from "../data/entities/Instance";
 import { User } from "../domain/entities/User";
 import { Route, Router } from "react-router-dom";
-import { createMemoryHistory } from "history";
+import { createMemoryHistory, MemoryHistory } from "history";
 import { getD2APiFromInstance } from "./d2-api";
 import { MuiThemeProvider } from "@material-ui/core/styles";
 import OldMuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { muiTheme } from "../webapp/pages/app/themes/dhis2.theme";
 import muiThemeLegacy from "../webapp/pages/app/themes/dhis2-legacy.theme";
 import { Country } from "../domain/entities/Country";
+import { ResourceTheme } from "../domain/entities/resources/ResourceTheme";
 
 export function givenAnUser(): User {
     return {
@@ -41,6 +42,14 @@ export function givenACountries(): Country[] {
     ];
 }
 
+export function givenAThemes(): ResourceTheme[] {
+    return [
+        { id: "QQMVsTNPJbB", name: "Spending on Health", code: "Spending on Health" },
+        { id: "XtkFOVtkBtT", name: "Financial Protection", code: "Financial Protection" },
+        { id: "nyzMcROMpmY", name: "Voluntary Health Insurance", code: "Voluntary Health Insurance" },
+    ];
+}
+
 export function getTestContext(repositoriesToOverwrite?: Repositories): AppContextState {
     // Mock api was working with axios but not with fetch
 
@@ -52,6 +61,7 @@ export function getTestContext(repositoriesToOverwrite?: Repositories): AppConte
         compositionRoot: getCompositionRoot(api, null, instance, repositoriesToOverwrite),
         isNodeDev: true,
         countries: givenACountries(),
+        themes: givenAThemes(),
     };
 
     return context;
@@ -79,13 +89,20 @@ type RouterConfig = {
 export function customRenderWithRouterMatch(
     children: ReactNode,
     config: RouterConfig,
-    overwriteRepositories?: Repositories
+    overwriteRepositories?: Repositories,
+    memoryHistory?: MemoryHistory
 ) {
+    const history = memoryHistory || createHistory(config);
+
     const node = (
-        <Router history={createMemoryHistory({ initialEntries: [config.route] })}>
+        <Router history={history}>
             <Route path={config.path || ""} render={() => children} />
         </Router>
     );
 
     return customRender(node, overwriteRepositories);
+}
+
+export function createHistory(config: RouterConfig) {
+    return createMemoryHistory({ initialEntries: [config.route] });
 }

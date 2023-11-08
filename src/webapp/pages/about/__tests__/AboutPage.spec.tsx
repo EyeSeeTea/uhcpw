@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen, waitFor, within, fireEvent } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import { instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
@@ -229,8 +229,6 @@ async function selectCountry(value: string) {
     const countrySelector = screen.getByLabelText(/country selector/i);
 
     await userEvent.click(countrySelector);
-
-    await userEvent.click(await screen.findByText("All countries"));
 
     const treeitem = await screen.findByRole("treeitem", { expanded: true });
     const treeScope = within(treeitem);

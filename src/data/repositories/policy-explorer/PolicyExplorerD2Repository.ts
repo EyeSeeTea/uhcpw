@@ -1,13 +1,24 @@
 import _ from "lodash";
 import { Future, FutureData } from "../../../domain/entities/Future";
-import { PolicyExplorer, PolicyExplorerGeneralInfo } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorer,
+    PolicyExplorerCell,
+    PolicyExplorerGeneralInfo,
+    PolicyExplorerReferences,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { exportToCSV } from "../../export/exportToCSV";
+import { getTableBuilder } from "./builders/TableBuilder";
+import {
+    CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
+    CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
+} from "./builders/TableBuilderChangesInCoveragePolicy";
+import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "./PolicyExplorerCategoryD2Repository";
 
-const generalDataElements: Record<string, string> = {
+export const generalDataElements: Record<string, string> = {
     source: "pDEHTRpRL8X",
     countryExperts: "mCEsfMPByf5",
     editors: "iyYnyNfyrfs",
@@ -15,13 +26,15 @@ const generalDataElements: Record<string, string> = {
     references: "DsWWAKomY4Z",
 };
 
+export const EMPTY_DATA = "";
+
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
     get(
         policyExplorerCategories: Record<string, string[]>,
         countries: string[],
-        years: string[]
+        yearsByCategory: Record<string, string[]>
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
@@ -34,7 +47,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 this.api.dataValues.getSet({
                     dataSet: [policyExplorerDataSet_ID],
                     orgUnit: countries,
-                    period: years,
+                    period: this.getPeriods(yearsByCategory),
                 })
             ),
             orgUnitsResponse: apiToFuture(
@@ -46,24 +59,26 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             ),
         }).map(({ dataSetResponse, dataValuesResponse, orgUnitsResponse }) => {
             return {
-                tables: this.buildTables(
+                tables: this.buildTables({
                     policyExplorerCategories,
-                    dataValuesResponse.dataValues,
-                    orgUnitsResponse.objects,
-                    dataSetResponse.objects[0]
-                ),
+                    dataValues: dataValuesResponse.dataValues,
+                    organisationUnits: orgUnitsResponse.objects,
+                    yearsByCategory,
+                    dataSet: dataSetResponse.objects[0],
+                }),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, orgUnitsResponse.objects),
+                references: this.buildReferences(dataValuesResponse.dataValues, orgUnitsResponse.objects),
             };
         });
     }
 
     saveToFile(policyExplorer: PolicyExplorer, categoryId: string): FutureData<void> {
-        const data = policyExplorer.tables[categoryId];
-        if (data) {
+        const rows = policyExplorer.tables[categoryId];
+        if (rows) {
             exportToCSV(
                 [
                     {
-                        data,
+                        data: this.getDataFromRows(rows),
                         name: "Policy Explorer",
                     },
                 ],
@@ -71,6 +86,18 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             );
         }
         return Future.success(undefined);
+    }
+
+    private getPeriods(yearsByCategory: Record<string, string[]>): string[] {
+        const years = Object.values(yearsByCategory).reduce((accYears, years) => accYears.concat(years), []);
+        return _.uniq(_.sortBy(years));
+    }
+
+    private getDataFromRows(rows: PolicyExplorerCell[][]): string[][] {
+        return rows.reduce((accRowsData: string[][], currentRow: PolicyExplorerCell[]) => {
+            const rowData: string[] = currentRow.map(({ value }) => value);
+            return [...accRowsData, rowData];
+        }, []);
     }
 
     private buildGeneralInfo(
@@ -105,105 +132,177 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    private buildColumns(
-        policyExplorerCategoryId: string,
-        policyExplorerSubcategoriesIds: string[],
-        dataSet?: D2DataSet
-    ): string[][] {
-        const dataElementsSection = this.getDataElementsSection(
-            policyExplorerCategoryId,
-            policyExplorerSubcategoriesIds,
-            dataSet
+    private buildTables(params: {
+        policyExplorerCategories: Record<string, string[]>;
+        dataValues: DataValueSetsDataValue[];
+        organisationUnits: D2OrgUnit[];
+        yearsByCategory: Record<string, string[]>;
+        dataSet?: D2DataSet;
+    }): Record<string, PolicyExplorerCell[][]> {
+        const { policyExplorerCategories, dataValues, organisationUnits, yearsByCategory, dataSet } = params;
+
+        const hasSomeChangesInCoveragePolicyCategory = Object.keys(policyExplorerCategories).some(categoryId =>
+            Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(categoryId)
         );
 
-        return [["Country", "Period", ...dataElementsSection.map(de => de.formName)]];
-    }
+        const allPolicyExplorerCategories = hasSomeChangesInCoveragePolicyCategory
+            ? this.fillSubcategoriesInChangesInCoveragePolicy(policyExplorerCategories)
+            : policyExplorerCategories;
 
-    private buildRows(
-        policyExplorerCategoryId: string,
-        policyExplorerSubcategoriesIds: string[],
-        dataValues: DataValueSetsDataValue[],
-        organisationUnits: D2OrgUnit[],
-        dataSet?: D2DataSet
-    ): string[][] {
-        const dataElementsSection = this.getDataElementsSection(
-            policyExplorerCategoryId,
-            policyExplorerSubcategoriesIds,
-            dataSet
-        );
-
-        const dataValuesByCountryAndYear = _(dataValues)
-            .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
-            .value();
-
-        return Object.keys(dataValuesByCountryAndYear).map(group => {
-            const [orgUnit, period] = group.split("-");
-
-            const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName || "";
-            const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
-
-            const references =
-                dataValues.find(
-                    dv => dv.orgUnit === orgUnit && dv.dataElement.includes(generalDataElements.references || "")
-                )?.value || "";
-
-            return [
-                orgUnitName,
-                period || "",
-                ...dataElementsSection.map(de => {
-                    const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
-
-                    return `${dataValue?.value || ""}\n\n${references}`;
-                }),
-            ];
-        });
-    }
-
-    private buildTables(
-        policyExplorerCategories: Record<string, string[]>,
-        dataValues: DataValueSetsDataValue[],
-        organisationUnits: D2OrgUnit[],
-        dataSet?: D2DataSet
-    ): Record<string, string[][]> {
         const tables = {};
-        return Object.entries(policyExplorerCategories).reduce(
-            (acc, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => ({
-                ...acc,
-                [policyExplorerCategoryId]: [
-                    ...this.buildColumns(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet),
-                    ...this.buildRows(
-                        policyExplorerCategoryId,
-                        policyExplorerSubcategoriesIds,
-                        dataValues,
-                        organisationUnits,
-                        dataSet
-                    ),
-                ],
-            }),
+
+        return Object.entries(allPolicyExplorerCategories).reduce(
+            (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
+                const tableBuilder = getTableBuilder(policyExplorerCategoryId);
+
+                const columns = tableBuilder.buildColumns({
+                    policyExplorerCategoryId,
+                    policyExplorerSubcategoriesIds,
+                    dataSet,
+                });
+
+                const countriesAlreadyInRows: string[] = [];
+
+                const dataValuesOrderByYear = _.orderBy(dataValues, ["orgUnit", "period"], "asc");
+                const dataValuesByCountryAndYear = _(dataValuesOrderByYear)
+                    .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
+                    .value();
+
+                const rows = Object.keys(dataValuesByCountryAndYear).reduce(
+                    (accRows: PolicyExplorerCell[][], group): PolicyExplorerCell[][] => {
+                        const [orgUnit, period] = group.split("-");
+
+                        if (!orgUnit) return accRows;
+
+                        const isPeriodNotIncludedInCategory =
+                            period && !yearsByCategory[policyExplorerCategoryId]?.includes(period);
+                        if (isPeriodNotIncludedInCategory) {
+                            return accRows;
+                        }
+
+                        const orgUnitName = countriesAlreadyInRows.includes(orgUnit)
+                            ? EMPTY_DATA
+                            : organisationUnits.find(ou => ou.id === orgUnit)?.shortName || EMPTY_DATA;
+
+                        if (!countriesAlreadyInRows.includes(orgUnit)) {
+                            countriesAlreadyInRows.push(orgUnit);
+                        }
+
+                        const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
+
+                        const references =
+                            dataValues.find(
+                                dv =>
+                                    dv.orgUnit === orgUnit &&
+                                    dv.dataElement.includes(generalDataElements.references || "")
+                            )?.value || EMPTY_DATA;
+
+                        return tableBuilder.buildRows({
+                            currentRowsInTable: accRows,
+                            policyExplorerCategoryId,
+                            policyExplorerSubcategoriesIds,
+                            dataValuesByGroup,
+                            orgUnitName,
+                            period,
+                            references,
+                            dataSet,
+                        });
+                    },
+                    []
+                );
+
+                const tableWithFilteredColumns = this.filterColumnsWithNoData(columns, rows);
+
+                return {
+                    ...accTables,
+                    [policyExplorerCategoryId]: tableWithFilteredColumns,
+                };
+            },
             tables
         );
     }
 
-    private getDataElementsSection(
-        policyExplorerCategoryId: string,
-        policyExplorerSubcategoriesIds: string[],
-        dataSet?: D2DataSet
-    ) {
-        return (
-            dataSet?.sections
-                .find(section => section.id === policyExplorerCategoryId)
-                ?.dataElements.filter(
-                    de => de.valueType === "LONG_TEXT" && policyExplorerSubcategoriesIds.includes(de.id)
-                ) || []
-        );
+    private fillSubcategoriesInChangesInCoveragePolicy(
+        policyExplorerCategories: Record<string, string[]>
+    ): Record<string, string[]> {
+        return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
+            switch (categoryId) {
+                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019:
+                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020:
+                    return {
+                        ...acc,
+                        [categoryId]: this.getAllSubcategoriesOfChangesInCoveragePolicy(
+                            categoryId,
+                            policyExplorerCategories[categoryId] || []
+                        ),
+                    };
+                default:
+                    return {
+                        ...acc,
+                        [categoryId]: policyExplorerCategories[categoryId],
+                    };
+            }
+        }, {});
+    }
+
+    private getAllSubcategoriesOfChangesInCoveragePolicy(categoryId: string, selectedSubcategories: string[]) {
+        const changesInCoveragePolicyGroupedSubcategories =
+            categoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
+                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
+                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
+
+        return selectedSubcategories.reduce((accSubcategories, subcategory) => {
+            const subcategoryIds = Object.values(changesInCoveragePolicyGroupedSubcategories).find(subcategoryIds =>
+                subcategoryIds.includes(subcategory)
+            );
+            return subcategoryIds ? [...accSubcategories, ...subcategoryIds] : accSubcategories;
+        }, [] as string[]);
+    }
+
+    private filterColumnsWithNoData(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]) {
+        const indexesToRemove = columns.reduce((accIndexesToRemove: number[], _column, columnIndex) => {
+            const hasRowsWithoutData = rows.every(row => !row[columnIndex]?.value);
+            return hasRowsWithoutData ? [...accIndexesToRemove, columnIndex] : accIndexesToRemove;
+        }, []);
+
+        const filteredColumns = columns.filter((_column, index) => !indexesToRemove.includes(index));
+        const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
+
+        return filteredColumns.length ? [filteredColumns, ...filteredRows] : [];
+    }
+
+    private buildReferences(
+        dataValues: DataValueSetsDataValue[],
+        organisationUnits: D2OrgUnit[]
+    ): PolicyExplorerReferences[] {
+        const dataValuesByOrgUnit = _(dataValues)
+            .groupBy(dataValue => dataValue.orgUnit)
+            .value();
+
+        return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
+            const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
+
+            const references =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.references || "")
+                )?.value || EMPTY_DATA;
+
+            const referencesArray = references.match(/\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g) as string[];
+
+            return { country, references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) };
+        });
     }
 }
 
 const dataSetFields = {
-    sections: { id: true, displayName: true, dataElements: { id: true, formName: true, valueType: true } },
+    sections: {
+        id: true,
+        displayName: true,
+        dataElements: { id: true, formName: true, valueType: true, description: true },
+    },
 } as const;
 
-type D2DataSet = MetadataPick<{
+export type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
 
