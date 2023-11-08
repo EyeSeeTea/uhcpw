@@ -9,7 +9,6 @@ export interface AppContextState {
     api: D2Api;
     currentUser: User;
     compositionRoot: CompositionRoot;
-    isNodeDev: boolean;
     countries: Country[];
     themes: ResourceTheme[];
 }

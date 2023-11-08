@@ -22,14 +22,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
 
-                {/* {visualization && analytics && (
-                    <ChartWithPlugin
-                        visualization={visualization}
-                        countryIds={filters.country.selected}
-                        periods={filters.year.selected ? filters.year.selected : []}
-                    />
-  
-                )}
+                {/* 
                 {{visualization && analytics && <Chart visualization={visualization} analytics={analytics} />} } */}
 
                 {showVisualization && filters.category.selected && (

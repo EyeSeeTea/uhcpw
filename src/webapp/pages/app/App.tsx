@@ -30,12 +30,11 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
             const compositionRoot = getCompositionRoot(api, dataEngine, instance);
             const currentUser = (await compositionRoot.users.getCurrent.execute().runAsync()).data;
             if (!currentUser) throw new Error("User not logged in");
-            const isNodeDev = process.env.NODE_ENV === "development";
 
             const countries = (await compositionRoot.countries.get.execute().runAsync()).data || [];
             const themes = (await compositionRoot.resources.getThemes.execute().runAsync()).data || [];
 
-            setAppContext({ api, currentUser, compositionRoot, isNodeDev, countries, themes });
+            setAppContext({ api, currentUser, compositionRoot, countries, themes });
             setLoading(false);
         }
         setup();
