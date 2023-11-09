@@ -21,7 +21,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             rows: this.getDimensions(visualization, "rows", orgUnits, periods),
             filters: this.getDimensions(visualization, "filters", orgUnits, periods),
         } as unknown as D2Visualization;
+        //const overwrittenVisualization = visualization as unknown as D2Visualization;
 
+        debugger;
         return Future.fromPromise(fetchData(this.d2DataEngine, overwrittenVisualization, {}))
             .flatMap(response => {
                 return Future.success(response.responses[0] as Analytics);
@@ -117,41 +119,22 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     ): ItemRef[] | undefined => {
         const existsOu = visualization[prop].some(vd => vd.id === "ou");
         const existsPe = visualization[prop].some(vd => vd.id === "pe");
-        const existsDx = visualization[prop].some(vd => vd.id === "dx");
+        const dimensionsDx = visualization[prop].filter(vd => vd.id === "dx");
         const others = visualization[prop].filter(vd => vd.id !== "dx" && vd.id !== "pe" && vd.id !== "ou");
 
-        if (existsOu || existsPe || existsDx || others.length > 0) {
-            const dimensionsOu =
-                existsOu && countryIds && countryIds.length > 0
-                    ? [{ dimension: "ou" as const, items: countryIds?.map(countryId => ({ id: countryId })) }]
-                    : [];
+        const dimensionsOu =
+            existsOu && countryIds && countryIds.length > 0
+                ? [{ dimension: "ou" as const, items: countryIds?.map(countryId => ({ id: countryId })) }]
+                : [];
 
-            const dimensionsPe =
-                existsPe && periods && periods.length > 0
-                    ? [{ dimension: "pe" as const, items: periods?.map(period => ({ id: period })) }]
-                    : [];
+        const dimensionsPe =
+            existsPe && periods && periods.length > 0
+                ? [{ dimension: "pe" as const, items: periods?.map(period => ({ id: period })) }]
+                : [];
 
-            const dimensionsDx =
-                (dimensionsOu.length > 0 || dimensionsPe.length > 0) &&
-                existsDx &&
-                visualization.dataDimensionItems &&
-                visualization.dataDimensionItems.length > 0
-                    ? [
-                          {
-                              dimension: "dx" as const,
-                              items: visualization.dataDimensionItems?.map(
-                                  dataDimensionItem => dataDimensionItem.dataElement
-                              ),
-                          },
-                      ]
-                    : [undefined];
+        const dimensions = _.compact([...others, ...dimensionsOu, ...dimensionsPe, ...dimensionsDx]);
 
-            const dimensions = _.compact([...others, ...dimensionsOu, ...dimensionsPe, ...dimensionsDx]);
-
-            return dimensions.length > 0 ? dimensions : undefined;
-        } else {
-            return undefined;
-        }
+        return dimensions.length > 0 ? dimensions : undefined;
     };
 }
 export type VisualizationProp = "filters" | "rows" | "columns";

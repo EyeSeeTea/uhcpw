@@ -32,7 +32,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         compositionRoot.indicatorExplorer.getVisualizations.execute().run(
             visualizations => {
                 setCategoryFilters(
-                    visualizations.map(visualization => ({ value: visualization.id, text: visualization.name }))
+                    visualizations.map(visualization => ({ value: visualization.id, text: visualization.categoryName }))
                 );
             },
             () => {

@@ -1,6 +1,14 @@
 import { Id, Ref } from "../Ref";
 
-export interface Visualization {
+export interface VisualizationExtra {
+    categoryName: string;
+    friendlyName: string;
+    info: VisualizationInfo;
+}
+
+export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
+
+export interface Visualization extends VisualizationExtra {
     id: Id;
     name: string;
     title: string;

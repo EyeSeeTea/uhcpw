@@ -11,13 +11,17 @@ import { visualizationCustomizations } from "./visualizationCustomizations";
 
 interface ChartDataState {
     chartData: ChartData;
+    showInfo: boolean;
     onDownload: () => void;
+    onShowInfo: () => void;
+    onCloseInfo: () => void;
 }
 
 export function useChartData(visualizationId: string, years: string[], countries: string[]): ChartDataState {
     const { compositionRoot } = useAppContext();
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
+    const [showInfo, setShowInfo] = useState<boolean>(false);
 
     useEffect(() => {
         if (visualizationId) {
@@ -52,7 +56,15 @@ export function useChartData(visualizationId: string, years: string[], countries
             .runAsync();
     }, [compositionRoot.indicatorExplorer.downloadAnalytics, visualizationId, years, countries]);
 
-    return { chartData, onDownload };
+    const onShowInfo = useCallback(() => {
+        setShowInfo(true);
+    }, []);
+
+    const onCloseInfo = useCallback(() => {
+        setShowInfo(false);
+    }, []);
+
+    return { chartData, showInfo, onShowInfo, onCloseInfo, onDownload };
 }
 
 function getChartData(

@@ -12,6 +12,7 @@ import { VisualizationRepository } from "../../../domain/repositories/indicator-
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { InmemoryCache } from "../../cache/InmemoryCache";
+import { emptyVisualizationExtra, visualizationsSeed } from "./VisualizationsSeed";
 
 export class VisualizationD2Repository implements VisualizationRepository {
     cache = new InmemoryCache();
@@ -22,7 +23,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
         return apiToFuture(
             this.api.models.visualizations.get({
                 fields: visualizationFields,
-                filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: ["R379Rkg9wX8"] } }, //, name: { like: "UHCW_" } },
+                filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: [Object.keys(visualizationsSeed).join(",")] } },
             })
         ).map(response => response.objects.map(object => this.buildVisualization(object)));
     }
@@ -41,6 +42,8 @@ export class VisualizationD2Repository implements VisualizationRepository {
     }
 
     private buildVisualization(d2Visualization: D2Visualization): Visualization {
+        const visualizationExtra = visualizationsSeed[d2Visualization.id] || emptyVisualizationExtra;
+
         return {
             id: d2Visualization.id,
             name: d2Visualization.name,
@@ -72,6 +75,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
             // TypeError: item.legendItem.getBBox is not a function
             // but is not in d2api schemas
             seriesKey: { hidden: false },
+            ...visualizationExtra,
         };
     }
 }

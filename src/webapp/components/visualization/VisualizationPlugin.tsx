@@ -6,6 +6,7 @@ import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import { NotesDialog } from "../dialog/NotesDialog";
 interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
@@ -14,7 +15,12 @@ interface VisualizationPluginProps {
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
     ({ visualizationId, years, countries }) => {
-        const { chartData, onDownload } = useChartData(visualizationId, years, countries);
+        const { chartData, showInfo, onShowInfo, onCloseInfo, onDownload } = useChartData(
+            visualizationId,
+            years,
+            countries
+        );
+
         const ref = useRef<HTMLDivElement>(null);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
@@ -23,11 +29,15 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     <Row>
                         <Row>
                             <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
-                                {chartData.visualization.name}
+                                {chartData.visualization.friendlyName}
                             </Typography>
-                            {/* <Button onClick={() => setIsOpen(true)}> */}
                             <Button>
-                                <CustomInfoIcon color="primary" className="info-button" htmlColor="#185698" />
+                                <CustomInfoIcon
+                                    color="primary"
+                                    className="info-button"
+                                    htmlColor="#185698"
+                                    onClick={onShowInfo}
+                                />
                             </Button>
                         </Row>
 
@@ -54,10 +64,11 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 />
                 <Box height={32} />
 
-                {/* <NotesDialog isOpen={isOpen} setIsOpen={setIsOpen} dialogInfo={dialogInfo} /> */}
+                {showInfo && (
+                    <NotesDialog isOpen={showInfo} onClose={onCloseInfo} dialogInfo={chartData.visualization.info} />
+                )}
             </Container>
-        ) : // <Chart visualization={chartData.visualization} analytics={chartData.analytics} />
-        chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
+        ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
             <Center>
                 <Typography variant="subtitle1">{i18n.t("There may be no data")}</Typography>
             </Center>

@@ -1,6 +1,5 @@
 import {
     Analytics,
-    VIS_TYPE_PIVOT_TABLE,
     layoutGetDimensionItems,
     DIMENSION_ID_PERIOD,
     DAILY,
