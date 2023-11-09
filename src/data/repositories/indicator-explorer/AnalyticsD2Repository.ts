@@ -5,24 +5,25 @@ import { Dimension, Visualization } from "../../../domain/entities/indicator-exp
 import { Ref } from "../../../domain/entities/Ref";
 import { AnalyticsRepository } from "../../../domain/repositories/indicator-explorer/AnalyticsRepository";
 import { D2Api } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
+import { isValidUid } from "../../../utils/uid";
+import { exportToCSV } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown) {}
 
-    public get(visualization: Visualization, _periods: string[], _orgUnits: string[]): FutureData<Analytics> {
-        const overwrittenVisualization = visualization as unknown as D2Visualization;
-        // = {
-        //     ...visualization,
-        //     columns: this.getDimensions(visualization, "columns", orgUnits, periods),
-        //     rows: this.getDimensions(visualization, "rows", orgUnits, periods),
-        //     filters: this.getDimensions(visualization, "filters", orgUnits, periods),
-        // } as unknown as D2Visualization;
+    public get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics> {
+        const overwrittenVisualization = {
+            ...visualization,
+            columns: this.getDimensions(visualization, "columns", orgUnits, periods),
+            rows: this.getDimensions(visualization, "rows", orgUnits, periods),
+            filters: this.getDimensions(visualization, "filters", orgUnits, periods),
+        } as unknown as D2Visualization;
 
         return Future.fromPromise(fetchData(this.d2DataEngine, overwrittenVisualization, {}))
             .flatMap(response => {
-                //return Future.success(hardcodedAnalytics as unknown as Analytics);
                 return Future.success(response.responses[0] as Analytics);
             })
             .flatMapError(_error => {
@@ -31,7 +32,84 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             });
     }
 
-    getDimensions = (
+    saveToFile(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<void> {
+        return this.get(visualization, periods, orgUnits).flatMap(analyticsResponse => {
+            const metadataIds = this.extractMetadataIds(analyticsResponse);
+
+            return Future.joinObj({
+                analyticsResponse: Future.success(analyticsResponse),
+                metadata: apiToFuture(
+                    this.api.get<Metadata>("/metadata", {
+                        fields: "id,shortName,name",
+                        filter: "id:in:[" + metadataIds.join(",") + "]",
+                    })
+                ),
+            }).flatMap(({ analyticsResponse, metadata }) => {
+                const columns = analyticsResponse.headers.map(header => header.column);
+
+                const rows = [columns, ...this.mapAnalyticsResponseRows(analyticsResponse, metadata)];
+
+                if (rows) {
+                    exportToCSV(
+                        [
+                            {
+                                data: rows,
+                                name: "Data",
+                            },
+                        ],
+                        "Data"
+                    );
+                }
+                return Future.success(undefined);
+            });
+        });
+    }
+
+    mapAnalyticsResponseRows(analyticsResponse: Analytics, metadata: Metadata): string[][] {
+        return analyticsResponse.rows.map(row =>
+            row.map(cell => {
+                if (isValidUid(cell)) {
+                    return this.getNameFromMetadata(cell, metadata);
+                } else {
+                    return cell;
+                }
+            })
+        );
+    }
+
+    getNameFromMetadata(id: string, metadata: Metadata): string {
+        const { organisationUnits, ...restMetadata } = metadata;
+
+        const orgUnit = organisationUnits?.find(orgUnit => orgUnit.id === id);
+
+        if (orgUnit) {
+            return orgUnit?.shortName || "";
+        } else {
+            const objects = Object.values(restMetadata).flat();
+
+            const metadataObject = objects.find(object => object.id === id);
+
+            return metadataObject?.name.replace("UHCW_", "") || "";
+        }
+    }
+
+    extractMetadataIds(analyticsResponse: Analytics) {
+        return _.uniq(
+            analyticsResponse.rows
+                .map(row => {
+                    return row.reduce((acc: string[], cell: string) => {
+                        if (isValidUid(cell)) {
+                            return [...acc, cell];
+                        } else {
+                            return acc;
+                        }
+                    }, []);
+                })
+                .flat()
+        );
+    }
+
+    private getDimensions = (
         visualization: Visualization,
         prop: VisualizationProp,
         countryIds?: string[],
@@ -40,8 +118,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const existsOu = visualization[prop].some(vd => vd.id === "ou");
         const existsPe = visualization[prop].some(vd => vd.id === "pe");
         const existsDx = visualization[prop].some(vd => vd.id === "dx");
+        const others = visualization[prop].filter(vd => vd.id !== "dx" && vd.id !== "pe" && vd.id !== "ou");
 
-        if (existsOu || existsPe || existsDx) {
+        if (existsOu || existsPe || existsDx || others.length > 0) {
             const dimensionsOu =
                 existsOu && countryIds && countryIds.length > 0
                     ? [{ dimension: "ou" as const, items: countryIds?.map(countryId => ({ id: countryId })) }]
@@ -67,7 +146,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                       ]
                     : [undefined];
 
-            const dimensions = _.compact([...dimensionsOu, ...dimensionsPe, ...dimensionsDx]);
+            const dimensions = _.compact([...others, ...dimensionsOu, ...dimensionsPe, ...dimensionsDx]);
 
             return dimensions.length > 0 ? dimensions : undefined;
         } else {
@@ -81,3 +160,5 @@ interface ItemRef {
     dimension: Dimension;
     items: Ref[];
 }
+
+type Metadata = Record<string | "organisationUnits", { id: string; name: string; shortName: string }[]>;

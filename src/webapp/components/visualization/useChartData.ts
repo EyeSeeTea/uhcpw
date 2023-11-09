@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { useAppContext } from "../../contexts/app-context";
 
@@ -9,7 +9,12 @@ import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet
 import { ChartData } from "./ChartData";
 import { visualizationCustomizations } from "./visualizationCustomizations";
 
-export function useChartData(visualizationId: string, years: string[], countries: string[]): ChartData {
+interface ChartDataState {
+    chartData: ChartData;
+    onDownload: () => void;
+}
+
+export function useChartData(visualizationId: string, years: string[], countries: string[]): ChartDataState {
     const { compositionRoot } = useAppContext();
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
@@ -41,7 +46,13 @@ export function useChartData(visualizationId: string, years: string[], countries
         }
     }, [compositionRoot, visualizationId, countries, years]);
 
-    return chartData;
+    const onDownload = useCallback(() => {
+        compositionRoot.indicatorExplorer.downloadAnalytics
+            .execute(visualizationId, years || [], countries || [])
+            .runAsync();
+    }, [compositionRoot.indicatorExplorer.downloadAnalytics, visualizationId, years, countries]);
+
+    return { chartData, onDownload };
 }
 
 function getChartData(

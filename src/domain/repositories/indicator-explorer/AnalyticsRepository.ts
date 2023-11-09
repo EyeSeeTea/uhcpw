@@ -4,4 +4,5 @@ import { Visualization } from "../../entities/indicator-explorer/Visualization";
 
 export interface AnalyticsRepository {
     get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics>;
+    saveToFile(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<void>;
 }

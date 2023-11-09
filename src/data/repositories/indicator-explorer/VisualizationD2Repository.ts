@@ -22,7 +22,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
         return apiToFuture(
             this.api.models.visualizations.get({
                 fields: visualizationFields,
-                filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: ["WaznCszwnj7", "D240hYLRs1P", "SKJkOTlS8vN"] } }, //, name: { like: "UHCW_" } },
+                filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: ["R379Rkg9wX8"] } }, //, name: { like: "UHCW_" } },
             })
         ).map(response => response.objects.map(object => this.buildVisualization(object)));
     }

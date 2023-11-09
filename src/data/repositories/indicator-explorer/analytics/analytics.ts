@@ -24,7 +24,7 @@ export const apiFetchAnalytics = async (
     const req = new analyticsEngine.request()
         .fromVisualization(visualization)
         .withParameters(options)
-        .withIncludeNumDen(visualization.type === VIS_TYPE_PIVOT_TABLE);
+        .withIncludeNumDen(false);
 
     const rawResponse = await analyticsEngine.aggregate.get(req);
 

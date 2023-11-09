@@ -7,7 +7,6 @@ import { getRelativePeriodTypeUsed } from "./getRelativePeriodTypeUsed";
 import { getRequestOptions } from "./getRequestOptions";
 
 export async function fetchData(d2DataEngine: unknown, visualization: D2Visualization, filters: unknown) {
-    const displayProperty = "NAME";
     const forDashboard = false;
 
     const adaptedVisualization = {
@@ -17,7 +16,7 @@ export async function fetchData(d2DataEngine: unknown, visualization: D2Visualiz
         filters: removeItemAllFromAxisItems(visualization.filters as VisualizationDimension[]),
     };
 
-    const options = getRequestOptions(adaptedVisualization, filters, displayProperty);
+    const options = getRequestOptions(adaptedVisualization, filters);
 
     const extraOptions = {
         dashboard: forDashboard,

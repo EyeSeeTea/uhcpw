@@ -28,6 +28,7 @@ import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
 import { PersonD2Repository } from "./data/repositories/PersonD2Repository";
 import { GetLegendSetsUseCase } from "./domain/usecases/indicator-explorer/GetLegendSets";
 import { LegendSetD2Repository } from "./data/repositories/indicator-explorer/LegendSetD2Repository";
+import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/DownloadAnalyticsUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -77,6 +78,7 @@ export function getCompositionRoot(
             getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
             getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
+            downloadAnalytics: new DownloadAnalyticsUseCase(repositories.visualization, repositories.analytics),
             getLegendSets: new GetLegendSetsUseCase(repositories.legendSet),
         },
         resources: {

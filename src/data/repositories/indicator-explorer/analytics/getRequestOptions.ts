@@ -1,9 +1,11 @@
 import { D2Visualization } from "../VisualizationD2Repository";
 import { AnalyticsOptions, getOptionsForRequest } from "./options";
 
-export type AnalyticsRequestOptions = AnalyticsOptions & { relativePeriodDate: unknown; displayProperty: string };
+export type AnalyticsRequestOptions = AnalyticsOptions & {
+    relativePeriodDate: unknown;
+};
 
-export const getRequestOptions = (visualization: D2Visualization, filters: any, displayProperty: string) => {
+export const getRequestOptions = (visualization: D2Visualization, filters: any) => {
     const options = getOptionsForRequest().reduce((input, [option, props]) => {
         const map = input as any;
 
@@ -28,6 +30,5 @@ export const getRequestOptions = (visualization: D2Visualization, filters: any, 
     return {
         ...options,
         relativePeriodDate: filters?.relativePeriodDate,
-        displayProperty: displayProperty.toUpperCase(),
     };
 };

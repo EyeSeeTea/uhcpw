@@ -2,7 +2,6 @@ import { Box, Button, CircularProgress, Typography } from "@material-ui/core";
 import React, { useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
-import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import InfoIcon from "@material-ui/icons/Info";
@@ -15,18 +14,8 @@ interface VisualizationPluginProps {
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
     ({ visualizationId, years, countries }) => {
-        const chartData = useChartData(visualizationId, years, countries);
+        const { chartData, onDownload } = useChartData(visualizationId, years, countries);
         const ref = useRef<HTMLDivElement>(null);
-        //const [isOpen, setIsOpen] = useState(false);
-
-        const handleDownload = React.useCallback(() => {
-            if (ref.current && chartData.kind === "Loaded")
-                downloadHtmlElement(ref.current, chartData.visualization.name, {
-                    backgroundColor: "#f1f9fc",
-                    exclusionClasses: ["download-button", "info-button"],
-                });
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [chartData.kind, chartData]);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
             <Container ref={ref}>
@@ -48,7 +37,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                                 startIcon={<DownloadIcon />}
                                 color="primary"
                                 style={{ marginLeft: 20 }}
-                                onClick={handleDownload}
+                                onClick={onDownload}
                                 className="download-button"
                             >
                                 <Typography>{i18n.t("Download")}</Typography>
