@@ -35,6 +35,17 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
             sourceLink: "",
         },
     },
+    R379Rkg9wX8: {
+        categoryName: "Financial Hardship: Households with catastrophic health spending by consumption quintile",
+        friendlyName: "Households with catastrophic health spending by consumption quintile",
+        info: {
+            infoNotes: [
+                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care. Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+            ],
+            sourceName: "WHO Barcelona Office for Health Systems Financing",
+            sourceLink: "",
+        },
+    },
 };
 
 // export const categoriesConfig: Record<string, CategoryConfig> = {
