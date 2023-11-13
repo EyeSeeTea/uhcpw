@@ -1,4 +1,5 @@
 import { getFieldsAsString } from "@eyeseetea/d2-api/api/common";
+import _ from "lodash";
 import { FutureData } from "../../../domain/entities/Future";
 import {
     CategoryDimensionItem,
@@ -25,7 +26,13 @@ export class VisualizationD2Repository implements VisualizationRepository {
                 fields: visualizationFields,
                 filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: [Object.keys(visualizationsSeed).join(",")] } },
             })
-        ).map(response => response.objects.map(object => this.buildVisualization(object)));
+        ).map(response =>
+            _.orderBy(
+                response.objects.map(object => this.buildVisualization(object)),
+                "categoryName",
+                "asc"
+            )
+        );
     }
 
     public getById(id: string): FutureData<Visualization> {

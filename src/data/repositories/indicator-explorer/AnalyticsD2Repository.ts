@@ -23,7 +23,6 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         } as unknown as D2Visualization;
         //const overwrittenVisualization = visualization as unknown as D2Visualization;
 
-        debugger;
         return Future.fromPromise(fetchData(this.d2DataEngine, overwrittenVisualization, {}))
             .flatMap(response => {
                 return Future.success(response.responses[0] as Analytics);
