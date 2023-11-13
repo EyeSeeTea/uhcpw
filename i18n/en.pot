@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-13T05:41:02.246Z\n"
-"PO-Revision-Date: 2023-11-13T05:41:02.246Z\n"
+"POT-Creation-Date: 2023-11-13T11:52:21.766Z\n"
+"PO-Revision-Date: 2023-11-13T11:52:21.766Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -398,6 +398,9 @@ msgid "There may be no data"
 msgstr ""
 
 msgid "All"
+msgstr ""
+
+msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"
