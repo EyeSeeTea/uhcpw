@@ -9,6 +9,7 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
+    const { selected: selectedCountries } = countryFilter;
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
@@ -27,6 +28,10 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         setSelectedYearFilter(value);
         setShowVisualization(false);
     }, []);
+
+    useEffect(() => {
+        setShowVisualization(false);
+    }, [selectedCountries]);
 
     useEffect(() => {
         compositionRoot.indicatorExplorer.getVisualizations.execute().run(
