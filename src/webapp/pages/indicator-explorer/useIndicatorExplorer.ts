@@ -5,6 +5,8 @@ import { IndicatorExplorerState } from "./IndicatorExplorerState";
 
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
+import i18n from "@eyeseetea/d2-ui-components/locales";
+import { LatestCOVID19 } from "../../../domain/entities/Year";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -47,8 +49,17 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     }, [compositionRoot.indicatorExplorer]);
 
     useEffect(() => {
-        setYearsFilters(generateYears().map(year => ({ value: year.id, text: year.id })));
-    }, [compositionRoot.indicatorExplorer]);
+        const categoryFilter = categoryFilters.find(cat => cat.value === selectedCategoryFilter)?.text;
+
+        if (categoryFilter?.startsWith("Comparative")) {
+            setYearsFilters([
+                { value: LatestCOVID19.id, text: i18n.t("2019 or latest available year before COVID-19") },
+            ]);
+            setSelectedYearFilter([LatestCOVID19.id]);
+        } else {
+            setYearsFilters(generateYears().map(year => ({ value: year.id, text: year.id })));
+        }
+    }, [categoryFilters, selectedCategoryFilter]);
 
     const onGet = useCallback(() => {
         setShowVisualization(true);

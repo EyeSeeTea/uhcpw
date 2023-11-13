@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-08T05:49:47.376Z\n"
-"PO-Revision-Date: 2023-11-08T05:49:47.376Z\n"
+"POT-Creation-Date: 2023-11-13T05:41:02.246Z\n"
+"PO-Revision-Date: 2023-11-13T05:41:02.246Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -316,9 +316,6 @@ msgstr ""
 msgid "Get chart"
 msgstr ""
 
-msgid "Countries"
-msgstr ""
-
 msgid "Co-funded by the European Union"
 msgstr ""
 
@@ -358,6 +355,9 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Countries"
+msgstr ""
+
 msgid "Regional report"
 msgstr ""
 
@@ -392,12 +392,6 @@ msgid "Select theme"
 msgstr ""
 
 msgid "Download"
-msgstr ""
-
-msgid "Tambor and Pavlova (2020)"
-msgstr ""
-
-msgid "15 June 2020"
 msgstr ""
 
 msgid "There may be no data"
