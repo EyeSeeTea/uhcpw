@@ -156,39 +156,23 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            {countryOptions.map(country => {
-                                return (
-                                    <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
-                                        {country.text}
-                                    </MenuItem>
-                                );
-                            })}
+                            {countryOptions
+                                //Temporary filter below to only show Bulgaria
+                                .filter(option => option.value === "AjeCGGb8H76")
+                                .map(country => {
+                                    return (
+                                        <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
+                                            {country.text}
+                                        </MenuItem>
+                                    );
+                                })}
                         </Menu>
                         <MenuButton id="regions" aria-controls="regions" aria-haspopup="true" disabled>
                             {i18n.t("Regional report")}
                         </MenuButton>
-                        <MenuButton
-                            id="methods"
-                            aria-controls="methods"
-                            aria-haspopup="true"
-                            onClick={handleParentMenuClick}
-                            endIcon={anchorEl?.id === "methods" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                        >
+                        <MenuButton id="regions" aria-controls="regions" aria-haspopup="true" disabled>
                             {i18n.t("Methods")}
                         </MenuButton>
-                        <MenuContainer
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={anchorEl?.id === "methods"}
-                            onClose={handleClose}
-                            getContentAnchorEl={null}
-                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                            transformOrigin={{ vertical: "top", horizontal: "center" }}
-                        >
-                            <ComingSoonTagContainer>
-                                <Tag>{i18n.t("Coming soon")}</Tag>
-                            </ComingSoonTagContainer>
-                        </MenuContainer>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}

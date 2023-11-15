@@ -54,7 +54,8 @@ export const Header: FC<HeaderType> = ({ countryId, onCountryChange, sliderRef, 
                 <CountryDropdown
                     fullWidth
                     placeholder={i18n.t("Select country")}
-                    options={filters.country.options}
+                    //Temporary filter below to only show Bulgaria
+                    options={filters.country.options.filter(option => option.id === "AjeCGGb8H76")}
                     value={countryId}
                     onChange={onCountryChange}
                 />
