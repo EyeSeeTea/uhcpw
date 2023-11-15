@@ -22,10 +22,22 @@ const MethodsMarkdown = ({ children }: { children: string }) => {
                         <Typography variant="body2">{children}</Typography>
                     </li>
                 ),
+                a: ({ ...props }) => <MarkdownLink {...props} />,
             }}
         >
             {children}
         </ReactMarkdown>
+    );
+};
+
+const MarkdownLink: React.FC<{
+    href?: string | undefined;
+    children: React.ReactNode;
+}> = ({ href, children }) => {
+    return (
+        <TextLink href={href} target="_blank" rel="noreferrer">
+            {children}
+        </TextLink>
     );
 };
 
@@ -45,7 +57,7 @@ export const MethodsPage: React.FC = () => {
             <TitleContainer aria-label="methods-page-header">
                 <Typography variant="h3">{i18n.t("Methods")}</Typography>
             </TitleContainer>
-            <StyledGrid container spacing={2} aria-label="methods-container">
+            <StyledGrid container spacing={5} aria-label="methods-container">
                 {methods.map((method, i) => (
                     <Grid item xs={6} key={method.sectionName} aria-label="method-item">
                         <Typography variant="h5" style={{ marginBottom: "10px" }}>
@@ -53,7 +65,7 @@ export const MethodsPage: React.FC = () => {
                         </Typography>
                         {isExpanded[i] === false ? (
                             <>
-                                <MethodsMarkdown>{method.shortText}</MethodsMarkdown>
+                                <MethodsMarkdown>{method.shortText.concat("...")}</MethodsMarkdown>
                                 <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => handleClick(i)}>
                                     {i18n.t("Read more")}
                                 </StyledReadMoreButton>
@@ -99,17 +111,32 @@ const StyledButton = styled(Button)`
     color: white;
     background-color: ${colors.accentPrimary};
     text-transform: none;
-    padding: 5px 10px;
+    padding: 5px 15px;
+    &:hover {
+        background-color: ${colors.accentPrimary};
+        opacity: 0.5;
+    }
 `;
 
 const ButtonsContainer = styled.div`
     display: flex;
     gap: 20px;
     padding: 40px;
+    float: right;
 `;
 
 const StyledReadMoreButton = styled(Button)`
     text-transform: none;
     color: ${colors.accentPrimary};
     font-weight: bold;
+`;
+
+const TextLink = styled.a`
+    color: ${colors.accentPrimary};
+    padding: 0 3px;
+    text-transform: none;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 `;
