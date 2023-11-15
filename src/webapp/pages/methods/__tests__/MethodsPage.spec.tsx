@@ -67,7 +67,7 @@ function verifyMethods(methods: Method[]) {
         const itemScope = within(item);
 
         itemScope.getByText(method.sectionName);
-        itemScope.getByText(method.shortText);
+        itemScope.getByText(method.shortText.concat("..."));
 
         const readMoreButton = itemScope.getByRole("button", { name: /read more/i });
 
