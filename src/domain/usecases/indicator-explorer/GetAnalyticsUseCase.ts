@@ -12,7 +12,9 @@ export class GetAnalyticsUseCase {
 
     public execute(visualizationId: string, periods: string[], countries: string[]): FutureData<Analytics> {
         return this.visualizationRepository.getById(visualizationId).flatMap(visualization => {
-            const isLatestCOVID19 = periods[0] === LatestCOVID19.id;
+            const sortedPeriods = periods.sort();
+
+            const isLatestCOVID19 = sortedPeriods[0] === LatestCOVID19.id;
 
             const finalPeriods = isLatestCOVID19 ? ["2019"] : periods;
 
