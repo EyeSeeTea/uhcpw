@@ -54,7 +54,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                     ...originalChartOptions.legend,
                     ...customizedOptions?.legend,
                 },
-                title: originalChartOptions.title,
+                title: { ...originalChartOptions.title, ...customizedOptions?.title },
                 subtitle: originalChartOptions.subtitle,
                 xAxis: originalChartOptions.xAxis,
                 yAxis: originalChartOptions.yAxis,
@@ -63,7 +63,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         customSerie => serie.id === customSerie.id
                     );
 
-                    return serieCustomization ? { ...serie, ...serieCustomization } : serie;
+                    const allSeriesCustomization = customizedOptions?.allSeries;
+
+                    const customization = serieCustomization || allSeriesCustomization;
+
+                    return customization ? { ...serie, ...customization } : serie;
                 }),
                 lang: originalChartOptions.lang,
                 noData: originalChartOptions.noData,

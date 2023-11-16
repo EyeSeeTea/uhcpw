@@ -11,41 +11,27 @@ export const emptyVisualizationExtra = {
 };
 
 export const visualizationsSeed: Record<string, VisualizationExtra> = {
-    m3A8awPhpf4: {
-        categoryName:
-            "Comparative charts: Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19",
-        friendlyName:
-            "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19",
+    iRWXr9Ql9B5: {
+        categoryName: "Financial Hardship",
         info: {
             infoNotes: [
-                "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care.",
             ],
             sourceName: "WHO Barcelona Office for Health Systems Financing",
             sourceLink: "",
         },
+        maxCountryFilter: 1,
     },
-    DqXTfGqi45X: {
-        categoryName: "Financial Hardship: Households with impoverishing health spending",
-        friendlyName: "Households with impoverishing health spending",
-        info: {
-            infoNotes: [
-                "A household is impoverished if its total spending (consumption) is below the basic needs line after out-of-pocket payments (i.e. it can no longer afford to meet its basic.",
-            ],
-            sourceName: "",
-            sourceLink: "",
-        },
-    },
-    R379Rkg9wX8: {
-        categoryName: "Financial Hardship: Households with catastrophic health spending by consumption quintile",
-        friendlyName: "Households with catastrophic health spending by consumption quintile",
-        info: {
-            infoNotes: [
-                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care. Consumption quintiles are based on per person consumption using OECD equivalence scales.",
-            ],
-            sourceName: "WHO Barcelona Office for Health Systems Financing",
-            sourceLink: "",
-        },
-    },
+    // NU4Q0sIIvcG: {
+    //     categoryName: "Financial Hardship",
+    //     info: {
+    //         infoNotes: [
+    //             "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care.",
+    //         ],
+    //         sourceName: "WHO Barcelona Office for Health Systems Financing",
+    //         sourceLink: "",
+    //     },
+    // },
 };
 
 // export const categoriesConfig: Record<string, CategoryConfig> = {
