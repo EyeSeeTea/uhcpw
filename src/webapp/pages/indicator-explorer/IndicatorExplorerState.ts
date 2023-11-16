@@ -4,6 +4,7 @@ export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
     onGet: () => void;
     showVisualization: boolean;
+    globalMessage?: GlobalMessage;
 };
 
 export type IndicatorExplorerFiltersState = {
@@ -11,3 +12,8 @@ export type IndicatorExplorerFiltersState = {
     category: OptionsFilterState;
     year: OptionsMultiFilterState;
 };
+
+export interface GlobalMessage {
+    text: string;
+    type: "info" | "success" | "error";
+}

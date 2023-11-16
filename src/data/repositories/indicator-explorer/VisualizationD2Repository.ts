@@ -83,6 +83,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
             // but is not in d2api schemas
             seriesKey: { hidden: false },
             ...visualizationExtra,
+            friendlyName: visualizationExtra.friendlyName || d2Visualization.name.replace("UHCW_", ""),
         };
     }
 }

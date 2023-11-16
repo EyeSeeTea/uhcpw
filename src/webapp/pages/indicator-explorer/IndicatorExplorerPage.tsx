@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -8,9 +8,23 @@ import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
+import { useSnackbar } from "@eyeseetea/d2-ui-components";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGet, showVisualization } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage } = useIndicatorExplorer();
+    const snackbar = useSnackbar();
+
+    useEffect(() => {
+        if (!globalMessage) return;
+
+        if (globalMessage?.type === "error") {
+            snackbar.error(globalMessage.text);
+        } else if (globalMessage?.type === "info") {
+            snackbar.info(globalMessage.text);
+        } else {
+            snackbar.success(globalMessage?.text);
+        }
+    }, [globalMessage, snackbar]);
 
     return (
         <Layout>

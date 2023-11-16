@@ -2,8 +2,11 @@ import { Id, Ref } from "../Ref";
 
 export interface VisualizationExtra {
     categoryName: string;
-    friendlyName: string;
+    friendlyName?: string;
     info: VisualizationInfo;
+    maxCountryFilter?: number;
+    minCountryFilter?: number;
+    isComparative?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
