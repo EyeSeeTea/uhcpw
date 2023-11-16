@@ -11,8 +11,9 @@ export const emptyVisualizationExtra = {
 };
 
 export const visualizationsSeed: Record<string, VisualizationExtra> = {
-    iRWXr9Ql9B5: {
+    Y31jQX5PVdI: {
         categoryName: "Financial Hardship",
+        friendlyName: "Households with catastrophic health spending",
         info: {
             infoNotes: [
                 "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care.",

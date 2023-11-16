@@ -35,7 +35,7 @@ const baseLegend = {
 } as LegendCustomization;
 
 export const visualizationCustomizations: VisualizationCustomization = {
-    iRWXr9Ql9B5: {
+    Y31jQX5PVdI: {
         title: { text: "" },
         legend: { enabled: false },
         allSeries: { color: "#354498" },
