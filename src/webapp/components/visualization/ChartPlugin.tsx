@@ -1,6 +1,7 @@
 import { createVisualization } from "@dhis2/analytics";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import _ from "lodash";
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
@@ -48,7 +49,16 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
             const originalChartOptions = { ...analyticsConfig.visualization.options };
 
-            const newOptions = {
+            const sortedSeries = customizedOptions?.series
+                ? _.orderBy(originalChartOptions.series, serie => {
+                      const serieCustomization = customizedOptions?.series?.find(
+                          customSerie => serie.id === customSerie.id
+                      );
+                      return serieCustomization ? customizedOptions?.series?.indexOf(serieCustomization) : 0;
+                  })
+                : originalChartOptions.series;
+
+            const newOptions: Highcharts.Options = {
                 chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
                 legend: {
                     ...originalChartOptions.legend,
@@ -58,7 +68,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 subtitle: originalChartOptions.subtitle,
                 xAxis: originalChartOptions.xAxis,
                 yAxis: originalChartOptions.yAxis,
-                series: originalChartOptions.series?.map(serie => {
+                series: sortedSeries?.map(serie => {
                     const serieCustomization = customizedOptions?.series?.find(
                         customSerie => serie.id === customSerie.id
                     );
@@ -90,7 +100,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
             setChartOptions({
                 ...newOptions,
-            } as Highcharts.Options);
+            });
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();
         }, [analytics, customizedOptions, legendSets, visualization]);
