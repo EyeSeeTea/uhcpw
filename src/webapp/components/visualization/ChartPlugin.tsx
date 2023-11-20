@@ -4,6 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import _ from "lodash";
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
+import { Country } from "../../../domain/entities/Country";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
@@ -14,7 +15,7 @@ export interface ChartPluginProps {
     visualization: Visualization;
     legendSets: LegendSet[];
     customizedOptions?: ChartCustomization;
-    periods?: string[];
+    countries: Country[];
 }
 
 /**
@@ -22,7 +23,7 @@ export interface ChartPluginProps {
  * https://github.com/dhis2/data-visualizer-app/blob/dev/src/components/VisualizationPlugin/ChartPlugin.js
  */
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
-    ({ analytics, visualization, legendSets, customizedOptions }) => {
+    ({ analytics, visualization, legendSets, customizedOptions, countries }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
 
@@ -58,8 +59,9 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                   })
                 : originalChartOptions.series;
 
-            const newOptions: Highcharts.Options = {
+            const newOptions = {
                 chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
+
                 legend: {
                     ...originalChartOptions.legend,
                     ...customizedOptions?.legend,
@@ -69,13 +71,17 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 xAxis: originalChartOptions.xAxis,
                 yAxis: originalChartOptions.yAxis,
                 series: sortedSeries?.map(serie => {
+                    const countrySerieCustomization = customizedOptions?.countrySerie
+                        ? customizedOptions?.countrySerie(countries, { id: serie.id || "" })
+                        : undefined;
+
                     const serieCustomization = customizedOptions?.series?.find(
                         customSerie => serie.id === customSerie.id
                     );
 
                     const allSeriesCustomization = customizedOptions?.allSeries;
 
-                    const customization = serieCustomization || allSeriesCustomization;
+                    const customization = countrySerieCustomization || serieCustomization || allSeriesCustomization;
 
                     return customization ? { ...serie, ...customization } : serie;
                 }),
@@ -99,11 +105,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             // to avoid render chart first with original colors in dhis2
 
             setChartOptions({
-                ...newOptions,
+                ...(newOptions as Highcharts.Options),
             });
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();
-        }, [analytics, customizedOptions, legendSets, visualization]);
+        }, [analytics, countries, customizedOptions, legendSets, visualization]);
 
         useEffect(() => {
             renderVisualization();

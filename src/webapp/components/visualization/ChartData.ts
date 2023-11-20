@@ -1,3 +1,4 @@
+import { Country } from "../../../domain/entities/Country";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
@@ -9,6 +10,7 @@ export type ChartDataLoaded = {
     analytics: Analytics;
     legendSets: LegendSet[];
     customization?: ChartCustomization;
+    countries: Country[];
 };
 
 export type ChartDataLoading = {
