@@ -57,36 +57,38 @@ export const MethodsPage: React.FC = () => {
             <TitleContainer aria-label="methods-page-header">
                 <Typography variant="h3">{i18n.t("Methods")}</Typography>
             </TitleContainer>
-            <StyledGrid container spacing={5} aria-label="methods-container">
-                {methods.map((method, i) => (
-                    <Grid item xs={6} key={method.sectionName} aria-label="method-item">
-                        <Typography variant="h5" style={{ marginBottom: "10px" }}>
-                            {method.sectionName}
-                        </Typography>
-                        {isExpanded[i] === false ? (
-                            <>
-                                <MethodsMarkdown>{method.shortText.concat("...")}</MethodsMarkdown>
-                                <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => handleClick(i)}>
-                                    {i18n.t("Read more")}
-                                </StyledReadMoreButton>
-                            </>
-                        ) : (
-                            <>
-                                <MethodsMarkdown>{method.text}</MethodsMarkdown>
-                                <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => handleClick(i)}>
-                                    {i18n.t("Read less")}
-                                </StyledReadMoreButton>
-                            </>
-                        )}
-                    </Grid>
-                ))}
-            </StyledGrid>
-            <ButtonsContainer aria-label="methods-buttons">
-                <StyledButton startIcon={<BookIcon />} onClick={() => setIsGlossaryOpen(!isGlossaryOpen)}>
-                    {i18n.t("Glossary")}
-                </StyledButton>
-                <StyledButton startIcon={<BookIcon />}>{i18n.t("Country abbreviations")}</StyledButton>
-            </ButtonsContainer>
+            <MainContainer>
+                <Grid container spacing={5} aria-label="methods-container">
+                    {methods.map((method, i) => (
+                        <Grid item xs={6} key={method.sectionName} aria-label="method-item">
+                            <Typography variant="h5" style={{ marginBottom: "10px" }}>
+                                {method.sectionName}
+                            </Typography>
+                            {isExpanded[i] === false ? (
+                                <TextContainer>
+                                    <MethodsMarkdown>{method.shortText.concat("...")}</MethodsMarkdown>
+                                    <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => handleClick(i)}>
+                                        {i18n.t("Read more")}
+                                    </StyledReadMoreButton>
+                                </TextContainer>
+                            ) : (
+                                <TextContainer>
+                                    <MethodsMarkdown>{method.text}</MethodsMarkdown>
+                                    <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => handleClick(i)}>
+                                        {i18n.t("Read less")}
+                                    </StyledReadMoreButton>
+                                </TextContainer>
+                            )}
+                        </Grid>
+                    ))}
+                </Grid>
+                <ButtonsContainer aria-label="methods-buttons">
+                    <StyledButton startIcon={<BookIcon />} onClick={() => setIsGlossaryOpen(!isGlossaryOpen)}>
+                        {i18n.t("Glossary")}
+                    </StyledButton>
+                    <StyledButton startIcon={<BookIcon />}>{i18n.t("Country abbreviations")}</StyledButton>
+                </ButtonsContainer>
+            </MainContainer>
             <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
         </Layout>
     );
@@ -102,10 +104,6 @@ const TitleContainer = styled.div`
     justify-content: space-between;
 `;
 
-const StyledGrid = styled(Grid)`
-    padding: 40px;
-`;
-
 const StyledButton = styled(Button)`
     border-radius: 20px;
     color: white;
@@ -119,10 +117,10 @@ const StyledButton = styled(Button)`
 `;
 
 const ButtonsContainer = styled.div`
+    width: 80%;
     display: flex;
     gap: 20px;
-    padding: 40px;
-    float: right;
+    justify-content: flex-end;
 `;
 
 const StyledReadMoreButton = styled(Button)`
@@ -139,4 +137,12 @@ const TextLink = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const TextContainer = styled.div`
+    width: 70%;
+`;
+
+const MainContainer = styled.div`
+    padding: 80px 40px;
 `;
