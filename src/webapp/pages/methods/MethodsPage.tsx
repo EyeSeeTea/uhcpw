@@ -5,7 +5,6 @@ import { Layout } from "../../components/layout/Layout";
 import bubblePattern from "../../assets/bubble-pattern-white.png";
 import i18n from "../../../locales";
 import { useMethods } from "./useMethods";
-import BookIcon from "@material-ui/icons/BookOutlined";
 import ReactMarkdown from "react-markdown";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
@@ -16,7 +15,11 @@ const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
         <ReactMarkdown
             components={{
-                p: ({ children }) => <Typography variant="body2">{children}</Typography>,
+                p: ({ children }) => (
+                    <Typography variant="body2" style={{ marginBottom: "10px" }}>
+                        {children}
+                    </Typography>
+                ),
                 li: ({ children }) => (
                     <li>
                         <Typography variant="body2">{children}</Typography>
@@ -81,13 +84,13 @@ export const MethodsPage: React.FC = () => {
                             )}
                         </Grid>
                     ))}
+                    <ButtonsGridItem item xs={6} aria-label="methods-buttons">
+                        <StyledButton onClick={() => setIsGlossaryOpen(!isGlossaryOpen)}>
+                            {i18n.t("Glossary")}
+                        </StyledButton>
+                        <StyledButton>{i18n.t("Abbreviations")}</StyledButton>
+                    </ButtonsGridItem>
                 </Grid>
-                <ButtonsContainer aria-label="methods-buttons">
-                    <StyledButton startIcon={<BookIcon />} onClick={() => setIsGlossaryOpen(!isGlossaryOpen)}>
-                        {i18n.t("Glossary")}
-                    </StyledButton>
-                    <StyledButton startIcon={<BookIcon />}>{i18n.t("Country abbreviations")}</StyledButton>
-                </ButtonsContainer>
             </MainContainer>
             <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
         </Layout>
@@ -116,17 +119,17 @@ const StyledButton = styled(Button)`
     }
 `;
 
-const ButtonsContainer = styled.div`
-    width: 80%;
+const ButtonsGridItem = styled(Grid)`
     display: flex;
+    height: max-content;
     gap: 20px;
-    justify-content: flex-end;
 `;
 
 const StyledReadMoreButton = styled(Button)`
     text-transform: none;
     color: ${colors.accentPrimary};
     font-weight: bold;
+    margin-left: -8px;
 `;
 
 const TextLink = styled.a`
