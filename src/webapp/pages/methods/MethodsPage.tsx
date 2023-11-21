@@ -147,5 +147,5 @@ const TextContainer = styled.div`
 `;
 
 const MainContainer = styled.div`
-    padding: 80px 40px;
+    padding: 80px 64px;
 `;
