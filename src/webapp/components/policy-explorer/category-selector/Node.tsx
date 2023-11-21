@@ -6,19 +6,12 @@ import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank"
 interface NodeProps {
     nodeId: string;
     name: string;
-    isSelectable?: boolean;
     selected?: boolean;
+    disabled?: boolean;
     onSelectedChange?: (nodeId: string, selected: boolean) => void;
 }
 
-export const Node: React.FC<NodeProps> = ({
-    nodeId,
-    name,
-    isSelectable = false,
-    selected,
-    onSelectedChange,
-    children,
-}) => {
+export const Node: React.FC<NodeProps> = ({ nodeId, name, selected, onSelectedChange, children, disabled = false }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         onSelectedChange && onSelectedChange(nodeId, event.target.checked);
     };
@@ -27,8 +20,8 @@ export const Node: React.FC<NodeProps> = ({
         <StyledTreeItem
             nodeId={nodeId}
             label={
-                <Row>
-                    {isSelectable ? (
+                <Row onClick={e => e.stopPropagation()}>
+                    {!disabled && (
                         <Checkbox
                             color="primary"
                             style={{ padding: "2px" }}
@@ -36,10 +29,10 @@ export const Node: React.FC<NodeProps> = ({
                             checked={selected}
                             onChange={handleChange}
                             inputProps={{ "aria-label": `Select all ${name}` }}
+                            disabled={disabled}
                         />
-                    ) : (
-                        <Typography>{name}</Typography>
                     )}
+                    <StyledTypography $disabled={disabled}>{name}</StyledTypography>
                 </Row>
             }
         >
@@ -54,6 +47,10 @@ const StyledTreeItem = styled(TreeItem)`
         font-weight: 500;
         font-size: 14px;
     }
+`;
+
+const StyledTypography = styled(Typography)<{ $disabled?: boolean }>`
+    color: ${props => (props.$disabled ? "#8e8e8e" : undefined)};
 `;
 
 const Row = styled.div`

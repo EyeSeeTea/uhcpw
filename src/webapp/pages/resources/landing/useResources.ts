@@ -1,9 +1,9 @@
 import _ from "lodash";
 import { useMemo } from "react";
 import { Country } from "../../../../domain/entities/Country";
-import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
+import { CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
-import { ResourceState } from "../by-type/ResourcesByTypeState";
+import { ComparativeAnalysisState, ResourceState } from "../by-type/ResourcesByTypeState";
 import { useResourcesByType } from "../by-type/useResourcesByType";
 import { ResourcesState } from "./ResourcesState";
 
@@ -58,9 +58,9 @@ function getMultimedia(items: ResourceState[]): Multimedia[] {
     ).slice(0, 1) as Multimedia[];
 }
 
-function getComparativeAnalysis(items: ResourceState[]): ComparativeAnalysis[] {
+function getComparativeAnalysis(items: ResourceState[]): ComparativeAnalysisState[] {
     return _.orderBy(
         items.filter(item => item.kind === "comparative-analysis"),
         "favouriteSectionOrder"
-    ).slice(0, 4) as ComparativeAnalysis[];
+    ).slice(0, 4) as ComparativeAnalysisState[];
 }

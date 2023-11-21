@@ -3,13 +3,18 @@ import { PolicyExplorerCell } from "../../../../domain/entities/policy-explorer/
 import { D2DataSet } from "../PolicyExplorerD2Repository";
 import { TableBuilderByTypeOfHealthcare } from "./TableBuilderByTypeOfHealthcare";
 import { TableBuilderDefault } from "./TableBuilderDefault";
+import {
+    CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+} from "../PolicyExplorerCategoryD2Repository";
+import { TableBuilderChangesInCoveragePolicy } from "./TableBuilderChangesInCoveragePolicy";
 
 export interface TableBuilder {
-    buildColumns(
-        policyExplorerCategoryId: string,
-        policyExplorerSubcategoriesIds: string[],
-        dataSet?: D2DataSet
-    ): PolicyExplorerCell[];
+    buildColumns(params: {
+        policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds: string[];
+        dataSet?: D2DataSet;
+    }): PolicyExplorerCell[];
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
         policyExplorerCategoryId: string;
@@ -22,16 +27,14 @@ export interface TableBuilder {
     }): PolicyExplorerCell[][];
 }
 
-export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
-    USER_CHARGES: "u800TAhsIBY",
-    TYPES_OF_USER_CHARGES: "lHk8jtKonPh",
-};
-
 export function getTableBuilder(policyExplorerCategoryId: string) {
     switch (policyExplorerCategoryId) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES:
-            return new TableBuilderByTypeOfHealthcare(policyExplorerCategoryId);
+            return new TableBuilderByTypeOfHealthcare();
+        case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019:
+        case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020:
+            return new TableBuilderChangesInCoveragePolicy();
         default:
             return new TableBuilderDefault();
     }

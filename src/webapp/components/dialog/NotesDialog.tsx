@@ -32,7 +32,12 @@ export const NotesDialog: React.FC<DialogType> = ({
                     ))}
                     <Typography style={{ color: "#242626", marginTop: "10px" }}>
                         Source:{" "}
-                        <a href={"/"} style={{ color: colors.accentPrimary, textDecoration: "none" }}>
+                        <a
+                            href={"/"}
+                            target="_blank"
+                            style={{ color: colors.accentPrimary, textDecoration: "none" }}
+                            rel="noopener noreferrer"
+                        >
                             {sourceName}
                         </a>
                     </Typography>

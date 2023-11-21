@@ -5,10 +5,10 @@ import {
     News,
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
-import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
+import { givenAThemes } from "../../../../../utils/tests-ui";
 
 export function createComparativeAnalysisResources(count: number): ComparativeAnalysis[] {
-    const themes = createResourcesThemes();
+    const themes = givenAThemes();
 
     const data = [...Array(count).keys()].map(index => {
         return {
@@ -34,7 +34,7 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
 }
 
 export function createCountryAnalysisResources(count: number): CountryAnalysis[] {
-    const themes = createResourcesThemes();
+    const themes = givenAThemes();
 
     const data = [...Array(count).keys()].map(index => {
         return {
@@ -104,16 +104,6 @@ export function createResourceCategories(): ResourceCategory[] {
         { id: "lQ4chDNdjkA", name: "news", code: "news" },
         { id: "MXKMGulj2KF", name: "multimedia", code: "multimedia" },
         { id: "bkO3SJzKQeD", name: "Country Analysis", code: "country-analysis" },
-    ];
-
-    return data;
-}
-
-export function createResourcesThemes(): ResourceTheme[] {
-    const data = [
-        { id: "QQMVsTNPJbB", name: "Spending on Health", code: "Spending on Health" },
-        { id: "XtkFOVtkBtT", name: "Financial Protection", code: "Financial Protection" },
-        { id: "nyzMcROMpmY", name: "Voluntary Health Insurance", code: "Voluntary Health Insurance" },
     ];
 
     return data;

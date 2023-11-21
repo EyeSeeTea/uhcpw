@@ -140,10 +140,10 @@ describe("Given PolicyExplorerPage", () => {
             givenASimplePolicyExplorer();
 
             renderPage();
-            await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
+            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Spain");
 
             const tableTitle = await waitFor(() =>
-                screen.getByRole("heading", { name: policyExplorerCategories[6]?.name })
+                screen.getByRole("heading", { name: policyExplorerCategories[0]?.name })
             );
 
             expect(tableTitle).toBeInTheDocument();
@@ -161,6 +161,7 @@ describe("Given PolicyExplorerPage", () => {
             const cells = await screen.queryAllByRole("cell");
             expect(cells.length).toBe(0);
         });
+        it("Then should render a message", async () => {});
     });
 
     describe("When get a category with multiple periods table", () => {
@@ -430,7 +431,6 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
 
     await userEvent.click(countrySelector);
 
-    userEvent.click(await screen.findByText("All countries"));
     userEvent.click(await screen.findByRole("checkbox", { name: value }));
     await userEvent.keyboard("{Escape}");
 

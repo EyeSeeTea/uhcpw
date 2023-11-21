@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useMemo } from "react";
+import React, { useMemo, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -12,6 +12,8 @@ import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
+    const referencesRef = useRef<HTMLDivElement>(null);
+
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(props.searchParams);
 
@@ -59,52 +61,66 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             onSwitchRowColumn={onSwitchRowColumn}
                             onDownload={onDownload}
                             dataOrientation={dataOrientationByTable[category.value]}
+                            referencesRef={referencesRef}
                         />
                     ))
                 ) : (
                     <EmptyContent />
                 )}
 
-                {data?.generalInfo.map(info => {
-                    return (
-                        <GeneralDataContainer key={info.country}>
-                            <GeneralRow>
-                                <CreditsText style={{ fontWeight: 500 }}>{`${info.country} (2023)`}</CreditsText>
-                            </GeneralRow>
+                <div ref={referencesRef}>
+                    {data?.generalInfo.map(info => {
+                        return (
+                            <div key={info.country}>
+                                <GeneralDataContainer>
+                                    <GeneralRow>
+                                        <CreditsText
+                                            style={{ fontWeight: 500 }}
+                                        >{`${info.country} (2023)`}</CreditsText>
+                                    </GeneralRow>
 
-                            <GeneralRow>
-                                <CreditsText>{i18n.t("Source: ")}</CreditsText>
-                                &nbsp;
-                                <Link
-                                    href={info.source}
-                                    style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                >
-                                    {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
-                                </Link>
-                            </GeneralRow>
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Source: ")}</CreditsText>
+                                        &nbsp;
+                                        <Link
+                                            href={info.source}
+                                            style={{ fontSize: "16px", color: colors.accentPrimary }}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
+                                        </Link>
+                                    </GeneralRow>
 
-                            <GeneralRow>
-                                <CreditsText>{i18n.t("Country experts: ")}</CreditsText>
-                                &nbsp;
-                                <CreditsText>{info.countryExperts}</CreditsText>
-                            </GeneralRow>
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Country experts: ")}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{info.countryExperts}</CreditsText>
+                                    </GeneralRow>
 
-                            <GeneralRow>
-                                <CreditsText>{i18n.t("Editors: ")}</CreditsText>
-                                &nbsp;
-                                <CreditsText>{info.editors}</CreditsText>
-                            </GeneralRow>
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Editors: ")}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{info.editors}</CreditsText>
+                                    </GeneralRow>
 
-                            <GeneralRow>
-                                <CreditsText>{i18n.t("Last updated: ")}</CreditsText>
-                                &nbsp;
-                                <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
-                            </GeneralRow>
-                        </GeneralDataContainer>
-                    );
-                })}
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Last updated: ")}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
+                                    </GeneralRow>
+                                </GeneralDataContainer>
+                                <ReferencesContainer>
+                                    {data?.references
+                                        ?.find(references => references.country === info.country)
+                                        ?.references?.map(reference => (
+                                            <ReferenceText key={reference}>{reference}</ReferenceText>
+                                        ))}
+                                </ReferencesContainer>
+                            </div>
+                        );
+                    })}
+                </div>
             </MainSection>
         </Layout>
     );
@@ -112,7 +128,18 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
 const GeneralDataContainer = styled.div`
     font-size: 16px;
+    margin-top: 24px;
     margin-bottom: 24px;
+`;
+
+const ReferencesContainer = styled.div`
+    margin-bottom: 24px;
+`;
+
+const ReferenceText = styled(Typography)`
+    color: black;
+    font-weight: 300;
+    margin-bottom: 12px;
 `;
 
 const MainSection = styled.div`

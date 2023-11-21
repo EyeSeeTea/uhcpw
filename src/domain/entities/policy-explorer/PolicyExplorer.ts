@@ -1,6 +1,7 @@
 export type PolicyExplorer = {
     tables: Record<string, PolicyExplorerCell[][]>;
     generalInfo: PolicyExplorerGeneralInfo[];
+    references: PolicyExplorerReferences[];
 };
 
 export enum PolicyExplorerCellType {
@@ -11,6 +12,7 @@ export enum PolicyExplorerCellType {
 export type PolicyExplorerCell = {
     type: PolicyExplorerCellType;
     value: string;
+    references?: string;
 };
 
 export type PolicyExplorerGeneralInfo = {
@@ -19,4 +21,9 @@ export type PolicyExplorerGeneralInfo = {
     editors: string;
     lastUpdate: Date;
     source: string;
+};
+
+export type PolicyExplorerReferences = {
+    country: string;
+    references: string[];
 };

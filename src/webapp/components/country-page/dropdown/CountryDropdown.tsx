@@ -10,7 +10,7 @@ interface DropdownProps<T extends string = string> {
     value?: T;
     placeholder?: string;
     fullWidth?: boolean;
-    onChange: (value?: T) => void;
+    onChange: (value: string) => void;
     width?: string;
 }
 
@@ -19,7 +19,7 @@ interface ContainerProps {
 }
 
 export const CountryDropdown: React.FC<DropdownProps> = React.memo(
-    ({ label, options, value, placeholder, fullWidth, width = "100%" }) => {
+    ({ label, options, value, placeholder, fullWidth, width = "100%", onChange }) => {
         const [valueOption, setValueOption] = useState<CountryOption | null>(null);
 
         useEffect(() => {
@@ -44,7 +44,7 @@ export const CountryDropdown: React.FC<DropdownProps> = React.memo(
                             InputLabelProps={{ shrink: true }}
                         />
                     )}
-                    onChange={() => {}}
+                    onChange={(_, value) => onChange((value as CountryOption).id)}
                 />
             </Container>
         );

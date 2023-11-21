@@ -8,7 +8,7 @@ type CountryExpert = {
     experts: PersonState[];
 };
 
-export function useCountryExpert(country?: string[]): CountryExpert {
+export function useCountryExpert(country: string): CountryExpert {
     const { compositionRoot, countries } = useAppContext();
     const [experts, setExperts] = useState<PersonState[]>([]);
 
@@ -17,7 +17,7 @@ export function useCountryExpert(country?: string[]): CountryExpert {
             persons => {
                 setExperts(
                     persons
-                        .filter(person => person.countryId === country?.[0])
+                        .filter(person => person.countryId === country)
                         .map(person => mapPersonToExpertState(person, countries))
                 );
             },

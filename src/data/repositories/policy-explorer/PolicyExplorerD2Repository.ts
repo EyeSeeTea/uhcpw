@@ -4,6 +4,7 @@ import {
     PolicyExplorer,
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
+    PolicyExplorerReferences,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
@@ -11,6 +12,11 @@ import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-a
 import { apiToFuture } from "../../../utils/futures";
 import { exportToCSV } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
+import {
+    CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
+    CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
+} from "./builders/TableBuilderChangesInCoveragePolicy";
+import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "./PolicyExplorerCategoryD2Repository";
 
 export const generalDataElements: Record<string, string> = {
     source: "pDEHTRpRL8X",
@@ -61,6 +67,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dataSet: dataSetResponse.objects[0],
                 }),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, orgUnitsResponse.objects),
+                references: this.buildReferences(dataValuesResponse.dataValues, orgUnitsResponse.objects),
             };
         });
     }
@@ -133,17 +140,26 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         dataSet?: D2DataSet;
     }): Record<string, PolicyExplorerCell[][]> {
         const { policyExplorerCategories, dataValues, organisationUnits, yearsByCategory, dataSet } = params;
+
+        const hasSomeChangesInCoveragePolicyCategory = Object.keys(policyExplorerCategories).some(categoryId =>
+            Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(categoryId)
+        );
+
+        const allPolicyExplorerCategories = hasSomeChangesInCoveragePolicyCategory
+            ? this.fillSubcategoriesInChangesInCoveragePolicy(policyExplorerCategories)
+            : policyExplorerCategories;
+
         const tables = {};
 
-        return Object.entries(policyExplorerCategories).reduce(
+        return Object.entries(allPolicyExplorerCategories).reduce(
             (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
                 const tableBuilder = getTableBuilder(policyExplorerCategoryId);
 
-                const columns = tableBuilder.buildColumns(
+                const columns = tableBuilder.buildColumns({
                     policyExplorerCategoryId,
                     policyExplorerSubcategoriesIds,
-                    dataSet
-                );
+                    dataSet,
+                });
 
                 const countriesAlreadyInRows: string[] = [];
 
@@ -206,6 +222,43 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         );
     }
 
+    private fillSubcategoriesInChangesInCoveragePolicy(
+        policyExplorerCategories: Record<string, string[]>
+    ): Record<string, string[]> {
+        return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
+            switch (categoryId) {
+                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019:
+                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020:
+                    return {
+                        ...acc,
+                        [categoryId]: this.getAllSubcategoriesOfChangesInCoveragePolicy(
+                            categoryId,
+                            policyExplorerCategories[categoryId] || []
+                        ),
+                    };
+                default:
+                    return {
+                        ...acc,
+                        [categoryId]: policyExplorerCategories[categoryId],
+                    };
+            }
+        }, {});
+    }
+
+    private getAllSubcategoriesOfChangesInCoveragePolicy(categoryId: string, selectedSubcategories: string[]) {
+        const changesInCoveragePolicyGroupedSubcategories =
+            categoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
+                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
+                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
+
+        return selectedSubcategories.reduce((accSubcategories, subcategory) => {
+            const subcategoryIds = Object.values(changesInCoveragePolicyGroupedSubcategories).find(subcategoryIds =>
+                subcategoryIds.includes(subcategory)
+            );
+            return subcategoryIds ? [...accSubcategories, ...subcategoryIds] : accSubcategories;
+        }, [] as string[]);
+    }
+
     private filterColumnsWithNoData(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]) {
         const indexesToRemove = columns.reduce((accIndexesToRemove: number[], _column, columnIndex) => {
             const hasRowsWithoutData = rows.every(row => !row[columnIndex]?.value);
@@ -215,12 +268,38 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const filteredColumns = columns.filter((_column, index) => !indexesToRemove.includes(index));
         const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
 
-        return [filteredColumns, ...filteredRows];
+        return filteredColumns.length ? [filteredColumns, ...filteredRows] : [];
+    }
+
+    private buildReferences(
+        dataValues: DataValueSetsDataValue[],
+        organisationUnits: D2OrgUnit[]
+    ): PolicyExplorerReferences[] {
+        const dataValuesByOrgUnit = _(dataValues)
+            .groupBy(dataValue => dataValue.orgUnit)
+            .value();
+
+        return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
+            const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
+
+            const references =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.references || "")
+                )?.value || EMPTY_DATA;
+
+            const referencesArray = references.match(/\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g) as string[];
+
+            return { country, references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) };
+        });
     }
 }
 
 const dataSetFields = {
-    sections: { id: true, displayName: true, dataElements: { id: true, formName: true, valueType: true } },
+    sections: {
+        id: true,
+        displayName: true,
+        dataElements: { id: true, formName: true, valueType: true, description: true },
+    },
 } as const;
 
 export type D2DataSet = MetadataPick<{
