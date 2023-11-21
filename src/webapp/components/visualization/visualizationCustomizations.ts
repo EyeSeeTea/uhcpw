@@ -40,6 +40,7 @@ export type AllSeriesCustomization = {
 };
 
 export type XAxisCustomization = {
+    title?: string;
     labels: { rotation: number };
 };
 
@@ -111,6 +112,16 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             };
         },
         xAxis: {
+            labels: {
+                rotation: -90,
+            },
+        },
+    },
+    rT39aStYqI3: {
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true, itemMarginTop: 20 },
+        xAxis: {
+            title: "",
             labels: {
                 rotation: -90,
             },
