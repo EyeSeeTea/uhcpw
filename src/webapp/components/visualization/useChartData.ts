@@ -50,7 +50,7 @@ export function useChartData(visualizationId: string, years: string[], countries
                 message: "Missing visualizationId",
             });
         }
-    }, [compositionRoot, visualizationId, countries, years]);
+    }, [compositionRoot, visualizationId, countries, years, allCountries]);
 
     const onDownload = useCallback(() => {
         compositionRoot.indicatorExplorer.downloadAnalytics
