@@ -20,6 +20,7 @@ const MethodsMarkdown = ({ children }: { children: string }) => {
                         {children}
                     </Typography>
                 ),
+                ul: ({ children }) => <ul style={{ paddingLeft: "1.2em" }}>{children}</ul>,
                 li: ({ children }) => (
                     <li>
                         <Typography variant="body2">{children}</Typography>
