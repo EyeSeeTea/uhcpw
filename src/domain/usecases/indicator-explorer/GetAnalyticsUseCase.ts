@@ -2,7 +2,7 @@ import { Analytics } from "../../entities/indicator-explorer/Analytics";
 import { FutureData } from "../../entities/Future";
 import { AnalyticsRepository } from "../../repositories/indicator-explorer/AnalyticsRepository";
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
-import { Visualization } from "../../entities/indicator-explorer/Visualization";
+import { LatestCOVID19 } from "../../entities/Year";
 
 export class GetAnalyticsUseCase {
     constructor(
@@ -10,29 +10,15 @@ export class GetAnalyticsUseCase {
         private analyticsRepository: AnalyticsRepository
     ) {}
 
-    public execute(visualizationId: string, periods: string[], orgUnits: string[]): FutureData<Analytics> {
+    public execute(visualizationId: string, periods: string[], countries: string[]): FutureData<Analytics> {
         return this.visualizationRepository.getById(visualizationId).flatMap(visualization => {
-            const { dimension, filter } = this.getDimensionsAndFilter(visualization, periods, orgUnits);
+            const sortedPeriods = periods.sort();
 
-            return this.analyticsRepository.get(dimension, filter);
+            const isLatestCOVID19 = sortedPeriods[0] === LatestCOVID19.id;
+
+            const finalPeriods = isLatestCOVID19 ? ["2019"] : periods;
+
+            return this.analyticsRepository.get(visualization, finalPeriods, countries);
         });
-    }
-
-    getDimensionsAndFilter(
-        visualization: Visualization,
-        periods: string[],
-        orgUnits: string[]
-    ): { dimension: string[]; filter?: string[] } {
-        const dataDimension = `dx:${visualization.dataDimensionItems.map(item => item.dataElement.id).join(";")}`;
-        const orgUnitDimension = `ou:${orgUnits.join(";")}`;
-        const categoryDimensions = visualization.categoryDimensions.map(
-            catDim => `${catDim.category.id}:${catDim.categoryOptions.map(catOp => catOp.id).join(";")}`
-        );
-        const periodDimension = `pe:${periods.join(";")}`;
-
-        return {
-            dimension: [...categoryDimensions, periodDimension],
-            filter: [dataDimension, orgUnitDimension],
-        };
     }
 }

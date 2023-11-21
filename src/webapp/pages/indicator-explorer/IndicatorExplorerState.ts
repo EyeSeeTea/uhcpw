@@ -1,12 +1,10 @@
-import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
-import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { CountryFilterState, OptionsFilterState, OptionsMultiFilterState } from "../../common/state/state";
 
 export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
-    visualization?: Visualization;
-    analytics?: Analytics;
-    onGetChart: () => void;
+    onGet: () => void;
+    showVisualization: boolean;
+    globalMessage?: GlobalMessage;
 };
 
 export type IndicatorExplorerFiltersState = {
@@ -14,3 +12,8 @@ export type IndicatorExplorerFiltersState = {
     category: OptionsFilterState;
     year: OptionsMultiFilterState;
 };
+
+export interface GlobalMessage {
+    text: string;
+    type: "info" | "success" | "error";
+}

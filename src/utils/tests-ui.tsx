@@ -58,7 +58,7 @@ export function getTestContext(repositoriesToOverwrite?: Repositories): AppConte
     const context = {
         api: api,
         currentUser: givenAnUser(),
-        compositionRoot: getCompositionRoot(api, instance, repositoriesToOverwrite),
+        compositionRoot: getCompositionRoot(api, null, instance, repositoriesToOverwrite),
         isNodeDev: true,
         countries: givenACountries(),
         themes: givenAThemes(),

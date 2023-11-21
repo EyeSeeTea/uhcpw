@@ -1,17 +1,30 @@
 import { Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
 import { IndicatorExplorerFilters } from "../../components/indicator-explorer/IndicatorExplorerFilters";
 import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
-import { ChartWithPlugin } from "../../components/chart/ChartWithPlugin";
-import { Chart } from "../../components/chart/Chart";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
+import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
+import { useSnackbar } from "@eyeseetea/d2-ui-components";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, visualization, analytics, onGetChart } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage } = useIndicatorExplorer();
+    const snackbar = useSnackbar();
+
+    useEffect(() => {
+        if (!globalMessage) return;
+
+        if (globalMessage?.type === "error") {
+            snackbar.error(globalMessage.text);
+        } else if (globalMessage?.type === "info") {
+            snackbar.info(globalMessage.text);
+        } else {
+            snackbar.success(globalMessage?.text);
+        }
+    }, [globalMessage, snackbar]);
 
     return (
         <Layout>
@@ -21,16 +34,15 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <IndicatorExplorerFilters filters={filters} onGetChart={onGetChart} />
+                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
 
-                {visualization && !analytics && (
-                    <ChartWithPlugin
-                        visualization={visualization}
-                        countryIds={filters.country.selected}
-                        periods={filters.year.selected ? filters.year.selected : []}
+                {showVisualization && filters.category.selected && (
+                    <VisualizationPlugin
+                        visualizationId={filters.category.selected}
+                        years={filters.year.selected || []}
+                        countries={filters.country.selected || []}
                     />
                 )}
-                {visualization && analytics && <Chart visualization={visualization} analytics={analytics} />}
             </MainSection>
         </Layout>
     );
