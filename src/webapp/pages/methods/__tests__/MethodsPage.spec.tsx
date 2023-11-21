@@ -34,7 +34,7 @@ describe("Methods Page", () => {
         const scope = within(screen.getByLabelText(/methods-buttons/i));
 
         const glossaryButton = scope.getByRole("button", { name: /glossary/i });
-        const countryAbbreviationsButton = scope.getByRole("button", { name: /country abbreviations/i });
+        const countryAbbreviationsButton = scope.getByRole("button", { name: /abbreviations/i });
 
         expect(glossaryButton).toBeInTheDocument();
         expect(countryAbbreviationsButton).toBeInTheDocument();
