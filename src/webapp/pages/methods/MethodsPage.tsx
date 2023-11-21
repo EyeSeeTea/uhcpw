@@ -63,7 +63,7 @@ export const MethodsPage: React.FC = () => {
             <MainContainer>
                 <Grid container spacing={5} aria-label="methods-container">
                     {methods.map((method, i) => (
-                        <Grid item xs={6} key={method.sectionName} aria-label="method-item">
+                        <Grid item xs={12} sm={6} key={method.sectionName} aria-label="method-item">
                             <Typography variant="h5" style={{ marginBottom: "10px" }}>
                                 {method.sectionName}
                             </Typography>
@@ -84,7 +84,7 @@ export const MethodsPage: React.FC = () => {
                             )}
                         </Grid>
                     ))}
-                    <ButtonsGridItem item xs={6} aria-label="methods-buttons">
+                    <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
                         <StyledButton onClick={() => setIsGlossaryOpen(!isGlossaryOpen)}>
                             {i18n.t("Glossary")}
                         </StyledButton>
