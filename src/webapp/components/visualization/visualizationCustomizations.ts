@@ -8,6 +8,7 @@ export type ChartCustomization = {
     allSeries?: AllSeriesCustomization;
     countrySerie?: (countries: Country[], serie: SerieCustomization) => SerieCustomization;
     title?: TitleCustomization;
+    xAxis?: XAxisCustomization;
 };
 
 export type LegendCustomization = {
@@ -28,11 +29,18 @@ export type SerieCustomization = {
     color?: string;
     name?: string;
     marker?: { enabled: boolean };
+    dataLabels?: {
+        enabled: boolean;
+    };
 };
 
 export type AllSeriesCustomization = {
     color: string;
     marker?: { enabled: boolean; symbol: "circle" };
+};
+
+export type XAxisCustomization = {
+    labels: { rotation: number };
 };
 
 const baseLegend = {
@@ -74,7 +82,15 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
                 name: country?.code || serie.name,
                 color,
                 marker: { enabled: true, symbol: "circle" },
+                dataLabels: {
+                    enabled: false,
+                },
             };
+        },
+        xAxis: {
+            labels: {
+                rotation: -90,
+            },
         },
     },
 };
