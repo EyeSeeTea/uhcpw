@@ -68,10 +68,12 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 },
                 title: { ...originalChartOptions.title, ...customizedOptions?.title },
                 subtitle: originalChartOptions.subtitle,
-                xAxis: {
-                    ...originalChartOptions.xAxis,
-                    ...customizedOptions?.xAxis,
-                },
+                xAxis: Array.isArray(originalChartOptions.xAxis)
+                    ? originalChartOptions.xAxis.map(item => {
+                          return { ...item, ...customizedOptions?.xAxis };
+                      })
+                    : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis },
+
                 yAxis: originalChartOptions.yAxis,
                 series: sortedSeries?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
