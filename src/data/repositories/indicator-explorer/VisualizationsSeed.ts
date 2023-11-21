@@ -45,6 +45,16 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         minCountryFilter: 2,
     },
+    ZZAcIv6O9LY: {
+        categoryName: "Health Spending (Health accounts)",
+        friendlyName: "Public spending on health as a share of current spending on health",
+        info: {
+            infoNotes: [],
+            sourceName: "",
+            sourceLink: "",
+        },
+        minCountryFilter: 2,
+    },
     // NU4Q0sIIvcG: {
     //     categoryName: "Financial Hardship",
     //     info: {

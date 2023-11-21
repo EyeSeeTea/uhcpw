@@ -70,11 +70,34 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     },
     zkEtsohZTTf: {
         title: { text: "" },
-        legend: { ...baseLegend, reversed: true, itemMarginTop: 20 },
+        legend: { ...baseLegend, reversed: true },
         countrySerie: (countries, serie) => {
             const country = countries.find(country => country.id === serie.id);
 
-            //TODO: Pending colors by country serie
+            const color = country ? countryPalette[countries.indexOf(country)] : undefined;
+
+            return {
+                id: serie.id,
+                name: country?.code || serie.name,
+                color,
+                marker: { enabled: true, symbol: "circle" },
+                dataLabels: {
+                    enabled: false,
+                },
+            };
+        },
+        xAxis: {
+            labels: {
+                rotation: -90,
+            },
+        },
+    },
+    ZZAcIv6O9LY: {
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true },
+        countrySerie: (countries, serie) => {
+            const country = countries.find(country => country.id === serie.id);
+
             const color = country ? countryPalette[countries.indexOf(country)] : undefined;
 
             return {
