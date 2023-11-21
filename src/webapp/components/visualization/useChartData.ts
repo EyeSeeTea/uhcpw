@@ -22,6 +22,7 @@ export function useChartData(visualizationId: string, years: string[], countries
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
     const [showInfo, setShowInfo] = useState<boolean>(false);
+    const { countries: allCountries } = useAppContext();
 
     useEffect(() => {
         if (visualizationId) {
@@ -33,6 +34,7 @@ export function useChartData(visualizationId: string, years: string[], countries
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
+                        countries: allCountries.filter(country => countries.includes(country.id)),
                     });
                 },
                 error => {
@@ -48,7 +50,7 @@ export function useChartData(visualizationId: string, years: string[], countries
                 message: "Missing visualizationId",
             });
         }
-    }, [compositionRoot, visualizationId, countries, years]);
+    }, [compositionRoot, visualizationId, countries, years, allCountries]);
 
     const onDownload = useCallback(() => {
         compositionRoot.indicatorExplorer.downloadAnalytics

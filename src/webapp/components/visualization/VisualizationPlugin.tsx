@@ -61,6 +61,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     visualization={chartData.visualization}
                     legendSets={chartData.legendSets}
                     customizedOptions={chartData.customization}
+                    countries={chartData.countries}
                 />
                 <Box height={32} />
 
