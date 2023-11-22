@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-02T08:12:14.956Z\n"
-"PO-Revision-Date: 2023-11-02T08:12:14.957Z\n"
+"POT-Creation-Date: 2023-11-22T12:06:03.435Z\n"
+"PO-Revision-Date: 2023-11-22T12:06:03.435Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -89,7 +89,7 @@ msgstr ""
 msgid "What are the main gaps in publicly financed coverage?"
 msgstr ""
 
-msgid "Main gaps in coverage"
+msgid "Population coverage"
 msgstr ""
 
 msgid ""
@@ -98,10 +98,16 @@ msgid ""
 "Health Insurance Fund benefits is based on the payment of contributions."
 msgstr ""
 
+msgid "Service coverage"
+msgstr ""
+
 msgid ""
 "National Health Insurance Fund coverage of outpatient medicines, medical "
 "products and dental care is limited. Medicine prices are high compared to "
 "other countries."
+msgstr ""
+
+msgid "User charges (co-payments)"
 msgstr ""
 
 msgid ""
