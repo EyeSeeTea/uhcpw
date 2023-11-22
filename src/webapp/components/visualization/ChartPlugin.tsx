@@ -8,7 +8,7 @@ import { Country } from "../../../domain/entities/Country";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { ChartCustomization } from "./visualizationCustomizations";
+import { ChartCustomization } from "./customization/types";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
