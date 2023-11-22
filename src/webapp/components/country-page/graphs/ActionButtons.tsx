@@ -12,7 +12,7 @@ type ActionButtonType = {
 export const ActionButtons: React.FC<ActionButtonType> = ({ onIconButtonClick, graphImage }) => {
     return (
         <Container>
-            <IconButton style={{ padding: "5px", color: "#035fa7" }} onClick={onIconButtonClick}>
+            <IconButton style={{ padding: "5px", color: "#0360a7" }} onClick={onIconButtonClick}>
                 <StyledInfoIcon />
             </IconButton>
             <a href={graphImage} download>
@@ -36,7 +36,7 @@ const StyledInfoIcon = styled(InfoIcon)`
 
 const StyledGetAppIcon = styled(GetAppIcon)`
     color: white;
-    background-color: #035fa7;
+    background-color: #0360a7;
     border-radius: 50%;
     padding: 4px;
     font-size: 17px;
