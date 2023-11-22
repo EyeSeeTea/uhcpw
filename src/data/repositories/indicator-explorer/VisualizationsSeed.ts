@@ -75,6 +75,18 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         maxCountryFilter: 1,
     },
+    BYAT5Woc9EJ: {
+        categoryName: "Health Spending (Health accounts)",
+        friendlyName: "Public spending on health as a share of GDP",
+        info: {
+            infoNotes: [
+                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. EU average include the United Kingdom up to and including 2019.",
+            ],
+            sourceName: "WHO Global Health Expenditure Database",
+            sourceLink: "",
+        },
+        minCountryFilter: 2,
+    },
 
     // NU4Q0sIIvcG: {
     //     categoryName: "Financial Hardship",

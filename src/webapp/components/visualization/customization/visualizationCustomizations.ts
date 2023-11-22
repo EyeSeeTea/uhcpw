@@ -1,5 +1,4 @@
-import { countryPalette } from "./countryPalette";
-import { linearQuintileSeries } from "./linearQuintileSeries";
+import { linearByCountryChart, linearQuintileChart } from "./commonCustomizationCharts";
 import { baseLegend, ChartCustomization } from "./types";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
@@ -20,74 +19,9 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             { id: "ykAPKvVQusS", name: "Outpatient care", color: "#ffc001" },
         ],
     },
-    zkEtsohZTTf: {
-        title: { text: "" },
-        legend: { ...baseLegend, reversed: true },
-        countrySerie: (countries, serie) => {
-            const country = countries.find(country => country.id === serie.id);
-
-            const color = country ? countryPalette[countries.indexOf(country)] : undefined;
-
-            return {
-                id: serie.id,
-                name: country?.code || serie.name,
-                color,
-                marker: { enabled: true, symbol: "circle" },
-                dataLabels: {
-                    enabled: false,
-                },
-            };
-        },
-        xAxis: {
-            labels: {
-                rotation: -90,
-            },
-        },
-    },
-    ZZAcIv6O9LY: {
-        title: { text: "" },
-        legend: { ...baseLegend, reversed: true },
-        countrySerie: (countries, serie) => {
-            const country = countries.find(country => country.id === serie.id);
-
-            const color = country ? countryPalette[countries.indexOf(country)] : undefined;
-
-            return {
-                id: serie.id,
-                name: country?.code || serie.name,
-                color,
-                marker: { enabled: true, symbol: "circle" },
-                dataLabels: {
-                    enabled: false,
-                },
-            };
-        },
-        xAxis: {
-            labels: {
-                rotation: -90,
-            },
-        },
-    },
-    rT39aStYqI3: {
-        title: { text: "" },
-        legend: { ...baseLegend, itemMarginTop: 20 },
-        series: linearQuintileSeries,
-        xAxis: {
-            title: "",
-            labels: {
-                rotation: -90,
-            },
-        },
-    },
-    nhaxK33nlhb: {
-        title: { text: "" },
-        legend: { ...baseLegend, itemMarginTop: 20 },
-        series: linearQuintileSeries,
-        xAxis: {
-            title: "",
-            labels: {
-                rotation: -90,
-            },
-        },
-    },
+    zkEtsohZTTf: linearByCountryChart,
+    ZZAcIv6O9LY: linearByCountryChart,
+    BYAT5Woc9EJ: linearByCountryChart,
+    rT39aStYqI3: linearQuintileChart,
+    nhaxK33nlhb: linearQuintileChart,
 };
