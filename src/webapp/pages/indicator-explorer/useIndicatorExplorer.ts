@@ -97,6 +97,16 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 }),
                 type: "info",
             });
+        } else if (
+            visualization?.maxCountryFilter &&
+            (selectedCountries?.length || 0) > visualization.maxCountryFilter
+        ) {
+            setGlobalMessage({
+                text: i18n.t(`This category:indicator need select only {{count}} country`, {
+                    count: visualization?.minCountryFilter,
+                }),
+                type: "info",
+            });
         } else {
             setShowVisualization(true);
         }
