@@ -3,7 +3,7 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import DashboardGraph from "../../assets/country-page/dashboard-graph.jpg";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { NotesDialog } from "../dialog/NotesDialog";
 import { ActionButtons } from "./graphs/ActionButtons";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
@@ -17,6 +17,11 @@ type HeroProps = {
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const [isOpen, setIsOpen] = useState(false);
     const country = useCountryInfo(countryId);
+
+    const handleClose = useCallback(() => {
+        setIsOpen(false);
+    }, []);
+
     return (
         <Grid container aria-label="country-page-hero">
             {country && (
@@ -45,7 +50,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
             </GraphGrid>
             <NotesDialog
                 isOpen={isOpen}
-                setIsOpen={setIsOpen}
+                onClose={handleClose}
                 dialogInfo={{
                     infoNotes: [
                         "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",

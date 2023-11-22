@@ -56,15 +56,6 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-msgid "Download"
-msgstr ""
-
-msgid "Tambor and Pavlova (2020)"
-msgstr ""
-
-msgid "15 June 2020"
-msgstr ""
-
 msgid "Country expert"
 msgstr ""
 
@@ -348,9 +339,6 @@ msgstr ""
 msgid "Get chart"
 msgstr ""
 
-msgid "Countries"
-msgstr ""
-
 msgid "Co-funded by the European Union"
 msgstr ""
 
@@ -390,6 +378,9 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Countries"
+msgstr ""
+
 msgid "Regional report"
 msgstr ""
 
@@ -423,7 +414,16 @@ msgstr ""
 msgid "Select theme"
 msgstr ""
 
+msgid "Download"
+msgstr ""
+
+msgid "There may be no data"
+msgstr ""
+
 msgid "All"
+msgstr ""
+
+msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"

@@ -61,6 +61,15 @@ export class Future<E, D> {
         );
     }
 
+    static fromPromise<E, D>(computation: Promise<D>): Future<E, D> {
+        return new Future(
+            fluture.Future((reject, resolve) => {
+                computation.then(data => resolve(data)).catch(error => reject(error));
+                return Future.noCancel;
+            })
+        );
+    }
+
     static success<D, E = unknown>(data: D): Future<E, D> {
         return new Future<E, D>(fluture.resolve(data));
     }

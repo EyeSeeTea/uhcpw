@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled, { css } from "styled-components";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { NotesDialog } from "../../dialog/NotesDialog";
 import { ActionButtons } from "../graphs/ActionButtons";
 
@@ -34,6 +34,15 @@ type SlideGraphType = {
 export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo }) => {
     const [isGraphOneOpen, setIsGraphOneOpen] = useState(false);
     const [isGraphTwoOpen, setIsGraphTwoOpen] = useState(false);
+
+    const handleCloseOne = useCallback(() => {
+        setIsGraphOneOpen(false);
+    }, []);
+
+    const handleCloseTwo = useCallback(() => {
+        setIsGraphTwoOpen(false);
+    }, []);
+
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
@@ -83,9 +92,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                     </Grid>
                 </GraphGrid>
             )}
-            <NotesDialog isOpen={isGraphOneOpen} setIsOpen={setIsGraphOneOpen} dialogInfo={graphOne.dialogInfo} />
+            <NotesDialog isOpen={isGraphOneOpen} onClose={handleCloseOne} dialogInfo={graphOne.dialogInfo} />
             {graphTwo && (
-                <NotesDialog isOpen={isGraphTwoOpen} setIsOpen={setIsGraphTwoOpen} dialogInfo={graphTwo.dialogInfo} />
+                <NotesDialog isOpen={isGraphTwoOpen} onClose={handleCloseTwo} dialogInfo={graphTwo.dialogInfo} />
             )}
         </Container>
     );
