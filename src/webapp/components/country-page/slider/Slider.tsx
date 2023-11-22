@@ -43,6 +43,7 @@ function TabPanel(props: { [x: string]: any; children: any; value: any; index: a
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
+            style={{ width: "100%" }}
             {...other}
         >
             {value === index && (
@@ -73,6 +74,7 @@ const useStyles = makeStyles(theme => ({
             "& .MuiTabs-indicator": {
                 display: "none",
             },
+            paddingBlock: "70px",
         },
     },
     tab: {
