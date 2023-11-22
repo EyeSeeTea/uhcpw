@@ -6,7 +6,7 @@ export type ChartCustomization = {
     legend: LegendCustomization;
     series?: SerieCustomization[];
     allSeries?: AllSeriesCustomization;
-    countrySerie?: (countries: Country[], serie: SerieCustomization) => SerieCustomization;
+    countrySerie?: (countries: Country[], serie: { id: string; name: string }) => SerieCustomization;
     title?: TitleCustomization;
     xAxis?: XAxisCustomization;
 };

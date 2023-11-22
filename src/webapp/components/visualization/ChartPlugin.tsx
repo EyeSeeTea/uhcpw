@@ -77,7 +77,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 yAxis: originalChartOptions.yAxis,
                 series: sortedSeries?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
-                        ? customizedOptions?.countrySerie(countries, { id: serie.id || "" })
+                        ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })
                         : undefined;
 
                     const serieCustomization = customizedOptions?.series?.find(
