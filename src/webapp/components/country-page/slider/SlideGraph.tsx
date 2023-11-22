@@ -103,7 +103,8 @@ const visuallyHidden = css`
 
 const Container = styled.div`
     @media (min-width: 960px) {
-        padding: 30px;
+        padding-inline: 30px;
+        padding-block: 46px;
         max-width: 900px;
         > h3 {
             ${visuallyHidden};
