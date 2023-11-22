@@ -7,7 +7,7 @@ import Rain from "../../../assets/country-page/rain.png";
 export const SlideInfoOne: React.FC = () => {
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "20px", fontWeight: 500 }}>
+            <Typography variant="h3" style={{ fontWeight: 500 }}>
                 {i18n.t("What are the main gaps in publicly financed coverage?")}
             </Typography>
             <Grid container>
