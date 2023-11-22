@@ -42,7 +42,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
             <GraphGrid container alignItems="center">
                 <Grid item xs={12} md={12} style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                     <Column>
-                        <Typography variant="h4" style={{ fontSize: "16px" }}>
+                        <Typography variant="h4" style={{ fontSize: "16px", fontWeight: "bold" }}>
                             {i18n.t(graphOne.title)}
                         </Typography>
                         <Row>
@@ -64,7 +64,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
                     <Grid item xs={12} md={12}>
                         <Column>
-                            <Typography variant="h4" style={{ fontSize: "16px" }}>
+                            <Typography variant="h4" style={{ fontSize: "16px", fontWeight: "bold" }}>
                                 {i18n.t(graphTwo.title)}
                             </Typography>
                             <Row>
@@ -121,8 +121,8 @@ const Tag = styled.div`
     padding: 6px 16px;
     display: inline-block;
     white-space: nowrap;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 14px;
+    font-weight: regular;
 `;
 
 const Column = styled.div`
