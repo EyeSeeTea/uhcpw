@@ -22,6 +22,7 @@ import nineTwo from "../../../assets/country-page/slider/9-2.jpg";
 import { SlideInfoOne } from "./SlideInfoOne";
 import { SlideInfoTwo } from "./SlideInfoTwo";
 import i18n from "../../../../locales";
+import { useCountryInfo } from "../../../pages/country/useCountryInfo";
 
 interface EventListenerArgs {
     capture?: boolean;
@@ -113,7 +114,8 @@ function a11yProps(index: number) {
     };
 }
 
-export const Slider: React.FC = () => {
+export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
+    const country = useCountryInfo(countryId);
     const classes = useStyles();
     const [value, setValue] = useState(0);
 
@@ -452,12 +454,16 @@ export const Slider: React.FC = () => {
                     }}
                 />
             </TabPanel>
-            <TabPanel value={value} index={9}>
-                <SlideInfoOne />
-            </TabPanel>
-            <TabPanel value={value} index={10}>
-                <SlideInfoTwo />
-            </TabPanel>
+            {country && (
+                <>
+                    <TabPanel value={value} index={9}>
+                        <SlideInfoOne country={country} />
+                    </TabPanel>
+                    <TabPanel value={value} index={10}>
+                        <SlideInfoTwo country={country} />
+                    </TabPanel>
+                </>
+            )}
         </div>
     );
 };

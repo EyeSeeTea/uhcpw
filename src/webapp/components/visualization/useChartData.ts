@@ -7,7 +7,7 @@ import { Future, FutureData } from "../../../domain/entities/Future";
 import { CompositionRoot } from "../../../CompositionRoot";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { ChartData } from "./ChartData";
-import { visualizationCustomizations } from "./visualizationCustomizations";
+import { visualizationCustomizations } from "./customization/visualizationCustomizations";
 
 interface ChartDataState {
     chartData: ChartData;

@@ -65,6 +65,51 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         maxCountryFilter: 1,
     },
+    nhaxK33nlhb: {
+        categoryName: "Unmet need",
+        friendlyName: "Unmet need for dental care due to cost, distance and waiting time by income quintile",
+        info: {
+            infoNotes: ["Income quintiles are based on the equivalized disposable income of each household member."],
+            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
+            sourceLink: "",
+        },
+        maxCountryFilter: 1,
+    },
+    BYAT5Woc9EJ: {
+        categoryName: "Health Spending (Health accounts)",
+        friendlyName: "Public spending on health as a share of GDP",
+        info: {
+            infoNotes: [
+                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. EU average include the United Kingdom up to and including 2019.",
+            ],
+            sourceName: "WHO Global Health Expenditure Database",
+            sourceLink: "",
+        },
+        minCountryFilter: 2,
+    },
+    d3kq9OCv8tH: {
+        categoryName: "Health Spending (Health accounts)",
+        friendlyName: "Out-of-pocket payments as a share of current spending on health",
+        info: {
+            infoNotes: ["EU average include the United Kingdom up to and including 2019."],
+            sourceName: "WHO Global Health Expenditure Database",
+            sourceLink: "",
+        },
+        minCountryFilter: 2,
+    },
+    jFtGKQIQTGp: {
+        categoryName: "Financial hardship",
+        friendlyName: "Households with impoverishing health spending",
+        info: {
+            infoNotes: [
+                "A household is impoverished if its total spending (consumption) is below the basic needs line after out-of-pocket payments (i.e. it can no longer afford to meet its basic needs) and further impoverished if its total spending is below the basic needs line (i.e. it is already unable to meet its basic needs) and it incurs out-of-pocket payments.",
+            ],
+            sourceName: "WHO Barcelona Office for Health Systems Financing",
+            sourceLink: "",
+        },
+        maxCountryFilter: 1,
+    },
+
     // NU4Q0sIIvcG: {
     //     categoryName: "Financial Hardship",
     //     info: {

@@ -8,7 +8,7 @@ import { Country } from "../../../domain/entities/Country";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { ChartCustomization } from "./visualizationCustomizations";
+import { ChartCustomization } from "./customization/types";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -77,7 +77,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 yAxis: originalChartOptions.yAxis,
                 series: sortedSeries?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
-                        ? customizedOptions?.countrySerie(countries, { id: serie.id || "" })
+                        ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })
                         : undefined;
 
                     const serieCustomization = customizedOptions?.series?.find(
