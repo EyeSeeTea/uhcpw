@@ -10,6 +10,7 @@ export const linearByCountryChart = {
         labels: {
             rotation: -90,
         },
+        title: { text: "" },
     },
 };
 
@@ -18,7 +19,7 @@ export const linearQuintileChart = {
     legend: { ...baseLegend, itemMarginTop: 20 },
     series: linearQuintileSeries,
     xAxis: {
-        title: "",
+        title: { text: "" },
         labels: {
             rotation: -90,
         },
