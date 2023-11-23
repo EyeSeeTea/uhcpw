@@ -4,12 +4,17 @@ import styled from "styled-components";
 import Umbrella from "../../../assets/country-page/umbrella-3.svg";
 import UmbrellaWeak from "../../../assets/country-page/umbrella-red-icon.svg";
 import bubblePattern from "../../../assets/bubble-pattern.svg";
+import { Country } from "../../../../domain/entities/Country";
 
-export const SlideInfoOne: React.FC = () => {
+export const SlideInfoOne: React.FC<{ country: Country }> = ({ country }) => {
+    const {
+        sliderInfo: { gapsSection },
+    } = country;
+
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "5px", fontWeight: 500 }}>
-                {i18n.t("What are the main gaps in publicly financed coverage?")}
+                {i18n.t(gapsSection.sectionName)}
             </Typography>
             <InfoGrid container alignItems="center">
                 <Grid item xs={12} md={6} style={{ display: "flex", justifyContent: "center" }}>
@@ -21,29 +26,12 @@ export const SlideInfoOne: React.FC = () => {
                             <img src={UmbrellaWeak} width={40} alt={"umbrella"} />
                             <Typography variant="h5">{i18n.t("Main gaps in coverage")}</Typography>
                         </Row>
-
-                        <Typography style={{ fontWeight: "bold" }}>{i18n.t("Population coverage:")}</Typography>
-                        <Typography>
-                            {i18n.t(
-                                "A large share of the population (15%) is uninsured and only has access to a few publicly financed health services. This is because access to National Health Insurance Fund benefits is based on the payment of contributions."
-                            )}
-                        </Typography>
-                        <Typography style={{ fontWeight: "bold", marginTop: "20px" }}>
-                            {i18n.t("Service coverage:")}
-                        </Typography>
-                        <Typography>
-                            {i18n.t(
-                                "National Health Insurance Fund coverage of outpatient medicines, medical products and dental care is limited. Medicine prices are high compared to other countries."
-                            )}
-                        </Typography>
-                        <Typography style={{ fontWeight: "bold", marginTop: "20px" }}>
-                            {i18n.t("User charges (co-payments): ")}
-                        </Typography>
-                        <Typography>
-                            {i18n.t(
-                                "Heavy percentage of co-payments for outpatient prescriptions and inadequate protection from co-payments, especially for poorer households and people with chronic conditions. More than half of all prescriptions financed by the National Health Insurance Fund incur a percentage co-payment of 50% or more of the reference price. There are no exemptions from these co-payments. There is no annual cap on all co-payments."
-                            )}
-                        </Typography>
+                        {gapsSection.content.map(({ title, text }) => (
+                            <>
+                                <Typography style={{ fontWeight: "bold" }}>{i18n.t(title)}</Typography>
+                                <Typography style={{ marginBottom: "20px" }}>{i18n.t(text)}</Typography>
+                            </>
+                        ))}
                     </Column>
                 </Grid>
             </InfoGrid>
@@ -70,7 +58,7 @@ const Column = styled.div`
 const Row = styled.div`
     display: flex;
     align-items: center;
-    gap: 15px;
+    margin-left: -25px;
 `;
 
 const Image = styled.img`

@@ -38,6 +38,26 @@ export function givenACountries(): Country[] {
             parents: [{ id: "EUR", name: "Europe" }],
             flag: "http://es.png",
             summary: "**Financial hardship (2018)**",
+            sliderInfo: {
+                gapsSection: {
+                    sectionName: "Gaps in current expenditure",
+                    content: [
+                        {
+                            title: "Main gaps in financing",
+                            text: "Main gaps include lack of financial help",
+                        },
+                    ],
+                },
+                finProtecSection: {
+                    sectionName: "Financial Protection",
+                    content: [
+                        {
+                            title: "Why is financial protection so needed?",
+                            text: "Financial protection saves families from catastrophic environment",
+                        },
+                    ],
+                },
+            },
         },
     ];
 }

@@ -59,7 +59,7 @@ export const CountryPage: React.FC = () => {
             <Hero countryId={selectedCountry} />
             <Divider />
             <div ref={sliderRef}>
-                <Slider />
+                <Slider countryId={selectedCountry} />
             </div>
             <Divider isOrange={false} />
             <div ref={resourcesRef}>
