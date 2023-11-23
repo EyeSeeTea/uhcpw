@@ -22,6 +22,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     zkEtsohZTTf: linearByCountryChart,
     ZZAcIv6O9LY: linearByCountryChart,
     BYAT5Woc9EJ: linearByCountryChart,
+    d3kq9OCv8tH: linearByCountryChart,
     rT39aStYqI3: linearQuintileChart,
     nhaxK33nlhb: linearQuintileChart,
 };

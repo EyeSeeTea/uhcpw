@@ -8,7 +8,8 @@ export type ChartCustomization = {
     allSeries?: AllSeriesCustomization;
     countrySerie?: (countries: Country[], serie: { id: string; name: string }) => SerieCustomization;
     title?: TitleCustomization;
-    xAxis?: XAxisCustomization;
+    xAxis?: AxisCustomization;
+    yAxis?: AxisCustomization;
 };
 
 export type LegendCustomization = {
@@ -39,9 +40,9 @@ export type AllSeriesCustomization = {
     marker?: { enabled: boolean; symbol: "circle" | string };
 };
 
-export type XAxisCustomization = {
-    title?: string;
-    labels: { rotation: number };
+export type AxisCustomization = {
+    title?: TitleCustomization;
+    labels?: { rotation?: number };
 };
 
 export const baseLegend = {
