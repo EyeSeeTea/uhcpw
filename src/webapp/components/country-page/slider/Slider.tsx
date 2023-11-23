@@ -191,9 +191,17 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                         "Which health services are responsible for financial hardship? International comparison"
                     )}
                 />
-                <Tab className={classes.tab} {...a11yProps(5)} label="How many people experience unmet need?" />
-                <Tab className={classes.tab} {...a11yProps(6)} label="Who experiences unmet need?" />
-                <Tab className={classes.tab} {...a11yProps(7)} label="How much does Bulgaria spend on health?" />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(5)}
+                    label={i18n.t("How many people experience unmet need?")}
+                />
+                <Tab className={classes.tab} {...a11yProps(6)} label={i18n.t("Who experiences unmet need?")} />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(7)}
+                    label={i18n.t("How much does Bulgaria spend on health?")}
+                />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(8)}
