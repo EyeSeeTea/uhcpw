@@ -44,10 +44,3 @@ export type AxisCustomization = {
     title?: TitleCustomization;
     labels?: { rotation?: number };
 };
-
-export const baseLegend = {
-    enabled: true,
-    align: "right",
-    verticalAlign: "middle",
-    layout: "vertical",
-} as LegendCustomization;

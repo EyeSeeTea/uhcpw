@@ -1,5 +1,6 @@
+import { baseLegend } from "./baseLegend";
 import { linearByCountryChart, linearQuintileChart } from "./commonCustomizationCharts";
-import { baseLegend, ChartCustomization } from "./types";
+import { ChartCustomization } from "./types";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
     Y31jQX5PVdI: {
@@ -25,4 +26,21 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     d3kq9OCv8tH: linearByCountryChart,
     rT39aStYqI3: linearQuintileChart,
     nhaxK33nlhb: linearQuintileChart,
+    jFtGKQIQTGp: {
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true },
+        series: [
+            {
+                id: "yYSS1uBgnTE",
+                name: "Further impoverished",
+                color: "#c00000",
+            },
+            {
+                id: "WsUM8TQ7cEh",
+                name: "Impoverished",
+                color: "#e46c09",
+            },
+        ],
+        xAxis: { title: { text: "" } },
+    },
 };

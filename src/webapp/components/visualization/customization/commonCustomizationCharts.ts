@@ -1,6 +1,6 @@
+import { baseLegend } from "./baseLegend";
 import { createCountrySerie } from "./createCountrySerie";
 import { linearQuintileSeries } from "./linearQuintileSeries";
-import { baseLegend } from "./types";
 
 export const linearByCountryChart = {
     title: { text: "" },
