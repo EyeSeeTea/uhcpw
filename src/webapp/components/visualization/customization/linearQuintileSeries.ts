@@ -1,7 +1,8 @@
 export const linearQuintileSeries = [
     {
-        id: "GeiKSyJLeKt",
-        name: "Poorest",
+        id: "Ks2z3Tx4SE5.Rh9j1wC8hNt",
+        name: "Poorest quintile",
+        color: "#c00000",
         dataLabels: {
             enabled: false,
         },
@@ -11,8 +12,9 @@ export const linearQuintileSeries = [
         },
     },
     {
-        id: "GuypYXqveWn",
-        name: "2nd",
+        id: "CQq6HWprR0p",
+        name: "Average",
+        color: "#ffc112",
         dataLabels: {
             enabled: false,
         },
@@ -22,30 +24,9 @@ export const linearQuintileSeries = [
         },
     },
     {
-        id: "ii0MC8x9D7i",
-        name: "3rd",
-        dataLabels: {
-            enabled: false,
-        },
-        marker: {
-            enabled: true,
-            symbol: "circle",
-        },
-    },
-    {
-        id: "O0MXmTdpf4m",
-        name: "4th",
-        dataLabels: {
-            enabled: false,
-        },
-        marker: {
-            enabled: true,
-            symbol: "circle",
-        },
-    },
-    {
-        id: "yiucIy5NIAw",
-        name: "Richest",
+        id: "Ks2z3Tx4SE5.ut4ntetvGMW",
+        name: "Richest quintile",
+        color: "#00b050",
         dataLabels: {
             enabled: false,
         },
