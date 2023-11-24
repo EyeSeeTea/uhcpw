@@ -27,7 +27,7 @@ describe("AboutPage", () => {
 
         expect(
             screen.getByText(
-                "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). The Office works with Member States across WHO’s European Region to promote evidence-informed policy making. It is also the home for WHO training courses on health financing."
+                "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). It works with Member States across WHO’s European Region to promote evidence-informed policy making and offers WHO training courses on health financing."
             )
         ).toBeInTheDocument();
     });
