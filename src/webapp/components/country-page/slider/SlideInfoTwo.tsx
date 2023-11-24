@@ -3,48 +3,26 @@ import i18n from "../../../../locales";
 import styled from "styled-components";
 import Umbrella from "../../../assets/country-page/umbrella-wordings.png";
 import bubblePattern from "../../../assets/bubble-pattern.svg";
+import { Country } from "../../../../domain/entities/Country";
 
-export const SlideInfoTwo: React.FC = () => {
+export const SlideInfoTwo: React.FC<{ country: Country }> = ({ country }) => {
+    const {
+        sliderInfo: { finProtecSection },
+    } = country;
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "25px", fontWeight: 500 }}>
-                {i18n.t("How can Bulgaria strengthen financial protection?")}
+                {i18n.t(finProtecSection.sectionName)}
             </Typography>
             <InfoGrid container alignItems="center">
                 <Grid item xs={12} md={6}>
                     <Column>
-                        <Typography style={{ fontWeight: "bold" }}>
-                            {i18n.t("Ensure the National Health Insurance Fund covers the whole population")}
-                        </Typography>
-                        <Typography>
-                            {i18n.t(
-                                "The Government should begin to pay social health insurance contributions for people living below the poverty line who are not entitled to social support. It should also stop penalizing non-payment of contributions by restricting access to health care; addressing non-payment of contributions should be the responsibility of the tax agency rather than the National Health Insurance Fund."
-                            )}
-                        </Typography>
-                        <Typography style={{ fontWeight: "bold", marginTop: "10px" }}>
-                            {i18n.t("Strengthen protection from user charges")}
-                        </Typography>
-                        <Typography>
-                            {i18n.t(
-                                "Exempt households with lower incomes and people with chronic conditions from co-payments. Introduce an annual income-based cap on all co-payments. Change percentage co-payments for medicines to low-fixed co-payments."
-                            )}
-                        </Typography>
-                        <Typography style={{ fontWeight: "bold", marginTop: "10px" }}>
-                            {i18n.t("Improve medicines policy")}
-                        </Typography>
-                        <Typography>
-                            {i18n.t(
-                                "Improve the capacity of the National Health Insurance Fund to purchase outpatient medicines. Continue to reduce medicine prices. Make sure health care providers and pharmacies have incentives to prescribe and dispense the cheapest alternatives."
-                            )}
-                        </Typography>
-                        <Typography style={{ fontWeight: "bold", marginTop: "10px" }}>
-                            {i18n.t("Increase public spending on health")}
-                        </Typography>
-                        <Typography>
-                            {i18n.t(
-                                "Support these policy changes by increasing the level of government budget transfers to the National Health Insurance Fund over time. Use additional resources carefully to meet equity and efficiency goals."
-                            )}
-                        </Typography>
+                        {finProtecSection.content.map(({ title, text }) => (
+                            <>
+                                <Typography style={{ fontWeight: "bold" }}>{i18n.t(title)}</Typography>
+                                <Typography style={{ marginBottom: "10px" }}>{i18n.t(text)}</Typography>
+                            </>
+                        ))}
                     </Column>
                 </Grid>
                 <Grid item xs={12} md={6} style={{ display: "flex", justifyContent: "center" }}>

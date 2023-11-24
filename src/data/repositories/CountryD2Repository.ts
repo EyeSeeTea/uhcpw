@@ -13,6 +13,30 @@ export const countryInfoDataElements: Record<string, string> = {
     summary: "B6gzpUbzpW3",
     status: "btOzN3badgN",
     geometry: "YNMHjDxsci9",
+
+    gapsSectionName: "jF3Lza5SL0X",
+    gapsTitle1: "ZhoU0tnc28i",
+    gapsText1: "QQ4PUBNw9Pm",
+    gapsTitle2: "EOo6KrBC8wW",
+    gapsText2: "tVgCJBa0kN2",
+    gapsTitle3: "VV2G8k5lKuP",
+    gapsText3: "WnzKABQ71eP",
+    gapsTitle4: "k8yVKLAvZOj",
+    gapsText4: "bk0MT2IwI4A",
+    gapsTitle5: "Oamhir4XiOb",
+    gapsText5: "FoT0oW4J3x2",
+
+    finProtecSectionName: "GIDvgdxhc9x",
+    finProtecTitle1: "boyf1aD01Ar",
+    finProtecText1: "FOQaNQKW2R3",
+    finProtecTitle2: "YOyOghIBBbf",
+    finProtecText2: "aO1dJuM6e4W",
+    finProtecTitle3: "XwVuawKTrFA",
+    finProtecText3: "HDjkxkaOrT8",
+    finProtecTitle4: "m6ku09AXbMy",
+    finProtecText4: "LyhjBnSS8tf",
+    finProtecTitle5: "D4kbP5uMvYC",
+    finProtecText5: "qF3rhM9dieb",
 };
 
 const euroOrgUnit = "svSQSBLTVz6";
@@ -86,6 +110,7 @@ export class CountryD2Repository implements CountryRepository {
                     .filter(oug => validOrgUnitGroups.includes(oug.id)),
                 flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
                 summary,
+                sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
             };
         });
     }
@@ -104,6 +129,128 @@ export class CountryD2Repository implements CountryRepository {
 
             return coor as [number, number];
         }
+    }
+
+    private buildSliderInfo(aditionalCountryInfo: D2Event | undefined) {
+        const gapsSectionName =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSectionName)
+                ?.value || "";
+        const gapsTitle1 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle1)?.value ||
+            "";
+        const gapsText1 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText1)?.value ||
+            "";
+        const gapsTitle2 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle2)?.value ||
+            "";
+        const gapsText2 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText2)?.value ||
+            "";
+        const gapsTitle3 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle3)?.value ||
+            "";
+        const gapsText3 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText3)?.value ||
+            "";
+        const gapsTitle4 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle4)?.value ||
+            "";
+        const gapsText4 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText4)?.value ||
+            "";
+        const gapsTitle5 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle5)?.value ||
+            "";
+        const gapsText5 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText5)?.value ||
+            "";
+
+        const finProtecSectionName =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecSectionName)
+                ?.value || "";
+        const finProtecTitle1 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle1)
+                ?.value || "";
+        const finProtecText1 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText1)
+                ?.value || "";
+        const finProtecTitle2 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle2)
+                ?.value || "";
+        const finProtecText2 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText2)
+                ?.value || "";
+        const finProtecTitle3 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle3)
+                ?.value || "";
+        const finProtecText3 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText3)
+                ?.value || "";
+        const finProtecTitle4 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle4)
+                ?.value || "";
+        const finProtecText4 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText4)
+                ?.value || "";
+        const finProtecTitle5 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle5)
+                ?.value || "";
+        const finProtecText5 =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText5)
+                ?.value || "";
+        return {
+            gapsSection: {
+                sectionName: gapsSectionName,
+                content: [
+                    {
+                        title: gapsTitle1,
+                        text: gapsText1,
+                    },
+                    {
+                        title: gapsTitle2,
+                        text: gapsText2,
+                    },
+                    {
+                        title: gapsTitle3,
+                        text: gapsText3,
+                    },
+                    {
+                        title: gapsTitle4,
+                        text: gapsText4,
+                    },
+                    {
+                        title: gapsTitle5,
+                        text: gapsText5,
+                    },
+                ],
+            },
+            finProtecSection: {
+                sectionName: finProtecSectionName,
+                content: [
+                    {
+                        title: finProtecTitle1,
+                        text: finProtecText1,
+                    },
+                    {
+                        title: finProtecTitle2,
+                        text: finProtecText2,
+                    },
+                    {
+                        title: finProtecTitle3,
+                        text: finProtecText3,
+                    },
+                    {
+                        title: finProtecTitle4,
+                        text: finProtecText4,
+                    },
+                    {
+                        title: finProtecTitle5,
+                        text: finProtecText5,
+                    },
+                ],
+            },
+        };
     }
 }
 
