@@ -1,6 +1,7 @@
 export type Country = {
     id: string;
     name: string;
+    longName: string;
     code: string;
     description: string;
     status: CountryStatus;

@@ -116,22 +116,22 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         countryIds?: string[],
         periods?: string[]
     ): ItemRef[] | undefined => {
-        const existsOu = visualization[prop].some(vd => vd.id === "ou");
-        const existsPe = visualization[prop].some(vd => vd.id === "pe");
-        const dimensionsDx = visualization[prop].filter(vd => vd.id === "dx");
+        const dimensionsOuInVisualization = visualization[prop].filter(vd => vd.id === "ou");
+        const dimensionsPeInVisualization = visualization[prop].filter(vd => vd.id === "pe");
+        const dimensionsDxInVisualization = visualization[prop].filter(vd => vd.id === "dx");
         const others = visualization[prop].filter(vd => vd.id !== "dx" && vd.id !== "pe" && vd.id !== "ou");
 
         const dimensionsOu =
-            existsOu && countryIds && countryIds.length > 0
+            dimensionsOuInVisualization && dimensionsOuInVisualization.length > 0 && countryIds && countryIds.length > 0
                 ? [{ dimension: "ou" as const, items: countryIds?.map(countryId => ({ id: countryId })) }]
-                : [];
+                : dimensionsOuInVisualization;
 
         const dimensionsPe =
-            existsPe && periods && periods.length > 0
+            dimensionsPeInVisualization && dimensionsPeInVisualization.length > 0 && periods && periods.length > 0
                 ? [{ dimension: "pe" as const, items: periods?.map(period => ({ id: period })) }]
-                : [];
+                : dimensionsPeInVisualization;
 
-        const dimensions = _.compact([...others, ...dimensionsOu, ...dimensionsPe, ...dimensionsDx]);
+        const dimensions = _.compact([...others, ...dimensionsOu, ...dimensionsPe, ...dimensionsDxInVisualization]);
 
         return dimensions.length > 0 ? dimensions : undefined;
     };

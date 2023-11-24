@@ -69,8 +69,18 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 title: { ...originalChartOptions.title, ...customizedOptions?.title },
                 subtitle: originalChartOptions.subtitle,
                 xAxis: Array.isArray(originalChartOptions.xAxis)
-                    ? originalChartOptions.xAxis.map(item => {
-                          return { ...item, ...customizedOptions?.xAxis };
+                    ? originalChartOptions.xAxis.map((item, index) => {
+                          const countryXAxisCustomization = customizedOptions?.countryXAxis
+                              ? customizedOptions?.countryXAxis(countries, { categories: item.categories || [] })
+                              : undefined;
+
+                          const customizedXAxis = Array.isArray(customizedOptions?.xAxis)
+                              ? customizedOptions?.xAxis[index]
+                              : customizedOptions?.xAxis;
+
+                          const customization = countryXAxisCustomization || customizedXAxis;
+
+                          return { ...item, ...customization };
                       })
                     : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis },
 
