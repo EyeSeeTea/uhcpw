@@ -1,6 +1,6 @@
 import { DataValueSetsDataValue } from "../../../../types/d2-api";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { D2DataSet, EMPTY_DATA } from "../PolicyExplorerD2Repository";
+import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { TableBuilder } from "./TableBuilder";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
 
@@ -155,8 +155,8 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
         );
 
         return [
-            { type: PolicyExplorerCellType.HEADER, value: "Country" },
-            { type: PolicyExplorerCellType.HEADER, value: "Period" },
+            { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
+            { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
             ...dataElementsSection.map(de => ({
                 type: PolicyExplorerCellType.HEADER,
                 value: de.description || de.formName,

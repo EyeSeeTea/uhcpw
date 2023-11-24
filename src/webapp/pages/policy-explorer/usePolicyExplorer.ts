@@ -168,11 +168,16 @@ export function usePolicyExplorer({
 
     const onDownload = useCallback(
         (categoryId: string) => {
-            if (!dataByTable) return;
+            if (!dataByTable || !dataOrientationByTable) return;
 
-            compositionRoot.policyExplorer.download.execute(dataByTable, categoryId).runAsync();
+            const dataOrientation = dataOrientationByTable[categoryId];
+            const initialDataOrientation = INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId) ? "normal" : "inverted";
+
+            compositionRoot.policyExplorer.download
+                .execute(dataByTable, categoryId, dataOrientation || initialDataOrientation)
+                .runAsync();
         },
-        [compositionRoot.policyExplorer, dataByTable]
+        [compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]
     );
 
     const disabledCategories = useMemo(() => {
