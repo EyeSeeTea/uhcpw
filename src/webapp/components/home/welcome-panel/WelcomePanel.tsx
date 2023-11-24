@@ -36,7 +36,6 @@ export const WelcomePanel: React.FC = () => {
                 </UmbrellaItem>
                 <UmbrellaItem>
                     <Marker src={gapsIcon} />
-                    {/* {i18n.t("Gaps in financial protection")} */}
                 </UmbrellaItem>
                 <UmbrellaItem>
                     <Marker src={strongIcon} />
