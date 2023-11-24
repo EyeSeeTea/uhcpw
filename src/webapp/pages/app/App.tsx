@@ -12,7 +12,7 @@ import { Router } from "../Router";
 import "./App.css";
 import muiThemeLegacy from "./themes/dhis2-legacy.theme";
 import { muiTheme } from "./themes/dhis2.theme";
-import FeedbackDialog from "../../components/dialog/FeedbackDialog";
+import NewsletterDialog from "../../components/dialog/NewsletterDialog";
 
 export interface AppProps {
     api: D2Api;
@@ -46,7 +46,7 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
         <MuiThemeProvider theme={muiTheme}>
             <OldMuiThemeProvider muiTheme={muiThemeLegacy}>
                 <SnackbarProvider>
-                    <FeedbackDialog />
+                    <NewsletterDialog />
                     <div id="app" className="content">
                         <AppContext.Provider value={appContext}>
                             <Router />
