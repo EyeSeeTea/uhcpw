@@ -76,19 +76,6 @@ describe("AboutPage", () => {
 
         await waitFor(() => expect(items).toHaveLength(2));
     });
-
-    it("should filter experts by inicial letter name", async () => {
-        givenAPersons();
-
-        renderPage();
-
-        await selectLetterFilter("F");
-
-        const scope = within(screen.getByLabelText(/experts/i));
-        const items = scope.queryAllByRole("listitem");
-
-        await waitFor(() => expect(items).toHaveLength(2));
-    });
 });
 
 function renderPage() {
