@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-13T11:52:21.766Z\n"
-"PO-Revision-Date: 2023-11-13T11:52:21.766Z\n"
+"POT-Creation-Date: 2023-11-24T12:53:29.222Z\n"
+"PO-Revision-Date: 2023-11-24T12:53:29.223Z\n"
 
 msgid "All countries"
 msgstr ""
@@ -24,18 +24,17 @@ msgstr ""
 
 msgid ""
 "The WHO Barcelona Office is a centre of excellence in health financing for "
-"universal health coverage (UHC). The Office works with Member States across "
-"WHO’s European Region to promote evidence-informed policy making. It is "
-"also the home for WHO training courses on health financing."
+"universal health coverage (UHC). It works with Member States across WHO’s "
+"European Region to promote evidence-informed policy making and offers WHO "
+"training courses on health financing."
 msgstr ""
 
 msgid ""
-"A key part of the work of the Office is to assess country and regional "
-"progress towards UHC by monitoring financial protection – affordable access "
-"to health care. The Office also supports countries to strengthen financial "
-"protection through tailored technical assistance, including analysis of "
-"country-specific policy options, high-level policy dialogue and the sharing "
-"of international experience."
+"The Office assesses country and regional progress towards UHC by monitoring "
+"financial protection – affordable access to health care. It also supports "
+"countries to strengthen financial protection through tailored technical "
+"assistance, including analysis of country-specific policy options, "
+"high-level policy dialogue and the sharing of international experience."
 msgstr ""
 
 msgid ""
@@ -77,74 +76,7 @@ msgid ""
 "COVID-19"
 msgstr ""
 
-msgid "What are the main gaps in publicly financed coverage?"
-msgstr ""
-
 msgid "Main gaps in coverage"
-msgstr ""
-
-msgid ""
-"A large share of the population (15%) is uninsured and only has access to a "
-"few publicly financed health services. This is because access to National "
-"Health Insurance Fund benefits is based on the payment of contributions."
-msgstr ""
-
-msgid ""
-"National Health Insurance Fund coverage of outpatient medicines, medical "
-"products and dental care is limited. Medicine prices are high compared to "
-"other countries."
-msgstr ""
-
-msgid ""
-"Heavy percentage of co-payments for outpatient prescriptions and inadequate "
-"protection from co-payments, especially for poorer households and people "
-"with chronic conditions. More than half of all prescriptions financed by "
-"the National Health Insurance Fund incur a percentage co-payment of 50% or "
-"more of the reference price. There are no exemptions from these "
-"co-payments. There is no annual cap on all co-payments."
-msgstr ""
-
-msgid "How can Bulgaria strengthen financial protection?"
-msgstr ""
-
-msgid "Ensure the National Health Insurance Fund covers the whole population"
-msgstr ""
-
-msgid ""
-"The Government should begin to pay social health insurance contributions "
-"for people living below the poverty line who are not entitled to social "
-"support. It should also stop penalizing non-payment of contributions by "
-"restricting access to health care; addressing non-payment of contributions "
-"should be the responsibility of the tax agency rather than the National "
-"Health Insurance Fund."
-msgstr ""
-
-msgid "Strengthen protection from user charges"
-msgstr ""
-
-msgid ""
-"Exempt households with lower incomes and people with chronic conditions "
-"from co-payments. Introduce an annual income-based cap on all co-payments. "
-"Change percentage co-payments for medicines to low-fixed co-payments."
-msgstr ""
-
-msgid "Improve medicines policy"
-msgstr ""
-
-msgid ""
-"Improve the capacity of the National Health Insurance Fund to purchase "
-"outpatient medicines. Continue to reduce medicine prices. Make sure health "
-"care providers and pharmacies have incentives to prescribe and dispense the "
-"cheapest alternatives."
-msgstr ""
-
-msgid "Increase public spending on health"
-msgstr ""
-
-msgid ""
-"Support these policy changes by increasing the level of government budget "
-"transfers to the National Health Insurance Fund over time. Use additional "
-"resources carefully to meet equity and efficiency goals."
 msgstr ""
 
 msgid "({{count}} selected)"
@@ -152,12 +84,16 @@ msgid_plural "({{count}} selected)"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "Send feedback"
+msgid "Get updates from UHC watch"
 msgstr ""
 
 msgid ""
-"We are eager to hear how you use UHCW and how we can improve the platform "
-"for all its users. To contact the team, uhcwatch@who.int"
+"Sign-up to our newsletter and get updates whenever we add new information "
+"for countries on UHC watch. We are also eager to hear how you use UHC watch "
+"and get recommendations for all its users."
+msgstr ""
+
+msgid "To subscribe to  UHC watch newsletter, send us an email to"
 msgstr ""
 
 msgid "Clear"
@@ -295,10 +231,10 @@ msgstr ""
 msgid "Weaker financial protection"
 msgstr ""
 
-msgid "Gaps in financial protection"
+msgid "Stronger financial protection"
 msgstr ""
 
-msgid "Stronger financial protection"
+msgid "UHC watch video"
 msgstr ""
 
 msgid "Category and indicator"
@@ -343,16 +279,10 @@ msgstr ""
 msgid "Privacy legal notice"
 msgstr ""
 
-msgid "Beta version"
-msgstr ""
-
 msgid "Mobile-friendly version coming soon"
 msgstr ""
 
 msgid "Glossary"
-msgstr ""
-
-msgid "Search"
 msgstr ""
 
 msgid "Countries"
@@ -389,6 +319,9 @@ msgid "Get table"
 msgstr ""
 
 msgid "Select theme"
+msgstr ""
+
+msgid "Search"
 msgstr ""
 
 msgid "Download"
