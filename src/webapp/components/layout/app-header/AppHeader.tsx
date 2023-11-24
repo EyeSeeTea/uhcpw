@@ -49,7 +49,6 @@ const useStyles = makeStyles(theme => ({
     },
     menuActive: {
         color: theme.palette.primary.main,
-        //fontWeight: theme.typography.fontWeightMedium,
         "& $icon": {
             color: theme.palette.primary.main,
         },
@@ -103,9 +102,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
                     </MenuTopButton>
-                    {/* <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
-                        {i18n.t("Search")}
-                    </MenuTopButton> */}
                     {action}
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
