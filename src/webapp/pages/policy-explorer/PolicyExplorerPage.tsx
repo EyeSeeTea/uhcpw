@@ -80,7 +80,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Source: ")}</CreditsText>
+                                        <CreditsText>{i18n.t("Source: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
                                         <Link
                                             href={info.source}
@@ -93,19 +93,19 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Country experts: ")}</CreditsText>
+                                        <CreditsText>{i18n.t("Country experts: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
                                         <CreditsText>{info.countryExperts}</CreditsText>
                                     </GeneralRow>
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Editors: ")}</CreditsText>
+                                        <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
                                         <CreditsText>{info.editors}</CreditsText>
                                     </GeneralRow>
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Last updated: ")}</CreditsText>
+                                        <CreditsText>{i18n.t("Last updated: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
                                         <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
                                     </GeneralRow>
