@@ -5,6 +5,7 @@ import { linearHealthQuintileChart } from "./charts/linearHealthQuintileChart";
 import { baseLegend } from "./legends/baseLegend";
 
 import { ChartCustomization } from "./types";
+import { yearXAxis } from "./xAxis/yearXAxis";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
     Y31jQX5PVdI: {
@@ -116,6 +117,49 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
         ],
         xAxis: { title: { text: "" } },
     },
+    OB4SCQfCzwz: {
+        title: { text: "" },
+        legend: { ...baseLegend },
+        series: [
+            {
+                id: "OyWweV5ivnF",
+                name: "Public spending on health",
+                color: "#00b050",
+                dataLabels: {
+                    enabled: false,
+                },
+                marker: {
+                    enabled: true,
+                    symbol: "circle",
+                },
+            },
+            {
+                id: "m6Ua21CL6YZ",
+                name: "Out-of-pocket payments",
+                color: "#c00000",
+                dataLabels: {
+                    enabled: false,
+                },
+                marker: {
+                    enabled: true,
+                    symbol: "circle",
+                },
+            },
+            {
+                id: "W22ZL143ENs",
+                name: "Voluntary health insurance",
+                color: "#ffc112",
+                dataLabels: {
+                    enabled: false,
+                },
+                marker: {
+                    enabled: true,
+                    symbol: "circle",
+                },
+            },
+        ],
+        xAxis: yearXAxis,
+    },
     B4CnzUqVR3n: {
         title: { text: "" },
         legend: { enabled: false },
@@ -126,10 +170,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             return isNumber
                 ? {}
                 : {
-                      labels: {
-                          rotation: -90,
-                      },
-                      title: { text: "" },
+                      ...yearXAxis,
                       categories: buildCountryCategoriesByName(countries, xAxis.categories),
                   };
         },
