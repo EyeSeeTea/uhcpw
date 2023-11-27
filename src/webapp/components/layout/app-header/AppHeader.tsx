@@ -49,7 +49,6 @@ const useStyles = makeStyles(theme => ({
     },
     menuActive: {
         color: theme.palette.primary.main,
-        //fontWeight: theme.typography.fontWeightMedium,
         "& $icon": {
             color: theme.palette.primary.main,
         },
@@ -95,22 +94,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                 <Toolbar className={classes.toolbarTop}>
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
-                    <BetaVersionTagContainer>
-                        <Tag>
-                            <Typography variant="body2">{i18n.t("Beta version")}</Typography>
-                        </Tag>
-                    </BetaVersionTagContainer>
-                    <BetaVersionTagContainer>
+                    <TagContainer>
                         <Tag>
                             <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
                         </Tag>
-                    </BetaVersionTagContainer>
+                    </TagContainer>
                     <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
                         {i18n.t("Glossary")}
                     </MenuTopButton>
-                    {/* <MenuTopButton onClick={handleClick} startIcon={<SearchIcon />}>
-                        {i18n.t("Search")}
-                    </MenuTopButton> */}
                     {action}
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
@@ -214,7 +205,7 @@ const LogoContainer = styled.div`
     cursor: pointer;
 `;
 
-const BetaVersionTagContainer = styled.div`
+const TagContainer = styled.div`
     margin-right: 16px;
 `;
 
@@ -223,8 +214,7 @@ const ComingSoonTagContainer = styled.div`
 `;
 
 const Tag = styled.div`
-    display: flex;
-    justify-content: center;
+    text-align: center;
     min-width: 100px;
     background-color: #4fad56;
     color: white;

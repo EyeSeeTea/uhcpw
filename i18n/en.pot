@@ -27,18 +27,17 @@ msgstr ""
 
 msgid ""
 "The WHO Barcelona Office is a centre of excellence in health financing for "
-"universal health coverage (UHC). The Office works with Member States across "
-"WHO’s European Region to promote evidence-informed policy making. It is "
-"also the home for WHO training courses on health financing."
+"universal health coverage (UHC). It works with Member States across WHO’s "
+"European Region to promote evidence-informed policy making and offers WHO "
+"training courses on health financing."
 msgstr ""
 
 msgid ""
-"A key part of the work of the Office is to assess country and regional "
-"progress towards UHC by monitoring financial protection – affordable access "
-"to health care. The Office also supports countries to strengthen financial "
-"protection through tailored technical assistance, including analysis of "
-"country-specific policy options, high-level policy dialogue and the sharing "
-"of international experience."
+"The Office assesses country and regional progress towards UHC by monitoring "
+"financial protection – affordable access to health care. It also supports "
+"countries to strengthen financial protection through tailored technical "
+"assistance, including analysis of country-specific policy options, "
+"high-level policy dialogue and the sharing of international experience."
 msgstr ""
 
 msgid ""
@@ -88,12 +87,16 @@ msgid_plural "({{count}} selected)"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "Send feedback"
+msgid "Get updates from UHC watch"
 msgstr ""
 
 msgid ""
-"We are eager to hear how you use UHCW and how we can improve the platform "
-"for all its users. To contact the team, uhcwatch@who.int"
+"Sign-up to our newsletter and get updates whenever we add new information "
+"for countries on UHC watch. We are also eager to hear how you use UHC watch "
+"and get recommendations for all its users."
+msgstr ""
+
+msgid "To subscribe to  UHC watch newsletter, send us an email to"
 msgstr ""
 
 msgid "Clear"
@@ -231,10 +234,10 @@ msgstr ""
 msgid "Weaker financial protection"
 msgstr ""
 
-msgid "Gaps in financial protection"
+msgid "Stronger financial protection"
 msgstr ""
 
-msgid "Stronger financial protection"
+msgid "UHC watch video"
 msgstr ""
 
 msgid "Category and indicator"
@@ -279,16 +282,10 @@ msgstr ""
 msgid "Privacy legal notice"
 msgstr ""
 
-msgid "Beta version"
-msgstr ""
-
 msgid "Mobile-friendly version coming soon"
 msgstr ""
 
 msgid "Glossary"
-msgstr ""
-
-msgid "Search"
 msgstr ""
 
 msgid "Countries"
@@ -325,6 +322,9 @@ msgid "Get table"
 msgstr ""
 
 msgid "Select theme"
+msgstr ""
+
+msgid "Search"
 msgstr ""
 
 msgid "Download"

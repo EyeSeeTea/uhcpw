@@ -6,8 +6,9 @@ import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import i18n from "../../../../locales";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
-const youtubeVideoLink = "https://www.youtube.com/watch?v=JTJmji04Iy4";
+const youtubeVideoLink = "https://www.youtube.com/watch?v=71S7ekOSSzU";
 
 export const WelcomePanel: React.FC = () => {
     return (
@@ -35,7 +36,6 @@ export const WelcomePanel: React.FC = () => {
                 </UmbrellaItem>
                 <UmbrellaItem>
                     <Marker src={gapsIcon} />
-                    {/* {i18n.t("Gaps in financial protection")} */}
                 </UmbrellaItem>
                 <UmbrellaItem>
                     <Marker src={strongIcon} />
@@ -43,8 +43,8 @@ export const WelcomePanel: React.FC = () => {
                 </UmbrellaItem>
             </UmbrellaItemsContainer>
             <VideoLink href={youtubeVideoLink} target="_blank" rel="noreferrer">
-                <PlayCircleFilledIcon style={{ color: "white" }} />
-                <Typography>{i18n.t("UHC watch")}</Typography>
+                <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
+                <Typography>{i18n.t("UHC watch video")}</Typography>
             </VideoLink>
         </Container>
     );
@@ -85,11 +85,12 @@ const VideoLink = styled.a`
     gap: 5px;
     width: fit-content;
     text-decoration: none;
-    p {
-        color: white;
-    }
+    background-color: white;
+    padding: 5px 15px;
+    color: ${colors.accentPrimary};
+    text-transform: initial;
+    border-radius: 40px;
     &:hover {
-        text-decoration: underline;
-        text-decoration-color: white;
+        background-color: ${colors.greyLight};
     }
 `;

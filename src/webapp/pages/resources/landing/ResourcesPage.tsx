@@ -8,7 +8,6 @@ import { ComparativeAnalysisItem } from "../../../components/resources/comparati
 import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
-import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 
@@ -21,9 +20,6 @@ export const ResourcesPage: React.FC = React.memo(() => {
             <TitleContainer>
                 <Typography variant="h4">{i18n.t("Resources")}</Typography>
             </TitleContainer>
-            <SearchContainer>
-                <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
-            </SearchContainer>
             <SelectsContainer maxWidth="xl">
                 <Grid container>
                     <ResourcesFilters
@@ -127,13 +123,6 @@ const TitleContainer = styled.div`
 const SelectsContainer = styled(Container)`
     padding-top: 64px;
     padding-bottom: 32px;
-`;
-
-const SearchContainer = styled.div`
-    margin: -24px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
 `;
 
 const Flag = styled.img`
