@@ -18,10 +18,13 @@ export interface CountryAnalysisProps {
 }
 
 const themeColor: Record<string, string> = {
-    "Financial Protection": "#008ad7",
-    Resilience: "#4fad56",
-    "Spending on Health": "#0360a7",
-    "Voluntary Health Insurance": "#ff8d4e",
+    default: "#0360a7",
+    "financial protection": "#0360a7",
+    "health financing policy papers": "rgb(0, 138, 215, 0.5)",
+    "spending on health": "#002060",
+    resilience: "#4fad56",
+    "voluntary health insurance": "#ff8d4e",
+    "health and economy": "#c42929",
 };
 
 export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
@@ -39,7 +42,11 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
                 </a>
 
                 <Box height={20} />
-                <Tag theme={themeName} color={themeColor[themeCode]} onClick={handleTagClick} />
+                <Tag
+                    theme={themeName}
+                    color={themeColor[themeCode?.toLowerCase()] || themeColor.default}
+                    onClick={handleTagClick}
+                />
                 {!minimalVersion && (
                     <>
                         <Row>
