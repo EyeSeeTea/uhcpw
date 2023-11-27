@@ -1,10 +1,10 @@
 import { baseLegend } from "../legends/baseLegend";
-import { linearQuintileSeries } from "../series/linearQuintileSeries";
+import { linearHealthQuintileSeries,  } from "../series/linearHealthQuintileSeries";
 
-export const linearQuintileChart = {
+export const linearHealthQuintileChart = {
     title: { text: "" },
     legend: { ...baseLegend, itemMarginTop: 20 },
-    series: linearQuintileSeries,
+    series: linearHealthQuintileSeries,
     xAxis: {
         title: { text: "" },
         labels: {

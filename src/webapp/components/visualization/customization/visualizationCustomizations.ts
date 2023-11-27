@@ -1,6 +1,7 @@
 import { buildCountryCategoriesByName } from "./builders/buildCountryCategoriesByName";
 import { linearByCountryChart } from "./charts/linearByCountryChart";
-import { linearQuintileChart } from "./charts/linearQuintileChart";
+import { linearDentalQuintileChart } from "./charts/linearDentalQuintileChart";
+import { linearHealthQuintileChart } from "./charts/linearHealthQuintileChart";
 import { baseLegend } from "./legends/baseLegend";
 
 import { ChartCustomization } from "./types";
@@ -27,8 +28,8 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     ZZAcIv6O9LY: linearByCountryChart,
     BYAT5Woc9EJ: linearByCountryChart,
     d3kq9OCv8tH: linearByCountryChart,
-    rT39aStYqI3: linearQuintileChart,
-    nhaxK33nlhb: linearQuintileChart,
+    rT39aStYqI3: linearHealthQuintileChart,
+    nhaxK33nlhb: linearDentalQuintileChart,
     jFtGKQIQTGp: {
         title: { text: "" },
         legend: { ...baseLegend, reversed: true },
