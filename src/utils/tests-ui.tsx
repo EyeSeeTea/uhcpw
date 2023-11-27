@@ -31,6 +31,7 @@ export function givenACountries(): Country[] {
         {
             id: "DVnpk4xiXGJ",
             name: "Spain",
+            longName: "Kingdom of Spain",
             code: "ESP",
             description: "description",
             status: "Weak",

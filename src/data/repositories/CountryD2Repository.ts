@@ -100,6 +100,7 @@ export class CountryD2Repository implements CountryRepository {
             return {
                 id: orgUnit.id,
                 name: orgUnit.shortName,
+                longName: orgUnit.name,
                 code: orgUnit.code,
                 description: orgUnit.description,
                 coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
@@ -255,6 +256,7 @@ export class CountryD2Repository implements CountryRepository {
 
 const organisationUnitsFields = {
     id: true,
+    name: true,
     shortName: true,
     code: true,
     description: { id: true, name: true },

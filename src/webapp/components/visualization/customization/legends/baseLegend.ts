@@ -1,4 +1,4 @@
-import { LegendCustomization } from "./types";
+import { LegendCustomization } from "../types";
 
 export const baseLegend = {
     enabled: true,

@@ -1,5 +1,8 @@
-import { baseLegend } from "./baseLegend";
-import { linearByCountryChart, linearQuintileChart } from "./commonCustomizationCharts";
+import { buildCountryCategoriesByName } from "./builders/buildCountryCategoriesByName";
+import { linearByCountryChart } from "./charts/linearByCountryChart";
+import { linearQuintileChart } from "./charts/linearQuintileChart";
+import { baseLegend } from "./legends/baseLegend";
+
 import { ChartCustomization } from "./types";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
@@ -111,5 +114,23 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             },
         ],
         xAxis: { title: { text: "" } },
+    },
+    B4CnzUqVR3n: {
+        title: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#00b050", dataLabels: { enabled: false } },
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
+                : {
+                      labels: {
+                          rotation: -90,
+                      },
+                      title: { text: "" },
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
     },
 };

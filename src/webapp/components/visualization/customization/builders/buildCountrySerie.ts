@@ -1,5 +1,5 @@
-import { Country } from "../../../../domain/entities/Country";
-import { countryPalette } from "./countryPalette";
+import { Country } from "../../../../../domain/entities/Country";
+import { countryPalette } from "../palettes/countryPalette";
 
 export function createCountrySerie(countries: Country[], serie: { id: string; name: string }) {
     const country = countries.find(country => country.id === serie.id);
