@@ -32,7 +32,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
 
                     {resources && (
                         <>
-                            <Grid item xs={12}>
+                            <Grid item md={6} xs={12}>
                                 <ResourceGroup
                                     title={i18n.t("Country analysis")}
                                     seeAllUrl={"/resources/country-analysis"}
@@ -57,7 +57,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                     })}
                                 </ResourceGroup>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item md={6} xs={12}>
                                 <ResourceGroup
                                     title={i18n.t("Comparative analysis")}
                                     seeAllUrl={"/resources/comparative-analysis"}
@@ -74,7 +74,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                     })}
                                 </ResourceGroup>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item md={6} xs={12}>
                                 <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
                                     {resources.multimedia.map(multimediaItem => {
                                         return (
@@ -90,7 +90,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                     })}
                                 </ResourceGroup>
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item md={6} xs={12}>
                                 <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
                                     {resources.news.map(newsItem => {
                                         return (
