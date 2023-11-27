@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
@@ -6,7 +5,7 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 
 type DialogType = {
     isOpen: boolean;
-    setIsOpen: Dispatch<SetStateAction<boolean>>;
+    onClose: () => void;
     dialogInfo: {
         title?: string;
         infoNotes: string[];
@@ -17,11 +16,11 @@ type DialogType = {
 
 export const NotesDialog: React.FC<DialogType> = ({
     isOpen,
-    setIsOpen,
+    onClose,
     dialogInfo: { title = "Notes:", infoNotes, sourceName },
 }) => {
     return (
-        <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <Dialog open={isOpen} onClose={onClose}>
             <DialogContainer>
                 <DialogTitle style={{ fontSize: "18px", paddingBottom: "2px" }}>{title}</DialogTitle>
                 <DialogContent>
@@ -42,7 +41,7 @@ export const NotesDialog: React.FC<DialogType> = ({
                         </a>
                     </Typography>
                 </DialogContent>
-                <CloseIconButton onClick={() => setIsOpen(false)}>
+                <CloseIconButton onClick={onClose}>
                     <CloseIcon
                         style={{
                             color: "white",

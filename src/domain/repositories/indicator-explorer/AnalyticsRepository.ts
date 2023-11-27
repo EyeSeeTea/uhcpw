@@ -1,6 +1,8 @@
 import { FutureData } from "../../entities/Future";
 import { Analytics } from "../../entities/indicator-explorer/Analytics";
+import { Visualization } from "../../entities/indicator-explorer/Visualization";
 
 export interface AnalyticsRepository {
-    get(dimension: string[], filter?: string[]): FutureData<Analytics>;
+    get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics>;
+    saveToFile(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<void>;
 }

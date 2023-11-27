@@ -28,10 +28,13 @@ import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
 import { PersonD2Repository } from "./data/repositories/PersonD2Repository";
 import { MethodD2Repository } from "./data/repositories/MethodD2Repository";
 import { GetMethodsUseCase } from "./domain/usecases/GetMethodsUseCase";
+import { GetLegendSetsUseCase } from "./domain/usecases/indicator-explorer/GetLegendSets";
+import { LegendSetD2Repository } from "./data/repositories/indicator-explorer/LegendSetD2Repository";
+import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/DownloadAnalyticsUseCase";
 
-function initializeRepositories(api: D2Api, instance: Instance) {
+function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
-        analytics: new AnalyticsD2Repository(api),
+        analytics: new AnalyticsD2Repository(api, d2DataEngine),
         instance: new InstanceDefaultRepository(instance),
         users: new UserD2Repository(api),
         country: new CountryD2Repository(api),
@@ -44,13 +47,19 @@ function initializeRepositories(api: D2Api, instance: Instance) {
         resourceTheme: new ResourceThemeD2Repository(api),
         person: new PersonD2Repository(api),
         method: new MethodD2Repository(api),
+        legendSet: new LegendSetD2Repository(api),
     };
 }
 
 export type Repositories = Partial<ReturnType<typeof initializeRepositories>>;
 
-export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesToOverwrite?: Repositories) {
-    const repositories = { ...initializeRepositories(api, instance), ...repositoriesToOverwrite };
+export function getCompositionRoot(
+    api: D2Api,
+    d2DataEngine: unknown,
+    instance: Instance,
+    repositoriesToOverwrite?: Repositories
+) {
+    const repositories = { ...initializeRepositories(api, d2DataEngine, instance), ...repositoriesToOverwrite };
 
     return {
         instance: {
@@ -72,6 +81,8 @@ export function getCompositionRoot(api: D2Api, instance: Instance, repositoriesT
             getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
             getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
+            downloadAnalytics: new DownloadAnalyticsUseCase(repositories.visualization, repositories.analytics),
+            getLegendSets: new GetLegendSetsUseCase(repositories.legendSet),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),
