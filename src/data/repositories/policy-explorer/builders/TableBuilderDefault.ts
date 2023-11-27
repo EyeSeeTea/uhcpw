@@ -1,7 +1,7 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { D2DataSet, EMPTY_DATA } from "../PolicyExplorerD2Repository";
+import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 
 export class TableBuilderDefault implements TableBuilder {
     buildColumns(params: {
@@ -17,8 +17,8 @@ export class TableBuilderDefault implements TableBuilder {
         );
 
         return [
-            { type: PolicyExplorerCellType.HEADER, value: "Country" },
-            { type: PolicyExplorerCellType.HEADER, value: "Period" },
+            { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
+            { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
             ...dataElementsSection.map(de => ({
                 type: PolicyExplorerCellType.HEADER,
                 value: de.description || de.formName,

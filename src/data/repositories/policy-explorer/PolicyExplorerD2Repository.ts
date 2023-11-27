@@ -17,6 +17,7 @@ import {
     CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
 } from "./builders/TableBuilderChangesInCoveragePolicy";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "./PolicyExplorerCategoryD2Repository";
+import { DataOrientation } from "../../../webapp/pages/policy-explorer/PolicyExplorerState";
 
 export const generalDataElements: Record<string, string> = {
     source: "pDEHTRpRL8X",
@@ -27,6 +28,9 @@ export const generalDataElements: Record<string, string> = {
 };
 
 export const EMPTY_DATA = "";
+export const COUNTRY_HEADER_NAME = "Country";
+export const PERIOD_HEADER_NAME = "Period";
+export const REFERENCES_HEADER_NAME = "References";
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
@@ -58,10 +62,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 })
             ),
         }).map(({ dataSetResponse, dataValuesResponse, orgUnitsResponse }) => {
+            const dataValuesWithOrgUnitNames = this.populateDataValuesWithOrgUnitNames(
+                dataValuesResponse.dataValues,
+                orgUnitsResponse.objects
+            );
             return {
                 tables: this.buildTables({
                     policyExplorerCategories,
-                    dataValues: dataValuesResponse.dataValues,
+                    dataValuesWithOrgUnitNames,
                     organisationUnits: orgUnitsResponse.objects,
                     yearsByCategory,
                     dataSet: dataSetResponse.objects[0],
@@ -72,13 +80,15 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    saveToFile(policyExplorer: PolicyExplorer, categoryId: string): FutureData<void> {
+    saveToFile(policyExplorer: PolicyExplorer, categoryId: string, dataOrientation: DataOrientation): FutureData<void> {
         const rows = policyExplorer.tables[categoryId];
+        const references = policyExplorer.references;
         if (rows) {
+            const dataRows = this.getDataFromRows(rows);
             exportToCSV(
                 [
                     {
-                        data: this.getDataFromRows(rows),
+                        data: this.addReferencesToDataRows(dataRows, references, dataOrientation),
                         name: "Policy Explorer",
                     },
                 ],
@@ -98,6 +108,32 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const rowData: string[] = currentRow.map(({ value }) => value);
             return [...accRowsData, rowData];
         }, []);
+    }
+
+    private addReferencesToDataRows(
+        dataRows: string[][],
+        references: PolicyExplorerReferences[],
+        dataOrientation: DataOrientation
+    ): string[][] {
+        if (dataOrientation === "normal") {
+            return dataRows?.map(dataRow => {
+                const isHeadersRow = dataRow.includes(COUNTRY_HEADER_NAME);
+                const referencesOfCountry =
+                    references.find(reference => dataRow.includes(reference.country))?.references.join(",") ||
+                    EMPTY_DATA;
+                return [...dataRow, isHeadersRow ? REFERENCES_HEADER_NAME : referencesOfCountry];
+            });
+        }
+        if (dataOrientation === "inverted") {
+            const countryDataRow = dataRows.find(dataRow => dataRow.includes(COUNTRY_HEADER_NAME));
+            const referencesDataRowToInclude = countryDataRow?.map((data): string => {
+                const referencesOfCountry =
+                    references.find(reference => reference.country === data)?.references.join(",") || EMPTY_DATA;
+                return data === COUNTRY_HEADER_NAME ? REFERENCES_HEADER_NAME : referencesOfCountry;
+            });
+            return referencesDataRowToInclude ? [...dataRows, referencesDataRowToInclude] : dataRows;
+        }
+        return dataRows;
     }
 
     private buildGeneralInfo(
@@ -134,12 +170,13 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private buildTables(params: {
         policyExplorerCategories: Record<string, string[]>;
-        dataValues: DataValueSetsDataValue[];
+        dataValuesWithOrgUnitNames: DataValueSetsDataValueWithOrgUnitNames[];
         organisationUnits: D2OrgUnit[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
     }): Record<string, PolicyExplorerCell[][]> {
-        const { policyExplorerCategories, dataValues, organisationUnits, yearsByCategory, dataSet } = params;
+        const { policyExplorerCategories, dataValuesWithOrgUnitNames, organisationUnits, yearsByCategory, dataSet } =
+            params;
 
         const hasSomeChangesInCoveragePolicyCategory = Object.keys(policyExplorerCategories).some(categoryId =>
             Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(categoryId)
@@ -163,7 +200,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
                 const countriesAlreadyInRows: string[] = [];
 
-                const dataValuesOrderByYear = _.orderBy(dataValues, ["orgUnit", "period"], "asc");
+                const dataValuesOrderByYear = _.orderBy(
+                    dataValuesWithOrgUnitNames,
+                    ["orgUnitShortName", "period"],
+                    "asc"
+                );
+
                 const dataValuesByCountryAndYear = _(dataValuesOrderByYear)
                     .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
                     .value();
@@ -191,7 +233,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =
-                            dataValues.find(
+                            dataValuesWithOrgUnitNames.find(
                                 dv =>
                                     dv.orgUnit === orgUnit &&
                                     dv.dataElement.includes(generalDataElements.references || "")
@@ -292,6 +334,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             return { country, references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) };
         });
     }
+
+    private populateDataValuesWithOrgUnitNames(
+        dataValues: DataValueSetsDataValue[],
+        organisationUnits: D2OrgUnit[]
+    ): DataValueSetsDataValueWithOrgUnitNames[] {
+        return dataValues.map(dataValue => ({
+            ...dataValue,
+            orgUnitShortName: organisationUnits.find(ou => ou.id === dataValue.orgUnit)?.shortName || "",
+        }));
+    }
 }
 
 const dataSetFields = {
@@ -314,3 +366,7 @@ const organisationUnitsFields = {
 type D2OrgUnit = MetadataPick<{
     organisationUnits: { fields: typeof organisationUnitsFields };
 }>["organisationUnits"][number];
+
+type DataValueSetsDataValueWithOrgUnitNames = DataValueSetsDataValue & {
+    orgUnitShortName: string;
+};

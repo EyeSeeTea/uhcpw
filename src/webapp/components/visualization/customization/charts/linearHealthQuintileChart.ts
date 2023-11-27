@@ -1,5 +1,5 @@
 import { baseLegend } from "../legends/baseLegend";
-import { linearHealthQuintileSeries,  } from "../series/linearHealthQuintileSeries";
+import { linearHealthQuintileSeries } from "../series/linearHealthQuintileSeries";
 
 export const linearHealthQuintileChart = {
     title: { text: "" },
