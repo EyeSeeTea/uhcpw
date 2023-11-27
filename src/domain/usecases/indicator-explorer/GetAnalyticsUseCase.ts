@@ -14,9 +14,9 @@ export class GetAnalyticsUseCase {
         return this.visualizationRepository.getById(visualizationId).flatMap(visualization => {
             const sortedPeriods = periods.sort();
 
-            const isLatestCOVID19 = sortedPeriods[0] === LatestCOVID19.id;
+            const noOverwritePeriods = sortedPeriods[0] === LatestCOVID19.id;
 
-            const finalPeriods = isLatestCOVID19 ? ["2019"] : periods;
+            const finalPeriods = noOverwritePeriods ? [] : periods;
 
             return this.analyticsRepository.get(visualization, finalPeriods, countries);
         });
