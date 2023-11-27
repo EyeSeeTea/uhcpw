@@ -1,6 +1,6 @@
-export const linearQuintileSeries = [
+export const linearDentalQuintileSeries = [
     {
-        id: "Ks2z3Tx4SE5.Rh9j1wC8hNt",
+        id: "a2zFSqU1Zsb.Rh9j1wC8hNt",
         name: "Poorest quintile",
         color: "#c00000",
         dataLabels: {
@@ -12,7 +12,7 @@ export const linearQuintileSeries = [
         },
     },
     {
-        id: "CQq6HWprR0p",
+        id: "a2zFSqU1Zsb",
         name: "Average",
         color: "#ffc112",
         dataLabels: {
@@ -24,7 +24,7 @@ export const linearQuintileSeries = [
         },
     },
     {
-        id: "Ks2z3Tx4SE5.ut4ntetvGMW",
+        id: "a2zFSqU1Zsb.ut4ntetvGMW",
         name: "Richest quintile",
         color: "#00b050",
         dataLabels: {
