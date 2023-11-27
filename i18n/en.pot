@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-21T10:42:36.601Z\n"
-"PO-Revision-Date: 2023-11-21T10:42:36.601Z\n"
+"POT-Creation-Date: 2023-11-27T11:35:36.480Z\n"
+"PO-Revision-Date: 2023-11-27T11:35:36.480Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -336,6 +336,9 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+msgid "2019 or latest available year before COVID-19"
+msgstr ""
+
 msgid "Read more"
 msgstr ""
 
@@ -346,7 +349,6 @@ msgid "Abbreviations"
 msgstr ""
 
 msgid "Error fetching Methods"
-msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"
