@@ -133,6 +133,18 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         maxCountryFilter: 1,
     },
+    OB4SCQfCzwz: {
+        categoryName: "Health Spending ( Health accounts)",
+        friendlyName: "Current spending on health per person by financing scheme (NCU)",
+        info: {
+            infoNotes: [
+                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment.",
+            ],
+            sourceName: "WHO Global Health Expenditure Database",
+            sourceLink: "",
+        },
+        maxCountryFilter: 1,
+    },
     B4CnzUqVR3n: {
         categoryName: "Comparative",
         friendlyName: "Public spending on health as a share of government spending",
