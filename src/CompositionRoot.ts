@@ -26,6 +26,8 @@ import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAna
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
 import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
 import { PersonD2Repository } from "./data/repositories/PersonD2Repository";
+import { MethodD2Repository } from "./data/repositories/MethodD2Repository";
+import { GetMethodsUseCase } from "./domain/usecases/GetMethodsUseCase";
 import { GetLegendSetsUseCase } from "./domain/usecases/indicator-explorer/GetLegendSets";
 import { LegendSetD2Repository } from "./data/repositories/indicator-explorer/LegendSetD2Repository";
 import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/DownloadAnalyticsUseCase";
@@ -44,6 +46,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         resourceCategory: new ResourceCategoryD2Repository(api),
         resourceTheme: new ResourceThemeD2Repository(api),
         person: new PersonD2Repository(api),
+        method: new MethodD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
     };
 }
@@ -88,6 +91,9 @@ export function getCompositionRoot(
         },
         about: {
             getPersons: new GetPersonsUseCase(repositories.person),
+        },
+        method: {
+            get: new GetMethodsUseCase(repositories.method),
         },
     };
 }
