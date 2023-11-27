@@ -171,7 +171,9 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                 <Tab
                     className={classes.tab}
                     {...a11yProps(0)}
-                    label={i18n.t("How many people experience financial hardship: impoverishing health spending?")}
+                    label={i18n.t("How many people experience financial hardship: impoverishing health spending?", {
+                        nsSeparator: false,
+                    })}
                 />
                 <Tab
                     className={classes.tab}

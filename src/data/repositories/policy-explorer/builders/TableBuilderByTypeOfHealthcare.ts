@@ -1,7 +1,7 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { EMPTY_DATA } from "../PolicyExplorerD2Repository";
+import { COUNTRY_HEADER_NAME, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
 
 const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
@@ -175,6 +175,8 @@ const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = 
     "Inpatient medicines": ["KR7sMncAKlz", "q5cIxEo3MPq", "ZqAbKQHqhLR", "Dgg4Jc9U7Jn", "SUBFUbBNE8g", "IpwrxmI5FU7"],
 };
 
+export const TYPE_OF_HEALTH_CARE_HEADER_NAME = "Type of health care";
+
 export class TableBuilderByTypeOfHealthcare implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
@@ -187,9 +189,9 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
                 : TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS;
 
         const commonColumns = [
-            { type: PolicyExplorerCellType.HEADER, value: "Country" },
-            { type: PolicyExplorerCellType.HEADER, value: "Period" },
-            { type: PolicyExplorerCellType.HEADER, value: "Type of health care" },
+            { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
+            { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
+            { type: PolicyExplorerCellType.HEADER, value: TYPE_OF_HEALTH_CARE_HEADER_NAME },
         ];
 
         const restColumns = Object.entries(columnsDataElementSectionIds)
