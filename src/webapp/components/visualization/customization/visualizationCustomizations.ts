@@ -1,5 +1,8 @@
-import { baseLegend } from "./baseLegend";
-import { linearByCountryChart, linearQuintileChart } from "./commonCustomizationCharts";
+import { buildCountryCategoriesByName } from "./builders/buildCountryCategoriesByName";
+import { linearByCountryChart } from "./charts/linearByCountryChart";
+import { linearQuintileChart } from "./charts/linearQuintileChart";
+import { baseLegend } from "./legends/baseLegend";
+
 import { ChartCustomization } from "./types";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
@@ -42,5 +45,92 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             },
         ],
         xAxis: { title: { text: "" } },
+    },
+    geNXcoXc3mf: {
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true },
+        series: [
+            {
+                id: "GeiKSyJLeKt",
+                name: "Poorest",
+                color: "#203864",
+            },
+            {
+                id: "GuypYXqveWn",
+                name: "2nd",
+                color: "#2f5597",
+            },
+            {
+                id: "ii0MC8x9D7i",
+                name: "3rd",
+                color: "#4472c4",
+            },
+            {
+                id: "O0MXmTdpf4m",
+                name: "4th",
+                color: "#8fa2d4",
+            },
+            {
+                id: "yiucIy5NIAw",
+                name: "Richest",
+                color: "#bac4e2",
+            },
+        ],
+        xAxis: { title: { text: "" } },
+    },
+    hpO1ZyFXpCz: {
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true },
+        series: [
+            {
+                id: "OEK4dKvUsOe",
+                name: "Inpatient care",
+                color: "#00b050",
+            },
+            {
+                id: "qgE5NJ9Nyaq",
+                name: "Medicines",
+                color: "#c00000",
+            },
+            {
+                id: "ykAPKvVQusS",
+                name: "Outpatient care",
+                color: "#ffc000",
+            },
+            {
+                id: "a2u2ccahVJL",
+                name: "Dental care",
+                color: "#0070c0",
+            },
+            {
+                id: "OuiKmOeXUWQ",
+                name: "Medical products",
+                color: "#ed7d31",
+            },
+            {
+                id: "qy4W8ZY2g5M",
+                name: "Diagnostic tests",
+                color: "#7030a0",
+            },
+        ],
+        xAxis: { title: { text: "" } },
+    },
+    B4CnzUqVR3n: {
+        title: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#00b050", dataLabels: { enabled: false } },
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
+                : {
+                      labels: {
+                          rotation: -90,
+                      },
+                      title: { text: "" },
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
     },
 };

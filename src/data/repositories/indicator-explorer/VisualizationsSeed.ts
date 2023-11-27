@@ -109,7 +109,42 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         maxCountryFilter: 1,
     },
-
+    geNXcoXc3mf: {
+        categoryName: "Financial hardship",
+        friendlyName: "Households with catastrophic health spending by consumption quintile",
+        info: {
+            infoNotes: [
+                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care. Consumption quintiles are based on per person consumption using OECD equivalence scales.",
+            ],
+            sourceName: "WHO Barcelona Office for Health Systems Financing",
+            sourceLink: "",
+        },
+        maxCountryFilter: 1,
+    },
+    hpO1ZyFXpCz: {
+        categoryName: "Financial hardship",
+        friendlyName: "Breakdown of catastrophic health spending by type of care",
+        info: {
+            infoNotes: [
+                "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs).",
+            ],
+            sourceName: "WHO Barcelona Office for Health Systems Financing",
+            sourceLink: "",
+        },
+        maxCountryFilter: 1,
+    },
+    B4CnzUqVR3n: {
+        categoryName: "Comparative",
+        friendlyName: "Public spending on health as a share of government spending",
+        info: {
+            infoNotes: [
+                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. It excludes San Marino.  EU average include the United Kingdom up to and including 2019.",
+            ],
+            sourceName: "WHO Global Health Expenditure Database",
+            sourceLink: "",
+        },
+        isComparative: true,
+    },
     // NU4Q0sIIvcG: {
     //     categoryName: "Financial Hardship",
     //     info: {
