@@ -8,7 +8,8 @@ export type ChartCustomization = {
     allSeries?: AllSeriesCustomization;
     countrySerie?: (countries: Country[], serie: { id: string; name: string }) => SerieCustomization;
     title?: TitleCustomization;
-    xAxis?: AxisCustomization;
+    xAxis?: AxisCustomization | AxisCustomization[];
+    countryXAxis?: (countries: Country[], xAxis: { categories: string[] }) => AxisCustomization;
     yAxis?: AxisCustomization;
 };
 
@@ -38,9 +39,13 @@ export type SerieCustomization = {
 export type AllSeriesCustomization = {
     color: string;
     marker?: { enabled: boolean; symbol: "circle" | string };
+    dataLabels?: {
+        enabled: boolean;
+    };
 };
 
 export type AxisCustomization = {
     title?: TitleCustomization;
     labels?: { rotation?: number };
+    categories?: string[];
 };

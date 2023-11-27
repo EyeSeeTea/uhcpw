@@ -1,5 +1,9 @@
-import { baseLegend } from "./baseLegend";
-import { linearByCountryChart, linearQuintileChart } from "./commonCustomizationCharts";
+import { buildCountryCategoriesByName } from "./builders/buildCountryCategoriesByName";
+import { linearByCountryChart } from "./charts/linearByCountryChart";
+import { linearDentalQuintileChart } from "./charts/linearDentalQuintileChart";
+import { linearHealthQuintileChart } from "./charts/linearHealthQuintileChart";
+import { baseLegend } from "./legends/baseLegend";
+
 import { ChartCustomization } from "./types";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
@@ -24,8 +28,8 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     ZZAcIv6O9LY: linearByCountryChart,
     BYAT5Woc9EJ: linearByCountryChart,
     d3kq9OCv8tH: linearByCountryChart,
-    rT39aStYqI3: linearQuintileChart,
-    nhaxK33nlhb: linearQuintileChart,
+    rT39aStYqI3: linearHealthQuintileChart,
+    nhaxK33nlhb: linearDentalQuintileChart,
     jFtGKQIQTGp: {
         title: { text: "" },
         legend: { ...baseLegend, reversed: true },
@@ -111,5 +115,23 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             },
         ],
         xAxis: { title: { text: "" } },
+    },
+    B4CnzUqVR3n: {
+        title: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#00b050", dataLabels: { enabled: false } },
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
+                : {
+                      labels: {
+                          rotation: -90,
+                      },
+                      title: { text: "" },
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
     },
 };
