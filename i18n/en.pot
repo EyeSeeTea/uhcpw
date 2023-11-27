@@ -333,6 +333,16 @@ msgstr ""
 msgid "All"
 msgstr ""
 
+msgid "Read more"
+msgstr ""
+
+msgid "Read less"
+msgstr ""
+
+msgid "Abbreviations"
+msgstr ""
+
+msgid "Error fetching Methods"
 msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
