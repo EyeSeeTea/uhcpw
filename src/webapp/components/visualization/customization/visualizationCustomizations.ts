@@ -1,11 +1,21 @@
 import { buildCountryCategoriesByName } from "./builders/buildCountryCategoriesByName";
 import { linearByCountryChart } from "./charts/linearByCountryChart";
-import { linearQuintileChart } from "./charts/linearQuintileChart";
+import { linearDentalQuintileChart } from "./charts/linearDentalQuintileChart";
+import { linearHealthQuintileChart } from "./charts/linearHealthQuintileChart";
 import { baseLegend } from "./legends/baseLegend";
 
 import { ChartCustomization } from "./types";
+import { yearXAxis } from "./xAxis/yearXAxis";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
+    hNU4Lj1xLYO: {
+        //1.
+        title: { text: "" },
+        subtitle: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#354498" },
+        xAxis: [{ title: { text: "" } }],
+    },
     Y31jQX5PVdI: {
         title: { text: "" },
         legend: { enabled: false },
@@ -27,8 +37,8 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     ZZAcIv6O9LY: linearByCountryChart,
     BYAT5Woc9EJ: linearByCountryChart,
     d3kq9OCv8tH: linearByCountryChart,
-    rT39aStYqI3: linearQuintileChart,
-    nhaxK33nlhb: linearQuintileChart,
+    rT39aStYqI3: linearHealthQuintileChart,
+    nhaxK33nlhb: linearDentalQuintileChart,
     jFtGKQIQTGp: {
         title: { text: "" },
         legend: { ...baseLegend, reversed: true },
@@ -115,6 +125,49 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
         ],
         xAxis: { title: { text: "" } },
     },
+    OB4SCQfCzwz: {
+        title: { text: "" },
+        legend: { ...baseLegend },
+        series: [
+            {
+                id: "OyWweV5ivnF",
+                name: "Public spending on health",
+                color: "#00b050",
+                dataLabels: {
+                    enabled: false,
+                },
+                marker: {
+                    enabled: true,
+                    symbol: "circle",
+                },
+            },
+            {
+                id: "m6Ua21CL6YZ",
+                name: "Out-of-pocket payments",
+                color: "#c00000",
+                dataLabels: {
+                    enabled: false,
+                },
+                marker: {
+                    enabled: true,
+                    symbol: "circle",
+                },
+            },
+            {
+                id: "W22ZL143ENs",
+                name: "Voluntary health insurance",
+                color: "#ffc112",
+                dataLabels: {
+                    enabled: false,
+                },
+                marker: {
+                    enabled: true,
+                    symbol: "circle",
+                },
+            },
+        ],
+        xAxis: yearXAxis,
+    },
     B4CnzUqVR3n: {
         title: { text: "" },
         legend: { enabled: false },
@@ -125,10 +178,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             return isNumber
                 ? {}
                 : {
-                      labels: {
-                          rotation: -90,
-                      },
-                      title: { text: "" },
+                      ...yearXAxis,
                       categories: buildCountryCategoriesByName(countries, xAxis.categories),
                   };
         },

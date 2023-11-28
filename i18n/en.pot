@@ -5,8 +5,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-24T06:54:29.385Z\n"
-"PO-Revision-Date: 2023-11-24T06:54:29.385Z\n"
+"POT-Creation-Date: 2023-11-27T13:30:17.038Z\n"
+"PO-Revision-Date: 2023-11-27T13:30:17.038Z\n"
+
+msgid "Error fetching methods"
+msgstr ""
 
 msgid "All countries"
 msgstr ""
@@ -24,18 +27,17 @@ msgstr ""
 
 msgid ""
 "The WHO Barcelona Office is a centre of excellence in health financing for "
-"universal health coverage (UHC). The Office works with Member States across "
-"WHO’s European Region to promote evidence-informed policy making. It is "
-"also the home for WHO training courses on health financing."
+"universal health coverage (UHC). It works with Member States across WHO’s "
+"European Region to promote evidence-informed policy making and offers WHO "
+"training courses on health financing."
 msgstr ""
 
 msgid ""
-"A key part of the work of the Office is to assess country and regional "
-"progress towards UHC by monitoring financial protection – affordable access "
-"to health care. The Office also supports countries to strengthen financial "
-"protection through tailored technical assistance, including analysis of "
-"country-specific policy options, high-level policy dialogue and the sharing "
-"of international experience."
+"The Office assesses country and regional progress towards UHC by monitoring "
+"financial protection – affordable access to health care. It also supports "
+"countries to strengthen financial protection through tailored technical "
+"assistance, including analysis of country-specific policy options, "
+"high-level policy dialogue and the sharing of international experience."
 msgstr ""
 
 msgid ""
@@ -77,7 +79,41 @@ msgid ""
 "COVID-19"
 msgstr ""
 
-msgid "Main gaps in coverage"
+msgid ""
+"How many people experience financial hardship: impoverishing health "
+"spending?"
+msgstr ""
+
+msgid "Catastrophic health spending. How many people experience financial hardship?"
+msgstr ""
+
+msgid "Who experiences financial hardship?"
+msgstr ""
+
+msgid "Which health services are responsible for financial hardship?"
+msgstr ""
+
+msgid ""
+"Which health services are responsible for financial hardship? International "
+"comparison"
+msgstr ""
+
+msgid "How many people experience unmet need?"
+msgstr ""
+
+msgid "Who experiences unmet need?"
+msgstr ""
+
+msgid "How much does Bulgaria spend on health?"
+msgstr ""
+
+msgid "How much does Bulgaria spend on health? International comparison"
+msgstr ""
+
+msgid "What are the main gaps in publicly financed coverage?"
+msgstr ""
+
+msgid "How can Bulgaria strengthen financial protection?"
 msgstr ""
 
 msgid "({{count}} selected)"
@@ -85,12 +121,16 @@ msgid_plural "({{count}} selected)"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "Send feedback"
+msgid "Get updates from UHC watch"
 msgstr ""
 
 msgid ""
-"We are eager to hear how you use UHCW and how we can improve the platform "
-"for all its users. To contact the team, uhcwatch@who.int"
+"Sign-up to our newsletter and get updates whenever we add new information "
+"for countries on UHC watch. We are also eager to hear how you use UHC watch "
+"and get recommendations for all its users."
+msgstr ""
+
+msgid "To subscribe to  UHC watch newsletter, send us an email to"
 msgstr ""
 
 msgid "Clear"
@@ -228,10 +268,10 @@ msgstr ""
 msgid "Weaker financial protection"
 msgstr ""
 
-msgid "Gaps in financial protection"
+msgid "Stronger financial protection"
 msgstr ""
 
-msgid "Stronger financial protection"
+msgid "UHC watch video"
 msgstr ""
 
 msgid "Category and indicator"
@@ -276,16 +316,10 @@ msgstr ""
 msgid "Privacy legal notice"
 msgstr ""
 
-msgid "Beta version"
-msgstr ""
-
 msgid "Mobile-friendly version coming soon"
 msgstr ""
 
 msgid "Glossary"
-msgstr ""
-
-msgid "Search"
 msgstr ""
 
 msgid "Countries"
@@ -324,6 +358,9 @@ msgstr ""
 msgid "Select theme"
 msgstr ""
 
+msgid "Search"
+msgstr ""
+
 msgid "Download"
 msgstr ""
 
@@ -336,7 +373,41 @@ msgstr ""
 msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
+msgid "This category:indicator need select almost {{count}} countries"
+msgid_plural "This category:indicator need select almost {{count}} countries"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "This category:indicator need select only {{count}} country"
+msgid_plural "This category:indicator need select only {{count}} country"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "Read more"
+msgstr ""
+
+msgid "Read less"
+msgstr ""
+
+msgid "Abbreviations"
+msgstr ""
+
+msgid "Error fetching Methods"
+msgstr ""
+
+msgid "Source: "
+msgstr ""
+
 msgid "WHO Barcelona Office for Health Systems Financing (2023)"
+msgstr ""
+
+msgid "Country experts: "
+msgstr ""
+
+msgid "Editors: "
+msgstr ""
+
+msgid "Last updated: "
 msgstr ""
 
 msgid "No data found"

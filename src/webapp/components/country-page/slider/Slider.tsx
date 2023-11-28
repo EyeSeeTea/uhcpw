@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useState } from "react";
-import { Box, Tab, Tabs, Typography, makeStyles } from "@material-ui/core";
+import { Box, Tab, Tabs, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
 import oneOne from "../../../assets/country-page/slider/1-1.jpg";
@@ -21,6 +21,7 @@ import nineOne from "../../../assets/country-page/slider/9-1.jpg";
 import nineTwo from "../../../assets/country-page/slider/9-2.jpg";
 import { SlideInfoOne } from "./SlideInfoOne";
 import { SlideInfoTwo } from "./SlideInfoTwo";
+import i18n from "../../../../locales";
 import { useCountryInfo } from "../../../pages/country/useCountryInfo";
 
 interface EventListenerArgs {
@@ -43,11 +44,12 @@ function TabPanel(props: { [x: string]: any; children: any; value: any; index: a
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
             aria-labelledby={`vertical-tab-${index}`}
+            style={{ width: "100%" }}
             {...other}
         >
             {value === index && (
                 <Box p={3}>
-                    <Typography>{children}</Typography>
+                    <div>{children}</div>
                 </Box>
             )}
         </div>
@@ -63,17 +65,45 @@ const useStyles = makeStyles(theme => ({
     tabs: {
         maxWidth: "30px",
         minWidth: "30px",
-        marginTop: "50px",
-        paddingBottom: "50px",
+        paddingBlock: "24px",
+        "& .MuiTabs-flexContainer": {
+            height: "100%",
+        },
+        [theme.breakpoints.up("md")]: {
+            minWidth: "35%",
+            paddingInlineStart: "24px",
+            "& .MuiTabs-indicator": {
+                display: "none",
+            },
+            paddingBlock: "70px",
+        },
     },
     tab: {
         borderRight: `10px solid ${colors.accentPrimary}`,
         marginBottom: "4px",
         maxWidth: "30px",
         minWidth: "30px",
-        /* "&.Mui-selected": {
-            backgroundColor: colors.accentPrimaryLight,
-        }, */
+        textTransform: "none",
+        color: `${colors.white}`,
+        "& span": {
+            display: "none",
+        },
+        [theme.breakpoints.up("md")]: {
+            width: "100%",
+            maxWidth: "unset",
+            borderRight: "unset",
+            transition: "background-color 0.3s ease-in-out",
+            backgroundColor: `${colors.accentPrimary}`,
+            minHeight: "60px",
+            padding: "15px 25px",
+            "& span": {
+                display: "inline",
+                textAlign: "start",
+            },
+            '&[aria-selected="true"]': {
+                backgroundColor: `${colors.accentPrimaryDark}`,
+            },
+        },
     },
 }));
 
@@ -138,17 +168,57 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                 onMouseEnter={disableScroll}
                 onMouseLeave={enableScroll}
             >
-                <Tab className={classes.tab} {...a11yProps(0)} />
-                <Tab className={classes.tab} {...a11yProps(1)} />
-                <Tab className={classes.tab} {...a11yProps(2)} />
-                <Tab className={classes.tab} {...a11yProps(3)} />
-                <Tab className={classes.tab} {...a11yProps(4)} />
-                <Tab className={classes.tab} {...a11yProps(5)} />
-                <Tab className={classes.tab} {...a11yProps(6)} />
-                <Tab className={classes.tab} {...a11yProps(7)} />
-                <Tab className={classes.tab} {...a11yProps(8)} />
-                <Tab className={classes.tab} {...a11yProps(9)} />
-                <Tab className={classes.tab} {...a11yProps(10)} />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(0)}
+                    label={i18n.t("How many people experience financial hardship: impoverishing health spending?", {
+                        nsSeparator: false,
+                    })}
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(1)}
+                    label={i18n.t("Catastrophic health spending. How many people experience financial hardship?")}
+                />
+                <Tab className={classes.tab} {...a11yProps(2)} label={i18n.t("Who experiences financial hardship?")} />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(3)}
+                    label={i18n.t("Which health services are responsible for financial hardship?")}
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(4)}
+                    label={i18n.t(
+                        "Which health services are responsible for financial hardship? International comparison"
+                    )}
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(5)}
+                    label={i18n.t("How many people experience unmet need?")}
+                />
+                <Tab className={classes.tab} {...a11yProps(6)} label={i18n.t("Who experiences unmet need?")} />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(7)}
+                    label={i18n.t("How much does Bulgaria spend on health?")}
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(8)}
+                    label={i18n.t("How much does Bulgaria spend on health? International comparison")}
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(9)}
+                    label={i18n.t("What are the main gaps in publicly financed coverage?")}
+                />
+                <Tab
+                    className={classes.tab}
+                    {...a11yProps(10)}
+                    label={i18n.t("How can Bulgaria strengthen financial protection?")}
+                />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <SlideGraph
@@ -181,7 +251,8 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <SlideGraph
-                    title="How many people experience financial hardship: catastrophic health spending?"
+                    title="Catastrophic health spending. 
+                    How many people experience financial hardship?"
                     graphOne={{
                         title: "Households with catastrophic health spending",
                         theme: "Financial hardship",

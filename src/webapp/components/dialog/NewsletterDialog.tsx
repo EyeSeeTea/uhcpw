@@ -3,7 +3,7 @@ import { Dialog, Button, DialogContent, DialogTitle, Typography } from "@materia
 import styled from "styled-components";
 import i18n from "../../../locales";
 
-export default function FeedbackDialog() {
+export default function NewsletterDialog() {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -17,7 +17,7 @@ export default function FeedbackDialog() {
     return (
         <>
             <StyledButton variant="outlined" onClick={handleClickOpen}>
-                Send feedback
+                {i18n.t("Get updates from UHC watch")}
             </StyledButton>
             <Dialog
                 open={open}
@@ -25,12 +25,22 @@ export default function FeedbackDialog() {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{i18n.t("Send feedback")}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{i18n.t("Get updates from UHC watch")}</DialogTitle>
                 <StyledDialogContent>
                     <Typography component={"p"} id="alert-dialog-description">
                         {i18n.t(
-                            "We are eager to hear how you use UHCW and how we can improve the platform for all its users. To contact the team, uhcwatch@who.int"
+                            "Sign-up to our newsletter and get updates whenever we add new information for countries on UHC watch. We are also eager to hear how you use UHC watch and get recommendations for all its users."
                         )}
+                        <br />
+                        <br />
+                        {i18n.t("To subscribe to  UHC watch newsletter, send us an email to")}{" "}
+                        <a
+                            href="mailto:uhcwatch@who.int?subject=I%20want%20to%20receive%20UHC%20watch%20news"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            uhcwatch@who.int
+                        </a>
                     </Typography>
                 </StyledDialogContent>
             </Dialog>

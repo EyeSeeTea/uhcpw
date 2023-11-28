@@ -26,28 +26,6 @@
             [
                 {
                     "type": "DATA",
-                    "value": "Spain"
-                },
-                {
-                    "type": "DATA",
-                    "value": "2023"
-                },
-                {
-                    "type": "DATA",
-                    "value": "None for residents, but administrative barriers can hinder access to entitlements for undocumented migrants, asylum seekers and foreigners legally reunited with relatives in Spain."
-                },
-                {
-                    "type": "DATA",
-                    "value": "Limited coverage of dental care, optical care and hearing aids, especially for adults. Waiting times are an issue for elective surgery, outpatient specialist visits, diagnostic tests and mental health services."
-                },
-                {
-                    "type": "DATA",
-                    "value": "Percentage co-payments are applied to outpatient prescribed medicines and medical products (ortho-prosthetic devices such as supportive braces and splints, prostheses, wheelchairs, crutches and hearing aids). Several protection mechanisms are in place – for example, a monthly cap on co-payments for pensioners and exemptions from co-payments for several groups of disadvantaged people, including some people with low incomes. However, there are no exemptions from co-payments for children or for many low-income households and there is no cap for non-pensioners.\n\nAccess to protection mechanisms may be hindered by administrative barriers when there is an application process in place (for example, for beneficiaries of the minimum vital income scheme) or delayed until the beginning of the following year because the user database collecting data on income and working status is only updated once a year."
-                }
-            ],
-            [
-                {
-                    "type": "DATA",
                     "value": "Belgium"
                 },
                 {
@@ -65,6 +43,28 @@
                 {
                     "type": "DATA",
                     "value": "Heavy and complex co-payments are applied to almost all health services, including primary care visits.\n\nThere are very few exemptions from co-payments and no general exemption for people with low incomes.\n\nReduced co-payments are not automatically granted to low-income households and there are major gaps in take-up.\n\nBalance billing is widespread in hospitals (‘fee supplements’) and also occurs in outpatient care.\n\nCo-payment protection mechanisms do not apply to balance billing.\n\nMost outpatient care is subject to retrospective reimbursement."
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": "Spain"
+                },
+                {
+                    "type": "DATA",
+                    "value": "2023"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None for residents, but administrative barriers can hinder access to entitlements for undocumented migrants, asylum seekers and foreigners legally reunited with relatives in Spain."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Limited coverage of dental care, optical care and hearing aids, especially for adults. Waiting times are an issue for elective surgery, outpatient specialist visits, diagnostic tests and mental health services."
+                },
+                {
+                    "type": "DATA",
+                    "value": "Percentage co-payments are applied to outpatient prescribed medicines and medical products (ortho-prosthetic devices such as supportive braces and splints, prostheses, wheelchairs, crutches and hearing aids). Several protection mechanisms are in place – for example, a monthly cap on co-payments for pensioners and exemptions from co-payments for several groups of disadvantaged people, including some people with low incomes. However, there are no exemptions from co-payments for children or for many low-income households and there is no cap for non-pensioners.\n\nAccess to protection mechanisms may be hindered by administrative barriers when there is an application process in place (for example, for beneficiaries of the minimum vital income scheme) or delayed until the beginning of the following year because the user database collecting data on income and working status is only updated once a year."
                 }
             ]
         ]

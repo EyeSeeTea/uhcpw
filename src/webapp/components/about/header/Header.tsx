@@ -19,7 +19,7 @@ export const Header: React.FC = React.memo(() => {
                     <p>
                         <Text gutterBottom>
                             {i18n.t(
-                                "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). The Office works with Member States across WHO’s European Region to promote evidence-informed policy making. It is also the home for WHO training courses on health financing."
+                                "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). It works with Member States across WHO’s European Region to promote evidence-informed policy making and offers WHO training courses on health financing."
                             )}
                         </Text>
                     </p>
@@ -27,7 +27,7 @@ export const Header: React.FC = React.memo(() => {
                     <p>
                         <Text gutterBottom>
                             {i18n.t(
-                                "A key part of the work of the Office is to assess country and regional progress towards UHC by monitoring financial protection – affordable access to health care. The Office also supports countries to strengthen financial protection through tailored technical assistance, including analysis of country-specific policy options, high-level policy dialogue and the sharing of international experience."
+                                "The Office assesses country and regional progress towards UHC by monitoring financial protection – affordable access to health care. It also supports countries to strengthen financial protection through tailored technical assistance, including analysis of country-specific policy options, high-level policy dialogue and the sharing of international experience."
                             )}
                         </Text>
                     </p>
