@@ -5,16 +5,43 @@ import { linearHealthQuintileChart } from "./charts/linearHealthQuintileChart";
 import { baseLegend } from "./legends/baseLegend";
 
 import { ChartCustomization } from "./types";
-import { yearXAxis } from "./xAxis/yearXAxis";
+import { rotateXAxis } from "./xAxis/rotateXAxis";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
     hNU4Lj1xLYO: {
-        //1.
+        // 1.
         title: { text: "" },
         subtitle: { text: "" },
         legend: { enabled: false },
         allSeries: { color: "#354498" },
         xAxis: [{ title: { text: "" } }],
+    },
+    dbc87Ljw8uN: {
+        // 2.
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true },
+        series: [
+            {
+                id: "MDhStd9lvOc",
+                name: "Further impoverished",
+                color: "#c00000",
+            },
+            {
+                id: "yKxOTGWUr4D",
+                name: "Impoverished",
+                color: "#e46c09",
+            },
+        ],
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? { ...rotateXAxis }
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
     },
     Y31jQX5PVdI: {
         title: { text: "" },
@@ -166,7 +193,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
                 },
             },
         ],
-        xAxis: yearXAxis,
+        xAxis: rotateXAxis,
     },
     B4CnzUqVR3n: {
         title: { text: "" },
@@ -178,27 +205,10 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             return isNumber
                 ? {}
                 : {
-                      ...yearXAxis,
+                      ...rotateXAxis,
                       categories: buildCountryCategoriesByName(countries, xAxis.categories),
                   };
         },
-    },
-    dbc87Ljw8uN: {
-        title: { text: "" },
-        legend: { ...baseLegend, reversed: true },
-        series: [
-            {
-                id: "MDhStd9lvOc",
-                name: "Further impoverished",
-                color: "#c00000",
-            },
-            {
-                id: "yKxOTGWUr4D",
-                name: "Impoverished",
-                color: "#e46c09",
-            },
-        ],
-        xAxis: { title: { text: "" } },
     },
 };
 
