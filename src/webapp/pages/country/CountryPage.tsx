@@ -58,17 +58,17 @@ export const CountryPage: React.FC = () => {
             />
             <Hero countryId={selectedCountry} />
             <Divider />
-            <div ref={sliderRef}>
+            <section ref={sliderRef}>
                 <Slider countryId={selectedCountry} />
-            </div>
+            </section>
             <Divider isOrange={false} />
-            <div ref={resourcesRef}>
+            <section ref={resourcesRef}>
                 <CountryResources countryId={selectedCountry} />
-            </div>
+            </section>
             <Divider />
-            <div ref={expertRef}>
+            <section ref={expertRef}>
                 <CountryExpert countryId={selectedCountry} />
-            </div>
+            </section>
         </Layout>
     );
 };

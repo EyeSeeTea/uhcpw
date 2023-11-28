@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useCallback, useState } from "react";
 import { NotesDialog } from "../../dialog/NotesDialog";
 import { ActionButtons } from "../graphs/ActionButtons";
@@ -45,16 +45,18 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
 
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500 }}>
+            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
                 {i18n.t(title)}
             </Typography>
             <GraphGrid container alignItems="center">
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={12} style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
                     <Column>
-                        <Typography style={{ maxWidth: "80%" }}>{i18n.t(graphOne.title)}</Typography>
+                        <Typography variant="h4" style={{ fontSize: "16px", fontWeight: "bold" }}>
+                            {i18n.t(graphOne.title)}
+                        </Typography>
                         <Row>
                             <Tag>{graphOne.theme}</Tag>
-                            <div style={{ marginTop: "5px", marginLeft: "20px" }}>
+                            <div style={{ marginLeft: "20px" }}>
                                 <ActionButtons
                                     onIconButtonClick={() => setIsGraphOneOpen(true)}
                                     graphImage={graphOne.image}
@@ -63,18 +65,20 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         </Row>
                     </Column>
                 </Grid>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={12} md={12}>
                     <Image src={graphOne.image} />
                 </Grid>
             </GraphGrid>
             {graphTwo && (
                 <GraphGrid container alignItems="center" style={{ marginTop: "50px" }}>
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} md={12}>
                         <Column>
-                            <Typography style={{ maxWidth: "80%" }}>{i18n.t(graphTwo.title)}</Typography>
+                            <Typography variant="h4" style={{ fontSize: "16px", fontWeight: "bold" }}>
+                                {i18n.t(graphTwo.title)}
+                            </Typography>
                             <Row>
                                 <Tag>{graphTwo.theme}</Tag>
-                                <div style={{ marginTop: "5px", marginLeft: "20px" }}>
+                                <div style={{ marginLeft: "20px" }}>
                                     <ActionButtons
                                         onIconButtonClick={() => setIsGraphTwoOpen(true)}
                                         graphImage={graphTwo.image}
@@ -83,7 +87,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             </Row>
                         </Column>
                     </Grid>
-                    <Grid item xs={12} md={8}>
+                    <Grid item xs={12} md={12}>
                         <Image src={graphTwo.image} />
                     </Grid>
                 </GraphGrid>
@@ -96,34 +100,64 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
     );
 };
 
+const visuallyHidden = css`
+    position: absolute;
+    width: 0.0625rem;
+    height: 0.0625rem;
+    overflow: hidden;
+    white-space: nowrap;
+    clip: rect(0 0 0 0);
+    clip-path: inset(100%);
+`;
+
 const Container = styled.div`
-    padding: 15px 10px 20px 30px;
+    @media (min-width: 960px) {
+        padding-inline: 30px;
+        padding-block: 46px;
+        max-width: 900px;
+        > h3 {
+            ${visuallyHidden};
+        }
+    }
 `;
 
 const GraphGrid = styled(Grid)``;
 
 const Tag = styled.div`
     border-radius: 20px;
-    background: #efefef;
-    background-color: #621e1e;
+    background-color: #008ad7;
     color: white;
-    padding: 4px 16px;
-    margin-top: 8px;
+    padding: 6px 16px;
     display: inline-block;
+    white-space: nowrap;
+    font-size: 14px;
+    font-weight: regular;
 `;
 
 const Column = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: start;
+    padding-block-end: 15px;
+    @media (min-width: 960px) {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 30px;
+        padding-block-end: 30px;
+        width: 100%;
+    }
 `;
 
 const Row = styled.div`
     display: flex;
     align-items: center;
+    @media (min-width: 960px) {
+        flex: 1;
+        justify-content: flex-end;
+    }
 `;
 
 const Image = styled.img`
-    width: 70%;
     height: auto;
+    width: 100%;
 `;

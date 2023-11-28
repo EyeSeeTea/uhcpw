@@ -11,6 +11,46 @@ export const emptyVisualizationExtra = {
 };
 
 export const visualizationsSeed: Record<string, VisualizationExtra> = {
+    hNU4Lj1xLYO: {
+        // 1.
+        categoryName: "Comparative",
+        friendlyName:
+            "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health in the WHO European Region",
+        info: {
+            infoNotes: [
+                "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+            ],
+            sourceName: "WHO Barcelona Office for Health Systems Financing",
+            sourceLink: "",
+        },
+        isComparative: true,
+    },
+    dbc87Ljw8uN: {
+        // 2.
+        categoryName: "Comparative",
+        friendlyName: "Households with impoverishing health spending",
+        info: {
+            infoNotes: [
+                "A household is impoverished if its total spending (consumption) is below the basic needs line after out-of-pocket payments (i.e. it can no longer afford to meet its basic needs) and further impoverished if its total spending is below the basic needs line (i.e. it is already unable to meet its basic needs) and it incurs out-of-pocket payments. The Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+            ],
+            sourceName: "WHO Barcelona Office for Health Systems Financing",
+            sourceLink: "",
+        },
+        isComparative: true,
+    },
+    NOukqSxCI63: {
+        // 3.
+        categoryName: "Comparative",
+        friendlyName: "Households with catastrophic health spending",
+        info: {
+            infoNotes: [
+                "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
+            ],
+            sourceName: "WHO Barcelona Office for Health Systems Financing",
+            sourceLink: "",
+        },
+        isComparative: true,
+    },
     Y31jQX5PVdI: {
         categoryName: "Financial Hardship",
         friendlyName: "Households with catastrophic health spending",
@@ -133,6 +173,18 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         maxCountryFilter: 1,
     },
+    OB4SCQfCzwz: {
+        categoryName: "Health Spending ( Health accounts)",
+        friendlyName: "Current spending on health per person by financing scheme (NCU)",
+        info: {
+            infoNotes: [
+                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment.",
+            ],
+            sourceName: "WHO Global Health Expenditure Database",
+            sourceLink: "",
+        },
+        maxCountryFilter: 1,
+    },
     B4CnzUqVR3n: {
         categoryName: "Comparative",
         friendlyName: "Public spending on health as a share of government spending",
@@ -145,28 +197,6 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         isComparative: true,
     },
-    NOukqSxCI63:{
-        categoryName: "Comparative",
-        friendlyName: "Households with catastrophic health spending",
-        info: {
-            infoNotes: [
-                "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
-            ],
-            sourceName: "WHO Barcelona Office for Health Systems Financing",
-            sourceLink: "",
-        },
-        isComparative: true,
-    }
-    // NU4Q0sIIvcG: {
-    //     categoryName: "Financial Hardship",
-    //     info: {
-    //         infoNotes: [
-    //             "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care.",
-    //         ],
-    //         sourceName: "WHO Barcelona Office for Health Systems Financing",
-    //         sourceLink: "",
-    //     },
-    // },
 };
 
 // export const categoriesConfig: Record<string, CategoryConfig> = {

@@ -67,7 +67,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                     ...customizedOptions?.legend,
                 },
                 title: { ...originalChartOptions.title, ...customizedOptions?.title },
-                subtitle: originalChartOptions.subtitle,
+                subtitle: { ...originalChartOptions.subtitle, ...customizedOptions?.subtitle },
                 xAxis: Array.isArray(originalChartOptions.xAxis)
                     ? originalChartOptions.xAxis.map((item, index) => {
                           const countryXAxisCustomization = customizedOptions?.countryXAxis
@@ -104,6 +104,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 noData: originalChartOptions.noData,
                 credits: { enabled: false },
                 exporting: { enabled: false },
+                plotOptions: {
+                    series: {
+                        grouping: false,
+                    },
+                },
             };
 
             // analyticsConfig.visualization.update({

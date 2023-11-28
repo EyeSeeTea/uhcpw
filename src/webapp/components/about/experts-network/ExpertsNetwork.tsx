@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
@@ -10,60 +10,41 @@ import { PersonState } from "../../../pages/about/AboutState";
 export interface ExpertsNetworkProps {
     members: PersonState[];
     countryFilter: CountryFilterState;
-    filters: string[];
-    selectedFilter: string;
-    onFilterChange: (value: string) => void;
 }
 
-export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(
-    ({ members, countryFilter, filters, selectedFilter, onFilterChange }) => {
-        return (
-            <>
-                <ItemsTitleContainer>
-                    <Title variant="h3">{i18n.t("The European Financial Protection Network")}</Title>
-                    <Subtitle variant="h5">
-                        {i18n.t(
-                            "Experts working with the WHO Barcelona Office to assess financial protection and coverage policy at country level"
-                        )}
-                    </Subtitle>
-                </ItemsTitleContainer>
+export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ members, countryFilter }) => {
+    return (
+        <>
+            <ItemsTitleContainer>
+                <Title variant="h3">{i18n.t("The European Financial Protection Network")}</Title>
+                <Subtitle variant="h5">
+                    {i18n.t(
+                        "Experts working with the WHO Barcelona Office to assess financial protection and coverage policy at country level"
+                    )}
+                </Subtitle>
+            </ItemsTitleContainer>
 
-                <Row style={{ padding: "16px 32px" }}>
-                    <CountrySelector
-                        countries={countryFilter.options}
-                        selectedIds={countryFilter.selected}
-                        onSelectedIdsChange={countryFilter.onSelectedChange}
-                        placeholder="Select country"
-                    />
+            <Row style={{ padding: "16px 32px 32px 32px" }}>
+                <CountrySelector
+                    countries={countryFilter.options}
+                    selectedIds={countryFilter.selected}
+                    onSelectedIdsChange={countryFilter.onSelectedChange}
+                    placeholder="Select country"
+                />
+            </Row>
 
-                    <Box width={4} />
-
-                    {filters.map(filter => {
-                        return (
-                            <FilterButton
-                                key={filter}
-                                selected={filter === selectedFilter}
-                                onClick={() => onFilterChange(filter)}
-                            >
-                                {filter}
-                            </FilterButton>
-                        );
-                    })}
-                </Row>
-
-                <Grid container spacing={8} style={{ marginBottom: 6 }}>
-                    {members.map((item, index) => {
-                        return (
-                            <Grid key={index} item xs={6} md>
-                                <ItemPerson person={item} isExpert />
-                            </Grid>
-                        );
-                    })}
-                </Grid>
-            </>
-        );
-    }
-);
+            <Grid container spacing={8} style={{ marginBottom: 6 }}>
+                {members.map((item, index) => {
+                    return (
+                        <Grid key={index} item xs={6} md>
+                            <ItemPerson person={item} isExpert />
+                        </Grid>
+                    );
+                })}
+            </Grid>
+        </>
+    );
+});
 
 const ItemsTitleContainer = styled.div`
     padding: 64px 32px 16px 32px;
