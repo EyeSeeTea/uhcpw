@@ -8,6 +8,7 @@ export type ChartCustomization = {
     allSeries?: AllSeriesCustomization;
     countrySerie?: (countries: Country[], serie: { id: string; name: string }) => SerieCustomization;
     title?: TitleCustomization;
+    subtitle?: TitleCustomization;
     xAxis?: AxisCustomization | AxisCustomization[];
     countryXAxis?: (countries: Country[], xAxis: { categories: string[] }) => AxisCustomization;
     yAxis?: AxisCustomization;

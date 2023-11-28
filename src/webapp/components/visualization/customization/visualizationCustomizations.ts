@@ -8,6 +8,14 @@ import { ChartCustomization } from "./types";
 import { yearXAxis } from "./xAxis/yearXAxis";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
+    hNU4Lj1xLYO: {
+        //1.
+        title: { text: "" },
+        subtitle: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#354498" },
+        xAxis: [{ title: { text: "" } }],
+    },
     Y31jQX5PVdI: {
         title: { text: "" },
         legend: { enabled: false },
