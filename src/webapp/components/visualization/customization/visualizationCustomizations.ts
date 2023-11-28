@@ -59,6 +59,22 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
                   };
         },
     },
+    B4CnzUqVR3n: {
+        // 4.
+        title: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#00b050", dataLabels: { enabled: false } },
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
+    },
     Y31jQX5PVdI: {
         title: { text: "" },
         legend: { enabled: false },
@@ -210,21 +226,6 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             },
         ],
         xAxis: rotateXAxis,
-    },
-    B4CnzUqVR3n: {
-        title: { text: "" },
-        legend: { enabled: false },
-        allSeries: { color: "#00b050", dataLabels: { enabled: false } },
-        countryXAxis: (countries, xAxis) => {
-            const isNumber = !isNaN(Number(xAxis.categories[0]));
-
-            return isNumber
-                ? {}
-                : {
-                      ...rotateXAxis,
-                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
-                  };
-        },
     },
 };
 

@@ -51,6 +51,19 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
         },
         isComparative: true,
     },
+    B4CnzUqVR3n: {
+        // 4.
+        categoryName: "Comparative",
+        friendlyName: "Public spending on health as a share of government spending",
+        info: {
+            infoNotes: [
+                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. It excludes San Marino.  EU average include the United Kingdom up to and including 2019.",
+            ],
+            sourceName: "WHO Global Health Expenditure Database",
+            sourceLink: "",
+        },
+        isComparative: true,
+    },
     Y31jQX5PVdI: {
         categoryName: "Financial Hardship",
         friendlyName: "Households with catastrophic health spending",
@@ -184,18 +197,6 @@ export const visualizationsSeed: Record<string, VisualizationExtra> = {
             sourceLink: "",
         },
         maxCountryFilter: 1,
-    },
-    B4CnzUqVR3n: {
-        categoryName: "Comparative",
-        friendlyName: "Public spending on health as a share of government spending",
-        info: {
-            infoNotes: [
-                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. It excludes San Marino.  EU average include the United Kingdom up to and including 2019.",
-            ],
-            sourceName: "WHO Global Health Expenditure Database",
-            sourceLink: "",
-        },
-        isComparative: true,
     },
 };
 
