@@ -43,6 +43,22 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
                   };
         },
     },
+    NOukqSxCI63: {
+        // 3.
+        title: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#5780c9", dataLabels: { enabled: false } },
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? { ...rotateXAxis }
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
+    },
     Y31jQX5PVdI: {
         title: { text: "" },
         legend: { enabled: false },
