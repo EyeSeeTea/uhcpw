@@ -1,21 +1,23 @@
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
+import { chart10Seed } from "./chart10Seed";
+import { chart11Seed } from "./chart11Seed";
+import { chart12Seed } from "./chart12Seed";
+import { chart14Seed } from "./chart14Seed";
+import { chart15Seed } from "./chart15Seed";
+import { chart16Seed } from "./chart16Seed";
+import { chart17Seed } from "./chart17Seed";
+import { chart18Seed } from "./chart18Seed";
 import { chart1Seed } from "./chart1Seed";
+import { chart21Seed } from "./chart21Seed";
+import { chart22Seed } from "./chart22Seed";
 import { chart2Seed } from "./chart2Seed";
 import { chart3Seed } from "./chart3Seed";
 import { chart4Seed } from "./chart4Seed";
 import { chart5Seed } from "./chart5Seed";
 import { chart6Seed } from "./chart6Seed";
 import { chart7Seed } from "./chart7Seed";
-
-export const emptyVisualizationExtra = {
-    categoryName: "",
-    friendlyName: "",
-    info: {
-        infoNotes: [],
-        sourceName: "",
-        sourceLink: "",
-    },
-};
+import { chart8Seed } from "./chart8Seed";
+import { chart9Seed } from "./chart9Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     hNU4Lj1xLYO: chart1Seed,
@@ -25,138 +27,26 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     GimM6ANOKhd: chart5Seed,
     VB7bdJ8ZXya: chart6Seed,
     mcNfvQaVbfy: chart7Seed,
-    Y31jQX5PVdI: {
-        categoryName: "Financial Hardship",
-        friendlyName: "Households with catastrophic health spending",
-        info: {
-            infoNotes: [
-                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care.",
-            ],
-            sourceName: "WHO Barcelona Office for Health Systems Financing",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
-    },
-    ZxNdsDM8NSb: {
-        categoryName: "Financial Hardship",
-        friendlyName: "Breakdown of catastrophic health spending by type of care and consumption quintile",
-        info: {
-            infoNotes: [
-                "Analysis as of 2020. Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs). Consumption quintiles are based on per person",
-            ],
-            sourceName: "",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
-    },
-    zkEtsohZTTf: {
-        categoryName: "Unmet need",
-        friendlyName: "Unmet need for dental care due to cost, distance and waiting time",
-        info: {
-            infoNotes: ["Dental care refers to ‘dental examination or treatment"],
-            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
-            sourceLink: "",
-        },
-        minCountryFilter: 2,
-    },
-    ZZAcIv6O9LY: {
-        categoryName: "Health Spending (Health accounts)",
-        friendlyName: "Public spending on health as a share of current spending on health",
-        info: {
-            infoNotes: [],
-            sourceName: "",
-            sourceLink: "",
-        },
-        minCountryFilter: 2,
-    },
-    rT39aStYqI3: {
-        categoryName: "Unmet need",
-        friendlyName: "Unmet need for health care due to cost, distance and waiting time by income quintile",
-        info: {
-            infoNotes: ["Income quintiles are based on the equivalized disposable income of each household member."],
-            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
-    },
-    nhaxK33nlhb: {
-        categoryName: "Unmet need",
-        friendlyName: "Unmet need for dental care due to cost, distance and waiting time by income quintile",
-        info: {
-            infoNotes: ["Income quintiles are based on the equivalized disposable income of each household member."],
-            sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
-    },
-    BYAT5Woc9EJ: {
-        categoryName: "Health Spending (Health accounts)",
-        friendlyName: "Public spending on health as a share of GDP",
-        info: {
-            infoNotes: [
-                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. EU average include the United Kingdom up to and including 2019.",
-            ],
-            sourceName: "WHO Global Health Expenditure Database",
-            sourceLink: "",
-        },
-        minCountryFilter: 2,
-    },
-    d3kq9OCv8tH: {
-        categoryName: "Health Spending (Health accounts)",
-        friendlyName: "Out-of-pocket payments as a share of current spending on health",
-        info: {
-            infoNotes: ["EU average include the United Kingdom up to and including 2019."],
-            sourceName: "WHO Global Health Expenditure Database",
-            sourceLink: "",
-        },
-        minCountryFilter: 2,
-    },
-    jFtGKQIQTGp: {
-        categoryName: "Financial hardship",
-        friendlyName: "Households with impoverishing health spending",
-        info: {
-            infoNotes: [
-                "A household is impoverished if its total spending (consumption) is below the basic needs line after out-of-pocket payments (i.e. it can no longer afford to meet its basic needs) and further impoverished if its total spending is below the basic needs line (i.e. it is already unable to meet its basic needs) and it incurs out-of-pocket payments.",
-            ],
-            sourceName: "WHO Barcelona Office for Health Systems Financing",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
-    },
-    geNXcoXc3mf: {
-        categoryName: "Financial hardship",
-        friendlyName: "Households with catastrophic health spending by consumption quintile",
-        info: {
-            infoNotes: [
-                "Catastrophic health spending refers to the share of households with out-of-pocket payments greater than 40% of household capacity to pay for health care. Consumption quintiles are based on per person consumption using OECD equivalence scales.",
-            ],
-            sourceName: "WHO Barcelona Office for Health Systems Financing",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
-    },
-    hpO1ZyFXpCz: {
-        categoryName: "Financial hardship",
-        friendlyName: "Breakdown of catastrophic health spending by type of care",
-        info: {
-            infoNotes: [
-                "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs).",
-            ],
-            sourceName: "WHO Barcelona Office for Health Systems Financing",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
-    },
-    OB4SCQfCzwz: {
-        categoryName: "Health Spending ( Health accounts)",
-        friendlyName: "Current spending on health per person by financing scheme (NCU)",
-        info: {
-            infoNotes: [
-                "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment.",
-            ],
-            sourceName: "WHO Global Health Expenditure Database",
-            sourceLink: "",
-        },
-        maxCountryFilter: 1,
+    jFtGKQIQTGp: chart8Seed,
+    Y31jQX5PVdI: chart9Seed,
+    geNXcoXc3mf: chart10Seed,
+    hpO1ZyFXpCz: chart11Seed,
+    ZxNdsDM8NSb: chart12Seed,
+    zkEtsohZTTf: chart14Seed,
+    rT39aStYqI3: chart15Seed,
+    nhaxK33nlhb: chart16Seed,
+    OB4SCQfCzwz: chart17Seed,
+    d3kq9OCv8tH: chart18Seed,
+    ZZAcIv6O9LY: chart21Seed,
+    BYAT5Woc9EJ: chart22Seed,
+};
+
+export const emptyVisualizationExtra = {
+    categoryName: "",
+    friendlyName: "",
+    info: {
+        infoNotes: [],
+        sourceName: "",
+        sourceLink: "",
     },
 };
