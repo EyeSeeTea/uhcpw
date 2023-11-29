@@ -265,6 +265,9 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
         [countryId, countries, country?.name]
     );
 
+    // NOTICE: This is done because i18next-scanner optional chaining throws error
+    const countryName = useMemo(() => country?.name, [country?.name]);
+
     return (
         <div className={classes.root} aria-label="country-page-slider">
             <Tabs
@@ -316,13 +319,13 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                 <Tab
                     className={classes.tab}
                     {...a11yProps(7)}
-                    label={i18n.t("How much does {{country}} spend on health?", { country: country?.name })}
+                    label={i18n.t("How much does {{country}} spend on health?", { country: countryName })}
                 />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(8)}
                     label={i18n.t("How much does {{country}} spend on health? International comparison", {
-                        country: country?.name,
+                        country: countryName,
                     })}
                 />
                 <Tab
@@ -333,7 +336,7 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                 <Tab
                     className={classes.tab}
                     {...a11yProps(10)}
-                    label={i18n.t("How can {{country}} strengthen financial protection?", { country: country?.name })}
+                    label={i18n.t("How can {{country}} strengthen financial protection?", { country: countryName })}
                 />
             </Tabs>
             {sliderGraphsConfig.map(tabConfig => (
