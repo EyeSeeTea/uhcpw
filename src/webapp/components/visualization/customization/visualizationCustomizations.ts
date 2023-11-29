@@ -25,11 +25,17 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
                 id: "MDhStd9lvOc",
                 name: "Further impoverished",
                 color: "#c00000",
+                dataLabels: {
+                    enabled: false,
+                },
             },
             {
                 id: "yKxOTGWUr4D",
                 name: "Impoverished",
                 color: "#e46c09",
+                dataLabels: {
+                    enabled: false,
+                },
             },
         ],
         countryXAxis: (countries, xAxis) => {
@@ -37,6 +43,146 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
 
             return isNumber
                 ? { ...rotateXAxis }
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
+    },
+    NOukqSxCI63: {
+        // 3.
+        title: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#5780c9", dataLabels: { enabled: false } },
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? { ...rotateXAxis }
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
+    },
+    B4CnzUqVR3n: {
+        // 4.
+        title: { text: "" },
+        legend: { enabled: false },
+        allSeries: { color: "#00b050", dataLabels: { enabled: false } },
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
+    },
+    GimM6ANOKhd: {
+        // 5.
+        title: { text: "" },
+        legend: { ...baseLegend },
+        series: [
+            {
+                id: "GeiKSyJLeKt",
+                name: "Poorest",
+                color: "#203864",
+                dataLabels: { enabled: false },
+            },
+            {
+                id: "GuypYXqveWn",
+                name: "2nd",
+                color: "#2f5597",
+                dataLabels: { enabled: false },
+            },
+            {
+                id: "ii0MC8x9D7i",
+                name: "3rd",
+                color: "#4472c4",
+                dataLabels: { enabled: false },
+            },
+            {
+                id: "O0MXmTdpf4m",
+                name: "4th",
+                color: "#8fa2d4",
+                dataLabels: { enabled: false },
+            },
+            {
+                id: "yiucIy5NIAw",
+                name: "Richest",
+                color: "#bac4e2",
+                dataLabels: { enabled: false },
+            },
+        ],
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
+    },
+    VB7bdJ8ZXya: {
+        // 6.
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true, itemMarginTop: 20 },
+        series: [
+            { id: "qgE5NJ9Nyaq", name: "Medicines", color: "#c00000", dataLabels: { enabled: false } },
+            { id: "OuiKmOeXUWQ", name: "Medical products", color: "#ed7d31", dataLabels: { enabled: false } },
+            { id: "a2u2ccahVJL", name: "Dental care", color: "#0071c0", dataLabels: { enabled: false } },
+            { id: "OEK4dKvUsOe", name: "Inpatient care", color: "#00b050", dataLabels: { enabled: false } },
+            { id: "qy4W8ZY2g5M", name: "Diagnostic tests", color: "#702fa0", dataLabels: { enabled: false } },
+            { id: "ykAPKvVQusS", name: "Outpatient care", color: "#ffc001", dataLabels: { enabled: false } },
+        ],
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
+                : {
+                      ...rotateXAxis,
+                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
+                  };
+        },
+    },
+    mcNfvQaVbfy: {
+        // 7.
+        title: { text: "" },
+        legend: { ...baseLegend, reversed: true, itemMarginTop: 20 },
+        series: [
+            { id: "SpTdfmqlzNj.CgeNM5PZBLy", name: "Medicines", color: "#c00000", dataLabels: { enabled: false } },
+            {
+                id: "SpTdfmqlzNj.WZQNt5d1TGm",
+                name: "Medical products",
+                color: "#ed7d31",
+                dataLabels: { enabled: false },
+            },
+            { id: "SpTdfmqlzNj.bHGxnqq0s6M", name: "Dental care", color: "#0071c0", dataLabels: { enabled: false } },
+            { id: "SpTdfmqlzNj.NYLedCi0SnS", name: "Inpatient care", color: "#00b050", dataLabels: { enabled: false } },
+            {
+                id: "SpTdfmqlzNj.JGYECk6mKHE",
+                name: "Diagnostic tests",
+                color: "#702fa0",
+                dataLabels: { enabled: false },
+            },
+            {
+                id: "SpTdfmqlzNj.xFBx8HXhRn6",
+                name: "Outpatient care",
+                color: "#ffc001",
+                dataLabels: { enabled: false },
+            },
+        ],
+        countryXAxis: (countries, xAxis) => {
+            const isNumber = !isNaN(Number(xAxis.categories[0]));
+
+            return isNumber
+                ? {}
                 : {
                       ...rotateXAxis,
                       categories: buildCountryCategoriesByName(countries, xAxis.categories),
@@ -194,21 +340,6 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
             },
         ],
         xAxis: rotateXAxis,
-    },
-    B4CnzUqVR3n: {
-        title: { text: "" },
-        legend: { enabled: false },
-        allSeries: { color: "#00b050", dataLabels: { enabled: false } },
-        countryXAxis: (countries, xAxis) => {
-            const isNumber = !isNaN(Number(xAxis.categories[0]));
-
-            return isNumber
-                ? {}
-                : {
-                      ...rotateXAxis,
-                      categories: buildCountryCategoriesByName(countries, xAxis.categories),
-                  };
-        },
     },
 };
 
