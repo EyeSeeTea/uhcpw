@@ -25,11 +25,17 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
                 id: "MDhStd9lvOc",
                 name: "Further impoverished",
                 color: "#c00000",
+                dataLabels: {
+                    enabled: false,
+                },
             },
             {
                 id: "yKxOTGWUr4D",
                 name: "Impoverished",
                 color: "#e46c09",
+                dataLabels: {
+                    enabled: false,
+                },
             },
         ],
         countryXAxis: (countries, xAxis) => {
