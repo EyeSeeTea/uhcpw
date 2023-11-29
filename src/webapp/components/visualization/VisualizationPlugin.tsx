@@ -11,10 +11,11 @@ interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
     countries: string[];
+    withoutBackground?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
-    ({ visualizationId, years, countries }) => {
+    ({ visualizationId, years, countries, withoutBackground = false }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownload } = useChartData(
             visualizationId,
             years,
@@ -24,7 +25,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         const ref = useRef<HTMLDivElement>(null);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
-            <Container ref={ref}>
+            <Container ref={ref} $withoutBackground={withoutBackground}>
                 <DataHeader>
                     <Row>
                         <Row>
@@ -62,6 +63,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     legendSets={chartData.legendSets}
                     customizedOptions={chartData.customization}
                     countries={chartData.countries}
+                    withoutBackground={withoutBackground}
                 />
                 <Box height={32} />
 
@@ -85,9 +87,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     }
 );
 
-const Container = styled.div`
+const Container = styled.div<{ $withoutBackground: boolean }>`
     margin-top: 48px;
-    background: #f1f9fc;
+    background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding: 0px 32px 32px 32px;
 `;
 

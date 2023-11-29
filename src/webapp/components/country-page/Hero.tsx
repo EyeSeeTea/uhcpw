@@ -1,26 +1,22 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import styled from "styled-components";
-import i18n from "../../../locales";
 import { colors } from "../../pages/app/themes/dhis2.theme";
-import DashboardGraph from "../../assets/country-page/dashboard-graph.jpg";
-import { useCallback, useState } from "react";
-import { NotesDialog } from "../dialog/NotesDialog";
-import { ActionButtons } from "./graphs/ActionButtons";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import ReactMarkdown from "react-markdown";
 import { ButtonItem } from "../home/country-panel/CountryPanel";
+import { VisualizationPlugin } from "../visualization/VisualizationPlugin";
+import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { useAppContext } from "../../contexts/app-context";
 
 type HeroProps = {
     countryId: string;
 };
 
-export const Hero: React.FC<HeroProps> = ({ countryId }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const country = useCountryInfo(countryId);
+const CHART_1_SCATTER_VISUALIZATION_ID = "hNU4Lj1xLYO";
 
-    const handleClose = useCallback(() => {
-        setIsOpen(false);
-    }, []);
+export const Hero: React.FC<HeroProps> = ({ countryId }) => {
+    const { countries } = useAppContext();
+    const country = useCountryInfo(countryId);
 
     return (
         <Grid container aria-label="country-page-hero">
@@ -36,6 +32,17 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                 </InfoGrid>
             )}
             <GraphGrid item xs={12} md={7} lg={8}>
+                <VisualizationContainer>
+                    <VisualizationPlugin
+                        visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
+                        years={[LatestCOVID19.id]}
+                        countries={countries.map(({ id }) => id)}
+                        withoutBackground
+                    />
+                </VisualizationContainer>
+            </GraphGrid>
+
+            {/* <GraphGrid item xs={12} md={7} lg={8}>
                 <Column>
                     <Row>
                         <Typography style={{ marginRight: "30px" }}>
@@ -58,18 +65,10 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     sourceName: "WHO Barcelona Office for Health Systems Financing",
                     sourceLink: "",
                 }}
-            />
+            /> */}
         </Grid>
     );
 };
-
-const Image = styled.img`
-    width: 100%;
-    height: auto;
-    @media (min-width: 1440px) {
-        width: 900px;
-    }
-`;
 
 const InfoGrid = styled(Grid)`
     background-color: ${colors.accentPrimary};
@@ -88,17 +87,6 @@ const GraphGrid = styled(Grid)`
     background-color: white;
 `;
 
-const Column = styled.div`
-    padding: 16px;
-    padding-bottom: 0px;
-    display: flex;
-    flex-direction: column;
+const VisualizationContainer = styled.div`
     max-width: 100%;
-    align-items: start;
-    gap: 10px;
-`;
-
-const Row = styled.div`
-    display: flex;
-    align-items: center;
 `;

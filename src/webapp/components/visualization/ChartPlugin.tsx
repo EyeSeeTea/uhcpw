@@ -16,6 +16,7 @@ export interface ChartPluginProps {
     legendSets: LegendSet[];
     customizedOptions?: ChartCustomization;
     countries: Country[];
+    withoutBackground?: boolean;
 }
 
 /**
@@ -23,7 +24,7 @@ export interface ChartPluginProps {
  * https://github.com/dhis2/data-visualizer-app/blob/dev/src/components/VisualizationPlugin/ChartPlugin.js
  */
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
-    ({ analytics, visualization, legendSets, customizedOptions, countries }) => {
+    ({ analytics, visualization, legendSets, customizedOptions, countries, withoutBackground = false }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
 
@@ -137,7 +138,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
         return (
             <div>
-                <Container style={{ width: "100%" }}>
+                <Container style={{ width: "100%" }} $withoutBackground={withoutBackground}>
                     <div ref={canvasRef} />
                     {chartOptions && <HighchartsReact highcharts={Highcharts} options={chartOptions} />}
                 </Container>
@@ -152,12 +153,12 @@ const customCss = css`
     }
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ $withoutBackground: boolean }>`
     .highcharts-container * {
         font-family: "Roboto";
     }
     .highcharts-background {
-        fill: #f1f9fc;
+        fill: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     }
 
     ${customCss}

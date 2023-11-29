@@ -1,3 +1,4 @@
+import { CircularProgress } from "@material-ui/core";
 import { Layout } from "../../components/layout/Layout";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { Divider } from "../../components/home/common/Divider";
@@ -46,6 +47,8 @@ export const CountryPage: React.FC = () => {
     const sliderRef = useRef(null);
     const resourcesRef = useRef(null);
     const expertRef = useRef(null);
+
+    if (!selectedCountry) return <CircularProgress />;
 
     return (
         <Layout>
