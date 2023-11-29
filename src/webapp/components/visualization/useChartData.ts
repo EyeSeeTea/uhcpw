@@ -8,6 +8,7 @@ import { CompositionRoot } from "../../../CompositionRoot";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { ChartData } from "./ChartData";
 import { visualizationCustomizations } from "./customization/visualizationCustomizations";
+import { chartOptions } from "./manual/chartOptions";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -28,6 +29,8 @@ export function useChartData(visualizationId: string, years: string[], countries
         if (visualizationId) {
             getChartData(compositionRoot, visualizationId, years, countries).run(
                 ({ visualization, analytics, legendSets }) => {
+                    const visualizationChartOptions = chartOptions[visualizationId];
+
                     setChartData({
                         kind: "Loaded",
                         visualization,
@@ -35,6 +38,9 @@ export function useChartData(visualizationId: string, years: string[], countries
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
                         countries: allCountries.filter(country => countries.includes(country.id)),
+                        chartOptions: visualizationChartOptions
+                            ? visualizationChartOptions(analytics, visualization)
+                            : undefined,
                     });
                 },
                 error => {

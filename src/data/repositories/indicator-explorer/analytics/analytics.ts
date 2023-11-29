@@ -23,7 +23,10 @@ export const apiFetchAnalytics = async (
     const req = new analyticsEngine.request()
         .fromVisualization(visualization)
         .withParameters(options)
-        .withIncludeNumDen(false);
+        .withIncludeNumDen(false)
+        .withShowHierarchy(true)
+        .withHierarchyMeta(true)
+        .withIncludeMetadataDetails(true);
 
     const rawResponse = await analyticsEngine.aggregate.get(req);
 

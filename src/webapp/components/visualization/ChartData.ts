@@ -10,6 +10,7 @@ export type ChartDataLoaded = {
     analytics: Analytics;
     legendSets: LegendSet[];
     customization?: ChartCustomization;
+    chartOptions?: Highcharts.Options;
     countries: Country[];
 };
 
