@@ -8,6 +8,8 @@ import { CTA } from "../buttons/CTA";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
 
+const ALBANIA_COUNTRY_ID = "VGOzFKfSazN";
+
 export const Analysis: React.FC = () => {
     return (
         <>
@@ -24,7 +26,7 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <CTA text={i18n.t("Country pages")} link={`/country-page?country=VGOzFKfSazN`} />
+                        <CTA text={i18n.t("Country pages")} link={`/country-page?country=${ALBANIA_COUNTRY_ID}`} />
                     </ButtonContainer>
                 </CountryContext>
                 <Region item md={6} xs={12}>

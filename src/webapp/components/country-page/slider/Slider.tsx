@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useMemo, useState } from "react";
-import { Box, Tab, Tabs, makeStyles } from "@material-ui/core";
+import { Box, CircularProgress, Tab, Tabs, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
 import { SlideInfoOne } from "./SlideInfoOne";
@@ -267,6 +267,8 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
 
     // NOTICE: This is done because i18next-scanner optional chaining throws error
     const countryName = useMemo(() => country?.name, [country?.name]);
+
+    if (!countryId) return <CircularProgress />;
 
     return (
         <div className={classes.root} aria-label="country-page-slider">

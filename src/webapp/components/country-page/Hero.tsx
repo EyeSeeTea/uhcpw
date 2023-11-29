@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
@@ -18,6 +18,8 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countries } = useAppContext();
     const country = useCountryInfo(countryId);
 
+    if (!countryId) return <CircularProgress />;
+
     return (
         <Grid container aria-label="country-page-hero">
             {country && (
@@ -34,6 +36,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
             <GraphGrid item xs={12} md={7} lg={8}>
                 <VisualizationContainer>
                     <VisualizationPlugin
+                        key={countryId}
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
                         years={[LatestCOVID19.id]}
                         countries={countries.map(({ id }) => id)}
@@ -41,31 +44,6 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     />
                 </VisualizationContainer>
             </GraphGrid>
-
-            {/* <GraphGrid item xs={12} md={7} lg={8}>
-                <Column>
-                    <Row>
-                        <Typography style={{ marginRight: "30px" }}>
-                            {i18n.t(
-                                "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19"
-                            )}
-                        </Typography>
-                        <ActionButtons onIconButtonClick={() => setIsOpen(true)} graphImage={DashboardGraph} />
-                    </Row>
-                    <Image src={DashboardGraph} alt="hero-graph" />
-                </Column>
-            </GraphGrid>
-            <NotesDialog
-                isOpen={isOpen}
-                onClose={handleClose}
-                dialogInfo={{
-                    infoNotes: [
-                        "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
-                    ],
-                    sourceName: "WHO Barcelona Office for Health Systems Financing",
-                    sourceLink: "",
-                }}
-            /> */}
         </Grid>
     );
 };
