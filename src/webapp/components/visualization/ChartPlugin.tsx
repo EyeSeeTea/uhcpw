@@ -104,6 +104,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 noData: originalChartOptions.noData,
                 credits: { enabled: false },
                 exporting: { enabled: false },
+                plotOptions: {
+                    series: {
+                        grouping: false,
+                    },
+                },
             };
 
             // analyticsConfig.visualization.update({

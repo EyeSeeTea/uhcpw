@@ -1,4 +1,4 @@
-export const yearXAxis = {
+export const rotateXAxis = {
     labels: {
         rotation: -90,
     },

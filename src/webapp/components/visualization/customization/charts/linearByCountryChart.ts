@@ -1,13 +1,13 @@
 import { baseLegend } from "../legends/baseLegend";
 import { createCountrySerie } from "../builders/buildCountrySerie";
 import { ChartCustomization } from "../types";
-import { yearXAxis } from "../xAxis/yearXAxis";
+import { rotateXAxis } from "../xAxis/rotateXAxis";
 
 export const linearByCountryChart: ChartCustomization = {
     title: { text: "" },
     legend: { ...baseLegend, reversed: true },
     countrySerie: createCountrySerie,
     xAxis: {
-        ...yearXAxis,
+        ...rotateXAxis,
     },
 };
