@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
-import React, { RefObject, useCallback } from "react";
+import React, { RefObject, useCallback, useState } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
@@ -9,6 +9,7 @@ import ReactMarkdown from "react-markdown";
 import { DataOrientation } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -30,6 +31,10 @@ export const PolicyExplorerTable = React.memo(
             },
             [referencesRef]
         );
+        const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
+        const handleClose = useCallback(() => {
+            setIsNotesDialogOpen(false);
+        }, []);
 
         return !rows?.length || !dataOrientation ? (
             category && (
@@ -38,7 +43,7 @@ export const PolicyExplorerTable = React.memo(
                         <Typography variant="h6" color="primary">
                             {category.text}
                         </Typography>
-                        <Button>
+                        <Button onClick={() => setIsNotesDialogOpen(true)}>
                             <InfoIcon color="primary" />
                         </Button>
                     </Wrapper>
@@ -47,6 +52,7 @@ export const PolicyExplorerTable = React.memo(
                             <Title variant="h6">{i18n.t("No data found")}</Title>
                         </Content>
                     </Container>
+                    <CategoryInfoDialog isOpen={isNotesDialogOpen} onClose={handleClose} category={category} />
                 </NoDataContainer>
             )
         ) : (
@@ -58,7 +64,7 @@ export const PolicyExplorerTable = React.memo(
                                 <Typography variant="h6" color="primary">
                                     {category.text}
                                 </Typography>
-                                <Button>
+                                <Button onClick={() => setIsNotesDialogOpen(true)}>
                                     <InfoIcon color="primary" />
                                 </Button>
                             </Row>
@@ -115,6 +121,7 @@ export const PolicyExplorerTable = React.memo(
                         </TableBody>
                     </StyledTable>
                 </TableContainer>
+                <CategoryInfoDialog isOpen={isNotesDialogOpen} onClose={handleClose} category={category} />
             </>
         );
     }
