@@ -5,6 +5,7 @@ import { chart3Options } from "./chart3Options";
 import { chart4Options } from "./chart4Options";
 import { chart5Options } from "./chart5Options";
 import { chart6Options } from "./chart6Options";
+import { chart7Options } from "./chart7Options";
 
 export const chartOptions: Record<
     string,
@@ -20,4 +21,6 @@ export const chartOptions: Record<
         chart5Options(analiticsResponse, visualization),
     VB7bdJ8ZXya: (analiticsResponse: Analytics, visualization: Visualization) =>
         chart6Options(analiticsResponse, visualization),
+    mcNfvQaVbfy: (analiticsResponse: Analytics, visualization: Visualization) =>
+        chart7Options(analiticsResponse, visualization),
 };
