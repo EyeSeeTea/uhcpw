@@ -4,6 +4,16 @@ import { Visualization } from "../../../../domain/entities/indicator-explorer/Vi
 import { baseLegend } from "../customization/legends/baseLegend";
 import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 
+const seriesNames: Record<string, string> = {
+    yKxOTGWUr4D: "Impoverished",
+    MDhStd9lvOc: "Further impoverished",
+};
+
+const seriesColors: Record<string, string> = {
+    yKxOTGWUr4D: "#e46c09",
+    MDhStd9lvOc: "#c00000",
+};
+
 export const chart2Options: (analiticsResponse: Analytics, visualization: Visualization) => Highcharts.Options = (
     analiticsResponse,
     _visualization
@@ -16,15 +26,18 @@ export const chart2Options: (analiticsResponse: Analytics, visualization: Visual
         .groupBy(row => row[0])
         .value();
 
-    const series = Object.keys(groupByDx).map(dxId => {
+    const keys = _(groupByDx)
+        .keys()
+        .sortBy(key => _(seriesNames).keys().indexOf(key))
+        .value();
+
+    const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
-        const name = dxId === "MDhStd9lvOc" ? "Further impoverished" : "Impoverished";
-        const color = dxId === "MDhStd9lvOc" ? "#c00000" : "#e46c09";
 
         return {
             type: "column",
-            name,
-            color,
+            name: seriesNames[dxId],
+            color: seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
                 const orgUnit = analiticsResponse.metaData.items[orgUnitId]?.code || "";

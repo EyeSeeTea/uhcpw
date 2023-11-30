@@ -3,6 +3,7 @@ import { Visualization } from "../../../../domain/entities/indicator-explorer/Vi
 import { chart2Options } from "./chart2Options";
 import { chart3Options } from "./chart3Options";
 import { chart4Options } from "./chart4Options";
+import { chart5Options } from "./chart5Options";
 
 export const chartOptions: Record<
     string,
@@ -14,4 +15,6 @@ export const chartOptions: Record<
         chart3Options(analiticsResponse, visualization),
     B4CnzUqVR3n: (analiticsResponse: Analytics, visualization: Visualization) =>
         chart4Options(analiticsResponse, visualization),
+    GimM6ANOKhd: (analiticsResponse: Analytics, visualization: Visualization) =>
+        chart5Options(analiticsResponse, visualization),
 };
