@@ -209,10 +209,6 @@ const TagContainer = styled.div`
     margin-right: 16px;
 `;
 
-const ComingSoonTagContainer = styled.div`
-    margin: 22px 10px;
-`;
-
 const Tag = styled.div`
     text-align: center;
     min-width: 100px;
@@ -220,11 +216,4 @@ const Tag = styled.div`
     color: white;
     border-radius: 30px;
     padding: 5px 10px;
-`;
-
-const MenuContainer = styled(Menu)`
-    .MuiPaper-rounded {
-        border-radius: 15px;
-        border: 1px solid rgba(36, 38, 38, 0.3);
-    }
 `;
