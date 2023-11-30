@@ -125,7 +125,7 @@ const GraphGrid = styled(Grid)``;
 
 const Tag = styled.div`
     border-radius: 20px;
-    background-color: #008ad7;
+    background-color: #0360a7;
     color: white;
     padding: 6px 16px;
     display: inline-block;
