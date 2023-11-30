@@ -3,6 +3,14 @@ import { Analytics } from "../../../../domain/entities/indicator-explorer/Analyt
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 
+const seriesNames: Record<string, string> = {
+    kBOh0hUi5bW: "Households with catastrophic health spending",
+};
+
+const seriesColors: Record<string, string> = {
+    kBOh0hUi5bW: "#5780c9",
+};
+
 export const chart3Options: (analiticsResponse: Analytics, visualization: Visualization) => Highcharts.Options = (
     analiticsResponse,
     _visualization
@@ -17,13 +25,11 @@ export const chart3Options: (analiticsResponse: Analytics, visualization: Visual
 
     const series = Object.keys(groupByDx).map(dxId => {
         const dataSource = groupByDx[dxId] || [];
-        const name = "Households with catastrophic health spending";
-        const color = "#5780c9";
 
         return {
             type: "column",
-            name,
-            color,
+            name: seriesNames[dxId],
+            color: seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
                 const orgUnit = analiticsResponse.metaData.items[orgUnitId]?.code || "";

@@ -3,6 +3,14 @@ import { Analytics } from "../../../../domain/entities/indicator-explorer/Analyt
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 
+const seriesNames: Record<string, string> = {
+    Ce6oTgNCapd: "Public spending on health as a share of government spending",
+};
+
+const seriesColors: Record<string, string> = {
+    Ce6oTgNCapd: "#00b050",
+};
+
 export const chart4Options: (analiticsResponse: Analytics, visualization: Visualization) => Highcharts.Options = (
     analiticsResponse,
     _visualization
@@ -17,13 +25,11 @@ export const chart4Options: (analiticsResponse: Analytics, visualization: Visual
 
     const series = Object.keys(groupByDx).map(dxId => {
         const dataSource = groupByDx[dxId] || [];
-        const name = "Public spending on health as a share of government spending";
-        const color = "#00b050";
 
         return {
             type: "column",
-            name,
-            color,
+            name: seriesNames[dxId],
+            color: seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
                 const orgUnit = analiticsResponse.metaData.items[orgUnitId]?.code || "";
