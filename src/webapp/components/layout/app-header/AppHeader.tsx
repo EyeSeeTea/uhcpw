@@ -109,7 +109,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={goToHome} />;
                     </LogoContainer>
                     <Box className={classes.rest} />
-                    <Hidden mdUp>
+                    <Hidden lgUp>
                         <MobileMenu />
                     </Hidden>
                     <Hidden mdDown>
