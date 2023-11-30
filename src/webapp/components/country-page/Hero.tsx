@@ -41,6 +41,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         years={[LatestCOVID19.id]}
                         countries={countries.map(({ id }) => id)}
                         withoutBackground
+                        useHeaderForCountryPage
                     />
                 </VisualizationContainer>
             </GraphGrid>

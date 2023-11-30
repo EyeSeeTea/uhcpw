@@ -1,5 +1,6 @@
 export const chart15Seed = {
     categoryName: "Unmet need",
+    categoryTag: "Unmet need",
     friendlyName: "Unmet need for health care due to cost, distance and waiting time by income quintile",
     info: {
         infoNotes: ["Income quintiles are based on the equivalized disposable income of each household member."],

@@ -29,6 +29,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                             years={(graphOne as VisualizationProps).years}
                             countries={(graphOne as VisualizationProps).countries}
                             withoutBackground
+                            useHeaderForCountryPage
                         />
                     </VisualizationContainer>
                 </Grid>
@@ -42,6 +43,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                                 years={(graphTwo as VisualizationProps).years}
                                 countries={(graphTwo as VisualizationProps).countries}
                                 withoutBackground
+                                useHeaderForCountryPage
                             />
                         </VisualizationContainer>
                     </Grid>
