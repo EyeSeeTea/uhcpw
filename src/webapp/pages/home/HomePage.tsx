@@ -8,6 +8,7 @@ import { Resources } from "../../components/home/resources/Resources";
 import { Layout } from "../../components/layout/Layout";
 import { useMap } from "../../components/home/map/useMap";
 import { useHomeResources } from "./useHomeResources";
+import NewsletterDialog from "../../components/dialog/NewsletterDialog";
 
 export const HomePage: React.FC = React.memo(() => {
     const mapState = useMap();
@@ -15,6 +16,7 @@ export const HomePage: React.FC = React.memo(() => {
 
     return (
         <Layout>
+            <NewsletterDialog />
             <MapSection>
                 <Map mapState={mapState} />
             </MapSection>
