@@ -2,6 +2,7 @@ import { VisualizationExtra } from "../../../../domain/entities/indicator-explor
 import { chart10Seed } from "./chart10Seed";
 import { chart11Seed } from "./chart11Seed";
 import { chart12Seed } from "./chart12Seed";
+import { chart13Seed } from "./chart13Seed";
 import { chart14Seed } from "./chart14Seed";
 import { chart15Seed } from "./chart15Seed";
 import { chart16Seed } from "./chart16Seed";
@@ -32,6 +33,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     geNXcoXc3mf: chart10Seed,
     hpO1ZyFXpCz: chart11Seed,
     ZxNdsDM8NSb: chart12Seed,
+    xJhFIBuwGVC: chart13Seed,
     zkEtsohZTTf: chart14Seed,
     rT39aStYqI3: chart15Seed,
     nhaxK33nlhb: chart16Seed,
