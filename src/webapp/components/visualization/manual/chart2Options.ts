@@ -5,13 +5,13 @@ import { baseLegend } from "../customization/legends/baseLegend";
 import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 
 const seriesNames: Record<string, string> = {
-    MDhStd9lvOc: "Further impoverished",
     yKxOTGWUr4D: "Impoverished",
+    MDhStd9lvOc: "Further impoverished",
 };
 
 const seriesColors: Record<string, string> = {
-    MDhStd9lvOc: "#c00000",
     yKxOTGWUr4D: "#e46c09",
+    MDhStd9lvOc: "#c00000",
 };
 
 export const chart2Options: (analiticsResponse: Analytics, visualization: Visualization) => Highcharts.Options = (
@@ -26,7 +26,12 @@ export const chart2Options: (analiticsResponse: Analytics, visualization: Visual
         .groupBy(row => row[0])
         .value();
 
-    const series = Object.keys(groupByDx).map(dxId => {
+    const keys = _(groupByDx)
+        .keys()
+        .sortBy(key => _(seriesNames).keys().indexOf(key))
+        .value();
+
+    const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
         return {
