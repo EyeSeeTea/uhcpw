@@ -7,30 +7,33 @@ export const chart3Options: (analiticsResponse: Analytics, visualization: Visual
     analiticsResponse,
     _visualization
 ) => {
-    const mappedRows = analiticsResponse.rows.map(row => {
-        const dxId = row[0] || "";
-        const orgUnitId = row[1] || "";
-        const year = row[2] || "";
-        const value = row[3] ? +row[3] : 0;
-
-        const dx = analiticsResponse.metaData.items[dxId]?.name || "";
-        const orgUnit = analiticsResponse.metaData.items[orgUnitId]?.code || "";
-
-        return [dx, orgUnit, year, value];
-    });
-    const orderRows = _(mappedRows)
-        .orderBy(item => item[3], "asc")
+    const orderRows = _(analiticsResponse.rows)
+        .orderBy(item => (item[3] ? +item[3] : 0), "asc")
         .value();
 
-    const series = [
-        {
+    const groupByDx = _(orderRows)
+        .groupBy(row => row[0])
+        .value();
+
+    const series = Object.keys(groupByDx).map(dxId => {
+        const dataSource = groupByDx[dxId] || [];
+        const name = "Households with catastrophic health spending";
+        const color = "#5780c9";
+
+        return {
             type: "column",
-            name: orderRows[0],
-            data: orderRows.map(row => {
-                return { name: `${row[1]} ${row[2]} `, y: row[3], color: "#5780c9" };
+            name,
+            color,
+            data: dataSource.map(row => {
+                const orgUnitId = row[1]?.toString() || "";
+                const orgUnit = analiticsResponse.metaData.items[orgUnitId]?.code || "";
+                const year = row[2] || "";
+                const value = row[3] ? +row[3] : 0;
+
+                return { name: `${orgUnit} ${year} `, y: value };
             }),
-        },
-    ];
+        };
+    });
 
     return {
         chart: {
