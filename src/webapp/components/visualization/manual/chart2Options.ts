@@ -65,7 +65,7 @@ export const chart2Options: (analiticsResponse: Analytics, visualization: Visual
                 text: "Households (%)",
             },
         },
-        legend: { ...baseLegend },
+        legend: { ...baseLegend, itemMarginTop: 20 },
         series,
         plotOptions: {
             column: {
