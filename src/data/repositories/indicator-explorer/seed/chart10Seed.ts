@@ -1,5 +1,6 @@
 export const chart10Seed = {
     categoryName: "Financial hardship",
+    categoryTag: "Financial hardship",
     friendlyName: "Households with catastrophic health spending by consumption quintile",
     info: {
         infoNotes: [

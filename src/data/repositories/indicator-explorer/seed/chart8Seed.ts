@@ -1,5 +1,6 @@
 export const chart8Seed = {
     categoryName: "Financial hardship",
+    categoryTag: "Financial hardship",
     friendlyName: "Households with impoverishing health spending",
     info: {
         infoNotes: [
