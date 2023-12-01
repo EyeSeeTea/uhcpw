@@ -1,5 +1,6 @@
 export const chart5Seed = {
     categoryName: "Comparative",
+    categoryTag: "International comparison",
     friendlyName: "Households with impoverishing health spending by quintile",
     info: {
         infoNotes: [

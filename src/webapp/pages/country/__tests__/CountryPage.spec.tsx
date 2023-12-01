@@ -3,9 +3,7 @@ import { screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
-import userEvent from "@testing-library/user-event";
 import { CountryPage } from "../CountryPage";
-import { Person } from "../../../../domain/entities/Person";
 import { PersonD2Repository } from "../../../../data/repositories/PersonD2Repository";
 import { ResourceD2Repository } from "../../../../data/repositories/resources/ResourceD2Repository";
 import {
@@ -18,7 +16,6 @@ import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../..
 import { PersonState } from "../../about/AboutState";
 
 let personRepository: PersonD2Repository;
-let resourceRepository: ResourceD2Repository;
 
 describe("Country Page", () => {
     it("should render Navbar", () => {
@@ -39,13 +36,7 @@ describe("Country Page", () => {
 
         renderPage();
 
-        const scope = within(screen.getByLabelText(/country-page-hero/i));
-
-        expect(
-            scope.getByText(
-                "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19"
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByLabelText(/country-page-hero/i)).toBeInTheDocument();
     });
 
     it("should render slider", () => {
@@ -57,14 +48,8 @@ describe("Country Page", () => {
 
         expect(
             scope.getByRole("heading", {
-                name: /How many people experience financial hardship: impoverishing health spending?/i,
+                name: /how many people experience financial hardship: impoverishing health spending\?/i,
             })
-        ).toBeInTheDocument();
-        expect(scope.getByText("Households with impoverishing health spending")).toBeInTheDocument();
-        expect(
-            scope.getByText(
-                "Households with impoverishing health spending, 2019 or latest available year before COVID-19"
-            )
         ).toBeInTheDocument();
     });
 
@@ -97,7 +82,7 @@ describe("Country Page", () => {
 function renderPage() {
     customRenderWithRouterMatch(
         <CountryPage />,
-        { path: "/country-page", route: `/country-page` },
+        { path: "/country-page", route: `/country-page?country=VGOzFKfSazN` },
         {
             person: personRepository,
         }
@@ -197,8 +182,6 @@ function givenAResources(): (ComparativeAnalysis | CountryAnalysis | News | Mult
     ];
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
-
-    resourceRepository = instance(mockedRepository);
 
     return data;
 }

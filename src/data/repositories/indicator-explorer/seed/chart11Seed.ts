@@ -1,5 +1,6 @@
 export const chart11Seed = {
     categoryName: "Financial hardship",
+    categoryTag: "Financial hardship",
     friendlyName: "Breakdown of catastrophic health spending by type of care",
     info: {
         infoNotes: [
