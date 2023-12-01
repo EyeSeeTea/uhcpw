@@ -49,7 +49,7 @@ export const PolicyExplorerTable = React.memo(
                     </Wrapper>
                     <Container>
                         <Content>
-                            <Title variant="h6">{i18n.t("No data found")}</Title>
+                            <Title variant="h6">{i18n.t("Country information coming soon")}</Title>
                         </Content>
                     </Container>
                     <CategoryInfoDialog isOpen={isNotesDialogOpen} onClose={handleClose} category={category} />

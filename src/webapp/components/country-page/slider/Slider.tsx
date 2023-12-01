@@ -199,15 +199,11 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                     label={i18n.t("How many people experience unmet need?")}
                 />
                 <Tab className={classes.tab} {...a11yProps(6)} label={i18n.t("Who experiences unmet need?")} />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(7)}
-                    label={i18n.t("How much does Bulgaria spend on health?")}
-                />
+                <Tab className={classes.tab} {...a11yProps(7)} label={i18n.t("How much is spent on health?")} />
                 <Tab
                     className={classes.tab}
                     {...a11yProps(8)}
-                    label={i18n.t("How much does Bulgaria spend on health? International comparison")}
+                    label={i18n.t("How much is spent on health? International comparison")}
                 />
                 <Tab
                     className={classes.tab}
@@ -217,7 +213,7 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                 <Tab
                     className={classes.tab}
                     {...a11yProps(10)}
-                    label={i18n.t("How can Bulgaria strengthen financial protection?")}
+                    label={i18n.t("How can financial protection be improved?")}
                 />
             </Tabs>
             <TabPanel value={value} index={0}>
@@ -410,7 +406,7 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
             </TabPanel>
             <TabPanel value={value} index={7}>
                 <SlideGraph
-                    title="How much does Bulgaria spend on health?"
+                    title="How much is spent on health?"
                     graphOne={{
                         title: "Current spending on health per person by financing scheme",
                         theme: "Spending on health (health accounts)",
@@ -437,7 +433,7 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
             </TabPanel>
             <TabPanel value={value} index={8}>
                 <SlideGraph
-                    title="How much does Bulgaria spend on health? International comparison"
+                    title="How much is spent on health? International comparison"
                     graphOne={{
                         title: "Public spending on health as a share of government spending, 2019",
                         theme: "Comparative chart",
