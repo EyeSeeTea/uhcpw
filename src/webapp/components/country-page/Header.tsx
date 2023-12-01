@@ -32,11 +32,11 @@ const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
 const handleBackgroundColor = (status?: CountryStatus) => {
     switch (status) {
         case "Weak":
-            return "linear-gradient(90deg, #c42929 0%, #ffe1d0 60.94%)";
+            return "linear-gradient(90deg, #c42929 1.8%, #ffe1d0 60.94%)";
         case "Gaps":
-            return "linear-gradient(90deg, #ff8d4e 0%, #ffe1d0 60.94%)";
+            return "linear-gradient(90deg, #FF9355 1.8%, #FFBC88 100%)";
         case "Strong":
-            return "linear-gradient(90deg, #50ad56 0%, #c8cfa9 60.94%)";
+            return "linear-gradient(90deg, #4FAD56 70.8%, #9CD77B 100%)";
     }
 };
 
