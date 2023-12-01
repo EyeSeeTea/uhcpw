@@ -3,6 +3,7 @@ import _ from "lodash";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 import { ChartSource } from "./chartOptions";
+import { baseChartOptions } from "./generic/baseChartOptions";
 
 const seriesNames: Record<string, string> = {
     "SpTdfmqlzNj.xFBx8HXhRn6": "Outpatient care",
@@ -56,11 +57,9 @@ export const chart7Options: (chartSource: ChartSource) => Highcharts.Options = c
     });
 
     return {
+        ...baseChartOptions,
         chart: {
             type: "column",
-        },
-        title: {
-            text: "",
         },
         xAxis: {
             ...rotateXAxis,
@@ -78,7 +77,5 @@ export const chart7Options: (chartSource: ChartSource) => Highcharts.Options = c
                 stacking: "normal",
             },
         },
-        credits: { enabled: false },
-        exporting: { enabled: false },
     } as Highcharts.Options;
 };

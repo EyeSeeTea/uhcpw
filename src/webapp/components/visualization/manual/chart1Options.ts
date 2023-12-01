@@ -1,6 +1,7 @@
 import _ from "lodash";
 
 import { ChartSource } from "./chartOptions";
+import { baseChartOptions } from "./generic/baseChartOptions";
 
 export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
@@ -67,11 +68,9 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
     });
 
     return {
+        ...baseChartOptions,
         chart: {
             type: "scatter",
-        },
-        title: {
-            text: "",
         },
         xAxis: {
             text: "Out-of-pocket payments as a share of current spending on health (%)",
@@ -92,8 +91,6 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
             pointFormat:
                 "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
         },
-        credits: { enabled: false },
-        exporting: { enabled: false },
     } as Highcharts.Options;
 };
 
