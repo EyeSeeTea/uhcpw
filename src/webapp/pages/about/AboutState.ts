@@ -5,10 +5,7 @@ export type ResourcesState = {
     team: PersonState[];
     experts: PersonState[];
     countryFilter: CountryFilterState;
-    filters: string[];
-    selectedFilter: string;
     onFilterChange: (value: string) => void;
-    allFilter: string;
 };
 
 export interface PersonState extends Person {

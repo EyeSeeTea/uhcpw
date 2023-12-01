@@ -60,11 +60,11 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
 
     private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
         const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
-
         return sections.map(section => ({
             id: section.id,
             name: section.displayName.replace("UHCW_", ""),
             subcategories: this.getSubcategories(section.id, section.dataElements),
+            description: section.description,
         }));
     }
 
@@ -117,7 +117,7 @@ const dataElementsFields = {
 } as const;
 
 const dataSetFields = {
-    sections: { id: true, displayName: true, dataElements: dataElementsFields },
+    sections: { id: true, displayName: true, dataElements: dataElementsFields, description: true },
 } as const;
 
 type D2DataElements = MetadataPick<{

@@ -15,5 +15,10 @@ export const chart4Options: (chartSource: ChartSource) => Highcharts.Options = c
         legend: {
             enabled: false,
         },
+        yAxis: {
+            title: {
+                text: "Government spending (%)",
+            },
+        },
     };
 };

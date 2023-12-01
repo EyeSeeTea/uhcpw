@@ -8,11 +8,9 @@ import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import i18n from "../../../../locales";
-import BookIcon from "@material-ui/icons/BookOutlined";
 import { useHistory } from "react-router";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { Glossary } from "./Glossary";
 import { MobileMenu } from "./MobileMenu";
 import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
 import { Option } from "../../dropdown/Option";
@@ -68,7 +66,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     const history = useHistory();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [isGlossaryOpen, setIsGlossaryOpen] = React.useState(false);
     const { countryOptions } = useCountryOptions();
 
     const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -99,9 +96,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
                         </Tag>
                     </TagContainer>
-                    <MenuTopButton onClick={() => setIsGlossaryOpen(true)} startIcon={<BookIcon />}>
-                        {i18n.t("Glossary")}
-                    </MenuTopButton>
+                    <MenuTopButton onClick={() => {}}>{i18n.t("Abbreviations")}</MenuTopButton>
+                    {action}
+                    <MenuTopButton onClick={() => {}}>{i18n.t("Glossary")}</MenuTopButton>
                     {action}
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
@@ -109,7 +106,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                         <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={goToHome} />;
                     </LogoContainer>
                     <Box className={classes.rest} />
-                    <Hidden mdUp>
+                    <Hidden lgUp>
                         <MobileMenu />
                     </Hidden>
                     <Hidden mdDown>
@@ -185,7 +182,6 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                     </Hidden>
                 </Toolbar>
             </MuiAppBar>
-            <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
         </div>
     );
 };
@@ -209,10 +205,6 @@ const TagContainer = styled.div`
     margin-right: 16px;
 `;
 
-const ComingSoonTagContainer = styled.div`
-    margin: 22px 10px;
-`;
-
 const Tag = styled.div`
     text-align: center;
     min-width: 100px;
@@ -220,11 +212,4 @@ const Tag = styled.div`
     color: white;
     border-radius: 30px;
     padding: 5px 10px;
-`;
-
-const MenuContainer = styled(Menu)`
-    .MuiPaper-rounded {
-        border-radius: 15px;
-        border: 1px solid rgba(36, 38, 38, 0.3);
-    }
 `;
