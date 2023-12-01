@@ -1,5 +1,6 @@
 export const chart2Seed = {
     categoryName: "Comparative",
+    categoryTag: "Comparative chart",
     friendlyName: "Households with impoverishing health spending",
     info: {
         infoNotes: [

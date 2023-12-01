@@ -1,26 +1,24 @@
-import { Grid, Typography } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import styled from "styled-components";
-import i18n from "../../../locales";
 import { colors } from "../../pages/app/themes/dhis2.theme";
-import DashboardGraph from "../../assets/country-page/dashboard-graph.jpg";
-import { useCallback, useState } from "react";
-import { NotesDialog } from "../dialog/NotesDialog";
-import { ActionButtons } from "./graphs/ActionButtons";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import ReactMarkdown from "react-markdown";
 import { ButtonItem } from "../home/country-panel/CountryPanel";
+import { VisualizationPlugin } from "../visualization/VisualizationPlugin";
+import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { useAppContext } from "../../contexts/app-context";
 
 type HeroProps = {
     countryId: string;
 };
 
+const CHART_1_SCATTER_VISUALIZATION_ID = "hNU4Lj1xLYO";
+
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
-    const [isOpen, setIsOpen] = useState(false);
+    const { countries } = useAppContext();
     const country = useCountryInfo(countryId);
 
-    const handleClose = useCallback(() => {
-        setIsOpen(false);
-    }, []);
+    if (!countryId) return <CircularProgress />;
 
     return (
         <Grid container aria-label="country-page-hero">
@@ -36,40 +34,20 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                 </InfoGrid>
             )}
             <GraphGrid item xs={12} md={7} lg={8}>
-                <Column>
-                    <Row>
-                        <Typography style={{ marginRight: "30px" }}>
-                            {i18n.t(
-                                "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, 2019 or latest available year before COVID-19"
-                            )}
-                        </Typography>
-                        <ActionButtons onIconButtonClick={() => setIsOpen(true)} graphImage={DashboardGraph} />
-                    </Row>
-                    <Image src={DashboardGraph} alt="hero-graph" />
-                </Column>
+                <VisualizationContainer>
+                    <VisualizationPlugin
+                        key={countryId}
+                        visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
+                        years={[LatestCOVID19.id]}
+                        countries={countries.map(({ id }) => id)}
+                        withoutBackground
+                        useHeaderForCountryPage
+                    />
+                </VisualizationContainer>
             </GraphGrid>
-            <NotesDialog
-                isOpen={isOpen}
-                onClose={handleClose}
-                dialogInfo={{
-                    infoNotes: [
-                        "Data on catastrophic health spending and out-of-pocket payments are for the same year. The colour of the dots reflects the incidence of catastrophic health spending. Green < 5%; orange < 10%; red ≥ 10%. For catastrophic health spending, the Netherlands cannot be compared to other countries because the Dutch household budget survey does not count the annual deductible amount households pay out-of-pocket for covered health care as household spending on health; our simulations suggest that catastrophic health spending is underestimated by up to 1.8 percentage points in the Netherlands in 2015.",
-                    ],
-                    sourceName: "WHO Barcelona Office for Health Systems Financing",
-                    sourceLink: "",
-                }}
-            />
         </Grid>
     );
 };
-
-const Image = styled.img`
-    width: 100%;
-    height: auto;
-    @media (min-width: 1440px) {
-        width: 900px;
-    }
-`;
 
 const InfoGrid = styled(Grid)`
     background-color: ${colors.accentPrimary};
@@ -88,17 +66,6 @@ const GraphGrid = styled(Grid)`
     background-color: white;
 `;
 
-const Column = styled.div`
-    padding: 16px;
-    padding-bottom: 0px;
-    display: flex;
-    flex-direction: column;
+const VisualizationContainer = styled.div`
     max-width: 100%;
-    align-items: start;
-    gap: 10px;
-`;
-
-const Row = styled.div`
-    display: flex;
-    align-items: center;
 `;
