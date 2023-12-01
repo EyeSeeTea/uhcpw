@@ -14,7 +14,7 @@ msgstr ""
 msgid "All countries"
 msgstr ""
 
-msgid "The European Financial Protection Network"
+msgid "The Financial Protection Expert Network"
 msgstr ""
 
 msgid ""
@@ -121,16 +121,21 @@ msgid_plural "({{count}} selected)"
 msgstr[0] ""
 msgstr[1] ""
 
+msgid "No information available for this category"
+msgstr ""
+
 msgid "Get updates from UHC watch"
 msgstr ""
 
 msgid ""
-"Sign-up to our newsletter and get updates whenever we add new information "
-"for countries on UHC watch. We are also eager to hear how you use UHC watch "
-"and get recommendations for all its users."
+"Sign up for our newsletter and get updates whenever we add new information "
+"or resources."
 msgstr ""
 
-msgid "To subscribe to  UHC watch newsletter, send us an email to"
+msgid "Give us feedback on  UHC watch."
+msgstr ""
+
+msgid "To sign up or to send feedback, email"
 msgstr ""
 
 msgid "Clear"
@@ -280,6 +285,9 @@ msgstr ""
 msgid "Select category"
 msgstr ""
 
+msgid "Countries"
+msgstr ""
+
 msgid "Years"
 msgstr ""
 
@@ -310,19 +318,16 @@ msgstr ""
 msgid "Tel: +34 673 290 861"
 msgstr ""
 
-msgid "Email: uhcwatch@who.int"
-msgstr ""
-
 msgid "Privacy legal notice"
 msgstr ""
 
 msgid "Mobile-friendly version coming soon"
 msgstr ""
 
-msgid "Glossary"
+msgid "Abbreviations"
 msgstr ""
 
-msgid "Countries"
+msgid "Glossary"
 msgstr ""
 
 msgid "Regional report"
@@ -338,9 +343,21 @@ msgid "Select Category"
 msgstr ""
 
 msgid ""
-"Select category to track and compare policies on population coverage, "
-"service coverage, user charges and voluntary health insurance and explore "
-"gaps in coverage."
+"Select a category to track policies on population coverage, service "
+"coverage,  user charges and voluntary health insurance, explore gaps in "
+"coverage  and compare countries. "
+msgstr ""
+
+msgid "Information is currently available for"
+msgstr ""
+
+msgid ""
+"Albania, Armenia, Austria, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, "
+"Kazakhstan, North Macedonia, Romania, Spain, Ukraine, the United Kingdom "
+"and Uzbekistan."
+msgstr ""
+
+msgid "More countries coming soon. "
 msgstr ""
 
 msgid "Category"
@@ -367,9 +384,6 @@ msgstr ""
 msgid "There may be no data"
 msgstr ""
 
-msgid "All"
-msgstr ""
-
 msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
@@ -387,9 +401,6 @@ msgid "Read more"
 msgstr ""
 
 msgid "Read less"
-msgstr ""
-
-msgid "Abbreviations"
 msgstr ""
 
 msgid "Error fetching Methods"
@@ -410,7 +421,7 @@ msgstr ""
 msgid "Last updated: "
 msgstr ""
 
-msgid "No data found"
+msgid "Country information coming soon"
 msgstr ""
 
 msgid "Switch row/column"

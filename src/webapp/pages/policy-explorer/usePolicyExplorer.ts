@@ -342,6 +342,7 @@ function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): Categ
         value: category.id,
         text: category.name,
         subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
+        description: category.description,
     }));
 }
 

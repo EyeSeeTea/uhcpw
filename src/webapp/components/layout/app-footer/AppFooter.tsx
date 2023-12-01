@@ -53,7 +53,10 @@ export const AppFooter: React.FC = () => {
                                 {i18n.t("Tel: +34 673 290 861", { nsSeparator: false })}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {i18n.t("Email: uhcwatch@who.int", { nsSeparator: false })}
+                                {i18n.t("Email:")}{" "}
+                                <MailLink href="mailto:uhcwatch@who.int" target="_blank" rel="noopener noreferrer">
+                                    uhcwatch@who.int
+                                </MailLink>
                             </Typography>
                         </Grid>
                     </Grid>
@@ -101,4 +104,9 @@ const FooterBottom = styled.div`
 const StyledNavLink = styled(NavLink)`
     color: white;
     text-decoration: none;
+`;
+
+const MailLink = styled.a`
+    text-decoration: none;
+    color: inherit;
 `;

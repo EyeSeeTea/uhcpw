@@ -5,20 +5,20 @@ import { baseLegend } from "../customization/legends/baseLegend";
 import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 
 const seriesNames: Record<string, string> = {
-    ykAPKvVQusS: "Outpatient care",
     qy4W8ZY2g5M: "Diagnostic tests",
+    ykAPKvVQusS: "Outpatient care",
     OEK4dKvUsOe: "Inpatient care",
-    a2u2ccahVJL: "Dental care",
     OuiKmOeXUWQ: "Medical products",
+    a2u2ccahVJL: "Dental care",
     qgE5NJ9Nyaq: "Medicines",
 };
 
 const seriesColors: Record<string, string> = {
-    ykAPKvVQusS: "#ffc001",
-    qy4W8ZY2g5M: "#702fa0",
+    qy4W8ZY2g5M: "#7030a0",
+    ykAPKvVQusS: "#ffc000",
     OEK4dKvUsOe: "#00b050",
-    a2u2ccahVJL: "#0071c0",
     OuiKmOeXUWQ: "#ed7d31",
+    a2u2ccahVJL: "#0000c0",
     qgE5NJ9Nyaq: "#c00000",
 };
 

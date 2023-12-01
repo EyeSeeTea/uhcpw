@@ -21,6 +21,7 @@ export type CategoryOption = {
     value: string;
     text: string;
     subcategories: SubcategoryOption[];
+    description: string;
 };
 
 interface CategorySelectorProps {

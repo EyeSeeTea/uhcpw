@@ -8,8 +8,6 @@ import { useMethods } from "./useMethods";
 import ReactMarkdown from "react-markdown";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import { useState } from "react";
-import { Glossary } from "../../components/layout/app-header/Glossary";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
@@ -48,8 +46,6 @@ const MarkdownLink: React.FC<{
 export const MethodsPage: React.FC = () => {
     const { methods, isExpanded, setExpanded } = useMethods();
 
-    const [isGlossaryOpen, setIsGlossaryOpen] = useState(false);
-
     const handleClick = (index: number) => {
         const updatedExpanded = [...isExpanded];
         updatedExpanded[index] = !updatedExpanded[index];
@@ -86,14 +82,11 @@ export const MethodsPage: React.FC = () => {
                         </Grid>
                     ))}
                     <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
-                        <StyledButton onClick={() => setIsGlossaryOpen(!isGlossaryOpen)}>
-                            {i18n.t("Glossary")}
-                        </StyledButton>
                         <StyledButton>{i18n.t("Abbreviations")}</StyledButton>
+                        <StyledButton onClick={() => {}}>{i18n.t("Glossary")}</StyledButton>
                     </ButtonsGridItem>
                 </Grid>
             </MainContainer>
-            <Glossary isOpen={isGlossaryOpen} setIsOpen={setIsGlossaryOpen} />
         </Layout>
     );
 };
