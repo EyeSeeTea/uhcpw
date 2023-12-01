@@ -54,7 +54,7 @@ export const chart4Options: (analiticsResponse: Analytics, visualization: Visual
         },
         yAxis: {
             title: {
-                text: "Households (%)",
+                text: "Government spending (%)",
             },
         },
         legend: {
