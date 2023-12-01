@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
         },
         [theme.breakpoints.up("md")]: {
             minWidth: "35%",
-            paddingInlineStart: "24px",
+            paddingInlineStart: "0px",
             "& .MuiTabs-indicator": {
                 display: "none",
             },
