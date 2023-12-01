@@ -1,8 +1,7 @@
 import _ from "lodash";
-import { Analytics } from "../../../../domain/entities/indicator-explorer/Analytics";
-import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
+import { ChartSource } from "./chartOptions";
 
 const seriesNames: Record<string, string> = {
     yKxOTGWUr4D: "Impoverished",
@@ -14,11 +13,8 @@ const seriesColors: Record<string, string> = {
     MDhStd9lvOc: "#c00000",
 };
 
-export const chart2Options: (analiticsResponse: Analytics, visualization: Visualization) => Highcharts.Options = (
-    analiticsResponse,
-    _visualization
-) => {
-    const orderRows = _(analiticsResponse.rows)
+export const chart2Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const orderRows = _(chartSource.analyticsResponse.rows)
         .orderBy(item => item[3], "asc")
         .value();
 
@@ -40,7 +36,7 @@ export const chart2Options: (analiticsResponse: Analytics, visualization: Visual
             color: seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = analiticsResponse.metaData.items[orgUnitId]?.code || "";
+                const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
