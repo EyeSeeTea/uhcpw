@@ -39,7 +39,11 @@ export function useChartData(visualizationId: string, years: string[], countries
                         customization: visualizationCustomizations[visualizationId],
                         countries: allCountries.filter(country => countries.includes(country.id)),
                         chartOptions: visualizationChartOptions
-                            ? visualizationChartOptions(analytics, visualization)
+                            ? visualizationChartOptions({
+                                  analyticsResponse: analytics,
+                                  visualization,
+                                  countries: allCountries,
+                              })
                             : undefined,
                     });
                 },
