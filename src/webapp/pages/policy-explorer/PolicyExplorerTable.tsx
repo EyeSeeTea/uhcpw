@@ -35,7 +35,6 @@ export const PolicyExplorerTable = React.memo(
         const handleClose = useCallback(() => {
             setIsNotesDialogOpen(false);
         }, []);
-
         return !rows?.length || !dataOrientation ? (
             category && (
                 <NoDataContainer>
