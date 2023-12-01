@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-30T16:46:35.341Z\n"
-"PO-Revision-Date: 2023-11-30T16:46:35.341Z\n"
+"POT-Creation-Date: 2023-12-01T10:26:37.725Z\n"
+"PO-Revision-Date: 2023-12-01T10:26:37.725Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -104,16 +104,16 @@ msgstr ""
 msgid "Who experiences unmet need?"
 msgstr ""
 
-msgid "How much does Bulgaria spend on health?"
+msgid "How much is spent on health?"
 msgstr ""
 
-msgid "How much does Bulgaria spend on health? International comparison"
+msgid "How much is spent on health? International comparison"
 msgstr ""
 
 msgid "What are the main gaps in publicly financed coverage?"
 msgstr ""
 
-msgid "How can Bulgaria strengthen financial protection?"
+msgid "How can financial protection be improved?"
 msgstr ""
 
 msgid "({{count}} selected)"
@@ -343,9 +343,21 @@ msgid "Select Category"
 msgstr ""
 
 msgid ""
-"Select category to track and compare policies on population coverage, "
-"service coverage, user charges and voluntary health insurance and explore "
-"gaps in coverage."
+"Select a category to track policies on population coverage, service "
+"coverage,  user charges and voluntary health insurance, explore gaps in "
+"coverage  and compare countries. "
+msgstr ""
+
+msgid "Information is currently available for"
+msgstr ""
+
+msgid ""
+"Albania, Armenia, Austria, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, "
+"Kazakhstan, North Macedonia, Romania, Spain, Ukraine, the United Kingdom "
+"and Uzbekistan."
+msgstr ""
+
+msgid "More countries coming soon. "
 msgstr ""
 
 msgid "Category"
@@ -409,7 +421,7 @@ msgstr ""
 msgid "Last updated: "
 msgstr ""
 
-msgid "No data found"
+msgid "Country information coming soon"
 msgstr ""
 
 msgid "Switch row/column"
