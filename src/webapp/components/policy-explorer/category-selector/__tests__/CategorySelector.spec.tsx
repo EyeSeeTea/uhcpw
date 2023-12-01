@@ -23,6 +23,8 @@ const categoryOptions: CategoryOption[] = [
                 text: "VHI role in covering user charges",
             },
         ],
+        description:
+            "This section focuses on user charges (co-payments) for covered services. It provides an overview of the types of user charges and protection mechanisms in place. More detailed information on the level and design of user charges is in the section on user charges by type of health care.",
     },
     {
         value: "uImM4yTeeV3",
@@ -41,6 +43,8 @@ const categoryOptions: CategoryOption[] = [
                 text: "Policies to make VHI affordable",
             },
         ],
+        description:
+            "This section focuses on the role voluntary health insurance (VHI) plays in relation to publicly financed health care, the share of population covered by VHI and its contribution to spending on health. It provides information on who sells and buys VHI, who regulates VHI and whether there are policies in place to make VHI more accessible or affordable.",
     },
     {
         value: "e6cfI6vWYEF",
@@ -59,6 +63,8 @@ const categoryOptions: CategoryOption[] = [
                 text: "User charges (co-payments): Main gaps in publicly financed coverage",
             },
         ],
+        description:
+            "This section highlights the main gaps in population and service coverage and gaps caused by user charges.",
     },
 ];
 

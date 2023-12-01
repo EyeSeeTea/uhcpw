@@ -29,13 +29,16 @@ export default function NewsletterDialog() {
                 <StyledDialogContent>
                     <Typography component={"p"} id="alert-dialog-description">
                         {i18n.t(
-                            "Sign-up to our newsletter and get updates whenever we add new information for countries on UHC watch. We are also eager to hear how you use UHC watch and get recommendations for all its users."
+                            "Sign up for our newsletter and get updates whenever we add new information or resources."
                         )}
                         <br />
                         <br />
-                        {i18n.t("To subscribe to  UHC watch newsletter, send us an email to")}{" "}
+                        {i18n.t("Give us feedback on  UHC watch.")}
+                        <br />
+                        <br />
+                        {i18n.t("To sign up or to send feedback, email")}{" "}
                         <a
-                            href="mailto:uhcwatch@who.int?subject=I%20want%20to%20receive%20UHC%20watch%20news"
+                            href="mailto:uhcwatch@who.int?subject=I%20want%20to%20receive%20UHC%20watch%20updates"
                             target="_blank"
                             rel="noopener noreferrer"
                         >

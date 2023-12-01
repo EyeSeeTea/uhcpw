@@ -13,8 +13,19 @@ export const EmptyContent: React.FC = () => {
                         <Title variant="h5">{i18n.t("Select Category")}</Title>
                         <Text>
                             {i18n.t(
-                                "Select category to track and compare policies on population coverage, service coverage, user charges and voluntary health insurance and explore gaps in coverage."
+                                "Select a category to track policies on population coverage, service coverage,  user charges and voluntary health insurance, explore gaps in coverage  and compare countries. "
                             )}
+                            <br />
+                            <br />
+                            {i18n.t("Information is currently available for")}{" "}
+                            <b>
+                                {i18n.t(
+                                    "Albania, Armenia, Austria, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, Kazakhstan, North Macedonia, Romania, Spain, Ukraine, the United Kingdom and Uzbekistan."
+                                )}
+                            </b>
+                            <br />
+                            <br />
+                            {i18n.t("More countries coming soon. ")}
                         </Text>
                     </div>
                     <GridOnIcon htmlColor="white" fontSize="large" />
