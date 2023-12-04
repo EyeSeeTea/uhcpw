@@ -82,21 +82,9 @@ export const MobileMenu = () => {
                     </MobileMenuSubItem>
                 </MenuItem>
                 <StyledDivider />
-                <MenuItem>
-                    <MobileMenuSubItem item="regions">
-                        <ComingSoonTagContainer>
-                            <Tag>{i18n.t("Coming soon")}</Tag>
-                        </ComingSoonTagContainer>
-                    </MobileMenuSubItem>
-                </MenuItem>
+                <MenuItem disabled>{i18n.t("Regional report")}</MenuItem>
                 <StyledDivider />
-                <MenuItem>
-                    <MobileMenuSubItem item="methods">
-                        <ComingSoonTagContainer>
-                            <Tag>{i18n.t("Coming soon")}</Tag>
-                        </ComingSoonTagContainer>
-                    </MobileMenuSubItem>
-                </MenuItem>
+                <MenuItem onClick={() => handleCloseMenu("/methods")}>{i18n.t("Methods")}</MenuItem>
                 <StyledDivider />
                 <MenuItem onClick={() => handleCloseMenu("/resources")}>{i18n.t("Resources")}</MenuItem>
                 <StyledDivider />
@@ -110,19 +98,4 @@ const StyledDivider = styled(Divider)`
     margin: 7px auto;
     width: 80%;
     background-color: #b5b5b5;
-`;
-
-const ComingSoonTagContainer = styled.div`
-    margin: 22px 10px;
-`;
-
-const Tag = styled.div`
-    display: flex;
-    justify-content: center;
-    min-width: 100px;
-    background-color: #4fad56;
-    color: white;
-    font-size: 15px;
-    border-radius: 30px;
-    padding: 5px 10px;
 `;

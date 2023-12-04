@@ -33,7 +33,7 @@ export default function NewsletterDialog() {
                         )}
                         <br />
                         <br />
-                        {i18n.t("Give us feedback on  UHC watch.")}
+                        {i18n.t("Give us feedback on UHC watch.")}
                         <br />
                         <br />
                         {i18n.t("To sign up or to send feedback, email")}{" "}
@@ -69,4 +69,5 @@ const StyledButton = styled(Button)`
         background: #ff5c01;
         border-color: #ff5c01;
     }
+    text-transform: unset;
 `;
