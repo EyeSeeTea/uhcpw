@@ -41,7 +41,7 @@ export const AppFooter: React.FC = () => {
                                 {i18n.t("Contact our office")}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
-                                {i18n.t("Sant Pau Art Nouveau Site (La Mercè pavillon)")}
+                                {i18n.t("Sant Pau Art Nouveau Site (La Mercè)")}
                             </Typography>
                             <Typography variant="body2" gutterBottom>
                                 {i18n.t("Sant Antoni Maria Claret 167")}

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-11-29T14:44:20.866Z\n"
-"PO-Revision-Date: 2023-11-29T14:44:20.866Z\n"
+"POT-Creation-Date: 2023-12-04T09:38:15.557Z\n"
+"PO-Revision-Date: 2023-12-04T09:38:15.558Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -71,12 +71,6 @@ msgid "Dashboard"
 msgstr ""
 
 msgid "In detail"
-msgstr ""
-
-msgid ""
-"Households with catastrophic health spending and out-of-pocket payments as "
-"a share of current spending on health, 2019 or latest available year before "
-"COVID-19"
 msgstr ""
 
 msgid ""
@@ -306,7 +300,7 @@ msgstr ""
 msgid "Contact our office"
 msgstr ""
 
-msgid "Sant Pau Art Nouveau Site (La Mercè pavillon)"
+msgid "Sant Pau Art Nouveau Site (La Mercè)"
 msgstr ""
 
 msgid "Sant Antoni Maria Claret 167"
@@ -378,10 +372,10 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
-msgid "Download"
+msgid "There may be no data"
 msgstr ""
 
-msgid "There may be no data"
+msgid "Download"
 msgstr ""
 
 msgid "2019 or latest available year before COVID-19"
