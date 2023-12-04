@@ -124,6 +124,16 @@ const StyledReadMoreButton = styled(Button)`
     color: ${colors.accentPrimary};
     font-weight: bold;
     margin-left: -8px;
+    padding: 0;
+    margin: 0;
+    :hover {
+        background-color: transparent;
+    }
+    .MuiButton-endIcon {
+        margin-inline-start: 4px;
+        position: relative;
+        inset-block-end: 2px;
+    }
 `;
 
 const TextLink = styled.a`
