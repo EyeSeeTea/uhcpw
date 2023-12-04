@@ -292,7 +292,7 @@ msgstr ""
 msgid "Contact our office"
 msgstr ""
 
-msgid "San pau Art Nouveau Site (La Mercé pavilion)"
+msgid "San pau Art Nouveau Site (La Mercé)"
 msgstr ""
 
 msgid "San Antoni Maria Claret 167"

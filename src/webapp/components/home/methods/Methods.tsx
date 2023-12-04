@@ -14,6 +14,7 @@ export const Methods: React.FC = () => {
                 header={i18n.t("Methods")}
                 subheader={i18n.t("How financial protection is monitored matters")}
                 isBackgroundOnRight={false}
+                link={"/methods"}
             />
             <Content container>
                 <Focus item md={4} xs={12}>
