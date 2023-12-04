@@ -37,7 +37,7 @@ const MarkdownLink: React.FC<{
     children: React.ReactNode;
 }> = ({ href, children }) => {
     return (
-        <TextLink href={href} target="_blank" rel="noreferrer">
+        <TextLink href={href} style={{ paddingInline: 0 }} target="_blank" rel="noreferrer">
             {children}
         </TextLink>
     );
