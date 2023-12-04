@@ -66,7 +66,7 @@ export const MethodsPage: React.FC = () => {
                             </Typography>
                             {isExpanded[i] === false ? (
                                 <TextContainer>
-                                    <MethodsMarkdown>{method.shortText.concat("...")}</MethodsMarkdown>
+                                    <MethodsMarkdown>{method.shortText}</MethodsMarkdown>
                                     <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => handleClick(i)}>
                                         {i18n.t("Read more")}
                                     </StyledReadMoreButton>
