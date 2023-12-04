@@ -18,7 +18,12 @@ interface ChartDataState {
     onCloseInfo: () => void;
 }
 
-export function useChartData(visualizationId: string, years: string[], countries: string[]): ChartDataState {
+export function useChartData(
+    visualizationId: string,
+    years: string[],
+    countries: string[],
+    currentCountry?: string
+): ChartDataState {
     const { compositionRoot } = useAppContext();
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
@@ -43,6 +48,7 @@ export function useChartData(visualizationId: string, years: string[], countries
                                   analyticsResponse: analytics,
                                   visualization,
                                   countries: allCountries,
+                                  currentCountry,
                               })
                             : undefined,
                     });

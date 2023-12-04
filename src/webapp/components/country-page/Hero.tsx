@@ -40,6 +40,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
                         years={[LatestCOVID19.id]}
                         countries={countries.map(({ id }) => id)}
+                        currentCountry={countryId}
                         withoutBackground
                         useHeaderForCountryPage
                     />

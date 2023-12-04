@@ -13,6 +13,7 @@ export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
     countries: Country[];
+    currentCountry?: string;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {

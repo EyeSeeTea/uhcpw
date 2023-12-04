@@ -351,6 +351,7 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                             title={tabConfig.tabTitle}
                             graphOne={tabConfig.graphOne}
                             graphTwo={tabConfig.graphTwo}
+                            countryId={countryId}
                         />
                     </TabPanel>
                 ))}
