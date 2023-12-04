@@ -48,7 +48,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             }).flatMap(({ analyticsResponse, metadata }) => {
                 const columns = analyticsResponse.headers.map(header => header.column);
 
-                const rows = [columns, ...this.mapAnalyticsResponseRows(analyticsResponse, metadata)];
+                const mappedRows = _(this.mapAnalyticsResponseRows(analyticsResponse, metadata))
+                    .sortBy(row => row[1])
+                    .value();
+
+                const rows = [columns, ...mappedRows];
 
                 if (rows) {
                     exportToCSV(
