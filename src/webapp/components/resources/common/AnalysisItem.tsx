@@ -32,7 +32,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
         const history = useHistory();
 
         const handleTagClick = () => {
-            history.push(`/resources/${type}?theme=${themeCode}`);
+            history.push(`/resources/${type}?theme=${themeName}`);
         };
 
         return (
@@ -42,11 +42,15 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
                 </a>
 
                 <Box height={20} />
-                <Tag
-                    theme={themeName}
-                    color={themeColor[themeCode?.toLowerCase()] || themeColor.default}
-                    onClick={handleTagClick}
-                />
+                {themeName ? (
+                    <Tag
+                        theme={themeName}
+                        color={themeColor[themeCode?.toLowerCase()] || themeColor.default}
+                        onClick={handleTagClick}
+                    />
+                ) : (
+                    <EmptyTag />
+                )}
                 {!minimalVersion && (
                     <>
                         <Row>
@@ -107,4 +111,8 @@ const Cover = styled.img`
         min-height: 19rem;
         max-height: 19rem;
     }
+`;
+
+const EmptyTag = styled.div`
+    height: 28px;
 `;

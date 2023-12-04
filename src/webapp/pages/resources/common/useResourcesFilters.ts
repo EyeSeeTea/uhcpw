@@ -39,7 +39,8 @@ export function useResourcesFilters(category?: string, countries?: string[], the
     }, [compositionRoot.resources]);
 
     useEffect(() => {
-        setThemeFilters(themes.map(theme => ({ value: theme.code, text: theme.name })));
+        // NOTICE: use theme name to filter resources by theme in ResourceRepository get()
+        setThemeFilters(themes.map(theme => ({ value: theme.name, text: theme.name })));
     }, [themes]);
 
     useEffect(() => {
