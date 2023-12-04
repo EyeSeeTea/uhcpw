@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled, { css } from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
@@ -21,33 +21,25 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
             <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
                 {i18n.t(title)}
             </Typography>
-            <Grid container>
-                <Grid item xs={12} md={10} xl={12}>
-                    <VisualizationContainer>
-                        <VisualizationPlugin
-                            visualizationId={(graphOne as VisualizationProps).visualizationId}
-                            years={(graphOne as VisualizationProps).years}
-                            countries={(graphOne as VisualizationProps).countries}
-                            withoutBackground
-                            useHeaderForCountryPage
-                        />
-                    </VisualizationContainer>
-                </Grid>
-            </Grid>
+            <VisualizationContainer>
+                <VisualizationPlugin
+                    visualizationId={(graphOne as VisualizationProps).visualizationId}
+                    years={(graphOne as VisualizationProps).years}
+                    countries={(graphOne as VisualizationProps).countries}
+                    withoutBackground
+                    useHeaderForCountryPage
+                />
+            </VisualizationContainer>
             {graphTwo && (
-                <Grid container>
-                    <Grid item xs={12} md={10} xl={12}>
-                        <VisualizationContainer>
-                            <VisualizationPlugin
-                                visualizationId={(graphTwo as VisualizationProps).visualizationId}
-                                years={(graphTwo as VisualizationProps).years}
-                                countries={(graphTwo as VisualizationProps).countries}
-                                withoutBackground
-                                useHeaderForCountryPage
-                            />
-                        </VisualizationContainer>
-                    </Grid>
-                </Grid>
+                <VisualizationContainer>
+                    <VisualizationPlugin
+                        visualizationId={(graphTwo as VisualizationProps).visualizationId}
+                        years={(graphTwo as VisualizationProps).years}
+                        countries={(graphTwo as VisualizationProps).countries}
+                        withoutBackground
+                        useHeaderForCountryPage
+                    />
+                </VisualizationContainer>
             )}
         </Container>
     );
@@ -64,6 +56,7 @@ const visuallyHidden = css`
 `;
 
 const Container = styled.div`
+    max-width: 100%;
     @media (min-width: 960px) {
         > h3 {
             ${visuallyHidden};

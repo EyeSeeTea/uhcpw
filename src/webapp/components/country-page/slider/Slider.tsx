@@ -1,5 +1,5 @@
 import { SetStateAction, useCallback, useMemo, useState } from "react";
-import { Box, CircularProgress, Tab, Tabs, makeStyles } from "@material-ui/core";
+import { Box, CircularProgress, Grid, Tab, Tabs, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
 import { SlideInfoOne } from "./SlideInfoOne";
@@ -43,11 +43,6 @@ function TabPanel(props: { [x: string]: any; children: any; value: any; index: a
 }
 
 const useStyles = makeStyles(theme => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-        display: "flex",
-    },
     tabs: {
         maxWidth: "30px",
         minWidth: "30px",
@@ -56,7 +51,8 @@ const useStyles = makeStyles(theme => ({
             height: "100%",
         },
         [theme.breakpoints.up("md")]: {
-            minWidth: "35%",
+            width: "100%",
+            maxWidth: "unset",
             paddingInlineStart: "0px",
             "& .MuiTabs-indicator": {
                 display: "none",
@@ -65,6 +61,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     tab: {
+        opacity: 1,
         borderRight: `10px solid ${colors.accentPrimary}`,
         marginBottom: "4px",
         maxWidth: "30px",
@@ -271,95 +268,103 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
     if (!countryId) return <CircularProgress />;
 
     return (
-        <div className={classes.root} aria-label="country-page-slider">
-            <Tabs
-                orientation="vertical"
-                value={value}
-                onChange={handleChange}
-                className={classes.tabs}
-                TabIndicatorProps={{
-                    style: {
-                        backgroundColor: colors.accentPrimaryDark,
-                        width: "10px",
-                    },
-                }}
-                onWheel={onWheel}
-                onMouseEnter={disableScroll}
-                onMouseLeave={enableScroll}
-            >
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(0)}
-                    label={i18n.t("How many people experience financial hardship: impoverishing health spending?", {
-                        nsSeparator: false,
-                    })}
-                />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(1)}
-                    label={i18n.t("Catastrophic health spending. How many people experience financial hardship?")}
-                />
-                <Tab className={classes.tab} {...a11yProps(2)} label={i18n.t("Who experiences financial hardship?")} />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(3)}
-                    label={i18n.t("Which health services are responsible for financial hardship?")}
-                />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(4)}
-                    label={i18n.t(
-                        "Which health services are responsible for financial hardship? International comparison"
-                    )}
-                />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(5)}
-                    label={i18n.t("How many people experience unmet need?")}
-                />
-                <Tab className={classes.tab} {...a11yProps(6)} label={i18n.t("Who experiences unmet need?")} />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(7)}
-                    label={i18n.t("How much does {{country}} spend on health?", { country: countryName })}
-                />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(8)}
-                    label={i18n.t("How much does {{country}} spend on health? International comparison", {
-                        country: countryName,
-                    })}
-                />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(9)}
-                    label={i18n.t("What are the main gaps in publicly financed coverage?")}
-                />
-                <Tab
-                    className={classes.tab}
-                    {...a11yProps(10)}
-                    label={i18n.t("How can {{country}} strengthen financial protection?", { country: countryName })}
-                />
-            </Tabs>
-            {sliderGraphsConfig.map(tabConfig => (
-                <TabPanel key={tabConfig.tab} value={value} index={tabConfig.tab}>
-                    <SlideGraph
-                        title={tabConfig.tabTitle}
-                        graphOne={tabConfig.graphOne}
-                        graphTwo={tabConfig.graphTwo}
+        <Grid container aria-label="country-page-slider">
+            <Grid item md={5} lg={4} xs={1}>
+                <Tabs
+                    orientation="vertical"
+                    value={value}
+                    onChange={handleChange}
+                    className={classes.tabs}
+                    TabIndicatorProps={{
+                        style: {
+                            backgroundColor: colors.accentPrimaryDark,
+                            width: "10px",
+                        },
+                    }}
+                    onWheel={onWheel}
+                    onMouseEnter={disableScroll}
+                    onMouseLeave={enableScroll}
+                >
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(0)}
+                        label={i18n.t("How many people experience financial hardship: impoverishing health spending?", {
+                            nsSeparator: false,
+                        })}
                     />
-                </TabPanel>
-            ))}
-            {country && (
-                <>
-                    <TabPanel value={value} index={9}>
-                        <SlideInfoOne country={country} />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(1)}
+                        label={i18n.t("Catastrophic health spending. How many people experience financial hardship?")}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(2)}
+                        label={i18n.t("Who experiences financial hardship?")}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(3)}
+                        label={i18n.t("Which health services are responsible for financial hardship?")}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(4)}
+                        label={i18n.t(
+                            "Which health services are responsible for financial hardship? International comparison"
+                        )}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(5)}
+                        label={i18n.t("How many people experience unmet need?")}
+                    />
+                    <Tab className={classes.tab} {...a11yProps(6)} label={i18n.t("Who experiences unmet need?")} />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(7)}
+                        label={i18n.t("How much does {{country}} spend on health?", { country: countryName })}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(8)}
+                        label={i18n.t("How much does {{country}} spend on health? International comparison", {
+                            country: countryName,
+                        })}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(9)}
+                        label={i18n.t("What are the main gaps in publicly financed coverage?")}
+                    />
+                    <Tab
+                        className={classes.tab}
+                        {...a11yProps(10)}
+                        label={i18n.t("How can {{country}} strengthen financial protection?", { country: countryName })}
+                    />
+                </Tabs>
+            </Grid>
+            <Grid item xs={11} md={7} lg={8}>
+                {sliderGraphsConfig.map(tabConfig => (
+                    <TabPanel key={tabConfig.tab} value={value} index={tabConfig.tab}>
+                        <SlideGraph
+                            title={tabConfig.tabTitle}
+                            graphOne={tabConfig.graphOne}
+                            graphTwo={tabConfig.graphTwo}
+                        />
                     </TabPanel>
-                    <TabPanel value={value} index={10}>
-                        <SlideInfoTwo country={country} />
-                    </TabPanel>
-                </>
-            )}
-        </div>
+                ))}
+                {country && (
+                    <>
+                        <TabPanel value={value} index={9}>
+                            <SlideInfoOne country={country} />
+                        </TabPanel>
+                        <TabPanel value={value} index={10}>
+                            <SlideInfoTwo country={country} />
+                        </TabPanel>
+                    </>
+                )}
+            </Grid>
+        </Grid>
     );
 };
