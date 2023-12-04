@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-12-04T09:38:15.557Z\n"
-"PO-Revision-Date: 2023-12-04T09:38:15.558Z\n"
+"POT-Creation-Date: 2023-12-04T09:49:24.685Z\n"
+"PO-Revision-Date: 2023-12-04T09:49:24.686Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -310,9 +310,6 @@ msgid "08025 Barcelona, Spain"
 msgstr ""
 
 msgid "Tel: +34 673 290 861"
-msgstr ""
-
-msgid "Privacy legal notice"
 msgstr ""
 
 msgid "Mobile-friendly version coming soon"

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Container, Grid, Typography, Link } from "@material-ui/core";
+import { Container, Grid, Typography, Link } from "@material-ui/core";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import whoLogoWhite from "../../../assets/who-logo-white.png";
@@ -65,10 +65,6 @@ export const AppFooter: React.FC = () => {
 
             <FooterBottom>
                 <Typography variant="body2">{i18n.t(`© ${new Date().getFullYear()} WHO`)}</Typography>
-                <Box width={20} />
-                <Typography variant="body2" display="inline">
-                    {i18n.t("Privacy legal notice")}
-                </Typography>
             </FooterBottom>
         </>
     );
