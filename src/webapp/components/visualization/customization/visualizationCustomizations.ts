@@ -7,7 +7,6 @@ import { chart15Customizations } from "./charts/chart15Customizations";
 import { chart16Customizations } from "./charts/chart16Customizations";
 import { chart17Customizations } from "./charts/chart17Customizations";
 import { chart18Customizations } from "./charts/chart18Customizations";
-import { chart1Customizations } from "./charts/chart1Customizations";
 import { chart21Customizations } from "./charts/chart21Customizations";
 import { chart22Customizations } from "./charts/chart22Customizations";
 import { chart7Customizations } from "./charts/chart7Customizations";
@@ -16,7 +15,6 @@ import { chart9Customizations } from "./charts/chart9Customizations";
 import { ChartCustomization } from "./types";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
-    hNU4Lj1xLYO: chart1Customizations,
     mcNfvQaVbfy: chart7Customizations,
     jFtGKQIQTGp: chart8Customizations,
     Y31jQX5PVdI: chart9Customizations,

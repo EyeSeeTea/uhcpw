@@ -9,11 +9,13 @@ export const chart8Customizations: ChartCustomization = {
             id: "yYSS1uBgnTE",
             name: "Further impoverished",
             color: "#c00000",
+            dataLabels: { enabled: false },
         },
         {
             id: "WsUM8TQ7cEh",
             name: "Impoverished",
             color: "#e46c09",
+            dataLabels: { enabled: false },
         },
     ],
     xAxis: { title: { text: "" } },

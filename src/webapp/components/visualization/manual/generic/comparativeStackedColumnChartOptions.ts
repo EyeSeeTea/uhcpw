@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { ChartSource } from "../chartOptions";
 import { comparativeColumnChartOptions } from "./comparativeColumnChartOptions";
 

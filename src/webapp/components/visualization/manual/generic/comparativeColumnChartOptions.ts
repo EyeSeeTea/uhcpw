@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { baseLegend } from "../../customization/legends/baseLegend";
-import { rotateXAxis } from "../../customization/xAxis/rotateXAxis";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 
@@ -11,7 +10,7 @@ export const comparativeColumnChartOptions: (
     currentSerieColor?: string
 ) => Highcharts.Options = (chartSource, seriesNames, seriesColors, currentSerieColor) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
-        .orderBy(item => (item[3] ? +item[3] : 0), "asc")
+        .orderBy(item => (item[1] ? chartSource.analyticsResponse.metaData.items[item[1]]?.code || "" : ""), "asc")
         .value();
 
     const groupByDx = _(orderRows)
@@ -65,7 +64,6 @@ export const comparativeColumnChartOptions: (
             labels: {
                 rotation: -90,
                 formatter: function () {
-                    debugger;
                     const countryLabel = (this.value as string).split(" ")[0];
 
                     return countryLabel === currentCountryCode

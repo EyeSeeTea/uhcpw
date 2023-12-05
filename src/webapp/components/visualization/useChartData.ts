@@ -66,7 +66,7 @@ export function useChartData(
                 message: "Missing visualizationId",
             });
         }
-    }, [compositionRoot, visualizationId, countries, years, allCountries]);
+    }, [compositionRoot, visualizationId, countries, years, allCountries, currentCountry]);
 
     const onDownload = useCallback(() => {
         compositionRoot.indicatorExplorer.downloadAnalytics
