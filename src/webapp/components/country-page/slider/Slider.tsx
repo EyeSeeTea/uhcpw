@@ -201,6 +201,11 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                     years: [LatestCOVID19.id],
                     countries: countries.map(({ id }) => id),
                 },
+                graphTwo: {
+                    visualizationId: "mcNfvQaVbfy",
+                    years: [LatestCOVID19.id],
+                    countries: countries.map(({ id }) => id),
+                },
             },
             {
                 tab: 5,
