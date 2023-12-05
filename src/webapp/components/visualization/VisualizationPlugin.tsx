@@ -9,16 +9,25 @@ interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
     countries: string[];
+    currentCountry?: string;
     withoutBackground?: boolean;
     useHeaderForCountryPage?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
-    ({ visualizationId, years, countries, withoutBackground = false, useHeaderForCountryPage = false }) => {
+    ({
+        visualizationId,
+        years,
+        currentCountry,
+        countries,
+        withoutBackground = false,
+        useHeaderForCountryPage = false,
+    }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownload } = useChartData(
             visualizationId,
             years,
-            countries
+            countries,
+            currentCountry
         );
 
         const ref = useRef<HTMLDivElement>(null);

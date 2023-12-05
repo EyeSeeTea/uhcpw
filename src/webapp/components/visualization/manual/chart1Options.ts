@@ -8,6 +8,9 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
         .groupBy(row => row[1])
         .value();
 
+    const currentCountryCode =
+        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+
     const seriesSource: SerieSource[] = [
         {
             name: "",
@@ -103,16 +106,23 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
         plotOptions: {
             series: {
                 dataLabels: {
+                    useHTML: true,
                     enabled: true,
                     align: "right",
                     verticalAlign: "middle",
-                    format: "{point.country}",
+                    //format: "{point.country}",
+                    formatter: function () {
+                        const countryPoint = (this.point as unknown as SerieData).country;
+                        return countryPoint === currentCountryCode
+                            ? `<strong style="color:black;">${countryPoint}</strong>`
+                            : countryPoint;
+                    },
                     x: -2,
                     color: "grey",
                     style: {
                         textOutline: "none",
                         fontSize: "12px",
-                        fontWeight: "300",
+                        fontWeight: "200",
                     },
                 },
             },

@@ -11,7 +11,7 @@ const seriesColors: Record<string, string> = {
 
 export const chart4Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     return {
-        ...comparativeColumnChartOptions(chartSource, seriesNames, seriesColors),
+        ...comparativeColumnChartOptions(chartSource, seriesNames, seriesColors, "#c00000"),
         legend: {
             enabled: false,
         },

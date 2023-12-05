@@ -11,11 +11,12 @@ type VisualizationProps = {
 
 type SlideGraphType = {
     title: string;
+    countryId: string;
     graphOne: VisualizationProps;
     graphTwo?: VisualizationProps;
 };
 
-export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo }) => {
+export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo }) => {
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
@@ -28,6 +29,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                     countries={(graphOne as VisualizationProps).countries}
                     withoutBackground
                     useHeaderForCountryPage
+                    currentCountry={countryId}
                 />
             </VisualizationContainer>
             {graphTwo && (
@@ -38,6 +40,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, graphOne, graphTwo
                         countries={(graphTwo as VisualizationProps).countries}
                         withoutBackground
                         useHeaderForCountryPage
+                        currentCountry={countryId}
                     />
                 </VisualizationContainer>
             )}
