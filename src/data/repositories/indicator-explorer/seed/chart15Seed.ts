@@ -3,8 +3,10 @@ export const chart15Seed = {
     categoryTag: "Unmet need",
     friendlyName: "Unmet need for health care due to cost, distance and waiting time by income quintile",
     info: {
-        infoNotes: ["Income quintiles are based on the equivalized disposable income of each household member."],
-        sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
+        infoNotes: [
+            "Quintiles are based on income. The first quintile is labelled “poorest” and the fifth quintile “richest”.",
+        ],
+        sourceName: "Eurostat (EU-SILC)",
         sourceLink: "",
     },
     maxCountryFilter: 1,

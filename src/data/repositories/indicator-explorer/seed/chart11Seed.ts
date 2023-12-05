@@ -4,9 +4,9 @@ export const chart11Seed = {
     friendlyName: "Breakdown of catastrophic health spending by type of care",
     info: {
         infoNotes: [
-            "Diagnostic tests include paramedical services. Medical products include non-medicine products and equipment (e.g. nebulizers, hearing aids, glasses and wheelchairs).",
+            "“Medical products” refers to items like glasses, hearing aids, nebulisers and wheelchairs. “Diagnostic tests” include other paramedical services.",
         ],
-        sourceName: "WHO Barcelona Office for Health Systems Financing",
+        sourceName: "WHO Regional Office for Europe",
         sourceLink: "",
     },
     maxCountryFilter: 1,
