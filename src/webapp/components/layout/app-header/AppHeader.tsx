@@ -157,9 +157,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                     );
                                 })}
                         </Menu>
-                        <MenuButton id="regions" aria-controls="regions" aria-haspopup="true" disabled>
+                        <MenuTopLink
+                            id="regions"
+                            aria-controls="regions"
+                            target="_blank"
+                            href="https://bit.ly/uhcwatch_regionalreport2023"
+                        >
                             {i18n.t("Regional report")}
-                        </MenuButton>
+                        </MenuTopLink>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
