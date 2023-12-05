@@ -47,7 +47,7 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
             const y = ySource[2] ? +ySource[2] : 0;
 
             return {
-                country: country?.name || "",
+                country: country?.code || "",
                 x,
                 y,
             };
@@ -74,6 +74,7 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
         },
         xAxis: {
             text: "Out-of-pocket payments as a share of current spending on health (%)",
+            min: 0,
         },
         yAxis: {
             title: {
@@ -81,10 +82,39 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
             },
         },
         legend: { enabled: false },
-        series,
+        series: [
+            ...series,
+            {
+                type: "line",
+                name: "Trend Line",
+                color: "lightgrey",
+                data: getTrendLine(countriesWithData),
+                marker: {
+                    enabled: false,
+                },
+                states: {
+                    hover: {
+                        lineWidth: 0,
+                    },
+                },
+                enableMouseTracking: false,
+            },
+        ],
         plotOptions: {
-            column: {
-                stacking: "normal",
+            series: {
+                dataLabels: {
+                    enabled: true,
+                    align: "right",
+                    verticalAlign: "middle",
+                    format: "{point.country}",
+                    x: -2,
+                    color: "grey",
+                    style: {
+                        textOutline: "none",
+                        fontSize: "12px",
+                        fontWeight: "300",
+                    },
+                },
             },
         },
         tooltip: {
@@ -121,4 +151,20 @@ function filterByValue(serieId: SerieType, data: SerieData) {
         case "extra-hight":
             return data.y > 0 && data.x >= 15;
     }
+}
+
+function getTrendLine(data: SerieData[]): number[][] {
+    const fixedData = data.filter(item => item.y > 0 && item.x > 0);
+
+    const minX = Math.min(...fixedData.map(({ x }) => x));
+    const maxX = Math.max(...fixedData.map(({ x }) => x));
+    const minY = Math.min(...fixedData.map(({ y }) => y));
+    const maxY = Math.max(...fixedData.map(({ y }) => y));
+
+    const trendline = [
+        [minX, minY],
+        [maxX, maxY],
+    ];
+
+    return trendline;
 }
