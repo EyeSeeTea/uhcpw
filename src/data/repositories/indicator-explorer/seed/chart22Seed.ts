@@ -6,7 +6,7 @@ export const chart22Seed = {
         infoNotes: [
             "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment. EU average include the United Kingdom up to and including 2019.",
         ],
-        sourceName: "WHO Global Health Expenditure Database",
+        sourceName: "GHED",
         sourceLink: "",
     },
     minCountryFilter: 2,

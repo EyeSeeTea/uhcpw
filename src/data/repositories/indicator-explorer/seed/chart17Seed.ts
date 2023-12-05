@@ -6,7 +6,7 @@ export const chart17Seed = {
         infoNotes: [
             "Public refers to transfers from the government budget and social health insurance contributions; it excludes other forms of compulsory pre-payment.",
         ],
-        sourceName: "WHO Global Health Expenditure Database",
+        sourceName: "GHED",
         sourceLink: "",
     },
     maxCountryFilter: 1,

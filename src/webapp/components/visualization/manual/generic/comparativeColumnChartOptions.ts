@@ -65,7 +65,6 @@ export const comparativeColumnChartOptions: (
             labels: {
                 rotation: -90,
                 formatter: function () {
-                    debugger;
                     const countryLabel = (this.value as string).split(" ")[0];
 
                     return countryLabel === currentCountryCode

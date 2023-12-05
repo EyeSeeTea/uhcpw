@@ -4,7 +4,7 @@ export const chart14Seed = {
     friendlyName: "Unmet need for dental care due to cost, distance and waiting time",
     info: {
         infoNotes: ["Dental care refers to ‘dental examination or treatment"],
-        sourceName: "Eurostat (European Union Statistics on Income and Living Conditions)",
+        sourceName: "Eurostat (EU-SILC)",
         sourceLink: "",
     },
     minCountryFilter: 2,

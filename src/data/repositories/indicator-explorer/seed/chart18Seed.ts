@@ -4,7 +4,7 @@ export const chart18Seed = {
     friendlyName: "Out-of-pocket payments as a share of current spending on health",
     info: {
         infoNotes: ["EU average include the United Kingdom up to and including 2019."],
-        sourceName: "WHO Global Health Expenditure Database",
+        sourceName: "GHED",
         sourceLink: "",
     },
     minCountryFilter: 2,

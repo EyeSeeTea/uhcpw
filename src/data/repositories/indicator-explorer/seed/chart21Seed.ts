@@ -3,7 +3,7 @@ export const chart21Seed = {
     friendlyName: "Public spending on health as a share of current spending on health",
     info: {
         infoNotes: [],
-        sourceName: "",
+        sourceName: "GHED",
         sourceLink: "",
     },
     minCountryFilter: 2,
