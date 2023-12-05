@@ -1,7 +1,7 @@
 import React from "react";
 import { SectionHeader } from "../section-header/SectionHeader";
 import i18n from "../../../../locales";
-import { Grid, Typography } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { SectionBlock } from "../section-block/SectionBlock";
 import { CTA } from "../buttons/CTA";
@@ -37,9 +37,9 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <Tag>
-                            <Typography>{i18n.t("Coming soon")}</Typography>
-                        </Tag>
+                        <Link href="https://bit.ly/uhcwatch_regionalreport2023" target="_blank" rel="noreferrer">
+                            {i18n.t("Regional report")}
+                        </Link>
                     </ButtonContainer>
                 </Region>
             </Content>
@@ -66,7 +66,7 @@ const ButtonContainer = styled.div`
     margin-top: 30px;
 `;
 
-const Tag = styled.div`
+const Link = styled.a`
     color: #4fad56;
     background-color: white;
     font-size: 14px;
@@ -76,4 +76,7 @@ const Tag = styled.div`
     height: 25px;
     display: flex;
     align-items: center;
+    text-transform: none;
+    text-decoration: none;
+    font-size: 16px;
 `;
