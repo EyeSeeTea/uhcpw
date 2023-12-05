@@ -39,4 +39,5 @@ const Item = styled(Card)`
         font-size: 14px;
         color: ${colors.accentPrimary};
     }
+    width: 180px;
 `;

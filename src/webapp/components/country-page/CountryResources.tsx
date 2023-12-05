@@ -39,6 +39,6 @@ const Container = styled.div`
 
 const Row = styled.div`
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     margin-bottom: 25px;
 `;

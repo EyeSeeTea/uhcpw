@@ -138,7 +138,8 @@ const ReferencesContainer = styled.div`
 
 const ReferenceText = styled(Typography)`
     color: black;
-    font-weight: 300;
+    font-weight: 500;
+    font-size: 0.875rem;
     margin-bottom: 12px;
 `;
 
@@ -170,7 +171,8 @@ const GeneralRow = styled.div`
 
 const CreditsText = styled(Typography)`
     color: black;
-    font-weight: 300;
+    font-weight: 500;
+    font-size: 0.875rem;
 `;
 
 const Link = styled.a`

@@ -69,7 +69,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
                                         >
                                             {link.language}
                                         </a>
-                                        {index < links.length - 1 && <StyledDivider orientation="vertical" flexItem />}
+                                        {index < links.length - 1 && <Box margin={"4px"} />}
                                     </React.Fragment>
                                 );
                             })}
