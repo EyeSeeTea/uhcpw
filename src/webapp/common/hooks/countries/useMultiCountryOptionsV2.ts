@@ -13,19 +13,21 @@ export function useMultiCountryOptionsV2(selectedCountries?: string[], countryOp
     }, [selectedCountries]);
 
     useEffect(() => {
-        const countryOptions = countries
-            .map(country => ({
-                id: country.id,
-                name: country.name,
-                code: country.code,
-                parents: [
-                    { id: "all", name: i18n.t("All countries") },
-                    ...country.parents.filter(parent => !parent.name.includes("income")),
-                ],
-            }))
-            .filter(({ id }) => countryOptionsToSelect?.includes(id));
+        const countryOptions = countries.map(country => ({
+            id: country.id,
+            name: country.name,
+            code: country.code,
+            parents: [
+                { id: "all", name: i18n.t("All countries") },
+                ...country.parents.filter(parent => !parent.name.includes("income")),
+            ],
+        }));
 
-        setOptions(countryOptions);
+        setOptions(
+            countryOptionsToSelect
+                ? countryOptions.filter(({ id }) => countryOptionsToSelect?.includes(id))
+                : countryOptions
+        );
     }, [countries, countryOptionsToSelect]);
 
     const onSelectedChange = useCallback((country: string[] | undefined) => {
