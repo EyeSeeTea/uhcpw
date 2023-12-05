@@ -85,7 +85,11 @@ export const MobileMenu = () => {
                     </MobileMenuSubItem>
                 </MenuItem>
                 <StyledDivider />
-                <MenuItem disabled>{i18n.t("Regional report")}</MenuItem>
+                <MenuItem>
+                    <MenuLink target="_blank" href="https://bit.ly/uhcwatch_regionalreport2023" rel="noreferrer">
+                        {i18n.t("Regional report")}
+                    </MenuLink>
+                </MenuItem>
                 <StyledDivider />
                 <MenuItem onClick={() => handleCloseMenu("/methods")}>{i18n.t("Methods")}</MenuItem>
                 <StyledDivider />
@@ -101,4 +105,10 @@ const StyledDivider = styled(Divider)`
     margin: 7px auto;
     width: 80%;
     background-color: #b5b5b5;
+`;
+
+const MenuLink = styled.a`
+    text-transform: none;
+    text-decoration: none;
+    color: white;
 `;

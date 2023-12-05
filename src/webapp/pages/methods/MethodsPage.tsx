@@ -82,8 +82,12 @@ export const MethodsPage: React.FC = () => {
                         </Grid>
                     ))}
                     <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
-                        <StyledButton>{i18n.t("Abbreviations")}</StyledButton>
-                        <StyledButton onClick={() => {}}>{i18n.t("Glossary")}</StyledButton>
+                        <DownloadLink target="_blank" href="https://bit.ly/uhcwatch_abbreviations">
+                            {i18n.t("Abbreviations")}
+                        </DownloadLink>
+                        <DownloadLink target="_blank" href="https://bit.ly/uhcwatch_glossary">
+                            {i18n.t("Glossary")}
+                        </DownloadLink>
                     </ButtonsGridItem>
                 </Grid>
             </MainContainer>
@@ -99,18 +103,6 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-`;
-
-const StyledButton = styled(Button)`
-    border-radius: 20px;
-    color: white;
-    background-color: ${colors.accentPrimary};
-    text-transform: none;
-    padding: 5px 15px;
-    &:hover {
-        background-color: ${colors.accentPrimary};
-        opacity: 0.5;
-    }
 `;
 
 const ButtonsGridItem = styled(Grid)`
@@ -152,4 +144,19 @@ const TextContainer = styled.div`
 
 const MainContainer = styled.div`
     padding: 80px 64px;
+`;
+
+const DownloadLink = styled.a`
+    border-radius: 20px;
+    color: white;
+    background-color: ${colors.accentPrimary};
+    text-transform: none;
+    text-decoration: none;
+    font-size: 14px;
+    line-height: 2;
+    padding: 5px 15px;
+    &:hover {
+        background-color: ${colors.accentPrimary};
+        opacity: 0.5;
+    }
 `;

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-12-04T10:18:21.520Z\n"
-"PO-Revision-Date: 2023-12-04T10:18:21.520Z\n"
+"POT-Creation-Date: 2023-12-05T13:05:27.978Z\n"
+"PO-Revision-Date: 2023-12-05T13:05:27.978Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -163,7 +163,7 @@ msgid ""
 "good practice"
 msgstr ""
 
-msgid "Coming soon"
+msgid "Regional report"
 msgstr ""
 
 msgid "Explorers"
@@ -319,9 +319,6 @@ msgid "Abbreviations"
 msgstr ""
 
 msgid "Glossary"
-msgstr ""
-
-msgid "Regional report"
 msgstr ""
 
 msgid "Back"

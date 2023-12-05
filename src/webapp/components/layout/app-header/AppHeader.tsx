@@ -97,10 +97,12 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
                         </Tag>
                     </TagContainer>
-                    <MenuTopButton onClick={() => {}}>{i18n.t("Abbreviations")}</MenuTopButton>
-                    {action}
-                    <MenuTopButton onClick={() => {}}>{i18n.t("Glossary")}</MenuTopButton>
-                    {action}
+                    <MenuTopLink target="_blank" href="https://bit.ly/uhcwatch_abbreviations">
+                        {i18n.t("Abbreviations")}
+                    </MenuTopLink>
+                    <MenuTopLink target="_blank" href="https://bit.ly/uhcwatch_glossary">
+                        {i18n.t("Glossary")}
+                    </MenuTopLink>
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
                     <LogoContainer>
@@ -155,9 +157,14 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                                     );
                                 })}
                         </Menu>
-                        <MenuButton id="regions" aria-controls="regions" aria-haspopup="true" disabled>
+                        <MenuTopLink
+                            id="regions"
+                            aria-controls="regions"
+                            target="_blank"
+                            href="https://bit.ly/uhcwatch_regionalreport2023"
+                        >
                             {i18n.t("Regional report")}
-                        </MenuButton>
+                        </MenuTopLink>
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -189,9 +196,24 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
     );
 };
 
-const MenuTopButton = styled(Button)`
+const MenuTopLink = styled.a`
     margin: 0px 16px;
     text-transform: none;
+    text-decoration: none;
+    text-align: center;
+    color: #000000;
+    padding: 6px 8px;
+    font-size: 0.875rem;
+    min-width: 64px;
+    cursor: pointer;
+    :hover {
+        background-color: rgba(150, 150, 150, 0.1);
+        transition: background-color 250ms;
+    }
+    font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    line-height: 1.75;
+    border-radius: 4px;
 `;
 
 const MenuButton = styled(Button)`
