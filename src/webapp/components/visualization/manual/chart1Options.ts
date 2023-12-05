@@ -55,7 +55,11 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
                 y,
             };
         })
-        .value();
+        .value()
+        .filter(serieData => {
+            //TODO: Delete removing ARM in hardcoded way
+            return serieData.country !== "ARM";
+        });
 
     const series = seriesSource.map(serie => {
         const serieData = countriesWithData.filter(country => filterByValue(serie.id, country));
@@ -76,7 +80,7 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
             type: "scatter",
         },
         xAxis: {
-            text: "Out-of-pocket payments as a share of current spending on health (%)",
+            title: { text: "Out-of-pocket payments as a share of current spending on health (%)" },
             min: 0,
         },
         yAxis: {
