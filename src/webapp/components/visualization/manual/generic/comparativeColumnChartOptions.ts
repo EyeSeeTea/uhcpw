@@ -10,7 +10,7 @@ export const comparativeColumnChartOptions: (
     currentSerieColor?: string
 ) => Highcharts.Options = (chartSource, seriesNames, seriesColors, currentSerieColor) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
-        .orderBy(item => (item[3] ? +item[3] : 0), "asc")
+        .orderBy(item => (item[1] ? chartSource.analyticsResponse.metaData.items[item[1]]?.code || "" : ""), "asc")
         .value();
 
     const groupByDx = _(orderRows)
