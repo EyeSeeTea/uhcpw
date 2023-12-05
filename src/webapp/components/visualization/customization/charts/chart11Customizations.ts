@@ -26,7 +26,7 @@ export const chart11Customizations: ChartCustomization = {
         {
             id: "a2u2ccahVJL",
             name: "Dental care",
-            color: "#0000c0",
+            color: "#0070c0",
             dataLabels: { enabled: false },
         },
         {

@@ -15,7 +15,7 @@ const seriesColors: Record<string, string> = {
     ykAPKvVQusS: "#ffc000",
     OEK4dKvUsOe: "#00b050",
     OuiKmOeXUWQ: "#ed7d31",
-    a2u2ccahVJL: "#0000c0",
+    a2u2ccahVJL: "#0070c0",
     qgE5NJ9Nyaq: "#c00000",
 };
 

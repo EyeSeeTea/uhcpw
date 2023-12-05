@@ -15,7 +15,7 @@ const seriesColors: Record<string, string> = {
     "SpTdfmqlzNj.xFBx8HXhRn6": "#ffc000",
     "SpTdfmqlzNj.NYLedCi0SnS": "#00b050",
     "SpTdfmqlzNj.WZQNt5d1TGm": "#ed7d31",
-    "SpTdfmqlzNj.bHGxnqq0s6M": "#0000c0",
+    "SpTdfmqlzNj.bHGxnqq0s6M": "#0070c0",
     "SpTdfmqlzNj.CgeNM5PZBLy": "#c00000",
 };
 
