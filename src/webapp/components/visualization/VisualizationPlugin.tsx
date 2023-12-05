@@ -1,7 +1,8 @@
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
+import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
@@ -23,7 +24,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         withoutBackground = false,
         useHeaderForCountryPage = false,
     }) => {
-        const { chartData, showInfo, onShowInfo, onCloseInfo, onDownload } = useChartData(
+        const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
             years,
             countries,
@@ -32,6 +33,15 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
         const ref = useRef<HTMLDivElement>(null);
 
+        const onDownloadImage = useCallback(() => {
+            if (chartData.kind === "Loaded" && ref.current) {
+                downloadHtmlElement(ref.current, chartData.visualization.friendlyName || "chart-image", {
+                    backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
+                    exclusionClasses: ["download-button", "info-button", "category"],
+                });
+            }
+        }, [chartData]);
+
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
             <Container ref={ref} $withoutBackground={withoutBackground}>
                 <VisualizationPluginHeader
@@ -39,7 +49,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     chartFriendlyName={chartData.visualization.friendlyName}
                     categoryTag={chartData.visualization.categoryTag}
                     showInfo={showInfo}
-                    onDownload={onDownload}
+                    onDownloadExcel={onDownloadExcel}
+                    onDownloadImage={onDownloadImage}
                     onShowInfo={onShowInfo}
                     onCloseInfo={onCloseInfo}
                     useHeaderForCountryPage={useHeaderForCountryPage}
