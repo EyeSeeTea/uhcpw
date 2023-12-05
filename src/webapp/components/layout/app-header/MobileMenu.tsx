@@ -7,6 +7,7 @@ import i18n from "../../../../locales";
 import { useHistory } from "react-router-dom";
 import { MobileMenuSubItem } from "./MobileMenuSubItem";
 import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
+import { COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE } from "../../../../data/repositories/CountryD2Repository";
 
 export const MobileMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -68,16 +69,18 @@ export const MobileMenu = () => {
                 <MenuItem>
                     <MobileMenuSubItem item="countries">
                         <div>
-                            {countryOptions.map(country => {
-                                return (
-                                    <MenuItem
-                                        key={country.value}
-                                        onClick={() => history.push(`/country-page?country=${country.value}`)}
-                                    >
-                                        {country.text}
-                                    </MenuItem>
-                                );
-                            })}
+                            {countryOptions
+                                .filter(({ value }) => COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE.includes(value))
+                                .map(country => {
+                                    return (
+                                        <MenuItem
+                                            key={country.value}
+                                            onClick={() => history.push(`/country-page?country=${country.value}`)}
+                                        >
+                                            {country.text}
+                                        </MenuItem>
+                                    );
+                                })}
                         </div>
                     </MobileMenuSubItem>
                 </MenuItem>

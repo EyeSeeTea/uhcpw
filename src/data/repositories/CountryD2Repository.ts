@@ -6,6 +6,28 @@ import { D2Api, D2Geometry, MetadataPick } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
 import { coordinatesFromString } from "./countries/coordinatesFromString";
 
+export const COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE = [
+    "lbMrRSBsXh3",
+    "DVnpk4xiXGJ",
+    "Mb9IYOFZYCv",
+    "cWrL45je7mw",
+    "kpFgAwwSjCZ",
+    "ibGsqmiVkoU",
+    "VGOzFKfSazN",
+    "cfBaKMnsXd1",
+    "XeWqwCw9G5s",
+    "eyvitcZL4ex",
+    "AjeCGGb8H76",
+    "T1irZBQ9gNW",
+    "N9i1v07Ro0E",
+    "Gnz4lqrVEMf",
+    "VnTycSnraEY",
+    "e9IoKRAkYLO",
+    "VJrTuNXAg9G",
+    "TIhakAVsQwM",
+    "KwgjnBBpe5b",
+];
+
 export const countryInfoProgram = "xgaF9UtfrzK";
 
 export const countryInfoDataElements: Record<string, string> = {

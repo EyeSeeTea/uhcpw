@@ -14,6 +14,7 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
 import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
 import { Option } from "../../dropdown/Option";
+import { COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE } from "../../../../data/repositories/CountryD2Repository";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -144,13 +145,15 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            {countryOptions.map(country => {
-                                return (
-                                    <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
-                                        {country.text}
-                                    </MenuItem>
-                                );
-                            })}
+                            {countryOptions
+                                .filter(({ value }) => COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE.includes(value))
+                                .map(country => {
+                                    return (
+                                        <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
+                                            {country.text}
+                                        </MenuItem>
+                                    );
+                                })}
                         </Menu>
                         <MenuButton id="regions" aria-controls="regions" aria-haspopup="true" disabled>
                             {i18n.t("Regional report")}
