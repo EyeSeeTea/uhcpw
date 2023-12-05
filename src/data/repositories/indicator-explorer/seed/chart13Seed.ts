@@ -3,7 +3,7 @@ export const chart13Seed = {
     categoryTag: "Unmet need",
     friendlyName: "Unmet need for health care due to cost, distance and waiting time",
     info: {
-        infoNotes: ["Health care refers to ‘medical examination or treatment’."],
+        infoNotes: [],
         sourceName: "Eurostat (EU-SILC)",
         sourceLink: "",
     },
