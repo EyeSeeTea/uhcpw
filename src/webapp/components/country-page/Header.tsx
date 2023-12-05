@@ -1,7 +1,6 @@
 import { Button, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { CountryDropdown } from "./dropdown/CountryDropdown";
-import { useResources } from "../../pages/resources/landing/useResources";
 import i18n from "../../../locales";
 import UmbrellaWeak from "../../assets/country-page/umbrella-weak.svg";
 import UmbrellaGap from "../../assets/country-page/umbrella-normal.png";
@@ -9,6 +8,8 @@ import UmbrellaStrong from "../../assets/country-page/umbrella-strong.png";
 import { FC, MutableRefObject } from "react";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
+import { useResourcesFilters } from "../../pages/resources/common/useResourcesFilters";
+import { COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE } from "../../../data/repositories/CountryD2Repository";
 
 type HeaderType = {
     countryId: string;
@@ -41,7 +42,8 @@ const handleBackgroundColor = (status?: CountryStatus) => {
 };
 
 export const Header: FC<HeaderType> = ({ countryId, onCountryChange, sliderRef, resourcesRef, expertRef }) => {
-    const { filters } = useResources();
+    const filters = useResourcesFilters({ countryOptionsToSelect: COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE });
+
     const country = useCountryInfo(countryId);
 
     const handleClick = (ref: MutableRefObject<any>) => {

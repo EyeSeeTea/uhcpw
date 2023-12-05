@@ -5,9 +5,15 @@ import { useAppContext } from "../../../contexts/app-context";
 import { ResourcesFiltersState } from "./ResourcesFiltersState";
 import { useMultiCountryOptionsV2 } from "../../../common/hooks/countries/useMultiCountryOptionsV2";
 
-export function useResourcesFilters(category?: string, countries?: string[], theme?: string): ResourcesFiltersState {
+export function useResourcesFilters(params: {
+    category?: string;
+    countries?: string[];
+    theme?: string;
+    countryOptionsToSelect?: string[];
+}): ResourcesFiltersState {
+    const { category, countries, theme, countryOptionsToSelect } = params;
     const { compositionRoot, themes } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2(countries);
+    const countryFilter = useMultiCountryOptionsV2(countries, countryOptionsToSelect);
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 
