@@ -1,6 +1,5 @@
 import _ from "lodash";
 import { baseLegend } from "../../customization/legends/baseLegend";
-import { rotateXAxis } from "../../customization/xAxis/rotateXAxis";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 
@@ -65,7 +64,6 @@ export const comparativeColumnChartOptions: (
             labels: {
                 rotation: -90,
                 formatter: function () {
-                    debugger;
                     const countryLabel = (this.value as string).split(" ")[0];
 
                     return countryLabel === currentCountryCode
