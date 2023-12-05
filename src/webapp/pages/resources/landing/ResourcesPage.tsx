@@ -64,7 +64,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                 >
                                     {resources.comparativeAnalysis.map(comparativeItem => {
                                         return (
-                                            <Grid item xs={6} md={3} key={comparativeItem.id}>
+                                            <Grid item key={comparativeItem.id}>
                                                 <ComparativeAnalysisItem
                                                     comparativeAnalysis={comparativeItem}
                                                     minimalVersion
