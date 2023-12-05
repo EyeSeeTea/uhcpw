@@ -7,10 +7,15 @@ import WhoBarcelona from "../../../assets/about-pic-video.png";
 
 export const Header: React.FC = React.memo(() => {
     return (
-        <HeaderGrid container spacing={5} alignItems="center">
+        <HeaderGrid container spacing={5} alignItems="flex-start">
             <Grid item md={6} xs={12}>
                 <a href="https://www.youtube.com/watch?v=k8OQYkjgERk&t=4s" target="_blank" rel="noreferrer">
-                    <img width="100%" alt="WHO Barcelona Office" src={WhoBarcelona} />
+                    <img
+                        style={{ paddingBlockStart: "16px" }}
+                        width="100%"
+                        alt="WHO Barcelona Office"
+                        src={WhoBarcelona}
+                    />
                 </a>
                 <Caption role="caption">{i18n.t("WHO Barcelona Office for Health Systems Financing")}</Caption>
             </Grid>
