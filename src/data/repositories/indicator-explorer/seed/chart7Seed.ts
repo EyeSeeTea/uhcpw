@@ -1,5 +1,6 @@
 export const chart7Seed = {
     categoryName: "Comparative",
+    categoryTag: "International comparison",
     friendlyName: "Breakdown of catastrophic health spending by type of care on the poorest quintile",
     info: {
         infoNotes: [
