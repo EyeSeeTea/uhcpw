@@ -151,15 +151,15 @@ type SerieType = "low" | "medium" | "medium-hight" | "hight" | "extra-hight";
 function filterByValue(serieId: SerieType, data: SerieData) {
     switch (serieId) {
         case "low":
-            return data.y > 0 && data.x > 0 && data.x < 2;
+            return data.x > 0 && data.y > 0 && data.y < 2;
         case "medium":
-            return data.y > 0 && data.x >= 2 && data.x < 5;
+            return data.x > 0 && data.y >= 2 && data.y < 5;
         case "medium-hight":
-            return data.y > 0 && data.x >= 5 && data.x < 10;
+            return data.x > 0 && data.y >= 5 && data.y < 10;
         case "hight":
-            return data.y > 0 && data.x >= 10 && data.x < 15;
+            return data.x > 0 && data.y >= 10 && data.y < 15;
         case "extra-hight":
-            return data.y > 0 && data.x >= 15;
+            return data.x > 0 && data.y >= 15;
     }
 }
 
