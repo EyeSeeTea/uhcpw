@@ -1,6 +1,6 @@
 export const chart6Seed = {
     categoryName: "Comparative",
-    categoryTag: "Comparative chart",
+    categoryTag: "International comparison",
     friendlyName: "Breakdown of catastrophic health spending by type of care",
     info: {
         infoNotes: [

@@ -3,7 +3,7 @@ import i18n from "../../../../locales";
 import { CountryOption } from "../../../components/country-selector/CountrySelector";
 import { useAppContext } from "../../../contexts/app-context";
 
-export function useMultiCountryOptionsV2(selectedCountries?: string[]) {
+export function useMultiCountryOptionsV2(selectedCountries?: string[], countryOptionsToSelect?: string[]) {
     const { countries } = useAppContext();
     const [options, setOptions] = useState<CountryOption[]>([]);
     const [selected, setSelected] = useState<string[] | undefined>([]);
@@ -23,8 +23,12 @@ export function useMultiCountryOptionsV2(selectedCountries?: string[]) {
             ],
         }));
 
-        setOptions(countryOptions);
-    }, [countries]);
+        setOptions(
+            countryOptionsToSelect
+                ? countryOptions.filter(({ id }) => countryOptionsToSelect?.includes(id))
+                : countryOptions
+        );
+    }, [countries, countryOptionsToSelect]);
 
     const onSelectedChange = useCallback((country: string[] | undefined) => {
         setSelected(country);
