@@ -9,6 +9,7 @@ import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
+import { EmptyContent } from "../../components/indicator-explorer/EmptyContent";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { filters, onGet, showVisualization, globalMessage } = useIndicatorExplorer();
@@ -36,12 +37,14 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
 
-                {showVisualization && filters.category.selected && (
+                {showVisualization && filters.category.selected ? (
                     <VisualizationPlugin
                         visualizationId={filters.category.selected}
                         years={filters.year.selected || []}
                         countries={filters.country.selected || []}
                     />
+                ) : (
+                    <EmptyContent />
                 )}
             </MainSection>
         </Layout>
