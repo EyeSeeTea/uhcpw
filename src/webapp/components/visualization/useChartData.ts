@@ -13,7 +13,7 @@ import { chartOptions } from "./manual/chartOptions";
 interface ChartDataState {
     chartData: ChartData;
     showInfo: boolean;
-    onDownload: () => void;
+    onDownloadExcel: () => void;
     onShowInfo: () => void;
     onCloseInfo: () => void;
 }
@@ -68,7 +68,7 @@ export function useChartData(
         }
     }, [compositionRoot, visualizationId, countries, years, allCountries, currentCountry]);
 
-    const onDownload = useCallback(() => {
+    const onDownloadExcel = useCallback(() => {
         compositionRoot.indicatorExplorer.downloadAnalytics
             .execute(visualizationId, years || [], countries || [])
             .runAsync();
@@ -82,7 +82,7 @@ export function useChartData(
         setShowInfo(false);
     }, []);
 
-    return { chartData, showInfo, onShowInfo, onCloseInfo, onDownload };
+    return { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel };
 }
 
 function getChartData(

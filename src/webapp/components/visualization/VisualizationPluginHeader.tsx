@@ -4,6 +4,7 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
+import GridOnIcon from "@material-ui/icons/GridOn";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import { NotesDialog } from "../dialog/NotesDialog";
 
@@ -17,7 +18,8 @@ interface VisualizationPluginHeaderProps {
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;
-    onDownload: () => void;
+    onDownloadExcel: () => void;
+    onDownloadImage: () => void;
     onShowInfo: () => void;
     onCloseInfo: () => void;
     useHeaderForCountryPage?: boolean;
@@ -31,7 +33,8 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         categoryTag,
         onShowInfo,
         onCloseInfo,
-        onDownload,
+        onDownloadExcel,
+        onDownloadImage,
         useHeaderForCountryPage = false,
     }) => {
         return (
@@ -46,12 +49,15 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                             </Row>
 
                             <RowWithGap $gap={20}>
-                                {categoryTag && <Tag>{categoryTag}</Tag>}
+                                {categoryTag && <Tag className="category">{categoryTag}</Tag>}
                                 <RowWithGap $gap={0}>
                                     <StyledIconButton onClick={onShowInfo} $color="#185698">
                                         <CustomInfoIcon color="primary" className="info-button" />
                                     </StyledIconButton>
-                                    <StyledIconButton onClick={onDownload} $color="white">
+                                    <StyledIconButton onClick={onDownloadExcel} $color="white">
+                                        <CustomGridOnIcon color="primary" className="download-button" />
+                                    </StyledIconButton>
+                                    <StyledIconButton onClick={onDownloadImage} $color="white">
                                         <CustomGetAppIcon color="primary" className="download-button" />
                                     </StyledIconButton>
                                 </RowWithGap>
@@ -73,18 +79,29 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 </Button>
                             </Row>
 
-                            <Row>
+                            <Column>
+                                <DownloadButton
+                                    variant="contained"
+                                    startIcon={<GridOnIcon />}
+                                    color="primary"
+                                    style={{ marginLeft: 20, marginBottom: 20 }}
+                                    onClick={onDownloadExcel}
+                                    className="download-button"
+                                >
+                                    <Typography>{i18n.t("Download")}</Typography>
+                                </DownloadButton>
+
                                 <DownloadButton
                                     variant="contained"
                                     startIcon={<DownloadIcon />}
                                     color="primary"
                                     style={{ marginLeft: 20 }}
-                                    onClick={onDownload}
+                                    onClick={onDownloadImage}
                                     className="download-button"
                                 >
                                     <Typography>{i18n.t("Download")}</Typography>
                                 </DownloadButton>
-                            </Row>
+                            </Column>
                         </>
                     )}
                 </Row>
@@ -103,6 +120,14 @@ const DataHeader = styled.div`
 const Row = styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0px;
+    align-items: center;
+`;
+
+const Column = styled.div`
+    display: flex;
+    flex-direction: column;
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: center;
@@ -135,6 +160,14 @@ const CustomInfoIcon = styled(InfoIcon)`
 `;
 
 const CustomGetAppIcon = styled(GetAppIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 3px;
+    font-size: 17px;
+`;
+
+const CustomGridOnIcon = styled(GridOnIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
