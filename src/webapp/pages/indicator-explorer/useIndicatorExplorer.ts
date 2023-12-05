@@ -92,9 +92,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
         if (visualization?.minCountryFilter && (selectedCountries?.length || 0) < visualization.minCountryFilter) {
             setGlobalMessage({
-                text: i18n.t(`This category:indicator need select almost {{count}} countries`, {
+                text: i18n.t(`This indicator needs at least {{count}} countries`, {
                     count: visualization.minCountryFilter,
-                    nsSeparator: false,
                 }),
                 type: "info",
             });
@@ -104,9 +103,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         ) {
             const { minCountryFilter } = visualization;
             setGlobalMessage({
-                text: i18n.t(`This category:indicator need select only {{count}} country`, {
+                text: i18n.t(`This indicator needs to select only {{count}} country`, {
                     count: minCountryFilter,
-                    nsSeparator: false,
                 }),
                 type: "info",
             });
