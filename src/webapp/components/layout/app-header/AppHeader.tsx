@@ -62,7 +62,7 @@ interface AppHeaderProps {
     action?: React.ReactNode;
 }
 
-export const AppHeader: React.FC<AppHeaderProps> = ({ action }) => {
+export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const history = useHistory();
 
