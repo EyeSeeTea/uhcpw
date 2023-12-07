@@ -9,6 +9,8 @@ import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 
+const allYearsFilters = generateYears().map(year => ({ value: year.id, text: year.id }));
+
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
@@ -39,6 +41,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 onSelectedCountryChange([]);
             } else if (newsVisualization?.isComparative) {
                 onSelectedCountryChange(countryOptions.map(op => op.id));
+            }
+
+            if (!newsVisualization?.isComparative) {
+                setSelectedYearFilter(allYearsFilters.map(year => year.value));
+            } else if (newsVisualization?.isComparative) {
+                setSelectedYearFilter([LatestCOVID19.id]);
             }
 
             setSelectedCategoryFilter(value);
@@ -81,9 +89,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setYearsFilters([
                 { value: LatestCOVID19.id, text: i18n.t("2019 or latest available year before COVID-19") },
             ]);
-            setSelectedYearFilter([LatestCOVID19.id]);
         } else {
-            setYearsFilters(generateYears().map(year => ({ value: year.id, text: year.id })));
+            setYearsFilters(allYearsFilters);
         }
     }, [categoryFilters, selectedCategoryFilter]);
 

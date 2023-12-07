@@ -40,7 +40,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     exclusionClasses: ["download-button", "info-button", "category"],
                 });
             }
-        }, [chartData]);
+        }, [chartData, useHeaderForCountryPage]);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
             <Container ref={ref} $withoutBackground={withoutBackground}>
