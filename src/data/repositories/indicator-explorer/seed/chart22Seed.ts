@@ -7,5 +7,5 @@ export const chart22Seed = {
         sourceName: "GHED",
         sourceLink: "",
     },
-    minCountryFilter: 2,
+    minCountryFilter: 1,
 };
