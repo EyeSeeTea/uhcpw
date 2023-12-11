@@ -12,6 +12,8 @@ import { Node } from "./Node";
 import { Leaf } from "./Leaf";
 import { SelectedChip } from "../../selected-chip/SelectedChip";
 
+const EMPTY_IDS_ARRAY: string[] = [];
+
 type SubcategoryOption = {
     value: string;
     text: string;
@@ -33,6 +35,7 @@ interface CategorySelectorProps {
     placeholder?: string;
     disabled?: boolean;
     label?: string;
+    categoriesNotShowSubcategories?: string[];
 }
 
 export const CategorySelector = React.memo(
@@ -45,6 +48,7 @@ export const CategorySelector = React.memo(
         disabled = false,
         label = "",
         disabledCategories,
+        categoriesNotShowSubcategories = EMPTY_IDS_ARRAY,
     }: CategorySelectorProps) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -252,17 +256,19 @@ export const CategorySelector = React.memo(
                                     }
                                     disabled={disabledCategories.includes(category.value)}
                                 >
-                                    {category.subcategories.map(({ value, text }) => (
-                                        <Leaf
-                                            key={value}
-                                            nodeId={value}
-                                            parentId={category.value}
-                                            name={text}
-                                            selected={isSubcategorySelected(category.value, value)}
-                                            onSelectedChange={handleSubcategoriesChange}
-                                            disabled={disabledCategories.includes(category.value)}
-                                        />
-                                    ))}
+                                    {categoriesNotShowSubcategories.includes(category.value)
+                                        ? null
+                                        : category.subcategories.map(({ value, text }) => (
+                                              <Leaf
+                                                  key={value}
+                                                  nodeId={value}
+                                                  parentId={category.value}
+                                                  name={text}
+                                                  selected={isSubcategorySelected(category.value, value)}
+                                                  onSelectedChange={handleSubcategoriesChange}
+                                                  disabled={disabledCategories.includes(category.value)}
+                                              />
+                                          ))}
                                 </Node>
                             ))}
                         </TreeView>
