@@ -9,14 +9,11 @@ import { coordinatesFromString } from "./countries/coordinatesFromString";
 export const COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE = [
     "lbMrRSBsXh3",
     "DVnpk4xiXGJ",
-    "Mb9IYOFZYCv",
-    "kpFgAwwSjCZ",
     "VGOzFKfSazN",
     "cfBaKMnsXd1",
     "XeWqwCw9G5s",
     "AjeCGGb8H76",
     "N9i1v07Ro0E",
-    "Gnz4lqrVEMf",
     "VJrTuNXAg9G",
     "KwgjnBBpe5b",
 ];
