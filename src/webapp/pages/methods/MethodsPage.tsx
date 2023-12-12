@@ -82,10 +82,10 @@ export const MethodsPage: React.FC = () => {
                         </Grid>
                     ))}
                     <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
-                        <DownloadLink target="_blank" href="https://bit.ly/uhcwatch_abbreviations">
+                        <DownloadLink target="_blank" href="https://cmyn.short.gy/abbreviations">
                             {i18n.t("Abbreviations")}
                         </DownloadLink>
-                        <DownloadLink target="_blank" href="https://bit.ly/uhcwatch_glossary">
+                        <DownloadLink target="_blank" href="https://cmyn.short.gy/glossary">
                             {i18n.t("Glossary")}
                         </DownloadLink>
                     </ButtonsGridItem>
