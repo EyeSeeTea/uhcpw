@@ -97,10 +97,10 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
                         </Tag>
                     </TagContainer>
-                    <MenuTopLink target="_blank" href="https://bit.ly/uhcwatch_abbreviations">
+                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/abbreviations">
                         {i18n.t("Abbreviations")}
                     </MenuTopLink>
-                    <MenuTopLink target="_blank" href="https://bit.ly/uhcwatch_glossary">
+                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary">
                         {i18n.t("Glossary")}
                     </MenuTopLink>
                 </Toolbar>
