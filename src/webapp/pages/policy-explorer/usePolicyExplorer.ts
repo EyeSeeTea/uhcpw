@@ -12,6 +12,7 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+import { Year } from "../../../domain/entities/Year";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
@@ -22,6 +23,10 @@ const CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION = [
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
+
+const latestAvailableYear = "2023";
+
+const isLatestAvailableYear = (year: Year) => year.id === latestAvailableYear;
 
 export function usePolicyExplorer({
     categories,
@@ -41,9 +46,7 @@ export function usePolicyExplorer({
     >();
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([
-        new Date().getFullYear().toString(),
-    ]);
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([latestAvailableYear]);
 
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
@@ -72,8 +75,10 @@ export function usePolicyExplorer({
             years => {
                 setYearsFilters(
                     years.map(year => {
-                        const isCurrentYear = new Date().getFullYear().toString() === year.id;
-                        return { value: year.id, text: isCurrentYear ? i18n.t("Latest avalaible year") : year.id };
+                        return {
+                            value: year.id,
+                            text: isLatestAvailableYear(year) ? i18n.t("Latest avalaible year") : year.id,
+                        };
                     })
                 );
             },
