@@ -1,7 +1,7 @@
 export const chart18Seed = {
-    categoryName: "Health Spending (Health accounts)",
-    categoryTag: "Spending on health (health accounts)",
-    friendlyName: "Out-of-pocket payments as a share of current spending on health",
+    categoryName: "Health spending (health accounts)",
+    categoryTag: "spending on health (health accounts)",
+    friendlyName: "out-of-pocket payments as a share of current spending on health",
     info: {
         infoNotes: [],
         sourceName: "GHED",

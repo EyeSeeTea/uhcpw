@@ -1,7 +1,7 @@
 export const chart16Seed = {
     categoryName: "Unmet need",
     categoryTag: "Unmet need",
-    friendlyName: "Unmet need for dental care due to cost, distance and waiting time by income quintile",
+    friendlyName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
     info: {
         infoNotes: [
             "Quintiles are based on income. The first quintile is labelled “poorest” and the fifth quintile “richest”.",

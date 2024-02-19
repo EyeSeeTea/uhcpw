@@ -1,6 +1,6 @@
 export const chart5Seed = {
     categoryName: "Comparative",
-    friendlyName: "Households with catastrophic health spending by consumption quintile",
+    friendlyName: "households with catastrophic health spending by consumption quintile",
     categoryTag: "International comparison",
     info: {
         infoNotes: [
