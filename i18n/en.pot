@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2023-12-05T13:05:27.978Z\n"
-"PO-Revision-Date: 2023-12-05T13:05:27.978Z\n"
+"POT-Creation-Date: 2024-01-19T09:28:12.335Z\n"
+"PO-Revision-Date: 2024-01-19T09:28:12.335Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -273,6 +273,24 @@ msgstr ""
 msgid "UHC watch video"
 msgstr ""
 
+msgid "Select Category"
+msgstr ""
+
+msgid "Select a category to track indicators and compare them across countries."
+msgstr ""
+
+msgid "Data are not available for all countries or all years."
+msgstr ""
+
+msgid "Data on financial protection are not currently available for"
+msgstr ""
+
+msgid ""
+"Andorra, Azerbaijan, Belarus, Iceland, Kazakhstan, Kyrgyzstan, Monaco, "
+"Norway, the Russian Federation, San Marino, Tajikistan, Turkmenistan and "
+"Uzbekistan."
+msgstr ""
+
 msgid "Category and indicator"
 msgstr ""
 
@@ -327,9 +345,6 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-msgid "Select Category"
-msgstr ""
-
 msgid ""
 "Select a category to track policies on population coverage, service "
 "coverage,  user charges and voluntary health insurance, explore gaps in "
@@ -340,9 +355,8 @@ msgid "Information is currently available for"
 msgstr ""
 
 msgid ""
-"Albania, Armenia, Austria, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, "
-"Kazakhstan, North Macedonia, Romania, Spain, Ukraine, the United Kingdom "
-"and Uzbekistan."
+"Albania, Armenia, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, Kazakhstan, "
+"North Macedonia, Romania, Spain, Ukraine, the United Kingdom and Uzbekistan."
 msgstr ""
 
 msgid "More countries coming soon. "
@@ -375,13 +389,13 @@ msgstr ""
 msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
-msgid "This category:indicator need select almost {{count}} countries"
-msgid_plural "This category:indicator need select almost {{count}} countries"
+msgid "This indicator needs at least {{count}} countries"
+msgid_plural "This indicator needs at least {{count}} countries"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "This category:indicator need select only {{count}} country"
-msgid_plural "This category:indicator need select only {{count}} country"
+msgid "This indicator needs to select only {{count}} country"
+msgid_plural "This indicator needs to select only {{count}} country"
 msgstr[0] ""
 msgstr[1] ""
 
