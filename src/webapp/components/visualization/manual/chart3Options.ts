@@ -6,7 +6,7 @@ const seriesNames: Record<string, string> = {
 };
 
 const seriesColors: Record<string, string> = {
-    kBOh0hUi5bW: "#5780c9",
+    kBOh0hUi5bW: "#185698",
 };
 
 export const chart3Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
