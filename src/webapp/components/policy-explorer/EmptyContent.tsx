@@ -20,7 +20,7 @@ export const EmptyContent: React.FC = () => {
                             {i18n.t("Information is currently available for")}{" "}
                             <b>
                                 {i18n.t(
-                                    "Albania, Armenia, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, Kazakhstan, North Macedonia, Romania, Spain, Ukraine, the United Kingdom and Uzbekistan."
+                                    "Albania, Armenia, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, Kazakhstan, North Macedonia, Romania, Spain, Tajikistan, Ukraine, the United Kingdom and Uzbekistan."
                                 )}
                             </b>
                             <br />
