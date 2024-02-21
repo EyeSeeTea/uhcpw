@@ -12,6 +12,8 @@ export const COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE = [
     "VGOzFKfSazN",
     "cfBaKMnsXd1",
     "XeWqwCw9G5s",
+    "fg8TSIHSGHX",
+    "yBqy4nxuOCA",
     "AjeCGGb8H76",
     "N9i1v07Ro0E",
     "VJrTuNXAg9G",
