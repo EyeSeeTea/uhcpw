@@ -55,11 +55,7 @@ export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = c
                 y,
             };
         })
-        .value()
-        .filter(serieData => {
-            //TODO: Delete removing ARM in hardcoded way
-            return serieData.country !== "ARM";
-        });
+        .value();
 
     const series = seriesSource.map(serie => {
         const serieData = countriesWithData.filter(country => filterByValue(serie.id, country));
@@ -155,7 +151,7 @@ type SerieType = "low" | "medium" | "medium-hight" | "hight" | "extra-hight";
 function filterByValue(serieId: SerieType, data: SerieData) {
     switch (serieId) {
         case "low":
-            return data.x > 0 && data.y > 0 && data.y < 2;
+            return data.x > 0 && data.y >= 0 && data.y < 2;
         case "medium":
             return data.x > 0 && data.y >= 2 && data.y < 5;
         case "medium-hight":
