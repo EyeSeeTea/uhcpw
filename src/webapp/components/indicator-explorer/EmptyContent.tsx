@@ -21,7 +21,7 @@ export const EmptyContent: React.FC = () => {
                             {i18n.t("Data on financial protection are not currently available for")}{" "}
                             <b>
                                 {i18n.t(
-                                    "Andorra, Azerbaijan, Belarus, Iceland, Kazakhstan, Kyrgyzstan, Monaco, Norway, the Russian Federation, San Marino, Tajikistan, Turkmenistan and Uzbekistan."
+                                    "Andorra, Azerbaijan, Belarus, Iceland, Kazakhstan, Kyrgyzstan, Monaco, Norway, the Russian Federation, San Marino, Turkmenistan and Uzbekistan."
                                 )}
                             </b>
                         </Text>
