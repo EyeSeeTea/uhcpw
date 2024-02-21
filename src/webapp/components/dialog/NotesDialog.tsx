@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
-import { colors } from "../../pages/app/themes/dhis2.theme";
+import i18n from "../../../locales";
 
 type DialogType = {
     isOpen: boolean;
@@ -30,15 +30,8 @@ export const NotesDialog: React.FC<DialogType> = ({
                         </Typography>
                     ))}
                     <Typography style={{ color: "#242626", marginTop: "10px" }}>
-                        Source:{" "}
-                        <a
-                            href={"/"}
-                            target="_blank"
-                            style={{ color: colors.accentPrimary, textDecoration: "none" }}
-                            rel="noopener noreferrer"
-                        >
-                            {sourceName}
-                        </a>
+                        {i18n.t("Source: ")}
+                        {sourceName}
                     </Typography>
                 </DialogContent>
                 <CloseIconButton onClick={onClose}>

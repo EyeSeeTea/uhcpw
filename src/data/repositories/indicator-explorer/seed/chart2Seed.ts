@@ -1,7 +1,7 @@
 export const chart2Seed = {
     categoryName: "Comparative",
     categoryTag: "Comparative chart",
-    friendlyName: "Households with impoverishing health spending",
+    friendlyName: "households with impoverishing health spending",
     info: {
         infoNotes: [],
         sourceName: "WHO Regional Office for Europe",

@@ -16,6 +16,7 @@ export const COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE = [
     "N9i1v07Ro0E",
     "VJrTuNXAg9G",
     "KwgjnBBpe5b",
+    "xb2ezJcUoSR",
 ];
 
 export const countryInfoProgram = "xgaF9UtfrzK";

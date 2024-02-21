@@ -2,7 +2,7 @@ export const linearHealthQuintileSeries = [
     {
         id: "Ks2z3Tx4SE5.Rh9j1wC8hNt",
         name: "Poorest quintile",
-        color: "#c00000",
+        color: "#ff0000",
         dataLabels: {
             enabled: false,
         },
@@ -14,7 +14,7 @@ export const linearHealthQuintileSeries = [
     {
         id: "CQq6HWprR0p",
         name: "Average",
-        color: "#ffc112",
+        color: "#ffc000",
         dataLabels: {
             enabled: false,
         },

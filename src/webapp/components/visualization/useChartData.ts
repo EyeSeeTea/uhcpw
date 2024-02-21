@@ -38,7 +38,14 @@ export function useChartData(
 
                     setChartData({
                         kind: "Loaded",
-                        visualization,
+                        visualization: {
+                            ...visualization,
+                            friendlyName: visualization.friendlyName
+                                ? `${visualization.friendlyName
+                                      .charAt(0)
+                                      .toUpperCase()}${visualization.friendlyName.slice(1)}`
+                                : visualization.friendlyName,
+                        },
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
