@@ -94,7 +94,18 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                       })
                     : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis },
 
-                yAxis: originalChartOptions.yAxis,
+                yAxis: customizedOptions?.yAxis
+                    ? Array.isArray(originalChartOptions.yAxis)
+                        ? originalChartOptions.yAxis.map((item, index) => {
+                              const customizedYAxis = Array.isArray(customizedOptions?.yAxis)
+                                  ? customizedOptions?.yAxis[index]
+                                  : customizedOptions?.yAxis;
+
+                              return { ...item, ...customizedYAxis };
+                          })
+                        : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
+                    : originalChartOptions.yAxis,
+
                 series: sortedSeries?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
                         ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })

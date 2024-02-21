@@ -8,7 +8,6 @@ import { chart4Options } from "./chart4Options";
 import { chart5Options } from "./chart5Options";
 import { chart6Options } from "./chart6Options";
 import { chart7Options } from "./chart7Options";
-import { chart22Options } from "./chart22Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -25,5 +24,4 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     GimM6ANOKhd: chartSource => chart5Options(chartSource),
     VB7bdJ8ZXya: chartSource => chart6Options(chartSource),
     mcNfvQaVbfy: chartSource => chart7Options(chartSource),
-    BYAT5Woc9EJ: chartSource => chart22Options(chartSource),
 };
