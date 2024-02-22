@@ -84,8 +84,8 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
     ],
     POLICY_OF_CHANGE_IN_COVERAGE_POLICY: [
         "mQYv2QxdflF",
-        "dfWsuiDvDlR",
         "JMYOe9wMIoE",
+        "dfWsuiDvDlR",
         "tdlh9Z0uktG",
         "PyBU3BkN3oQ",
         "kUBtnGm4EKp",
@@ -135,8 +135,8 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
 // NOTICE: This is because in the same year data could change up to 10 times and table have to show all the data changes
 export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS = {
     FIRST_CHANGE: ["xP4nCc5rpV4", "mQYv2QxdflF", "peIML3XRBaN", "CUSj5kPkJ0W", "mdnjNf5baYj"],
-    SECOND_CHANGE: ["AFxIxVuvvsZ", "dfWsuiDvDlR", "FKBHFNqiFM4", "fgsOChZT1Yp", "qJ9dWNT1HU1"],
-    THIRD_CHANGE: ["IjpUXUVF9bn", "JMYOe9wMIoE", "AZgRUJmVPNi", "M90TwNwsXjY", "rxDjH7GshzX"],
+    SECOND_CHANGE: ["AFxIxVuvvsZ", "JMYOe9wMIoE", "FKBHFNqiFM4", "fgsOChZT1Yp", "qJ9dWNT1HU1"],
+    THIRD_CHANGE: ["IjpUXUVF9bn", "dfWsuiDvDlR", "AZgRUJmVPNi", "M90TwNwsXjY", "rxDjH7GshzX"],
     FOURTH_CHANGE: ["Soj201VJFWL", "tdlh9Z0uktG", "jq0sGqVVTNW", "XZbHFY1652W", "BYbKtpEB0Hn"],
     FIFTH_CHANGE: ["JfqWVc1eCJl", "PyBU3BkN3oQ", "zvBP5xebI2D", "b5kKyrRkcHG", "L9klgnq75d8"],
     SIXTH_CHANGE: ["CEjDnfFPHAn", "kUBtnGm4EKp", "SfaynclXRLx", "Azmt9ndZOE2", "pUFqAJjXUfY"],
