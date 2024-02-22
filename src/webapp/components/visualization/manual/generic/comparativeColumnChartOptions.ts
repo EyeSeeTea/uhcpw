@@ -10,8 +10,16 @@ export const comparativeColumnChartOptions: (
     currentSerieColor?: string
 ) => Highcharts.Options = (chartSource, seriesNames, seriesColors, currentSerieColor) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
-        .orderBy(item => (item[1] ? chartSource.analyticsResponse.metaData.items[item[1]]?.code || "" : ""), "asc")
-        .value();
+        .groupBy(row => {
+            const orgUnitId = row[1]?.toString() || "";
+            const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
+            const year = row[2] || "";
+
+            return `${orgUnit} ${year} `;
+        })
+        .orderBy(items => _(items).sumBy(row => (row[3] ? +row[3] : 0)))
+        .value()
+        .flat();
 
     const groupByDx = _(orderRows)
         .groupBy(row => row[0])
