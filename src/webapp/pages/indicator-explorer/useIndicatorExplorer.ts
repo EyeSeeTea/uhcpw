@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { GlobalMessage, IndicatorExplorerState } from "./IndicatorExplorerState";
@@ -14,11 +14,9 @@ const allYearsFilters = generateYears().map(year => ({ value: year.id, text: yea
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
-    const {
-        selected: selectedCountries,
-        onSelectedChange: onSelectedCountryChange,
-        options: countryOptions,
-    } = countryFilter;
+    const { selected: selectedCountries, onSelectedChange: onSelectedCountryChange, options } = countryFilter;
+
+    const countryOptions = useMemo(() => options.filter(option => option.name !== "Greenland"), [options]);
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
