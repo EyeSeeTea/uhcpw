@@ -255,8 +255,8 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         </Typography>
                         <TreeView
                             disableSelection
-                            defaultCollapseIcon={<ArrowDropUpIcon />}
-                            defaultExpandIcon={<ArrowDropDownIcon />}
+                            defaultCollapseIcon={<ArrowDropUpIcon aria-label="collapse-icon" />}
+                            defaultExpandIcon={<ArrowDropDownIcon aria-label="expand-icon" />}
                             onNodeToggle={handleToggle}
                             expanded={expandedParents}
                             style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
