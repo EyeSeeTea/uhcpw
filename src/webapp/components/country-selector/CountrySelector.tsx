@@ -1,4 +1,4 @@
-import { InputAdornment, Menu, Typography } from "@material-ui/core";
+import { InputAdornment, Menu, Typography, Button } from "@material-ui/core";
 import React, { useCallback, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
@@ -13,6 +13,8 @@ import { SelectedChip } from "../selected-chip/SelectedChip";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 
+const EMPTY_IDS_ARRAY: string[] = [];
+
 export type CountryOption = {
     id: string;
     name: string;
@@ -23,24 +25,31 @@ export type CountryOption = {
 interface CountrySelectorProps {
     countries: CountryOption[];
     selectedIds?: string[];
-    onSelectedIdsChange?: (ids: string[]) => void;
+    onSelectedIdsChange: (ids: string[]) => void;
     fullWidth?: boolean;
     placeholder?: string;
     disabled?: boolean;
     label?: string;
     disabledCountries?: string[];
+    hasSelectAll?: boolean;
+    hasClearAll?: boolean;
+    topClearAll?: number;
+    allWidth?: boolean;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
     ({
         countries,
-        selectedIds = [],
+        selectedIds = EMPTY_IDS_ARRAY,
         onSelectedIdsChange,
-        fullWidth,
+        fullWidth = false,
         placeholder,
-        disabled,
+        disabled = false,
         label,
         disabledCountries,
+        hasSelectAll = false,
+        hasClearAll = false,
+        topClearAll = 0,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -118,8 +127,59 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             setExpandedParents(nodeIds);
         }, []);
 
+        const handleClear = useCallback(() => {
+            hasClearAll && onSelectedIdsChange([]);
+        }, [hasClearAll, onSelectedIdsChange]);
+
+        const handleSelectedAllCountriesInParent = useCallback(
+            (allCountriesInSelectedParent: CountryOption[], selected: boolean) => {
+                if (hasSelectAll) {
+                    const allowedCountriesInSelectedParent = allCountriesInSelectedParent.filter(
+                        ({ id }) => !disabledCountries?.includes(id)
+                    );
+
+                    const selectedCountries = selected
+                        ? [
+                              ...selectedIds,
+                              ...allowedCountriesInSelectedParent
+                                  .map(({ id }) => id)
+                                  .filter(id => !selectedIds.includes(id)),
+                          ]
+                        : selectedIds.filter(id => !allowedCountriesInSelectedParent.map(({ id }) => id).includes(id));
+
+                    onSelectedIdsChange(selectedCountries);
+                }
+            },
+            [disabledCountries, onSelectedIdsChange, selectedIds, hasSelectAll]
+        );
+
+        const isAllCountryParentSelected = useCallback(
+            (countryParentId: string) => {
+                if (hasSelectAll) {
+                    const finalChildrenAllowed = finalCountries
+                        .filter(country => country.parents.some(p => p.id === countryParentId))
+                        .filter(({ id }) => !disabledCountries?.includes(id));
+                    return (
+                        !!finalChildrenAllowed.length &&
+                        finalChildrenAllowed.every(country => selectedIds.includes(country.id))
+                    );
+                }
+            },
+            [disabledCountries, finalCountries, selectedIds, hasSelectAll]
+        );
+
+        const isCountryParentDisabled = useCallback(
+            (allCountriesInSelectedParent: CountryOption[]) => {
+                const finalChildrenAllowed = allCountriesInSelectedParent.filter(
+                    ({ id }) => !disabledCountries?.includes(id)
+                );
+                return hasSelectAll && !finalChildrenAllowed.length;
+            },
+            [disabledCountries, hasSelectAll]
+        );
+
         return (
-            <>
+            <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
                     label={label}
                     aria-label="Country selector"
@@ -212,7 +272,17 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
 
                                 return (
                                     <div key={nindex}>
-                                        <Node nodeId={parent.id} name={parent.name} selectedCount={selectedCount}>
+                                        <Node
+                                            nodeId={parent.id}
+                                            name={parent.name}
+                                            selectedCount={selectedCount}
+                                            onSelectedChange={(_nodeId: string, selected: boolean) =>
+                                                handleSelectedAllCountriesInParent(finalChildren, selected)
+                                            }
+                                            selected={isAllCountryParentSelected(parent.id)}
+                                            disabled={isCountryParentDisabled(finalChildren)}
+                                            hasSelectAll={hasSelectAll}
+                                        >
                                             {finalChildren.map((child, lindex) => {
                                                 const selected = selectedIds.find(id => id === child.id) !== undefined;
 
@@ -234,10 +304,30 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         </TreeView>
                     </div>
                 </StyledMenu>
-            </>
+                {(selectedIds || []).length > 0 && hasClearAll && (
+                    <ClearButton variant="text" onClick={handleClear} disabled={disabled} top={topClearAll}>
+                        {i18n.t("Clear all")}
+                    </ClearButton>
+                )}
+            </Container>
         );
     }
 );
+
+const Container = styled.div<{ $fullWidth: boolean }>`
+    position: relative;
+    width: ${props => (props.$fullWidth ? "100%" : "unset")};
+`;
+
+const ClearButton = styled(Button)<{ top: number }>`
+    color: orange;
+    text-transform: none;
+    position: absolute;
+    top: ${props => props.top}px;
+    right: 0;
+    padding: 0px;
+    font-weight: 400;
+`;
 
 const SelectedContainer = styled.div`
     max-width: 100%;
