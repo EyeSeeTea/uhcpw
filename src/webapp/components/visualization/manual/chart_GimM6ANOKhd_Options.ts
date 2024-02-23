@@ -17,6 +17,6 @@ const seriesColors: Record<string, string> = {
     GeiKSyJLeKt: "#203864",
 };
 
-export const chart5Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+export const chart_GimM6ANOKhd_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     return comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors);
 };
