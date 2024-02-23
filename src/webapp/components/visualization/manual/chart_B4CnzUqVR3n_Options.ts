@@ -9,7 +9,7 @@ const seriesColors: Record<string, string> = {
     Ce6oTgNCapd: "#00b050",
 };
 
-export const chart4Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     return {
         ...comparativeColumnChartOptions(chartSource, seriesNames, seriesColors, "#c00000"),
         legend: {
