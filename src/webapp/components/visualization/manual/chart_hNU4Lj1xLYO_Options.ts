@@ -3,7 +3,7 @@ import _ from "lodash";
 import { ChartSource } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 
-export const chart1Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
         .groupBy(row => row[1])
         .value();

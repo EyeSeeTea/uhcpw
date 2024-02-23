@@ -8,7 +8,7 @@ import { chart15Seed } from "./chart15Seed";
 import { chart16Seed } from "./chart16Seed";
 import { chart17Seed } from "./chart17Seed";
 import { chart18Seed } from "./chart18Seed";
-import { chart1Seed } from "./chart1Seed";
+import { chart_hNU4Lj1xLYO_Seed } from "./chart_hNU4Lj1xLYO_Seed";
 import { chart21Seed } from "./chart21Seed";
 import { chart22Seed } from "./chart22Seed";
 import { chart2Seed } from "./chart2Seed";
@@ -21,7 +21,7 @@ import { chart8Seed } from "./chart8Seed";
 import { chart9Seed } from "./chart9Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
-    hNU4Lj1xLYO: chart1Seed,
+    hNU4Lj1xLYO: chart_hNU4Lj1xLYO_Seed,
     dbc87Ljw8uN: chart2Seed,
     NOukqSxCI63: chart3Seed,
     B4CnzUqVR3n: chart4Seed,

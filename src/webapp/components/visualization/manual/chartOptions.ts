@@ -1,7 +1,7 @@
 import { Country } from "../../../../domain/entities/Country";
 import { Analytics } from "../../../../domain/entities/indicator-explorer/Analytics";
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
-import { chart1Options } from "./chart1Options";
+import { chart_hNU4Lj1xLYO_Options } from "./chart_hNU4Lj1xLYO_Options";
 import { chart2Options } from "./chart2Options";
 import { chart3Options } from "./chart3Options";
 import { chart4Options } from "./chart4Options";
@@ -17,7 +17,7 @@ export interface ChartSource {
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
-    hNU4Lj1xLYO: chartSource => chart1Options(chartSource),
+    hNU4Lj1xLYO: chartSource => chart_hNU4Lj1xLYO_Options(chartSource),
     dbc87Ljw8uN: chartSource => chart2Options(chartSource),
     NOukqSxCI63: chartSource => chart3Options(chartSource),
     B4CnzUqVR3n: chartSource => chart4Options(chartSource),
