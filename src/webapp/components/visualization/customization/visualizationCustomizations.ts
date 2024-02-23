@@ -6,7 +6,7 @@ import { chart_zkEtsohZTTf_Customizations } from "./charts/chart_zkEtsohZTTf_Cus
 import { chart_rT39aStYqI3_Customizations } from "./charts/chart_rT39aStYqI3_Customizations";
 import { chart_nhaxK33nlhb_Customizations } from "./charts/chart_nhaxK33nlhb_Customizations";
 import { chart_OB4SCQfCzwz_Customizations } from "./charts/chart_OB4SCQfCzwz_Customizations";
-import { chart18Customizations } from "./charts/chart18Customizations";
+import { chart_d3kq9OCv8tH_Customizations } from "./charts/chart_d3kq9OCv8tH_Customizations";
 import { chart21Customizations } from "./charts/chart21Customizations";
 import { chart22Customizations } from "./charts/chart22Customizations";
 import { chart_jFtGKQIQTGp_Customizations } from "./charts/chart_jFtGKQIQTGp_Customizations";
@@ -24,7 +24,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     rT39aStYqI3: chart_rT39aStYqI3_Customizations,
     nhaxK33nlhb: chart_nhaxK33nlhb_Customizations,
     OB4SCQfCzwz: chart_OB4SCQfCzwz_Customizations,
-    d3kq9OCv8tH: chart18Customizations,
+    d3kq9OCv8tH: chart_d3kq9OCv8tH_Customizations,
     ZZAcIv6O9LY: chart21Customizations,
     BYAT5Woc9EJ: chart22Customizations,
 };
