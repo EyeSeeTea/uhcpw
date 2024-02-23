@@ -1,4 +1,4 @@
 import { ChartCustomization } from "../types";
 import { linearDentalQuintileChart } from "./generic/linearDentalQuintileChart";
 
-export const chart16Customizations: ChartCustomization = { ...linearDentalQuintileChart };
+export const chart_nhaxK33nlhb_Customizations: ChartCustomization = { ...linearDentalQuintileChart };
