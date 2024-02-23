@@ -16,7 +16,7 @@ import { chart_NOukqSxCI63_Seed } from "./chart_NOukqSxCI63_Seed";
 import { chart_B4CnzUqVR3n_Seed } from "./chart_B4CnzUqVR3n_Seed";
 import { chart_GimM6ANOKhd_Seed } from "./chart_GimM6ANOKhd_Seed";
 import { chart_VB7bdJ8ZXya_Seed } from "./chart_VB7bdJ8ZXya_Seed";
-import { chart7Seed } from "./chart7Seed";
+import { chart_mcNfvQaVbfy_Seed } from "./chart_mcNfvQaVbfy_Seed";
 import { chart8Seed } from "./chart8Seed";
 import { chart9Seed } from "./chart9Seed";
 
@@ -27,7 +27,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     B4CnzUqVR3n: chart_B4CnzUqVR3n_Seed,
     GimM6ANOKhd: chart_GimM6ANOKhd_Seed,
     VB7bdJ8ZXya: chart_VB7bdJ8ZXya_Seed,
-    mcNfvQaVbfy: chart7Seed,
+    mcNfvQaVbfy: chart_mcNfvQaVbfy_Seed,
     jFtGKQIQTGp: chart8Seed,
     Y31jQX5PVdI: chart9Seed,
     geNXcoXc3mf: chart10Seed,
