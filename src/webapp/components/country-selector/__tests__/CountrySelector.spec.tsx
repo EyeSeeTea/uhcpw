@@ -175,8 +175,8 @@ describe("Given CountrySelector", () => {
             await selectAllCountries();
             userEvent.keyboard("{Escape}");
 
-            const clearButton = screen.getByText(/clear all/i);
-            expect(clearButton).toBeInTheDocument();
+            const clearButtons = screen.getAllByText(/clear all/i);
+            expect(clearButtons[0]).toBeInTheDocument();
         });
         it("Then should clear all when click on clear all button", async () => {
             await selectAllCountries();
@@ -199,9 +199,8 @@ async function selectAllCountries() {
 }
 
 async function clickOnClearAll() {
-    const clearButton = screen.getByText(/clear all/i);
-
-    return userEvent.click(clearButton);
+    const clearButtons = screen.getAllByText(/clear all/i);
+    if (clearButtons[0]) return userEvent.click(clearButtons[0]);
 }
 
 function expandCountriesParentNode(index: 0 | 1 | 2) {

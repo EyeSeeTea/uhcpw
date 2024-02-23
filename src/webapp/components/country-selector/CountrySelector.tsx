@@ -34,7 +34,6 @@ interface CountrySelectorProps {
     hasSelectAll?: boolean;
     hasClearAll?: boolean;
     topClearAll?: number;
-    allWidth?: boolean;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
@@ -178,6 +177,23 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             [disabledCountries, hasSelectAll]
         );
 
+        const areAllCountriesSelected = useMemo(() => {
+            return (
+                finalCountries.filter(({ id }) => !selectedIds?.includes(id) && !disabledCountries?.includes(id))
+                    ?.length === 0
+            );
+        }, [disabledCountries, finalCountries, selectedIds]);
+
+        const handleSelectAll = useCallback(() => {
+            if (hasSelectAll) {
+                const countriesToSelect = finalCountries
+                    .filter(({ id }) => !disabledCountries?.includes(id))
+                    .map(({ id }) => id);
+
+                onSelectedIdsChange(countriesToSelect);
+            }
+        }, [disabledCountries, finalCountries, hasSelectAll, onSelectedIdsChange]);
+
         return (
             <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
@@ -250,9 +266,31 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             }}
                         />
                         <br />
-                        <Typography variant="body1" gutterBottom>
-                            {i18n.t("Select country")}
-                        </Typography>
+                        <Container $fullWidth={fullWidth}>
+                            <Typography variant="body1" gutterBottom>
+                                {i18n.t("Select country")}
+                            </Typography>
+                            {hasSelectAll && (
+                                <StyledButton
+                                    variant="text"
+                                    onClick={handleSelectAll}
+                                    disabled={areAllCountriesSelected}
+                                    right={100}
+                                >
+                                    {i18n.t("Select all")}
+                                </StyledButton>
+                            )}
+                            {hasClearAll && (
+                                <StyledButton
+                                    variant="text"
+                                    onClick={handleClear}
+                                    disabled={(selectedIds || []).length === 0}
+                                    right={30}
+                                >
+                                    {i18n.t("Clear all")}
+                                </StyledButton>
+                            )}
+                        </Container>
                         <TreeView
                             disableSelection
                             defaultCollapseIcon={<ArrowDropUpIcon aria-label="collapse-icon" />}
@@ -305,9 +343,9 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     </div>
                 </StyledMenu>
                 {(selectedIds || []).length > 0 && hasClearAll && (
-                    <ClearButton variant="text" onClick={handleClear} disabled={disabled} top={topClearAll}>
+                    <StyledButton variant="text" onClick={handleClear} disabled={disabled} top={topClearAll}>
                         {i18n.t("Clear all")}
-                    </ClearButton>
+                    </StyledButton>
                 )}
             </Container>
         );
@@ -319,12 +357,12 @@ const Container = styled.div<{ $fullWidth: boolean }>`
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
 `;
 
-const ClearButton = styled(Button)<{ top: number }>`
+const StyledButton = styled(Button)<{ top?: number; right?: number }>`
     color: orange;
     text-transform: none;
     position: absolute;
-    top: ${props => props.top}px;
-    right: 0;
+    top: ${props => props.top || 0}px;
+    right: ${props => props.right || 0}px;
     padding: 0px;
     font-weight: 400;
 `;
