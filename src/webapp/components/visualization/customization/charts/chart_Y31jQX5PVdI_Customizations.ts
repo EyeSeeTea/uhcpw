@@ -1,6 +1,6 @@
 import { ChartCustomization } from "../types";
 
-export const chart9Customizations: ChartCustomization = {
+export const chart_Y31jQX5PVdI_Customizations: ChartCustomization = {
     title: { text: "" },
     legend: { enabled: false },
     series: [
