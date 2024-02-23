@@ -1,11 +1,14 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { InputAdornment, Menu, Typography } from "@material-ui/core";
+import { InputAdornment, Menu, Typography, Button } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import CloseIcon from "@material-ui/icons/Close";
 import { TreeView } from "@material-ui/lab";
 import styled from "styled-components";
+import { isEmpty } from "lodash";
 
+import i18n from "../../../../locales";
+import { CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION } from "../../../pages/policy-explorer/usePolicyExplorer";
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 import SearchInput from "../../search-input/SearchInput";
 import { Node } from "./Node";
@@ -36,6 +39,7 @@ interface CategorySelectorProps {
     disabled?: boolean;
     label?: string;
     categoriesNotShowSubcategories?: string[];
+    moreThanOneCountrySelected?: boolean;
 }
 
 export const CategorySelector = React.memo(
@@ -49,6 +53,7 @@ export const CategorySelector = React.memo(
         label = "",
         disabledCategories,
         categoriesNotShowSubcategories = EMPTY_IDS_ARRAY,
+        moreThanOneCountrySelected = false,
     }: CategorySelectorProps) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -124,9 +129,9 @@ export const CategorySelector = React.memo(
             (categoryId: string) => {
                 const selectedCategoryOption = categoryOptions.find(({ value }) => value === categoryId);
                 return selectedCategoryOption?.subcategories.every(
-                    ({ value }) =>
+                    subcategory =>
                         !!selectedCategoriesWithSubcategories &&
-                        selectedCategoriesWithSubcategories[categoryId]?.includes(value)
+                        selectedCategoriesWithSubcategories[categoryId]?.includes(subcategory.value)
                 );
             },
             [categoryOptions, selectedCategoriesWithSubcategories]
@@ -165,18 +170,71 @@ export const CategorySelector = React.memo(
             return categoryOptions
                 .map(category => ({
                     ...category,
-                    subcategories: category.subcategories.filter(subcategory =>
-                        subcategory.text.toLowerCase().includes(searchTerm.toLowerCase())
-                    ),
+                    subcategories: CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category.value)
+                        ? category.subcategories
+                        : category.subcategories.filter(subcategory =>
+                              subcategory.text.toLowerCase().includes(searchTerm.toLowerCase())
+                          ),
                 }))
                 .filter(
-                    ({ text, subcategories }) =>
-                        subcategories.length || text.toLowerCase().includes(searchTerm.toLowerCase())
+                    ({ value, text, subcategories }) =>
+                        (subcategories.length && !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(value)) ||
+                        text.toLowerCase().includes(searchTerm.toLowerCase())
                 );
         }, [categoryOptions, searchTerm]);
 
+        const handleClear = useCallback(() => {
+            onSelect && onSelect(undefined);
+        }, [onSelect]);
+
+        const categoriesToBeSelected = useMemo(() => {
+            return filteredCategories.filter(
+                ({ value }) =>
+                    !disabledCategories.includes(value) &&
+                    ((!!selectedCategoriesWithSubcategories &&
+                        !Object.keys(selectedCategoriesWithSubcategories).includes(value)) ||
+                        isEmpty(selectedCategoriesWithSubcategories))
+            );
+        }, [disabledCategories, filteredCategories, selectedCategoriesWithSubcategories]);
+
+        const handleSelectAll = useCallback(() => {
+            const categories = categoriesToBeSelected.reduce((accCategoriesToSelect, category) => {
+                return {
+                    ...accCategoriesToSelect,
+                    [category.value]: category.subcategories.map(({ value }) => value),
+                };
+            }, {});
+
+            !isEmpty(categories) &&
+                onSelect &&
+                onSelect({
+                    ...selectedCategoriesWithSubcategories,
+                    ...categories,
+                });
+        }, [onSelect, categoriesToBeSelected, selectedCategoriesWithSubcategories]);
+
+        const disableSelectAll = useMemo(() => {
+            const normalCategories = filteredCategories.filter(
+                category =>
+                    !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category.value) &&
+                    !disabledCategories.includes(category.value)
+            );
+
+            const specialCategories = filteredCategories.filter(
+                category =>
+                    CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category.value) &&
+                    !disabledCategories.includes(category.value)
+            );
+
+            const bothTypesOfCategoriesCanbeSelected = normalCategories.length && specialCategories.length;
+            return (
+                (moreThanOneCountrySelected && !!bothTypesOfCategoriesCanbeSelected) ||
+                categoriesToBeSelected.length === 0
+            );
+        }, [categoriesToBeSelected.length, disabledCategories, filteredCategories, moreThanOneCountrySelected]);
+
         return (
-            <>
+            <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
                     label={label}
                     onClick={handleClick}
@@ -235,9 +293,27 @@ export const CategorySelector = React.memo(
                             }}
                         />
                         <br />
-                        <Typography variant="body1" gutterBottom>
-                            {placeholder}
-                        </Typography>
+                        <Container>
+                            <Typography variant="body1" gutterBottom>
+                                {placeholder}
+                            </Typography>
+                            <StyledButton
+                                variant="text"
+                                onClick={handleSelectAll}
+                                disabled={disableSelectAll}
+                                right={100}
+                            >
+                                {i18n.t("Select all")}
+                            </StyledButton>
+                            <StyledButton
+                                variant="text"
+                                onClick={handleClear}
+                                disabled={isEmpty(selectedCategoriesWithSubcategories)}
+                                right={30}
+                            >
+                                {i18n.t("Clear all")}
+                            </StyledButton>
+                        </Container>
                         <TreeView
                             disableSelection
                             aria-label="Categories tree"
@@ -274,10 +350,30 @@ export const CategorySelector = React.memo(
                         </TreeView>
                     </div>
                 </StyledMenu>
-            </>
+                {!isEmpty(selectedCategoriesWithSubcategories) && (
+                    <StyledButton variant="text" onClick={handleClear} disabled={disabled}>
+                        {i18n.t("Clear all")}
+                    </StyledButton>
+                )}
+            </Container>
         );
     }
 );
+
+const Container = styled.div<{ $fullWidth?: boolean }>`
+    position: relative;
+    width: ${props => (props.$fullWidth ? "100%" : "unset")};
+`;
+
+const StyledButton = styled(Button)<{ right?: number }>`
+    color: orange;
+    text-transform: none;
+    position: absolute;
+    top: 0;
+    right: ${props => props.right || 0}px;
+    padding: 0px;
+    font-weight: 400;
+`;
 
 const SelectedContainer = styled.div`
     width: 100%;
