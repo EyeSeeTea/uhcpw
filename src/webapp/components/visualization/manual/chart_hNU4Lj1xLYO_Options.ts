@@ -76,13 +76,15 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
             type: "scatter",
         },
         xAxis: {
-            title: { text: "Out-of-pocket payments as a share of current spending on health (%)" },
+            title: { text: "Out-of-pocket payments as a share of current spending on health (%)", margin: 20 },
             min: 0,
         },
         yAxis: {
             title: {
                 text: "Households with catastrophic health spending (%)",
+                margin: 20,
             },
+            max: 20,
         },
         legend: { enabled: false },
         series: [
@@ -107,6 +109,7 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
             series: {
                 dataLabels: {
                     useHTML: true,
+                    allowOverlap: true,
                     enabled: true,
                     align: "right",
                     verticalAlign: "middle",
