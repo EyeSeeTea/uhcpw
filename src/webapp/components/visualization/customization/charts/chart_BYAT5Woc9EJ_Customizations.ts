@@ -1,7 +1,7 @@
 import { ChartCustomization } from "../types";
 import { linearByCountryChart } from "./generic/linearByCountryChart";
 
-export const chart22Customizations: ChartCustomization = {
+export const chart_BYAT5Woc9EJ_Customizations: ChartCustomization = {
     ...linearByCountryChart,
     yAxis: {
         title: {
