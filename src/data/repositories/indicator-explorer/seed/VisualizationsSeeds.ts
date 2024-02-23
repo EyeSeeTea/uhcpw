@@ -1,6 +1,6 @@
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { chart_geNXcoXc3mf_Seed } from "./chart_geNXcoXc3mf_Seed";
-import { chart11Seed } from "./chart11Seed";
+import { chart_hpO1ZyFXpCz_Seed } from "./chart_hpO1ZyFXpCz_Seed";
 import { chart12Seed } from "./chart12Seed";
 import { chart13Seed } from "./chart13Seed";
 import { chart14Seed } from "./chart14Seed";
@@ -31,7 +31,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Seed,
     Y31jQX5PVdI: chart_Y31jQX5PVdI_Seed,
     geNXcoXc3mf: chart_geNXcoXc3mf_Seed,
-    hpO1ZyFXpCz: chart11Seed,
+    hpO1ZyFXpCz: chart_hpO1ZyFXpCz_Seed,
     ZxNdsDM8NSb: chart12Seed,
     xJhFIBuwGVC: chart13Seed,
     zkEtsohZTTf: chart14Seed,

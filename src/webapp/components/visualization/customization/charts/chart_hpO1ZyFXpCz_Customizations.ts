@@ -1,7 +1,7 @@
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
 
-export const chart11Customizations: ChartCustomization = {
+export const chart_hpO1ZyFXpCz_Customizations: ChartCustomization = {
     title: { text: "" },
     legend: { ...baseLegend, reversed: true },
     series: [
