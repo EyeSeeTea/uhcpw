@@ -1,6 +1,6 @@
 import { chart_geNXcoXc3mf_Customizations } from "./charts/chart_geNXcoXc3mf_Customizations";
 import { chart_hpO1ZyFXpCz_Customizations } from "./charts/chart_hpO1ZyFXpCz_Customizations";
-import { chart12Customizations } from "./charts/chart12Customizations";
+import { chart_ZxNdsDM8NSb_Customizations } from "./charts/chart_ZxNdsDM8NSb_Customizations";
 import { chart13Customizations } from "./charts/chart13Customizations";
 import { chart14Customizations } from "./charts/chart14Customizations";
 import { chart15Customizations } from "./charts/chart15Customizations";
@@ -18,7 +18,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     Y31jQX5PVdI: chart_Y31jQX5PVdI_Customizations,
     geNXcoXc3mf: chart_geNXcoXc3mf_Customizations,
     hpO1ZyFXpCz: chart_hpO1ZyFXpCz_Customizations,
-    ZxNdsDM8NSb: chart12Customizations,
+    ZxNdsDM8NSb: chart_ZxNdsDM8NSb_Customizations,
     xJhFIBuwGVC: chart13Customizations,
     zkEtsohZTTf: chart14Customizations,
     rT39aStYqI3: chart15Customizations,
