@@ -1,4 +1,4 @@
-import { chart10Customizations } from "./charts/chart10Customizations";
+import { chart_geNXcoXc3mf_Customizations } from "./charts/chart_geNXcoXc3mf_Customizations";
 import { chart11Customizations } from "./charts/chart11Customizations";
 import { chart12Customizations } from "./charts/chart12Customizations";
 import { chart13Customizations } from "./charts/chart13Customizations";
@@ -16,7 +16,7 @@ import { ChartCustomization } from "./types";
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Customizations,
     Y31jQX5PVdI: chart_Y31jQX5PVdI_Customizations,
-    geNXcoXc3mf: chart10Customizations,
+    geNXcoXc3mf: chart_geNXcoXc3mf_Customizations,
     hpO1ZyFXpCz: chart11Customizations,
     ZxNdsDM8NSb: chart12Customizations,
     xJhFIBuwGVC: chart13Customizations,
