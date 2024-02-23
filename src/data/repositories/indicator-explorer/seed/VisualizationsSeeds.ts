@@ -11,7 +11,7 @@ import { chart18Seed } from "./chart18Seed";
 import { chart_hNU4Lj1xLYO_Seed } from "./chart_hNU4Lj1xLYO_Seed";
 import { chart21Seed } from "./chart21Seed";
 import { chart22Seed } from "./chart22Seed";
-import { chart2Seed } from "./chart2Seed";
+import { chart_dbc87Ljw8uN_Seed } from "./chart_dbc87Ljw8uN_Seed";
 import { chart3Seed } from "./chart3Seed";
 import { chart4Seed } from "./chart4Seed";
 import { chart5Seed } from "./chart5Seed";
@@ -22,7 +22,7 @@ import { chart9Seed } from "./chart9Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     hNU4Lj1xLYO: chart_hNU4Lj1xLYO_Seed,
-    dbc87Ljw8uN: chart2Seed,
+    dbc87Ljw8uN: chart_dbc87Ljw8uN_Seed,
     NOukqSxCI63: chart3Seed,
     B4CnzUqVR3n: chart4Seed,
     GimM6ANOKhd: chart5Seed,
