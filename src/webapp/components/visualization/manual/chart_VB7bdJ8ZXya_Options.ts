@@ -19,7 +19,7 @@ const seriesColors: Record<string, string> = {
     qgE5NJ9Nyaq: "#c00000",
 };
 
-export const chart6Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     return {
         ...comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors),
         yAxis: {
