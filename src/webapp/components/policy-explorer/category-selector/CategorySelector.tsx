@@ -187,33 +187,29 @@ export const CategorySelector = React.memo(
             onSelect && onSelect(undefined);
         }, [onSelect]);
 
-        const categoriesToBeSelected = useMemo(() => {
-            return filteredCategories.filter(
+        const handleSelectAll = useCallback(() => {
+            const categoriesToSelect = filteredCategories.reduce((accCategoriesToSelect, category) => {
+                if (!disabledCategories.includes(category.value)) {
+                    return {
+                        ...accCategoriesToSelect,
+                        [category.value]: category.subcategories.map(({ value }) => value),
+                    };
+                }
+                return accCategoriesToSelect;
+            }, {});
+
+            !isEmpty(categoriesToSelect) && onSelect && onSelect(categoriesToSelect);
+        }, [disabledCategories, filteredCategories, onSelect]);
+
+        const disableSelectAll = useMemo(() => {
+            const categoriesToBeSelected = filteredCategories.filter(
                 ({ value }) =>
                     !disabledCategories.includes(value) &&
                     ((!!selectedCategoriesWithSubcategories &&
                         !Object.keys(selectedCategoriesWithSubcategories).includes(value)) ||
                         isEmpty(selectedCategoriesWithSubcategories))
             );
-        }, [disabledCategories, filteredCategories, selectedCategoriesWithSubcategories]);
 
-        const handleSelectAll = useCallback(() => {
-            const categories = categoriesToBeSelected.reduce((accCategoriesToSelect, category) => {
-                return {
-                    ...accCategoriesToSelect,
-                    [category.value]: category.subcategories.map(({ value }) => value),
-                };
-            }, {});
-
-            !isEmpty(categories) &&
-                onSelect &&
-                onSelect({
-                    ...selectedCategoriesWithSubcategories,
-                    ...categories,
-                });
-        }, [onSelect, categoriesToBeSelected, selectedCategoriesWithSubcategories]);
-
-        const disableSelectAll = useMemo(() => {
             const normalCategories = filteredCategories.filter(
                 category =>
                     !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category.value) &&
@@ -231,7 +227,7 @@ export const CategorySelector = React.memo(
                 (moreThanOneCountrySelected && !!bothTypesOfCategoriesCanbeSelected) ||
                 categoriesToBeSelected.length === 0
             );
-        }, [categoriesToBeSelected.length, disabledCategories, filteredCategories, moreThanOneCountrySelected]);
+        }, [disabledCategories, filteredCategories, moreThanOneCountrySelected, selectedCategoriesWithSubcategories]);
 
         return (
             <Container $fullWidth={fullWidth}>
