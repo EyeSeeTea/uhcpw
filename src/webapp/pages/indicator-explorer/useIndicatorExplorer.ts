@@ -99,7 +99,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
         if (visualization?.minCountryFilter && (selectedCountries?.length || 0) < visualization.minCountryFilter) {
             setGlobalMessage({
-                text: i18n.t(`This indicator needs at least {{count}} countries`, {
+                text: i18n.t(`For this indicator, select at least {{count}} countries`, {
                     count: visualization.minCountryFilter,
                 }),
                 type: "info",
@@ -108,10 +108,9 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             visualization?.maxCountryFilter &&
             (selectedCountries?.length || 0) > visualization.maxCountryFilter
         ) {
-            const { minCountryFilter } = visualization;
             setGlobalMessage({
-                text: i18n.t(`This indicator needs to select only {{count}} country`, {
-                    count: minCountryFilter,
+                text: i18n.t(`For this indicator, select {{count}} country only`, {
+                    count: visualization.maxCountryFilter,
                 }),
                 type: "info",
             });
