@@ -2,7 +2,7 @@ import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
 import { rotateXAxis } from "../xAxis/rotateXAxis";
 
-export const chart17Customizations: ChartCustomization = {
+export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
     title: { text: "" },
     legend: { ...baseLegend },
     series: [
