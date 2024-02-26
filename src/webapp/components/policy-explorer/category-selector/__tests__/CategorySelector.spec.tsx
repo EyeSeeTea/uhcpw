@@ -134,9 +134,7 @@ describe("Given CategorySelector component", () => {
 
             await focusComponent();
 
-            await expandCategoryByName(firstCategoryName);
             await selectCategoryByName(firstCategoryName);
-            await expandCategoryByName(secondCategoryName);
             await selectCategoryByName(secondCategoryName);
 
             userEvent.keyboard("{Escape}");
@@ -196,10 +194,6 @@ async function selectCategoryByName(name: string) {
     });
 
     return userEvent.click(categoryCheckbox);
-}
-
-async function expandCategoryByName(name: string) {
-    return userEvent.click(await screen.findByText(name));
 }
 
 async function focusComponent() {
