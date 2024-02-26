@@ -80,16 +80,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Source: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <Link
-                                            href={info.source}
-                                            style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
-                                        </Link>
+                                        <CreditsText>
+                                            {i18n.t(
+                                                "Source: WHO Barcelona Office for Health Systems Financing (2023)",
+                                                { nsSeparator: false }
+                                            )}
+                                        </CreditsText>
                                     </GeneralRow>
 
                                     <GeneralRow>
@@ -173,8 +169,4 @@ const CreditsText = styled(Typography)`
     color: black;
     font-weight: 500;
     font-size: 0.875rem;
-`;
-
-const Link = styled.a`
-    text-decoration: none;
 `;
