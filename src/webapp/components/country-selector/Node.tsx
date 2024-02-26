@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { Typography, Checkbox } from "@material-ui/core";
 import { TreeItem } from "@material-ui/lab";
 import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank";
@@ -25,14 +25,14 @@ export const Node: React.FC<NodeProps> = ({
     disabled = false,
     hasSelectAll = false,
 }) => {
-    const handleCheckboxClick = React.useCallback(
+    const handleCheckboxClick = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             onSelectedChange && onSelectedChange(nodeId, event.target.checked);
         },
         [nodeId, onSelectedChange]
     );
 
-    const handleLabelClick = React.useCallback(
+    const handleLabelClick = useCallback(
         (event: React.MouseEvent<Element, MouseEvent>) => {
             if (hasSelectAll && !disabled) {
                 event.preventDefault();
