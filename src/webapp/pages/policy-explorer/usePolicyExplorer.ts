@@ -171,19 +171,13 @@ export function usePolicyExplorer({
         [dataByTable, dataOrientationByTable, initialDataByTable]
     );
 
-    const onDownload = useCallback(
-        (categoryId: string) => {
-            if (!dataByTable || !dataOrientationByTable) return;
+    const onDownload = useCallback(() => {
+        if (!dataByTable || !dataOrientationByTable) return;
 
-            const dataOrientation = dataOrientationByTable[categoryId];
-            const initialDataOrientation = INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId) ? "normal" : "inverted";
-
-            compositionRoot.policyExplorer.download
-                .execute(dataByTable, categoryId, dataOrientation || initialDataOrientation)
-                .runAsync();
-        },
-        [compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]
-    );
+        compositionRoot.policyExplorer.download
+            .execute(categoryFilters, dataByTable, dataOrientationByTable)
+            .runAsync();
+    }, [categoryFilters, compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]);
 
     const disabledCategories = useMemo(() => {
         const isMoreThanOneCountrySelected = countryFilter?.selected?.length && countryFilter?.selected?.length > 1;

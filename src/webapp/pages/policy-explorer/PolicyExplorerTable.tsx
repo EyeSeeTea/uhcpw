@@ -4,7 +4,6 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
-import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ReactMarkdown from "react-markdown";
 import { DataOrientation } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
@@ -16,14 +15,13 @@ interface PolicyExplorerTableProps {
     rows?: PolicyExplorerCell[][];
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;
-    onDownload: (categoryId: string) => void;
     referencesRef: RefObject<HTMLDivElement>;
 }
 
 const EMPTY_URL = "/";
 
 export const PolicyExplorerTable = React.memo(
-    ({ category, rows, onSwitchRowColumn, onDownload, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
+    ({ category, rows, onSwitchRowColumn, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
         const handleClickEmptyUrl = useCallback(
             event => {
                 event.preventDefault();
@@ -76,15 +74,6 @@ export const PolicyExplorerTable = React.memo(
                                 onClick={() => onSwitchRowColumn(category.value)}
                             >
                                 {i18n.t("Switch row/column")}
-                            </CustomButton>
-                            <CustomButton
-                                variant="contained"
-                                startIcon={<DownloadIcon />}
-                                color="primary"
-                                style={{ marginLeft: 20 }}
-                                onClick={() => onDownload(category.value)}
-                            >
-                                {i18n.t("Download")}
                             </CustomButton>
                         </Row>
                     </Row>

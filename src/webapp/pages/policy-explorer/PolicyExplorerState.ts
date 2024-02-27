@@ -13,7 +13,7 @@ export type PolicyExplorerState = {
     dataOrientationByTable?: Record<string, DataOrientation>;
     onGetTable: () => void;
     onSwitchRowColumn: (categoryId: string) => void;
-    onDownload: (categoryId: string) => void;
+    onDownload: () => void;
 };
 
 type CountryFilterStateDisabled = {
