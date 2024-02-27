@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import {
+    latestAvailableYear,
     PolicyExplorer,
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
@@ -99,7 +100,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     }
 
     private getPeriods(yearsByCategory: Record<string, string[]>): string[] {
-        const years = Object.values(yearsByCategory).reduce((accYears, years) => accYears.concat(years), []);
+        const years = Object.values(yearsByCategory).reduce((accYears, years) => {
+            const yearsToAdd =years.includes(latestAvailableYear) ? "2023,2024" : years;
+            return accYears.concat(yearsToAdd);
+        }, []);
         return _.uniq(_.sortBy(years));
     }
 
@@ -200,13 +204,18 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
                 const countriesAlreadyInRows: string[] = [];
 
+                const years = yearsByCategory[policyExplorerCategoryId] || [];
+                const yearsIsLatestAvailableYear = years.length === 1 && years[0] === latestAvailableYear;
+
                 const dataValuesOrderByYear = _.orderBy(
                     dataValuesWithOrgUnitNames,
                     ["orgUnitShortName", "period"],
                     "asc"
-                );
+                )
 
-                const dataValuesByCountryAndYear = _(dataValuesOrderByYear)
+                const finalDataValues  = yearsIsLatestAvailableYear ? this.filterByLatestAvailableYear(dataValuesOrderByYear):dataValuesOrderByYear;
+
+                const dataValuesByCountryAndYear = _(finalDataValues)
                     .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
                     .value();
 
@@ -217,7 +226,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         if (!orgUnit) return accRows;
 
                         const isPeriodNotIncludedInCategory =
-                            period && !yearsByCategory[policyExplorerCategoryId]?.includes(period);
+                            period && !years.includes(period) && !yearsIsLatestAvailableYear;
+
                         if (isPeriodNotIncludedInCategory) {
                             return accRows;
                         }
@@ -262,6 +272,28 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             },
             tables
         );
+    }
+
+    private filterByLatestAvailableYear(dataValuesOrderByYear: DataValueSetsDataValueWithOrgUnitNames[]):DataValueSetsDataValueWithOrgUnitNames[] {
+        return _(dataValuesOrderByYear)
+            .reduce((acc, dataValue) => {
+                const existedDataValue = acc.find(dv => dv.orgUnit === dataValue.orgUnit && dv.dataElement === dataValue.dataElement);
+
+                if (!existedDataValue) {
+                    return [...acc, dataValue];
+                } else {
+
+                    return acc.map(dv => {
+                        if (dv === existedDataValue) {
+                            return +dataValue.period > +dv.period ? dataValue : dv;
+                        } else {
+                            return dv;
+                        }
+                    });
+
+                }
+
+            }, [] as DataValueSetsDataValueWithOrgUnitNames[]);
     }
 
     private fillSubcategoriesInChangesInCoveragePolicy(

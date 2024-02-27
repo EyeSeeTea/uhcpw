@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
-import { PolicyExplorer, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    latestAvailableYear,
+    PolicyExplorer,
+    PolicyExplorerCellType,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 
@@ -12,7 +16,6 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
-import { Year } from "../../../domain/entities/Year";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
@@ -24,9 +27,11 @@ const CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION = [
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 
-const latestAvailableYear = "2023";
-
-const isLatestAvailableYear = (year: Year) => year.id === latestAvailableYear;
+const yearFilters: Option[] = [
+    { value: "2023", text: "2023" },
+    { value: "2024", text: "2024" },
+    { value: latestAvailableYear, text: i18n.t("Latest avalaible year") },
+];
 
 export function usePolicyExplorer({
     categories,
@@ -45,7 +50,6 @@ export function usePolicyExplorer({
         Record<string, string[]> | undefined
     >();
 
-    const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([latestAvailableYear]);
 
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
@@ -71,30 +75,12 @@ export function usePolicyExplorer({
     }, [countryFilter.selected?.length]);
 
     useEffect(() => {
-        compositionRoot.policyExplorer.getYears.execute().run(
-            years => {
-                setYearsFilters(
-                    years.map(year => {
-                        return {
-                            value: year.id,
-                            text: isLatestAvailableYear(year) ? i18n.t("Latest avalaible year") : year.id,
-                        };
-                    })
-                );
-            },
-            () => {
-                setYearsFilters([]);
-            }
-        );
-    }, [compositionRoot.policyExplorer]);
-
-    useEffect(() => {
         compositionRoot.policyExplorer.getCategories.execute().run(
             categories => {
                 setCategoryFilters(buildCategoryFilterOptions(categories));
             },
             () => {
-                setYearsFilters([]);
+                setCategoryFilters([]);
             }
         );
     }, [compositionRoot.policyExplorer]);
@@ -146,7 +132,11 @@ export function usePolicyExplorer({
     }, []);
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
-        setSelectedYearFilter(value);
+        if (value?.length && value.some(year => year === latestAvailableYear)) {
+            setSelectedYearFilter([latestAvailableYear]);
+        } else {
+            setSelectedYearFilter(value);
+        }
     }, []);
 
     const onSwitchRowColumn = useCallback(

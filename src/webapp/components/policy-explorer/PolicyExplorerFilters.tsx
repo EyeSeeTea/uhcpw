@@ -111,7 +111,6 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         options={filters.year.options}
                         values={filters.year.selected}
                         onChange={onYearsChange}
-                        disabled
                     />
                 </Center>
             </Grid>

@@ -27,3 +27,5 @@ export type PolicyExplorerReferences = {
     country: string;
     references: string[];
 };
+
+export const latestAvailableYear = "latest";
