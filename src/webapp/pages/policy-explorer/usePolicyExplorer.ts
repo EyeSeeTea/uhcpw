@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
-import { PolicyExplorer, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorer,
+    PolicyExplorerCellType,
+    DataOrientationByTable,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 
 import i18n from "../../../locales";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
-import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
+import { PolicyExplorerState } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
@@ -50,7 +54,7 @@ export function usePolicyExplorer({
 
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
-    const [dataOrientationByTable, setDataOrientationByTable] = useState<Record<string, DataOrientation> | undefined>();
+    const [dataOrientationByTable, setDataOrientationByTable] = useState<DataOrientationByTable | undefined>();
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
@@ -325,7 +329,7 @@ function invertDataOfCategoriesIds(
     }, data);
 }
 
-function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Record<string, DataOrientation> {
+function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): DataOrientationByTable {
     const dataOrientation = {};
     return selectedCategoriesIds.reduce(
         (acc, categoryId) => ({

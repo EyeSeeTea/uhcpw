@@ -1,16 +1,14 @@
-import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { PolicyExplorer, DataOrientationByTable } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import {
     CountryFilterState,
     OptionsMultiFilterState,
     PolicyExplorerCategoriesFilterState,
 } from "../../common/state/state";
 
-export type DataOrientation = "inverted" | "normal";
-
 export type PolicyExplorerState = {
     filters: PolicyExplorerFiltersState;
     data?: PolicyExplorer;
-    dataOrientationByTable?: Record<string, DataOrientation>;
+    dataOrientationByTable?: DataOrientationByTable;
     onGetTable: () => void;
     onSwitchRowColumn: (categoryId: string) => void;
     onDownload: () => void;

@@ -1,7 +1,6 @@
 import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
-import { DataOrientation } from "../../../webapp/pages/policy-explorer/PolicyExplorerState";
 import { FutureData } from "../../entities/Future";
-import { PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
+import { PolicyExplorer, DataOrientationByTable } from "../../entities/policy-explorer/PolicyExplorer";
 
 export interface PolicyExplorerRepository {
     get(
@@ -12,6 +11,6 @@ export interface PolicyExplorerRepository {
     saveToFile(
         categories: CategoryOption[],
         policyExplorer: PolicyExplorer,
-        dataOrientationByTable: Record<string, DataOrientation>
+        dataOrientationByTable: DataOrientationByTable
     ): FutureData<void>;
 }

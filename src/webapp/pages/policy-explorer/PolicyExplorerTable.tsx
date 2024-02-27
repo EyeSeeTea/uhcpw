@@ -5,9 +5,12 @@ import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
 import ReactMarkdown from "react-markdown";
-import { DataOrientation } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
-import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorerCell,
+    PolicyExplorerCellType,
+    DataOrientation,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 
 interface PolicyExplorerTableProps {

@@ -5,6 +5,8 @@ import {
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
     PolicyExplorerReferences,
+    DataOrientationByTable,
+    DataOrientation,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
@@ -20,7 +22,6 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 } from "./PolicyExplorerCategoryD2Repository";
-import { DataOrientation } from "../../../webapp/pages/policy-explorer/PolicyExplorerState";
 import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 
 export const generalDataElements: Record<string, string> = {
@@ -94,7 +95,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     saveToFile(
         categories: CategoryOption[],
         policyExplorer: PolicyExplorer,
-        dataOrientationByTable: Record<string, DataOrientation>
+        dataOrientationByTable: DataOrientationByTable
     ): FutureData<void> {
         const tabs = Object.keys(policyExplorer.tables).reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
