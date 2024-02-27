@@ -105,6 +105,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
 
                                     <GeneralRow>
+                                        <CreditsText>{i18n.t("Reviewers: ", { nsSeparator: false })}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{info.reviewers}</CreditsText>
+                                    </GeneralRow>
+
+                                    <GeneralRow>
                                         <CreditsText>{i18n.t("Last updated: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
                                         <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
