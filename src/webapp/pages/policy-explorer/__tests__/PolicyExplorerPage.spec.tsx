@@ -5,7 +5,6 @@ import { Future } from "../../../../domain/entities/Future";
 import { createHistory, customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { PolicyExplorerPage } from "../PolicyExplorerPage";
 import policyExplorerCategoriesData from "./data/policyExplorerCategories.json";
-import dataSetData from "./data/dataSet.json";
 import countriesData from "./data/countries.json";
 import policyExplorerSimple from "./data/policyExplorerSimple.json";
 import policyExplorerEmpty from "./data/policyExplorerEmpty.json";
@@ -13,11 +12,9 @@ import policyExplorerWithMultiplePeriods from "./data/policyExplorerWithMultiple
 import policyExplorerWithMoreThanOneTable from "./data/policyExplorerWithMoreThanOneTable.json";
 import policyExplorerByTypeOfHealthcare from "./data/policyExplorerByTypeOfHealthcare.json";
 import userEvent from "@testing-library/user-event";
-import { DataSetD2Repository } from "../../../../data/repositories/DataSetD2Repository";
 import { PolicyExplorerCategoryD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
 import { PolicyExplorerD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
-import { DataSet } from "../../../../domain/entities/metadata/DataSet";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { Country } from "../../../../domain/entities/Country";
 import {
@@ -26,7 +23,6 @@ import {
     PolicyExplorerCellType,
 } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 
-let dataSetRepository: DataSetD2Repository;
 let policyExplorerCategoryRepository: PolicyExplorerCategoryD2Repository;
 let countryRepository: CountryD2Repository;
 let policyExplorerRepository: PolicyExplorerD2Repository;
@@ -35,7 +31,6 @@ describe("Given PolicyExplorerPage", () => {
     describe("When loading the page", () => {
         it("Then should render policy explorer title", () => {
             getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -47,7 +42,6 @@ describe("Given PolicyExplorerPage", () => {
     describe("When setting filters", () => {
         it("The URL should change accordingly", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -62,7 +56,6 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get Population Coverage category table", () => {
         it("Then should render expected table title", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -78,7 +71,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render a table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -92,7 +84,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render expected total rows in the table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             const policyExplorer = givenASimplePolicyExplorer();
 
@@ -106,7 +97,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render expected columns in the table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             const policyExplorer = givenASimplePolicyExplorer();
 
@@ -119,7 +109,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render expected rows in the table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             const policyExplorer = givenASimplePolicyExplorer();
 
@@ -135,7 +124,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get an empty category table", () => {
         it("Then should render expected table title", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+            
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -150,7 +139,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should not render any table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+            
             givenCountries();
             givenAnEmptyPolicyExplorer();
 
@@ -167,7 +156,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get a category with multiple periods table", () => {
         it("Then should render a period column with more than one period data", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+            
             givenCountries();
             const policyExplorer = givenAPolicyExplorerWithMultiplePeriods();
 
@@ -182,7 +171,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get two categories", () => {
         it("Then should render two expected table titles", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+            
             givenCountries();
             givenAPolicyExplorerWithMoreThanOneTable();
 
@@ -206,7 +195,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render two tables", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+            
             givenCountries();
             givenAPolicyExplorerWithMoreThanOneTable();
 
@@ -225,7 +214,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get a category by type of healthcare", () => {
         it("Then should render a column with the types of healthcare", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+            
             givenCountries();
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
@@ -237,7 +226,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render a column with the types of healthcare with header type style", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+            
             givenCountries();
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
@@ -272,7 +261,6 @@ function renderPage() {
         <PolicyExplorerPage />,
         config,
         {
-            dataSet: dataSetRepository,
             policyExplorerCategory: policyExplorerCategoryRepository,
             country: countryRepository,
             policyExplorer: policyExplorerRepository,
@@ -281,18 +269,6 @@ function renderPage() {
     );
 
     return { history };
-}
-
-function givenADataSet(): DataSet {
-    const mockedRepository = mock(DataSetD2Repository);
-
-    const item = dataSetData;
-
-    when(mockedRepository.getById(anything())).thenReturn(Future.success(item));
-
-    dataSetRepository = instance(mockedRepository);
-
-    return item;
 }
 
 function givenPolicyExplorerCategories(): PolicyExplorerCategory[] {
