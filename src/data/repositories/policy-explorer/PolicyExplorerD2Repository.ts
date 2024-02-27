@@ -101,7 +101,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private getPeriods(yearsByCategory: Record<string, string[]>): string[] {
         const years = Object.values(yearsByCategory).reduce((accYears, years) => {
-            const yearsToAdd =years.includes(latestAvailableYear) ? "2023,2024" : years;
+            const yearsToAdd = years.includes(latestAvailableYear) ? "2023,2024" : years;
             return accYears.concat(yearsToAdd);
         }, []);
         return _.uniq(_.sortBy(years));
@@ -211,9 +211,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dataValuesWithOrgUnitNames,
                     ["orgUnitShortName", "period"],
                     "asc"
-                )
+                );
 
-                const finalDataValues  = yearsIsLatestAvailableYear ? this.filterByLatestAvailableYear(dataValuesOrderByYear):dataValuesOrderByYear;
+                const finalDataValues = yearsIsLatestAvailableYear
+                    ? this.filterByLatestAvailableYear(dataValuesOrderByYear)
+                    : dataValuesOrderByYear;
 
                 const dataValuesByCountryAndYear = _(finalDataValues)
                     .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
@@ -274,26 +276,26 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         );
     }
 
-    private filterByLatestAvailableYear(dataValuesOrderByYear: DataValueSetsDataValueWithOrgUnitNames[]):DataValueSetsDataValueWithOrgUnitNames[] {
-        return _(dataValuesOrderByYear)
-            .reduce((acc, dataValue) => {
-                const existedDataValue = acc.find(dv => dv.orgUnit === dataValue.orgUnit && dv.dataElement === dataValue.dataElement);
+    private filterByLatestAvailableYear(
+        dataValuesOrderByYear: DataValueSetsDataValueWithOrgUnitNames[]
+    ): DataValueSetsDataValueWithOrgUnitNames[] {
+        return _(dataValuesOrderByYear).reduce((acc, dataValue) => {
+            const existedDataValue = acc.find(
+                dv => dv.orgUnit === dataValue.orgUnit && dv.dataElement === dataValue.dataElement
+            );
 
-                if (!existedDataValue) {
-                    return [...acc, dataValue];
-                } else {
-
-                    return acc.map(dv => {
-                        if (dv === existedDataValue) {
-                            return +dataValue.period > +dv.period ? dataValue : dv;
-                        } else {
-                            return dv;
-                        }
-                    });
-
-                }
-
-            }, [] as DataValueSetsDataValueWithOrgUnitNames[]);
+            if (!existedDataValue) {
+                return [...acc, dataValue];
+            } else {
+                return acc.map(dv => {
+                    if (dv === existedDataValue) {
+                        return +dataValue.period > +dv.period ? dataValue : dv;
+                    } else {
+                        return dv;
+                    }
+                });
+            }
+        }, [] as DataValueSetsDataValueWithOrgUnitNames[]);
     }
 
     private fillSubcategoriesInChangesInCoveragePolicy(

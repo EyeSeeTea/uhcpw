@@ -124,7 +124,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get an empty category table", () => {
         it("Then should render expected table title", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            
+
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -139,7 +139,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should not render any table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            
+
             givenCountries();
             givenAnEmptyPolicyExplorer();
 
@@ -156,7 +156,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get a category with multiple periods table", () => {
         it("Then should render a period column with more than one period data", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            
+
             givenCountries();
             const policyExplorer = givenAPolicyExplorerWithMultiplePeriods();
 
@@ -171,7 +171,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get two categories", () => {
         it("Then should render two expected table titles", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            
+
             givenCountries();
             givenAPolicyExplorerWithMoreThanOneTable();
 
@@ -195,7 +195,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render two tables", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            
+
             givenCountries();
             givenAPolicyExplorerWithMoreThanOneTable();
 
@@ -214,7 +214,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get a category by type of healthcare", () => {
         it("Then should render a column with the types of healthcare", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            
+
             givenCountries();
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
@@ -226,7 +226,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render a column with the types of healthcare with header type style", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            
+
             givenCountries();
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
