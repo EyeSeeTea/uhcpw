@@ -1,3 +1,4 @@
+import React from "react";
 import { Checkbox, Typography } from "@material-ui/core";
 import { TreeItem } from "@material-ui/lab";
 import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank";
@@ -12,17 +13,29 @@ interface LeafProps {
 }
 
 export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedChange, disabled = false }) => {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onSelectedChange(nodeId, event.target.checked);
-    };
+    const handleChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            !disabled && onSelectedChange(nodeId, event.target.checked);
+        },
+        [disabled, nodeId, onSelectedChange]
+    );
 
-    const handleClick = () => {
+    const handleClick = React.useCallback(() => {
         !disabled && onSelectedChange(nodeId, !selected);
-    };
+    }, [disabled, nodeId, onSelectedChange, selected]);
+
+    const handleLabelClick = React.useCallback(
+        (event: React.MouseEvent<Element, MouseEvent>) => {
+            event.preventDefault();
+            !disabled && onSelectedChange(nodeId, !selected);
+        },
+        [disabled, nodeId, onSelectedChange, selected]
+    );
 
     return (
         <StyledTreeItem
             nodeId={nodeId}
+            onLabelClick={handleLabelClick}
             label={
                 <Row role="checkbox">
                     {!disabled && (

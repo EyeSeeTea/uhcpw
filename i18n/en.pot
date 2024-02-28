@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-02-28T05:41:16.841Z\n"
-"PO-Revision-Date: 2024-02-28T05:41:16.841Z\n"
+"POT-Creation-Date: 2024-02-23T12:52:36.139Z\n"
+"PO-Revision-Date: 2024-02-23T12:52:36.139Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -110,6 +110,12 @@ msgstr ""
 msgid "How can {{country}} strengthen financial protection?"
 msgstr ""
 
+msgid "Select all"
+msgstr ""
+
+msgid "Clear all"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
@@ -133,9 +139,6 @@ msgid "To sign up or to send feedback, email"
 msgstr ""
 
 msgid "Clear"
-msgstr ""
-
-msgid "Clear all"
 msgstr ""
 
 msgid "Analysis"

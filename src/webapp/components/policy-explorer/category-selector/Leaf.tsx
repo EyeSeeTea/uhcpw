@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { Checkbox, Typography } from "@material-ui/core";
 import { TreeItem } from "@material-ui/lab";
 import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank";
@@ -13,13 +14,16 @@ interface LeafProps {
 }
 
 export const Leaf: React.FC<LeafProps> = ({ nodeId, name, parentId, selected, onSelectedChange, disabled = false }) => {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onSelectedChange(parentId, nodeId, event.target.checked);
-    };
+    const handleChange = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onSelectedChange(parentId, nodeId, event.target.checked);
+        },
+        [nodeId, onSelectedChange, parentId]
+    );
 
-    const handleClick = () => {
+    const handleClick = useCallback(() => {
         !disabled && onSelectedChange(parentId, nodeId, !selected);
-    };
+    }, [disabled, nodeId, onSelectedChange, parentId, selected]);
 
     return (
         <StyledTreeItem

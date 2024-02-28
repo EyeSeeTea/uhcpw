@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
@@ -33,7 +33,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
 
             if (value) {
                 queryParameters.set("category", JSON.stringify(value));
-            } else if (value == null) {
+            } else if (!value) {
                 queryParameters.delete("category");
             }
             filters.category.onSelectedChange(value);
@@ -74,12 +74,17 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
         [filters.year, history, location.search]
     );
 
+    const moreThanOneCountrySelected = useMemo(() => {
+        return !!filters.country.selected?.length && filters.country.selected?.length > 1;
+    }, [filters.country.selected?.length]);
+
     return (
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
             <Grid item md={4} sm={6}>
                 <Center>
                     <CategorySelector
                         fullWidth
+                        moreThanOneCountrySelected={moreThanOneCountrySelected}
                         label={i18n.t("Category")}
                         placeholder={i18n.t("Select category")}
                         categoryOptions={filters.category.options}
@@ -94,6 +99,8 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                 <Center>
                     <CountrySelector
                         fullWidth
+                        hasClearAll
+                        hasSelectAll={filters.country.allowSelectAllCountries}
                         label={i18n.t("Countries")}
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}

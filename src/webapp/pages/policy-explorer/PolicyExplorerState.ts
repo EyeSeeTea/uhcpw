@@ -16,12 +16,13 @@ export type PolicyExplorerState = {
     onDownload: (categoryId: string) => void;
 };
 
-type CountryFilterStateDisabled = {
+type ExtraCountryFilterState = {
     disabledCountries: string[];
+    allowSelectAllCountries: boolean;
 };
 
 export type PolicyExplorerFiltersState = {
-    country: CountryFilterState & CountryFilterStateDisabled;
+    country: CountryFilterState & ExtraCountryFilterState;
     category: PolicyExplorerCategoriesFilterState;
     year: OptionsMultiFilterState;
 };
