@@ -169,7 +169,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     $isDisabled={disabled}
                 />
                 <StyledMenu
-                    PaperProps={{ style: { width: "600px", padding: "16px" } }}
+                    PaperProps={{ style: { width: fullWidth ? "600px" : "350px", padding: "16px" } }}
                     id="country-selector"
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
