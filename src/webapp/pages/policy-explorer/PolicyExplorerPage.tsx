@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -41,6 +41,16 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
             category => filters.category.selected && Object.keys(filters.category.selected)?.includes(category.value)
         );
     }, [filters.category]);
+
+    const getCleanReferencesByCountry = useCallback(
+        (country: string) => {
+            const regex = /\[(.*?)\]:\s/;
+            return data?.references
+                ?.find(references => references.country === country)
+                ?.references?.map(reference => reference.replace(regex, "$1:").replace(/"/g, ""));
+        },
+        [data?.references]
+    );
 
     return (
         <Layout>
@@ -111,9 +121,8 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {data?.references
-                                        ?.find(references => references.country === info.country)
-                                        ?.references?.map(reference => (
+                                    {info.country &&
+                                        getCleanReferencesByCountry(info.country)?.map(reference => (
                                             <ReferenceText key={reference}>{reference}</ReferenceText>
                                         ))}
                                 </ReferencesContainer>
