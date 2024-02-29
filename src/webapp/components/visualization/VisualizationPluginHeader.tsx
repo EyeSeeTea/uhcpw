@@ -122,7 +122,7 @@ const Row = styled.div`
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 0px;
-    align-items: center;
+    align-items: start;
 `;
 
 const Column = styled.div`
