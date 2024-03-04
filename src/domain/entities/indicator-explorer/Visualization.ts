@@ -79,6 +79,7 @@ export type VisualizationAxes = {
     decimals: number;
     index: number;
     type: string;
+    maxValue: number;
     title: {
         text: string;
     };

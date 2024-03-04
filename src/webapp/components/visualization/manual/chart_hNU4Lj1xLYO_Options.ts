@@ -70,6 +70,10 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
         };
     });
 
+    const maxYAxis = chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
+        ? { max: chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
+        : {};
+
     return {
         ...baseChartOptions,
         chart: {
@@ -83,6 +87,7 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
             title: {
                 text: "Households with catastrophic health spending (%)",
             },
+            ...maxYAxis,
         },
         legend: { enabled: false },
         series: [
