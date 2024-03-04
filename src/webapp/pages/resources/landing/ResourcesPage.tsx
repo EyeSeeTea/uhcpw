@@ -36,79 +36,87 @@ export const ResourcesPage: React.FC = React.memo(() => {
 
                     {resources && (
                         <>
-                            <Grid item md={filters.search.term ? 12: 6} xs={12}>
-                               {resources.countryAnalysisByCountry.length > 0 && <ResourceGroup
-                                    title={i18n.t("Country analysis")}
-                                    seeAllUrl={"/resources/country-analysis"}
-                                >
-                                    {resources.countryAnalysisByCountry.map(country => {
-                                        return (
-                                            <Grid item xs={2} key={country.countryId}>
-                                                <Tooltip title={country.countryName} placement="top" arrow>
-                                                    <Flag
-                                                        role="listitem"
-                                                        width={"90%"}
-                                                        src={country.flag}
-                                                        onClick={() =>
-                                                            history.push(
-                                                                `/resources/country-analysis?country=${country.countryId}`
-                                                            )
-                                                        }
+                            <Grid item md={filters.search.term ? 12 : 6} xs={12}>
+                                {resources.countryAnalysisByCountry.length > 0 && (
+                                    <ResourceGroup
+                                        title={i18n.t("Country analysis")}
+                                        seeAllUrl={"/resources/country-analysis"}
+                                    >
+                                        {resources.countryAnalysisByCountry.map(country => {
+                                            return (
+                                                <Grid item xs={2} key={country.countryId}>
+                                                    <Tooltip title={country.countryName} placement="top" arrow>
+                                                        <Flag
+                                                            role="listitem"
+                                                            width={"90%"}
+                                                            src={country.flag}
+                                                            onClick={() =>
+                                                                history.push(
+                                                                    `/resources/country-analysis?country=${country.countryId}`
+                                                                )
+                                                            }
+                                                        />
+                                                    </Tooltip>
+                                                </Grid>
+                                            );
+                                        })}
+                                    </ResourceGroup>
+                                )}
+                            </Grid>
+                            <Grid item md={filters.search.term ? 12 : 6} xs={12}>
+                                {resources.comparativeAnalysis.length > 0 && (
+                                    <ResourceGroup
+                                        title={i18n.t("Comparative analysis")}
+                                        seeAllUrl={"/resources/comparative-analysis"}
+                                    >
+                                        {resources.comparativeAnalysis.map(comparativeItem => {
+                                            return (
+                                                <Grid item key={comparativeItem.id}>
+                                                    <ComparativeAnalysisItem
+                                                        comparativeAnalysis={comparativeItem}
+                                                        minimalVersion
                                                     />
-                                                </Tooltip>
-                                            </Grid>
-                                        );
-                                    })}
-                                </ResourceGroup>}
+                                                </Grid>
+                                            );
+                                        })}
+                                    </ResourceGroup>
+                                )}
                             </Grid>
-                            <Grid item md={filters.search.term ? 12: 6} xs={12}>
-                               {resources.comparativeAnalysis.length > 0 && <ResourceGroup
-                                    title={i18n.t("Comparative analysis")}
-                                    seeAllUrl={"/resources/comparative-analysis"}
-                                >
-                                    {resources.comparativeAnalysis.map(comparativeItem => {
-                                        return (
-                                            <Grid item key={comparativeItem.id}>
-                                                <ComparativeAnalysisItem
-                                                    comparativeAnalysis={comparativeItem}
-                                                    minimalVersion
-                                                />
-                                            </Grid>
-                                        );
-                                    })}
-                                </ResourceGroup>}
+                            <Grid item md={filters.search.term ? 12 : 6} xs={12}>
+                                {resources.multimedia.length > 0 && (
+                                    <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
+                                        {resources.multimedia.map(multimediaItem => {
+                                            return (
+                                                <Grid item xs={12} key={multimediaItem.id}>
+                                                    <SimpleResourceItem
+                                                        title={multimediaItem.title}
+                                                        url={multimediaItem.url}
+                                                        image={multimediaItem.image}
+                                                        date={multimediaItem.date}
+                                                    />
+                                                </Grid>
+                                            );
+                                        })}
+                                    </ResourceGroup>
+                                )}
                             </Grid>
-                            <Grid item md={filters.search.term ? 12: 6} xs={12}>
-                               { resources.multimedia.length > 0 && <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
-                                    {resources.multimedia.map(multimediaItem => {
-                                        return (
-                                            <Grid item xs={12} key={multimediaItem.id}>
-                                                <SimpleResourceItem
-                                                    title={multimediaItem.title}
-                                                    url={multimediaItem.url}
-                                                    image={multimediaItem.image}
-                                                    date={multimediaItem.date}
-                                                />
-                                            </Grid>
-                                        );
-                                    })}
-                                </ResourceGroup>}
-                            </Grid>
-                            <Grid item md={filters.search.term ? 12: 6} xs={12}>
-                                {resources.news.length > 0 && <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
-                                    {resources.news.map(newsItem => {
-                                        return (
-                                            <Grid item xs={12} key={newsItem.id}>
-                                                <SimpleResourceItem
-                                                    title={newsItem.title}
-                                                    url={newsItem.url}
-                                                    image={newsItem.image}
-                                                    date={newsItem.date}
-                                                />
-                                            </Grid>
-                                        );
-                                    })}
-                                </ResourceGroup>}
+                            <Grid item md={filters.search.term ? 12 : 6} xs={12}>
+                                {resources.news.length > 0 && (
+                                    <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
+                                        {resources.news.map(newsItem => {
+                                            return (
+                                                <Grid item xs={12} key={newsItem.id}>
+                                                    <SimpleResourceItem
+                                                        title={newsItem.title}
+                                                        url={newsItem.url}
+                                                        image={newsItem.image}
+                                                        date={newsItem.date}
+                                                    />
+                                                </Grid>
+                                            );
+                                        })}
+                                    </ResourceGroup>
+                                )}
                             </Grid>
                         </>
                     )}
