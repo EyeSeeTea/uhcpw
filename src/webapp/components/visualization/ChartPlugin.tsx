@@ -105,10 +105,10 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                                   ? customizedOptions?.yAxis[index]
                                   : customizedOptions?.yAxis;
 
-                              return { ...item, ...customizedYAxis };
+                              return { ...item, ...customizedYAxis, ...maxYAxis };
                           })
-                        : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis, ...maxYAxis }
-                    : { ...originalChartOptions.yAxis, ...maxYAxis },
+                        : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
+                    : originalChartOptions.yAxis,
 
                 series: sortedSeries?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
