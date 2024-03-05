@@ -18,6 +18,7 @@ export interface ChartPluginProps {
     externalchartOptions?: Highcharts.Options;
     countries: Country[];
     withoutBackground?: boolean;
+    height?: string;
 }
 
 /**
@@ -33,6 +34,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         countries,
         externalchartOptions,
         withoutBackground = false,
+        height,
     }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
@@ -70,7 +72,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 : originalChartOptions.series;
 
             const newOptions = {
-                chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
+                chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined, height: 1000 },
 
                 legend: {
                     ...originalChartOptions.legend,
@@ -171,12 +173,16 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         }, [renderVisualization]);
 
         return (
-            <div>
-                <Container style={{ width: "100%" }} $withoutBackground={withoutBackground}>
-                    <div ref={canvasRef} />
-                    {chartOptions && <HighchartsReact highcharts={Highcharts} options={chartOptions} />}
-                </Container>
-            </div>
+            <Container style={{ width: "100%", height: "100%" }} $withoutBackground={withoutBackground}>
+                <div ref={canvasRef} />
+                {chartOptions && (
+                    <HighchartsReact
+                        highcharts={Highcharts}
+                        options={chartOptions}
+                        containerProps={{ style: { height: height || "500px" } }}
+                    />
+                )}
+            </Container>
         );
     }
 );

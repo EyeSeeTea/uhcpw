@@ -13,6 +13,7 @@ interface VisualizationPluginProps {
     currentCountry?: string;
     withoutBackground?: boolean;
     useHeaderForCountryPage?: boolean;
+    height?: string;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
@@ -23,6 +24,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         countries,
         withoutBackground = false,
         useHeaderForCountryPage = false,
+        height,
     }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
@@ -43,7 +45,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }, [chartData, useHeaderForCountryPage]);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
-            <Container ref={ref} $withoutBackground={withoutBackground}>
+            <Container ref={ref} $withoutBackground={withoutBackground} isCountryHeader={useHeaderForCountryPage}>
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualization.info}
                     chartFriendlyName={chartData.visualization.friendlyName}
@@ -55,16 +57,19 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     onCloseInfo={onCloseInfo}
                     useHeaderForCountryPage={useHeaderForCountryPage}
                 />
-                <ChartPlugin
-                    analytics={[chartData.analytics]}
-                    visualization={chartData.visualization}
-                    legendSets={chartData.legendSets}
-                    customizedOptions={chartData.customization}
-                    countries={chartData.countries}
-                    withoutBackground={withoutBackground}
-                    externalchartOptions={chartData.chartOptions}
-                />
-                <Box height={32} />
+
+                <ChartContainer isCountryHeader={useHeaderForCountryPage}>
+                    <ChartPlugin
+                        analytics={[chartData.analytics]}
+                        visualization={chartData.visualization}
+                        legendSets={chartData.legendSets}
+                        customizedOptions={chartData.customization}
+                        countries={chartData.countries}
+                        withoutBackground={withoutBackground}
+                        externalchartOptions={chartData.chartOptions}
+                        height={height}
+                    />
+                </ChartContainer>
             </Container>
         ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
             <Center>
@@ -82,10 +87,11 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     }
 );
 
-const Container = styled.div<{ $withoutBackground: boolean }>`
-    margin-top: 48px;
+const Container = styled.div<{ $withoutBackground: boolean; isCountryHeader: boolean }>`
+    margin-top: ${props => (props.isCountryHeader ? "0px" : "48px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
-    padding: 0px 32px 32px 32px;
+    padding: ${props => (props.isCountryHeader ? "32px" : "0px 32px 32px 32px")};
+    height: 100%;
 `;
 
 const Center = styled.div`
@@ -95,4 +101,8 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const ChartContainer = styled.div<{ isCountryHeader: boolean }>`
+    padding: ${props => (props.isCountryHeader ? "0px 100px" : "0px")};
 `;

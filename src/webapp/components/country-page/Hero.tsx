@@ -43,6 +43,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         currentCountry={countryId}
                         withoutBackground
                         useHeaderForCountryPage
+                        height="600px"
                     />
                 </VisualizationContainer>
             </GraphGrid>
@@ -63,10 +64,10 @@ const InfoGrid = styled(Grid)`
 `;
 
 const GraphGrid = styled(Grid)`
-    padding: 20px 50px 30px 50px;
     background-color: white;
 `;
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
+    height: 700px;
 `;
