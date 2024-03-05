@@ -8,6 +8,7 @@ export interface VisualizationExtra {
     maxCountryFilter?: number;
     minCountryFilter?: number;
     isComparative?: boolean;
+    showCountryTag?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

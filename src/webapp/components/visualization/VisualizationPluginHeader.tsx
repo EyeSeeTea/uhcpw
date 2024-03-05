@@ -1,12 +1,14 @@
-import { Button, IconButton, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
-import i18n from "../../../locales";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import GridOnIcon from "@material-ui/icons/GridOn";
 import GetAppIcon from "@material-ui/icons/GetApp";
+
+import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
+import { Country } from "../../../domain/entities/Country";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: {
@@ -23,6 +25,9 @@ interface VisualizationPluginHeaderProps {
     onShowInfo: () => void;
     onCloseInfo: () => void;
     useHeaderForCountryPage?: boolean;
+    showCountryTag?: boolean;
+    countries: Country[];
+    currentCountry?: string;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -35,8 +40,17 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         onCloseInfo,
         onDownloadExcel,
         onDownloadImage,
+        countries,
+        currentCountry,
         useHeaderForCountryPage = false,
+        showCountryTag = false,
     }) => {
+        const currentCountryName = useMemo(() => {
+            if (currentCountry) {
+                return countries.find(({ id }) => id === currentCountry)?.name;
+            }
+        }, [countries, currentCountry]);
+
         return (
             <DataHeader>
                 <Row>
@@ -49,7 +63,11 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                             </Row>
 
                             <RowWithGap $gap={20}>
-                                {categoryTag && <Tag className="category">{categoryTag}</Tag>}
+                                {showCountryTag && currentCountryName ? (
+                                    <Tag className="category">{currentCountryName}</Tag>
+                                ) : (
+                                    categoryTag && <Tag className="category">{categoryTag}</Tag>
+                                )}
                                 <RowWithGap $gap={0}>
                                     <StyledIconButton onClick={onShowInfo} $color="#185698">
                                         <CustomInfoIcon color="primary" className="info-button" />

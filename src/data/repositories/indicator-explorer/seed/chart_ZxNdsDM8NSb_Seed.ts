@@ -1,6 +1,6 @@
 export const chart_ZxNdsDM8NSb_Seed = {
     categoryName: "Financial hardship",
-    categoryTag: "Financial hardship",
+    showCountryTag: true,
     friendlyName: "breakdown of catastrophic health spending by type of care and consumption quintile",
     info: {
         infoNotes: [
