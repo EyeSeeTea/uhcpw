@@ -52,7 +52,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         }, [countries, currentCountry]);
 
         return (
-            <DataHeader>
+            <DataHeader className="visualization-plugin-header">
                 <Row>
                     {useHeaderForCountryPage ? (
                         <>
@@ -140,7 +140,7 @@ const Row = styled.div`
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 0px;
-    align-items: center;
+    align-items: flex-start;
 `;
 
 const Column = styled.div`
