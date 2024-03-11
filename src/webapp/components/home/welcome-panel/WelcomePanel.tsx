@@ -18,15 +18,18 @@ export const WelcomePanel: React.FC = () => {
             </Typography>
             <ParagraphContainer>
                 <Typography paragraph>
-                    {i18n.t("Tracking progress on affordable access to health care in Europe and Central Asia")}
+                    <TopSpan>{i18n.t("Tracking progress on affordable access to health care")}</TopSpan>
+                    <BottomSpan>{i18n.t("in Europe and Central Asia")}</BottomSpan>
                 </Typography>
                 <Typography paragraph>
-                    {i18n.t(
-                        "Affordable access to health care - financial protection - is at the heart of universal health coverage (UHC)"
-                    )}
+                    <TopSpan>{i18n.t("Affordable access to health care")}</TopSpan>
+                    <BottomSpan>
+                        {i18n.t("- financial protection - is at the heart of universal health coverage (UHC)")}
+                    </BottomSpan>
                 </Typography>
                 <Typography paragraph>
-                    {i18n.t("UHC means everyone can use quality health care without financial hardship")}{" "}
+                    <TopSpan>{i18n.t("UHC means everyone can use quality health care")}</TopSpan>
+                    <BottomSpan>{i18n.t("without financial hardship")}</BottomSpan>{" "}
                 </Typography>
             </ParagraphContainer>
             <UmbrellaItemsContainer>
@@ -93,4 +96,16 @@ const VideoLink = styled.a`
     &:hover {
         background-color: ${colors.greyLight};
     }
+`;
+
+const TopSpan = styled.span`
+    display: block;
+    position: relative;
+    top: 0;
+`;
+
+const BottomSpan = styled.span`
+    display: block;
+    position: relative;
+    bottom: 0;
 `;
