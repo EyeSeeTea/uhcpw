@@ -62,8 +62,8 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
         );
 
         return (
-            <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
-                <Grid item md={3} sm={6}>
+            <Grid container spacing={1} alignItems="flex-end" justifyContent="space-between">
+                <Grid item md={2} sm={6}>
                     <Center>
                         <Dropdown
                             fullWidth
@@ -90,7 +90,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} sm={6}>
+                <Grid item md={2} sm={6}>
                     <Center>
                         <CountrySelector
                             fullWidth
@@ -102,7 +102,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} sm={6}>
+                <Grid item md={2} sm={6}>
                     <Center>
                         <DropdownMultiple
                             placeholder={i18n.t("Select years")}
