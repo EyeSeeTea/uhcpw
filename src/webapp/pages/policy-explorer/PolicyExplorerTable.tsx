@@ -109,6 +109,9 @@ export const PolicyExplorerTable = React.memo(
                                                             </a>
                                                         );
                                                     },
+                                                    li: ({ children, ...props }) => (
+                                                        <StyledLi {...props}>{children} </StyledLi>
+                                                    ),
                                                 }}
                                             >
                                                 {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
@@ -212,4 +215,8 @@ const Content = styled.div`
 
 const Title = styled(Typography)`
     color: #008ad7;
+`;
+
+const StyledLi = styled.li`
+    line-height: 1.43;
 `;
