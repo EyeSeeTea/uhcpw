@@ -31,6 +31,7 @@ import { GetMethodsUseCase } from "./domain/usecases/GetMethodsUseCase";
 import { GetLegendSetsUseCase } from "./domain/usecases/indicator-explorer/GetLegendSets";
 import { LegendSetD2Repository } from "./data/repositories/indicator-explorer/LegendSetD2Repository";
 import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/DownloadAnalyticsUseCase";
+import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerSelectCategoryInfoUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -74,6 +75,7 @@ export function getCompositionRoot(
         policyExplorer: {
             getYears: new GetPolicyExplorerYearsUseCase(repositories.dataSet),
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
+            getSelectCategoryInfo: new GetPolicyExplorerSelectCategoryInfoUseCase(repositories.policyExplorerCategory),
             get: new GetPolicyExplorerUseCase(repositories.policyExplorer, repositories.country),
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
