@@ -67,6 +67,8 @@ const validOrgUnitGroups = [
     "A1BdaIwDheX",
 ];
 
+const KOSOVO = "NEPywTBN52g";
+
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
 
@@ -77,7 +79,8 @@ export class CountryD2Repository implements CountryRepository {
                     fields: organisationUnitsFields,
                     paging: false,
                     level: 3,
-                    filter: { path: { like: euroOrgUnit } },
+                    rootJunction: "OR",
+                    filter: { path: { like: euroOrgUnit }, id: { eq: KOSOVO } },
                     order: "shortName:asc",
                 })
             ),
