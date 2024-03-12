@@ -1,4 +1,5 @@
 import { FutureData, Future } from "../../../domain/entities/Future";
+import { Id } from "../../../domain/entities/Ref";
 import {
     PolicyExplorerCategory,
     PolicyExplorerSelectCategoryInfo,
@@ -47,7 +48,7 @@ const sectionsList = [
 
 const selectCategoryInfoProgram = "ai5rB7mcqHH";
 
-const selectCategoryInfoDataElements: PolicyExplorerSelectCategoryInfo = {
+const selectCategoryInfoDataElements: Record<string, Id> = {
     title: "yEaMMB7MXqI",
     text: "SAzOXqrxWfI",
 };

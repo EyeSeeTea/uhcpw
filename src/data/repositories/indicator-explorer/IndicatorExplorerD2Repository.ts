@@ -1,4 +1,5 @@
 import { FutureData, Future } from "../../../domain/entities/Future";
+import { Id } from "../../../domain/entities/Ref";
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
 import { IndicatorExplorerRepository } from "../../../domain/repositories/indicator-explorer/IndicatorExplorerRepository";
 import { D2Api } from "../../../types/d2-api";
@@ -6,7 +7,7 @@ import { apiToFuture } from "../../../utils/futures";
 
 const selectCategoryInfoProgram = "ai5rB7mcqHH";
 
-const selectCategoryInfoDataElements: IndicatorExplorerSelectCategoryInfo = {
+const selectCategoryInfoDataElements: Record<string, Id> = {
     title: "h5A4TCDMTHM",
     text: "XVZ0MsAkYaC",
 };
