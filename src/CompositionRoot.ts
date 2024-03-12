@@ -32,6 +32,8 @@ import { GetLegendSetsUseCase } from "./domain/usecases/indicator-explorer/GetLe
 import { LegendSetD2Repository } from "./data/repositories/indicator-explorer/LegendSetD2Repository";
 import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/DownloadAnalyticsUseCase";
 import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerSelectCategoryInfoUseCase";
+import { GetIndicatorExplorerSelectCategoryInfoUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerSelectCategoryInfoUseCase";
+import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -49,6 +51,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         person: new PersonD2Repository(api),
         method: new MethodD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
+        indicatorExplorer: new IndicatorExplorerD2Repository(api),
     };
 }
 
@@ -85,6 +88,7 @@ export function getCompositionRoot(
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
             downloadAnalytics: new DownloadAnalyticsUseCase(repositories.visualization, repositories.analytics),
             getLegendSets: new GetLegendSetsUseCase(repositories.legendSet),
+            getSelectCategoryInfo: new GetIndicatorExplorerSelectCategoryInfoUseCase(repositories.indicatorExplorer),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),
