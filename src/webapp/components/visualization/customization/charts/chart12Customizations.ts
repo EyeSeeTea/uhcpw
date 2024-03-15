@@ -3,7 +3,7 @@ import { ChartCustomization } from "../types";
 
 export const chart12Customizations: ChartCustomization = {
     title: { text: "" },
-    legend: { ...baseLegend, reversed: true, itemMarginTop: 20 },
+    legend: { ...baseLegend, reversed: true },
     series: [
         { id: "OEK4dKvUsOe", name: "Inpatient care", color: "#00b050", dataLabels: { enabled: false } },
         { id: "qgE5NJ9Nyaq", name: "Medicines", color: "#c00000", dataLabels: { enabled: false } },
