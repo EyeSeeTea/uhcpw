@@ -43,5 +43,5 @@ export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
             },
         },
     ],
-    xAxis: rotateXAxis,
+    xAxis: { ...rotateXAxis },
 };

@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 
 import { ChartSource } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
@@ -76,6 +77,7 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
             type: "scatter",
         },
         xAxis: {
+            ...rotateXAxis,
             title: { text: "Out-of-pocket payments as a share of current spending on health (%)" },
             min: 0,
         },
