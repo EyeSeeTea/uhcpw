@@ -7,12 +7,16 @@ import userEvent from "@testing-library/user-event";
 import { AboutPage } from "../AboutPage";
 import { Person } from "../../../../domain/entities/Person";
 import { PersonD2Repository } from "../../../../data/repositories/PersonD2Repository";
+import { AboutInfoD2Repository } from "../../../../data/repositories/about/AboutInfoD2Repository";
+import { OfficeInfo } from "../../../../domain/entities/about/OfficeInfo";
 
 let personRepository: PersonD2Repository;
+let aboutInfoRepository: AboutInfoD2Repository;
 
 describe("AboutPage", () => {
     it("should render about title", () => {
         givenAPersons();
+        givenOfficeInfo();
 
         renderPage();
 
@@ -22,17 +26,19 @@ describe("AboutPage", () => {
     });
     it("should render office description", () => {
         givenAPersons();
+        givenOfficeInfo();
 
         renderPage();
 
         expect(
             screen.getByText(
-                "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). It works with Member States across WHO’s European Region to promote evidence-informed policy making and offers WHO training courses on health financing."
+                "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). It works with Member States across WHO’s European Region to promote evidence-informed policy making and offers WHO training courses on health financing. The Office assesses country and regional progress towards UHC by monitoring financial protection – affordable access to health care. It also supports countries to strengthen financial protection through tailored technical assistance, including analysis of country-specific policy options, high-level policy dialogue and the sharing of international experience. Established in 1999, the Office is supported by the Government of the Autonomous Community of Catalonia, Spain. It is part of the Division of Country Health Policies and Systems of the WHO Regional Office for Europe."
             )
         ).toBeInTheDocument();
     });
     it("should render office header caption", () => {
         givenAPersons();
+        givenOfficeInfo();
 
         renderPage();
 
@@ -84,6 +90,7 @@ function renderPage() {
         { path: "/about", route: `/about` },
         {
             person: personRepository,
+            aboutInfo: aboutInfoRepository,
         }
     );
 }
@@ -225,4 +232,20 @@ async function selectCountry(value: string) {
     await userEvent.keyboard("{Escape}");
 
     await screen.findByLabelText(/countries/i);
+}
+
+function givenOfficeInfo(): OfficeInfo {
+    const mockedRepository = mock(AboutInfoD2Repository);
+
+    const officeInfo: OfficeInfo = {
+        officeText:
+            "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). It works with Member States across WHO’s European Region to promote evidence-informed policy making and offers WHO training courses on health financing. The Office assesses country and regional progress towards UHC by monitoring financial protection – affordable access to health care. It also supports countries to strengthen financial protection through tailored technical assistance, including analysis of country-specific policy options, high-level policy dialogue and the sharing of international experience. Established in 1999, the Office is supported by the Government of the Autonomous Community of Catalonia, Spain. It is part of the Division of Country Health Policies and Systems of the WHO Regional Office for Europe.",
+        officeVideo: "https://www.youtube.com/watch?v=k8OQYkjgERk&t=4s",
+    };
+
+    when(mockedRepository.getOfficeInfo()).thenReturn(Future.success(officeInfo));
+
+    aboutInfoRepository = instance(mockedRepository);
+
+    return officeInfo;
 }
