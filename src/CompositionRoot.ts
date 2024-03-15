@@ -33,6 +33,8 @@ import { LegendSetD2Repository } from "./data/repositories/indicator-explorer/Le
 import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/DownloadAnalyticsUseCase";
 import { GetSliderInfoUseCase } from "./domain/usecases/country-page/GetSliderInfoUseCase";
 import { CountryPageInfoD2Repository } from "./data/repositories/country-page/CountryPageInfoD2Repository";
+import { GetOfficeInfoUseCase } from "./domain/usecases/about/GetOfficeInfoUseCase";
+import { AboutInfoD2Repository } from "./data/repositories/about/AboutInfoD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -51,6 +53,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         method: new MethodD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
         countryPageInfo: new CountryPageInfoD2Repository(api),
+        aboutInfo: new AboutInfoD2Repository(api),
     };
 }
 
@@ -94,6 +97,7 @@ export function getCompositionRoot(
         },
         about: {
             getPersons: new GetPersonsUseCase(repositories.person),
+            getOfficeInfo: new GetOfficeInfoUseCase(repositories.aboutInfo),
         },
         method: {
             get: new GetMethodsUseCase(repositories.method),
