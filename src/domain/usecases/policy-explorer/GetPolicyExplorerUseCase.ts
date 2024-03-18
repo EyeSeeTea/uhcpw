@@ -1,4 +1,4 @@
-import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { Future, FutureData } from "../../entities/Future";
 import { PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
 import { CountryRepository } from "../../repositories/CountryRepository";
@@ -38,10 +38,8 @@ export class GetPolicyExplorerUseCase {
 
         const yearsByCategory = categoryIds.reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019:
-                    return (acc = { ...acc, [categoryId]: generateRangeOfYears(2000, 2019).map(years => years.id) });
-                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020:
-                    return (acc = { ...acc, [categoryId]: generateRangeOfYears(2020).map(years => years.id) });
+                case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID:
+                    return (acc = { ...acc, [categoryId]: generateRangeOfYears(2000).map(years => years.id) });
                 default:
                     return (acc = {
                         ...acc,

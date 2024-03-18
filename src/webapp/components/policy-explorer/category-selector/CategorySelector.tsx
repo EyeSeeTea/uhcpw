@@ -15,8 +15,6 @@ import { Node } from "./Node";
 import { Leaf } from "./Leaf";
 import { SelectedChip } from "../../selected-chip/SelectedChip";
 
-const EMPTY_IDS_ARRAY: string[] = [];
-
 type SubcategoryOption = {
     value: string;
     text: string;
@@ -38,7 +36,6 @@ interface CategorySelectorProps {
     placeholder?: string;
     disabled?: boolean;
     label?: string;
-    categoriesNotShowSubcategories?: string[];
     moreThanOneCountrySelected?: boolean;
 }
 
@@ -52,7 +49,6 @@ export const CategorySelector = React.memo(
         disabled = false,
         label = "",
         disabledCategories,
-        categoriesNotShowSubcategories = EMPTY_IDS_ARRAY,
         moreThanOneCountrySelected = false,
     }: CategorySelectorProps) => {
         const [expanded, setExpanded] = useState(false);
@@ -128,10 +124,16 @@ export const CategorySelector = React.memo(
         const isAllCategorySelected = useCallback(
             (categoryId: string) => {
                 const selectedCategoryOption = categoryOptions.find(({ value }) => value === categoryId);
-                return selectedCategoryOption?.subcategories.every(
-                    subcategory =>
+                return (
+                    (!!selectedCategoryOption?.subcategories.length &&
+                        selectedCategoryOption?.subcategories.every(
+                            subcategory =>
+                                !!selectedCategoriesWithSubcategories &&
+                                selectedCategoriesWithSubcategories[categoryId]?.includes(subcategory.value)
+                        )) ||
+                    (!selectedCategoryOption?.subcategories.length &&
                         !!selectedCategoriesWithSubcategories &&
-                        selectedCategoriesWithSubcategories[categoryId]?.includes(subcategory.value)
+                        !!selectedCategoriesWithSubcategories[categoryId])
                 );
             },
             [categoryOptions, selectedCategoriesWithSubcategories]
@@ -328,19 +330,17 @@ export const CategorySelector = React.memo(
                                     }
                                     disabled={disabledCategories.includes(category.value)}
                                 >
-                                    {categoriesNotShowSubcategories.includes(category.value)
-                                        ? null
-                                        : category.subcategories.map(({ value, text }) => (
-                                              <Leaf
-                                                  key={value}
-                                                  nodeId={value}
-                                                  parentId={category.value}
-                                                  name={text}
-                                                  selected={isSubcategorySelected(category.value, value)}
-                                                  onSelectedChange={handleSubcategoriesChange}
-                                                  disabled={disabledCategories.includes(category.value)}
-                                              />
-                                          ))}
+                                    {category.subcategories.map(({ value, text }) => (
+                                        <Leaf
+                                            key={value}
+                                            nodeId={value}
+                                            parentId={category.value}
+                                            name={text}
+                                            selected={isSubcategorySelected(category.value, value)}
+                                            onSelectedChange={handleSubcategoriesChange}
+                                            disabled={disabledCategories.includes(category.value)}
+                                        />
+                                    ))}
                                 </Node>
                             ))}
                         </TreeView>

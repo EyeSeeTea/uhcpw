@@ -3,6 +3,7 @@ import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/e
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { TableBuilder } from "./TableBuilder";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
+import { generateRangeOfYears } from "../../../../domain/usecases/utils/generateYears";
 
 export const CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES = {
     AREA_OF_CHANGE_IN_COVERAGE_POLICY_PRE2019: [
@@ -118,18 +119,6 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
         "GJ7LuLvC5NP",
         "l26WfNjfVSx",
     ],
-    WAS_THIS_A_RESPONSE_TO_THE_COVID19_PANDEMIC: [
-        "mdnjNf5baYj",
-        "qJ9dWNT1HU1",
-        "rxDjH7GshzX",
-        "BYbKtpEB0Hn",
-        "L9klgnq75d8",
-        "pUFqAJjXUfY",
-        "KT9GQze7Pii",
-        "bP4RX98OLaj",
-        "kCOZDO02mN1",
-        "BGY8hoKzw0B",
-    ],
 };
 
 // NOTICE: This is because in the same year data could change up to 10 times and table have to show all the data changes
@@ -147,12 +136,9 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YE
 };
 
 export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
-    buildColumns(params: { policyExplorerCategoryId: string; dataSet?: D2DataSet }): PolicyExplorerCell[] {
-        const { policyExplorerCategoryId, dataSet } = params;
-        const dataElementsSection = this.getDataElementsSectionForChangesInCoveragePolicy(
-            policyExplorerCategoryId,
-            dataSet
-        );
+    buildColumns(params: { dataSet?: D2DataSet }): PolicyExplorerCell[] {
+        const { dataSet } = params;
+        const dataElementsSection = this.getDataElementsSectionForChangesInCoveragePolicy(dataSet);
 
         return [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
@@ -166,29 +152,29 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
 
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
-        policyExplorerCategoryId: string;
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
         references: string;
     }): PolicyExplorerCell[][] {
-        const { currentRowsInTable, policyExplorerCategoryId, dataValuesByGroup, orgUnitName, period, references } =
-            params;
+        const { currentRowsInTable, dataValuesByGroup, orgUnitName, period, references } = params;
 
-        const subcategoriesIdsByColumn =
-            policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
+        if (!period) return currentRowsInTable;
 
-        const subcategoriesIdsByChangeInTheYear =
-            policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS;
+        const upToAndIncluding2019 = generateRangeOfYears(2000, 2019).map(years => years.id);
+
+        const subcategoriesIdsByColumn = upToAndIncluding2019.includes(period)
+            ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
+            : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
+
+        const subcategoriesIdsByChangeInTheYear = upToAndIncluding2019.includes(period)
+            ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS
+            : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS;
 
         const rows = Object.values(subcategoriesIdsByChangeInTheYear).reduce(
             (accRows: PolicyExplorerCell[][], subcategoriesIdsInAChangeOfTheYear, index) => {
                 const initCellsInRow: PolicyExplorerCell[] =
-                    index === 0
+                    index === 0 || !accRows.length
                         ? [
                               { type: PolicyExplorerCellType.DATA, value: orgUnitName },
                               { type: PolicyExplorerCellType.DATA, value: period || EMPTY_DATA },
@@ -224,22 +210,22 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
         return [...currentRowsInTable, ...rows];
     }
 
-    private getDataElementsSectionForChangesInCoveragePolicy(policyExplorerCategoryId: string, dataSet?: D2DataSet) {
-        const onlyFirstIdOfSubcategories =
-            policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS.FIRST_CHANGE
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS.FIRST_CHANGE;
-        return this.getDataElementsSection(policyExplorerCategoryId, onlyFirstIdOfSubcategories, dataSet);
+    private getDataElementsSectionForChangesInCoveragePolicy(dataSet?: D2DataSet) {
+        const onlyFirstIdOfSubcategories = [
+            ...CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS.FIRST_CHANGE,
+            ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS.FIRST_CHANGE,
+        ];
+        return this.getDataElementsSection(onlyFirstIdOfSubcategories, dataSet);
     }
 
-    private getDataElementsSection(
-        policyExplorerCategoryId: string,
-        policyExplorerSubcategoriesIds: string[],
-        dataSet?: D2DataSet
-    ) {
+    private getDataElementsSection(policyExplorerSubcategoriesIds: string[], dataSet?: D2DataSet) {
         return (
             dataSet?.sections
-                .find(section => section.id === policyExplorerCategoryId)
+                .find(
+                    section =>
+                        section.id === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019 ||
+                        section.id === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020
+                )
                 ?.dataElements.filter(
                     de =>
                         (de.valueType === "LONG_TEXT" || de.valueType === "TEXT") &&
