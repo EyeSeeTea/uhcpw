@@ -4,9 +4,10 @@ import { ChartCustomization } from "../../types";
 
 export const linearByCountryChart: ChartCustomization = {
     title: { text: "" },
-    legend: { ...baseLegend, reversed: true },
+    legend: { ...baseLegend },
     countrySerie: createCountrySerie,
     xAxis: {
         title: { text: "" },
     },
+    sortLegendByLastDataPoint: true,
 };

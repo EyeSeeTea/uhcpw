@@ -6,4 +6,5 @@ export const linearHealthQuintileChart = {
     legend: baseLegend,
     series: linearHealthQuintileSeries,
     xAxis: { title: { text: "" } },
+    sortLegendByLastDataPoint: true,
 };

@@ -6,4 +6,5 @@ export const linearDentalQuintileChart = {
     legend: baseLegend,
     series: linearDentalQuintileSeries,
     xAxis: { title: { text: "" } },
+    sortLegendByLastDataPoint: true,
 };
