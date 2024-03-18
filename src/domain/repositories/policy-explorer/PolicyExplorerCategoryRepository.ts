@@ -1,6 +1,10 @@
 import { FutureData } from "../../entities/Future";
-import { PolicyExplorerCategory } from "../../entities/policy-explorer/PolicyExplorerCategory";
+import {
+    PolicyExplorerCategory,
+    PolicyExplorerSelectCategoryInfo,
+} from "../../entities/policy-explorer/PolicyExplorerCategory";
 
 export interface PolicyExplorerCategoryRepository {
     getAll(): FutureData<PolicyExplorerCategory[]>;
+    getSelectCategoryInfo(): FutureData<PolicyExplorerSelectCategoryInfo>;
 }

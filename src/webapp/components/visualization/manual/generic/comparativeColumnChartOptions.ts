@@ -77,7 +77,7 @@ export const comparativeColumnChartOptions: (
                 text: "Households (%)",
             },
         },
-        legend: { ...baseLegend, itemMarginTop: 20 },
+        legend: baseLegend,
         series,
     } as Highcharts.Options;
 };

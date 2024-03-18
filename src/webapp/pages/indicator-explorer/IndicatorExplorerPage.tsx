@@ -12,7 +12,8 @@ import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import { EmptyContent } from "../../components/indicator-explorer/EmptyContent";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGet, showVisualization, globalMessage } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, selectCategoryInfo, errorMessage } =
+        useIndicatorExplorer();
     const snackbar = useSnackbar();
 
     useEffect(() => {
@@ -26,6 +27,12 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             snackbar.success(globalMessage?.text);
         }
     }, [globalMessage, snackbar]);
+
+    useEffect(() => {
+        if (errorMessage) {
+            snackbar.error(i18n.t(errorMessage));
+        }
+    }, [errorMessage, snackbar]);
 
     return (
         <Layout>
@@ -44,7 +51,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         countries={filters.country.selected || []}
                     />
                 ) : (
-                    <EmptyContent />
+                    <EmptyContent info={selectCategoryInfo} />
                 )}
             </MainSection>
         </Layout>
