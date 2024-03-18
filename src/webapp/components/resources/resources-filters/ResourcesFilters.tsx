@@ -94,6 +94,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                     <Center>
                         <CountrySelector
                             fullWidth
+                            hasSelectAll
+                            hasClearAll
+                            topClearAll={-35}
                             placeholder={i18n.t("Select country")}
                             countries={filters.country.options}
                             selectedIds={filters.country.selected}
