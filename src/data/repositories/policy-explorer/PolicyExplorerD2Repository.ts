@@ -34,7 +34,7 @@ export const generalDataElements: Record<string, string> = {
 
 export const EMPTY_DATA = "";
 export const COUNTRY_HEADER_NAME = "Country";
-export const PERIOD_HEADER_NAME = "Period";
+export const PERIOD_HEADER_NAME = "Year";
 export const REFERENCES_HEADER_NAME = "References";
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {

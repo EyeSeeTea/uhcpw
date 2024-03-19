@@ -123,16 +123,16 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
 
 // NOTICE: This is because in the same year data could change up to 10 times and table have to show all the data changes
 export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS = {
-    FIRST_CHANGE: ["xP4nCc5rpV4", "mQYv2QxdflF", "peIML3XRBaN", "CUSj5kPkJ0W", "mdnjNf5baYj"],
-    SECOND_CHANGE: ["AFxIxVuvvsZ", "dfWsuiDvDlR", "FKBHFNqiFM4", "fgsOChZT1Yp", "qJ9dWNT1HU1"],
-    THIRD_CHANGE: ["IjpUXUVF9bn", "JMYOe9wMIoE", "AZgRUJmVPNi", "M90TwNwsXjY", "rxDjH7GshzX"],
-    FOURTH_CHANGE: ["Soj201VJFWL", "tdlh9Z0uktG", "jq0sGqVVTNW", "XZbHFY1652W", "BYbKtpEB0Hn"],
-    FIFTH_CHANGE: ["JfqWVc1eCJl", "PyBU3BkN3oQ", "zvBP5xebI2D", "b5kKyrRkcHG", "L9klgnq75d8"],
-    SIXTH_CHANGE: ["CEjDnfFPHAn", "kUBtnGm4EKp", "SfaynclXRLx", "Azmt9ndZOE2", "pUFqAJjXUfY"],
-    SEVENTH_CHANGE: ["PRq7KFCDGWc", "TH73JJkBEXA", "QMd8Ch70DMO", "S9zr8VMFxu7", "KT9GQze7Pii"],
-    EIGHTH_CHANGE: ["oVgaMvPvL3R", "gdZ63nAVakA", "zNkK3T9RC20", "DzK5t6bz3En", "bP4RX98OLaj"],
-    NINTH_CHANGE: ["eohpuMxhpeT", "O5Z0EpAy0HE", "qbUvq6u68Vp", "GJ7LuLvC5NP", "kCOZDO02mN1"],
-    TENTH_CHANGE: ["e4ieVLuEisR", "IVVTmrOelXA", "SLw4hji7Eqz", "l26WfNjfVSx", "BGY8hoKzw0B"],
+    FIRST_CHANGE: ["xP4nCc5rpV4", "mQYv2QxdflF", "peIML3XRBaN", "CUSj5kPkJ0W"],
+    SECOND_CHANGE: ["AFxIxVuvvsZ", "dfWsuiDvDlR", "FKBHFNqiFM4", "fgsOChZT1Yp"],
+    THIRD_CHANGE: ["IjpUXUVF9bn", "JMYOe9wMIoE", "AZgRUJmVPNi", "M90TwNwsXjY"],
+    FOURTH_CHANGE: ["Soj201VJFWL", "tdlh9Z0uktG", "jq0sGqVVTNW", "XZbHFY1652W"],
+    FIFTH_CHANGE: ["JfqWVc1eCJl", "PyBU3BkN3oQ", "zvBP5xebI2D", "b5kKyrRkcHG"],
+    SIXTH_CHANGE: ["CEjDnfFPHAn", "kUBtnGm4EKp", "SfaynclXRLx", "Azmt9ndZOE2"],
+    SEVENTH_CHANGE: ["PRq7KFCDGWc", "TH73JJkBEXA", "QMd8Ch70DMO", "S9zr8VMFxu7"],
+    EIGHTH_CHANGE: ["oVgaMvPvL3R", "gdZ63nAVakA", "zNkK3T9RC20", "DzK5t6bz3En"],
+    NINTH_CHANGE: ["eohpuMxhpeT", "O5Z0EpAy0HE", "qbUvq6u68Vp", "GJ7LuLvC5NP"],
+    TENTH_CHANGE: ["e4ieVLuEisR", "IVVTmrOelXA", "SLw4hji7Eqz", "l26WfNjfVSx"],
 };
 
 export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
