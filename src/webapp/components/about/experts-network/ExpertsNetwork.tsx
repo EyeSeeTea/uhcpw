@@ -26,6 +26,9 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
 
             <Row style={{ padding: "16px 32px 32px 32px" }}>
                 <CountrySelector
+                    hasSelectAll
+                    hasClearAll
+                    topClearAll={-35}
                     countries={countryFilter.options}
                     selectedIds={countryFilter.selected}
                     onSelectedIdsChange={countryFilter.onSelectedChange}

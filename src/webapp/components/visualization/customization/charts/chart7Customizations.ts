@@ -5,7 +5,7 @@ import { rotateXAxis } from "../xAxis/rotateXAxis";
 
 export const chart7Customizations: ChartCustomization = {
     title: { text: "" },
-    legend: { ...baseLegend, reversed: true, itemMarginTop: 20 },
+    legend: { ...baseLegend, reversed: true },
     series: [
         { id: "SpTdfmqlzNj.CgeNM5PZBLy", name: "Medicines", color: "#c00000", dataLabels: { enabled: false } },
         {

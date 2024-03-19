@@ -301,6 +301,9 @@ function givenPolicyExplorerCategories(): PolicyExplorerCategory[] {
     const items = policyExplorerCategoriesData as unknown as PolicyExplorerCategory[];
 
     when(mockedRepository.getAll()).thenReturn(Future.success(items));
+    when(mockedRepository.getSelectCategoryInfo()).thenReturn(
+        Future.success({ title: "Select Category", text: "text" })
+    );
 
     policyExplorerCategoryRepository = instance(mockedRepository);
 
@@ -399,12 +402,10 @@ async function selectFiltersAndGetTable(categoryriesNames: string[], countryText
     await userEvent.click(getTableButton);
 }
 
-async function expandCategoryByName(name: string) {
-    return userEvent.click(await screen.findByText(name));
-}
-
 async function selectCategoryByName(name: string) {
-    const categoryCheckbox = await screen.getByLabelText(`Select all ${name}`);
+    const categoryCheckbox = screen.getByRole("checkbox", {
+        name: `Select all ${name}`,
+    });
 
     return userEvent.click(categoryCheckbox);
 }
@@ -413,10 +414,9 @@ async function selectCategoryFilter(categoryriesNames: string[]) {
     const categorySelectorToFocus = screen.getByRole("textbox", {
         name: /categories/i,
     });
-    userEvent.click(categorySelectorToFocus);
+    await userEvent.click(categorySelectorToFocus);
 
     for (const name of categoryriesNames) {
-        await expandCategoryByName(name);
         await selectCategoryByName(name);
     }
     await userEvent.keyboard("{Escape}");

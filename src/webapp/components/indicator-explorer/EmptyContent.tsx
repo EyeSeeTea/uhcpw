@@ -1,37 +1,29 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import i18n from "../../../locales";
+import ReactMarkdown from "react-markdown";
 import GridOnIcon from "@material-ui/icons/GridOn";
 
-export const EmptyContent: React.FC = () => {
+import i18n from "../../../locales";
+import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
+
+export const EmptyContent: React.FC<{ info?: IndicatorExplorerSelectCategoryInfo }> = React.memo(({ info }) => {
+    if (!info) return null;
+
     return (
         <Container>
             <Content>
                 <Row>
                     <div>
-                        <Title variant="h5">{i18n.t("Select Category")}</Title>
-                        <Text>
-                            {i18n.t("Select a category to track indicators and compare them across countries.")}
-                            <br />
-                            <br />
-                            {i18n.t("Data are not available for all countries or all years.")}
-                            <br />
-                            <br />
-                            {i18n.t("Data on financial protection are not currently available for")}{" "}
-                            <b>
-                                {i18n.t(
-                                    "Andorra, Azerbaijan, Belarus, Iceland, Kazakhstan, Kyrgyzstan, Monaco, Norway, the Russian Federation, San Marino, Turkmenistan and Uzbekistan."
-                                )}
-                            </b>
-                        </Text>
+                        <Title variant="h5">{i18n.t(info.title)}</Title>
+                        <ReactMarkdown>{info.text}</ReactMarkdown>
                     </div>
                     <GridOnIcon htmlColor="white" fontSize="large" />
                 </Row>
             </Content>
         </Container>
     );
-};
+});
 
 const Row = styled.div`
     display: flex;
@@ -60,9 +52,4 @@ const Content = styled.div`
 
 const Title = styled(Typography)`
     color: #008ad7;
-`;
-
-const Text = styled(Typography)`
-    max-width: 340px;
-    margin-top: 16px;
 `;
