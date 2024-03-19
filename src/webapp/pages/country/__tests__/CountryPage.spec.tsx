@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
+import moment from "moment";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { CountryPage } from "../CountryPage";
@@ -18,12 +19,14 @@ import { CountryPageInfoD2Repository } from "../../../../data/repositories/count
 import { SliderInfo } from "../../../../domain/entities/country-page/SliderInfo";
 
 let personRepository: PersonD2Repository;
+let resourceRepository: ResourceD2Repository;
 let countryPageInfoRepository: CountryPageInfoD2Repository;
 
 describe("Country Page", () => {
     it("should render Navbar", () => {
         givenAPersons();
         givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -38,6 +41,7 @@ describe("Country Page", () => {
     it("should render Hero", () => {
         givenAPersons();
         givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -47,6 +51,7 @@ describe("Country Page", () => {
     it("should render slider", () => {
         givenAPersons();
         givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -59,9 +64,10 @@ describe("Country Page", () => {
         ).toBeInTheDocument();
     });
 
-    it("should render country resources", () => {
+    it("should render country resources", async () => {
         givenAPersons();
         givenSliderTitles();
+        const resources = givenAResources();
 
         renderPage();
 
@@ -69,13 +75,12 @@ describe("Country Page", () => {
 
         expect(scope.getByRole("heading", { name: /country resources/i })).toBeInTheDocument();
 
-        const resources = givenAResources();
-
-        // verifyResourceItems(resources);
+        await verifyResourceItems(resources);
     });
-    it("should render country expert", () => {
+    it("should render country expert", async () => {
         const { experts } = givenAPersons();
         givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -83,7 +88,7 @@ describe("Country Page", () => {
 
         expect(scope.getByRole("heading", { name: /country expert/i })).toBeInTheDocument();
 
-        // verifyExpertMembers(experts);
+        await verifyExpertMembers(experts);
     });
 });
 
@@ -93,6 +98,7 @@ function renderPage() {
         { path: "/country-page", route: `/country-page?country=DVnpk4xiXGJ` },
         {
             person: personRepository,
+            resource: resourceRepository,
             countryPageInfo: countryPageInfoRepository,
         }
     );
@@ -116,8 +122,7 @@ async function verifyExpertMembers(experts: PersonState[]) {
         const image = itemScope.getByAltText(`${expert.firstName} ${expert.lastName}`) as HTMLImageElement;
         expect(image.src).toContain(expert.image);
 
-        itemScope.getByText(expert.firstName);
-        itemScope.getByText(expert.lastName);
+        itemScope.getByText(`${expert.firstName} ${expert.lastName}`);
         itemScope.getByText(expert.position);
         itemScope.getByText(expert.institution || "");
         itemScope.getByText(expert.countryName || "");
@@ -146,7 +151,11 @@ async function verifyResourceItems(resources: any[]) {
             expect(link).toHaveAttribute("href", resource.url);
         });
 
-        itemScope.getByText(resource.date.getFullYear());
+        if (resource.kind === "news") {
+            itemScope.getByText(moment(resource.date).format("DD MMMM YYYY"));
+        } else {
+            itemScope.getByText(resource.date.getFullYear());
+        }
     });
 }
 
@@ -192,6 +201,7 @@ function givenAResources(): (ComparativeAnalysis | CountryAnalysis | News | Mult
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
 
+    resourceRepository = instance(mockedRepository);
     return data;
 }
 
