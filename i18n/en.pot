@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-03-18T12:25:27.664Z\n"
-"PO-Revision-Date: 2024-03-18T12:25:27.664Z\n"
+"POT-Creation-Date: 2024-03-19T12:02:31.754Z\n"
+"PO-Revision-Date: 2024-03-19T12:02:31.754Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -71,43 +71,6 @@ msgid "Dashboard"
 msgstr ""
 
 msgid "In detail"
-msgstr ""
-
-msgid ""
-"How many people experience financial hardship: impoverishing health "
-"spending?"
-msgstr ""
-
-msgid "Catastrophic health spending. How many people experience financial hardship?"
-msgstr ""
-
-msgid "Who experiences financial hardship?"
-msgstr ""
-
-msgid "Which health services are responsible for financial hardship?"
-msgstr ""
-
-msgid ""
-"Which health services are responsible for financial hardship? International "
-"comparison"
-msgstr ""
-
-msgid "How many people experience unmet need?"
-msgstr ""
-
-msgid "Who experiences unmet need?"
-msgstr ""
-
-msgid "How much does {{country}} spend on health?"
-msgstr ""
-
-msgid "How much does {{country}} spend on health? International comparison"
-msgstr ""
-
-msgid "What are the main gaps in publicly financed coverage?"
-msgstr ""
-
-msgid "How can {{country}} strengthen financial protection?"
 msgstr ""
 
 msgid "Select all"
