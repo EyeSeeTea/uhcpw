@@ -1,38 +1,20 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@material-ui/core";
+import { Dialog, DialogContent, IconButton } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
-import i18n from "../../../locales";
+import ReactMarkdown from "react-markdown";
 
 type DialogType = {
     isOpen: boolean;
     onClose: () => void;
-    dialogInfo: {
-        title?: string;
-        infoNotes: string[];
-        sourceName: string;
-        sourceLink: string;
-    };
+    dialogInfo: string;
 };
 
-export const NotesDialog: React.FC<DialogType> = ({
-    isOpen,
-    onClose,
-    dialogInfo: { title = "Notes:", infoNotes, sourceName },
-}) => {
+export const NotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo }) => {
     return (
         <Dialog open={isOpen} onClose={onClose}>
             <DialogContainer>
-                <DialogTitle style={{ fontSize: "18px", paddingBottom: "2px" }}>{title}</DialogTitle>
                 <DialogContent>
-                    {infoNotes.map(note => (
-                        <Typography key={note} style={{ color: "#242626" }}>
-                            {note}
-                        </Typography>
-                    ))}
-                    <Typography style={{ color: "#242626", marginTop: "10px" }}>
-                        {i18n.t("Source: ")}
-                        {sourceName}
-                    </Typography>
+                    <ReactMarkdown>{dialogInfo}</ReactMarkdown>
                 </DialogContent>
                 <CloseIconButton onClick={onClose}>
                     <CloseIcon

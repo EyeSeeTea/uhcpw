@@ -45,7 +45,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
             <Container ref={ref} $withoutBackground={withoutBackground}>
                 <VisualizationPluginHeader
-                    visualizationDialogInfo={chartData.visualization.info}
+                    visualizationDialogInfo={chartData.visualization.notes || ""}
                     chartFriendlyName={chartData.visualization.friendlyName}
                     categoryTag={chartData.visualization.categoryTag}
                     showInfo={showInfo}
