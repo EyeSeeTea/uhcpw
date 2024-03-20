@@ -1,6 +1,6 @@
 import { getFieldsAsString } from "@eyeseetea/d2-api/api/common";
 import _ from "lodash";
-import { FutureData } from "../../../domain/entities/Future";
+import { Future, FutureData } from "../../../domain/entities/Future";
 import {
     CategoryDimensionItem,
     DataDimensionItem,
@@ -13,6 +13,7 @@ import { VisualizationRepository } from "../../../domain/repositories/indicator-
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { InmemoryCache } from "../../cache/InmemoryCache";
+import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import { emptyVisualizationExtra, VisualizationsSeeds } from "./seed/VisualizationsSeeds";
 
 export class VisualizationD2Repository implements VisualizationRepository {
@@ -36,20 +37,25 @@ export class VisualizationD2Repository implements VisualizationRepository {
     }
 
     public getById(id: string): FutureData<Visualization> {
-        return this.cache.getOrFuture(
-            id,
-            apiToFuture(
-                this.api.get<D2Visualization>(`/visualizations/${id}`, {
-                    fields: getFieldsAsString(visualizationFields),
-                })
-            ).map(visualization => {
-                return this.buildVisualization(visualization);
-            })
-        );
+        return Future.joinObj({
+            visualization: this.cache.getOrFuture(
+                id,
+                apiToFuture(
+                    this.api.get<D2Visualization>(`/visualizations/${id}`, {
+                        fields: getFieldsAsString(visualizationFields),
+                    })
+                )
+            ),
+            infoNotes: this.cache.getOrFuture("infoNotes", getInfoNotes(this.api)),
+        }).map(({ visualization, infoNotes }) => {
+            return this.buildVisualization(visualization, infoNotes);
+        });
     }
 
-    private buildVisualization(d2Visualization: D2Visualization): Visualization {
-        const visualizationExtra = VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra;
+    private buildVisualization(d2Visualization: D2Visualization, infoNotes?: InfoNotes): Visualization {
+        const notes = infoNotes ? infoNotes[d2Visualization.id] || "" : "";
+
+        const visualizationExtra = { ...(VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra), notes };
 
         return {
             id: d2Visualization.id,
