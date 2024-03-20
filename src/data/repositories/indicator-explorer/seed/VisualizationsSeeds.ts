@@ -50,9 +50,4 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
 export const emptyVisualizationExtra = {
     categoryName: "",
     friendlyName: "",
-    info: {
-        infoNotes: [],
-        sourceName: "",
-        sourceLink: "",
-    },
 };
