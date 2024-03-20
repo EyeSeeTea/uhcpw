@@ -1,0 +1,132 @@
+{
+    "id": "hNU4Lj1xLYO",
+    "name": "1. Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health in the WHO European Region",
+    "showData": true,
+    "aggregationType": "DEFAULT",
+    "hideSubtitle": false,
+    "type": "SCATTER",
+    "percentStackedValues": false,
+    "noSpaceBetweenColumns": false,
+    "regressionType": "NONE",
+    "cumulativeValues": false,
+    "hideTitle": false,
+    "regression": false,
+    "sortOrder": 0,
+    "fontSize": "NORMAL",
+    "hideEmptyRowItems": "NONE",
+    "skipRounding": false,
+    "legend": {
+        "showKey": false
+    },
+    "seriesKey": {
+        "hidden": false
+    },
+    "dataDimensionItems": [
+        {
+            "dataDimensionItemType": "DATA_ELEMENT",
+            "dataElement": {
+                "id": "kBOh0hUi5bW"
+            }
+        },
+        {
+            "dataDimensionItemType": "DATA_ELEMENT",
+            "dataElement": {
+                "id": "rX0nLoxvSAi"
+            }
+        }
+    ],
+    "columns": [
+        {
+            "id": "dx",
+            "dimension": "dx",
+            "items": [
+                {
+                    "id": "kBOh0hUi5bW"
+                },
+                {
+                    "id": "rX0nLoxvSAi"
+                }
+            ]
+        }
+    ],
+    "axes": [
+        {
+            "index": 0,
+            "type": "RANGE",
+            "title": {
+                "textMode": "CUSTOM",
+                "text": "Households with catastrophic health spending (%)"
+            }
+        },
+        {
+            "index": 0,
+            "type": "DOMAIN",
+            "title": {
+                "textMode": "CUSTOM",
+                "text": "Out-of-pocket payments as a share of current spending on health (%)"
+            }
+        },
+        {
+            "index": 1,
+            "type": "RANGE",
+            "title": {
+                "textMode": "CUSTOM",
+                "text": "Out-of-pocket payments as a share of current spending on health (%)"
+            }
+        }
+    ],
+    "yearlySeries": [],
+    "categoryDimensions": [],
+    "filters": [
+        {
+            "id": "pe",
+            "dimension": "pe",
+            "items": [
+                {
+                    "id": "2010"
+                },
+                {
+                    "id": "2011"
+                },
+                {
+                    "id": "2012"
+                },
+                {
+                    "id": "2013"
+                },
+                {
+                    "id": "2014"
+                },
+                {
+                    "id": "2015"
+                },
+                {
+                    "id": "2016"
+                },
+                {
+                    "id": "2017"
+                },
+                {
+                    "id": "2018"
+                },
+                {
+                    "id": "2019"
+                }
+            ]
+        }
+    ],
+    "rows": [
+        {
+            "id": "ou",
+            "dimension": "ou",
+            "items": [
+                {
+                    "id": "DVnpk4xiXGJ"
+                },
+                {
+                    "id": "XKKI1hhyFxk"
+                }
+            ]
+        }
+    ]
+}
