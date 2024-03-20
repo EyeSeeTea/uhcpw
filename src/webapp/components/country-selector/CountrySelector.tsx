@@ -68,6 +68,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const handleClose = useCallback(() => {
             setAnchorEl(null);
             setExpanded(!expanded);
+            setSearchTerm("");
         }, [expanded, setExpanded, setAnchorEl]);
 
         const handleSelectedChange = useCallback(
