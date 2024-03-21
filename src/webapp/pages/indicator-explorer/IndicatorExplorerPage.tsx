@@ -44,9 +44,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
 
-                {showVisualization && filters.category.selected ? (
+                {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
-                        visualizationId={filters.category.selected}
+                        visualizationId={filters.indicators.selected}
                         years={filters.year.selected || []}
                         countries={filters.country.selected || []}
                     />

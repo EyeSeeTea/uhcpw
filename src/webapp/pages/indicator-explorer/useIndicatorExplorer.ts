@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
-import { GlobalMessage, IndicatorExplorerState } from "./IndicatorExplorerState";
+import { GlobalMessage, IndicatorExplorerState, IndicatorOption } from "./IndicatorExplorerState";
 
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
@@ -9,6 +9,7 @@ import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
+import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 
 const allYearsFilters = generateYears().map(year => ({ value: year.id, text: year.id }));
 
@@ -21,8 +22,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const [errorMessage, setErrorMessage] = useState<string>("");
 
-    const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
-    const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
+    const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
+    const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
     const [selectCategoryInfo, setSelectCategoryInfo] = useState<IndicatorExplorerSelectCategoryInfo | undefined>(
         undefined
     );
@@ -38,7 +39,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const onChangeCategoryFilter = useCallback(
         (value: string | undefined) => {
-            const oldVisualization = visualizations.find(visualization => visualization.id === selectedCategoryFilter);
+            const oldVisualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
             const newsVisualization = visualizations.find(visualization => visualization.id === value);
 
             if (oldVisualization?.isComparative && !newsVisualization?.isComparative) {
@@ -53,10 +54,10 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
 
-            setSelectedCategoryFilter(value);
+            setSelectedIndicatorFilter(value);
             setShowVisualization(false);
         },
-        [countryOptions, onSelectedCountryChange, selectedCategoryFilter, visualizations]
+        [countryOptions, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
     );
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
@@ -71,32 +72,29 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     useEffect(() => {
         compositionRoot.indicatorExplorer.getVisualizations.execute().run(
             visualizations => {
-                setCategoryFilters(
-                    visualizations.map(visualization => ({
-                        value: visualization.id,
-                        text: `${visualization.categoryName}: ${visualization.friendlyName}`,
-                    }))
-                );
+                setIndicatorFilters(buildIndicatorOptionsAndSortByCategories(visualizations));
 
                 setVisualizations(visualizations);
             },
             () => {
-                setCategoryFilters([]);
+                setIndicatorFilters([]);
             }
         );
     }, [compositionRoot.indicatorExplorer]);
 
     useEffect(() => {
-        const categoryFilter = categoryFilters.find(cat => cat.value === selectedCategoryFilter)?.text;
+        const categoryOfIndicatorSelectedFilter = indicatorFilters.find(
+            indicator => indicator.value === selectedIndicatorFilter
+        )?.category;
 
-        if (categoryFilter?.startsWith("Comparative")) {
+        if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
             setYearsFilters([
                 { value: LatestCOVID19.id, text: i18n.t("2019 or latest available year before COVID-19") },
             ]);
         } else {
             setYearsFilters(allYearsFilters);
         }
-    }, [categoryFilters, selectedCategoryFilter]);
+    }, [indicatorFilters, selectedIndicatorFilter]);
 
     useEffect(() => {
         compositionRoot.indicatorExplorer.getSelectCategoryInfo.execute().run(
@@ -111,7 +109,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     }, [compositionRoot.indicatorExplorer]);
 
     const onGet = useCallback(() => {
-        const visualization = visualizations.find(visualization => visualization.id === selectedCategoryFilter);
+        const visualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
 
         if (visualization?.minCountryFilter && (selectedCountries?.length || 0) < visualization.minCountryFilter) {
             setGlobalMessage({
@@ -134,11 +132,11 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         } else {
             setShowVisualization(true);
         }
-    }, [selectedCountries, selectedCategoryFilter, visualizations]);
+    }, [selectedCountries, selectedIndicatorFilter, visualizations]);
 
     const onCountriesChange = useCallback(
         (countries: string[] | undefined) => {
-            const visualization = visualizations.find(visualization => visualization.id === selectedCategoryFilter);
+            const visualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
 
             if (visualization?.maxCountryFilter && (countries?.length || 0) > visualization.maxCountryFilter) {
                 return;
@@ -146,15 +144,15 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
             onSelectedCountryChange(countries);
         },
-        [onSelectedCountryChange, selectedCategoryFilter, visualizations]
+        [onSelectedCountryChange, selectedIndicatorFilter, visualizations]
     );
 
     return {
         filters: {
             country: { ...countryFilter, onSelectedChange: onCountriesChange, options: countryOptions },
-            category: {
-                options: categoryFilters,
-                selected: selectedCategoryFilter,
+            indicators: {
+                options: indicatorFilters,
+                selected: selectedIndicatorFilter,
                 onSelectedChange: onChangeCategoryFilter,
             },
             year: {
@@ -169,4 +167,23 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         selectCategoryInfo,
         errorMessage,
     };
+}
+
+function buildIndicatorOptionsAndSortByCategories(visualizations: Visualization[]): IndicatorOption[] {
+    return visualizations
+        .map(visualization => ({
+            value: visualization.id,
+            text: `${visualization.friendlyName.charAt(0).toUpperCase()}${visualization.friendlyName.slice(1)}`,
+            category: visualization.categoryName,
+        }))
+        .sort((optionA, optionB) => {
+            const indexCategoryA = Object.values(sortedCategoryNames).indexOf(optionA.category);
+            const indexCategoryB = Object.values(sortedCategoryNames).indexOf(optionB.category);
+            const indexIndicatorA = sortedCharts.indexOf(optionA.value);
+            const indexIndicatorB = sortedCharts.indexOf(optionB.value);
+
+            return indexCategoryA !== indexCategoryB
+                ? indexCategoryA - indexCategoryB
+                : indexIndicatorA - indexIndicatorB;
+        });
 }
