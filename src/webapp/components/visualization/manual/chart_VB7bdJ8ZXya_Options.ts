@@ -23,6 +23,7 @@ export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts
     return {
         ...comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors),
         yAxis: {
+            ...comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors)?.yAxis,
             title: {
                 text: "Catastrophic health spending (%)",
             },
