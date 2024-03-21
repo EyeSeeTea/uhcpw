@@ -9,12 +9,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { NotesDialog } from "../dialog/NotesDialog";
 
 interface VisualizationPluginHeaderProps {
-    visualizationDialogInfo: {
-        title?: string;
-        infoNotes: string[];
-        sourceName: string;
-        sourceLink: string;
-    };
+    visualizationDialogInfo: string;
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;
