@@ -1,5 +1,5 @@
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
-import { CountryFilterState, OptionsFilterState, OptionsMultiFilterState } from "../../common/state/state";
+import { CountryFilterState, OptionsMultiFilterState } from "../../common/state/state";
 
 export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
@@ -10,9 +10,21 @@ export type IndicatorExplorerState = {
     errorMessage: string;
 };
 
+export type IndicatorOption = {
+    value: string;
+    text: string;
+    category: string;
+};
+
+export type IndicatorFilterState = {
+    options: IndicatorOption[];
+    selected: string | undefined;
+    onSelectedChange: (value: string | undefined) => void;
+};
+
 export type IndicatorExplorerFiltersState = {
     country: CountryFilterState;
-    category: OptionsFilterState;
+    indicators: IndicatorFilterState;
     year: OptionsMultiFilterState;
 };
 
