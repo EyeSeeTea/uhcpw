@@ -1,19 +1,12 @@
 import React, { useCallback } from "react";
 import { Button } from "@material-ui/core";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import {
-    TreeItem,
-    TreeView,
-    Autocomplete,
-    AutocompleteCloseReason,
-    AutocompleteInputChangeReason,
-} from "@material-ui/lab";
+import { Autocomplete, AutocompleteRenderGroupParams } from "@material-ui/lab";
 import styled from "styled-components";
 
 import i18n from "../../../../locales";
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 import { IndicatorOption } from "../../../pages/indicator-explorer/IndicatorExplorerState";
+import { CategoryGroup } from "./CategoryGroup";
 
 interface IndicatorSelectorProps {
     label?: string;
@@ -27,10 +20,7 @@ interface IndicatorSelectorProps {
 
 export const IndicatorSelector = React.memo(
     ({ label, options, selectedValue, placeholder, fullWidth, onChange, width = "100%" }: IndicatorSelectorProps) => {
-        const [open, setOpen] = React.useState<boolean>(false);
         const [selectedOption, setSelectedOption] = React.useState<IndicatorOption | null>(null);
-        const [expandedCategories, setExpandedCategories] = React.useState<string[]>([]);
-        const [inputValue, setInputValue] = React.useState("");
 
         React.useEffect(() => {
             setSelectedOption(options.find(option => option.value === selectedValue) || null);
@@ -48,41 +38,11 @@ export const IndicatorSelector = React.memo(
             setSelectedOption(null);
         }, [onChange]);
 
-        const handleClose = React.useCallback((event: React.ChangeEvent<{}>, reason: AutocompleteCloseReason) => {
-            const isClickingOutsidePanel = reason === "blur" && !(event as React.MouseEvent)?.relatedTarget;
-            if (isClickingOutsidePanel || reason !== "blur") {
-                setOpen(false);
-                setExpandedCategories([]);
-            }
-        }, []);
-
-        const handleOpen = React.useCallback((_event: React.ChangeEvent<{}>) => {
-            setOpen(true);
-        }, []);
-
-        const handleExpandCategory = useCallback((_event: React.ChangeEvent<{}>, nodeIds: string[]) => {
-            setExpandedCategories(nodeIds);
-        }, []);
-
-        const handleInputChange = useCallback(
-            (event: React.ChangeEvent<{}>, value: string, reason: AutocompleteInputChangeReason) => {
-                // NOTICE: This is to avoid that when we have search text in the input and also expanding/collapsing categories, the input is not reset.
-                const isExpandingOrCollapsingCategory = event?.type === "blur" && reason === "reset";
-                if (!isExpandingOrCollapsingCategory) {
-                    setInputValue(value);
-                }
-            },
-            []
-        );
-
         return (
             <Container width={width}>
                 <StyledAutocomplete
                     fullWidth={fullWidth}
                     multiple={false}
-                    open={open}
-                    onClose={handleClose}
-                    onOpen={handleOpen}
                     options={options}
                     groupBy={option => (option as IndicatorOption).category}
                     getOptionLabel={option => {
@@ -91,8 +51,6 @@ export const IndicatorSelector = React.memo(
                         ).text.toLowerCase()}`;
                     }}
                     value={selectedOption || null}
-                    inputValue={inputValue}
-                    onInputChange={handleInputChange}
                     onChange={handleChange}
                     renderInput={props => (
                         <DropdownTextField
@@ -102,18 +60,9 @@ export const IndicatorSelector = React.memo(
                             InputLabelProps={{ shrink: true }}
                         />
                     )}
-                    renderGroup={props => (
-                        <StyledTreeView
-                            expanded={expandedCategories}
-                            onNodeToggle={handleExpandCategory}
-                            defaultCollapseIcon={<ArrowDropUpIcon aria-label="collapse-icon" />}
-                            defaultExpandIcon={<ArrowDropDownIcon aria-label="expand-icon" />}
-                        >
-                            <StyledTreeItem nodeId={props.group} label={props.group}>
-                                {props.children}
-                            </StyledTreeItem>
-                        </StyledTreeView>
-                    )}
+                    renderGroup={(paramsGroup: AutocompleteRenderGroupParams) => {
+                        return <CategoryGroup key={paramsGroup.key} params={paramsGroup} />;
+                    }}
                     renderOption={option => (option as IndicatorOption).text}
                 />
                 {selectedValue ? (
@@ -147,24 +96,5 @@ const StyledAutocomplete = styled(Autocomplete)`
     }
     .MuiAutocomplete-popupIndicator {
         margin-inline-end: 5px;
-    }
-`;
-
-const StyledTreeItem = styled(TreeItem)`
-    .MuiTreeItem-label {
-        padding: 8px;
-        font-weight: 400;
-        font-size: 1rem;
-    }
-`;
-
-const StyledTreeView = styled(TreeView)`
-    padding-inline-end: 16px;
-    padding-inline-start: 16px;
-    &:first-child {
-        padding-block-start: 8px;
-    }
-    &:last-child {
-        padding-block-end: 8px;
     }
 `;
