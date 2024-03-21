@@ -110,6 +110,12 @@ msgstr ""
 msgid "How can {{country}} strengthen financial protection?"
 msgstr ""
 
+msgid "Select all"
+msgstr ""
+
+msgid "Clear all"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
@@ -133,9 +139,6 @@ msgid "To sign up or to send feedback, email"
 msgstr ""
 
 msgid "Clear"
-msgstr ""
-
-msgid "Clear all"
 msgstr ""
 
 msgid "Analysis"
@@ -418,6 +421,9 @@ msgid "Country experts: "
 msgstr ""
 
 msgid "Editors: "
+msgstr ""
+
+msgid "Reviewers: "
 msgstr ""
 
 msgid "Last updated: "

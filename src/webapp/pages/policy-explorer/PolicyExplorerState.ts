@@ -1,4 +1,5 @@
 import { PolicyExplorer } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
     CountryFilterState,
     OptionsMultiFilterState,
@@ -14,14 +15,17 @@ export type PolicyExplorerState = {
     onGetTable: () => void;
     onSwitchRowColumn: (categoryId: string) => void;
     onDownload: (categoryId: string) => void;
+    selectCategoryInfo: PolicyExplorerSelectCategoryInfo | undefined;
+    errorMessage: string;
 };
 
-type CountryFilterStateDisabled = {
+type ExtraCountryFilterState = {
     disabledCountries: string[];
+    allowSelectAllCountries: boolean;
 };
 
 export type PolicyExplorerFiltersState = {
-    country: CountryFilterState & CountryFilterStateDisabled;
+    country: CountryFilterState & ExtraCountryFilterState;
     category: PolicyExplorerCategoriesFilterState;
     year: OptionsMultiFilterState;
 };

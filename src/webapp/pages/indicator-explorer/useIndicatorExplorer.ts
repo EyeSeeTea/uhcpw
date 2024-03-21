@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { GlobalMessage, IndicatorExplorerState } from "./IndicatorExplorerState";
@@ -8,20 +8,24 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
+import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
 
 const allYearsFilters = generateYears().map(year => ({ value: year.id, text: year.id }));
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2();
-    const {
-        selected: selectedCountries,
-        onSelectedChange: onSelectedCountryChange,
-        options: countryOptions,
-    } = countryFilter;
+    const { selected: selectedCountries, onSelectedChange: onSelectedCountryChange, options } = countryFilter;
+
+    const countryOptions = useMemo(() => options.filter(option => option.name !== "Greenland"), [options]);
+
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     const [categoryFilters, setCategoryFilters] = useState<Option[]>([]);
     const [selectedCategoryFilter, setSelectedCategoryFilter] = useState<string | undefined>();
+    const [selectCategoryInfo, setSelectCategoryInfo] = useState<IndicatorExplorerSelectCategoryInfo | undefined>(
+        undefined
+    );
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
@@ -94,6 +98,18 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         }
     }, [categoryFilters, selectedCategoryFilter]);
 
+    useEffect(() => {
+        compositionRoot.indicatorExplorer.getSelectCategoryInfo.execute().run(
+            info => {
+                setSelectCategoryInfo(info);
+            },
+            error => {
+                setSelectCategoryInfo(undefined);
+                setErrorMessage(error);
+            }
+        );
+    }, [compositionRoot.indicatorExplorer]);
+
     const onGet = useCallback(() => {
         const visualization = visualizations.find(visualization => visualization.id === selectedCategoryFilter);
 
@@ -150,5 +166,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         onGet,
         showVisualization,
         globalMessage,
+        selectCategoryInfo,
+        errorMessage,
     };
 }
