@@ -1,6 +1,6 @@
 export const chart_jFtGKQIQTGp_Seed = {
     categoryName: "Financial hardship",
-    categoryTag: "Financial hardship",
+    showCountryTag: true,
     friendlyName: "households with impoverishing health spending",
     info: {
         infoNotes: [],

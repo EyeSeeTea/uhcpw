@@ -1,6 +1,6 @@
 export const chart_hpO1ZyFXpCz_Seed = {
     categoryName: "Financial hardship",
-    categoryTag: "Financial hardship",
+    showCountryTag: true,
     friendlyName: "breakdown of catastrophic health spending by type of care",
     info: {
         infoNotes: [

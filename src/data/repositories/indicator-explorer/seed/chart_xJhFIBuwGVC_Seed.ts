@@ -1,6 +1,6 @@
 export const chart_xJhFIBuwGVC_Seed = {
     categoryName: "Unmet need",
-    categoryTag: "Unmet need",
+    showCountryTag: true,
     friendlyName: "unmet need for health care due to cost, distance and waiting time",
     info: {
         infoNotes: [],

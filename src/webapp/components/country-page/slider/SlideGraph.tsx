@@ -72,4 +72,7 @@ const VisualizationContainer = styled.div`
         margin: 0;
     }
     max-width: 100%;
+    .visualization-plugin-header {
+        padding-block-start: 37px;
+    }
 `;
