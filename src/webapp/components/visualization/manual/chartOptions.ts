@@ -1,13 +1,13 @@
 import { Country } from "../../../../domain/entities/Country";
 import { Analytics } from "../../../../domain/entities/indicator-explorer/Analytics";
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
-import { chart1Options } from "./chart1Options";
-import { chart2Options } from "./chart2Options";
-import { chart3Options } from "./chart3Options";
-import { chart4Options } from "./chart4Options";
-import { chart5Options } from "./chart5Options";
-import { chart6Options } from "./chart6Options";
-import { chart7Options } from "./chart7Options";
+import { chart_hNU4Lj1xLYO_Options } from "./chart_hNU4Lj1xLYO_Options";
+import { chart_dbc87Ljw8uN_Options } from "./chart_dbc87Ljw8uN_Options";
+import { chart_NOukqSxCI63_Options } from "./chart_NOukqSxCI63_Options";
+import { chart_B4CnzUqVR3n_Options } from "./chart_B4CnzUqVR3n_Options";
+import { chart_GimM6ANOKhd_Options } from "./chart_GimM6ANOKhd_Options";
+import { chart_VB7bdJ8ZXya_Options } from "./chart_VB7bdJ8ZXya_Options";
+import { chart_mcNfvQaVbfy_Options } from "./chart_mcNfvQaVbfy_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -17,11 +17,11 @@ export interface ChartSource {
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
-    hNU4Lj1xLYO: chartSource => chart1Options(chartSource),
-    dbc87Ljw8uN: chartSource => chart2Options(chartSource),
-    NOukqSxCI63: chartSource => chart3Options(chartSource),
-    B4CnzUqVR3n: chartSource => chart4Options(chartSource),
-    GimM6ANOKhd: chartSource => chart5Options(chartSource),
-    VB7bdJ8ZXya: chartSource => chart6Options(chartSource),
-    mcNfvQaVbfy: chartSource => chart7Options(chartSource),
+    hNU4Lj1xLYO: chartSource => chart_hNU4Lj1xLYO_Options(chartSource),
+    dbc87Ljw8uN: chartSource => chart_dbc87Ljw8uN_Options(chartSource),
+    NOukqSxCI63: chartSource => chart_NOukqSxCI63_Options(chartSource),
+    B4CnzUqVR3n: chartSource => chart_B4CnzUqVR3n_Options(chartSource),
+    GimM6ANOKhd: chartSource => chart_GimM6ANOKhd_Options(chartSource),
+    VB7bdJ8ZXya: chartSource => chart_VB7bdJ8ZXya_Options(chartSource),
+    mcNfvQaVbfy: chartSource => chart_mcNfvQaVbfy_Options(chartSource),
 };
