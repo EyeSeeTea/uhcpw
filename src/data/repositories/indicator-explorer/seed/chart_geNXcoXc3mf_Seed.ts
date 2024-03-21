@@ -1,5 +1,7 @@
+import { sortedCategoryNames } from "./utils";
+
 export const chart_geNXcoXc3mf_Seed = {
-    categoryName: "Financial hardship",
+    categoryName: sortedCategoryNames.financialHardship,
     showCountryTag: true,
     friendlyName: "households with catastrophic health spending by consumption quintile",
     info: {

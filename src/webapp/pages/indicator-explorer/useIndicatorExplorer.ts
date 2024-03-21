@@ -9,6 +9,7 @@ import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
+import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 
 const allYearsFilters = generateYears().map(year => ({ value: year.id, text: year.id }));
 
@@ -71,15 +72,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     useEffect(() => {
         compositionRoot.indicatorExplorer.getVisualizations.execute().run(
             visualizations => {
-                setIndicatorFilters(
-                    visualizations.map(visualization => ({
-                        value: visualization.id,
-                        text: `${visualization.friendlyName.charAt(0).toUpperCase()}${visualization.friendlyName.slice(
-                            1
-                        )}`,
-                        category: visualization.categoryName,
-                    }))
-                );
+                setIndicatorFilters(buildIndicatorOptionsAndSortByCategories(visualizations));
 
                 setVisualizations(visualizations);
             },
@@ -94,7 +87,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             indicator => indicator.value === selectedIndicatorFilter
         )?.category;
 
-        if (categoryOfIndicatorSelectedFilter?.startsWith("Comparative")) {
+        if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
             setYearsFilters([
                 { value: LatestCOVID19.id, text: i18n.t("2019 or latest available year before COVID-19") },
             ]);
@@ -174,4 +167,23 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         selectCategoryInfo,
         errorMessage,
     };
+}
+
+function buildIndicatorOptionsAndSortByCategories(visualizations: Visualization[]): IndicatorOption[] {
+    return visualizations
+        .map(visualization => ({
+            value: visualization.id,
+            text: `${visualization.friendlyName.charAt(0).toUpperCase()}${visualization.friendlyName.slice(1)}`,
+            category: visualization.categoryName,
+        }))
+        .sort((optionA, optionB) => {
+            const indexCategoryA = Object.values(sortedCategoryNames).indexOf(optionA.category);
+            const indexCategoryB = Object.values(sortedCategoryNames).indexOf(optionB.category);
+            const indexIndicatorA = sortedCharts.indexOf(optionA.value);
+            const indexIndicatorB = sortedCharts.indexOf(optionB.value);
+
+            return indexCategoryA !== indexCategoryB
+                ? indexCategoryA - indexCategoryB
+                : indexIndicatorA - indexIndicatorB;
+        });
 }
