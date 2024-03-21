@@ -1,32 +1,30 @@
-import { chart10Customizations } from "./charts/chart10Customizations";
-import { chart11Customizations } from "./charts/chart11Customizations";
-import { chart12Customizations } from "./charts/chart12Customizations";
-import { chart13Customizations } from "./charts/chart13Customizations";
-import { chart14Customizations } from "./charts/chart14Customizations";
-import { chart15Customizations } from "./charts/chart15Customizations";
-import { chart16Customizations } from "./charts/chart16Customizations";
-import { chart17Customizations } from "./charts/chart17Customizations";
-import { chart18Customizations } from "./charts/chart18Customizations";
-import { chart21Customizations } from "./charts/chart21Customizations";
-import { chart22Customizations } from "./charts/chart22Customizations";
-import { chart7Customizations } from "./charts/chart7Customizations";
-import { chart8Customizations } from "./charts/chart8Customizations";
-import { chart9Customizations } from "./charts/chart9Customizations";
+import { chart_geNXcoXc3mf_Customizations } from "./charts/chart_geNXcoXc3mf_Customizations";
+import { chart_hpO1ZyFXpCz_Customizations } from "./charts/chart_hpO1ZyFXpCz_Customizations";
+import { chart_ZxNdsDM8NSb_Customizations } from "./charts/chart_ZxNdsDM8NSb_Customizations";
+import { chart_xJhFIBuwGVC_Customizations } from "./charts/chart_xJhFIBuwGVC_Customizations";
+import { chart_zkEtsohZTTf_Customizations } from "./charts/chart_zkEtsohZTTf_Customizations";
+import { chart_rT39aStYqI3_Customizations } from "./charts/chart_rT39aStYqI3_Customizations";
+import { chart_nhaxK33nlhb_Customizations } from "./charts/chart_nhaxK33nlhb_Customizations";
+import { chart_OB4SCQfCzwz_Customizations } from "./charts/chart_OB4SCQfCzwz_Customizations";
+import { chart_d3kq9OCv8tH_Customizations } from "./charts/chart_d3kq9OCv8tH_Customizations";
+import { chart_ZZAcIv6O9LY_Customizations } from "./charts/chart_ZZAcIv6O9LY_Customizations";
+import { chart_BYAT5Woc9EJ_Customizations } from "./charts/chart_BYAT5Woc9EJ_Customizations";
+import { chart_jFtGKQIQTGp_Customizations } from "./charts/chart_jFtGKQIQTGp_Customizations";
+import { chart_Y31jQX5PVdI_Customizations } from "./charts/chart_Y31jQX5PVdI_Customizations";
 import { ChartCustomization } from "./types";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
-    mcNfvQaVbfy: chart7Customizations,
-    jFtGKQIQTGp: chart8Customizations,
-    Y31jQX5PVdI: chart9Customizations,
-    geNXcoXc3mf: chart10Customizations,
-    hpO1ZyFXpCz: chart11Customizations,
-    ZxNdsDM8NSb: chart12Customizations,
-    xJhFIBuwGVC: chart13Customizations,
-    zkEtsohZTTf: chart14Customizations,
-    rT39aStYqI3: chart15Customizations,
-    nhaxK33nlhb: chart16Customizations,
-    OB4SCQfCzwz: chart17Customizations,
-    d3kq9OCv8tH: chart18Customizations,
-    ZZAcIv6O9LY: chart21Customizations,
-    BYAT5Woc9EJ: chart22Customizations,
+    jFtGKQIQTGp: chart_jFtGKQIQTGp_Customizations,
+    Y31jQX5PVdI: chart_Y31jQX5PVdI_Customizations,
+    geNXcoXc3mf: chart_geNXcoXc3mf_Customizations,
+    hpO1ZyFXpCz: chart_hpO1ZyFXpCz_Customizations,
+    ZxNdsDM8NSb: chart_ZxNdsDM8NSb_Customizations,
+    xJhFIBuwGVC: chart_xJhFIBuwGVC_Customizations,
+    zkEtsohZTTf: chart_zkEtsohZTTf_Customizations,
+    rT39aStYqI3: chart_rT39aStYqI3_Customizations,
+    nhaxK33nlhb: chart_nhaxK33nlhb_Customizations,
+    OB4SCQfCzwz: chart_OB4SCQfCzwz_Customizations,
+    d3kq9OCv8tH: chart_d3kq9OCv8tH_Customizations,
+    ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Customizations,
+    BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Customizations,
 };
