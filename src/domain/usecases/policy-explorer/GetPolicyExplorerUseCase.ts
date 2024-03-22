@@ -3,7 +3,7 @@ import { Future, FutureData } from "../../entities/Future";
 import { PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
 import { CountryRepository } from "../../repositories/CountryRepository";
 import { PolicyExplorerRepository } from "../../repositories/policy-explorer/PolicyExplorerRepository";
-import { generateYears, generateRangeOfYears } from "../utils/generateYears";
+import { generateYears, generateYearsUntilToday } from "../utils/generateYears";
 
 export class GetPolicyExplorerUseCase {
     constructor(
@@ -39,7 +39,7 @@ export class GetPolicyExplorerUseCase {
         const yearsByCategory = categoryIds.reduce((acc, categoryId) => {
             switch (categoryId) {
                 case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID:
-                    return (acc = { ...acc, [categoryId]: generateRangeOfYears(2000).map(years => years.id) });
+                    return (acc = { ...acc, [categoryId]: generateYearsUntilToday().map(years => years.id) });
                 default:
                     return (acc = {
                         ...acc,
