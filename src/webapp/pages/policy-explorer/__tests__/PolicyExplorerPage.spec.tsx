@@ -153,18 +153,18 @@ describe("Given PolicyExplorerPage", () => {
         it("Then should render a message", async () => {});
     });
 
-    describe("When get a category with multiple periods table", () => {
-        it("Then should render a period column with more than one period data", async () => {
+    describe("When get a category with multiple years table", () => {
+        it("Then should render a year column with more than one year data", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
 
             givenCountries();
-            const policyExplorer = givenAPolicyExplorerWithMultiplePeriods();
+            const policyExplorer = givenAPolicyExplorerWithMultipleYears();
 
             renderPage();
 
             await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
 
-            await verifyMoreThanOnePeriodData(policyExplorer, policyExplorerCategories[8]?.id);
+            await verifyMoreThanOneYearData(policyExplorer, policyExplorerCategories[6]?.id);
         });
     });
 
@@ -319,7 +319,7 @@ function givenAnEmptyPolicyExplorer(): PolicyExplorer {
     return items;
 }
 
-function givenAPolicyExplorerWithMultiplePeriods(): PolicyExplorer {
+function givenAPolicyExplorerWithMultipleYears(): PolicyExplorer {
     const mockedRepository = mock(PolicyExplorerD2Repository);
 
     const items: PolicyExplorer = policyExplorerWithMultiplePeriods as unknown as PolicyExplorer;
@@ -384,9 +384,7 @@ async function selectCategoryByName(name: string) {
 }
 
 async function selectCategoryFilter(categoryriesNames: string[]) {
-    const categorySelectorToFocus = screen.getByRole("textbox", {
-        name: /categories/i,
-    });
+    const categorySelectorToFocus = screen.getByLabelText(/categories/i);
     await userEvent.click(categorySelectorToFocus);
 
     for (const name of categoryriesNames) {
@@ -437,27 +435,26 @@ function getTableRowsByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, 
     return [];
 }
 
-function getPeriodColumnValuesByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
+function getYearColumnValuesByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
     const table = getTableByPolicyExplorerCategoryId(policyExplorer, categoryId);
-    const periodRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Period") : -1;
-    if (periodRowsIndex !== -1) {
+    const yearRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Year") : -1;
+    if (yearRowsIndex !== -1) {
         return table
             ?.reduce((acc, row) => {
-                return row[periodRowsIndex] ? ([...acc, row[periodRowsIndex]] as PolicyExplorerCell[]) : acc;
+                return row[yearRowsIndex] ? ([...acc, row[yearRowsIndex]] as PolicyExplorerCell[]) : acc;
             }, [])
             .filter(row => row.type !== PolicyExplorerCellType.HEADER);
     } else {
-        throw new Error(`Period column not found`);
+        throw new Error(`Year column not found`);
     }
 }
 
 function getTypeOfHealthcareColumnByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
     const table = getTableByPolicyExplorerCategoryId(policyExplorer, categoryId);
-    const periodRowsIndex =
-        table && table[0] ? table[0].findIndex(column => column.value === "Type of health care") : -1;
-    if (periodRowsIndex !== -1) {
+    const yearRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Type of health care") : -1;
+    if (yearRowsIndex !== -1) {
         return table?.reduce((acc, row) => {
-            return row[periodRowsIndex] ? ([...acc, row[periodRowsIndex]] as PolicyExplorerCell[]) : acc;
+            return row[yearRowsIndex] ? ([...acc, row[yearRowsIndex]] as PolicyExplorerCell[]) : acc;
         }, []);
     } else {
         throw new Error(`Type of healthcare column not found`);
@@ -508,10 +505,10 @@ async function verifyRows(policyExplorer: PolicyExplorer, categoryId?: string) {
     }
 }
 
-async function verifyMoreThanOnePeriodData(policyExplorer: PolicyExplorer, categoryId?: string) {
-    const periodColumn = getPeriodColumnValuesByPolicyExplorerCategoryId(policyExplorer, categoryId);
+async function verifyMoreThanOneYearData(policyExplorer: PolicyExplorer, categoryId?: string) {
+    const yearColumn = getYearColumnValuesByPolicyExplorerCategoryId(policyExplorer, categoryId);
 
-    expect(periodColumn?.length).toBeGreaterThan(1);
+    expect(yearColumn?.length).toBeGreaterThan(1);
 }
 
 async function verifyTypeOfHealthcareColumn(policyExplorer: PolicyExplorer, categoryId?: string) {

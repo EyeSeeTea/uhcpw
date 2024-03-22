@@ -14,16 +14,16 @@ import { CategoryOption } from "../../components/policy-explorer/category-select
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
-    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 
 export const CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION = [
-    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 

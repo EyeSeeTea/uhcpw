@@ -819,16 +819,16 @@ function verifyPolicyExplorerTableRows(rows: PolicyExplorerCell[][], expectedRow
 }
 
 function verifyMoreThanOnePeriodData(table: PolicyExplorerCell[][]) {
-    const periodRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Period") : -1;
+    const periodRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Year") : -1;
     if (periodRowsIndex !== -1) {
         const periodColumn = table
             ?.reduce((acc, row) => {
                 return row[periodRowsIndex] ? ([...acc, row[periodRowsIndex]] as PolicyExplorerCell[]) : acc;
             }, [])
-            .filter(row => row.value !== "Period");
+            .filter(row => row.value !== "Year");
         expect(periodColumn?.length).toBeGreaterThan(1);
     } else {
-        throw new Error(`Period column not found`);
+        throw new Error(`Year column not found`);
     }
 }
 
