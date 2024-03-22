@@ -1,4 +1,4 @@
-import { FutureData } from "../../../domain/entities/Future";
+import { Future, FutureData } from "../../../domain/entities/Future";
 import {
     PolicyExplorerCategory,
     PolicyExplorerSubcategory,
@@ -7,6 +7,8 @@ import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/p
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+import { InmemoryCache } from "../../cache/InmemoryCache";
+import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import {
     CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
     CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
@@ -45,27 +47,42 @@ const sectionsList = [
 ];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
+    cache = new InmemoryCache();
+
     constructor(private api: D2Api) {}
 
     getAll(): FutureData<PolicyExplorerCategory[]> {
-        return apiToFuture(
-            this.api.models.dataSets.get({
-                fields: dataSetFields,
-                filter: { id: { eq: policyExplorerDataSet_ID } },
-            })
-        ).map(response => {
-            return this.buildCategories(response.objects[0]);
+        return Future.joinObj({
+            datasets: apiToFuture(
+                this.api.models.dataSets.get({
+                    fields: dataSetFields,
+                    filter: { id: { eq: policyExplorerDataSet_ID } },
+                })
+            ),
+            infoNotes: this.cache.getOrFuture("infoNotes", getInfoNotes(this.api)),
+        }).flatMap(({ datasets, infoNotes }) => {
+            const dataSet = datasets.objects[0];
+
+            if (dataSet) {
+                return Future.success(this.buildCategories(dataSet, infoNotes));
+            } else {
+                return Future.error("No categories found");
+            }
         });
     }
 
-    private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
+    private buildCategories(data: D2DataSet, infoNotes: InfoNotes): PolicyExplorerCategory[] {
         const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
-        return sections.map(section => ({
-            id: section.id,
-            name: section.displayName.replace("UHCW_", ""),
-            subcategories: this.getSubcategories(section.id, section.dataElements),
-            description: section.description,
-        }));
+        return sections.map(section => {
+            const notes = infoNotes ? infoNotes[section.id] || "" : "";
+
+            return {
+                id: section.id,
+                name: section.displayName.replace("UHCW_", ""),
+                subcategories: this.getSubcategories(section.id, section.dataElements),
+                description: notes,
+            };
+        });
     }
 
     private getSubcategories(sectionId: string, dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
