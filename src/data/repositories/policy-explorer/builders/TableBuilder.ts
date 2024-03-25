@@ -11,14 +11,14 @@ import { TableBuilderChangesInCoveragePolicy } from "./TableBuilderChangesInCove
 
 export interface TableBuilder {
     buildColumns(params: {
-        policyExplorerCategoryId?: string;
-        policyExplorerSubcategoriesIds: string[];
+        policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds?: string[];
         dataSet?: D2DataSet;
     }): PolicyExplorerCell[];
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
-        policyExplorerCategoryId?: string;
-        policyExplorerSubcategoriesIds: string[];
+        policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds?: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
