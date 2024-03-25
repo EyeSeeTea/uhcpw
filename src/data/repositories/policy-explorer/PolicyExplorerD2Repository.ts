@@ -298,20 +298,13 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         dataValuesOrderByYear: DataValueSetsDataValueWithOrgUnitNames[]
     ): DataValueSetsDataValueWithOrgUnitNames[] {
         return _(dataValuesOrderByYear).reduce((acc, dataValue) => {
-            const existedDataValue = acc.find(
-                dv => dv.orgUnit === dataValue.orgUnit && dv.dataElement === dataValue.dataElement
-            );
+            const existedDataValuesForOrgUnit = acc.find(dv => dv.orgUnit === dataValue.orgUnit);
 
-            if (!existedDataValue) {
+            if (!existedDataValuesForOrgUnit || +existedDataValuesForOrgUnit?.period === +dataValue.period) {
                 return [...acc, dataValue];
             } else {
-                return acc.map(dv => {
-                    if (dv === existedDataValue) {
-                        return +dataValue.period > +dv.period ? dataValue : dv;
-                    } else {
-                        return dv;
-                    }
-                });
+                const newAcc = acc.filter(dv => dv.orgUnit !== dataValue.orgUnit);
+                return [...newAcc, dataValue];
             }
         }, [] as DataValueSetsDataValueWithOrgUnitNames[]);
     }
