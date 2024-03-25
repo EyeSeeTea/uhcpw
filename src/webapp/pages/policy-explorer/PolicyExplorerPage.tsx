@@ -92,9 +92,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             <div key={info.country}>
                                 <GeneralDataContainer>
                                     <GeneralRow>
-                                        <CreditsText
-                                            style={{ fontWeight: 500 }}
-                                        >{`${info.country} (2023)`}</CreditsText>
+                                        <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
                                     </GeneralRow>
 
                                     <GeneralRow>
@@ -106,7 +104,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                             target="_blank"
                                             rel="noreferrer"
                                         >
-                                            {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
+                                            {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                                         </Link>
                                     </GeneralRow>
 

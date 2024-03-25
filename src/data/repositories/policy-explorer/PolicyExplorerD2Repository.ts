@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import {
+    latestAvailableYear,
     PolicyExplorer,
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
@@ -16,8 +17,13 @@ import {
     CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
     CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
 } from "./builders/TableBuilderChangesInCoveragePolicy";
-import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "./PolicyExplorerCategoryD2Repository";
+import {
+    CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+} from "./PolicyExplorerCategoryD2Repository";
 import { DataOrientation } from "../../../webapp/pages/policy-explorer/PolicyExplorerState";
+import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
+import { Id } from "../../../domain/entities/Ref";
 
 export const generalDataElements: Record<string, string> = {
     source: "pDEHTRpRL8X",
@@ -30,7 +36,7 @@ export const generalDataElements: Record<string, string> = {
 
 export const EMPTY_DATA = "";
 export const COUNTRY_HEADER_NAME = "Country";
-export const PERIOD_HEADER_NAME = "Period";
+export const PERIOD_HEADER_NAME = "Year";
 export const REFERENCES_HEADER_NAME = "References";
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
@@ -67,6 +73,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 dataValuesResponse.dataValues,
                 orgUnitsResponse.objects
             );
+
             return {
                 tables: this.buildTables({
                     policyExplorerCategories,
@@ -100,7 +107,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     }
 
     private getPeriods(yearsByCategory: Record<string, string[]>): string[] {
-        const years = Object.values(yearsByCategory).reduce((accYears, years) => accYears.concat(years), []);
+        const years = Object.values(yearsByCategory).reduce((accYears, years) => {
+            const yearsToAdd = years.includes(latestAvailableYear) ? "2023,2024" : years;
+            return accYears.concat(yearsToAdd);
+        }, []);
         return _.uniq(_.sortBy(years));
     }
 
@@ -183,17 +193,19 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const { policyExplorerCategories, dataValuesWithOrgUnitNames, organisationUnits, yearsByCategory, dataSet } =
             params;
 
-        const hasSomeChangesInCoveragePolicyCategory = Object.keys(policyExplorerCategories).some(categoryId =>
-            Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(categoryId)
+        const hasToFillAllSubcategories = Object.keys(policyExplorerCategories).some(
+            categoryId =>
+                CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID === categoryId ||
+                CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === categoryId
         );
 
-        const allPolicyExplorerCategories = hasSomeChangesInCoveragePolicyCategory
-            ? this.fillSubcategoriesInChangesInCoveragePolicy(policyExplorerCategories)
+        const allPolicyExplorerCategoriesAndSubcategories = hasToFillAllSubcategories
+            ? this.fillAllSubcategories(policyExplorerCategories)
             : policyExplorerCategories;
 
         const tables = {};
 
-        return Object.entries(allPolicyExplorerCategories).reduce(
+        return Object.entries(allPolicyExplorerCategoriesAndSubcategories).reduce(
             (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
                 const tableBuilder = getTableBuilder(policyExplorerCategoryId);
 
@@ -203,7 +215,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dataSet,
                 });
 
-                const countriesAlreadyInRows: string[] = [];
+                const years = yearsByCategory[policyExplorerCategoryId] || [];
+                const yearsIsLatestAvailableYear = years.length === 1 && years[0] === latestAvailableYear;
 
                 const dataValuesOrderByYear = _.orderBy(
                     dataValuesWithOrgUnitNames,
@@ -211,7 +224,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     "asc"
                 );
 
-                const dataValuesByCountryAndYear = _(dataValuesOrderByYear)
+                const finalDataValues = yearsIsLatestAvailableYear
+                    ? this.filterByLatestAvailableYear(dataValuesOrderByYear)
+                    : dataValuesOrderByYear;
+
+                const dataValuesByCountryAndYear = _(finalDataValues)
                     .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
                     .value();
 
@@ -222,18 +239,15 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         if (!orgUnit) return accRows;
 
                         const isPeriodNotIncludedInCategory =
-                            period && !yearsByCategory[policyExplorerCategoryId]?.includes(period);
+                            period && !years.includes(period) && !yearsIsLatestAvailableYear;
+
                         if (isPeriodNotIncludedInCategory) {
                             return accRows;
                         }
 
-                        const orgUnitName = countriesAlreadyInRows.includes(orgUnit)
+                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, organisationUnits, orgUnit)
                             ? EMPTY_DATA
                             : organisationUnits.find(ou => ou.id === orgUnit)?.shortName || EMPTY_DATA;
-
-                        if (!countriesAlreadyInRows.includes(orgUnit)) {
-                            countriesAlreadyInRows.push(orgUnit);
-                        }
 
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
@@ -249,7 +263,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             policyExplorerCategoryId,
                             policyExplorerSubcategoriesIds,
                             dataValuesByGroup,
-                            orgUnitName,
+                            orgUnitName: orgUnitNameInCell,
                             period,
                             references,
                             dataSet,
@@ -269,19 +283,53 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         );
     }
 
-    private fillSubcategoriesInChangesInCoveragePolicy(
-        policyExplorerCategories: Record<string, string[]>
-    ): Record<string, string[]> {
+    private isCountryAlreadyInRows(
+        accRows: PolicyExplorerCell[][],
+        organisationUnits: D2OrgUnit[],
+        orgUnit: Id
+    ): boolean {
+        const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName;
+        return (
+            !!orgUnitName && !!accRows?.find((row: PolicyExplorerCell[]) => !!row[0] && row[0]?.value === orgUnitName)
+        );
+    }
+
+    private filterByLatestAvailableYear(
+        dataValuesOrderByYear: DataValueSetsDataValueWithOrgUnitNames[]
+    ): DataValueSetsDataValueWithOrgUnitNames[] {
+        return _(dataValuesOrderByYear).reduce((acc, dataValue) => {
+            const existedDataValuesForOrgUnit = acc.find(dv => dv.orgUnit === dataValue.orgUnit);
+
+            if (!existedDataValuesForOrgUnit || +existedDataValuesForOrgUnit?.period === +dataValue.period) {
+                return [...acc, dataValue];
+            } else {
+                const newAcc = acc.filter(dv => dv.orgUnit !== dataValue.orgUnit);
+                return [...newAcc, dataValue];
+            }
+        }, [] as DataValueSetsDataValueWithOrgUnitNames[]);
+    }
+
+    private fillAllSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
         return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019:
-                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020:
+                case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID:
                     return {
                         ...acc,
-                        [categoryId]: this.getAllSubcategoriesOfChangesInCoveragePolicy(
-                            categoryId,
-                            policyExplorerCategories[categoryId] || []
-                        ),
+                        [categoryId]: Object.values({
+                            ...CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
+                            ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
+                        }).reduce((accSubcategories, subcategoryIds) => {
+                            return [...accSubcategories, ...subcategoryIds];
+                        }, [] as string[]),
+                    };
+                case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
+                    return {
+                        ...acc,
+                        [categoryId]: Object.values(
+                            USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS
+                        ).reduce((accSubcategories, subcategoryIds) => {
+                            return [...accSubcategories, ...subcategoryIds];
+                        }, [] as string[]),
                     };
                 default:
                     return {
@@ -290,20 +338,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     };
             }
         }, {});
-    }
-
-    private getAllSubcategoriesOfChangesInCoveragePolicy(categoryId: string, selectedSubcategories: string[]) {
-        const changesInCoveragePolicyGroupedSubcategories =
-            categoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
-
-        return selectedSubcategories.reduce((accSubcategories, subcategory) => {
-            const subcategoryIds = Object.values(changesInCoveragePolicyGroupedSubcategories).find(subcategoryIds =>
-                subcategoryIds.includes(subcategory)
-            );
-            return subcategoryIds ? [...accSubcategories, ...subcategoryIds] : accSubcategories;
-        }, [] as string[]);
     }
 
     private filterColumnsWithNoData(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]) {
