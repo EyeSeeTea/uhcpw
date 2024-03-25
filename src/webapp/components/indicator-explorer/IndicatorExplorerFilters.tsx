@@ -4,8 +4,8 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
 import { CountrySelector } from "../country-selector/CountrySelector";
-import { Dropdown } from "../dropdown/Dropdown";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
+import { IndicatorSelector } from "./category-indicator-selector/IndicatorSelector";
 
 export interface ResourcesFiltersProps {
     filters: IndicatorExplorerFiltersState;
@@ -17,13 +17,13 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
             <Grid item md={4} xs={6}>
                 <Center>
-                    <Dropdown
+                    <IndicatorSelector
                         fullWidth
                         label={i18n.t("Category and indicator")}
                         placeholder={i18n.t("Select category")}
-                        options={filters.category.options}
-                        value={filters.category.selected}
-                        onChange={filters.category.onSelectedChange}
+                        options={filters.indicators.options}
+                        selectedValue={filters.indicators.selected}
+                        onChange={filters.indicators.onSelectedChange}
                     />
                 </Center>
             </Grid>
@@ -58,7 +58,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     variant="contained"
                     color="primary"
                     disabled={
-                        !filters.category.selected ||
+                        !filters.indicators.selected ||
                         !filters.country.selected?.length ||
                         !filters.year.selected?.length
                     }

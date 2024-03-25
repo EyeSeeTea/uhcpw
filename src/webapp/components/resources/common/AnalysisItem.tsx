@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 import React from "react";
 import styled from "styled-components";
@@ -54,9 +54,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
                 {!minimalVersion && (
                     <>
                         <Row>
-                            <Typography variant="body1">{date.getFullYear()}</Typography>
-
-                            <StyledDivider orientation="vertical" flexItem />
+                            <StyledTypography variant="body1">{date.getFullYear()}</StyledTypography>
 
                             {links.map((link, index) => {
                                 return (
@@ -92,8 +90,8 @@ const Row = styled.div`
     justify-content: flex-start;
 `;
 
-const StyledDivider = styled(Divider)`
-    margin: 0px 8px 0px 4px;
+const StyledTypography = styled(Typography)`
+    margin-right: 8px;
 `;
 
 const Column = styled.div`

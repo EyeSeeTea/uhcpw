@@ -11,7 +11,10 @@ import i18n from "../../../locales";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import {
+    PolicyExplorerCategory,
+    PolicyExplorerSelectCategoryInfo,
+} from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
@@ -44,8 +47,12 @@ export function usePolicyExplorer({
 }): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2(countriesFilter);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
+    const [selectCategoryInfo, setSelectCategoryInfo] = useState<PolicyExplorerSelectCategoryInfo | undefined>(
+        undefined
+    );
     const [selectedCategoriesWithSubcategoriesFilter, setSelectedCategoriesWithSubcategoriesFilter] = useState<
         Record<string, string[]> | undefined
     >();
@@ -81,6 +88,18 @@ export function usePolicyExplorer({
             },
             () => {
                 setCategoryFilters([]);
+            }
+        );
+    }, [compositionRoot.policyExplorer]);
+
+    useEffect(() => {
+        compositionRoot.policyExplorer.getSelectCategoryInfo.execute().run(
+            info => {
+                setSelectCategoryInfo(info);
+            },
+            error => {
+                setSelectCategoryInfo(undefined);
+                setErrorMessage(error);
             }
         );
     }, [compositionRoot.policyExplorer]);
@@ -256,6 +275,8 @@ export function usePolicyExplorer({
         onGetTable,
         onSwitchRowColumn,
         onDownload,
+        selectCategoryInfo,
+        errorMessage,
     };
 }
 

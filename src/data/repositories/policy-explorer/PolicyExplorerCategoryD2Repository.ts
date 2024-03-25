@@ -1,6 +1,8 @@
-import { FutureData } from "../../../domain/entities/Future";
+import { FutureData, Future } from "../../../domain/entities/Future";
+import { Id } from "../../../domain/entities/Ref";
 import {
     PolicyExplorerCategory,
+    PolicyExplorerSelectCategoryInfo,
     PolicyExplorerSubcategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
@@ -37,6 +39,13 @@ const sectionsList = [
 
 export const CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID = "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID";
 
+const selectCategoryInfoProgram = "ai5rB7mcqHH";
+
+const selectCategoryInfoDataElements: Record<string, Id> = {
+    title: "yEaMMB7MXqI",
+    text: "SAzOXqrxWfI",
+};
+
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     constructor(private api: D2Api) {}
 
@@ -49,6 +58,28 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         ).map(response => {
             return this.buildCategories(response.objects[0]);
         });
+    }
+
+    getSelectCategoryInfo(): FutureData<PolicyExplorerSelectCategoryInfo> {
+        return apiToFuture(
+            this.api.events.get({
+                fields: eventsFields,
+                skipPaging: true,
+                program: selectCategoryInfoProgram,
+            })
+        ).flatMap(response => {
+            if (response.events[0]) {
+                return Future.success(this.buildSelectCategoryInfo(response.events[0]));
+            }
+            return Future.error("An error has ocurred fetching Select Category Info");
+        });
+    }
+
+    private buildSelectCategoryInfo(event: D2Event): PolicyExplorerSelectCategoryInfo {
+        return {
+            title: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
+            text: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+        };
     }
 
     private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
@@ -108,6 +139,12 @@ const dataSetFields = {
     sections: { id: true, displayName: true, dataElements: dataElementsFields, description: true },
 } as const;
 
+const eventsFields = {
+    event: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
+} as const;
+
 type D2DataElements = MetadataPick<{
     dataElements: { fields: typeof dataElementsFields };
 }>["dataElements"][number];
@@ -130,3 +167,14 @@ type Sections = SelectedPick<
         readonly description: true;
     }
 >[];
+
+interface D2Event {
+    event: string;
+    dataValues: DataValue[];
+    eventDate: string;
+}
+
+interface DataValue {
+    dataElement: string;
+    value: string;
+}

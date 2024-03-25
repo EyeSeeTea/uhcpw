@@ -108,8 +108,8 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
     ],
     POLICY_OF_CHANGE_IN_COVERAGE_POLICY: [
         "mQYv2QxdflF",
-        "dfWsuiDvDlR",
         "JMYOe9wMIoE",
+        "dfWsuiDvDlR",
         "tdlh9Z0uktG",
         "PyBU3BkN3oQ",
         "kUBtnGm4EKp",
