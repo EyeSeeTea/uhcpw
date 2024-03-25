@@ -150,13 +150,17 @@ export function usePolicyExplorer({
         }
     }, []);
 
-    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
-        if (value?.length && value.some(year => year === latestAvailableYear)) {
-            setSelectedYearFilter([latestAvailableYear]);
-        } else {
-            setSelectedYearFilter(value);
-        }
-    }, []);
+    const onChangeYearFilter = useCallback(
+        (value: string[] | undefined) => {
+            if (value?.length && value?.length > 1) {
+                const values = value.filter(value => !selectedYearFilter?.includes(value));
+                setSelectedYearFilter(values);
+            } else {
+                setSelectedYearFilter(value);
+            }
+        },
+        [selectedYearFilter]
+    );
 
     const onSwitchRowColumn = useCallback(
         (categoryId: string) => {
