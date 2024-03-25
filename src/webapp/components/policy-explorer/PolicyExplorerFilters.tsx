@@ -1,5 +1,5 @@
 import { Button, Grid, Typography } from "@material-ui/core";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { useHistory, useLocation } from "react-router-dom";
 import i18n from "../../../locales";
@@ -64,23 +64,17 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
         [filters.year, history, location.search]
     );
 
-    const moreThanOneCountrySelected = useMemo(() => {
-        return !!filters.country.selected?.length && filters.country.selected?.length > 1;
-    }, [filters.country.selected?.length]);
-
     return (
         <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
             <Grid item md={4} sm={6}>
                 <Center>
                     <CategorySelector
                         fullWidth
-                        moreThanOneCountrySelected={moreThanOneCountrySelected}
                         label={i18n.t("Category")}
                         placeholder={i18n.t("Select category")}
                         categoryOptions={filters.category.options}
                         selectedCategoriesWithSubcategories={filters.category.selected}
                         onSelect={onCategoryChange}
-                        disabledCategories={filters.category.disabledCategories}
                     />
                 </Center>
             </Grid>
@@ -89,12 +83,11 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     <CountrySelector
                         fullWidth
                         hasClearAll
-                        hasSelectAll={filters.country.allowSelectAllCountries}
+                        hasSelectAll
                         label={i18n.t("Countries")}
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={onCountryChange}
-                        disabledCountries={filters.country.disabledCountries}
                     />
                 </Center>
             </Grid>

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     latestAvailableYear,
     PolicyExplorer,
@@ -25,7 +25,7 @@ const INITIAL_NORMAL_ORIENTED_TABLES = [
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 
-export const CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION = [
+export const CATEGORIES_WITHOUT_SUBCATEGORIES = [
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
@@ -198,75 +198,13 @@ export function usePolicyExplorer({
         [compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]
     );
 
-    const disabledCategories = useMemo(() => {
-        const isMoreThanOneCountrySelected = !!countryFilter?.selected?.length && countryFilter?.selected?.length > 1;
-
-        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
-            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
-            : [];
-
-        const normalCategories = categoryFilters
-            .map(({ value }) => value)
-            .filter(category => !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category));
-
-        const isSomeCategoryWithSpecialVisualizationSelected = CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.some(
-            category => selectedCategories.includes(category)
-        );
-
-        if (isMoreThanOneCountrySelected && isSomeCategoryWithSpecialVisualizationSelected) {
-            return normalCategories;
-        }
-
-        const isSomeNormalCategorySelected = normalCategories.some(category => selectedCategories.includes(category));
-
-        if (isMoreThanOneCountrySelected && isSomeNormalCategorySelected) {
-            return CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION;
-        }
-        return [];
-    }, [categoryFilters, countryFilter?.selected?.length, selectedCategoriesWithSubcategoriesFilter]);
-
-    const disabledCountries = useMemo(() => {
-        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
-            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
-            : [];
-
-        if (
-            isOneCountryAndSomeCategoryWithSpecialVisualizationSelected(
-                countryFilter?.selected?.length,
-                selectedCategories
-            )
-        ) {
-            const restCountries = countryFilter.options
-                .map(c => c.id)
-                .filter(cId => countryFilter?.selected && !countryFilter?.selected.includes(cId));
-            return restCountries;
-        }
-        return [];
-    }, [countryFilter.options, countryFilter?.selected, selectedCategoriesWithSubcategoriesFilter]);
-
-    const allowSelectAllCountries = useMemo(() => {
-        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
-            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
-            : [];
-
-        const isSomeCategoryWithSpecialVisualizationSelected = CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.some(
-            category => selectedCategories.includes(category)
-        );
-        return !isSomeCategoryWithSpecialVisualizationSelected;
-    }, [selectedCategoriesWithSubcategoriesFilter]);
-
     return {
         filters: {
-            country: {
-                ...countryFilter,
-                disabledCountries,
-                allowSelectAllCountries,
-            },
+            country: countryFilter,
             category: {
                 options: categoryFilters,
                 selected: selectedCategoriesWithSubcategoriesFilter,
                 onSelectedChange: onChangeCategoryFilter,
-                disabledCategories,
             },
             year: {
                 options: yearFilters,
@@ -375,15 +313,4 @@ function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): Categ
         subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
         description: category.description,
     }));
-}
-
-function isOneCountryAndSomeCategoryWithSpecialVisualizationSelected(
-    totalCountrySelected: number | undefined,
-    selectedCategories: string[]
-) {
-    const isSomeCategoryWithSpecialVisualizationSelected = CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.some(
-        category => selectedCategories.includes(category)
-    );
-
-    return totalCountrySelected && totalCountrySelected === 1 && isSomeCategoryWithSpecialVisualizationSelected;
 }

@@ -19,13 +19,8 @@ export type PolicyExplorerState = {
     errorMessage: string;
 };
 
-type ExtraCountryFilterState = {
-    disabledCountries: string[];
-    allowSelectAllCountries: boolean;
-};
-
 export type PolicyExplorerFiltersState = {
-    country: CountryFilterState & ExtraCountryFilterState;
+    country: CountryFilterState;
     category: PolicyExplorerCategoriesFilterState;
     year: OptionsMultiFilterState;
 };

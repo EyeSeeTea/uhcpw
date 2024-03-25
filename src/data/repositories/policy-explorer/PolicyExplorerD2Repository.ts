@@ -23,6 +23,7 @@ import {
 } from "./PolicyExplorerCategoryD2Repository";
 import { DataOrientation } from "../../../webapp/pages/policy-explorer/PolicyExplorerState";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
+import { Id } from "../../../domain/entities/Ref";
 
 export const generalDataElements: Record<string, string> = {
     source: "pDEHTRpRL8X",
@@ -214,8 +215,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dataSet,
                 });
 
-                const countriesAlreadyInRows: string[] = [];
-
                 const years = yearsByCategory[policyExplorerCategoryId] || [];
                 const yearsIsLatestAvailableYear = years.length === 1 && years[0] === latestAvailableYear;
 
@@ -246,13 +245,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             return accRows;
                         }
 
-                        const orgUnitName = countriesAlreadyInRows.includes(orgUnit)
+                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, organisationUnits, orgUnit)
                             ? EMPTY_DATA
                             : organisationUnits.find(ou => ou.id === orgUnit)?.shortName || EMPTY_DATA;
-
-                        if (!countriesAlreadyInRows.includes(orgUnit)) {
-                            countriesAlreadyInRows.push(orgUnit);
-                        }
 
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
@@ -268,7 +263,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             policyExplorerCategoryId,
                             policyExplorerSubcategoriesIds,
                             dataValuesByGroup,
-                            orgUnitName,
+                            orgUnitName: orgUnitNameInCell,
                             period,
                             references,
                             dataSet,
@@ -285,6 +280,17 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 };
             },
             tables
+        );
+    }
+
+    private isCountryAlreadyInRows(
+        accRows: PolicyExplorerCell[][],
+        organisationUnits: D2OrgUnit[],
+        orgUnit: Id
+    ): boolean {
+        const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName;
+        return (
+            !!orgUnitName && !!accRows?.find((row: PolicyExplorerCell[]) => !!row[0] && row[0]?.value === orgUnitName)
         );
     }
 
