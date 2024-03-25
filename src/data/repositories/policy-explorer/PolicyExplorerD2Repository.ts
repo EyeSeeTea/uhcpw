@@ -130,7 +130,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             return dataRows?.map(dataRow => {
                 const isHeadersRow = dataRow.includes(COUNTRY_HEADER_NAME);
                 const referencesOfCountry =
-                    references.find(reference => dataRow.includes(reference.country))?.references.join(",") ||
+                    references.find(reference => dataRow.includes(reference.country))?.references?.join(",") ||
                     EMPTY_DATA;
                 return [...dataRow, isHeadersRow ? REFERENCES_HEADER_NAME : referencesOfCountry];
             });
@@ -139,7 +139,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const countryDataRow = dataRows.find(dataRow => dataRow.includes(COUNTRY_HEADER_NAME));
             const referencesDataRowToInclude = countryDataRow?.map((data): string => {
                 const referencesOfCountry =
-                    references.find(reference => reference.country === data)?.references.join(",") || EMPTY_DATA;
+                    references.find(reference => reference.country === data)?.references?.join(",") || EMPTY_DATA;
                 return data === COUNTRY_HEADER_NAME ? REFERENCES_HEADER_NAME : referencesOfCountry;
             });
             return referencesDataRowToInclude ? [...dataRows, referencesDataRowToInclude] : dataRows;
