@@ -46,7 +46,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Primary care"
+                    "value": "Primary care visits"
                 },
                 {
                     "type": "DATA",
@@ -80,7 +80,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Specialist visits"
+                    "value": "Outpatient specialist visits"
                 },
                 {
                     "type": "DATA",
@@ -114,7 +114,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Emergency visits"
+                    "value": "Outpatient emergency visits"
                 },
                 {
                     "type": "DATA",
@@ -148,7 +148,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Outpatient medicines"
+                    "value": "Outpatient prescribed medicines"
                 },
                 {
                     "type": "DATA",
@@ -169,40 +169,6 @@
                 {
                     "type": "DATA",
                     "value": "Yes, for all pensioners except those covered by mutual funds (MUFACE, MUGEJU and ISFAS):\nannual income < €18 000: €8.23 a month\nannual income €18 000–100 000: €18.52 a month\nannual income > €100 000: €61.75 a month"
-                }
-            ],
-            [
-                {
-                    "type": "DATA",
-                    "value": ""
-                },
-                {
-                    "type": "DATA",
-                    "value": ""
-                },
-                {
-                    "type": "HEADER",
-                    "value": "Inpatient medicines"
-                },
-                {
-                    "type": "DATA",
-                    "value": "Yes"
-                },
-                {
-                    "type": "DATA",
-                    "value": "None"
-                },
-                {
-                    "type": "DATA",
-                    "value": "No"
-                },
-                {
-                    "type": "DATA",
-                    "value": "People\n\nIncome\n    • people receiving non-contributory pensions or the minimum vital income\n    • unemployed people who have exhausted their unemployment benefits\n    • pensioners with annual income < €5 635 (or €11 200 if they are not obliged to pay personal income tax)\n\nHealth status\n    • people with toxic shock syndrome\n    • a very small number of people with disabilities\n    • moderately and severely disabled children\n    • people receiving benefits for a dependent child or minor in a permanent family foster care scheme\n\nOther\n    • people requiring treatment due to occupational illness or injury"
-                },
-                {
-                    "type": "DATA",
-                    "value": "Yes, for all pensioners except those covered by mutual funds (MUFACE, MUGEJU and ISFAS):\n    • annual income < €18 000: €8.23 a month\n    • annual income €18 000–100 000: €18.52 a month\n    • annual income > €100 000: €61.75 a month"
                 }
             ],
             [
@@ -284,7 +250,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Dental visits"
+                    "value": "Dental care visits"
                 },
                 {
                     "type": "DATA",
@@ -373,6 +339,40 @@
                 {
                     "type": "DATA",
                     "value": "NA"
+                }
+            ],
+            [
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "DATA",
+                    "value": ""
+                },
+                {
+                    "type": "HEADER",
+                    "value": "Inpatient medicines"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Yes"
+                },
+                {
+                    "type": "DATA",
+                    "value": "None"
+                },
+                {
+                    "type": "DATA",
+                    "value": "No"
+                },
+                {
+                    "type": "DATA",
+                    "value": "People\n\nIncome\n    • people receiving non-contributory pensions or the minimum vital income\n    • unemployed people who have exhausted their unemployment benefits\n    • pensioners with annual income < €5 635 (or €11 200 if they are not obliged to pay personal income tax)\n\nHealth status\n    • people with toxic shock syndrome\n    • a very small number of people with disabilities\n    • moderately and severely disabled children\n    • people receiving benefits for a dependent child or minor in a permanent family foster care scheme\n\nOther\n    • people requiring treatment due to occupational illness or injury"
+                },
+                {
+                    "type": "DATA",
+                    "value": "Yes, for all pensioners except those covered by mutual funds (MUFACE, MUGEJU and ISFAS):\n    • annual income < €18 000: €8.23 a month\n    • annual income €18 000–100 000: €18.52 a month\n    • annual income > €100 000: €61.75 a month"
                 }
             ]
         ]
