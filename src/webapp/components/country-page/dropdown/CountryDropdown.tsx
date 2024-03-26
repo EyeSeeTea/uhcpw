@@ -1,5 +1,5 @@
 import { Autocomplete } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
@@ -22,6 +22,14 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
             setValueOption(countryOptions.find(option => option.value === value) || null);
         }, [countryOptions, value]);
 
+        const handleChange = useCallback(
+            (_event: React.ChangeEvent<{}>, value: unknown) => {
+                if (value && (value as Option<string>)?.value) {
+                    onChange((value as Option<string>).value);
+                }
+            },
+            [onChange]
+        );
         return (
             <Container width={width} aria-label="country-dropdown">
                 <StyledAutocomplete
@@ -39,7 +47,7 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
                             InputLabelProps={{ shrink: true }}
                         />
                     )}
-                    onChange={(_, value) => onChange((value as Option<string>).value)}
+                    onChange={handleChange}
                 />
             </Container>
         );
