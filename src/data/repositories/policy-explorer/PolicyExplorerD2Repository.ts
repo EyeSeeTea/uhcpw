@@ -43,9 +43,19 @@ export const REFERENCES_HEADER_NAME = "References";
 const FILE_NAME = "PolicyExplorer";
 
 const categoriesNameWithLessThan31Chars: Record<string, string> = {
-    Dg4b8bTfEIr: "Changes coverage policy",
-    FtRwT2aBET4: "Changes coverage policy 2019",
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
+    e6cfI6vWYEF: "Main gaps in financed coverage",
+};
+
+const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
+    populationCoverage: "uG2PbDfOc0w",
+    serviceCoverage: "W4CqlzcDPB1",
+    userCharges: "mCMVwmnGWJF",
+    userChargesByHealthCare: "u800TAhsIBY",
+    voluntaryHealthInsurance: "uImM4yTeeV3",
+    mainGapsInFinancedCoverage: "e6cfI6vWYEF",
+    changesInCoveragePolicy: "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
 };
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
@@ -102,7 +112,13 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         policyExplorer: PolicyExplorer,
         dataOrientationByTable: DataOrientationByTable
     ): FutureData<void> {
-        const tabs = Object.keys(policyExplorer.tables).reduce((accTabs: Tab[], categoryId: string) => {
+        const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
+            return (
+                Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
+                Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdB)
+            );
+        });
+        const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
             const category = categories.find(({ value }) => value === categoryId);
             const normalOrientedTables = [
@@ -113,7 +129,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const dataOrientation = dataOrientationByTable[categoryId] || initialDataOrientation;
             const references = policyExplorer.references;
 
-            if (rows) {
+            if (rows?.length) {
                 const dataRows = this.getDataFromRows(rows);
                 return [
                     ...accTabs,
