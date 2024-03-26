@@ -86,7 +86,7 @@ export const MobileMenu = () => {
                 </MenuItem>
                 <StyledDivider />
                 <MenuItem>
-                    <MenuLink target="_blank" href="https://bit.ly/uhcwatch_regionalreport2023" rel="noreferrer">
+                    <MenuLink target="_blank" href="https://cmyn.short.gy/regionalreport" rel="noreferrer">
                         {i18n.t("Regional report")}
                     </MenuLink>
                 </MenuItem>

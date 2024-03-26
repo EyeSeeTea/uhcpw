@@ -51,6 +51,10 @@ export const comparativeColumnChartOptions: (
         };
     });
 
+    const maxYAxis = chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
+        ? { max: chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
+        : {};
+
     return {
         ...baseChartOptions,
         chart: {
@@ -76,8 +80,9 @@ export const comparativeColumnChartOptions: (
             title: {
                 text: "Households (%)",
             },
+            ...maxYAxis,
         },
-        legend: { ...baseLegend, itemMarginTop: 20 },
+        legend: baseLegend,
         series,
     } as Highcharts.Options;
 };

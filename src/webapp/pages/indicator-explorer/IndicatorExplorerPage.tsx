@@ -12,7 +12,8 @@ import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import { EmptyContent } from "../../components/indicator-explorer/EmptyContent";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGet, showVisualization, globalMessage } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, selectCategoryInfo, errorMessage } =
+        useIndicatorExplorer();
     const snackbar = useSnackbar();
 
     useEffect(() => {
@@ -27,6 +28,12 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         }
     }, [globalMessage, snackbar]);
 
+    useEffect(() => {
+        if (errorMessage) {
+            snackbar.error(i18n.t(errorMessage));
+        }
+    }, [errorMessage, snackbar]);
+
     return (
         <Layout>
             <TitleContainer>
@@ -37,14 +44,14 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
 
-                {showVisualization && filters.category.selected ? (
+                {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
-                        visualizationId={filters.category.selected}
+                        visualizationId={filters.indicators.selected}
                         years={filters.year.selected || []}
                         countries={filters.country.selected || []}
                     />
                 ) : (
-                    <EmptyContent />
+                    <EmptyContent info={selectCategoryInfo} />
                 )}
             </MainSection>
         </Layout>

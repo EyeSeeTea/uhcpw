@@ -37,7 +37,7 @@ export const Analysis: React.FC = () => {
                         )}
                     />
                     <ButtonContainer>
-                        <Link href="https://bit.ly/uhcwatch_regionalreport2023" target="_blank" rel="noreferrer">
+                        <Link href="https://cmyn.short.gy/regionalreport" target="_blank" rel="noreferrer">
                             {i18n.t("Regional report")}
                         </Link>
                     </ButtonContainer>

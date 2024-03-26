@@ -67,6 +67,9 @@ const validOrgUnitGroups = [
     "A1BdaIwDheX",
 ];
 
+const KOSOVO = "NEPywTBN52g";
+const NETHERLANDS = "rEQqufy2KNi";
+
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
 
@@ -77,7 +80,8 @@ export class CountryD2Repository implements CountryRepository {
                     fields: organisationUnitsFields,
                     paging: false,
                     level: 3,
-                    filter: { path: { like: euroOrgUnit } },
+                    rootJunction: "OR",
+                    filter: { path: { like: euroOrgUnit }, id: { eq: KOSOVO } },
                     order: "shortName:asc",
                 })
             ),
@@ -112,9 +116,10 @@ export class CountryD2Repository implements CountryRepository {
                 dv => dv.dataElement === countryInfoDataElements.geometry
             )?.value as unknown as D2Geometry;
 
+            const isNetherlands = orgUnit.id === NETHERLANDS;
             return {
                 id: orgUnit.id,
-                name: orgUnit.shortName,
+                name: isNetherlands ? `${orgUnit.shortName} (Kingdom of the)` : orgUnit.shortName,
                 longName: orgUnit.name,
                 code: orgUnit.code,
                 description: orgUnit.description,
