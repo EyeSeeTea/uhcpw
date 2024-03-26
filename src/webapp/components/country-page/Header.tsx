@@ -5,15 +5,15 @@ import i18n from "../../../locales";
 import UmbrellaWeak from "../../assets/country-page/umbrella-weak.svg";
 import UmbrellaGap from "../../assets/country-page/umbrella-normal.png";
 import UmbrellaStrong from "../../assets/country-page/umbrella-strong.png";
-import { FC, MutableRefObject } from "react";
+import { FC, MutableRefObject, useCallback } from "react";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
-import { useResourcesFilters } from "../../pages/resources/common/useResourcesFilters";
-import { COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE } from "../../../data/repositories/CountryD2Repository";
+import { Option } from "../../components/dropdown/Option";
 
 type HeaderType = {
     countryId: string;
     onCountryChange: (value: string) => void;
+    countryOptions: Option<string>[];
     sliderRef: MutableRefObject<null>;
     resourcesRef: MutableRefObject<null>;
     expertRef: MutableRefObject<null>;
@@ -41,14 +41,19 @@ const handleBackgroundColor = (status?: CountryStatus) => {
     }
 };
 
-export const Header: FC<HeaderType> = ({ countryId, onCountryChange, sliderRef, resourcesRef, expertRef }) => {
-    const filters = useResourcesFilters({ countryOptionsToSelect: COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE });
-
+export const Header: FC<HeaderType> = ({
+    countryId,
+    onCountryChange,
+    countryOptions,
+    sliderRef,
+    resourcesRef,
+    expertRef,
+}) => {
     const country = useCountryInfo(countryId);
 
-    const handleClick = (ref: MutableRefObject<any>) => {
+    const handleClick = useCallback((ref: MutableRefObject<any>) => {
         ref.current?.scrollIntoView({ behavior: "smooth" });
-    };
+    }, []);
 
     return (
         <Container aria-label="country-page-header" status={country?.status}>
@@ -56,7 +61,7 @@ export const Header: FC<HeaderType> = ({ countryId, onCountryChange, sliderRef, 
                 <CountryDropdown
                     fullWidth
                     placeholder={i18n.t("Select country")}
-                    options={filters.country.options}
+                    countryOptions={countryOptions}
                     value={countryId}
                     onChange={onCountryChange}
                 />

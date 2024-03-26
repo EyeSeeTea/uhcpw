@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { IconButton, Menu, MenuItem, Divider, withStyles } from "@material-ui/core";
 import { Menu as MenuIcon, CloseOutlined as CloseOutlinedIcon } from "@material-ui/icons";
 import styled from "styled-components";
@@ -6,25 +6,28 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import i18n from "../../../../locales";
 import { useHistory } from "react-router-dom";
 import { MobileMenuSubItem } from "./MobileMenuSubItem";
-import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
-import { COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE } from "../../../../data/repositories/CountryD2Repository";
+import { useCountryPage } from "../../../pages/country/useCountryPage";
+import { Option } from "../../dropdown/Option";
 
 export const MobileMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
-    const { countryOptions } = useCountryOptions();
+    const { countryFilter } = useCountryPage();
     const history = useHistory();
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
-    };
+    }, []);
 
-    const handleCloseMenu = (link?: string) => {
-        setAnchorEl(null);
-        if (link) {
-            history.push(link);
-        }
-    };
+    const handleCloseMenu = useCallback(
+        (link?: string) => {
+            setAnchorEl(null);
+            if (link) {
+                history.push(link);
+            }
+        },
+        [history]
+    );
 
     const StyledMenu = withStyles({
         paper: {
@@ -34,6 +37,14 @@ export const MobileMenu = () => {
             padding: "0px 10px",
         },
     })(Menu);
+
+    const onCountryChange = useCallback(
+        (country: Option<string>) => {
+            history.push(`/country-page?country=${country.value}`);
+            handleCloseMenu();
+        },
+        [handleCloseMenu, history]
+    );
 
     return (
         <div>
@@ -69,24 +80,19 @@ export const MobileMenu = () => {
                 <MenuItem>
                     <MobileMenuSubItem item="countries">
                         <div>
-                            {countryOptions
-                                .filter(({ value }) => COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE.includes(value))
-                                .map(country => {
-                                    return (
-                                        <MenuItem
-                                            key={country.value}
-                                            onClick={() => history.push(`/country-page?country=${country.value}`)}
-                                        >
-                                            {country.text}
-                                        </MenuItem>
-                                    );
-                                })}
+                            {countryFilter.countryOptions.map(country => {
+                                return (
+                                    <MenuItem key={country.value} onClick={() => onCountryChange(country)}>
+                                        {country.text}
+                                    </MenuItem>
+                                );
+                            })}
                         </div>
                     </MobileMenuSubItem>
                 </MenuItem>
                 <StyledDivider />
                 <MenuItem>
-                    <MenuLink target="_blank" href="https://cmyn.short.gy/regionalreport" rel="noreferrer">
+                    <MenuLink target="_blank" href="https://bit.ly/uhcwatch_regionalreport2023" rel="noreferrer">
                         {i18n.t("Regional report")}
                     </MenuLink>
                 </MenuItem>
