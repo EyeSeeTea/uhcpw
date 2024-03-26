@@ -33,6 +33,7 @@ import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/po
 import { GetIndicatorExplorerSelectCategoryInfoUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerSelectCategoryInfoUseCase";
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
+import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -50,6 +51,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         method: new MethodD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
         indicatorExplorer: new IndicatorExplorerD2Repository(api),
+        homePage: new HomePageContentD2Repository(api),
     };
 }
 
@@ -99,7 +101,7 @@ export function getCompositionRoot(
             get: new GetMethodsUseCase(repositories.method),
         },
         home: {
-            getPageContent: new GetHomePageContentUseCase(),
+            getPageContent: new GetHomePageContentUseCase(repositories.homePage),
         },
     };
 }
