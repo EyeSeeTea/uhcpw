@@ -1,78 +1,68 @@
+import { useEffect, useState } from "react";
+import { HomePageContent } from "../../../domain/entities/HomePageContent";
+import { useAppContext } from "../../contexts/app-context";
+
 export function useHomePageContent(): HomePageContent {
-    return {
-        explorers: {
-            title: "Explorers",
-            subtitle: "Assess the current situation, monitor trends, compare countries",
-            indicator: {
-                title: "Indicator explorer",
-                text: "Over 50 indicators of financial hardship, unmet need for health care and spending on health",
-                buttonText: "Explore data",
-            },
-            policy: {
-                title: "Policy explorer",
-                text: "Information on population coverage, service coverage, user charges and voluntary health insurance",
-                buttonText: "Explore data",
-            },
-        },
-        analysis: {
-            title: "Analysis",
-            subtitle: "Country-level and comparative analysis of financial protection",
-            countries: {
-                title: "Countries in context",
-                text: "Find out about the health system factors that strengthen and undermine financial protection at country level",
-                buttonText: "Country pages",
-            },
-            regional: {
-                title: "The region at a glance",
-                text: "Compare financial protection indicators, identify gaps in coverage, explore good practice",
-                buttonText: "Regional report",
-            },
-        },
-        methods: {
-            title: "Methods",
-            subtitle: "How financial protection is monitored matters",
-            column1: {
-                title: "A focus on equity",
-                text: "We measure financial hardship using an approach that accounts for people's capacity to pay for health care",
-            },
-            column2: {
-                title: "Numbers and stories",
-                text: "UHC Watch identifies the factors that influence financial protection at country level, drawing on insights from comparative analysis",
-            },
-            column3: {
-                title: "Actionable evidence",
-                text: "UHC Watch provides clear guidance for policy by identifying who lacks financial protection, driven by which health services and why",
-            },
-        },
-    };
+    const [content, setContent] = useState<HomePageContent>(emptyHomePageContent);
+
+    const { compositionRoot } = useAppContext();
+
+    useEffect(() => {
+        compositionRoot.home.getPageContent.execute().run(
+            content => setContent(content),
+            error => {
+                setContent(emptyHomePageContent);
+                console.error(error);
+            }
+        );
+    }, [compositionRoot.home.getPageContent]);
+
+    return content;
 }
 
-export type HomePageContent = { explorers: ExplorersContent; analysis: AnalysisContent; methods: MethodsContent };
-
-type ColumnContent = {
-    title: string;
-    text: string;
-    buttonText?: string;
-};
-
-export type ExplorersContent = {
-    title: string;
-    subtitle: string;
-    indicator: ColumnContent;
-    policy: ColumnContent;
-};
-
-export type AnalysisContent = {
-    title: string;
-    subtitle: string;
-    countries: ColumnContent;
-    regional: ColumnContent;
-};
-
-export type MethodsContent = {
-    title: string;
-    subtitle: string;
-    column1: ColumnContent;
-    column2: ColumnContent;
-    column3: ColumnContent;
+const emptyHomePageContent: HomePageContent = {
+    explorers: {
+        title: "",
+        subtitle: "",
+        indicator: {
+            title: "",
+            text: "",
+            buttonText: "",
+        },
+        policy: {
+            title: "",
+            text: "",
+            buttonText: "",
+        },
+    },
+    analysis: {
+        title: "",
+        subtitle: "",
+        countries: {
+            title: "",
+            text: "",
+            buttonText: "",
+        },
+        regional: {
+            title: "",
+            text: "",
+            buttonText: "",
+        },
+    },
+    methods: {
+        title: "",
+        subtitle: "",
+        column1: {
+            title: "",
+            text: "",
+        },
+        column2: {
+            title: "",
+            text: "",
+        },
+        column3: {
+            title: "",
+            text: "",
+        },
+    },
 };

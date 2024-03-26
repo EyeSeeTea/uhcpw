@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { SectionBlock } from "../section-block/SectionBlock";
 import { Divider } from "../common/Divider";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
-import { MethodsContent } from "../../../pages/home/useHomePageContent";
+import { MethodsContent } from "../../../../domain/entities/HomePageContent";
 
 type MethodsProps = { content: MethodsContent };
 

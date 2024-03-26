@@ -7,7 +7,7 @@ import { SectionBlock } from "../section-block/SectionBlock";
 import { CTA } from "../buttons/CTA";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
-import { AnalysisContent } from "../../../pages/home/useHomePageContent";
+import { AnalysisContent } from "../../../../domain/entities/HomePageContent";
 
 const ALBANIA_COUNTRY_ID = "VGOzFKfSazN";
 

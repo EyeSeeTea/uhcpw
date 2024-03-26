@@ -9,7 +9,7 @@ import indicatorExplorer from "../../../assets/indicator-explorer.svg";
 import policyExplorer from "../../../assets/policy-explorer.svg";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
-import { ExplorersContent } from "../../../pages/home/useHomePageContent";
+import { ExplorersContent } from "../../../../domain/entities/HomePageContent";
 
 type ExplorersProps = {
     content: ExplorersContent;

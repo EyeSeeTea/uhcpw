@@ -32,6 +32,7 @@ import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/D
 import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerSelectCategoryInfoUseCase";
 import { GetIndicatorExplorerSelectCategoryInfoUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerSelectCategoryInfoUseCase";
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
+import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -96,6 +97,9 @@ export function getCompositionRoot(
         },
         method: {
             get: new GetMethodsUseCase(repositories.method),
+        },
+        home: {
+            getPageContent: new GetHomePageContentUseCase(),
         },
     };
 }
