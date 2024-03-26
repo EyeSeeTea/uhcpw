@@ -2,56 +2,94 @@ import { Future, FutureData } from "../../domain/entities/Future";
 import { HomePageContent } from "../../domain/entities/HomePageContent";
 import { HomePageContentRepository } from "../../domain/repositories/HomePageContentRepository";
 import { D2Api } from "../../types/d2-api";
+import { apiToFuture } from "../../utils/futures";
+
+const mainPagesProgram = "ai5rB7mcqHH";
 
 export class HomePageContentD2Repository implements HomePageContentRepository {
     constructor(private api: D2Api) {}
 
     get(): FutureData<HomePageContent> {
-        return Future.success({
+        return apiToFuture(
+            this.api.events.get({
+                fields: eventsFields,
+                skipPaging: true,
+                program: mainPagesProgram,
+            })
+        ).flatMap(response => {
+            if (response.events.length === 0) {
+                return Future.error("No main pages found");
+            }
+
+            const event = response.events[0];
+
+            return Future.success(this.buildHomePageContent(event?.dataValues || []));
+        });
+    }
+
+    buildHomePageContent(dataValues: DataValue[]): HomePageContent {
+        return {
             explorers: {
-                title: "Explorers",
-                subtitle: "Assess the current situation, monitor trends, compare countries",
+                title: dataValues.find(dv => dv.dataElement === "KpyjdWU235A")?.value || "",
+                subtitle: dataValues.find(dv => dv.dataElement === "Hp6hYaoKOoJ")?.value || "",
                 indicator: {
-                    title: "Indicator explorer",
-                    text: "Over 50 indicators of financial hardship, unmet need for health care and spending on health",
-                    buttonText: "Explore data",
+                    title: dataValues.find(dv => dv.dataElement === "JK20iGDaqRm")?.value || "",
+                    text: dataValues.find(dv => dv.dataElement === "tWEnsQ6gfqO")?.value || "",
+                    buttonText: dataValues.find(dv => dv.dataElement === "kpzr2XPNCdL")?.value || "",
                 },
                 policy: {
-                    title: "Policy explorer",
-                    text: "Information on population coverage, service coverage, user charges and voluntary health insurance",
-                    buttonText: "Explore data",
+                    title: dataValues.find(dv => dv.dataElement === "qGYZubI0Wd8")?.value || "",
+                    text: dataValues.find(dv => dv.dataElement === "F1ksGHvzhTV")?.value || "",
+                    buttonText: dataValues.find(dv => dv.dataElement === "LWqNfdyS1JV")?.value || "",
                 },
             },
             analysis: {
-                title: "Analysis",
-                subtitle: "Country-level and comparative analysis of financial protection",
+                title: dataValues.find(dv => dv.dataElement === "CkA1bW7jfMT")?.value || "",
+                subtitle: dataValues.find(dv => dv.dataElement === "J5mOLwFoqo1")?.value || "",
                 countries: {
-                    title: "Countries in context",
-                    text: "Find out about the health system factors that strengthen and undermine financial protection at country level",
-                    buttonText: "Country pages",
+                    title: dataValues.find(dv => dv.dataElement === "F3gWD69Fme4")?.value || "",
+                    text: dataValues.find(dv => dv.dataElement === "ZgY7XuAhb0o")?.value || "",
+                    buttonText: dataValues.find(dv => dv.dataElement === "MWBXipF0xxJ")?.value || "",
                 },
                 regional: {
-                    title: "The region at a glance",
-                    text: "Compare financial protection indicators, identify gaps in coverage, explore good practice",
-                    buttonText: "Regional report",
+                    title: dataValues.find(dv => dv.dataElement === "hvp6EKlgXMX")?.value || "",
+                    text: dataValues.find(dv => dv.dataElement === "VsidPy2O456")?.value || "",
+                    buttonText: dataValues.find(dv => dv.dataElement === "eeOs9Cegtri")?.value || "",
                 },
             },
             methods: {
-                title: "Methods",
-                subtitle: "How financial protection is monitored matters",
+                title: dataValues.find(dv => dv.dataElement === "W9amq4m0VsD")?.value || "",
+                subtitle: dataValues.find(dv => dv.dataElement === "hTJXBephuMD")?.value || "",
                 column1: {
-                    title: "A focus on equity",
-                    text: "We measure financial hardship using an approach that accounts for people's capacity to pay for health care",
+                    title: dataValues.find(dv => dv.dataElement === "j3ZodhTcOly")?.value || "",
+                    text: dataValues.find(dv => dv.dataElement === "tcNygLDHOq3")?.value || "",
                 },
                 column2: {
-                    title: "Numbers and stories",
-                    text: "UHC Watch identifies the factors that influence financial protection at country level, drawing on insights from comparative analysis",
+                    title: dataValues.find(dv => dv.dataElement === "islfoEB6Y2u")?.value || "",
+                    text: dataValues.find(dv => dv.dataElement === "NTRCLMyqi7N")?.value || "",
                 },
                 column3: {
-                    title: "Actionable evidence",
-                    text: "UHC Watch provides clear guidance for policy by identifying who lacks financial protection, driven by which health services and why",
+                    title: dataValues.find(dv => dv.dataElement === "TX5VeXTeg5a")?.value || "",
+                    text: dataValues.find(dv => dv.dataElement === "lPZ0Gfkd2AY")?.value || "",
                 },
             },
-        });
+        };
     }
+}
+
+const eventsFields = {
+    event: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
+} as const;
+
+export interface D2Event {
+    event: string;
+    dataValues: DataValue[];
+    eventDate: string;
+}
+
+export interface DataValue {
+    dataElement: string;
+    value: string;
 }
