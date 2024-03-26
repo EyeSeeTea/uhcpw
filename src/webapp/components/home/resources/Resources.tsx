@@ -98,5 +98,5 @@ const Content = styled.div`
 `;
 
 const Container = styled.div`
-    padding: 48px;
+    padding: 0 48px 48px 48px;
 `;
