@@ -9,10 +9,12 @@ import { Layout } from "../../components/layout/Layout";
 import { useMap } from "../../components/home/map/useMap";
 import { useHomeResources } from "./useHomeResources";
 import NewsletterDialog from "../../components/dialog/NewsletterDialog";
+import { useHomePageContent } from "./useHomePageContent";
 
 export const HomePage: React.FC = React.memo(() => {
     const mapState = useMap();
     const { resources } = useHomeResources();
+    const homePageContent = useHomePageContent();
 
     return (
         <Layout>
@@ -21,13 +23,13 @@ export const HomePage: React.FC = React.memo(() => {
                 <Map mapState={mapState} />
             </MapSection>
             <section>
-                <Explorers />
+                <Explorers content={homePageContent.explorers} />
             </section>
             <section>
-                <Analysis />
+                <Analysis content={homePageContent.analysis} />
             </section>
             <section>
-                <Methods />
+                <Methods content={homePageContent.methods} />
             </section>
             <section>
                 <Resources resources={resources} />

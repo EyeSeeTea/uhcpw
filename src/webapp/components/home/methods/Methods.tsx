@@ -1,45 +1,32 @@
 import React from "react";
 import { SectionHeader } from "../section-header/SectionHeader";
-import i18n from "../../../../locales";
 import { Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { SectionBlock } from "../section-block/SectionBlock";
 import { Divider } from "../common/Divider";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
+import { MethodsContent } from "../../../pages/home/useHomePageContent";
 
-export const Methods: React.FC = () => {
+type MethodsProps = { content: MethodsContent };
+
+export const Methods: React.FC<MethodsProps> = ({ content }) => {
     return (
         <>
             <SectionHeader
-                header={i18n.t("Methods")}
-                subheader={i18n.t("How financial protection is monitored matters")}
+                header={content.title}
+                subheader={content.subtitle}
                 isBackgroundOnRight={false}
                 link={"/methods"}
             />
             <Content container>
                 <Focus item md={4} xs={12}>
-                    <SectionBlock
-                        title={i18n.t("A focus on equity")}
-                        text={i18n.t(
-                            "We measure financial hardship using an approach that accounts for people's capacity to pay for health care"
-                        )}
-                    />
+                    <SectionBlock title={content.column1.title} text={content.column1.text} />
                 </Focus>
                 <Analysis item md={4} xs={12}>
-                    <SectionBlock
-                        title={i18n.t("Numbers and stories")}
-                        text={i18n.t(
-                            "UHC Watch identifies the factors that influence financial protection at country level, drawing on insights from comparative analysis"
-                        )}
-                    />
+                    <SectionBlock title={content.column2.title} text={content.column2.text} />
                 </Analysis>
                 <Story item md={4} xs={12}>
-                    <SectionBlock
-                        title={i18n.t("Actionable evidence")}
-                        text={i18n.t(
-                            "UHC Watch provides clear guidance for policy by identifying who lacks financial protection, driven by which health services and why"
-                        )}
-                    />
+                    <SectionBlock title={content.column3.title} text={content.column3.text} />
                 </Story>
             </Content>
             <Divider />
