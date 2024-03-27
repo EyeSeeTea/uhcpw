@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-03-25T07:13:33.345Z\n"
-"PO-Revision-Date: 2024-03-25T07:13:33.345Z\n"
+"POT-Creation-Date: 2024-03-27T09:30:31.702Z\n"
+"PO-Revision-Date: 2024-03-27T09:30:31.702Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -276,26 +276,6 @@ msgstr ""
 msgid "UHC watch video"
 msgstr ""
 
-<<<<<<< HEAD
-msgid "Select Category"
-msgstr ""
-
-msgid "Select a category to track indicators and compare them across countries."
-msgstr ""
-
-msgid "Data are not available for all countries or all years."
-msgstr ""
-
-msgid "Data on financial protection are not currently available for"
-msgstr ""
-
-msgid ""
-"Andorra, Azerbaijan, Belarus, Iceland, Kazakhstan, Kyrgyzstan, Monaco, "
-"Norway, the Russian Federation, San Marino, Turkmenistan and Uzbekistan."
-msgstr ""
-
-=======
->>>>>>> origin/development
 msgid "Category and indicator"
 msgstr ""
 
@@ -350,27 +330,6 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-<<<<<<< HEAD
-msgid ""
-"Select a category to track policies on population coverage, service "
-"coverage,  user charges and voluntary health insurance, explore gaps in "
-"coverage  and compare countries. "
-msgstr ""
-
-msgid "Information is currently available for"
-msgstr ""
-
-msgid ""
-"Albania, Armenia, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, Kazakhstan, "
-"North Macedonia, Romania, Spain, Tajikistan, Ukraine, the United Kingdom "
-"and Uzbekistan."
-msgstr ""
-
-msgid "More countries coming soon. "
-msgstr ""
-
-=======
->>>>>>> origin/development
 msgid "Category"
 msgstr ""
 
