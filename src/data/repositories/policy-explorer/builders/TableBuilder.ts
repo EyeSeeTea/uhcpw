@@ -5,20 +5,20 @@ import { TableBuilderByTypeOfHealthcare } from "./TableBuilderByTypeOfHealthcare
 import { TableBuilderDefault } from "./TableBuilderDefault";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "../PolicyExplorerCategoryD2Repository";
 import { TableBuilderChangesInCoveragePolicy } from "./TableBuilderChangesInCoveragePolicy";
 
 export interface TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
-        policyExplorerSubcategoriesIds: string[];
+        policyExplorerSubcategoriesIds?: string[];
         dataSet?: D2DataSet;
     }): PolicyExplorerCell[];
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
         policyExplorerCategoryId: string;
-        policyExplorerSubcategoriesIds: string[];
+        policyExplorerSubcategoriesIds?: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
@@ -32,8 +32,7 @@ export function getTableBuilder(policyExplorerCategoryId: string) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES:
             return new TableBuilderByTypeOfHealthcare();
-        case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019:
-        case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020:
+        case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID:
             return new TableBuilderChangesInCoveragePolicy();
         default:
             return new TableBuilderDefault();

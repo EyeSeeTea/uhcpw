@@ -117,7 +117,7 @@ const Image = styled.img`
 
 const TextLink = styled.a`
     color: ${colors.accentPrimary};
-    padding: 0 3px;
+    padding: 0;
     text-transform: none;
     text-decoration: none;
     &:hover {

@@ -4,13 +4,14 @@ import { Divider } from "../../components/home/common/Divider";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { Hero } from "../../components/country-page/Hero";
 import { Slider } from "../../components/country-page/slider/Slider";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
+import { useCountryPage } from "./useCountryPage";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
-    const [selectedCountry, setSelectedCountry] = useState("");
+    const { countryFilter } = useCountryPage();
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -26,21 +27,21 @@ export const CountryPage: React.FC = () => {
         if (filterInParams.country) {
             const searchParams = new URLSearchParams(history.location.search);
             searchParams.set("country", filterInParams.country);
-            setSelectedCountry(filterInParams.country);
+            countryFilter.onCountryChange(filterInParams.country);
         }
-    }, [filterInParams.country, history.location.search, selectedCountry]);
+    }, [countryFilter, filterInParams.country, history.location.search]);
 
-    const onCountryChange = useCallback(
+    const handleCountryChange = useCallback(
         (value: string) => {
             const searchParams = new URLSearchParams(history.location.search);
 
             if (value) {
                 searchParams.set("country", value);
             }
-            setSelectedCountry(value);
+            countryFilter.onCountryChange(value);
             history.push({ search: searchParams.toString() });
         },
-        [history]
+        [countryFilter, history]
     );
 
     const sliderRef = useRef(null);
@@ -50,24 +51,25 @@ export const CountryPage: React.FC = () => {
     return (
         <Layout>
             <Header
-                countryId={selectedCountry}
-                onCountryChange={onCountryChange}
+                countryId={countryFilter.selectedCountry}
+                onCountryChange={handleCountryChange}
+                countryOptions={countryFilter.countryOptions}
                 sliderRef={sliderRef}
                 resourcesRef={resourcesRef}
                 expertRef={expertRef}
             />
-            <Hero countryId={selectedCountry} />
+            <Hero countryId={countryFilter.selectedCountry} />
             <Divider />
             <section ref={sliderRef}>
-                <Slider countryId={selectedCountry} />
+                <Slider countryId={countryFilter.selectedCountry} />
             </section>
             <Divider isOrange={false} />
             <section ref={resourcesRef}>
-                <CountryResources countryId={selectedCountry} />
+                <CountryResources countryId={countryFilter.selectedCountry} />
             </section>
             <Divider />
             <section ref={expertRef}>
-                <CountryExpert countryId={selectedCountry} />
+                <CountryExpert countryId={countryFilter.selectedCountry} />
             </section>
         </Layout>
     );

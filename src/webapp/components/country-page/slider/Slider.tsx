@@ -9,6 +9,7 @@ import { useCountryInfo } from "../../../pages/country/useCountryInfo";
 import { generateYears } from "../../../../domain/usecases/utils/generateYears";
 import { LatestCOVID19 } from "../../../../domain/entities/Year";
 import { useAppContext } from "../../../contexts/app-context";
+import styled from "styled-components";
 
 interface EventListenerArgs {
     capture?: boolean;
@@ -63,13 +64,16 @@ const useStyles = makeStyles(theme => ({
     tab: {
         opacity: 1,
         borderRight: `10px solid ${colors.accentPrimary}`,
-        marginBottom: "4px",
+        borderTop: `4px solid ${colors.white}`,
         maxWidth: "30px",
         minWidth: "30px",
         textTransform: "none",
         color: `${colors.white}`,
         "& span": {
             display: "none",
+        },
+        "&:last-child": {
+            borderBottom: `4px solid ${colors.white}`,
         },
         [theme.breakpoints.up("md")]: {
             width: "100%",
@@ -274,7 +278,7 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
 
     return (
         <Grid container aria-label="country-page-slider">
-            <Grid item md={5} lg={4} xs={1}>
+            <StyledGrid item md={5} lg={4} xs={1}>
                 <Tabs
                     orientation="vertical"
                     value={value}
@@ -345,10 +349,12 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                     <Tab
                         className={classes.tab}
                         {...a11yProps(10)}
-                        label={i18n.t("How can {{country}} strengthen financial protection?", { country: countryName })}
+                        label={i18n.t("How can {{country}} strengthen financial protection?", {
+                            country: countryName,
+                        })}
                     />
                 </Tabs>
-            </Grid>
+            </StyledGrid>
             <Grid item xs={11} md={7} lg={8}>
                 {sliderGraphsConfig.map(tabConfig => (
                     <TabPanel key={tabConfig.tab} value={value} index={tabConfig.tab}>
@@ -374,3 +380,8 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
         </Grid>
     );
 };
+
+const StyledGrid = styled(Grid)`
+    background-color: ${colors.accentPrimary};
+    margin: 5px 0px;
+`;

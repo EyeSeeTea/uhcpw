@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-01-19T09:28:12.335Z\n"
-"PO-Revision-Date: 2024-01-19T09:28:12.335Z\n"
+"POT-Creation-Date: 2024-03-27T09:30:31.702Z\n"
+"PO-Revision-Date: 2024-03-27T09:30:31.702Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -110,6 +110,12 @@ msgstr ""
 msgid "How can {{country}} strengthen financial protection?"
 msgstr ""
 
+msgid "Select all"
+msgstr ""
+
+msgid "Clear all"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
@@ -133,9 +139,6 @@ msgid "To sign up or to send feedback, email"
 msgstr ""
 
 msgid "Clear"
-msgstr ""
-
-msgid "Clear all"
 msgstr ""
 
 msgid "Analysis"
@@ -273,24 +276,6 @@ msgstr ""
 msgid "UHC watch video"
 msgstr ""
 
-msgid "Select Category"
-msgstr ""
-
-msgid "Select a category to track indicators and compare them across countries."
-msgstr ""
-
-msgid "Data are not available for all countries or all years."
-msgstr ""
-
-msgid "Data on financial protection are not currently available for"
-msgstr ""
-
-msgid ""
-"Andorra, Azerbaijan, Belarus, Iceland, Kazakhstan, Kyrgyzstan, Monaco, "
-"Norway, the Russian Federation, San Marino, Tajikistan, Turkmenistan and "
-"Uzbekistan."
-msgstr ""
-
 msgid "Category and indicator"
 msgstr ""
 
@@ -345,23 +330,6 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-msgid ""
-"Select a category to track policies on population coverage, service "
-"coverage,  user charges and voluntary health insurance, explore gaps in "
-"coverage  and compare countries. "
-msgstr ""
-
-msgid "Information is currently available for"
-msgstr ""
-
-msgid ""
-"Albania, Armenia, Belgium, Bulgaria, Croatia,  Cyprus, Estonia, Kazakhstan, "
-"North Macedonia, Romania, Spain, Ukraine, the United Kingdom and Uzbekistan."
-msgstr ""
-
-msgid "More countries coming soon. "
-msgstr ""
-
 msgid "Category"
 msgstr ""
 
@@ -411,13 +379,13 @@ msgstr ""
 msgid "Source: "
 msgstr ""
 
-msgid "WHO Barcelona Office for Health Systems Financing (2023)"
-msgstr ""
-
 msgid "Country experts: "
 msgstr ""
 
 msgid "Editors: "
+msgstr ""
+
+msgid "Reviewers: "
 msgstr ""
 
 msgid "Last updated: "

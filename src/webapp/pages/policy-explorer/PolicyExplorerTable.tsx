@@ -1,14 +1,18 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
 import React, { RefObject, useCallback, useState } from "react";
 import styled from "styled-components";
-import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ReactMarkdown from "react-markdown";
-import { DataOrientation } from "./PolicyExplorerState";
+
+import i18n from "../../../locales";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
-import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorerCell,
+    PolicyExplorerCellType,
+    DataOrientation,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 
 interface PolicyExplorerTableProps {
@@ -16,14 +20,23 @@ interface PolicyExplorerTableProps {
     rows?: PolicyExplorerCell[][];
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;
-    onDownload: (categoryId: string) => void;
+    onDownload: () => void;
     referencesRef: RefObject<HTMLDivElement>;
+    hasDownloadButton?: boolean;
 }
 
 const EMPTY_URL = "/";
 
 export const PolicyExplorerTable = React.memo(
-    ({ category, rows, onSwitchRowColumn, onDownload, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
+    ({
+        category,
+        rows,
+        onSwitchRowColumn,
+        dataOrientation,
+        referencesRef,
+        onDownload,
+        hasDownloadButton = false,
+    }: PolicyExplorerTableProps) => {
         const handleClickEmptyUrl = useCallback(
             event => {
                 event.preventDefault();
@@ -77,15 +90,17 @@ export const PolicyExplorerTable = React.memo(
                             >
                                 {i18n.t("Switch row/column")}
                             </CustomButton>
-                            <CustomButton
-                                variant="contained"
-                                startIcon={<DownloadIcon />}
-                                color="primary"
-                                style={{ marginLeft: 20 }}
-                                onClick={() => onDownload(category.value)}
-                            >
-                                {i18n.t("Download")}
-                            </CustomButton>
+                            {hasDownloadButton ? (
+                                <CustomButton
+                                    variant="contained"
+                                    startIcon={<DownloadIcon />}
+                                    color="primary"
+                                    style={{ marginLeft: 20 }}
+                                    onClick={onDownload}
+                                >
+                                    {i18n.t("Download")}
+                                </CustomButton>
+                            ) : null}
                         </Row>
                     </Row>
                 </TableHeader>
@@ -109,6 +124,9 @@ export const PolicyExplorerTable = React.memo(
                                                             </a>
                                                         );
                                                     },
+                                                    li: ({ children, ...props }) => (
+                                                        <StyledLi {...props}>{children} </StyledLi>
+                                                    ),
                                                 }}
                                             >
                                                 {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
@@ -212,4 +230,8 @@ const Content = styled.div`
 
 const Title = styled(Typography)`
     color: #008ad7;
+`;
+
+const StyledLi = styled.li`
+    line-height: 1.43;
 `;
