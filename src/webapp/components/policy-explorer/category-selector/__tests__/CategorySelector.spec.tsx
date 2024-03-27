@@ -96,7 +96,7 @@ describe("Given CategorySelector component", () => {
     describe("When focus", () => {
         it("Then should show the category options", async () => {
             renderComponent();
-            focusComponent();
+            await focusComponent();
 
             await waitFor(() => {
                 categoryOptions.forEach(category => screen.getByText(category.text));
@@ -119,7 +119,7 @@ describe("Given CategorySelector component", () => {
 
             renderComponent();
 
-            focusComponent();
+            await focusComponent();
 
             await search(firstCategoryName);
 
@@ -132,11 +132,9 @@ describe("Given CategorySelector component", () => {
 
             renderComponent();
 
-            focusComponent();
+            await focusComponent();
 
-            await expandCategoryByName(firstCategoryName);
             await selectCategoryByName(firstCategoryName);
-            await expandCategoryByName(secondCategoryName);
             await selectCategoryByName(secondCategoryName);
 
             userEvent.keyboard("{Escape}");
@@ -144,7 +142,18 @@ describe("Given CategorySelector component", () => {
             await verifyChip(firstCategoryName);
             await verifyChip(secondCategoryName);
         });
-        describe("When a category is disabled", () => {});
+        describe("When using select all and clear all options", () => {
+            it("Then should show select all button and clear all button in dropdown menu", async () => {
+                renderComponent();
+                await focusComponent();
+
+                const clearButton = screen.getByText(/clear all/i);
+                expect(clearButton).toBeInTheDocument();
+
+                const selectAllButton = screen.getByText(/select all/i);
+                expect(selectAllButton).toBeInTheDocument();
+            });
+        });
     });
 });
 
@@ -186,11 +195,7 @@ async function selectCategoryByName(name: string) {
     return userEvent.click(categoryCheckbox);
 }
 
-async function expandCategoryByName(name: string) {
-    return userEvent.click(await screen.findByText(name));
-}
-
-function focusComponent() {
+async function focusComponent() {
     const autocompleteInput = screen.getByRole("textbox", {
         name: /categories/i,
     });
@@ -217,7 +222,6 @@ function CategorySelectorContainer() {
             onSelect={handleSelectedChange}
             label="Category"
             placeholder="Select category"
-            disabledCategories={[]}
         />
     );
 }

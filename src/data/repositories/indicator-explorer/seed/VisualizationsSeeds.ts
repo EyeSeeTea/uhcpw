@@ -29,7 +29,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     VB7bdJ8ZXya: chart_VB7bdJ8ZXya_Seed,
     mcNfvQaVbfy: chart_mcNfvQaVbfy_Seed,
     B4CnzUqVR3n: chart_B4CnzUqVR3n_Seed,
-    // Comparative charts
+    // Financial hardship
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Seed,
     Y31jQX5PVdI: chart_Y31jQX5PVdI_Seed,
     geNXcoXc3mf: chart_geNXcoXc3mf_Seed,

@@ -1,22 +1,12 @@
 import { Button, Grid, Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
 import styled from "styled-components";
+import { useHistory, useLocation } from "react-router-dom";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
 import { CountrySelector } from "../country-selector/CountrySelector";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 import { CategorySelector } from "./category-selector/CategorySelector";
-import { useHistory, useLocation } from "react-router-dom";
-import {
-    CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
-} from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
-
-const CATEGORIES_NOT_SHOW_SUBCATEGORIES = [
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020,
-    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
-];
 
 export interface ResourcesFiltersProps {
     filters: PolicyExplorerFiltersState;
@@ -33,7 +23,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
 
             if (value) {
                 queryParameters.set("category", JSON.stringify(value));
-            } else if (value == null) {
+            } else if (!value) {
                 queryParameters.delete("category");
             }
             filters.category.onSelectedChange(value);
@@ -85,8 +75,6 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         categoryOptions={filters.category.options}
                         selectedCategoriesWithSubcategories={filters.category.selected}
                         onSelect={onCategoryChange}
-                        disabledCategories={filters.category.disabledCategories}
-                        categoriesNotShowSubcategories={CATEGORIES_NOT_SHOW_SUBCATEGORIES}
                     />
                 </Center>
             </Grid>
@@ -94,11 +82,12 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                 <Center>
                     <CountrySelector
                         fullWidth
+                        hasClearAll
+                        hasSelectAll
                         label={i18n.t("Countries")}
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={onCountryChange}
-                        disabledCountries={filters.country.disabledCountries}
                     />
                 </Center>
             </Grid>
@@ -111,7 +100,6 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         options={filters.year.options}
                         values={filters.year.selected}
                         onChange={onYearsChange}
-                        disabled
                     />
                 </Center>
             </Grid>

@@ -7,7 +7,7 @@ export const chart_Y31jQX5PVdI_Customizations: ChartCustomization = {
         {
             id: "WmOGqGcov4f",
             name: "Households with catastrophic health spending",
-            color: "#354498",
+            color: "#185698",
             dataLabels: { enabled: false },
         },
     ],

@@ -43,6 +43,7 @@ const Container = styled.div`
 
 const Row = styled.div`
     padding-top: 8px;
+    padding-left: 16px;
     display: flex;
     flex-direction: row;
     align-items: center;

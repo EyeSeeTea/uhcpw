@@ -1,5 +1,7 @@
+import { sortedCategoryNames } from "./utils";
+
 export const chart_VB7bdJ8ZXya_Seed = {
-    categoryName: "Comparative",
+    categoryName: sortedCategoryNames.comparative,
     categoryTag: "International comparison",
     friendlyName: "breakdown of catastrophic health spending by type of care",
     info: {

@@ -16,6 +16,7 @@ export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts
             enabled: false,
         },
         yAxis: {
+            ...comparativeColumnChartOptions(chartSource, seriesNames, seriesColors, "#c00000")?.yAxis,
             title: {
                 text: "Government spending (%)",
             },
