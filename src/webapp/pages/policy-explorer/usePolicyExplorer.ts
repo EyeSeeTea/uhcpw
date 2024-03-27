@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import {
-    latestAvailableYear,
     PolicyExplorer,
     PolicyExplorerCellType,
+    DataOrientationByTable,
+    latestAvailableYear,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 
 import i18n from "../../../locales";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
-import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
+import { PolicyExplorerState } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import {
     PolicyExplorerCategory,
@@ -61,7 +62,7 @@ export function usePolicyExplorer({
 
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
-    const [dataOrientationByTable, setDataOrientationByTable] = useState<Record<string, DataOrientation> | undefined>();
+    const [dataOrientationByTable, setDataOrientationByTable] = useState<DataOrientationByTable | undefined>();
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
@@ -184,19 +185,13 @@ export function usePolicyExplorer({
         [dataByTable, dataOrientationByTable, initialDataByTable]
     );
 
-    const onDownload = useCallback(
-        (categoryId: string) => {
-            if (!dataByTable || !dataOrientationByTable) return;
+    const onDownload = useCallback(() => {
+        if (!dataByTable || !dataOrientationByTable) return;
 
-            const dataOrientation = dataOrientationByTable[categoryId];
-            const initialDataOrientation = INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId) ? "normal" : "inverted";
-
-            compositionRoot.policyExplorer.download
-                .execute(dataByTable, categoryId, dataOrientation || initialDataOrientation)
-                .runAsync();
-        },
-        [compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]
-    );
+        compositionRoot.policyExplorer.download
+            .execute(categoryFilters, dataByTable, dataOrientationByTable)
+            .runAsync();
+    }, [categoryFilters, compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]);
 
     return {
         filters: {
@@ -295,7 +290,7 @@ function invertDataOfCategoriesIds(
     }, data);
 }
 
-function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Record<string, DataOrientation> {
+function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): DataOrientationByTable {
     const dataOrientation = {};
     return selectedCategoriesIds.reduce(
         (acc, categoryId) => ({

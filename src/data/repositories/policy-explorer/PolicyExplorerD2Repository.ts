@@ -6,12 +6,14 @@ import {
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
     PolicyExplorerReferences,
+    DataOrientationByTable,
+    DataOrientation,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { exportToCSV } from "../../export/exportToCSV";
+import { Tab, exportToCSV } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
     CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
@@ -21,7 +23,7 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "./PolicyExplorerCategoryD2Repository";
-import { DataOrientation } from "../../../webapp/pages/policy-explorer/PolicyExplorerState";
+import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
 
@@ -38,6 +40,23 @@ export const EMPTY_DATA = "";
 export const COUNTRY_HEADER_NAME = "Country";
 export const PERIOD_HEADER_NAME = "Year";
 export const REFERENCES_HEADER_NAME = "References";
+const FILE_NAME = "PolicyExplorer";
+
+const categoriesNameWithLessThan31Chars: Record<string, string> = {
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: "Changes in coverage policy",
+    u800TAhsIBY: "User charges by health care",
+    e6cfI6vWYEF: "Main gaps in financed coverage",
+};
+
+const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
+    populationCoverage: "uG2PbDfOc0w",
+    serviceCoverage: "W4CqlzcDPB1",
+    userCharges: "mCMVwmnGWJF",
+    userChargesByHealthCare: "u800TAhsIBY",
+    voluntaryHealthInsurance: "uImM4yTeeV3",
+    mainGapsInFinancedCoverage: "e6cfI6vWYEF",
+    changesInCoveragePolicy: "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
+};
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
@@ -88,21 +107,44 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    saveToFile(policyExplorer: PolicyExplorer, categoryId: string, dataOrientation: DataOrientation): FutureData<void> {
-        const rows = policyExplorer.tables[categoryId];
-        const references = policyExplorer.references;
-        if (rows) {
-            const dataRows = this.getDataFromRows(rows);
-            exportToCSV(
-                [
+    saveToFile(
+        categories: CategoryOption[],
+        policyExplorer: PolicyExplorer,
+        dataOrientationByTable: DataOrientationByTable
+    ): FutureData<void> {
+        const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
+            return (
+                Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
+                Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdB)
+            );
+        });
+        const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
+            const rows = policyExplorer.tables[categoryId];
+            const category = categories.find(({ value }) => value === categoryId);
+            const normalOrientedTables = [
+                ...CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+                ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+            ];
+            const initialDataOrientation = normalOrientedTables.includes(categoryId) ? "normal" : "inverted";
+            const dataOrientation = dataOrientationByTable[categoryId] || initialDataOrientation;
+            const references = policyExplorer.references;
+
+            if (rows?.length) {
+                const dataRows = this.getDataFromRows(rows);
+                return [
+                    ...accTabs,
                     {
                         data: this.addReferencesToDataRows(dataRows, references, dataOrientation),
-                        name: "Policy Explorer",
+                        name: Object.keys(categoriesNameWithLessThan31Chars).includes(categoryId)
+                            ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
+                            : category?.text || categoryId,
                     },
-                ],
-                "PolicyExplorer"
-            );
-        }
+                ];
+            }
+            return accTabs;
+        }, []);
+
+        exportToCSV(tabs, FILE_NAME);
         return Future.success(undefined);
     }
 
@@ -132,6 +174,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 const referencesOfCountry =
                     references.find(reference => dataRow.includes(reference.country))?.references?.join(",") ||
                     EMPTY_DATA;
+
                 return [...dataRow, isHeadersRow ? REFERENCES_HEADER_NAME : referencesOfCountry];
             });
         }
