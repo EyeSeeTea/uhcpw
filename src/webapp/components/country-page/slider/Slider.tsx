@@ -9,7 +9,6 @@ import { useCountryInfo } from "../../../pages/country/useCountryInfo";
 import { generateYears } from "../../../../domain/usecases/utils/generateYears";
 import { LatestCOVID19 } from "../../../../domain/entities/Year";
 import { useAppContext } from "../../../contexts/app-context";
-import styled from "styled-components";
 
 interface EventListenerArgs {
     capture?: boolean;
@@ -44,27 +43,44 @@ function TabPanel(props: { [x: string]: any; children: any; value: any; index: a
 }
 
 const useStyles = makeStyles(theme => ({
+    gridItem: {
+        marginBlock: "4px",
+        backgroundColor: colors.white,
+        borderInlineEnd: `6px solid ${colors.accentPrimary}`,
+        width: "30px",
+        flexBasis: "unset",
+        paddingBlockStart: "70px",
+        [theme.breakpoints.up("md")]: {
+            backgroundColor: colors.accentPrimary,
+            borderInlineEnd: "none",
+            marginBlock: "4px",
+            flexBasis: "content",
+        },
+    },
     tabs: {
         maxWidth: "30px",
         minWidth: "30px",
-        paddingBlock: "24px",
         "& .MuiTabs-flexContainer": {
             height: "100%",
         },
+        backgroundColor: colors.white,
+        borderBlockEnd: `4px solid ${colors.white}`,
         [theme.breakpoints.up("md")]: {
+            backgroundColor: colors.accentPrimary,
             width: "100%",
             maxWidth: "unset",
             paddingInlineStart: "0px",
             "& .MuiTabs-indicator": {
                 display: "none",
             },
+            borderBlockEnd: "none",
             paddingBlock: "70px",
         },
     },
     tab: {
         opacity: 1,
-        borderRight: `10px solid ${colors.accentPrimary}`,
-        borderTop: `4px solid ${colors.white}`,
+        borderInlineEnd: `150px solid ${colors.accentPrimary}`,
+        borderBlockStart: `4px solid ${colors.white}`,
         maxWidth: "30px",
         minWidth: "30px",
         textTransform: "none",
@@ -72,8 +88,8 @@ const useStyles = makeStyles(theme => ({
         "& span": {
             display: "none",
         },
-        "&:last-child": {
-            borderBottom: `4px solid ${colors.white}`,
+        "&:first-child": {
+            borderBlockStart: `4px solid ${colors.white}`,
         },
         [theme.breakpoints.up("md")]: {
             width: "100%",
@@ -90,6 +106,18 @@ const useStyles = makeStyles(theme => ({
             '&[aria-selected="true"]': {
                 backgroundColor: `${colors.accentPrimaryDark}`,
             },
+            "&:last-child": {
+                borderBlockEnd: `4px solid ${colors.white}`,
+            },
+        },
+    },
+    indicator: {
+        backgroundColor: colors.accentPrimaryDark,
+        width: "10px",
+        borderBlock: `4px solid ${colors.white}`,
+        [theme.breakpoints.up("md")]: {
+            backgroundColor: colors.accentPrimaryDark,
+            width: "10px",
         },
     },
 }));
@@ -278,18 +306,19 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
 
     return (
         <Grid container aria-label="country-page-slider">
-            <StyledGrid item md={5} lg={4} xs={1}>
+            <Grid item md={5} lg={4} xs={1} className={classes.gridItem}>
                 <Tabs
                     orientation="vertical"
                     value={value}
                     onChange={handleChange}
                     className={classes.tabs}
-                    TabIndicatorProps={{
-                        style: {
-                            backgroundColor: colors.accentPrimaryDark,
-                            width: "10px",
-                        },
-                    }}
+                    classes={{ indicator: classes.indicator }}
+                    // TabIndicatorProps={{
+                    //     style: {
+                    //         backgroundColor: colors.accentPrimaryDark,
+                    //         width: "10px",
+                    //     },
+                    // }}
                     onWheel={onWheel}
                     onMouseEnter={disableScroll}
                     onMouseLeave={enableScroll}
@@ -354,7 +383,7 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
                         })}
                     />
                 </Tabs>
-            </StyledGrid>
+            </Grid>
             <Grid item xs={11} md={7} lg={8}>
                 {sliderGraphsConfig.map(tabConfig => (
                     <TabPanel key={tabConfig.tab} value={value} index={tabConfig.tab}>
@@ -380,8 +409,3 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
         </Grid>
     );
 };
-
-const StyledGrid = styled(Grid)`
-    background-color: ${colors.accentPrimary};
-    margin: 5px 0px;
-`;
