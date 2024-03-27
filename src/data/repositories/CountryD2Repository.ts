@@ -2,24 +2,10 @@ import polylabel from "polylabel";
 import { Country, CountryStatus } from "../../domain/entities/Country";
 import { Future, FutureData } from "../../domain/entities/Future";
 import { CountryRepository } from "../../domain/repositories/CountryRepository";
+import { Id } from "../../domain/entities/Ref";
 import { D2Api, D2Geometry, MetadataPick } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
 import { coordinatesFromString } from "./countries/coordinatesFromString";
-
-export const COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE = [
-    "lbMrRSBsXh3",
-    "DVnpk4xiXGJ",
-    "VGOzFKfSazN",
-    "cfBaKMnsXd1",
-    "XeWqwCw9G5s",
-    "fg8TSIHSGHX",
-    "yBqy4nxuOCA",
-    "AjeCGGb8H76",
-    "N9i1v07Ro0E",
-    "VJrTuNXAg9G",
-    "KwgjnBBpe5b",
-    "xb2ezJcUoSR",
-];
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -67,6 +53,34 @@ const validOrgUnitGroups = [
     "A1BdaIwDheX",
 ];
 
+const KOSOVO = "NEPywTBN52g";
+const NETHERLANDS = "rEQqufy2KNi";
+
+const countriesInCountryPageProgram = "ai5rB7mcqHH";
+
+const countriesInCountryPageDataElements: Record<string, Id> = {
+    countryOne: "TnVtPv9CtZs",
+    countryTwo: "eZWjJNv8stp",
+    countryThree: "LPHN04myQFr",
+    countryFour: "fb6h94Fy4hO",
+    countryFive: "M0MeJ4H1Sw6",
+    countrySix: "MAsbPRB23yd",
+    countrySeven: "KnbvNQnRcJB",
+    countryEight: "h3eBaOIwlBU",
+    countryNine: "jo9LfEeHxxH",
+    countryTen: "ZaBZ9rfaR6b",
+    countryEleven: "w41UoFFIanF",
+    countryTwelve: "vCXqIEAwWR3",
+    countryThirteen: "KZlaUubGGDP",
+    countryFourteen: "S9bSqXTeaCv",
+    countryFifteen: "LfNKBuw3lXS",
+    countrySixteen: "A3siIDGWn6c",
+    countrySeventeen: "cNMsoNqLB1n",
+    countryEighteen: "ABHaHZo8cLw",
+    countryNineteen: "CTTavmjBoll",
+    countryTwenty: "w89t0SozQcf",
+};
+
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
 
@@ -77,7 +91,8 @@ export class CountryD2Repository implements CountryRepository {
                     fields: organisationUnitsFields,
                     paging: false,
                     level: 3,
-                    filter: { path: { like: euroOrgUnit } },
+                    rootJunction: "OR",
+                    filter: { path: { like: euroOrgUnit }, id: { eq: KOSOVO } },
                     order: "shortName:asc",
                 })
             ),
@@ -87,13 +102,35 @@ export class CountryD2Repository implements CountryRepository {
                     program: countryInfoProgram,
                 })
             ),
-        }).map(({ countries, aditionalCountriesInfo }) => {
-            return this.buildCountries(countries.objects, aditionalCountriesInfo.events);
+            countriesInCountryPage: apiToFuture(
+                this.api.events.get({
+                    fields: eventsFields,
+                    skipPaging: true,
+                    program: countriesInCountryPageProgram,
+                })
+            ),
+        }).map(({ countries, aditionalCountriesInfo, countriesInCountryPage }) => {
+            return this.buildCountries(countries.objects, aditionalCountriesInfo.events, countriesInCountryPage.events);
         });
     }
 
-    private buildCountries(orgUnits: D2OrgUnit[], aditionalCountriesInfo: D2Event[]): Country[] {
+    private buildCountries(
+        orgUnits: D2OrgUnit[],
+        aditionalCountriesInfo: D2Event[],
+        countriesInCountryPageEvents: D2Event[]
+    ): Country[] {
         return orgUnits.map(orgUnit => {
+            const countriesInCountryPage = countriesInCountryPageEvents[0]
+                ? Object.values(countriesInCountryPageDataElements)
+                      .map(
+                          countryDataElement =>
+                              countriesInCountryPageEvents[0]?.dataValues?.find(
+                                  dv => dv.dataElement === countryDataElement
+                              )?.value || ""
+                      )
+                      .filter(Boolean)
+                : [];
+
             const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
                 event => event.orgUnit === orgUnit.id
             );
@@ -112,9 +149,10 @@ export class CountryD2Repository implements CountryRepository {
                 dv => dv.dataElement === countryInfoDataElements.geometry
             )?.value as unknown as D2Geometry;
 
+            const isNetherlands = orgUnit.id === NETHERLANDS;
             return {
                 id: orgUnit.id,
-                name: orgUnit.shortName,
+                name: isNetherlands ? `${orgUnit.shortName} (Kingdom of the)` : orgUnit.shortName,
                 longName: orgUnit.name,
                 code: orgUnit.code,
                 description: orgUnit.description,
@@ -126,6 +164,7 @@ export class CountryD2Repository implements CountryRepository {
                 flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
                 summary,
                 sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
+                isInCountryPage: countriesInCountryPage.includes(orgUnit.id),
             };
         });
     }

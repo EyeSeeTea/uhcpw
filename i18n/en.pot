@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-02-22T08:26:04.849Z\n"
-"PO-Revision-Date: 2024-02-22T08:26:04.849Z\n"
+"POT-Creation-Date: 2024-03-25T07:13:33.345Z\n"
+"PO-Revision-Date: 2024-03-25T07:13:33.345Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -110,6 +110,12 @@ msgstr ""
 msgid "How can {{country}} strengthen financial protection?"
 msgstr ""
 
+msgid "Select all"
+msgstr ""
+
+msgid "Clear all"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
@@ -133,9 +139,6 @@ msgid "To sign up or to send feedback, email"
 msgstr ""
 
 msgid "Clear"
-msgstr ""
-
-msgid "Clear all"
 msgstr ""
 
 msgid "Analysis"
@@ -273,6 +276,7 @@ msgstr ""
 msgid "UHC watch video"
 msgstr ""
 
+<<<<<<< HEAD
 msgid "Select Category"
 msgstr ""
 
@@ -290,6 +294,8 @@ msgid ""
 "Norway, the Russian Federation, San Marino, Turkmenistan and Uzbekistan."
 msgstr ""
 
+=======
+>>>>>>> origin/development
 msgid "Category and indicator"
 msgstr ""
 
@@ -344,6 +350,7 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
+<<<<<<< HEAD
 msgid ""
 "Select a category to track policies on population coverage, service "
 "coverage,  user charges and voluntary health insurance, explore gaps in "
@@ -362,6 +369,8 @@ msgstr ""
 msgid "More countries coming soon. "
 msgstr ""
 
+=======
+>>>>>>> origin/development
 msgid "Category"
 msgstr ""
 
@@ -411,13 +420,13 @@ msgstr ""
 msgid "Source: "
 msgstr ""
 
-msgid "WHO Barcelona Office for Health Systems Financing (2023)"
-msgstr ""
-
 msgid "Country experts: "
 msgstr ""
 
 msgid "Editors: "
+msgstr ""
+
+msgid "Reviewers: "
 msgstr ""
 
 msgid "Last updated: "

@@ -21,9 +21,12 @@ export type PolicyExplorerGeneralInfo = {
     editors: string;
     lastUpdate: Date;
     source: string;
+    reviewers: string;
 };
 
 export type PolicyExplorerReferences = {
     country: string;
     references: string[];
 };
+
+export const latestAvailableYear = "latest";

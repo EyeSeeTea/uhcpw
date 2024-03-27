@@ -13,10 +13,11 @@ export interface SimpleResourceItemProps {
     dateFormat?: string;
     tag?: string;
     tagColor?: string;
+    onTagClick?: () => void;
 }
 
 export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
-    ({ title, url, image, date, dateFormat, tag, tagColor }) => {
+    ({ title, url, image, date, dateFormat, tag, tagColor, onTagClick }) => {
         return (
             <Item elevation={0} role="listitem">
                 <Column>
@@ -26,7 +27,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
 
                     <Box height={20} />
                     <Row>
-                        {tag && <Tag theme={tag} color={tagColor} />}
+                        {tag && <Tag theme={tag} color={tagColor} onClick={onTagClick} />}
 
                         <Text gutterBottom>{moment(date).format(dateFormat || "YYYY")}</Text>
                     </Row>

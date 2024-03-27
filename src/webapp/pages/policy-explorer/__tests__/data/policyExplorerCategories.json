@@ -1,7 +1,7 @@
 [
     {
         "id": "uG2PbDfOc0w",
-        "name": "Population Coverage",
+        "name": "Population coverage",
         "subcategories": [
             {
                 "id": "SQQ3ZDRbxGT",
@@ -39,11 +39,12 @@
                 "id": "aUK2KCRN9Kx",
                 "name": "VHI role in filling gaps in population coverage"
             }
-        ]
+        ],
+        "description": "This section focuses on the basis for entitlement to publicly financed health care. It describes the basis for entitlement; entitlements for refugees, asylum seekers and undocumented migrants; and the groups of people who lack coverage and their entitlements."
     },
     {
         "id": "W4CqlzcDPB1",
-        "name": "Service Coverage",
+        "name": "Service coverage",
         "subcategories": [
             {
                 "id": "ie6trn3DrnP",
@@ -109,11 +110,12 @@
                 "id": "Om86yyWLAaM",
                 "name": "VHI role in filling gaps in service coverage"
             }
-        ]
+        ],
+        "description": "This section focuses on the publicly financed benefits package. It provides information on the institutions and processes involved in defining the benefits package, the types of health care that are not so well covered, the user pathway for covered services, informal payments, waiting times and other access issues."
     },
     {
         "id": "mCMVwmnGWJF",
-        "name": "User Charges (co-payments)",
+        "name": "User charges (co-payments)",
         "subcategories": [
             {
                 "id": "eAa8alKgk7f",
@@ -147,11 +149,12 @@
                 "id": "ekIncD2R5o7",
                 "name": "VHI role in covering user charges"
             }
-        ]
+        ],
+        "description": "This section focuses on user charges (co-payments) for covered services. It provides an overview of the types of user charges and protection mechanisms in place. More detailed information on the level and design of user charges is in the section on user charges by type of health care."
     },
     {
         "id": "uImM4yTeeV3",
-        "name": "Voluntary Health Insurance",
+        "name": "Voluntary health insurance",
         "subcategories": [
             {
                 "id": "OKGIXiFYHNQ",
@@ -193,7 +196,8 @@
                 "id": "G04CNOCKHDC",
                 "name": "Tax incentives or disincentives for selling or buying VHI"
             }
-        ]
+        ],
+        "description": "This section focuses on the role voluntary health insurance (VHI) plays in relation to publicly financed health care, the share of population covered by VHI and its contribution to spending on health. It provides information on who sells and buys VHI, who regulates VHI and whether there are policies in place to make VHI more accessible or affordable. "
     },
     {
         "id": "e6cfI6vWYEF",
@@ -211,650 +215,19 @@
                 "id": "CCIzcBhaqCZ",
                 "name": "User charges (co-payments): Main gaps in publicly financed coverage"
             }
-        ]
+        ],
+        "description": "This section highlights the main gaps in population and service coverage and gaps caused by user charges. "
     },
     {
         "id": "u800TAhsIBY",
         "name": "User charges (co-payments) by type of health care",
-        "subcategories": [
-            {
-                "id": "mTB12rvpJWd",
-                "name": "Type of user charge  (Primary Care)"
-            },
-            {
-                "id": "giUCPiCe745",
-                "name": "User charges apply (Primary Care)"
-            },
-            {
-                "id": "b29bW9mc9C7",
-                "name": "Reduced user charges (Primary Care)"
-            },
-            {
-                "id": "tu36CFgEoh8",
-                "name": "Exemptions from user charges (Primary Care)"
-            },
-            {
-                "id": "mSgmJhjn4Bi",
-                "name": "Cap on user charges (Primary Care)"
-            },
-            {
-                "id": "wDQRlBezRAs",
-                "name": "Type of user charge (Specialist Visits)"
-            },
-            {
-                "id": "SWX96A7gnpA",
-                "name": "User charges apply (Specialist Visits)"
-            },
-            {
-                "id": "ZkElvtoVJSd",
-                "name": "Reduced user charges (Specialist Visits)"
-            },
-            {
-                "id": "zsiuJlUSvAW",
-                "name": "Exemptions from user charges (Specialist Visits)"
-            },
-            {
-                "id": "o6d3FfwRVj7",
-                "name": "Cap on user charges (Specialist Visits)"
-            },
-            {
-                "id": "ibq7wtqnsns",
-                "name": "Type of user charge (Emergency Visits)"
-            },
-            {
-                "id": "WTtArv6Xvsy",
-                "name": "User charges apply (Emergency Visits)"
-            },
-            {
-                "id": "n8jFYyMKDaV",
-                "name": "Reduced user charges (Emergency Visits)"
-            },
-            {
-                "id": "SiNpgO1L5bG",
-                "name": "Exemptions from user charges (Emergency Visits)"
-            },
-            {
-                "id": "sASANfdEGUR",
-                "name": "Cap on user charges (Emergency Visits)"
-            },
-            {
-                "id": "EruJIoPKO1s",
-                "name": "Type of user charge  (Outpatient Medicines)"
-            },
-            {
-                "id": "gMAYqfQ5xAD",
-                "name": "User charges apply (Outpatient Medicines)"
-            },
-            {
-                "id": "KBW3D8lOlpg",
-                "name": "Reduced user charges (Outpatient Medicines)"
-            },
-            {
-                "id": "a67cjmP423S",
-                "name": "Exemptions from user charges (Outpatient Medicines)"
-            },
-            {
-                "id": "sk9g2PsK7vD",
-                "name": "Cap on user charges (Outpatient Medicines)"
-            },
-            {
-                "id": "KfHkuuRZdBh",
-                "name": "Type of user charge  (Inpatient Medicines)"
-            },
-            {
-                "id": "NJ8zBQdwnd2",
-                "name": "User charges apply (Inpatient Medicines)"
-            },
-            {
-                "id": "lj174orsYYW",
-                "name": "Reduced user charges (Inpatient Medicines)"
-            },
-            {
-                "id": "eRfuZtUFbPK",
-                "name": "Exemptions from user charges (Inpatient Medicines)"
-            },
-            {
-                "id": "Ut93noOXsdK",
-                "name": "Cap on user charges (Inpatient Medicines)"
-            },
-            {
-                "id": "CpMWBaXJ91P",
-                "name": "Type of user charge (Medical Products)"
-            },
-            {
-                "id": "VroSbngmebX",
-                "name": "User charges apply (Medical Products)"
-            },
-            {
-                "id": "P7qWfL7oluy",
-                "name": "Reduced user charges (Medical Products)"
-            },
-            {
-                "id": "yhSc51DOubT",
-                "name": "Exemptions from user charges (Medical Products)"
-            },
-            {
-                "id": "olgegohqR8l",
-                "name": "Cap on user charges (Medical Products)"
-            },
-            {
-                "id": "L2sCkhEbSfM",
-                "name": "Type of user charge (Diagnostics Tests)"
-            },
-            {
-                "id": "OjTsewAuevP",
-                "name": "User charges apply (Diagnostics Tests)"
-            },
-            {
-                "id": "NkHvpG471tm",
-                "name": "Reduced user charges (Diagnostics Tests)"
-            },
-            {
-                "id": "Cm6ngZTrVQR",
-                "name": "Exemptions from user charges (Diagnostics Tests)"
-            },
-            {
-                "id": "JLSGrrzqrW9",
-                "name": "Cap on user charges (Diagnostics Tests)"
-            },
-            {
-                "id": "PUXn0hz2JFX",
-                "name": "Type of user charge (Dental Visits)"
-            },
-            {
-                "id": "rZlHlitEiFp",
-                "name": "User charges apply (Dental Visits)"
-            },
-            {
-                "id": "lXBWfAv1EJE",
-                "name": "Reduced user charges (Dental Visits)"
-            },
-            {
-                "id": "M228fF4qKsx",
-                "name": "Exemptions from user charges (Dental Visits)"
-            },
-            {
-                "id": "wZ9JynvumSQ",
-                "name": "Cap on user charges (Dental Visits)"
-            },
-            {
-                "id": "Py0PrMRPlUj",
-                "name": "Type of user charge (Dental Care Treatment)"
-            },
-            {
-                "id": "RtLyOZpUtqO",
-                "name": "User charges apply (Dental Care Treatment)"
-            },
-            {
-                "id": "Bwx3a0w5orN",
-                "name": "Reduced user charges (Dental Care Treatment)"
-            },
-            {
-                "id": "KQVn9LNZPlq",
-                "name": "Exemptions from user charges (Dental Care Treatment)"
-            },
-            {
-                "id": "SINKYu3EMgX",
-                "name": "Cap on user charges (Dental Care Treatment)"
-            },
-            {
-                "id": "TaS7d80ciTe",
-                "name": "User charges apply (Inpatient Care)"
-            },
-            {
-                "id": "syr5O2Mj2vL",
-                "name": "Reduced user charges (Inpatient Care)"
-            },
-            {
-                "id": "Urb1llvnJV4",
-                "name": "Exemptions from user charges (Inpatient Care)"
-            },
-            {
-                "id": "Ai7ziQeOU53",
-                "name": "Cap on user charges (Inpatient Care)"
-            },
-            {
-                "id": "L6ly0Y1uCe2",
-                "name": "Type of user charge  (Inpatient Care)"
-            }
-        ]
+        "subcategories": [],
+        "description": "This section focuses on the design of user charges (co-payments) for covered services. It describes the level and type of user charges and protection mechanisms in place for the following types of health care: outpatient primary care visits, outpatient specialist visits, outpatient emergency visits, outpatient prescribed medicines, medical products, diagnostic tests, dental care visits, dental care treatment, inpatient care and inpatient medicines."
     },
     {
-        "id": "FtRwT2aBET4",
-        "name": "Changes in coverage policy up to and including 2019",
-        "subcategories": [
-            {
-                "id": "KDsEXYarBTu",
-                "name": "Area of change in coverage policy pre2019 (1)"
-            },
-            {
-                "id": "ewpOQ5y97nj",
-                "name": "Area of change in coverage policy pre2019 (2)"
-            },
-            {
-                "id": "hDGqtzIFTAg",
-                "name": "Area of change in coverage policy pre2019 (3)"
-            },
-            {
-                "id": "Ed553tXFkcC",
-                "name": "Area of change in coverage policy pre2019 (4)"
-            },
-            {
-                "id": "G90HxQdY44N",
-                "name": "Area of change in coverage policy pre2019 (5)"
-            },
-            {
-                "id": "gOtySPsOkmn",
-                "name": "Health services targeted in change in coverage policy pre2019 (1)"
-            },
-            {
-                "id": "ueyZG15lJNe",
-                "name": "Health services targeted in change in coverage policy pre2019 (2)"
-            },
-            {
-                "id": "oR85dLJrBWB",
-                "name": "Health services targeted in change in coverage policy pre2019 (3)"
-            },
-            {
-                "id": "GMqwcTkBm5u",
-                "name": "Health services targeted in change in coverage policy pre2019 (4)"
-            },
-            {
-                "id": "GwYOC7auTo3",
-                "name": "Health services targeted in change in coverage policy pre2019 (5)"
-            },
-            {
-                "id": "CnlZeapVRTA",
-                "name": "People targeted in change in coverage policy pre2019 (1)"
-            },
-            {
-                "id": "Dg9FyroZ53d",
-                "name": "People targeted in change in coverage policy pre2019 (2)"
-            },
-            {
-                "id": "Ak3h87SXFws",
-                "name": "People targeted in change in coverage policy pre2019 (3)"
-            },
-            {
-                "id": "OAFiKkIj9AV",
-                "name": "People targeted in change in coverage policy pre2019 (4)"
-            },
-            {
-                "id": "VqZfgxa6KhX",
-                "name": "People targeted in change in coverage policy pre2019 (5)"
-            },
-            {
-                "id": "u50ywFZ6gum",
-                "name": "Policy of change in coverage policy pre2019 (1)"
-            },
-            {
-                "id": "pnUIywtp441",
-                "name": "Policy of change in coverage policy pre2019 (2)"
-            },
-            {
-                "id": "fVrKY8v7ZRy",
-                "name": "Policy of change in coverage policy pre2019 (3)"
-            },
-            {
-                "id": "xZjl72SoX34",
-                "name": "Policy of change in coverage policy pre2019 (4)"
-            },
-            {
-                "id": "RPDIUoT8kU7",
-                "name": "Policy of change in coverage policy pre2019 (5)"
-            }
-        ]
-    },
-    {
-        "id": "lHk8jtKonPh",
-        "name": "Type of user charge",
-        "subcategories": [
-            {
-                "id": "EboejH0zPz9",
-                "name": "Primary Care - Fixed co-payment"
-            },
-            {
-                "id": "cBXErExkfsP",
-                "name": "Primary Care - Percentage co-payment"
-            },
-            {
-                "id": "uFiUQKJhltM",
-                "name": "Primary Care - Reference pricing"
-            },
-            {
-                "id": "xvfbvuNow1z",
-                "name": "Primary Care - Deductible"
-            },
-            {
-                "id": "BuXscQqeqt3",
-                "name": "Primary Care - Balance billing"
-            },
-            {
-                "id": "AenLLMXSR2j",
-                "name": "Primary Care - Extra billing/full price"
-            },
-            {
-                "id": "oHXaoGjuNBz",
-                "name": "Specialist Visits - Fixed co-payment"
-            },
-            {
-                "id": "mXKLWeQblWM",
-                "name": "Specialist Visits - Percentage co-payment"
-            },
-            {
-                "id": "iho7qMihBEN",
-                "name": "Specialist Visits - Reference pricing"
-            },
-            {
-                "id": "H2f0XhUerVj",
-                "name": "Specialist Visits - Deductible"
-            },
-            {
-                "id": "gxOwKGHM5uM",
-                "name": "Specialist Visits - Balance billing"
-            },
-            {
-                "id": "OVMONRywtGy",
-                "name": "Specialist Visits - Extra billing/full price"
-            },
-            {
-                "id": "NnTynkwUOLd",
-                "name": "Emergency Visits - Fixed co-payment"
-            },
-            {
-                "id": "AumlNzFYLzS",
-                "name": "Emergency Visits - Percentage co-payment"
-            },
-            {
-                "id": "RnRU6QWQtFO",
-                "name": "Emergency Visits - Reference pricing"
-            },
-            {
-                "id": "y1ZQGX2JSfk",
-                "name": "Emergency Visits - Deductible"
-            },
-            {
-                "id": "ZVvNouUFwSj",
-                "name": "Emergency Visits - Balance billing"
-            },
-            {
-                "id": "U3EM7x9wA7q",
-                "name": "Emergency Visits - Extra billing/full price"
-            },
-            {
-                "id": "FPWimBd7wCe",
-                "name": "Outpatient prescribed medicines - Fixed co-payment"
-            },
-            {
-                "id": "c6VoqBpnpxd",
-                "name": "Outpatient prescribed medicines - Percentage co-payment"
-            },
-            {
-                "id": "asegoCEvyrS",
-                "name": "Outpatient prescribed medicines - Reference pricing"
-            },
-            {
-                "id": "mik8Xg9vOeV",
-                "name": "Outpatient prescribed medicines - Deductible"
-            },
-            {
-                "id": "phzaWpXIfni",
-                "name": "Outpatient prescribed medicines - Balance billing"
-            },
-            {
-                "id": "ngo9UfDawgI",
-                "name": "Outpatient prescribed medicines - Extra billing/full price"
-            },
-            {
-                "id": "SgGPLj9ftfg",
-                "name": "Medical Products - Fixed co-payment"
-            },
-            {
-                "id": "AA6Ye2mqJHR",
-                "name": "Medical Products - Percentage co-payment"
-            },
-            {
-                "id": "xmaBfCQrnvo",
-                "name": "Medical Products - Reference pricing"
-            },
-            {
-                "id": "SAdCPb1pzvB",
-                "name": "Medical Products - Deductible"
-            },
-            {
-                "id": "rRtvOQKWekP",
-                "name": "Medical Products - Balance billing"
-            },
-            {
-                "id": "ZhPZvGqaolU",
-                "name": "Medical Products - Extra billing/full price"
-            },
-            {
-                "id": "KGrh7f4UdO2",
-                "name": "Diagnostic Tests - Fixed co-payment"
-            },
-            {
-                "id": "jgb82HFCuoF",
-                "name": "Diagnostic Tests - Percentage co-payment"
-            },
-            {
-                "id": "z21e4xo33Gq",
-                "name": "Diagnostic Tests - Reference pricing"
-            },
-            {
-                "id": "yACvBd3ApA0",
-                "name": "Diagnostic Tests - Deductible"
-            },
-            {
-                "id": "bC0ASJpuYnX",
-                "name": "Diagnostic Tests - Balance billing"
-            },
-            {
-                "id": "cMmiVU55Byh",
-                "name": "Diagnostic Tests - Extra billing/full price"
-            },
-            {
-                "id": "zZ0IhJeGF3G",
-                "name": "Dental Visits - Fixed co-payment"
-            },
-            {
-                "id": "G68kPZZ43zG",
-                "name": "Dental Visits - Percentage co-payment"
-            },
-            {
-                "id": "MDvxRjDZvDj",
-                "name": "Dental Visits - Reference pricing"
-            },
-            {
-                "id": "U9QK3B63xKo",
-                "name": "Dental Visits - Deductible"
-            },
-            {
-                "id": "VplpY1Yy1lR",
-                "name": "Dental Visits - Balance billing"
-            },
-            {
-                "id": "McgI8vrnFw6",
-                "name": "Dental Visits - Extra billing/full price"
-            },
-            {
-                "id": "sAxdNOgcV3H",
-                "name": "Dental Care Treatment - Fixed co-payment"
-            },
-            {
-                "id": "rajdlRWxCX4",
-                "name": "Dental Care Treatment - Percentage co-payment"
-            },
-            {
-                "id": "eUtTI5WTx9F",
-                "name": "Dental Care Treatment - Reference pricing"
-            },
-            {
-                "id": "r0iKZc6gEdK",
-                "name": "Dental Care Treatment - Deductible"
-            },
-            {
-                "id": "GaGhir32y1U",
-                "name": "Dental Care Treatment - Balance billing"
-            },
-            {
-                "id": "DNTGpXo6buK",
-                "name": "Dental Care Treatment - Extra billing/full price"
-            },
-            {
-                "id": "UfpRQ2Ijiyb",
-                "name": "Inpatient Care - Fixed co-payment"
-            },
-            {
-                "id": "WdF9ezTBVNb",
-                "name": "Inpatient Care - Percentage co-payment"
-            },
-            {
-                "id": "BnI3YDe3flm",
-                "name": "Inpatient Care - Reference pricing"
-            },
-            {
-                "id": "ccDqDzq4b0x",
-                "name": "Inpatient Care - Deductible"
-            },
-            {
-                "id": "u1Eguha8n2H",
-                "name": "Inpatient Care - Balance billing"
-            },
-            {
-                "id": "UUi5TUqljop",
-                "name": "Inpatient Care - Extra billing/full price"
-            },
-            {
-                "id": "KR7sMncAKlz",
-                "name": "Inpatient Medicines - Fixed co-payment"
-            },
-            {
-                "id": "q5cIxEo3MPq",
-                "name": "Inpatient Medicines - Percentage co-payment"
-            },
-            {
-                "id": "ZqAbKQHqhLR",
-                "name": "Inpatient Medicines - Reference pricing"
-            },
-            {
-                "id": "Dgg4Jc9U7Jn",
-                "name": "Inpatient Medicines - Deductible"
-            },
-            {
-                "id": "SUBFUbBNE8g",
-                "name": "Inpatient Medicines - Balance billing"
-            },
-            {
-                "id": "IpwrxmI5FU7",
-                "name": "Inpatient Medicines - Extra billing/full price"
-            }
-        ]
-    },
-    {
-        "id": "Dg4b8bTfEIr",
-        "name": "Changes in coverage policy since 2020",
-        "subcategories": [
-            {
-                "id": "AFxIxVuvvsZ",
-                "name": "Area of change in coverage policy"
-            },
-            {
-                "id": "JMYOe9wMIoE",
-                "name": "Policy of change in coverage policy"
-            },
-            {
-                "id": "FKBHFNqiFM4",
-                "name": "Health services targeted in change in coverage policy"
-            },
-            {
-                "id": "fgsOChZT1Yp",
-                "name": "People targeted in change in coverage policy"
-            },
-            {
-                "id": "qJ9dWNT1HU1",
-                "name": "Was this a response to the COVID-19 pandemic?"
-            },
-            {
-                "id": "IjpUXUVF9bn",
-                "name": "Area of change in coverage policy"
-            },
-            {
-                "id": "dfWsuiDvDlR",
-                "name": "Policy of change in coverage policy"
-            },
-            {
-                "id": "AZgRUJmVPNi",
-                "name": "Health services targeted in change in coverage policy"
-            },
-            {
-                "id": "M90TwNwsXjY",
-                "name": "People targeted in change in coverage policy"
-            },
-            {
-                "id": "rxDjH7GshzX",
-                "name": "Was this a response to the COVID-19 pandemic?"
-            },
-            {
-                "id": "Soj201VJFWL",
-                "name": "Area of change in coverage policy"
-            },
-            {
-                "id": "tdlh9Z0uktG",
-                "name": "Policy of change in coverage policy"
-            },
-            {
-                "id": "jq0sGqVVTNW",
-                "name": "Health services targeted in change in coverage policy"
-            },
-            {
-                "id": "XZbHFY1652W",
-                "name": "People targeted in change in coverage policy"
-            },
-            {
-                "id": "BYbKtpEB0Hn",
-                "name": "Was this a response to the COVID-19 pandemic?"
-            },
-            {
-                "id": "JfqWVc1eCJl",
-                "name": "Area of change in coverage policy"
-            },
-            {
-                "id": "PyBU3BkN3oQ",
-                "name": "Policy of change in coverage policy"
-            },
-            {
-                "id": "zvBP5xebI2D",
-                "name": "Health services targeted in change in coverage policy"
-            },
-            {
-                "id": "b5kKyrRkcHG",
-                "name": "People targeted in change in coverage policy"
-            },
-            {
-                "id": "L9klgnq75d8",
-                "name": "Was this a response to the COVID-19 pandemic?"
-            },
-            {
-                "id": "xP4nCc5rpV4",
-                "name": "Area of change in coverage policy (1)"
-            },
-            {
-                "id": "mQYv2QxdflF",
-                "name": "Policy of change in coverage policy (1)"
-            },
-            {
-                "id": "peIML3XRBaN",
-                "name": "Health services targeted in change in coverage policy (1)"
-            },
-            {
-                "id": "CUSj5kPkJ0W",
-                "name": "People targeted in change in coverage policy (1)"
-            },
-            {
-                "id": "mdnjNf5baYj",
-                "name": "Was this a response to the COVID-19 pandemic? (1)"
-            }
-        ]
+        "id": "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
+        "name": "Changes in coverage policy",
+        "subcategories": [],
+        "description": "This section focuses on changes in coverage policy over time. It describes policy changes affecting population coverage, service coverage, user charges and voluntary health insurance."
     }
 ]

@@ -1,6 +1,7 @@
 import { Typography } from "@material-ui/core";
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useEffect } from "react";
 import styled from "styled-components";
+import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
@@ -12,6 +13,8 @@ import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
+    const snackbar = useSnackbar();
+
     const referencesRef = useRef<HTMLDivElement>(null);
 
     const filterInParams = useMemo(() => {
@@ -30,11 +33,26 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         };
     }, [props.searchParams]);
 
-    const { filters, data, onGetTable, onSwitchRowColumn, onDownload, dataOrientationByTable } = usePolicyExplorer({
+    const {
+        filters,
+        data,
+        onGetTable,
+        onSwitchRowColumn,
+        onDownload,
+        dataOrientationByTable,
+        selectCategoryInfo,
+        errorMessage,
+    } = usePolicyExplorer({
         countriesFilter: filterInParams.country,
         categories: filterInParams.category,
         yearsFilter: filterInParams.year,
     });
+
+    useEffect(() => {
+        if (errorMessage) {
+            snackbar.error(i18n.t(errorMessage));
+        }
+    }, [errorMessage, snackbar]);
 
     const categories = useMemo(() => {
         return filters.category.options.filter(
@@ -65,7 +83,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                         />
                     ))
                 ) : (
-                    <EmptyContent />
+                    <EmptyContent info={selectCategoryInfo} />
                 )}
 
                 <div ref={referencesRef}>
@@ -74,9 +92,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             <div key={info.country}>
                                 <GeneralDataContainer>
                                     <GeneralRow>
-                                        <CreditsText
-                                            style={{ fontWeight: 500 }}
-                                        >{`${info.country} (2023)`}</CreditsText>
+                                        <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
                                     </GeneralRow>
 
                                     <GeneralRow>
@@ -88,7 +104,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                             target="_blank"
                                             rel="noreferrer"
                                         >
-                                            {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
+                                            {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                                         </Link>
                                     </GeneralRow>
 
@@ -102,6 +118,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
                                         <CreditsText>{info.editors}</CreditsText>
+                                    </GeneralRow>
+
+                                    <GeneralRow>
+                                        <CreditsText>{i18n.t("Reviewers: ", { nsSeparator: false })}</CreditsText>
+                                        &nbsp;
+                                        <CreditsText>{info.reviewers}</CreditsText>
                                     </GeneralRow>
 
                                     <GeneralRow>

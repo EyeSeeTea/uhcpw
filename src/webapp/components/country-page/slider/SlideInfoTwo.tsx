@@ -11,6 +11,8 @@ export const SlideInfoTwo: React.FC<{ country: Country }> = ({ country }) => {
     const {
         sliderInfo: { finProtecSection },
     } = country;
+    console.log("and UHC watch policy explorer.", finProtecSection);
+
     return (
         <Container>
             <Typography variant="h3" style={{ fontWeight: 500 }}>
@@ -118,7 +120,6 @@ const Image = styled.img`
 
 const TextLink = styled.a`
     color: ${colors.accentPrimary};
-    padding: 0 3px;
     text-transform: none;
     text-decoration: none;
     &:hover {
