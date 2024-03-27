@@ -11,7 +11,6 @@ export const SlideInfoTwo: React.FC<{ country: Country }> = ({ country }) => {
     const {
         sliderInfo: { finProtecSection },
     } = country;
-    console.log("and UHC watch policy explorer.", finProtecSection);
 
     return (
         <Container>
