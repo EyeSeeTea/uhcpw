@@ -1,8 +1,9 @@
-import { Typography } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import React, { useMemo, useRef, useEffect } from "react";
-import styled from "styled-components";
-import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import moment from "moment";
+import styled from "styled-components";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
+import { useSnackbar } from "@eyeseetea/d2-ui-components";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -72,17 +73,32 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                 <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} />
 
                 {data && dataOrientationByTable ? (
-                    categories.map(category => (
-                        <PolicyExplorerTable
-                            key={category.value}
-                            category={category}
-                            rows={data.tables[category.value]}
-                            onSwitchRowColumn={onSwitchRowColumn}
-                            onDownload={onDownload}
-                            dataOrientation={dataOrientationByTable[category.value]}
-                            referencesRef={referencesRef}
-                        />
-                    ))
+                    <Content>
+                        {categories.length > 1 ? (
+                            <CustomButton
+                                variant="contained"
+                                startIcon={<DownloadIcon />}
+                                color="primary"
+                                style={{ marginLeft: 20 }}
+                                onClick={onDownload}
+                            >
+                                {i18n.t("Download all tables")}
+                            </CustomButton>
+                        ) : null}
+
+                        {categories.map(category => (
+                            <PolicyExplorerTable
+                                key={category.value}
+                                category={category}
+                                rows={data.tables[category.value]}
+                                onSwitchRowColumn={onSwitchRowColumn}
+                                dataOrientation={dataOrientationByTable[category.value]}
+                                referencesRef={referencesRef}
+                                onDownload={onDownload}
+                                hasDownloadButton={categories.length === 1}
+                            />
+                        ))}
+                    </Content>
                 ) : (
                     <EmptyContent info={selectCategoryInfo} />
                 )}
@@ -148,6 +164,20 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         </Layout>
     );
 });
+
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const CustomButton = styled(Button)`
+    margin: 48px 0 0 0;
+    border-radius: 10px;
+    padding: 0px 16px;
+    height: 36px;
+    width: 235px;
+    align-self: flex-end;
+`;
 
 const GeneralDataContainer = styled.div`
     font-size: 16px;
