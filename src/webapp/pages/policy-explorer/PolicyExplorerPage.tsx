@@ -74,15 +74,18 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                 {data && dataOrientationByTable ? (
                     <Content>
-                        <CustomButton
-                            variant="contained"
-                            startIcon={<DownloadIcon />}
-                            color="primary"
-                            style={{ marginLeft: 20 }}
-                            onClick={onDownload}
-                        >
-                            {i18n.t("Download all tables")}
-                        </CustomButton>
+                        {categories.length > 1 ? (
+                            <CustomButton
+                                variant="contained"
+                                startIcon={<DownloadIcon />}
+                                color="primary"
+                                style={{ marginLeft: 20 }}
+                                onClick={onDownload}
+                            >
+                                {i18n.t("Download all tables")}
+                            </CustomButton>
+                        ) : null}
+
                         {categories.map(category => (
                             <PolicyExplorerTable
                                 key={category.value}
@@ -91,6 +94,8 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                 onSwitchRowColumn={onSwitchRowColumn}
                                 dataOrientation={dataOrientationByTable[category.value]}
                                 referencesRef={referencesRef}
+                                onDownload={onDownload}
+                                hasDownloadButton={categories.length === 1}
                             />
                         ))}
                     </Content>
@@ -166,7 +171,7 @@ const Content = styled.div`
 `;
 
 const CustomButton = styled(Button)`
-    margin: 30px 0 0 0;
+    margin: 48px 0 0 0;
     border-radius: 10px;
     padding: 0px 16px;
     height: 36px;

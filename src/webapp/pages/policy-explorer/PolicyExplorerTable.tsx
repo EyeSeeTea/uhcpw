@@ -1,10 +1,12 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
 import React, { RefObject, useCallback, useState } from "react";
 import styled from "styled-components";
-import i18n from "../../../locales";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ReactMarkdown from "react-markdown";
+
+import i18n from "../../../locales";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import {
     PolicyExplorerCell,
@@ -18,13 +20,23 @@ interface PolicyExplorerTableProps {
     rows?: PolicyExplorerCell[][];
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;
+    onDownload: () => void;
     referencesRef: RefObject<HTMLDivElement>;
+    hasDownloadButton?: boolean;
 }
 
 const EMPTY_URL = "/";
 
 export const PolicyExplorerTable = React.memo(
-    ({ category, rows, onSwitchRowColumn, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
+    ({
+        category,
+        rows,
+        onSwitchRowColumn,
+        dataOrientation,
+        referencesRef,
+        onDownload,
+        hasDownloadButton = false,
+    }: PolicyExplorerTableProps) => {
         const handleClickEmptyUrl = useCallback(
             event => {
                 event.preventDefault();
@@ -78,6 +90,17 @@ export const PolicyExplorerTable = React.memo(
                             >
                                 {i18n.t("Switch row/column")}
                             </CustomButton>
+                            {hasDownloadButton ? (
+                                <CustomButton
+                                    variant="contained"
+                                    startIcon={<DownloadIcon />}
+                                    color="primary"
+                                    style={{ marginLeft: 20 }}
+                                    onClick={onDownload}
+                                >
+                                    {i18n.t("Download")}
+                                </CustomButton>
+                            ) : null}
                         </Row>
                     </Row>
                 </TableHeader>
