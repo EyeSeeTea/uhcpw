@@ -57,8 +57,11 @@ const InfoGrid = styled(Grid)`
     overflow-y: auto;
     font-size: 16px;
     ul {
-        list-style-position: inside;
-        padding-left: 0;
+        list-style-position: outside;
+        padding-left: 13px;
+        > li {
+            padding-inline-start: 7px;
+        }
     }
 `;
 
