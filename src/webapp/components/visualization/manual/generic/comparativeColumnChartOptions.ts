@@ -7,8 +7,9 @@ export const comparativeColumnChartOptions: (
     chartSource: ChartSource,
     seriesNames: Record<string, string>,
     seriesColors: Record<string, string>,
-    currentSerieColor?: string
-) => Highcharts.Options = (chartSource, seriesNames, seriesColors, currentSerieColor) => {
+    currentSerieColor?: string,
+    orderByValueInSerie?: string
+) => Highcharts.Options = (chartSource, seriesNames, seriesColors, currentSerieColor, orderByValueInSerie) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
@@ -17,7 +18,15 @@ export const comparativeColumnChartOptions: (
 
             return `${orgUnit} ${year} `;
         })
-        .orderBy(items => _(items).sumBy(row => (row[3] ? +row[3] : 0)))
+        .orderBy(items => {
+            if (orderByValueInSerie) {
+                const item = items.find(row => row[0] === orderByValueInSerie);
+
+                return item ? (item[3] ? +item[3] : 0) : 0;
+            } else {
+                return _(items).sumBy(row => (row[3] ? +row[3] : 0));
+            }
+        })
         .value()
         .flat();
 
