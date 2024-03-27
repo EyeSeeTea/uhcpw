@@ -2,13 +2,14 @@ import { Typography } from "@material-ui/core";
 import React, { useMemo, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
+import moment from "moment";
+
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
 import { usePolicyExplorer } from "./usePolicyExplorer";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
-import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
-import moment from "moment";
+import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
