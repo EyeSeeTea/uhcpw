@@ -1,15 +1,17 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
-import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
+
+import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import i18n from "../../../../locales";
 import { useHistory } from "react-router";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
 import { Option } from "../../dropdown/Option";
@@ -64,6 +66,7 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const history = useHistory();
+    const { pathname } = useLocation();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { countryFilter } = useCountryPage();
@@ -87,6 +90,8 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
         },
         [handleClose, history]
     );
+
+    const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
     return (
         <div className={classes.root}>
@@ -115,6 +120,11 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                         <MobileMenu />
                     </Hidden>
                     <Hidden mdDown>
+                        {!isHomePage ? (
+                            <HomeButton className={classes.menu} onClick={goToHome}>
+                                <HomeOutlinedIcon style={{ color: "#3D3D3D" }} />
+                            </HomeButton>
+                        ) : null}
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -237,4 +247,8 @@ const Tag = styled.div`
     color: white;
     border-radius: 30px;
     padding: 5px 10px;
+`;
+
+const HomeButton = styled(Button)`
+    min-width: unset;
 `;
