@@ -1,10 +1,12 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { IconButton, Menu, MenuItem, Divider, withStyles } from "@material-ui/core";
 import { Menu as MenuIcon, CloseOutlined as CloseOutlinedIcon } from "@material-ui/icons";
 import styled from "styled-components";
+import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
+
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import i18n from "../../../../locales";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { MobileMenuSubItem } from "./MobileMenuSubItem";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { Option } from "../../dropdown/Option";
@@ -14,6 +16,7 @@ export const MobileMenu = () => {
     const open = Boolean(anchorEl);
     const { countryFilter } = useCountryPage();
     const history = useHistory();
+    const { pathname } = useLocation();
 
     const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -46,6 +49,13 @@ export const MobileMenu = () => {
         [handleCloseMenu, history]
     );
 
+    const isHomePage = useMemo(() => pathname === "/", [pathname]);
+
+    const goToHome = useCallback(() => {
+        history.push("/");
+        handleCloseMenu();
+    }, [handleCloseMenu, history]);
+
     return (
         <div>
             <IconButton
@@ -71,6 +81,15 @@ export const MobileMenu = () => {
                     horizontal: "center",
                 }}
             >
+                {!isHomePage ? (
+                    <>
+                        <HomeMenuItem onClick={goToHome}>
+                            <HomeOutlinedIcon style={{ color: "#F0F0FF" }} />
+                        </HomeMenuItem>
+                        <StyledDivider />
+                    </>
+                ) : null}
+
                 <MenuItem onClick={() => handleCloseMenu("/indicator-explorer")}>
                     {i18n.t("Indicator explorer")}
                 </MenuItem>
@@ -117,4 +136,8 @@ const MenuLink = styled.a`
     text-transform: none;
     text-decoration: none;
     color: white;
+`;
+
+const HomeMenuItem = styled(MenuItem)`
+    justify-content: center;
 `;

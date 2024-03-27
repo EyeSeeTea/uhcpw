@@ -4,6 +4,7 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import { useAppContext } from "../../contexts/app-context";
 import { Country } from "../../../domain/entities/Country";
 import { Person } from "../../../domain/entities/Person";
+import _ from "lodash";
 
 export function useAbout(): ResourcesState {
     const { compositionRoot, countries } = useAppContext();
@@ -30,7 +31,11 @@ export function useAbout(): ResourcesState {
     useEffect(() => {
         compositionRoot.about.getPersons.execute(false).run(
             persons => {
-                setExperts(persons.map(person => mapPersonToExpertState(person, countries)));
+                const experts = persons.map(person => mapPersonToExpertState(person, countries));
+
+                const orderedExperts = _(experts).orderBy(["countryName", "firstName"], ["asc", "asc"]).value();
+
+                setExperts(orderedExperts);
             },
             () => setExperts([])
         );

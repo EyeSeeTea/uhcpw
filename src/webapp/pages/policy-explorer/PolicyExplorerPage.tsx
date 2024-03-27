@@ -10,7 +10,7 @@ import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
 import { usePolicyExplorer } from "./usePolicyExplorer";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
-import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
+import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
