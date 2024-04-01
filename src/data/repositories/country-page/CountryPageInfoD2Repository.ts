@@ -41,17 +41,34 @@ export class CountryPageInfoD2Repository implements CountryPageInfoRepository {
 
     private buildSliderInfo(countryName: string, event: D2Event): SliderInfo {
         return {
-            sliderOne: event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderOne)?.value || "",
-            sliderTwo: event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderTwo)?.value || "",
+            sliderOne:
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderOne)
+                    ?.value.replace(/<country>/g, countryName) || "",
+            sliderTwo:
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderTwo)
+                    ?.value.replace(/<country>/g, countryName) || "",
             sliderThree:
-                event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderThree)?.value || "",
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderThree)
+                    ?.value.replace(/<country>/g, countryName) || "",
             sliderFour:
-                event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderFour)?.value || "",
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderFour)
+                    ?.value.replace(/<country>/g, countryName) || "",
             sliderFive:
-                event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderFive)?.value || "",
-            sliderSix: event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderSix)?.value || "",
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderFive)
+                    ?.value.replace(/<country>/g, countryName) || "",
+            sliderSix:
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderSix)
+                    ?.value.replace(/<country>/g, countryName) || "",
             sliderSeven:
-                event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderSeven)?.value || "",
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderSeven)
+                    ?.value.replace(/<country>/g, countryName) || "",
             sliderEight:
                 event?.dataValues
                     ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderEight)
@@ -60,7 +77,10 @@ export class CountryPageInfoD2Repository implements CountryPageInfoRepository {
                 event?.dataValues
                     ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderNine)
                     ?.value.replace(/<country>/g, countryName) || "",
-            sliderTen: event?.dataValues?.find(dv => dv.dataElement === sliderInfoDataElements.sliderTen)?.value || "",
+            sliderTen:
+                event?.dataValues
+                    ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderTen)
+                    ?.value.replace(/<country>/g, countryName) || "",
             sliderEleven:
                 event?.dataValues
                     ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderEleven)
