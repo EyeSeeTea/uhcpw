@@ -28,17 +28,16 @@ function TabPanel(props: { [x: string]: any; children: any; value: any; index: a
 
 const useStyles = makeStyles(theme => ({
     gridItem: {
+        backgroundColor: colors.accentPrimary,
+        borderInlineEnd: "none",
         marginBlock: "4px",
-        backgroundColor: colors.white,
-        borderInlineEnd: `6px solid ${colors.accentPrimary}`,
-        width: "30px",
-        flexBasis: "unset",
-        paddingBlockStart: "70px",
-        [theme.breakpoints.up("md")]: {
-            backgroundColor: colors.accentPrimary,
-            borderInlineEnd: "none",
+        [theme.breakpoints.down("sm")]: {
             marginBlock: "4px",
-            flexBasis: "content",
+            backgroundColor: colors.white,
+            borderInlineEnd: `6px solid ${colors.accentPrimary}`,
+            width: "30px",
+            flexBasis: "unset",
+            paddingBlockStart: "70px",
         },
     },
     tabs: {
