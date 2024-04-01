@@ -8,14 +8,12 @@ import styled from "styled-components";
 import { isEmpty } from "lodash";
 
 import i18n from "../../../../locales";
-import { CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION } from "../../../pages/policy-explorer/usePolicyExplorer";
+import { CATEGORIES_WITHOUT_SUBCATEGORIES } from "../../../pages/policy-explorer/usePolicyExplorer";
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 import SearchInput from "../../search-input/SearchInput";
 import { Node } from "./Node";
 import { Leaf } from "./Leaf";
 import { SelectedChip } from "../../selected-chip/SelectedChip";
-
-const EMPTY_IDS_ARRAY: string[] = [];
 
 type SubcategoryOption = {
     value: string;
@@ -32,14 +30,11 @@ export type CategoryOption = {
 interface CategorySelectorProps {
     categoryOptions: CategoryOption[];
     selectedCategoriesWithSubcategories?: Record<string, string[]>;
-    disabledCategories: string[];
     onSelect: (value: Record<string, string[]> | undefined) => void;
     fullWidth?: boolean;
     placeholder?: string;
     disabled?: boolean;
     label?: string;
-    categoriesNotShowSubcategories?: string[];
-    moreThanOneCountrySelected?: boolean;
 }
 
 export const CategorySelector = React.memo(
@@ -51,9 +46,6 @@ export const CategorySelector = React.memo(
         placeholder = "",
         disabled = false,
         label = "",
-        disabledCategories,
-        categoriesNotShowSubcategories = EMPTY_IDS_ARRAY,
-        moreThanOneCountrySelected = false,
     }: CategorySelectorProps) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -128,10 +120,16 @@ export const CategorySelector = React.memo(
         const isAllCategorySelected = useCallback(
             (categoryId: string) => {
                 const selectedCategoryOption = categoryOptions.find(({ value }) => value === categoryId);
-                return selectedCategoryOption?.subcategories.every(
-                    subcategory =>
+                return (
+                    (!!selectedCategoryOption?.subcategories.length &&
+                        selectedCategoryOption?.subcategories.every(
+                            subcategory =>
+                                !!selectedCategoriesWithSubcategories &&
+                                selectedCategoriesWithSubcategories[categoryId]?.includes(subcategory.value)
+                        )) ||
+                    (!selectedCategoryOption?.subcategories.length &&
                         !!selectedCategoriesWithSubcategories &&
-                        selectedCategoriesWithSubcategories[categoryId]?.includes(subcategory.value)
+                        !!selectedCategoriesWithSubcategories[categoryId])
                 );
             },
             [categoryOptions, selectedCategoriesWithSubcategories]
@@ -170,7 +168,7 @@ export const CategorySelector = React.memo(
             return categoryOptions
                 .map(category => ({
                     ...category,
-                    subcategories: CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category.value)
+                    subcategories: CATEGORIES_WITHOUT_SUBCATEGORIES.includes(category.value)
                         ? category.subcategories
                         : category.subcategories.filter(subcategory =>
                               subcategory.text.toLowerCase().includes(searchTerm.toLowerCase())
@@ -178,7 +176,7 @@ export const CategorySelector = React.memo(
                 }))
                 .filter(
                     ({ value, text, subcategories }) =>
-                        (subcategories.length && !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(value)) ||
+                        (subcategories.length && !CATEGORIES_WITHOUT_SUBCATEGORIES.includes(value)) ||
                         text.toLowerCase().includes(searchTerm.toLowerCase())
                 );
         }, [categoryOptions, searchTerm]);
@@ -189,45 +187,34 @@ export const CategorySelector = React.memo(
 
         const handleSelectAll = useCallback(() => {
             const categoriesToSelect = filteredCategories.reduce((accCategoriesToSelect, category) => {
-                if (!disabledCategories.includes(category.value)) {
-                    return {
-                        ...accCategoriesToSelect,
-                        [category.value]: category.subcategories.map(({ value }) => value),
-                    };
-                }
-                return accCategoriesToSelect;
+                return {
+                    ...accCategoriesToSelect,
+                    [category.value]: category.subcategories.map(({ value }) => value),
+                };
             }, {});
 
-            !isEmpty(categoriesToSelect) && onSelect && onSelect(categoriesToSelect);
-        }, [disabledCategories, filteredCategories, onSelect]);
+            if (!isEmpty(filteredCategories) && onSelect) {
+                onSelect(categoriesToSelect);
+            }
+        }, [filteredCategories, onSelect]);
 
         const disableSelectAll = useMemo(() => {
-            const categoriesToBeSelected = filteredCategories.filter(
-                ({ value }) =>
-                    !disabledCategories.includes(value) &&
-                    ((!!selectedCategoriesWithSubcategories &&
-                        !Object.keys(selectedCategoriesWithSubcategories).includes(value)) ||
-                        isEmpty(selectedCategoriesWithSubcategories))
-            );
+            const categoriesToBeSelected = filteredCategories.filter(category => {
+                const categoryNotSelected =
+                    !!selectedCategoriesWithSubcategories &&
+                    !Object.keys(selectedCategoriesWithSubcategories).includes(category.value);
 
-            const normalCategories = filteredCategories.filter(
-                category =>
-                    !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category.value) &&
-                    !disabledCategories.includes(category.value)
-            );
+                const allSubcategoriesNotSelected =
+                    !!selectedCategoriesWithSubcategories &&
+                    selectedCategoriesWithSubcategories[category.value]?.length !== category.subcategories.length;
 
-            const specialCategories = filteredCategories.filter(
-                category =>
-                    CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category.value) &&
-                    !disabledCategories.includes(category.value)
-            );
+                return (
+                    isEmpty(selectedCategoriesWithSubcategories) || categoryNotSelected || allSubcategoriesNotSelected
+                );
+            });
 
-            const bothTypesOfCategoriesCanbeSelected = normalCategories.length && specialCategories.length;
-            return (
-                (moreThanOneCountrySelected && !!bothTypesOfCategoriesCanbeSelected) ||
-                categoriesToBeSelected.length === 0
-            );
-        }, [disabledCategories, filteredCategories, moreThanOneCountrySelected, selectedCategoriesWithSubcategories]);
+            return categoriesToBeSelected.length === 0;
+        }, [filteredCategories, selectedCategoriesWithSubcategories]);
 
         return (
             <Container $fullWidth={fullWidth}>
@@ -326,21 +313,17 @@ export const CategorySelector = React.memo(
                                     onSelectedChange={(nodeId: string, selected: boolean) =>
                                         handleSelectedAllSubcategories(nodeId, selected, category.subcategories)
                                     }
-                                    disabled={disabledCategories.includes(category.value)}
                                 >
-                                    {categoriesNotShowSubcategories.includes(category.value)
-                                        ? null
-                                        : category.subcategories.map(({ value, text }) => (
-                                              <Leaf
-                                                  key={value}
-                                                  nodeId={value}
-                                                  parentId={category.value}
-                                                  name={text}
-                                                  selected={isSubcategorySelected(category.value, value)}
-                                                  onSelectedChange={handleSubcategoriesChange}
-                                                  disabled={disabledCategories.includes(category.value)}
-                                              />
-                                          ))}
+                                    {category.subcategories.map(({ value, text }) => (
+                                        <Leaf
+                                            key={value}
+                                            nodeId={value}
+                                            parentId={category.value}
+                                            name={text}
+                                            selected={isSubcategorySelected(category.value, value)}
+                                            onSelectedChange={handleSubcategoriesChange}
+                                        />
+                                    ))}
                                 </Node>
                             ))}
                         </TreeView>

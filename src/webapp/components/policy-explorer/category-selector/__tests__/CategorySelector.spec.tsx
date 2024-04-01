@@ -154,7 +154,6 @@ describe("Given CategorySelector component", () => {
                 expect(selectAllButton).toBeInTheDocument();
             });
         });
-        describe("When a category is disabled", () => {});
     });
 });
 
@@ -223,7 +222,6 @@ function CategorySelectorContainer() {
             onSelect={handleSelectedChange}
             label="Category"
             placeholder="Select category"
-            disabledCategories={[]}
         />
     );
 }

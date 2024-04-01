@@ -1,6 +1,5 @@
 import { Instance } from "./data/entities/Instance";
 import { CountryD2Repository } from "./data/repositories/CountryD2Repository";
-import { DataSetD2Repository } from "./data/repositories/DataSetD2Repository";
 import { InstanceDefaultRepository } from "./data/repositories/InstanceDefaultRepository";
 import { ResourceD2Repository } from "./data/repositories/resources/ResourceD2Repository";
 import { PolicyExplorerCategoryD2Repository } from "./data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
@@ -16,7 +15,6 @@ import { GetVisualizationsUseCase } from "./domain/usecases/indicator-explorer/G
 import { DownloadPolicyExplorerUseCase } from "./domain/usecases/policy-explorer/DownloadPolicyExplorerUseCase";
 import { GetPolicyExplorerCategoriesUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerCategoriesUseCase";
 import { GetPolicyExplorerUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerUseCase";
-import { GetPolicyExplorerYearsUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerYearsUseCase";
 import { D2Api } from "./types/d2-api";
 import { GetResourceCategoriesUseCase } from "./domain/usecases/resources/GetResourceCategoriesUseCase";
 import { ResourceCategoryD2Repository } from "./data/repositories/resources/ResourceCategoryD2Repository";
@@ -43,7 +41,6 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         instance: new InstanceDefaultRepository(instance),
         users: new UserD2Repository(api),
         country: new CountryD2Repository(api),
-        dataSet: new DataSetD2Repository(api),
         policyExplorerCategory: new PolicyExplorerCategoryD2Repository(api),
         policyExplorer: new PolicyExplorerD2Repository(api),
         visualization: new VisualizationD2Repository(api),
@@ -79,7 +76,6 @@ export function getCompositionRoot(
             get: new GetCountriesUseCase(repositories.country),
         },
         policyExplorer: {
-            getYears: new GetPolicyExplorerYearsUseCase(repositories.dataSet),
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
             getSelectCategoryInfo: new GetPolicyExplorerSelectCategoryInfoUseCase(repositories.policyExplorerCategory),
             get: new GetPolicyExplorerUseCase(repositories.policyExplorer, repositories.country),

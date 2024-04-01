@@ -1,5 +1,5 @@
 export const countryPalette = [
-    "#FF6262",
+    "#C00000",
     "#164FA8",
     "#0E78D9",
     "#6ABEED",
