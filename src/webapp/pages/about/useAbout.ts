@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import _ from "lodash";
 import { PersonState, ResourcesState } from "./AboutState";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { useAppContext } from "../../contexts/app-context";
 import { Country } from "../../../domain/entities/Country";
 import { Person } from "../../../domain/entities/Person";
-import _ from "lodash";
+import { OfficeInfo } from "../../../domain/entities/about/OfficeInfo";
 
 export function useAbout(): ResourcesState {
     const { compositionRoot, countries } = useAppContext();
@@ -13,6 +14,7 @@ export function useAbout(): ResourcesState {
     const [officeTeam, setOfficeTeam] = useState<PersonState[]>([]);
 
     const [experts, setExperts] = useState<PersonState[]>([]);
+    const [officeInfo, setOfficeInfo] = useState<OfficeInfo | undefined>(undefined);
     const [filteredExperts, setFilteredExperts] = useState<PersonState[]>([]);
 
     useEffect(() => {
@@ -41,11 +43,21 @@ export function useAbout(): ResourcesState {
         );
     }, [compositionRoot.about.getPersons, countries]);
 
+    useEffect(() => {
+        compositionRoot.about.getOfficeInfo.execute().run(
+            info => {
+                setOfficeInfo(info);
+            },
+            () => setOfficeInfo(undefined)
+        );
+    }, [compositionRoot.about.getOfficeInfo]);
+
     const onFilterChange = useCallback(() => {
         setFilteredExperts(filterExperts(experts, countryFilter.selected));
     }, [countryFilter.selected, experts]);
 
     return {
+        officeInfo,
         team: officeTeam,
         experts: filteredExperts,
         countryFilter,
