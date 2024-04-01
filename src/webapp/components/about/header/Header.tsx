@@ -4,7 +4,6 @@ import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 
 import i18n from "../../../../locales";
-import WhoBarcelona from "../../../assets/about-pic-video.png";
 import { OfficeInfo } from "../../../../domain/entities/about/OfficeInfo";
 
 export const Header: React.FC<{ officeInfo: OfficeInfo | undefined }> = React.memo(({ officeInfo }) => {
@@ -17,7 +16,7 @@ export const Header: React.FC<{ officeInfo: OfficeInfo | undefined }> = React.me
                         style={{ paddingBlockStart: "16px" }}
                         width="100%"
                         alt="WHO Barcelona Office"
-                        src={WhoBarcelona}
+                        src={officeInfo.officeImage}
                     />
                 </a>
                 <Caption role="caption">{i18n.t("WHO Barcelona Office for Health Systems Financing")}</Caption>

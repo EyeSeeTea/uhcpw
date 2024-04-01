@@ -241,6 +241,7 @@ function givenOfficeInfo(): OfficeInfo {
         officeText:
             "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). It works with Member States across WHO’s European Region to promote evidence-informed policy making and offers WHO training courses on health financing. The Office assesses country and regional progress towards UHC by monitoring financial protection – affordable access to health care. It also supports countries to strengthen financial protection through tailored technical assistance, including analysis of country-specific policy options, high-level policy dialogue and the sharing of international experience. Established in 1999, the Office is supported by the Government of the Autonomous Community of Catalonia, Spain. It is part of the Division of Country Health Policies and Systems of the WHO Regional Office for Europe.",
         officeVideo: "https://www.youtube.com/watch?v=k8OQYkjgERk&t=4s",
+        officeImage: "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
     };
 
     when(mockedRepository.getOfficeInfo()).thenReturn(Future.success(officeInfo));

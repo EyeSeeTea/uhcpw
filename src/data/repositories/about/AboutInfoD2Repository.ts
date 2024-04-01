@@ -10,6 +10,7 @@ const aboutInfoProgram = "ai5rB7mcqHH";
 const officeInfoDataElements: Record<string, Id> = {
     officeText: "DxSdmDJ2zZW",
     officeVideo: "m9RpeQUFCP1",
+    officeImage: "fIrafA0Qbh3",
 };
 
 export class AboutInfoD2Repository implements AboutInfoRepository {
@@ -36,6 +37,7 @@ export class AboutInfoD2Repository implements AboutInfoRepository {
                 event?.dataValues?.find(dv => dv.dataElement === officeInfoDataElements.officeText)?.value || "",
             officeVideo:
                 event?.dataValues?.find(dv => dv.dataElement === officeInfoDataElements.officeVideo)?.value || "",
+            officeImage: `${this.api.baseUrl}/api/events/files?dataElementUid=${officeInfoDataElements.officeImage}&eventUid=${event?.event}`,
         };
     }
 }
