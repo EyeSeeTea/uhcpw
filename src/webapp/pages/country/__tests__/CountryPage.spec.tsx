@@ -1,6 +1,7 @@
 import "@testing-library/jest-dom";
 import { screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
+import moment from "moment";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { CountryPage } from "../CountryPage";
@@ -14,12 +15,18 @@ import {
 } from "../../resources/common/__tests__/helpers";
 import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { PersonState } from "../../about/AboutState";
+import { CountryPageInfoD2Repository } from "../../../../data/repositories/country-page/CountryPageInfoD2Repository";
+import { SliderInfo } from "../../../../domain/entities/country-page/SliderInfo";
 
 let personRepository: PersonD2Repository;
+let resourceRepository: ResourceD2Repository;
+let countryPageInfoRepository: CountryPageInfoD2Repository;
 
 describe("Country Page", () => {
     it("should render Navbar", () => {
         givenAPersons();
+        givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -33,6 +40,8 @@ describe("Country Page", () => {
     });
     it("should render Hero", () => {
         givenAPersons();
+        givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -41,6 +50,8 @@ describe("Country Page", () => {
 
     it("should render slider", () => {
         givenAPersons();
+        givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -53,8 +64,10 @@ describe("Country Page", () => {
         ).toBeInTheDocument();
     });
 
-    it("should render country resources", () => {
+    it("should render country resources", async () => {
         givenAPersons();
+        givenSliderTitles();
+        const resources = givenAResources();
 
         renderPage();
 
@@ -62,12 +75,12 @@ describe("Country Page", () => {
 
         expect(scope.getByRole("heading", { name: /country resources/i })).toBeInTheDocument();
 
-        const resources = givenAResources();
-
-        verifyResourceItems(resources);
+        await verifyResourceItems(resources);
     });
-    it("should render country expert", () => {
+    it("should render country expert", async () => {
         const { experts } = givenAPersons();
+        givenSliderTitles();
+        givenAResources();
 
         renderPage();
 
@@ -75,16 +88,18 @@ describe("Country Page", () => {
 
         expect(scope.getByRole("heading", { name: /country expert/i })).toBeInTheDocument();
 
-        verifyExpertMembers(experts);
+        await verifyExpertMembers(experts);
     });
 });
 
 function renderPage() {
     customRenderWithRouterMatch(
         <CountryPage />,
-        { path: "/country-page", route: `/country-page?country=VGOzFKfSazN` },
+        { path: "/country-page", route: `/country-page?country=DVnpk4xiXGJ` },
         {
             person: personRepository,
+            resource: resourceRepository,
+            countryPageInfo: countryPageInfoRepository,
         }
     );
 }
@@ -107,8 +122,7 @@ async function verifyExpertMembers(experts: PersonState[]) {
         const image = itemScope.getByAltText(`${expert.firstName} ${expert.lastName}`) as HTMLImageElement;
         expect(image.src).toContain(expert.image);
 
-        itemScope.getByText(expert.firstName);
-        itemScope.getByText(expert.lastName);
+        itemScope.getByText(`${expert.firstName} ${expert.lastName}`);
         itemScope.getByText(expert.position);
         itemScope.getByText(expert.institution || "");
         itemScope.getByText(expert.countryName || "");
@@ -137,7 +151,11 @@ async function verifyResourceItems(resources: any[]) {
             expect(link).toHaveAttribute("href", resource.url);
         });
 
-        itemScope.getByText(resource.date.getFullYear());
+        if (resource.kind === "news") {
+            itemScope.getByText(moment(resource.date).format("DD MMMM YYYY"));
+        } else {
+            itemScope.getByText(resource.date.getFullYear());
+        }
     });
 }
 
@@ -160,7 +178,7 @@ function givenAPersons(): {
             position: "Position ABC",
             countryId: "DVnpk4xiXGJ",
             institution: "institution",
-            countryName: "Bulgaria",
+            countryName: "Spain",
         },
     ];
 
@@ -183,5 +201,30 @@ function givenAResources(): (ComparativeAnalysis | CountryAnalysis | News | Mult
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
 
+    resourceRepository = instance(mockedRepository);
     return data;
+}
+
+function givenSliderTitles(): SliderInfo {
+    const mockedRepository = mock(CountryPageInfoD2Repository);
+
+    const sliderInfo: SliderInfo = {
+        sliderOne: "How many people experience financial hardship: impoverishing health spending?",
+        sliderTwo: "Catastrophic health spending. How many people experience financial hardship?",
+        sliderThree: "Who experiences financial hardship?",
+        sliderFour: "Which health services are responsible for financial hardship?",
+        sliderFive: "Which health services are responsible for financial hardship? International comparison",
+        sliderSix: "How many people experience unmet need?",
+        sliderSeven: "Who experiences unmet need?",
+        sliderEight: "How much does Spain spend on health?",
+        sliderNine: "How much does Spain spend on health? International comparison",
+        sliderTen: "What are the main gaps in publicly financed coverage?",
+        sliderEleven: "How can Spain strengthen financial protection?",
+    };
+
+    when(mockedRepository.getSliderInfo("Spain")).thenReturn(Future.success(sliderInfo));
+
+    countryPageInfoRepository = instance(mockedRepository);
+
+    return sliderInfo;
 }
