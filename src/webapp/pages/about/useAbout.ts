@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import _ from "lodash";
 import { PersonState, ResourcesState } from "./AboutState";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { useAppContext } from "../../contexts/app-context";
@@ -32,7 +33,11 @@ export function useAbout(): ResourcesState {
     useEffect(() => {
         compositionRoot.about.getPersons.execute(false).run(
             persons => {
-                setExperts(persons.map(person => mapPersonToExpertState(person, countries)));
+                const experts = persons.map(person => mapPersonToExpertState(person, countries));
+
+                const orderedExperts = _(experts).orderBy(["countryName", "firstName"], ["asc", "asc"]).value();
+
+                setExperts(orderedExperts);
             },
             () => setExperts([])
         );

@@ -54,6 +54,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     onShowInfo={onShowInfo}
                     onCloseInfo={onCloseInfo}
                     useHeaderForCountryPage={useHeaderForCountryPage}
+                    currentCountry={currentCountry}
+                    countries={chartData.countries}
+                    showCountryTag={chartData.visualization.showCountryTag}
                 />
                 <ChartPlugin
                     analytics={[chartData.analytics]}

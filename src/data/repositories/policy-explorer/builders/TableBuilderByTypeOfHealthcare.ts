@@ -4,80 +4,80 @@ import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/e
 import { COUNTRY_HEADER_NAME, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
 
-const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
+export const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
     "User charges apply": [
         "giUCPiCe745",
         "SWX96A7gnpA",
         "WTtArv6Xvsy",
         "gMAYqfQ5xAD",
-        "NJ8zBQdwnd2",
         "VroSbngmebX",
         "OjTsewAuevP",
         "rZlHlitEiFp",
         "RtLyOZpUtqO",
         "TaS7d80ciTe",
+        "NJ8zBQdwnd2",
     ],
     "Type of user charge": [
         "mTB12rvpJWd",
         "wDQRlBezRAs",
         "ibq7wtqnsns",
         "EruJIoPKO1s",
-        "KfHkuuRZdBh",
         "CpMWBaXJ91P",
         "L2sCkhEbSfM",
         "PUXn0hz2JFX",
         "Py0PrMRPlUj",
         "L6ly0Y1uCe2",
+        "KfHkuuRZdBh",
     ],
     "Reduced user charges": [
         "b29bW9mc9C7",
         "ZkElvtoVJSd",
         "n8jFYyMKDaV",
         "KBW3D8lOlpg",
-        "lj174orsYYW",
         "P7qWfL7oluy",
         "NkHvpG471tm",
         "lXBWfAv1EJE",
         "Bwx3a0w5orN",
         "syr5O2Mj2vL",
+        "lj174orsYYW",
     ],
     "Exemptions from user charges": [
         "tu36CFgEoh8",
         "zsiuJlUSvAW",
         "SiNpgO1L5bG",
         "a67cjmP423S",
-        "eRfuZtUFbPK",
         "yhSc51DOubT",
         "Cm6ngZTrVQR",
         "M228fF4qKsx",
         "KQVn9LNZPlq",
         "Urb1llvnJV4",
+        "eRfuZtUFbPK",
     ],
     "Cap on user charges": [
         "mSgmJhjn4Bi",
         "o6d3FfwRVj7",
         "sASANfdEGUR",
         "sk9g2PsK7vD",
-        "Ut93noOXsdK",
         "olgegohqR8l",
         "JLSGrrzqrW9",
         "wZ9JynvumSQ",
         "SINKYu3EMgX",
         "Ai7ziQeOU53",
+        "Ut93noOXsdK",
     ],
 };
 
 const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
-    "Primary care": ["giUCPiCe745", "mTB12rvpJWd", "b29bW9mc9C7", "tu36CFgEoh8", "mSgmJhjn4Bi"],
-    "Specialist visits": ["SWX96A7gnpA", "wDQRlBezRAs", "ZkElvtoVJSd", "zsiuJlUSvAW", "o6d3FfwRVj7"],
-    "Emergency visits": ["WTtArv6Xvsy", "ibq7wtqnsns", "n8jFYyMKDaV", "SiNpgO1L5bG", "sASANfdEGUR"],
-    "Outpatient medicines": ["gMAYqfQ5xAD", "EruJIoPKO1s", "KBW3D8lOlpg", "a67cjmP423S", "sk9g2PsK7vD"],
-    "Inpatient medicines": ["NJ8zBQdwnd2", "KfHkuuRZdBh", "lj174orsYYW", "eRfuZtUFbPK", "Ut93noOXsdK"],
+    "Primary care visits": ["giUCPiCe745", "mTB12rvpJWd", "b29bW9mc9C7", "tu36CFgEoh8", "mSgmJhjn4Bi"],
+    "Outpatient specialist visits": ["SWX96A7gnpA", "wDQRlBezRAs", "ZkElvtoVJSd", "zsiuJlUSvAW", "o6d3FfwRVj7"],
+    "Outpatient emergency visits": ["WTtArv6Xvsy", "ibq7wtqnsns", "n8jFYyMKDaV", "SiNpgO1L5bG", "sASANfdEGUR"],
+    "Outpatient prescribed medicines": ["gMAYqfQ5xAD", "EruJIoPKO1s", "KBW3D8lOlpg", "a67cjmP423S", "sk9g2PsK7vD"],
     "Medical products": ["VroSbngmebX", "CpMWBaXJ91P", "P7qWfL7oluy", "yhSc51DOubT", "olgegohqR8l"],
     "Diagnostics tests": ["OjTsewAuevP", "L2sCkhEbSfM", "NkHvpG471tm", "Cm6ngZTrVQR", "JLSGrrzqrW9"],
-    "Dental visits": ["rZlHlitEiFp", "PUXn0hz2JFX", "lXBWfAv1EJE", "M228fF4qKsx", "wZ9JynvumSQ"],
+    "Dental care visits": ["rZlHlitEiFp", "PUXn0hz2JFX", "lXBWfAv1EJE", "M228fF4qKsx", "wZ9JynvumSQ"],
     "Dental care treatment": ["RtLyOZpUtqO", "Py0PrMRPlUj", "Bwx3a0w5orN", "KQVn9LNZPlq", "SINKYu3EMgX"],
     "Inpatient care": ["TaS7d80ciTe", "L6ly0Y1uCe2", "syr5O2Mj2vL", "Urb1llvnJV4", "Ai7ziQeOU53"],
+    "Inpatient medicines": ["NJ8zBQdwnd2", "KfHkuuRZdBh", "lj174orsYYW", "eRfuZtUFbPK", "Ut93noOXsdK"],
 };
 
 const TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
@@ -156,9 +156,23 @@ const TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
 };
 
 const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
-    "Primary care": ["EboejH0zPz9", "cBXErExkfsP", "uFiUQKJhltM", "xvfbvuNow1z", "BuXscQqeqt3", "AenLLMXSR2j"],
-    "Specialist visits": ["oHXaoGjuNBz", "mXKLWeQblWM", "iho7qMihBEN", "H2f0XhUerVj", "gxOwKGHM5uM", "OVMONRywtGy"],
-    "Emergency visits": ["NnTynkwUOLd", "AumlNzFYLzS", "RnRU6QWQtFO", "y1ZQGX2JSfk", "ZVvNouUFwSj", "U3EM7x9wA7q"],
+    "Primary care visits": ["EboejH0zPz9", "cBXErExkfsP", "uFiUQKJhltM", "xvfbvuNow1z", "BuXscQqeqt3", "AenLLMXSR2j"],
+    "Outpatient specialist visits": [
+        "oHXaoGjuNBz",
+        "mXKLWeQblWM",
+        "iho7qMihBEN",
+        "H2f0XhUerVj",
+        "gxOwKGHM5uM",
+        "OVMONRywtGy",
+    ],
+    "Outpatient emergency visits": [
+        "NnTynkwUOLd",
+        "AumlNzFYLzS",
+        "RnRU6QWQtFO",
+        "y1ZQGX2JSfk",
+        "ZVvNouUFwSj",
+        "U3EM7x9wA7q",
+    ],
     "Outpatient prescribed medicines": [
         "FPWimBd7wCe",
         "c6VoqBpnpxd",
@@ -169,7 +183,7 @@ const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = 
     ],
     "Medical products": ["SgGPLj9ftfg", "AA6Ye2mqJHR", "xmaBfCQrnvo", "SAdCPb1pzvB", "rRtvOQKWekP", "ZhPZvGqaolU"],
     "Diagnostics tests": ["KGrh7f4UdO2", "jgb82HFCuoF", "z21e4xo33Gq", "yACvBd3ApA0", "bC0ASJpuYnX", "cMmiVU55Byh"],
-    "Dental visits": ["zZ0IhJeGF3G", "G68kPZZ43zG", "MDvxRjDZvDj", "U9QK3B63xKo", "VplpY1Yy1lR", "McgI8vrnFw6"],
+    "Dental care visits": ["zZ0IhJeGF3G", "G68kPZZ43zG", "MDvxRjDZvDj", "U9QK3B63xKo", "VplpY1Yy1lR", "McgI8vrnFw6"],
     "Dental care treatment": ["sAxdNOgcV3H", "rajdlRWxCX4", "eUtTI5WTx9F", "r0iKZc6gEdK", "GaGhir32y1U", "DNTGpXo6buK"],
     "Inpatient care": ["UfpRQ2Ijiyb", "WdF9ezTBVNb", "BnI3YDe3flm", "ccDqDzq4b0x", "u1Eguha8n2H", "UUi5TUqljop"],
     "Inpatient medicines": ["KR7sMncAKlz", "q5cIxEo3MPq", "ZqAbKQHqhLR", "Dgg4Jc9U7Jn", "SUBFUbBNE8g", "IpwrxmI5FU7"],
@@ -178,11 +192,8 @@ const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = 
 export const TYPE_OF_HEALTH_CARE_HEADER_NAME = "Type of health care";
 
 export class TableBuilderByTypeOfHealthcare implements TableBuilder {
-    buildColumns(params: {
-        policyExplorerCategoryId: string;
-        policyExplorerSubcategoriesIds: string[];
-    }): PolicyExplorerCell[] {
-        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds } = params;
+    buildColumns(params: { policyExplorerCategoryId: string }): PolicyExplorerCell[] {
+        const { policyExplorerCategoryId } = params;
         const columnsDataElementSectionIds =
             policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES
                 ? USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS
@@ -194,14 +205,10 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
             { type: PolicyExplorerCellType.HEADER, value: TYPE_OF_HEALTH_CARE_HEADER_NAME },
         ];
 
-        const restColumns = Object.entries(columnsDataElementSectionIds)
-            .filter(([_columnName, dataElementIds]) => {
-                return policyExplorerSubcategoriesIds.some(subcategoryId => dataElementIds.includes(subcategoryId));
-            })
-            .map(([columnName, _dataElementIds]) => ({
-                type: PolicyExplorerCellType.HEADER,
-                value: columnName,
-            }));
+        const restColumns = Object.entries(columnsDataElementSectionIds).map(([columnName, _dataElementIds]) => ({
+            type: PolicyExplorerCellType.HEADER,
+            value: columnName,
+        }));
 
         return [...commonColumns, ...restColumns];
     }
@@ -209,21 +216,13 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
         policyExplorerCategoryId: string;
-        policyExplorerSubcategoriesIds: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
         references: string;
     }) {
-        const {
-            policyExplorerCategoryId,
-            policyExplorerSubcategoriesIds,
-            dataValuesByGroup,
-            orgUnitName,
-            period,
-            references,
-            currentRowsInTable,
-        } = params;
+        const { policyExplorerCategoryId, dataValuesByGroup, orgUnitName, period, references, currentRowsInTable } =
+            params;
 
         const idsByTypeOfHealthcare =
             policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES
@@ -235,22 +234,10 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
                 ? USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS
                 : TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS;
 
-        const idsByTypeOfHealthcareByPolicyExplorerSubcategoriesIdsSelected =
-            this.filterGroupedDataElementIdsByPolicyExplorerSubcategoriesIds(
-                idsByTypeOfHealthcare,
-                policyExplorerSubcategoriesIds
-            );
-
-        const idsByColumnByPolicyExplorerSubcategoriesIdsSelected =
-            this.filterGroupedDataElementIdsByPolicyExplorerSubcategoriesIds(
-                idsByColumn,
-                policyExplorerSubcategoriesIds
-            );
-
-        const rows = Object.entries(idsByTypeOfHealthcareByPolicyExplorerSubcategoriesIdsSelected).reduce(
+        const rows = Object.entries(idsByTypeOfHealthcare).reduce(
             (accRows: PolicyExplorerCell[][], [healthcareType, dataElementsSectionIdsInType], index) => {
                 const initCellsInRow: PolicyExplorerCell[] =
-                    index === 0
+                    index === 0 || accRows.length === 0
                         ? [
                               { type: PolicyExplorerCellType.DATA, value: orgUnitName },
                               { type: PolicyExplorerCellType.DATA, value: period || EMPTY_DATA },
@@ -262,20 +249,18 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
                               { type: PolicyExplorerCellType.HEADER, value: healthcareType },
                           ];
 
-                const restCellsInRow = Object.values(idsByColumnByPolicyExplorerSubcategoriesIdsSelected).map(
-                    dataElementsSectionIdsInColumn => {
-                        const dataElementsSectionId = dataElementsSectionIdsInColumn.find(item =>
-                            dataElementsSectionIdsInType.includes(item)
-                        );
+                const restCellsInRow = Object.values(idsByColumn).map(dataElementsSectionIdsInColumn => {
+                    const dataElementsSectionId = dataElementsSectionIdsInColumn.find(item =>
+                        dataElementsSectionIdsInType.includes(item)
+                    );
 
-                        const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementsSectionId);
-                        return {
-                            type: PolicyExplorerCellType.DATA,
-                            value: dataValue?.value || EMPTY_DATA,
-                            references,
-                        };
-                    }
-                );
+                    const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementsSectionId);
+                    return {
+                        type: PolicyExplorerCellType.DATA,
+                        value: dataValue?.value || EMPTY_DATA,
+                        references,
+                    };
+                });
 
                 const row = [...initCellsInRow, ...restCellsInRow];
 
@@ -286,23 +271,5 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
         );
 
         return [...currentRowsInTable, ...rows];
-    }
-
-    private filterGroupedDataElementIdsByPolicyExplorerSubcategoriesIds(
-        groupedDataElementIds: Record<string, string[]>,
-        policyExplorerSubcategoriesIds: string[]
-    ) {
-        const filteredData: Record<string, string[]> = {};
-
-        for (const key in groupedDataElementIds) {
-            const filteredArray = groupedDataElementIds[key]?.filter((item: string) =>
-                policyExplorerSubcategoriesIds.includes(item)
-            );
-            if (filteredArray?.length) {
-                filteredData[key] = filteredArray;
-            }
-        }
-
-        return filteredData;
     }
 }

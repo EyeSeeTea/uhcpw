@@ -48,7 +48,7 @@ const countries: CountryOption[] = [
  *
  */
 
-describe("CountrySelector", () => {
+describe("Given CountrySelector", () => {
     describe("to load", () => {
         it("should not show the options", async () => {
             renderComponent();
@@ -142,13 +142,100 @@ describe("CountrySelector", () => {
             await verifyTotalExpandedGroups(2);
         });
     });
+    describe("When has select all and clear all options", () => {
+        beforeEach(async () => {
+            renderComponent(true, true);
+            focusComponent();
+            await screen.findByRole("listbox");
+            screen.getByText(/select country/i);
+        });
+        it("Then should show a checkbox in all parent nodes", async () => {
+            const allCountriesCheckbox = screen.getByRole("checkbox", {
+                name: /select all all countries/i,
+            });
+            const europeCheckbox = screen.getByRole("checkbox", {
+                name: /select all europe/i,
+            });
+            const asiaCheckbox = screen.getByRole("checkbox", {
+                name: /select all asia/i,
+            });
+            expect(allCountriesCheckbox).toBeInTheDocument();
+            expect(europeCheckbox).toBeInTheDocument();
+            expect(asiaCheckbox).toBeInTheDocument();
+        });
+        it("Then should select all countries from a parent when its checkbox it's clicked", async () => {
+            await selectAllCountries();
+            userEvent.keyboard("{Escape}");
+
+            await verifyChip(getChild(0));
+            await verifyChip(getChild(1));
+            await verifyChip(getChild(2));
+        });
+        it("Then should show clear all button when there are something selected", async () => {
+            await selectAllCountries();
+            userEvent.keyboard("{Escape}");
+
+            const clearButtons = screen.getAllByText(/clear all/i);
+            expect(clearButtons[0]).toBeInTheDocument();
+        });
+        it("Then should clear all when click on clear all button", async () => {
+            await selectAllCountries();
+            userEvent.keyboard("{Escape}");
+            await clickOnClearAll();
+
+            await verifyNotFoundChip(getChild(0));
+            await verifyNotFoundChip(getChild(1));
+            await verifyNotFoundChip(getChild(2));
+        });
+    });
 });
 
-function renderComponent() {
-    customRender(<CountrySelectorContainer />);
+async function selectAllCountries() {
+    const allCountriesCheckbox = screen.getByRole("checkbox", {
+        name: /select all all countries/i,
+    });
+
+    return userEvent.click(allCountriesCheckbox);
 }
 
-function CountrySelectorContainer() {
+async function clickOnClearAll() {
+    const clearButtons = screen.getAllByText(/clear all/i);
+    if (clearButtons[0]) return userEvent.click(clearButtons[0]);
+}
+
+function expandCountriesParentNode(index: 0 | 1 | 2) {
+    const arrowIcons = screen.getAllByLabelText("expand-icon");
+    if (!arrowIcons.length) {
+        collapseCountriesParentNode(index);
+    }
+    if (arrowIcons[index]) {
+        userEvent.click(arrowIcons[index] as HTMLElement);
+    }
+}
+
+function collapseCountriesParentNode(index: 0 | 1 | 2) {
+    const arrowIcons = screen.getAllByLabelText("collapse-icon");
+    if (!arrowIcons.length) {
+        expandCountriesParentNode(index);
+    }
+    if (arrowIcons[index]) {
+        userEvent.click(arrowIcons[index] as HTMLElement);
+    }
+}
+
+function renderComponent(hasSelectAll?: boolean, hasClearAll?: boolean) {
+    customRender(<CountrySelectorContainer hasSelectAll={hasSelectAll} hasClearAll={hasClearAll} />);
+}
+
+interface CountrySelectorContainerProps {
+    hasSelectAll?: boolean;
+    hasClearAll?: boolean;
+}
+
+const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
+    hasSelectAll = false,
+    hasClearAll = false,
+}) => {
     const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
     const handleSelectedChange = useCallback((ids: string[]) => {
@@ -156,9 +243,15 @@ function CountrySelectorContainer() {
     }, []);
 
     return (
-        <CountrySelector countries={countries} selectedIds={selectedIds} onSelectedIdsChange={handleSelectedChange} />
+        <CountrySelector
+            countries={countries}
+            selectedIds={selectedIds}
+            onSelectedIdsChange={handleSelectedChange}
+            hasSelectAll={hasSelectAll}
+            hasClearAll={hasClearAll}
+        />
     );
-}
+};
 
 function focusComponent() {
     const autocompleteInput = screen.getByRole("textbox", {
@@ -207,6 +300,14 @@ async function verifyChip(name: string) {
     });
 
     expect(chip).toBeInTheDocument();
+}
+
+async function verifyNotFoundChip(name: string) {
+    const chip = await screen.queryByRole("button", {
+        name: name,
+    });
+
+    expect(chip).toBeNull();
 }
 
 async function verifyTotalExpandedGroups(total: number) {

@@ -27,33 +27,53 @@ function TabPanel(props: { [x: string]: any; children: any; value: any; index: a
 }
 
 const useStyles = makeStyles(theme => ({
+    gridItem: {
+        marginBlock: "4px",
+        backgroundColor: colors.white,
+        borderInlineEnd: `6px solid ${colors.accentPrimary}`,
+        width: "30px",
+        flexBasis: "unset",
+        paddingBlockStart: "70px",
+        [theme.breakpoints.up("md")]: {
+            backgroundColor: colors.accentPrimary,
+            borderInlineEnd: "none",
+            marginBlock: "4px",
+            flexBasis: "content",
+        },
+    },
     tabs: {
         maxWidth: "30px",
         minWidth: "30px",
-        paddingBlock: "24px",
         "& .MuiTabs-flexContainer": {
             height: "100%",
         },
+        backgroundColor: colors.white,
+        borderBlockEnd: `4px solid ${colors.white}`,
         [theme.breakpoints.up("md")]: {
+            backgroundColor: colors.accentPrimary,
             width: "100%",
             maxWidth: "unset",
             paddingInlineStart: "0px",
             "& .MuiTabs-indicator": {
                 display: "none",
             },
+            borderBlockEnd: "none",
             paddingBlock: "70px",
         },
     },
     tab: {
         opacity: 1,
-        borderRight: `10px solid ${colors.accentPrimary}`,
-        marginBottom: "4px",
+        borderInlineEnd: `150px solid ${colors.accentPrimary}`,
+        borderBlockStart: `4px solid ${colors.white}`,
         maxWidth: "30px",
         minWidth: "30px",
         textTransform: "none",
         color: `${colors.white}`,
         "& span": {
             display: "none",
+        },
+        "&:first-child": {
+            borderBlockStart: `4px solid ${colors.white}`,
         },
         [theme.breakpoints.up("md")]: {
             width: "100%",
@@ -70,6 +90,18 @@ const useStyles = makeStyles(theme => ({
             '&[aria-selected="true"]': {
                 backgroundColor: `${colors.accentPrimaryDark}`,
             },
+            "&:last-child": {
+                borderBlockEnd: `4px solid ${colors.white}`,
+            },
+        },
+    },
+    indicator: {
+        backgroundColor: colors.accentPrimaryDark,
+        width: "10px",
+        borderBlock: `4px solid ${colors.white}`,
+        [theme.breakpoints.up("md")]: {
+            backgroundColor: colors.accentPrimaryDark,
+            width: "10px",
         },
     },
 }));
@@ -90,18 +122,19 @@ export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
 
     return (
         <Grid container aria-label="country-page-slider">
-            <Grid item md={5} lg={4} xs={1}>
+            <Grid item md={5} lg={4} xs={1} className={classes.gridItem}>
                 <Tabs
                     orientation="vertical"
                     value={tabValue}
                     onChange={handleTabChange}
                     className={classes.tabs}
-                    TabIndicatorProps={{
-                        style: {
-                            backgroundColor: colors.accentPrimaryDark,
-                            width: "10px",
-                        },
-                    }}
+                    classes={{ indicator: classes.indicator }}
+                    // TabIndicatorProps={{
+                    //     style: {
+                    //         backgroundColor: colors.accentPrimaryDark,
+                    //         width: "10px",
+                    //     },
+                    // }}
                     onWheel={onWheel}
                     onMouseEnter={disableScroll}
                     onMouseLeave={enableScroll}

@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import styled from "styled-components";
 import { Typography, Checkbox } from "@material-ui/core";
 import { TreeItem } from "@material-ui/lab";
@@ -12,22 +13,36 @@ interface NodeProps {
 }
 
 export const Node: React.FC<NodeProps> = ({ nodeId, name, selected, onSelectedChange, children, disabled = false }) => {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onSelectedChange && onSelectedChange(nodeId, event.target.checked);
-    };
+    const handleCheckboxClick = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onSelectedChange && onSelectedChange(nodeId, event.target.checked);
+        },
+        [nodeId, onSelectedChange]
+    );
+
+    const handleLabelClick = useCallback(
+        (event: React.MouseEvent<Element, MouseEvent>) => {
+            if (!disabled) {
+                event.preventDefault();
+                onSelectedChange && onSelectedChange(nodeId, !selected);
+            }
+        },
+        [nodeId, onSelectedChange, selected, disabled]
+    );
 
     return (
         <StyledTreeItem
             nodeId={nodeId}
+            onLabelClick={handleLabelClick}
             label={
-                <Row onClick={e => e.stopPropagation()}>
+                <Row>
                     {!disabled && (
                         <Checkbox
                             color="primary"
                             style={{ padding: "2px" }}
                             icon={<UnCheckedIcon style={{ fill: "gray" }} />}
                             checked={selected}
-                            onChange={handleChange}
+                            onChange={handleCheckboxClick}
                             inputProps={{ "aria-label": `Select all ${name}` }}
                             disabled={disabled}
                         />

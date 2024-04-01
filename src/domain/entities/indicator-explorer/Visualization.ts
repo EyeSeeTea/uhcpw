@@ -2,12 +2,13 @@ import { Id, Ref } from "../Ref";
 
 export interface VisualizationExtra {
     categoryName: string;
-    friendlyName?: string;
+    friendlyName: string;
     categoryTag?: string;
     info: VisualizationInfo;
     maxCountryFilter?: number;
     minCountryFilter?: number;
     isComparative?: boolean;
+    showCountryTag?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
@@ -79,6 +80,7 @@ export type VisualizationAxes = {
     decimals: number;
     index: number;
     type: string;
+    maxValue: number;
     title: {
         text: string;
     };
