@@ -21,9 +21,15 @@ export type PolicyExplorerGeneralInfo = {
     editors: string;
     lastUpdate: Date;
     source: string;
+    reviewers: string;
 };
 
 export type PolicyExplorerReferences = {
     country: string;
     references: string[];
 };
+
+export type DataOrientation = "inverted" | "normal";
+
+export type DataOrientationByTable = Record<string, DataOrientation>;
+export const latestAvailableYear = "latest";

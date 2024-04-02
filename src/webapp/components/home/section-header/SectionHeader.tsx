@@ -23,7 +23,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     link,
 }) => {
     return (
-        <Header isBackgroundOnRight={isBackgroundOnRight}>
+        <Header isBackgroundOnRight={isBackgroundOnRight} hasSubheader={!!subheader}>
             <Row>
                 {link ? (
                     <Title variant="h3">
@@ -46,8 +46,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     );
 };
 
-const Header = styled.div<{ isBackgroundOnRight?: boolean }>`
-    height: 150px;
+const Header = styled.div<{ isBackgroundOnRight?: boolean; hasSubheader?: boolean }>`
+    height: ${props => (props.hasSubheader ? "150px" : "80px")};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,7 +56,7 @@ const Header = styled.div<{ isBackgroundOnRight?: boolean }>`
     background-image: ${props => props.isBackgroundOnRight !== undefined && `url(${bubblePattern})`};
     background-repeat: no-repeat;
     background-position: ${props => (props.isBackgroundOnRight ? "right" : "-200px")};
-    padding: 40px 0px 0px;
+    padding: ${props => (props.hasSubheader ? "40px" : "55px")} 0px 0px;
 `;
 
 const Title = styled(Typography)`

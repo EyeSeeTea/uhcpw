@@ -5,6 +5,18 @@ import { TableBuilder } from "./TableBuilder";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
 
 export const CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES = {
+    MONTH_OF_CHANGE_IN_COVERAGE_POLICY_PRE2019: [
+        "U4N5xac8pmo",
+        "D78Xa9pSvpm",
+        "WwaBsXSleHu",
+        "sZX7Hpaa9Sh",
+        "xe9vvN9AcBU",
+        "rLIXdgvrk0R",
+        "cWBSBglr7so",
+        "t22ker43Vi7",
+        "WRaZ7YO8JV6",
+        "BrmUF8mdt3c",
+    ],
     AREA_OF_CHANGE_IN_COVERAGE_POLICY_PRE2019: [
         "KDsEXYarBTu",
         "ewpOQ5y97nj",
@@ -16,6 +28,18 @@ export const CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES =
         "WA27bUg63Dh",
         "xGDYpRE0Vvl",
         "uF05inoJDh5",
+    ],
+    POLICY_OF_CHANGE_IN_COVERAGE_POLICY_PRE2019: [
+        "u50ywFZ6gum",
+        "pnUIywtp441",
+        "fVrKY8v7ZRy",
+        "xZjl72SoX34",
+        "RPDIUoT8kU7",
+        "D4F1hKgVhkm",
+        "vWyHWGYlxGx",
+        "os0IgAMStfl",
+        "OE3asNfDFlf",
+        "LzUtOANFszs",
     ],
     HEALTH_SERVICES_TARGETED_IN_CHANGE_IN_COVERAGE_POLICY_PRE2019: [
         "gOtySPsOkmn",
@@ -41,35 +65,35 @@ export const CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES =
         "uPUoqXkGxWx",
         "NG7PK1qyFuN",
     ],
-    POLICY_OF_CHANGE_IN_COVERAGE_POLICY_PRE2019: [
-        "u50ywFZ6gum",
-        "pnUIywtp441",
-        "fVrKY8v7ZRy",
-        "xZjl72SoX34",
-        "RPDIUoT8kU7",
-        "D4F1hKgVhkm",
-        "vWyHWGYlxGx",
-        "os0IgAMStfl",
-        "OE3asNfDFlf",
-        "LzUtOANFszs",
-    ],
 };
 
 // NOTICE: This is because in the same year data could change up to 10 times and table have to show all the data changes
 export const CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS = {
-    FIRST_CHANGE: ["KDsEXYarBTu", "gOtySPsOkmn", "CnlZeapVRTA", "u50ywFZ6gum"],
-    SECOND_CHANGE: ["ewpOQ5y97nj", "ueyZG15lJNe", "Dg9FyroZ53d", "pnUIywtp441"],
-    THIRD_CHANGE: ["hDGqtzIFTAg", "oR85dLJrBWB", "Ak3h87SXFws", "fVrKY8v7ZRy"],
-    FOURTH_CHANGE: ["Ed553tXFkcC", "GMqwcTkBm5u", "OAFiKkIj9AV", "xZjl72SoX34"],
-    FIFTH_CHANGE: ["G90HxQdY44N", "GwYOC7auTo3", "VqZfgxa6KhX", "RPDIUoT8kU7"],
-    SIXTH_CHANGE: ["NYOzeiIIuer", "qOJSgPcqcL2", "jRzKTIos828", "D4F1hKgVhkm"],
-    SEVENTH_CHANGE: ["sbJ5LiyNmKl", "WR7QyEwmqtq", "vmfNUlnK3D3", "vWyHWGYlxGx"],
-    EIGHTH_CHANGE: ["WA27bUg63Dh", "x3jxJF9DqNy", "B12VprnJrCs", "os0IgAMStfl"],
-    NINTH_CHANGE: ["xGDYpRE0Vvl", "YzGXBvmFVYm", "uPUoqXkGxWx", "OE3asNfDFlf"],
-    TENTH_CHANGE: ["uF05inoJDh5", "iP2LBbjXJMD", "NG7PK1qyFuN", "LzUtOANFszs"],
+    FIRST_CHANGE: ["U4N5xac8pmo", "KDsEXYarBTu", "u50ywFZ6gum", "gOtySPsOkmn", "CnlZeapVRTA"],
+    SECOND_CHANGE: ["D78Xa9pSvpm", "ewpOQ5y97nj", "pnUIywtp441", "ueyZG15lJNe", "Dg9FyroZ53d"],
+    THIRD_CHANGE: ["WwaBsXSleHu", "hDGqtzIFTAg", "fVrKY8v7ZRy", "oR85dLJrBWB", "Ak3h87SXFws"],
+    FOURTH_CHANGE: ["sZX7Hpaa9Sh", "Ed553tXFkcC", "xZjl72SoX34", "GMqwcTkBm5u", "OAFiKkIj9AV"],
+    FIFTH_CHANGE: ["xe9vvN9AcBU", "G90HxQdY44N", "RPDIUoT8kU7", "GwYOC7auTo3", "VqZfgxa6KhX"],
+    SIXTH_CHANGE: ["rLIXdgvrk0R", "NYOzeiIIuer", "D4F1hKgVhkm", "qOJSgPcqcL2", "jRzKTIos828"],
+    SEVENTH_CHANGE: ["cWBSBglr7so", "sbJ5LiyNmKl", "vWyHWGYlxGx", "WR7QyEwmqtq", "vmfNUlnK3D3"],
+    EIGHTH_CHANGE: ["t22ker43Vi7", "WA27bUg63Dh", "os0IgAMStfl", "x3jxJF9DqNy", "B12VprnJrCs"],
+    NINTH_CHANGE: ["WRaZ7YO8JV6", "xGDYpRE0Vvl", "OE3asNfDFlf", "YzGXBvmFVYm", "uPUoqXkGxWx"],
+    TENTH_CHANGE: ["BrmUF8mdt3c", "uF05inoJDh5", "LzUtOANFszs", "iP2LBbjXJMD", "NG7PK1qyFuN"],
 };
 
 export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
+    MONTH_OF_CHANGE_IN_COVERAGE_POLICY: [
+        "SZj4LVtPJhZ",
+        "eAvddXS2gMt",
+        "YJ95rSdosLq",
+        "fBN2oqBByJi",
+        "RMMwFbPBCSZ",
+        "KaHyWIkTXed",
+        "Wkhte2i9YUQ",
+        "N0vnvEUWgsq",
+        "slyKOdh6XTH",
+        "JP6tyBu3236",
+    ],
     AREA_OF_CHANGE_IN_COVERAGE_POLICY: [
         "xP4nCc5rpV4",
         "AFxIxVuvvsZ",
@@ -84,8 +108,8 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
     ],
     POLICY_OF_CHANGE_IN_COVERAGE_POLICY: [
         "mQYv2QxdflF",
-        "dfWsuiDvDlR",
         "JMYOe9wMIoE",
+        "dfWsuiDvDlR",
         "tdlh9Z0uktG",
         "PyBU3BkN3oQ",
         "kUBtnGm4EKp",
@@ -118,77 +142,62 @@ export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES = {
         "GJ7LuLvC5NP",
         "l26WfNjfVSx",
     ],
-    WAS_THIS_A_RESPONSE_TO_THE_COVID19_PANDEMIC: [
-        "mdnjNf5baYj",
-        "qJ9dWNT1HU1",
-        "rxDjH7GshzX",
-        "BYbKtpEB0Hn",
-        "L9klgnq75d8",
-        "pUFqAJjXUfY",
-        "KT9GQze7Pii",
-        "bP4RX98OLaj",
-        "kCOZDO02mN1",
-        "BGY8hoKzw0B",
-    ],
 };
 
 // NOTICE: This is because in the same year data could change up to 10 times and table have to show all the data changes
 export const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS = {
-    FIRST_CHANGE: ["xP4nCc5rpV4", "mQYv2QxdflF", "peIML3XRBaN", "CUSj5kPkJ0W", "mdnjNf5baYj"],
-    SECOND_CHANGE: ["AFxIxVuvvsZ", "dfWsuiDvDlR", "FKBHFNqiFM4", "fgsOChZT1Yp", "qJ9dWNT1HU1"],
-    THIRD_CHANGE: ["IjpUXUVF9bn", "JMYOe9wMIoE", "AZgRUJmVPNi", "M90TwNwsXjY", "rxDjH7GshzX"],
-    FOURTH_CHANGE: ["Soj201VJFWL", "tdlh9Z0uktG", "jq0sGqVVTNW", "XZbHFY1652W", "BYbKtpEB0Hn"],
-    FIFTH_CHANGE: ["JfqWVc1eCJl", "PyBU3BkN3oQ", "zvBP5xebI2D", "b5kKyrRkcHG", "L9klgnq75d8"],
-    SIXTH_CHANGE: ["CEjDnfFPHAn", "kUBtnGm4EKp", "SfaynclXRLx", "Azmt9ndZOE2", "pUFqAJjXUfY"],
-    SEVENTH_CHANGE: ["PRq7KFCDGWc", "TH73JJkBEXA", "QMd8Ch70DMO", "S9zr8VMFxu7", "KT9GQze7Pii"],
-    EIGHTH_CHANGE: ["oVgaMvPvL3R", "gdZ63nAVakA", "zNkK3T9RC20", "DzK5t6bz3En", "bP4RX98OLaj"],
-    NINTH_CHANGE: ["eohpuMxhpeT", "O5Z0EpAy0HE", "qbUvq6u68Vp", "GJ7LuLvC5NP", "kCOZDO02mN1"],
-    TENTH_CHANGE: ["e4ieVLuEisR", "IVVTmrOelXA", "SLw4hji7Eqz", "l26WfNjfVSx", "BGY8hoKzw0B"],
+    FIRST_CHANGE: ["SZj4LVtPJhZ", "xP4nCc5rpV4", "mQYv2QxdflF", "peIML3XRBaN", "CUSj5kPkJ0W"],
+    SECOND_CHANGE: ["eAvddXS2gMt", "AFxIxVuvvsZ", "dfWsuiDvDlR", "FKBHFNqiFM4", "fgsOChZT1Yp"],
+    THIRD_CHANGE: ["YJ95rSdosLq", "IjpUXUVF9bn", "JMYOe9wMIoE", "AZgRUJmVPNi", "M90TwNwsXjY"],
+    FOURTH_CHANGE: ["fBN2oqBByJi", "Soj201VJFWL", "tdlh9Z0uktG", "jq0sGqVVTNW", "XZbHFY1652W"],
+    FIFTH_CHANGE: ["RMMwFbPBCSZ", "JfqWVc1eCJl", "PyBU3BkN3oQ", "zvBP5xebI2D", "b5kKyrRkcHG"],
+    SIXTH_CHANGE: ["KaHyWIkTXed", "CEjDnfFPHAn", "kUBtnGm4EKp", "SfaynclXRLx", "Azmt9ndZOE2"],
+    SEVENTH_CHANGE: ["Wkhte2i9YUQ", "PRq7KFCDGWc", "TH73JJkBEXA", "QMd8Ch70DMO", "S9zr8VMFxu7"],
+    EIGHTH_CHANGE: ["N0vnvEUWgsq", "oVgaMvPvL3R", "gdZ63nAVakA", "zNkK3T9RC20", "DzK5t6bz3En"],
+    NINTH_CHANGE: ["slyKOdh6XTH", "eohpuMxhpeT", "O5Z0EpAy0HE", "qbUvq6u68Vp", "GJ7LuLvC5NP"],
+    TENTH_CHANGE: ["JP6tyBu3236", "e4ieVLuEisR", "IVVTmrOelXA", "SLw4hji7Eqz", "l26WfNjfVSx"],
 };
 
 export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
-    buildColumns(params: { policyExplorerCategoryId: string; dataSet?: D2DataSet }): PolicyExplorerCell[] {
-        const { policyExplorerCategoryId, dataSet } = params;
-        const dataElementsSection = this.getDataElementsSectionForChangesInCoveragePolicy(
-            policyExplorerCategoryId,
-            dataSet
-        );
+    buildColumns(params: { dataSet?: D2DataSet }): PolicyExplorerCell[] {
+        const { dataSet } = params;
+        const columnsNames = this.getColumnsNamesFromChangesInCoveragePolicy2019(dataSet);
 
         return [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
-            ...dataElementsSection.map(de => ({
+            ...columnsNames.map(name => ({
                 type: PolicyExplorerCellType.HEADER,
-                value: de.description || de.formName,
+                value: name,
             })),
         ];
     }
 
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
-        policyExplorerCategoryId: string;
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
         references: string;
     }): PolicyExplorerCell[][] {
-        const { currentRowsInTable, policyExplorerCategoryId, dataValuesByGroup, orgUnitName, period, references } =
-            params;
+        const { currentRowsInTable, dataValuesByGroup, orgUnitName, period, references } = params;
 
-        const subcategoriesIdsByColumn =
-            policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
+        if (!period) return currentRowsInTable;
 
-        const subcategoriesIdsByChangeInTheYear =
-            policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS;
+        const isUpToAndIncluding2019 = parseInt(period) <= 2019;
+
+        const subcategoriesIdsByColumn = isUpToAndIncluding2019
+            ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
+            : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
+
+        const subcategoriesIdsByChangeInTheYear = isUpToAndIncluding2019
+            ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS
+            : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS;
 
         const rows = Object.values(subcategoriesIdsByChangeInTheYear).reduce(
             (accRows: PolicyExplorerCell[][], subcategoriesIdsInAChangeOfTheYear, index) => {
                 const initCellsInRow: PolicyExplorerCell[] =
-                    index === 0
+                    index === 0 || !accRows.length
                         ? [
                               { type: PolicyExplorerCellType.DATA, value: orgUnitName },
                               { type: PolicyExplorerCellType.DATA, value: period || EMPTY_DATA },
@@ -224,27 +233,19 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
         return [...currentRowsInTable, ...rows];
     }
 
-    private getDataElementsSectionForChangesInCoveragePolicy(policyExplorerCategoryId: string, dataSet?: D2DataSet) {
+    private getColumnsNamesFromChangesInCoveragePolicy2019(dataSet?: D2DataSet): string[] {
         const onlyFirstIdOfSubcategories =
-            policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS.FIRST_CHANGE
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES_BY_CHANGE_IN_YEARS.FIRST_CHANGE;
-        return this.getDataElementsSection(policyExplorerCategoryId, onlyFirstIdOfSubcategories, dataSet);
-    }
+            CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES_BY_CHANGE_IN_YEARS.FIRST_CHANGE;
 
-    private getDataElementsSection(
-        policyExplorerCategoryId: string,
-        policyExplorerSubcategoriesIds: string[],
-        dataSet?: D2DataSet
-    ) {
-        return (
+        const dataElementsFromFirstChangesInCoveragePolicy2019 =
             dataSet?.sections
-                .find(section => section.id === policyExplorerCategoryId)
+                .find(section => section.id === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019)
                 ?.dataElements.filter(
                     de =>
                         (de.valueType === "LONG_TEXT" || de.valueType === "TEXT") &&
-                        policyExplorerSubcategoriesIds.includes(de.id)
-                ) || []
-        );
+                        onlyFirstIdOfSubcategories.includes(de.id)
+                ) || [];
+
+        return dataElementsFromFirstChangesInCoveragePolicy2019.map(de => de.description || de.formName);
     }
 }

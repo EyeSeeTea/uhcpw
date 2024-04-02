@@ -1,64 +1,67 @@
 import { Autocomplete } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
-
+import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-import { CountryOption } from "../../country-selector/CountrySelector";
+
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
-interface DropdownProps<T extends string = string> {
+import { Option } from "../../dropdown/Option";
+interface CountryDropdownProps {
     label?: string;
-    options: CountryOption[];
-    value?: T;
+    countryOptions: Option<string>[];
+    value?: string;
     placeholder?: string;
     fullWidth?: boolean;
     onChange: (value: string) => void;
     width?: string;
 }
 
-interface ContainerProps {
-    width: string;
-}
-
-export const CountryDropdown: React.FC<DropdownProps> = React.memo(
-    ({ label, options, value, placeholder, fullWidth, width = "100%", onChange }) => {
-        const [valueOption, setValueOption] = useState<CountryOption | null>(null);
+export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
+    ({ label, countryOptions, value, placeholder, fullWidth, width = "100%", onChange }) => {
+        const [valueOption, setValueOption] = useState<Option<string> | null>(null);
 
         useEffect(() => {
-            setValueOption(options.find(option => option.id === value) || null);
-        }, [options, value]);
+            setValueOption(countryOptions.find(option => option.value === value) || null);
+        }, [countryOptions, value]);
 
+        const handleChange = useCallback(
+            (_event: React.ChangeEvent<{}>, value: unknown) => {
+                if (value && (value as Option<string>)?.value) {
+                    onChange((value as Option<string>).value);
+                }
+            },
+            [onChange]
+        );
         return (
             <Container width={width} aria-label="country-dropdown">
                 <StyledAutocomplete
                     fullWidth={fullWidth}
                     multiple={false}
-                    id="tags-filled"
-                    options={options}
+                    id="country-autocomplete"
+                    options={countryOptions}
                     value={valueOption || null}
-                    getOptionLabel={option => (option as CountryOption)?.name}
+                    getOptionLabel={option => (option as Option<string>)?.text}
                     renderInput={params => (
                         <DropdownTextField
                             {...params}
-                            variant="standard"
                             label={label}
                             placeholder={placeholder}
                             InputLabelProps={{ shrink: true }}
                         />
                     )}
-                    onChange={(_, value) => onChange((value as CountryOption).id)}
+                    onChange={handleChange}
                 />
             </Container>
         );
     }
 );
 
-const Container = styled.div<ContainerProps>`
+const Container = styled.div<{ width: string }>`
     position: relative;
     width: ${props => props.width || "100%"};
 `;
 
 const StyledAutocomplete = styled(Autocomplete)`
-    .MuiInputBase-root {
-        border-radius: 20px !important;
+    div.MuiInputBase-root {
+        border-radius: 20px;
     }
     .MuiAutocomplete-popupIndicator {
         margin-right: 5px;

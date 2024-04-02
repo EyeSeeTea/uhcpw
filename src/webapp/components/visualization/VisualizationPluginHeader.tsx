@@ -1,12 +1,14 @@
-import { Button, IconButton, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
-import i18n from "../../../locales";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import GridOnIcon from "@material-ui/icons/GridOn";
 import GetAppIcon from "@material-ui/icons/GetApp";
+
+import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
+import { Country } from "../../../domain/entities/Country";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: {
@@ -23,6 +25,9 @@ interface VisualizationPluginHeaderProps {
     onShowInfo: () => void;
     onCloseInfo: () => void;
     useHeaderForCountryPage?: boolean;
+    showCountryTag?: boolean;
+    countries: Country[];
+    currentCountry?: string;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -35,10 +40,19 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         onCloseInfo,
         onDownloadExcel,
         onDownloadImage,
+        countries,
+        currentCountry,
         useHeaderForCountryPage = false,
+        showCountryTag = false,
     }) => {
+        const currentCountryName = useMemo(() => {
+            if (currentCountry) {
+                return countries.find(({ id }) => id === currentCountry)?.name;
+            }
+        }, [countries, currentCountry]);
+
         return (
-            <DataHeader>
+            <DataHeader className="visualization-plugin-header">
                 <Row>
                     {useHeaderForCountryPage ? (
                         <>
@@ -49,7 +63,11 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                             </Row>
 
                             <RowWithGap $gap={20}>
-                                {categoryTag && <Tag className="category">{categoryTag}</Tag>}
+                                {showCountryTag && currentCountryName ? (
+                                    <Tag className="category">{currentCountryName}</Tag>
+                                ) : (
+                                    categoryTag && <Tag className="category">{categoryTag}</Tag>
+                                )}
                                 <RowWithGap $gap={0}>
                                     <StyledIconButton onClick={onShowInfo} $color="#185698">
                                         <CustomInfoIcon color="primary" className="info-button" />
@@ -68,15 +86,15 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                             <Row>
                                 <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
                                     {chartFriendlyName}
+                                    <Button>
+                                        <CustomInfoIcon
+                                            color="primary"
+                                            className="info-button"
+                                            htmlColor="#185698"
+                                            onClick={onShowInfo}
+                                        />
+                                    </Button>
                                 </Typography>
-                                <Button>
-                                    <CustomInfoIcon
-                                        color="primary"
-                                        className="info-button"
-                                        htmlColor="#185698"
-                                        onClick={onShowInfo}
-                                    />
-                                </Button>
                             </Row>
 
                             <Column>
@@ -84,7 +102,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     variant="contained"
                                     startIcon={<GridOnIcon />}
                                     color="primary"
-                                    style={{ marginLeft: 20, marginBottom: 20 }}
+                                    style={{ marginLeft: 40, marginBottom: 20 }}
                                     onClick={onDownloadExcel}
                                     className="download-button"
                                 >
@@ -95,7 +113,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     variant="contained"
                                     startIcon={<DownloadIcon />}
                                     color="primary"
-                                    style={{ marginLeft: 20 }}
+                                    style={{ marginLeft: 40 }}
                                     onClick={onDownloadImage}
                                     className="download-button"
                                 >
@@ -122,7 +140,7 @@ const Row = styled.div`
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 0px;
-    align-items: center;
+    align-items: flex-start;
 `;
 
 const Column = styled.div`

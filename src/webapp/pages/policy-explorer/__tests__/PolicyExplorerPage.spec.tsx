@@ -5,7 +5,6 @@ import { Future } from "../../../../domain/entities/Future";
 import { createHistory, customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { PolicyExplorerPage } from "../PolicyExplorerPage";
 import policyExplorerCategoriesData from "./data/policyExplorerCategories.json";
-import dataSetData from "./data/dataSet.json";
 import countriesData from "./data/countries.json";
 import policyExplorerSimple from "./data/policyExplorerSimple.json";
 import policyExplorerEmpty from "./data/policyExplorerEmpty.json";
@@ -13,11 +12,9 @@ import policyExplorerWithMultiplePeriods from "./data/policyExplorerWithMultiple
 import policyExplorerWithMoreThanOneTable from "./data/policyExplorerWithMoreThanOneTable.json";
 import policyExplorerByTypeOfHealthcare from "./data/policyExplorerByTypeOfHealthcare.json";
 import userEvent from "@testing-library/user-event";
-import { DataSetD2Repository } from "../../../../data/repositories/DataSetD2Repository";
 import { PolicyExplorerCategoryD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
 import { PolicyExplorerD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
-import { DataSet } from "../../../../domain/entities/metadata/DataSet";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { Country } from "../../../../domain/entities/Country";
 import {
@@ -26,7 +23,6 @@ import {
     PolicyExplorerCellType,
 } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 
-let dataSetRepository: DataSetD2Repository;
 let policyExplorerCategoryRepository: PolicyExplorerCategoryD2Repository;
 let countryRepository: CountryD2Repository;
 let policyExplorerRepository: PolicyExplorerD2Repository;
@@ -35,7 +31,6 @@ describe("Given PolicyExplorerPage", () => {
     describe("When loading the page", () => {
         it("Then should render policy explorer title", () => {
             getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -47,7 +42,6 @@ describe("Given PolicyExplorerPage", () => {
     describe("When setting filters", () => {
         it("The URL should change accordingly", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -62,7 +56,6 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get Population Coverage category table", () => {
         it("Then should render expected table title", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -78,7 +71,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render a table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -92,7 +84,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render expected total rows in the table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             const policyExplorer = givenASimplePolicyExplorer();
 
@@ -106,7 +97,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render expected columns in the table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             const policyExplorer = givenASimplePolicyExplorer();
 
@@ -119,7 +109,6 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render expected rows in the table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
             givenCountries();
             const policyExplorer = givenASimplePolicyExplorer();
 
@@ -135,7 +124,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get an empty category table", () => {
         it("Then should render expected table title", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+
             givenCountries();
             givenASimplePolicyExplorer();
 
@@ -150,7 +139,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should not render any table", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+
             givenCountries();
             givenAnEmptyPolicyExplorer();
 
@@ -164,25 +153,25 @@ describe("Given PolicyExplorerPage", () => {
         it("Then should render a message", async () => {});
     });
 
-    describe("When get a category with multiple periods table", () => {
-        it("Then should render a period column with more than one period data", async () => {
+    describe("When get a category with multiple years table", () => {
+        it("Then should render a year column with more than one year data", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+
             givenCountries();
-            const policyExplorer = givenAPolicyExplorerWithMultiplePeriods();
+            const policyExplorer = givenAPolicyExplorerWithMultipleYears();
 
             renderPage();
 
             await selectFiltersAndGetTable([policyExplorerCategories[6]?.name || ""], "Spain");
 
-            await verifyMoreThanOnePeriodData(policyExplorer, policyExplorerCategories[8]?.id);
+            await verifyMoreThanOneYearData(policyExplorer, policyExplorerCategories[6]?.id);
         });
     });
 
     describe("When get two categories", () => {
         it("Then should render two expected table titles", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+
             givenCountries();
             givenAPolicyExplorerWithMoreThanOneTable();
 
@@ -206,7 +195,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render two tables", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+
             givenCountries();
             givenAPolicyExplorerWithMoreThanOneTable();
 
@@ -225,7 +214,7 @@ describe("Given PolicyExplorerPage", () => {
     describe("When get a category by type of healthcare", () => {
         it("Then should render a column with the types of healthcare", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+
             givenCountries();
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
@@ -237,7 +226,7 @@ describe("Given PolicyExplorerPage", () => {
         });
         it("Then should render a column with the types of healthcare with header type style", async () => {
             const { policyExplorerCategories } = getPolicyExplorerCategories();
-            givenADataSet();
+
             givenCountries();
             const policyExplorer = givenAPolicyExplorerByTypeOfHealthcare();
 
@@ -272,7 +261,6 @@ function renderPage() {
         <PolicyExplorerPage />,
         config,
         {
-            dataSet: dataSetRepository,
             policyExplorerCategory: policyExplorerCategoryRepository,
             country: countryRepository,
             policyExplorer: policyExplorerRepository,
@@ -283,24 +271,15 @@ function renderPage() {
     return { history };
 }
 
-function givenADataSet(): DataSet {
-    const mockedRepository = mock(DataSetD2Repository);
-
-    const item = dataSetData;
-
-    when(mockedRepository.getById(anything())).thenReturn(Future.success(item));
-
-    dataSetRepository = instance(mockedRepository);
-
-    return item;
-}
-
 function givenPolicyExplorerCategories(): PolicyExplorerCategory[] {
     const mockedRepository = mock(PolicyExplorerCategoryD2Repository);
 
     const items = policyExplorerCategoriesData as unknown as PolicyExplorerCategory[];
 
     when(mockedRepository.getAll()).thenReturn(Future.success(items));
+    when(mockedRepository.getSelectCategoryInfo()).thenReturn(
+        Future.success({ title: "Select Category", text: "text" })
+    );
 
     policyExplorerCategoryRepository = instance(mockedRepository);
 
@@ -343,7 +322,7 @@ function givenAnEmptyPolicyExplorer(): PolicyExplorer {
     return items;
 }
 
-function givenAPolicyExplorerWithMultiplePeriods(): PolicyExplorer {
+function givenAPolicyExplorerWithMultipleYears(): PolicyExplorer {
     const mockedRepository = mock(PolicyExplorerD2Repository);
 
     const items: PolicyExplorer = policyExplorerWithMultiplePeriods as unknown as PolicyExplorer;
@@ -399,24 +378,19 @@ async function selectFiltersAndGetTable(categoryriesNames: string[], countryText
     await userEvent.click(getTableButton);
 }
 
-async function expandCategoryByName(name: string) {
-    return userEvent.click(await screen.findByText(name));
-}
-
 async function selectCategoryByName(name: string) {
-    const categoryCheckbox = await screen.getByLabelText(`Select all ${name}`);
+    const categoryCheckbox = screen.getByRole("checkbox", {
+        name: `Select all ${name}`,
+    });
 
     return userEvent.click(categoryCheckbox);
 }
 
 async function selectCategoryFilter(categoryriesNames: string[]) {
-    const categorySelectorToFocus = screen.getByRole("textbox", {
-        name: /categories/i,
-    });
-    userEvent.click(categorySelectorToFocus);
+    const categorySelectorToFocus = screen.getByLabelText(/categories/i);
+    await userEvent.click(categorySelectorToFocus);
 
     for (const name of categoryriesNames) {
-        await expandCategoryByName(name);
         await selectCategoryByName(name);
     }
     await userEvent.keyboard("{Escape}");
@@ -464,27 +438,26 @@ function getTableRowsByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, 
     return [];
 }
 
-function getPeriodColumnValuesByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
+function getYearColumnValuesByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
     const table = getTableByPolicyExplorerCategoryId(policyExplorer, categoryId);
-    const periodRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Period") : -1;
-    if (periodRowsIndex !== -1) {
+    const yearRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Year") : -1;
+    if (yearRowsIndex !== -1) {
         return table
             ?.reduce((acc, row) => {
-                return row[periodRowsIndex] ? ([...acc, row[periodRowsIndex]] as PolicyExplorerCell[]) : acc;
+                return row[yearRowsIndex] ? ([...acc, row[yearRowsIndex]] as PolicyExplorerCell[]) : acc;
             }, [])
             .filter(row => row.type !== PolicyExplorerCellType.HEADER);
     } else {
-        throw new Error(`Period column not found`);
+        throw new Error(`Year column not found`);
     }
 }
 
 function getTypeOfHealthcareColumnByPolicyExplorerCategoryId(policyExplorer: PolicyExplorer, categoryId?: string) {
     const table = getTableByPolicyExplorerCategoryId(policyExplorer, categoryId);
-    const periodRowsIndex =
-        table && table[0] ? table[0].findIndex(column => column.value === "Type of health care") : -1;
-    if (periodRowsIndex !== -1) {
+    const yearRowsIndex = table && table[0] ? table[0].findIndex(column => column.value === "Type of health care") : -1;
+    if (yearRowsIndex !== -1) {
         return table?.reduce((acc, row) => {
-            return row[periodRowsIndex] ? ([...acc, row[periodRowsIndex]] as PolicyExplorerCell[]) : acc;
+            return row[yearRowsIndex] ? ([...acc, row[yearRowsIndex]] as PolicyExplorerCell[]) : acc;
         }, []);
     } else {
         throw new Error(`Type of healthcare column not found`);
@@ -535,10 +508,10 @@ async function verifyRows(policyExplorer: PolicyExplorer, categoryId?: string) {
     }
 }
 
-async function verifyMoreThanOnePeriodData(policyExplorer: PolicyExplorer, categoryId?: string) {
-    const periodColumn = getPeriodColumnValuesByPolicyExplorerCategoryId(policyExplorer, categoryId);
+async function verifyMoreThanOneYearData(policyExplorer: PolicyExplorer, categoryId?: string) {
+    const yearColumn = getYearColumnValuesByPolicyExplorerCategoryId(policyExplorer, categoryId);
 
-    expect(periodColumn?.length).toBeGreaterThan(1);
+    expect(yearColumn?.length).toBeGreaterThan(1);
 }
 
 async function verifyTypeOfHealthcareColumn(policyExplorer: PolicyExplorer, categoryId?: string) {

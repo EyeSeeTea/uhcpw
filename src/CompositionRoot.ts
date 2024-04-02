@@ -1,6 +1,5 @@
 import { Instance } from "./data/entities/Instance";
 import { CountryD2Repository } from "./data/repositories/CountryD2Repository";
-import { DataSetD2Repository } from "./data/repositories/DataSetD2Repository";
 import { InstanceDefaultRepository } from "./data/repositories/InstanceDefaultRepository";
 import { ResourceD2Repository } from "./data/repositories/resources/ResourceD2Repository";
 import { PolicyExplorerCategoryD2Repository } from "./data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
@@ -16,7 +15,6 @@ import { GetVisualizationsUseCase } from "./domain/usecases/indicator-explorer/G
 import { DownloadPolicyExplorerUseCase } from "./domain/usecases/policy-explorer/DownloadPolicyExplorerUseCase";
 import { GetPolicyExplorerCategoriesUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerCategoriesUseCase";
 import { GetPolicyExplorerUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerUseCase";
-import { GetPolicyExplorerYearsUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerYearsUseCase";
 import { D2Api } from "./types/d2-api";
 import { GetResourceCategoriesUseCase } from "./domain/usecases/resources/GetResourceCategoriesUseCase";
 import { ResourceCategoryD2Repository } from "./data/repositories/resources/ResourceCategoryD2Repository";
@@ -31,6 +29,13 @@ import { GetMethodsUseCase } from "./domain/usecases/GetMethodsUseCase";
 import { GetLegendSetsUseCase } from "./domain/usecases/indicator-explorer/GetLegendSets";
 import { LegendSetD2Repository } from "./data/repositories/indicator-explorer/LegendSetD2Repository";
 import { DownloadAnalyticsUseCase } from "./domain/usecases/indicator-explorer/DownloadAnalyticsUseCase";
+import { GetSliderInfoUseCase } from "./domain/usecases/country-page/GetSliderInfoUseCase";
+import { CountryPageInfoD2Repository } from "./data/repositories/country-page/CountryPageInfoD2Repository";
+import { GetOfficeInfoUseCase } from "./domain/usecases/about/GetOfficeInfoUseCase";
+import { AboutInfoD2Repository } from "./data/repositories/about/AboutInfoD2Repository";
+import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerSelectCategoryInfoUseCase";
+import { GetIndicatorExplorerSelectCategoryInfoUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerSelectCategoryInfoUseCase";
+import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -38,7 +43,6 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         instance: new InstanceDefaultRepository(instance),
         users: new UserD2Repository(api),
         country: new CountryD2Repository(api),
-        dataSet: new DataSetD2Repository(api),
         policyExplorerCategory: new PolicyExplorerCategoryD2Repository(api),
         policyExplorer: new PolicyExplorerD2Repository(api),
         visualization: new VisualizationD2Repository(api),
@@ -48,6 +52,9 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         person: new PersonD2Repository(api),
         method: new MethodD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
+        countryPageInfo: new CountryPageInfoD2Repository(api),
+        aboutInfo: new AboutInfoD2Repository(api),
+        indicatorExplorer: new IndicatorExplorerD2Repository(api),
     };
 }
 
@@ -72,8 +79,8 @@ export function getCompositionRoot(
             get: new GetCountriesUseCase(repositories.country),
         },
         policyExplorer: {
-            getYears: new GetPolicyExplorerYearsUseCase(repositories.dataSet),
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
+            getSelectCategoryInfo: new GetPolicyExplorerSelectCategoryInfoUseCase(repositories.policyExplorerCategory),
             get: new GetPolicyExplorerUseCase(repositories.policyExplorer, repositories.country),
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
@@ -83,6 +90,7 @@ export function getCompositionRoot(
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
             downloadAnalytics: new DownloadAnalyticsUseCase(repositories.visualization, repositories.analytics),
             getLegendSets: new GetLegendSetsUseCase(repositories.legendSet),
+            getSelectCategoryInfo: new GetIndicatorExplorerSelectCategoryInfoUseCase(repositories.indicatorExplorer),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),
@@ -91,9 +99,13 @@ export function getCompositionRoot(
         },
         about: {
             getPersons: new GetPersonsUseCase(repositories.person),
+            getOfficeInfo: new GetOfficeInfoUseCase(repositories.aboutInfo),
         },
         method: {
             get: new GetMethodsUseCase(repositories.method),
+        },
+        countryPage: {
+            getSliderInfo: new GetSliderInfoUseCase(repositories.countryPageInfo),
         },
     };
 }

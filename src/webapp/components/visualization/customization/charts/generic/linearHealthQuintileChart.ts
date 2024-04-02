@@ -4,7 +4,7 @@ import { rotateXAxis } from "../../xAxis/rotateXAxis";
 
 export const linearHealthQuintileChart = {
     title: { text: "" },
-    legend: { ...baseLegend, itemMarginTop: 20 },
+    legend: baseLegend,
     series: linearHealthQuintileSeries,
     xAxis: { ...rotateXAxis },
 };

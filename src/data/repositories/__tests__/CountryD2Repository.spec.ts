@@ -4,6 +4,7 @@ import { getD2APiFromInstance } from "../../../utils/d2-api";
 
 import orgUnits from "./data/orgUnits.json";
 import countryInfo from "./data/countryInfo.json";
+import countriesInCountryPage from "./data/countriesInCountryPage.json";
 
 import { CountryD2Repository } from "../CountryD2Repository";
 
@@ -20,6 +21,7 @@ describe("Country repository", () => {
     it("order in filter", async () => {
         givenAOrgUnits();
         givenACountriesInfo();
+        givenCountriesInCountryPage();
 
         await countryD2Repository.get().runAsync();
 
@@ -47,6 +49,17 @@ function givenACountriesInfo() {
             endpoint: `/api/events`,
             httpStatusCode: 200,
             response: countryInfo,
+        },
+    ]);
+}
+
+function givenCountriesInCountryPage() {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/events`,
+            httpStatusCode: 200,
+            response: countriesInCountryPage,
         },
     ]);
 }
