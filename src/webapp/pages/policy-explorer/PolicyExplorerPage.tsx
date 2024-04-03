@@ -118,12 +118,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         </CreditsText>
                                         &nbsp;
                                         <Link
-                                            href={info.source}
+                                            href={info.sourceUrl}
                                             style={{ fontSize: "16px", color: colors.accentPrimary }}
                                             target="_blank"
                                             rel="noreferrer"
                                         >
-                                            {i18n.t("WHO Barcelona Office for Health Systems Financing")}
+                                            {info.sourceText}
                                         </Link>
                                     </GeneralRow>
 

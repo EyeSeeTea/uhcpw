@@ -28,7 +28,8 @@ import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } fr
 import { Id } from "../../../domain/entities/Ref";
 
 export const generalDataElements: Record<string, string> = {
-    source: "pDEHTRpRL8X",
+    sourceUrl: "pDEHTRpRL8X",
+    sourceText: "LO9Cw7DmDBY",
     countryExperts: "mCEsfMPByf5",
     editors: "iyYnyNfyrfs",
     lastUpdate: "VDRInyNx7fG",
@@ -201,9 +202,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
             const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
 
-            const source =
+            const sourceUrl =
                 dataValues.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.source || "")
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
                 )?.value || "";
             const countryExperts =
                 dataValues.find(
@@ -221,8 +222,20 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 dataValues.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
                 )?.value || "";
+            const sourceText =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
+                )?.value || "";
 
-            return { country, source, countryExperts, editors, lastUpdate: new Date(lastUpdate), reviewers };
+            return {
+                country,
+                sourceText,
+                sourceUrl,
+                countryExperts,
+                editors,
+                lastUpdate: new Date(lastUpdate),
+                reviewers,
+            };
         });
     }
 
