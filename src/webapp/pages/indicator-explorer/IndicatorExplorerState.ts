@@ -22,10 +22,12 @@ export type IndicatorFilterState = {
     onSelectedChange: (value: string | undefined) => void;
 };
 
+export type YeasrFilterState = OptionsMultiFilterState & { realYearSelected: string[] | undefined };
+
 export type IndicatorExplorerFiltersState = {
     country: CountryFilterState;
     indicators: IndicatorFilterState;
-    year: OptionsMultiFilterState;
+    year: YeasrFilterState;
 };
 
 export interface GlobalMessage {

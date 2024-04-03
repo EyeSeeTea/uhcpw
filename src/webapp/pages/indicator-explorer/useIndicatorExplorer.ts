@@ -11,7 +11,9 @@ import { Visualization } from "../../../domain/entities/indicator-explorer/Visua
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 
-const allYearsFilters = generateYears().map(year => ({ value: year.id, text: year.id }));
+export const allYearsItem = { value: "all", text: i18n.t("All years") };
+export const yearsItems = generateYears().map(year => ({ value: year.id, text: year.id }));
+const allYearsFilters = [allYearsItem, ...yearsItems];
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -49,7 +51,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             }
 
             if (!newsVisualization?.isComparative) {
-                setSelectedYearFilter(allYearsFilters.map(year => year.value));
+                setSelectedYearFilter([allYearsItem.value]);
             } else if (newsVisualization?.isComparative) {
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
@@ -60,10 +62,23 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         [countryOptions, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
     );
 
-    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
-        setSelectedYearFilter(value);
-        setShowVisualization(false);
-    }, []);
+    const onChangeYearFilter = useCallback(
+        (value: string[] | undefined) => {
+            const oldContainsAllYears = selectedYearFilter?.includes(allYearsItem.value);
+            const newContainsAllYears = value?.includes(allYearsItem.value);
+
+            if (oldContainsAllYears) {
+                setSelectedYearFilter(value?.filter(year => year !== allYearsItem.value));
+            } else if (newContainsAllYears) {
+                setSelectedYearFilter([allYearsItem.value]);
+            } else {
+                setSelectedYearFilter(value);
+            }
+
+            setShowVisualization(false);
+        },
+        [selectedYearFilter]
+    );
 
     useEffect(() => {
         setShowVisualization(false);
@@ -159,6 +174,9 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 options: yearFilters,
                 selected: selectedYearFilter,
                 onSelectedChange: onChangeYearFilter,
+                realYearSelected: selectedYearFilter?.includes(allYearsItem.value)
+                    ? allYearsFilters.map(year => year.value)
+                    : selectedYearFilter,
             },
         },
         onGet,

@@ -48,7 +48,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                 {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected}
-                        years={filters.year.selected || []}
+                        years={filters.year.realYearSelected || []}
                         countries={filters.country.selected || []}
                     />
                 ) : (
