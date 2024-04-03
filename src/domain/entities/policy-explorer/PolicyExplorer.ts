@@ -20,7 +20,8 @@ export type PolicyExplorerGeneralInfo = {
     countryExperts: string;
     editors: string;
     lastUpdate: Date;
-    source: string;
+    sourceText: string;
+    sourceUrl: string;
     reviewers: string;
 };
 
