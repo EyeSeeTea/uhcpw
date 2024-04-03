@@ -314,6 +314,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                                     dv.dataElement.includes(generalDataElements.references || "")
                             )?.value || EMPTY_DATA;
 
+                        const areMarkdownReferences = references.match(
+                            /\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g
+                        ) as string[];
+
                         return tableBuilder.buildRows({
                             currentRowsInTable: accRows,
                             policyExplorerCategoryId,
@@ -321,7 +325,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             dataValuesByGroup,
                             orgUnitName: orgUnitNameInCell,
                             period,
-                            references,
+                            references: areMarkdownReferences ? references : "",
                             dataSet,
                         });
                     },
@@ -426,7 +430,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
             const referencesArray = references.match(/\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g) as string[];
 
-            return { country, references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) };
+            return {
+                country,
+                references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) || [references],
+            };
         });
     }
 

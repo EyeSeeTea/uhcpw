@@ -1,9 +1,10 @@
+import React, { useCallback, useMemo, useRef, useEffect } from "react";
 import { Typography, Button } from "@material-ui/core";
-import React, { useMemo, useRef, useEffect } from "react";
 import moment from "moment";
 import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
+import ReactMarkdown from "react-markdown";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -61,6 +62,16 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
             category => filters.category.selected && Object.keys(filters.category.selected)?.includes(category.value)
         );
     }, [filters.category]);
+
+    const getCleanReferencesByCountry = useCallback(
+        (country: string) => {
+            const regex = /\[(.*?)\((.*?)\)\]:\s/;
+            return data?.references
+                ?.find(references => references.country === country)
+                ?.references?.map(reference => reference.replace(regex, "$1$2.").replace(/"/g, ""));
+        },
+        [data?.references]
+    );
 
     return (
         <Layout>
@@ -152,10 +163,16 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {data?.references
-                                        ?.find(references => references.country === info.country)
-                                        ?.references?.map(reference => (
-                                            <ReferenceText key={reference}>{reference}</ReferenceText>
+                                    {info.country &&
+                                        getCleanReferencesByCountry(info.country)?.map(reference => (
+                                            <ReactMarkdown
+                                                key={reference}
+                                                components={{
+                                                    p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
+                                                }}
+                                            >
+                                                {reference}
+                                            </ReactMarkdown>
                                         ))}
                                 </ReferencesContainer>
                             </div>
