@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-04-01T09:52:56.803Z\n"
-"PO-Revision-Date: 2024-04-01T09:52:56.803Z\n"
+"POT-Creation-Date: 2024-04-03T07:48:04.707Z\n"
+"PO-Revision-Date: 2024-04-03T07:48:04.707Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -294,6 +294,9 @@ msgid "There may be no data"
 msgstr ""
 
 msgid "Download"
+msgstr ""
+
+msgid "All years"
 msgstr ""
 
 msgid "2019 or latest available year before COVID-19"
