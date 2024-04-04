@@ -171,7 +171,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             id="regions"
                             aria-controls="regions"
                             target="_blank"
-                            href="https://bit.ly/uhcwatch_regionalreport2023"
+                            href="https://cmyn.short.gy/regionalreport"
                         >
                             {i18n.t("Regional report")}
                         </MenuTopLink>
