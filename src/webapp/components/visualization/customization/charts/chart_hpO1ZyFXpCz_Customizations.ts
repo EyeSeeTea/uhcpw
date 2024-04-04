@@ -6,21 +6,9 @@ export const chart_hpO1ZyFXpCz_Customizations: ChartCustomization = {
     legend: { ...baseLegend, reversed: true },
     series: [
         {
-            id: "OEK4dKvUsOe",
-            name: "Inpatient care",
-            color: "#00b050",
-            dataLabels: { enabled: false },
-        },
-        {
             id: "qgE5NJ9Nyaq",
             name: "Medicines",
             color: "#c00000",
-            dataLabels: { enabled: false },
-        },
-        {
-            id: "ykAPKvVQusS",
-            name: "Outpatient care",
-            color: "#ffc000",
             dataLabels: { enabled: false },
         },
         {
@@ -35,6 +23,19 @@ export const chart_hpO1ZyFXpCz_Customizations: ChartCustomization = {
             color: "#ed7d31",
             dataLabels: { enabled: false },
         },
+        {
+            id: "OEK4dKvUsOe",
+            name: "Inpatient care",
+            color: "#00b050",
+            dataLabels: { enabled: false },
+        },
+        {
+            id: "ykAPKvVQusS",
+            name: "Outpatient care",
+            color: "#ffc000",
+            dataLabels: { enabled: false },
+        },
+
         {
             id: "qy4W8ZY2g5M",
             name: "Diagnostic tests",
