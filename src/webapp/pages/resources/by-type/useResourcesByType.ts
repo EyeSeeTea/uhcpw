@@ -45,7 +45,7 @@ export function useResourcesByType(params: {
                 years: filters.year.selected,
                 count: params.count,
                 favourite: params.favourite,
-                favouriteSection: params.favouriteSection,
+                favouriteSection: filters.search.term ? undefined : params.favouriteSection,
             })
             .run(
                 resources => {
