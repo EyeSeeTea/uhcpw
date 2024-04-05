@@ -1,32 +1,41 @@
-import { useCallback, useEffect, useState, useMemo } from "react";
-import { PolicyExplorer, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { useCallback, useEffect, useState } from "react";
+import {
+    PolicyExplorer,
+    PolicyExplorerCellType,
+    DataOrientationByTable,
+    latestAvailableYear,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 
 import i18n from "../../../locales";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
-import { DataOrientation, PolicyExplorerState } from "./PolicyExplorerState";
+import { PolicyExplorerState } from "./PolicyExplorerState";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import {
+    PolicyExplorerCategory,
+    PolicyExplorerSelectCategoryInfo,
+} from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
-import { Year } from "../../../domain/entities/Year";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
-    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 
-const CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION = [
-    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+export const CATEGORIES_WITHOUT_SUBCATEGORIES = [
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 
-const latestAvailableYear = "2023";
-
-const isLatestAvailableYear = (year: Year) => year.id === latestAvailableYear;
+const yearFilters: Option[] = [
+    { value: "2023", text: "2023" },
+    { value: "2024", text: "2024" },
+    { value: latestAvailableYear, text: i18n.t("Latest avalaible year") },
+];
 
 export function usePolicyExplorer({
     categories,
@@ -39,18 +48,21 @@ export function usePolicyExplorer({
 }): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2(countriesFilter);
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
+    const [selectCategoryInfo, setSelectCategoryInfo] = useState<PolicyExplorerSelectCategoryInfo | undefined>(
+        undefined
+    );
     const [selectedCategoriesWithSubcategoriesFilter, setSelectedCategoriesWithSubcategoriesFilter] = useState<
         Record<string, string[]> | undefined
     >();
 
-    const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([latestAvailableYear]);
 
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
-    const [dataOrientationByTable, setDataOrientationByTable] = useState<Record<string, DataOrientation> | undefined>();
+    const [dataOrientationByTable, setDataOrientationByTable] = useState<DataOrientationByTable | undefined>();
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
@@ -71,30 +83,24 @@ export function usePolicyExplorer({
     }, [countryFilter.selected?.length]);
 
     useEffect(() => {
-        compositionRoot.policyExplorer.getYears.execute().run(
-            years => {
-                setYearsFilters(
-                    years.map(year => {
-                        return {
-                            value: year.id,
-                            text: isLatestAvailableYear(year) ? i18n.t("Latest avalaible year") : year.id,
-                        };
-                    })
-                );
-            },
-            () => {
-                setYearsFilters([]);
-            }
-        );
-    }, [compositionRoot.policyExplorer]);
-
-    useEffect(() => {
         compositionRoot.policyExplorer.getCategories.execute().run(
             categories => {
                 setCategoryFilters(buildCategoryFilterOptions(categories));
             },
             () => {
-                setYearsFilters([]);
+                setCategoryFilters([]);
+            }
+        );
+    }, [compositionRoot.policyExplorer]);
+
+    useEffect(() => {
+        compositionRoot.policyExplorer.getSelectCategoryInfo.execute().run(
+            info => {
+                setSelectCategoryInfo(info);
+            },
+            error => {
+                setSelectCategoryInfo(undefined);
+                setErrorMessage(error);
             }
         );
     }, [compositionRoot.policyExplorer]);
@@ -145,9 +151,17 @@ export function usePolicyExplorer({
         }
     }, []);
 
-    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
-        setSelectedYearFilter(value);
-    }, []);
+    const onChangeYearFilter = useCallback(
+        (value: string[] | undefined) => {
+            if (value?.length && value?.length > 1) {
+                const values = value.filter(value => !selectedYearFilter?.includes(value));
+                setSelectedYearFilter(values);
+            } else {
+                setSelectedYearFilter(value);
+            }
+        },
+        [selectedYearFilter]
+    );
 
     const onSwitchRowColumn = useCallback(
         (categoryId: string) => {
@@ -171,78 +185,21 @@ export function usePolicyExplorer({
         [dataByTable, dataOrientationByTable, initialDataByTable]
     );
 
-    const onDownload = useCallback(
-        (categoryId: string) => {
-            if (!dataByTable || !dataOrientationByTable) return;
+    const onDownload = useCallback(() => {
+        if (!dataByTable || !dataOrientationByTable) return;
 
-            const dataOrientation = dataOrientationByTable[categoryId];
-            const initialDataOrientation = INITIAL_NORMAL_ORIENTED_TABLES.includes(categoryId) ? "normal" : "inverted";
-
-            compositionRoot.policyExplorer.download
-                .execute(dataByTable, categoryId, dataOrientation || initialDataOrientation)
-                .runAsync();
-        },
-        [compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]
-    );
-
-    const disabledCategories = useMemo(() => {
-        const isMoreThanOneCountrySelected = countryFilter?.selected?.length && countryFilter?.selected?.length > 1;
-        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
-            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
-            : [];
-
-        const normalCategories = categoryFilters
-            .map(({ value }) => value)
-            .filter(category => !CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.includes(category));
-
-        const isSomeCategoryWithSpecialVisualizationSelected = CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION.some(
-            category => selectedCategories.includes(category)
-        );
-
-        if (isMoreThanOneCountrySelected && isSomeCategoryWithSpecialVisualizationSelected) {
-            return normalCategories;
-        }
-
-        const isSomeNormalCategorySelected = normalCategories.some(category => selectedCategories.includes(category));
-
-        if (isMoreThanOneCountrySelected && isSomeNormalCategorySelected) {
-            return CATEGORIES_WITH_SPECIAL_COUNTRY_VISUALIZATION;
-        }
-        return [];
-    }, [categoryFilters, countryFilter?.selected?.length, selectedCategoriesWithSubcategoriesFilter]);
-
-    const disabledCountries = useMemo(() => {
-        const selectedCategories = selectedCategoriesWithSubcategoriesFilter
-            ? Object.keys(selectedCategoriesWithSubcategoriesFilter)
-            : [];
-
-        const allCategories = categoryFilters.map(({ value }) => value);
-        if (
-            isOneCountrySelectedAndAllCategoriesSelected(
-                countryFilter?.selected?.length,
-                allCategories,
-                selectedCategories
-            )
-        ) {
-            const restCountries = countryFilter.options
-                .map(c => c.id)
-                .filter(cId => countryFilter?.selected && !countryFilter?.selected.includes(cId));
-            return restCountries;
-        }
-        return [];
-    }, [categoryFilters, countryFilter.options, countryFilter?.selected, selectedCategoriesWithSubcategoriesFilter]);
+        compositionRoot.policyExplorer.download
+            .execute(categoryFilters, dataByTable, dataOrientationByTable)
+            .runAsync();
+    }, [categoryFilters, compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]);
 
     return {
         filters: {
-            country: {
-                ...countryFilter,
-                disabledCountries,
-            },
+            country: countryFilter,
             category: {
                 options: categoryFilters,
                 selected: selectedCategoriesWithSubcategoriesFilter,
                 onSelectedChange: onChangeCategoryFilter,
-                disabledCategories,
             },
             year: {
                 options: yearFilters,
@@ -255,6 +212,8 @@ export function usePolicyExplorer({
         onGetTable,
         onSwitchRowColumn,
         onDownload,
+        selectCategoryInfo,
+        errorMessage,
     };
 }
 
@@ -331,7 +290,7 @@ function invertDataOfCategoriesIds(
     }, data);
 }
 
-function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Record<string, DataOrientation> {
+function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): DataOrientationByTable {
     const dataOrientation = {};
     return selectedCategoriesIds.reduce(
         (acc, categoryId) => ({
@@ -349,14 +308,4 @@ function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): Categ
         subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
         description: category.description,
     }));
-}
-
-function isOneCountrySelectedAndAllCategoriesSelected(
-    totalCountrySelected: number | undefined,
-    allCategories: string[],
-    selectedCategories: string[]
-) {
-    const areAllCategoriesSelected = allCategories.every(category => selectedCategories.includes(category));
-
-    return totalCountrySelected && totalCountrySelected === 1 && areAllCategoriesSelected;
 }

@@ -59,6 +59,7 @@ export function givenACountries(): Country[] {
                     ],
                 },
             },
+            isInCountryPage: true,
         },
     ];
 }

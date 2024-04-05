@@ -1,17 +1,17 @@
 import { Container, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+
 import i18n from "../../../locales";
 import { ExpertsNetwork } from "../../components/about/experts-network/ExpertsNetwork";
 import { Header } from "../../components/about/header/Header";
 import { Team } from "../../components/about/team/Team";
 import { Layout } from "../../components/layout/Layout";
-
 import { colors } from "../app/themes/dhis2.theme";
 import { useAbout } from "./useAbout";
 
 export const AboutPage: React.FC = React.memo(() => {
-    const { team, experts, countryFilter } = useAbout();
+    const { team, experts, countryFilter, officeInfo } = useAbout();
 
     return (
         <Layout>
@@ -23,7 +23,7 @@ export const AboutPage: React.FC = React.memo(() => {
 
             <HeaderSection>
                 <Container maxWidth="xl">
-                    <Header />
+                    <Header officeInfo={officeInfo} />
                 </Container>
             </HeaderSection>
 

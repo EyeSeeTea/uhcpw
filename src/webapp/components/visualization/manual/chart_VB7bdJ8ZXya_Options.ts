@@ -21,8 +21,9 @@ const seriesColors: Record<string, string> = {
 
 export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     return {
-        ...comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors),
+        ...comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors, "qgE5NJ9Nyaq"),
         yAxis: {
+            ...comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors)?.yAxis,
             title: {
                 text: "Catastrophic health spending (%)",
             },

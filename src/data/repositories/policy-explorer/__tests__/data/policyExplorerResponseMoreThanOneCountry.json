@@ -8,7 +8,7 @@
                 },
                 {
                     "type": "HEADER",
-                    "value": "Period"
+                    "value": "Year"
                 },
                 {
                     "type": "HEADER",
@@ -72,7 +72,8 @@
     "generalInfo": [
         {
             "country": "Belgium",
-            "source": "<a href=”https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)”>WHO Barcelona Office for Health Systems Financing (Spain)</a>",
+            "sourceUrl": "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)",
+            "sourceText": "WHO Barcelona Office for Health Systems Financing",
             "countryExperts": "Nicolas Bouckaert, Charline Maertens de Noordhout, Carine Van de Voorde (Belgian Health Care Knowledge Centre)",
             "editors": "Marcos Gallardo Martínez, Sarah Thomson (WHO Barcelona Office for Health Systems Financing)",
             "lastUpdate": "2023-04-01T00:00:00.000Z"

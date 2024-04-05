@@ -1,6 +1,8 @@
-import { Future, FutureData } from "../../../domain/entities/Future";
+import { FutureData, Future } from "../../../domain/entities/Future";
+import { Id } from "../../../domain/entities/Ref";
 import {
     PolicyExplorerCategory,
+    PolicyExplorerSelectCategoryInfo,
     PolicyExplorerSubcategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
@@ -9,20 +11,11 @@ import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
-import {
-    CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
-    CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
-} from "./builders/TableBuilderChangesInCoveragePolicy";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
     UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
     SINCE_2020: "Dg4b8bTfEIr",
 };
-
-const sectionsWithValueTypeText = [
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020,
-];
 
 export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     USER_CHARGES: "u800TAhsIBY",
@@ -45,6 +38,15 @@ const sectionsList = [
     // CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
 ];
+
+export const CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID = "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID";
+
+const selectCategoryInfoProgram = "ai5rB7mcqHH";
+
+const selectCategoryInfoDataElements: Record<string, Id> = {
+    title: "yEaMMB7MXqI",
+    text: "SAzOXqrxWfI",
+};
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     cache = new InmemoryCache();
@@ -71,58 +73,75 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         });
     }
 
-    private buildCategories(data: D2DataSet, infoNotes: InfoNotes): PolicyExplorerCategory[] {
-        const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
-        return sections.map(section => {
-            const notes = infoNotes ? infoNotes[section.id] || "" : "";
-
-            return {
-                id: section.id,
-                name: section.displayName.replace("UHCW_", ""),
-                subcategories: this.getSubcategories(section.id, section.dataElements),
-                description: notes,
-            };
+    getSelectCategoryInfo(): FutureData<PolicyExplorerSelectCategoryInfo> {
+        return apiToFuture(
+            this.api.events.get({
+                fields: eventsFields,
+                skipPaging: true,
+                program: selectCategoryInfoProgram,
+            })
+        ).flatMap(response => {
+            if (response.events[0]) {
+                return Future.success(this.buildSelectCategoryInfo(response.events[0]));
+            }
+            return Future.error("An error has ocurred fetching Select Category Info");
         });
     }
 
-    private getSubcategories(sectionId: string, dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
-        const subcategories = dataElements
-            ?.filter(
-                de =>
-                    de.valueType === "LONG_TEXT" ||
-                    (sectionsWithValueTypeText.includes(sectionId) && de.valueType === "TEXT")
-            )
+    private buildSelectCategoryInfo(event: D2Event): PolicyExplorerSelectCategoryInfo {
+        return {
+            title: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
+            text: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+        };
+    }
+
+    private buildCategories(data: D2DataSet, infoNotes: InfoNotes): PolicyExplorerCategory[] {
+        const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
+        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
+
+        return [
+            ...sections
+                .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
+                .map(section => {
+                    const notes = infoNotes ? infoNotes[section.id] || "" : "";
+
+                    return {
+                        id: section.id,
+                        name: section.displayName.replace("UHCW_", ""),
+                        subcategories:
+                            CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
+                                ? []
+                                : this.getSubcategories(section.dataElements),
+                        description: notes,
+                    };
+                }),
+            changesInCoveragePolicyMergedCategory,
+        ];
+    }
+
+    private getChangesInCoveragePolicyMergedCategory(infoNotes: InfoNotes): PolicyExplorerCategory {
+        const notes = infoNotes ? infoNotes[CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019] || "" : "";
+
+        const changesInCoveragePolicyMergedCategory: PolicyExplorerCategory = {
+            id: CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+            name: "Changes in coverage policy",
+            subcategories: [],
+            description: notes,
+        };
+        return changesInCoveragePolicyMergedCategory;
+    }
+
+    private getSubcategories(sectionDataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
+        const subcategories = sectionDataElements
+            ?.filter(de => de.valueType === "LONG_TEXT")
             .map(subcategory => {
-                return sectionId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019 ||
-                    sectionId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.SINCE_2020
-                    ? this.getFirstSubcategoryOfGroup(sectionId, subcategory)
-                    : {
-                          id: subcategory.id,
-                          name: subcategory.description || subcategory.formName,
-                      };
+                return {
+                    id: subcategory.id,
+                    name: subcategory.description || subcategory.formName,
+                };
             })
             .filter(Boolean);
         return (subcategories as PolicyExplorerSubcategory[]) || [];
-    }
-
-    private getFirstSubcategoryOfGroup(
-        sectionId: string,
-        subcategory: D2DataElements
-    ): PolicyExplorerSubcategory | undefined {
-        const changesInCoveragePolicyGroupedSubcategories =
-            sectionId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019
-                ? CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
-                : CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES;
-
-        const subcategoryFound = Object.values(changesInCoveragePolicyGroupedSubcategories).some(
-            subcategoryIds => subcategoryIds.includes(subcategory.id) && subcategoryIds[0] === subcategory.id
-        );
-        if (subcategoryFound) {
-            return {
-                id: subcategory.id,
-                name: subcategory.description || subcategory.formName,
-            };
-        }
     }
 }
 
@@ -137,6 +156,12 @@ const dataSetFields = {
     sections: { id: true, displayName: true, dataElements: dataElementsFields, description: true },
 } as const;
 
+const eventsFields = {
+    event: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
+} as const;
+
 type D2DataElements = MetadataPick<{
     dataElements: { fields: typeof dataElementsFields };
 }>["dataElements"][number];
@@ -144,3 +169,14 @@ type D2DataElements = MetadataPick<{
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
+
+interface D2Event {
+    event: string;
+    dataValues: DataValue[];
+    eventDate: string;
+}
+
+interface DataValue {
+    dataElement: string;
+    value: string;
+}

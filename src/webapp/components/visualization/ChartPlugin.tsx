@@ -79,6 +79,9 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                       "desc"
                   )
                 : sortedSeries;
+            const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
+                ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
+                : {};
 
             const newOptions = {
                 chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
@@ -112,7 +115,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                                   ? customizedOptions?.yAxis[index]
                                   : customizedOptions?.yAxis;
 
-                              return { ...item, ...customizedYAxis };
+                              return { ...item, ...customizedYAxis, ...maxYAxis };
                           })
                         : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
                     : originalChartOptions.yAxis,

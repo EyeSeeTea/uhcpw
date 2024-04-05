@@ -1,17 +1,23 @@
-import { Typography } from "@material-ui/core";
-import React, { useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useEffect } from "react";
+import { Typography, Button } from "@material-ui/core";
+import moment from "moment";
 import styled from "styled-components";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
+import { useSnackbar } from "@eyeseetea/d2-ui-components";
+import ReactMarkdown from "react-markdown";
+
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
 import { usePolicyExplorer } from "./usePolicyExplorer";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
-import { EmptyContent } from "../../components/policy-explorer/EmptyContent";
-import moment from "moment";
+import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
+    const snackbar = useSnackbar();
+
     const referencesRef = useRef<HTMLDivElement>(null);
 
     const filterInParams = useMemo(() => {
@@ -30,17 +36,42 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         };
     }, [props.searchParams]);
 
-    const { filters, data, onGetTable, onSwitchRowColumn, onDownload, dataOrientationByTable } = usePolicyExplorer({
+    const {
+        filters,
+        data,
+        onGetTable,
+        onSwitchRowColumn,
+        onDownload,
+        dataOrientationByTable,
+        selectCategoryInfo,
+        errorMessage,
+    } = usePolicyExplorer({
         countriesFilter: filterInParams.country,
         categories: filterInParams.category,
         yearsFilter: filterInParams.year,
     });
+
+    useEffect(() => {
+        if (errorMessage) {
+            snackbar.error(i18n.t(errorMessage));
+        }
+    }, [errorMessage, snackbar]);
 
     const categories = useMemo(() => {
         return filters.category.options.filter(
             category => filters.category.selected && Object.keys(filters.category.selected)?.includes(category.value)
         );
     }, [filters.category]);
+
+    const getCleanReferencesByCountry = useCallback(
+        (country: string) => {
+            const regex = /\[(.*?)\((.*?)\)\]:\s/;
+            return data?.references
+                ?.find(references => references.country === country)
+                ?.references?.map(reference => reference.replace(regex, "$1$2.").replace(/"/g, ""));
+        },
+        [data?.references]
+    );
 
     return (
         <Layout>
@@ -53,19 +84,34 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                 <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} />
 
                 {data && dataOrientationByTable ? (
-                    categories.map(category => (
-                        <PolicyExplorerTable
-                            key={category.value}
-                            category={category}
-                            rows={data.tables[category.value]}
-                            onSwitchRowColumn={onSwitchRowColumn}
-                            onDownload={onDownload}
-                            dataOrientation={dataOrientationByTable[category.value]}
-                            referencesRef={referencesRef}
-                        />
-                    ))
+                    <Content>
+                        {categories.length > 1 ? (
+                            <CustomButton
+                                variant="contained"
+                                startIcon={<DownloadIcon />}
+                                color="primary"
+                                style={{ marginLeft: 20 }}
+                                onClick={onDownload}
+                            >
+                                {i18n.t("Download all tables")}
+                            </CustomButton>
+                        ) : null}
+
+                        {categories.map(category => (
+                            <PolicyExplorerTable
+                                key={category.value}
+                                category={category}
+                                rows={data.tables[category.value]}
+                                onSwitchRowColumn={onSwitchRowColumn}
+                                dataOrientation={dataOrientationByTable[category.value]}
+                                referencesRef={referencesRef}
+                                onDownload={onDownload}
+                                hasDownloadButton={categories.length === 1}
+                            />
+                        ))}
+                    </Content>
                 ) : (
-                    <EmptyContent />
+                    <EmptyContent info={selectCategoryInfo} />
                 )}
 
                 <div ref={referencesRef}>
@@ -74,21 +120,21 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             <div key={info.country}>
                                 <GeneralDataContainer>
                                     <GeneralRow>
-                                        <CreditsText
-                                            style={{ fontWeight: 500 }}
-                                        >{`${info.country} (2023)`}</CreditsText>
+                                        <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
                                     </GeneralRow>
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Source: ", { nsSeparator: false })}</CreditsText>
+                                        <CreditsText>
+                                            {i18n.t("Suggested citation: ", { nsSeparator: false })}
+                                        </CreditsText>
                                         &nbsp;
                                         <Link
-                                            href={info.source}
+                                            href={info.sourceUrl}
                                             style={{ fontSize: "16px", color: colors.accentPrimary }}
                                             target="_blank"
                                             rel="noreferrer"
                                         >
-                                            {i18n.t("WHO Barcelona Office for Health Systems Financing (2023)")}
+                                            {info.sourceText}
                                         </Link>
                                     </GeneralRow>
 
@@ -104,6 +150,14 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         <CreditsText>{info.editors}</CreditsText>
                                     </GeneralRow>
 
+                                    {info.reviewers ? (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Reviewers: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.reviewers}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
+
                                     <GeneralRow>
                                         <CreditsText>{i18n.t("Last updated: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
@@ -111,10 +165,16 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {data?.references
-                                        ?.find(references => references.country === info.country)
-                                        ?.references?.map(reference => (
-                                            <ReferenceText key={reference}>{reference}</ReferenceText>
+                                    {info.country &&
+                                        getCleanReferencesByCountry(info.country)?.map(reference => (
+                                            <ReactMarkdown
+                                                key={reference}
+                                                components={{
+                                                    p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
+                                                }}
+                                            >
+                                                {reference}
+                                            </ReactMarkdown>
                                         ))}
                                 </ReferencesContainer>
                             </div>
@@ -125,6 +185,20 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         </Layout>
     );
 });
+
+const Content = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const CustomButton = styled(Button)`
+    margin: 48px 0 0 0;
+    border-radius: 10px;
+    padding: 0px 16px;
+    height: 36px;
+    width: 235px;
+    align-self: flex-end;
+`;
 
 const GeneralDataContainer = styled.div`
     font-size: 16px;

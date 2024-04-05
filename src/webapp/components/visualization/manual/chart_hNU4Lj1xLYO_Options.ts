@@ -71,6 +71,12 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
         };
     });
 
+    const axeItem = chartSource.visualization.axes.find(
+        ({ type, title }) => type === "RANGE" && title.text === "Households with catastrophic health spending (%)"
+    );
+
+    const maxYAxis = axeItem ? { max: axeItem.maxValue } : {};
+
     return {
         ...baseChartOptions,
         chart: {
@@ -78,13 +84,15 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
         },
         xAxis: {
             ...rotateXAxis,
-            title: { text: "Out-of-pocket payments as a share of current spending on health (%)" },
+            title: { text: "Out-of-pocket payments as a share of current spending on health (%)", margin: 20 },
             min: 0,
         },
         yAxis: {
             title: {
                 text: "Households with catastrophic health spending (%)",
+                margin: 20,
             },
+            ...maxYAxis,
         },
         legend: { enabled: false },
         series: [

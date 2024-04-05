@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
-import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
+
+import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import i18n from "../../../../locales";
 import { useHistory } from "react-router";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
-import { useCountryOptions } from "../../../common/hooks/countries/useCountryOptions";
 import { Option } from "../../dropdown/Option";
-import { COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE } from "../../../../data/repositories/CountryD2Repository";
+import { useCountryPage } from "../../../pages/country/useCountryPage";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -65,26 +66,32 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const history = useHistory();
+    const { pathname } = useLocation();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const { countryOptions } = useCountryOptions();
+    const { countryFilter } = useCountryPage();
 
-    const handleParentMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    const handleParentMenuClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
-    };
+    }, []);
 
-    const goToHome = () => {
+    const goToHome = useCallback(() => {
         history.push("/");
-    };
+    }, [history]);
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setAnchorEl(null);
-    };
+    }, []);
 
-    const handleCountryClick = (country: Option<string>) => {
-        history.push(`/country-page?country=${country.value}`);
-        handleClose();
-    };
+    const handleCountryClick = useCallback(
+        (country: Option<string>) => {
+            history.push(`/country-page?country=${country.value}`);
+            handleClose();
+        },
+        [handleClose, history]
+    );
+
+    const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
     return (
         <div className={classes.root}>
@@ -113,6 +120,11 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                         <MobileMenu />
                     </Hidden>
                     <Hidden mdDown>
+                        {!isHomePage ? (
+                            <HomeButton className={classes.menu} onClick={goToHome}>
+                                <HomeOutlinedIcon style={{ color: "#3D3D3D" }} />
+                            </HomeButton>
+                        ) : null}
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -147,21 +159,19 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
                         >
-                            {countryOptions
-                                .filter(({ value }) => COUNTRIES_WITH_DATA_IN_COUNTRY_PAGE.includes(value))
-                                .map(country => {
-                                    return (
-                                        <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
-                                            {country.text}
-                                        </MenuItem>
-                                    );
-                                })}
+                            {countryFilter.countryOptions.map(country => {
+                                return (
+                                    <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
+                                        {country.text}
+                                    </MenuItem>
+                                );
+                            })}
                         </Menu>
                         <MenuTopLink
                             id="regions"
                             aria-controls="regions"
                             target="_blank"
-                            href="https://bit.ly/uhcwatch_regionalreport2023"
+                            href="https://cmyn.short.gy/regionalreport"
                         >
                             {i18n.t("Regional report")}
                         </MenuTopLink>
@@ -237,4 +247,8 @@ const Tag = styled.div`
     color: white;
     border-radius: 30px;
     padding: 5px 10px;
+`;
+
+const HomeButton = styled(Button)`
+    min-width: unset;
 `;
