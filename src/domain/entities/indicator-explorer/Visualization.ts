@@ -4,7 +4,7 @@ export interface VisualizationExtra {
     categoryName: string;
     friendlyName: string;
     categoryTag?: string;
-    info: VisualizationInfo;
+    notes?: string;
     maxCountryFilter?: number;
     minCountryFilter?: number;
     isComparative?: boolean;

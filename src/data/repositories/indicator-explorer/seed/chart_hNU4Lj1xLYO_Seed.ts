@@ -4,11 +4,5 @@ export const chart_hNU4Lj1xLYO_Seed = {
     categoryName: sortedCategoryNames.comparative,
     friendlyName:
         "households with catastrophic health spending and out-of-pocket payments as a share of current spending on health in Europe and central Asia",
-    info: {
-        infoNotes: ["Data on catastrophic health spending and out-of-pocket payments are for the same year"],
-        sourceName:
-            "Data on catastrophic health spending: WHO Regional Office for Europe; data on out-of-pocket payments: GHED",
-        sourceLink: "",
-    },
     isComparative: true,
 };

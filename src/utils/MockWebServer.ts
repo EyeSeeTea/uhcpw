@@ -13,6 +13,7 @@ export interface MockHandler<T extends DefaultBodyType> {
 export interface Request {
     headers: Record<string, string>;
     params: URLSearchParams;
+    url: URL;
 }
 
 export class MockWebServer {
@@ -91,6 +92,7 @@ export class MockWebServer {
         return {
             headers: req.headers.raw(),
             params: req.url.searchParams,
+            url: req.url,
         };
     }
 }

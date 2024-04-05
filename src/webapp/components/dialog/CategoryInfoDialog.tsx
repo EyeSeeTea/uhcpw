@@ -3,6 +3,7 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import { CategoryOption } from "../policy-explorer/category-selector/CategorySelector";
 import CloseIcon from "@material-ui/icons/Close";
+import ReactMarkdown from "react-markdown";
 
 type DialogType = {
     isOpen: boolean;
@@ -29,7 +30,17 @@ export const CategoryInfoDialog: React.FC<DialogType> = ({ isOpen, onClose, cate
                     {category.description ? (
                         <>
                             <Title variant="body2">{i18n.t(category.text)}</Title>
-                            <Typography variant="body2">{i18n.t(category.description)}</Typography>
+                            <ReactMarkdown
+                                components={{
+                                    p: ({ children }) => (
+                                        <Typography variant="body2" gutterBottom>
+                                            {children}
+                                        </Typography>
+                                    ),
+                                }}
+                            >
+                                {category.description}
+                            </ReactMarkdown>
                         </>
                     ) : (
                         <Typography variant="body2">{i18n.t("No information available for this category")}</Typography>
