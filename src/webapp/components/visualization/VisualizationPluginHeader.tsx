@@ -11,12 +11,7 @@ import { NotesDialog } from "../dialog/NotesDialog";
 import { Country } from "../../../domain/entities/Country";
 
 interface VisualizationPluginHeaderProps {
-    visualizationDialogInfo: {
-        title?: string;
-        infoNotes: string[];
-        sourceName: string;
-        sourceLink: string;
-    };
+    visualizationDialogInfo: string;
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;

@@ -72,6 +72,16 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
                 ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
+            const finalSeries = customizedOptions?.sortLegendByLastDataPoint
+                ? _.orderBy(
+                      sortedSeries,
+                      serie => {
+                          const finalSerie = serie as any;
+                          return finalSerie.data?.[finalSerie.data.length - 1];
+                      },
+                      "desc"
+                  )
+                : sortedSeries;
 
             const newOptions = {
                 chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
@@ -110,7 +120,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
                     : originalChartOptions.yAxis,
 
-                series: sortedSeries?.map(serie => {
+                series: finalSeries?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
                         ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })
                         : undefined;

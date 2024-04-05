@@ -1,0 +1,14 @@
+{
+    "events": [
+        {
+            "event": "c2VMpVGC8yH",
+            "eventDate": "2024-03-14T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "SH0Au5PUhZO",
+                    "value": "Data on catastrophic health spending and out-of-pocket payments are for the same year\n\nSource: Data on catastrophic health spending: WHO Regional Office for Europe; data on out-of-pocket payments: GHED"
+                }
+            ]
+        }
+    ]
+}
