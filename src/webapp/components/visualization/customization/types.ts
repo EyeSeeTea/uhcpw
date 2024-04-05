@@ -12,6 +12,7 @@ export type ChartCustomization = {
     xAxis?: AxisCustomization | AxisCustomization[];
     countryXAxis?: (countries: Country[], xAxis: { categories: string[] }) => AxisCustomization;
     yAxis?: AxisCustomization;
+    sortLegendByLastDataPoint?: boolean;
 };
 
 export type LegendCustomization = {

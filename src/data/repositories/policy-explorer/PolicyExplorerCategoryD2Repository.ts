@@ -7,8 +7,10 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
-import { D2Api, D2SectionSchema, MetadataPick, SelectedPick } from "../../../types/d2-api";
+import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+import { InmemoryCache } from "../../cache/InmemoryCache";
+import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
     UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
@@ -47,16 +49,27 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
 };
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
+    cache = new InmemoryCache();
+
     constructor(private api: D2Api) {}
 
     getAll(): FutureData<PolicyExplorerCategory[]> {
-        return apiToFuture(
-            this.api.models.dataSets.get({
-                fields: dataSetFields,
-                filter: { id: { eq: policyExplorerDataSet_ID } },
-            })
-        ).map(response => {
-            return this.buildCategories(response.objects[0]);
+        return Future.joinObj({
+            datasets: apiToFuture(
+                this.api.models.dataSets.get({
+                    fields: dataSetFields,
+                    filter: { id: { eq: policyExplorerDataSet_ID } },
+                })
+            ),
+            infoNotes: this.cache.getOrFuture("infoNotes", getInfoNotes(this.api)),
+        }).flatMap(({ datasets, infoNotes }) => {
+            const dataSet = datasets.objects[0];
+
+            if (dataSet) {
+                return Future.success(this.buildCategories(dataSet, infoNotes));
+            } else {
+                return Future.error("No categories found");
+            }
         });
     }
 
@@ -82,40 +95,44 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         };
     }
 
-    private buildCategories(data?: D2DataSet): PolicyExplorerCategory[] {
+    private buildCategories(data: D2DataSet, infoNotes: InfoNotes): PolicyExplorerCategory[] {
         const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
-        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(sections);
+        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
 
         return [
             ...sections
                 .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
-                .map(section => ({
-                    id: section.id,
-                    name: section.displayName.replace("UHCW_", ""),
-                    subcategories:
-                        CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
-                            ? []
-                            : this.getSubcategories(section.id, section.dataElements),
-                    description: section.description,
-                })),
+                .map(section => {
+                    const notes = infoNotes ? infoNotes[section.id] || "" : "";
+
+                    return {
+                        id: section.id,
+                        name: section.displayName.replace("UHCW_", ""),
+                        subcategories:
+                            CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
+                                ? []
+                                : this.getSubcategories(section.dataElements),
+                        description: notes,
+                    };
+                }),
             changesInCoveragePolicyMergedCategory,
         ];
     }
 
-    private getChangesInCoveragePolicyMergedCategory(sections: Sections): PolicyExplorerCategory {
+    private getChangesInCoveragePolicyMergedCategory(infoNotes: InfoNotes): PolicyExplorerCategory {
+        const notes = infoNotes ? infoNotes[CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019] || "" : "";
+
         const changesInCoveragePolicyMergedCategory: PolicyExplorerCategory = {
             id: CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
             name: "Changes in coverage policy",
             subcategories: [],
-            description:
-                sections.find(({ id }) => id === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019)
-                    ?.description || "",
+            description: notes,
         };
         return changesInCoveragePolicyMergedCategory;
     }
 
-    private getSubcategories(sectionId: string, dataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
-        const subcategories = dataElements
+    private getSubcategories(sectionDataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
+        const subcategories = sectionDataElements
             ?.filter(de => de.valueType === "LONG_TEXT")
             .map(subcategory => {
                 return {
@@ -152,21 +169,6 @@ type D2DataElements = MetadataPick<{
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
-
-type Sections = SelectedPick<
-    D2SectionSchema,
-    {
-        readonly id: true;
-        readonly displayName: true;
-        readonly dataElements: {
-            readonly id: true;
-            readonly formName: true;
-            readonly valueType: true;
-            readonly description: true;
-        };
-        readonly description: true;
-    }
->[];
 
 interface D2Event {
     event: string;
