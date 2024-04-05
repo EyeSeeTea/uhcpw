@@ -9,7 +9,9 @@ export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) =>
 
     return (
         <Container aria-label="experts">
-            <Typography variant="h3">{i18n.t("Country expert")}</Typography>
+            <TitleRow>
+                <Typography variant="h5">{i18n.t("Country expert")}</Typography>
+            </TitleRow>
             <GridContainer container spacing={5}>
                 {experts.map((expert, i) => (
                     <Grid key={i} xs={12} md={6} role="listitem">
@@ -66,4 +68,12 @@ const Image = styled.img`
     margin-bottom: 6px;
     object-fit: cover;
     object-position: 50% 0%;
+`;
+
+const TitleRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-block-end: 25px;
+    gap: 2px;
 `;
