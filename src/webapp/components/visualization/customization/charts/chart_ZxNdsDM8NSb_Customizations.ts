@@ -5,7 +5,9 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
     title: { text: "" },
     legend: { ...baseLegend, reversed: true },
     xAxis: [
-        {},
+        {
+            lineWidth: 0,
+        },
         {
             lineWidth: 0,
         },
@@ -36,9 +38,17 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
                 }
 
                 const yAxis = this.yAxis[0];
+                const yAxisFirstValueTick =
+                    yAxis?.tickPositions && yAxis?.tickPositions[0] !== undefined ? yAxis?.tickPositions[0] : undefined;
+
+                if (yAxisFirstValueTick !== undefined && yAxis?.ticks[yAxisFirstValueTick]?.gridLine) {
+                    yAxis?.ticks[yAxisFirstValueTick]?.gridLine?.hide();
+                }
+
                 const yAxisTotalTicks = yAxis?.tickPositions ? yAxis?.tickPositions?.length : undefined;
                 const yAxisLastValueTick =
                     yAxis?.tickPositions && yAxisTotalTicks ? yAxis?.tickPositions[yAxisTotalTicks - 1] : undefined;
+
                 if (yAxisLastValueTick !== undefined && yAxis?.ticks[yAxisLastValueTick]?.gridLine) {
                     yAxis?.ticks[yAxisLastValueTick]?.gridLine?.hide();
                 }
