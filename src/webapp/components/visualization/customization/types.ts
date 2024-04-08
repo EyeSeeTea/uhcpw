@@ -13,6 +13,7 @@ export type ChartCustomization = {
     countryXAxis?: (countries: Country[], xAxis: { categories: string[] }) => AxisCustomization;
     yAxis?: AxisCustomization;
     sortLegendByLastDataPoint?: boolean;
+    chart?: ChartPropertyCustomization;
 };
 
 export type LegendCustomization = {
@@ -50,4 +51,9 @@ export type AxisCustomization = {
     title?: TitleCustomization;
     labels?: { rotation?: number };
     categories?: string[];
+    lineWidth?: number;
+};
+
+export type ChartPropertyCustomization = {
+    events?: { load: (this: Highcharts.Chart) => void };
 };
