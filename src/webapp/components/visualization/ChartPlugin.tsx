@@ -84,7 +84,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 : {};
 
             const newOptions = {
-                chart: { ...originalChartOptions.chart, events: undefined, renderTo: undefined },
+                chart: {
+                    ...originalChartOptions.chart,
+                    events: customizedOptions?.chart?.events ? { ...customizedOptions?.chart?.events } : undefined,
+                    renderTo: undefined,
+                },
 
                 legend: {
                     ...originalChartOptions.legend,
