@@ -146,7 +146,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:like:comparative analysis`
+                `${resourceDataElements.comparativeAnalysisCategory}:eq:true`
             );
         });
     });
@@ -165,7 +165,9 @@ describe("Resource repository", () => {
 
             await resourceRepository.get({ category: "news" }).runAsync();
 
-            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(`${resourceDataElements.category}:like:news`);
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
+                `${resourceDataElements.newsCategory}:eq:true`
+            );
         });
     });
     describe("Multimedia", () => {
@@ -184,7 +186,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "multimedia" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:like:multimedia`
+                `${resourceDataElements.multimediaCategory}:eq:true`
             );
         });
     });
@@ -204,7 +206,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "country-analysis" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:like:country analysis`
+                `${resourceDataElements.countryAnalysisCategory}:eq:true`
             );
         });
     });

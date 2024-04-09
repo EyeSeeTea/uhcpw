@@ -14,7 +14,10 @@ import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
 export const resourceDataElements: Record<string, string> = {
-    category: "iO4ThHtWZ8M",
+    comparativeAnalysisCategory: "BBKWdyuSwkT",
+    newsCategory: "AGWJYBEy90o",
+    multimediaCategory: "awlsQKOwDgB",
+    countryAnalysisCategory: "jwmMKDQrxhD",
     theme: "TTAQLTta8JS",
     image: "uund7zjS1Yt",
     title: "iBxOUseHUtO",
@@ -101,9 +104,7 @@ export class ResourceD2Repository implements ResourceRepository {
     public get(filters: ResourceFilters): FutureData<Resource[]> {
         //2:38 has a bug filtering events by data element value using eq operator. Like works!
         const filter = _([
-            filters.category
-                ? `${resourceDataElements.category}:like:${filters.category.replace("-", " ")}`
-                : undefined,
+            filters.category ? this.getCategoriesFilter(filters.category) : undefined,
             filters.theme ? `${resourceDataElements.theme}:like:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
             filters.favourite !== undefined ? `${resourceDataElements.favourite}:eq:${filters.favourite}` : undefined,
@@ -135,28 +136,59 @@ export class ResourceD2Repository implements ResourceRepository {
                     ? this.filterCountries(response.events, filters)
                     : response.events;
 
-            return this.buildResources(events);
+            return this.buildResources(events, filters.category);
         });
     }
 
-    private buildResources(events: D2Event[]): Resource[] {
+    private getCategoriesFilter(categoryFilter: string): string | undefined {
+        switch (categoryFilter) {
+            case "comparative-analysis":
+                return `${resourceDataElements.comparativeAnalysisCategory}:eq:true`;
+            case "news":
+                return `${resourceDataElements.newsCategory}:eq:true`;
+            case "multimedia":
+                return `${resourceDataElements.multimediaCategory}:eq:true`;
+            case "country-analysis":
+                return `${resourceDataElements.countryAnalysisCategory}:eq:true`;
+            default:
+                return undefined;
+        }
+    }
+
+    private buildResources(events: D2Event[], categoryFilter: string | undefined): Resource[] {
         return _.compact(
             _(
-                events.map(event => {
-                    const category =
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)?.value || "";
+                events.flatMap(event => {
+                    const isComparativeAnalysisCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.comparativeAnalysisCategory)
+                            ?.value === "true";
 
-                    if (category === "comparative-analysis") {
-                        return this.buildComparativeAnalysis(event);
-                    } else if (category === "news") {
-                        return this.buildNews(event);
-                    } else if (category === "multimedia") {
-                        return this.buildMultimedia(event);
-                    } else if (category === "country-analysis") {
-                        return this.buildCountryAnalysis(event);
-                    } else {
-                        return undefined;
-                    }
+                    const isNewsCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.newsCategory)?.value ===
+                        "true";
+
+                    const isMultimediaCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.multimediaCategory)
+                            ?.value === "true";
+
+                    const isCountryAnalysisCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryAnalysisCategory)
+                            ?.value === "true";
+
+                    return [
+                        isComparativeAnalysisCategory && (!categoryFilter || categoryFilter === "comparative-analysis")
+                            ? this.buildComparativeAnalysis(event)
+                            : undefined,
+                        isNewsCategory && (!categoryFilter || categoryFilter === "news")
+                            ? this.buildNews(event)
+                            : undefined,
+                        isMultimediaCategory && (!categoryFilter || categoryFilter === "multimedia")
+                            ? this.buildMultimedia(event)
+                            : undefined,
+                        isCountryAnalysisCategory && (!categoryFilter || categoryFilter === "country-analysis")
+                            ? this.buildCountryAnalysis(event)
+                            : undefined,
+                    ];
                 })
             ).value()
         );
