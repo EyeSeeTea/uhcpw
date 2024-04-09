@@ -158,6 +158,12 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             getContentAnchorEl={null}
                             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
                             transformOrigin={{ vertical: "top", horizontal: "center" }}
+                            PaperProps={{
+                                style: {
+                                    maxHeight: 556,
+                                    overflowY: "auto",
+                                },
+                            }}
                         >
                             {countryFilter.countryOptions.map(country => {
                                 return (

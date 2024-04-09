@@ -50,6 +50,12 @@ export const MobileMenuSubItem = ({ item, children }: SubItemType) => {
                     vertical: -40,
                     horizontal: "center",
                 }}
+                PaperProps={{
+                    style: {
+                        maxHeight: 558,
+                        overflowY: "auto",
+                    },
+                }}
             >
                 {children}
             </StyledSubMenu>
