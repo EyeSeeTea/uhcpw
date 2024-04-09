@@ -57,29 +57,7 @@ const KOSOVO = "NEPywTBN52g";
 const NETHERLANDS = "rEQqufy2KNi";
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
-
-const countriesInCountryPageDataElements: Record<string, Id> = {
-    countryOne: "TnVtPv9CtZs",
-    countryTwo: "eZWjJNv8stp",
-    countryThree: "LPHN04myQFr",
-    countryFour: "fb6h94Fy4hO",
-    countryFive: "M0MeJ4H1Sw6",
-    countrySix: "MAsbPRB23yd",
-    countrySeven: "KnbvNQnRcJB",
-    countryEight: "h3eBaOIwlBU",
-    countryNine: "jo9LfEeHxxH",
-    countryTen: "ZaBZ9rfaR6b",
-    countryEleven: "w41UoFFIanF",
-    countryTwelve: "vCXqIEAwWR3",
-    countryThirteen: "KZlaUubGGDP",
-    countryFourteen: "S9bSqXTeaCv",
-    countryFifteen: "LfNKBuw3lXS",
-    countrySixteen: "A3siIDGWn6c",
-    countrySeventeen: "cNMsoNqLB1n",
-    countryEighteen: "ABHaHZo8cLw",
-    countryNineteen: "CTTavmjBoll",
-    countryTwenty: "w89t0SozQcf",
-};
+const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
 
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
@@ -102,35 +80,35 @@ export class CountryD2Repository implements CountryRepository {
                     program: countryInfoProgram,
                 })
             ),
-            countriesInCountryPage: apiToFuture(
+            programMetadata: apiToFuture(
+                this.api.models.programs.get({
+                    fields: programFields,
+                    filter: { id: { eq: countriesInCountryPageProgram } },
+                })
+            ),
+            sectionsEvent: apiToFuture(
                 this.api.events.get({
                     fields: eventsFields,
                     skipPaging: true,
                     program: countriesInCountryPageProgram,
                 })
             ),
-        }).map(({ countries, aditionalCountriesInfo, countriesInCountryPage }) => {
-            return this.buildCountries(countries.objects, aditionalCountriesInfo.events, countriesInCountryPage.events);
+        }).map(({ countries, aditionalCountriesInfo, programMetadata, sectionsEvent }) => {
+            const countriesIdsInCountryPage = this.getCountriesIdsInCountryPage(
+                programMetadata.objects[0],
+                sectionsEvent.events[0]
+            );
+
+            return this.buildCountries(countries.objects, aditionalCountriesInfo.events, countriesIdsInCountryPage);
         });
     }
 
     private buildCountries(
         orgUnits: D2OrgUnit[],
         aditionalCountriesInfo: D2Event[],
-        countriesInCountryPageEvents: D2Event[]
+        countriesIdsInCountryPage: Id[]
     ): Country[] {
         return orgUnits.map(orgUnit => {
-            const countriesInCountryPage = countriesInCountryPageEvents[0]
-                ? Object.values(countriesInCountryPageDataElements)
-                      .map(
-                          countryDataElement =>
-                              countriesInCountryPageEvents[0]?.dataValues?.find(
-                                  dv => dv.dataElement === countryDataElement
-                              )?.value || ""
-                      )
-                      .filter(Boolean)
-                : [];
-
             const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
                 event => event.orgUnit === orgUnit.id
             );
@@ -164,7 +142,7 @@ export class CountryD2Repository implements CountryRepository {
                 flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
                 summary,
                 sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
-                isInCountryPage: countriesInCountryPage.includes(orgUnit.id),
+                isInCountryPage: countriesIdsInCountryPage.includes(orgUnit.id),
             };
         });
     }
@@ -306,6 +284,24 @@ export class CountryD2Repository implements CountryRepository {
             },
         };
     }
+
+    private getCountriesIdsInCountryPage(
+        programMetadata: D2Program | undefined,
+        sectionsEvent: D2Event | undefined
+    ): Id[] {
+        const dataElementsInCountryPage = programMetadata?.programStages[0]?.programStageSections.find(
+            ({ id }) => id === COUNTRY_TOP_MENU_SECTION_ID
+        )?.dataElements;
+
+        if (dataElementsInCountryPage?.length && sectionsEvent) {
+            const dataElementsInCountryPageIds = dataElementsInCountryPage.map(({ id }) => id);
+            return sectionsEvent.dataValues
+                ?.filter(({ dataElement }) => dataElementsInCountryPageIds.includes(dataElement))
+                ?.map(({ value }) => value);
+        }
+
+        return [];
+    }
 }
 
 const organisationUnitsFields = {
@@ -340,3 +336,22 @@ export interface DataValue {
     dataElement: string;
     value: string;
 }
+
+const programFields = {
+    id: true,
+    programStages: {
+        id: true,
+        name: true,
+        programStageSections: {
+            id: true,
+            dataElements: {
+                id: true,
+                code: true,
+            },
+        },
+    },
+} as const;
+
+type D2Program = MetadataPick<{
+    programs: { fields: typeof programFields };
+}>["programs"][number];
