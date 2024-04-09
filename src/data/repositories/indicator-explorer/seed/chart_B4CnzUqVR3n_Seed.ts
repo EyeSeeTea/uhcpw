@@ -2,7 +2,7 @@ import { sortedCategoryNames } from "./utils";
 
 export const chart_B4CnzUqVR3n_Seed = {
     categoryName: sortedCategoryNames.comparative,
-    categoryTag: "Comparative chart",
+    categoryTag: "International comparison",
     friendlyName: "public spending on health as a share of government spending",
     isComparative: true,
 };
