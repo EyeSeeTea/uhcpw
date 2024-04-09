@@ -11,12 +11,7 @@ import { NotesDialog } from "../dialog/NotesDialog";
 import { Country } from "../../../domain/entities/Country";
 
 interface VisualizationPluginHeaderProps {
-    visualizationDialogInfo: {
-        title?: string;
-        infoNotes: string[];
-        sourceName: string;
-        sourceLink: string;
-    };
+    visualizationDialogInfo: string;
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;
@@ -86,15 +81,15 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                             <Row>
                                 <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
                                     {chartFriendlyName}
+                                    <Button>
+                                        <CustomInfoIcon
+                                            color="primary"
+                                            className="info-button"
+                                            htmlColor="#185698"
+                                            onClick={onShowInfo}
+                                        />
+                                    </Button>
                                 </Typography>
-                                <Button>
-                                    <CustomInfoIcon
-                                        color="primary"
-                                        className="info-button"
-                                        htmlColor="#185698"
-                                        onClick={onShowInfo}
-                                    />
-                                </Button>
                             </Row>
 
                             <Column>
@@ -102,7 +97,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     variant="contained"
                                     startIcon={<GridOnIcon />}
                                     color="primary"
-                                    style={{ marginLeft: 20, marginBottom: 20 }}
+                                    style={{ marginLeft: 40, marginBottom: 20 }}
                                     onClick={onDownloadExcel}
                                     className="download-button"
                                 >
@@ -113,7 +108,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     variant="contained"
                                     startIcon={<DownloadIcon />}
                                     color="primary"
-                                    style={{ marginLeft: 20 }}
+                                    style={{ marginLeft: 40 }}
                                     onClick={onDownloadImage}
                                     className="download-button"
                                 >

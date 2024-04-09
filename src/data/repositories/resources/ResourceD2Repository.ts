@@ -130,11 +130,10 @@ export class ResourceD2Repository implements ResourceRepository {
                 order: "eventDate:desc",
             })
         ).map(response => {
-            let events = response.events;
-
-            if (filters.countries && filters.countries.length > 0) {
-                events = this.filterCountries(response.events, filters);
-            }
+            const events =
+                filters.countries && filters.countries.length > 0
+                    ? this.filterCountries(response.events, filters)
+                    : response.events;
 
             return this.buildResources(events);
         });

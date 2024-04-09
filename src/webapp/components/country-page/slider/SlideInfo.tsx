@@ -1,28 +1,27 @@
 import { Grid, Typography } from "@material-ui/core";
 import ReactMarkdown from "react-markdown";
-import i18n from "../../../../locales";
 import styled, { css } from "styled-components";
-import Umbrella from "../../../assets/country-page/umbrella-3.svg";
-import Rain from "../../../assets/country-page/rain.png";
-import { Country } from "../../../../domain/entities/Country";
+import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import Rain from "../../../assets/country-page/rain.png";
+import { CountrySectionInfo } from "../../../../domain/entities/Country";
 
-export const SlideInfoOne: React.FC<{ country: Country }> = ({ country }) => {
-    const {
-        sliderInfo: { gapsSection },
-    } = country;
-
+export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: string; icon: string }> = ({
+    sliderInfo,
+    titleColor,
+    icon,
+}) => {
     return (
         <Container>
             <Typography variant="h3" style={{ fontWeight: 500 }}>
-                {i18n.t(gapsSection.sectionName)}
+                {i18n.t(sliderInfo.sectionName)}
             </Typography>
             <Grid container>
                 <Grid item xs={12} md={8}>
                     <Column>
-                        {gapsSection.content.map(({ title, text }) => (
+                        {sliderInfo.content.map(({ title, text }) => (
                             <>
-                                <Title>{i18n.t(title)}</Title>
+                                <Title $titleColor={titleColor}>{i18n.t(title)}</Title>
                                 <Paragraph>
                                     <ReactMarkdown
                                         components={{
@@ -52,7 +51,7 @@ export const SlideInfoOne: React.FC<{ country: Country }> = ({ country }) => {
                     </Column>
                 </Grid>
                 <UmbrellaContainer item xs={12} md={4}>
-                    <Image src={Umbrella} />
+                    <Image src={icon} />
                 </UmbrellaContainer>
             </Grid>
         </Container>
@@ -100,13 +99,15 @@ const Column = styled.div`
     padding-block: 46px;
 `;
 
-const Title = styled(Typography)`
+const Title = styled(Typography)<{ $titleColor: string }>`
     font-weight: bold;
-    color: #b20101;
+    color: ${props => props.$titleColor};
 `;
 
 const Paragraph = styled(Typography)`
-    margin-block-end: 10px;
+    :not(last-of-type) {
+        margin-block-end: 10px;
+    }
 `;
 
 const Image = styled.img`
@@ -117,7 +118,6 @@ const Image = styled.img`
 
 const TextLink = styled.a`
     color: ${colors.accentPrimary};
-    padding: 0 3px;
     text-transform: none;
     text-decoration: none;
     &:hover {

@@ -6,12 +6,14 @@ import {
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
     PolicyExplorerReferences,
+    DataOrientationByTable,
+    DataOrientation,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { exportToCSV } from "../../export/exportToCSV";
+import { Tab, exportToCSV } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
     CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
@@ -21,12 +23,13 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "./PolicyExplorerCategoryD2Repository";
-import { DataOrientation } from "../../../webapp/pages/policy-explorer/PolicyExplorerState";
+import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
 
 export const generalDataElements: Record<string, string> = {
-    source: "pDEHTRpRL8X",
+    sourceUrl: "pDEHTRpRL8X",
+    sourceText: "LO9Cw7DmDBY",
     countryExperts: "mCEsfMPByf5",
     editors: "iyYnyNfyrfs",
     lastUpdate: "VDRInyNx7fG",
@@ -38,6 +41,23 @@ export const EMPTY_DATA = "";
 export const COUNTRY_HEADER_NAME = "Country";
 export const PERIOD_HEADER_NAME = "Year";
 export const REFERENCES_HEADER_NAME = "References";
+const FILE_NAME = "PolicyExplorer";
+
+const categoriesNameWithLessThan31Chars: Record<string, string> = {
+    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: "Changes in coverage policy",
+    u800TAhsIBY: "User charges by health care",
+    e6cfI6vWYEF: "Main gaps in financed coverage",
+};
+
+const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
+    populationCoverage: "uG2PbDfOc0w",
+    serviceCoverage: "W4CqlzcDPB1",
+    userCharges: "mCMVwmnGWJF",
+    userChargesByHealthCare: "u800TAhsIBY",
+    voluntaryHealthInsurance: "uImM4yTeeV3",
+    mainGapsInFinancedCoverage: "e6cfI6vWYEF",
+    changesInCoveragePolicy: "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
+};
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
@@ -88,21 +108,44 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    saveToFile(policyExplorer: PolicyExplorer, categoryId: string, dataOrientation: DataOrientation): FutureData<void> {
-        const rows = policyExplorer.tables[categoryId];
-        const references = policyExplorer.references;
-        if (rows) {
-            const dataRows = this.getDataFromRows(rows);
-            exportToCSV(
-                [
+    saveToFile(
+        categories: CategoryOption[],
+        policyExplorer: PolicyExplorer,
+        dataOrientationByTable: DataOrientationByTable
+    ): FutureData<void> {
+        const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
+            return (
+                Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
+                Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdB)
+            );
+        });
+        const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
+            const rows = policyExplorer.tables[categoryId];
+            const category = categories.find(({ value }) => value === categoryId);
+            const normalOrientedTables = [
+                ...CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+                ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+            ];
+            const initialDataOrientation = normalOrientedTables.includes(categoryId) ? "normal" : "inverted";
+            const dataOrientation = dataOrientationByTable[categoryId] || initialDataOrientation;
+            const references = policyExplorer.references;
+
+            if (rows?.length) {
+                const dataRows = this.getDataFromRows(rows);
+                return [
+                    ...accTabs,
                     {
                         data: this.addReferencesToDataRows(dataRows, references, dataOrientation),
-                        name: "Policy Explorer",
+                        name: Object.keys(categoriesNameWithLessThan31Chars).includes(categoryId)
+                            ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
+                            : category?.text || categoryId,
                     },
-                ],
-                "PolicyExplorer"
-            );
-        }
+                ];
+            }
+            return accTabs;
+        }, []);
+
+        exportToCSV(tabs, FILE_NAME);
         return Future.success(undefined);
     }
 
@@ -132,6 +175,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 const referencesOfCountry =
                     references.find(reference => dataRow.includes(reference.country))?.references?.join(",") ||
                     EMPTY_DATA;
+
                 return [...dataRow, isHeadersRow ? REFERENCES_HEADER_NAME : referencesOfCountry];
             });
         }
@@ -158,9 +202,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
             const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
 
-            const source =
+            const sourceUrl =
                 dataValues.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.source || "")
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
                 )?.value || "";
             const countryExperts =
                 dataValues.find(
@@ -178,8 +222,20 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 dataValues.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
                 )?.value || "";
+            const sourceText =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
+                )?.value || "";
 
-            return { country, source, countryExperts, editors, lastUpdate: new Date(lastUpdate), reviewers };
+            return {
+                country,
+                sourceText,
+                sourceUrl,
+                countryExperts,
+                editors,
+                lastUpdate: new Date(lastUpdate),
+                reviewers,
+            };
         });
     }
 
@@ -258,6 +314,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                                     dv.dataElement.includes(generalDataElements.references || "")
                             )?.value || EMPTY_DATA;
 
+                        const areMarkdownReferences = references.match(
+                            /\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g
+                        ) as string[];
+
                         return tableBuilder.buildRows({
                             currentRowsInTable: accRows,
                             policyExplorerCategoryId,
@@ -265,7 +325,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             dataValuesByGroup,
                             orgUnitName: orgUnitNameInCell,
                             period,
-                            references,
+                            references: areMarkdownReferences ? references : "",
                             dataSet,
                         });
                     },
@@ -370,7 +430,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
             const referencesArray = references.match(/\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g) as string[];
 
-            return { country, references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) };
+            return {
+                country,
+                references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) || [references],
+            };
         });
     }
 

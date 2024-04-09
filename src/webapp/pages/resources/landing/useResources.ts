@@ -62,5 +62,5 @@ function getComparativeAnalysis(items: ResourceState[]): ComparativeAnalysisStat
     return _.orderBy(
         items.filter(item => item.kind === "comparative-analysis"),
         "favouriteSectionOrder"
-    ).slice(0, 4) as ComparativeAnalysisState[];
+    ).slice(0, 6) as ComparativeAnalysisState[];
 }

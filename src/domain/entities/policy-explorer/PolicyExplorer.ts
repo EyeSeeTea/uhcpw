@@ -20,7 +20,8 @@ export type PolicyExplorerGeneralInfo = {
     countryExperts: string;
     editors: string;
     lastUpdate: Date;
-    source: string;
+    sourceText: string;
+    sourceUrl: string;
     reviewers: string;
 };
 
@@ -29,4 +30,7 @@ export type PolicyExplorerReferences = {
     references: string[];
 };
 
+export type DataOrientation = "inverted" | "normal";
+
+export type DataOrientationByTable = Record<string, DataOrientation>;
 export const latestAvailableYear = "latest";

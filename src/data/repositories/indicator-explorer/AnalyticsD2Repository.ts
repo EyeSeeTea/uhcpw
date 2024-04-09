@@ -2,7 +2,7 @@ import _ from "lodash";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { Dimension, Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { Ref } from "../../../domain/entities/Ref";
+import { Id, Ref } from "../../../domain/entities/Ref";
 import { AnalyticsRepository } from "../../../domain/repositories/indicator-explorer/AnalyticsRepository";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
@@ -10,6 +10,7 @@ import { isValidUid } from "../../../utils/uid";
 import { exportToCSV } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
+import { getCustomCellName } from "./utils/getCustomCellName";
 
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown) {}
@@ -48,7 +49,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             }).flatMap(({ analyticsResponse, metadata }) => {
                 const columns = analyticsResponse.headers.map(header => header.column);
 
-                const mappedRows = _(this.mapAnalyticsResponseRows(analyticsResponse, metadata))
+                const mappedRows = _(this.mapAnalyticsResponseRows(analyticsResponse, metadata, visualization.id))
                     .sortBy(row => row[1])
                     .value();
 
@@ -70,11 +71,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         });
     }
 
-    mapAnalyticsResponseRows(analyticsResponse: Analytics, metadata: Metadata): string[][] {
+    mapAnalyticsResponseRows(analyticsResponse: Analytics, metadata: Metadata, visualizationId: Id): string[][] {
         return analyticsResponse.rows.map(row =>
             row.map(cell => {
                 if (isValidUid(cell)) {
-                    return this.getNameFromMetadata(cell, metadata);
+                    return getCustomCellName(visualizationId, cell) ?? this.getNameFromMetadata(cell, metadata);
                 } else {
                     return cell;
                 }

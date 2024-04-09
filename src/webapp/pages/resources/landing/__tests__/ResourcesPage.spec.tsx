@@ -51,7 +51,7 @@ describe("ResourcesPage", () => {
         expect(screen.queryAllByRole("listitem")).toHaveLength(0);
     });
     it("should render expected items content", async () => {
-        givenAResources(5);
+        givenAResources(7);
 
         renderPage();
 
@@ -60,7 +60,7 @@ describe("ResourcesPage", () => {
         await verifyElementsInGroup("News", 1);
         await verifyElementsInGroup("Multimedia", 1);
         await verifyElementsInGroup("Country analysis", 1);
-        await verifyElementsInGroup("Comparative analysis", 4);
+        await verifyElementsInGroup("Comparative analysis", 6);
     });
     it("should render enabled category filter", async () => {
         renderPage();

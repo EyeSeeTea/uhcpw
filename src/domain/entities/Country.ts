@@ -13,6 +13,7 @@ export type Country = {
         gapsSection: CountrySectionInfo;
         finProtecSection: CountrySectionInfo;
     };
+    isInCountryPage: boolean;
 };
 
 export type CountrySectionInfo = {
