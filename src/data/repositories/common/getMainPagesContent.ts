@@ -2,7 +2,7 @@ import { Future, FutureData } from "../../../domain/entities/Future";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
-const mainPagesProgram = "ai5rB7mcqHH";
+export const mainPagesProgram = "ai5rB7mcqHH";
 
 export function getMainPagesContent(api: D2Api): FutureData<DataValue[]> {
     return apiToFuture(
