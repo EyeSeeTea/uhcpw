@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Button } from "@material-ui/core";
+import { Button, Popper } from "@material-ui/core";
 import { Autocomplete, AutocompleteRenderGroupParams } from "@material-ui/lab";
 import styled from "styled-components";
 
@@ -41,6 +41,7 @@ export const IndicatorSelector = React.memo(
         return (
             <Container width={width}>
                 <StyledAutocomplete
+                    PopperComponent={props => <Popper {...props} style={{ width: 632 }} />}
                     fullWidth={fullWidth}
                     multiple={false}
                     options={options}
