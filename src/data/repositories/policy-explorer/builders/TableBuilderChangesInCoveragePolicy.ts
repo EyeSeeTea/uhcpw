@@ -246,6 +246,9 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
                         onlyFirstIdOfSubcategories.includes(de.id)
                 ) || [];
 
-        return dataElementsFromFirstChangesInCoveragePolicy2019.map(de => de.description || de.formName);
+        // Do not show "Month" in header
+        return dataElementsFromFirstChangesInCoveragePolicy2019.map(de =>
+            de.id === "U4N5xac8pmo" ? "" : de.description || de.formName
+        );
     }
 }
