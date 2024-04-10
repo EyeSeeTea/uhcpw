@@ -5,6 +5,16 @@ import { ResourceTheme, getThemeName } from "../../../domain/entities/resources/
 import { useAppContext } from "../../contexts/app-context";
 import { ResourceState } from "../resources/by-type/ResourcesByTypeState";
 
+const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
+    "country-analysis" | "comparative-analysis" | "news" | "multimedia",
+    number
+> = {
+    "country-analysis": 1,
+    "comparative-analysis": 2,
+    news: 3,
+    multimedia: 4,
+};
+
 type CountryResourcesType = {
     loading: boolean;
     items?: ResourceState[];
@@ -46,7 +56,21 @@ function buildResourcesBySection(
     countries: Country[],
     themes: ResourceTheme[]
 ): ResourceState[] {
-    return resources.map(item => {
+    const uniqueResources = resources.reduce((acc: Resource[], resource: Resource): Resource[] => {
+        const sameResourcesSortedByPriorityToBeShown = resources
+            .filter(({ id }) => resource.id === id)
+            .sort((resourceA, resourceB) => {
+                return RESOURCES_PRIORITY_TO_BE_SHOWN[resourceA.kind] - RESOURCES_PRIORITY_TO_BE_SHOWN[resourceB.kind];
+            });
+
+        const isAlready = acc.find(({ id }) => resource.id === id);
+
+        return isAlready || !sameResourcesSortedByPriorityToBeShown[0]
+            ? acc
+            : [...acc, sameResourcesSortedByPriorityToBeShown[0]];
+    }, []);
+
+    return uniqueResources.map(item => {
         if (item.kind === "news") {
             return item;
         }
