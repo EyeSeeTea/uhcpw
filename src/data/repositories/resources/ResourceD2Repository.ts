@@ -29,7 +29,6 @@ export const resourceDataElements: Record<string, string> = {
     link3Language: "DQAOcVPEQTh",
     link4: "yfKcdYARapH",
     link4Language: "QlRpFiResvs",
-    countryId: "PC9lIDo5x8m",
     relatedCountry1: "s4rejJAHkEj",
     relatedCountry2: "oQ6Qi6faNK5",
     relatedCountry3: "LpvSstI1qkv",
@@ -246,7 +245,8 @@ export class ResourceD2Repository implements ResourceRepository {
     private buildCountryAnalysis(event: D2Event): CountryAnalysis {
         const analysis = this.buildAnalysis(event);
 
-        const countryId = event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryId)?.value || "";
+        const countryId =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry1)?.value || "";
 
         return {
             kind: "country-analysis",
@@ -312,19 +312,20 @@ export class ResourceD2Repository implements ResourceRepository {
     }
 
     private filterCountries(events: D2Event[], filters: ResourceFilters) {
-        if (filters.category === "comparative-analysis") {
-            return events.filter(event => {
-                const relatedCountries = this.getRelatedCountries(event);
-
-                return relatedCountries?.some(country => filters.countries?.includes(country));
-            });
-        } else {
-            return events.filter(el =>
-                el.dataValues.some(
-                    el => el.dataElement === resourceDataElements.countryId && filters.countries?.includes(el.value)
+        if (filters.category === "country-analysis") {
+            return events.filter(event =>
+                event.dataValues.some(
+                    event =>
+                        event.dataElement === resourceDataElements.relatedCountry1 &&
+                        filters.countries?.includes(event.value)
                 )
             );
         }
+        return events.filter(event => {
+            const relatedCountries = this.getRelatedCountries(event);
+
+            return relatedCountries?.some(country => filters.countries?.includes(country));
+        });
     }
 
     private createLink(link?: string, language?: string) {
