@@ -93,7 +93,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                 style={{ marginLeft: 20 }}
                                 onClick={onDownload}
                             >
-                                {i18n.t("Download all tables")}
+                                {i18n.t("Download")}
                             </CustomButton>
                         ) : null}
 
