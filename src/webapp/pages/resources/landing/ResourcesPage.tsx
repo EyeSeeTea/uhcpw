@@ -10,7 +10,6 @@ import { ResourceGroup } from "../../../components/resources/resource-group/Reso
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
-import SearchInput from "../../../components/search-input/SearchInput";
 
 export const ResourcesPage: React.FC = React.memo(() => {
     const history = useHistory();
@@ -21,9 +20,9 @@ export const ResourcesPage: React.FC = React.memo(() => {
             <TitleContainer>
                 <Typography variant="h4">{i18n.t("Resources")}</Typography>
             </TitleContainer>
-            <SearchContainer>
+            {/* <SearchContainer>
                 <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
-            </SearchContainer>
+            </SearchContainer> */}
             <SelectsContainer maxWidth="xl">
                 <Grid container>
                     <ResourcesFilters
@@ -143,12 +142,12 @@ const Flag = styled.img`
     cursor: pointer;
 `;
 
-const SearchContainer = styled.div`
-    margin: -24px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    @media (max-width: 450px) {
-        padding: 0 25px;
-    }
-`;
+// const SearchContainer = styled.div`
+//     margin: -24px;
+//     display: flex;
+//     flex-direction: row;
+//     justify-content: center;
+//     @media (max-width: 450px) {
+//         padding: 0 25px;
+//     }
+// `;
