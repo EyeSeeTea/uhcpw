@@ -1,11 +1,9 @@
-import { FutureData, Future } from "../../../domain/entities/Future";
+import { FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
 import { IndicatorExplorerRepository } from "../../../domain/repositories/indicator-explorer/IndicatorExplorerRepository";
 import { D2Api } from "../../../types/d2-api";
-import { apiToFuture } from "../../../utils/futures";
-
-const selectCategoryInfoProgram = "ai5rB7mcqHH";
+import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
 
 const selectCategoryInfoDataElements: Record<string, Id> = {
     title: "h5A4TCDMTHM",
@@ -16,41 +14,13 @@ export class IndicatorExplorerD2Repository implements IndicatorExplorerRepositor
     constructor(private api: D2Api) {}
 
     getSelectCategoryInfo(): FutureData<IndicatorExplorerSelectCategoryInfo> {
-        return apiToFuture(
-            this.api.events.get({
-                fields: eventsFields,
-                skipPaging: true,
-                program: selectCategoryInfoProgram,
-            })
-        ).flatMap(response => {
-            if (response.events[0]) {
-                return Future.success(this.buildSelectCategoryInfo(response.events[0]));
-            }
-            return Future.error("An error has ocurred fetching Select Category Info");
-        });
+        return getMainPagesContent(this.api).map(dataValues => this.buildSelectCategoryInfo(dataValues));
     }
 
-    private buildSelectCategoryInfo(event: D2Event): IndicatorExplorerSelectCategoryInfo {
+    private buildSelectCategoryInfo(dataValues: DataValue[]): IndicatorExplorerSelectCategoryInfo {
         return {
-            title: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
-            text: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+            title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
+            text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
         };
     }
-}
-
-const eventsFields = {
-    event: true,
-    dataValues: { dataElement: true, value: true },
-    eventDate: true,
-} as const;
-
-interface D2Event {
-    event: string;
-    dataValues: DataValue[];
-    eventDate: string;
-}
-
-interface DataValue {
-    dataElement: string;
-    value: string;
 }

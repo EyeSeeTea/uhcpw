@@ -7,38 +7,31 @@ import { SectionBlock } from "../section-block/SectionBlock";
 import { CTA } from "../buttons/CTA";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
+import { AnalysisContent } from "../../../../domain/entities/HomePageContent";
 
 const ALBANIA_COUNTRY_ID = "VGOzFKfSazN";
 
-export const Analysis: React.FC = () => {
+type AnalysisProps = { content: AnalysisContent };
+
+export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
     return (
         <>
-            <SectionHeader
-                header={i18n.t("Analysis")}
-                subheader={i18n.t("Country-level and comparative analysis of financial protection")}
-            />
+            <SectionHeader header={content.title} subheader={content.subtitle} />
             <Content container>
                 <CountryContext item md={6} xs={12}>
-                    <SectionBlock
-                        title={i18n.t("Countries in context")}
-                        text={i18n.t(
-                            "Find out about the health system factors that strengthen and undermine financial protection at country level"
-                        )}
-                    />
+                    <SectionBlock title={content.countries.title} text={content.countries.text} />
                     <ButtonContainer>
-                        <CTA text={i18n.t("Country pages")} link={`/country-page?country=${ALBANIA_COUNTRY_ID}`} />
+                        <CTA
+                            text={content.countries.buttonText || ""}
+                            link={`/country-page?country=${ALBANIA_COUNTRY_ID}`}
+                        />
                     </ButtonContainer>
                 </CountryContext>
                 <Region item md={6} xs={12}>
-                    <SectionBlock
-                        title={i18n.t("The region at a glance")}
-                        text={i18n.t(
-                            "Compare financial protection indicators, identify gaps in coverage, explore good practice"
-                        )}
-                    />
+                    <SectionBlock title={content.regional.title} text={content.regional.text} />
                     <ButtonContainer>
                         <Link href="https://cmyn.short.gy/regionalreport" target="_blank" rel="noreferrer">
-                            {i18n.t("Regional report")}
+                            {i18n.t(content.regional.buttonText || "")}
                         </Link>
                     </ButtonContainer>
                 </Region>

@@ -1,4 +1,4 @@
-import { FutureData, Future } from "../../../domain/entities/Future";
+import { Future, FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
 import {
     PolicyExplorerCategory,
@@ -9,6 +9,7 @@ import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/p
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 
@@ -41,8 +42,6 @@ const sectionsList = [
 
 export const CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID = "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID";
 
-const selectCategoryInfoProgram = "ai5rB7mcqHH";
-
 const selectCategoryInfoDataElements: Record<string, Id> = {
     title: "yEaMMB7MXqI",
     text: "SAzOXqrxWfI",
@@ -74,24 +73,13 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     }
 
     getSelectCategoryInfo(): FutureData<PolicyExplorerSelectCategoryInfo> {
-        return apiToFuture(
-            this.api.events.get({
-                fields: eventsFields,
-                skipPaging: true,
-                program: selectCategoryInfoProgram,
-            })
-        ).flatMap(response => {
-            if (response.events[0]) {
-                return Future.success(this.buildSelectCategoryInfo(response.events[0]));
-            }
-            return Future.error("An error has ocurred fetching Select Category Info");
-        });
+        return getMainPagesContent(this.api).map(dataValues => this.buildSelectCategoryInfo(dataValues));
     }
 
-    private buildSelectCategoryInfo(event: D2Event): PolicyExplorerSelectCategoryInfo {
+    private buildSelectCategoryInfo(dataValues: DataValue[]): PolicyExplorerSelectCategoryInfo {
         return {
-            title: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
-            text: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+            title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
+            text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
         };
     }
 
@@ -156,12 +144,6 @@ const dataSetFields = {
     sections: { id: true, displayName: true, dataElements: dataElementsFields, description: true },
 } as const;
 
-const eventsFields = {
-    event: true,
-    dataValues: { dataElement: true, value: true },
-    eventDate: true,
-} as const;
-
 type D2DataElements = MetadataPick<{
     dataElements: { fields: typeof dataElementsFields };
 }>["dataElements"][number];
@@ -169,14 +151,3 @@ type D2DataElements = MetadataPick<{
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
-
-interface D2Event {
-    event: string;
-    dataValues: DataValue[];
-    eventDate: string;
-}
-
-interface DataValue {
-    dataElement: string;
-    value: string;
-}

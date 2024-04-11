@@ -83,60 +83,7 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-msgid "Analysis"
-msgstr ""
-
-msgid "Country-level and comparative analysis of financial protection"
-msgstr ""
-
-msgid "Countries in context"
-msgstr ""
-
-msgid ""
-"Find out about the health system factors that strengthen and undermine "
-"financial protection at country level"
-msgstr ""
-
-msgid "Country pages"
-msgstr ""
-
-msgid "The region at a glance"
-msgstr ""
-
-msgid ""
-"Compare financial protection indicators, identify gaps in coverage, explore "
-"good practice"
-msgstr ""
-
-msgid "Regional report"
-msgstr ""
-
-msgid "Explorers"
-msgstr ""
-
-msgid "Assess the current situation, monitor trends, compare countries"
-msgstr ""
-
-msgid "Indicator explorer"
-msgstr ""
-
-msgid ""
-"Over 50 indicators of financial hardship, unmet need for health care and "
-"spending on health"
-msgstr ""
-
-msgid "Explore data"
-msgstr ""
-
 msgid "indicator explorer"
-msgstr ""
-
-msgid "Policy explorer"
-msgstr ""
-
-msgid ""
-"Information on population coverage, service coverage, user charges and "
-"voluntary health insurance"
 msgstr ""
 
 msgid "policy explorer"
@@ -146,36 +93,6 @@ msgid "Zoom in"
 msgstr ""
 
 msgid "Zoom out"
-msgstr ""
-
-msgid "Methods"
-msgstr ""
-
-msgid "How financial protection is monitored matters"
-msgstr ""
-
-msgid "A focus on equity"
-msgstr ""
-
-msgid ""
-"We measure financial hardship using an approach that accounts for people's "
-"capacity to pay for health care"
-msgstr ""
-
-msgid "Numbers and stories"
-msgstr ""
-
-msgid ""
-"UHC Watch identifies the factors that influence financial protection at "
-"country level, drawing on insights from comparative analysis"
-msgstr ""
-
-msgid "Actionable evidence"
-msgstr ""
-
-msgid ""
-"UHC Watch provides clear guidance for policy by identifying who lacks "
-"financial protection, driven by which health services and why"
 msgstr ""
 
 msgid "Resources"
@@ -264,6 +181,18 @@ msgid "Abbreviations"
 msgstr ""
 
 msgid "Glossary"
+msgstr ""
+
+msgid "Indicator explorer"
+msgstr ""
+
+msgid "Policy explorer"
+msgstr ""
+
+msgid "Regional report"
+msgstr ""
+
+msgid "Methods"
 msgstr ""
 
 msgid "Back"

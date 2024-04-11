@@ -9,27 +9,23 @@ import indicatorExplorer from "../../../assets/indicator-explorer.svg";
 import policyExplorer from "../../../assets/policy-explorer.svg";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
+import { ExplorersContent } from "../../../../domain/entities/HomePageContent";
 
-export const Explorers: React.FC = () => {
+type ExplorersProps = {
+    content: ExplorersContent;
+};
+
+export const Explorers: React.FC<ExplorersProps> = ({ content }) => {
     return (
         <>
-            <SectionHeader
-                header={i18n.t("Explorers")}
-                subheader={i18n.t("Assess the current situation, monitor trends, compare countries")}
-                isBackgroundOnRight
-            />
+            <SectionHeader header={content.title} subheader={content.subtitle} isBackgroundOnRight />
             <Content container>
                 <IndicatorExplorer item md={6} xs={12}>
                     <ContentSectionGrid container>
                         <Grid item>
-                            <SectionBlock
-                                title={i18n.t("Indicator explorer")}
-                                text={i18n.t(
-                                    "Over 50 indicators of financial hardship, unmet need for health care and spending on health"
-                                )}
-                            />
+                            <SectionBlock title={content.indicator.title} text={content.indicator.text} />
                             <ButtonContainer>
-                                <CTA text={i18n.t("Explore data")} link="/indicator-explorer" />
+                                <CTA text={content.indicator.buttonText || ""} link="/indicator-explorer" />
                             </ButtonContainer>
                         </Grid>
                         <Grid item>
@@ -40,14 +36,9 @@ export const Explorers: React.FC = () => {
                 <PolicyExplorer item md={6} xs={12}>
                     <ContentSectionGrid container>
                         <Grid item>
-                            <SectionBlock
-                                title={i18n.t("Policy explorer")}
-                                text={i18n.t(
-                                    "Information on population coverage, service coverage, user charges and voluntary health insurance"
-                                )}
-                            />
+                            <SectionBlock title={content.policy.title} text={content.policy.text} />
                             <ButtonContainer>
-                                <CTA text={i18n.t("Explore data")} link="/policy-explorer" />
+                                <CTA text={content.policy.buttonText || ""} link="/policy-explorer" />
                             </ButtonContainer>
                         </Grid>
                         <Grid item>
