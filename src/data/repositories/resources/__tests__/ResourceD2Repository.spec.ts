@@ -260,7 +260,7 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
     );
     expect(comparativeAnalysis.theme).toBe("Financial Protection");
 
-    expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2024-04-01T22:00:00.000Z").toISOString());
+    expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2024-04-02T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
@@ -294,7 +294,7 @@ function verifyNews(newsItem?: News) {
     expect(newsItem.url).toBe(
         "https://www.who.int/europe/news/item/15-06-2023-new-who-report-outlines-concrete-steps-to-make-health-care-more-accessible-for-people-in-ukraine"
     );
-    expect(newsItem.date.toISOString()).toBe(new Date("2023-06-14T22:00:00.000Z").toISOString());
+    expect(newsItem.date.toISOString()).toBe(new Date("2023-06-15T00:00:00.000").toISOString());
 
     expect(newsItem.favouriteSection).toBe(true);
     expect(newsItem.favouriteSectionOrder).toBe(1);
@@ -311,7 +311,7 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
         "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=gh0m908lst5073jitb2pe52a7f&suffix=pdf&print=1"
     );
 
-    expect(multimediaItem.date.toISOString()).toBe(new Date("2022-12-31T23:00:00.000Z").toISOString());
+    expect(multimediaItem.date.toISOString()).toBe(new Date("2023-01-01T00:00:00.000").toISOString());
 
     expect(multimediaItem.theme).toBe("Financial Protection");
 
@@ -329,7 +329,7 @@ function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
         "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary."
     );
     expect(countryAnalysis.theme).toBe("Financial Protection");
-    expect(countryAnalysis.date.toISOString()).toBe(new Date("2023-05-14T22:00:00.000Z").toISOString());
+    expect(countryAnalysis.date.toISOString()).toBe(new Date("2023-05-15T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
