@@ -36,7 +36,7 @@ export function useCountryResources(country: string): CountryResourcesType {
             .run(
                 resources => {
                     setLoading(false);
-                    setItems(buildResourcesBySection(resources, countries, themes));
+                    setItems(buildResourcesBySection(resources, countries, themes, country));
                 },
                 () => {
                     setLoading(false);
@@ -54,16 +54,24 @@ export function useCountryResources(country: string): CountryResourcesType {
 function buildResourcesBySection(
     resources: Resource[],
     countries: Country[],
-    themes: ResourceTheme[]
+    themes: ResourceTheme[],
+    countryOfPage: string
 ): ResourceState[] {
-    const uniqueResources = resources.reduce((acc: Resource[], resource: Resource): Resource[] => {
+    const uniqueResources = resources.reduce((acc: Resource[], currentResource: Resource): Resource[] => {
         const sameResourcesSortedByPriorityToBeShown = resources
-            .filter(({ id }) => resource.id === id)
+            .filter(
+                resource =>
+                    currentResource.id === resource.id &&
+                    ((currentResource.kind === "country-analysis" && currentResource.countryId === countryOfPage) ||
+                        currentResource.kind === "comparative-analysis" ||
+                        currentResource.kind === "news" ||
+                        currentResource.kind === "multimedia")
+            )
             .sort((resourceA, resourceB) => {
                 return RESOURCES_PRIORITY_TO_BE_SHOWN[resourceA.kind] - RESOURCES_PRIORITY_TO_BE_SHOWN[resourceB.kind];
             });
 
-        const isAlready = acc.find(({ id }) => resource.id === id);
+        const isAlready = acc.find(({ id }) => currentResource.id === id);
 
         return isAlready || !sameResourcesSortedByPriorityToBeShown[0]
             ? acc
@@ -76,12 +84,12 @@ function buildResourcesBySection(
         }
 
         if (item.kind === "country-analysis") {
-            const country = countries.find(country => country.id === item.countryId);
+            const countryOfPageData = countries.find(({ id }) => id === countryOfPage);
 
             return {
                 ...item,
-                countryName: country?.name || "",
-                countryFlag: country?.flag || "",
+                countryName: countryOfPageData?.name || "",
+                countryFlag: countryOfPageData?.flag || "",
                 themeName: getThemeName(themes, item.theme),
             };
         }

@@ -138,7 +138,7 @@ export class ResourceD2Repository implements ResourceRepository {
                     ? this.filterCountries(response.events, filters)
                     : response.events;
 
-            const resources = this.buildResources(events, filters.category);
+            const resources = this.buildResources(events, filters);
             return this.filterByFavouriteSection(resources, filters.favouriteSection);
         });
     }
@@ -158,7 +158,7 @@ export class ResourceD2Repository implements ResourceRepository {
         }
     }
 
-    private buildResources(events: D2Event[], categoryFilter: string | undefined): Resource[] {
+    private buildResources(events: D2Event[], filters: ResourceFilters): Resource[] {
         return _.compact(
             _(
                 events.flatMap(event => {
@@ -178,17 +178,26 @@ export class ResourceD2Repository implements ResourceRepository {
                         event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryAnalysisCategory)
                             ?.value === "true";
 
+                    const mainCountryForCountryAnalysis = event.dataValues.find(
+                        dv => dv.dataElement === resourceDataElements.relatedCountry1
+                    )?.value;
+
                     return [
-                        isComparativeAnalysisCategory && (!categoryFilter || categoryFilter === "comparative-analysis")
+                        isComparativeAnalysisCategory &&
+                        (!filters.category || filters.category === "comparative-analysis")
                             ? this.buildComparativeAnalysis(event)
                             : undefined,
-                        isNewsCategory && (!categoryFilter || categoryFilter === "news")
+                        isNewsCategory && (!filters.category || filters.category === "news")
                             ? this.buildNews(event)
                             : undefined,
-                        isMultimediaCategory && (!categoryFilter || categoryFilter === "multimedia")
+                        isMultimediaCategory && (!filters.category || filters.category === "multimedia")
                             ? this.buildMultimedia(event)
                             : undefined,
-                        isCountryAnalysisCategory && (!categoryFilter || categoryFilter === "country-analysis")
+                        isCountryAnalysisCategory &&
+                        (!filters.category || filters.category === "country-analysis") &&
+                        (!filters.countries ||
+                            (mainCountryForCountryAnalysis &&
+                                filters.countries?.includes(mainCountryForCountryAnalysis)))
                             ? this.buildCountryAnalysis(event)
                             : undefined,
                     ];
