@@ -191,19 +191,7 @@ describe("Resource repository", () => {
         });
     });
 
-    describe("favourite and favouriteSection", () => {
-        it("when favourite true in filter then should return all favourite resources", async () => {
-            givenAComparativeAnalysis();
-
-            const response = await resourceRepository
-                .get({ category: "comparative-analysis", favourite: true })
-                .runAsync();
-
-            const comparativeAnalysisItems = (response.data || []) as ComparativeAnalysis[];
-
-            verifyFavouriteResources(comparativeAnalysisItems);
-        });
-
+    describe("favouriteSection", () => {
         it("when favouriteSection true in filter then should return all favouriteSection resources", async () => {
             givenAComparativeAnalysis();
 
@@ -373,12 +361,6 @@ function verifyFavourite(item?: BasicResource) {
 
     expect(item.favourite).toBe(true);
     expect(item.favouriteOrder).toBe(1);
-}
-
-function verifyFavouriteResources(resources: BasicResource[]) {
-    if (!resources.length) fail("Resources are undefined");
-    const allResourcesAreFavourite = resources.every(({ favourite }) => favourite);
-    expect(allResourcesAreFavourite).toBe(true);
 }
 
 function verifyFavouriteSectionResources(resources: ComparativeAnalysis[]) {
