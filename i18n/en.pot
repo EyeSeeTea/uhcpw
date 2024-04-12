@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-04-12T08:25:46.641Z\n"
-"PO-Revision-Date: 2024-04-12T08:25:46.641Z\n"
+"POT-Creation-Date: 2024-04-12T08:43:21.124Z\n"
+"PO-Revision-Date: 2024-04-12T08:43:21.124Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -248,9 +248,6 @@ msgid "Read less"
 msgstr ""
 
 msgid "Error fetching Methods"
-msgstr ""
-
-msgid "Download all tables"
 msgstr ""
 
 msgid "Suggested citation: "
