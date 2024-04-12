@@ -23,6 +23,7 @@ export type PolicyExplorerGeneralInfo = {
     sourceText: string;
     sourceUrl: string;
     reviewers: string;
+    notes: string;
 };
 
 export type PolicyExplorerReferences = {
