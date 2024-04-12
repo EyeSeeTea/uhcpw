@@ -5,8 +5,6 @@ export interface BasicResource {
     date: Date;
     favourite: boolean;
     favouriteOrder: number;
-    favouriteSection: boolean;
-    favouriteSectionOrder: number;
 }
 
 export interface AnalysisResource extends BasicResource {
@@ -20,11 +18,15 @@ export interface MediaResource extends BasicResource {
 
 export interface News extends MediaResource {
     kind: "news";
+    favouriteSection: boolean;
+    favouriteSectionOrder: number;
 }
 
 export interface Multimedia extends MediaResource {
     kind: "multimedia";
     theme: string;
+    favouriteSection: boolean;
+    favouriteSectionOrder: number;
 }
 
 export interface ResourceLink {
@@ -35,11 +37,15 @@ export interface ResourceLink {
 export interface ComparativeAnalysis extends AnalysisResource {
     kind: "comparative-analysis";
     relatedCountries: string[];
+    favouriteSection: boolean;
+    favouriteSectionOrder: number;
 }
 
 export interface CountryAnalysis extends AnalysisResource {
     kind: "country-analysis";
     countryId: string;
+    favouriteSection: boolean;
+    favouriteSectionOrder: number;
 }
 
 export type Resource = News | Multimedia | CountryAnalysis | ComparativeAnalysis;
