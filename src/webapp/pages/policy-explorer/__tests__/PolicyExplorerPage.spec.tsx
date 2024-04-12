@@ -413,7 +413,7 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
 
 async function switchToColumns() {
     const switchRowColumnButton = await screen.getByRole("button", {
-        name: /switch row\/column/i,
+        name: /row\/column/i,
     });
     await userEvent.click(switchRowColumnButton);
 }
