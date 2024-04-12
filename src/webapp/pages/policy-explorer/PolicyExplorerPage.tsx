@@ -145,6 +145,14 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         </GeneralRow>
                                     ) : null}
 
+                                    {info.notes ? (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.notes}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
+
                                     <GeneralRow>
                                         <CreditsText>{i18n.t("Last updated: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
