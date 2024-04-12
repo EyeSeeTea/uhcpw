@@ -65,9 +65,9 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
     );
 
     return (
-        <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
+        <Grid container alignItems="flex-end" justifyContent="center">
             <Grid item md={4} sm={6}>
-                <Center>
+                <Wrapper>
                     <CategorySelector
                         fullWidth
                         label={i18n.t("Category")}
@@ -76,10 +76,10 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         selectedCategoriesWithSubcategories={filters.category.selected}
                         onSelect={onCategoryChange}
                     />
-                </Center>
+                </Wrapper>
             </Grid>
             <Grid item md={4} sm={6}>
-                <Center>
+                <Wrapper>
                     <CountrySelector
                         fullWidth
                         hasClearAll
@@ -89,10 +89,10 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={onCountryChange}
                     />
-                </Center>
+                </Wrapper>
             </Grid>
             <Grid item md={3} sm={6}>
-                <Center>
+                <Wrapper>
                     <DropdownMultiple
                         fullWidth
                         label={i18n.t("Year")}
@@ -101,9 +101,9 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         values={filters.year.selected}
                         onChange={onYearsChange}
                     />
-                </Center>
+                </Wrapper>
             </Grid>
-            <Grid item md={1} sm={2}>
+            <GridGetTableButton item md={1} sm={2}>
                 <GetTableButton
                     aria-label="Get table"
                     variant="contained"
@@ -118,16 +118,17 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                 >
                     <Typography>{i18n.t("Get table")}</Typography>
                 </GetTableButton>
-            </Grid>
+            </GridGetTableButton>
         </Grid>
     );
 });
 
-const Center = styled.div`
+const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-inline-end: 40px;
 `;
 
 const GetTableButton = styled(Button)`
@@ -135,4 +136,8 @@ const GetTableButton = styled(Button)`
     height: 50px;
     text-transform: none;
     white-space: nowrap;
+`;
+
+const GridGetTableButton = styled(Grid)`
+    text-align: end;
 `;
