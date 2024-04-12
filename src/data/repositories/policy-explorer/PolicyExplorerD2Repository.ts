@@ -35,6 +35,7 @@ export const generalDataElements: Record<string, string> = {
     lastUpdate: "VDRInyNx7fG",
     references: "DsWWAKomY4Z",
     reviewers: "coUVQe1snBi",
+    notes: "HihKaI46iuO",
 };
 
 export const EMPTY_DATA = "";
@@ -227,6 +228,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
                 )?.value || "";
 
+            const notes =
+                dataValues.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.notes || "")
+                )?.value || "";
+
             return {
                 country,
                 sourceText,
@@ -235,6 +241,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 editors,
                 lastUpdate: new Date(lastUpdate),
                 reviewers,
+                notes,
             };
         });
     }
