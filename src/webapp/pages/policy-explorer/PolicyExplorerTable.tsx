@@ -72,13 +72,14 @@ export const PolicyExplorerTable = React.memo(
                         )}
                         <Row>
                             <SwitchRowColumnButton
+                                aria-label="Row/Column"
                                 variant="contained"
                                 startIcon={<SwitchIcon />}
                                 color="primary"
                                 onClick={() => onSwitchRowColumn(category.value)}
                                 className="switch-button"
                             >
-                                <Typography>{i18n.t("Row/column")}</Typography>
+                                <Typography>{i18n.t("Row/Column")}</Typography>
                             </SwitchRowColumnButton>
                         </Row>
                     </Row>
