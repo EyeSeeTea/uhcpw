@@ -3,7 +3,6 @@ import React, { RefObject, useCallback, useState } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
-import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ReactMarkdown from "react-markdown";
 
 import i18n from "../../../locales";
@@ -20,23 +19,13 @@ interface PolicyExplorerTableProps {
     rows?: PolicyExplorerCell[][];
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;
-    onDownload: () => void;
     referencesRef: RefObject<HTMLDivElement>;
-    hasDownloadButton?: boolean;
 }
 
 const EMPTY_URL = "/";
 
 export const PolicyExplorerTable = React.memo(
-    ({
-        category,
-        rows,
-        onSwitchRowColumn,
-        dataOrientation,
-        referencesRef,
-        onDownload,
-        hasDownloadButton = false,
-    }: PolicyExplorerTableProps) => {
+    ({ category, rows, onSwitchRowColumn, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
         const handleClickEmptyUrl = useCallback(
             event => {
                 event.preventDefault();
@@ -55,9 +44,9 @@ export const PolicyExplorerTable = React.memo(
                         <Typography variant="h6" color="primary">
                             {category.text}
                         </Typography>
-                        <Button onClick={() => setIsNotesDialogOpen(true)}>
+                        <InfoButton onClick={() => setIsNotesDialogOpen(true)}>
                             <InfoIcon color="primary" />
-                        </Button>
+                        </InfoButton>
                     </Wrapper>
                     <Container>
                         <Content>
@@ -76,31 +65,21 @@ export const PolicyExplorerTable = React.memo(
                                 <Typography variant="h6" color="primary">
                                     {category.text}
                                 </Typography>
-                                <Button onClick={() => setIsNotesDialogOpen(true)}>
+                                <InfoButton onClick={() => setIsNotesDialogOpen(true)}>
                                     <InfoIcon color="primary" />
-                                </Button>
+                                </InfoButton>
                             </Row>
                         )}
                         <Row>
-                            <CustomButton
-                                variant="outlined"
+                            <SwitchRowColumnButton
+                                variant="contained"
                                 startIcon={<SwitchIcon />}
                                 color="primary"
                                 onClick={() => onSwitchRowColumn(category.value)}
+                                className="switch-button"
                             >
-                                {i18n.t("Switch row/column")}
-                            </CustomButton>
-                            {hasDownloadButton ? (
-                                <CustomButton
-                                    variant="contained"
-                                    startIcon={<DownloadIcon />}
-                                    color="primary"
-                                    style={{ marginLeft: 20 }}
-                                    onClick={onDownload}
-                                >
-                                    {i18n.t("Download")}
-                                </CustomButton>
-                            ) : null}
+                                <Typography>{i18n.t("Row/column")}</Typography>
+                            </SwitchRowColumnButton>
                         </Row>
                     </Row>
                 </TableHeader>
@@ -159,17 +138,17 @@ const Row = styled.div`
 `;
 
 const TableHeader = styled.div`
-    padding: 48px 0px;
-`;
-
-const CustomButton = styled(Button)`
-    border-radius: 10px;
-    padding: 0px 16px;
+    padding-block-start: 20px;
+    padding-block-end: 48px;
 `;
 
 const TablePaper = styled(Paper)`
     border-radius: 10px;
     box-shadow: none;
+    margin-block-end: 92px;
+    &:last-child {
+        margin-block-end: 64px;
+    }
 `;
 
 const StyledNormalTable = styled(Table)`
@@ -181,7 +160,6 @@ const StyledNormalTable = styled(Table)`
     tbody > tr > td {
         vertical-align: top;
     }
-    margin-bottom: 64px;
 `;
 
 const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType }>`
@@ -197,7 +175,6 @@ const StyledInvertedTable = styled(Table)`
     tbody > tr > td {
         vertical-align: top;
     }
-    margin-bottom: 64px;
 `;
 
 const NoDataContainer = styled.div`
@@ -234,4 +211,16 @@ const Title = styled(Typography)`
 
 const StyledLi = styled.li`
     line-height: 1.43;
+`;
+
+const InfoButton = styled(Button)`
+    align-self: baseline;
+`;
+
+const SwitchRowColumnButton = styled(Button)`
+    border-radius: 20px;
+    padding: 0px 32px;
+    height: 42px;
+    width: 170px;
+    text-transform: initial;
 `;
