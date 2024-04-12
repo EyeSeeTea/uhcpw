@@ -86,6 +86,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                 {data && dataOrientationByTable ? (
                     <Content>
                         <DownloadButton
+                            aria-label="Download"
                             variant="contained"
                             startIcon={<DownloadIcon />}
                             color="primary"
