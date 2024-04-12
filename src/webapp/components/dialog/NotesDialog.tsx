@@ -1,8 +1,7 @@
-import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@material-ui/core";
+import { Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
 import ReactMarkdown from "react-markdown";
-import i18n from "@eyeseetea/d2-ui-components/locales";
 
 type DialogType = {
     isOpen: boolean;
@@ -14,7 +13,6 @@ export const NotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo 
     return (
         <Dialog open={isOpen} onClose={onClose}>
             <DialogContainer>
-                <DialogTitle style={{ fontSize: "18px", paddingBottom: "2px" }}>{i18n.t("Notes:")}</DialogTitle>
                 <DialogContent>
                     <ReactMarkdown
                         components={{
@@ -44,6 +42,11 @@ export const NotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo 
 
 const DialogContainer = styled.div`
     padding: 25px;
+    div.MuiDialogContent-root {
+        padding-inline: 16px;
+        padding-block-start: 16px;
+        padding-block-end: 8px;
+    }
 `;
 
 const CloseIconButton = styled(IconButton)`

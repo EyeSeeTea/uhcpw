@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-04-05T06:27:30.618Z\n"
-"PO-Revision-Date: 2024-04-05T06:27:30.618Z\n"
+"POT-Creation-Date: 2024-04-12T08:43:21.124Z\n"
+"PO-Revision-Date: 2024-04-12T08:43:21.124Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -250,9 +250,6 @@ msgstr ""
 msgid "Error fetching Methods"
 msgstr ""
 
-msgid "Download all tables"
-msgstr ""
-
 msgid "Suggested citation: "
 msgstr ""
 
@@ -271,7 +268,7 @@ msgstr ""
 msgid "Country information coming soon"
 msgstr ""
 
-msgid "Switch row/column"
+msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
