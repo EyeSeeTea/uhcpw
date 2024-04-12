@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { Future, FutureData } from "../../../../domain/entities/Future";
+import { Resource } from "../../../../domain/entities/resources/Resource";
 import { getThemeName } from "../../../../domain/entities/resources/ResourceTheme";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
@@ -11,9 +13,10 @@ export function useResourcesByType(params: {
     favourite?: boolean;
     themeFilter?: string;
     favouriteSection?: boolean;
+    includeAdvancedSearch?: boolean;
 }): ResourcesByTypeState {
     const { compositionRoot, countries, themes } = useAppContext();
-    const { category, countriesFilter, themeFilter } = params;
+    const { category, countriesFilter, themeFilter, includeAdvancedSearch } = params;
     const filters = useResourcesFilters({ category, countries: countriesFilter, theme: themeFilter });
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -35,9 +38,9 @@ export function useResourcesByType(params: {
 
     const onGetResources = useCallback(() => {
         setLoading(true);
-
-        const cancel = compositionRoot.resources.get
-            .execute({
+        // ...
+        const cancel = Future.joinObj({
+            normalResponse: compositionRoot.resources.get.execute({
                 searchTerm: filters.search.term,
                 category: params.category,
                 theme: filters.theme.selected,
@@ -46,42 +49,43 @@ export function useResourcesByType(params: {
                 count: params.count,
                 favourite: params.favourite,
                 favouriteSection: filters.search.term ? undefined : params.favouriteSection,
-            })
-            .run(
-                resources => {
-                    setLoading(false);
+            }),
+            advancedResponse: executeAdvancedSearch(includeAdvancedSearch),
+        }).run(
+            ({ normalResponse, advancedResponse }) => {
+                setLoading(false);
 
-                    const finalItems = resources.map(item => {
-                        if (item.kind === "news") {
-                            return item;
-                        } else if (item.kind === "country-analysis") {
-                            const country = countries.find(country => country.id === item.countryId);
+                const finalItems = [...normalResponse, ...advancedResponse].map(item => {
+                    if (item.kind === "news") {
+                        return item;
+                    } else if (item.kind === "country-analysis") {
+                        const country = countries.find(country => country.id === item.countryId);
 
-                            return {
-                                ...item,
-                                countryName: country?.name || "",
-                                countryFlag: country?.flag || "",
-                                themeName: getThemeName(themes, item.theme),
-                            };
-                        } else {
-                            return {
-                                ...item,
-                                themeName: getThemeName(themes, item.theme),
-                            };
-                        }
-                    });
+                        return {
+                            ...item,
+                            countryName: country?.name || "",
+                            countryFlag: country?.flag || "",
+                            themeName: getThemeName(themes, item.theme),
+                        };
+                    } else {
+                        return {
+                            ...item,
+                            themeName: getThemeName(themes, item.theme),
+                        };
+                    }
+                });
 
-                    setItems(finalItems);
-                },
-                () => {
-                    setLoading(false);
-                    setItems([]);
-                }
-            );
+                setItems(finalItems);
+            },
+            () => {
+                setLoading(false);
+                setItems([]);
+            }
+        );
 
         return cancel;
     }, [
-        compositionRoot.resources.get,
+        compositionRoot,
         filters.search.term,
         filters.theme.selected,
         filters.country.selected,
@@ -90,6 +94,7 @@ export function useResourcesByType(params: {
         params.count,
         params.favourite,
         params.favouriteSection,
+        includeAdvancedSearch,
         countries,
         themes,
     ]);
@@ -103,4 +108,12 @@ export function useResourcesByType(params: {
         items,
         onGetResources,
     };
+}
+
+function executeAdvancedSearch(includeAdvancedSearch?: boolean): FutureData<Resource[]> {
+    if (!includeAdvancedSearch) {
+        return Future.success([]);
+    }
+
+    return Future.success([]);
 }
