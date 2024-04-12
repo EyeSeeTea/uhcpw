@@ -74,17 +74,15 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                 {data && dataOrientationByTable ? (
                     <Content>
-                        {categories.length > 1 ? (
-                            <CustomButton
-                                variant="contained"
-                                startIcon={<DownloadIcon />}
-                                color="primary"
-                                style={{ marginLeft: 20 }}
-                                onClick={onDownload}
-                            >
-                                {i18n.t("Download")}
-                            </CustomButton>
-                        ) : null}
+                        <DownloadButton
+                            variant="contained"
+                            startIcon={<DownloadIcon />}
+                            color="primary"
+                            onClick={onDownload}
+                            className="download-button"
+                        >
+                            <Typography>{i18n.t("Download")}</Typography>
+                        </DownloadButton>
 
                         {categories.map(category => (
                             <PolicyExplorerTable
@@ -94,8 +92,6 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                 onSwitchRowColumn={onSwitchRowColumn}
                                 dataOrientation={dataOrientationByTable[category.value]}
                                 referencesRef={referencesRef}
-                                onDownload={onDownload}
-                                hasDownloadButton={categories.length === 1}
                             />
                         ))}
                     </Content>
@@ -172,15 +168,6 @@ const Content = styled.div`
     flex-direction: column;
 `;
 
-const CustomButton = styled(Button)`
-    margin: 48px 0 0 0;
-    border-radius: 10px;
-    padding: 0px 16px;
-    height: 36px;
-    width: 235px;
-    align-self: flex-end;
-`;
-
 const GeneralDataContainer = styled.div`
     font-size: 16px;
     margin-top: 24px;
@@ -232,4 +219,14 @@ const CreditsText = styled(Typography)`
 
 const Link = styled.a`
     text-decoration: none;
+`;
+
+const DownloadButton = styled(Button)`
+    border-radius: 20px;
+    padding: 0px 32px;
+    height: 42px;
+    width: 170px;
+    text-transform: initial;
+    align-self: flex-end;
+    margin-block-start: 20px;
 `;
