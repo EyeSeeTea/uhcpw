@@ -22,6 +22,7 @@ export type PolicyExplorerGeneralInfo = {
     lastUpdate: Date;
     source: string;
     reviewers: string;
+    notes: string;
 };
 
 export type PolicyExplorerReferences = {
