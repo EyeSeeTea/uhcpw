@@ -53,7 +53,8 @@ const validOrgUnitGroups = [
     "A1BdaIwDheX",
 ];
 
-const KOSOVO = "NEPywTBN52g";
+// NOTICE: For the moment, do not show Kosovo
+// const KOSOVO = "NEPywTBN52g";
 const NETHERLANDS = "rEQqufy2KNi";
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
@@ -91,8 +92,9 @@ export class CountryD2Repository implements CountryRepository {
                     fields: organisationUnitsFields,
                     paging: false,
                     level: 3,
-                    rootJunction: "OR",
-                    filter: { path: { like: euroOrgUnit }, id: { eq: KOSOVO } },
+                    // rootJunction: "OR",
+                    // filter: { path: { like: euroOrgUnit }, id: { eq: KOSOVO } },
+                    filter: { path: { like: euroOrgUnit } },
                     order: "shortName:asc",
                 })
             ),

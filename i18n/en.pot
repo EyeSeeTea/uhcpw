@@ -339,7 +339,7 @@ msgstr ""
 msgid "Country information coming soon"
 msgstr ""
 
-msgid "Switch row/column"
+msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
