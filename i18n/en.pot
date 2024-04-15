@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-04-12T12:51:31.710Z\n"
-"PO-Revision-Date: 2024-04-12T12:51:31.710Z\n"
+"POT-Creation-Date: 2024-04-15T06:08:09.502Z\n"
+"PO-Revision-Date: 2024-04-15T06:08:09.502Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -318,10 +318,10 @@ msgstr ""
 msgid "Error fetching Methods"
 msgstr ""
 
-msgid "Source: "
+msgid "Notes: "
 msgstr ""
 
-msgid "Notes: "
+msgid "Source: "
 msgstr ""
 
 msgid "Country experts: "
