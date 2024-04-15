@@ -93,6 +93,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                                         url={multimediaItem.url}
                                                         image={multimediaItem.image}
                                                         date={multimediaItem.date}
+                                                        isGeneralView
                                                     />
                                                 </Grid>
                                             );
@@ -111,6 +112,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                                         url={newsItem.url}
                                                         image={newsItem.image}
                                                         date={newsItem.date}
+                                                        isGeneralView
                                                     />
                                                 </Grid>
                                             );

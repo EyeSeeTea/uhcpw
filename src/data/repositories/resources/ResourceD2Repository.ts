@@ -20,6 +20,7 @@ export const resourceDataElements: Record<string, string> = {
     countryAnalysisCategory: "jwmMKDQrxhD",
     theme: "TTAQLTta8JS",
     image: "uund7zjS1Yt",
+    imageSpecificMedia: "UBAOd8omOog",
     title: "iBxOUseHUtO",
     link: "WlAFwnRMskp",
     linkLanguage: "yKHkUZLIGc6",
@@ -241,6 +242,7 @@ export class ResourceD2Repository implements ResourceRepository {
         return {
             id: event.event,
             image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            imageSpecificMedia: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageSpecificMedia}&eventUid=${event.event}`,
             title,
             url,
             date: new Date(event.eventDate),
