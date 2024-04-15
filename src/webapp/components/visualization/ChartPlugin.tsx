@@ -74,11 +74,17 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                       sortedSeries,
                       serie => {
                           const finalSerie = serie as any;
-                          return finalSerie.data?.[finalSerie.data.length - 1];
+                          const seriesDataWithNumbers = finalSerie.data.filter(
+                              (dataPoint: number) => dataPoint !== null && dataPoint !== undefined
+                          );
+                          return seriesDataWithNumbers?.length
+                              ? seriesDataWithNumbers?.[seriesDataWithNumbers.length - 1]
+                              : 0;
                       },
                       "desc"
                   )
                 : sortedSeries;
+
             const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
                 ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
