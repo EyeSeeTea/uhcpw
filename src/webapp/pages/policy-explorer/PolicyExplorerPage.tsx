@@ -109,6 +109,14 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
                                     </GeneralRow>
 
+                                    {info.notes ? (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.notes}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
+
                                     <GeneralRow>
                                         <CreditsText>{i18n.t("Source: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
@@ -123,7 +131,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     </GeneralRow>
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Country experts: ", { nsSeparator: false })}</CreditsText>
+                                        <CreditsText $noWrap>
+                                            {i18n.t("Country experts: ", { nsSeparator: false })}
+                                        </CreditsText>
                                         &nbsp;
                                         <CreditsText>{info.countryExperts}</CreditsText>
                                     </GeneralRow>
@@ -142,16 +152,10 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         </GeneralRow>
                                     ) : null}
 
-                                    {info.notes ? (
-                                        <GeneralRow>
-                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
-                                            &nbsp;
-                                            <CreditsText>{info.notes}</CreditsText>
-                                        </GeneralRow>
-                                    ) : null}
-
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Last updated: ", { nsSeparator: false })}</CreditsText>
+                                        <CreditsText $noWrap>
+                                            {i18n.t("Last updated: ", { nsSeparator: false })}
+                                        </CreditsText>
                                         &nbsp;
                                         <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
                                     </GeneralRow>
@@ -216,14 +220,15 @@ const Image = styled.img`
 const GeneralRow = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     margin-bottom: 12px;
 `;
 
-const CreditsText = styled(Typography)`
+const CreditsText = styled(Typography)<{ $noWrap?: boolean }>`
     color: black;
     font-weight: 500;
     font-size: 0.875rem;
+    white-space: ${props => (props.$noWrap ? "nowrap" : "unset")};
 `;
 
 const Link = styled.a`
