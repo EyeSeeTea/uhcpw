@@ -77,7 +77,9 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                           const seriesDataWithNumbers = finalSerie.data.filter(
                               (dataPoint: number) => dataPoint !== null && dataPoint !== undefined
                           );
-                          return seriesDataWithNumbers?.[seriesDataWithNumbers.length - 1];
+                          return seriesDataWithNumbers?.length
+                              ? seriesDataWithNumbers?.[seriesDataWithNumbers.length - 1]
+                              : 0;
                       },
                       "desc"
                   )
