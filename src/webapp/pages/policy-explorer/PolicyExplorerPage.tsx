@@ -120,6 +120,14 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
                                     </GeneralRow>
 
+                                    {info.notes ? (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.notes}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
+
                                     <GeneralRow>
                                         <CreditsText>
                                             {i18n.t("Suggested citation: ", { nsSeparator: false })}
@@ -134,14 +142,6 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                             {info.sourceText}
                                         </Link>
                                     </GeneralRow>
-
-                                    {info.notes ? (
-                                        <GeneralRow>
-                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
-                                            &nbsp;
-                                            <CreditsText>{info.notes}</CreditsText>
-                                        </GeneralRow>
-                                    ) : null}
 
                                     <GeneralRow>
                                         <CreditsText $noWrap>
