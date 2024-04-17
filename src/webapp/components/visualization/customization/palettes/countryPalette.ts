@@ -62,3 +62,5 @@ export const countryPalette = [
     "#B2DE5F",
     "#AAE9F3",
 ];
+
+export const EU27Color = "#185698";

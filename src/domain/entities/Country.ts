@@ -37,4 +37,4 @@ export type CountriesRegion = {
     parents: { id: string; name: string }[];
 };
 
-export const EUR27: Id = "svSQSBLTVz6";
+export const EU27: Id = "svSQSBLTVz6";

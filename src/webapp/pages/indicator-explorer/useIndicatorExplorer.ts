@@ -9,7 +9,7 @@ import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
-import { EUR27 } from "../../../domain/entities/Country";
+import { EU27 } from "../../../domain/entities/Country";
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 
 export const allYearsItem = { value: "all", text: i18n.t("All years") };
@@ -48,17 +48,18 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             const oldVisualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
             const newsVisualization = visualizations.find(visualization => visualization.id === value);
 
+            const isEu27Selected = selectedCountries?.find(selectedCountry => selectedCountry === EU27);
             if (
                 (oldVisualization?.isComparative && !newsVisualization?.isComparative) ||
-                (!newsVisualization?.isComparative && !newsVisualization?.hasEur27)
+                (!newsVisualization?.isComparative && !newsVisualization?.hasEur27 && isEu27Selected)
             ) {
                 onSelectedCountryChange([]);
             } else if (newsVisualization?.isComparative) {
-                onSelectedCountryChange(countryOptions.map(op => op.id).filter(id => id !== EUR27));
+                onSelectedCountryChange(countryOptions.map(op => op.id).filter(id => id !== EU27));
             }
 
             if (!newsVisualization?.hasEur27) {
-                setDisabledCountries([EUR27]);
+                setDisabledCountries([EU27]);
             } else {
                 setDisabledCountries([]);
             }
@@ -72,7 +73,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setSelectedIndicatorFilter(value);
             setShowVisualization(false);
         },
-        [countryOptions, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
+        [countryOptions, onSelectedCountryChange, selectedCountries, selectedIndicatorFilter, visualizations]
     );
 
     const onChangeYearFilter = useCallback(

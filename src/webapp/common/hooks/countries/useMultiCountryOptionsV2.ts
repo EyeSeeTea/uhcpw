@@ -27,7 +27,7 @@ export function useMultiCountryOptionsV2(params?: {
     }, [selectedCountries]);
 
     useEffect(() => {
-        if (showEurRegion) {
+        if (showEurRegion && !eurRegion) {
             compositionRoot.countries.getEurCountriesRegion.execute().run(
                 eurRegionData => {
                     setEurRegion(eurRegionData);
@@ -37,7 +37,7 @@ export function useMultiCountryOptionsV2(params?: {
                 }
             );
         }
-    }, [compositionRoot.countries, showEurRegion]);
+    }, [compositionRoot.countries, showEurRegion, eurRegion]);
 
     useEffect(() => {
         const countryOptions = countries.map(country => ({
