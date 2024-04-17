@@ -7,6 +7,11 @@ import { CountryOption, CountrySelector } from "../CountrySelector";
 
 const countries: CountryOption[] = [
     {
+        id: "svSQSBLTVz6",
+        name: "EU27",
+        parents: [],
+    },
+    {
         id: "BVnpk4xiXGJ",
         name: "China",
         parents: [
@@ -35,13 +40,14 @@ const countries: CountryOption[] = [
 /**
  *  Expected tree
  *
- *  All Countries
+ *    EU27
+ *  - All Countries
  *      China
  *      France
  *      Spain
- *  Asia
+ *  - Asia
  *      China
- *  Europe
+ *  - Europe
  *      France
  *      Spain
  *
@@ -144,7 +150,7 @@ describe("Given CountrySelector", () => {
     });
     describe("When has select all and clear all options", () => {
         beforeEach(async () => {
-            renderComponent(true, true);
+            renderComponent({ hasSelectAll: true, hasClearAll: true });
             focusComponent();
             await screen.findByRole("listbox");
             screen.getByText(/select country/i);
@@ -188,6 +194,17 @@ describe("Given CountrySelector", () => {
             await verifyNotFoundChip(getChild(2));
         });
     });
+    describe("When an option is disabled", () => {
+        beforeEach(async () => {
+            renderComponent({ disabledCountries: ["svSQSBLTVz6"] });
+            focusComponent();
+        });
+        it("Then the option should be disabled", async () => {
+            const disabledText = await screen.findByText(/eu27/i);
+
+            expect(disabledText.getAttribute("aria-disabled")).toBe("true");
+        });
+    });
 });
 
 async function selectAllCountries() {
@@ -223,18 +240,26 @@ function collapseCountriesParentNode(index: 0 | 1 | 2) {
     }
 }
 
-function renderComponent(hasSelectAll?: boolean, hasClearAll?: boolean) {
-    customRender(<CountrySelectorContainer hasSelectAll={hasSelectAll} hasClearAll={hasClearAll} />);
+function renderComponent(params?: { hasSelectAll?: boolean; hasClearAll?: boolean; disabledCountries?: string[] }) {
+    customRender(
+        <CountrySelectorContainer
+            hasSelectAll={params?.hasSelectAll}
+            hasClearAll={params?.hasClearAll}
+            disabledCountries={params?.disabledCountries}
+        />
+    );
 }
 
 interface CountrySelectorContainerProps {
     hasSelectAll?: boolean;
     hasClearAll?: boolean;
+    disabledCountries?: string[];
 }
 
 const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
     hasSelectAll = false,
     hasClearAll = false,
+    disabledCountries = [],
 }) => {
     const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
@@ -249,6 +274,7 @@ const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
             onSelectedIdsChange={handleSelectedChange}
             hasSelectAll={hasSelectAll}
             hasClearAll={hasClearAll}
+            disabledCountries={disabledCountries}
         />
     );
 };
