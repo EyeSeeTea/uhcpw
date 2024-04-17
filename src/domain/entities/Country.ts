@@ -1,3 +1,5 @@
+import { Id } from "./Ref";
+
 export type Country = {
     id: string;
     name: string;
@@ -25,3 +27,14 @@ export type CountrySectionInfo = {
 };
 
 export type CountryStatus = "Strong" | "Gaps" | "Weak";
+
+export type CountriesRegion = {
+    id: string;
+    name: string;
+    longName: string;
+    code: string;
+    description: string;
+    parents: { id: string; name: string }[];
+};
+
+export const EUR27: Id = "svSQSBLTVz6";
