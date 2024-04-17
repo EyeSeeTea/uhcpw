@@ -13,7 +13,7 @@ export function useResourcesFilters(params: {
 }): ResourcesFiltersState {
     const { category, countries, theme, countryOptionsToSelect } = params;
     const { compositionRoot, themes } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2(countries, countryOptionsToSelect);
+    const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countries, countryOptionsToSelect });
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 

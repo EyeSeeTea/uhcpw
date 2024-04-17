@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { GlobalMessage, IndicatorExplorerState, IndicatorOption } from "./IndicatorExplorerState";
@@ -9,6 +9,7 @@ import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
+import { EUR27 } from "../../../domain/entities/Country";
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 
 export const allYearsItem = { value: "all", text: i18n.t("All years") };
@@ -17,10 +18,11 @@ const allYearsFilters = [allYearsItem, ...yearsItems];
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2();
-    const { selected: selectedCountries, onSelectedChange: onSelectedCountryChange, options } = countryFilter;
-
-    const countryOptions = useMemo(() => options.filter(option => option.name !== "Greenland"), [options]);
+    const {
+        selected: selectedCountries,
+        onSelectedChange: onSelectedCountryChange,
+        options: countryOptions,
+    } = useMultiCountryOptionsV2({ showEurRegion: true });
 
     const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -39,15 +41,26 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const [showVisualization, setShowVisualization] = useState(false);
 
+    const [disabledCountries, setDisabledCountries] = useState<string[]>([]);
+
     const onChangeCategoryFilter = useCallback(
         (value: string | undefined) => {
             const oldVisualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
             const newsVisualization = visualizations.find(visualization => visualization.id === value);
 
-            if (oldVisualization?.isComparative && !newsVisualization?.isComparative) {
+            if (
+                (oldVisualization?.isComparative && !newsVisualization?.isComparative) ||
+                (!newsVisualization?.isComparative && !newsVisualization?.hasEur27)
+            ) {
                 onSelectedCountryChange([]);
             } else if (newsVisualization?.isComparative) {
-                onSelectedCountryChange(countryOptions.map(op => op.id));
+                onSelectedCountryChange(countryOptions.map(op => op.id).filter(id => id !== EUR27));
+            }
+
+            if (!newsVisualization?.hasEur27) {
+                setDisabledCountries([EUR27]);
+            } else {
+                setDisabledCountries([]);
             }
 
             if (!newsVisualization?.isComparative) {
@@ -164,7 +177,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     return {
         filters: {
-            country: { ...countryFilter, onSelectedChange: onCountriesChange, options: countryOptions },
+            country: {
+                selected: selectedCountries,
+                onSelectedChange: onCountriesChange,
+                options: countryOptions,
+                disabledCountries,
+            },
             indicators: {
                 options: indicatorFilters,
                 selected: selectedIndicatorFilter,

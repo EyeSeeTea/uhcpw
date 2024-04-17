@@ -24,8 +24,10 @@ export type IndicatorFilterState = {
 
 export type YeasrFilterState = OptionsMultiFilterState & { realYearSelected: string[] | undefined };
 
+type CountryFilterStateWithDisabled = CountryFilterState & { disabledCountries: string[] };
+
 export type IndicatorExplorerFiltersState = {
-    country: CountryFilterState;
+    country: CountryFilterStateWithDisabled;
     indicators: IndicatorFilterState;
     year: YeasrFilterState;
 };

@@ -37,6 +37,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         countries={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}
+                        disabledCountries={filters.country.disabledCountries}
                     />
                 </Center>
             </Grid>
