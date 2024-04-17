@@ -1,7 +1,8 @@
 export interface BasicResource {
     id: string;
     title: string;
-    image: string;
+    imageOriginal: string;
+    imageCustom: string;
     date: Date;
     favourite: boolean;
     favouriteOrder: number;
@@ -14,7 +15,6 @@ export interface AnalysisResource extends BasicResource {
 
 export interface MediaResource extends BasicResource {
     url: string;
-    imageSpecificMedia: string;
 }
 
 export interface News extends MediaResource {

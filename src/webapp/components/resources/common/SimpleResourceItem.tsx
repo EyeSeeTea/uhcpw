@@ -14,16 +14,16 @@ export interface SimpleResourceItemProps {
     tag?: string;
     tagColor?: string;
     onTagClick?: () => void;
-    isGeneralView?: boolean;
+    maintainAspectRatio?: boolean;
 }
 
 export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
-    ({ title, url, image, date, dateFormat, tag, tagColor, onTagClick, isGeneralView = false }) => {
+    ({ title, url, image, date, dateFormat, tag, tagColor, onTagClick, maintainAspectRatio = false }) => {
         return (
             <Item elevation={0} role="listitem">
                 <Column>
                     <a href={url} style={{ width: "100%" }} target="_blank" rel="noreferrer">
-                        <Image src={image} alt={title} fitContain={isGeneralView} />
+                        <Image src={image} alt={title} $maintainAspectRatio={maintainAspectRatio} />
                     </a>
 
                     <Box height={20} />
@@ -58,10 +58,10 @@ const Text = styled(Typography)`
     font-weight: normal;
 `;
 
-const Image = styled.img<{ fitContain?: boolean }>`
+const Image = styled.img<{ $maintainAspectRatio?: boolean }>`
     width: 100%;
     height: 300px;
-    object-fit: ${props => (props.fitContain ? "contain" : "cover")};
+    object-fit: ${props => (props.$maintainAspectRatio ? "contain" : "cover")};
 `;
 
 const Row = styled.div`

@@ -91,9 +91,9 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                                     <SimpleResourceItem
                                                         title={multimediaItem.title}
                                                         url={multimediaItem.url}
-                                                        image={multimediaItem.image}
+                                                        image={multimediaItem.imageOriginal}
                                                         date={multimediaItem.date}
-                                                        isGeneralView
+                                                        maintainAspectRatio
                                                     />
                                                 </Grid>
                                             );
@@ -110,9 +110,9 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                                     <SimpleResourceItem
                                                         title={newsItem.title}
                                                         url={newsItem.url}
-                                                        image={newsItem.image}
+                                                        image={newsItem.imageOriginal}
                                                         date={newsItem.date}
-                                                        isGeneralView
+                                                        maintainAspectRatio
                                                     />
                                                 </Grid>
                                             );

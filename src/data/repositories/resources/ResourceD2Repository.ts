@@ -19,8 +19,8 @@ export const resourceDataElements: Record<string, string> = {
     multimediaCategory: "awlsQKOwDgB",
     countryAnalysisCategory: "jwmMKDQrxhD",
     theme: "TTAQLTta8JS",
-    image: "uund7zjS1Yt",
-    imageSpecificMedia: "UBAOd8omOog",
+    imageOriginal: "uund7zjS1Yt",
+    imageCustom: "UBAOd8omOog",
     title: "iBxOUseHUtO",
     link: "WlAFwnRMskp",
     linkLanguage: "yKHkUZLIGc6",
@@ -241,8 +241,8 @@ export class ResourceD2Repository implements ResourceRepository {
 
         return {
             id: event.event,
-            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
-            imageSpecificMedia: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageSpecificMedia}&eventUid=${event.event}`,
+            imageOriginal: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageOriginal}&eventUid=${event.event}`,
+            imageCustom: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageCustom}&eventUid=${event.event}`,
             title,
             url,
             date: new Date(event.eventDate),
@@ -301,7 +301,8 @@ export class ResourceD2Repository implements ResourceRepository {
         const favouriteData = this.buildFavourite(event);
 
         return {
-            image: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.image}&eventUid=${event.event}`,
+            imageOriginal: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageOriginal}&eventUid=${event.event}`,
+            imageCustom: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageCustom}&eventUid=${event.event}`,
             id: event.event,
             theme: theme,
             links: _([

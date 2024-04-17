@@ -13,7 +13,7 @@ import {
     createMultimediaResources,
     createNewsResources,
 } from "../../resources/common/__tests__/helpers";
-import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
+import { Resource } from "../../../../domain/entities/resources/Resource";
 import { PersonState } from "../../about/AboutState";
 import { CountryPageInfoD2Repository } from "../../../../data/repositories/country-page/CountryPageInfoD2Repository";
 import { SliderInfo } from "../../../../domain/entities/country-page/SliderInfo";
@@ -129,7 +129,7 @@ async function verifyExpertMembers(experts: PersonState[]) {
     });
 }
 
-async function verifyResourceItems(resources: any[]) {
+async function verifyResourceItems(resources: Resource[]) {
     const scope = within(screen.getByLabelText(/country-page-resources/i));
     const items = await scope.findAllByRole("listitem");
 
@@ -143,14 +143,16 @@ async function verifyResourceItems(resources: any[]) {
         const itemScope = within(item);
 
         const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
-        expect(image.src).toContain(resource.image);
+        expect(image.src).toContain(resource.imageOriginal);
 
-        const links = itemScope.queryAllByRole("link");
-        expect(itemScope.queryAllByRole("link").length).toBeGreaterThan(0);
+        if (resource.kind === "news" || resource.kind === "multimedia") {
+            const links = itemScope.queryAllByRole("link");
+            expect(itemScope.queryAllByRole("link").length).toBeGreaterThan(0);
 
-        links.forEach(link => {
-            expect(link).toHaveAttribute("href", resource.url);
-        });
+            links.forEach(link => {
+                expect(link).toHaveAttribute("href", resource.url);
+            });
+        }
 
         if (resource.kind === "news") {
             itemScope.getByText(moment(resource.date).format("DD MMMM YYYY"));
@@ -190,10 +192,10 @@ function givenAPersons(): {
     return { experts };
 }
 
-function givenAResources(): (ComparativeAnalysis | CountryAnalysis | News | Multimedia)[] {
+function givenAResources(): Resource[] {
     const mockedRepository = mock(ResourceD2Repository);
 
-    const data = [
+    const data: Resource[] = [
         ...createComparativeAnalysisResources(1),
         ...createCountryAnalysisResources(1),
         ...createNewsResources(1),
