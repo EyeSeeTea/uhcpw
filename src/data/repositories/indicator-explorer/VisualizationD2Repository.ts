@@ -57,11 +57,28 @@ export class VisualizationD2Repository implements VisualizationRepository {
 
         const visualizationExtra = { ...(VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra), notes };
 
+        const columns = (d2Visualization.columns as VisualizationDimension[]).reduce(
+            (acc: VisualizationDimension[], column: VisualizationDimension) => {
+                const renamedItems = column.items.map(item => ({
+                    ...item,
+                    id: item.dimensionItem,
+                }));
+                return [
+                    ...acc,
+                    {
+                        ...column,
+                        items: renamedItems,
+                    },
+                ];
+            },
+            [] as VisualizationDimension[]
+        );
+
         return {
             id: d2Visualization.id,
             name: d2Visualization.name,
             rows: d2Visualization.rows as VisualizationDimension[],
-            columns: d2Visualization.columns as VisualizationDimension[],
+            columns: columns,
             filters: d2Visualization.filters as VisualizationDimension[],
             dataDimensionItems: d2Visualization.dataDimensionItems as DataDimensionItem[],
             categoryDimensions: d2Visualization.categoryDimensions as CategoryDimensionItem[],
@@ -98,7 +115,11 @@ const visualizationFields = {
     id: true,
     name: true,
     rows: { id: true, dimension: true, items: true },
-    columns: { id: true, dimension: true, items: true },
+    columns: {
+        id: true,
+        dimension: true,
+        items: { dimensionItem: true },
+    },
     filters: { id: true, dimension: true, items: true },
     dataDimensionItems: true,
     categoryDimensions: { category: true, categoryOptions: true },

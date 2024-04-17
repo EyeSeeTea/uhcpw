@@ -8,6 +8,7 @@ export interface VisualizationExtra {
     maxCountryFilter?: number;
     minCountryFilter?: number;
     isComparative?: boolean;
+    hasEur27?: boolean;
     showCountryTag?: boolean;
 }
 
@@ -104,6 +105,7 @@ export type VisualizationDimension = { id: Dimension; dimension: Dimension; item
 export type DimensionItem = {
     name: string;
     id: string;
+    dimensionItem: string;
     dimensionItemType:
         | "DATA_ELEMENT"
         | "DATA_ELEMENT_OPERAND"
