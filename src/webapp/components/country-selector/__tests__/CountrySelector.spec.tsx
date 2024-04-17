@@ -7,11 +7,6 @@ import { CountryOption, CountrySelector } from "../CountrySelector";
 
 const countries: CountryOption[] = [
     {
-        id: "svSQSBLTVz6",
-        name: "EU27",
-        parents: [],
-    },
-    {
         id: "BVnpk4xiXGJ",
         name: "China",
         parents: [
@@ -35,12 +30,16 @@ const countries: CountryOption[] = [
             { id: "3", name: "Europe" },
         ],
     },
+    {
+        id: "svSQSBLTVz6",
+        name: "EU27",
+        parents: [],
+    },
 ];
 
 /**
  *  Expected tree
  *
- *    EU27
  *  - All Countries
  *      China
  *      France
@@ -50,6 +49,7 @@ const countries: CountryOption[] = [
  *  - Europe
  *      France
  *      Spain
+ *    EU27
  *
  *
  */
