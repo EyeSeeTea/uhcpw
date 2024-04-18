@@ -13,6 +13,7 @@ interface VisualizationPluginProps {
     currentCountry?: string;
     withoutBackground?: boolean;
     useHeaderForCountryPage?: boolean;
+    noDataMessage?: string;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
@@ -23,6 +24,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         countries,
         withoutBackground = false,
         useHeaderForCountryPage = false,
+        noDataMessage = "",
     }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
@@ -71,7 +73,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             </Container>
         ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
             <Center>
-                <Typography variant="subtitle1">{i18n.t("There may be no data")}</Typography>
+                <Typography variant="subtitle1">
+                    {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
+                </Typography>
             </Center>
         ) : chartData.kind === "Error" ? (
             <Center>
