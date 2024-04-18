@@ -45,7 +45,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }, [chartData, useHeaderForCountryPage]);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
-            <Container ref={ref} $withoutBackground={withoutBackground}>
+            <Container ref={ref} $withoutBackground={withoutBackground} $isCountryPage={useHeaderForCountryPage}>
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualization.notes || ""}
                     chartFriendlyName={chartData.visualization.friendlyName}
@@ -89,8 +89,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     }
 );
 
-const Container = styled.div<{ $withoutBackground: boolean }>`
-    margin-top: 48px;
+const Container = styled.div<{ $withoutBackground: boolean; $isCountryPage?: boolean }>`
+    margin-block-start: ${props => (props.$isCountryPage ? "0px" : "48px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding: 0px 32px 32px 32px;
 `;
