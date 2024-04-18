@@ -6,10 +6,10 @@ import GridOnIcon from "@material-ui/icons/GridOn";
 
 import i18n from "../../../locales";
 import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
-import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
+import { SelectCategoryContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 
-export const EmptyContent: React.FC<{ info?: PolicyExplorerSelectCategoryInfo | IndicatorExplorerSelectCategoryInfo }> =
-    React.memo(({ info }) => {
+export const EmptyContent: React.FC<{ info?: PolicyExplorerSelectCategoryInfo | SelectCategoryContent }> = React.memo(
+    ({ info }) => {
         if (!info) return null;
 
         return (
@@ -31,7 +31,8 @@ export const EmptyContent: React.FC<{ info?: PolicyExplorerSelectCategoryInfo | 
                 </Content>
             </Container>
         );
-    });
+    }
+);
 
 const Row = styled.div`
     display: flex;

@@ -34,7 +34,7 @@ import { CountryPageInfoD2Repository } from "./data/repositories/country-page/Co
 import { GetOfficeInfoUseCase } from "./domain/usecases/about/GetOfficeInfoUseCase";
 import { AboutInfoD2Repository } from "./data/repositories/about/AboutInfoD2Repository";
 import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerSelectCategoryInfoUseCase";
-import { GetIndicatorExplorerSelectCategoryInfoUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerSelectCategoryInfoUseCase";
+import { GetIndicatorExplorerPageContentUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerPageContentUseCase";
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
 import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
@@ -93,7 +93,7 @@ export function getCompositionRoot(
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
             downloadAnalytics: new DownloadAnalyticsUseCase(repositories.visualization, repositories.analytics),
             getLegendSets: new GetLegendSetsUseCase(repositories.legendSet),
-            getSelectCategoryInfo: new GetIndicatorExplorerSelectCategoryInfoUseCase(repositories.indicatorExplorer),
+            getPageContent: new GetIndicatorExplorerPageContentUseCase(repositories.indicatorExplorer),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),
