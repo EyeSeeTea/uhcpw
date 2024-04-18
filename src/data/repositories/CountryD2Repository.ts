@@ -105,16 +105,17 @@ export class CountryD2Repository implements CountryRepository {
         });
     }
 
+    // WORKAROUND: EU27 data is added in Greenland because we cannot use EUR
     public getEurCountriesRegion(): FutureData<CountriesRegion | undefined> {
         return apiToFuture(
             this.api.models.organisationUnits.get({
                 fields: organisationUnitsFields,
                 paging: false,
-                level: 2,
-                filter: { id: { eq: euroOrgUnit } },
+                level: 3,
+                filter: { id: { eq: GREENLAND } },
             })
         ).map(eurRegion => {
-            return this.buildRegion(eurRegion?.objects[0]);
+            return this.buildEurCountriesRegion(eurRegion?.objects[0]);
         });
     }
 
@@ -320,7 +321,7 @@ export class CountryD2Repository implements CountryRepository {
         return [];
     }
 
-    private buildRegion(eurRegion?: D2OrgUnit): CountriesRegion | undefined {
+    private buildEurCountriesRegion(eurRegion?: D2OrgUnit): CountriesRegion | undefined {
         return eurRegion
             ? {
                   id: eurRegion.id,

@@ -31,7 +31,7 @@ const countries: CountryOption[] = [
         ],
     },
     {
-        id: "svSQSBLTVz6",
+        id: "IZy3ESdFnp5",
         name: "EU27",
         parents: [],
     },
@@ -196,7 +196,7 @@ describe("Given CountrySelector", () => {
     });
     describe("When an option is disabled", () => {
         beforeEach(async () => {
-            renderComponent({ disabledCountries: ["svSQSBLTVz6"] });
+            renderComponent({ disabledCountries: ["IZy3ESdFnp5"] });
             focusComponent();
         });
         it("Then the option should be disabled", async () => {

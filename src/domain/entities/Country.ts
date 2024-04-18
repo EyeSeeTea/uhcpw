@@ -37,4 +37,5 @@ export type CountriesRegion = {
     parents: { id: string; name: string }[];
 };
 
-export const EU27: Id = "svSQSBLTVz6";
+// WORKAROUND: EU27 data is added in Greenland because we cannot use EUR
+export const EU27: Id = "IZy3ESdFnp5";
