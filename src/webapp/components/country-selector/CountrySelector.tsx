@@ -34,6 +34,7 @@ interface CountrySelectorProps {
     hasSelectAll?: boolean;
     hasClearAll?: boolean;
     topClearAll?: number;
+    maxSelection?: number;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
@@ -49,6 +50,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         hasSelectAll = false,
         hasClearAll = false,
         topClearAll = 0,
+        maxSelection,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -182,9 +184,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                 const finalChildrenAllowed = allCountriesInSelectedParent.filter(
                     ({ id }) => !disabledCountries?.includes(id)
                 );
-                return hasSelectAll && !finalChildrenAllowed.length;
+                return (
+                    (hasSelectAll && !finalChildrenAllowed.length) ||
+                    (!!maxSelection && maxSelection < finalChildrenAllowed.length)
+                );
             },
-            [disabledCountries, hasSelectAll]
+            [disabledCountries, hasSelectAll, maxSelection]
         );
 
         const areAllCountriesSelected = useMemo(() => {
@@ -195,15 +200,15 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             );
         }, [disabledCountries, filteredCountriesBySearch, selectedIds]);
 
+        const countriesToSelect = useMemo(() => {
+            return filteredCountriesBySearch.filter(({ id }) => !disabledCountries?.includes(id)).map(({ id }) => id);
+        }, [disabledCountries, filteredCountriesBySearch]);
+
         const handleSelectAll = useCallback(() => {
             if (hasSelectAll) {
-                const countriesToSelect = filteredCountriesBySearch
-                    .filter(({ id }) => !disabledCountries?.includes(id))
-                    .map(({ id }) => id);
-
                 onSelectedIdsChange(countriesToSelect);
             }
-        }, [disabledCountries, filteredCountriesBySearch, hasSelectAll, onSelectedIdsChange]);
+        }, [countriesToSelect, hasSelectAll, onSelectedIdsChange]);
 
         return (
             <Container $fullWidth={fullWidth}>
@@ -285,7 +290,10 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                 <StyledButton
                                     variant="text"
                                     onClick={handleSelectAll}
-                                    disabled={areAllCountriesSelected}
+                                    disabled={
+                                        areAllCountriesSelected ||
+                                        (!!maxSelection && maxSelection < countriesToSelect.length)
+                                    }
                                     right={100}
                                 >
                                     {i18n.t("Select all")}
@@ -321,7 +329,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                                 name={option.name}
                                                 selected={selectedOption}
                                                 onSelectedChange={handleSelectedChange}
-                                                disabled={disabledCountries?.includes(option.id)}
+                                                disabled={
+                                                    disabledCountries?.includes(option.id) ||
+                                                    (!selectedOption &&
+                                                        !!maxSelection &&
+                                                        maxSelection === selectedIds.length)
+                                                }
                                             />
                                         </FirstLevelLeafWrapper>
                                     );
@@ -358,7 +371,12 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                                         name={child.name}
                                                         selected={selected}
                                                         onSelectedChange={handleSelectedChange}
-                                                        disabled={disabledCountries?.includes(child.id)}
+                                                        disabled={
+                                                            disabledCountries?.includes(child.id) ||
+                                                            (!selected &&
+                                                                !!maxSelection &&
+                                                                maxSelection === selectedIds.length)
+                                                        }
                                                     />
                                                 );
                                             })}

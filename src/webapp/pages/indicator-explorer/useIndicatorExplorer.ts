@@ -11,6 +11,7 @@ import { Visualization } from "../../../domain/entities/indicator-explorer/Visua
 import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
 import { EU27 } from "../../../domain/entities/Country";
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
+import { CountryOption } from "../../components/country-selector/CountrySelector";
 
 export const allYearsItem = { value: "all", text: i18n.t("All years") };
 export const yearsItems = generateYears().map(year => ({ value: year.id, text: year.id }));
@@ -42,27 +43,32 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [showVisualization, setShowVisualization] = useState(false);
 
     const [disabledCountries, setDisabledCountries] = useState<string[]>([]);
+    const [maxCountrySelection, setMaxCountrySelection] = useState<number | undefined>(undefined);
 
     const onChangeCategoryFilter = useCallback(
         (value: string | undefined) => {
             const oldVisualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
             const newsVisualization = visualizations.find(visualization => visualization.id === value);
+            const isEu27Selected = !!selectedCountries?.find(selectedCountry => selectedCountry === EU27);
 
-            const isEu27Selected = selectedCountries?.find(selectedCountry => selectedCountry === EU27);
-            if (
-                (oldVisualization?.isComparative && !newsVisualization?.isComparative) ||
-                (!newsVisualization?.isComparative && !newsVisualization?.hasEur27 && isEu27Selected)
-            ) {
-                onSelectedCountryChange([]);
-            } else if (newsVisualization?.isComparative) {
-                onSelectedCountryChange(countryOptions.map(op => op.id).filter(id => id !== EU27));
+            const maybeUpdatedCountrySelection = getUpdatedCountriesSelectionFilter(
+                oldVisualization,
+                newsVisualization,
+                isEu27Selected,
+                countryOptions
+            );
+
+            if (maybeUpdatedCountrySelection) {
+                onSelectedCountryChange(maybeUpdatedCountrySelection);
             }
 
-            if (!newsVisualization?.hasEur27) {
-                setDisabledCountries([EU27]);
-            } else {
-                setDisabledCountries([]);
-            }
+            const selectedCountriesInFilter = maybeUpdatedCountrySelection ?? selectedCountries;
+            const disabledCountries = getDisabledCountriesFilter(
+                newsVisualization,
+                selectedCountriesInFilter,
+                countryOptions
+            );
+            setDisabledCountries(disabledCountries);
 
             if (!newsVisualization?.isComparative) {
                 setSelectedYearFilter([allYearsItem.value]);
@@ -70,6 +76,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
 
+            setMaxCountrySelection(newsVisualization?.maxCountryFilter);
             setSelectedIndicatorFilter(value);
             setShowVisualization(false);
         },
@@ -97,6 +104,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     useEffect(() => {
         setShowVisualization(false);
     }, [selectedCountries]);
+
+    useEffect(() => {
+        if (!selectedIndicatorFilter) {
+            setDisabledCountries([]);
+        }
+    }, [selectedIndicatorFilter]);
 
     useEffect(() => {
         compositionRoot.indicatorExplorer.getVisualizations.execute().run(
@@ -167,13 +180,16 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         (countries: string[] | undefined) => {
             const visualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
 
-            if (visualization?.maxCountryFilter && (countries?.length || 0) > visualization.maxCountryFilter) {
-                return;
+            if ((countries?.length || 0) === visualization?.maxCountryFilter) {
+                const countriesToDisabled = countryOptions.map(op => op.id).filter(id => !countries?.includes(id));
+                setDisabledCountries(countriesToDisabled);
+            } else {
+                setDisabledCountries(visualization && !visualization.hasEur27 ? [EU27] : []);
             }
 
             onSelectedCountryChange(countries);
         },
-        [onSelectedCountryChange, selectedIndicatorFilter, visualizations]
+        [countryOptions, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
     );
 
     return {
@@ -183,6 +199,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 onSelectedChange: onCountriesChange,
                 options: countryOptions,
                 disabledCountries,
+                maxCountrySelection,
             },
             indicators: {
                 options: indicatorFilters,
@@ -223,4 +240,45 @@ function buildIndicatorOptionsAndSortByCategories(visualizations: Visualization[
                 ? indexCategoryA - indexCategoryB
                 : indexIndicatorA - indexIndicatorB;
         });
+}
+
+function getUpdatedCountriesSelectionFilter(
+    oldVisualization: Visualization | undefined,
+    newsVisualization: Visualization | undefined,
+    isEu27Selected: boolean,
+    countryOptions: CountryOption[]
+): string[] | undefined {
+    if (
+        (oldVisualization?.isComparative && !newsVisualization?.isComparative) ||
+        (!newsVisualization?.isComparative && !newsVisualization?.hasEur27 && isEu27Selected)
+    ) {
+        return [];
+    }
+
+    if (newsVisualization?.isComparative && newsVisualization?.hasEur27) {
+        return countryOptions.map(op => op.id);
+    }
+
+    if (newsVisualization?.isComparative) {
+        return countryOptions.map(op => op.id).filter(id => id !== EU27);
+    }
+}
+
+function getDisabledCountriesFilter(
+    newsVisualization: Visualization | undefined,
+    selectedCountriesFilter: string[] | undefined,
+    countryOptions: CountryOption[]
+): string[] {
+    if ((selectedCountriesFilter?.length || 0) === newsVisualization?.maxCountryFilter) {
+        const countriesToDisabled = countryOptions
+            .map(op => op.id)
+            .filter(id => !selectedCountriesFilter?.includes(id));
+        return countriesToDisabled;
+    }
+
+    if (!newsVisualization?.hasEur27) {
+        return [EU27];
+    }
+
+    return [];
 }
