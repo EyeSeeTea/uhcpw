@@ -66,21 +66,10 @@ msgstr[1] ""
 msgid "No information available for this category"
 msgstr ""
 
-msgid "Get updates from UHC watch"
-msgstr ""
-
-msgid ""
-"Sign up for our newsletter and get updates whenever we add new information "
-"or resources."
-msgstr ""
-
-msgid "Give us feedback on UHC watch."
-msgstr ""
-
-msgid "To sign up or to send feedback, email"
-msgstr ""
-
 msgid "Clear"
+msgstr ""
+
+msgid "Sign up for updates"
 msgstr ""
 
 msgid "indicator explorer"
