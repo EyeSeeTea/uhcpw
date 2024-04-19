@@ -11,7 +11,7 @@ import { useCountryPage } from "./useCountryPage";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
-    const { countryFilter } = useCountryPage();
+    const { countryFilter, resetTab, handleResetTab } = useCountryPage();
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -40,8 +40,9 @@ export const CountryPage: React.FC = () => {
             }
             countryFilter.onCountryChange(value);
             history.push({ search: searchParams.toString() });
+            handleResetTab(true);
         },
-        [countryFilter, history]
+        [countryFilter, handleResetTab, history]
     );
 
     const sliderRef = useRef(null);
@@ -57,11 +58,12 @@ export const CountryPage: React.FC = () => {
                 sliderRef={sliderRef}
                 resourcesRef={resourcesRef}
                 expertRef={expertRef}
+                handleResetTab={handleResetTab}
             />
             <Hero countryId={countryFilter.selectedCountry} />
             <Divider />
             <section ref={sliderRef}>
-                <Slider countryId={countryFilter.selectedCountry} />
+                <Slider countryId={countryFilter.selectedCountry} resetTab={resetTab} handleResetTab={handleResetTab} />
             </section>
             <Divider isOrange={false} />
             <section ref={resourcesRef}>
