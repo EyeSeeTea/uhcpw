@@ -130,7 +130,8 @@ async function verifyExpertMembers(experts: PersonState[]) {
 }
 
 async function verifyResourceItems(resources: any[]) {
-    const items = await screen.findAllByRole("listitem");
+    const scope = within(screen.getByLabelText(/country-page-resources/i));
+    const items = await scope.findAllByRole("listitem");
 
     resources.forEach((resource, index) => {
         const item = items[index];

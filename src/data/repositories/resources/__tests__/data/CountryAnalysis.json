@@ -1,24 +1,358 @@
 {
     "events": [
         {
-            "event": "FoBYCO3UUnU",
-            "eventDate": "2021-01-01T00:00:00.000",
+            "event": "qgw0lMQo87H",
+            "eventDate": "2023-05-15T00:00:00.000",
             "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=r8a91mnr011up8h6h8jedtn841&suffix=pdf&print=1"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=2k57ep0md925h16799htajrr3c&suffix=pdf&print=1"
+                },
+                {
+                    "dataElement": "XxXz056LMCO",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "Français"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Les soins de santé sont-ils abordables? De nouvelles bases factuelles sur la protection financière en Belgique"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Summary"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary."
+                },
+                {
+                    "dataElement": "iO4ThHtWZ8M",
+                    "value": "country-analysis"
+                },
+                {
+                    "dataElement": "EqiRrE4nz7c",
+                    "value": "1"
+                },
+                {
+                    "dataElement": "PC9lIDo5x8m",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "1"
+                }
+            ]
+        },
+        {
+            "event": "cT3QVtYc3u8",
+            "eventDate": "2023-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/365978"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=2k57ep0md925h16799htajrr3c&suffix=pdf&print=1"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "Français"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Les soins de santé sont-ils abordables? De nouvelles bases factuelles sur la protection financière en Belgique"
+                },
                 {
                     "dataElement": "lW90bnEXAFI",
                     "value": "Report"
                 },
                 {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Belgium"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "2"
+                },
+                {
+                    "dataElement": "iO4ThHtWZ8M",
+                    "value": "country-analysis"
+                },
+                {
+                    "dataElement": "PC9lIDo5x8m",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "BB7U4PXpsqj"
+                }
+            ]
+        },
+        {
+            "event": "gGIXHvLl5Wl",
+            "eventDate": "2023-01-01T00:00:00.000",
+            "dataValues": [
+                {
                     "dataElement": "WlAFwnRMskp",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/347403/9789289056182-eng.pdf?sequence=1&isAllowed=y"
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=gh0m908lst5073jitb2pe52a7f&suffix=pdf&print=1"
                 },
                 {
                     "dataElement": "nVhCDkoptRC",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/347895/WHO-EURO-2021-3996-43755-61568-spa.pdf?sequence=1&isAllowed=y"
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=qeq4c9vtah1o37qgqv0tnovc1s&suffix=pdf&print=1"
+                },
+                {
+                    "dataElement": "XxXz056LMCO",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "français"
+                },
+                {
+                    "dataElement": "awlsQKOwDgB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "La protection financière en Belgique"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Infographic"
                 },
                 {
                     "dataElement": "yKHkUZLIGc6",
                     "value": "English"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Financial protection in Belgium"
+                },
+                {
+                    "dataElement": "iO4ThHtWZ8M",
+                    "value": "country-analysis"
+                },
+                {
+                    "dataElement": "EqiRrE4nz7c",
+                    "value": "2"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "PC9lIDo5x8m",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "pB7DMuEiVnt"
+                }
+            ]
+        },
+        {
+            "event": "hgA2yFDH6me",
+            "eventDate": "2021-06-07T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/341727"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/handle/10665/341954"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "українська"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Політика щодо співоплати: міркування в контексті України"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Co-payment policy: considerations for Ukraine"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "4"
+                },
+                {
+                    "dataElement": "iO4ThHtWZ8M",
+                    "value": "country-analysis"
+                },
+                {
+                    "dataElement": "PC9lIDo5x8m",
+                    "value": "VJrTuNXAg9G"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Health financing policy papers"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "j226qmC5tQx"
+                }
+            ]
+        },
+        {
+            "event": "MzGBfXThHlQ",
+            "eventDate": "2021-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://cdn.who.int/media/docs/librariesprovider2/country-sites/spain-a4-brochure-eng---who-sp.pdf?sfvrsn=5312accc_1&download=true"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://www.who.int/docs/librariesprovider2/default-document-library/spain-a4-brochure-es---who-sp.pdf?sfvrsn=7914b9b4_1"
+                },
+                {
+                    "dataElement": "XxXz056LMCO",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "Castellano"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "¿Se puede permitir la gente pagar por la atención sanitaria? Nuevos datos sobre la protección financiera en España"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Summary"
+                },
+                {
+                    "dataElement": "yKHkUZLIGc6",
+                    "value": "English"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Spain. Summary."
+                },
+                {
+                    "dataElement": "iO4ThHtWZ8M",
+                    "value": "country-analysis"
+                },
+                {
+                    "dataElement": "EqiRrE4nz7c",
+                    "value": "4"
+                },
+                {
+                    "dataElement": "PC9lIDo5x8m",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "DVnpk4xiXGJ"
+                }
+            ]
+        },
+        {
+            "event": "lGBTBli0tb2",
+            "eventDate": "2021-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/347403"
+                },
+                {
+                    "dataElement": "XxXz056LMCO",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "¿Se puede permitir la gente pagar por la atención sanitaria? Nueva evidencia sobre la protección financiera en España"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "https://apps.who.int/iris/handle/10665/347895"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "yKHkUZLIGc6",
+                    "value": "castellano"
                 },
                 {
                     "dataElement": "iBxOUseHUtO",
@@ -29,74 +363,106 @@
                     "value": "country-analysis"
                 },
                 {
-                    "dataElement": "rovY1LEqAPX",
-                    "value": "Castellano"
+                    "dataElement": "EqiRrE4nz7c",
+                    "value": "3"
                 },
                 {
                     "dataElement": "PC9lIDo5x8m",
                     "value": "DVnpk4xiXGJ"
                 },
                 {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
                     "dataElement": "TTAQLTta8JS",
                     "value": "Financial Protection"
                 },
                 {
-                    "dataElement": "Bjhex2xmHxG",
-                    "value": "¿Se puede permitir la gente pagar por la atención sanitaria? Nueva evidencia sobre la protección financiera en España"
-                },
-                {
-                    "dataElement": "uund7zjS1Yt",
-                    "value": "dabMJBJjuwL"
-                },
-                { "dataElement": "aP3GIoQRvDt", "value": "true" },
-                { "dataElement": "G9DVX5SjoA2", "value": "1" },
-                { "dataElement": "XxXz056LMCO", "value": "true" },
-                { "dataElement": "EqiRrE4nz7c", "value": "1" }
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "DVnpk4xiXGJ"
+                }
             ]
         },
         {
-            "event": "Ln1nd0LBOxu",
-            "eventDate": "2019-01-01T00:00:00.000",
+            "event": "rCveu4PJ5Fx",
+            "eventDate": "2019-05-29T00:00:00.000",
             "dataValues": [
+                {
+                    "dataElement": "oQ6Qi6faNK5",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/311654"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/handle/10665/330088"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "русский"
+                },
+                {
+                    "dataElement": "fJdnhBV0nYB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "awlsQKOwDgB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "В состоянии ли люди платить за услуги здравоохранения? Hовые фактические данные о финансовой защите в Европе"
+                },
+                {
+                    "dataElement": "lDHvdREWAUp",
+                    "value": "1"
+                },
                 {
                     "dataElement": "lW90bnEXAFI",
                     "value": "Report"
                 },
                 {
-                    "dataElement": "WlAFwnRMskp",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/346328/WHO-EURO-2019-3618-43377-60851-eng.pdf?sequence=1&isAllowed=y"
-                },
-                {
-                    "dataElement": "nVhCDkoptRC",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/346329/WHO-EURO-2019-3618-43377-60852-ukr.pdf?sequence=1&isAllowed=y"
-                },
-                {
-                    "dataElement": "yKHkUZLIGc6",
-                    "value": "English"
-                },
-                {
                     "dataElement": "iBxOUseHUtO",
-                    "value": "Ukraine: review of health financing reforms 2016-2019"
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Europe"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "3"
                 },
                 {
                     "dataElement": "iO4ThHtWZ8M",
-                    "value": "country-analysis"
+                    "value": "comparative-analysis"
                 },
                 {
-                    "dataElement": "rovY1LEqAPX",
-                    "value": "українська"
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
                 },
                 {
-                    "dataElement": "PC9lIDo5x8m",
-                    "value": "VJrTuNXAg9G"
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
                 },
                 {
                     "dataElement": "TTAQLTta8JS",
                     "value": "Financial Protection"
                 },
                 {
-                    "dataElement": "Bjhex2xmHxG",
-                    "value": "Україна: огляд реформи фінансування системи охорони здоров’я 2016–2019: спільний звіт ВООЗ та Світового банку"
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "XKxSqDHDB0B"
                 }
             ]
         }

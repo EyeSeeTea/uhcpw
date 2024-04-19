@@ -14,7 +14,10 @@ import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
 export const resourceDataElements: Record<string, string> = {
-    category: "iO4ThHtWZ8M",
+    comparativeAnalysisCategory: "BBKWdyuSwkT",
+    newsCategory: "AGWJYBEy90o",
+    multimediaCategory: "awlsQKOwDgB",
+    countryAnalysisCategory: "jwmMKDQrxhD",
     theme: "TTAQLTta8JS",
     image: "uund7zjS1Yt",
     title: "iBxOUseHUtO",
@@ -26,7 +29,6 @@ export const resourceDataElements: Record<string, string> = {
     link3Language: "DQAOcVPEQTh",
     link4: "yfKcdYARapH",
     link4Language: "QlRpFiResvs",
-    countryId: "PC9lIDo5x8m",
     relatedCountry1: "s4rejJAHkEj",
     relatedCountry2: "oQ6Qi6faNK5",
     relatedCountry3: "LpvSstI1qkv",
@@ -89,8 +91,14 @@ export const resourceDataElements: Record<string, string> = {
     relatedCountry60: "rk5OFNGLSdK",
     favourite: "aP3GIoQRvDt",
     favouriteOrder: "G9DVX5SjoA2",
-    favouriteSection: "XxXz056LMCO",
-    favouriteSectionOrder: "EqiRrE4nz7c",
+    favouriteCountryAnalysis: "XxXz056LMCO",
+    favouriteCountryAnalysisOrder: "EqiRrE4nz7c",
+    favouriteComparativeAnalysis: "fJdnhBV0nYB",
+    favouriteComparativeAnalysisOrder: "lDHvdREWAUp",
+    favouriteMultimedia: "KPwK8b3rkOz",
+    favouriteMultimediaOrder: "mFLscuj8vES",
+    favouriteNews: "CCFn3rUBXLS",
+    favouriteNewsOrder: "KFrs71ATfx6",
 };
 
 export const resourcesProgram = "wWo0lhm5GsY";
@@ -99,17 +107,13 @@ export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
+        debugger;
         //2:38 has a bug filtering events by data element value using eq operator. Like works!
         const filter = _([
-            filters.category
-                ? `${resourceDataElements.category}:like:${filters.category.replace("-", " ")}`
-                : undefined,
+            filters.category ? this.getCategoriesFilter(filters.category) : undefined,
             filters.theme ? `${resourceDataElements.theme}:like:${filters.theme.replace("-", " ")}` : undefined,
             filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
             filters.favourite !== undefined ? `${resourceDataElements.favourite}:eq:${filters.favourite}` : undefined,
-            filters.favouriteSection !== undefined
-                ? `${resourceDataElements.favouriteSection}:eq:${filters.favouriteSection}`
-                : undefined,
         ])
             .compact()
             .join(",");
@@ -135,28 +139,69 @@ export class ResourceD2Repository implements ResourceRepository {
                     ? this.filterCountries(response.events, filters)
                     : response.events;
 
-            return this.buildResources(events);
+            const resources = this.buildResources(events, filters);
+            return this.filterByFavouriteSection(resources, filters.favouriteSection);
         });
     }
 
-    private buildResources(events: D2Event[]): Resource[] {
+    private getCategoriesFilter(categoryFilter: string): string | undefined {
+        switch (categoryFilter) {
+            case "comparative-analysis":
+                return `${resourceDataElements.comparativeAnalysisCategory}:eq:true`;
+            case "news":
+                return `${resourceDataElements.newsCategory}:eq:true`;
+            case "multimedia":
+                return `${resourceDataElements.multimediaCategory}:eq:true`;
+            case "country-analysis":
+                return `${resourceDataElements.countryAnalysisCategory}:eq:true`;
+            default:
+                return undefined;
+        }
+    }
+
+    private buildResources(events: D2Event[], filters: ResourceFilters): Resource[] {
         return _.compact(
             _(
-                events.map(event => {
-                    const category =
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.category)?.value || "";
+                events.flatMap(event => {
+                    const isComparativeAnalysisCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.comparativeAnalysisCategory)
+                            ?.value === "true";
 
-                    if (category === "comparative-analysis") {
-                        return this.buildComparativeAnalysis(event);
-                    } else if (category === "news") {
-                        return this.buildNews(event);
-                    } else if (category === "multimedia") {
-                        return this.buildMultimedia(event);
-                    } else if (category === "country-analysis") {
-                        return this.buildCountryAnalysis(event);
-                    } else {
-                        return undefined;
-                    }
+                    const isNewsCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.newsCategory)?.value ===
+                        "true";
+
+                    const isMultimediaCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.multimediaCategory)
+                            ?.value === "true";
+
+                    const isCountryAnalysisCategory =
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryAnalysisCategory)
+                            ?.value === "true";
+
+                    const mainCountryForCountryAnalysis = event.dataValues.find(
+                        dv => dv.dataElement === resourceDataElements.relatedCountry1
+                    )?.value;
+
+                    return [
+                        isComparativeAnalysisCategory &&
+                        (!filters.category || filters.category === "comparative-analysis")
+                            ? this.buildComparativeAnalysis(event)
+                            : undefined,
+                        isNewsCategory && (!filters.category || filters.category === "news")
+                            ? this.buildNews(event)
+                            : undefined,
+                        isMultimediaCategory && (!filters.category || filters.category === "multimedia")
+                            ? this.buildMultimedia(event)
+                            : undefined,
+                        isCountryAnalysisCategory &&
+                        (!filters.category || filters.category === "country-analysis") &&
+                        (!filters.countries ||
+                            (mainCountryForCountryAnalysis &&
+                                filters.countries?.includes(mainCountryForCountryAnalysis)))
+                            ? this.buildCountryAnalysis(event)
+                            : undefined,
+                    ];
                 })
             ).value()
         );
@@ -164,10 +209,12 @@ export class ResourceD2Repository implements ResourceRepository {
 
     private buildNews(event: D2Event): News {
         const media = this.buildMedia(event);
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "news");
 
         return {
             kind: "news",
             ...media,
+            ...favouriteSectionData,
         };
     }
 
@@ -176,9 +223,12 @@ export class ResourceD2Repository implements ResourceRepository {
 
         const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
 
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "multimedia");
+
         return {
             kind: "multimedia",
             ...media,
+            ...favouriteSectionData,
             theme,
         };
     }
@@ -204,9 +254,12 @@ export class ResourceD2Repository implements ResourceRepository {
 
         const relatedCountries = this.getRelatedCountries(event);
 
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "comparative-analysis");
+
         return {
             kind: "comparative-analysis",
             ...analysis,
+            ...favouriteSectionData,
             relatedCountries,
         };
     }
@@ -214,11 +267,15 @@ export class ResourceD2Repository implements ResourceRepository {
     private buildCountryAnalysis(event: D2Event): CountryAnalysis {
         const analysis = this.buildAnalysis(event);
 
-        const countryId = event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryId)?.value || "";
+        const countryId =
+            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry1)?.value || "";
+
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "country-analysis");
 
         return {
             kind: "country-analysis",
             ...analysis,
+            ...favouriteSectionData,
             countryId,
         };
     }
@@ -265,18 +322,70 @@ export class ResourceD2Repository implements ResourceRepository {
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.favourite)?.value === "true" || false;
         const favouriteOrder =
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteOrder)?.value || 0;
-        const favouriteSection =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteSection)?.value === "true" ||
-            false;
-        const favouriteSectionOrder =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteSectionOrder)?.value || 0;
 
         return {
             favourite,
             favouriteOrder: +favouriteOrder,
-            favouriteSection,
-            favouriteSectionOrder: +favouriteSectionOrder,
         };
+    }
+
+    private buildFavouriteSectionByKind(
+        event: D2Event,
+        kind: "country-analysis" | "comparative-analysis" | "news" | "multimedia"
+    ): {
+        favouriteSection: boolean;
+        favouriteSectionOrder: number;
+    } {
+        switch (kind) {
+            case "comparative-analysis":
+                return {
+                    favouriteSection:
+                        event.dataValues.find(
+                            dv => dv.dataElement === resourceDataElements.favouriteComparativeAnalysis
+                        )?.value === "true" || false,
+                    favouriteSectionOrder: +(
+                        event.dataValues.find(
+                            dv => dv.dataElement === resourceDataElements.favouriteComparativeAnalysisOrder
+                        )?.value || 0
+                    ),
+                };
+            case "news":
+                return {
+                    favouriteSection:
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteNews)?.value ===
+                            "true" || false,
+                    favouriteSectionOrder: +(
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteNewsOrder)
+                            ?.value || 0
+                    ),
+                };
+            case "multimedia":
+                return {
+                    favouriteSection:
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteMultimedia)
+                            ?.value === "true" || false,
+                    favouriteSectionOrder: +(
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteMultimediaOrder)
+                            ?.value || 0
+                    ),
+                };
+            case "country-analysis":
+                return {
+                    favouriteSection:
+                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteCountryAnalysis)
+                            ?.value === "true" || false,
+                    favouriteSectionOrder: +(
+                        event.dataValues.find(
+                            dv => dv.dataElement === resourceDataElements.favouriteCountryAnalysisOrder
+                        )?.value || 0
+                    ),
+                };
+            default:
+                return {
+                    favouriteSection: false,
+                    favouriteSectionOrder: 0,
+                };
+        }
     }
 
     private filterCountries(events: D2Event[], filters: ResourceFilters) {
@@ -290,6 +399,12 @@ export class ResourceD2Repository implements ResourceRepository {
 
             return foundCountry || foundRelatedCountry;
         });
+    }
+
+    private filterByFavouriteSection(resources: Resource[], favouriteSectionFilter?: boolean): Resource[] {
+        return favouriteSectionFilter !== undefined
+            ? resources.filter(resource => resource.favouriteSection)
+            : resources;
     }
 
     private createLink(link?: string, language?: string) {

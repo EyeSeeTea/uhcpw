@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { CompositionRoot } from "../../../../CompositionRoot";
-import { Country } from "../../../../domain/entities/Country";
 import { Future, FutureData } from "../../../../domain/entities/Future";
-import { Resource } from "../../../../domain/entities/resources/Resource";
 import { getThemeName, ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
+import { Country } from "../../../../domain/entities/Country";
+import { Resource } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
@@ -40,6 +40,7 @@ export function useResourcesByType(params: {
 
     const onGetResources = useCallback(() => {
         setLoading(true);
+        debugger;
         // ...
         const cancel = Future.joinObj({
             normalResponse: compositionRoot.resources.get.execute({
@@ -59,27 +60,7 @@ export function useResourcesByType(params: {
             ({ normalResponse, advancedResponse }) => {
                 setLoading(false);
 
-                const finalItems = [...normalResponse, ...advancedResponse].map(item => {
-                    if (item.kind === "news") {
-                        return item;
-                    } else if (item.kind === "country-analysis") {
-                        const country = countries.find(country => country.id === item.countryId);
-
-                        return {
-                            ...item,
-                            countryName: country?.name || "",
-                            countryFlag: country?.flag || "",
-                            themeName: getThemeName(themes, item.theme),
-                        };
-                    } else {
-                        return {
-                            ...item,
-                            themeName: getThemeName(themes, item.theme),
-                        };
-                    }
-                });
-
-                setItems(finalItems);
+                setItems(buildResourcesBySection([...normalResponse, ...advancedResponse], countries, themes));
             },
             () => {
                 setLoading(false);
@@ -135,10 +116,38 @@ function executeAdvancedSearch(
             : Future.success([]),
         byThemeResponse: themeByTerm
             ? compositionRoot.resources.get.execute({
-                  theme: themeByTerm.id,
+                  theme: themeByTerm.name,
               })
             : Future.success([]),
     }).map(({ byCountryResponse, byThemeResponse }) => {
         return [...byCountryResponse, ...byThemeResponse];
+    });
+}
+
+function buildResourcesBySection(
+    resources: Resource[],
+    countries: Country[],
+    themes: ResourceTheme[]
+): ResourceState[] {
+    return resources.map(item => {
+        if (item.kind === "news") {
+            return item;
+        }
+
+        if (item.kind === "country-analysis") {
+            const country = countries.find(country => country.id === item.countryId);
+
+            return {
+                ...item,
+                countryName: country?.name || "",
+                countryFlag: country?.flag || "",
+                themeName: getThemeName(themes, item.theme),
+            };
+        }
+
+        return {
+            ...item,
+            themeName: getThemeName(themes, item.theme),
+        };
     });
 }
