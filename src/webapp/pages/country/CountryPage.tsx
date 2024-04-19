@@ -24,12 +24,13 @@ export const CountryPage: React.FC = () => {
     }, [history.location.search]);
 
     useEffect(() => {
-        if (filterInParams.country) {
+        if (filterInParams.country && filterInParams.country !== countryFilter?.selectedCountry) {
             const searchParams = new URLSearchParams(history.location.search);
             searchParams.set("country", filterInParams.country);
             countryFilter.onCountryChange(filterInParams.country);
+            !resetTab && handleResetTab(true);
         }
-    }, [countryFilter, filterInParams.country, history.location.search]);
+    }, [countryFilter, filterInParams.country, handleResetTab, history.location.search, resetTab]);
 
     const handleCountryChange = useCallback(
         (value: string) => {
