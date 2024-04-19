@@ -85,4 +85,5 @@ const GetChartButton = styled(Button)`
     height: 50px;
     text-transform: none;
     white-space: nowrap;
+    background: #185698;
 `;
