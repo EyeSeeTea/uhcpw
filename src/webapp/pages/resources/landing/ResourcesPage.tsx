@@ -94,6 +94,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                                         image={multimediaItem.imageOriginal}
                                                         date={multimediaItem.date}
                                                         maintainAspectRatio
+                                                        fullWidth={!filters.search.term}
                                                     />
                                                 </Grid>
                                             );
@@ -113,6 +114,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                                                         image={newsItem.imageOriginal}
                                                         date={newsItem.date}
                                                         maintainAspectRatio
+                                                        fullWidth={!filters.search.term}
                                                     />
                                                 </Grid>
                                             );
