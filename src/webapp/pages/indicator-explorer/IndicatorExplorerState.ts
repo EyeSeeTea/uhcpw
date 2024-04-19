@@ -1,4 +1,4 @@
-import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
+import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import { CountryFilterState, OptionsMultiFilterState } from "../../common/state/state";
 
 export type IndicatorExplorerState = {
@@ -6,7 +6,7 @@ export type IndicatorExplorerState = {
     onGet: () => void;
     showVisualization: boolean;
     globalMessage?: GlobalMessage;
-    selectCategoryInfo: IndicatorExplorerSelectCategoryInfo | undefined;
+    pageContent: IndicatorExplorerContent | undefined;
     errorMessage: string;
 };
 

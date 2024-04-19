@@ -14,7 +14,8 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
         return {
             kind: "comparative-analysis" as const,
             id: `id-comparative-analysis-${index}`,
-            image: `http://image${index}.png`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
             links: [
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
@@ -40,7 +41,8 @@ export function createCountryAnalysisResources(count: number): CountryAnalysis[]
         return {
             kind: "country-analysis" as const,
             id: `id-country-analysis-${index}`,
-            image: `http://image${index}.png`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
             links: [
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
@@ -64,7 +66,8 @@ export function createNewsResources(count: number): News[] {
         return {
             kind: "news" as const,
             id: `id-news-${index}`,
-            image: `http://image${index}.png`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             title: `title ${index}`,
             date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,
@@ -83,7 +86,8 @@ export function createMultimediaResources(count: number): Multimedia[] {
         return {
             kind: "multimedia" as const,
             id: `id-multimedia-${index}`,
-            image: `http://image${index}.png`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             title: `title ${index}`,
             date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,

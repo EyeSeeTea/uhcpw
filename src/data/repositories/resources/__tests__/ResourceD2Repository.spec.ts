@@ -254,7 +254,9 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
     if (!comparativeAnalysis) fail("Comparative analysis is undefined");
 
     expect(comparativeAnalysis.kind).toBe("comparative-analysis");
-    expect(comparativeAnalysis.image).toContain("//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ESI1B0zxHfk");
+    expect(comparativeAnalysis.imageOriginal).toContain(
+        "//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ESI1B0zxHfk"
+    );
     expect(comparativeAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
     );
@@ -287,7 +289,7 @@ function verifyNews(newsItem?: News) {
     if (!newsItem) fail("News is undefined");
 
     expect(newsItem.kind).toBe("news");
-    expect(newsItem.image).toContain("//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ckY8Z4ZmTDe");
+    expect(newsItem.imageOriginal).toContain("//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ckY8Z4ZmTDe");
     expect(newsItem.title).toBe(
         "New WHO report outlines concrete steps to make health care more accessible for people in Ukraine"
     );
@@ -305,7 +307,9 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
     if (!multimediaItem) fail("Multimedia is undefined");
 
     expect(multimediaItem.kind).toBe("multimedia");
-    expect(multimediaItem.image).toContain("//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=gGIXHvLl5Wl");
+    expect(multimediaItem.imageOriginal).toContain(
+        "//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=gGIXHvLl5Wl"
+    );
     expect(multimediaItem.title).toBe("Financial protection in Belgium");
     expect(multimediaItem.url).toBe(
         "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=gh0m908lst5073jitb2pe52a7f&suffix=pdf&print=1"
@@ -324,7 +328,9 @@ function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
     if (!countryAnalysis) fail("countryAnalysis is undefined");
 
     expect(countryAnalysis.kind).toBe("country-analysis");
-    expect(countryAnalysis.image).toContain("//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=qgw0lMQo87H");
+    expect(countryAnalysis.imageOriginal).toContain(
+        "//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=qgw0lMQo87H"
+    );
     expect(countryAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary."
     );

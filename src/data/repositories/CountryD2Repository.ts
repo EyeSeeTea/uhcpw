@@ -53,8 +53,10 @@ const validOrgUnitGroups = [
     "A1BdaIwDheX",
 ];
 
-const KOSOVO = "NEPywTBN52g";
 const NETHERLANDS = "rEQqufy2KNi";
+const GREENLAND = "IZy3ESdFnp5";
+const KOSOVO = "NEPywTBN52g";
+const COUNTRIES_NOT_SHOWN = [GREENLAND, KOSOVO];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
@@ -108,43 +110,45 @@ export class CountryD2Repository implements CountryRepository {
         aditionalCountriesInfo: D2Event[],
         countriesIdsInCountryPage: Id[]
     ): Country[] {
-        return orgUnits.map(orgUnit => {
-            const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
-                event => event.orgUnit === orgUnit.id
-            );
+        return orgUnits
+            .filter(({ id }) => !COUNTRIES_NOT_SHOWN.includes(id))
+            .map(orgUnit => {
+                const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
+                    event => event.orgUnit === orgUnit.id
+                );
 
-            const summary =
-                aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)
-                    ?.value || "";
+                const summary =
+                    aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)
+                        ?.value || "";
 
-            const rawStatus =
-                aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value ||
-                "";
+                const rawStatus =
+                    aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)
+                        ?.value || "";
 
-            const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
+                const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
 
-            const customGeometry = aditionalCountryInfo?.dataValues.find(
-                dv => dv.dataElement === countryInfoDataElements.geometry
-            )?.value as unknown as D2Geometry;
+                const customGeometry = aditionalCountryInfo?.dataValues.find(
+                    dv => dv.dataElement === countryInfoDataElements.geometry
+                )?.value as unknown as D2Geometry;
 
-            const isNetherlands = orgUnit.id === NETHERLANDS;
-            return {
-                id: orgUnit.id,
-                name: isNetherlands ? `${orgUnit.shortName} (Kingdom of the)` : orgUnit.shortName,
-                longName: orgUnit.name,
-                code: orgUnit.code,
-                description: orgUnit.description,
-                coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
-                status,
-                parents: orgUnit.organisationUnitGroups
-                    .map(({ id, name }) => ({ id, name }))
-                    .filter(oug => validOrgUnitGroups.includes(oug.id)),
-                flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
-                summary,
-                sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
-                isInCountryPage: countriesIdsInCountryPage.includes(orgUnit.id),
-            };
-        });
+                const isNetherlands = orgUnit.id === NETHERLANDS;
+                return {
+                    id: orgUnit.id,
+                    name: isNetherlands ? `${orgUnit.shortName} (Kingdom of the)` : orgUnit.shortName,
+                    longName: orgUnit.name,
+                    code: orgUnit.code,
+                    description: orgUnit.description,
+                    coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
+                    status,
+                    parents: orgUnit.organisationUnitGroups
+                        .map(({ id, name }) => ({ id, name }))
+                        .filter(oug => validOrgUnitGroups.includes(oug.id)),
+                    flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
+                    summary,
+                    sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
+                    isInCountryPage: countriesIdsInCountryPage.includes(orgUnit.id),
+                };
+            });
     }
 
     private buildPoint(geometry: D2Geometry | string): [number, number] {

@@ -8,7 +8,7 @@ import { Resources } from "../../components/home/resources/Resources";
 import { Layout } from "../../components/layout/Layout";
 import { useMap } from "../../components/home/map/useMap";
 import { useHomeResources } from "./useHomeResources";
-import NewsletterDialog from "../../components/dialog/NewsletterDialog";
+import NewsletterButton from "../../components/home/buttons/NewsletterButton";
 import { useHomePageContent } from "./useHomePageContent";
 
 export const HomePage: React.FC = React.memo(() => {
@@ -18,7 +18,7 @@ export const HomePage: React.FC = React.memo(() => {
 
     return (
         <Layout>
-            <NewsletterDialog />
+            <NewsletterButton />
             <MapSection>
                 <Map mapState={mapState} />
             </MapSection>

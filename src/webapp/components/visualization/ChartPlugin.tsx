@@ -1,7 +1,6 @@
 import { createVisualization } from "@dhis2/analytics";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
-import _ from "lodash";
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { Country } from "../../../domain/entities/Country";
@@ -9,6 +8,7 @@ import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { ChartCustomization } from "./customization/types";
+import { getSeriesChart } from "./utils";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -60,25 +60,13 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
             const originalChartOptions = { ...analyticsConfig.visualization.options };
 
-            const sortedSeries = customizedOptions?.series
-                ? _.orderBy(originalChartOptions.series, serie => {
-                      const serieCustomization = customizedOptions?.series?.find(
-                          customSerie => serie.id === customSerie.id
-                      );
-                      return serieCustomization ? customizedOptions?.series?.indexOf(serieCustomization) : 0;
-                  })
-                : originalChartOptions.series;
+            const series = getSeriesChart(
+                originalChartOptions.series,
+                customizedOptions?.series,
+                customizedOptions?.sortLegendByLastDataPoint,
+                customizedOptions?.hideLegendIfNoData
+            );
 
-            const finalSeries = customizedOptions?.sortLegendByLastDataPoint
-                ? _.orderBy(
-                      sortedSeries,
-                      serie => {
-                          const finalSerie = serie as any;
-                          return finalSerie.data?.[finalSerie.data.length - 1];
-                      },
-                      "desc"
-                  )
-                : sortedSeries;
             const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
                 ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
@@ -124,7 +112,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
                     : originalChartOptions.yAxis,
 
-                series: finalSeries?.map(serie => {
+                series: series?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
                         ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })
                         : undefined;

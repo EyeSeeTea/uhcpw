@@ -47,7 +47,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         }, [countries, currentCountry]);
 
         return (
-            <DataHeader className="visualization-plugin-header">
+            <DataHeader className="visualization-plugin-header" $isCountryPage={useHeaderForCountryPage}>
                 <Row>
                     {useHeaderForCountryPage ? (
                         <>
@@ -126,8 +126,9 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
     }
 );
 
-const DataHeader = styled.div`
-    padding: 48px 0px;
+const DataHeader = styled.div<{ $isCountryPage?: boolean }>`
+    padding-block-start: ${props => (props.$isCountryPage ? "30px" : "48px")};
+    padding-block-end: 48px;
 `;
 
 const Row = styled.div`

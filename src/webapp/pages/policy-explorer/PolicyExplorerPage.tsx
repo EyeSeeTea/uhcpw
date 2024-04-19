@@ -85,17 +85,16 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                 {data && dataOrientationByTable ? (
                     <Content>
-                        {categories.length > 1 ? (
-                            <CustomButton
-                                variant="contained"
-                                startIcon={<DownloadIcon />}
-                                color="primary"
-                                style={{ marginLeft: 20 }}
-                                onClick={onDownload}
-                            >
-                                {i18n.t("Download")}
-                            </CustomButton>
-                        ) : null}
+                        <DownloadButton
+                            aria-label="Download"
+                            variant="contained"
+                            startIcon={<DownloadIcon />}
+                            color="primary"
+                            onClick={onDownload}
+                            className="download-button"
+                        >
+                            <Typography>{i18n.t("Download")}</Typography>
+                        </DownloadButton>
 
                         {categories.map(category => (
                             <PolicyExplorerTable
@@ -105,8 +104,6 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                 onSwitchRowColumn={onSwitchRowColumn}
                                 dataOrientation={dataOrientationByTable[category.value]}
                                 referencesRef={referencesRef}
-                                onDownload={onDownload}
-                                hasDownloadButton={categories.length === 1}
                             />
                         ))}
                     </Content>
@@ -123,23 +120,20 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
                                     </GeneralRow>
 
-                                    <GeneralRow>
-                                        <CreditsText>
-                                            {i18n.t("Suggested citation: ", { nsSeparator: false })}
-                                        </CreditsText>
-                                        &nbsp;
-                                        <Link
-                                            href={info.sourceUrl}
-                                            style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            {info.sourceText}
-                                        </Link>
-                                    </GeneralRow>
+                                    {info.lastUpdate ? (
+                                        <GeneralRow>
+                                            <CreditsText $noWrap>
+                                                {i18n.t("Last updated: ", { nsSeparator: false })}
+                                            </CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
 
                                     <GeneralRow>
-                                        <CreditsText>{i18n.t("Country experts: ", { nsSeparator: false })}</CreditsText>
+                                        <CreditsText $noWrap>
+                                            {i18n.t("Country experts: ", { nsSeparator: false })}
+                                        </CreditsText>
                                         &nbsp;
                                         <CreditsText>{info.countryExperts}</CreditsText>
                                     </GeneralRow>
@@ -158,11 +152,30 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         </GeneralRow>
                                     ) : null}
 
-                                    <GeneralRow>
-                                        <CreditsText>{i18n.t("Last updated: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
-                                    </GeneralRow>
+                                    {info.notes ? (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.notes}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
+
+                                    {info.sourceText ? (
+                                        <GeneralRow>
+                                            <CreditsText>
+                                                {i18n.t("Suggested citation: ", { nsSeparator: false })}
+                                            </CreditsText>
+                                            &nbsp;
+                                            <Link
+                                                href={info.sourceUrl}
+                                                style={{ fontSize: "16px", color: colors.accentPrimary }}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                {info.sourceText}
+                                            </Link>
+                                        </GeneralRow>
+                                    ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
                                     {info.country &&
@@ -189,15 +202,6 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 const Content = styled.div`
     display: flex;
     flex-direction: column;
-`;
-
-const CustomButton = styled(Button)`
-    margin: 48px 0 0 0;
-    border-radius: 10px;
-    padding: 0px 16px;
-    height: 36px;
-    width: 235px;
-    align-self: flex-end;
 `;
 
 const GeneralDataContainer = styled.div`
@@ -239,16 +243,27 @@ const Image = styled.img`
 const GeneralRow = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: start;
     margin-bottom: 12px;
 `;
 
-const CreditsText = styled(Typography)`
+const CreditsText = styled(Typography)<{ $noWrap?: boolean }>`
     color: black;
     font-weight: 500;
     font-size: 0.875rem;
+    white-space: ${props => (props.$noWrap ? "nowrap" : "unset")};
 `;
 
 const Link = styled.a`
     text-decoration: none;
+`;
+
+const DownloadButton = styled(Button)`
+    border-radius: 20px;
+    padding: 0px 32px;
+    height: 42px;
+    width: 170px;
+    text-transform: initial;
+    align-self: flex-end;
+    margin-block-start: 20px;
 `;
