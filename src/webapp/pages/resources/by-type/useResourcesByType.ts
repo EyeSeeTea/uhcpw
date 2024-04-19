@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
+import { CompositionRoot } from "../../../../CompositionRoot";
+import { Country } from "../../../../domain/entities/Country";
 import { Future, FutureData } from "../../../../domain/entities/Future";
 import { Resource } from "../../../../domain/entities/resources/Resource";
-import { getThemeName } from "../../../../domain/entities/resources/ResourceTheme";
+import { getThemeName, ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
@@ -50,7 +52,9 @@ export function useResourcesByType(params: {
                 favourite: params.favourite,
                 favouriteSection: filters.search.term ? undefined : params.favouriteSection,
             }),
-            advancedResponse: executeAdvancedSearch(includeAdvancedSearch),
+            advancedResponse: includeAdvancedSearch
+                ? executeAdvancedSearch(compositionRoot, countries, themes, filters.search.term)
+                : Future.success([]),
         }).run(
             ({ normalResponse, advancedResponse }) => {
                 setLoading(false);
@@ -110,10 +114,31 @@ export function useResourcesByType(params: {
     };
 }
 
-function executeAdvancedSearch(includeAdvancedSearch?: boolean): FutureData<Resource[]> {
-    if (!includeAdvancedSearch) {
+function executeAdvancedSearch(
+    compositionRoot: CompositionRoot,
+    countries: Country[],
+    themes: ResourceTheme[],
+    searchTerm: string
+): FutureData<Resource[]> {
+    if (!searchTerm) {
         return Future.success([]);
     }
 
-    return Future.success([]);
+    const countryByTerm = countries.find(country => country.name.toLowerCase() === searchTerm.toLowerCase());
+    const themeByTerm = themes.find(theme => theme.name.toLowerCase() === searchTerm.toLowerCase());
+
+    return Future.joinObj({
+        byCountryResponse: countryByTerm
+            ? compositionRoot.resources.get.execute({
+                  countries: [countryByTerm.id],
+              })
+            : Future.success([]),
+        byThemeResponse: themeByTerm
+            ? compositionRoot.resources.get.execute({
+                  theme: themeByTerm.id,
+              })
+            : Future.success([]),
+    }).map(({ byCountryResponse, byThemeResponse }) => {
+        return [...byCountryResponse, ...byThemeResponse];
+    });
 }
