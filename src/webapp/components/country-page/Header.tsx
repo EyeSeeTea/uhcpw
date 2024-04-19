@@ -9,6 +9,7 @@ import { FC, MutableRefObject, useCallback } from "react";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
 import { Option } from "../../components/dropdown/Option";
+import { getBackgroundColorByCountryStatus } from "../../pages/country/utils";
 
 type HeaderType = {
     countryId: string;
@@ -28,17 +29,6 @@ const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
             return <img src={UmbrellaGap} width={100} alt={"umbrella gap"} />;
         case "Strong":
             return <img src={UmbrellaStrong} width={100} alt={"umbrella strong"} />;
-    }
-};
-
-const handleBackgroundColor = (status?: CountryStatus) => {
-    switch (status) {
-        case "Weak":
-            return "linear-gradient(90deg, #c42929 1.8%, #ffe1d0 60.94%)";
-        case "Gaps":
-            return "linear-gradient(90deg, #FF8D4E 1.8%, #FFD3A5 100%)";
-        case "Strong":
-            return "linear-gradient(90deg, #4FAD56 70.8%, #9CD77B 100%)";
     }
 };
 
@@ -100,7 +90,7 @@ const Container = styled.div<{ status: CountryStatus | undefined }>`
     justify-content: space-between;
     height: 80px;
     align-items: center;
-    background: ${props => handleBackgroundColor(props.status)};
+    background: ${props => getBackgroundColorByCountryStatus(props.status)};
     padding: 0px 40px;
 `;
 

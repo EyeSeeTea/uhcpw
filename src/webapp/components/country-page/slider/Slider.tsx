@@ -31,14 +31,12 @@ const useStyles = makeStyles(theme => ({
     gridItem: {
         backgroundColor: colors.accentPrimary,
         borderInlineEnd: "none",
-        marginBlock: "4px",
+        marginBlockEnd: "4px",
         [theme.breakpoints.down("sm")]: {
-            marginBlock: "4px",
             backgroundColor: colors.white,
             borderInlineEnd: `6px solid ${colors.accentPrimary}`,
             width: "30px",
             flexBasis: "unset",
-            paddingBlockStart: "70px",
         },
     },
     tabs: {
@@ -58,7 +56,7 @@ const useStyles = makeStyles(theme => ({
                 display: "none",
             },
             borderBlockEnd: "none",
-            paddingBlock: "70px",
+            paddingBlockEnd: "70px",
         },
     },
     tab: {

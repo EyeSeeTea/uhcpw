@@ -8,10 +8,12 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
 import { useCountryPage } from "./useCountryPage";
+import { useCountryInfo } from "./useCountryInfo";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
     const { countryFilter, resetTab, handleResetTab } = useCountryPage();
+    const country = useCountryInfo(countryFilter.selectedCountry);
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -62,15 +64,15 @@ export const CountryPage: React.FC = () => {
                 handleResetTab={handleResetTab}
             />
             <Hero countryId={countryFilter.selectedCountry} />
-            <Divider />
+            <Divider countryStatus={country?.status} />
             <section ref={sliderRef}>
                 <Slider countryId={countryFilter.selectedCountry} resetTab={resetTab} handleResetTab={handleResetTab} />
             </section>
-            <Divider isOrange={false} />
+            <Divider countryStatus={country?.status} />
             <section ref={resourcesRef}>
                 <CountryResources countryId={countryFilter.selectedCountry} />
             </section>
-            <Divider />
+            <Divider countryStatus={country?.status} />
             <section ref={expertRef}>
                 <CountryExpert countryId={countryFilter.selectedCountry} />
             </section>
