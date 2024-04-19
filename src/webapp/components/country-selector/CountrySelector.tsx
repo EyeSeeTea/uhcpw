@@ -34,6 +34,7 @@ interface CountrySelectorProps {
     hasSelectAll?: boolean;
     hasClearAll?: boolean;
     topClearAll?: number;
+    maxSelection?: number;
 }
 
 export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
@@ -49,6 +50,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         hasSelectAll = false,
         hasClearAll = false,
         topClearAll = 0,
+        maxSelection,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -115,13 +117,22 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             [countries, setSearchTerm, setExpandedParents]
         );
 
-        const finalCountries = useMemo(() => {
+        const filteredCountriesBySearch = useMemo(() => {
             return countries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase()));
         }, [searchTerm, countries]);
 
         const parents = useMemo(() => {
-            return _.uniqBy(finalCountries.map(country => country.parents).flat(), "id");
-        }, [finalCountries]);
+            return _.uniqBy(filteredCountriesBySearch.map(country => country.parents).flat(), "id").map(parent => ({
+                ...parent,
+                isLeaf: false,
+            }));
+        }, [filteredCountriesBySearch]);
+
+        const filteredCountriesBySearchWithoutParent = useMemo(() => {
+            return filteredCountriesBySearch
+                .filter(country => !country.parents.length)
+                .map(country => ({ ...country, isLeaf: true }));
+        }, [filteredCountriesBySearch]);
 
         const handleToggle = useCallback((_event: React.ChangeEvent<{}>, nodeIds: string[]) => {
             setExpandedParents(nodeIds);
@@ -156,7 +167,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
         const isAllCountryParentSelected = useCallback(
             (countryParentId: string) => {
                 if (hasSelectAll) {
-                    const finalChildrenAllowed = finalCountries
+                    const finalChildrenAllowed = filteredCountriesBySearch
                         .filter(country => country.parents.some(p => p.id === countryParentId))
                         .filter(({ id }) => !disabledCountries?.includes(id));
                     return (
@@ -165,7 +176,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     );
                 }
             },
-            [disabledCountries, finalCountries, selectedIds, hasSelectAll]
+            [disabledCountries, filteredCountriesBySearch, selectedIds, hasSelectAll]
         );
 
         const isCountryParentDisabled = useCallback(
@@ -173,27 +184,31 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                 const finalChildrenAllowed = allCountriesInSelectedParent.filter(
                     ({ id }) => !disabledCountries?.includes(id)
                 );
-                return hasSelectAll && !finalChildrenAllowed.length;
+                return (
+                    (hasSelectAll && !finalChildrenAllowed.length) ||
+                    (!!maxSelection && maxSelection < finalChildrenAllowed.length)
+                );
             },
-            [disabledCountries, hasSelectAll]
+            [disabledCountries, hasSelectAll, maxSelection]
         );
 
         const areAllCountriesSelected = useMemo(() => {
             return (
-                finalCountries.filter(({ id }) => !selectedIds?.includes(id) && !disabledCountries?.includes(id))
-                    ?.length === 0
+                filteredCountriesBySearch.filter(
+                    ({ id }) => !selectedIds?.includes(id) && !disabledCountries?.includes(id)
+                )?.length === 0
             );
-        }, [disabledCountries, finalCountries, selectedIds]);
+        }, [disabledCountries, filteredCountriesBySearch, selectedIds]);
+
+        const countriesToSelect = useMemo(() => {
+            return filteredCountriesBySearch.filter(({ id }) => !disabledCountries?.includes(id)).map(({ id }) => id);
+        }, [disabledCountries, filteredCountriesBySearch]);
 
         const handleSelectAll = useCallback(() => {
             if (hasSelectAll) {
-                const countriesToSelect = finalCountries
-                    .filter(({ id }) => !disabledCountries?.includes(id))
-                    .map(({ id }) => id);
-
                 onSelectedIdsChange(countriesToSelect);
             }
-        }, [disabledCountries, finalCountries, hasSelectAll, onSelectedIdsChange]);
+        }, [countriesToSelect, hasSelectAll, onSelectedIdsChange]);
 
         return (
             <Container $fullWidth={fullWidth}>
@@ -275,7 +290,10 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                 <StyledButton
                                     variant="text"
                                     onClick={handleSelectAll}
-                                    disabled={areAllCountriesSelected}
+                                    disabled={
+                                        areAllCountriesSelected ||
+                                        (!!maxSelection && maxSelection < countriesToSelect.length)
+                                    }
                                     right={100}
                                 >
                                     {i18n.t("Select all")}
@@ -300,25 +318,46 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             expanded={expandedParents}
                             style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
                         >
-                            {parents.map((parent, nindex) => {
-                                const finalChildren = finalCountries.filter(country =>
-                                    country.parents.some(p => p.id === parent.id)
+                            {[...filteredCountriesBySearchWithoutParent, ...parents].map((option, nindex) => {
+                                if (option.isLeaf) {
+                                    const selectedOption = selectedIds.find(id => id === option.id) !== undefined;
+                                    return (
+                                        <FirstLevelLeafWrapper>
+                                            <Leaf
+                                                key={`first-level-${nindex}`}
+                                                nodeId={option.id}
+                                                name={option.name}
+                                                selected={selectedOption}
+                                                onSelectedChange={handleSelectedChange}
+                                                disabled={
+                                                    disabledCountries?.includes(option.id) ||
+                                                    (!selectedOption &&
+                                                        !!maxSelection &&
+                                                        maxSelection === selectedIds.length)
+                                                }
+                                            />
+                                        </FirstLevelLeafWrapper>
+                                    );
+                                }
+
+                                const finalChildren = filteredCountriesBySearch.filter(country =>
+                                    country.parents.some(p => p.id === option.id)
                                 );
                                 const children = countries.filter(country =>
-                                    country.parents.some(p => p.id === parent.id)
+                                    country.parents.some(p => p.id === option.id)
                                 );
                                 const selectedCount = children.filter(child => selectedIds.includes(child.id)).length;
 
                                 return (
-                                    <div key={nindex}>
+                                    <div key={`first-level-${nindex}`}>
                                         <Node
-                                            nodeId={parent.id}
-                                            name={parent.name}
+                                            nodeId={option.id}
+                                            name={option.name}
                                             selectedCount={selectedCount}
                                             onSelectedChange={(_nodeId: string, selected: boolean) =>
                                                 handleSelectedAllCountriesInParent(finalChildren, selected)
                                             }
-                                            selected={isAllCountryParentSelected(parent.id)}
+                                            selected={isAllCountryParentSelected(option.id)}
                                             disabled={isCountryParentDisabled(finalChildren)}
                                             hasSelectAll={hasSelectAll}
                                         >
@@ -327,12 +366,17 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
 
                                                 return (
                                                     <Leaf
-                                                        key={lindex}
+                                                        key={`second-level-${option.id}-${lindex}`}
                                                         nodeId={child.id}
                                                         name={child.name}
                                                         selected={selected}
                                                         onSelectedChange={handleSelectedChange}
-                                                        disabled={disabledCountries?.includes(child.id)}
+                                                        disabled={
+                                                            disabledCountries?.includes(child.id) ||
+                                                            (!selected &&
+                                                                !!maxSelection &&
+                                                                maxSelection === selectedIds.length)
+                                                        }
                                                     />
                                                 );
                                             })}
@@ -386,5 +430,11 @@ const StyledDropdownTextField = styled(DropdownTextField)`
     }
     .MuiInputBase-input {
         caret-color: transparent;
+    }
+`;
+
+const FirstLevelLeafWrapper = styled.div`
+    .MuiTreeItem-label {
+        padding: 8px;
     }
 `;

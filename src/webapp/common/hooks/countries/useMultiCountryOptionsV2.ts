@@ -1,16 +1,43 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import i18n from "../../../../locales";
 import { CountryOption } from "../../../components/country-selector/CountrySelector";
 import { useAppContext } from "../../../contexts/app-context";
+import { CountriesRegion } from "../../../../domain/entities/Country";
 
-export function useMultiCountryOptionsV2(selectedCountries?: string[], countryOptionsToSelect?: string[]) {
-    const { countries } = useAppContext();
+export function useMultiCountryOptionsV2(params?: {
+    selectedCountries?: string[];
+    countryOptionsToSelect?: string[];
+    showEurRegion?: boolean;
+}) {
+    const { countries, compositionRoot } = useAppContext();
     const [options, setOptions] = useState<CountryOption[]>([]);
     const [selected, setSelected] = useState<string[] | undefined>([]);
+    const [eurRegion, setEurRegion] = useState<CountriesRegion | undefined>(undefined);
+
+    const { selectedCountries, countryOptionsToSelect, showEurRegion } = useMemo(() => {
+        return {
+            selectedCountries: params?.selectedCountries,
+            countryOptionsToSelect: params?.countryOptionsToSelect,
+            showEurRegion: params?.showEurRegion,
+        };
+    }, [params?.countryOptionsToSelect, params?.selectedCountries, params?.showEurRegion]);
 
     useEffect(() => {
         setSelected(selectedCountries);
     }, [selectedCountries]);
+
+    useEffect(() => {
+        if (showEurRegion && !eurRegion) {
+            compositionRoot.countries.getEurCountriesRegion.execute().run(
+                eurRegionData => {
+                    setEurRegion(eurRegionData);
+                },
+                () => {
+                    setEurRegion(undefined);
+                }
+            );
+        }
+    }, [compositionRoot.countries, showEurRegion, eurRegion]);
 
     useEffect(() => {
         const countryOptions = countries.map(country => ({
@@ -23,15 +50,27 @@ export function useMultiCountryOptionsV2(selectedCountries?: string[], countryOp
             ],
         }));
 
-        setOptions(
-            countryOptionsToSelect
-                ? countryOptions.filter(({ id }) => countryOptionsToSelect?.includes(id))
-                : countryOptions
-        );
-    }, [countries, countryOptionsToSelect]);
+        const countryOptionsFiltered = countryOptionsToSelect
+            ? countryOptions.filter(({ id }) => countryOptionsToSelect?.includes(id))
+            : countryOptions;
 
-    const onSelectedChange = useCallback((country: string[] | undefined) => {
-        setSelected(country);
+        const optionsToSet =
+            showEurRegion && eurRegion
+                ? [
+                      ...countryOptionsFiltered,
+                      {
+                          id: eurRegion.id,
+                          name: eurRegion.name,
+                          code: eurRegion.code,
+                          parents: [],
+                      },
+                  ]
+                : countryOptionsFiltered;
+        setOptions(optionsToSet);
+    }, [countries, countryOptionsToSelect, eurRegion, showEurRegion]);
+
+    const onSelectedChange = useCallback((countries: string[] | undefined) => {
+        setSelected(countries);
     }, []);
 
     return { options, selected, onSelectedChange };

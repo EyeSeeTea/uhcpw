@@ -47,7 +47,7 @@ export function usePolicyExplorer({
     yearsFilter?: string[];
 }): PolicyExplorerState {
     const { compositionRoot } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2(countriesFilter);
+    const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter });
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);

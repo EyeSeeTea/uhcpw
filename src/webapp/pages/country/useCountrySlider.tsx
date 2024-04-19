@@ -4,7 +4,7 @@ import { SliderInfo } from "../../../domain/entities/country-page/SliderInfo";
 import { useCountryInfo } from "./useCountryInfo";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
-import { CountrySectionInfo } from "../../../domain/entities/Country";
+import { CountrySectionInfo, EU27 } from "../../../domain/entities/Country";
 import UmbrellaGreen from "../../assets/country-page/umbrellaGreen.png";
 import UmbrellaRed from "../../assets/country-page/umbrella-3.svg";
 
@@ -173,12 +173,12 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphOne: {
                     visualizationId: "xJhFIBuwGVC",
                     years: generateYears().map(year => year.id),
-                    countries: [countryId],
+                    countries: [countryId, EU27],
                 },
                 graphTwo: {
                     visualizationId: "zkEtsohZTTf",
                     years: generateYears().map(year => year.id),
-                    countries: [countryId],
+                    countries: [countryId, EU27],
                 },
             },
             {
@@ -206,7 +206,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "d3kq9OCv8tH",
                     years: generateYears().map(year => year.id),
-                    countries: [countryId],
+                    countries: [countryId, EU27],
                 },
             },
             {
@@ -220,7 +220,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "BYAT5Woc9EJ",
                     years: [LatestCOVID19.id],
-                    countries: [countryId],
+                    countries: [countryId, EU27],
                 },
             },
         ],

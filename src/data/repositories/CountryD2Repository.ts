@@ -1,5 +1,5 @@
 import polylabel from "polylabel";
-import { Country, CountryStatus } from "../../domain/entities/Country";
+import { Country, CountryStatus, CountriesRegion } from "../../domain/entities/Country";
 import { Future, FutureData } from "../../domain/entities/Future";
 import { CountryRepository } from "../../domain/repositories/CountryRepository";
 import { Id } from "../../domain/entities/Ref";
@@ -102,6 +102,20 @@ export class CountryD2Repository implements CountryRepository {
             );
 
             return this.buildCountries(countries.objects, aditionalCountriesInfo.events, countriesIdsInCountryPage);
+        });
+    }
+
+    // WORKAROUND: EU27 data is added in Greenland because we cannot use EUR
+    public getEurCountriesRegion(): FutureData<CountriesRegion | undefined> {
+        return apiToFuture(
+            this.api.models.organisationUnits.get({
+                fields: organisationUnitsFields,
+                paging: false,
+                level: 3,
+                filter: { id: { eq: GREENLAND } },
+            })
+        ).map(eurRegion => {
+            return this.buildEurCountriesRegion(eurRegion?.objects[0]);
         });
     }
 
@@ -305,6 +319,21 @@ export class CountryD2Repository implements CountryRepository {
         }
 
         return [];
+    }
+
+    private buildEurCountriesRegion(eurRegion?: D2OrgUnit): CountriesRegion | undefined {
+        return eurRegion
+            ? {
+                  id: eurRegion.id,
+                  name: "EU27 average",
+                  longName: "EU27 average",
+                  code: "EU27",
+                  description: eurRegion.description,
+                  parents: eurRegion.organisationUnitGroups
+                      .map(({ id, name }) => ({ id, name }))
+                      .filter(oug => validOrgUnitGroups.includes(oug.id)),
+              }
+            : undefined;
     }
 }
 

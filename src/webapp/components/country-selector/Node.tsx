@@ -46,6 +46,7 @@ export const Node: React.FC<NodeProps> = ({
         <StyledTreeItem
             nodeId={nodeId}
             onLabelClick={handleLabelClick}
+            aria-disabled={disabled}
             label={
                 <Row>
                     {hasSelectAll && !disabled && (
