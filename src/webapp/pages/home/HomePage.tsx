@@ -20,7 +20,7 @@ export const HomePage: React.FC = React.memo(() => {
         <Layout>
             <NewsletterButton />
             <MapSection>
-                <Map mapState={mapState} />
+                <Map mapState={mapState} welcomePanelContent={homePageContent.mainMapPanel} />
             </MapSection>
             <section>
                 <Explorers content={homePageContent.explorers} />

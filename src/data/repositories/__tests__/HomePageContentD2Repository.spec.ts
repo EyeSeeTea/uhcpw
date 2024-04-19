@@ -62,6 +62,13 @@ function givenAHomePageContent() {
 function verifyContentIsParsed(homePageContent?: HomePageContent) {
     if (!homePageContent) fail("Home Page Content is undefined");
 
+    expect(homePageContent.mainMapPanel.title).toBe("UHC watch(TEST)");
+    expect(homePageContent.mainMapPanel.description).toBe(
+        "(TEST)Tracking progress on affordable access to health care in Europe and Central Asia\n\nAffordable access to health care - financial protection - is at the heart of universal health coverage (UHC)\n\nUHC means everyone can use quality health care without financial hardship"
+    );
+    expect(homePageContent.mainMapPanel.buttonText).toBe("UHC watch video(TEST)");
+    expect(homePageContent.mainMapPanel.buttonLink).toBe("https://www.youtube.com/watch?v=71S7ekOSSzU");
+
     expect(homePageContent.explorers.title).toBe("Explorers");
     expect(homePageContent.explorers.subtitle).toBe("Assess the current situation, monitor trends, compare countries");
 

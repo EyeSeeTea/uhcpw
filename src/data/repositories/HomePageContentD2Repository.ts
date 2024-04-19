@@ -13,6 +13,12 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
 
     buildHomePageContent(dataValues: DataValue[]): HomePageContent {
         return {
+            mainMapPanel: {
+                title: dataValues.find(dv => dv.dataElement === "H3x21OGOjhn")?.value || "",
+                description: dataValues.find(dv => dv.dataElement === "CPpA7kDtOfM")?.value || "",
+                buttonText: dataValues.find(dv => dv.dataElement === "fIsJ5Wn0T3J")?.value || "",
+                buttonLink: dataValues.find(dv => dv.dataElement === "XKV6Or4MYLu")?.value || "",
+            },
             explorers: {
                 title: dataValues.find(dv => dv.dataElement === "KpyjdWU235A")?.value || "",
                 subtitle: dataValues.find(dv => dv.dataElement === "Hp6hYaoKOoJ")?.value || "",

@@ -1,4 +1,16 @@
-export type HomePageContent = { explorers: ExplorersContent; analysis: AnalysisContent; methods: MethodsContent };
+export type HomePageContent = {
+    mainMapPanel: MainMapPanelContent;
+    explorers: ExplorersContent;
+    analysis: AnalysisContent;
+    methods: MethodsContent;
+};
+
+export type MainMapPanelContent = {
+    title: string;
+    description: string;
+    buttonText: string;
+    buttonLink: string;
+};
 
 type ColumnContent = {
     title: string;

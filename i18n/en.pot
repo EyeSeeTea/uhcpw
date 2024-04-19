@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-04-18T17:57:54.202Z\n"
-"PO-Revision-Date: 2024-04-18T17:57:54.202Z\n"
+"POT-Creation-Date: 2024-04-19T08:45:11.834Z\n"
+"PO-Revision-Date: 2024-04-19T08:45:11.834Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -99,29 +99,10 @@ msgstr ""
 msgid "Multimedia"
 msgstr ""
 
-msgid "UHC watch"
-msgstr ""
-
-msgid ""
-"Tracking progress on affordable access to health care in Europe and Central "
-"Asia"
-msgstr ""
-
-msgid ""
-"Affordable access to health care - financial protection - is at the heart "
-"of universal health coverage (UHC)"
-msgstr ""
-
-msgid "UHC means everyone can use quality health care without financial hardship"
-msgstr ""
-
 msgid "Weaker financial protection"
 msgstr ""
 
 msgid "Stronger financial protection"
-msgstr ""
-
-msgid "UHC watch video"
 msgstr ""
 
 msgid "Category and indicator"
