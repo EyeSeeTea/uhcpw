@@ -224,4 +224,5 @@ const SwitchRowColumnButton = styled(Button)`
     height: 42px;
     width: 170px;
     text-transform: initial;
+    background: #185698;
 `;
