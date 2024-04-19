@@ -21,6 +21,12 @@ export function useHomePageContent(): HomePageContent {
 }
 
 const emptyHomePageContent: HomePageContent = {
+    mainMapPanel: {
+        title: "",
+        description: "",
+        buttonText: "",
+        buttonLink: "",
+    },
     explorers: {
         title: "",
         subtitle: "",

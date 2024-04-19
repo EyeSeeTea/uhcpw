@@ -7,27 +7,27 @@ import gapsIcon from "../../../assets/map/icon-normal.svg";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
+import ReactMarkdown from "react-markdown";
 
-const youtubeVideoLink = "https://www.youtube.com/watch?v=71S7ekOSSzU";
+interface WelcomePanelProps {
+    welcomePanelContent: MainMapPanelContent;
+}
 
-export const WelcomePanel: React.FC = () => {
+export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent }) => {
     return (
         <Container>
             <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
-                {i18n.t("UHC watch")}
+                {welcomePanelContent.title}
             </Typography>
             <ParagraphContainer>
-                <Typography paragraph>
-                    {i18n.t("Tracking progress on affordable access to health care in Europe and Central Asia")}
-                </Typography>
-                <Typography paragraph>
-                    {i18n.t(
-                        "Affordable access to health care - financial protection - is at the heart of universal health coverage (UHC)"
-                    )}
-                </Typography>
-                <Typography paragraph>
-                    {i18n.t("UHC means everyone can use quality health care without financial hardship")}{" "}
-                </Typography>
+                <ReactMarkdown
+                    components={{
+                        p: ({ children }) => <Typography paragraph>{children}</Typography>,
+                    }}
+                >
+                    {welcomePanelContent.description}
+                </ReactMarkdown>
             </ParagraphContainer>
             <UmbrellaItemsContainer>
                 <UmbrellaItem>
@@ -42,9 +42,9 @@ export const WelcomePanel: React.FC = () => {
                     <span>{i18n.t("Stronger financial protection")}</span>
                 </UmbrellaItem>
             </UmbrellaItemsContainer>
-            <VideoLink href={youtubeVideoLink} target="_blank" rel="noreferrer">
+            <VideoLink href={welcomePanelContent.buttonLink} target="_blank" rel="noreferrer">
                 <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
-                <Typography>{i18n.t("UHC watch video")}</Typography>
+                <Typography>{welcomePanelContent.buttonText}</Typography>
             </VideoLink>
         </Container>
     );
