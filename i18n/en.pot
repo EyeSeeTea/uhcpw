@@ -239,10 +239,7 @@ msgstr ""
 msgid "Error fetching Methods"
 msgstr ""
 
-msgid "Notes: "
-msgstr ""
-
-msgid "Suggested citation: "
+msgid "Last updated: "
 msgstr ""
 
 msgid "Country experts: "
@@ -254,7 +251,10 @@ msgstr ""
 msgid "Reviewers: "
 msgstr ""
 
-msgid "Last updated: "
+msgid "Notes: "
+msgstr ""
+
+msgid "Suggested citation: "
 msgstr ""
 
 msgid "Country information coming soon"
