@@ -255,7 +255,7 @@ async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) 
         const itemScope = within(item);
 
         const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
-        expect(image.src).toContain(resource.image);
+        expect(image.src).toContain(resource.imageOriginal);
 
         itemScope.getByText(resource.date.getFullYear());
         itemScope.getByText(resource.theme);
@@ -281,7 +281,7 @@ async function verifyNewsItems(resources: News[]) {
         const itemScope = within(item);
 
         const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
-        expect(image.src).toContain(resource.image);
+        expect(image.src).toContain(resource.imageOriginal);
 
         const links = itemScope.queryAllByRole("link");
         expect(itemScope.queryAllByRole("link").length).toBeGreaterThan(0);
@@ -307,7 +307,7 @@ async function verifyMultimediaItems(resources: Multimedia[]) {
         const itemScope = within(item);
 
         const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
-        expect(image.src).toContain(resource.image);
+        expect(image.src).toContain(resource.imageOriginal);
 
         const links = itemScope.queryAllByRole("link");
         expect(itemScope.queryAllByRole("link").length).toBeGreaterThan(0);
@@ -340,7 +340,7 @@ async function verifyCountryAnalysisItems(resources: CountryAnalysis[]) {
         itemScope.getByText(country?.name || "", { exact: true });
 
         const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
-        expect(image.src).toContain(resource.image);
+        expect(image.src).toContain(resource.imageOriginal);
 
         itemScope.getByText(resource.date.getFullYear());
         itemScope.getByText(resource.theme);

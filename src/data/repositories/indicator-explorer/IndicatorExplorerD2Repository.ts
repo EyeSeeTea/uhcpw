@@ -1,7 +1,7 @@
 import { FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
-import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
-import { IndicatorExplorerRepository } from "../../../domain/repositories/indicator-explorer/IndicatorExplorerRepository";
+import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
+import { IndicatorExplorerContentRepository } from "../../../domain/repositories/indicator-explorer/IndicatorExplorerContentRepository";
 import { D2Api } from "../../../types/d2-api";
 import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
 
@@ -10,17 +10,22 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
     text: "XVZ0MsAkYaC",
 };
 
-export class IndicatorExplorerD2Repository implements IndicatorExplorerRepository {
+const noDataDataElement: Id = "KvLqwZMVyUO";
+
+export class IndicatorExplorerD2Repository implements IndicatorExplorerContentRepository {
     constructor(private api: D2Api) {}
 
-    getSelectCategoryInfo(): FutureData<IndicatorExplorerSelectCategoryInfo> {
-        return getMainPagesContent(this.api).map(dataValues => this.buildSelectCategoryInfo(dataValues));
+    get(): FutureData<IndicatorExplorerContent> {
+        return getMainPagesContent(this.api).map(dataValues => this.buildContent(dataValues));
     }
 
-    private buildSelectCategoryInfo(dataValues: DataValue[]): IndicatorExplorerSelectCategoryInfo {
+    private buildContent(dataValues: DataValue[]): IndicatorExplorerContent {
         return {
-            title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
-            text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+            selectCategory: {
+                title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
+                text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+            },
+            noDataMessage: dataValues.find(dv => dv.dataElement === noDataDataElement)?.value || "",
         };
     }
 }

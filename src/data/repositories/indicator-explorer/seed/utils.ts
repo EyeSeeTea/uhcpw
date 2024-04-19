@@ -6,10 +6,10 @@ type SortedCategoryNames = {
 };
 
 export const sortedCategoryNames: SortedCategoryNames = {
-    comparative: "Comparative",
     financialHardship: "Financial hardship",
     unmetNeed: "Unmet need",
     healthSpending: "Health spending (health accounts)",
+    comparative: "Comparative",
 };
 
 export const sortedCharts: string[] = [

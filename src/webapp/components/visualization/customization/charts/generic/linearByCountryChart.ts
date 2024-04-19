@@ -10,4 +10,5 @@ export const linearByCountryChart: ChartCustomization = {
         title: { text: "" },
     },
     sortLegendByLastDataPoint: true,
+    hideLegendIfNoData: true,
 };

@@ -120,28 +120,15 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
                                     </GeneralRow>
 
-                                    {info.notes ? (
+                                    {info.lastUpdate ? (
                                         <GeneralRow>
-                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            <CreditsText $noWrap>
+                                                {i18n.t("Last updated: ", { nsSeparator: false })}
+                                            </CreditsText>
                                             &nbsp;
-                                            <CreditsText>{info.notes}</CreditsText>
+                                            <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
                                         </GeneralRow>
                                     ) : null}
-
-                                    <GeneralRow>
-                                        <CreditsText>
-                                            {i18n.t("Suggested citation: ", { nsSeparator: false })}
-                                        </CreditsText>
-                                        &nbsp;
-                                        <Link
-                                            href={info.sourceUrl}
-                                            style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            {info.sourceText}
-                                        </Link>
-                                    </GeneralRow>
 
                                     <GeneralRow>
                                         <CreditsText $noWrap>
@@ -165,13 +152,30 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         </GeneralRow>
                                     ) : null}
 
-                                    <GeneralRow>
-                                        <CreditsText $noWrap>
-                                            {i18n.t("Last updated: ", { nsSeparator: false })}
-                                        </CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
-                                    </GeneralRow>
+                                    {info.notes ? (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.notes}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
+
+                                    {info.sourceText ? (
+                                        <GeneralRow>
+                                            <CreditsText>
+                                                {i18n.t("Suggested citation: ", { nsSeparator: false })}
+                                            </CreditsText>
+                                            &nbsp;
+                                            <Link
+                                                href={info.sourceUrl}
+                                                style={{ fontSize: "16px", color: colors.accentPrimary }}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                {info.sourceText}
+                                            </Link>
+                                        </GeneralRow>
+                                    ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
                                     {info.country &&

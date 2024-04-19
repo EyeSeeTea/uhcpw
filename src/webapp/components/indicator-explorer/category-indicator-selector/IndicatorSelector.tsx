@@ -47,9 +47,7 @@ export const IndicatorSelector = React.memo(
                     options={options}
                     groupBy={option => (option as IndicatorOption).category}
                     getOptionLabel={option => {
-                        return `${(option as IndicatorOption).category}: ${(
-                            option as IndicatorOption
-                        ).text.toLowerCase()}`;
+                        return `${(option as IndicatorOption).text}`;
                     }}
                     value={selectedOption || null}
                     onChange={handleChange}

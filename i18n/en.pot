@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-04-15T06:59:52.490Z\n"
-"PO-Revision-Date: 2024-04-15T06:59:52.490Z\n"
+"POT-Creation-Date: 2024-04-18T17:57:54.202Z\n"
+"PO-Revision-Date: 2024-04-18T17:57:54.202Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -66,21 +66,10 @@ msgstr[1] ""
 msgid "No information available for this category"
 msgstr ""
 
-msgid "Get updates from UHC watch"
-msgstr ""
-
-msgid ""
-"Sign up for our newsletter and get updates whenever we add new information "
-"or resources."
-msgstr ""
-
-msgid "Give us feedback on UHC watch."
-msgstr ""
-
-msgid "To sign up or to send feedback, email"
-msgstr ""
-
 msgid "Clear"
+msgstr ""
+
+msgid "Sign up for updates"
 msgstr ""
 
 msgid "indicator explorer"
@@ -250,10 +239,7 @@ msgstr ""
 msgid "Error fetching Methods"
 msgstr ""
 
-msgid "Notes: "
-msgstr ""
-
-msgid "Suggested citation: "
+msgid "Last updated: "
 msgstr ""
 
 msgid "Country experts: "
@@ -265,7 +251,10 @@ msgstr ""
 msgid "Reviewers: "
 msgstr ""
 
-msgid "Last updated: "
+msgid "Notes: "
+msgstr ""
+
+msgid "Suggested citation: "
 msgstr ""
 
 msgid "Country information coming soon"

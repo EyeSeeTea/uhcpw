@@ -25,7 +25,7 @@ export const ResourceItem: React.FC<{ resource: ResourceState }> = React.memo(({
                 <SimpleResourceItem
                     title={resource.title}
                     url={resource.url}
-                    image={resource.image}
+                    image={resource.imageCustom}
                     date={resource.date}
                     dateFormat={"DD MMMM YYYY"}
                 />
@@ -36,7 +36,7 @@ export const ResourceItem: React.FC<{ resource: ResourceState }> = React.memo(({
                 <SimpleResourceItem
                     title={resource.title}
                     url={resource.url}
-                    image={resource.image}
+                    image={resource.imageCustom}
                     date={resource.date}
                     tag={theme}
                     tagColor={themeColor[resource.theme]}

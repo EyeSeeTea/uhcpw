@@ -2,7 +2,7 @@ export const linearDentalQuintileSeries = [
     {
         id: "a2zFSqU1Zsb.Rh9j1wC8hNt",
         name: "Poorest quintile",
-        color: "#ff0000",
+        color: "#c00000",
         dataLabels: {
             enabled: false,
         },

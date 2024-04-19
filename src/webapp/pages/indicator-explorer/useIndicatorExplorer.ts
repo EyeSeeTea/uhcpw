@@ -8,8 +8,8 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
 import { EU27 } from "../../../domain/entities/Country";
+import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 import { CountryOption } from "../../components/country-selector/CountrySelector";
 
@@ -29,9 +29,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
     const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
-    const [selectCategoryInfo, setSelectCategoryInfo] = useState<IndicatorExplorerSelectCategoryInfo | undefined>(
-        undefined
-    );
+    const [pageContent, setPageContent] = useState<IndicatorExplorerContent | undefined>(undefined);
 
     const [yearFilters, setYearsFilters] = useState<Option[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
@@ -139,12 +137,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     }, [indicatorFilters, selectedIndicatorFilter]);
 
     useEffect(() => {
-        compositionRoot.indicatorExplorer.getSelectCategoryInfo.execute().run(
-            info => {
-                setSelectCategoryInfo(info);
+        compositionRoot.indicatorExplorer.getPageContent.execute().run(
+            result => {
+                setPageContent(result);
             },
             error => {
-                setSelectCategoryInfo(undefined);
+                setPageContent(undefined);
                 setErrorMessage(error);
             }
         );
@@ -218,7 +216,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         onGet,
         showVisualization,
         globalMessage,
-        selectCategoryInfo,
+        pageContent,
         errorMessage,
     };
 }
