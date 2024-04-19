@@ -63,8 +63,10 @@ export function useCountrySlider(countryId: string): CountrySlider {
     }, []);
 
     const onResetTab = useCallback(() => {
-        setTabValue(0);
-    }, []);
+        if (tabValue !== 0) {
+            setTabValue(0);
+        }
+    }, [tabValue]);
 
     const preventDefault = useCallback((event: Event) => {
         if (event.preventDefault) {
