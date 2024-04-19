@@ -18,6 +18,7 @@ type HeaderType = {
     sliderRef: MutableRefObject<null>;
     resourcesRef: MutableRefObject<null>;
     expertRef: MutableRefObject<null>;
+    handleResetTab: (value: boolean) => void;
 };
 
 const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
@@ -38,12 +39,19 @@ export const Header: FC<HeaderType> = ({
     sliderRef,
     resourcesRef,
     expertRef,
+    handleResetTab,
 }) => {
     const country = useCountryInfo(countryId);
 
-    const handleClick = useCallback((ref: MutableRefObject<any>) => {
-        ref.current?.scrollIntoView({ behavior: "smooth" });
-    }, []);
+    const handleClick = useCallback(
+        (ref: MutableRefObject<any>, where: "detail" | "resources" | "expert") => {
+            ref.current?.scrollIntoView({ behavior: "smooth" });
+            if (where === "detail") {
+                handleResetTab(true);
+            }
+        },
+        [handleResetTab]
+    );
 
     return (
         <Container aria-label="country-page-header" status={country?.status}>
@@ -62,13 +70,15 @@ export const Header: FC<HeaderType> = ({
                     <ButtonText>{i18n.t("Dashboard")}</ButtonText>
                 </Button>
                 <Button>
-                    <ButtonText onClick={() => handleClick(sliderRef)}>{i18n.t("In detail")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(sliderRef, "detail")}>{i18n.t("In detail")}</ButtonText>
                 </Button>
                 <Button>
-                    <ButtonText onClick={() => handleClick(resourcesRef)}>{i18n.t("Country resources")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(resourcesRef, "resources")}>
+                        {i18n.t("Country resources")}
+                    </ButtonText>
                 </Button>
                 <Button>
-                    <ButtonText onClick={() => handleClick(expertRef)}>{i18n.t("Country expert")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(expertRef, "expert")}>{i18n.t("Country expert")}</ButtonText>
                 </Button>
             </ButtonsContainer>
         </Container>

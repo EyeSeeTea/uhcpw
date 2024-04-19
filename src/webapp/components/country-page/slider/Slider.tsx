@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Box, CircularProgress, Grid, Tab, Tabs, makeStyles } from "@material-ui/core";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { SlideGraph } from "./SlideGraph";
@@ -110,10 +111,29 @@ function a11yProps(index: number) {
     };
 }
 
-export const Slider: React.FC<{ countryId: string }> = ({ countryId }) => {
+export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleResetTab: (value: boolean) => void }> = ({
+    countryId,
+    handleResetTab,
+    resetTab = false,
+}) => {
     const classes = useStyles();
-    const { tabValue, sliderGraphsConfig, sliderInfoConfig, handleTabChange, onWheel, disableScroll, enableScroll } =
-        useCountrySlider(countryId);
+    const {
+        tabValue,
+        sliderGraphsConfig,
+        sliderInfoConfig,
+        handleTabChange,
+        onWheel,
+        disableScroll,
+        enableScroll,
+        onResetTab,
+    } = useCountrySlider(countryId);
+
+    useEffect(() => {
+        if (resetTab) {
+            onResetTab();
+            handleResetTab(false);
+        }
+    }, [handleResetTab, onResetTab, resetTab]);
 
     if (!countryId) return <CircularProgress />;
 

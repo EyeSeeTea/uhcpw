@@ -37,6 +37,7 @@ type CountrySlider = {
     onWheel: (event: React.WheelEvent<HTMLButtonElement>) => void;
     disableScroll: () => void;
     enableScroll: () => void;
+    onResetTab: () => void;
 };
 
 export function useCountrySlider(countryId: string): CountrySlider {
@@ -60,6 +61,12 @@ export function useCountrySlider(countryId: string): CountrySlider {
     const handleTabChange = useCallback((_event: React.ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
     }, []);
+
+    const onResetTab = useCallback(() => {
+        if (tabValue !== 0) {
+            setTabValue(0);
+        }
+    }, [tabValue]);
 
     const preventDefault = useCallback((event: Event) => {
         if (event.preventDefault) {
@@ -262,6 +269,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
         sliderGraphsConfig,
         sliderInfoConfig,
         handleTabChange,
+        onResetTab,
         onWheel,
         disableScroll,
         enableScroll,
