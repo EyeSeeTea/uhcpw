@@ -390,20 +390,16 @@ export class ResourceD2Repository implements ResourceRepository {
         }
     }
 
-    private filterCountries(events: D2Event[], filters: ResourceFilters): D2Event[] {
-        if (filters.category === "country-analysis") {
-            return events.filter(event =>
-                event.dataValues.some(
-                    event =>
-                        event.dataElement === resourceDataElements.relatedCountry1 &&
-                        filters.countries?.includes(event.value)
-                )
-            );
-        }
+    private filterCountries(events: D2Event[], filters: ResourceFilters) {
         return events.filter(event => {
             const relatedCountries = this.getRelatedCountries(event);
 
-            return relatedCountries?.some(country => filters.countries?.includes(country));
+            const foundRelatedCountry = relatedCountries?.some(country => filters.countries?.includes(country));
+            const foundCountry = event.dataValues.some(
+                el => el.dataElement === resourceDataElements.countryId && filters.countries?.includes(el.value)
+            );
+
+            return foundCountry || foundRelatedCountry;
         });
     }
 

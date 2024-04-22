@@ -1,30 +1,50 @@
 import _ from "lodash";
 import { useMemo } from "react";
 import { Country } from "../../../../domain/entities/Country";
-import { CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
+import { CountryAnalysis, News } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
-import { ComparativeAnalysisState, ResourceState } from "../by-type/ResourcesByTypeState";
+import {
+    ComparativeAnalysisState,
+    CountryAnalysisState,
+    MultimediaState,
+    ResourceState,
+} from "../by-type/ResourcesByTypeState";
 import { useResourcesByType } from "../by-type/useResourcesByType";
 import { ResourcesState } from "./ResourcesState";
 
 export function useResources(): ResourcesState {
     const { countries } = useAppContext();
-    const { filters, items, onGetResources } = useResourcesByType({ favouriteSection: true });
+    const { filters, items, onGetResources } = useResourcesByType({
+        favouriteSection: true,
+        includeAdvancedSearch: true,
+    });
 
-    const resources = useMemo(() => {
-        return items
+    const landingResources = useMemo(() => {
+        return items && !filters.search.term
             ? {
                   countryAnalysisByCountry: getAnalysisCountries(items, countries),
-                  comparativeAnalysis: getComparativeAnalysis(items),
-                  news: getNews(items),
-                  multimedia: getMultimedia(items),
+                  comparativeAnalysis: getComparativeAnalysis(items, true),
+                  news: getNews(items, true),
+                  multimedia: getMultimedia(items, true),
               }
             : undefined;
-    }, [countries, items]);
+    }, [countries, filters.search.term, items]);
+
+    const filteredByTextResources = useMemo(() => {
+        return items && !!filters.search.term
+            ? {
+                  countryAnalysis: items.filter(item => item.kind === "country-analysis") as CountryAnalysisState[],
+                  comparativeAnalysis: getComparativeAnalysis(items, false),
+                  news: getNews(items, false),
+                  multimedia: getMultimedia(items, false),
+              }
+            : undefined;
+    }, [filters.search.term, items]);
 
     return {
         filters,
-        resources,
+        landingResources,
+        filteredByTextResources,
         onGetResources,
     };
 }
@@ -44,23 +64,29 @@ function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
     );
 }
 
-function getNews(items: ResourceState[]): News[] {
-    return _.orderBy(
+function getNews(items: ResourceState[], isLanding: boolean): News[] {
+    const news = _.orderBy(
         items.filter(item => item.kind === "news"),
         "favouriteSectionOrder"
-    ).slice(0, 1) as News[];
+    ) as News[];
+
+    return isLanding ? news.slice(0, 1) : news;
 }
 
-function getMultimedia(items: ResourceState[]): Multimedia[] {
-    return _.orderBy(
+function getMultimedia(items: ResourceState[], isLanding: boolean): MultimediaState[] {
+    const multimedia = _.orderBy(
         items.filter(item => item.kind === "multimedia"),
         "favouriteSectionOrder"
-    ).slice(0, 1) as Multimedia[];
+    ) as MultimediaState[];
+
+    return isLanding ? multimedia.slice(0, 1) : multimedia;
 }
 
-function getComparativeAnalysis(items: ResourceState[]): ComparativeAnalysisState[] {
-    return _.orderBy(
+function getComparativeAnalysis(items: ResourceState[], isLanding: boolean): ComparativeAnalysisState[] {
+    const comparativeAnalysis = _.orderBy(
         items.filter(item => item.kind === "comparative-analysis"),
         "favouriteSectionOrder"
-    ).slice(0, 6) as ComparativeAnalysisState[];
+    ) as ComparativeAnalysisState[];
+
+    return isLanding ? comparativeAnalysis.slice(0, 6) : comparativeAnalysis;
 }

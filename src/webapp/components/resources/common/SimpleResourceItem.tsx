@@ -1,7 +1,7 @@
 import { Box, Card, Typography } from "@material-ui/core";
 import moment from "moment";
 
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Tag } from "../tag/Tag";
 
@@ -9,21 +9,49 @@ export interface SimpleResourceItemProps {
     title: string;
     url: string;
     image: string;
+    fallbackImage?: string;
     date: Date;
     dateFormat?: string;
     tag?: string;
     tagColor?: string;
     onTagClick?: () => void;
     maintainAspectRatio?: boolean;
+    fullWidth?: boolean;
 }
 
 export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
-    ({ title, url, image, date, dateFormat, tag, tagColor, onTagClick, maintainAspectRatio = false }) => {
+    ({
+        title,
+        url,
+        image,
+        fallbackImage,
+        date,
+        dateFormat,
+        tag,
+        tagColor,
+        onTagClick,
+        maintainAspectRatio = false,
+        fullWidth = true,
+    }) => {
+        const [imgSrc, setImgSrc] = useState(image);
+
+        const handleImageError = useCallback(() => {
+            if (fallbackImage) {
+                setImgSrc(fallbackImage);
+            }
+        }, [fallbackImage]);
+
         return (
             <Item elevation={0} role="listitem">
                 <Column>
                     <a href={url} style={{ width: "100%" }} target="_blank" rel="noreferrer">
-                        <Image src={image} alt={title} $maintainAspectRatio={maintainAspectRatio} />
+                        <Image
+                            src={imgSrc}
+                            onError={handleImageError}
+                            alt={title}
+                            $maintainAspectRatio={maintainAspectRatio}
+                            $fullWidth={fullWidth}
+                        />
                     </a>
 
                     <Box height={20} />
@@ -58,8 +86,8 @@ const Text = styled(Typography)`
     font-weight: normal;
 `;
 
-const Image = styled.img<{ $maintainAspectRatio?: boolean }>`
-    width: 100%;
+const Image = styled.img<{ $maintainAspectRatio?: boolean; $fullWidth?: boolean }>`
+    width: ${props => (props.$fullWidth ? "100%" : "unset")};
     height: 300px;
     object-fit: ${props => (props.$maintainAspectRatio ? "contain" : "cover")};
 `;
