@@ -40,8 +40,7 @@ export function useResourcesByType(params: {
 
     const onGetResources = useCallback(() => {
         setLoading(true);
-        debugger;
-        // ...
+
         const cancel = Future.joinObj({
             normalResponse: compositionRoot.resources.get.execute({
                 searchTerm: filters.search.term,

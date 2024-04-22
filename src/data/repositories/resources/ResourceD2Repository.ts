@@ -108,7 +108,6 @@ export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
-        debugger;
         //2:38 has a bug filtering events by data element value using eq operator. Like works!
         const filter = _([
             filters.category ? this.getCategoriesFilter(filters.category) : undefined,
