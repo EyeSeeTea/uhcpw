@@ -9,7 +9,7 @@ export interface SimpleResourceItemProps {
     title: string;
     url: string;
     image: string;
-    fallbackImage: string;
+    fallbackImage?: string;
     date: Date;
     dateFormat?: string;
     tag?: string;
@@ -36,7 +36,9 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         const [imgSrc, setImgSrc] = useState(image);
 
         const handleImageError = useCallback(() => {
-            setImgSrc(fallbackImage);
+            if (fallbackImage) {
+                setImgSrc(fallbackImage);
+            }
         }, [fallbackImage]);
 
         return (
