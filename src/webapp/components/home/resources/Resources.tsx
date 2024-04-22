@@ -50,6 +50,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
                         image={resource.imageCustom}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Comparative analysis")}
                         onTagClick={() => handleOnTagClick("/resources/comparative-analysis")}
@@ -62,6 +63,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
                         image={resource.imageCustom}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Country analysis")}
                         onTagClick={() => handleOnTagClick("/resources/country-analysis")}
@@ -74,6 +76,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         title={resource.title}
                         url={resource.url}
                         image={resource.imageCustom}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("News")}
                         onTagClick={() => handleOnTagClick("/resources/news")}
@@ -86,6 +89,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         title={resource.title}
                         url={resource.url}
                         image={resource.imageCustom}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Multimedia")}
                         onTagClick={() => handleOnTagClick("/resources/multimedia")}

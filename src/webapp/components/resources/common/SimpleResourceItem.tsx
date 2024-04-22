@@ -1,7 +1,7 @@
 import { Box, Card, Typography } from "@material-ui/core";
 import moment from "moment";
 
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Tag } from "../tag/Tag";
 
@@ -9,6 +9,7 @@ export interface SimpleResourceItemProps {
     title: string;
     url: string;
     image: string;
+    fallbackImage: string;
     date: Date;
     dateFormat?: string;
     tag?: string;
@@ -23,6 +24,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         title,
         url,
         image,
+        fallbackImage,
         date,
         dateFormat,
         tag,
@@ -31,12 +33,19 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         maintainAspectRatio = false,
         fullWidth = true,
     }) => {
+        const [imgSrc, setImgSrc] = useState(image);
+
+        const handleImageError = useCallback(() => {
+            setImgSrc(fallbackImage);
+        }, [fallbackImage]);
+
         return (
             <Item elevation={0} role="listitem">
                 <Column>
                     <a href={url} style={{ width: "100%" }} target="_blank" rel="noreferrer">
                         <Image
-                            src={image}
+                            src={imgSrc}
+                            onError={handleImageError}
                             alt={title}
                             $maintainAspectRatio={maintainAspectRatio}
                             $fullWidth={fullWidth}
