@@ -34,9 +34,20 @@ function isYAxes(visualizationId: Id, axeId: Id): boolean {
     return !!axes && axes.y === axeId;
 }
 
-export function getCustomCellName(visualizationId: Id, axeId: Id): string | undefined {
+export function getCustomCellName(
+    visualizationId: Id,
+    seriesIdAndName: {
+        id: string | undefined;
+        name: string | undefined;
+    }[],
+    cell: string
+): string | undefined {
     const axesNames = cellNameByVisualizationId[visualizationId];
-    const xAxesName = isXAxes(visualizationId, axeId) && axesNames?.x ? axesNames?.x : undefined;
-    const yAxesName = isYAxes(visualizationId, axeId) && axesNames?.y ? axesNames?.y : undefined;
-    return xAxesName || yAxesName;
+    if (axesNames) {
+        const xAxesName = isXAxes(visualizationId, cell) && axesNames?.x ? axesNames?.x : undefined;
+        const yAxesName = isYAxes(visualizationId, cell) && axesNames?.y ? axesNames?.y : undefined;
+        return xAxesName || yAxesName;
+    }
+
+    return seriesIdAndName.find(({ id }) => id === cell)?.name;
 }
