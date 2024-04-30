@@ -60,6 +60,8 @@ const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     changesInCoveragePolicy: "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
 };
 
+const REFERENCES_REGEX = /\[.*?\]: <\/> ".*?"/g;
+
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
@@ -321,9 +323,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                                     dv.dataElement.includes(generalDataElements.references || "")
                             )?.value || EMPTY_DATA;
 
-                        const areMarkdownReferences = references.match(
-                            /\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g
-                        ) as string[];
+                        const areMarkdownReferences = references.match(REFERENCES_REGEX) as string[];
 
                         return tableBuilder.buildRows({
                             currentRowsInTable: accRows,
@@ -435,7 +435,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.references || "")
                 )?.value || EMPTY_DATA;
 
-            const referencesArray = references.match(/\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g) as string[];
+            const referencesArray = references.match(REFERENCES_REGEX) as string[];
 
             return {
                 country,
