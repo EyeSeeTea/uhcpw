@@ -14,8 +14,8 @@ export interface ResourcesFiltersProps {
 
 export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetChart }) => {
     return (
-        <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
-            <Grid item md={4} xs={6}>
+        <Grid container alignItems="flex-end" justifyContent="center">
+            <Grid item md={4} sm={6}>
                 <Center>
                     <IndicatorSelector
                         fullWidth
@@ -27,7 +27,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     />
                 </Center>
             </Grid>
-            <Grid item md={4} xs={6}>
+            <Grid item md={4} sm={6}>
                 <Center>
                     <CountrySelector
                         fullWidth
@@ -42,7 +42,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     />
                 </Center>
             </Grid>
-            <Grid item md={3} xs={6}>
+            <Grid item md={3} sm={6}>
                 <Center>
                     <DropdownMultiple
                         fullWidth
@@ -54,7 +54,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     />
                 </Center>
             </Grid>
-            <Grid item md={1} xs={2}>
+            <GridGetChartButton item md={1} sm={2}>
                 <GetChartButton
                     aria-label="Get chart"
                     variant="contained"
@@ -68,7 +68,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                 >
                     <Typography>{i18n.t("Get chart")}</Typography>
                 </GetChartButton>
-            </Grid>
+            </GridGetChartButton>
         </Grid>
     );
 });
@@ -78,6 +78,7 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-inline-end: 40px;
 `;
 
 const GetChartButton = styled(Button)`
@@ -86,4 +87,8 @@ const GetChartButton = styled(Button)`
     text-transform: none;
     white-space: nowrap;
     background: #185698;
+`;
+
+const GridGetChartButton = styled(Grid)`
+    text-align: end;
 `;
