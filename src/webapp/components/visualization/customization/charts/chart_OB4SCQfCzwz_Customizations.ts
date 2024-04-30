@@ -44,4 +44,5 @@ export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
         },
     ],
     xAxis: { ...rotateXAxis },
+    sortLegendByLastDataPoint: true,
 };
