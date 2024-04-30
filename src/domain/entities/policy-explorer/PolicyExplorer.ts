@@ -16,6 +16,7 @@ export type PolicyExplorerCell = {
 };
 
 export type PolicyExplorerGeneralInfo = {
+    year: string;
     country: string;
     countryExperts: string;
     editors: string;
