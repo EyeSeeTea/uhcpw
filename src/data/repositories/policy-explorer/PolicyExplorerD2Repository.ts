@@ -200,38 +200,43 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
 
-        return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
+        return Object.entries(dataValuesByOrgUnit).map(([orgUnitId, dataValuesOfCountry]) => {
             const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
 
+            const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
+            const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
+
             const sourceUrl =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
                 )?.value || "";
             const countryExperts =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.countryExperts || "")
                 )?.value || "";
             const editors =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.editors || "")
                 )?.value || "";
             const lastUpdate =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.lastUpdate || "")
                 )?.value || "";
             const reviewers =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
                 )?.value || "";
             const sourceText =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
                 )?.value || "";
 
             const notes =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.notes || "")
                 )?.value || "";
+
+            const year = sortedYears.length && sortedYears[0] ? sortedYears[0] : "";
 
             return {
                 country,
@@ -242,6 +247,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 lastUpdate: new Date(lastUpdate),
                 reviewers,
                 notes,
+                year,
             };
         });
     }
