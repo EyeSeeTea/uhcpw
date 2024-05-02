@@ -71,6 +71,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
 
+                debugger
             const newOptions = {
                 chart: {
                     ...originalChartOptions.chart,
