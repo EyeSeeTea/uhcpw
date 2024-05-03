@@ -154,9 +154,11 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                                     {info.notes ? (
                                         <GeneralRow>
-                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
-                                            &nbsp;
-                                            <CreditsText>{info.notes}</CreditsText>
+                                            <CreditsText variant="caption">
+                                                {`${i18n.t("Notes: ", {
+                                                    nsSeparator: false,
+                                                })} ${info.notes}`}
+                                            </CreditsText>
                                         </GeneralRow>
                                     ) : null}
 
