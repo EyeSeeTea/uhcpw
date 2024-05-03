@@ -78,7 +78,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     ) : (
                         <>
                             <Row>
-                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
+                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20, marginTop: -8 }}>
                                     {chartFriendlyName}
                                     <Button>
                                         <CustomInfoIcon
