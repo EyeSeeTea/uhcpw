@@ -96,7 +96,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                                 name: "Data",
                             },
                         ],
-                        `${visualization.categoryName}: ${visualization.downloadedFileName}` ?? chartName
+                        visualization.downloadedFileName
+                            ? `${visualization.categoryName}: ${visualization.downloadedFileName}`
+                            : chartName
                     );
                 }
                 return Future.success(undefined);
