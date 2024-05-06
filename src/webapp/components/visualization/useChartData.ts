@@ -6,14 +6,14 @@ import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { CompositionRoot } from "../../../CompositionRoot";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
-import { ChartData } from "./ChartData";
+import { ChartData, ChartDataLoaded } from "./ChartData";
 import { visualizationCustomizations } from "./customization/visualizationCustomizations";
 import { chartOptions } from "./manual/chartOptions";
 
 interface ChartDataState {
     chartData: ChartData;
     showInfo: boolean;
-    onDownloadExcel: () => void;
+    onDownloadExcel: (chartDataLoaded: ChartDataLoaded) => void;
     onShowInfo: () => void;
     onCloseInfo: () => void;
 }
@@ -75,11 +75,22 @@ export function useChartData(
         }
     }, [compositionRoot, visualizationId, countries, years, allCountries, currentCountry]);
 
-    const onDownloadExcel = useCallback(() => {
-        compositionRoot.indicatorExplorer.downloadAnalytics
-            .execute(visualizationId, years || [], countries || [])
-            .runAsync();
-    }, [compositionRoot.indicatorExplorer.downloadAnalytics, visualizationId, years, countries]);
+    const onDownloadExcel = useCallback(
+        (chartDataLoaded: ChartDataLoaded) => {
+            const seriesData = chartDataLoaded?.chartOptions?.series ?? chartDataLoaded?.customization?.series;
+            const seriesIdAndName = (seriesData || []).map(({ id, name }) => ({ id, name }));
+
+            compositionRoot.indicatorExplorer.downloadAnalytics
+                .execute({
+                    visualizationId,
+                    periods: years || [],
+                    orgUnits: countries || [],
+                    seriesIdAndName: seriesIdAndName,
+                })
+                .runAsync();
+        },
+        [compositionRoot.indicatorExplorer.downloadAnalytics, visualizationId, years, countries]
+    );
 
     const onShowInfo = useCallback(() => {
         setShowInfo(true);

@@ -51,7 +51,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     chartFriendlyName={chartData.visualization.friendlyName}
                     categoryTag={chartData.visualization.categoryTag}
                     showInfo={showInfo}
-                    onDownloadExcel={onDownloadExcel}
+                    onDownloadExcel={() => onDownloadExcel(chartData)}
                     onDownloadImage={onDownloadImage}
                     onShowInfo={onShowInfo}
                     onCloseInfo={onCloseInfo}
