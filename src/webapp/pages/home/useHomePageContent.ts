@@ -34,11 +34,13 @@ const emptyHomePageContent: HomePageContent = {
             title: "",
             text: "",
             buttonText: "",
+            buttonLink: "",
         },
         policy: {
             title: "",
             text: "",
             buttonText: "",
+            buttonLink: "",
         },
     },
     analysis: {
@@ -48,11 +50,13 @@ const emptyHomePageContent: HomePageContent = {
             title: "",
             text: "",
             buttonText: "",
+            buttonLink: "",
         },
         regional: {
             title: "",
             text: "",
             buttonText: "",
+            buttonLink: "",
         },
     },
     methods: {

@@ -77,12 +77,16 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
         "Over 50 indicators of financial hardship, unmet need for health care and spending on health"
     );
     expect(homePageContent.explorers.indicator.buttonText).toBe("Explore data");
+    expect(homePageContent.explorers.indicator.buttonLink).toBe(
+        "https://apps.who.int/dhis2/uhcwatch/#/indicator-explorer"
+    );
 
     expect(homePageContent.explorers.policy.title).toBe("Policy explorer");
     expect(homePageContent.explorers.policy.text).toBe(
         "Information on population coverage, service coverage, user charges and voluntary health insurance"
     );
     expect(homePageContent.explorers.policy.buttonText).toBe("Explore data");
+    expect(homePageContent.explorers.policy.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/#/policy-explorer");
 
     expect(homePageContent.analysis.title).toBe("Analysis");
     expect(homePageContent.analysis.subtitle).toBe("Country-level and comparative analysis of financial protection");
@@ -92,12 +96,16 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
         "Find out about the health system factors that strengthen and undermine financial protection at country level"
     );
     expect(homePageContent.analysis.countries.buttonText).toBe("Country pages");
+    expect(homePageContent.analysis.countries.buttonLink).toBe(
+        "https://apps.who.int/dhis2/uhcwatch/#/country-page?country=VGOzFKfSazN"
+    );
 
     expect(homePageContent.analysis.regional.title).toBe("The region at a glance");
     expect(homePageContent.analysis.regional.text).toBe(
         "Compare financial protection indicators, identify gaps in coverage, explore good practice"
     );
     expect(homePageContent.analysis.regional.buttonText).toBe("Regional report");
+    expect(homePageContent.analysis.regional.buttonLink).toBe("https://cmyn.short.gy/regionalreport");
 
     expect(homePageContent.methods.title).toBe("Methods");
     expect(homePageContent.methods.subtitle).toBe("How financial protection is monitored matters");
