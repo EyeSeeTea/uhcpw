@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,12 +10,11 @@ import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 
 import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import i18n from "../../../../locales";
-import { useHistory } from "react-router";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
-import { Option } from "../../dropdown/Option";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
+import { useAppHeader } from "./useAppHeader";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -65,33 +64,9 @@ interface AppHeaderProps {
 
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
-    const history = useHistory();
-    const { pathname } = useLocation();
-
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const { countryFilter } = useCountryPage();
-
-    const handleParentMenuClick = useCallback((event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
-    }, []);
-
-    const goToHome = useCallback(() => {
-        history.push("/");
-    }, [history]);
-
-    const handleClose = useCallback(() => {
-        setAnchorEl(null);
-    }, []);
-
-    const handleCountryClick = useCallback(
-        (country: Option<string>) => {
-            history.push(`/country-page?country=${country.value}`);
-            handleClose();
-        },
-        [handleClose, history]
-    );
-
-    const isHomePage = useMemo(() => pathname === "/", [pathname]);
+    const { regionalReport, anchorEl, isHomePage, goToHome, handleCountryClick, handleClose, handleSetAnchorEl } =
+        useAppHeader();
 
     return (
         <div className={classes.root}>
@@ -113,7 +88,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
                     <LogoContainer>
-                        <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={goToHome} />;
+                        <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={() => goToHome()} />;
                     </LogoContainer>
                     <Box className={classes.rest} />
                     <Hidden lgUp>
@@ -121,7 +96,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                     </Hidden>
                     <Hidden mdDown>
                         {!isHomePage ? (
-                            <HomeButton className={classes.menu} onClick={goToHome}>
+                            <HomeButton className={classes.menu} onClick={() => goToHome()}>
                                 <HomeOutlinedIcon style={{ color: "#3D3D3D" }} />
                             </HomeButton>
                         ) : null}
@@ -145,7 +120,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             id="countries"
                             aria-controls="countries"
                             aria-haspopup="true"
-                            onClick={handleParentMenuClick}
+                            onClick={handleSetAnchorEl}
                             endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         >
                             {i18n.t("Countries")}
@@ -173,12 +148,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                                 );
                             })}
                         </Menu>
-                        <MenuTopLink
-                            id="regions"
-                            aria-controls="regions"
-                            target="_blank"
-                            href="https://cmyn.short.gy/regionalreport"
-                        >
+                        <MenuTopLink id="regions" aria-controls="regions" target="_blank" href={regionalReport}>
                             {i18n.t("Regional report")}
                         </MenuTopLink>
                         <Button

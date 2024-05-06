@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React from "react";
 import { IconButton, Menu, MenuItem, Divider, withStyles } from "@material-ui/core";
 import { Menu as MenuIcon, CloseOutlined as CloseOutlinedIcon } from "@material-ui/icons";
 import styled from "styled-components";
@@ -6,31 +6,23 @@ import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import i18n from "../../../../locales";
-import { useHistory, useLocation } from "react-router-dom";
 import { MobileMenuSubItem } from "./MobileMenuSubItem";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
-import { Option } from "../../dropdown/Option";
+import { useAppHeader } from "./useAppHeader";
 
-export const MobileMenu = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+export const MobileMenu: React.FC = () => {
     const { countryFilter } = useCountryPage();
-    const history = useHistory();
-    const { pathname } = useLocation();
-
-    const handleClick = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    }, []);
-
-    const handleCloseMenu = useCallback(
-        (link?: string) => {
-            setAnchorEl(null);
-            if (link) {
-                history.push(link);
-            }
-        },
-        [history]
-    );
+    const {
+        regionalReport,
+        anchorEl,
+        isHomePage,
+        goToHome,
+        handleCountryClick,
+        handleMenuItemClick,
+        handleClose,
+        handleSetAnchorEl,
+    } = useAppHeader();
+    const open = Boolean(anchorEl);
 
     const StyledMenu = withStyles({
         paper: {
@@ -41,21 +33,6 @@ export const MobileMenu = () => {
         },
     })(Menu);
 
-    const onCountryChange = useCallback(
-        (country: Option<string>) => {
-            history.push(`/country-page?country=${country.value}`);
-            handleCloseMenu();
-        },
-        [handleCloseMenu, history]
-    );
-
-    const isHomePage = useMemo(() => pathname === "/", [pathname]);
-
-    const goToHome = useCallback(() => {
-        history.push("/");
-        handleCloseMenu();
-    }, [handleCloseMenu, history]);
-
     return (
         <div>
             <IconButton
@@ -63,7 +40,7 @@ export const MobileMenu = () => {
                 aria-controls={open ? "basic-menu" : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
-                onClick={handleClick}
+                onClick={handleSetAnchorEl}
             >
                 {open ? <CloseOutlinedIcon /> : <MenuIcon />}
             </IconButton>
@@ -71,7 +48,7 @@ export const MobileMenu = () => {
                 anchorEl={anchorEl}
                 keepMounted
                 open={open}
-                onClose={() => handleCloseMenu()}
+                onClose={() => handleClose()}
                 anchorOrigin={{
                     vertical: "top",
                     horizontal: "left",
@@ -83,25 +60,25 @@ export const MobileMenu = () => {
             >
                 {!isHomePage ? (
                     <>
-                        <HomeMenuItem onClick={goToHome}>
+                        <HomeMenuItem onClick={() => goToHome(true)}>
                             <HomeOutlinedIcon style={{ color: "#F0F0FF" }} />
                         </HomeMenuItem>
                         <StyledDivider />
                     </>
                 ) : null}
 
-                <MenuItem onClick={() => handleCloseMenu("/indicator-explorer")}>
+                <MenuItem onClick={() => handleMenuItemClick("/indicator-explorer")}>
                     {i18n.t("Indicator explorer")}
                 </MenuItem>
                 <StyledDivider />
-                <MenuItem onClick={() => handleCloseMenu("/policy-explorer")}>{i18n.t("Policy explorer")}</MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("/policy-explorer")}>{i18n.t("Policy explorer")}</MenuItem>
                 <StyledDivider />
                 <MenuItem>
                     <MobileMenuSubItem item="countries">
                         <div>
                             {countryFilter.countryOptions.map(country => {
                                 return (
-                                    <MenuItem key={country.value} onClick={() => onCountryChange(country)}>
+                                    <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
                                         {country.text}
                                     </MenuItem>
                                 );
@@ -111,16 +88,16 @@ export const MobileMenu = () => {
                 </MenuItem>
                 <StyledDivider />
                 <MenuItem>
-                    <MenuLink target="_blank" href="https://cmyn.short.gy/regionalreport" rel="noreferrer">
+                    <MenuLink target="_blank" href={regionalReport} rel="noreferrer">
                         {i18n.t("Regional report")}
                     </MenuLink>
                 </MenuItem>
                 <StyledDivider />
-                <MenuItem onClick={() => handleCloseMenu("/methods")}>{i18n.t("Methods")}</MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("/methods")}>{i18n.t("Methods")}</MenuItem>
                 <StyledDivider />
-                <MenuItem onClick={() => handleCloseMenu("/resources")}>{i18n.t("Resources")}</MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("/resources")}>{i18n.t("Resources")}</MenuItem>
                 <StyledDivider />
-                <MenuItem onClick={() => handleCloseMenu("/about")}>{i18n.t("About us")}</MenuItem>
+                <MenuItem onClick={() => handleMenuItemClick("/about")}>{i18n.t("About us")}</MenuItem>
             </StyledMenu>
         </div>
     );
