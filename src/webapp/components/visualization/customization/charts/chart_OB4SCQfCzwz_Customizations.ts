@@ -42,4 +42,5 @@ export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
             },
         },
     ],
+    sortLegendByLastDataPoint: true,
 };
