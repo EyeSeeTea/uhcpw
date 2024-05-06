@@ -80,6 +80,7 @@ export class CountryD2Repository implements CountryRepository {
                 this.api.events.get({
                     fields: eventsFields,
                     program: countryInfoProgram,
+                    skipPaging: true,
                 })
             ),
             programMetadata: apiToFuture(
