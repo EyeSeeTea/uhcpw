@@ -50,24 +50,21 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                         onGetResources={onGetResources}
                         disabledCountryFilter={disabledCountryFilter}
                     />
-                </SelectsContainer>
-                <Container maxWidth="xl">
                     {
-                        <Grid container spacing={5}>
+                        <StyledGridContainer container spacing={5}>
                             {items &&
                                 items.map((item, index) => {
                                     const sizes = getSizes(item);
 
                                     return (
-                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
+                                        <StyledGrid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
                                             <ResourceItem resource={item} />
-                                        </Grid>
+                                        </StyledGrid>
                                     );
                                 })}
-                        </Grid>
+                        </StyledGridContainer>
                     }
-                </Container>
-
+                </SelectsContainer>
                 <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                     <CircularProgress color="primary" />
                 </Backdrop>
@@ -91,7 +88,6 @@ const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSiz
 
 const Content = styled.div`
     background: white;
-    padding: 32px;
     min-height: 100vh;
 `;
 
@@ -121,4 +117,12 @@ const SearchContainer = styled.div`
     @media (max-width: 450px) {
         padding: 0 25px;
     }
+`;
+
+const StyledGrid = styled(Grid)`
+    padding: 20px;
+`;
+
+const StyledGridContainer = styled(Grid)`
+    padding: 32px;
 `;
