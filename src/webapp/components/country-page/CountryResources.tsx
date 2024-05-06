@@ -18,7 +18,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
 
     return (
         <Container aria-label="country-page-resources">
-            <ResourcesSection>
+            <ResourcesSection aria-label="country-resources">
                 <Row>
                     <Typography variant="h5">{i18n.t("Country resources")}</Typography>
                     <Fab
@@ -46,7 +46,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                     <CircularProgress color="primary" />
                 </Backdrop>
             </ResourcesSection>
-            <ResourcesSection marginTop="64px">
+            <ResourcesSection aria-label="comparative-resources" marginTop="64px">
                 <Row>
                     <Typography variant="h5">{i18n.t("Comparative resources")}</Typography>
                     <Fab
