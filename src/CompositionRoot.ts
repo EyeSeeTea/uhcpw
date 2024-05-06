@@ -39,6 +39,7 @@ import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-exp
 import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
 import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
 import { GetEurCountriesRegionUseCase } from "./domain/usecases/GetEurCountriesRegionUseCase";
+import { GetRegionalReportLinkUseCase } from "./domain/usecases/GetRegionalReportLinkUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -111,6 +112,7 @@ export function getCompositionRoot(
         },
         home: {
             getPageContent: new GetHomePageContentUseCase(repositories.homePage),
+            getRegionalReportLink: new GetRegionalReportLinkUseCase(repositories.homePage),
         },
         countryPage: {
             getSliderInfo: new GetSliderInfoUseCase(repositories.countryPageInfo),

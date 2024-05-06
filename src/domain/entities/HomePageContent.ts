@@ -16,6 +16,7 @@ type ColumnContent = {
     title: string;
     text: string;
     buttonText?: string;
+    buttonLink?: string;
 };
 
 export type ExplorersContent = {
@@ -39,3 +40,5 @@ export type MethodsContent = {
     column2: ColumnContent;
     column3: ColumnContent;
 };
+
+export type RegionalReportLink = string;
