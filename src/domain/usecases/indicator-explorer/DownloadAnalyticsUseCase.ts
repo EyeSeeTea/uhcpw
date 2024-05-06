@@ -9,7 +9,16 @@ export class DownloadAnalyticsUseCase {
         private analyticsRepository: AnalyticsRepository
     ) {}
 
-    public execute(visualizationId: string, periods: string[], orgUnits: string[]): FutureData<void> {
+    public execute(params: {
+        visualizationId: string;
+        periods: string[];
+        orgUnits: string[];
+        seriesIdAndName: {
+            id: string | undefined;
+            name: string | undefined;
+        }[];
+    }): FutureData<void> {
+        const { visualizationId, periods, orgUnits, seriesIdAndName } = params;
         return this.visualizationRepository.getById(visualizationId).flatMap(visualization => {
             const sortedPeriods = periods.sort();
 
@@ -17,7 +26,7 @@ export class DownloadAnalyticsUseCase {
 
             const finalPeriods = noOverwritePeriods ? [] : periods;
 
-            return this.analyticsRepository.saveToFile(visualization, finalPeriods, orgUnits);
+            return this.analyticsRepository.saveToFile(visualization, finalPeriods, orgUnits, seriesIdAndName);
         });
     }
 }
