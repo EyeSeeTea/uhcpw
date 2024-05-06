@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { useHistory, useLocation } from "react-router-dom";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
-import { CountrySelector } from "../country-selector/CountrySelector";
+import { TreeSelector } from "../tree-selector/TreeSelector";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 import { CategorySelector } from "./category-selector/CategorySelector";
 
@@ -80,14 +80,15 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
             </Grid>
             <Grid item md={4} sm={6}>
                 <Wrapper>
-                    <CountrySelector
+                    <TreeSelector
                         fullWidth
                         hasClearAll
                         hasSelectAll
                         label={i18n.t("Countries")}
-                        countries={filters.country.options}
+                        items={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={onCountryChange}
+                        placeholder={i18n.t("Select country")}
                     />
                 </Wrapper>
             </Grid>

@@ -408,7 +408,11 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
     userEvent.click(await screen.findByRole("checkbox", { name: value }));
     await userEvent.keyboard("{Escape}");
 
-    await scope.findByLabelText(/countries/i);
+    const textbox = await scope.findByRole("textbox", {
+        name: "Select country",
+    });
+
+    within(textbox).getByText(/countries/i);
 }
 
 async function switchToColumns() {

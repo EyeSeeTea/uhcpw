@@ -3,7 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
-import { CountrySelector } from "../country-selector/CountrySelector";
+import { TreeSelector } from "../tree-selector/TreeSelector";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 import { IndicatorSelector } from "./category-indicator-selector/IndicatorSelector";
 
@@ -29,16 +29,17 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             </Grid>
             <Grid item md={4} xs={6}>
                 <Center>
-                    <CountrySelector
+                    <TreeSelector
                         fullWidth
                         hasSelectAll
                         hasClearAll
                         label={i18n.t("Countries")}
-                        countries={filters.country.options}
+                        items={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}
-                        disabledCountries={filters.country.disabledCountries}
+                        disabledItems={filters.country.disabledCountries}
                         maxSelection={filters.country.maxCountrySelection}
+                        placeholder={i18n.t("Select country")}
                     />
                 </Center>
             </Grid>

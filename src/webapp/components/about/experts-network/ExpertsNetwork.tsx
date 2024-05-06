@@ -4,7 +4,7 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ItemPerson } from "../person/ItemPerson";
 import { CountryFilterState } from "../../../common/state/state";
-import { CountrySelector } from "../../country-selector/CountrySelector";
+import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { PersonState } from "../../../pages/about/AboutState";
 
 export interface ExpertsNetworkProps {
@@ -25,14 +25,14 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
             </ItemsTitleContainer>
 
             <Row style={{ padding: "16px 32px 32px 32px" }}>
-                <CountrySelector
+                <TreeSelector
                     hasSelectAll
                     hasClearAll
                     topClearAll={-35}
-                    countries={countryFilter.options}
+                    items={countryFilter.options}
                     selectedIds={countryFilter.selected}
                     onSelectedIdsChange={countryFilter.onSelectedChange}
-                    placeholder="Select country"
+                    placeholder={i18n.t("Select country")}
                 />
             </Row>
 

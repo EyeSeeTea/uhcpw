@@ -11,7 +11,7 @@ import { Visualization } from "../../../domain/entities/indicator-explorer/Visua
 import { EU27 } from "../../../domain/entities/Country";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
-import { CountryOption } from "../../components/country-selector/CountrySelector";
+import { TreeOption } from "../../components/tree-selector/TreeSelector";
 
 export const allYearsItem = { value: "all", text: i18n.t("All years") };
 export const yearsItems = generateYears().map(year => ({ value: year.id, text: year.id }));
@@ -244,7 +244,7 @@ function getUpdatedCountriesSelectionFilter(
     oldVisualization: Visualization | undefined,
     newsVisualization: Visualization | undefined,
     isEu27Selected: boolean,
-    countryOptions: CountryOption[]
+    countryOptions: TreeOption[]
 ): string[] | undefined {
     if (
         (oldVisualization?.isComparative && !newsVisualization?.isComparative) ||
@@ -265,7 +265,7 @@ function getUpdatedCountriesSelectionFilter(
 function getDisabledCountriesFilter(
     newsVisualization: Visualization | undefined,
     selectedCountriesFilter: string[] | undefined,
-    countryOptions: CountryOption[]
+    countryOptions: TreeOption[]
 ): string[] {
     if ((selectedCountriesFilter?.length || 0) === newsVisualization?.maxCountryFilter) {
         const countriesToDisabled = countryOptions

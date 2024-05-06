@@ -3,9 +3,9 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { useCallback } from "react";
 import { customRender } from "../../../../utils/tests-ui";
-import { CountryOption, CountrySelector } from "../CountrySelector";
+import { TreeOption, TreeSelector } from "../TreeSelector";
 
-const countries: CountryOption[] = [
+const countries: TreeOption[] = [
     {
         id: "BVnpk4xiXGJ",
         name: "China",
@@ -54,7 +54,7 @@ const countries: CountryOption[] = [
  *
  */
 
-describe("Given CountrySelector", () => {
+describe("Given TreeSelector", () => {
     describe("to load", () => {
         it("should not show the options", async () => {
             renderComponent();
@@ -268,20 +268,21 @@ const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
     }, []);
 
     return (
-        <CountrySelector
-            countries={countries}
+        <TreeSelector
+            items={countries}
             selectedIds={selectedIds}
             onSelectedIdsChange={handleSelectedChange}
             hasSelectAll={hasSelectAll}
             hasClearAll={hasClearAll}
-            disabledCountries={disabledCountries}
+            disabledItems={disabledCountries}
+            placeholder="Select country"
         />
     );
 };
 
 function focusComponent() {
     const autocompleteInput = screen.getByRole("textbox", {
-        name: /Country selector/i,
+        name: "Select country",
     });
 
     userEvent.click(autocompleteInput);
