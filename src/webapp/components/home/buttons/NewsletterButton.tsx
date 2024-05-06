@@ -1,17 +1,17 @@
 import React from "react";
 import { Button, Link } from "@material-ui/core";
 import styled from "styled-components";
-import i18n from "../../../../locales";
+import { NewsletterContent } from "../../../../domain/entities/HomePageContent";
 
-const NEWSLETTER_URL = "https://confirmsubscription.com/h/d/0BA400B38F94A681";
+type NewsletterButtonProps = { content: NewsletterContent };
 
-export default function NewsletterButton() {
+export const NewsletterButton: React.FC<NewsletterButtonProps> = ({ content }) => {
     return (
-        <Link target="_blank" href={NEWSLETTER_URL}>
-            <StyledButton variant="outlined">{i18n.t("Sign up for updates")}</StyledButton>
+        <Link target="_blank" href={content.buttonLink}>
+            <StyledButton variant="outlined">{content.buttonText}</StyledButton>
         </Link>
     );
-}
+};
 
 const StyledButton = styled(Button)`
     position: fixed;
