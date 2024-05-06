@@ -59,7 +59,17 @@ export function useResourcesByType(params: {
             ({ normalResponse, advancedResponse }) => {
                 setLoading(false);
 
-                setItems(buildResourcesBySection([...normalResponse, ...advancedResponse], countries, themes));
+                const mergedResponses = [
+                    ...normalResponse.filter(({ id, kind }) => {
+                        const isNormalAlreadyIncludedInAdvanced = advancedResponse.some(
+                            advanced => advanced.id === id && advanced.kind === kind
+                        );
+                        return !isNormalAlreadyIncludedInAdvanced;
+                    }),
+                    ...advancedResponse,
+                ];
+
+                setItems(buildResourcesBySection(mergedResponses, countries, themes));
             },
             () => {
                 setLoading(false);
