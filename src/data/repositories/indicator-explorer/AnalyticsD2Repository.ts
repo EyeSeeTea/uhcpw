@@ -13,6 +13,8 @@ import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
 import { EU27 } from "../../../domain/entities/Country";
 
+const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
+
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown) {}
 
@@ -62,11 +64,16 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     pe: "Year",
                     dx: "Parameter",
                 };
-                const columns = analyticsResponse.headers.map(
-                    header =>
+
+                const columns = analyticsResponse.headers.map(header => {
+                    if (SERVICE_PRIMARY_NAME_COLUMN === header.name) {
+                        return "Parameter";
+                    }
+                    return (
                         mapCodeNameToColumnName[header.name] ??
                         header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase()
-                );
+                    );
+                });
 
                 const mappedRows = _(
                     this.mapAnalyticsResponseRows({
@@ -89,7 +96,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                                 name: "Data",
                             },
                         ],
-                        chartName
+                        `${visualization.categoryName}: ${visualization.downloadedFileName}` ?? chartName
                     );
                 }
                 return Future.success(undefined);

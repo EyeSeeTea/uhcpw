@@ -3,6 +3,7 @@ import { Id, Ref } from "../Ref";
 export interface VisualizationExtra {
     categoryName: string;
     friendlyName: string;
+    downloadedFileName?: string;
     categoryTag?: string;
     notes?: string;
     maxCountryFilter?: number;
