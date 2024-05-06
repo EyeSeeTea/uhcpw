@@ -142,7 +142,7 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 0px;
+    margin-block-start: 9px;
     align-items: center;
 `;
 
