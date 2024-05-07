@@ -108,6 +108,7 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
     expect(homePageContent.analysis.regional.buttonLink).toBe("https://cmyn.short.gy/regionalreport");
 
     expect(homePageContent.methods.title).toBe("Methods");
+    expect(homePageContent.methods.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/#/methods");
     expect(homePageContent.methods.subtitle).toBe("How financial protection is monitored matters");
 
     expect(homePageContent.methods.column1.title).toBe("A focus on equity");
@@ -124,6 +125,9 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
     expect(homePageContent.methods.column3.text).toBe(
         "UHC Watch provides clear guidance for policy by identifying who lacks financial protection, driven by which health services and why"
     );
+
+    expect(homePageContent.newsletter.buttonText).toBe("Sign up for updates");
+    expect(homePageContent.newsletter.buttonLink).toBe("https://confirmsubscription.com/h/d/0BA400B38F94A681");
 }
 
 export {};

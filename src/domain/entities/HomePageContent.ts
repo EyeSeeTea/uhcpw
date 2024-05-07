@@ -3,6 +3,7 @@ export type HomePageContent = {
     explorers: ExplorersContent;
     analysis: AnalysisContent;
     methods: MethodsContent;
+    newsletter: NewsletterContent;
 };
 
 export type MainMapPanelContent = {
@@ -15,6 +16,11 @@ export type MainMapPanelContent = {
 type ColumnContent = {
     title: string;
     text: string;
+    buttonText?: string;
+    buttonLink?: string;
+};
+
+export type NewsletterContent = {
     buttonText?: string;
     buttonLink?: string;
 };
@@ -39,6 +45,7 @@ export type MethodsContent = {
     column1: ColumnContent;
     column2: ColumnContent;
     column3: ColumnContent;
+    buttonLink: string;
 };
 
 export type RegionalReportLink = string;
