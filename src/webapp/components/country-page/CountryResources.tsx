@@ -18,30 +18,62 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
 
     return (
         <Container aria-label="country-page-resources">
-            <Row>
-                <Typography variant="h5">{i18n.t("Country resources")}</Typography>
-                <Fab
-                    aria-label="Go to resources"
-                    color="primary"
-                    size="small"
-                    style={{ boxShadow: "none", transform: "scale(0.7)" }}
-                >
-                    <ChevronRightSharpIcon onClick={onArrowClick} />
-                </Fab>
-            </Row>
-            <Grid container spacing={5}>
-                {items &&
-                    items.map((resource, i) => {
-                        return (
-                            <Grid key={i} item xs={6} md={4} lg={3} xl={2}>
-                                <ResourceItem resource={resource} />
-                            </Grid>
-                        );
-                    })}
-            </Grid>
-            <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
-                <CircularProgress color="primary" />
-            </Backdrop>
+            <ResourcesSection aria-label="country-resources">
+                <Row>
+                    <Typography variant="h5">{i18n.t("Country resources")}</Typography>
+                    <Fab
+                        aria-label="Go to country resources"
+                        color="primary"
+                        size="small"
+                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                    >
+                        <ChevronRightSharpIcon onClick={onArrowClick} />
+                    </Fab>
+                </Row>
+                <Grid container spacing={5}>
+                    {items &&
+                        items
+                            .filter(({ kind }) => kind === "country-analysis")
+                            .map((resource, i) => {
+                                return (
+                                    <Grid key={i} item xs={6} md={4} lg={3} xl={2}>
+                                        <ResourceItem resource={resource} />
+                                    </Grid>
+                                );
+                            })}
+                </Grid>
+                <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                    <CircularProgress color="primary" />
+                </Backdrop>
+            </ResourcesSection>
+            <ResourcesSection aria-label="comparative-resources" marginTop="64px">
+                <Row>
+                    <Typography variant="h5">{i18n.t("Comparative resources")}</Typography>
+                    <Fab
+                        aria-label="Go to comparative resources"
+                        color="primary"
+                        size="small"
+                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                    >
+                        <ChevronRightSharpIcon onClick={onArrowClick} />
+                    </Fab>
+                </Row>
+                <Grid container spacing={5}>
+                    {items &&
+                        items
+                            .filter(({ kind }) => kind === "comparative-analysis")
+                            .map((resource, i) => {
+                                return (
+                                    <Grid key={i} item xs={6} md={4} lg={3} xl={2}>
+                                        <ResourceItem resource={resource} />
+                                    </Grid>
+                                );
+                            })}
+                </Grid>
+                <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                    <CircularProgress color="primary" />
+                </Backdrop>
+            </ResourcesSection>
         </Container>
     );
 };
@@ -49,6 +81,10 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
 const Container = styled.div`
     padding: 40px 0px 40px 60px;
     max-width: 80%;
+`;
+
+const ResourcesSection = styled.div<{ marginTop?: string }>`
+    margin-block-start: ${props => (props.marginTop ? props.marginTop : "0")};
 `;
 
 const Row = styled.div`

@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom";
 import { screen, waitFor, within } from "@testing-library/react";
 import { anything, instance, mock, when } from "ts-mockito";
-import moment from "moment";
 import { Future } from "../../../../domain/entities/Future";
 import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { CountryPage } from "../CountryPage";
@@ -10,8 +9,6 @@ import { ResourceD2Repository } from "../../../../data/repositories/resources/Re
 import {
     createComparativeAnalysisResources,
     createCountryAnalysisResources,
-    createMultimediaResources,
-    createNewsResources,
 } from "../../resources/common/__tests__/helpers";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { PersonState } from "../../about/AboutState";
@@ -75,7 +72,14 @@ describe("Country Page", () => {
 
         expect(scope.getByRole("heading", { name: /country resources/i })).toBeInTheDocument();
 
-        await verifyResourceItems(resources);
+        await verifyResourceItems(
+            resources.filter(({ kind }) => kind === "country-analysis"),
+            false
+        );
+        await verifyResourceItems(
+            resources.filter(({ kind }) => kind === "comparative-analysis"),
+            true
+        );
     });
     it("should render country expert", async () => {
         const { experts } = givenAPersons();
@@ -129,8 +133,10 @@ async function verifyExpertMembers(experts: PersonState[]) {
     });
 }
 
-async function verifyResourceItems(resources: Resource[]) {
-    const scope = within(screen.getByLabelText(/country-page-resources/i));
+async function verifyResourceItems(resources: Resource[], isComparative: boolean) {
+    const scope = isComparative
+        ? within(screen.getByLabelText(/comparative-resources/i))
+        : within(screen.getByLabelText(/country-resources/i));
     const items = await scope.findAllByRole("listitem");
 
     resources.forEach((resource, index) => {
@@ -144,21 +150,7 @@ async function verifyResourceItems(resources: Resource[]) {
 
         const image = itemScope.getByAltText(resource.title) as HTMLImageElement;
         expect(image.src).toContain(resource.imageOriginal);
-
-        if (resource.kind === "news" || resource.kind === "multimedia") {
-            const links = itemScope.queryAllByRole("link");
-            expect(itemScope.queryAllByRole("link").length).toBeGreaterThan(0);
-
-            links.forEach(link => {
-                expect(link).toHaveAttribute("href", resource.url);
-            });
-        }
-
-        if (resource.kind === "news") {
-            itemScope.getByText(moment(resource.date).format("DD MMMM YYYY"));
-        } else {
-            itemScope.getByText(resource.date.getFullYear());
-        }
+        itemScope.getByText(resource.date.getFullYear());
     });
 }
 
@@ -195,12 +187,7 @@ function givenAPersons(): {
 function givenAResources(): Resource[] {
     const mockedRepository = mock(ResourceD2Repository);
 
-    const data: Resource[] = [
-        ...createComparativeAnalysisResources(1),
-        ...createCountryAnalysisResources(1),
-        ...createNewsResources(1),
-        ...createMultimediaResources(1),
-    ];
+    const data: Resource[] = [...createComparativeAnalysisResources(1), ...createCountryAnalysisResources(1)];
 
     when(mockedRepository.get(anything())).thenReturn(Future.success(data));
 
