@@ -3,7 +3,6 @@ import React from "react";
 import styled from "styled-components";
 import bubblePattern from "../../../assets/bubble-pattern.svg";
 import { ChevronRightIcon } from "../../icons/ChevronRightIcon";
-import { NavLink } from "react-router-dom";
 
 export interface SectionHeaderProps {
     header: string;
@@ -11,7 +10,7 @@ export interface SectionHeaderProps {
     isBackgroundOnRight?: boolean;
     hasArrowIcon?: boolean;
     tag?: string;
-    link?: string;
+    url?: string;
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -20,14 +19,14 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     isBackgroundOnRight,
     hasArrowIcon,
     tag,
-    link,
+    url,
 }) => {
     return (
         <Header isBackgroundOnRight={isBackgroundOnRight} hasSubheader={!!subheader}>
             <Row>
-                {link ? (
+                {url ? (
                     <Title variant="h3">
-                        <Link to={link}>{header}</Link>
+                        <Link href={url}>{header}</Link>
                     </Title>
                 ) : (
                     <Title variant="h3">{header}</Title>
@@ -63,7 +62,7 @@ const Title = styled(Typography)`
     font-weight: 500;
 `;
 
-const Link = styled(NavLink)`
+const Link = styled.a`
     text-transform: none;
     text-decoration: none;
     color: inherit;

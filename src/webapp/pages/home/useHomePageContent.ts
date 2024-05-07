@@ -74,5 +74,10 @@ const emptyHomePageContent: HomePageContent = {
             title: "",
             text: "",
         },
+        buttonLink: "",
+    },
+    newsletter: {
+        buttonText: "",
+        buttonLink: "",
     },
 };
