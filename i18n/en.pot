@@ -72,9 +72,6 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-msgid "Sign up for updates"
-msgstr ""
-
 msgid "indicator explorer"
 msgstr ""
 
