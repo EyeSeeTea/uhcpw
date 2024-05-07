@@ -2,7 +2,7 @@ export interface BasicResource {
     id: string;
     title: string;
     imageOriginal: string;
-    imageCustom: string;
+    imageCustom?: string;
     date: Date;
     favourite: boolean;
     favouriteOrder: number;
