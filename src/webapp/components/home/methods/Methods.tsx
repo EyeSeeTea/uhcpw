@@ -16,7 +16,7 @@ export const Methods: React.FC<MethodsProps> = ({ content }) => {
                 header={content.title}
                 subheader={content.subtitle}
                 isBackgroundOnRight={false}
-                link={"/methods"}
+                url={content.buttonLink}
             />
             <Content container>
                 <Focus item md={4} xs={12}>
