@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-05-06T15:19:28.561Z\n"
-"PO-Revision-Date: 2024-05-06T15:19:28.561Z\n"
+"POT-Creation-Date: 2024-05-08T09:56:05.131Z\n"
+"PO-Revision-Date: 2024-05-08T09:56:05.131Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -43,7 +43,10 @@ msgstr ""
 msgid "Country resources"
 msgstr ""
 
-msgid "Comparative resources"
+msgid "Country analysis"
+msgstr ""
+
+msgid "Comparative analysis"
 msgstr ""
 
 msgid "Select country"
@@ -85,12 +88,6 @@ msgid "Zoom out"
 msgstr ""
 
 msgid "Resources"
-msgstr ""
-
-msgid "Comparative analysis"
-msgstr ""
-
-msgid "Country analysis"
 msgstr ""
 
 msgid "News"
