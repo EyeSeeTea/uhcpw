@@ -36,6 +36,7 @@ export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedCh
         <StyledTreeItem
             nodeId={nodeId}
             onLabelClick={handleLabelClick}
+            aria-disabled={disabled}
             label={
                 <Row role="checkbox">
                     {!disabled && (
@@ -49,7 +50,7 @@ export const Leaf: React.FC<LeafProps> = ({ nodeId, name, selected, onSelectedCh
                             disabled={disabled}
                         />
                     )}
-                    <StyledTypography onClick={handleClick} $disabled={disabled}>
+                    <StyledTypography onClick={handleClick} $disabled={disabled} aria-disabled={disabled}>
                         {name}
                     </StyledTypography>
                 </Row>

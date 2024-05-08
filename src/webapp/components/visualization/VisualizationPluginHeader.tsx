@@ -3,8 +3,7 @@ import styled from "styled-components";
 import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
-import GridOnIcon from "@material-ui/icons/GridOn";
-import GetAppIcon from "@material-ui/icons/GetApp";
+import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 
 import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
@@ -47,7 +46,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         }, [countries, currentCountry]);
 
         return (
-            <DataHeader className="visualization-plugin-header">
+            <DataHeader className="visualization-plugin-header" $isCountryPage={useHeaderForCountryPage}>
                 <Row>
                     {useHeaderForCountryPage ? (
                         <>
@@ -68,10 +67,10 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                         <CustomInfoIcon color="primary" className="info-button" />
                                     </StyledIconButton>
                                     <StyledIconButton onClick={onDownloadExcel} $color="white">
-                                        <CustomGridOnIcon color="primary" className="download-button" />
+                                        <CustomCloudIcon color="primary" className="download-button" />
                                     </StyledIconButton>
                                     <StyledIconButton onClick={onDownloadImage} $color="white">
-                                        <CustomGetAppIcon color="primary" className="download-button" />
+                                        <CustomImageIcon color="primary" className="download-button" />
                                     </StyledIconButton>
                                 </RowWithGap>
                             </RowWithGap>
@@ -95,7 +94,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                             <Column>
                                 <DownloadButton
                                     variant="contained"
-                                    startIcon={<GridOnIcon />}
+                                    startIcon={<DownloadIcon />}
                                     color="primary"
                                     style={{ marginLeft: 40, marginBottom: 20 }}
                                     onClick={onDownloadExcel}
@@ -106,7 +105,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
 
                                 <DownloadButton
                                     variant="contained"
-                                    startIcon={<DownloadIcon />}
+                                    startIcon={<ImageRoundedIcon />}
                                     color="primary"
                                     style={{ marginLeft: 40 }}
                                     onClick={onDownloadImage}
@@ -126,8 +125,9 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
     }
 );
 
-const DataHeader = styled.div`
-    padding: 48px 0px;
+const DataHeader = styled.div<{ $isCountryPage?: boolean }>`
+    padding-block-start: ${props => (props.$isCountryPage ? "30px" : "48px")};
+    padding-block-end: 48px;
 `;
 
 const Row = styled.div`
@@ -142,7 +142,7 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    margin-bottom: 0px;
+    margin-block-start: 9px;
     align-items: center;
 `;
 
@@ -172,7 +172,7 @@ const CustomInfoIcon = styled(InfoIcon)`
     font-size: 26px;
 `;
 
-const CustomGetAppIcon = styled(GetAppIcon)`
+const CustomImageIcon = styled(ImageRoundedIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
@@ -180,7 +180,7 @@ const CustomGetAppIcon = styled(GetAppIcon)`
     font-size: 17px;
 `;
 
-const CustomGridOnIcon = styled(GridOnIcon)`
+const CustomCloudIcon = styled(DownloadIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;

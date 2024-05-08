@@ -9,6 +9,7 @@ import { FC, MutableRefObject, useCallback } from "react";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
 import { Option } from "../../components/dropdown/Option";
+import { getBackgroundColorByCountryStatus } from "../../pages/country/utils";
 
 type HeaderType = {
     countryId: string;
@@ -17,6 +18,7 @@ type HeaderType = {
     sliderRef: MutableRefObject<null>;
     resourcesRef: MutableRefObject<null>;
     expertRef: MutableRefObject<null>;
+    handleResetTab: (value: boolean) => void;
 };
 
 const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
@@ -30,17 +32,6 @@ const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
     }
 };
 
-const handleBackgroundColor = (status?: CountryStatus) => {
-    switch (status) {
-        case "Weak":
-            return "linear-gradient(90deg, #c42929 1.8%, #ffe1d0 60.94%)";
-        case "Gaps":
-            return "linear-gradient(90deg, #FF8D4E 1.8%, #FFD3A5 100%)";
-        case "Strong":
-            return "linear-gradient(90deg, #4FAD56 70.8%, #9CD77B 100%)";
-    }
-};
-
 export const Header: FC<HeaderType> = ({
     countryId,
     onCountryChange,
@@ -48,12 +39,19 @@ export const Header: FC<HeaderType> = ({
     sliderRef,
     resourcesRef,
     expertRef,
+    handleResetTab,
 }) => {
     const country = useCountryInfo(countryId);
 
-    const handleClick = useCallback((ref: MutableRefObject<any>) => {
-        ref.current?.scrollIntoView({ behavior: "smooth" });
-    }, []);
+    const handleClick = useCallback(
+        (ref: MutableRefObject<any>, where: "detail" | "resources" | "expert") => {
+            ref.current?.scrollIntoView({ behavior: "smooth" });
+            if (where === "detail") {
+                handleResetTab(true);
+            }
+        },
+        [handleResetTab]
+    );
 
     return (
         <Container aria-label="country-page-header" status={country?.status}>
@@ -72,13 +70,15 @@ export const Header: FC<HeaderType> = ({
                     <ButtonText>{i18n.t("Dashboard")}</ButtonText>
                 </Button>
                 <Button>
-                    <ButtonText onClick={() => handleClick(sliderRef)}>{i18n.t("In detail")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(sliderRef, "detail")}>{i18n.t("In detail")}</ButtonText>
                 </Button>
                 <Button>
-                    <ButtonText onClick={() => handleClick(resourcesRef)}>{i18n.t("Country resources")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(resourcesRef, "resources")}>
+                        {i18n.t("Country resources")}
+                    </ButtonText>
                 </Button>
                 <Button>
-                    <ButtonText onClick={() => handleClick(expertRef)}>{i18n.t("Country expert")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(expertRef, "expert")}>{i18n.t("Country expert")}</ButtonText>
                 </Button>
             </ButtonsContainer>
         </Container>
@@ -90,7 +90,7 @@ const Container = styled.div<{ status: CountryStatus | undefined }>`
     justify-content: space-between;
     height: 80px;
     align-items: center;
-    background: ${props => handleBackgroundColor(props.status)};
+    background: ${props => getBackgroundColorByCountryStatus(props.status)};
     padding: 0px 40px;
 `;
 

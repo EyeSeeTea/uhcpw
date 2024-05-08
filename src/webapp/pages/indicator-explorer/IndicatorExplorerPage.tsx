@@ -13,8 +13,7 @@ import { VisualizationPlugin } from "../../components/visualization/Visualizatio
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGet, showVisualization, globalMessage, selectCategoryInfo, errorMessage } =
-        useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, pageContent, errorMessage } = useIndicatorExplorer();
     const snackbar = useSnackbar();
 
     useEffect(() => {
@@ -48,11 +47,12 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                 {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected}
-                        years={filters.year.selected || []}
+                        years={filters.year.realYearSelected || []}
                         countries={filters.country.selected || []}
+                        noDataMessage={pageContent?.noDataMessage}
                     />
                 ) : (
-                    <EmptyContent info={selectCategoryInfo} />
+                    <EmptyContent info={pageContent?.selectCategory} />
                 )}
             </MainSection>
         </Layout>

@@ -1,56 +1,31 @@
-import { FutureData, Future } from "../../../domain/entities/Future";
+import { FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
-import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
-import { IndicatorExplorerRepository } from "../../../domain/repositories/indicator-explorer/IndicatorExplorerRepository";
+import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
+import { IndicatorExplorerContentRepository } from "../../../domain/repositories/indicator-explorer/IndicatorExplorerContentRepository";
 import { D2Api } from "../../../types/d2-api";
-import { apiToFuture } from "../../../utils/futures";
-
-const selectCategoryInfoProgram = "ai5rB7mcqHH";
+import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
 
 const selectCategoryInfoDataElements: Record<string, Id> = {
     title: "h5A4TCDMTHM",
     text: "XVZ0MsAkYaC",
 };
 
-export class IndicatorExplorerD2Repository implements IndicatorExplorerRepository {
+const noDataDataElement: Id = "KvLqwZMVyUO";
+
+export class IndicatorExplorerD2Repository implements IndicatorExplorerContentRepository {
     constructor(private api: D2Api) {}
 
-    getSelectCategoryInfo(): FutureData<IndicatorExplorerSelectCategoryInfo> {
-        return apiToFuture(
-            this.api.events.get({
-                fields: eventsFields,
-                skipPaging: true,
-                program: selectCategoryInfoProgram,
-            })
-        ).flatMap(response => {
-            if (response.events[0]) {
-                return Future.success(this.buildSelectCategoryInfo(response.events[0]));
-            }
-            return Future.error("An error has ocurred fetching Select Category Info");
-        });
+    get(): FutureData<IndicatorExplorerContent> {
+        return getMainPagesContent(this.api).map(dataValues => this.buildContent(dataValues));
     }
 
-    private buildSelectCategoryInfo(event: D2Event): IndicatorExplorerSelectCategoryInfo {
+    private buildContent(dataValues: DataValue[]): IndicatorExplorerContent {
         return {
-            title: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
-            text: event?.dataValues?.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+            selectCategory: {
+                title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
+                text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+            },
+            noDataMessage: dataValues.find(dv => dv.dataElement === noDataDataElement)?.value || "",
         };
     }
-}
-
-const eventsFields = {
-    event: true,
-    dataValues: { dataElement: true, value: true },
-    eventDate: true,
-} as const;
-
-interface D2Event {
-    event: string;
-    dataValues: DataValue[];
-    eventDate: string;
-}
-
-interface DataValue {
-    dataElement: string;
-    value: string;
 }

@@ -8,10 +8,12 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
 import { useCountryPage } from "./useCountryPage";
+import { useCountryInfo } from "./useCountryInfo";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
-    const { countryFilter } = useCountryPage();
+    const { countryFilter, resetTab, handleResetTab } = useCountryPage();
+    const country = useCountryInfo(countryFilter.selectedCountry);
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -24,12 +26,13 @@ export const CountryPage: React.FC = () => {
     }, [history.location.search]);
 
     useEffect(() => {
-        if (filterInParams.country) {
+        if (filterInParams.country && filterInParams.country !== countryFilter?.selectedCountry) {
             const searchParams = new URLSearchParams(history.location.search);
             searchParams.set("country", filterInParams.country);
             countryFilter.onCountryChange(filterInParams.country);
+            !resetTab && handleResetTab(true);
         }
-    }, [countryFilter, filterInParams.country, history.location.search]);
+    }, [countryFilter, filterInParams.country, handleResetTab, history.location.search, resetTab]);
 
     const handleCountryChange = useCallback(
         (value: string) => {
@@ -40,8 +43,9 @@ export const CountryPage: React.FC = () => {
             }
             countryFilter.onCountryChange(value);
             history.push({ search: searchParams.toString() });
+            handleResetTab(true);
         },
-        [countryFilter, history]
+        [countryFilter, handleResetTab, history]
     );
 
     const sliderRef = useRef(null);
@@ -57,17 +61,18 @@ export const CountryPage: React.FC = () => {
                 sliderRef={sliderRef}
                 resourcesRef={resourcesRef}
                 expertRef={expertRef}
+                handleResetTab={handleResetTab}
             />
             <Hero countryId={countryFilter.selectedCountry} />
-            <Divider />
+            <Divider countryStatus={country?.status} />
             <section ref={sliderRef}>
-                <Slider countryId={countryFilter.selectedCountry} />
+                <Slider countryId={countryFilter.selectedCountry} resetTab={resetTab} handleResetTab={handleResetTab} />
             </section>
-            <Divider isOrange={false} />
+            <Divider countryStatus={country?.status} />
             <section ref={resourcesRef}>
                 <CountryResources countryId={countryFilter.selectedCountry} />
             </section>
-            <Divider />
+            <Divider countryStatus={country?.status} />
             <section ref={expertRef}>
                 <CountryExpert countryId={countryFilter.selectedCountry} />
             </section>

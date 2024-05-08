@@ -1,0 +1,447 @@
+{
+    "pager": {
+        "page": 1,
+        "pageSize": 50,
+        "isLastPage": true
+    },
+    "events": [
+        {
+            "programStage": "BTXf8hoyDEM",
+            "programType": "WITHOUT_REGISTRATION",
+            "orgUnit": "H8RixfF8ugH",
+            "program": "ai5rB7mcqHH",
+            "event": "losyBXc2SGp",
+            "status": "ACTIVE",
+            "orgUnitName": "Global",
+            "eventDate": "2024-03-11T00:00:00.000",
+            "created": "2024-03-11T11:59:37.795",
+            "lastUpdated": "2024-04-09T11:43:34.355",
+            "deleted": false,
+            "attributeOptionCombo": "Xr12mI7VPn3",
+            "dataValues": [
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.603",
+                    "created": "2024-03-13T12:38:29.603",
+                    "dataElement": "Hp6hYaoKOoJ",
+                    "value": "Assess the current situation, monitor trends, compare countries",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.602",
+                    "created": "2024-03-13T12:38:29.602",
+                    "dataElement": "LWqNfdyS1JV",
+                    "value": "Explore data",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.603",
+                    "created": "2024-03-13T12:38:29.603",
+                    "dataElement": "lPZ0Gfkd2AY",
+                    "value": "UHC Watch provides clear guidance for policy by identifying who lacks financial protection, driven by which health services and why",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.005",
+                    "created": "2024-03-13T11:53:48.005",
+                    "dataElement": "fb6h94Fy4hO",
+                    "value": "lbMrRSBsXh3",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.600",
+                    "created": "2024-03-13T12:38:29.600",
+                    "dataElement": "eeOs9Cegtri",
+                    "value": "Regional report",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.600",
+                    "created": "2024-03-13T12:38:29.600",
+                    "dataElement": "tcNygLDHOq3",
+                    "value": "We measure financial hardship using an approach that accounts for people's capacity to pay for health care",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.600",
+                    "created": "2024-03-13T12:38:29.600",
+                    "dataElement": "tWEnsQ6gfqO",
+                    "value": "Over 50 indicators of financial hardship, unmet need for health care and spending on health",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.006",
+                    "created": "2024-03-13T11:53:48.006",
+                    "dataElement": "MAsbPRB23yd",
+                    "value": "fg8TSIHSGHX",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.599",
+                    "created": "2024-03-13T12:38:29.599",
+                    "dataElement": "F3gWD69Fme4",
+                    "value": "Countries in context",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.006",
+                    "created": "2024-03-13T11:53:48.006",
+                    "dataElement": "TnVtPv9CtZs",
+                    "value": "VGOzFKfSazN",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.603",
+                    "created": "2024-03-13T12:38:29.603",
+                    "dataElement": "KpyjdWU235A",
+                    "value": "Explorers",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.600",
+                    "created": "2024-03-13T12:38:29.600",
+                    "dataElement": "F1ksGHvzhTV",
+                    "value": "Information on population coverage, service coverage, user charges and voluntary health insurance",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.603",
+                    "created": "2024-03-13T12:38:29.603",
+                    "dataElement": "VsidPy2O456",
+                    "value": "Compare financial protection indicators, identify gaps in coverage, explore good practice",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.802",
+                    "dataElement": "AM4wvFj31yu",
+                    "value": "How many people experience financial hardship: impoverishing health spending?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.599",
+                    "created": "2024-03-13T12:38:29.599",
+                    "dataElement": "ZgY7XuAhb0o",
+                    "value": "Find out about the health system factors that strengthen and undermine financial protection at country level",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.598",
+                    "created": "2024-03-13T12:38:29.598",
+                    "dataElement": "TX5VeXTeg5a",
+                    "value": "Actionable evidence",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.005",
+                    "created": "2024-03-13T11:53:48.005",
+                    "dataElement": "h3eBaOIwlBU",
+                    "value": "yBqy4nxuOCA",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.604",
+                    "created": "2024-03-13T12:38:29.604",
+                    "dataElement": "JK20iGDaqRm",
+                    "value": "Indicator explorer",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.799",
+                    "dataElement": "sCobTF9m297",
+                    "value": "Who experiences unmet need?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.802",
+                    "dataElement": "Br8gF2la6Sq",
+                    "value": "How can <country> strengthen financial protection?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T10:11:07.351",
+                    "created": "2024-03-27T15:38:07.313",
+                    "dataElement": "fIrafA0Qbh3",
+                    "value": "fD0r1ijjdUl",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.600",
+                    "created": "2024-03-13T12:38:29.600",
+                    "dataElement": "hTJXBephuMD",
+                    "value": "How financial protection is monitored matters",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.799",
+                    "dataElement": "zrRiDQtns3m",
+                    "value": "How many people experience unmet need?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T10:11:07.351",
+                    "created": "2024-03-11T11:59:37.803",
+                    "dataElement": "m9RpeQUFCP1",
+                    "value": "https://www.youtube.com/watch?v=k8OQYkjgERk&t=4s",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.802",
+                    "dataElement": "VPK5gfA0gZS",
+                    "value": "What are the main gaps in publicly financed coverage?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-09T09:27:26.564",
+                    "created": "2024-04-09T09:27:26.564",
+                    "dataElement": "vCXqIEAwWR3",
+                    "value": "VJrTuNXAg9G",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.477",
+                    "created": "2024-03-11T11:59:37.803",
+                    "dataElement": "YYxAoMDpCp8",
+                    "value": "Who experiences financial hardship?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.598",
+                    "created": "2024-03-13T12:38:29.598",
+                    "dataElement": "islfoEB6Y2u",
+                    "value": "Numbers and stories",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-15T12:03:38.737",
+                    "created": "2024-03-11T11:59:37.799",
+                    "dataElement": "XVZ0MsAkYaC",
+                    "value": "Select a category to track indicators and compare them across countries.\n\nData are not available for all countries or all years.\n\nData on financial protection are not currently available for **Andorra, Azerbaijan, Belarus, Iceland, Kazakhstan, Kyrgyzstan, Monaco, Norway, the Russian Federation, San Marino, Turkmenistan and Uzbekistan**.",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.796",
+                    "dataElement": "zZ2s2fZv3x8",
+                    "value": "How much does <country> spend on health?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.006",
+                    "created": "2024-03-13T11:53:48.006",
+                    "dataElement": "jo9LfEeHxxH",
+                    "value": "N9i1v07Ro0E",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.006",
+                    "created": "2024-03-13T11:53:48.006",
+                    "dataElement": "w41UoFFIanF",
+                    "value": "xb2ezJcUoSR",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.006",
+                    "created": "2024-03-13T11:53:48.006",
+                    "dataElement": "eZWjJNv8stp",
+                    "value": "KwgjnBBpe5b",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-15T12:03:38.737",
+                    "created": "2024-03-11T11:59:37.802",
+                    "dataElement": "SAzOXqrxWfI",
+                    "value": "Select a category to track policies on population coverage, service coverage, user charges and voluntary health insurance, explore gaps in coverage and compare countries.\n\nInformation is currently available for **Albania, Armenia, Belgium, Bulgaria, Croatia, Cyprus, Estonia, Kazakhstan, North Macedonia, Romania, Spain, Tajikistan, Ukraine, the United Kingdom and Uzbekistan**.\n\nMore countries coming soon.",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.604",
+                    "created": "2024-03-13T12:38:29.604",
+                    "dataElement": "j3ZodhTcOly",
+                    "value": "A focus on equity",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.006",
+                    "created": "2024-03-13T11:53:48.006",
+                    "dataElement": "M0MeJ4H1Sw6",
+                    "value": "XeWqwCw9G5s",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.604",
+                    "created": "2024-03-13T12:38:29.604",
+                    "dataElement": "NTRCLMyqi7N",
+                    "value": "UHC Watch identifies the factors that influence financial protection at country level, drawing on insights from comparative analysis",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.601",
+                    "created": "2024-03-13T12:38:29.601",
+                    "dataElement": "hvp6EKlgXMX",
+                    "value": "The region at a glance",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.004",
+                    "created": "2024-03-13T11:53:48.004",
+                    "dataElement": "ZaBZ9rfaR6b",
+                    "value": "DVnpk4xiXGJ",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.600",
+                    "created": "2024-03-13T12:38:29.600",
+                    "dataElement": "CkA1bW7jfMT",
+                    "value": "Analysis",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.801",
+                    "dataElement": "cdRt1CWMZUY",
+                    "value": "Which health services are responsible for financial hardship?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-15T12:03:38.737",
+                    "created": "2024-03-11T11:59:37.802",
+                    "dataElement": "yEaMMB7MXqI",
+                    "value": "Select Category",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T14:02:48.779",
+                    "created": "2024-03-11T11:59:37.803",
+                    "dataElement": "DxSdmDJ2zZW",
+                    "value": "The WHO Barcelona Office is a centre of excellence in health financing for universal health coverage (UHC). It works with Member States across WHO’s European Region to promote evidence-informed policy making and offers WHO training courses on health financing.\n\n\nThe Office assesses country and regional progress towards UHC by monitoring financial protection – affordable access to health care. It also supports countries to strengthen financial protection through tailored technical assistance, including analysis of country-specific policy options, high-level policy dialogue and the sharing of international experience.\n\n\nEstablished in 1999, the Office is supported by the Government of the Autonomous Community of Catalonia, Spain. It is part of the Division of Country Health Policies and Systems of the WHO Regional Office for Europe.",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-15T12:03:38.737",
+                    "created": "2024-03-11T11:59:37.801",
+                    "dataElement": "h5A4TCDMTHM",
+                    "value": "Select Category",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.603",
+                    "created": "2024-03-13T12:38:29.603",
+                    "dataElement": "kpzr2XPNCdL",
+                    "value": "Explore data",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.005",
+                    "created": "2024-03-13T11:53:48.005",
+                    "dataElement": "KnbvNQnRcJB",
+                    "value": "cfBaKMnsXd1",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.599",
+                    "created": "2024-03-13T12:38:29.599",
+                    "dataElement": "W9amq4m0VsD",
+                    "value": "Methods",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.601",
+                    "created": "2024-03-13T12:38:29.601",
+                    "dataElement": "qGYZubI0Wd8",
+                    "value": "Policy explorer",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.799",
+                    "dataElement": "E5k0QrzhOC1",
+                    "value": "How much does <country> spend on health? International comparison",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T11:53:48.006",
+                    "created": "2024-03-13T11:53:48.006",
+                    "dataElement": "LPHN04myQFr",
+                    "value": "AjeCGGb8H76",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.476",
+                    "created": "2024-03-11T11:59:37.803",
+                    "dataElement": "Ifdsw5JqjzJ",
+                    "value": "Catastrophic health spending. How many people experience financial hardship?",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.603",
+                    "created": "2024-03-13T12:38:29.603",
+                    "dataElement": "MWBXipF0xxJ",
+                    "value": "Country pages",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-04-01T12:16:52.477",
+                    "created": "2024-03-11T11:59:37.804",
+                    "dataElement": "sICvMAAy9SS",
+                    "value": "Which health services are responsible for financial hardship? International comparison",
+                    "providedElsewhere": false
+                },
+                {
+                    "lastUpdated": "2024-03-13T12:38:29.599",
+                    "created": "2024-03-13T12:38:29.599",
+                    "dataElement": "J5mOLwFoqo1",
+                    "value": "Country-level and comparative analysis of financial protection",
+                    "providedElsewhere": false
+                },
+                {
+                    "dataElement": "CPpA7kDtOfM",
+                    "value": "(TEST)Tracking progress on affordable access to health care in Europe and Central Asia\n\nAffordable access to health care - financial protection - is at the heart of universal health coverage (UHC)\n\nUHC means everyone can use quality health care without financial hardship"
+                },
+                {
+                    "dataElement": "H3x21OGOjhn",
+                    "value": "UHC watch(TEST)"
+                },
+                {
+                    "dataElement": "fIsJ5Wn0T3J",
+                    "value": "UHC watch video(TEST)"
+                },
+                {
+                    "dataElement": "XKV6Or4MYLu",
+                    "value": "https://www.youtube.com/watch?v=71S7ekOSSzU"
+                },
+                {
+                    "dataElement": "OlSNAHCkM4J",
+                    "value": "https://apps.who.int/dhis2/uhcwatch/#/indicator-explorer"
+                },
+                {
+                    "dataElement": "SzUNsjs49ZC",
+                    "value": "https://apps.who.int/dhis2/uhcwatch/#/policy-explorer"
+                },
+                {
+                    "dataElement": "mg7kSoSStzc",
+                    "value": "https://apps.who.int/dhis2/uhcwatch/#/country-page?country=VGOzFKfSazN"
+                },
+                {
+                    "dataElement": "GsiYRlaUFWH",
+                    "value": "https://cmyn.short.gy/regionalreport"
+                },
+                {
+                    "dataElement": "CZ8syDdSQi3",
+                    "value": "https://apps.who.int/dhis2/uhcwatch/#/methods"
+                },
+                {
+                    "dataElement": "q2xV2rgnt31",
+                    "value": "https://confirmsubscription.com/h/d/0BA400B38F94A681"
+                },
+                {
+                    "dataElement": "qdJWVPUS3gn",
+                    "value": "Sign up for updates"
+                }
+            ]
+        }
+    ]
+}

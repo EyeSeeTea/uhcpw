@@ -1,140 +1,337 @@
 {
     "events": [
         {
-            "event": "bT2PACV80QO",
-            "eventDate": "2019-01-01T00:00:00.000",
+            "event": "ESI1B0zxHfk",
+            "eventDate": "2024-04-02T00:00:00.000",
             "dataValues": [
                 {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Summary"
+                },
+                {
+                    "dataElement": "oQ6Qi6faNK5",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
                     "dataElement": "WlAFwnRMskp",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345512/WHO-EURO-2019-3439-431980-60514-eng.pdf?sequence=1&isAllowed=y"
-                },
-                {
-                    "dataElement": "nVhCDkoptRC",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345523/WHO-EURO-2019-3439-431980-60516-ger.pdf?sequence=1&isAllowed=y"
-                },
-                { "dataElement": "rovY1LEqAPX", "value": "Deutsch" },
-                {
-                    "dataElement": "yfKcdYARapH",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345515/WHO-EURO-2019-3439-431980-60515-fre.pdf?sequence=1&isAllowed=y"
-                },
-                { "dataElement": "DQAOcVPEQTh", "value": "Castellano" },
-                {
-                    "dataElement": "Bjhex2xmHxG",
-                    "value": "Können sich die Menschen ihre Gesundheitsversorgung leisten? Neue Erkenntnisse über finanzielle Absicherung in der Europäischen Region: Zusammenfassung"
-                },
-                { "dataElement": "lW90bnEXAFI", "value": "Article" },
-                {
-                    "dataElement": "YeINoY1RwMh",
-                    "value": "¿Se puede permitir la gente pagar por la atención sanitaria? Nueva evidencia sobre la protección financiera en Europa: resumen"
-                },
-                { "dataElement": "yKHkUZLIGc6", "value": "English" },
-                {
-                    "dataElement": "JMPD3IdDAcv",
-                    "value": "2.3.1.2.4 Les soins de santé sont-ils abordables ? De nouvelles bases factuelles sur la protection financière en Europe; résumé"
+                    "value": "https://apps.who.int/iris/handle/10665/345512"
                 },
                 {
                     "dataElement": "iBxOUseHUtO",
                     "value": "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
                 },
                 {
-                    "dataElement": "egYRckQrYVj",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/345524/WHO-EURO-2019-3439-431980-60517-spa.pdf?sequence=1&isAllowed=y"
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
                 },
-                { "dataElement": "iO4ThHtWZ8M", "value": "comparative-analysis" },
-                { "dataElement": "PC9lIDo5x8m", "value": "DVnpk4xiXGJ" },
-                { "dataElement": "TTAQLTta8JS", "value": "Financial Protection" },
-                { "dataElement": "QlRpFiResvs", "value": "Français" },
-                { "dataElement": "uund7zjS1Yt", "value": "THq3Odg09pD" },
-                { "dataElement": "aP3GIoQRvDt", "value": "true" },
-                { "dataElement": "G9DVX5SjoA2", "value": "1" },
-                { "dataElement": "XxXz056LMCO", "value": "true" },
-                { "dataElement": "EqiRrE4nz7c", "value": "1" },
-                { "dataElement": "s4rejJAHkEj", "value": "PevCwH17M73" },
-                { "dataElement": "oQ6Qi6faNK5", "value": "jXQq22U4Y2e" },
-                { "dataElement": "LpvSstI1qkv", "value": "pP1WlCSYejH" },
-                { "dataElement": "XqOzgOaLYIC", "value": "qAmRvjY8kVd" },
-                { "dataElement": "W1rJkxxdsf7", "value": "IyO9ICB0WIn" },
-                { "dataElement": "s9VZRkTRnok", "value": "Yvrvqzpb59w" },
-                { "dataElement": "wR829irugl9", "value": "IWK3HDhXMyK" },
-                { "dataElement": "x6PpqgIH0Rt", "value": "fX0oY3wvF3N" },
-                { "dataElement": "wkH2AyYFqOc", "value": "WnVzqXGTSUW" },
-                { "dataElement": "PF1BSn79hgT", "value": "xloTsC6lk5Q" },
-                { "dataElement": "uc0QAtItg9A", "value": "DrRI1gAgp5i" },
-                { "dataElement": "JypkjZAQmnM", "value": "uceyvAirxHE" },
-                { "dataElement": "AlLQaVQtjDw", "value": "uDBXvALekyM" },
-                { "dataElement": "Vc55KzffRaY", "value": "KQZWODjf6lc" },
-                { "dataElement": "txupFIjcJxc", "value": "AKHUgj34AuC" },
-                { "dataElement": "i51gDVomugt", "value": "xEf8zHPDMBf" },
-                { "dataElement": "NrdV87QJt9S", "value": "TBc9iqbtrzB" },
-                { "dataElement": "hbPjqVnjly5", "value": "Dyo0QYSfPUQ" },
-                { "dataElement": "y74nWeCoAdH", "value": "ev358tR1o4a" },
-                { "dataElement": "sqqJNJDwN1F", "value": "mA5X0hfEgzA" },
-                { "dataElement": "QlBdXGOdz4x", "value": "JHRPRIyWYIl" },
-                { "dataElement": "jc3d0ZSupHK", "value": "wJ6Rhjej5Gv" },
-                { "dataElement": "Jh00i19RF91", "value": "O6hDdHQsQEB" },
-                { "dataElement": "EJAYWps6wm0", "value": "h1H7oFkAIFE" },
-                { "dataElement": "a61IrOb5leV", "value": "j1Fovj5I0gc" },
-                { "dataElement": "BFFlxznLkZv", "value": "ijJ8gnHagIP" },
-                { "dataElement": "vLdkDy58YqQ", "value": "aqmqNhhHJf0" },
-                { "dataElement": "ffndxAozKG5", "value": "jFHht0qBr1e" },
-                { "dataElement": "tYbQcw47cQZ", "value": "yyIcczRsUnC" },
-                { "dataElement": "TVsjP1VoGsA", "value": "ZmFDfUckZA6" },
-                { "dataElement": "ZEDLsKyJcib", "value": "xfEdpe91K5z" },
-                { "dataElement": "vJqqddnRCsW", "value": "GqpxsBJRLbf" },
-                { "dataElement": "POJAv84qfrq", "value": "ytkCRkD480w" },
-                { "dataElement": "HvuwOxCfiN4", "value": "sP69rtJgvbT" },
-                { "dataElement": "ZwP1hA1cpmK", "value": "UKdVDx5CfZd" },
-                { "dataElement": "zxVo1DM7JnD", "value": "JKaMsaxznQx" },
-                { "dataElement": "mCH3sabJvqA", "value": "EJco8S7Qjk0" },
-                { "dataElement": "yhFTBkdmwv0", "value": "J0GOGzNpFHU" },
-                { "dataElement": "qQRNZQTY9VN", "value": "jAHjx4Eyevv" },
-                { "dataElement": "Uyvm6flgZiw", "value": "PbDWLB5gXr2" },
-                { "dataElement": "ILEnJeyeLoq", "value": "X2ibxFpkIcT" },
-                { "dataElement": "xqIqiIeXTTn", "value": "WoRrRuTxmwA" },
-                { "dataElement": "Z3dx2oHFuX0", "value": "aeuQlqb8ccl" },
-                { "dataElement": "JznDPih1PSU", "value": "beuQlqb7ccl" },
-                { "dataElement": "n7TlGYb7dym", "value": "cbDWKB5gQr2" },
-                { "dataElement": "QJT7OLzr03U", "value": "dbDWHB5gAr2" },
-                { "dataElement": "ECnmaEiTUvR", "value": "ebDWDB5gBr2" },
-                { "dataElement": "cU3KtOc1ITE", "value": "fbDWSB5gCr2" },
-                { "dataElement": "HuEm6ea7BOF", "value": "GbDWCB5gDr2" },
-                { "dataElement": "EHvTTWUmkol", "value": "hbDWDB5gEr2" },
-                { "dataElement": "YxV0WQp3VAl", "value": "IbDWZB5gFr2" },
-                { "dataElement": "DdN4ILfxL3C", "value": "JbDWWB5gGr2" },
-                { "dataElement": "lNV1ALwvpIw", "value": "KbDWUB5gHr2" },
-                { "dataElement": "XJwfD9RRdjD", "value": "lbDWPB5gIr2" },
-                { "dataElement": "iT9uyIe9YzS", "value": "mbDWOB5gJr2" },
-                { "dataElement": "WwRZaRKfWRd", "value": "nbDWBB5gKr2" },
-                { "dataElement": "bxQaM4K8tNl", "value": "obDWXB5gLr2" },
-                { "dataElement": "CrBYPANirHP", "value": "pbDWFB5gMr2" },
-                { "dataElement": "fol5rrUU53I", "value": "QbDWYB5gNr2" },
-                { "dataElement": "rk5OFNGLSdK", "value": "rbDWJB5gOr2" }
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "1"
+                },
+                {
+                    "dataElement": "fJdnhBV0nYB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "lDHvdREWAUp",
+                    "value": "1"
+                }
             ]
         },
         {
-            "event": "DGTisRwoFZk",
-            "eventDate": "2016-01-01T00:00:00.000",
+            "event": "gGIXHvLl5Wl",
+            "eventDate": "2023-01-01T00:00:00.000",
             "dataValues": [
-                { "dataElement": "lW90bnEXAFI", "value": "Article" },
                 {
                     "dataElement": "WlAFwnRMskp",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/326316/9789289050388-%20eng.pdf?sequence=1&isAllowed=y"
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=gh0m908lst5073jitb2pe52a7f&suffix=pdf&print=1"
                 },
                 {
                     "dataElement": "nVhCDkoptRC",
-                    "value": "https://apps.who.int/iris/bitstream/handle/10665/332111/9789289050449-rus.pdf?sequence=1&isAllowed=y"
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=qeq4c9vtah1o37qgqv0tnovc1s&suffix=pdf&print=1"
                 },
-                { "dataElement": "yKHkUZLIGc6", "value": "English" },
-                { "dataElement": "iBxOUseHUtO", "value": "Voluntary health insurance in Europe: role and regulation" },
-                { "dataElement": "iO4ThHtWZ8M", "value": "comparative-analysis" },
-                { "dataElement": "rovY1LEqAPX", "value": "русский" },
-                { "dataElement": "PC9lIDo5x8m", "value": "DVnpk4xiXGJ" },
-                { "dataElement": "TTAQLTta8JS", "value": "Financial Protection" },
+                {
+                    "dataElement": "XxXz056LMCO",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "français"
+                },
+                {
+                    "dataElement": "awlsQKOwDgB",
+                    "value": "true"
+                },
                 {
                     "dataElement": "Bjhex2xmHxG",
-                    "value": "Добровольное медицинское страхование в Европе: роль и регулирование"
+                    "value": "La protection financière en Belgique"
                 },
-                { "dataElement": "uund7zjS1Yt", "value": "pBQO14Es7oA" }
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Infographic"
+                },
+                {
+                    "dataElement": "yKHkUZLIGc6",
+                    "value": "English"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Financial protection in Belgium"
+                },
+                {
+                    "dataElement": "EqiRrE4nz7c",
+                    "value": "2"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "pB7DMuEiVnt"
+                }
+            ]
+        },
+        {
+            "event": "eZhD2JgYvQB",
+            "eventDate": "2021-06-07T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/340910"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/handle/10665/362908"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "русский"
+                },
+                {
+                    "dataElement": "fJdnhBV0nYB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Расходы на здравоохранение в Европе: вступая в новую эру. Краткий обзор."
+                },
+                {
+                    "dataElement": "lDHvdREWAUp",
+                    "value": "3"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Spending on health in Europe: entering a new era"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "6"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Spending on Health"
+                },
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "NfwpuB5ka3j"
+                }
+            ]
+        },
+        {
+            "event": "rCveu4PJ5Fx",
+            "eventDate": "2019-05-29T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "oQ6Qi6faNK5",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/311654"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/handle/10665/330088"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "русский"
+                },
+                {
+                    "dataElement": "fJdnhBV0nYB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "awlsQKOwDgB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "В состоянии ли люди платить за услуги здравоохранения? Hовые фактические данные о финансовой защите в Европе"
+                },
+                {
+                    "dataElement": "lDHvdREWAUp",
+                    "value": "1"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Europe"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "3"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "XKxSqDHDB0B"
+                }
+            ]
+        },
+        {
+            "event": "EQCYfQqCRpI",
+            "eventDate": "2019-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "oQ6Qi6faNK5",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/345512"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/handle/10665/345523"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "Deutsch"
+                },
+                {
+                    "dataElement": "fJdnhBV0nYB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "yfKcdYARapH",
+                    "value": "https://apps.who.int/iris/handle/10665/345515"
+                },
+                {
+                    "dataElement": "DQAOcVPEQTh",
+                    "value": "Castellano"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "Können sich die Menschen ihre Gesundheitsversorgung leisten? Neue Erkenntnisse über finanzielle Absicherung in der Europäischen Region. Zusammenfassung"
+                },
+                {
+                    "dataElement": "lDHvdREWAUp",
+                    "value": "2"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Summary"
+                },
+                {
+                    "dataElement": "YeINoY1RwMh",
+                    "value": "¿Se puede permitir la gente pagar por la atención sanitaria? Nueva evidencia sobre la protección financiera en Europa. Resumen"
+                },
+                {
+                    "dataElement": "JMPD3IdDAcv",
+                    "value": "Les soins de santé sont-ils abordables ? De nouvelles bases factuelles sur la protection financière en Europe Résumé"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Europe. Summary"
+                },
+                {
+                    "dataElement": "egYRckQrYVj",
+                    "value": "https://apps.who.int/iris/handle/10665/345524"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "QlRpFiResvs",
+                    "value": "Français"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                }
             ]
         }
     ]

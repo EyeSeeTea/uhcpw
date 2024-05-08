@@ -49,10 +49,12 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
-                        image={resource.image}
+                        image={resource.imageOriginal}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Comparative analysis")}
                         onTagClick={() => handleOnTagClick("/resources/comparative-analysis")}
+                        maintainAspectRatio
                     />
                 );
             case "country-analysis":
@@ -60,10 +62,12 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
-                        image={resource.image}
+                        image={resource.imageOriginal}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Country analysis")}
                         onTagClick={() => handleOnTagClick("/resources/country-analysis")}
+                        maintainAspectRatio
                     />
                 );
             case "news":
@@ -71,10 +75,12 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.url}
-                        image={resource.image}
+                        image={resource.imageOriginal}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("News")}
                         onTagClick={() => handleOnTagClick("/resources/news")}
+                        maintainAspectRatio
                     />
                 );
             case "multimedia": {
@@ -82,10 +88,12 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.url}
-                        image={resource.image}
+                        image={resource.imageOriginal}
+                        fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Multimedia")}
                         onTagClick={() => handleOnTagClick("/resources/multimedia")}
+                        maintainAspectRatio
                     />
                 );
             }

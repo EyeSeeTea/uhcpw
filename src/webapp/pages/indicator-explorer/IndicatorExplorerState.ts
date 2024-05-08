@@ -1,4 +1,4 @@
-import { IndicatorExplorerSelectCategoryInfo } from "../../../domain/entities/indicator-explorer/IndicatorExplorer";
+import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import { CountryFilterState, OptionsMultiFilterState } from "../../common/state/state";
 
 export type IndicatorExplorerState = {
@@ -6,7 +6,7 @@ export type IndicatorExplorerState = {
     onGet: () => void;
     showVisualization: boolean;
     globalMessage?: GlobalMessage;
-    selectCategoryInfo: IndicatorExplorerSelectCategoryInfo | undefined;
+    pageContent: IndicatorExplorerContent | undefined;
     errorMessage: string;
 };
 
@@ -22,10 +22,17 @@ export type IndicatorFilterState = {
     onSelectedChange: (value: string | undefined) => void;
 };
 
+export type YeasrFilterState = OptionsMultiFilterState & { realYearSelected: string[] | undefined };
+
+type ExtraCountryFilterState = CountryFilterState & {
+    disabledCountries: string[];
+    maxCountrySelection: number | undefined;
+};
+
 export type IndicatorExplorerFiltersState = {
-    country: CountryFilterState;
+    country: ExtraCountryFilterState;
     indicators: IndicatorFilterState;
-    year: OptionsMultiFilterState;
+    year: YeasrFilterState;
 };
 
 export interface GlobalMessage {

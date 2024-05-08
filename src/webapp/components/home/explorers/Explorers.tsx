@@ -4,32 +4,30 @@ import i18n from "../../../../locales";
 import { Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { SectionBlock } from "../section-block/SectionBlock";
-import { CTA } from "../buttons/CTA";
 import indicatorExplorer from "../../../assets/indicator-explorer.svg";
 import policyExplorer from "../../../assets/policy-explorer.svg";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
+import { ExplorersContent } from "../../../../domain/entities/HomePageContent";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
-export const Explorers: React.FC = () => {
+type ExplorersProps = {
+    content: ExplorersContent;
+};
+
+export const Explorers: React.FC<ExplorersProps> = ({ content }) => {
     return (
         <>
-            <SectionHeader
-                header={i18n.t("Explorers")}
-                subheader={i18n.t("Assess the current situation, monitor trends, compare countries")}
-                isBackgroundOnRight
-            />
+            <SectionHeader header={content.title} subheader={content.subtitle} isBackgroundOnRight />
             <Content container>
                 <IndicatorExplorer item md={6} xs={12}>
                     <ContentSectionGrid container>
                         <Grid item>
-                            <SectionBlock
-                                title={i18n.t("Indicator explorer")}
-                                text={i18n.t(
-                                    "Over 50 indicators of financial hardship, unmet need for health care and spending on health"
-                                )}
-                            />
+                            <SectionBlock title={content.indicator.title} text={content.indicator.text} />
                             <ButtonContainer>
-                                <CTA text={i18n.t("Explore data")} link="/indicator-explorer" />
+                                <Link href={content.indicator.buttonLink || ""}>
+                                    {i18n.t(content.indicator.buttonText || "")}
+                                </Link>
                             </ButtonContainer>
                         </Grid>
                         <Grid item>
@@ -40,14 +38,11 @@ export const Explorers: React.FC = () => {
                 <PolicyExplorer item md={6} xs={12}>
                     <ContentSectionGrid container>
                         <Grid item>
-                            <SectionBlock
-                                title={i18n.t("Policy explorer")}
-                                text={i18n.t(
-                                    "Information on population coverage, service coverage, user charges and voluntary health insurance"
-                                )}
-                            />
+                            <SectionBlock title={content.policy.title} text={content.policy.text} />
                             <ButtonContainer>
-                                <CTA text={i18n.t("Explore data")} link="/policy-explorer" />
+                                <Link href={content.policy.buttonLink || ""}>
+                                    {i18n.t(content.policy.buttonText || "")}
+                                </Link>
                             </ButtonContainer>
                         </Grid>
                         <Grid item>
@@ -91,4 +86,19 @@ const Image = styled.img`
     @media (max-width: 768px) {
         width: 100px;
     }
+`;
+
+const Link = styled.a`
+    color: ${colors.accentPrimary};
+    background-color: white;
+    font-size: 14px;
+    border-radius: 30px;
+    padding: 10px 40px;
+    width: fit-content;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    text-transform: none;
+    text-decoration: none;
+    font-size: 16px;
 `;

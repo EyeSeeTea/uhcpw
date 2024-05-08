@@ -13,6 +13,7 @@ interface VisualizationPluginProps {
     currentCountry?: string;
     withoutBackground?: boolean;
     useHeaderForCountryPage?: boolean;
+    noDataMessage?: string;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
@@ -23,6 +24,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         countries,
         withoutBackground = false,
         useHeaderForCountryPage = false,
+        noDataMessage = "",
     }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
@@ -43,13 +45,13 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }, [chartData, useHeaderForCountryPage]);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
-            <Container ref={ref} $withoutBackground={withoutBackground}>
+            <Container ref={ref} $withoutBackground={withoutBackground} $isCountryPage={useHeaderForCountryPage}>
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualization.notes || ""}
                     chartFriendlyName={chartData.visualization.friendlyName}
                     categoryTag={chartData.visualization.categoryTag}
                     showInfo={showInfo}
-                    onDownloadExcel={onDownloadExcel}
+                    onDownloadExcel={() => onDownloadExcel(chartData)}
                     onDownloadImage={onDownloadImage}
                     onShowInfo={onShowInfo}
                     onCloseInfo={onCloseInfo}
@@ -71,7 +73,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             </Container>
         ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
             <Center>
-                <Typography variant="subtitle1">{i18n.t("There may be no data")}</Typography>
+                <Typography variant="subtitle1">
+                    {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
+                </Typography>
             </Center>
         ) : chartData.kind === "Error" ? (
             <Center>
@@ -85,8 +89,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     }
 );
 
-const Container = styled.div<{ $withoutBackground: boolean }>`
-    margin-top: 48px;
+const Container = styled.div<{ $withoutBackground: boolean; $isCountryPage?: boolean }>`
+    margin-block-start: ${props => (props.$isCountryPage ? "0px" : "48px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding: 0px 32px 32px 32px;
 `;

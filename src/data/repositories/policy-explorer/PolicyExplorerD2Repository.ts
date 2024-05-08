@@ -28,7 +28,8 @@ import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } fr
 import { Id } from "../../../domain/entities/Ref";
 
 export const generalDataElements: Record<string, string> = {
-    source: "pDEHTRpRL8X",
+    sourceUrl: "pDEHTRpRL8X",
+    sourceText: "LO9Cw7DmDBY",
     countryExperts: "mCEsfMPByf5",
     editors: "iyYnyNfyrfs",
     lastUpdate: "VDRInyNx7fG",
@@ -58,6 +59,8 @@ const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     mainGapsInFinancedCoverage: "e6cfI6vWYEF",
     changesInCoveragePolicy: "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
 };
+
+const REFERENCES_REGEX = /\[.*?\]: <\/> ".*?"/g;
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
@@ -199,36 +202,55 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
 
-        return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
+        return Object.entries(dataValuesByOrgUnit).map(([orgUnitId, dataValuesOfCountry]) => {
             const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
 
-            const source =
-                dataValues.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.source || "")
+            const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
+            const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
+
+            const sourceUrl =
+                dataValuesOfCountryOrderByYear.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
                 )?.value || "";
             const countryExperts =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.countryExperts || "")
                 )?.value || "";
             const editors =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.editors || "")
                 )?.value || "";
             const lastUpdate =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.lastUpdate || "")
                 )?.value || "";
             const reviewers =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
+                )?.value || "";
+            const sourceText =
+                dataValuesOfCountryOrderByYear.find(
+                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
                 )?.value || "";
 
             const notes =
-                dataValues.find(
+                dataValuesOfCountryOrderByYear.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.notes || "")
                 )?.value || "";
 
-            return { country, source, countryExperts, editors, lastUpdate: new Date(lastUpdate), reviewers, notes };
+            const year = sortedYears.length && sortedYears[0] ? sortedYears[0] : "";
+
+            return {
+                country,
+                sourceText,
+                sourceUrl,
+                countryExperts,
+                editors,
+                lastUpdate: new Date(lastUpdate),
+                reviewers,
+                notes,
+                year,
+            };
         });
     }
 
@@ -307,6 +329,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                                     dv.dataElement.includes(generalDataElements.references || "")
                             )?.value || EMPTY_DATA;
 
+                        const areMarkdownReferences = references.match(REFERENCES_REGEX) as string[];
+
                         return tableBuilder.buildRows({
                             currentRowsInTable: accRows,
                             policyExplorerCategoryId,
@@ -314,7 +338,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             dataValuesByGroup,
                             orgUnitName: orgUnitNameInCell,
                             period,
-                            references,
+                            references: areMarkdownReferences ? references : "",
                             dataSet,
                         });
                     },
@@ -417,9 +441,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.references || "")
                 )?.value || EMPTY_DATA;
 
-            const referencesArray = references.match(/\[([^\]]+)\]:\s<(.*?)>([^[]+)(?=\[|$)/g) as string[];
+            const referencesArray = references.match(REFERENCES_REGEX) as string[];
 
-            return { country, references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) };
+            return {
+                country,
+                references: referencesArray?.map(reference => reference?.replace(/<\/>/g, "")) || [references],
+            };
         });
     }
 

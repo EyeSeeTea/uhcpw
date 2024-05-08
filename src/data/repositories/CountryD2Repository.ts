@@ -1,5 +1,5 @@
 import polylabel from "polylabel";
-import { Country, CountryStatus } from "../../domain/entities/Country";
+import { Country, CountryStatus, CountriesRegion } from "../../domain/entities/Country";
 import { Future, FutureData } from "../../domain/entities/Future";
 import { CountryRepository } from "../../domain/repositories/CountryRepository";
 import { Id } from "../../domain/entities/Ref";
@@ -59,29 +59,7 @@ const KOSOVO = "NEPywTBN52g";
 const COUNTRIES_NOT_SHOWN = [GREENLAND, KOSOVO];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
-
-const countriesInCountryPageDataElements: Record<string, Id> = {
-    countryOne: "TnVtPv9CtZs",
-    countryTwo: "eZWjJNv8stp",
-    countryThree: "LPHN04myQFr",
-    countryFour: "fb6h94Fy4hO",
-    countryFive: "M0MeJ4H1Sw6",
-    countrySix: "MAsbPRB23yd",
-    countrySeven: "KnbvNQnRcJB",
-    countryEight: "h3eBaOIwlBU",
-    countryNine: "jo9LfEeHxxH",
-    countryTen: "ZaBZ9rfaR6b",
-    countryEleven: "w41UoFFIanF",
-    countryTwelve: "vCXqIEAwWR3",
-    countryThirteen: "KZlaUubGGDP",
-    countryFourteen: "S9bSqXTeaCv",
-    countryFifteen: "LfNKBuw3lXS",
-    countrySixteen: "A3siIDGWn6c",
-    countrySeventeen: "cNMsoNqLB1n",
-    countryEighteen: "ABHaHZo8cLw",
-    countryNineteen: "CTTavmjBoll",
-    countryTwenty: "w89t0SozQcf",
-};
+const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
 
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
@@ -102,39 +80,54 @@ export class CountryD2Repository implements CountryRepository {
                 this.api.events.get({
                     fields: eventsFields,
                     program: countryInfoProgram,
+                    skipPaging: true,
                 })
             ),
-            countriesInCountryPage: apiToFuture(
+            programMetadata: apiToFuture(
+                this.api.models.programs.get({
+                    fields: programFields,
+                    filter: { id: { eq: countriesInCountryPageProgram } },
+                })
+            ),
+            sectionsEvent: apiToFuture(
                 this.api.events.get({
                     fields: eventsFields,
                     skipPaging: true,
                     program: countriesInCountryPageProgram,
                 })
             ),
-        }).map(({ countries, aditionalCountriesInfo, countriesInCountryPage }) => {
-            return this.buildCountries(countries.objects, aditionalCountriesInfo.events, countriesInCountryPage.events);
+        }).map(({ countries, aditionalCountriesInfo, programMetadata, sectionsEvent }) => {
+            const countriesIdsInCountryPage = this.getCountriesIdsInCountryPage(
+                programMetadata.objects[0],
+                sectionsEvent.events[0]
+            );
+
+            return this.buildCountries(countries.objects, aditionalCountriesInfo.events, countriesIdsInCountryPage);
+        });
+    }
+
+    // WORKAROUND: EU27 data is added in Greenland because we cannot use EUR
+    public getEurCountriesRegion(): FutureData<CountriesRegion | undefined> {
+        return apiToFuture(
+            this.api.models.organisationUnits.get({
+                fields: organisationUnitsFields,
+                paging: false,
+                level: 3,
+                filter: { id: { eq: GREENLAND } },
+            })
+        ).map(eurRegion => {
+            return this.buildEurCountriesRegion(eurRegion?.objects[0]);
         });
     }
 
     private buildCountries(
         orgUnits: D2OrgUnit[],
         aditionalCountriesInfo: D2Event[],
-        countriesInCountryPageEvents: D2Event[]
+        countriesIdsInCountryPage: Id[]
     ): Country[] {
         return orgUnits
             .filter(({ id }) => !COUNTRIES_NOT_SHOWN.includes(id))
             .map(orgUnit => {
-                const countriesInCountryPage = countriesInCountryPageEvents[0]
-                    ? Object.values(countriesInCountryPageDataElements)
-                          .map(
-                              countryDataElement =>
-                                  countriesInCountryPageEvents[0]?.dataValues?.find(
-                                      dv => dv.dataElement === countryDataElement
-                                  )?.value || ""
-                          )
-                          .filter(Boolean)
-                    : [];
-
                 const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
                     event => event.orgUnit === orgUnit.id
                 );
@@ -168,7 +161,7 @@ export class CountryD2Repository implements CountryRepository {
                     flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
                     summary,
                     sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
-                    isInCountryPage: countriesInCountryPage.includes(orgUnit.id),
+                    isInCountryPage: countriesIdsInCountryPage.includes(orgUnit.id),
                 };
             });
     }
@@ -310,6 +303,39 @@ export class CountryD2Repository implements CountryRepository {
             },
         };
     }
+
+    private getCountriesIdsInCountryPage(
+        programMetadata: D2Program | undefined,
+        sectionsEvent: D2Event | undefined
+    ): Id[] {
+        const dataElementsInCountryPage = programMetadata?.programStages[0]?.programStageSections.find(
+            ({ id }) => id === COUNTRY_TOP_MENU_SECTION_ID
+        )?.dataElements;
+
+        if (dataElementsInCountryPage?.length && sectionsEvent) {
+            const dataElementsInCountryPageIds = dataElementsInCountryPage.map(({ id }) => id);
+            return sectionsEvent.dataValues
+                ?.filter(({ dataElement }) => dataElementsInCountryPageIds.includes(dataElement))
+                ?.map(({ value }) => value);
+        }
+
+        return [];
+    }
+
+    private buildEurCountriesRegion(eurRegion?: D2OrgUnit): CountriesRegion | undefined {
+        return eurRegion
+            ? {
+                  id: eurRegion.id,
+                  name: "EU27 average",
+                  longName: "EU27 average",
+                  code: "EU27",
+                  description: eurRegion.description,
+                  parents: eurRegion.organisationUnitGroups
+                      .map(({ id, name }) => ({ id, name }))
+                      .filter(oug => validOrgUnitGroups.includes(oug.id)),
+              }
+            : undefined;
+    }
 }
 
 const organisationUnitsFields = {
@@ -344,3 +370,22 @@ export interface DataValue {
     dataElement: string;
     value: string;
 }
+
+const programFields = {
+    id: true,
+    programStages: {
+        id: true,
+        name: true,
+        programStageSections: {
+            id: true,
+            dataElements: {
+                id: true,
+                code: true,
+            },
+        },
+    },
+} as const;
+
+type D2Program = MetadataPick<{
+    programs: { fields: typeof programFields };
+}>["programs"][number];

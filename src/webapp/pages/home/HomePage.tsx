@@ -8,26 +8,28 @@ import { Resources } from "../../components/home/resources/Resources";
 import { Layout } from "../../components/layout/Layout";
 import { useMap } from "../../components/home/map/useMap";
 import { useHomeResources } from "./useHomeResources";
-import NewsletterDialog from "../../components/dialog/NewsletterDialog";
+import { NewsletterButton } from "../../components/home/buttons/NewsletterButton";
+import { useHomePageContent } from "./useHomePageContent";
 
 export const HomePage: React.FC = React.memo(() => {
     const mapState = useMap();
     const { resources } = useHomeResources();
+    const homePageContent = useHomePageContent();
 
     return (
         <Layout>
-            <NewsletterDialog />
+            <NewsletterButton content={homePageContent.newsletter} />
             <MapSection>
-                <Map mapState={mapState} />
+                <Map mapState={mapState} welcomePanelContent={homePageContent.mainMapPanel} />
             </MapSection>
             <section>
-                <Explorers />
+                <Explorers content={homePageContent.explorers} />
             </section>
             <section>
-                <Analysis />
+                <Analysis content={homePageContent.analysis} />
             </section>
             <section>
-                <Methods />
+                <Methods content={homePageContent.methods} />
             </section>
             <section>
                 <Resources resources={resources} />

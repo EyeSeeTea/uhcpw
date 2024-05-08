@@ -16,6 +16,7 @@ import gapsPin from "../../../assets/map/pin-gaps.svg";
 
 import { MapState } from "./MapState";
 import i18n from "../../../../locales";
+import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -27,9 +28,10 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 
 export interface MapProps {
     mapState: MapState;
+    welcomePanelContent: MainMapPanelContent;
 }
 
-export const Map: React.FC<MapProps> = ({ mapState }) => {
+export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
@@ -96,7 +98,11 @@ export const Map: React.FC<MapProps> = ({ mapState }) => {
         <Container ref={mainContainerRef}>
             <MapContent ref={mapContainerRef} />
             <MapSidePanel>
-                {mapState.selectedCountry ? <CountryPanel country={mapState.selectedCountry} /> : <WelcomePanel />}
+                {mapState.selectedCountry ? (
+                    <CountryPanel country={mapState.selectedCountry} />
+                ) : (
+                    <WelcomePanel welcomePanelContent={welcomePanelContent} />
+                )}
             </MapSidePanel>
             <MapControls>
                 <Tooltip title={i18n.t("Zoom in")}>

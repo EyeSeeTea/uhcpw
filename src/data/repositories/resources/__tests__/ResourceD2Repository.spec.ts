@@ -79,26 +79,6 @@ describe("Resource repository", () => {
             );
         });
 
-        it("favouriteSection true in filter", async () => {
-            givenAComparativeAnalysis();
-
-            await resourceRepository.get({ category: "comparative-analysis", favouriteSection: true }).runAsync();
-
-            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.favouriteSection}:eq:true`
-            );
-        });
-
-        it("favouriteSection false in filter", async () => {
-            givenAComparativeAnalysis();
-
-            await resourceRepository.get({ category: "comparative-analysis", favouriteSection: false }).runAsync();
-
-            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.favouriteSection}:eq:false`
-            );
-        });
-
         it("order in filter", async () => {
             givenAComparativeAnalysis();
 
@@ -146,7 +126,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:like:comparative analysis`
+                `${resourceDataElements.comparativeAnalysisCategory}:eq:true`
             );
         });
     });
@@ -165,7 +145,9 @@ describe("Resource repository", () => {
 
             await resourceRepository.get({ category: "news" }).runAsync();
 
-            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(`${resourceDataElements.category}:like:news`);
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
+                `${resourceDataElements.newsCategory}:eq:true`
+            );
         });
     });
     describe("Multimedia", () => {
@@ -184,7 +166,7 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "multimedia" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:like:multimedia`
+                `${resourceDataElements.multimediaCategory}:eq:true`
             );
         });
     });
@@ -196,7 +178,7 @@ describe("Resource repository", () => {
 
             const countryAnalysis = (response.data || []) as CountryAnalysis[];
 
-            verifCountryAnalysis(countryAnalysis[0]);
+            verifyCountryAnalysis(countryAnalysis[0]);
         });
         it("should send expected filter for multimedia", async () => {
             givenACountryAnalysis();
@@ -204,8 +186,22 @@ describe("Resource repository", () => {
             await resourceRepository.get({ category: "country-analysis" }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
-                `${resourceDataElements.category}:like:country analysis`
+                `${resourceDataElements.countryAnalysisCategory}:eq:true`
             );
+        });
+    });
+
+    describe("favouriteSection", () => {
+        it("when favouriteSection true in filter then should return all favouriteSection resources", async () => {
+            givenAComparativeAnalysis();
+
+            const response = await resourceRepository
+                .get({ category: "comparative-analysis", favouriteSection: true })
+                .runAsync();
+
+            const comparativeAnalysisItems = (response.data || []) as ComparativeAnalysis[];
+
+            verifyFavouriteSectionResources(comparativeAnalysisItems);
         });
     });
 });
@@ -255,98 +251,27 @@ function givenACountryAnalysis() {
 }
 
 function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
-    if (!comparativeAnalysis) fail("Person is undefined");
+    if (!comparativeAnalysis) fail("Comparative analysis is undefined");
 
     expect(comparativeAnalysis.kind).toBe("comparative-analysis");
-    expect(comparativeAnalysis.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=bT2PACV80QO");
+    expect(comparativeAnalysis.imageOriginal).toContain(
+        "//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ESI1B0zxHfk"
+    );
     expect(comparativeAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
     );
     expect(comparativeAnalysis.theme).toBe("Financial Protection");
 
-    expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2019-01-01T00:00:00.000").toISOString());
+    expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2024-04-02T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
+            url: "https://apps.who.int/iris/handle/10665/345512",
             language: "English",
-            url: "https://apps.who.int/iris/bitstream/handle/10665/345512/WHO-EURO-2019-3439-431980-60514-eng.pdf?sequence=1&isAllowed=y",
-        },
-        {
-            language: "Deutsch",
-            url: "https://apps.who.int/iris/bitstream/handle/10665/345523/WHO-EURO-2019-3439-431980-60516-ger.pdf?sequence=1&isAllowed=y",
-        },
-        {
-            language: "Castellano",
-            url: "https://apps.who.int/iris/bitstream/handle/10665/345524/WHO-EURO-2019-3439-431980-60517-spa.pdf?sequence=1&isAllowed=y",
-        },
-        {
-            language: "Français",
-            url: "https://apps.who.int/iris/bitstream/handle/10665/345515/WHO-EURO-2019-3439-431980-60515-fre.pdf?sequence=1&isAllowed=y",
         },
     ];
 
-    expect(comparativeAnalysis.relatedCountries).toStrictEqual([
-        "PevCwH17M73",
-        "jXQq22U4Y2e",
-        "pP1WlCSYejH",
-        "qAmRvjY8kVd",
-        "IyO9ICB0WIn",
-        "Yvrvqzpb59w",
-        "IWK3HDhXMyK",
-        "fX0oY3wvF3N",
-        "WnVzqXGTSUW",
-        "xloTsC6lk5Q",
-        "DrRI1gAgp5i",
-        "uceyvAirxHE",
-        "uDBXvALekyM",
-        "KQZWODjf6lc",
-        "AKHUgj34AuC",
-        "xEf8zHPDMBf",
-        "TBc9iqbtrzB",
-        "Dyo0QYSfPUQ",
-        "ev358tR1o4a",
-        "mA5X0hfEgzA",
-        "JHRPRIyWYIl",
-        "wJ6Rhjej5Gv",
-        "O6hDdHQsQEB",
-        "h1H7oFkAIFE",
-        "j1Fovj5I0gc",
-        "ijJ8gnHagIP",
-        "aqmqNhhHJf0",
-        "jFHht0qBr1e",
-        "yyIcczRsUnC",
-        "ZmFDfUckZA6",
-        "xfEdpe91K5z",
-        "GqpxsBJRLbf",
-        "ytkCRkD480w",
-        "sP69rtJgvbT",
-        "UKdVDx5CfZd",
-        "JKaMsaxznQx",
-        "EJco8S7Qjk0",
-        "J0GOGzNpFHU",
-        "jAHjx4Eyevv",
-        "PbDWLB5gXr2",
-        "X2ibxFpkIcT",
-        "WoRrRuTxmwA",
-        "aeuQlqb8ccl",
-        "beuQlqb7ccl",
-        "cbDWKB5gQr2",
-        "dbDWHB5gAr2",
-        "ebDWDB5gBr2",
-        "fbDWSB5gCr2",
-        "GbDWCB5gDr2",
-        "hbDWDB5gEr2",
-        "IbDWZB5gFr2",
-        "JbDWWB5gGr2",
-        "KbDWUB5gHr2",
-        "lbDWPB5gIr2",
-        "mbDWOB5gJr2",
-        "nbDWBB5gKr2",
-        "obDWXB5gLr2",
-        "pbDWFB5gMr2",
-        "QbDWYB5gNr2",
-        "rbDWJB5gOr2",
-    ]);
+    expect(comparativeAnalysis.relatedCountries).toStrictEqual(["KwgjnBBpe5b", "DVnpk4xiXGJ"]);
 
     comparativeAnalysis.links.forEach((link, index) => {
         const expectedLink = expectedLinks[index];
@@ -355,6 +280,8 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
         expect(link.url).toBe(expectedLink?.url);
     });
 
+    expect(comparativeAnalysis.favouriteSection).toBe(true);
+    expect(comparativeAnalysis.favouriteSectionOrder).toBe(1);
     verifyFavourite(comparativeAnalysis);
 }
 
@@ -362,15 +289,17 @@ function verifyNews(newsItem?: News) {
     if (!newsItem) fail("News is undefined");
 
     expect(newsItem.kind).toBe("news");
-    expect(newsItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=L7pJLhVhB1W");
+    expect(newsItem.imageOriginal).toContain("//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ckY8Z4ZmTDe");
     expect(newsItem.title).toBe(
-        "Countries hosting Ukrainian refugees reaffirm their commitment to meeting their health needs"
+        "New WHO report outlines concrete steps to make health care more accessible for people in Ukraine"
     );
     expect(newsItem.url).toBe(
-        "https://www.who.int/europe/news/item/03-05-2023-countries-hosting-ukrainian-refugees-reaffirm-their-commitment-to-meeting-their-health-needs"
+        "https://www.who.int/europe/news/item/15-06-2023-new-who-report-outlines-concrete-steps-to-make-health-care-more-accessible-for-people-in-ukraine"
     );
-    expect(newsItem.date.toISOString()).toBe(new Date("2023-05-03T00:00:00.000").toISOString());
+    expect(newsItem.date.toISOString()).toBe(new Date("2023-06-15T00:00:00.000").toISOString());
 
+    expect(newsItem.favouriteSection).toBe(true);
+    expect(newsItem.favouriteSectionOrder).toBe(1);
     verifyFavourite(newsItem);
 }
 
@@ -378,36 +307,44 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
     if (!multimediaItem) fail("Multimedia is undefined");
 
     expect(multimediaItem.kind).toBe("multimedia");
-    expect(multimediaItem.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=pqv58NbllXi");
-    expect(multimediaItem.title).toBe("Financial protection in Spain: a pillar of universal health coverage");
-    expect(multimediaItem.url).toBe("https://www.youtube.com/watch?v=LcltHPiuHqY");
+    expect(multimediaItem.imageOriginal).toContain(
+        "//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=gGIXHvLl5Wl"
+    );
+    expect(multimediaItem.title).toBe("Financial protection in Belgium");
+    expect(multimediaItem.url).toBe(
+        "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=gh0m908lst5073jitb2pe52a7f&suffix=pdf&print=1"
+    );
 
-    expect(multimediaItem.date.toISOString()).toBe(new Date("2021-05-09T00:00:00.000").toISOString());
+    expect(multimediaItem.date.toISOString()).toBe(new Date("2023-01-01T00:00:00.000").toISOString());
 
     expect(multimediaItem.theme).toBe("Financial Protection");
 
+    expect(multimediaItem.favouriteSection).toBe(true);
+    expect(multimediaItem.favouriteSectionOrder).toBe(1);
     verifyFavourite(multimediaItem);
 }
 
-function verifCountryAnalysis(countryAnalysis?: CountryAnalysis) {
+function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
     if (!countryAnalysis) fail("countryAnalysis is undefined");
 
     expect(countryAnalysis.kind).toBe("country-analysis");
-    expect(countryAnalysis.image).toContain("/events/files?dataElementUid=uund7zjS1Yt&eventUid=FoBYCO3UUnU");
+    expect(countryAnalysis.imageOriginal).toContain(
+        "//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=qgw0lMQo87H"
+    );
     expect(countryAnalysis.title).toBe(
-        "Can people afford to pay for health care? New evidence on financial protection in Spain"
+        "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary."
     );
     expect(countryAnalysis.theme).toBe("Financial Protection");
-    expect(countryAnalysis.date.toISOString()).toBe(new Date("2021-01-01T00:00:00.000").toISOString());
+    expect(countryAnalysis.date.toISOString()).toBe(new Date("2023-05-15T00:00:00.000").toISOString());
 
     const expectedLinks = [
         {
+            url: "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=r8a91mnr011up8h6h8jedtn841&suffix=pdf&print=1",
             language: "English",
-            url: "https://apps.who.int/iris/bitstream/handle/10665/347403/9789289056182-eng.pdf?sequence=1&isAllowed=y",
         },
         {
-            language: "Castellano",
-            url: "https://apps.who.int/iris/bitstream/handle/10665/347895/WHO-EURO-2021-3996-43755-61568-spa.pdf?sequence=1&isAllowed=y",
+            url: "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=2k57ep0md925h16799htajrr3c&suffix=pdf&print=1",
+            language: "Français",
         },
     ];
 
@@ -418,8 +355,10 @@ function verifCountryAnalysis(countryAnalysis?: CountryAnalysis) {
         expect(link.url).toBe(expectedLink?.url);
     });
 
-    expect(countryAnalysis.countryId).toBe("DVnpk4xiXGJ");
+    expect(countryAnalysis.countryId).toBe("KwgjnBBpe5b");
 
+    expect(countryAnalysis.favouriteSection).toBe(true);
+    expect(countryAnalysis.favouriteSectionOrder).toBe(1);
     verifyFavourite(countryAnalysis);
 }
 
@@ -428,6 +367,10 @@ function verifyFavourite(item?: BasicResource) {
 
     expect(item.favourite).toBe(true);
     expect(item.favouriteOrder).toBe(1);
-    expect(item.favouriteSection).toBe(true);
-    expect(item.favouriteSectionOrder).toBe(1);
+}
+
+function verifyFavouriteSectionResources(resources: ComparativeAnalysis[]) {
+    if (!resources.length) fail("Resources are undefined");
+    const allResourcesAreFavouriteSection = resources.every(({ favouriteSection }) => favouriteSection);
+    expect(allResourcesAreFavouriteSection).toBe(true);
 }

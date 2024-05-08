@@ -1,33 +1,94 @@
-import { Backdrop, CircularProgress, Grid, Typography } from "@material-ui/core";
+import React, { useCallback } from "react";
+import { Backdrop, CircularProgress, Fab, Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
+
 import i18n from "../../../locales";
-import { ChevronRightIcon } from "../icons/ChevronRightIcon";
 import { useCountryResources } from "../../pages/country/useCountryResources";
-import React from "react";
 import { ResourceItem } from "../resources/common/ResourceItem";
 
 export const CountryResources: React.FC<{ countryId: string }> = ({ countryId }) => {
-    const { loading, items } = useCountryResources(countryId);
+    const history = useHistory();
+    const { loading, countryAnalysisResource, comparativeAnalysisResources } = useCountryResources(countryId);
+
+    const onArrowClick = useCallback(
+        (link: string) => {
+            history.push(link);
+        },
+        [history]
+    );
 
     return (
         <Container aria-label="country-page-resources">
             <Row>
-                <Typography variant="h3">{i18n.t("Country resources")}</Typography>
-                <ChevronRightIcon link="/resources" />
+                <Typography variant="h5">{i18n.t("Country resources")}</Typography>
+                <Fab
+                    aria-label="Go to country resources"
+                    color="primary"
+                    size="small"
+                    style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                >
+                    <ChevronRightSharpIcon onClick={() => onArrowClick("/resources")} />
+                </Fab>
             </Row>
-            <Grid container spacing={5}>
-                {items &&
-                    items.map((resource, i) => {
-                        return (
-                            <Grid key={i} item xs={6} md={4} lg={3} xl={2}>
-                                <ResourceItem resource={resource} />
-                            </Grid>
-                        );
-                    })}
-            </Grid>
-            <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
-                <CircularProgress color="primary" />
-            </Backdrop>
+            {countryAnalysisResource?.length ? (
+                <ResourcesSection aria-label="country-resources">
+                    <Row>
+                        <Typography variant="h6">{i18n.t("Country analysis")}</Typography>
+                        <Fab
+                            aria-label="Go to country analysis resources"
+                            color="primary"
+                            size="small"
+                            style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                        >
+                            <ChevronRightSharpIcon
+                                onClick={() => onArrowClick(`/resources/country-analysis?country=${countryId}`)}
+                            />
+                        </Fab>
+                    </Row>
+                    <Grid container spacing={5}>
+                        {countryAnalysisResource.map((resource, i) => {
+                            return (
+                                <Grid key={`country-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
+                                    <ResourceItem resource={resource} />
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                        <CircularProgress color="primary" />
+                    </Backdrop>
+                </ResourcesSection>
+            ) : null}
+
+            {comparativeAnalysisResources?.length ? (
+                <ResourcesSection aria-label="comparative-resources">
+                    <Row>
+                        <Typography variant="h6">{i18n.t("Comparative analysis")}</Typography>
+                        <Fab
+                            aria-label="Go to comparative analysis resources"
+                            color="primary"
+                            size="small"
+                            style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                        >
+                            <ChevronRightSharpIcon onClick={() => onArrowClick("/resources/comparative-analysis")} />
+                        </Fab>
+                    </Row>
+                    <Grid container spacing={5}>
+                        {comparativeAnalysisResources.map((resource, i) => {
+                            return (
+                                <Grid key={`comparative-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
+                                    <ResourceItem resource={resource} />
+                                </Grid>
+                            );
+                        })}
+                    </Grid>
+                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                        <CircularProgress color="primary" />
+                    </Backdrop>
+                </ResourcesSection>
+            ) : null}
         </Container>
     );
 };
@@ -37,8 +98,14 @@ const Container = styled.div`
     max-width: 80%;
 `;
 
+const ResourcesSection = styled.div`
+    margin-block-start: 50px;
+`;
+
 const Row = styled.div`
     display: flex;
-    align-items: flex-end;
-    margin-bottom: 25px;
+    flex-direction: row;
+    align-items: center;
+    margin-block-end: 25px;
+    gap: 2px;
 `;

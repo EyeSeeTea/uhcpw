@@ -8,11 +8,14 @@ export type CountryPageState = {
         selectedCountry: string;
         onCountryChange: (value: string) => void;
     };
+    resetTab: boolean;
+    handleResetTab: (value: boolean) => void;
 };
 
 export function useCountryPage(): CountryPageState {
     const { countries } = useAppContext();
     const [selectedCountry, setSelectedCountry] = useState<string>("");
+    const [resetTab, setResetTab] = useState<boolean>(false);
 
     const countryOptions: Option<string>[] = useMemo(() => {
         return countries
@@ -24,7 +27,13 @@ export function useCountryPage(): CountryPageState {
         setSelectedCountry(country);
     }, []);
 
+    const handleResetTab = useCallback((value: boolean) => {
+        setResetTab(value);
+    }, []);
+
     return {
         countryFilter: { countryOptions, selectedCountry, onCountryChange },
+        resetTab,
+        handleResetTab,
     };
 }

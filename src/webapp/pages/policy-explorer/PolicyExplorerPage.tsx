@@ -1,9 +1,10 @@
+import React, { useCallback, useMemo, useRef, useEffect } from "react";
 import { Typography, Button } from "@material-ui/core";
-import React, { useMemo, useRef, useEffect } from "react";
 import moment from "moment";
 import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
+import ReactMarkdown from "react-markdown";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -62,6 +63,16 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         );
     }, [filters.category]);
 
+    const getCleanReferencesByCountry = useCallback(
+        (country: string) => {
+            const regex = /\[(.*?)\((.*?)\)\]:\s/;
+            return data?.references
+                ?.find(references => references.country === country)
+                ?.references?.map(reference => reference.replace(regex, "$1$2.").replace(/"/g, ""));
+        },
+        [data?.references]
+    );
+
     return (
         <Layout>
             <TitleContainer>
@@ -106,29 +117,20 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             <div key={info.country}>
                                 <GeneralDataContainer>
                                     <GeneralRow>
-                                        <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
+                                        <CreditsText
+                                            style={{ fontWeight: 500 }}
+                                        >{`${info.country} (${info.year})`}</CreditsText>
                                     </GeneralRow>
 
-                                    {info.notes ? (
+                                    {info.lastUpdate ? (
                                         <GeneralRow>
-                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            <CreditsText $noWrap>
+                                                {i18n.t("Last updated: ", { nsSeparator: false })}
+                                            </CreditsText>
                                             &nbsp;
-                                            <CreditsText>{info.notes}</CreditsText>
+                                            <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
                                         </GeneralRow>
                                     ) : null}
-
-                                    <GeneralRow>
-                                        <CreditsText>{i18n.t("Source: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <Link
-                                            href={info.source}
-                                            style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-                                            {i18n.t("WHO Barcelona Office for Health Systems Financing")}
-                                        </Link>
-                                    </GeneralRow>
 
                                     <GeneralRow>
                                         <CreditsText $noWrap>
@@ -152,19 +154,42 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         </GeneralRow>
                                     ) : null}
 
-                                    <GeneralRow>
-                                        <CreditsText $noWrap>
-                                            {i18n.t("Last updated: ", { nsSeparator: false })}
-                                        </CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
-                                    </GeneralRow>
+                                    {info.notes ? (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.notes}</CreditsText>
+                                        </GeneralRow>
+                                    ) : null}
+
+                                    {info.sourceText ? (
+                                        <GeneralRow>
+                                            <CreditsText>
+                                                {i18n.t("Suggested citation: ", { nsSeparator: false })}
+                                            </CreditsText>
+                                            &nbsp;
+                                            <Link
+                                                href={info.sourceUrl}
+                                                style={{ fontSize: "16px", color: colors.accentPrimary }}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                {info.sourceText}
+                                            </Link>
+                                        </GeneralRow>
+                                    ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {data?.references
-                                        ?.find(references => references.country === info.country)
-                                        ?.references?.map(reference => (
-                                            <ReferenceText key={reference}>{reference}</ReferenceText>
+                                    {info.country &&
+                                        getCleanReferencesByCountry(info.country)?.map(reference => (
+                                            <ReactMarkdown
+                                                key={reference}
+                                                components={{
+                                                    p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
+                                                }}
+                                            >
+                                                {reference}
+                                            </ReactMarkdown>
                                         ))}
                                 </ReferencesContainer>
                             </div>
@@ -243,4 +268,5 @@ const DownloadButton = styled(Button)`
     text-transform: initial;
     align-self: flex-end;
     margin-block-start: 20px;
+    background: #185698;
 `;

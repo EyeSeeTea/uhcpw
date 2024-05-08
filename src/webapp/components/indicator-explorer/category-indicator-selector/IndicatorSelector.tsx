@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { Button } from "@material-ui/core";
+import { Button, Paper } from "@material-ui/core";
 import { Autocomplete, AutocompleteRenderGroupParams } from "@material-ui/lab";
 import styled from "styled-components";
 
@@ -41,14 +41,13 @@ export const IndicatorSelector = React.memo(
         return (
             <Container width={width}>
                 <StyledAutocomplete
+                    PaperComponent={props => <StyledPaper {...props} />}
                     fullWidth={fullWidth}
                     multiple={false}
                     options={options}
                     groupBy={option => (option as IndicatorOption).category}
                     getOptionLabel={option => {
-                        return `${(option as IndicatorOption).category}: ${(
-                            option as IndicatorOption
-                        ).text.toLowerCase()}`;
+                        return `${(option as IndicatorOption).text}`;
                     }}
                     value={selectedOption || null}
                     onChange={handleChange}
@@ -97,4 +96,8 @@ const StyledAutocomplete = styled(Autocomplete)`
     .MuiAutocomplete-popupIndicator {
         margin-inline-end: 5px;
     }
+`;
+
+const StyledPaper = styled(Paper)`
+    width: 600px;
 `;

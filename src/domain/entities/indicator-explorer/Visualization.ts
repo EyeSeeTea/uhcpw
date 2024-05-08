@@ -3,11 +3,13 @@ import { Id, Ref } from "../Ref";
 export interface VisualizationExtra {
     categoryName: string;
     friendlyName: string;
+    downloadedFileName?: string;
     categoryTag?: string;
     notes?: string;
     maxCountryFilter?: number;
     minCountryFilter?: number;
     isComparative?: boolean;
+    hasEur27?: boolean;
     showCountryTag?: boolean;
 }
 
@@ -104,6 +106,7 @@ export type VisualizationDimension = { id: Dimension; dimension: Dimension; item
 export type DimensionItem = {
     name: string;
     id: string;
+    dimensionItem: string;
     dimensionItemType:
         | "DATA_ELEMENT"
         | "DATA_ELEMENT_OPERAND"

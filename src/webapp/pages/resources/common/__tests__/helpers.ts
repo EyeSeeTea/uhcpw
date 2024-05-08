@@ -13,8 +13,9 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "comparative-analysis" as const,
-            id: `id${index}`,
-            image: `http://image${index}.png`,
+            id: `id-comparative-analysis-${index}`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
             links: [
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
@@ -26,7 +27,7 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
             favouriteOrder: index,
             favouriteSection: true,
             favouriteSectionOrder: index,
-            relatedCountries: [],
+            relatedCountries: ["DVnpk4xiXGJ"],
         };
     });
 
@@ -39,8 +40,9 @@ export function createCountryAnalysisResources(count: number): CountryAnalysis[]
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "country-analysis" as const,
-            id: `id${index}`,
-            image: `http://image${index}.png`,
+            id: `id-country-analysis-${index}`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
             links: [
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
@@ -63,8 +65,9 @@ export function createNewsResources(count: number): News[] {
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "news" as const,
-            id: `id${index}`,
-            image: `http://image${index}.png`,
+            id: `id-news-${index}`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             title: `title ${index}`,
             date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,
@@ -82,8 +85,9 @@ export function createMultimediaResources(count: number): Multimedia[] {
     const data = [...Array(count).keys()].map(index => {
         return {
             kind: "multimedia" as const,
-            id: `id${index}`,
-            image: `http://image${index}.png`,
+            id: `id-multimedia-${index}`,
+            imageOriginal: `http://image${index}.png`,
+            imageCustom: `http://image${index}.png`,
             title: `title ${index}`,
             date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,

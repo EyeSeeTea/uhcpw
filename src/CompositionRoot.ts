@@ -34,8 +34,12 @@ import { CountryPageInfoD2Repository } from "./data/repositories/country-page/Co
 import { GetOfficeInfoUseCase } from "./domain/usecases/about/GetOfficeInfoUseCase";
 import { AboutInfoD2Repository } from "./data/repositories/about/AboutInfoD2Repository";
 import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerSelectCategoryInfoUseCase";
-import { GetIndicatorExplorerSelectCategoryInfoUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerSelectCategoryInfoUseCase";
+import { GetIndicatorExplorerPageContentUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerPageContentUseCase";
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
+import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
+import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
+import { GetEurCountriesRegionUseCase } from "./domain/usecases/GetEurCountriesRegionUseCase";
+import { GetRegionalReportLinkUseCase } from "./domain/usecases/GetRegionalReportLinkUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -55,6 +59,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         countryPageInfo: new CountryPageInfoD2Repository(api),
         aboutInfo: new AboutInfoD2Repository(api),
         indicatorExplorer: new IndicatorExplorerD2Repository(api),
+        homePage: new HomePageContentD2Repository(api),
     };
 }
 
@@ -77,6 +82,7 @@ export function getCompositionRoot(
         },
         countries: {
             get: new GetCountriesUseCase(repositories.country),
+            getEurCountriesRegion: new GetEurCountriesRegionUseCase(repositories.country),
         },
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
@@ -90,7 +96,7 @@ export function getCompositionRoot(
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
             downloadAnalytics: new DownloadAnalyticsUseCase(repositories.visualization, repositories.analytics),
             getLegendSets: new GetLegendSetsUseCase(repositories.legendSet),
-            getSelectCategoryInfo: new GetIndicatorExplorerSelectCategoryInfoUseCase(repositories.indicatorExplorer),
+            getPageContent: new GetIndicatorExplorerPageContentUseCase(repositories.indicatorExplorer),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),
@@ -103,6 +109,10 @@ export function getCompositionRoot(
         },
         method: {
             get: new GetMethodsUseCase(repositories.method),
+        },
+        home: {
+            getPageContent: new GetHomePageContentUseCase(repositories.homePage),
+            getRegionalReportLink: new GetRegionalReportLinkUseCase(repositories.homePage),
         },
         countryPage: {
             getSliderInfo: new GetSliderInfoUseCase(repositories.countryPageInfo),

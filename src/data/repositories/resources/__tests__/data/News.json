@@ -1,33 +1,279 @@
 {
     "events": [
         {
-            "event": "L7pJLhVhB1W",
-            "eventDate": "2023-05-03T00:00:00.000",
+            "event": "ckY8Z4ZmTDe",
+            "eventDate": "2023-06-15T00:00:00.000",
             "dataValues": [
                 {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Article"
+                },
+                {
                     "dataElement": "WlAFwnRMskp",
-                    "value": "https://www.who.int/europe/news/item/03-05-2023-countries-hosting-ukrainian-refugees-reaffirm-their-commitment-to-meeting-their-health-needs"
+                    "value": "https://www.who.int/europe/news/item/15-06-2023-new-who-report-outlines-concrete-steps-to-make-health-care-more-accessible-for-people-in-ukraine"
                 },
                 {
                     "dataElement": "iBxOUseHUtO",
-                    "value": "Countries hosting Ukrainian refugees reaffirm their commitment to meeting their health needs"
+                    "value": "New WHO report outlines concrete steps to make health care more accessible for people in Ukraine"
                 },
                 {
-                    "dataElement": "iO4ThHtWZ8M",
-                    "value": "news"
+                    "dataElement": "CCFn3rUBXLS",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "1"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Health and economy"
                 },
                 {
                     "dataElement": "uund7zjS1Yt",
-                    "value": "C6p06vtYhED"
+                    "value": "UaMDVzIfqPQ"
                 },
-                { "dataElement": "aP3GIoQRvDt", "value": "true" },
-                { "dataElement": "G9DVX5SjoA2", "value": "1" },
-                { "dataElement": "XxXz056LMCO", "value": "true" },
-                { "dataElement": "EqiRrE4nz7c", "value": "1" }
+                {
+                    "dataElement": "UBAOd8omOog",
+                    "value": "UaMDVzIfqPQ"
+                },
+                {
+                    "dataElement": "KFrs71ATfx6",
+                    "value": "1"
+                },
+                {
+                    "dataElement": "KPwK8b3rkOz",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "mFLscuj8vES",
+                    "value": "1"
+                }
             ]
         },
         {
-            "event": "sKWgr88XiRH",
+            "event": "kAn748TgALi",
+            "eventDate": "2023-04-25T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://www.who.int/europe/news/item/25-04-2023-who-europe-supports-countries-to-improve-quality-of-data-on-health-spending"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "WHO/Europe supports countries to improve quality of data on health spending"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                }
+            ]
+        },
+        {
+            "event": "AMNmHHBpedc",
+            "eventDate": "2023-03-28T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://www.who.int/europe/news/item/28-03-2023-who-and-partners-highlight-way-forward-to-improve-health-equity-across-north-macedonia"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "WHO and partners highlight way forward to improve health equity across North Macedonia"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                }
+            ]
+        },
+        {
+            "event": "lxQWoDTZVRl",
+            "eventDate": "2023-03-28T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://www.who.int/europe/news/item/28-03-2023-who-and-partners-highlight-way-forward-to-improve-health-equity-across-north-macedonia"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "WHO and partners highlight way forward to improve health equity across North Macedonia"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Spending on Health"
+                }
+            ]
+        },
+        {
+            "event": "lp36w61tT9d",
+            "eventDate": "2023-02-28T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://www.who.int/europe/news/item/28-02-2023-can-people-afford-to-pay-for-health-care--new-evidence-on-financial-protection-in-belgium"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Belgium"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                }
+            ]
+        },
+        {
+            "event": "QncSJwuFee1",
+            "eventDate": "2023-02-28T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://www.who.int/europe/news/item/28-02-2023-can-people-afford-to-pay-for-health-care--new-evidence-on-financial-protection-in-belgium"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Belgium"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                }
+            ]
+        },
+        {
+            "event": "L7kIrsNDGuc",
+            "eventDate": "2023-01-26T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://www.who.int/europe/news/item/26-01-2023-new-who-report-lays-out-concrete-actions-for-governments-to-optimize-public-private-partnerships-for-health"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "New WHO report lays out concrete actions for governments to optimize public–private partnerships for health"
+                },
+                {
+                    "dataElement": "CCFn3rUBXLS",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "5"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "WarfgNVLFRi"
+                },
+                {
+                    "dataElement": "UBAOd8omOog",
+                    "value": "WarfgNVLFRi"
+                },
+                {
+                    "dataElement": "KFrs71ATfx6",
+                    "value": "3"
+                }
+            ]
+        },
+        {
+            "event": "gGIXHvLl5Wl",
+            "eventDate": "2023-01-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=gh0m908lst5073jitb2pe52a7f&suffix=pdf&print=1"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://who.canto.global/pdfviewer/viewer/viewer.html?share=share%2Calbum%2CGIAIK&column=document&id=qeq4c9vtah1o37qgqv0tnovc1s&suffix=pdf&print=1"
+                },
+                {
+                    "dataElement": "XxXz056LMCO",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "français"
+                },
+                {
+                    "dataElement": "awlsQKOwDgB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "La protection financière en Belgique"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Infographic"
+                },
+                {
+                    "dataElement": "yKHkUZLIGc6",
+                    "value": "English"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Financial protection in Belgium"
+                },
+                {
+                    "dataElement": "EqiRrE4nz7c",
+                    "value": "2"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
+                },
+                {
+                    "dataElement": "uund7zjS1Yt",
+                    "value": "pB7DMuEiVnt"
+                },
+                {
+                    "dataElement": "UBAOd8omOog",
+                    "value": "pB7DMuEiVnt"
+                }
+            ]
+        },
+        {
+            "event": "v2uL21WIFCj",
             "eventDate": "2022-10-12T00:00:00.000",
             "dataValues": [
                 {
@@ -39,12 +285,98 @@
                     "value": "Countries in eastern Europe and central Asia work together to monitor financial protection – a key dimension of universal health coverage"
                 },
                 {
-                    "dataElement": "iO4ThHtWZ8M",
-                    "value": "news"
+                    "dataElement": "CCFn3rUBXLS",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "KFrs71ATfx6",
+                    "value": "2"
+                }
+            ]
+        },
+        {
+            "event": "rCveu4PJ5Fx",
+            "eventDate": "2019-05-29T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "oQ6Qi6faNK5",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "WlAFwnRMskp",
+                    "value": "https://apps.who.int/iris/handle/10665/311654"
+                },
+                {
+                    "dataElement": "nVhCDkoptRC",
+                    "value": "https://apps.who.int/iris/handle/10665/330088"
+                },
+                {
+                    "dataElement": "rovY1LEqAPX",
+                    "value": "русский"
+                },
+                {
+                    "dataElement": "fJdnhBV0nYB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "aP3GIoQRvDt",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "awlsQKOwDgB",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Bjhex2xmHxG",
+                    "value": "В состоянии ли люди платить за услуги здравоохранения? Hовые фактические данные о финансовой защите в Европе"
+                },
+                {
+                    "dataElement": "lDHvdREWAUp",
+                    "value": "1"
+                },
+                {
+                    "dataElement": "lW90bnEXAFI",
+                    "value": "Report"
+                },
+                {
+                    "dataElement": "iBxOUseHUtO",
+                    "value": "Can people afford to pay for health care? New evidence on financial protection in Europe"
+                },
+                {
+                    "dataElement": "G9DVX5SjoA2",
+                    "value": "3"
+                },
+                {
+                    "dataElement": "AGWJYBEy90o",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "jwmMKDQrxhD",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "TTAQLTta8JS",
+                    "value": "Financial Protection"
+                },
+                {
+                    "dataElement": "BBKWdyuSwkT",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "s4rejJAHkEj",
+                    "value": "KwgjnBBpe5b"
                 },
                 {
                     "dataElement": "uund7zjS1Yt",
-                    "value": "Hg1tbMm31Y1"
+                    "value": "XKxSqDHDB0B"
+                },
+                {
+                    "dataElement": "UBAOd8omOog",
+                    "value": "XKxSqDHDB0B"
                 }
             ]
         }

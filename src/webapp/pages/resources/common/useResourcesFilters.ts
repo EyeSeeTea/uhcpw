@@ -13,7 +13,7 @@ export function useResourcesFilters(params: {
 }): ResourcesFiltersState {
     const { category, countries, theme, countryOptionsToSelect } = params;
     const { compositionRoot, themes } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2(countries, countryOptionsToSelect);
+    const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countries, countryOptionsToSelect });
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -46,7 +46,9 @@ export function useResourcesFilters(params: {
 
     useEffect(() => {
         // NOTICE: use theme name to filter resources by theme in ResourceRepository get()
-        setThemeFilters(themes.map(theme => ({ value: theme.name, text: theme.name })));
+        setThemeFilters(
+            themes.map(theme => ({ value: theme.name, text: theme.name })).sort((a, b) => a.text.localeCompare(b.text))
+        );
     }, [themes]);
 
     useEffect(() => {
