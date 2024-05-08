@@ -28,5 +28,5 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     d3kq9OCv8tH: chart_d3kq9OCv8tH_Customizations,
     ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Customizations,
     BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Customizations,
-    pWFRTFfh5mA: chart_pWFRTFfh5mA_Customizations
+    pWFRTFfh5mA: chart_pWFRTFfh5mA_Customizations,
 };
