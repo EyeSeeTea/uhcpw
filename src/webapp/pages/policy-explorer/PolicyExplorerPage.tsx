@@ -154,11 +154,17 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                                     {info.notes ? (
                                         <GeneralRow>
-                                            <CreditsText variant="caption">
+                                            <ReactMarkdown
+                                                components={{
+                                                    p: ({ children }) => (
+                                                        <CreditsText variant="caption">{children}</CreditsText>
+                                                    ),
+                                                }}
+                                            >
                                                 {`${i18n.t("Notes: ", {
                                                     nsSeparator: false,
                                                 })} ${info.notes}`}
-                                            </CreditsText>
+                                            </ReactMarkdown>
                                         </GeneralRow>
                                     ) : null}
 
