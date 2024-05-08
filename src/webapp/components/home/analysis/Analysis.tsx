@@ -4,12 +4,10 @@ import i18n from "../../../../locales";
 import { Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { SectionBlock } from "../section-block/SectionBlock";
-import { CTA } from "../buttons/CTA";
 import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
 import { AnalysisContent } from "../../../../domain/entities/HomePageContent";
-
-const ALBANIA_COUNTRY_ID = "VGOzFKfSazN";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 type AnalysisProps = { content: AnalysisContent };
 
@@ -21,16 +19,15 @@ export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
                 <CountryContext item md={6} xs={12}>
                     <SectionBlock title={content.countries.title} text={content.countries.text} />
                     <ButtonContainer>
-                        <CTA
-                            text={content.countries.buttonText || ""}
-                            link={`/country-page?country=${ALBANIA_COUNTRY_ID}`}
-                        />
+                        <Link href={content.countries.buttonLink || ""}>
+                            {i18n.t(content.countries.buttonText || "")}
+                        </Link>
                     </ButtonContainer>
                 </CountryContext>
                 <Region item md={6} xs={12}>
                     <SectionBlock title={content.regional.title} text={content.regional.text} />
                     <ButtonContainer>
-                        <Link href="https://cmyn.short.gy/regionalreport" target="_blank" rel="noreferrer">
+                        <Link href={content.regional.buttonLink || ""} target="_blank" rel="noreferrer" isRegional>
                             {i18n.t(content.regional.buttonText || "")}
                         </Link>
                     </ButtonContainer>
@@ -59,8 +56,8 @@ const ButtonContainer = styled.div`
     margin-top: 30px;
 `;
 
-const Link = styled.a`
-    color: #4fad56;
+const Link = styled.a<{ isRegional?: boolean }>`
+    color: ${props => (props.isRegional ? "#4fad56" : colors.accentPrimary)};
     background-color: white;
     font-size: 14px;
     border-radius: 30px;

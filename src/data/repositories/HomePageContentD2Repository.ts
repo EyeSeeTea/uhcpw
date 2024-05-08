@@ -1,5 +1,5 @@
 import { FutureData } from "../../domain/entities/Future";
-import { HomePageContent } from "../../domain/entities/HomePageContent";
+import { HomePageContent, RegionalReportLink } from "../../domain/entities/HomePageContent";
 import { HomePageContentRepository } from "../../domain/repositories/HomePageContentRepository";
 import { D2Api } from "../../types/d2-api";
 import { DataValue, getMainPagesContent } from "./common/getMainPagesContent";
@@ -9,6 +9,12 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
 
     get(): FutureData<HomePageContent> {
         return getMainPagesContent(this.api).map(dataValues => this.buildHomePageContent(dataValues));
+    }
+
+    getRegionalReportLink(): FutureData<RegionalReportLink> {
+        return getMainPagesContent(this.api).map(
+            dataValues => dataValues.find(dv => dv.dataElement === "GsiYRlaUFWH")?.value || ""
+        );
     }
 
     buildHomePageContent(dataValues: DataValue[]): HomePageContent {
@@ -26,11 +32,13 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
                     title: dataValues.find(dv => dv.dataElement === "JK20iGDaqRm")?.value || "",
                     text: dataValues.find(dv => dv.dataElement === "tWEnsQ6gfqO")?.value || "",
                     buttonText: dataValues.find(dv => dv.dataElement === "kpzr2XPNCdL")?.value || "",
+                    buttonLink: dataValues.find(dv => dv.dataElement === "OlSNAHCkM4J")?.value || "",
                 },
                 policy: {
                     title: dataValues.find(dv => dv.dataElement === "qGYZubI0Wd8")?.value || "",
                     text: dataValues.find(dv => dv.dataElement === "F1ksGHvzhTV")?.value || "",
                     buttonText: dataValues.find(dv => dv.dataElement === "LWqNfdyS1JV")?.value || "",
+                    buttonLink: dataValues.find(dv => dv.dataElement === "SzUNsjs49ZC")?.value || "",
                 },
             },
             analysis: {
@@ -40,11 +48,13 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
                     title: dataValues.find(dv => dv.dataElement === "F3gWD69Fme4")?.value || "",
                     text: dataValues.find(dv => dv.dataElement === "ZgY7XuAhb0o")?.value || "",
                     buttonText: dataValues.find(dv => dv.dataElement === "MWBXipF0xxJ")?.value || "",
+                    buttonLink: dataValues.find(dv => dv.dataElement === "mg7kSoSStzc")?.value || "",
                 },
                 regional: {
                     title: dataValues.find(dv => dv.dataElement === "hvp6EKlgXMX")?.value || "",
                     text: dataValues.find(dv => dv.dataElement === "VsidPy2O456")?.value || "",
                     buttonText: dataValues.find(dv => dv.dataElement === "eeOs9Cegtri")?.value || "",
+                    buttonLink: dataValues.find(dv => dv.dataElement === "GsiYRlaUFWH")?.value || "",
                 },
             },
             methods: {
@@ -62,6 +72,11 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
                     title: dataValues.find(dv => dv.dataElement === "TX5VeXTeg5a")?.value || "",
                     text: dataValues.find(dv => dv.dataElement === "lPZ0Gfkd2AY")?.value || "",
                 },
+                buttonLink: dataValues.find(dv => dv.dataElement === "CZ8syDdSQi3")?.value || "",
+            },
+            newsletter: {
+                buttonText: dataValues.find(dv => dv.dataElement === "qdJWVPUS3gn")?.value || "",
+                buttonLink: dataValues.find(dv => dv.dataElement === "q2xV2rgnt31")?.value || "",
             },
         };
     }

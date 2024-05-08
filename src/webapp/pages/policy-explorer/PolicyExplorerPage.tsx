@@ -117,7 +117,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             <div key={info.country}>
                                 <GeneralDataContainer>
                                     <GeneralRow>
-                                        <CreditsText style={{ fontWeight: 500 }}>{`${info.country}`}</CreditsText>
+                                        <CreditsText
+                                            style={{ fontWeight: 500 }}
+                                        >{`${info.country} (${info.year})`}</CreditsText>
                                     </GeneralRow>
 
                                     {info.lastUpdate ? (
@@ -154,9 +156,17 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                                     {info.notes ? (
                                         <GeneralRow>
-                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
-                                            &nbsp;
-                                            <CreditsText>{info.notes}</CreditsText>
+                                            <ReactMarkdown
+                                                components={{
+                                                    p: ({ children }) => (
+                                                        <CreditsText variant="caption">{children}</CreditsText>
+                                                    ),
+                                                }}
+                                            >
+                                                {`${i18n.t("Notes: ", {
+                                                    nsSeparator: false,
+                                                })} ${info.notes}`}
+                                            </ReactMarkdown>
                                         </GeneralRow>
                                     ) : null}
 
