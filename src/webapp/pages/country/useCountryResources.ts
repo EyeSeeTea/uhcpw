@@ -12,14 +12,18 @@ const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<"country-analysis" | "comparative-a
 
 type CountryResourcesType = {
     loading: boolean;
-    items?: ResourceState[];
+    countryAnalysisResource?: ResourceState[];
+    comparativeAnalysisResources?: ResourceState[];
 };
 
 export function useCountryResources(country: string): CountryResourcesType {
     const { compositionRoot, countries, themes } = useAppContext();
 
     const [loading, setLoading] = useState<boolean>(false);
-    const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
+    const [countryAnalysisResource, setCountryAnalysisResources] = useState<ResourceState[] | undefined>(undefined);
+    const [comparativeAnalysisResources, setComparativeAnalysisResources] = useState<ResourceState[] | undefined>(
+        undefined
+    );
 
     useEffect(() => {
         setLoading(true);
@@ -31,18 +35,24 @@ export function useCountryResources(country: string): CountryResourcesType {
             .run(
                 resources => {
                     setLoading(false);
-                    setItems(buildResourcesBySection(resources, countries, themes, country));
+                    const resourceItems = buildResourcesBySection(resources, countries, themes, country);
+                    setCountryAnalysisResources(resourceItems.filter(({ kind }) => kind === "country-analysis"));
+                    setComparativeAnalysisResources(
+                        resourceItems.filter(({ kind }) => kind === "comparative-analysis")
+                    );
                 },
                 () => {
                     setLoading(false);
-                    setItems([]);
+                    setComparativeAnalysisResources([]);
+                    setCountryAnalysisResources([]);
                 }
             );
     }, [compositionRoot.resources.get, countries, country, themes]);
 
     return {
         loading,
-        items,
+        countryAnalysisResource,
+        comparativeAnalysisResources,
     };
 }
 
