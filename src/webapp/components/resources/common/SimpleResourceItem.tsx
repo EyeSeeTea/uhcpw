@@ -71,7 +71,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
 
 const Item = styled(Card)`
     border-radius: 10px;
-    padding: 16px;
+    padding-block: 16px;
     flex-direction: column;
 `;
 

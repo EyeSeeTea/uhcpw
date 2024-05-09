@@ -51,7 +51,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                         disabledCountryFilter={disabledCountryFilter}
                     />
                     {
-                        <StyledGridContainer container spacing={5} direction="row" justifyContent="space-between">
+                        <StyledGridContainer spacing={2} container direction="row">
                             {items &&
                                 items.map((item, index) => {
                                     const sizes = getSizes(item);
