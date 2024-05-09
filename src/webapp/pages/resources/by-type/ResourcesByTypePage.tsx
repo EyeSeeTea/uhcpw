@@ -51,15 +51,15 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                         disabledCountryFilter={disabledCountryFilter}
                     />
                     {
-                        <StyledGridContainer container spacing={5}>
+                        <StyledGridContainer container spacing={5} direction="row" justifyContent="space-between">
                             {items &&
                                 items.map((item, index) => {
                                     const sizes = getSizes(item);
 
                                     return (
-                                        <StyledGrid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
+                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
                                             <ResourceItem resource={item} />
-                                        </StyledGrid>
+                                        </Grid>
                                     );
                                 })}
                         </StyledGridContainer>
@@ -105,8 +105,9 @@ const Title = styled(Typography)`
 `;
 
 const SelectsContainer = styled(Container)`
-    padding-top: 64px;
-    padding-bottom: 32px;
+    padding-block-start: 64px;
+    padding-block-end: 32px;
+    padding-inline: 64px;
 `;
 
 const SearchContainer = styled.div`
@@ -119,10 +120,6 @@ const SearchContainer = styled.div`
     }
 `;
 
-const StyledGrid = styled(Grid)`
-    padding: 20px;
-`;
-
 const StyledGridContainer = styled(Grid)`
-    padding: 32px;
+    padding-block: 32px;
 `;
