@@ -14,7 +14,7 @@ import { PolicyExplorerRepository } from "../../../domain/repositories/policy-ex
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { Tab, exportToCSV } from "../../export/exportToCSV";
+import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
     CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
@@ -131,7 +131,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 return [
                     ...accTabs,
                     {
-                        data: dataRows,
+                        data: [[category?.text || categoryId], ...dataRows],
                         name: Object.keys(categoriesNameWithLessThan31Chars).includes(categoryId)
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.text || categoryId,
@@ -141,7 +141,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             return accTabs;
         }, []);
 
-        exportToCSV([generalInformationTab, ...tabs, referencesTab], FILE_NAME);
+        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], FILE_NAME);
         return Future.success(undefined);
     }
 
@@ -200,7 +200,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 );
                 return [...referencesTabAcc, [countryReferences.country, cleanReferences.join("\n")]];
             },
-            [[referencesTitle], ["Country"]]
+            [[referencesTitle], ["Country", ""]]
         );
 
         return {
