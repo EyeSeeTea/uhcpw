@@ -36,6 +36,8 @@ interface TreeSelectorProps {
     topClearAll?: number;
     maxSelection?: number;
     ariaLabel?: string;
+    disableSearch?: boolean;
+    showParentIfChecked?: boolean;
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
@@ -53,6 +55,8 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         topClearAll = 0,
         maxSelection,
         ariaLabel,
+        disableSearch,
+        showParentIfChecked,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -84,10 +88,19 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         onSelectedIdsChange(selected);
                     }
                 } else {
-                    const selected = selectedIds.filter(id => id !== nodeId);
+                    const isParent = items.find(item => item.parents.some(parent => parent.id === nodeId));
 
-                    if (onSelectedIdsChange) {
-                        onSelectedIdsChange(selected);
+                    if (isParent) {
+                        const finalChildren = filteredItemsBySearch.filter(item =>
+                            item.parents.some(p => p.id === nodeId)
+                        );
+                        handleSelectedAllItemsInParent(finalChildren, selected);
+                    } else {
+                        const selected = selectedIds.filter(id => id !== nodeId);
+
+                        if (onSelectedIdsChange) {
+                            onSelectedIdsChange(selected);
+                        }
                     }
                 }
             },
@@ -203,13 +216,21 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
             }
         }, [itemsToSelect, hasSelectAll, onSelectedIdsChange]);
 
+        const selectedChips = useMemo(() => {
+            return showParentIfChecked && areAllItemsSelected && parents.length > 0 ? parents : selectedItems;
+        }, [areAllItemsSelected, parents, selectedItems, showParentIfChecked]);
+
+        const finalPlaceholder = useMemo(() => {
+            return selectedChips.length === 0 ? placeholder : "";
+        }, [placeholder, selectedChips.length]);
+
         return (
             <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
                     label={label}
                     aria-label={ariaLabel || placeholder || "Tree selector"}
                     onClick={handleClick}
-                    placeholder={placeholder}
+                    placeholder={finalPlaceholder}
                     role={"textbox"}
                     fullWidth={fullWidth}
                     value={""}
@@ -221,7 +242,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>
-                                {selectedItems.map(item => {
+                                {selectedChips.map(item => {
                                     return (
                                         <SelectedChip
                                             key={item.id}
@@ -263,16 +284,19 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     onClose={handleClose}
                 >
                     <div role="listbox">
-                        <SearchInput
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            style={{
-                                height: "20px",
-                                background: "#f2f9fd",
-                                border: "1px solid #cfe9f7",
-                                borderRadius: "20px",
-                            }}
-                        />
+                        {!disableSearch && (
+                            <SearchInput
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                style={{
+                                    height: "20px",
+                                    background: "#f2f9fd",
+                                    border: "1px solid #cfe9f7",
+                                    borderRadius: "20px",
+                                }}
+                            />
+                        )}
+
                         <br />
                         <Container $fullWidth={fullWidth}>
                             <Typography variant="body1" gutterBottom>

@@ -4,7 +4,6 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
 import { TreeSelector } from "../tree-selector/TreeSelector";
-import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 import { IndicatorSelector } from "./category-indicator-selector/IndicatorSelector";
 
 export interface ResourcesFiltersProps {
@@ -45,13 +44,17 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             </Grid>
             <Grid item md={3} sm={6}>
                 <Center>
-                    <DropdownMultiple
+                    <TreeSelector
                         fullWidth
+                        hasSelectAll
+                        hasClearAll
                         label={i18n.t("Years")}
+                        items={filters.year.options}
+                        selectedIds={filters.year.selected}
+                        onSelectedIdsChange={filters.year.onSelectedChange}
                         placeholder={i18n.t("Select years")}
-                        options={filters.year.options}
-                        values={filters.year.selected}
-                        onChange={filters.year.onSelectedChange}
+                        disableSearch={true}
+                        showParentIfChecked={true}
                     />
                 </Center>
             </Grid>

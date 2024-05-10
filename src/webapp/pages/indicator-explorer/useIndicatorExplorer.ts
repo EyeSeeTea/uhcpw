@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
 import { GlobalMessage, IndicatorExplorerState, IndicatorOption } from "./IndicatorExplorerState";
 
@@ -13,9 +12,9 @@ import { IndicatorExplorerContent } from "../../../domain/entities/indicator-exp
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 
-export const allYearsItem = { value: "all", text: i18n.t("All years") };
-export const yearsItems = generateYears().map(year => ({ value: year.id, text: year.id }));
-const allYearsFilters = [allYearsItem, ...yearsItems];
+export const allYearsItem = { id: "all", name: i18n.t("All years"), parents: [] };
+export const yearsItems = generateYears().map(year => ({ id: year.id, name: year.id, parents: [allYearsItem] }));
+const allYearsFilters: TreeOption[] = yearsItems;
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot } = useAppContext();
@@ -31,7 +30,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
     const [pageContent, setPageContent] = useState<IndicatorExplorerContent | undefined>(undefined);
 
-    const [yearFilters, setYearsFilters] = useState<Option[]>([]);
+    const [yearFilters, setYearsFilters] = useState<TreeOption[]>([]);
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
 
     const [visualizations, setVisualizations] = useState<Visualization[]>([]);
@@ -69,7 +68,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setDisabledCountries(disabledCountries);
 
             if (!newsVisualization?.isComparative) {
-                setSelectedYearFilter([allYearsItem.value]);
+                setSelectedYearFilter([allYearsItem.id]);
             } else if (newsVisualization?.isComparative) {
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
@@ -83,13 +82,13 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const onChangeYearFilter = useCallback(
         (value: string[] | undefined) => {
-            const oldContainsAllYears = selectedYearFilter?.includes(allYearsItem.value);
-            const newContainsAllYears = value?.includes(allYearsItem.value);
+            const oldContainsAllYears = selectedYearFilter?.includes(allYearsItem.id);
+            const newContainsAllYears = value?.includes(allYearsItem.id);
 
             if (oldContainsAllYears) {
-                setSelectedYearFilter(value?.filter(year => year !== allYearsItem.value));
+                setSelectedYearFilter(value?.filter(year => year !== allYearsItem.id));
             } else if (newContainsAllYears) {
-                setSelectedYearFilter([allYearsItem.value]);
+                setSelectedYearFilter([allYearsItem.id]);
             } else {
                 setSelectedYearFilter(value);
             }
@@ -129,7 +128,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
         if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
             setYearsFilters([
-                { value: LatestCOVID19.id, text: i18n.t("2019 or latest available year before COVID-19") },
+                { id: LatestCOVID19.id, name: i18n.t("2019 or latest available year before COVID-19"), parents: [] },
             ]);
         } else {
             setYearsFilters(allYearsFilters);
@@ -208,8 +207,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 options: yearFilters,
                 selected: selectedYearFilter,
                 onSelectedChange: onChangeYearFilter,
-                realYearSelected: selectedYearFilter?.includes(allYearsItem.value)
-                    ? allYearsFilters.map(year => year.value)
+                realYearSelected: selectedYearFilter?.includes(allYearsItem.id)
+                    ? allYearsFilters.map(year => year.id)
                     : selectedYearFilter,
             },
         },
