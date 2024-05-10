@@ -27,6 +27,19 @@ export type PolicyExplorerGeneralInfo = {
     notes: string;
 };
 
+export type PolicyExplorerGeneralInfoToDownload = {
+    country: string;
+    year: string;
+    lastUpdate: string;
+    countryExperts: string;
+    editors: string;
+    reviewers: string;
+    notes: string;
+    source: string;
+};
+
+export type PolicyExplorerGeneralInfoToDownloadKeys = keyof PolicyExplorerGeneralInfoToDownload;
+
 export type PolicyExplorerReferences = {
     country: string;
     references: string[];
