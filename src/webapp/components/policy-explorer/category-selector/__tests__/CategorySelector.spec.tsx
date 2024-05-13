@@ -147,7 +147,7 @@ describe("Given CategorySelector component", () => {
                 renderComponent();
                 await focusComponent();
 
-                const clearButton = screen.getByText(/clear all/i);
+                const clearButton = screen.getByText(/clear/i);
                 expect(clearButton).toBeInTheDocument();
 
                 const selectAllButton = screen.getByText(/select all/i);

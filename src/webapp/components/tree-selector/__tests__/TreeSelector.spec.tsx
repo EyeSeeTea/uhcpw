@@ -149,7 +149,7 @@ describe("Given TreeSelector", () => {
             await selectAllCountries();
             userEvent.keyboard("{Escape}");
 
-            const clearButtons = screen.getAllByText(/clear all/i);
+            const clearButtons = screen.getAllByText(/clear/i);
             expect(clearButtons[0]).toBeInTheDocument();
         });
         it("Then should clear all when click on clear all button", async () => {
