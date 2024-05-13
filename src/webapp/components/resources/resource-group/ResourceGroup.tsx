@@ -39,11 +39,12 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(({ title, 
 
 const Container = styled.div`
     padding: 32px;
+    padding-inline-start: 0;
 `;
 
 const Row = styled.div`
     padding-top: 8px;
-    padding-left: 16px;
+    padding-left: 0;
     display: flex;
     flex-direction: row;
     align-items: center;

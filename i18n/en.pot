@@ -46,7 +46,10 @@ msgstr ""
 msgid "Country resources"
 msgstr ""
 
-msgid "Comparative resources"
+msgid "Country analysis"
+msgstr ""
+
+msgid "Comparative analysis"
 msgstr ""
 
 msgid "Dashboard"
@@ -77,12 +80,6 @@ msgid "Zoom out"
 msgstr ""
 
 msgid "Resources"
-msgstr ""
-
-msgid "Comparative analysis"
-msgstr ""
-
-msgid "Country analysis"
 msgstr ""
 
 msgid "News"

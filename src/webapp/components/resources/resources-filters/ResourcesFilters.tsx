@@ -62,7 +62,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
         );
 
         return (
-            <Grid container spacing={5} alignItems="flex-end" justifyContent="center">
+            <Grid container spacing={1} direction="row" alignItems="flex-end" justifyContent="space-between">
                 <Grid item md={3} sm={6}>
                     <Center>
                         <Dropdown
@@ -105,7 +105,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} sm={6}>
+                <Grid item md={2} sm={6}>
                     <Center>
                         <DropdownMultiple
                             placeholder={i18n.t("Select years")}
@@ -118,7 +118,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         />
                     </Center>
                 </Grid>
-                <Grid item md={1} sm={2} xs={6}>
+                <Grid item md={1} sm={3} xs={6}>
                     <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetResources}>
                         <Typography>{i18n.t("Search")}</Typography>
                     </SearchButton>
@@ -140,4 +140,5 @@ const SearchButton = styled(Button)`
     height: 50px;
     text-transform: none;
     padding: 16px 24px;
+    width: 100%;
 `;

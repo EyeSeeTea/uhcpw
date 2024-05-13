@@ -50,8 +50,9 @@ const TitleContainer = styled.div`
 `;
 
 const SelectsContainer = styled(Container)`
-    padding-top: 64px;
-    padding-bottom: 32px;
+    padding-block-start: 64px;
+    padding-block-end: 32px;
+    padding-inline: 64px;
 `;
 
 const SearchContainer = styled.div`

@@ -32,7 +32,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
 
 const Item = styled(Card)`
     border-radius: 10px;
-    padding: 16px;
+    padding-block: 16px;
     flex-direction: column;
     a {
         text-decoration: none;
