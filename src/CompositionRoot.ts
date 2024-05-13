@@ -1,5 +1,5 @@
 import { Instance } from "./data/entities/Instance";
-import { CountryD2Repository } from "./data/repositories/CountryD2Repository";
+import { CountryD2Repository } from "./data/repositories/countries/CountryD2Repository";
 import { InstanceDefaultRepository } from "./data/repositories/InstanceDefaultRepository";
 import { ResourceD2Repository } from "./data/repositories/resources/ResourceD2Repository";
 import { PolicyExplorerCategoryD2Repository } from "./data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
