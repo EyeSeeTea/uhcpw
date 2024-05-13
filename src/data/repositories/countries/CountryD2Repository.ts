@@ -1,11 +1,11 @@
 import polylabel from "polylabel";
-import { Country, CountryStatus, CountriesRegion } from "../../domain/entities/Country";
-import { Future, FutureData } from "../../domain/entities/Future";
-import { CountryRepository } from "../../domain/repositories/CountryRepository";
-import { Id } from "../../domain/entities/Ref";
-import { D2Api, D2Geometry, MetadataPick } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
-import { coordinatesFromString } from "./countries/coordinatesFromString";
+import { Country, CountryStatus, CountriesRegion } from "../../../domain/entities/Country";
+import { Future, FutureData } from "../../../domain/entities/Future";
+import { CountryRepository } from "../../../domain/repositories/CountryRepository";
+import { Id } from "../../../domain/entities/Ref";
+import { D2Api, D2Geometry, MetadataPick } from "../../../types/d2-api";
+import { apiToFuture } from "../../../utils/futures";
+import { coordinatesFromString } from "./coordinatesFromString";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
