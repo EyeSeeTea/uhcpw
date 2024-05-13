@@ -6,6 +6,7 @@ import { Id } from "../../../domain/entities/Ref";
 import { D2Api, D2Geometry, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { coordinatesFromString } from "./coordinatesFromString";
+import { mapToWhoCountryCode } from "./mapToWhoCountryCode";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -151,7 +152,7 @@ export class CountryD2Repository implements CountryRepository {
                     id: orgUnit.id,
                     name: isNetherlands ? `${orgUnit.shortName} (Kingdom of the)` : orgUnit.shortName,
                     longName: orgUnit.name,
-                    code: orgUnit.code,
+                    code: mapToWhoCountryCode(orgUnit.code),
                     description: orgUnit.description,
                     coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
                     status,
