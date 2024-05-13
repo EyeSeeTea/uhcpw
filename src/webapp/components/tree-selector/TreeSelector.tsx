@@ -79,6 +79,32 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
             setSearchTerm("");
         }, [expanded, setExpanded, setAnchorEl]);
 
+        const filteredItemsBySearch = useMemo(() => {
+            return items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        }, [searchTerm, items]);
+
+        const handleSelectedAllItemsInParent = useCallback(
+            (allItemsInSelectedParent: TreeOption[], selected: boolean) => {
+                if (hasSelectAll) {
+                    const allowedItemsInSelectedParent = allItemsInSelectedParent.filter(
+                        ({ id }) => !disabledItems?.includes(id)
+                    );
+
+                    const selectedItems = selected
+                        ? [
+                              ...selectedIds,
+                              ...allowedItemsInSelectedParent
+                                  .map(({ id }) => id)
+                                  .filter(id => !selectedIds.includes(id)),
+                          ]
+                        : selectedIds.filter(id => !allowedItemsInSelectedParent.map(({ id }) => id).includes(id));
+
+                    onSelectedIdsChange(selectedItems);
+                }
+            },
+            [disabledItems, onSelectedIdsChange, selectedIds, hasSelectAll]
+        );
+
         const handleSelectedChange = useCallback(
             (nodeId: string, selected: boolean) => {
                 if (selected) {
@@ -104,7 +130,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     }
                 }
             },
-            [selectedIds, onSelectedIdsChange]
+            [selectedIds, onSelectedIdsChange, items, filteredItemsBySearch, handleSelectedAllItemsInParent]
         );
 
         const selectedItems = useMemo(() => {
@@ -128,10 +154,6 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
             [items, setSearchTerm, setExpandedParents]
         );
 
-        const filteredItemsBySearch = useMemo(() => {
-            return items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-        }, [searchTerm, items]);
-
         const parents = useMemo(() => {
             return _.uniqBy(filteredItemsBySearch.map(item => item.parents).flat(), "id").map(parent => ({
                 ...parent,
@@ -150,28 +172,6 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         const handleClear = useCallback(() => {
             hasClearAll && onSelectedIdsChange([]);
         }, [hasClearAll, onSelectedIdsChange]);
-
-        const handleSelectedAllItemsInParent = useCallback(
-            (allItemsInSelectedParent: TreeOption[], selected: boolean) => {
-                if (hasSelectAll) {
-                    const allowedItemsInSelectedParent = allItemsInSelectedParent.filter(
-                        ({ id }) => !disabledItems?.includes(id)
-                    );
-
-                    const selectedItems = selected
-                        ? [
-                              ...selectedIds,
-                              ...allowedItemsInSelectedParent
-                                  .map(({ id }) => id)
-                                  .filter(id => !selectedIds.includes(id)),
-                          ]
-                        : selectedIds.filter(id => !allowedItemsInSelectedParent.map(({ id }) => id).includes(id));
-
-                    onSelectedIdsChange(selectedItems);
-                }
-            },
-            [disabledItems, onSelectedIdsChange, selectedIds, hasSelectAll]
-        );
 
         const isAllItemParentSelected = useCallback(
             (itemParentId: string) => {

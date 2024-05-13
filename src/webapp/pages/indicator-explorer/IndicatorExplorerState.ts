@@ -27,7 +27,6 @@ export type YeasrFilterState = {
     options: TreeOption[];
     selected: string[] | undefined;
     onSelectedChange: (value: string[] | undefined) => void;
-    realYearSelected: string[] | undefined;
 };
 
 type ExtraCountryFilterState = CountryFilterState & {

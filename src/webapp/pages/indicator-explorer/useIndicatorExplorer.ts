@@ -68,7 +68,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setDisabledCountries(disabledCountries);
 
             if (!newsVisualization?.isComparative) {
-                setSelectedYearFilter([allYearsItem.id]);
+                setSelectedYearFilter(allYearsFilters.map(year => year.id));
             } else if (newsVisualization?.isComparative) {
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
@@ -80,23 +80,11 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         [countryOptions, onSelectedCountryChange, selectedCountries, selectedIndicatorFilter, visualizations]
     );
 
-    const onChangeYearFilter = useCallback(
-        (value: string[] | undefined) => {
-            const oldContainsAllYears = selectedYearFilter?.includes(allYearsItem.id);
-            const newContainsAllYears = value?.includes(allYearsItem.id);
+    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
+        setSelectedYearFilter(value);
 
-            if (oldContainsAllYears) {
-                setSelectedYearFilter(value?.filter(year => year !== allYearsItem.id));
-            } else if (newContainsAllYears) {
-                setSelectedYearFilter([allYearsItem.id]);
-            } else {
-                setSelectedYearFilter(value);
-            }
-
-            setShowVisualization(false);
-        },
-        [selectedYearFilter]
-    );
+        setShowVisualization(false);
+    }, []);
 
     useEffect(() => {
         setShowVisualization(false);
@@ -207,9 +195,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 options: yearFilters,
                 selected: selectedYearFilter,
                 onSelectedChange: onChangeYearFilter,
-                realYearSelected: selectedYearFilter?.includes(allYearsItem.id)
-                    ? allYearsFilters.map(year => year.id)
-                    : selectedYearFilter,
             },
         },
         onGet,
