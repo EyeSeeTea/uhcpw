@@ -2,9 +2,9 @@ import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 
-import orgUnits from "../../__tests__/data/orgUnits.json";
-import countryInfo from "../../__tests__/data/countryInfo.json";
-import countriesInCountryPage from "../../__tests__/data/countriesInCountryPage.json";
+import orgUnits from "./data/orgUnits.json";
+import countryInfo from "./data/countryInfo.json";
+import countriesInCountryPage from "./data/countriesInCountryPage.json";
 
 import { CountryD2Repository } from "../CountryD2Repository";
 
