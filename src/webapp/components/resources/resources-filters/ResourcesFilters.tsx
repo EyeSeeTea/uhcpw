@@ -4,7 +4,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ResourcesFiltersState } from "../../../pages/resources/common/ResourcesFiltersState";
-import { CountrySelector } from "../../country-selector/CountrySelector";
+import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { Dropdown } from "../../dropdown/Dropdown";
 import { DropdownMultiple } from "../../dropdown/DropdownMultiple";
 
@@ -92,13 +92,13 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                 </Grid>
                 <Grid item md={3} sm={6}>
                     <Center>
-                        <CountrySelector
+                        <TreeSelector
                             fullWidth
                             hasSelectAll
                             hasClearAll
                             topClearAll={-35}
                             placeholder={i18n.t("Select country")}
-                            countries={filters.country.options}
+                            items={filters.country.options}
                             selectedIds={filters.country.selected}
                             disabled={disabledCountryFilter}
                             onSelectedIdsChange={onCountryChange}

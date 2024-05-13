@@ -220,7 +220,7 @@ async function selectLetterFilter(letter: string) {
 }
 
 async function selectCountry(value: string) {
-    const countrySelector = screen.getByLabelText(/country selector/i);
+    const countrySelector = screen.getByLabelText("Select country");
 
     await userEvent.click(countrySelector);
 
@@ -231,7 +231,7 @@ async function selectCountry(value: string) {
 
     await userEvent.keyboard("{Escape}");
 
-    await screen.findByLabelText(/countries/i);
+    await screen.findByLabelText("Select country");
 }
 
 function givenOfficeInfo(): OfficeInfo {

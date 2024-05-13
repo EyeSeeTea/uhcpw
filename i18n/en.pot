@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-05-08T09:56:05.131Z\n"
-"PO-Revision-Date: 2024-05-08T09:56:05.131Z\n"
+"POT-Creation-Date: 2024-05-10T08:23:25.932Z\n"
+"PO-Revision-Date: 2024-05-10T08:23:25.932Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -20,6 +20,9 @@ msgstr ""
 msgid ""
 "Experts working with the WHO Barcelona Office to assess financial "
 "protection and coverage policy at country level"
+msgstr ""
+
+msgid "Select country"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing"
@@ -49,30 +52,19 @@ msgstr ""
 msgid "Comparative analysis"
 msgstr ""
 
-msgid "Select country"
-msgstr ""
-
 msgid "Dashboard"
 msgstr ""
 
 msgid "In detail"
 msgstr ""
 
-msgid "Select all"
-msgstr ""
-
-msgid "Clear all"
-msgstr ""
-
-msgid "({{count}} selected)"
-msgid_plural "({{count}} selected)"
-msgstr[0] ""
-msgstr[1] ""
-
 msgid "No information available for this category"
 msgstr ""
 
 msgid "Clear"
+msgstr ""
+
+msgid "Clear all"
 msgstr ""
 
 msgid "indicator explorer"
@@ -180,11 +172,19 @@ msgstr ""
 msgid "Get table"
 msgstr ""
 
+msgid "Select all"
+msgstr ""
+
 msgid "Select theme"
 msgstr ""
 
 msgid "Search"
 msgstr ""
+
+msgid "({{count}} selected)"
+msgid_plural "({{count}} selected)"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "There may be no data"
 msgstr ""

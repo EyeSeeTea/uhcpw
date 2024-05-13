@@ -144,5 +144,9 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
 
     userEvent.keyboard("{Escape}");
 
-    await screen.findByLabelText(/countries/i);
+    const textbox = await scope.findByRole("textbox", {
+        name: "Select country",
+    });
+
+    within(textbox).getByText(/countries/i);
 }

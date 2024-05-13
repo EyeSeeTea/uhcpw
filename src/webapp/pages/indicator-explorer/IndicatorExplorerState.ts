@@ -1,5 +1,6 @@
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import { CountryFilterState, OptionsMultiFilterState } from "../../common/state/state";
+import { TreeOption } from "../../components/tree-selector/TreeSelector";
 
 export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
@@ -22,7 +23,11 @@ export type IndicatorFilterState = {
     onSelectedChange: (value: string | undefined) => void;
 };
 
-export type YeasrFilterState = OptionsMultiFilterState & { realYearSelected: string[] | undefined };
+export type YeasrFilterState = {
+    options: TreeOption[];
+    selected: string[] | undefined;
+    onSelectedChange: (value: string[] | undefined) => void;
+};
 
 type ExtraCountryFilterState = CountryFilterState & {
     disabledCountries: string[];

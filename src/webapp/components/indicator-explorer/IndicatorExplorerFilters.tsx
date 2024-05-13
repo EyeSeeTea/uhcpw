@@ -3,8 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
-import { CountrySelector } from "../country-selector/CountrySelector";
-import { DropdownMultiple } from "../dropdown/DropdownMultiple";
+import { TreeSelector } from "../tree-selector/TreeSelector";
 import { IndicatorSelector } from "./category-indicator-selector/IndicatorSelector";
 
 export interface ResourcesFiltersProps {
@@ -29,28 +28,33 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
             </Grid>
             <Grid item md={4} sm={6}>
                 <Center>
-                    <CountrySelector
+                    <TreeSelector
                         fullWidth
                         hasSelectAll
                         hasClearAll
                         label={i18n.t("Countries")}
-                        countries={filters.country.options}
+                        items={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}
-                        disabledCountries={filters.country.disabledCountries}
+                        disabledItems={filters.country.disabledCountries}
                         maxSelection={filters.country.maxCountrySelection}
+                        placeholder={i18n.t("Select country")}
                     />
                 </Center>
             </Grid>
             <Grid item md={3} sm={6}>
                 <Center>
-                    <DropdownMultiple
+                    <TreeSelector
                         fullWidth
+                        hasSelectAll
+                        hasClearAll
                         label={i18n.t("Years")}
+                        items={filters.year.options}
+                        selectedIds={filters.year.selected}
+                        onSelectedIdsChange={filters.year.onSelectedChange}
                         placeholder={i18n.t("Select years")}
-                        options={filters.year.options}
-                        values={filters.year.selected}
-                        onChange={filters.year.onSelectedChange}
+                        disableSearch={true}
+                        showParentIfChecked={true}
                     />
                 </Center>
             </Grid>

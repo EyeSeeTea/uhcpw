@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import i18n from "../../../../locales";
-import { CountryOption } from "../../../components/country-selector/CountrySelector";
+import { TreeOption } from "../../../components/tree-selector/TreeSelector";
 import { useAppContext } from "../../../contexts/app-context";
 import { CountriesRegion } from "../../../../domain/entities/Country";
 
@@ -10,7 +10,7 @@ export function useMultiCountryOptionsV2(params?: {
     showEurRegion?: boolean;
 }) {
     const { countries, compositionRoot } = useAppContext();
-    const [options, setOptions] = useState<CountryOption[]>([]);
+    const [options, setOptions] = useState<TreeOption[]>([]);
     const [selected, setSelected] = useState<string[] | undefined>([]);
     const [eurRegion, setEurRegion] = useState<CountriesRegion | undefined>(undefined);
 

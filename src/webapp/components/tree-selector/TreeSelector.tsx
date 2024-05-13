@@ -15,42 +15,48 @@ import styled from "styled-components";
 
 const EMPTY_IDS_ARRAY: string[] = [];
 
-export type CountryOption = {
+export type TreeOption = {
     id: string;
     name: string;
     code?: string;
     parents: { id: string; name: string }[];
 };
 
-interface CountrySelectorProps {
-    countries: CountryOption[];
+interface TreeSelectorProps {
+    items: TreeOption[];
     selectedIds?: string[];
     onSelectedIdsChange: (ids: string[]) => void;
     fullWidth?: boolean;
     placeholder?: string;
     disabled?: boolean;
     label?: string;
-    disabledCountries?: string[];
+    disabledItems?: string[];
     hasSelectAll?: boolean;
     hasClearAll?: boolean;
     topClearAll?: number;
     maxSelection?: number;
+    ariaLabel?: string;
+    disableSearch?: boolean;
+    showParentIfChecked?: boolean;
 }
 
-export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
+export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
     ({
-        countries,
+        items,
         selectedIds = EMPTY_IDS_ARRAY,
         onSelectedIdsChange,
         fullWidth = false,
         placeholder,
         disabled = false,
         label,
-        disabledCountries,
+        disabledItems,
         hasSelectAll = false,
         hasClearAll = false,
         topClearAll = 0,
         maxSelection,
+        ariaLabel,
+        disableSearch,
+        showParentIfChecked,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -73,6 +79,32 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             setSearchTerm("");
         }, [expanded, setExpanded, setAnchorEl]);
 
+        const filteredItemsBySearch = useMemo(() => {
+            return items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        }, [searchTerm, items]);
+
+        const handleSelectedAllItemsInParent = useCallback(
+            (allItemsInSelectedParent: TreeOption[], selected: boolean) => {
+                if (hasSelectAll) {
+                    const allowedItemsInSelectedParent = allItemsInSelectedParent.filter(
+                        ({ id }) => !disabledItems?.includes(id)
+                    );
+
+                    const selectedItems = selected
+                        ? [
+                              ...selectedIds,
+                              ...allowedItemsInSelectedParent
+                                  .map(({ id }) => id)
+                                  .filter(id => !selectedIds.includes(id)),
+                          ]
+                        : selectedIds.filter(id => !allowedItemsInSelectedParent.map(({ id }) => id).includes(id));
+
+                    onSelectedIdsChange(selectedItems);
+                }
+            },
+            [disabledItems, onSelectedIdsChange, selectedIds, hasSelectAll]
+        );
+
         const handleSelectedChange = useCallback(
             (nodeId: string, selected: boolean) => {
                 if (selected) {
@@ -82,57 +114,56 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                         onSelectedIdsChange(selected);
                     }
                 } else {
-                    const selected = selectedIds.filter(id => id !== nodeId);
+                    const isParent = items.find(item => item.parents.some(parent => parent.id === nodeId));
 
-                    if (onSelectedIdsChange) {
-                        onSelectedIdsChange(selected);
+                    if (isParent) {
+                        const finalChildren = filteredItemsBySearch.filter(item =>
+                            item.parents.some(p => p.id === nodeId)
+                        );
+                        handleSelectedAllItemsInParent(finalChildren, selected);
+                    } else {
+                        const selected = selectedIds.filter(id => id !== nodeId);
+
+                        if (onSelectedIdsChange) {
+                            onSelectedIdsChange(selected);
+                        }
                     }
                 }
             },
-            [selectedIds, onSelectedIdsChange]
+            [selectedIds, onSelectedIdsChange, items, filteredItemsBySearch, handleSelectedAllItemsInParent]
         );
 
-        const selectedCountries = useMemo(() => {
-            return countries.filter(country => selectedIds.includes(country.id));
-        }, [countries, selectedIds]);
+        const selectedItems = useMemo(() => {
+            return items.filter(item => selectedIds.includes(item.id));
+        }, [items, selectedIds]);
 
         const handleSearchChange = useCallback(
             (term: string) => {
                 if (term) {
                     const parentsToExpand: string[] = [];
-                    const filterCountries = countries.filter(country =>
-                        country.name.toLowerCase().includes(term.toLowerCase())
-                    );
-                    const filterParents = _.uniqBy(filterCountries.map(country => country.parents).flat(), "id");
+                    const filterItems = items.filter(item => item.name.toLowerCase().includes(term.toLowerCase()));
+                    const filterParents = _.uniqBy(filterItems.map(item => item.parents).flat(), "id");
                     filterParents.forEach(({ id }) => {
-                        const finalChildren = filterCountries.filter(country =>
-                            country.parents.some(parent => parent.id === id)
-                        );
+                        const finalChildren = filterItems.filter(item => item.parents.some(parent => parent.id === id));
                         if (finalChildren.length) parentsToExpand.push(id);
                     });
                     setExpandedParents(parentsToExpand);
                 }
                 setSearchTerm(term);
             },
-            [countries, setSearchTerm, setExpandedParents]
+            [items, setSearchTerm, setExpandedParents]
         );
 
-        const filteredCountriesBySearch = useMemo(() => {
-            return countries.filter(country => country.name.toLowerCase().includes(searchTerm.toLowerCase()));
-        }, [searchTerm, countries]);
-
         const parents = useMemo(() => {
-            return _.uniqBy(filteredCountriesBySearch.map(country => country.parents).flat(), "id").map(parent => ({
+            return _.uniqBy(filteredItemsBySearch.map(item => item.parents).flat(), "id").map(parent => ({
                 ...parent,
                 isLeaf: false,
             }));
-        }, [filteredCountriesBySearch]);
+        }, [filteredItemsBySearch]);
 
-        const filteredCountriesBySearchWithoutParent = useMemo(() => {
-            return filteredCountriesBySearch
-                .filter(country => !country.parents.length)
-                .map(country => ({ ...country, isLeaf: true }));
-        }, [filteredCountriesBySearch]);
+        const filteredItemsBySearchWithoutParent = useMemo(() => {
+            return filteredItemsBySearch.filter(item => !item.parents.length).map(item => ({ ...item, isLeaf: true }));
+        }, [filteredItemsBySearch]);
 
         const handleToggle = useCallback((_event: React.ChangeEvent<{}>, nodeIds: string[]) => {
             setExpandedParents(nodeIds);
@@ -142,97 +173,81 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
             hasClearAll && onSelectedIdsChange([]);
         }, [hasClearAll, onSelectedIdsChange]);
 
-        const handleSelectedAllCountriesInParent = useCallback(
-            (allCountriesInSelectedParent: CountryOption[], selected: boolean) => {
+        const isAllItemParentSelected = useCallback(
+            (itemParentId: string) => {
                 if (hasSelectAll) {
-                    const allowedCountriesInSelectedParent = allCountriesInSelectedParent.filter(
-                        ({ id }) => !disabledCountries?.includes(id)
-                    );
-
-                    const selectedCountries = selected
-                        ? [
-                              ...selectedIds,
-                              ...allowedCountriesInSelectedParent
-                                  .map(({ id }) => id)
-                                  .filter(id => !selectedIds.includes(id)),
-                          ]
-                        : selectedIds.filter(id => !allowedCountriesInSelectedParent.map(({ id }) => id).includes(id));
-
-                    onSelectedIdsChange(selectedCountries);
-                }
-            },
-            [disabledCountries, onSelectedIdsChange, selectedIds, hasSelectAll]
-        );
-
-        const isAllCountryParentSelected = useCallback(
-            (countryParentId: string) => {
-                if (hasSelectAll) {
-                    const finalChildrenAllowed = filteredCountriesBySearch
-                        .filter(country => country.parents.some(p => p.id === countryParentId))
-                        .filter(({ id }) => !disabledCountries?.includes(id));
+                    const finalChildrenAllowed = filteredItemsBySearch
+                        .filter(item => item.parents.some(p => p.id === itemParentId))
+                        .filter(({ id }) => !disabledItems?.includes(id));
                     return (
                         !!finalChildrenAllowed.length &&
-                        finalChildrenAllowed.every(country => selectedIds.includes(country.id))
+                        finalChildrenAllowed.every(item => selectedIds.includes(item.id))
                     );
                 }
             },
-            [disabledCountries, filteredCountriesBySearch, selectedIds, hasSelectAll]
+            [disabledItems, filteredItemsBySearch, selectedIds, hasSelectAll]
         );
 
-        const isCountryParentDisabled = useCallback(
-            (allCountriesInSelectedParent: CountryOption[]) => {
-                const finalChildrenAllowed = allCountriesInSelectedParent.filter(
-                    ({ id }) => !disabledCountries?.includes(id)
-                );
+        const isItemParentDisabled = useCallback(
+            (allItemsInSelectedParent: TreeOption[]) => {
+                const finalChildrenAllowed = allItemsInSelectedParent.filter(({ id }) => !disabledItems?.includes(id));
                 return (
                     (hasSelectAll && !finalChildrenAllowed.length) ||
                     (!!maxSelection && maxSelection < finalChildrenAllowed.length)
                 );
             },
-            [disabledCountries, hasSelectAll, maxSelection]
+            [disabledItems, hasSelectAll, maxSelection]
         );
 
-        const areAllCountriesSelected = useMemo(() => {
+        const areAllItemsSelected = useMemo(() => {
             return (
-                filteredCountriesBySearch.filter(
-                    ({ id }) => !selectedIds?.includes(id) && !disabledCountries?.includes(id)
-                )?.length === 0
+                filteredItemsBySearch.filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id))
+                    ?.length === 0
             );
-        }, [disabledCountries, filteredCountriesBySearch, selectedIds]);
+        }, [disabledItems, filteredItemsBySearch, selectedIds]);
 
-        const countriesToSelect = useMemo(() => {
-            return filteredCountriesBySearch.filter(({ id }) => !disabledCountries?.includes(id)).map(({ id }) => id);
-        }, [disabledCountries, filteredCountriesBySearch]);
+        const itemsToSelect = useMemo(() => {
+            return filteredItemsBySearch.filter(({ id }) => !disabledItems?.includes(id)).map(({ id }) => id);
+        }, [disabledItems, filteredItemsBySearch]);
 
         const handleSelectAll = useCallback(() => {
             if (hasSelectAll) {
-                onSelectedIdsChange(countriesToSelect);
+                onSelectedIdsChange(itemsToSelect);
             }
-        }, [countriesToSelect, hasSelectAll, onSelectedIdsChange]);
+        }, [itemsToSelect, hasSelectAll, onSelectedIdsChange]);
+
+        const selectedChips = useMemo(() => {
+            return showParentIfChecked && areAllItemsSelected && parents.length > 0 ? parents : selectedItems;
+        }, [areAllItemsSelected, parents, selectedItems, showParentIfChecked]);
+
+        const finalPlaceholder = useMemo(() => {
+            return selectedChips.length === 0 ? placeholder : "";
+        }, [placeholder, selectedChips.length]);
 
         return (
             <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
                     label={label}
-                    aria-label="Country selector"
+                    aria-label={ariaLabel || placeholder || "Tree selector"}
                     onClick={handleClick}
-                    placeholder={placeholder}
+                    placeholder={finalPlaceholder}
                     role={"textbox"}
                     fullWidth={fullWidth}
                     value={""}
                     disabled={disabled}
+                    $isDisabled={disabled}
                     inputProps={{
-                        "aria-label": "Select countries",
+                        "aria-label": `input ${ariaLabel || placeholder || "Tree selector"}`,
                     }}
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>
-                                {selectedCountries.map(country => {
+                                {selectedChips.map(item => {
                                     return (
                                         <SelectedChip
-                                            key={country.id}
-                                            label={country.name}
-                                            onDelete={() => handleSelectedChange(country.id, false)}
+                                            key={item.id}
+                                            label={item.name}
+                                            onDelete={() => handleSelectedChange(item.id, false)}
                                             deleteIcon={<CloseIcon fontSize="small" />}
                                         />
                                     );
@@ -258,11 +273,9 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             </InputAdornment>
                         ),
                     }}
-                    $isDisabled={disabled}
                 />
                 <StyledMenu
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}
-                    id="country-selector"
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     getContentAnchorEl={null}
@@ -271,28 +284,30 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                     onClose={handleClose}
                 >
                     <div role="listbox">
-                        <SearchInput
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            style={{
-                                height: "20px",
-                                background: "#f2f9fd",
-                                border: "1px solid #cfe9f7",
-                                borderRadius: "20px",
-                            }}
-                        />
+                        {!disableSearch && (
+                            <SearchInput
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                style={{
+                                    height: "20px",
+                                    background: "#f2f9fd",
+                                    border: "1px solid #cfe9f7",
+                                    borderRadius: "20px",
+                                }}
+                            />
+                        )}
+
                         <br />
                         <Container $fullWidth={fullWidth}>
                             <Typography variant="body1" gutterBottom>
-                                {i18n.t("Select country")}
+                                {placeholder}
                             </Typography>
                             {hasSelectAll && (
                                 <StyledButton
                                     variant="text"
                                     onClick={handleSelectAll}
                                     disabled={
-                                        areAllCountriesSelected ||
-                                        (!!maxSelection && maxSelection < countriesToSelect.length)
+                                        areAllItemsSelected || (!!maxSelection && maxSelection < itemsToSelect.length)
                                     }
                                     right={100}
                                 >
@@ -318,7 +333,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                             expanded={expandedParents}
                             style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
                         >
-                            {[...filteredCountriesBySearchWithoutParent, ...parents].map((option, nindex) => {
+                            {[...filteredItemsBySearchWithoutParent, ...parents].map((option, nindex) => {
                                 if (option.isLeaf) {
                                     const selectedOption = selectedIds.find(id => id === option.id) !== undefined;
                                     return (
@@ -330,7 +345,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                                 selected={selectedOption}
                                                 onSelectedChange={handleSelectedChange}
                                                 disabled={
-                                                    disabledCountries?.includes(option.id) ||
+                                                    disabledItems?.includes(option.id) ||
                                                     (!selectedOption &&
                                                         !!maxSelection &&
                                                         maxSelection === selectedIds.length)
@@ -340,12 +355,10 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                     );
                                 }
 
-                                const finalChildren = filteredCountriesBySearch.filter(country =>
-                                    country.parents.some(p => p.id === option.id)
+                                const finalChildren = filteredItemsBySearch.filter(item =>
+                                    item.parents.some(p => p.id === option.id)
                                 );
-                                const children = countries.filter(country =>
-                                    country.parents.some(p => p.id === option.id)
-                                );
+                                const children = items.filter(item => item.parents.some(p => p.id === option.id));
                                 const selectedCount = children.filter(child => selectedIds.includes(child.id)).length;
 
                                 return (
@@ -355,10 +368,10 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                             name={option.name}
                                             selectedCount={selectedCount}
                                             onSelectedChange={(_nodeId: string, selected: boolean) =>
-                                                handleSelectedAllCountriesInParent(finalChildren, selected)
+                                                handleSelectedAllItemsInParent(finalChildren, selected)
                                             }
-                                            selected={isAllCountryParentSelected(option.id)}
-                                            disabled={isCountryParentDisabled(finalChildren)}
+                                            selected={isAllItemParentSelected(option.id)}
+                                            disabled={isItemParentDisabled(finalChildren)}
                                             hasSelectAll={hasSelectAll}
                                         >
                                             {finalChildren.map((child, lindex) => {
@@ -372,7 +385,7 @@ export const CountrySelector: React.FC<CountrySelectorProps> = React.memo(
                                                         selected={selected}
                                                         onSelectedChange={handleSelectedChange}
                                                         disabled={
-                                                            disabledCountries?.includes(child.id) ||
+                                                            disabledItems?.includes(child.id) ||
                                                             (!selected &&
                                                                 !!maxSelection &&
                                                                 maxSelection === selectedIds.length)
