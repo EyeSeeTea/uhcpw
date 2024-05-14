@@ -49,9 +49,7 @@ export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: s
                             </>
                         ))}
 
-                        <Typography variant="body2" style={{ marginTop: "-30px" }}>
-                            {sliderInfo.sourceText}
-                        </Typography>
+                        <Typography variant="body2">{sliderInfo.sourceText}</Typography>
                     </Column>
                 </Grid>
                 <UmbrellaContainer item xs={12} md={4}>
