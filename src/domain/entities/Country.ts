@@ -20,6 +20,7 @@ export type Country = {
 
 export type CountrySectionInfo = {
     sectionName: string;
+    sourceText: string;
     content: {
         title: string;
         text: string;

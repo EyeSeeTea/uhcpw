@@ -27,6 +27,7 @@ export const countryInfoDataElements: Record<string, string> = {
     gapsText4: "bk0MT2IwI4A",
     gapsTitle5: "Oamhir4XiOb",
     gapsText5: "FoT0oW4J3x2",
+    gapsSourceText: "M4prpRjUZQn",
 
     finProtecSectionName: "GIDvgdxhc9x",
     finProtecTitle1: "boyf1aD01Ar",
@@ -39,6 +40,7 @@ export const countryInfoDataElements: Record<string, string> = {
     finProtecText4: "LyhjBnSS8tf",
     finProtecTitle5: "D4kbP5uMvYC",
     finProtecText5: "qF3rhM9dieb",
+    finProtecSourceText: "AzNWXx1JPip",
 };
 
 const euroOrgUnit = "svSQSBLTVz6";
@@ -218,6 +220,10 @@ export class CountryD2Repository implements CountryRepository {
             aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText5)?.value ||
             "";
 
+        const gapsSourceText =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSourceText)
+                ?.value || "";
+
         const finProtecSectionName =
             aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecSectionName)
                 ?.value || "";
@@ -251,9 +257,15 @@ export class CountryD2Repository implements CountryRepository {
         const finProtecText5 =
             aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText5)
                 ?.value || "";
+
+        const finProtecSourceText =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecSourceText)
+                ?.value || "";
+
         return {
             gapsSection: {
                 sectionName: gapsSectionName,
+                sourceText: gapsSourceText,
                 content: [
                     {
                         title: gapsTitle1,
@@ -279,6 +291,7 @@ export class CountryD2Repository implements CountryRepository {
             },
             finProtecSection: {
                 sectionName: finProtecSectionName,
+                sourceText: finProtecSourceText,
                 content: [
                     {
                         title: finProtecTitle1,
