@@ -65,10 +65,11 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
     const getCleanReferencesByCountry = useCallback(
         (country: string) => {
-            const regex = /\[(.*?)\((.*?)\)\]:\s/;
             return data?.references
                 ?.find(references => references.country === country)
-                ?.references?.map(reference => reference.replace(regex, "$1$2.").replace(/"/g, ""));
+                ?.references?.map(reference => {
+                    return reference.split("]:")[1]?.replace(/"/g, "") || reference;
+                });
         },
         [data?.references]
     );
