@@ -321,7 +321,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                                     disabled={(selectedIds || []).length === 0}
                                     right={30}
                                 >
-                                    {i18n.t("Clear all")}
+                                    {i18n.t("Clear")}
                                 </StyledButton>
                             )}
                         </Container>
@@ -401,8 +401,14 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     </div>
                 </StyledMenu>
                 {(selectedIds || []).length > 0 && hasClearAll && (
-                    <StyledButton variant="text" onClick={handleClear} disabled={disabled} top={topClearAll}>
-                        {i18n.t("Clear all")}
+                    <StyledButton
+                        variant="text"
+                        onClick={handleClear}
+                        disabled={disabled}
+                        top={topClearAll}
+                        right={-15}
+                    >
+                        {i18n.t("Clear")}
                     </StyledButton>
                 )}
             </Container>
