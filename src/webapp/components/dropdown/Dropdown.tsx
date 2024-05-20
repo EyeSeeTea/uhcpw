@@ -95,7 +95,7 @@ const ClearButton = styled(Button)<{ top: string }>`
     color: orange;
     text-transform: none;
     position: absolute;
-    right: 0;
+    right: -15px;
     padding: 0px;
     font-weight: 400;
     top: ${props => props.top};

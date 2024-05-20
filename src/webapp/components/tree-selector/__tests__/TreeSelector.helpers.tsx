@@ -11,7 +11,7 @@ export async function selectAllCountries() {
 }
 
 export async function clickOnClearAll() {
-    const clearButtons = screen.getAllByText(/clear all/i);
+    const clearButtons = screen.getAllByText(/clear/i);
     if (clearButtons[0]) return userEvent.click(clearButtons[0]);
 }
 

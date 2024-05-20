@@ -42,6 +42,7 @@ export function givenACountries(): Country[] {
             sliderInfo: {
                 gapsSection: {
                     sectionName: "Gaps in current expenditure",
+                    sourceText: "Source: WHO",
                     content: [
                         {
                             title: "Main gaps in financing",
@@ -51,6 +52,7 @@ export function givenACountries(): Country[] {
                 },
                 finProtecSection: {
                     sectionName: "Financial Protection",
+                    sourceText: "Source: WHO",
                     content: [
                         {
                             title: "Why is financial protection so needed?",

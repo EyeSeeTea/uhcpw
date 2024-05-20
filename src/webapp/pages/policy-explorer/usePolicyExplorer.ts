@@ -186,12 +186,10 @@ export function usePolicyExplorer({
     );
 
     const onDownload = useCallback(() => {
-        if (!dataByTable || !dataOrientationByTable) return;
+        if (!dataByTable) return;
 
-        compositionRoot.policyExplorer.download
-            .execute(categoryFilters, dataByTable, dataOrientationByTable)
-            .runAsync();
-    }, [categoryFilters, compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]);
+        compositionRoot.policyExplorer.download.execute(categoryFilters, dataByTable).runAsync();
+    }, [categoryFilters, compositionRoot.policyExplorer.download, dataByTable]);
 
     return {
         filters: {

@@ -78,7 +78,7 @@ const ClearButton = styled(Button)`
     color: orange;
     text-transform: none;
     position: absolute;
-    right: 0;
+    right: -15px;
     padding: 0;
     font-weight: 400;
     top: 0;
