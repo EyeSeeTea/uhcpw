@@ -96,6 +96,7 @@ export const comparativeColumnChartOptions: (
         yAxis: {
             title: {
                 text: "Households (%)",
+                style: { fontSize: "13px" },
             },
             ...maxYAxis,
         },

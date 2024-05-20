@@ -6,6 +6,7 @@ export const chart_BYAT5Woc9EJ_Customizations: ChartCustomization = {
     yAxis: {
         title: {
             text: "GDP (%)",
+            style: { fontSize: "13px" },
         },
     },
 };

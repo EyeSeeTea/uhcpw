@@ -26,6 +26,7 @@ export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts
             ...comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors)?.yAxis,
             title: {
                 text: "Catastrophic health spending (%)",
+                style: { fontSize: "13px" },
             },
         },
     };

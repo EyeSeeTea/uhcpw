@@ -191,6 +191,15 @@ const customCss = css`
     .highcharts-grid-line {
         //opacity: 0;
     }
+
+    .highcharts-axis-labels text {
+        color: #212934 !important;
+        fill: #212934 !important;
+    }
+
+    .highcharts-axis-title {
+        color: #212934 !important;
+    }
 `;
 
 const Container = styled.div<{ $withoutBackground: boolean }>`

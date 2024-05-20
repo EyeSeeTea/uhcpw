@@ -1,3 +1,4 @@
+import { CSSProperties } from "react";
 import { Country } from "../../../../domain/entities/Country";
 
 export type VisualizationCustomization = Record<string, ChartCustomization>;
@@ -28,6 +29,7 @@ export type LegendCustomization = {
 
 export type TitleCustomization = {
     text?: string;
+    style?: CSSProperties;
 };
 
 export type SerieCustomization = {
