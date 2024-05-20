@@ -162,6 +162,17 @@ describe("Given TreeSelector", () => {
             await verifyNotFoundChip(getChild(2));
         });
     });
+    describe("When an option is disabled", () => {
+        beforeEach(async () => {
+            renderComponent({ disabledCountries: ["IZy3ESdFnp5"] });
+            focusComponent();
+        });
+        it("Then the option should be disabled", async () => {
+            const disabledText = await screen.findByText(/eu27/i);
+
+            expect(disabledText.getAttribute("aria-disabled")).toBe("true");
+        });
+    });
     describe("When has show parent if check", () => {
         beforeEach(async () => {
             renderComponent({ hasSelectAll: true, hasClearAll: true, showParentIfChecked: true });
@@ -175,17 +186,6 @@ describe("Given TreeSelector", () => {
             getAllParents().forEach(async parent => {
                 await verifyChip(parent);
             });
-        });
-    });
-    describe("When an option is disabled", () => {
-        beforeEach(async () => {
-            renderComponent({ disabledCountries: ["IZy3ESdFnp5"] });
-            focusComponent();
-        });
-        it("Then the option should be disabled", async () => {
-            const disabledText = await screen.findByText(/eu27/i);
-
-            expect(disabledText.getAttribute("aria-disabled")).toBe("true");
         });
     });
 });
