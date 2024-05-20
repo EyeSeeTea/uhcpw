@@ -8,7 +8,7 @@ import { Tag } from "../tag/Tag";
 export interface SimpleResourceItemProps {
     title: string;
     url: string;
-    image: string;
+    image?: string;
     fallbackImage?: string;
     date: Date;
     dateFormat?: string;
@@ -46,7 +46,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
                 <Column>
                     <a href={url} style={{ width: "100%" }} target="_blank" rel="noreferrer">
                         <Image
-                            src={imgSrc}
+                            src={imgSrc || fallbackImage}
                             onError={handleImageError}
                             alt={title}
                             $maintainAspectRatio={maintainAspectRatio}
@@ -89,8 +89,7 @@ const Text = styled(Typography)`
 const Image = styled.img<{ $maintainAspectRatio?: boolean; $fullWidth?: boolean }>`
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
     height: 300px;
-    object-fit: cover;
-    /* object-fit: ${props => (props.$maintainAspectRatio ? "contain" : "cover")}; */
+    object-fit: ${props => (props.$maintainAspectRatio ? "contain" : "cover")};
 `;
 
 const Row = styled.div`
