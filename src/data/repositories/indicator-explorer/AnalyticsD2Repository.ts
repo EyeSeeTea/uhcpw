@@ -36,19 +36,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     return Future.error<string, Analytics>("No data found");
                 }
 
-                const items: Record<string, AnalyticsMetadataItem> = Object.values(
-                    analyticsResponse.metaData.items
-                ).reduce((acc, item) => {
-                    const newItem = { ...item, code: mapToWhoCountryCode(item.code || "") };
-                    return { ...acc, [newItem.uid]: newItem };
-                }, {});
-
-                const responsesWithWhoCodes: Analytics = {
-                    ...analyticsResponse,
-                    metaData: { ...analyticsResponse.metaData, items: items },
-                };
-
-                return Future.success(responsesWithWhoCodes);
+                return Future.success(analyticsResponse);
             })
             .flatMapError(_error => {
                 //console.log(error);
