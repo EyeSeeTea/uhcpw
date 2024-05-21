@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { Future, FutureData } from "../../../domain/entities/Future";
-import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
+import { Analytics, AnalyticsMetadataItem } from "../../../domain/entities/indicator-explorer/Analytics";
 import { Dimension, Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Id, Ref } from "../../../domain/entities/Ref";
 import { AnalyticsRepository } from "../../../domain/repositories/indicator-explorer/AnalyticsRepository";
@@ -12,6 +12,7 @@ import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
 import { EU27 } from "../../../domain/entities/Country";
+import { mapToWhoCountryCode } from "../countries/mapToWhoCountryCode";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 
@@ -29,7 +30,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         return Future.fromPromise(fetchData(this.d2DataEngine, overwrittenVisualization, {}))
             .flatMap(response => {
-                return Future.success(response.responses[0] as Analytics);
+                const analyticsResponse = response.responses[0] as Analytics;
+
+                if (!analyticsResponse) {
+                    return Future.error<string, Analytics>("No data found");
+                }
+
+                return Future.success(analyticsResponse);
             })
             .flatMapError(_error => {
                 //console.log(error);

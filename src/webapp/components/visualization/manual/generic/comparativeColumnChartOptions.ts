@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/mapToWhoCountryCode";
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
@@ -52,7 +53,9 @@ export const comparativeColumnChartOptions: (
             color: seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
+                const orgUnit = mapToWhoCountryCode(
+                    chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
+                );
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
