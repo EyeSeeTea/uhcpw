@@ -45,11 +45,15 @@ export const PERIOD_HEADER_NAME = "Year";
 export const REFERENCES_HEADER_NAME = "References";
 const FILE_NAME = "PolicyExplorer";
 
-const categoriesNameWithLessThan31Chars: Record<string, string> = {
+export const categoriesNameWithLessThan31Chars: Record<string, string> = {
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
 };
+
+export const REFERENCES_TAB_NAME = "References";
+export const GENERAL_INFOMRATION_TAB_NAME = "General information";
+export const DATE_OF_DOWNLOAD = "Date of download:";
 
 const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     populationCoverage: "uG2PbDfOc0w",
@@ -146,8 +150,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     }
 
     private getGeneralInformationTab(generalInfo: PolicyExplorerGeneralInfo[]): Tab {
-        const generalInformationTitle = "General information";
-        const downloadDate = `Date of download: ${moment(new Date()).format("DD/MM/YYYY")}`;
+        const generalInformationTitle = GENERAL_INFOMRATION_TAB_NAME;
+        const downloadDate = `${DATE_OF_DOWNLOAD} ${moment(new Date()).format("DD/MM/YYYY")}`;
         const generalInfoRowsTitles: PolicyExplorerGeneralInfoToDownload = {
             country: "Country",
             year: "Year",
@@ -190,7 +194,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     }
 
     private getReferencesTab(references: PolicyExplorerReferences[]): Tab {
-        const referencesTitle = "References";
+        const referencesTitle = REFERENCES_TAB_NAME;
 
         const referencesTab = references.reduce(
             (referencesTabAcc, countryReferences) => {
