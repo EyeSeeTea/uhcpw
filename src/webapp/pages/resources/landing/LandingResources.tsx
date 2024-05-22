@@ -95,6 +95,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
 
 const Flag = styled.img`
     border: 1px solid #c5c3c3;
-    margin: 16px;
+    margin-block: 16px;
+    margin-inline-end: 16px;
     cursor: pointer;
 `;
