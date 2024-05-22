@@ -9,6 +9,7 @@ import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { ChartCustomization } from "./customization/types";
 import { getSeriesChart } from "./utils";
+import { colors } from "../../pages/app/themes/dhis2.theme";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -193,12 +194,13 @@ const customCss = css`
     }
 
     .highcharts-axis-labels text {
-        color: #212934 !important;
-        fill: #212934 !important;
+        color: ${colors.chartContent} !important;
+        fill: ${colors.chartContent} !important;
     }
 
     .highcharts-axis-title {
-        color: #212934 !important;
+        color: ${colors.chartContent} !important;
+        fill: ${colors.chartContent} !important;
     }
 `;
 

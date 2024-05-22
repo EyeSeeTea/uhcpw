@@ -25,6 +25,7 @@ export const colors = {
     warning: "#F19C02",
     positive: "#3D9305",
     info: "#EAF4FF",
+    chartContent: "#212934",
 };
 
 export const palette = {
@@ -41,6 +42,7 @@ export const palette = {
         secondary: colors.white,
         disabled: colors.greyDisabled,
         hint: colors.grey,
+        chartContent: colors.chartContent,
     },
     primary: {
         main: colors.accentPrimary,
