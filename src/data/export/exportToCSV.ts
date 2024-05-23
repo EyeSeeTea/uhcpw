@@ -5,7 +5,7 @@ import {
     GENERAL_INFOMRATION_TAB_NAME,
     REFERENCES_TAB_NAME,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
-import { addDataValue, getCellStyles, setSizes } from "./utils";
+import { addDataValue, getCellStyles, setHeight, setWidth } from "./utils";
 
 const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
 const fileExtension = ".xlsx";
@@ -49,9 +49,10 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
                 addDataValue(sheet, cell, cellRef);
                 const cellStyle = getCellStyles(sheet, tab.name, rowIndex, columnIndex);
                 sheet.cell(cellRef).style(cellStyle);
+                setWidth(sheet, tab.name, columnIndex);
             });
         });
-        setSizes(sheet, tab.data);
+        setHeight(sheet, tab.data);
     });
     workbook.deleteSheet("Sheet1");
 

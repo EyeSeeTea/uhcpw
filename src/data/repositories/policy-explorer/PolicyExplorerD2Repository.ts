@@ -198,9 +198,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
         const referencesTab = references.reduce(
             (referencesTabAcc, countryReferences) => {
-                const regex = /\[(.*?)\((.*?)\)\]:\s/;
-                const cleanReferences = countryReferences.references?.map(reference =>
-                    reference.replace(regex, "$1$2.").replace(/"/g, "")
+                const cleanReferences = countryReferences.references?.map(
+                    reference => reference.split("]:")[1]?.replace(/"/g, "") || reference
                 );
                 return [...referencesTabAcc, [countryReferences.country, cleanReferences.join("\n")]];
             },

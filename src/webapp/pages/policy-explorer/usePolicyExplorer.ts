@@ -186,10 +186,17 @@ export function usePolicyExplorer({
     );
 
     const onDownload = useCallback(() => {
-        if (!initialDataByTable) return;
-
-        compositionRoot.policyExplorer.download.execute(categoryFilters, initialDataByTable).runAsync();
-    }, [categoryFilters, compositionRoot.policyExplorer.download, initialDataByTable]);
+        if (!initialDataByTable || !selectedCategoriesWithSubcategoriesFilter) return;
+        const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
+        const data = getInitialDataByTable(initialDataByTable, categoriesIds);
+        if (!data) return;
+        compositionRoot.policyExplorer.download.execute(categoryFilters, data).runAsync();
+    }, [
+        categoryFilters,
+        compositionRoot.policyExplorer.download,
+        initialDataByTable,
+        selectedCategoriesWithSubcategoriesFilter,
+    ]);
 
     return {
         filters: {
