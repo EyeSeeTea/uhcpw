@@ -2,13 +2,22 @@ import XlsxPopulate, { Sheet } from "@eyeseetea/xlsx-populate";
 import {
     DATE_OF_DOWNLOAD,
     GENERAL_INFOMRATION_TAB_NAME,
+    PERIOD_HEADER_NAME,
     REFERENCES_TAB_NAME,
     categoriesNameWithLessThan31Chars,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { TYPE_OF_HEALTH_CARE_HEADER_NAME } from "../repositories/policy-explorer/builders/TableBuilderByTypeOfHealthcare";
 
-const DEFAULT_CHAR_SIZE = 1.5;
 const DEFAULT_HEIGHT = 30;
+
+const COLUMN_WIDTHS = {
+    firstColumn: 30,
+    yearColumn: 8,
+    typeOfHealthCareColumnOrAreaOfChange: 35,
+    userChargesApplyColumn: 25,
+    referencesColumn: 250,
+    default: 60,
+};
 
 const CELL_STYLES = {
     tabTitleCell: {
@@ -99,8 +108,7 @@ export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: numbe
         return {
             ...CELL_STYLES.headerCell,
             bold:
-                columnDataIndex !== 0 ||
-                tabName === GENERAL_INFOMRATION_TAB_NAME ||
+                rowDataIndex === 1 ||
                 tabName === REFERENCES_TAB_NAME ||
                 tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID ||
                 tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY,
@@ -109,7 +117,8 @@ export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: numbe
                 color:
                     rowDataIndex !== 1 &&
                     (tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID ||
-                        tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY)
+                        tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY ||
+                        tabName === REFERENCES_TAB_NAME)
                         ? CELL_STYLES.dataCell.fill.color
                         : CELL_STYLES.headerCell.fill.color,
             },
@@ -125,51 +134,63 @@ export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: numbe
     };
 }
 
-function getMaxLineWidth(string: string): number {
-    const lines = string.split(/\r?\n/);
-    const sizeByLine = lines.map(line => line.length * DEFAULT_CHAR_SIZE);
-    return Math.max(...sizeByLine);
-}
-
-function getColumnWidth(cellsInColumn: string[], isFirstColumn: boolean): number {
-    const widthByCell = cellsInColumn.map(cell => getMaxLineWidth(cell));
-    return isFirstColumn ? 50 : Math.max(...widthByCell);
-}
-
 function getRowHeight(cellsInRow: string[]): number {
     const totalLinesInCells = cellsInRow.map(cell => cell.split(/\r?\n/).length);
     return DEFAULT_HEIGHT * Math.max(...totalLinesInCells);
 }
 
-function getCellSizes(data: string[][]): {
-    columnWidths: number[];
-    rowHeights: number[];
-} {
-    const totalColumns = data[1]?.length || 0;
-    const columnWidths = Array.from({ length: totalColumns }, (_, columnIndex) => {
-        const cellsInColumn = data.map(row => row[columnIndex] || "");
-        return getColumnWidth(cellsInColumn, columnIndex === 0);
-    });
-
+export function setHeight(sheet: Sheet, data: string[][]) {
     const rowHeights = data.map(row => {
         return row ? getRowHeight(row) : 0;
     });
 
-    return {
-        columnWidths,
-        rowHeights,
-    };
+    data.forEach((_, rowIndex) => {
+        sheet.row(rowIndex + 1).height(rowHeights[rowIndex] || 1);
+    });
 }
 
-export function setSizes(sheet: Sheet, data: string[][]) {
-    const sizes = getCellSizes(data);
+function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number): number {
+    if (columnDataIndex === 0) {
+        return COLUMN_WIDTHS.firstColumn;
+    }
 
-    data.forEach((_, rowIndex) => {
-        sheet.row(rowIndex + 1).height(sizes.rowHeights[rowIndex] || 1);
-    });
+    if (tabName === REFERENCES_TAB_NAME && columnDataIndex === 1) {
+        return COLUMN_WIDTHS.referencesColumn;
+    }
 
-    const columnCount = data[1]?.length || 0;
-    Array.from({ length: columnCount }).forEach((_, columnIndex) => {
-        sheet.column(columnIndex + 1).width(sizes.columnWidths[columnIndex] || 1);
-    });
+    const column = String.fromCharCode("A".charCodeAt(0) + columnDataIndex);
+    const headerColumnValue = sheet.cell(`${column}2`).value();
+
+    if (
+        headerColumnValue === PERIOD_HEADER_NAME ||
+        (tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
+            !headerColumnValue)
+    ) {
+        return COLUMN_WIDTHS.yearColumn;
+    }
+
+    if (
+        tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
+        headerColumnValue === "Area of change"
+    ) {
+        return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
+    }
+
+    if (
+        tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY &&
+        headerColumnValue === TYPE_OF_HEALTH_CARE_HEADER_NAME
+    ) {
+        return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
+    }
+
+    if (tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY && headerColumnValue === "User charges apply") {
+        return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
+    }
+
+    return COLUMN_WIDTHS.default;
+}
+
+export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number) {
+    const width = getColumnWidth(sheet, tabName, columnDataIndex);
+    sheet.column(columnDataIndex + 1).width(width);
 }
