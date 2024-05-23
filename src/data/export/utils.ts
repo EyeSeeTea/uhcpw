@@ -11,9 +11,10 @@ import { TYPE_OF_HEALTH_CARE_HEADER_NAME } from "../repositories/policy-explorer
 const DEFAULT_HEIGHT = 30;
 
 const COLUMN_WIDTHS = {
-    firstColumn: 30,
+    firstColumn: 40,
     yearColumn: 8,
-    typeOfHealthCareColumnOrAreaOfChange: 35,
+    monthColumn: 16,
+    typeOfHealthCareColumnOrAreaOfChange: 40,
     userChargesApplyColumn: 25,
     referencesColumn: 250,
     default: 60,
@@ -161,30 +162,28 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
     const column = String.fromCharCode("A".charCodeAt(0) + columnDataIndex);
     const headerColumnValue = sheet.cell(`${column}2`).value();
 
-    if (
-        headerColumnValue === PERIOD_HEADER_NAME ||
-        (tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-            !headerColumnValue)
-    ) {
+    if (headerColumnValue === PERIOD_HEADER_NAME) {
         return COLUMN_WIDTHS.yearColumn;
     }
 
     if (
         tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-        headerColumnValue === "Area of change"
+        !headerColumnValue
     ) {
-        return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
+        return COLUMN_WIDTHS.monthColumn;
     }
 
     if (
-        tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY &&
-        headerColumnValue === TYPE_OF_HEALTH_CARE_HEADER_NAME
+        (tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
+            headerColumnValue === "Area of change") ||
+        (tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY &&
+            headerColumnValue === TYPE_OF_HEALTH_CARE_HEADER_NAME)
     ) {
         return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
     }
 
     if (tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY && headerColumnValue === "User charges apply") {
-        return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
+        return COLUMN_WIDTHS.userChargesApplyColumn;
     }
 
     return COLUMN_WIDTHS.default;
