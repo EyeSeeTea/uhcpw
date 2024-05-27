@@ -177,14 +177,13 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                                 {i18n.t("Suggested citation: ", { nsSeparator: false })}
                                             </CreditsText>
                                             &nbsp;
-                                            <Link
-                                                href={info.sourceUrl}
-                                                style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                {info.sourceText}
-                                            </Link>
+                                            {info.sourceUrl ? (
+                                                <Link href={info.sourceUrl} target="_blank" rel="noreferrer">
+                                                    {info.sourceText}
+                                                </Link>
+                                            ) : (
+                                                <CreditsText>{info.sourceText}</CreditsText>
+                                            )}
                                         </GeneralRow>
                                     ) : null}
                                 </GeneralDataContainer>
@@ -266,7 +265,14 @@ const CreditsText = styled(Typography)<{ $noWrap?: boolean }>`
 `;
 
 const Link = styled.a`
+    text-transform: none;
     text-decoration: none;
+    font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+    color: black;
+    font-weight: 500;
+    font-size: 0.875rem;
+    white-space: unset;
+    line-height: 1.5;
 `;
 
 const DownloadButton = styled(Button)`
