@@ -67,5 +67,6 @@ export const chart_pWFRTFfh5mA_Customizations: ChartCustomization = {
         },
     ],
     xAxis: { title: { text: "" } },
+    yAxis: { title: { text: "Household budget (%)" } },
     sortLegendByLastDataPoint: true,
 };
