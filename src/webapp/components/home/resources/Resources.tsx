@@ -49,7 +49,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
-                        image={resource.imageCustom}
+                        image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Comparative analysis")}
@@ -62,7 +62,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
-                        image={resource.imageCustom}
+                        image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Country analysis")}
@@ -75,7 +75,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.url}
-                        image={resource.imageCustom}
+                        image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("News")}
@@ -88,7 +88,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.url}
-                        image={resource.imageCustom}
+                        image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         tag={i18n.t("Multimedia")}
