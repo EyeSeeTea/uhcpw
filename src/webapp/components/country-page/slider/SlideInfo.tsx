@@ -6,6 +6,27 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import Rain from "../../../assets/country-page/rain.png";
 import { CountrySectionInfo } from "../../../../domain/entities/Country";
 
+const markdownComponents = {
+    p: ({ children }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>) => (
+        <Typography variant="body2" style={{ marginBottom: "0px" }}>
+            {children}
+        </Typography>
+    ),
+    ul: ({ children }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLUListElement>, HTMLUListElement>) => (
+        <ul style={{ paddingLeft: "1.2em" }}>{children}</ul>
+    ),
+    li: ({ children }: React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>) => (
+        <li>
+            <Typography variant="body2">{children}</Typography>
+        </li>
+    ),
+    a: ({ ...props }) => (
+        <TextLink href={props.href} target="_blank" rel="noreferrer">
+            {props.children}
+        </TextLink>
+    ),
+};
+
 export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: string; icon: string }> = ({
     sliderInfo,
     titleColor,
@@ -23,33 +44,12 @@ export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: s
                             <>
                                 <Title $titleColor={titleColor}>{i18n.t(title)}</Title>
                                 <Paragraph>
-                                    <ReactMarkdown
-                                        components={{
-                                            p: ({ children }) => (
-                                                <Typography variant="body2" style={{ marginBottom: "10px" }}>
-                                                    {children}
-                                                </Typography>
-                                            ),
-                                            ul: ({ children }) => <ul style={{ paddingLeft: "1.2em" }}>{children}</ul>,
-                                            li: ({ children }) => (
-                                                <li>
-                                                    <Typography variant="body2">{children}</Typography>
-                                                </li>
-                                            ),
-                                            a: ({ ...props }) => (
-                                                <TextLink href={props.href} target="_blank" rel="noreferrer">
-                                                    {props.children}
-                                                </TextLink>
-                                            ),
-                                        }}
-                                    >
-                                        {i18n.t(text)}
-                                    </ReactMarkdown>
+                                    <ReactMarkdown components={markdownComponents}>{i18n.t(text)}</ReactMarkdown>
                                 </Paragraph>
                             </>
                         ))}
 
-                        <Typography variant="body2">{sliderInfo.sourceText}</Typography>
+                        <ReactMarkdown components={markdownComponents}>{sliderInfo.sourceText}</ReactMarkdown>
                     </Column>
                 </Grid>
                 <UmbrellaContainer item xs={12} md={4}>
