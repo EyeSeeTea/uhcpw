@@ -1,9 +1,9 @@
-import { CountryOption } from "../../components/country-selector/CountrySelector";
+import { TreeOption } from "../../components/tree-selector/TreeSelector";
 import { Option } from "../../components/dropdown/Option";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 
 export type CountryFilterState = {
-    options: CountryOption[];
+    options: TreeOption[];
     selected: string[] | undefined;
     onSelectedChange: (value: string[] | undefined) => void;
 };

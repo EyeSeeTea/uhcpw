@@ -76,8 +76,9 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                         onClick={handleClear}
                         disabled={disabled}
                         top={label && !hideLabel ? "0" : "-20px"}
+                        right={-15}
                     >
-                        {i18n.t("Clear all")}
+                        {i18n.t("Clear")}
                     </ClearButton>
                 )}
             </Container>
@@ -85,12 +86,12 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
     }
 );
 
-const ClearButton = styled(Button)<{ top: string }>`
+const ClearButton = styled(Button)<{ top: string; right?: number }>`
     color: orange;
     text-transform: none;
     position: absolute;
     top: ${props => props.top};
-    right: 0;
+    right: ${props => props.right || 0}px;
     padding: 0px;
     font-weight: 400;
 `;

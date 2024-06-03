@@ -9,6 +9,7 @@ import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { ChartCustomization } from "./customization/types";
 import { getSeriesChart } from "./utils";
+import { colors } from "../../pages/app/themes/dhis2.theme";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -190,6 +191,16 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 const customCss = css`
     .highcharts-grid-line {
         //opacity: 0;
+    }
+
+    .highcharts-axis-labels text {
+        color: ${colors.chartContent} !important;
+        fill: ${colors.chartContent} !important;
+    }
+
+    .highcharts-axis-title {
+        color: ${colors.chartContent} !important;
+        fill: ${colors.chartContent} !important;
     }
 `;
 

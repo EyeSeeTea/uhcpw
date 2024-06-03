@@ -12,6 +12,7 @@ import { chart_BYAT5Woc9EJ_Customizations } from "./charts/chart_BYAT5Woc9EJ_Cus
 import { chart_jFtGKQIQTGp_Customizations } from "./charts/chart_jFtGKQIQTGp_Customizations";
 import { chart_Y31jQX5PVdI_Customizations } from "./charts/chart_Y31jQX5PVdI_Customizations";
 import { ChartCustomization } from "./types";
+import { chart_pWFRTFfh5mA_Customizations } from "./charts/chart_pWFRTFfh5mA_Customizations";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Customizations,
@@ -27,4 +28,5 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     d3kq9OCv8tH: chart_d3kq9OCv8tH_Customizations,
     ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Customizations,
     BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Customizations,
+    pWFRTFfh5mA: chart_pWFRTFfh5mA_Customizations,
 };

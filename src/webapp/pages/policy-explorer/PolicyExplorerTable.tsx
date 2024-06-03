@@ -107,6 +107,9 @@ export const PolicyExplorerTable = React.memo(
                                                     li: ({ children, ...props }) => (
                                                         <StyledLi {...props}>{children} </StyledLi>
                                                     ),
+                                                    ul: ({ children, ...props }) => (
+                                                        <StyledUl {...props}>{children}</StyledUl>
+                                                    ),
                                                 }}
                                             >
                                                 {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
@@ -212,6 +215,10 @@ const Title = styled(Typography)`
 
 const StyledLi = styled.li`
     line-height: 1.43;
+`;
+
+const StyledUl = styled.ul`
+    padding-inline-start: 14px;
 `;
 
 const InfoButton = styled(Button)`

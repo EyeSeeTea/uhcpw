@@ -13,7 +13,7 @@ import policyExplorerWithMoreThanOneTable from "./data/policyExplorerWithMoreTha
 import policyExplorerByTypeOfHealthcare from "./data/policyExplorerByTypeOfHealthcare.json";
 import userEvent from "@testing-library/user-event";
 import { PolicyExplorerCategoryD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
-import { CountryD2Repository } from "../../../../data/repositories/CountryD2Repository";
+import { CountryD2Repository } from "../../../../data/repositories/countries/CountryD2Repository";
 import { PolicyExplorerD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { Country } from "../../../../domain/entities/Country";
@@ -408,7 +408,11 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
     userEvent.click(await screen.findByRole("checkbox", { name: value }));
     await userEvent.keyboard("{Escape}");
 
-    await scope.findByLabelText(/countries/i);
+    const textbox = await scope.findByRole("textbox", {
+        name: "Select country",
+    });
+
+    within(textbox).getByText(/countries/i);
 }
 
 async function switchToColumns() {

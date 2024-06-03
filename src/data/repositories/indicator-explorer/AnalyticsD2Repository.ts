@@ -29,7 +29,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         return Future.fromPromise(fetchData(this.d2DataEngine, overwrittenVisualization, {}))
             .flatMap(response => {
-                return Future.success(response.responses[0] as Analytics);
+                const analyticsResponse = response.responses[0] as Analytics;
+
+                if (!analyticsResponse) {
+                    return Future.error<string, Analytics>("No data found");
+                }
+
+                return Future.success(analyticsResponse);
             })
             .flatMapError(_error => {
                 //console.log(error);

@@ -3,58 +3,26 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { useCallback } from "react";
 import { customRender } from "../../../../utils/tests-ui";
-import { CountryOption, CountrySelector } from "../CountrySelector";
+import { TreeSelector } from "../TreeSelector";
+import { countries } from "./TreeSelector.fixture";
+import {
+    clickOnClearAll,
+    collapseGroup,
+    expandGroup,
+    focusComponent,
+    getAllParents,
+    getChild,
+    getParentFromChild,
+    search,
+    selectAllCountries,
+    selectCountry,
+    verifyChip,
+    verifyCountryIsChecked,
+    verifyNotFoundChip,
+    verifyTotalExpandedGroups,
+} from "./TreeSelector.helpers";
 
-const countries: CountryOption[] = [
-    {
-        id: "BVnpk4xiXGJ",
-        name: "China",
-        parents: [
-            { id: "1", name: "All countries" },
-            { id: "2", name: "Asia" },
-        ],
-    },
-    {
-        id: "AVnpk4xiXGJ",
-        name: "France",
-        parents: [
-            { id: "1", name: "All countries" },
-            { id: "3", name: "Europe" },
-        ],
-    },
-    {
-        id: "DVnpk4xiXGJ",
-        name: "Spain",
-        parents: [
-            { id: "1", name: "All countries" },
-            { id: "3", name: "Europe" },
-        ],
-    },
-    {
-        id: "IZy3ESdFnp5",
-        name: "EU27",
-        parents: [],
-    },
-];
-
-/**
- *  Expected tree
- *
- *  - All Countries
- *      China
- *      France
- *      Spain
- *  - Asia
- *      China
- *  - Europe
- *      France
- *      Spain
- *    EU27
- *
- *
- */
-
-describe("Given CountrySelector", () => {
+describe("Given TreeSelector", () => {
     describe("to load", () => {
         it("should not show the options", async () => {
             renderComponent();
@@ -181,7 +149,7 @@ describe("Given CountrySelector", () => {
             await selectAllCountries();
             userEvent.keyboard("{Escape}");
 
-            const clearButtons = screen.getAllByText(/clear all/i);
+            const clearButtons = screen.getAllByText(/clear/i);
             expect(clearButtons[0]).toBeInTheDocument();
         });
         it("Then should clear all when click on clear all button", async () => {
@@ -205,61 +173,50 @@ describe("Given CountrySelector", () => {
             expect(disabledText.getAttribute("aria-disabled")).toBe("true");
         });
     });
+    describe("When has show parent if check", () => {
+        beforeEach(async () => {
+            renderComponent({ hasSelectAll: true, hasClearAll: true, showParentIfChecked: true });
+            focusComponent();
+            await screen.findByRole("listbox");
+            screen.getByText(/select country/i);
+        });
+        it("Should show parent as chip instead of children", async () => {
+            selectAllCountries();
+
+            getAllParents().forEach(async parent => {
+                await verifyChip(parent);
+            });
+        });
+    });
 });
 
-async function selectAllCountries() {
-    const allCountriesCheckbox = screen.getByRole("checkbox", {
-        name: /select all all countries/i,
-    });
-
-    return userEvent.click(allCountriesCheckbox);
-}
-
-async function clickOnClearAll() {
-    const clearButtons = screen.getAllByText(/clear all/i);
-    if (clearButtons[0]) return userEvent.click(clearButtons[0]);
-}
-
-function expandCountriesParentNode(index: 0 | 1 | 2) {
-    const arrowIcons = screen.getAllByLabelText("expand-icon");
-    if (!arrowIcons.length) {
-        collapseCountriesParentNode(index);
-    }
-    if (arrowIcons[index]) {
-        userEvent.click(arrowIcons[index] as HTMLElement);
-    }
-}
-
-function collapseCountriesParentNode(index: 0 | 1 | 2) {
-    const arrowIcons = screen.getAllByLabelText("collapse-icon");
-    if (!arrowIcons.length) {
-        expandCountriesParentNode(index);
-    }
-    if (arrowIcons[index]) {
-        userEvent.click(arrowIcons[index] as HTMLElement);
-    }
-}
-
-function renderComponent(params?: { hasSelectAll?: boolean; hasClearAll?: boolean; disabledCountries?: string[] }) {
+function renderComponent(params?: {
+    hasSelectAll?: boolean;
+    hasClearAll?: boolean;
+    disabledCountries?: string[];
+    showParentIfChecked?: boolean;
+}) {
     customRender(
         <CountrySelectorContainer
             hasSelectAll={params?.hasSelectAll}
             hasClearAll={params?.hasClearAll}
             disabledCountries={params?.disabledCountries}
+            showParentIfChecked={params?.showParentIfChecked}
         />
     );
 }
-
 interface CountrySelectorContainerProps {
     hasSelectAll?: boolean;
     hasClearAll?: boolean;
     disabledCountries?: string[];
+    showParentIfChecked?: boolean;
 }
 
 const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
     hasSelectAll = false,
     hasClearAll = false,
     disabledCountries = [],
+    showParentIfChecked,
 }) => {
     const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
@@ -268,75 +225,15 @@ const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
     }, []);
 
     return (
-        <CountrySelector
-            countries={countries}
+        <TreeSelector
+            items={countries}
             selectedIds={selectedIds}
             onSelectedIdsChange={handleSelectedChange}
             hasSelectAll={hasSelectAll}
             hasClearAll={hasClearAll}
-            disabledCountries={disabledCountries}
+            disabledItems={disabledCountries}
+            placeholder="Select country"
+            showParentIfChecked={showParentIfChecked}
         />
     );
 };
-
-function focusComponent() {
-    const autocompleteInput = screen.getByRole("textbox", {
-        name: /Country selector/i,
-    });
-
-    userEvent.click(autocompleteInput);
-}
-
-function getChild(child: number) {
-    return countries[child]?.name || "";
-}
-
-function getParentFromChild(filter: { child: number; parent: number }) {
-    return countries[filter.child]?.parents[filter.parent]?.name || "";
-}
-
-async function expandGroup(name: string) {
-    return userEvent.click(await screen.findByText(name));
-}
-
-async function collapseGroup(name: string) {
-    return userEvent.click(await screen.findByText(name));
-}
-
-async function selectCountry(name: string) {
-    const checkbox = await screen.findByRole("checkbox", { name });
-
-    userEvent.click(checkbox);
-}
-
-async function verifyCountryIsChecked(name: string) {
-    const checkbox = await screen.findByRole("checkbox", { name });
-
-    await waitFor(() => expect(checkbox).toBeChecked());
-}
-
-async function search(name: string) {
-    const searchBox = await screen.findByRole("searchbox");
-    userEvent.type(searchBox, name);
-}
-
-async function verifyChip(name: string) {
-    const chip = await screen.findByRole("button", {
-        name: name,
-    });
-
-    expect(chip).toBeInTheDocument();
-}
-
-async function verifyNotFoundChip(name: string) {
-    const chip = await screen.queryByRole("button", {
-        name: name,
-    });
-
-    expect(chip).toBeNull();
-}
-
-async function verifyTotalExpandedGroups(total: number) {
-    const groups = await screen.findAllByRole("treeitem", { expanded: true });
-    expect(groups).toHaveLength(total);
-}

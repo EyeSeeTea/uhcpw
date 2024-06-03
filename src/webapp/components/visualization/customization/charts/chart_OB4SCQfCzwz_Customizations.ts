@@ -1,6 +1,5 @@
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
-import { rotateXAxis } from "../xAxis/rotateXAxis";
 
 export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -43,6 +42,5 @@ export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
             },
         },
     ],
-    xAxis: { ...rotateXAxis },
     sortLegendByLastDataPoint: true,
 };

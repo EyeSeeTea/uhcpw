@@ -1,5 +1,4 @@
 import _ from "lodash";
-import { rotateXAxis } from "../customization/xAxis/rotateXAxis";
 
 import { ChartSource } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
@@ -83,7 +82,6 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
             type: "scatter",
         },
         xAxis: {
-            ...rotateXAxis,
             title: { text: "Out-of-pocket payments as a share of current spending on health (%)", margin: 20 },
             min: 0,
         },
@@ -91,6 +89,7 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
             title: {
                 text: "Households with catastrophic health spending (%)",
                 margin: 20,
+                style: { fontSize: "13px" },
             },
             ...maxYAxis,
         },
@@ -131,7 +130,7 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
                     color: "grey",
                     style: {
                         textOutline: "none",
-                        fontSize: "12px",
+                        fontSize: "13px",
                         fontWeight: "200",
                     },
                 },

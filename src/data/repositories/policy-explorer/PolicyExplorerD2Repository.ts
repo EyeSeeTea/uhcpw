@@ -1,4 +1,5 @@
 import _ from "lodash";
+import moment from "moment";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import {
     latestAvailableYear,
@@ -6,14 +7,14 @@ import {
     PolicyExplorerCell,
     PolicyExplorerGeneralInfo,
     PolicyExplorerReferences,
-    DataOrientationByTable,
-    DataOrientation,
+    PolicyExplorerGeneralInfoToDownload,
+    PolicyExplorerGeneralInfoToDownloadKeys,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { Tab, exportToCSV } from "../../export/exportToCSV";
+import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
     CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
@@ -44,11 +45,15 @@ export const PERIOD_HEADER_NAME = "Year";
 export const REFERENCES_HEADER_NAME = "References";
 const FILE_NAME = "PolicyExplorer";
 
-const categoriesNameWithLessThan31Chars: Record<string, string> = {
+export const categoriesNameWithLessThan31Chars: Record<string, string> = {
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
 };
+
+export const REFERENCES_TAB_NAME = "References";
+export const GENERAL_INFOMRATION_TAB_NAME = "General information";
+export const DATE_OF_DOWNLOAD = "Date of download:";
 
 const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     populationCoverage: "uG2PbDfOc0w",
@@ -111,34 +116,26 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    saveToFile(
-        categories: CategoryOption[],
-        policyExplorer: PolicyExplorer,
-        dataOrientationByTable: DataOrientationByTable
-    ): FutureData<void> {
+    saveToFile(categories: CategoryOption[], policyExplorer: PolicyExplorer): FutureData<void> {
         const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
             return (
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdB)
             );
         });
+        const generalInformationTab = this.getGeneralInformationTab(policyExplorer.generalInfo);
+        const referencesTab = this.getReferencesTab(policyExplorer.references);
+
         const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
             const category = categories.find(({ value }) => value === categoryId);
-            const normalOrientedTables = [
-                ...CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
-                ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
-            ];
-            const initialDataOrientation = normalOrientedTables.includes(categoryId) ? "normal" : "inverted";
-            const dataOrientation = dataOrientationByTable[categoryId] || initialDataOrientation;
-            const references = policyExplorer.references;
 
             if (rows?.length) {
                 const dataRows = this.getDataFromRows(rows);
                 return [
                     ...accTabs,
                     {
-                        data: this.addReferencesToDataRows(dataRows, references, dataOrientation),
+                        data: [[category?.text || categoryId], ...dataRows],
                         name: Object.keys(categoriesNameWithLessThan31Chars).includes(categoryId)
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.text || categoryId,
@@ -148,8 +145,71 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             return accTabs;
         }, []);
 
-        exportToCSV(tabs, FILE_NAME);
+        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], FILE_NAME);
         return Future.success(undefined);
+    }
+
+    private getGeneralInformationTab(generalInfo: PolicyExplorerGeneralInfo[]): Tab {
+        const generalInformationTitle = GENERAL_INFOMRATION_TAB_NAME;
+        const downloadDate = `${DATE_OF_DOWNLOAD} ${moment(new Date()).format("DD/MM/YYYY")}`;
+        const generalInfoRowsTitles: PolicyExplorerGeneralInfoToDownload = {
+            country: "Country",
+            year: "Year",
+            lastUpdate: "Last updated",
+            countryExperts: "Country experts",
+            editors: "Editors",
+            reviewers: "Reviewers*",
+            notes: "Notes*",
+            source: "Suggested citation",
+        };
+        const generalInfoForDownload: PolicyExplorerGeneralInfoToDownload[] = generalInfo.map(info => ({
+            country: info.country,
+            year: info.year,
+            lastUpdate: info.lastUpdate ? moment(info.lastUpdate).format("DD MMMM YYYY") : "",
+            countryExperts: info.countryExperts,
+            editors: info.editors,
+            reviewers: info.reviewers,
+            notes: info.notes,
+            source: `${info.sourceText} ${info.sourceUrl}`,
+        }));
+
+        const generalInfoTab = generalInfoForDownload.reduce(
+            (generalInfoRowsAcc, countryGeneralInfo) => {
+                const generalInfoRowsTitlesKeys = Object.keys(
+                    generalInfoRowsTitles
+                ) as PolicyExplorerGeneralInfoToDownloadKeys[];
+
+                return generalInfoRowsTitlesKeys.map((generalInfoKey, index) => {
+                    const row: string[] = generalInfoRowsAcc[index] ?? [];
+                    return [...row, countryGeneralInfo[generalInfoKey]];
+                });
+            },
+            Object.values(generalInfoRowsTitles).map(row => [row])
+        );
+
+        return {
+            data: [[generalInformationTitle], ...generalInfoTab, [downloadDate]],
+            name: generalInformationTitle,
+        };
+    }
+
+    private getReferencesTab(references: PolicyExplorerReferences[]): Tab {
+        const referencesTitle = REFERENCES_TAB_NAME;
+
+        const referencesTab = references.reduce(
+            (referencesTabAcc, countryReferences) => {
+                const cleanReferences = countryReferences.references?.map(
+                    reference => reference.split("]:")[1]?.replace(/"/g, "") || reference
+                );
+                return [...referencesTabAcc, [countryReferences.country, cleanReferences.join("\n")]];
+            },
+            [[referencesTitle], ["Country", ""]]
+        );
+
+        return {
+            data: referencesTab,
+            name: referencesTitle,
+        };
     }
 
     private getPeriods(yearsByCategory: Record<string, string[]>): string[] {
@@ -165,33 +225,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const rowData: string[] = currentRow.map(({ value }) => value);
             return [...accRowsData, rowData];
         }, []);
-    }
-
-    private addReferencesToDataRows(
-        dataRows: string[][],
-        references: PolicyExplorerReferences[],
-        dataOrientation: DataOrientation
-    ): string[][] {
-        if (dataOrientation === "normal") {
-            return dataRows?.map(dataRow => {
-                const isHeadersRow = dataRow.includes(COUNTRY_HEADER_NAME);
-                const referencesOfCountry =
-                    references.find(reference => dataRow.includes(reference.country))?.references?.join(",") ||
-                    EMPTY_DATA;
-
-                return [...dataRow, isHeadersRow ? REFERENCES_HEADER_NAME : referencesOfCountry];
-            });
-        }
-        if (dataOrientation === "inverted") {
-            const countryDataRow = dataRows.find(dataRow => dataRow.includes(COUNTRY_HEADER_NAME));
-            const referencesDataRowToInclude = countryDataRow?.map((data): string => {
-                const referencesOfCountry =
-                    references.find(reference => reference.country === data)?.references?.join(",") || EMPTY_DATA;
-                return data === COUNTRY_HEADER_NAME ? REFERENCES_HEADER_NAME : referencesOfCountry;
-            });
-            return referencesDataRowToInclude ? [...dataRows, referencesDataRowToInclude] : dataRows;
-        }
-        return dataRows;
     }
 
     private buildGeneralInfo(

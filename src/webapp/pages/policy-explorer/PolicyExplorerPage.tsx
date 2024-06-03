@@ -65,10 +65,11 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
     const getCleanReferencesByCountry = useCallback(
         (country: string) => {
-            const regex = /\[(.*?)\((.*?)\)\]:\s/;
             return data?.references
                 ?.find(references => references.country === country)
-                ?.references?.map(reference => reference.replace(regex, "$1$2.").replace(/"/g, ""));
+                ?.references?.map(reference => {
+                    return reference.split("]:")[1]?.replace(/"/g, "") || reference;
+                });
         },
         [data?.references]
     );
@@ -156,9 +157,17 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                                     {info.notes ? (
                                         <GeneralRow>
-                                            <CreditsText>{i18n.t("Notes: ", { nsSeparator: false })}</CreditsText>
-                                            &nbsp;
-                                            <CreditsText>{info.notes}</CreditsText>
+                                            <ReactMarkdown
+                                                components={{
+                                                    p: ({ children }) => (
+                                                        <CreditsText variant="caption">{children}</CreditsText>
+                                                    ),
+                                                }}
+                                            >
+                                                {`${i18n.t("Notes: ", {
+                                                    nsSeparator: false,
+                                                })} ${info.notes}`}
+                                            </ReactMarkdown>
                                         </GeneralRow>
                                     ) : null}
 
@@ -168,14 +177,13 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                                 {i18n.t("Suggested citation: ", { nsSeparator: false })}
                                             </CreditsText>
                                             &nbsp;
-                                            <Link
-                                                href={info.sourceUrl}
-                                                style={{ fontSize: "16px", color: colors.accentPrimary }}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                {info.sourceText}
-                                            </Link>
+                                            {info.sourceUrl ? (
+                                                <Link href={info.sourceUrl} target="_blank" rel="noreferrer">
+                                                    {info.sourceText}
+                                                </Link>
+                                            ) : (
+                                                <CreditsText>{info.sourceText}</CreditsText>
+                                            )}
                                         </GeneralRow>
                                     ) : null}
                                 </GeneralDataContainer>
@@ -257,7 +265,14 @@ const CreditsText = styled(Typography)<{ $noWrap?: boolean }>`
 `;
 
 const Link = styled.a`
+    text-transform: none;
     text-decoration: none;
+    font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+    color: black;
+    font-weight: 500;
+    font-size: 0.875rem;
+    white-space: unset;
+    line-height: 1.5;
 `;
 
 const DownloadButton = styled(Button)`

@@ -186,12 +186,17 @@ export function usePolicyExplorer({
     );
 
     const onDownload = useCallback(() => {
-        if (!dataByTable || !dataOrientationByTable) return;
-
-        compositionRoot.policyExplorer.download
-            .execute(categoryFilters, dataByTable, dataOrientationByTable)
-            .runAsync();
-    }, [categoryFilters, compositionRoot.policyExplorer.download, dataByTable, dataOrientationByTable]);
+        if (!initialDataByTable || !selectedCategoriesWithSubcategoriesFilter) return;
+        const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
+        const data = getInitialDataByTable(initialDataByTable, categoriesIds);
+        if (!data) return;
+        compositionRoot.policyExplorer.download.execute(categoryFilters, data).runAsync();
+    }, [
+        categoryFilters,
+        compositionRoot.policyExplorer.download,
+        initialDataByTable,
+        selectedCategoriesWithSubcategoriesFilter,
+    ]);
 
     return {
         filters: {

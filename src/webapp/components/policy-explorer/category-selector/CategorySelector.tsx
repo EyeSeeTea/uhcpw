@@ -294,7 +294,7 @@ export const CategorySelector = React.memo(
                                 disabled={isEmpty(selectedCategoriesWithSubcategories)}
                                 right={30}
                             >
-                                {i18n.t("Clear all")}
+                                {i18n.t("Clear")}
                             </StyledButton>
                         </Container>
                         <TreeView
@@ -330,8 +330,8 @@ export const CategorySelector = React.memo(
                     </div>
                 </StyledMenu>
                 {!isEmpty(selectedCategoriesWithSubcategories) && (
-                    <StyledButton variant="text" onClick={handleClear} disabled={disabled}>
-                        {i18n.t("Clear all")}
+                    <StyledButton variant="text" onClick={handleClear} disabled={disabled} right={-15}>
+                        {i18n.t("Clear")}
                     </StyledButton>
                 )}
             </Container>
