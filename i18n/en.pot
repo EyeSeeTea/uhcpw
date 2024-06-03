@@ -52,6 +52,9 @@ msgstr ""
 msgid "Comparative analysis"
 msgstr ""
 
+msgid "Select country"
+msgstr ""
+
 msgid "Dashboard"
 msgstr ""
 
