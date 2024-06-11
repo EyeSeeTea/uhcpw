@@ -114,7 +114,7 @@ async function selectFiltersAndGetChart(visualizationText: string, countryText: 
     const mainElement = screen.getByRole("main");
     const main = within(mainElement);
 
-    await selectFilter(main, "Category and indicator", visualizationText);
+    await selectFilter(main, "Indicators", visualizationText);
     await selectCountry(main, countryText);
     await selectFilter(main, "Years", yearText);
 
@@ -145,7 +145,7 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
     userEvent.keyboard("{Escape}");
 
     const textbox = await scope.findByRole("textbox", {
-        name: "Select country",
+        name: "Select country or area",
     });
 
     within(textbox).getByText(/countries/i);

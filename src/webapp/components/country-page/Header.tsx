@@ -58,7 +58,7 @@ export const Header: FC<HeaderType> = ({
             <ButtonsContainer>
                 <CountryDropdown
                     fullWidth
-                    placeholder={i18n.t("Select country")}
+                    placeholder={i18n.t("Select country or area")}
                     countryOptions={countryOptions}
                     value={countryId}
                     onChange={onCountryChange}
@@ -74,11 +74,11 @@ export const Header: FC<HeaderType> = ({
                 </Button>
                 <Button>
                     <ButtonText onClick={() => handleClick(resourcesRef, "resources")}>
-                        {i18n.t("Country resources")}
+                        {i18n.t("Resources")}
                     </ButtonText>
                 </Button>
                 <Button>
-                    <ButtonText onClick={() => handleClick(expertRef, "expert")}>{i18n.t("Country expert")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(expertRef, "expert")}>{i18n.t("Experts")}</ButtonText>
                 </Button>
             </ButtonsContainer>
         </Container>

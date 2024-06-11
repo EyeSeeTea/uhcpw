@@ -15,6 +15,7 @@ import { muiTheme } from "../webapp/pages/app/themes/dhis2.theme";
 import muiThemeLegacy from "../webapp/pages/app/themes/dhis2-legacy.theme";
 import { Country } from "../domain/entities/Country";
 import { ResourceTheme } from "../domain/entities/resources/ResourceTheme";
+import { GeneralContent } from "../domain/entities/GeneralContent";
 
 export function givenAnUser(): User {
     return {
@@ -74,6 +75,15 @@ export function givenAThemes(): ResourceTheme[] {
     ];
 }
 
+export function givenAGeneralContent(): GeneralContent {
+    return {
+        footer: {
+            disclaimer:
+                "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)",
+        },
+    };
+}
+
 export function getTestContext(repositoriesToOverwrite?: Repositories): AppContextState {
     // Mock api was working with axios but not with fetch
 
@@ -86,6 +96,7 @@ export function getTestContext(repositoriesToOverwrite?: Repositories): AppConte
         isNodeDev: true,
         countries: givenACountries(),
         themes: givenAThemes(),
+        generalContent: givenAGeneralContent(),
     };
 
     return context;
