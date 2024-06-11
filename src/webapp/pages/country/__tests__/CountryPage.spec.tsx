@@ -31,8 +31,8 @@ describe("Country Page", () => {
 
         expect(scope.getByText(/dashboard/i)).toBeInTheDocument();
         expect(scope.getByText(/in detail/i)).toBeInTheDocument();
-        expect(scope.getByText(/country resources/i)).toBeInTheDocument();
-        expect(scope.getByText(/country expert/i)).toBeInTheDocument();
+        expect(scope.getByText(/resources/i)).toBeInTheDocument();
+        expect(scope.getByText(/experts/i)).toBeInTheDocument();
         expect(scope.getByLabelText(/country-dropdown/i)).toBeInTheDocument();
     });
     it("should render Hero", () => {
@@ -70,7 +70,7 @@ describe("Country Page", () => {
 
         const scope = within(screen.getByLabelText(/country-page-resources/i));
 
-        expect(scope.getByRole("heading", { name: /country resources/i })).toBeInTheDocument();
+        expect(scope.getByRole("heading", { name: /resources/i })).toBeInTheDocument();
 
         await verifyResourceItems(
             resources.filter(({ kind }) => kind === "country-analysis"),
@@ -90,7 +90,7 @@ describe("Country Page", () => {
 
         const scope = within(screen.getByLabelText(/experts/i));
 
-        expect(scope.getByRole("heading", { name: /country expert/i })).toBeInTheDocument();
+        expect(scope.getByRole("heading", { name: /experts/i })).toBeInTheDocument();
 
         await verifyExpertMembers(experts);
     });

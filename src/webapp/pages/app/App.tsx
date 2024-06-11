@@ -32,8 +32,9 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
 
             const countries = (await compositionRoot.countries.get.execute().runAsync()).data || [];
             const themes = (await compositionRoot.resources.getThemes.execute().runAsync()).data || [];
+            const generalContent = (await compositionRoot.general.getContent.execute().runAsync()).data;
 
-            setAppContext({ api, currentUser, compositionRoot, countries, themes });
+            setAppContext({ api, currentUser, compositionRoot, countries, themes, generalContent });
             setLoading(false);
         }
         setup();

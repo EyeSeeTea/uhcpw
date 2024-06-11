@@ -6,7 +6,7 @@ import { Id } from "../../../domain/entities/Ref";
 import { D2Api, D2Geometry, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { coordinatesFromString } from "./coordinatesFromString";
-import { mapToWhoCountryCode } from "./mapToWhoCountryCode";
+import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -56,10 +56,9 @@ const validOrgUnitGroups = [
     "A1BdaIwDheX",
 ];
 
-const NETHERLANDS = "rEQqufy2KNi";
 const GREENLAND = "IZy3ESdFnp5";
 const KOSOVO = "NEPywTBN52g";
-const COUNTRIES_NOT_SHOWN = [GREENLAND, KOSOVO];
+const COUNTRIES_NOT_SHOWN = [GREENLAND];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
@@ -149,11 +148,10 @@ export class CountryD2Repository implements CountryRepository {
                     dv => dv.dataElement === countryInfoDataElements.geometry
                 )?.value as unknown as D2Geometry;
 
-                const isNetherlands = orgUnit.id === NETHERLANDS;
                 return {
                     id: orgUnit.id,
-                    name: isNetherlands ? `${orgUnit.shortName} (Kingdom of the)` : orgUnit.shortName,
-                    longName: orgUnit.name,
+                    name: mapToWhoCountryName(orgUnit.id, orgUnit.shortName),
+                    longName: mapToWhoCountryName(orgUnit.id, orgUnit.name),
                     code: mapToWhoCountryCode(orgUnit.code),
                     description: orgUnit.description,
                     coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
@@ -166,7 +164,8 @@ export class CountryD2Repository implements CountryRepository {
                     sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
                     isInCountryPage: countriesIdsInCountryPage.includes(orgUnit.id),
                 };
-            });
+            })
+            .sort((countryA, countryB) => (countryA.id === KOSOVO ? 1 : countryB.id === KOSOVO ? -1 : 0));
     }
 
     private buildPoint(geometry: D2Geometry | string): [number, number] {

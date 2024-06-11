@@ -75,7 +75,7 @@ describe("ResourcesPage", () => {
     it("should render disabled country filter", async () => {
         renderPage();
 
-        expect(screen.getByRole("textbox", { name: /input select country/i })).toBeDisabled();
+        expect(screen.getByRole("textbox", { name: /input select country or area/i })).toBeDisabled();
     });
     it("should render disabled years filter", async () => {
         renderPage();

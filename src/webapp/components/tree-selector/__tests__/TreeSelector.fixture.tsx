@@ -5,7 +5,7 @@ export const countries: TreeOption[] = [
         id: "BVnpk4xiXGJ",
         name: "China",
         parents: [
-            { id: "1", name: "All countries" },
+            { id: "1", name: "All countries and areas" },
             { id: "2", name: "Asia" },
         ],
     },
@@ -13,7 +13,7 @@ export const countries: TreeOption[] = [
         id: "AVnpk4xiXGJ",
         name: "France",
         parents: [
-            { id: "1", name: "All countries" },
+            { id: "1", name: "All countries and areas" },
             { id: "3", name: "Europe" },
         ],
     },
@@ -21,7 +21,7 @@ export const countries: TreeOption[] = [
         id: "DVnpk4xiXGJ",
         name: "Spain",
         parents: [
-            { id: "1", name: "All countries" },
+            { id: "1", name: "All countries and areas" },
             { id: "3", name: "Europe" },
         ],
     },
@@ -35,7 +35,7 @@ export const countries: TreeOption[] = [
 /**
  *  Expected tree
  *
- *  - All Countries
+ *  - All countries and areas
  *      China
  *      France
  *      Spain

@@ -31,7 +31,10 @@ export class ResourceCategoryD2Repository implements ResourceCategoryRepository 
             .map(option => {
                 return {
                     id: option.id,
-                    name: option.displayName.replace("UHCW_", ""),
+                    name:
+                        option.displayName.replace("UHCW_", "") === "Country analysis"
+                            ? "Country or area analysis"
+                            : option.displayName.replace("UHCW_", ""),
                     code: option.code,
                 };
             })

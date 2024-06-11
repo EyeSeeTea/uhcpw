@@ -45,7 +45,7 @@ export function useMultiCountryOptionsV2(params?: {
             name: country.name,
             code: country.code,
             parents: [
-                { id: "all", name: i18n.t("All countries") },
+                { id: "all", name: i18n.t("All countries and areas") },
                 ...country.parents.filter(parent => !parent.name.includes("income")),
             ],
         }));

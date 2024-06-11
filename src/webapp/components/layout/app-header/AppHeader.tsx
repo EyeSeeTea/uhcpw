@@ -118,12 +118,12 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                         </Button>
                         <MenuButton
                             id="countries"
-                            aria-controls="countries"
+                            aria-controls="countries & areas"
                             aria-haspopup="true"
                             onClick={handleSetAnchorEl}
                             endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                         >
-                            {i18n.t("Countries")}
+                            {i18n.t("Countries & areas")}
                         </MenuButton>
                         <Menu
                             anchorEl={anchorEl}

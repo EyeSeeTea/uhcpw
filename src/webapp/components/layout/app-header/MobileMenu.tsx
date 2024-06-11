@@ -74,7 +74,7 @@ export const MobileMenu: React.FC = () => {
                 <MenuItem onClick={() => handleMenuItemClick("/policy-explorer")}>{i18n.t("Policy explorer")}</MenuItem>
                 <StyledDivider />
                 <MenuItem>
-                    <MobileMenuSubItem item="countries">
+                    <MobileMenuSubItem item="Countries & areas">
                         <div>
                             {countryFilter.countryOptions.map(country => {
                                 return (
