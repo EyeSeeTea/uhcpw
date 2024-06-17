@@ -14,6 +14,7 @@ export interface AppContextState {
     countries: Country[];
     themes: ResourceTheme[];
     generalContent: Maybe<GeneralContent>;
+    countriesAndRegions: Country[];
 }
 
 export const AppContext = React.createContext<AppContextState | null>(null);

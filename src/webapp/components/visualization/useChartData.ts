@@ -28,7 +28,7 @@ export function useChartData(
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
     const [showInfo, setShowInfo] = useState<boolean>(false);
-    const { countries: allCountries } = useAppContext();
+    const { countriesAndRegions } = useAppContext();
 
     useEffect(() => {
         if (visualizationId) {
@@ -49,12 +49,12 @@ export function useChartData(
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
-                        countries: allCountries.filter(country => countries.includes(country.id)),
+                        countries: countriesAndRegions.filter(country => countries.includes(country.id)),
                         chartOptions: visualizationChartOptions
                             ? visualizationChartOptions({
                                   analyticsResponse: analytics,
                                   visualization,
-                                  countries: allCountries,
+                                  countries: countriesAndRegions,
                                   currentCountry,
                               })
                             : undefined,
@@ -73,7 +73,7 @@ export function useChartData(
                 message: "Missing visualizationId",
             });
         }
-    }, [compositionRoot, visualizationId, countries, years, allCountries, currentCountry]);
+    }, [compositionRoot, visualizationId, countries, years, countriesAndRegions, currentCountry]);
 
     const onDownloadExcel = useCallback(
         (chartDataLoaded: ChartDataLoaded) => {

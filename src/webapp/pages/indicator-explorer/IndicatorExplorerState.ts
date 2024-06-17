@@ -32,6 +32,7 @@ export type YeasrFilterState = {
 type ExtraCountryFilterState = CountryFilterState & {
     disabledCountries: string[];
     maxCountrySelection: number | undefined;
+    showSubRegions: boolean;
 };
 
 export type IndicatorExplorerFiltersState = {

@@ -20,6 +20,7 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+import { BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../../../data/repositories/countries/CountryD2Repository";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
@@ -46,8 +47,8 @@ export function usePolicyExplorer({
     countriesFilter?: string[];
     yearsFilter?: string[];
 }): PolicyExplorerState {
-    const { compositionRoot } = useAppContext();
-    const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter });
+    const { compositionRoot, countriesAndRegions } = useAppContext();
+    const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter, showSubRegions: true });
     const [errorMessage, setErrorMessage] = useState<string>("");
 
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
@@ -108,13 +109,15 @@ export function usePolicyExplorer({
     const onGetTable = useCallback(() => {
         if (
             selectedCategoriesWithSubcategoriesFilter &&
-            Object.keys(selectedCategoriesWithSubcategoriesFilter)?.length
+            Object.keys(selectedCategoriesWithSubcategoriesFilter)?.length &&
+            countryFilter.selected?.length
         ) {
             compositionRoot.policyExplorer.get
                 .execute(
                     selectedCategoriesWithSubcategoriesFilter,
-                    countryFilter.selected || [],
-                    selectedYearFilter ? selectedYearFilter : []
+                    countryFilter.selected,
+                    selectedYearFilter ? selectedYearFilter : [],
+                    countriesAndRegions
                 )
                 .run(
                     policyExplorer => {
@@ -137,6 +140,7 @@ export function usePolicyExplorer({
         }
     }, [
         compositionRoot.policyExplorer.get,
+        countriesAndRegions,
         countryFilter.selected,
         selectedCategoriesWithSubcategoriesFilter,
         selectedYearFilter,
@@ -200,7 +204,12 @@ export function usePolicyExplorer({
 
     return {
         filters: {
-            country: countryFilter,
+            country: {
+                ...countryFilter,
+                disabledCountries: [BOSNIA_AND_HERZEGOVINA_LEVEL_4],
+                showSubRegions: true,
+                defaultExpandedCountries: [BOSNIA_AND_HERZEGOVINA_LEVEL_4],
+            },
             category: {
                 options: categoryFilters,
                 selected: selectedCategoriesWithSubcategoriesFilter,

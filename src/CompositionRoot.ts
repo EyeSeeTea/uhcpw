@@ -90,7 +90,7 @@ export function getCompositionRoot(
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
             getSelectCategoryInfo: new GetPolicyExplorerSelectCategoryInfoUseCase(repositories.policyExplorerCategory),
-            get: new GetPolicyExplorerUseCase(repositories.policyExplorer, repositories.country),
+            get: new GetPolicyExplorerUseCase(repositories.policyExplorer),
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
         indicatorExplorer: {

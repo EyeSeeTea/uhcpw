@@ -38,6 +38,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         onSelectedIdsChange={filters.country.onSelectedChange}
                         disabledItems={filters.country.disabledCountries}
                         maxSelection={filters.country.maxCountrySelection}
+                        showSubChildren={filters.country.showSubRegions}
                         placeholder={i18n.t("Select country or area")}
                     />
                 </Center>

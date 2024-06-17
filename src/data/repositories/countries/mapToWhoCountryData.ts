@@ -62,11 +62,16 @@ const whoCountrycodes: Record<string, string> = {
     GBR: "UNK",
     UZB: "UZB",
     XKX: "KOS*",
+    "f5415f05-3d3a-476f-9907-c6dc5cd8003c": "BIH-F",
+    "95d59331-585d-4c09-943f-46fa7b40ea88": "BIH-R",
+    "d98ef9c7-cca6-4424-a1e1-3dc9669330a8": "BIH",
 };
 
 const whoCountryNames: Record<Id, string> = {
     rEQqufy2KNi: "Netherlands (Kingdom of the)",
     NEPywTBN52g: "Kosovo*",
+    j44olg405lZ: "BIH (Federation of Bosnia and Herzegovina)",
+    FvoXRc5cEEk: "BIH (Republika Srpska)",
 };
 
 export function mapToWhoCountryName(countryId: Id, countryName: string): string {
