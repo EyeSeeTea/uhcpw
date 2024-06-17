@@ -38,9 +38,9 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
             const countriesRegions = countries.flatMap(country => (country.children ? country.children : []));
 
             const countriesAndRegions = [...countries, ...countriesRegions].sort((countryA, countryB) => {
-                if (countryB.id === KOSOVO || countryA.name.toLowerCase() < countryB.name.toLowerCase()) return -1;
-                if (countryA.id === KOSOVO || countryA.name.toLowerCase() > countryB.name.toLowerCase()) return 1;
-                return 0;
+                if (countryA.id === KOSOVO) return 1;
+                if (countryB.id === KOSOVO) return -1;
+                return countryA.name.toLowerCase() < countryB.name.toLowerCase() ? -1 : 1;
             });
 
             setAppContext({
