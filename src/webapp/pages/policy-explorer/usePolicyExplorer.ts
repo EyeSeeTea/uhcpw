@@ -208,6 +208,7 @@ export function usePolicyExplorer({
                 ...countryFilter,
                 disabledCountries: [BOSNIA_AND_HERZEGOVINA_LEVEL_4],
                 showSubRegions: true,
+                defaultExpandedCountries: [BOSNIA_AND_HERZEGOVINA_LEVEL_4],
             },
             category: {
                 options: categoryFilters,

@@ -41,6 +41,7 @@ interface TreeSelectorProps {
     disableSearch?: boolean;
     showParentIfChecked?: boolean;
     showSubChildren?: boolean;
+    defaultExpanded?: string[];
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
@@ -61,11 +62,12 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         disableSearch,
         showParentIfChecked,
         showSubChildren = false,
+        defaultExpanded = EMPTY_IDS_ARRAY,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
-        const [expandedParents, setExpandedParents] = React.useState<string[]>(["all"]);
+        const [expandedParents, setExpandedParents] = React.useState<string[]>(["all", ...defaultExpanded]);
 
         const handleClick = useCallback(
             (event: React.MouseEvent<HTMLInputElement>) => {

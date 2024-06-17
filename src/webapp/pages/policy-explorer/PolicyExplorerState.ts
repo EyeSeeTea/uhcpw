@@ -20,6 +20,7 @@ export type PolicyExplorerState = {
 type ExtraCountryFilterState = CountryFilterState & {
     disabledCountries: string[];
     showSubRegions: boolean;
+    defaultExpandedCountries: string[];
 };
 
 export type PolicyExplorerFiltersState = {
