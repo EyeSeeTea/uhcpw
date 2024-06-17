@@ -1,33 +1,28 @@
 import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { Future, FutureData } from "../../entities/Future";
+import { Id } from "../../entities/Ref";
 import { latestAvailableYear, PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
-import { CountryRepository } from "../../repositories/CountryRepository";
 import { PolicyExplorerRepository } from "../../repositories/policy-explorer/PolicyExplorerRepository";
 import { generate, generateYears } from "../utils/generateYears";
+import { Country } from "../../entities/Country";
 
 export class GetPolicyExplorerUseCase {
-    constructor(
-        private policyExplorerRepository: PolicyExplorerRepository,
-        private countryRepository: CountryRepository
-    ) {}
+    constructor(private policyExplorerRepository: PolicyExplorerRepository) {}
 
     public execute(
         policyExplorerCategories: Record<string, string[]>,
-        countryIds: string[],
-        years: string[]
+        selectedCountriesIds: Id[],
+        years: string[],
+        countriesAndRegions: Country[]
     ): FutureData<PolicyExplorer> {
-        return Future.joinObj({
-            countries: this.getCountries(countryIds),
-            yearsByCategory: this.getYearsByCategory(years, policyExplorerCategories),
-        }).flatMap(({ countries, yearsByCategory }) => {
-            return this.policyExplorerRepository.get(policyExplorerCategories, countries, yearsByCategory);
+        return this.getYearsByCategory(years, policyExplorerCategories).flatMap(yearsByCategory => {
+            return this.policyExplorerRepository.get(
+                policyExplorerCategories,
+                selectedCountriesIds,
+                yearsByCategory,
+                countriesAndRegions
+            );
         });
-    }
-
-    private getCountries(countryIds: string[]): FutureData<string[]> {
-        if (countryIds.length > 0) return Future.success(countryIds);
-
-        return this.countryRepository.get().map(countries => countries.map(country => country.id));
     }
 
     private getYearsByCategory(

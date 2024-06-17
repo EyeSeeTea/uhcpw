@@ -17,8 +17,13 @@ export type PolicyExplorerState = {
     errorMessage: string;
 };
 
+type ExtraCountryFilterState = CountryFilterState & {
+    disabledCountries: string[];
+    showSubRegions: boolean;
+};
+
 export type PolicyExplorerFiltersState = {
-    country: CountryFilterState;
+    country: ExtraCountryFilterState;
     category: PolicyExplorerCategoriesFilterState;
     year: OptionsMultiFilterState;
 };

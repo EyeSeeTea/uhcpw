@@ -7,7 +7,7 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { EU27 } from "../../../domain/entities/Country";
+import { Country, EU27 } from "../../../domain/entities/Country";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
@@ -17,12 +17,12 @@ export const yearsItems = generateYears().map(year => ({ id: year.id, name: year
 const allYearsFilters: TreeOption[] = yearsItems;
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
-    const { compositionRoot } = useAppContext();
+    const { compositionRoot, countriesAndRegions } = useAppContext();
     const {
         selected: selectedCountries,
         onSelectedChange: onSelectedCountryChange,
         options: countryOptions,
-    } = useMultiCountryOptionsV2({ showEurRegion: true });
+    } = useMultiCountryOptionsV2({ showEurRegion: true, showSubRegions: true });
 
     const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -52,7 +52,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 oldVisualization,
                 newsVisualization,
                 isEu27Selected,
-                countryOptions
+                countriesAndRegions
             );
 
             if (maybeUpdatedCountrySelection) {
@@ -77,7 +77,14 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setSelectedIndicatorFilter(value);
             setShowVisualization(false);
         },
-        [countryOptions, onSelectedCountryChange, selectedCountries, selectedIndicatorFilter, visualizations]
+        [
+            countriesAndRegions,
+            countryOptions,
+            onSelectedCountryChange,
+            selectedCountries,
+            selectedIndicatorFilter,
+            visualizations,
+        ]
     );
 
     const onChangeYearFilter = useCallback((value: string[] | undefined) => {
@@ -167,7 +174,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
             if ((countries?.length || 0) === visualization?.maxCountryFilter) {
                 const countriesToDisabled = countryOptions.map(op => op.id).filter(id => !countries?.includes(id));
-                setDisabledCountries(countriesToDisabled);
+
+                const subregionsToDisabled = countryOptions
+                    .flatMap(countryOption => (countryOption.children ? countryOption.children : []))
+                    .map(op => op.id)
+                    .filter(id => !countries?.includes(id));
+                setDisabledCountries([...countriesToDisabled, ...subregionsToDisabled]);
             } else {
                 setDisabledCountries(visualization && !visualization.hasEur27 ? [EU27] : []);
             }
@@ -185,6 +197,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 options: countryOptions,
                 disabledCountries,
                 maxCountrySelection,
+                showSubRegions: true,
             },
             indicators: {
                 options: indicatorFilters,
@@ -228,7 +241,7 @@ function getUpdatedCountriesSelectionFilter(
     oldVisualization: Visualization | undefined,
     newsVisualization: Visualization | undefined,
     isEu27Selected: boolean,
-    countryOptions: TreeOption[]
+    countriesAndRegions: Country[]
 ): string[] | undefined {
     if (
         (oldVisualization?.isComparative && !newsVisualization?.isComparative) ||
@@ -238,11 +251,11 @@ function getUpdatedCountriesSelectionFilter(
     }
 
     if (newsVisualization?.isComparative && newsVisualization?.hasEur27) {
-        return countryOptions.map(op => op.id);
+        return countriesAndRegions.map(c => c.id);
     }
 
     if (newsVisualization?.isComparative) {
-        return countryOptions.map(op => op.id).filter(id => id !== EU27);
+        return countriesAndRegions.map(c => c.id).filter(id => id !== EU27);
     }
 }
 
@@ -255,7 +268,12 @@ function getDisabledCountriesFilter(
         const countriesToDisabled = countryOptions
             .map(op => op.id)
             .filter(id => !selectedCountriesFilter?.includes(id));
-        return countriesToDisabled;
+
+        const subregionsToDisabled = countryOptions
+            .flatMap(countryOption => (countryOption.children ? countryOption.children : []))
+            .map(op => op.id)
+            .filter(id => !selectedCountriesFilter?.includes(id));
+        return [...countriesToDisabled, ...subregionsToDisabled];
     }
 
     if (!newsVisualization?.hasEur27) {

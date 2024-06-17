@@ -13,15 +13,15 @@ export type CountryPageState = {
 };
 
 export function useCountryPage(): CountryPageState {
-    const { countries } = useAppContext();
+    const { countriesAndRegions } = useAppContext();
     const [selectedCountry, setSelectedCountry] = useState<string>("");
     const [resetTab, setResetTab] = useState<boolean>(false);
 
     const countryOptions: Option<string>[] = useMemo(() => {
-        return countries
+        return countriesAndRegions
             .filter(({ isInCountryPage }) => isInCountryPage)
             .map(country => ({ value: country.id, text: country.name }));
-    }, [countries]);
+    }, [countriesAndRegions]);
 
     const onCountryChange = useCallback((country: string) => {
         setSelectedCountry(country);

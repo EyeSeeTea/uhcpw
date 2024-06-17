@@ -89,6 +89,8 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={onCountryChange}
                         placeholder={i18n.t("Select country or area")}
+                        disabledItems={filters.country.disabledCountries}
+                        showSubChildren={filters.country.showSubRegions}
                     />
                 </Wrapper>
             </Grid>

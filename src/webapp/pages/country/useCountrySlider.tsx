@@ -41,7 +41,7 @@ type CountrySlider = {
 };
 
 export function useCountrySlider(countryId: string): CountrySlider {
-    const { compositionRoot, countries } = useAppContext();
+    const { compositionRoot, countriesAndRegions } = useAppContext();
     const country = useCountryInfo(countryId);
 
     const [tabValue, setTabValue] = useState(0);
@@ -108,7 +108,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "dbc87Ljw8uN",
                     years: [LatestCOVID19.id],
-                    countries: countries.map(({ id }) => id),
+                    countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
             {
@@ -122,7 +122,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "NOukqSxCI63",
                     years: [LatestCOVID19.id],
-                    countries: countries.map(({ id }) => id),
+                    countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
             {
@@ -136,7 +136,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "GimM6ANOKhd",
                     years: [LatestCOVID19.id],
-                    countries: countries.map(({ id }) => id),
+                    countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
             {
@@ -159,12 +159,12 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphOne: {
                     visualizationId: "VB7bdJ8ZXya",
                     years: [LatestCOVID19.id],
-                    countries: countries.map(({ id }) => id),
+                    countries: countriesAndRegions.map(({ id }) => id),
                 },
                 graphTwo: {
                     visualizationId: "mcNfvQaVbfy",
                     years: [LatestCOVID19.id],
-                    countries: countries.map(({ id }) => id),
+                    countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
             {
@@ -215,7 +215,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphOne: {
                     visualizationId: "B4CnzUqVR3n",
                     years: [LatestCOVID19.id],
-                    countries: countries.map(({ id }) => id),
+                    countries: countriesAndRegions.map(({ id }) => id),
                 },
                 graphTwo: {
                     visualizationId: "BYAT5Woc9EJ",
@@ -225,7 +225,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
         ],
         [
-            countries,
+            countriesAndRegions,
             countryId,
             sliderInfo?.sliderEight,
             sliderInfo?.sliderFive,

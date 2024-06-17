@@ -8,6 +8,7 @@ import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { TreeView } from "@material-ui/lab";
 import { Node } from "./Node";
 import { Leaf } from "./Leaf";
+import { ChildAndSubChildren } from "./ChildAndSubChildren";
 import _ from "lodash";
 import { SelectedChip } from "../selected-chip/SelectedChip";
 import CloseIcon from "@material-ui/icons/Close";
@@ -20,6 +21,7 @@ export type TreeOption = {
     name: string;
     code?: string;
     parents: { id: string; name: string }[];
+    children?: { id: string; name: string; code: string }[];
 };
 
 interface TreeSelectorProps {
@@ -38,6 +40,7 @@ interface TreeSelectorProps {
     ariaLabel?: string;
     disableSearch?: boolean;
     showParentIfChecked?: boolean;
+    showSubChildren?: boolean;
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
@@ -57,6 +60,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         ariaLabel,
         disableSearch,
         showParentIfChecked,
+        showSubChildren = false,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -79,9 +83,27 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
             setSearchTerm("");
         }, [expanded, setExpanded, setAnchorEl]);
 
-        const filteredItemsBySearch = useMemo(() => {
-            return items.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()));
-        }, [searchTerm, items]);
+        const filteredItemsBySearch: TreeOption[] = useMemo(() => {
+            return items.reduce((acc, item) => {
+                const filteredItemChildren =
+                    item.children?.length && showSubChildren
+                        ? item.children?.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        : undefined;
+
+                if (item.name.toLowerCase().includes(searchTerm.toLowerCase()) || filteredItemChildren?.length) {
+                    return [
+                        ...acc,
+                        item.children?.length && showSubChildren
+                            ? {
+                                  ...item,
+                                  children: filteredItemChildren,
+                              }
+                            : item,
+                    ];
+                }
+                return acc;
+            }, [] as TreeOption[]);
+        }, [items, searchTerm, showSubChildren]);
 
         const handleSelectedAllItemsInParent = useCallback(
             (allItemsInSelectedParent: TreeOption[], selected: boolean) => {
@@ -90,28 +112,31 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         ({ id }) => !disabledItems?.includes(id)
                     );
 
-                    const selectedItems = selected
-                        ? [
-                              ...selectedIds,
-                              ...allowedItemsInSelectedParent
-                                  .map(({ id }) => id)
-                                  .filter(id => !selectedIds.includes(id)),
-                          ]
-                        : selectedIds.filter(id => !allowedItemsInSelectedParent.map(({ id }) => id).includes(id));
+                    const subChildrenIds: string[] = allItemsInSelectedParent
+                        .flatMap(item => (item.children ? item.children.map(child => child.id) : []))
+                        .filter(id => !disabledItems?.includes(id));
 
-                    onSelectedIdsChange(selectedItems);
+                    const allSelectableItems = showSubChildren
+                        ? [...subChildrenIds, ...allowedItemsInSelectedParent.map(({ id }) => id)]
+                        : allowedItemsInSelectedParent.map(({ id }) => id);
+
+                    const idsToSelect = selected
+                        ? [...selectedIds, ...allSelectableItems.filter(id => !selectedIds.includes(id))]
+                        : selectedIds.filter(id => !allSelectableItems.includes(id));
+
+                    onSelectedIdsChange(idsToSelect);
                 }
             },
-            [disabledItems, onSelectedIdsChange, selectedIds, hasSelectAll]
+            [hasSelectAll, showSubChildren, selectedIds, onSelectedIdsChange, disabledItems]
         );
 
         const handleSelectedChange = useCallback(
             (nodeId: string, selected: boolean) => {
                 if (selected) {
-                    const selected = [...selectedIds, nodeId];
+                    const selection = [...selectedIds, nodeId];
 
                     if (onSelectedIdsChange) {
-                        onSelectedIdsChange(selected);
+                        onSelectedIdsChange(selection);
                     }
                 } else {
                     const isParent = items.find(item => item.parents.some(parent => parent.id === nodeId));
@@ -122,10 +147,10 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         );
                         handleSelectedAllItemsInParent(finalChildren, selected);
                     } else {
-                        const selected = selectedIds.filter(id => id !== nodeId);
+                        const selection = selectedIds.filter(id => id !== nodeId);
 
                         if (onSelectedIdsChange) {
-                            onSelectedIdsChange(selected);
+                            onSelectedIdsChange(selection);
                         }
                     }
                 }
@@ -134,8 +159,13 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         );
 
         const selectedItems = useMemo(() => {
-            return items.filter(item => selectedIds.includes(item.id));
-        }, [items, selectedIds]);
+            const selectedSubChildren = showSubChildren
+                ? items
+                      .flatMap(item => (item.children ? item.children : []))
+                      .filter(item => selectedIds.includes(item.id))
+                : [];
+            return [...items.filter(item => selectedIds.includes(item.id)), ...selectedSubChildren];
+        }, [items, selectedIds, showSubChildren]);
 
         const handleSearchChange = useCallback(
             (term: string) => {
@@ -179,13 +209,21 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     const finalChildrenAllowed = filteredItemsBySearch
                         .filter(item => item.parents.some(p => p.id === itemParentId))
                         .filter(({ id }) => !disabledItems?.includes(id));
-                    return (
-                        !!finalChildrenAllowed.length &&
-                        finalChildrenAllowed.every(item => selectedIds.includes(item.id))
-                    );
+
+                    const finalSubChildrenAllowed = showSubChildren
+                        ? filteredItemsBySearch
+                              .flatMap(item => (item.children ? item.children : []))
+                              .filter(({ id }) => !disabledItems?.includes(id))
+                        : [];
+
+                    const allowedSelection = showSubChildren
+                        ? [...finalSubChildrenAllowed, ...finalChildrenAllowed]
+                        : finalChildrenAllowed;
+
+                    return !!allowedSelection.length && allowedSelection.every(item => selectedIds.includes(item.id));
                 }
             },
-            [disabledItems, filteredItemsBySearch, selectedIds, hasSelectAll]
+            [hasSelectAll, filteredItemsBySearch, showSubChildren, disabledItems, selectedIds]
         );
 
         const isItemParentDisabled = useCallback(
@@ -200,15 +238,29 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         );
 
         const areAllItemsSelected = useMemo(() => {
-            return (
-                filteredItemsBySearch.filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id))
-                    ?.length === 0
+            const selection = filteredItemsBySearch.filter(
+                ({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id)
             );
-        }, [disabledItems, filteredItemsBySearch, selectedIds]);
+            const selectedSubChildren = showSubChildren
+                ? filteredItemsBySearch
+                      .flatMap(item => (item.children ? item.children : []))
+                      .filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id))
+                : [];
+            return [...selection, ...selectedSubChildren]?.length === 0;
+        }, [disabledItems, filteredItemsBySearch, selectedIds, showSubChildren]);
 
         const itemsToSelect = useMemo(() => {
-            return filteredItemsBySearch.filter(({ id }) => !disabledItems?.includes(id)).map(({ id }) => id);
-        }, [disabledItems, filteredItemsBySearch]);
+            const selectableItems = filteredItemsBySearch
+                .filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id))
+                .map(({ id }) => id);
+            const selectableSubChildren = showSubChildren
+                ? filteredItemsBySearch
+                      .flatMap(item => (item.children ? item.children : []))
+                      .filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id))
+                      .map(({ id }) => id)
+                : [];
+            return [...selectableItems, ...selectableSubChildren];
+        }, [disabledItems, filteredItemsBySearch, selectedIds, showSubChildren]);
 
         const handleSelectAll = useCallback(() => {
             if (hasSelectAll) {
@@ -217,7 +269,13 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         }, [itemsToSelect, hasSelectAll, onSelectedIdsChange]);
 
         const selectedChips = useMemo(() => {
-            return showParentIfChecked && areAllItemsSelected && parents.length > 0 ? parents : selectedItems;
+            const selectedDataToShow =
+                showParentIfChecked && areAllItemsSelected && parents.length > 0 ? parents : selectedItems;
+            return selectedDataToShow.sort((a, b) => {
+                if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+                return 0;
+            });
         }, [areAllItemsSelected, parents, selectedItems, showParentIfChecked]);
 
         const finalPlaceholder = useMemo(() => {
@@ -335,7 +393,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         >
                             {[...filteredItemsBySearchWithoutParent, ...parents].map((option, nindex) => {
                                 if (option.isLeaf) {
-                                    const selectedOption = selectedIds.find(id => id === option.id) !== undefined;
+                                    const selectedOption = selectedIds.includes(option.id);
                                     return (
                                         <FirstLevelLeafWrapper>
                                             <Leaf
@@ -375,9 +433,25 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                                             hasSelectAll={hasSelectAll}
                                         >
                                             {finalChildren.map((child, lindex) => {
-                                                const selected = selectedIds.find(id => id === child.id) !== undefined;
-
-                                                return (
+                                                const selected = selectedIds.includes(child.id);
+                                                return showSubChildren && child?.children?.length ? (
+                                                    <ChildAndSubChildren
+                                                        nodeId={child.id}
+                                                        name={child.name}
+                                                        selected={selected}
+                                                        onSelectedChange={handleSelectedChange}
+                                                        disabled={
+                                                            disabledItems?.includes(child.id) ||
+                                                            (!selected &&
+                                                                !!maxSelection &&
+                                                                maxSelection === selectedIds.length)
+                                                        }
+                                                        subChildren={child?.children}
+                                                        disabledItems={disabledItems}
+                                                        selectedIds={selectedIds}
+                                                        maxSelection={maxSelection}
+                                                    />
+                                                ) : (
                                                     <Leaf
                                                         key={`second-level-${option.id}-${lindex}`}
                                                         nodeId={child.id}
