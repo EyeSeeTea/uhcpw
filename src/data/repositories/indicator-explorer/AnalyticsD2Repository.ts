@@ -46,13 +46,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     saveToFile(
         visualization: Visualization,
         periods: string[],
-        orgUnits: string[],
+        orgUnitUids: string[],
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
         }[]
     ): FutureData<void> {
-        return this.get(visualization, periods, orgUnits).flatMap(analyticsResponse => {
+        return this.get(visualization, periods, orgUnitUids).flatMap(analyticsResponse => {
             const metadataIds = this.extractMetadataIds(analyticsResponse);
 
             return Future.joinObj({
@@ -63,7 +63,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         filter: "id:in:[" + metadataIds.join(",") + "]",
                     })
                 ),
-            }).flatMap(({ analyticsResponse, metadata }) => {
+                orgUnits: apiToFuture(
+                    this.api.models.organisationUnits.get({
+                        fields: { id: true, shortName: true },
+                        paging: false,
+                        filter: { id: { in: orgUnitUids } },
+                    })
+                ),
+            }).flatMap(({ analyticsResponse, metadata, orgUnits }) => {
                 const chartName = `${visualization.categoryName}: ${visualization.friendlyName}`;
                 const mapCodeNameToColumnName: Record<string, string> = {
                     ou: "Country",
@@ -81,6 +88,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     );
                 });
 
+                const existsCountryColumn = columns.includes("Country");
+                const addCountryColumn = !existsCountryColumn && orgUnits.objects.length === 1;
+
+                const finalColumns = addCountryColumn ? ["Country", ...columns] : columns;
+
                 const mappedRows = _(
                     this.mapAnalyticsResponseRows({
                         analyticsResponse,
@@ -92,16 +104,27 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     .sortBy(row => row[1])
                     .value();
 
-                const rows = [[chartName || visualization.name], columns, ...mappedRows];
+                const dataRows = [[chartName || visualization.name], finalColumns, ...mappedRows];
 
-                if (rows) {
+                const dataRowsWithCountryIfRequired = dataRows.map((row, index) => {
+                    if (addCountryColumn && index > 1) {
+                        const country = orgUnits.objects[0];
+                        return country ? [country.shortName, ...row] : ["", ...row];
+                    }
+                    return row;
+                });
+
+                const tabs = [
+                    { data: [[visualization.notes || ""]], name: "Notes" },
+                    {
+                        data: dataRowsWithCountryIfRequired,
+                        name: "Data",
+                    },
+                ];
+
+                if (dataRows) {
                     exportToCSV(
-                        [
-                            {
-                                data: rows,
-                                name: "Data",
-                            },
-                        ],
+                        tabs,
                         visualization.downloadedFileName
                             ? `${visualization.categoryName}: ${visualization.downloadedFileName}`
                             : chartName
