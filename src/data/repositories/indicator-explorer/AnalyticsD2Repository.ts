@@ -4,7 +4,7 @@ import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics
 import { Dimension, Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Id, Ref } from "../../../domain/entities/Ref";
 import { AnalyticsRepository } from "../../../domain/repositories/indicator-explorer/AnalyticsRepository";
-import { D2Api } from "../../../types/d2-api";
+import { D2Api, NonPaginatedObjects } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { isValidUid } from "../../../utils/uid";
 import { exportToCSV } from "../../export/exportToCSV";
@@ -72,57 +72,25 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ),
             }).flatMap(({ analyticsResponse, metadata, orgUnits }) => {
                 const chartName = `${visualization.categoryName}: ${visualization.friendlyName}`;
-                const mapCodeNameToColumnName: Record<string, string> = {
-                    ou: "Country",
-                    pe: "Year",
-                    dx: "Parameter",
-                };
 
-                const columns = analyticsResponse.headers.map(header => {
-                    if (SERVICE_PRIMARY_NAME_COLUMN === header.name) {
-                        return "Parameter";
-                    }
-                    return (
-                        mapCodeNameToColumnName[header.name] ??
-                        header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase()
-                    );
-                });
-
-                const existsCountryColumn = columns.includes("Country");
-                const addCountryColumn = !existsCountryColumn && orgUnits.objects.length === 1;
-
-                const finalColumns = addCountryColumn ? ["Country", ...columns] : columns;
-
-                const mappedRows = _(
-                    this.mapAnalyticsResponseRows({
-                        analyticsResponse,
-                        metadata,
-                        visualizationId: visualization.id,
-                        seriesIdAndName,
-                    })
-                )
-                    .sortBy(row => row[1])
-                    .value();
-
-                const dataRows = [[chartName || visualization.name], finalColumns, ...mappedRows];
-
-                const dataRowsWithCountryIfRequired = dataRows.map((row, index) => {
-                    if (addCountryColumn && index > 1) {
-                        const country = orgUnits.objects[0];
-                        return country ? [country.shortName, ...row] : ["", ...row];
-                    }
-                    return row;
-                });
+                const dataRows = this.createDataRows(
+                    chartName,
+                    visualization,
+                    analyticsResponse,
+                    orgUnits,
+                    metadata,
+                    seriesIdAndName
+                );
 
                 const tabs = [
-                    { data: [[visualization.notes || ""]], name: "Notes" },
+                    { name: "Notes", data: [[visualization.notes || ""]] },
                     {
-                        data: dataRowsWithCountryIfRequired,
                         name: "Data",
+                        data: dataRows,
                     },
                 ];
 
-                if (dataRows) {
+                if (tabs.length > 0) {
                     exportToCSV(
                         tabs,
                         visualization.downloadedFileName
@@ -133,6 +101,58 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 return Future.success(undefined);
             });
         });
+    }
+
+    private createDataRows(
+        chartName: string,
+        visualization: Visualization,
+        analyticsResponse: Analytics,
+        orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>,
+        metadata: Metadata,
+        seriesIdAndName: { id: string | undefined; name: string | undefined }[]
+    ) {
+        const mapCodeNameToColumnName: Record<string, string> = {
+            ou: "Country",
+            pe: "Year",
+            dx: "Parameter",
+        };
+
+        const columns = analyticsResponse.headers.map(header => {
+            if (SERVICE_PRIMARY_NAME_COLUMN === header.name) {
+                return "Parameter";
+            }
+            return (
+                mapCodeNameToColumnName[header.name] ??
+                header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase()
+            );
+        });
+
+        const existsCountryColumn = columns.includes("Country");
+        const addCountryColumn = !existsCountryColumn && orgUnits.objects.length === 1;
+
+        const finalColumns = addCountryColumn ? ["Country", ...columns] : columns;
+
+        const mappedRows = _(
+            this.mapAnalyticsResponseRows({
+                analyticsResponse,
+                metadata,
+                visualizationId: visualization.id,
+                seriesIdAndName,
+            })
+        )
+            .sortBy(row => row[1])
+            .value();
+
+        const dataRows = [[chartName || visualization.name], finalColumns, ...mappedRows];
+
+        const dataRowsWithCountryIfRequired = dataRows.map((row, index) => {
+            if (addCountryColumn && index > 1) {
+                const country = orgUnits.objects[0];
+                return country ? [country.shortName, ...row] : ["", ...row];
+            }
+            return row;
+        });
+        return dataRowsWithCountryIfRequired;
     }
 
     mapAnalyticsResponseRows(params: {
