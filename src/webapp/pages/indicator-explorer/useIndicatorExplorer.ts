@@ -24,8 +24,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         options: countryOptions,
     } = useMultiCountryOptionsV2({ showEurRegion: true, showSubRegions: true });
 
-    const [errorMessage, setErrorMessage] = useState<string>("");
-
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
     const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
     const [pageContent, setPageContent] = useState<IndicatorExplorerContent | undefined>(undefined);
@@ -137,7 +135,10 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             },
             error => {
                 setPageContent(undefined);
-                setErrorMessage(error);
+                setGlobalMessage({
+                    text: error,
+                    type: "error",
+                });
             }
         );
     }, [compositionRoot.indicatorExplorer]);
@@ -214,7 +215,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         showVisualization,
         globalMessage,
         pageContent,
-        errorMessage,
     };
 }
 

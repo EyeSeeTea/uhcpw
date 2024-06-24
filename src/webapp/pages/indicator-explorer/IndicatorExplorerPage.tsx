@@ -13,7 +13,7 @@ import { VisualizationPlugin } from "../../components/visualization/Visualizatio
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGet, showVisualization, globalMessage, pageContent, errorMessage } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
     const snackbar = useSnackbar();
 
     useEffect(() => {
@@ -27,12 +27,6 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             snackbar.success(globalMessage?.text);
         }
     }, [globalMessage, snackbar]);
-
-    useEffect(() => {
-        if (errorMessage) {
-            snackbar.error(i18n.t(errorMessage));
-        }
-    }, [errorMessage, snackbar]);
 
     return (
         <Layout>
