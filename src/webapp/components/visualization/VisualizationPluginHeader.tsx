@@ -14,14 +14,15 @@ interface VisualizationPluginHeaderProps {
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;
-    onDownloadExcel: () => void;
-    onDownloadImage: () => void;
-    onShowInfo: () => void;
-    onCloseInfo: () => void;
+    onDownloadExcel?: () => void;
+    onDownloadImage?: () => void;
+    onShowInfo?: () => void;
+    onCloseInfo?: () => void;
     useHeaderForCountryPage?: boolean;
     showCountryTag?: boolean;
     countries: Country[];
     currentCountry?: string;
+    isScreenshot?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -38,6 +39,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         currentCountry,
         useHeaderForCountryPage = false,
         showCountryTag = false,
+        isScreenshot = false,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountry) {
@@ -51,7 +53,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryPage ? (
                         <>
                             <Row>
-                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
+                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20, width: "100%" }}>
                                     {chartFriendlyName}
                                 </Typography>
                             </Row>
@@ -66,9 +68,11 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     <StyledIconButton onClick={onShowInfo} $color="#185698">
                                         <CustomInfoIcon color="primary" className="info-button" />
                                     </StyledIconButton>
+
                                     <StyledIconButton onClick={onDownloadExcel} $color="white">
                                         <CustomCloudIcon color="primary" className="download-button" />
                                     </StyledIconButton>
+
                                     <StyledIconButton onClick={onDownloadImage} $color="white">
                                         <CustomImageIcon color="primary" className="download-button" />
                                     </StyledIconButton>
@@ -78,41 +82,52 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     ) : (
                         <>
                             <Row>
-                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
+                                <Title
+                                    isScreenshot={isScreenshot}
+                                    variant="h6"
+                                    color="textPrimary"
+                                    style={{ marginLeft: 20 }}
+                                >
                                     {chartFriendlyName}
-                                    <Button>
-                                        <CustomInfoIcon
-                                            color="primary"
-                                            className="info-button"
-                                            htmlColor="#185698"
-                                            onClick={onShowInfo}
-                                        />
-                                    </Button>
-                                </Typography>
+                                    {onShowInfo !== undefined && (
+                                        <Button>
+                                            <CustomInfoIcon
+                                                color="primary"
+                                                className="info-button"
+                                                htmlColor="#185698"
+                                                onClick={onShowInfo}
+                                            />
+                                        </Button>
+                                    )}
+                                </Title>
                             </Row>
 
                             <Column>
-                                <DownloadButton
-                                    variant="contained"
-                                    startIcon={<DownloadIcon />}
-                                    color="primary"
-                                    style={{ marginLeft: 40, marginBottom: 20 }}
-                                    onClick={onDownloadExcel}
-                                    className="download-button"
-                                >
-                                    <Typography>{i18n.t("Download")}</Typography>
-                                </DownloadButton>
+                                {onDownloadExcel !== undefined && (
+                                    <DownloadButton
+                                        variant="contained"
+                                        startIcon={<DownloadIcon />}
+                                        color="primary"
+                                        style={{ marginLeft: 40, marginBottom: 20 }}
+                                        onClick={onDownloadExcel}
+                                        className="download-button"
+                                    >
+                                        <Typography>{i18n.t("Download")}</Typography>
+                                    </DownloadButton>
+                                )}
 
-                                <DownloadButton
-                                    variant="contained"
-                                    startIcon={<ImageRoundedIcon />}
-                                    color="primary"
-                                    style={{ marginLeft: 40 }}
-                                    onClick={onDownloadImage}
-                                    className="download-button"
-                                >
-                                    <Typography>{i18n.t("Download")}</Typography>
-                                </DownloadButton>
+                                {onDownloadImage !== undefined && (
+                                    <DownloadButton
+                                        variant="contained"
+                                        startIcon={<ImageRoundedIcon />}
+                                        color="primary"
+                                        style={{ marginLeft: 40 }}
+                                        onClick={onDownloadImage}
+                                        className="download-button"
+                                    >
+                                        <Typography>{i18n.t("Download")}</Typography>
+                                    </DownloadButton>
+                                )}
                             </Column>
                         </>
                     )}
@@ -197,4 +212,8 @@ const Tag = styled.div`
     white-space: nowrap;
     font-size: 14px;
     font-weight: regular;
+`;
+
+const Title = styled(Typography)<{ isScreenshot: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")}; ;
 `;

@@ -11,10 +11,12 @@ import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
+import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
     const snackbar = useSnackbar();
+    const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -27,6 +29,14 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             snackbar.success(globalMessage?.text);
         }
     }, [globalMessage, snackbar]);
+
+    const handleOpenScreenshot = React.useCallback(() => {
+        setOpenScreenshot(true);
+    }, []);
+
+    const handleCloseScreenshot = React.useCallback(() => {
+        setOpenScreenshot(false);
+    }, []);
 
     return (
         <Layout>
@@ -44,10 +54,26 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         years={filters.year.selected || []}
                         countries={filters.country.selected || []}
                         noDataMessage={pageContent?.noDataMessage}
+                        onDownloadImage={handleOpenScreenshot}
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
                 )}
+
+                <ScreenshotModal
+                    open={openScreenshot}
+                    onClose={handleCloseScreenshot}
+                    title={""}
+                    backgroundColor={"#f1f9fc"}
+                >
+                    <VisualizationPlugin
+                        visualizationId={filters.indicators.selected || ""}
+                        years={filters.year.selected || []}
+                        countries={filters.country.selected || []}
+                        noDataMessage={pageContent?.noDataMessage}
+                        isScreenshot={true}
+                    />
+                </ScreenshotModal>
             </MainSection>
         </Layout>
     );
