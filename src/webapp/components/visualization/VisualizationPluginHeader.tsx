@@ -53,9 +53,14 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryPage ? (
                         <>
                             <Row>
-                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20, width: "100%" }}>
+                                <Title
+                                    isScreenshot={isScreenshot}
+                                    variant="h6"
+                                    color="textPrimary"
+                                    style={{ marginLeft: 20, width: "100%" }}
+                                >
                                     {chartFriendlyName}
-                                </Typography>
+                                </Title>
                             </Row>
 
                             <RowWithGap $gap={20}>
@@ -65,17 +70,23 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     categoryTag && <Tag className="category">{categoryTag}</Tag>
                                 )}
                                 <RowWithGap $gap={0}>
-                                    <StyledIconButton onClick={onShowInfo} $color="#185698">
-                                        <CustomInfoIcon color="primary" className="info-button" />
-                                    </StyledIconButton>
+                                    {onShowInfo && (
+                                        <StyledIconButton onClick={onShowInfo} $color="#185698">
+                                            <CustomInfoIcon color="primary" className="info-button" />
+                                        </StyledIconButton>
+                                    )}
 
-                                    <StyledIconButton onClick={onDownloadExcel} $color="white">
-                                        <CustomCloudIcon color="primary" className="download-button" />
-                                    </StyledIconButton>
+                                    {onDownloadExcel && (
+                                        <StyledIconButton onClick={onDownloadExcel} $color="white">
+                                            <CustomCloudIcon color="primary" className="download-button" />
+                                        </StyledIconButton>
+                                    )}
 
-                                    <StyledIconButton onClick={onDownloadImage} $color="white">
-                                        <CustomImageIcon color="primary" className="download-button" />
-                                    </StyledIconButton>
+                                    {onDownloadImage && (
+                                        <StyledIconButton onClick={onDownloadImage} $color="white">
+                                            <CustomImageIcon color="primary" className="download-button" />
+                                        </StyledIconButton>
+                                    )}
                                 </RowWithGap>
                             </RowWithGap>
                         </>
@@ -89,7 +100,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     style={{ marginLeft: 20 }}
                                 >
                                     {chartFriendlyName}
-                                    {onShowInfo !== undefined && (
+                                    {onShowInfo && (
                                         <Button>
                                             <CustomInfoIcon
                                                 color="primary"
@@ -103,7 +114,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                             </Row>
 
                             <Column>
-                                {onDownloadExcel !== undefined && (
+                                {onDownloadExcel && (
                                     <DownloadButton
                                         variant="contained"
                                         startIcon={<DownloadIcon />}
@@ -116,7 +127,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     </DownloadButton>
                                 )}
 
-                                {onDownloadImage !== undefined && (
+                                {onDownloadImage && (
                                     <DownloadButton
                                         variant="contained"
                                         startIcon={<ImageRoundedIcon />}

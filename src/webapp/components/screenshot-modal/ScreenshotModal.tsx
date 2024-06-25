@@ -13,6 +13,7 @@ interface ScreenshotModalProps {
     children: React.ReactNode;
     backgroundColor?: string;
     exclusionClasses?: string[];
+    hideTitle?: boolean;
 }
 
 function ScreenshotModal({
@@ -22,6 +23,7 @@ function ScreenshotModal({
     backgroundColor = "#FFF",
     exclusionClasses,
     children,
+    hideTitle = true,
 }: ScreenshotModalProps) {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -40,7 +42,7 @@ function ScreenshotModal({
         >
             <StyledBox backgroundColor={backgroundColor}>
                 <Header>
-                    <Title>{_.capitalize(title)}</Title>
+                    {!hideTitle && <Title>{_.capitalize(title)}</Title>}
                     <StyledScreenshotButton
                         variant="contained"
                         startIcon={<ImageRoundedIcon />}

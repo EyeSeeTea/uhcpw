@@ -2,9 +2,12 @@ import { Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled, { css } from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
+import React from "react";
+import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 
 type VisualizationProps = {
     visualizationId: string;
+    visualizationName?: string;
     years: string[];
     countries: string[];
 };
@@ -17,6 +20,16 @@ type SlideGraphType = {
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo }) => {
+    const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
+
+    const handleOpenScreenshot = React.useCallback((graph: VisualizationProps) => {
+        setCurrentGraphScreenshot(graph);
+    }, []);
+
+    const handleCloseScreenshot = React.useCallback(() => {
+        setCurrentGraphScreenshot(undefined);
+    }, []);
+
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
@@ -30,6 +43,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     withoutBackground
                     useHeaderForCountryPage
                     currentCountry={countryId}
+                    onDownloadImage={() => handleOpenScreenshot(graphOne)}
                 />
             </VisualizationContainer>
             {graphTwo && (
@@ -41,8 +55,28 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         withoutBackground
                         useHeaderForCountryPage
                         currentCountry={countryId}
+                        onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                     />
                 </VisualizationContainer>
+            )}
+
+            {currentGraphScreenshot && (
+                <ScreenshotModal
+                    open={true}
+                    onClose={handleCloseScreenshot}
+                    title={currentGraphScreenshot.visualizationName || ""}
+                    backgroundColor={"#f1f9fc"}
+                >
+                    <VisualizationPlugin
+                        visualizationId={currentGraphScreenshot.visualizationId}
+                        years={currentGraphScreenshot.years}
+                        countries={currentGraphScreenshot.countries}
+                        withoutBackground
+                        useHeaderForCountryPage
+                        currentCountry={countryId}
+                        isScreenshot={true}
+                    />
+                </ScreenshotModal>
             )}
         </Container>
     );

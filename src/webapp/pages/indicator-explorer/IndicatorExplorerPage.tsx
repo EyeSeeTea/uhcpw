@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 
@@ -38,6 +38,11 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         setOpenScreenshot(false);
     }, []);
 
+    const chartName = useMemo(
+        () => filters.indicators.options.find(o => o.value === filters.indicators.selected)?.text || "",
+        [filters.indicators.options, filters.indicators.selected]
+    );
+
     return (
         <Layout>
             <TitleContainer>
@@ -63,7 +68,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                 <ScreenshotModal
                     open={openScreenshot}
                     onClose={handleCloseScreenshot}
-                    title={""}
+                    title={chartName}
                     backgroundColor={"#f1f9fc"}
                 >
                     <VisualizationPlugin
