@@ -62,9 +62,9 @@ const whoCountrycodes: Record<string, string> = {
     GBR: "UNK",
     UZB: "UZB",
     XKX: "KOS*",
-    "f5415f05-3d3a-476f-9907-c6dc5cd8003c": "BIH-F",
-    "95d59331-585d-4c09-943f-46fa7b40ea88": "BIH-R",
-    "d98ef9c7-cca6-4424-a1e1-3dc9669330a8": "BIH",
+    "BIH-4-1": "BIH",
+    "BIH-4-2": "BIH-F",
+    "BIH-4-3": "BIH-R",
 };
 
 const whoCountryNames: Record<Id, string> = {
