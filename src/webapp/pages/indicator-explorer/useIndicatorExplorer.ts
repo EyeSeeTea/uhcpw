@@ -40,6 +40,29 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [disabledCountries, setDisabledCountries] = useState<string[]>([]);
     const [maxCountrySelection, setMaxCountrySelection] = useState<number | undefined>(undefined);
 
+    const showNonComparativeMessageIfRequired = useCallback(
+        (oldVisualization: Visualization | undefined, newsVisualization: Visualization | undefined) => {
+            if (oldVisualization?.isComparative && !newsVisualization?.isComparative) {
+                if (newsVisualization?.minCountryFilter === 1) {
+                    setGlobalMessage({
+                        text: i18n.t(`You can only select one country at a time with this indicator`, {
+                            count: newsVisualization.minCountryFilter,
+                        }),
+                        type: "info",
+                    });
+                } else {
+                    setGlobalMessage({
+                        text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
+                            count: newsVisualization?.minCountryFilter,
+                        }),
+                        type: "info",
+                    });
+                }
+            }
+        },
+        []
+    );
+
     const onChangeCategoryFilter = useCallback(
         (value: string | undefined) => {
             const oldVisualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
@@ -70,6 +93,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             } else if (newsVisualization?.isComparative) {
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
+
+            showNonComparativeMessageIfRequired(oldVisualization, newsVisualization);
 
             setMaxCountrySelection(newsVisualization?.maxCountryFilter);
             setSelectedIndicatorFilter(value);

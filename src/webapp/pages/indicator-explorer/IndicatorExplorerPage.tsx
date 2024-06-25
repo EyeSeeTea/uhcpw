@@ -22,7 +22,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         if (globalMessage?.type === "error") {
             snackbar.error(globalMessage.text);
         } else if (globalMessage?.type === "info") {
-            snackbar.info(globalMessage.text);
+            snackbar.info(globalMessage.text, { autoHideDuration: 5000 });
         } else {
             snackbar.success(globalMessage?.text);
         }
