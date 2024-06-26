@@ -21,6 +21,7 @@ import { chart_jFtGKQIQTGp_Seed } from "./chart_jFtGKQIQTGp_Seed";
 import { chart_Y31jQX5PVdI_Seed } from "./chart_Y31jQX5PVdI_Seed";
 import { chart_pWFRTFfh5mA_Seed } from "./chart_pWFRTFfh5mA_Seed";
 import { chat_uRZCilOIr1C_Seed } from "./chat_uRZCilOIr1C_Seed";
+import { chart_qipBCG0Hc9Y_Seed } from "./chart_qipBCG0Hc9Y_Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     // Comparative charts
@@ -51,6 +52,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Seed,
     //HSH
     uRZCilOIr1C: chat_uRZCilOIr1C_Seed,
+    qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
 };
 
 export const emptyVisualizationExtra = {
