@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2024-06-11T08:47:38.571Z\n"
+"POT-Creation-Date: 2024-06-27T12:16:10.347Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 msgid ""
 "Experts working with the WHO Barcelona Office to assess financial protection "
-"and coverage policy at country or area level"
+"at country or area level"
 msgstr ""
 
 msgid "Select country or area"
