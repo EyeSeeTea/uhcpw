@@ -32,5 +32,13 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     ],
     xAxis: {
         title: { text: "" },
+        categories: [
+            "Outpatient Medicines (HC.5.1)",
+            "Medical products (HC.5.2)",
+            "Outpatient care (HC.1.3)-(HC.1.3.2)",
+            "Dental care (HC.1.2.3)",
+            "Diagnostic tests (HC.4)-(HC.4.3)",
+            "Inpatient care (HC.1.1)+(HC.2.1)",
+        ],
     },
 };
