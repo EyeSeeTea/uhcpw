@@ -1,18 +1,12 @@
+import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
+import { sortSerieDataByValueInSerie } from "./utils/sortSerieDataByValueInSerie";
 
 export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     title: { text: "" },
-    legend: { ...baseLegend },
+    legend: { ...baseLegend, reversed: true },
     series: [
-        {
-            id: "OE8u72wcKty",
-            name: "Public spending on health (HF .1)",
-            color: "#00b050",
-            dataLabels: {
-                enabled: false,
-            },
-        },
         {
             id: "S0rJgTIK3Gv",
             name: "Out-of-pocket payments (HF .3)",
@@ -29,16 +23,33 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
                 enabled: false,
             },
         },
+        {
+            id: "OE8u72wcKty",
+            name: "Public spending on health (HF .1)",
+            color: "#00b050",
+            dataLabels: {
+                enabled: false,
+            },
+        },
     ],
     xAxis: {
         title: { text: "" },
-        categories: [
-            "Outpatient Medicines (HC.5.1)",
-            "Medical products (HC.5.2)",
-            "Outpatient care (HC.1.3)-(HC.1.3.2)",
-            "Dental care (HC.1.2.3)",
-            "Diagnostic tests (HC.4)-(HC.4.3)",
-            "Inpatient care (HC.1.1)+(HC.2.1)",
-        ],
+    },
+    sortSerieData: (series, categories) => {
+        if (!series) return series;
+
+        const seriesWithCategoryInData = series.map(serie => {
+            return {
+                ...serie,
+                data: (serie.data || []).map((item, index) => {
+                    return {
+                        y: item,
+                        name: categories[index],
+                    };
+                }),
+            } as unknown as SeriesColumnOptions;
+        });
+
+        return sortSerieDataByValueInSerie(seriesWithCategoryInData, "S0rJgTIK3Gv");
     },
 };
