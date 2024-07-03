@@ -81,6 +81,7 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: `${colors.accentPrimary}`,
             minHeight: "60px",
             padding: "15px 25px",
+            paddingInlineStart: "64px",
             "& span": {
                 display: "inline",
                 textAlign: "start",
@@ -139,7 +140,7 @@ export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleRes
 
     return (
         <Grid container aria-label="country-page-slider">
-            <Grid item md={5} lg={4} xs={1} className={classes.gridItem}>
+            <Grid item xs={1} md={5} lg={4} className={classes.gridItem}>
                 <Tabs
                     orientation="vertical"
                     value={tabValue}
