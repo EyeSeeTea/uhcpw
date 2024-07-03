@@ -72,7 +72,9 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             size="small"
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}
                         >
-                            <ChevronRightSharpIcon onClick={() => onArrowClick("/resources/comparative-analysis")} />
+                            <ChevronRightSharpIcon
+                                onClick={() => onArrowClick(`/resources/comparative-analysis?country=${countryId}`)}
+                            />
                         </Fab>
                     </Row>
                     <Grid container spacing={5}>
