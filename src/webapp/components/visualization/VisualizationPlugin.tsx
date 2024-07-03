@@ -14,6 +14,8 @@ interface VisualizationPluginProps {
     withoutBackground?: boolean;
     useHeaderForCountryPage?: boolean;
     noDataMessage?: string;
+    onDownloadImage?: () => void;
+    isScreenshot?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
@@ -25,6 +27,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         withoutBackground = false,
         useHeaderForCountryPage = false,
         noDataMessage = "",
+        onDownloadImage,
+        isScreenshot = false,
     }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
@@ -35,7 +39,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
         const ref = useRef<HTMLDivElement>(null);
 
-        const onDownloadImage = useCallback(() => {
+        const onDirectDownloadImage = useCallback(() => {
             if (chartData.kind === "Loaded" && ref.current) {
                 downloadHtmlElement(ref.current, chartData.visualization.friendlyName || "chart-image", {
                     backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
@@ -45,20 +49,25 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }, [chartData, useHeaderForCountryPage]);
 
         return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
-            <Container ref={ref} $withoutBackground={withoutBackground} $isCountryPage={useHeaderForCountryPage}>
+            <Container
+                ref={ref}
+                $withoutBackground={withoutBackground}
+                $marginStart={!useHeaderForCountryPage && !isScreenshot}
+            >
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualization.notes || ""}
                     chartFriendlyName={chartData.visualization.friendlyName}
                     categoryTag={chartData.visualization.categoryTag}
                     showInfo={showInfo}
-                    onDownloadExcel={() => onDownloadExcel(chartData)}
-                    onDownloadImage={onDownloadImage}
-                    onShowInfo={onShowInfo}
-                    onCloseInfo={onCloseInfo}
+                    onDownloadExcel={isScreenshot ? undefined : () => onDownloadExcel(chartData)}
+                    onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}
+                    onShowInfo={isScreenshot ? undefined : onShowInfo}
+                    onCloseInfo={isScreenshot ? undefined : onCloseInfo}
                     useHeaderForCountryPage={useHeaderForCountryPage}
                     currentCountry={currentCountry}
                     countries={chartData.countries}
                     showCountryTag={chartData.visualization.showCountryTag}
+                    isScreenshot={isScreenshot}
                 />
                 <ChartPlugin
                     analytics={[chartData.analytics]}
@@ -69,7 +78,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     withoutBackground={withoutBackground}
                     externalchartOptions={chartData.chartOptions}
                 />
-                <Box height={32} />
+                {!isScreenshot && <Box height={32} />}
             </Container>
         ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
             <Center>
@@ -89,8 +98,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     }
 );
 
-const Container = styled.div<{ $withoutBackground: boolean; $isCountryPage?: boolean }>`
-    margin-block-start: ${props => (props.$isCountryPage ? "0px" : "48px")};
+const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean }>`
+    margin-block-start: ${props => (props.$marginStart ? "48px" : "0px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding: 0px 32px 32px 32px;
 `;

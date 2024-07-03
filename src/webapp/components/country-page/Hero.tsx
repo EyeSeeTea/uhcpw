@@ -7,16 +7,29 @@ import { ButtonItem } from "../home/country-panel/CountryPanel";
 import { VisualizationPlugin } from "../visualization/VisualizationPlugin";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
+import React from "react";
+import ScreenshotModal from "../screenshot-modal/ScreenshotModal";
+import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
 
 type HeroProps = {
     countryId: string;
 };
 
 const CHART_1_SCATTER_VISUALIZATION_ID = "hNU4Lj1xLYO";
+const CHART_1_SCATTER_VISUALIZATION_NAME = VisualizationsSeeds["hNU4Lj1xLYO"]?.friendlyName;
 
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndRegions } = useAppContext();
     const country = useCountryInfo(countryId);
+    const [openScreenshot, setOpenScreenshot] = React.useState(false);
+
+    const handleOpenScreenshot = React.useCallback(() => {
+        setOpenScreenshot(true);
+    }, []);
+
+    const handleCloseScreenshot = React.useCallback(() => {
+        setOpenScreenshot(false);
+    }, []);
 
     if (!countryId) return <CircularProgress />;
 
@@ -43,8 +56,26 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         currentCountry={countryId}
                         withoutBackground
                         useHeaderForCountryPage
+                        onDownloadImage={handleOpenScreenshot}
                     />
                 </VisualizationContainer>
+
+                <ScreenshotModal
+                    open={openScreenshot}
+                    onClose={handleCloseScreenshot}
+                    title={CHART_1_SCATTER_VISUALIZATION_NAME || ""}
+                    backgroundColor={"#f1f9fc"}
+                >
+                    <VisualizationPlugin
+                        visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
+                        years={[LatestCOVID19.id]}
+                        countries={countriesAndRegions.map(({ id }) => id)}
+                        currentCountry={countryId}
+                        withoutBackground
+                        useHeaderForCountryPage
+                        isScreenshot={true}
+                    />
+                </ScreenshotModal>
             </GraphGrid>
         </Grid>
     );

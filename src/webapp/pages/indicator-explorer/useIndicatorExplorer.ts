@@ -106,6 +106,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             onSelectedCountryChange,
             selectedCountries,
             selectedIndicatorFilter,
+            showNonComparativeMessageIfRequired,
             visualizations,
         ]
     );
