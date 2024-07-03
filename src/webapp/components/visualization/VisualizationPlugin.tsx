@@ -92,7 +92,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 const Container = styled.div<{ $withoutBackground: boolean; $isCountryPage?: boolean }>`
     margin-block-start: ${props => (props.$isCountryPage ? "0px" : "48px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
-    padding: 0px 32px 32px 32px;
+    padding: 0px 32px 32px 16px;
 `;
 
 const Center = styled.div`

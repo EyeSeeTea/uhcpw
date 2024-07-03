@@ -57,12 +57,16 @@ const InfoGrid = styled(Grid)`
     color: white;
     overflow-y: auto;
     font-size: 16px;
+    @media (min-width: 743px) {
+    padding-inline-end: 100px;
+    }
     ul {
         list-style-position: outside;
         padding-left: 13px;
         > li {
             padding-inline-start: 7px;
         }
+    }
     }
 `;
 

@@ -51,7 +51,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryPage ? (
                         <>
                             <Row>
-                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
+                                <Typography variant="h6" color="textPrimary">
                                     {chartFriendlyName}
                                 </Typography>
                             </Row>
@@ -136,6 +136,7 @@ const Row = styled.div`
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: flex-start;
+    gap: 1rem;
 `;
 
 const Column = styled.div`
