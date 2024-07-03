@@ -21,7 +21,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     if (!countryId) return <CircularProgress />;
 
     return (
-        <Grid container aria-label="country-page-hero">
+        <Container container aria-label="country-page-hero">
             {country && (
                 <InfoGrid item md={5} lg={4} xs={12}>
                     <ReactMarkdown
@@ -46,9 +46,14 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     />
                 </VisualizationContainer>
             </GraphGrid>
-        </Grid>
+        </Container>
     );
 };
+
+const Container = styled(Grid)`
+    padding-inline-start: 2.3rem;
+    background-color: ${colors.accentPrimary};
+`;
 
 const InfoGrid = styled(Grid)`
     background-color: ${colors.accentPrimary};
