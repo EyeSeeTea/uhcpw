@@ -33,9 +33,17 @@ interface SearchInputProps {
     onChange?: (value: string) => void;
     style?: React.CSSProperties;
     autoFocus?: boolean;
+    placeholder?: string;
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, style, autoFocus = false }) => {
+const SearchInput: React.FC<SearchInputProps> = ({
+    value,
+    className,
+    onChange,
+    style,
+    autoFocus = false,
+    placeholder,
+}) => {
     const classes = useStyles();
 
     const [stateValue, updateStateValue] = useState(value);
@@ -71,7 +79,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ value, className, onChange, s
                 className={classes.input}
                 disableUnderline
                 onChange={handleChange}
-                placeholder={i18n.t("Search")}
+                placeholder={placeholder ? placeholder : i18n.t("Search")}
                 value={stateValue}
                 role="searchbox"
                 onKeyDown={handleKeydown}
