@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-06-27T12:16:10.347Z\n"
-"PO-Revision-Date: 2024-06-27T12:16:10.347Z\n"
+"POT-Creation-Date: 2024-07-03T07:08:42.341Z\n"
+"PO-Revision-Date: 2024-07-03T07:08:42.341Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -242,4 +242,7 @@ msgid "Latest avalaible year"
 msgstr ""
 
 msgid "Country analysis"
+msgstr ""
+
+msgid "Search all publications"
 msgstr ""
