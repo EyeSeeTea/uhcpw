@@ -1,4 +1,4 @@
-import { Button, Typography } from "@material-ui/core";
+import { Button, Typography, makeStyles } from "@material-ui/core";
 import styled from "styled-components";
 import { CountryDropdown } from "./dropdown/CountryDropdown";
 import i18n from "../../../locales";
@@ -10,6 +10,18 @@ import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
 import { Option } from "../../components/dropdown/Option";
 import { getBackgroundColorByCountryStatus } from "../../pages/country/utils";
+
+const useStyles = makeStyles(theme => ({
+    container: {
+        paddingLeft: theme.spacing(8),
+        paddingRight: theme.spacing(10),
+        "@media (max-width: 500px)": {
+            flexWrap: "wrap",
+            justifyContent: "flex-end",
+            gap: 4,
+        },
+    },
+}));
 
 type HeaderType = {
     countryId: string;
@@ -42,7 +54,7 @@ export const Header: FC<HeaderType> = ({
     handleResetTab,
 }) => {
     const country = useCountryInfo(countryId);
-
+    const classes = useStyles();
     const handleClick = useCallback(
         (ref: MutableRefObject<any>, where: "detail" | "resources" | "expert") => {
             ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -54,7 +66,7 @@ export const Header: FC<HeaderType> = ({
     );
 
     return (
-        <Container aria-label="country-page-header" status={country?.status}>
+        <Container aria-label="country-page-header" status={country?.status} className={classes.container}>
             <ButtonsContainer>
                 <CountryDropdown
                     fullWidth
@@ -91,7 +103,6 @@ const Container = styled.div<{ status: CountryStatus | undefined }>`
     height: 80px;
     align-items: center;
     background: ${props => getBackgroundColorByCountryStatus(props.status)};
-    padding: 0px 40px;
 `;
 
 const ButtonsContainer = styled.div`
