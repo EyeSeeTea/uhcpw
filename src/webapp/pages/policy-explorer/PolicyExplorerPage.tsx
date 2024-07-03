@@ -89,7 +89,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                         <DownloadButton
                             aria-label="Download"
                             variant="contained"
-                            startIcon={<DownloadIcon />}
+                            endIcon={<DownloadIcon />}
                             color="primary"
                             onClick={onDownload}
                             className="download-button"
