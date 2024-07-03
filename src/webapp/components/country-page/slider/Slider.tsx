@@ -146,12 +146,6 @@ export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleRes
                     onChange={handleTabChange}
                     className={classes.tabs}
                     classes={{ indicator: classes.indicator }}
-                    // TabIndicatorProps={{
-                    //     style: {
-                    //         backgroundColor: colors.accentPrimaryDark,
-                    //         width: "10px",
-                    //     },
-                    // }}
                     onWheel={onWheel}
                     onMouseEnter={disableScroll}
                     onMouseLeave={enableScroll}
