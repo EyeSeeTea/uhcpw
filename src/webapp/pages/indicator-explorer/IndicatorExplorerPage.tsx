@@ -77,6 +77,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         countries={filters.country.selected || []}
                         noDataMessage={pageContent?.noDataMessage}
                         isScreenshot={true}
+                        withoutBackground
                     />
                 </ScreenshotModal>
             </MainSection>
