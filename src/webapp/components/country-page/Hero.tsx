@@ -51,7 +51,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
 };
 
 const Container = styled(Grid)`
-    padding-inline-start: 2.3rem;
+    padding-inline-start: 2.2rem;
     background-color: ${colors.accentPrimary};
 `;
 
