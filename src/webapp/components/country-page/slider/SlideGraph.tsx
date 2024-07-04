@@ -2,6 +2,7 @@ import { Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
 import styled, { css } from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
+import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -17,6 +18,8 @@ type SlideGraphType = {
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo }) => {
+    const { pageContent } = useIndicatorExplorer();
+
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
@@ -30,6 +33,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     withoutBackground
                     useHeaderForCountryPage
                     currentCountry={countryId}
+                    noDataMessage={pageContent?.noDataMessage}
                 />
             </VisualizationContainer>
             {graphTwo && (
@@ -41,6 +45,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         withoutBackground
                         useHeaderForCountryPage
                         currentCountry={countryId}
+                        noDataMessage={pageContent?.noDataMessage}
                     />
                 </VisualizationContainer>
             )}
