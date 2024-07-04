@@ -5,21 +5,13 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-07-03T07:08:42.341Z\n"
-"PO-Revision-Date: 2024-07-03T07:08:42.341Z\n"
+"POT-Creation-Date: 2024-07-04T08:30:25.552Z\n"
+"PO-Revision-Date: 2024-07-04T08:30:25.552Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
 
 msgid "All countries and areas"
-msgstr ""
-
-msgid "The Financial Protection Expert Network"
-msgstr ""
-
-msgid ""
-"Experts working with the WHO Barcelona Office to assess financial "
-"protection at country or area level"
 msgstr ""
 
 msgid "Select country or area"
