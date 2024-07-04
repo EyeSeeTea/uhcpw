@@ -96,7 +96,7 @@ const FooterTop = styled.div`
 `;
 
 const FooterBottom = styled.div`
-    padding-left: 48px;
+    padding-inline-start: 3.75rem;
     height: 50px;
     background: #0360a6;
     color: white;
@@ -117,6 +117,7 @@ const MailLink = styled.a`
 
 const Disclaimer = styled(Typography)`
     margin-block-start: 16px;
+    padding-inline-start: 0.3125rem;
 `;
 
 const FirstGrid = styled(Grid)`
