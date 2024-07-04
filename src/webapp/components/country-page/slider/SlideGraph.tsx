@@ -70,10 +70,12 @@ const Container = styled.div`
 const VisualizationContainer = styled.div`
     > div {
         margin: 0;
+        @media (min-width: 960px) {
+            padding-inline-end: 3.75rem;
+        }
     }
     max-width: 100%;
     .visualization-plugin-header {
         padding-block-start: 37px;
-        max-width: 57.5rem;
     }
 `;
