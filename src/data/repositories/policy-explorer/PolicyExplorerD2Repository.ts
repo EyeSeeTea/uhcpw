@@ -162,7 +162,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const generalInfoForDownload: PolicyExplorerGeneralInfoToDownload[] = generalInfo.map(info => ({
             country: info.country,
             year: info.year,
-            lastUpdate: info.lastUpdate ? moment(info.lastUpdate).format("DD MMMM YYYY") : "",
+            lastUpdate: info.lastUpdate ? moment(info.lastUpdate).format("D MMMM YYYY") : "",
             countryExperts: info.countryExperts,
             editors: info.editors,
             reviewers: info.reviewers,

@@ -129,7 +129,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                                 {i18n.t("Last updated: ", { nsSeparator: false })}
                                             </CreditsText>
                                             &nbsp;
-                                            <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
+                                            <CreditsText>{moment(info.lastUpdate).format("D MMMM YYYY")}</CreditsText>
                                         </GeneralRow>
                                     ) : null}
 
