@@ -687,6 +687,11 @@ export function givenAGeneralContent(): GeneralContent {
             disclaimer:
                 "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)",
         },
+        aboutUs: {
+            title: "The Financial Protection Expert Network",
+            subtitle:
+                "Experts working with the WHO Barcelona Office to assess financial protection at country or area level",
+        },
     };
 }
 
