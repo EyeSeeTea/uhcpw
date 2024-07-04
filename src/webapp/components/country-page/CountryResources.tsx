@@ -53,7 +53,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}
                         >
                             <ChevronRightSharpIcon
-                                onClick={() => onArrowClick(`/resources/country-analysis?country=${countryId}`)}
+                                onClick={() => onArrowClick(`/resources/country-analysis?country=${redirectCountryId}`)}
                             />
                         </Fab>
                     </Row>
