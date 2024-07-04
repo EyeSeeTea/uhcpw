@@ -43,17 +43,17 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const showNonComparativeMessageIfRequired = useCallback(
         (oldVisualization: Visualization | undefined, newsVisualization: Visualization | undefined) => {
             if (oldVisualization?.isComparative && !newsVisualization?.isComparative) {
-                if (newsVisualization?.minCountryFilter === 1) {
+                if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter === 1) {
                     setGlobalMessage({
                         text: i18n.t(`You can only select one country at a time with this indicator`, {
                             count: newsVisualization.minCountryFilter,
                         }),
                         type: "info",
                     });
-                } else {
+                } else if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter >= 1) {
                     setGlobalMessage({
                         text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
-                            count: newsVisualization?.minCountryFilter,
+                            count: newsVisualization?.maxCountryFilter,
                         }),
                         type: "info",
                     });
