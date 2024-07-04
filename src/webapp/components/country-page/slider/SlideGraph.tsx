@@ -74,5 +74,6 @@ const VisualizationContainer = styled.div`
     max-width: 100%;
     .visualization-plugin-header {
         padding-block-start: 37px;
+        max-width: 57.5rem;
     }
 `;
