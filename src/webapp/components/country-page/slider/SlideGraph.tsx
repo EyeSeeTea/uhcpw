@@ -4,6 +4,7 @@ import styled, { css } from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
 import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
+import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -29,6 +30,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
     const handleCloseScreenshot = React.useCallback(() => {
         setCurrentGraphScreenshot(undefined);
     }, []);
+    const { pageContent } = useIndicatorExplorer();
 
     return (
         <Container>
@@ -44,6 +46,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     useHeaderForCountryPage
                     currentCountry={countryId}
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
+                    noDataMessage={pageContent?.noDataMessage}
                 />
             </VisualizationContainer>
             {graphTwo && (
@@ -56,6 +59,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         useHeaderForCountryPage
                         currentCountry={countryId}
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
+                        noDataMessage={pageContent?.noDataMessage}
                     />
                 </VisualizationContainer>
             )}

@@ -7,10 +7,20 @@ import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
 import i18n from "../../../locales";
 import { useCountryResources } from "../../pages/country/useCountryResources";
 import { ResourceItem } from "../resources/common/ResourceItem";
+import {
+    FEDERACIJA_BOSNE_I_HERCEGOVINE,
+    REPUBLICA_SERPSKA,
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+} from "../../../data/repositories/countries/CountryD2Repository";
 
 export const CountryResources: React.FC<{ countryId: string }> = ({ countryId }) => {
     const history = useHistory();
     const { loading, countryAnalysisResource, comparativeAnalysisResources } = useCountryResources(countryId);
+
+    const redirectCountryId =
+        countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA
+            ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
+            : countryId;
 
     const onArrowClick = useCallback(
         (link: string) => {
@@ -43,7 +53,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}
                         >
                             <ChevronRightSharpIcon
-                                onClick={() => onArrowClick(`/resources/country-analysis?country=${countryId}`)}
+                                onClick={() => onArrowClick(`/resources/country-analysis?country=${redirectCountryId}`)}
                             />
                         </Fab>
                     </Row>
@@ -72,7 +82,11 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             size="small"
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}
                         >
-                            <ChevronRightSharpIcon onClick={() => onArrowClick("/resources/comparative-analysis")} />
+                            <ChevronRightSharpIcon
+                                onClick={() =>
+                                    onArrowClick(`/resources/comparative-analysis?country=${redirectCountryId}`)
+                                }
+                            />
                         </Fab>
                     </Row>
                     <Grid container spacing={5}>
