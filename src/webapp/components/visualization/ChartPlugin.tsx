@@ -1,5 +1,5 @@
-import { createVisualization } from "@dhis2/analytics";
-import Highcharts from "highcharts";
+import { AnalyticsResponse, createVisualization } from "@dhis2/analytics";
+import Highcharts, { PointOptionsObject, SeriesColumnOptions, XAxisOptions } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
@@ -39,7 +39,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
 
         const renderWithAnaliticsAndCustomizations = useCallback(() => {
-            const analyticsResponse = analytics.map(item => ({
+            const analyticsResponse: AnalyticsResponse[] = analytics.map(item => ({
                 response: { ...item },
                 ...item,
             }));
@@ -67,6 +67,19 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 customizedOptions?.sortLegendByLastDataPoint,
                 customizedOptions?.hideLegendIfNoData
             );
+
+            const orderedByValueInSerie = customizedOptions?.sortSerieData
+                ? customizedOptions?.sortSerieData(
+                      series as SeriesColumnOptions[],
+                      getCategories(originalChartOptions.xAxis)
+                  )
+                : series;
+
+            const categoriesByOrderedByValueInSerie = customizedOptions?.sortSerieData
+                ? (orderedByValueInSerie as SeriesColumnOptions[])[0]?.data?.map(
+                      item => (item as PointOptionsObject).name || ""
+                  )
+                : undefined;
 
             const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
                 ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
@@ -97,7 +110,14 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
                           const customization = countryXAxisCustomization || customizedXAxis;
 
-                          return { ...item, ...customization };
+                          return {
+                              ...item,
+                              ...customization,
+                              categories:
+                                  categoriesByOrderedByValueInSerie && categoriesByOrderedByValueInSerie.length > 0
+                                      ? categoriesByOrderedByValueInSerie
+                                      : item.categories,
+                          };
                       })
                     : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis },
 
@@ -113,7 +133,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
                     : originalChartOptions.yAxis,
 
-                series: series?.map(serie => {
+                series: orderedByValueInSerie?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
                         ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })
                         : undefined;
@@ -214,3 +234,7 @@ const Container = styled.div<{ $withoutBackground: boolean }>`
 
     ${customCss}
 `;
+
+function getCategories(xAxis: Highcharts.XAxisOptions | Highcharts.XAxisOptions[] | undefined): string[] {
+    return Array.isArray(xAxis) ? xAxis[0]?.categories || [] : xAxis?.categories || [];
+}

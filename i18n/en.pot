@@ -170,6 +170,9 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Download"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
@@ -178,10 +181,15 @@ msgstr[1] ""
 msgid "There may be no data"
 msgstr ""
 
-msgid "Download"
+msgid "All years"
 msgstr ""
 
-msgid "All years"
+msgid "You can only select one country at a time with this indicator"
+msgid_plural "You can only select one country at a time with this indicator"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "You can only select {{count}} countries at a time with this indicator"
 msgstr ""
 
 msgid "2019 or latest available year before COVID-19"

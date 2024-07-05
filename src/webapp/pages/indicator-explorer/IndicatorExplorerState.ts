@@ -1,5 +1,5 @@
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
-import { CountryFilterState, OptionsMultiFilterState } from "../../common/state/state";
+import { CountryFilterState } from "../../common/state/state";
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 
 export type IndicatorExplorerState = {
@@ -8,7 +8,6 @@ export type IndicatorExplorerState = {
     showVisualization: boolean;
     globalMessage?: GlobalMessage;
     pageContent: IndicatorExplorerContent | undefined;
-    errorMessage: string;
 };
 
 export type IndicatorOption = {
