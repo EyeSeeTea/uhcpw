@@ -5,7 +5,6 @@ import { baseChartOptions } from "./generic/baseChartOptions";
 const REST_ID = "REST_ID";
 
 export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    debugger;
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
         .groupBy(row => row[1])
         .value();
@@ -125,7 +124,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         },
         tooltip: {
             pointFormat:
-                "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
+                "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
         },
     } as Highcharts.Options;
 };
