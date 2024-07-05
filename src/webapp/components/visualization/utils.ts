@@ -7,14 +7,30 @@ export function getSeriesChart(
     sortLegendByLastDataPoint: boolean | undefined,
     hideLegendIfNoData: boolean | undefined
 ): Highcharts.SeriesOptionsType[] | undefined {
-    const sortedSeries = customizedOptionsSeries
+    const sortedSeries = sortSeriesByCustomization(customizedOptionsSeries, originalChartOptionsSeries);
+
+    const seriesWithData = hideSeriesIfRequired(hideLegendIfNoData, sortedSeries);
+
+    return sortLegendByLastDataPointIfRequired(sortLegendByLastDataPoint, seriesWithData);
+}
+
+function sortSeriesByCustomization(
+    customizedOptionsSeries: SerieCustomization[] | undefined,
+    originalChartOptionsSeries: Highcharts.SeriesOptionsType[] | undefined
+): Highcharts.SeriesOptionsType[] | undefined {
+    return customizedOptionsSeries
         ? _.orderBy(originalChartOptionsSeries, serie => {
               const serieCustomization = customizedOptionsSeries?.find(customSerie => serie.id === customSerie.id);
               return serieCustomization ? customizedOptionsSeries?.indexOf(serieCustomization) : 0;
           })
         : originalChartOptionsSeries;
+}
 
-    const seriesWithData = hideLegendIfNoData
+function hideSeriesIfRequired(
+    hideLegendIfNoData: boolean | undefined,
+    sortedSeries: Highcharts.SeriesOptionsType[] | undefined
+): Highcharts.SeriesOptionsType[] | undefined {
+    return hideLegendIfNoData
         ? sortedSeries?.filter(serie => {
               const finalSerie = serie as any;
               const isDataSeriesEmpty =
@@ -23,7 +39,12 @@ export function getSeriesChart(
               return !isDataSeriesEmpty;
           })
         : sortedSeries;
+}
 
+function sortLegendByLastDataPointIfRequired(
+    sortLegendByLastDataPoint: boolean | undefined,
+    seriesWithData: Highcharts.SeriesOptionsType[] | undefined
+): Highcharts.SeriesOptionsType[] | undefined {
     return sortLegendByLastDataPoint
         ? _.orderBy(
               seriesWithData,
