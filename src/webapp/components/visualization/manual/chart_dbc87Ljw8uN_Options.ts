@@ -1,5 +1,4 @@
 import { SeriesColumnOptions } from "highcharts";
-import _ from "lodash";
 import { sortSerieDataByValueInSerie } from "../customization/charts/utils/sortSerieDataByValueInSerie";
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
