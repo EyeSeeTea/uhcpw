@@ -75,9 +75,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                   )
                 : series;
 
-            const categoriesByOrderedByValueInSerie = (orderedByValueInSerie as SeriesColumnOptions[])[0]?.data?.map(
-                item => (item as PointOptionsObject).name || ""
-            );
+            const categoriesByOrderedByValueInSerie = customizedOptions?.sortSerieData
+                ? (orderedByValueInSerie as SeriesColumnOptions[])[0]?.data?.map(
+                      item => (item as PointOptionsObject).name || ""
+                  )
+                : undefined;
 
             const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
                 ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
