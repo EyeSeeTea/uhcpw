@@ -62,6 +62,7 @@ export const PolicyExplorerTable = React.memo(
                     <Row>
                         {category && (
                             <Row>
+                                {/* padding */}
                                 <Typography variant="h6" color="primary">
                                     {category.text}
                                 </Typography>
@@ -142,16 +143,16 @@ const Row = styled.div`
 `;
 
 const TableHeader = styled.div`
-    padding-block-start: 20px;
-    padding-block-end: 48px;
+    padding-block-start: 10px;
+    padding-block-end: 12px;
 `;
 
 const TablePaper = styled(Paper)`
     border-radius: 10px;
     box-shadow: none;
-    margin-block-end: 92px;
+    margin-block-end: 36px;
     &:last-child {
-        margin-block-end: 64px;
+        margin-block-end: 26px;
     }
 `;
 
