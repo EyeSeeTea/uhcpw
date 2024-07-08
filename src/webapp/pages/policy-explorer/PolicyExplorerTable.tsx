@@ -46,6 +46,7 @@ export const PolicyExplorerTable = React.memo(
 
         const getCellWidth = React.useCallback(
             columnIndex => {
+                // 128 is the padding of the screen
                 const totalWidth = width - 128;
 
                 if (dataOrientation === "normal" && rows?.[0]?.[columnIndex]) {
