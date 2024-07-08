@@ -37,6 +37,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     VB7bdJ8ZXya: chart_VB7bdJ8ZXya_Seed,
     mcNfvQaVbfy: chart_mcNfvQaVbfy_Seed,
     B4CnzUqVR3n: chart_B4CnzUqVR3n_Seed,
+    eEKRLRR4mDk: chart_eEKRLRR4mDk_Seed,
     // Household spending on health
     pWFRTFfh5mA: chart_pWFRTFfh5mA_Seed,
     // Financial hardship
@@ -64,7 +65,6 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     z6nPPMMbOw5: chart_z6nPPMMbOw5_Seed,
     //FH
     TzWcDtEOTPX: chart_TzWcDtEOTPX_Seed,
-    eEKRLRR4mDk: chart_eEKRLRR4mDk_Seed,
 };
 
 export const emptyVisualizationExtra = {
