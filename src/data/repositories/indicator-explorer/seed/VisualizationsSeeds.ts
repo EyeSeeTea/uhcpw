@@ -26,6 +26,7 @@ import { chart_xKmSHeJ1GXq_Seed } from "./chart_xKmSHeJ1GXq_Seed";
 import { chat_fY7K8ATEDgQ_Seed } from "./chat_fY7K8ATEDgQ_Seed";
 import { chart_z6nPPMMbOw5_Seed } from "./chart_z6nPPMMbOw5_Seed";
 import { chart_TzWcDtEOTPX_Seed } from "./chart_TzWcDtEOTPX_Seed";
+import { chart_eEKRLRR4mDk_Seed } from "./chart_eEKRLRR4mDk_Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     // Comparative charts
@@ -36,6 +37,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     VB7bdJ8ZXya: chart_VB7bdJ8ZXya_Seed,
     mcNfvQaVbfy: chart_mcNfvQaVbfy_Seed,
     B4CnzUqVR3n: chart_B4CnzUqVR3n_Seed,
+    eEKRLRR4mDk: chart_eEKRLRR4mDk_Seed,
     // Household spending on health
     pWFRTFfh5mA: chart_pWFRTFfh5mA_Seed,
     // Financial hardship
