@@ -77,4 +77,5 @@ const GraphGrid = styled(Grid)`
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
+    padding-inline-end: 50px;
 `;

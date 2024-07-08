@@ -118,6 +118,7 @@ const MailLink = styled.a`
 const Disclaimer = styled(Typography)`
     margin-block-start: 16px;
     padding-inline-start: 0.3125rem;
+    max-width: 43.75rem;
 `;
 
 const FirstGrid = styled(Grid)`
