@@ -14,6 +14,7 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 import useWindowSize from "../../common/hooks/screen/useWindowSize";
+import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -53,10 +54,10 @@ export const PolicyExplorerTable = React.memo(
                     const columnWidth =
                         rows?.[0]?.[columnIndex]?.value === "Year" ||
                         rows?.[0]?.[columnIndex]?.value === "Country" ||
-                        (category.value === "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID" &&
+                        (category.value === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
                             rows?.[0]?.[columnIndex]?.value === "")
                             ? MIN_CELL_WIDTH
-                            : category.value === "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID"
+                            : category.value === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID
                             ? (totalWidth - 300) / (rows?.[0]?.length || 1)
                             : (totalWidth - 200) / (rows?.[0]?.length || 1);
 
