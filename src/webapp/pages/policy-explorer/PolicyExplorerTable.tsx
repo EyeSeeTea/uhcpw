@@ -59,7 +59,7 @@ export const PolicyExplorerTable = React.memo(
         ) : (
             <>
                 <TableHeader>
-                    <Row>
+                    <CenteredRow>
                         {category && (
                             <Row>
                                 {/* padding */}
@@ -83,7 +83,7 @@ export const PolicyExplorerTable = React.memo(
                                 <Typography>{i18n.t("Row/Column")}</Typography>
                             </SwitchRowColumnButton>
                         </Row>
-                    </Row>
+                    </CenteredRow>
                 </TableHeader>
                 <TableContainer component={TablePaper}>
                     <StyledTable orientation={dataOrientation}>
@@ -139,7 +139,21 @@ export const StyledTable: React.FC<{ orientation: DataOrientation }> = ({ orient
 const Row = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
+`;
+
+const CenteredRow = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    & > *:last-child {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
 `;
 
 const TableHeader = styled.div`
