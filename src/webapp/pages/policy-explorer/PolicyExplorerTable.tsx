@@ -183,7 +183,8 @@ const StyledInvertedTable = styled(Table)`
 `;
 
 const NoDataContainer = styled.div`
-    padding: 48px 0px;
+    padding-block: 10px 0px;
+    padding-inline: 0px;
     display: flex;
     flex-direction: column;
 `;
@@ -196,8 +197,8 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-block-start: 36px;
+    margin-block-end: 36px;
 `;
 
 const Content = styled.div`
