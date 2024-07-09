@@ -464,7 +464,7 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
     userEvent.keyboard("{Escape}");
 
     const textbox = await scope.findByRole("textbox", {
-        name: "Select country",
+        name: "Select country or area",
     });
 
     within(textbox).getByText(/countries/i);

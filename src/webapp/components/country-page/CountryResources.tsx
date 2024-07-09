@@ -22,9 +22,9 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
     return (
         <Container aria-label="country-page-resources">
             <Row>
-                <Typography variant="h5">{i18n.t("Country resources")}</Typography>
+                <Typography variant="h5">{i18n.t("Resources")}</Typography>
                 <Fab
-                    aria-label="Go to country resources"
+                    aria-label="Go to resources"
                     color="primary"
                     size="small"
                     style={{ boxShadow: "none", transform: "scale(0.7)" }}
@@ -35,9 +35,9 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
             {countryAnalysisResource?.length ? (
                 <ResourcesSection aria-label="country-resources">
                     <Row>
-                        <Typography variant="h6">{i18n.t("Country analysis")}</Typography>
+                        <Typography variant="h6">{i18n.t("Country or area analysis")}</Typography>
                         <Fab
-                            aria-label="Go to country analysis resources"
+                            aria-label="Go to country or area analysis resources"
                             color="primary"
                             size="small"
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}

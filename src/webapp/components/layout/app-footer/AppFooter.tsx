@@ -5,19 +5,27 @@ import i18n from "../../../../locales";
 import whoLogoWhite from "../../../assets/who-logo-white.png";
 import europeFlag from "../../../assets/europe-flag.png";
 import { NavLink } from "react-router-dom";
+import { useAppContext } from "../../../contexts/app-context";
 
 const URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING =
     "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)";
 
 export const AppFooter: React.FC = () => {
+    const { generalContent } = useAppContext();
     return (
         <>
             <FooterTop>
                 <Container maxWidth="xl">
                     <Grid container spacing={6}>
-                        <Grid item lg={3} md={6} xs={12}>
+                        <FirstGrid item lg={3} md={6} xs={12}>
                             <img src={whoLogoWhite} width={150} alt="WHO logo" />
-                        </Grid>
+                            <Disclaimer variant="body2">
+                                {i18n.t(
+                                    generalContent?.footer.disclaimer ||
+                                        "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)"
+                                )}
+                            </Disclaimer>
+                        </FirstGrid>
                         <Grid item lg={3} md={6} xs={12}>
                             <EuropeContainer>
                                 <img src={europeFlag} width={100} alt="WHO logo" />
@@ -105,4 +113,14 @@ const StyledNavLink = styled(NavLink)`
 const MailLink = styled.a`
     text-decoration: none;
     color: inherit;
+`;
+
+const Disclaimer = styled(Typography)`
+    margin-block-start: 16px;
+`;
+
+const FirstGrid = styled(Grid)`
+    &.MuiGrid-item {
+        padding-inline-end: 0;
+    }
 `;

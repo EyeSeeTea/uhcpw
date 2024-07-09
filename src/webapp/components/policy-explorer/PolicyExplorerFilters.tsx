@@ -70,7 +70,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                 <Wrapper>
                     <CategorySelector
                         fullWidth
-                        label={i18n.t("Category")}
+                        label={i18n.t("Categories")}
                         placeholder={i18n.t("Select category")}
                         categoryOptions={filters.category.options}
                         selectedCategoriesWithSubcategories={filters.category.selected}
@@ -84,11 +84,14 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         fullWidth
                         hasClearAll
                         hasSelectAll
-                        label={i18n.t("Countries")}
+                        label={i18n.t("Countries and areas")}
                         items={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={onCountryChange}
-                        placeholder={i18n.t("Select country")}
+                        placeholder={i18n.t("Select country or area")}
+                        disabledItems={filters.country.disabledCountries}
+                        showSubChildren={filters.country.showSubRegions}
+                        defaultExpanded={filters.country.defaultExpandedCountries}
                     />
                 </Wrapper>
             </Grid>
@@ -96,7 +99,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                 <Wrapper>
                     <DropdownMultiple
                         fullWidth
-                        label={i18n.t("Year")}
+                        label={i18n.t("Years")}
                         placeholder={i18n.t("Select year")}
                         options={filters.year.options}
                         values={filters.year.selected}

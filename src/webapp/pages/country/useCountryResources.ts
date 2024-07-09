@@ -1,9 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Country } from "../../../domain/entities/Country";
 import { ComparativeAnalysis, CountryAnalysis, Resource } from "../../../domain/entities/resources/Resource";
 import { ResourceTheme, getThemeName } from "../../../domain/entities/resources/ResourceTheme";
 import { useAppContext } from "../../contexts/app-context";
 import { ResourceState } from "../resources/by-type/ResourcesByTypeState";
+import {
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+    FEDERACIJA_BOSNE_I_HERCEGOVINE,
+    REPUBLICA_SERPSKA,
+} from "../../../data/repositories/countries/CountryD2Repository";
 
 const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<"country-analysis" | "comparative-analysis", number> = {
     "country-analysis": 1,
@@ -25,17 +30,23 @@ export function useCountryResources(country: string): CountryResourcesType {
         undefined
     );
 
+    const countryId = useMemo(() => {
+        return country === FEDERACIJA_BOSNE_I_HERCEGOVINE || country === REPUBLICA_SERPSKA
+            ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
+            : country;
+    }, [country]);
+
     useEffect(() => {
         setLoading(true);
 
         compositionRoot.resources.get
             .execute({
-                countries: [country],
+                countries: [countryId],
             })
             .run(
                 resources => {
                     setLoading(false);
-                    const resourceItems = buildResourcesBySection(resources, countries, themes, country);
+                    const resourceItems = buildResourcesBySection(resources, countries, themes, countryId);
                     setCountryAnalysisResources(resourceItems.filter(({ kind }) => kind === "country-analysis"));
                     setComparativeAnalysisResources(
                         resourceItems.filter(({ kind }) => kind === "comparative-analysis")
@@ -47,7 +58,7 @@ export function useCountryResources(country: string): CountryResourcesType {
                     setCountryAnalysisResources([]);
                 }
             );
-    }, [compositionRoot.resources.get, countries, country, themes]);
+    }, [compositionRoot.resources.get, countries, countryId, themes]);
 
     return {
         loading,

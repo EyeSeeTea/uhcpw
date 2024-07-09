@@ -5,10 +5,10 @@ export type Country = {
     name: string;
     longName: string;
     code: string;
-    description: string;
     status: CountryStatus;
     coordinates: [number, number];
     parents: { id: string; name: string }[];
+    children?: Country[];
     flag: string;
     summary: string;
     sliderInfo: {

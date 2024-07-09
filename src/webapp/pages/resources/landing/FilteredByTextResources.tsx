@@ -13,7 +13,7 @@ export const FilteredByTextResources: React.FC<{ resources: FilteredByTextResour
         <>
             <Grid item md={12} xs={12}>
                 {resources.countryAnalysis.length > 0 && (
-                    <ResourceGroup title={i18n.t("Country analysis")} seeAllUrl={"/resources/country-analysis"}>
+                    <ResourceGroup title={i18n.t("Country or area analysis")} seeAllUrl={"/resources/country-analysis"}>
                         {resources.countryAnalysis.map(countryAnalysis => (
                             <StyledGrid key={countryAnalysis.id} item lg={2} md={3} xs={6}>
                                 <ResourceItem resource={countryAnalysis} />

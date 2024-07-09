@@ -25,7 +25,7 @@ export function useMultiCountryOptionsFake(
             name: country.name,
             code: country.code,
             parents: [
-                { id: "all", name: i18n.t("All countries") },
+                { id: "all", name: i18n.t("All countries and areas") },
                 ...country.parents.filter(parent =>
                     groupedByIncome ? parent.name.includes("income") : !parent.name.includes("income")
                 ),

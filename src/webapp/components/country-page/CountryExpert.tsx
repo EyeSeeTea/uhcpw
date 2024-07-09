@@ -10,7 +10,7 @@ export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) =>
     return (
         <Container aria-label="experts">
             <TitleRow>
-                <Typography variant="h5">{i18n.t("Country expert")}</Typography>
+                <Typography variant="h5">{i18n.t("Experts")}</Typography>
             </TitleRow>
             <GridContainer container spacing={5}>
                 {experts.map((expert, i) => (

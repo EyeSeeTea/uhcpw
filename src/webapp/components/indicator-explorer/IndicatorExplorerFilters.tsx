@@ -18,8 +18,8 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                 <Center>
                     <IndicatorSelector
                         fullWidth
-                        label={i18n.t("Category and indicator")}
-                        placeholder={i18n.t("Select category")}
+                        label={i18n.t("Indicators")}
+                        placeholder={i18n.t("Select category and indicator")}
                         options={filters.indicators.options}
                         selectedValue={filters.indicators.selected}
                         onChange={filters.indicators.onSelectedChange}
@@ -32,13 +32,14 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         fullWidth
                         hasSelectAll
                         hasClearAll
-                        label={i18n.t("Countries")}
+                        label={i18n.t("Countries and areas")}
                         items={filters.country.options}
                         selectedIds={filters.country.selected}
                         onSelectedIdsChange={filters.country.onSelectedChange}
                         disabledItems={filters.country.disabledCountries}
                         maxSelection={filters.country.maxCountrySelection}
-                        placeholder={i18n.t("Select country")}
+                        showSubChildren={filters.country.showSubRegions}
+                        placeholder={i18n.t("Select country or area")}
                     />
                 </Center>
             </Grid>
@@ -52,7 +53,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         items={filters.year.options}
                         selectedIds={filters.year.selected}
                         onSelectedIdsChange={filters.year.onSelectedChange}
-                        placeholder={i18n.t("Select years")}
+                        placeholder={i18n.t("Select year")}
                         disableSearch={true}
                         showParentIfChecked={true}
                     />

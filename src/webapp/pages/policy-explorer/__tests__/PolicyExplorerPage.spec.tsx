@@ -303,7 +303,7 @@ function givenASimplePolicyExplorer(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerSimple as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(items));
+    when(mockedRepository.get(anything(), anything(), anything(), anything())).thenReturn(Future.success(items));
 
     policyExplorerRepository = instance(mockedRepository);
 
@@ -315,7 +315,7 @@ function givenAnEmptyPolicyExplorer(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerEmpty as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(items));
+    when(mockedRepository.get(anything(), anything(), anything(), anything())).thenReturn(Future.success(items));
 
     policyExplorerRepository = instance(mockedRepository);
 
@@ -327,7 +327,7 @@ function givenAPolicyExplorerWithMultipleYears(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerWithMultiplePeriods as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(items));
+    when(mockedRepository.get(anything(), anything(), anything(), anything())).thenReturn(Future.success(items));
 
     policyExplorerRepository = instance(mockedRepository);
 
@@ -339,7 +339,7 @@ function givenAPolicyExplorerWithMoreThanOneTable(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerWithMoreThanOneTable as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(items));
+    when(mockedRepository.get(anything(), anything(), anything(), anything())).thenReturn(Future.success(items));
 
     policyExplorerRepository = instance(mockedRepository);
 
@@ -351,7 +351,7 @@ function givenAPolicyExplorerByTypeOfHealthcare(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerByTypeOfHealthcare as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(items));
+    when(mockedRepository.get(anything(), anything(), anything(), anything())).thenReturn(Future.success(items));
 
     policyExplorerRepository = instance(mockedRepository);
 
@@ -409,7 +409,7 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
     await userEvent.keyboard("{Escape}");
 
     const textbox = await scope.findByRole("textbox", {
-        name: "Select country",
+        name: "Select country or area",
     });
 
     within(textbox).getByText(/countries/i);

@@ -4,7 +4,7 @@ import { countries } from "./TreeSelector.fixture";
 
 export async function selectAllCountries() {
     const allCountriesCheckbox = screen.getByRole("checkbox", {
-        name: /select all all countries/i,
+        name: /select all all countries and areas/i,
     });
 
     return userEvent.click(allCountriesCheckbox);
@@ -37,7 +37,7 @@ export function collapseCountriesParentNode(index: 0 | 1 | 2) {
 
 export function focusComponent() {
     const autocompleteInput = screen.getByRole("textbox", {
-        name: "Select country",
+        name: "Select country or area",
     });
 
     userEvent.click(autocompleteInput);

@@ -27,6 +27,8 @@ import {
 import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
+import { Country } from "../../../domain/entities/Country";
+import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -66,14 +68,16 @@ const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
 };
 
 const REFERENCES_REGEX = /\[.*?\]: <\/> ".*?"/g;
+const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
     get(
         policyExplorerCategories: Record<string, string[]>,
-        countries: string[],
-        yearsByCategory: Record<string, string[]>
+        selectedCountriesIds: Id[],
+        yearsByCategory: Record<string, string[]>,
+        countriesAndRegions: Country[]
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
@@ -85,33 +89,26 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             dataValuesResponse: apiToFuture(
                 this.api.dataValues.getSet({
                     dataSet: [policyExplorerDataSet_ID],
-                    orgUnit: countries,
+                    orgUnit: selectedCountriesIds,
                     period: this.getPeriods(yearsByCategory),
                 })
             ),
-            orgUnitsResponse: apiToFuture(
-                this.api.models.organisationUnits.get({
-                    fields: organisationUnitsFields,
-                    paging: false,
-                    level: 3,
-                })
-            ),
-        }).map(({ dataSetResponse, dataValuesResponse, orgUnitsResponse }) => {
+        }).map(({ dataSetResponse, dataValuesResponse }) => {
             const dataValuesWithOrgUnitNames = this.populateDataValuesWithOrgUnitNames(
                 dataValuesResponse.dataValues,
-                orgUnitsResponse.objects
+                countriesAndRegions
             );
 
             return {
                 tables: this.buildTables({
                     policyExplorerCategories,
                     dataValuesWithOrgUnitNames,
-                    organisationUnits: orgUnitsResponse.objects,
+                    countriesAndRegions: countriesAndRegions,
                     yearsByCategory,
                     dataSet: dataSetResponse.objects[0],
                 }),
-                generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, orgUnitsResponse.objects),
-                references: this.buildReferences(dataValuesResponse.dataValues, orgUnitsResponse.objects),
+                generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndRegions),
+                references: this.buildReferences(dataValuesResponse.dataValues, countriesAndRegions),
             };
         });
     }
@@ -229,14 +226,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private buildGeneralInfo(
         dataValues: DataValueSetsDataValue[],
-        organisationUnits: D2OrgUnit[]
+        countriesAndRegions: Country[]
     ): PolicyExplorerGeneralInfo[] {
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
 
         return Object.entries(dataValuesByOrgUnit).map(([orgUnitId, dataValuesOfCountry]) => {
-            const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
+            const countryName = this.getCountryName(orgUnitId, countriesAndRegions);
 
             const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
             const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
@@ -274,7 +271,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const year = sortedYears.length && sortedYears[0] ? sortedYears[0] : "";
 
             return {
-                country,
+                country: countryName,
                 sourceText,
                 sourceUrl,
                 countryExperts,
@@ -290,11 +287,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private buildTables(params: {
         policyExplorerCategories: Record<string, string[]>;
         dataValuesWithOrgUnitNames: DataValueSetsDataValueWithOrgUnitNames[];
-        organisationUnits: D2OrgUnit[];
+        countriesAndRegions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
     }): Record<string, PolicyExplorerCell[][]> {
-        const { policyExplorerCategories, dataValuesWithOrgUnitNames, organisationUnits, yearsByCategory, dataSet } =
+        const { policyExplorerCategories, dataValuesWithOrgUnitNames, countriesAndRegions, yearsByCategory, dataSet } =
             params;
 
         const hasToFillAllSubcategories = Object.keys(policyExplorerCategories).some(
@@ -349,10 +346,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             return accRows;
                         }
 
-                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, organisationUnits, orgUnit)
+                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, countriesAndRegions, orgUnit)
                             ? EMPTY_DATA
-                            : organisationUnits.find(ou => ou.id === orgUnit)?.shortName || EMPTY_DATA;
-
+                            : this.getCountryName(orgUnit, countriesAndRegions);
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =
@@ -391,10 +387,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private isCountryAlreadyInRows(
         accRows: PolicyExplorerCell[][],
-        organisationUnits: D2OrgUnit[],
+        countriesAndRegions: Country[],
         orgUnit: Id
     ): boolean {
-        const orgUnitName = organisationUnits.find(ou => ou.id === orgUnit)?.shortName;
+        const orgUnitName = this.getCountryName(orgUnit, countriesAndRegions);
         return (
             !!orgUnitName && !!accRows?.find((row: PolicyExplorerCell[]) => !!row[0] && row[0]?.value === orgUnitName)
         );
@@ -460,15 +456,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private buildReferences(
         dataValues: DataValueSetsDataValue[],
-        organisationUnits: D2OrgUnit[]
+        countriesAndRegions: Country[]
     ): PolicyExplorerReferences[] {
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
 
         return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
-            const country = organisationUnits.find(ou => ou.id === orgUnitId)?.shortName || "";
-
+            const country = this.getCountryName(orgUnitId, countriesAndRegions);
             const references =
                 dataValues.find(
                     dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.references || "")
@@ -485,12 +480,19 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private populateDataValuesWithOrgUnitNames(
         dataValues: DataValueSetsDataValue[],
-        organisationUnits: D2OrgUnit[]
+        countriesAndRegions: Country[]
     ): DataValueSetsDataValueWithOrgUnitNames[] {
         return dataValues.map(dataValue => ({
             ...dataValue,
-            orgUnitShortName: organisationUnits.find(ou => ou.id === dataValue.orgUnit)?.shortName || "",
+            orgUnitShortName: this.getCountryName(dataValue.orgUnit, countriesAndRegions),
         }));
+    }
+
+    private getCountryName(orgUnitId: Id, countriesAndRegions: Country[]): string {
+        const orgUnitName = countriesAndRegions.find(country => country.id === orgUnitId)?.name || EMPTY_DATA;
+        return orgUnitId === REPUBLICA_SERPSKA || orgUnitId === FEDERACIJA_BOSNE_I_HERCEGOVINE
+            ? orgUnitName.match(REGEX_INSIDE_PARENTHESIS)?.[1] || ""
+            : orgUnitName || "";
     }
 }
 
@@ -505,15 +507,6 @@ const dataSetFields = {
 export type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
-
-const organisationUnitsFields = {
-    id: true,
-    shortName: true,
-} as const;
-
-type D2OrgUnit = MetadataPick<{
-    organisationUnits: { fields: typeof organisationUnitsFields };
-}>["organisationUnits"][number];
 
 type DataValueSetsDataValueWithOrgUnitNames = DataValueSetsDataValue & {
     orgUnitShortName: string;

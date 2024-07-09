@@ -4,6 +4,8 @@ import { Country } from "../../domain/entities/Country";
 import { ResourceTheme } from "../../domain/entities/resources/ResourceTheme";
 import { User } from "../../domain/entities/User";
 import { D2Api } from "../../types/d2-api";
+import { GeneralContent } from "../../domain/entities/GeneralContent";
+import { Maybe } from "../../types/utils";
 
 export interface AppContextState {
     api: D2Api;
@@ -11,6 +13,8 @@ export interface AppContextState {
     compositionRoot: CompositionRoot;
     countries: Country[];
     themes: ResourceTheme[];
+    generalContent: Maybe<GeneralContent>;
+    countriesAndRegions: Country[];
 }
 
 export const AppContext = React.createContext<AppContextState | null>(null);

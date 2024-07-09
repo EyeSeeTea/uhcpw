@@ -6,7 +6,8 @@ import { Id } from "../../../domain/entities/Ref";
 import { D2Api, D2Geometry, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { coordinatesFromString } from "./coordinatesFromString";
-import { mapToWhoCountryCode } from "./mapToWhoCountryCode";
+import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData";
+import { Maybe } from "../../../types/utils";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -56,13 +57,17 @@ const validOrgUnitGroups = [
     "A1BdaIwDheX",
 ];
 
-const NETHERLANDS = "rEQqufy2KNi";
 const GREENLAND = "IZy3ESdFnp5";
-const KOSOVO = "NEPywTBN52g";
-const COUNTRIES_NOT_SHOWN = [GREENLAND, KOSOVO];
+export const KOSOVO = "NEPywTBN52g";
+const COUNTRIES_NOT_SHOWN = [GREENLAND];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
+
+const BOSNIA_AND_HERZEGOVINA_LEVEL_3 = "n8iofJiiX4T";
+export const BOSNIA_AND_HERZEGOVINA_LEVEL_4 = "rqaiYTAnMC6";
+export const FEDERACIJA_BOSNE_I_HERCEGOVINE = "j44olg405lZ";
+export const REPUBLICA_SERPSKA = "FvoXRc5cEEk";
 
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
@@ -76,6 +81,17 @@ export class CountryD2Repository implements CountryRepository {
                     level: 3,
                     rootJunction: "OR",
                     filter: { path: { like: euroOrgUnit }, id: { eq: KOSOVO } },
+                    order: "shortName:asc",
+                })
+            ),
+            bosniaAndHerzegovinaRegions: apiToFuture(
+                this.api.models.organisationUnits.get({
+                    fields: organisationUnitsFields,
+                    paging: false,
+                    level: 4,
+                    filter: {
+                        id: { in: [FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA] },
+                    },
                     order: "shortName:asc",
                 })
             ),
@@ -99,13 +115,18 @@ export class CountryD2Repository implements CountryRepository {
                     program: countriesInCountryPageProgram,
                 })
             ),
-        }).map(({ countries, aditionalCountriesInfo, programMetadata, sectionsEvent }) => {
+        }).map(({ countries, bosniaAndHerzegovinaRegions, aditionalCountriesInfo, programMetadata, sectionsEvent }) => {
             const countriesIdsInCountryPage = this.getCountriesIdsInCountryPage(
                 programMetadata.objects[0],
                 sectionsEvent.events[0]
             );
 
-            return this.buildCountries(countries.objects, aditionalCountriesInfo.events, countriesIdsInCountryPage);
+            return this.buildCountries(
+                countries.objects,
+                bosniaAndHerzegovinaRegions.objects,
+                aditionalCountriesInfo.events,
+                countriesIdsInCountryPage
+            );
         });
     }
 
@@ -125,48 +146,86 @@ export class CountryD2Repository implements CountryRepository {
 
     private buildCountries(
         orgUnits: D2OrgUnit[],
+        bosniaAndHerzegovinaRegions: D2OrgUnit[],
         aditionalCountriesInfo: D2Event[],
         countriesIdsInCountryPage: Id[]
     ): Country[] {
         return orgUnits
             .filter(({ id }) => !COUNTRIES_NOT_SHOWN.includes(id))
             .map(orgUnit => {
+                const countryId =
+                    BOSNIA_AND_HERZEGOVINA_LEVEL_3 === orgUnit.id ? BOSNIA_AND_HERZEGOVINA_LEVEL_4 : orgUnit.id;
+
                 const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
-                    event => event.orgUnit === orgUnit.id
+                    event => event.orgUnit === countryId
                 );
 
-                const summary =
-                    aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)
-                        ?.value || "";
+                const isInCountryPage = countriesIdsInCountryPage.includes(countryId);
+                const country = this.buildCountry(countryId, orgUnit, isInCountryPage, aditionalCountryInfo);
 
-                const rawStatus =
-                    aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)
-                        ?.value || "";
+                return countryId === BOSNIA_AND_HERZEGOVINA_LEVEL_4
+                    ? {
+                          ...country,
+                          children: this.getBosniaAndHerzegovinaChildren(
+                              bosniaAndHerzegovinaRegions,
+                              aditionalCountriesInfo,
+                              countriesIdsInCountryPage
+                          ),
+                      }
+                    : country;
+            })
+            .sort((countryA, countryB) => (countryA.id === KOSOVO ? 1 : countryB.id === KOSOVO ? -1 : 0));
+    }
 
-                const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
+    private getBosniaAndHerzegovinaChildren(
+        bosniaAndHerzegovinaRegions: D2OrgUnit[],
+        aditionalCountriesInfo: D2Event[],
+        countriesIdsInCountryPage: Id[]
+    ): Country[] {
+        return bosniaAndHerzegovinaRegions.map(orgUnit => {
+            const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
+                event => event.orgUnit === orgUnit.id
+            );
 
-                const customGeometry = aditionalCountryInfo?.dataValues.find(
-                    dv => dv.dataElement === countryInfoDataElements.geometry
-                )?.value as unknown as D2Geometry;
+            const isInCountryPage = countriesIdsInCountryPage.includes(orgUnit.id);
+            return this.buildCountry(orgUnit.id, orgUnit, isInCountryPage, aditionalCountryInfo);
+        });
+    }
 
-                const isNetherlands = orgUnit.id === NETHERLANDS;
-                return {
-                    id: orgUnit.id,
-                    name: isNetherlands ? `${orgUnit.shortName} (Kingdom of the)` : orgUnit.shortName,
-                    longName: orgUnit.name,
-                    code: mapToWhoCountryCode(orgUnit.code),
-                    description: orgUnit.description,
-                    coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
-                    status,
-                    parents: orgUnit.organisationUnitGroups
-                        .map(({ id, name }) => ({ id, name }))
-                        .filter(oug => validOrgUnitGroups.includes(oug.id)),
-                    flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
-                    summary,
-                    sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
-                    isInCountryPage: countriesIdsInCountryPage.includes(orgUnit.id),
-                };
-            });
+    private buildCountry(
+        countryId: Id,
+        orgUnit: D2OrgUnit,
+        isInCountryPage: boolean,
+        aditionalCountryInfo: Maybe<D2Event>
+    ): Country {
+        const summary =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)?.value ||
+            "";
+
+        const rawStatus =
+            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value || "";
+
+        const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
+
+        const customGeometry = aditionalCountryInfo?.dataValues.find(
+            dv => dv.dataElement === countryInfoDataElements.geometry
+        )?.value as unknown as D2Geometry;
+
+        return {
+            id: countryId,
+            name: mapToWhoCountryName(orgUnit.id, orgUnit.shortName),
+            longName: mapToWhoCountryName(orgUnit.id, orgUnit.name),
+            code: mapToWhoCountryCode(orgUnit.code),
+            coordinates: this.buildPoint(customGeometry || orgUnit.geometry),
+            status,
+            parents: orgUnit.organisationUnitGroups
+                .map(({ id, name }) => ({ id, name }))
+                .filter(oug => validOrgUnitGroups.includes(oug.id)),
+            flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
+            summary,
+            sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
+            isInCountryPage: isInCountryPage,
+        };
     }
 
     private buildPoint(geometry: D2Geometry | string): [number, number] {

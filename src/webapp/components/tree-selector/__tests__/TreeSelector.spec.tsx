@@ -37,7 +37,7 @@ describe("Given TreeSelector", () => {
             focusComponent();
 
             await screen.findByRole("listbox");
-            screen.getByText(/select country/i);
+            screen.getByText(/select country or area/i);
 
             await waitFor(() => {
                 (countries[0]?.parents || []).forEach(parent => screen.getByText(parent.name));
@@ -121,11 +121,11 @@ describe("Given TreeSelector", () => {
             renderComponent({ hasSelectAll: true, hasClearAll: true });
             focusComponent();
             await screen.findByRole("listbox");
-            screen.getByText(/select country/i);
+            screen.getByText(/select country or area/i);
         });
         it("Then should show a checkbox in all parent nodes", async () => {
             const allCountriesCheckbox = screen.getByRole("checkbox", {
-                name: /select all all countries/i,
+                name: /select all all countries and areas/i,
             });
             const europeCheckbox = screen.getByRole("checkbox", {
                 name: /select all europe/i,
@@ -178,7 +178,7 @@ describe("Given TreeSelector", () => {
             renderComponent({ hasSelectAll: true, hasClearAll: true, showParentIfChecked: true });
             focusComponent();
             await screen.findByRole("listbox");
-            screen.getByText(/select country/i);
+            screen.getByText(/select country or area/i);
         });
         it("Should show parent as chip instead of children", async () => {
             selectAllCountries();
@@ -232,7 +232,7 @@ const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
             hasSelectAll={hasSelectAll}
             hasClearAll={hasClearAll}
             disabledItems={disabledCountries}
-            placeholder="Select country"
+            placeholder="Select country or area"
             showParentIfChecked={showParentIfChecked}
         />
     );

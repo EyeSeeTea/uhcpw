@@ -12,6 +12,7 @@ import { Router } from "../Router";
 import "./App.css";
 import muiThemeLegacy from "./themes/dhis2-legacy.theme";
 import { muiTheme } from "./themes/dhis2.theme";
+import { KOSOVO } from "../../../data/repositories/countries/CountryD2Repository";
 
 export interface AppProps {
     api: D2Api;
@@ -32,8 +33,25 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
 
             const countries = (await compositionRoot.countries.get.execute().runAsync()).data || [];
             const themes = (await compositionRoot.resources.getThemes.execute().runAsync()).data || [];
+            const generalContent = (await compositionRoot.general.getContent.execute().runAsync()).data;
 
-            setAppContext({ api, currentUser, compositionRoot, countries, themes });
+            const countriesRegions = countries.flatMap(country => (country.children ? country.children : []));
+
+            const countriesAndRegions = [...countries, ...countriesRegions].sort((countryA, countryB) => {
+                if (countryA.id === KOSOVO) return 1;
+                if (countryB.id === KOSOVO) return -1;
+                return countryA.name.toLowerCase() < countryB.name.toLowerCase() ? -1 : 1;
+            });
+
+            setAppContext({
+                api,
+                currentUser,
+                compositionRoot,
+                countries,
+                themes,
+                generalContent,
+                countriesAndRegions,
+            });
             setLoading(false);
         }
         setup();

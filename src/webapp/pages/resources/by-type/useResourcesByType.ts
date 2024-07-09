@@ -35,7 +35,7 @@ export function useResourcesByType(params: {
     useEffect(() => {
         const title = filters.category.options.find(cat => cat.value === filters.category.selected)?.text || "";
 
-        setTitle(title);
+        setTitle(title === "Country or area analysis" ? "Country analysis" : title);
     }, [filters.category.options, filters.category.selected]);
 
     const onGetResources = useCallback(() => {

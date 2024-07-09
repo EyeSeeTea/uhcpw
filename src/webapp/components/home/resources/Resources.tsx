@@ -65,7 +65,7 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
-                        tag={i18n.t("Country analysis")}
+                        tag={i18n.t("Country or area analysis")}
                         onTagClick={() => handleOnTagClick("/resources/country-analysis")}
                         maintainAspectRatio
                     />

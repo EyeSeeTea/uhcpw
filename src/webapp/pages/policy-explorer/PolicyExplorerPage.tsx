@@ -134,9 +134,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     ) : null}
 
                                     <GeneralRow>
-                                        <CreditsText $noWrap>
-                                            {i18n.t("Country experts: ", { nsSeparator: false })}
-                                        </CreditsText>
+                                        <CreditsText $noWrap>{i18n.t("Experts: ", { nsSeparator: false })}</CreditsText>
                                         &nbsp;
                                         <CreditsText>{info.countryExperts}</CreditsText>
                                     </GeneralRow>

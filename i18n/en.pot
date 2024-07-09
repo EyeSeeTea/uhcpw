@@ -5,13 +5,13 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-05-13T21:21:58.911Z\n"
-"PO-Revision-Date: 2024-05-13T21:21:58.911Z\n"
+"POT-Creation-Date: 2024-06-27T12:16:10.347Z\n"
+"PO-Revision-Date: 2024-06-27T12:16:10.347Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
 
-msgid "All countries"
+msgid "All countries and areas"
 msgstr ""
 
 msgid "The Financial Protection Expert Network"
@@ -19,10 +19,10 @@ msgstr ""
 
 msgid ""
 "Experts working with the WHO Barcelona Office to assess financial "
-"protection and coverage policy at country level"
+"protection at country or area level"
 msgstr ""
 
-msgid "Select country"
+msgid "Select country or area"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing"
@@ -40,19 +40,16 @@ msgstr ""
 msgid "List"
 msgstr ""
 
-msgid "Country expert"
+msgid "Experts"
 msgstr ""
 
-msgid "Country resources"
+msgid "Resources"
 msgstr ""
 
-msgid "Country analysis"
+msgid "Country or area analysis"
 msgstr ""
 
 msgid "Comparative analysis"
-msgstr ""
-
-msgid "Select country"
 msgstr ""
 
 msgid "Dashboard"
@@ -79,9 +76,6 @@ msgstr ""
 msgid "Zoom out"
 msgstr ""
 
-msgid "Resources"
-msgstr ""
-
 msgid "News"
 msgstr ""
 
@@ -94,19 +88,19 @@ msgstr ""
 msgid "Stronger financial protection"
 msgstr ""
 
-msgid "Category and indicator"
+msgid "Indicators"
 msgstr ""
 
-msgid "Select category"
+msgid "Select category and indicator"
 msgstr ""
 
-msgid "Countries"
+msgid "Countries and areas"
 msgstr ""
 
 msgid "Years"
 msgstr ""
 
-msgid "Select years"
+msgid "Select year"
 msgstr ""
 
 msgid "Get chart"
@@ -148,6 +142,9 @@ msgstr ""
 msgid "Policy explorer"
 msgstr ""
 
+msgid "Countries & areas"
+msgstr ""
+
 msgid "Regional report"
 msgstr ""
 
@@ -160,13 +157,10 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-msgid "Category"
+msgid "Categories"
 msgstr ""
 
-msgid "Year"
-msgstr ""
-
-msgid "Select year"
+msgid "Select category"
 msgstr ""
 
 msgid "Get table"
@@ -176,6 +170,9 @@ msgid "Select all"
 msgstr ""
 
 msgid "Select theme"
+msgstr ""
+
+msgid "Select years"
 msgstr ""
 
 msgid "Search"
@@ -220,7 +217,7 @@ msgstr ""
 msgid "Last updated: "
 msgstr ""
 
-msgid "Country experts: "
+msgid "Experts: "
 msgstr ""
 
 msgid "Editors: "
@@ -242,4 +239,7 @@ msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
+msgstr ""
+
+msgid "Country analysis"
 msgstr ""

@@ -40,6 +40,8 @@ import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentU
 import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
 import { GetEurCountriesRegionUseCase } from "./domain/usecases/GetEurCountriesRegionUseCase";
 import { GetRegionalReportLinkUseCase } from "./domain/usecases/GetRegionalReportLinkUseCase";
+import { GeneralContentD2Repository } from "./data/repositories/GeneralContentD2Repository";
+import { GetGeneralContentUseCase } from "./domain/usecases/GetGeneralContentUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -60,6 +62,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         aboutInfo: new AboutInfoD2Repository(api),
         indicatorExplorer: new IndicatorExplorerD2Repository(api),
         homePage: new HomePageContentD2Repository(api),
+        generalContent: new GeneralContentD2Repository(api),
     };
 }
 
@@ -87,7 +90,7 @@ export function getCompositionRoot(
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
             getSelectCategoryInfo: new GetPolicyExplorerSelectCategoryInfoUseCase(repositories.policyExplorerCategory),
-            get: new GetPolicyExplorerUseCase(repositories.policyExplorer, repositories.country),
+            get: new GetPolicyExplorerUseCase(repositories.policyExplorer),
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
         indicatorExplorer: {
@@ -116,6 +119,9 @@ export function getCompositionRoot(
         },
         countryPage: {
             getSliderInfo: new GetSliderInfoUseCase(repositories.countryPageInfo),
+        },
+        general: {
+            getContent: new GetGeneralContentUseCase(repositories.generalContent),
         },
     };
 }

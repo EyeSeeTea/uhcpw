@@ -15,7 +15,7 @@ type HeroProps = {
 const CHART_1_SCATTER_VISUALIZATION_ID = "hNU4Lj1xLYO";
 
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
-    const { countries } = useAppContext();
+    const { countriesAndRegions } = useAppContext();
     const country = useCountryInfo(countryId);
 
     if (!countryId) return <CircularProgress />;
@@ -39,7 +39,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         key={countryId}
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
                         years={[LatestCOVID19.id]}
-                        countries={countries.map(({ id }) => id)}
+                        countries={countriesAndRegions.map(({ id }) => id)}
                         currentCountry={countryId}
                         withoutBackground
                         useHeaderForCountryPage

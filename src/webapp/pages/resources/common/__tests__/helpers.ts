@@ -107,7 +107,7 @@ export function createResourceCategories(): ResourceCategory[] {
         { id: "bcMc7kD0M98", name: "Comparative Analysis", code: "comparative-analysis" },
         { id: "lQ4chDNdjkA", name: "news", code: "news" },
         { id: "MXKMGulj2KF", name: "multimedia", code: "multimedia" },
-        { id: "bkO3SJzKQeD", name: "Country Analysis", code: "country-analysis" },
+        { id: "bkO3SJzKQeD", name: "Country or area analysis", code: "country-analysis" },
     ];
 
     return data;

@@ -1,3 +1,5 @@
+import { Id } from "../../../domain/entities/Ref";
+
 export function mapToWhoCountryCode(countryCode: string): string {
     return whoCountrycodes[countryCode] || countryCode;
 }
@@ -31,7 +33,7 @@ const whoCountrycodes: Record<string, string> = {
     ITA: "ITA",
     KAZ: "KAZ",
     KGZ: "KGZ",
-    "RS-KM": "KOS",
+    "RS-KM": "KOS*",
     LVA: "LVA",
     LTU: "LTU",
     LUX: "LUX",
@@ -59,4 +61,19 @@ const whoCountrycodes: Record<string, string> = {
     UKR: "UKR",
     GBR: "UNK",
     UZB: "UZB",
+    XKX: "KOS*",
+    "BIH-4-1": "BIH",
+    "BIH-4-2": "BIH-F",
+    "BIH-4-3": "BIH-R",
 };
+
+const whoCountryNames: Record<Id, string> = {
+    rEQqufy2KNi: "Netherlands (Kingdom of the)",
+    NEPywTBN52g: "Kosovo*",
+    j44olg405lZ: "BIH (Federation of Bosnia and Herzegovina)",
+    FvoXRc5cEEk: "BIH (Republika Srpska)",
+};
+
+export function mapToWhoCountryName(countryId: Id, countryName: string): string {
+    return whoCountryNames[countryId] || countryName;
+}
