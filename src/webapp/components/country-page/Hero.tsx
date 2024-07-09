@@ -84,9 +84,13 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
 const InfoGrid = styled(Grid)`
     background-color: ${colors.accentPrimary};
     padding: 40px 30px 60px 30px;
+    padding-inline-start: 4.1rem;
     color: white;
     overflow-y: auto;
     font-size: 16px;
+    @media (min-width: 743px) {
+        padding-inline-end: 100px;
+    }
     ul {
         list-style-position: outside;
         padding-left: 13px;
@@ -103,4 +107,5 @@ const GraphGrid = styled(Grid)`
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
+    padding-inline-end: 50px;
 `;

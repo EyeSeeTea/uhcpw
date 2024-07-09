@@ -98,6 +98,7 @@ const visuallyHidden = css`
 
 const Container = styled.div`
     max-width: 100%;
+    padding: 20px 50px 30px 50px;
     @media (min-width: 960px) {
         > h3 {
             ${visuallyHidden};
@@ -106,11 +107,6 @@ const Container = styled.div`
 `;
 
 const VisualizationContainer = styled.div`
-    > div {
-        margin: 0;
-    }
     max-width: 100%;
-    .visualization-plugin-header {
-        padding-block-start: 37px;
-    }
+    padding-inline-end: 50px;
 `;

@@ -154,6 +154,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
 const DataHeader = styled.div<{ $isCountryPage?: boolean }>`
     padding-block-start: ${props => (props.$isCountryPage ? "30px" : "48px")};
     padding-block-end: 48px;
+    width: 100%;
 `;
 
 const Row = styled.div`
@@ -162,6 +163,7 @@ const Row = styled.div`
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: flex-start;
+    gap: 1rem;
 `;
 
 const Column = styled.div`
