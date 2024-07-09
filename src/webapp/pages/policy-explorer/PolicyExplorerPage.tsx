@@ -89,7 +89,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                         <DownloadButton
                             aria-label="Download"
                             variant="contained"
-                            startIcon={<DownloadIcon />}
+                            endIcon={<DownloadIcon />}
                             color="primary"
                             onClick={onDownload}
                             className="download-button"
@@ -129,7 +129,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                                 {i18n.t("Last updated: ", { nsSeparator: false })}
                                             </CreditsText>
                                             &nbsp;
-                                            <CreditsText>{moment(info.lastUpdate).format("DD MMMM YYYY")}</CreditsText>
+                                            <CreditsText>{moment(info.lastUpdate).format("D MMMM YYYY")}</CreditsText>
                                         </GeneralRow>
                                     ) : null}
 

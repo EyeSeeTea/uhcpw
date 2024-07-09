@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 import { ChartSource } from "./chartOptions";
-import { baseChartOptions } from "./generic/baseChartOptions";
+import { createScratterChart } from "./generic/scratterChart";
 
 export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
@@ -70,77 +70,14 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
         };
     });
 
-    const axeItem = chartSource.visualization.axes.find(
-        ({ type, title }) => type === "RANGE" && title.text === "Households with catastrophic health spending (%)"
+    return createScratterChart(
+        series,
+        chartSource.visualization,
+        currentCountryCode,
+        "Out-of-pocket payments as a share of current spending on health (%)",
+        "Households with catastrophic health spending (%)",
+        "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%"
     );
-
-    const maxYAxis = axeItem ? { max: axeItem.maxValue } : {};
-
-    return {
-        ...baseChartOptions,
-        chart: {
-            type: "scatter",
-        },
-        xAxis: {
-            title: { text: "Out-of-pocket payments as a share of current spending on health (%)", margin: 20 },
-            min: 0,
-        },
-        yAxis: {
-            title: {
-                text: "Households with catastrophic health spending (%)",
-                margin: 20,
-                style: { fontSize: "13px" },
-            },
-            ...maxYAxis,
-        },
-        legend: { enabled: false },
-        series: [
-            ...series,
-            {
-                type: "line",
-                name: "Trend Line",
-                color: "lightgrey",
-                data: getTrendLine(countriesWithData),
-                marker: {
-                    enabled: false,
-                },
-                states: {
-                    hover: {
-                        lineWidth: 0,
-                    },
-                },
-                enableMouseTracking: false,
-            },
-        ],
-        plotOptions: {
-            series: {
-                dataLabels: {
-                    useHTML: true,
-                    enabled: true,
-                    align: "right",
-                    verticalAlign: "middle",
-                    //format: "{point.country}",
-                    formatter: function () {
-                        const countryPoint = (this.point as unknown as SerieData).country;
-                        return countryPoint === currentCountryCode
-                            ? `<strong style="color:black;">${countryPoint}</strong>`
-                            : countryPoint;
-                    },
-                    x: -2,
-                    color: "grey",
-                    style: {
-                        textOutline: "none",
-                        fontSize: "13px",
-                        fontWeight: "200",
-                    },
-                },
-            },
-        },
-        tooltip: {
-            pointFormat:
-                "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
-        },
-    } as Highcharts.Options;
 };
 
 interface SerieData {
@@ -170,20 +107,4 @@ function filterByValue(serieId: SerieType, data: SerieData) {
         case "extra-hight":
             return data.x > 0 && data.y >= 15;
     }
-}
-
-function getTrendLine(data: SerieData[]): number[][] {
-    const fixedData = data.filter(item => item.y > 0 && item.x > 0);
-
-    const minX = Math.min(...fixedData.map(({ x }) => x));
-    const maxX = Math.max(...fixedData.map(({ x }) => x));
-    const minY = Math.min(...fixedData.map(({ y }) => y));
-    const maxY = Math.max(...fixedData.map(({ y }) => y));
-
-    const trendline = [
-        [minX, minY],
-        [maxX, maxY],
-    ];
-
-    return trendline;
 }

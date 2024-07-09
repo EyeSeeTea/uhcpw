@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 
 type DialogType = {
     isOpen: boolean;
-    onClose: () => void;
+    onClose?: () => void;
     dialogInfo: string;
 };
 

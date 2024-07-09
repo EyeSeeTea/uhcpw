@@ -6,6 +6,7 @@ import { ItemPerson } from "../person/ItemPerson";
 import { CountryFilterState } from "../../../common/state/state";
 import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { PersonState } from "../../../pages/about/AboutState";
+import { useAppContext } from "../../../contexts/app-context";
 
 export interface ExpertsNetworkProps {
     members: PersonState[];
@@ -13,13 +14,17 @@ export interface ExpertsNetworkProps {
 }
 
 export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ members, countryFilter }) => {
+    const { generalContent } = useAppContext();
     return (
         <>
             <ItemsTitleContainer>
-                <Title variant="h3">{i18n.t("The Financial Protection Expert Network")}</Title>
+                <Title variant="h3">
+                    {i18n.t(generalContent?.aboutUs?.title || "The Financial Protection Expert Network")}
+                </Title>
                 <Subtitle variant="h5">
                     {i18n.t(
-                        "Experts working with the WHO Barcelona Office to assess financial protection at country or area level"
+                        generalContent?.aboutUs?.subtitle ||
+                            "Experts working with the WHO Barcelona Office to assess financial protection at country or area level"
                     )}
                 </Subtitle>
             </ItemsTitleContainer>

@@ -13,6 +13,8 @@ import {
     DataOrientation,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
+import useWindowSize from "../../common/hooks/screen/useWindowSize";
+import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -23,9 +25,12 @@ interface PolicyExplorerTableProps {
 }
 
 const EMPTY_URL = "/";
+const MIN_CELL_WIDTH = 200;
 
 export const PolicyExplorerTable = React.memo(
     ({ category, rows, onSwitchRowColumn, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
+        const { width } = useWindowSize();
+
         const handleClickEmptyUrl = useCallback(
             event => {
                 event.preventDefault();
@@ -33,10 +38,38 @@ export const PolicyExplorerTable = React.memo(
             },
             [referencesRef]
         );
+
         const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
+
         const handleClose = useCallback(() => {
             setIsNotesDialogOpen(false);
         }, []);
+
+        const getCellWidth = React.useCallback(
+            columnIndex => {
+                // 128 is the padding of the screen
+                const totalWidth = width - 128;
+
+                if (dataOrientation === "normal" && rows?.[0]?.[columnIndex]) {
+                    const columnWidth =
+                        rows?.[0]?.[columnIndex]?.value === "Year" ||
+                        rows?.[0]?.[columnIndex]?.value === "Country" ||
+                        (category.value === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
+                            rows?.[0]?.[columnIndex]?.value === "")
+                            ? MIN_CELL_WIDTH
+                            : category.value === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID
+                            ? (totalWidth - 300) / (rows?.[0]?.length || 1)
+                            : (totalWidth - 200) / (rows?.[0]?.length || 1);
+
+                    return columnWidth < MIN_CELL_WIDTH ? MIN_CELL_WIDTH : columnWidth;
+                }
+
+                const columnWidth = (totalWidth - MIN_CELL_WIDTH) / (rows?.[0]?.length || 1);
+                return columnIndex === 0 ? MIN_CELL_WIDTH : columnWidth < MIN_CELL_WIDTH ? MIN_CELL_WIDTH : columnWidth;
+            },
+            [category.value, dataOrientation, rows, width]
+        );
+
         return !rows?.length || !dataOrientation ? (
             category && (
                 <NoDataContainer>
@@ -74,7 +107,7 @@ export const PolicyExplorerTable = React.memo(
                             <SwitchRowColumnButton
                                 aria-label="Row/Column"
                                 variant="contained"
-                                startIcon={<SwitchIcon />}
+                                endIcon={<SwitchIcon />}
                                 color="primary"
                                 onClick={() => onSwitchRowColumn(category.value)}
                                 className="switch-button"
@@ -90,7 +123,11 @@ export const PolicyExplorerTable = React.memo(
                             {rows.map((row, index) => (
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
                                     {row.map((cell, i) => (
-                                        <StyledTableCell key={`${category.value}_${i}_${cell.value}`} type={cell.type}>
+                                        <StyledTableCell
+                                            key={`${category.value}_${i}_${cell.value}`}
+                                            type={cell.type}
+                                            cellwidth={getCellWidth(i)}
+                                        >
                                             <ReactMarkdown
                                                 components={{
                                                     a: ({ href, children, ...props }) => {
@@ -166,9 +203,11 @@ const StyledNormalTable = styled(Table)`
     }
 `;
 
-const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType }>`
+const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwidth: number }>`
     color: #0460a7;
     font-weight: 500;
+    width: ${props => `${props.cellwidth}px`};
+    min-width: ${props => `${props.cellwidth}px`};
     background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
 `;

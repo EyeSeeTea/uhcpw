@@ -16,6 +16,10 @@ export class GeneralContentD2Repository implements GeneralContentRepository {
             footer: {
                 disclaimer: dataValues.find(dv => dv.dataElement === "zCBDjsjnsC0")?.value || "",
             },
+            aboutUs: {
+                title: dataValues.find(dv => dv.dataElement === "gYzFGI0mMLQ")?.value || "",
+                subtitle: dataValues.find(dv => dv.dataElement === "aY5eSBLrOMc")?.value || "",
+            },
         };
     }
 }
