@@ -89,7 +89,7 @@ const InfoGrid = styled(Grid)`
     overflow-y: auto;
     font-size: 16px;
     @media (min-width: 743px) {
-    padding-inline-end: 100px;
+        padding-inline-end: 100px;
     }
     ul {
         list-style-position: outside;
@@ -97,7 +97,6 @@ const InfoGrid = styled(Grid)`
         > li {
             padding-inline-start: 7px;
         }
-    }
     }
 `;
 

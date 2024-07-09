@@ -1,5 +1,5 @@
 import { AnalyticsResponse, createVisualization } from "@dhis2/analytics";
-import Highcharts, { PointOptionsObject, SeriesColumnOptions, XAxisOptions } from "highcharts";
+import Highcharts, { PointOptionsObject, SeriesColumnOptions } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";

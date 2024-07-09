@@ -71,6 +71,7 @@ const visuallyHidden = css`
 `;
 
 const Container = styled.div`
+    margin-inline-start: 55px;
     padding: 0px 10px 20px 30px;
     @media (min-width: 960px) {
         > h3 {
@@ -81,6 +82,7 @@ const Container = styled.div`
 
 const UmbrellaContainer = styled(Grid)`
     display: none;
+    padding-inline-end: 40px;
     @media (min-width: 1024px) {
         display: flex;
         height: 100vh;

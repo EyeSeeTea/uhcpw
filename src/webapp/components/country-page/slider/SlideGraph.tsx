@@ -107,12 +107,6 @@ const Container = styled.div`
 `;
 
 const VisualizationContainer = styled.div`
-    > div {
-        margin: 0;
-        padding: 0;
-        @media (min-width: 960px) {
-            padding-inline-end: 3.75rem;
-        }
-    }
-    width: 100%;
+    max-width: 100%;
+    padding-inline-end: 50px;
 `;

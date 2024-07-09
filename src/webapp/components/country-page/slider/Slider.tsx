@@ -5,6 +5,7 @@ import { SlideGraph } from "./SlideGraph";
 import i18n from "../../../../locales";
 import { useCountrySlider } from "../../../pages/country/useCountrySlider";
 import { SlideInfo } from "./SlideInfo";
+import styled from "styled-components";
 
 function TabPanel(props: { [x: string]: any; children: any; value: any; index: any }) {
     const { children, value, index, ...other } = props;
@@ -163,7 +164,7 @@ export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleRes
                     ))}
                 </Tabs>
             </Grid>
-            <Grid item xs={11} md={7} lg={8}>
+            <RightPanelGrid item xs={11} md={7} lg={8}>
                 {sliderGraphsConfig.map(config => (
                     <TabPanel key={`sliderGraphsConfig_${config.tab}`} value={tabValue} index={config.tab}>
                         <SlideGraph
@@ -185,7 +186,13 @@ export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleRes
                         </TabPanel>
                     ) : null
                 )}
-            </Grid>
+            </RightPanelGrid>
         </Grid>
     );
 };
+
+const RightPanelGrid = styled(Grid)`
+    .MuiBox-root {
+        padding: 0;
+    }
+`;
