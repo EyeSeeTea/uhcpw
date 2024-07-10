@@ -117,7 +117,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 {onDownloadExcel && (
                                     <DownloadButton
                                         variant="contained"
-                                        startIcon={<DownloadIcon />}
+                                        endIcon={<DownloadIcon />}
                                         color="primary"
                                         style={{ marginLeft: 40, marginBottom: 20 }}
                                         onClick={onDownloadExcel}
@@ -130,7 +130,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 {onDownloadImage && (
                                     <DownloadButton
                                         variant="contained"
-                                        startIcon={<ImageRoundedIcon />}
+                                        endIcon={<ImageRoundedIcon />}
                                         color="primary"
                                         style={{ marginLeft: 40 }}
                                         onClick={onDownloadImage}
