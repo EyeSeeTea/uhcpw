@@ -9,9 +9,10 @@ import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/p
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
+import { getMainPagesContent } from "../common/getMainPagesContent";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
+import _ from "lodash";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
     UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
@@ -47,6 +48,8 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
     text: "SAzOXqrxWfI",
 };
 
+// TODO id
+export const policyExplorerProgram = "Ik70ZvT77Ee";
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     cache = new InmemoryCache();
 
@@ -61,11 +64,32 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                 })
             ),
             infoNotes: this.cache.getOrFuture("infoNotes", getInfoNotes(this.api)),
-        }).flatMap(({ datasets, infoNotes }) => {
-            const dataSet = datasets.objects[0];
+            programMetadata: apiToFuture(
+                this.api.models.programs.get({
+                    fields: programFields,
+                    filter: { id: { eq: policyExplorerProgram } },
+                })
+            ),
 
+            sectionsEvent: apiToFuture(
+                this.api.events.get({
+                    fields: eventsFields,
+                    skipPaging: true,
+                    program: policyExplorerProgram,
+                })
+            ),
+        }).flatMap(({ datasets, infoNotes, programMetadata, sectionsEvent }) => {
+            const dataSet = datasets.objects[0];
+            const programs = programMetadata.objects[0];
+            const events = sectionsEvent.events[0];
+            console.log({ dataSet, programs, events });
             if (dataSet) {
-                return Future.success(this.buildCategories(dataSet, infoNotes));
+                console.log({
+                    oldRes: this.buildCategories(dataSet, infoNotes),
+                    newRes: this.buildCategoriesNew(programs, events, infoNotes),
+                });
+                return Future.success(this.buildCategoriesNew(programs, events, infoNotes));
+                // return Future.success(this.buildCategories(dataSet, infoNotes));
             } else {
                 return Future.error("No categories found");
             }
@@ -81,6 +105,71 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
             text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
         };
+    }
+
+    private sortSubcategories(
+        sectionDataElements: { id: string; code: string }[],
+        sectionsEvent: D2Event | undefined
+    ): PolicyExplorerSubcategory[] {
+        const sectionDataElementsIds = sectionDataElements.map(({ id }) => id);
+        // .filter(de => de.valueType === "LONG_TEXT")
+        const subcategories = sectionsEvent?.dataValues
+            .filter(e => sectionDataElementsIds.includes(e.dataElement))
+            .map(e => {
+                const { code, id } = _(sectionDataElements).find({ id: e.dataElement }) || { id: "", code: "" };
+                return {
+                    id,
+                    code,
+                    name: e.value,
+                };
+            });
+
+        // Find the order object and extract the order
+        const orderArray = subcategories?.find(subcategorie => subcategorie.code?.endsWith("_Order"))?.name.split(";");
+        if (!orderArray) {
+            throw new Error("Order object not found");
+        }
+
+        // Sort the data according to the custom order
+        const sortedSubcategories = _(subcategories)
+            .filter(subcategory => !subcategory.code?.endsWith("_Order")) // Exclude sectionData ending with "_Order"
+            .sortBy(subcategory => {
+                const match = subcategory.code?.match(/_([A-Z])_/);
+                if (match && match[1]) {
+                    return orderArray.indexOf(match[1]);
+                }
+                return Number.MAX_SAFE_INTEGER; // Place objects without a match at the end
+            })
+            .map(({ id, name }) => ({ id, name }))
+            .value();
+
+        return sortedSubcategories;
+    }
+
+    private buildCategoriesNew(
+        programMetadata: D2Program | undefined,
+        sectionsEvent: D2Event | undefined,
+        infoNotes: InfoNotes
+    ): PolicyExplorerCategory[] {
+        const sections = programMetadata?.programStages[0]?.programStageSections || [];
+        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
+        return [
+            ...sections
+                .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
+                .map((section): PolicyExplorerCategory => {
+                    const notes = infoNotes ? infoNotes[section.id] || "" : "";
+                    return {
+                        id: section.id,
+                        name: section.displayName.replace("Policy Explorer - ", ""),
+                        subcategories:
+                            CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
+                                ? []
+                                : this.sortSubcategories(section.dataElements, sectionsEvent),
+                        description: notes,
+                    };
+                }),
+            changesInCoveragePolicyMergedCategory,
+        ];
     }
 
     private buildCategories(data: D2DataSet, infoNotes: InfoNotes): PolicyExplorerCategory[] {
@@ -138,10 +227,34 @@ const dataElementsFields = {
     formName: true,
     valueType: true,
     description: true,
+    code: true,
 } as const;
 
 const dataSetFields = {
     sections: { id: true, displayName: true, dataElements: dataElementsFields, description: true },
+} as const;
+
+const programFields = {
+    id: true,
+    programStages: {
+        id: true,
+        programStageSections: {
+            id: true,
+            displayName: true,
+            description: true,
+            dataElements: {
+                id: true,
+                code: true,
+            },
+        },
+    },
+} as const;
+
+const eventsFields = {
+    event: true,
+    orgUnit: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
 } as const;
 
 type D2DataElements = MetadataPick<{
@@ -151,3 +264,19 @@ type D2DataElements = MetadataPick<{
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
+
+type D2Program = MetadataPick<{
+    programs: { fields: typeof programFields };
+}>["programs"][number];
+
+export interface D2Event {
+    event: string;
+    orgUnit: string;
+    dataValues: DataValue[];
+    eventDate: string;
+}
+
+export interface DataValue {
+    dataElement: string;
+    value: string;
+}
