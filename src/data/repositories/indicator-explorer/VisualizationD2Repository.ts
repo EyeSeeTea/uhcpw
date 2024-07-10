@@ -14,6 +14,7 @@ import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
+import { getBreakInSeries } from "./break-in-series/getBreakInSeries";
 import { emptyVisualizationExtra, VisualizationsSeeds } from "./seed/VisualizationsSeeds";
 
 export class VisualizationD2Repository implements VisualizationRepository {
@@ -47,6 +48,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
                 )
             ),
             infoNotes: this.cache.getOrFuture("infoNotes", getInfoNotes(this.api)),
+            breakInSeries: this.cache.getOrFuture("breakInSeries", getBreakInSeries(this.api)),
         }).map(({ visualization, infoNotes }) => {
             return this.buildVisualization(visualization, infoNotes);
         });
