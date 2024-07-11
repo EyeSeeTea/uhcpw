@@ -6,7 +6,7 @@ import {
     PolicyExplorerSubcategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
-import { policyExplorerDataSet_ID } from "../../../domain/utils";
+import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { getMainPagesContent } from "../common/getMainPagesContent";
@@ -112,8 +112,6 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
     text: "SAzOXqrxWfI",
 };
 
-// TODO id
-export const policyExplorerProgram = "Ik70ZvT77Ee";
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     cache = new InmemoryCache();
 
@@ -131,14 +129,14 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             programMetadata: apiToFuture(
                 this.api.models.programs.get({
                     fields: programFields,
-                    filter: { id: { eq: policyExplorerProgram } },
+                    filter: { id: { eq: policyExplorerProgram_ID } },
                 })
             ),
             sectionsEvent: apiToFuture(
                 this.api.events.get({
                     fields: eventsFields,
                     skipPaging: true,
-                    program: policyExplorerProgram,
+                    program: policyExplorerProgram_ID,
                 })
             ),
         }).flatMap(({ datasets, infoNotes, programMetadata, sectionsEvent }) => {
@@ -146,7 +144,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             const programs = programMetadata.objects[0];
             const events = sectionsEvent.events[0];
 
-            if (dataSet) {
+            if (dataSet && programs && events) {
                 return Future.success(this.buildCategories(programs, events, dataSet, infoNotes));
             } else {
                 return Future.error("No categories found");
