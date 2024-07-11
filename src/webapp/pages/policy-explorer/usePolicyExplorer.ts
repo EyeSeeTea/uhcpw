@@ -117,7 +117,8 @@ export function usePolicyExplorer({
                     selectedCategoriesWithSubcategoriesFilter,
                     countryFilter.selected,
                     selectedYearFilter ? selectedYearFilter : [],
-                    countriesAndRegions
+                    countriesAndRegions,
+                    categoryFilters
                 )
                 .run(
                     policyExplorer => {
@@ -144,6 +145,7 @@ export function usePolicyExplorer({
         countryFilter.selected,
         selectedCategoriesWithSubcategoriesFilter,
         selectedYearFilter,
+        categoryFilters,
     ]);
 
     const onChangeCategoryFilter = useCallback((value: Record<string, string[]> | undefined) => {

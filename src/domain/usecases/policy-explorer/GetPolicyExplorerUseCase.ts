@@ -5,6 +5,7 @@ import { latestAvailableYear, PolicyExplorer } from "../../entities/policy-explo
 import { PolicyExplorerRepository } from "../../repositories/policy-explorer/PolicyExplorerRepository";
 import { generate, generateYears } from "../utils/generateYears";
 import { Country } from "../../entities/Country";
+import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 
 export class GetPolicyExplorerUseCase {
     constructor(private policyExplorerRepository: PolicyExplorerRepository) {}
@@ -13,14 +14,16 @@ export class GetPolicyExplorerUseCase {
         policyExplorerCategories: Record<string, string[]>,
         selectedCountriesIds: Id[],
         years: string[],
-        countriesAndRegions: Country[]
+        countriesAndRegions: Country[],
+        programCategories: CategoryOption[]
     ): FutureData<PolicyExplorer> {
         return this.getYearsByCategory(years, policyExplorerCategories).flatMap(yearsByCategory => {
             return this.policyExplorerRepository.get(
                 policyExplorerCategories,
                 selectedCountriesIds,
                 yearsByCategory,
-                countriesAndRegions
+                countriesAndRegions,
+                programCategories
             );
         });
     }

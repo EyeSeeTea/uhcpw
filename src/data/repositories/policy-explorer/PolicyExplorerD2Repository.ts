@@ -77,7 +77,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         policyExplorerCategories: Record<string, string[]>,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
-        countriesAndRegions: Country[]
+        countriesAndRegions: Country[],
+        programCategories: CategoryOption[]
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
@@ -106,6 +107,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     countriesAndRegions: countriesAndRegions,
                     yearsByCategory,
                     dataSet: dataSetResponse.objects[0],
+                    programCategories,
                 }),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndRegions),
                 references: this.buildReferences(dataValuesResponse.dataValues, countriesAndRegions),
@@ -290,9 +292,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         countriesAndRegions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
+        programCategories: CategoryOption[];
     }): Record<string, PolicyExplorerCell[][]> {
-        const { policyExplorerCategories, dataValuesWithOrgUnitNames, countriesAndRegions, yearsByCategory, dataSet } =
-            params;
+        const {
+            policyExplorerCategories,
+            dataValuesWithOrgUnitNames,
+            countriesAndRegions,
+            yearsByCategory,
+            dataSet,
+            programCategories,
+        } = params;
 
         const hasToFillAllSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
@@ -314,6 +323,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     policyExplorerCategoryId,
                     policyExplorerSubcategoriesIds,
                     dataSet,
+                    programCategories,
                 });
 
                 const years = yearsByCategory[policyExplorerCategoryId] || [];

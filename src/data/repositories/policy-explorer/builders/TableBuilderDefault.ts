@@ -2,27 +2,34 @@ import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
+import { CategoryOption } from "../../../../webapp/components/policy-explorer/category-selector/CategorySelector";
+import _ from "lodash";
 
 export class TableBuilderDefault implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
         dataSet?: D2DataSet;
+        programCategories: CategoryOption[];
     }): PolicyExplorerCell[] {
-        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet } = params;
+        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet, programCategories } = params;
         const dataElementsSection = this.getDataElementsSection(
             policyExplorerCategoryId,
             policyExplorerSubcategoriesIds,
             dataSet
         );
+        const programSubcategories =
+            _.find(programCategories, { value: policyExplorerCategoryId })?.subcategories || [];
 
         return [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
-            ...dataElementsSection.map(de => ({
+            ...programSubcategories.map(de => ({
                 type: PolicyExplorerCellType.HEADER,
-                value: de.description || de.formName,
+                // value: de.description || de.formName,
+                value: de.text,
             })),
+            // .reverse(),
         ];
     }
 
