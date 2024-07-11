@@ -86,12 +86,12 @@ const PROGRAM_VOLUNTARY_HEALTH_INSURANCE_CATEGORY = "fqYkOLq51CG";
 const PROGRAM_GAPS_IN_COVERAGE_CATEGORY = "Ex9yvYNHvC4";
 const PROGRAM_USER_CHARGES_COPAYMENTS_CATEGORY = "R09wRQllQ4m";
 
-const CATEGORY_PROGRAM_TO_DATASET = {
-    [PROGRAM_POPULATION_COVERAGE_CATEGORY]: DATASET_POPULATION_COVERAGE_CATEGORY,
-    [PROGRAM_SERVICE_COVERAGE_CATEGORY]: DATASET_SERVICE_COVERAGE_CATEGORY,
-    [PROGRAM_VOLUNTARY_HEALTH_INSURANCE_CATEGORY]: DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
-    [PROGRAM_GAPS_IN_COVERAGE_CATEGORY]: DATASET_GAPS_IN_COVERAGE_CATEGORY,
-    [PROGRAM_USER_CHARGES_COPAYMENTS_CATEGORY]: DATASET_USER_CHARGES_COPAYMENTS_CATEGORY,
+const CATEGORY_DATASET_TO_PROGRAM = {
+    [DATASET_POPULATION_COVERAGE_CATEGORY]: PROGRAM_POPULATION_COVERAGE_CATEGORY,
+    [DATASET_SERVICE_COVERAGE_CATEGORY]: PROGRAM_SERVICE_COVERAGE_CATEGORY,
+    [DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY]: PROGRAM_VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
+    [DATASET_GAPS_IN_COVERAGE_CATEGORY]: PROGRAM_GAPS_IN_COVERAGE_CATEGORY,
+    [DATASET_USER_CHARGES_COPAYMENTS_CATEGORY]: PROGRAM_USER_CHARGES_COPAYMENTS_CATEGORY,
 };
 
 const sectionsList = [
@@ -229,27 +229,34 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         dataSet: D2DataSet | undefined,
         infoNotes: InfoNotes
     ): PolicyExplorerCategory[] {
-        const dataSetSections = _(dataSet?.sections)
-            .filter(section => sectionsList.includes(section.id))
-            .flatMap(section => section.dataElements.filter(de => de.valueType === "LONG_TEXT"))
-            .value();
+        const dataSetSections = dataSet?.sections.filter(section => sectionsList.includes(section.id)) || [];
+        const programSections = programMetadata?.programStages[0]?.programStageSections || [];
 
-        const sections = programMetadata?.programStages[0]?.programStageSections || [];
         const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
         return [
-            ...sections
+            ...dataSetSections
                 .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
                 .map((section): PolicyExplorerCategory => {
-                    const notes = infoNotes ? infoNotes[section.id] || "" : "";
+                    const notes = infoNotes[section.id] || "";
+
+                    // To prevent fallback on dataSet if section is not in program
+                    const sectionFallback = {
+                        displayName: section.displayName.replace("UHCW_", ""),
+                        dataElements: section.dataElements,
+                    };
+
+                    const { displayName, dataElements } =
+                        _.find(programSections, {
+                            id: CATEGORY_DATASET_TO_PROGRAM[section.id as keyof typeof CATEGORY_DATASET_TO_PROGRAM],
+                        }) || sectionFallback;
+
                     return {
-                        // @ts-ignore
-                        id: CATEGORY_PROGRAM_TO_DATASET[section.id],
-                        name: section.displayName.replace("Policy Explorer - ", ""),
-                        // @ts-ignore
+                        id: section.id,
+                        name: displayName.replace("Policy Explorer - ", ""),
                         subcategories:
                             CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
                                 ? []
-                                : this.sortSubcategories(section.dataElements, sectionsEvent, dataSetSections),
+                                : this.sortSubcategories(dataElements, sectionsEvent, section.dataElements),
                         description: notes,
                     };
                 }),
