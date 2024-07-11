@@ -145,14 +145,9 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             const dataSet = datasets.objects[0];
             const programs = programMetadata.objects[0];
             const events = sectionsEvent.events[0];
-            console.log({ dataSet, programs, events });
+
             if (dataSet) {
-                console.log({
-                    oldRes: this.buildCategories(dataSet, infoNotes),
-                    newRes: this.buildCategoriesNew(programs, events, dataSet, infoNotes),
-                });
-                return Future.success(this.buildCategoriesNew(programs, events, dataSet, infoNotes));
-                // return Future.success(this.buildCategories(dataSet, infoNotes));
+                return Future.success(this.buildCategories(programs, events, dataSet, infoNotes));
             } else {
                 return Future.error("No categories found");
             }
@@ -223,7 +218,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         return sortedSubcategories;
     }
 
-    private buildCategoriesNew(
+    private buildCategories(
         programMetadata: D2Program | undefined,
         sectionsEvent: D2Event | undefined,
         dataSet: D2DataSet | undefined,
@@ -264,30 +259,6 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         ];
     }
 
-    private buildCategories(data: D2DataSet, infoNotes: InfoNotes): PolicyExplorerCategory[] {
-        const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
-        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
-
-        return [
-            ...sections
-                .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
-                .map(section => {
-                    const notes = infoNotes ? infoNotes[section.id] || "" : "";
-
-                    return {
-                        id: section.id,
-                        name: section.displayName.replace("UHCW_", ""),
-                        subcategories:
-                            CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
-                                ? []
-                                : this.getSubcategories(section.dataElements),
-                        description: notes,
-                    };
-                }),
-            changesInCoveragePolicyMergedCategory,
-        ];
-    }
-
     private getChangesInCoveragePolicyMergedCategory(infoNotes: InfoNotes): PolicyExplorerCategory {
         const notes = infoNotes ? infoNotes[CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019] || "" : "";
 
@@ -298,20 +269,6 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             description: notes,
         };
         return changesInCoveragePolicyMergedCategory;
-    }
-
-    private getSubcategories(sectionDataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
-        const subcategories = sectionDataElements
-            ?.filter(de => de.valueType === "LONG_TEXT")
-            .map(subcategory => {
-                return {
-                    id: subcategory.id,
-                    name: subcategory.description || subcategory.formName,
-                    code: subcategory.code,
-                };
-            })
-            .filter(Boolean);
-        return (subcategories as PolicyExplorerSubcategory[]) || [];
     }
 }
 
@@ -333,9 +290,7 @@ const programFields = {
         id: true,
         programStageSections: {
             id: true,
-            code: true,
             displayName: true,
-            description: true,
             dataElements: {
                 id: true,
                 code: true,
@@ -350,10 +305,6 @@ const eventsFields = {
     dataValues: { dataElement: true, value: true },
     eventDate: true,
 } as const;
-
-type D2DataElements = MetadataPick<{
-    dataElements: { fields: typeof dataElementsFields };
-}>["dataElements"][number];
 
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
