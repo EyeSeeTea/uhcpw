@@ -3,7 +3,6 @@ import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CategoryOption } from "../../../../webapp/components/policy-explorer/category-selector/CategorySelector";
-import _ from "lodash";
 
 export class TableBuilderDefault implements TableBuilder {
     buildColumns(params: {

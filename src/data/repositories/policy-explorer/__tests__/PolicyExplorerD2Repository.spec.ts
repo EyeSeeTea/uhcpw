@@ -703,7 +703,6 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             const policyExplorerResponse = (response.data || []) as PolicyExplorer;
-            console.log(JSON.stringify(policyExplorerResponse?.tables, null, 2));
             const expectedPolicyExplorerResponse =
                 policyExplorerResponseWithoutOneSubcategory as unknown as PolicyExplorer;
 
