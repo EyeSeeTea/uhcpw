@@ -323,6 +323,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     policyExplorerCategoryId,
                     policyExplorerSubcategoriesIds,
                     programCategories,
+                    dataSet,
                 });
 
                 const years = yearsByCategory[policyExplorerCategoryId] || [];

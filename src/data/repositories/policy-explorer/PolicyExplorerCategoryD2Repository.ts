@@ -206,8 +206,6 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                 return {
                     id,
                     name: subcategory.name,
-                    //   code: subcategory.code,
-                    //   oldCode: PROGRAM_CODE_TO_DATA_ELEMENT_CODE[subcategory.code],
                 };
             })
             .compact()
