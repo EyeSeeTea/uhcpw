@@ -9,27 +9,23 @@ export class TableBuilderDefault implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
-        dataSet?: D2DataSet;
         programCategories: CategoryOption[];
     }): PolicyExplorerCell[] {
-        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet, programCategories } = params;
-        const dataElementsSection = this.getDataElementsSection(
+        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, programCategories } = params;
+
+        const programSubcategories = this.getProgramDataElementsSection(
             policyExplorerCategoryId,
             policyExplorerSubcategoriesIds,
-            dataSet
+            programCategories
         );
-        const programSubcategories =
-            _.find(programCategories, { value: policyExplorerCategoryId })?.subcategories || [];
 
         return [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
             ...programSubcategories.map(de => ({
                 type: PolicyExplorerCellType.HEADER,
-                // value: de.description || de.formName,
                 value: de.text,
             })),
-            // .reverse(),
         ];
     }
 
@@ -96,6 +92,18 @@ export class TableBuilderDefault implements TableBuilder {
                         (de.valueType === "LONG_TEXT" || de.valueType === "TEXT") &&
                         policyExplorerSubcategoriesIds.includes(de.id)
                 ) || []
+        );
+    }
+
+    private getProgramDataElementsSection(
+        policyExplorerCategoryId: string,
+        policyExplorerSubcategoriesIds: string[],
+        programCategories: CategoryOption[]
+    ) {
+        return (
+            programCategories
+                .find(section => section.value === policyExplorerCategoryId)
+                ?.subcategories.filter(subcategory => policyExplorerSubcategoriesIds.includes(subcategory.value)) || []
         );
     }
 }

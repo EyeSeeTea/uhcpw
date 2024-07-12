@@ -322,7 +322,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 const columns = tableBuilder.buildColumns({
                     policyExplorerCategoryId,
                     policyExplorerSubcategoriesIds,
-                    dataSet,
                     programCategories,
                 });
 
