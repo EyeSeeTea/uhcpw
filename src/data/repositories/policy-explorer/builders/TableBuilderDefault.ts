@@ -39,7 +39,7 @@ export class TableBuilderDefault implements TableBuilder {
         orgUnitName: string;
         period?: string;
         references: string;
-        dataSet: D2DataSet;
+        dataSet?: D2DataSet;
     }): PolicyExplorerCell[][] {
         const {
             policyExplorerCategoryId,
