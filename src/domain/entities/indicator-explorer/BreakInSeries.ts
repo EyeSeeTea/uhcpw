@@ -1,29 +1,3 @@
-/**
- * Example the BreakInSeries domain structure:
- *
- * {
- *    "visualizationId1": {
- *       countries: {
- *          "country1":{
- *             years: ["2020", "2021"],
- *             description: "Description"
- *          },
- *          "country2":{
- *             years: ["2020", "2021"],
- *             description: "Description"
- *          }
- *       }
- *    },
- *     "visualizationId1": {
- *       countries: {
- *          "country1":{
- *             years: ["2020"],
- *             description: "Description"
- *          },
- *       }
- *    },
- */
-
 export type VisualizationBreakInSeries = {
     countries: Map<string, CountryBreakInSeries>;
 };

@@ -1,0 +1,70 @@
+{
+    "events": [
+        {
+            "event": "pIKpfuq4haM",
+            "eventDate": "2024-07-15T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "l9H4rmLGiKp",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "xH7Z4T1S9Pg",
+                    "value": "2015;2018"
+                },
+                {
+                    "dataElement": "ULemve5LPPR",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "D2s74Z1oOr5",
+                    "value": "During 2015 and 2018 there were some changes that affected how this is measured. Therefore, we are applying break in series."
+                }
+            ]
+        },
+        {
+            "event": "CPNXw5rVvgu",
+            "eventDate": "2024-07-05T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "xH7Z4T1S9Pg",
+                    "value": "2015;2018"
+                },
+                {
+                    "dataElement": "ULemve5LPPR",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "ZBaBjQxc104",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "D2s74Z1oOr5",
+                    "value": "This break corresponds to COVID-19"
+                }
+            ]
+        },
+        {
+            "event": "i6gQ5noK1x5",
+            "eventDate": "2024-07-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "xH7Z4T1S9Pg",
+                    "value": "2015;2018"
+                },
+                {
+                    "dataElement": "ULemve5LPPR",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "D2s74Z1oOr5",
+                    "value": "During 2015 and 2018 there were some changes that affected how this is measured.\n\nTherefore, we are applying break in series."
+                },
+                {
+                    "dataElement": "ykSVfaOeweJ",
+                    "value": "true"
+                }
+            ]
+        }
+    ]
+}

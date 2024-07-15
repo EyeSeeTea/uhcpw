@@ -1,0 +1,55 @@
+{
+    "pager": {
+        "page": 1,
+        "pageCount": 1,
+        "total": 1,
+        "pageSize": 50
+    },
+    "objects": [
+        {
+            "id": "uoOqwxmquTH",
+            "programStages": [
+                {
+                    "name": "UHCW_BreakInSeries",
+                    "id": "XOVRVleXMRP",
+                    "programStageSections": [
+                        {
+                            "id": "UOb51uJ4eoE",
+                            "dataElements": [
+                                {
+                                    "code": "BreakInSeries_xJhFIBuwGVC",
+                                    "id": "ZBaBjQxc104"
+                                },
+                                {
+                                    "code": "BreakInSeries_jFtGKQIQTGp",
+                                    "id": "ykSVfaOeweJ"
+                                },
+                                {
+                                    "code": "BreakInSeries_nhaxK33nlhb",
+                                    "id": "l9H4rmLGiKp"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "BvycmK16cyQ",
+                            "dataElements": [
+                                {
+                                    "code": "UHCW_BreakInSeries_Country",
+                                    "id": "ULemve5LPPR"
+                                },
+                                {
+                                    "code": "UHCW_BreakInSeries_Year",
+                                    "id": "xH7Z4T1S9Pg"
+                                },
+                                {
+                                    "code": "UHCW_BreakInSeries_Description",
+                                    "id": "D2s74Z1oOr5"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

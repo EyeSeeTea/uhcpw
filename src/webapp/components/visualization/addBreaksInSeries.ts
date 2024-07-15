@@ -148,6 +148,9 @@ function getSeriesWithBreaks(
     }
 }
 
+/**
+ * Generates column series with breaks by adding null simulating a break.
+ */
 function getColumnSeriesWithBreaks(
     series: Array<Highcharts.SeriesColumnOptions>,
     categories: string[]
@@ -177,6 +180,9 @@ function getColumnSeriesWithBreaks(
     });
 }
 
+/**
+ *  Generates series of lines with breaks by slicing the series in others and adding transparent series in between to simulate the breaks.
+ */
 function getLineSeriesWithBreaks(
     series: Array<SeriesLineOptionsWithCustomization>,
     visualizationBreakInSeries: VisualizationBreakInSeries,
