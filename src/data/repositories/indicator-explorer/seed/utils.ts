@@ -4,7 +4,6 @@ type SortedCategoryNames = {
     unmetNeed: string;
     healthSpending: string;
     householdHealthSpending: string;
-    fh: string;
 };
 
 export const sortedCategoryNames: SortedCategoryNames = {
@@ -13,7 +12,6 @@ export const sortedCategoryNames: SortedCategoryNames = {
     unmetNeed: "Unmet need",
     healthSpending: "Health spending (health accounts)",
     comparative: "Comparative",
-    fh: "FH",
 };
 
 export const sortedCharts: string[] = [
@@ -36,6 +34,7 @@ export const sortedCharts: string[] = [
     "geNXcoXc3mf",
     "hpO1ZyFXpCz",
     "ZxNdsDM8NSb",
+    "TzWcDtEOTPX",
     // Unmet need
     "xJhFIBuwGVC",
     "zkEtsohZTTf",
