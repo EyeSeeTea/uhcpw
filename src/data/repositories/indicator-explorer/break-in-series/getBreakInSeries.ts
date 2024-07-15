@@ -1,53 +1,19 @@
-import { D2Api } from "@eyeseetea/d2-api/2.36";
-import { d } from "msw/lib/glossary-de6278a9";
+import { D2Api, MetadataPick } from "@eyeseetea/d2-api/2.36";
 import { Future, FutureData } from "../../../../domain/entities/Future";
 import { apiToFuture } from "../../../../utils/futures";
 import { isValidUid } from "../../../../utils/uid";
+import { BreakInSeries, CountryBreakInSeries } from "../../../../domain/entities/indicator-explorer/BreakInSeries";
+import { Id } from "../../../../domain/entities/Ref";
 
-const breakInSeriesProgram = "uoOqwxmquTH";
+const BREAK_IN_SERIES_PROGRAM_ID = "uoOqwxmquTH";
 
-const orgUnitIdDE = "ULemve5LPPR";
-const yearDE = "xH7Z4T1S9Pg";
-const descriptionDE = "D2s74Z1oOr5";
-const visualizationDECodePattern = "BreakInSeries_";
+const BREAK_IN_SERIES_CHARTS_SECTION_ID = "UOb51uJ4eoE";
 
-/**
- * Example the BreakInSeries domain structure:
- *
- * {
- *    "visualizationId1": {
- *       counties: {
- *          "county1":{
- *             years: ["2020", "2021"],
- *             description: "Description"
- *          },
- *          "county2":{
- *             years: ["2020", "2021"],
- *             description: "Description"
- *          }
- *       }
- *    },
- *     "visualizationId1": {
- *       counties: {
- *          "county1":{
- *             years: ["2020"],
- *             description: "Description"
- *          },
- *       }
- *    },
- */
+const ORGANISATION_UNIT_ID_DATA_ELEMENT_ID = "ULemve5LPPR";
+const YEARS_DATA_ELEMENT_ID = "xH7Z4T1S9Pg";
+const DESCRIPTION_DATA_ELEMENT_ID = "D2s74Z1oOr5";
 
-// Move to domain/entities/BreakInSeries.ts
-export type BreakInSeries = Map<string, VisualizationBreakInSeries>;
-
-export type VisualizationBreakInSeries = {
-    counties: Map<string, CountryBreakInSeries>;
-};
-
-export type CountryBreakInSeries = {
-    years: string[];
-    description: string;
-};
+const VISUALIZATION_DATA_ELEMENT_CODE_PATTERN = "BreakInSeries_";
 
 export function getBreakInSeries(api: D2Api): FutureData<BreakInSeries> {
     return Future.joinObj({
@@ -55,58 +21,107 @@ export function getBreakInSeries(api: D2Api): FutureData<BreakInSeries> {
             api.events.get({
                 fields: eventsFields,
                 skipPaging: true,
-                program: breakInSeriesProgram,
+                program: BREAK_IN_SERIES_PROGRAM_ID,
             })
         ),
-        dataElementsResponse: apiToFuture(
-            // Try retrieve dataElements in program to reduce response
-            api.models.dataElements.get({
-                fields: dataElementFields,
-                paging: false,
+        programMetadata: apiToFuture(
+            api.models.programs.get({
+                fields: programFields,
+                filter: { id: { eq: BREAK_IN_SERIES_PROGRAM_ID } },
             })
         ),
-    }).map(({ eventsResponse, dataElementsResponse }) => {
-        const events = eventsResponse.events;
-        const visualizationIds = dataElementsResponse.objects
-            .filter(dataElement => dataElement.code && dataElement.code.includes(visualizationDECodePattern))
-            .map(dataElement => dataElement.code.replace(visualizationDECodePattern, ""))
-            .filter(visualizationId => isValidUid(visualizationId));
+    }).map(({ eventsResponse, programMetadata }) => {
+        const visualizationIdByDataElementId = getVisualizationIdByDataElementId(programMetadata.objects[0]);
 
-        const breakInSeries = visualizationIds.reduce((breakInSeries, visualizationId) => {}, new BreakInSeries());
-
-        debugger;
+        const breakInSeriesWithVisualizationIds = Array.from(visualizationIdByDataElementId.values()).reduce(
+            (breakInSeries, visualizationId) => {
+                breakInSeries.addVisualization(visualizationId);
+                return breakInSeries;
+            },
+            new BreakInSeries()
+        );
 
         const breakInSeries = eventsResponse.events.reduce((breakInSeries, event) => {
             const visualizationIds = event.dataValues
-                .filter(dataValue => dataValue.dataElement.includes(visualizationDECodePattern))
-                .map(dataValue => dataValue.value);
+                .filter(
+                    dataValue =>
+                        dataValue.value === "true" && visualizationIdByDataElementId?.get(dataValue.dataElement)
+                )
+                .map(dataValue => visualizationIdByDataElementId?.get(dataValue.dataElement))
+                .filter(Boolean) as Id[];
 
-            // if (visualizationId) {
-            //     const item = breakInSeries.get(visualizationId) || { counties: [], years: [], description: "" };
-            //     const orgUnitId = event.dataValues.find(dataValue => dataValue.dataElement === orgUnitIdDE)?.value;
-            //     const year = event.dataValues.find(dataValue => dataValue.dataElement === yearDE)?.value;
-            //     const description = event.dataValues.find(dataValue => dataValue.dataElement === descriptionDE)?.value;
-            //     if (orgUnitId) item.counties.push(orgUnitId);
-            //     if (year) item.years.push(year);
-            //     if (description) item.description = description;
-            //     return breakInSeries.set(visualizationId, item);
-            // }
-            return breakInSeries;
-        }, new BreakInSeries());
+            return visualizationIds.length
+                ? addCountryBreakInSeries(breakInSeries, visualizationIds, event.dataValues)
+                : breakInSeries;
+        }, breakInSeriesWithVisualizationIds);
 
-        return new BreakInSeries();
+        return breakInSeries;
     });
+}
+
+function getVisualizationIdByDataElementId(programMetadata: D2Program | undefined): Map<Id, Id> {
+    const dataElementsInBreakInSeriesCharts = programMetadata?.programStages[0]?.programStageSections.find(
+        ({ id }) => id === BREAK_IN_SERIES_CHARTS_SECTION_ID
+    )?.dataElements;
+
+    return (dataElementsInBreakInSeriesCharts || [])?.reduce((map, dataElement) => {
+        if (dataElement.code && dataElement.code.includes(VISUALIZATION_DATA_ELEMENT_CODE_PATTERN)) {
+            const visualizationId = dataElement.code.replace(VISUALIZATION_DATA_ELEMENT_CODE_PATTERN, "");
+            return isValidUid(visualizationId) ? map.set(dataElement.id, visualizationId) : map;
+        }
+        return map;
+    }, new Map<Id, Id>());
+}
+
+function addCountryBreakInSeries(
+    currentBreakInSeries: BreakInSeries,
+    visualizationIds: Id[],
+    dataValues: DataValue[]
+): BreakInSeries {
+    return visualizationIds.reduce((breakInSeries, visualizationId) => {
+        const orgUnitId = dataValues.find(
+            dataValue => dataValue.dataElement === ORGANISATION_UNIT_ID_DATA_ELEMENT_ID
+        )?.value;
+        if (!orgUnitId) return breakInSeries;
+        const updatedCountryBreakInSeries = getCountryBreakInSeries(
+            breakInSeries,
+            dataValues,
+            visualizationId,
+            orgUnitId
+        );
+        breakInSeries.addCountry(visualizationId, orgUnitId, updatedCountryBreakInSeries);
+        return breakInSeries;
+    }, currentBreakInSeries);
+}
+
+function getCountryBreakInSeries(
+    breakInSeries: BreakInSeries,
+    dataValues: DataValue[],
+    visualizationId: Id,
+    orgUnitId: Id
+): CountryBreakInSeries {
+    const countryBreakInSeries = breakInSeries.getCountry(visualizationId, orgUnitId) || {
+        years: [],
+        description: "",
+    };
+
+    const yearsMerged = dataValues.find(dataValue => dataValue.dataElement === YEARS_DATA_ELEMENT_ID)?.value;
+    const years = yearsMerged?.split(";");
+
+    const description = dataValues.find(dataValue => dataValue.dataElement === DESCRIPTION_DATA_ELEMENT_ID)?.value;
+
+    const updatedCountryBreakInSeries = {
+        years: years ? [...countryBreakInSeries.years, ...years] : countryBreakInSeries.years,
+        description: description || countryBreakInSeries.description,
+    };
+
+    return updatedCountryBreakInSeries;
 }
 
 const eventsFields = {
     event: true,
     dataValues: { dataElement: true, value: true },
     eventDate: true,
-} as const;
-
-const dataElementFields = {
-    id: true,
-    code: true,
 } as const;
 
 export interface D2Event {
@@ -119,3 +134,22 @@ export interface DataValue {
     dataElement: string;
     value: string;
 }
+
+const programFields = {
+    id: true,
+    programStages: {
+        id: true,
+        name: true,
+        programStageSections: {
+            id: true,
+            dataElements: {
+                id: true,
+                code: true,
+            },
+        },
+    },
+} as const;
+
+type D2Program = MetadataPick<{
+    programs: { fields: typeof programFields };
+}>["programs"][number];

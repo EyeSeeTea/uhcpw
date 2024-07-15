@@ -5,4 +5,5 @@ export const chart_jFtGKQIQTGp_Seed = {
     showCountryTag: true,
     friendlyName: "households with impoverishing health spending",
     maxCountryFilter: 1,
+    allowBreaksInSeries: true,
 };

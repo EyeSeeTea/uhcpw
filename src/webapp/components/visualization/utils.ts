@@ -59,3 +59,7 @@ function sortLegendByLastDataPointIfRequired(
           )
         : seriesWithData;
 }
+
+export function getCategories(xAxis: Highcharts.XAxisOptions | Highcharts.XAxisOptions[] | undefined): string[] {
+    return Array.isArray(xAxis) ? xAxis[0]?.categories || [] : xAxis?.categories || [];
+}

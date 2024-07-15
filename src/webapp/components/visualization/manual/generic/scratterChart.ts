@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Visualization } from "../../../../../domain/entities/indicator-explorer/Visualization";
 import { baseChartOptions } from "./baseChartOptions";
 

@@ -1,4 +1,5 @@
 import { Id, Ref } from "../Ref";
+import { VisualizationBreakInSeries } from "./BreakInSeries";
 
 export interface VisualizationExtra {
     categoryName: string;
@@ -11,6 +12,8 @@ export interface VisualizationExtra {
     isComparative?: boolean;
     hasEur27?: boolean;
     showCountryTag?: boolean;
+    breakInSeries?: VisualizationBreakInSeries;
+    allowBreaksInSeries?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
