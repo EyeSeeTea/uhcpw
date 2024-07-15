@@ -5,7 +5,6 @@ type SortedCategoryNames = {
     healthSpending: string;
     householdHealthSpending: string;
     hsh: string;
-    hsha: string;
     fh: string;
 };
 
@@ -16,7 +15,6 @@ export const sortedCategoryNames: SortedCategoryNames = {
     healthSpending: "Health spending (health accounts)",
     comparative: "Comparative",
     hsh: "HSH",
-    hsha: "HS (HA)",
     fh: "FH",
 };
 
@@ -47,4 +45,6 @@ export const sortedCharts: string[] = [
     "d3kq9OCv8tH",
     "ZZAcIv6O9LY",
     "BYAT5Woc9EJ",
+    "xKmSHeJ1GXq",
+    "z6nPPMMbOw5",
 ];
