@@ -8,14 +8,6 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     legend: { ...baseLegend },
     series: [
         {
-            id: "OE8u72wcKty",
-            name: "Public spending on health (HF .1)",
-            color: "#00b050",
-            dataLabels: {
-                enabled: false,
-            },
-        },
-        {
             id: "S0rJgTIK3Gv",
             name: "Out-of-pocket payments (HF .3)",
             color: "#c00000",
