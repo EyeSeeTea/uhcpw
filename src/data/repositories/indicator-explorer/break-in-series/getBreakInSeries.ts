@@ -41,7 +41,7 @@ export function getBreakInSeries(api: D2Api): FutureData<BreakInSeries> {
             new BreakInSeries()
         );
 
-        const breakInSeries = eventsResponse.events.reduce((breakInSeries, event) => {
+        return eventsResponse.events.reduce((breakInSeries, event) => {
             const visualizationIds = event.dataValues
                 .filter(
                     dataValue =>
@@ -54,8 +54,6 @@ export function getBreakInSeries(api: D2Api): FutureData<BreakInSeries> {
                 ? addCountryBreakInSeries(breakInSeries, visualizationIds, event.dataValues)
                 : breakInSeries;
         }, breakInSeriesWithVisualizationIds);
-
-        return breakInSeries;
     });
 }
 
