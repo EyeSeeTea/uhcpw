@@ -29,6 +29,7 @@ import { chart_NOR4oxtMVxP_Seed } from "./chart_NOR4oxtMVxP_Seed";
 import { chart_TzWcDtEOTPX_Seed } from "./chart_TzWcDtEOTPX_Seed";
 import { chart_eEKRLRR4mDk_Seed } from "./chart_eEKRLRR4mDk_Seed";
 import { chart_sjgCABd3zK7_Seed } from "./chart_sjgCABd3zK7_Seed";
+import { chart_cGE32OzPgMS_Seed } from "./chart_cGE32OzPgMS_Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     // Comparative charts
@@ -46,6 +47,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
     fY7K8ATEDgQ: chat_fY7K8ATEDgQ_Seed,
     sjgCABd3zK7: chart_sjgCABd3zK7_Seed,
+    cGE32OzPgMS: chart_cGE32OzPgMS_Seed,
     // Financial hardship
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Seed,
     Y31jQX5PVdI: chart_Y31jQX5PVdI_Seed,
