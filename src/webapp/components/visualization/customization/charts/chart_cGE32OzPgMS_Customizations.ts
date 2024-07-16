@@ -67,6 +67,6 @@ export const chart_cGE32OzPgMS_Customizations: ChartCustomization = {
         },
     ],
     xAxis: { title: { text: "" } },
-    yAxis: { title: { text: "Household budget (%)" } },
+    yAxis: { title: { text: "Household (%)" } },
     sortLegendByLastDataPoint: true,
 };
