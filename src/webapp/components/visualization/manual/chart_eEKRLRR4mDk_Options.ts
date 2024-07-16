@@ -1,14 +1,13 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
 import { createScratterChart, SerieData } from "./generic/scratterChart";
+import { NamedRef } from "../../../../domain/entities/Ref";
 
 const REST_ID = "REST_ID";
 
-type SerieSource = {
-    id: string;
-    name: string;
+interface SerieSource extends NamedRef {
     color: string;
-};
+}
 
 export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
