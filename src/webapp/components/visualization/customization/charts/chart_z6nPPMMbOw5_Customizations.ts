@@ -5,7 +5,7 @@ import { sortSerieDataByCategories } from "./utils/sortSerieDataByCategories";
 
 export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     title: { text: "" },
-    legend: { ...baseLegend },
+    legend: { ...baseLegend, reversed: true },
     series: [
         {
             id: "S0rJgTIK3Gv",
