@@ -40,12 +40,16 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     eEKRLRR4mDk: chart_eEKRLRR4mDk_Seed,
     // Household spending on health
     pWFRTFfh5mA: chart_pWFRTFfh5mA_Seed,
+    uRZCilOIr1C: chat_uRZCilOIr1C_Seed,
+    qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
+    fY7K8ATEDgQ: chat_fY7K8ATEDgQ_Seed,
     // Financial hardship
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Seed,
     Y31jQX5PVdI: chart_Y31jQX5PVdI_Seed,
     geNXcoXc3mf: chart_geNXcoXc3mf_Seed,
     hpO1ZyFXpCz: chart_hpO1ZyFXpCz_Seed,
     ZxNdsDM8NSb: chart_ZxNdsDM8NSb_Seed,
+    TzWcDtEOTPX: chart_TzWcDtEOTPX_Seed,
     // Unmet need
     xJhFIBuwGVC: chart_xJhFIBuwGVC_Seed,
     zkEtsohZTTf: chart_zkEtsohZTTf_Seed,
@@ -56,15 +60,8 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     d3kq9OCv8tH: chart_d3kq9OCv8tH_Seed,
     ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Seed,
     BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Seed,
-    //HSH
-    uRZCilOIr1C: chat_uRZCilOIr1C_Seed,
-    qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
-    fY7K8ATEDgQ: chat_fY7K8ATEDgQ_Seed,
-    //HSHA
     xKmSHeJ1GXq: chart_xKmSHeJ1GXq_Seed,
     z6nPPMMbOw5: chart_z6nPPMMbOw5_Seed,
-    //FH
-    TzWcDtEOTPX: chart_TzWcDtEOTPX_Seed,
 };
 
 export const emptyVisualizationExtra = {
