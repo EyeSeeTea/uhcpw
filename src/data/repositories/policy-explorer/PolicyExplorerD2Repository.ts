@@ -24,7 +24,6 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "./PolicyExplorerCategoryD2Repository";
-import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
@@ -78,7 +77,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndRegions: Country[],
-        programCategories: CategoryOption[]
+        programCategories: ProgramCategory[]
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
@@ -115,7 +114,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    saveToFile(categories: CategoryOption[], policyExplorer: PolicyExplorer): FutureData<void> {
+    saveToFile(categories: ProgramCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
         const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
             return (
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
@@ -292,7 +291,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         countriesAndRegions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
-        programCategories: CategoryOption[];
+        programCategories: ProgramCategory[];
     }): Record<string, PolicyExplorerCell[][]> {
         const {
             policyExplorerCategories,
@@ -520,4 +519,14 @@ export type D2DataSet = MetadataPick<{
 
 type DataValueSetsDataValueWithOrgUnitNames = DataValueSetsDataValue & {
     orgUnitShortName: string;
+};
+
+export type ProgramCategory = {
+    value: string;
+    text: string;
+    subcategories: {
+        value: string;
+        text: string;
+    }[];
+    description: string;
 };

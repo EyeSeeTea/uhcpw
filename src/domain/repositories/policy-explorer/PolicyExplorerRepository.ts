@@ -1,3 +1,4 @@
+import { ProgramCategory } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 import { Country } from "../../entities/Country";
 import { FutureData } from "../../entities/Future";
@@ -10,7 +11,7 @@ export interface PolicyExplorerRepository {
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndRegions: Country[],
-        programCategories: CategoryOption[]
+        programCategories: ProgramCategory[]
     ): FutureData<PolicyExplorer>;
     saveToFile(categories: CategoryOption[], policyExplorer: PolicyExplorer): FutureData<void>;
 }
