@@ -3,7 +3,7 @@ import { ChartCustomization } from "../types";
 
 export const chart_NOR4oxtMVxP_Customizations: ChartCustomization = {
     title: { text: "" },
-    legend: { ...baseLegend },
+    legend: { ...baseLegend, reversed: true },
     series: [
         {
             id: "OQ4P2FX0ApA",
