@@ -55,8 +55,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 $marginStart={!useHeaderForCountryPage && !isScreenshot}
             >
                 <VisualizationPluginHeader
-                    visualizationDialogInfo={chartData.visualization.notes || ""}
-                    visualizationBreakInSeries={chartData.visualization.breakInSeries}
+                    visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
                     chartFriendlyName={chartData.visualization.friendlyName}
                     categoryTag={chartData.visualization.categoryTag}
                     showInfo={showInfo}

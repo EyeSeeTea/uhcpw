@@ -115,7 +115,8 @@ function getXAxisWithBreaks(
 
 function getCategoriesWithBreaks(xAxis: Highcharts.XAxisOptions | undefined, years: string[]): string[] | undefined {
     return xAxis?.categories?.reduce(
-        (acc: string[], category) => (years.includes(category) ? [...acc, "", category] : [...acc, category]),
+        (acc: string[], category, index) =>
+            years.includes(category) && index !== 0 ? [...acc, "", category] : [...acc, category],
         []
     );
 }

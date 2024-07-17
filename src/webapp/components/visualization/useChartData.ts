@@ -9,6 +9,7 @@ import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet
 import { ChartData, ChartDataLoaded } from "./ChartData";
 import { visualizationCustomizations } from "./customization/visualizationCustomizations";
 import { chartOptions } from "./manual/chartOptions";
+import { Country } from "../../../domain/entities/Country";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -30,6 +31,46 @@ export function useChartData(
     const [showInfo, setShowInfo] = useState<boolean>(false);
     const { countriesAndRegions } = useAppContext();
 
+    const getVisualizationDialogInfo = useCallback(
+        (visualization: Visualization, analytics: Analytics, countries: Country[]) => {
+            const yearIndexColumn = analytics.headers.findIndex(header => header.name === "pe");
+
+            const allYearsInChart = analytics.rows.reduce((years, row) => {
+                if (yearIndexColumn) {
+                    const year = row[yearIndexColumn];
+                    return year && !years.includes(year) ? [...years, year] : years;
+                }
+
+                return years;
+            }, []);
+
+            const breakInSeriesDescriptions = countries.reduce<string[]>((descriptions, country) => {
+                const yearsBeforeBreak = (visualization.breakInSeries?.countries.get(country.id)?.years || []).map(
+                    year => (Number(year) - 1).toString()
+                );
+                const areYearsBeforeBreakInChart = yearsBeforeBreak.some(year => allYearsInChart.includes(year));
+
+                if (areYearsBeforeBreakInChart && visualization.breakInSeries?.countries.get(country.id)?.description) {
+                    return [
+                        ...descriptions,
+                        `${country.name}: ${visualization.breakInSeries?.countries.get(country.id)?.description}`,
+                    ];
+                }
+
+                return descriptions;
+            }, []);
+
+            if (breakInSeriesDescriptions.length && visualization.notes) {
+                return [`${visualization.notes}  \n`, breakInSeriesDescriptions.join("  \n")].join("  \n");
+            }
+
+            return breakInSeriesDescriptions.length
+                ? breakInSeriesDescriptions.join("  \n")
+                : visualization.notes || "";
+        },
+        []
+    );
+
     useEffect(() => {
         if (visualizationId) {
             getChartData(compositionRoot, visualizationId, years, countries).run(
@@ -46,6 +87,11 @@ export function useChartData(
                                       .toUpperCase()}${visualization.friendlyName.slice(1)}`
                                 : visualization.friendlyName,
                         },
+                        visualizationDialogInfo: getVisualizationDialogInfo(
+                            visualization,
+                            analytics,
+                            countriesAndRegions
+                        ),
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
@@ -73,7 +119,15 @@ export function useChartData(
                 message: "Missing visualizationId",
             });
         }
-    }, [compositionRoot, visualizationId, countries, years, countriesAndRegions, currentCountry]);
+    }, [
+        compositionRoot,
+        visualizationId,
+        countries,
+        years,
+        countriesAndRegions,
+        currentCountry,
+        getVisualizationDialogInfo,
+    ]);
 
     const onDownloadExcel = useCallback(
         (chartDataLoaded: ChartDataLoaded) => {
@@ -100,7 +154,13 @@ export function useChartData(
         setShowInfo(false);
     }, []);
 
-    return { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel };
+    return {
+        chartData,
+        showInfo,
+        onShowInfo,
+        onCloseInfo,
+        onDownloadExcel,
+    };
 }
 
 function getChartData(

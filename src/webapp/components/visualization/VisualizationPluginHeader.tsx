@@ -8,11 +8,9 @@ import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
 import { Country } from "../../../domain/entities/Country";
-import { VisualizationBreakInSeries } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: string;
-    visualizationBreakInSeries?: VisualizationBreakInSeries;
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;
@@ -30,7 +28,6 @@ interface VisualizationPluginHeaderProps {
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
     ({
         visualizationDialogInfo,
-        visualizationBreakInSeries,
         chartFriendlyName,
         showInfo,
         categoryTag,
@@ -49,17 +46,6 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                 return countries.find(({ id }) => id === currentCountry)?.name;
             }
         }, [countries, currentCountry]);
-
-        const dialogInfo = useMemo(() => {
-            const breakInSeriesDescriptions = countries
-                .map(country =>
-                    visualizationBreakInSeries?.countries.get(country.id)?.description
-                        ? `${country.name}: ${visualizationBreakInSeries?.countries.get(country.id)?.description}`
-                        : ""
-                )
-                .join("  \n");
-            return [`${visualizationDialogInfo}  \n`, breakInSeriesDescriptions].join("  \n");
-        }, [countries, visualizationBreakInSeries?.countries, visualizationDialogInfo]);
 
         return (
             <DataHeader className="visualization-plugin-header" $isCountryPage={useHeaderForCountryPage}>
@@ -157,7 +143,9 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                         </>
                     )}
                 </Row>
-                {showInfo && <NotesDialog isOpen={showInfo} onClose={onCloseInfo} dialogInfo={dialogInfo} />}
+                {showInfo && (
+                    <NotesDialog isOpen={showInfo} onClose={onCloseInfo} dialogInfo={visualizationDialogInfo} />
+                )}
             </DataHeader>
         );
     }

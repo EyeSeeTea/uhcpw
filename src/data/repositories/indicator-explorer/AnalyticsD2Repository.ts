@@ -11,7 +11,9 @@ import { exportToCSV } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
-import { EU27 } from "../../../domain/entities/Country";
+import { mapToWhoCountryName } from "../countries/mapToWhoCountryData";
+import { VisualizationBreakInSeries } from "../../../domain/entities/indicator-explorer/BreakInSeries";
+import { Maybe } from "../../../types/utils";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 
@@ -82,8 +84,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     seriesIdAndName
                 );
 
+                const breakInSeriesDescriptions = this.getBreakInSeriesDescription(
+                    analyticsResponse,
+                    metadata.organisationUnits,
+                    visualization.breakInSeries
+                );
+
                 const tabs = [
-                    { name: "Notes", data: [[visualization.notes || ""]] },
+                    { name: "Notes", data: [[visualization.notes || ""], ...breakInSeriesDescriptions] },
                     {
                         name: "Data",
                         data: dataRows,
@@ -101,6 +109,48 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 return Future.success(undefined);
             });
         });
+    }
+
+    private getBreakInSeriesDescription(
+        analytics: Analytics,
+        organisationUnits: Maybe<
+            {
+                id: string;
+                name: string;
+                shortName: string;
+            }[]
+        >,
+        visualizationBreakInSeries: Maybe<VisualizationBreakInSeries>
+    ): string[][] {
+        const yearIndexColumn = analytics.headers.findIndex(header => header.name === "pe");
+
+        const allYearsInDataRows = analytics.rows.reduce((years, row) => {
+            if (yearIndexColumn) {
+                const year = row[yearIndexColumn];
+                return year && !years.includes(year) ? [...years, year] : years;
+            }
+
+            return years;
+        }, []);
+
+        return (organisationUnits || [])
+            .map(orgUnit => {
+                const yearsBeforeBreak = (visualizationBreakInSeries?.countries.get(orgUnit.id)?.years || []).map(
+                    year => (Number(year) - 1).toString()
+                );
+                const areYearsBeforeBreakInChart = yearsBeforeBreak.some(year => allYearsInDataRows.includes(year));
+
+                if (areYearsBeforeBreakInChart && visualizationBreakInSeries?.countries.get(orgUnit.id)?.description) {
+                    return [
+                        `${mapToWhoCountryName(orgUnit.id, orgUnit.shortName || "")}: ${
+                            visualizationBreakInSeries?.countries.get(orgUnit.id)?.description
+                        }`,
+                    ];
+                }
+
+                return [""];
+            })
+            .filter(description => description[0] !== "");
     }
 
     private createDataRows(
@@ -148,7 +198,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const dataRowsWithCountryIfRequired = dataRows.map((row, index) => {
             if (addCountryColumn && index > 1) {
                 const country = orgUnits.objects[0];
-                return country ? [country.shortName, ...row] : ["", ...row];
+                const countryName = country ? mapToWhoCountryName(country.id, country.shortName || "") : "";
+                return [countryName, ...row];
             }
             return row;
         });
@@ -186,7 +237,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const orgUnit = organisationUnits?.find(orgUnit => orgUnit.id === id);
 
         if (orgUnit) {
-            return EU27 === id ? "EU27" : orgUnit?.shortName || "";
+            return mapToWhoCountryName(id, orgUnit?.shortName || "");
         } else {
             const objects = Object.values(restMetadata).flat();
 
