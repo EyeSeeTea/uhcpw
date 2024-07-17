@@ -23,7 +23,6 @@ export const sortedCharts: string[] = [
     "VB7bdJ8ZXya",
     "mcNfvQaVbfy",
     "B4CnzUqVR3n",
-    "eibYs7QySNk",
     // Household spending on health"
     "pWFRTFfh5mA",
     "uRZCilOIr1C",
@@ -42,6 +41,7 @@ export const sortedCharts: string[] = [
     "zkEtsohZTTf",
     "rT39aStYqI3",
     "nhaxK33nlhb",
+    "eibYs7QySNk",
     // Health spending (health accounts)
     "OB4SCQfCzwz",
     "d3kq9OCv8tH",

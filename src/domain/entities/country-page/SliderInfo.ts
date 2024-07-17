@@ -10,4 +10,5 @@ export type SliderInfo = {
     sliderNine: string;
     sliderTen: string;
     sliderEleven: string;
+    sliderTwelve: string;
 };

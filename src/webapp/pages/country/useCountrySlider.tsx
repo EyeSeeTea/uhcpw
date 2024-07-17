@@ -243,6 +243,22 @@ export function useCountrySlider(countryId: string): CountrySlider {
                     countries: [countryId, EU27],
                 },
             },
+            {
+                tab: 12,
+                tabTitle: sliderInfo?.sliderTwelve || "",
+                graphOne: {
+                    visualizationId: "eibYs7QySNk",
+                    visualizationName: VisualizationsSeeds["eibYs7QySNk"]?.friendlyName,
+                    years: [LatestCOVID19.id],
+                    countries: countriesAndRegions.map(({ id }) => id),
+                },
+                graphTwo: {
+                    visualizationId: "BYAT5Woc9EJ",
+                    visualizationName: VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
+                    years: [LatestCOVID19.id],
+                    countries: countriesAndRegions.map(({ id }) => id),
+                },
+            },
         ],
         [
             countriesAndRegions,
@@ -254,6 +270,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             sliderInfo?.sliderOne,
             sliderInfo?.sliderSeven,
             sliderInfo?.sliderSix,
+            sliderInfo?.sliderTwelve,
             sliderInfo?.sliderThree,
             sliderInfo?.sliderTwo,
         ]
