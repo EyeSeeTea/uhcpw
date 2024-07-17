@@ -112,7 +112,7 @@ export const chartStackedColumnABreakBeforeFirstOptionsWithBreaks = {
             overflow: "hidden",
             textOverflow: "ellipsis",
             fill: "#212934",
-            width: "1072px",
+            width: "1100px",
         },
         text: "",
         align: "center",
@@ -129,14 +129,14 @@ export const chartStackedColumnABreakBeforeFirstOptionsWithBreaks = {
             overflow: "hidden",
             textOverflow: "ellipsis",
             fill: "#4a5768",
-            width: "1072px",
+            width: "1100px",
         },
         align: "center",
         widthAdjust: -44,
     },
     xAxis: [
         {
-            categories: ["2015", "2016", "2017"],
+            categories: ["2018", "2019", "2020"],
             title: {
                 text: "",
             },
@@ -185,7 +185,7 @@ export const chartStackedColumnABreakBeforeFirstOptionsWithBreaks = {
         {
             id: "yYSS1uBgnTE",
             name: "Further impoverished",
-            data: [0.63, 0.68, 0.55],
+            data: [0.8, 0.71, 1.3],
             dataLabels: {
                 enabled: false,
             },
@@ -203,7 +203,7 @@ export const chartStackedColumnABreakBeforeFirstOptionsWithBreaks = {
         {
             id: "WsUM8TQ7cEh",
             name: "Impoverished",
-            data: [0.13, 0.11, 0.12],
+            data: [0.13, 0.09, 0.27],
             dataLabels: {
                 enabled: false,
             },
@@ -277,11 +277,6 @@ export const chartStackedColumnABreakBeforeFirstOptionsWithBreaks = {
     plotOptions: {
         series: {
             grouping: false,
-        },
-        line: {
-            events: {
-                legendItemClick: expect.any(Function),
-            },
         },
     },
 } as unknown as Highcharts.Options;

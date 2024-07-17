@@ -133,13 +133,15 @@ function getSeriesWithBreaks(
 ): Array<Highcharts.SeriesOptionsType> {
     switch (chartType) {
         case "line":
-            return getLineSeriesWithBreaks(
-                series as Array<SeriesLineOptionsWithCustomization>,
-                visualizationBreakInSeries,
-                categories,
-                countries,
-                isCountrySeries
-            );
+            return categories.length === 1
+                ? series
+                : getLineSeriesWithBreaks(
+                      series as Array<SeriesLineOptionsWithCustomization>,
+                      visualizationBreakInSeries,
+                      categories,
+                      countries,
+                      isCountrySeries
+                  );
 
         case "column":
             return getColumnSeriesWithBreaks(series as Array<Highcharts.SeriesColumnOptions>, categories);
@@ -199,9 +201,13 @@ function getLineSeriesWithBreaks(
             isCountrySeries
         );
 
-        if (!countryBreakInSeries) return serie;
+        const breakYearsInCategories = countryBreakInSeries?.years.filter(year => categories.includes(year));
 
-        const yearsBreakIndexes = countryBreakInSeries.years.flatMap((year: string) => categories.indexOf(year));
+        if (!breakYearsInCategories?.length) return serie;
+
+        const yearsBreakIndexes = breakYearsInCategories
+            .flatMap((year: string) => categories.indexOf(year))
+            .filter(index => index !== -1 && index !== 0);
 
         const allYearsBreakIndex = [0, ...yearsBreakIndexes, categories.length - 1];
 

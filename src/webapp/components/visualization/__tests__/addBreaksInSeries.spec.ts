@@ -5,10 +5,12 @@ import chartStackedColumnOptionsJson from "./data/chartStackedColumnOptions.json
 import chartLineOptionsJson from "./data/chartLineOptions.json";
 import chartCountriesLineOptionsJson from "./data/chartCountriesLineOptions.json";
 import chartStackedColumnABreakBeforeFirstOptionsJson from "./data/chartStackedColumnABreakBeforeFirstOptions.json";
+import chartLineOneValueBeforeBreakOptionsWithBreaksOptionsJson from "./data/chartLineOneValueBeforeBreakOptionsWithBreaksOptionsJson.json";
 import { chartStackedColumnOptionsWithBreaks } from "./data/chartStackedColumnOptionsWithBreaks";
 import { chartLineOptionsWithBreaks } from "./data/chartLineOptionsWithBreaks";
 import { chartCountriesLineOptionsWithBreaks } from "./data/chartCountriesLineOptionsWithBreaks";
 import { chartStackedColumnABreakBeforeFirstOptionsWithBreaks } from "./data/chartStackedColumnABreakBeforeFirstOptionsWithBreaks";
+import { chartLineOneValueBeforeBreakOptionsWithBreaks } from "./data/chartLineOneValueBeforeBreakOptionsWithBreaks";
 import countriesJson from "./data/countries.json";
 import countryJson from "./data/country.json";
 import {
@@ -17,6 +19,13 @@ import {
 } from "../../../../domain/entities/indicator-explorer/BreakInSeries";
 import { Country } from "../../../../domain/entities/Country";
 import { addBreaksInSeries } from "../addBreaksInSeries";
+
+type TestTypeValue =
+    | "stackedColumn"
+    | "line"
+    | "countriesLine"
+    | "stackedColumnABreakBeforeFirst"
+    | "lineOneValueBeforeBreak";
 
 describe("Given addBreakInSeries", () => {
     describe("When we have a stacked column chart with a break in series", () => {
@@ -71,28 +80,44 @@ describe("Given addBreakInSeries", () => {
         });
     });
 
-    describe("When we have a stacked column chart with a break in series but this break is before the fisrt position of the chart", () => {
+    describe("When we have a stacked column chart with a break in series but this break is before the first position of the chart", () => {
         it("Then should not add any break", () => {
-            const chartOptions = givenChartOptions("countriesLine");
+            const chartOptions = givenChartOptions("stackedColumnABreakBeforeFirst");
             const visualizationBreakInSeries = givenVisualizationBreakInSeries();
             const countries = givenCountries();
 
             const chartOptionsWithBreaks = addBreaksInSeries(chartOptions, visualizationBreakInSeries, countries, true);
 
-            const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("countriesLine");
+            const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("stackedColumnABreakBeforeFirst");
+
+            verifyChartOptions(chartOptionsWithBreaks, expectedChartOptionsWithBreaks);
+        });
+    });
+
+    describe("When we have a line chart with a break in series before selected year and we select just this year", () => {
+        it("Then should not add any break", () => {
+            const chartOptions = givenChartOptions("lineOneValueBeforeBreak");
+            const visualizationBreakInSeries = givenVisualizationBreakInSeries();
+            const countries = givenCountries();
+
+            const chartOptionsWithBreaks = addBreaksInSeries(chartOptions, visualizationBreakInSeries, countries, true);
+
+            const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("lineOneValueBeforeBreak");
 
             verifyChartOptions(chartOptionsWithBreaks, expectedChartOptionsWithBreaks);
         });
     });
 });
 
-function givenChartOptions(type: "stackedColumn" | "line" | "countriesLine"): Highcharts.Options {
+function givenChartOptions(type: TestTypeValue): Highcharts.Options {
     const chartOptionsTypes = {
         stackedColumn: chartStackedColumnOptionsJson as unknown as Highcharts.Options,
         stackedColumnABreakBeforeFirst: chartStackedColumnABreakBeforeFirstOptionsJson as unknown as Highcharts.Options,
         line: chartLineOptionsJson as unknown as Highcharts.Options,
         countriesLine: chartCountriesLineOptionsJson as unknown as Highcharts.Options,
-    } as Record<string, Highcharts.Options>;
+        lineOneValueBeforeBreak:
+            chartLineOneValueBeforeBreakOptionsWithBreaksOptionsJson as unknown as Highcharts.Options,
+    } as Record<TestTypeValue, Highcharts.Options>;
 
     const chartOptions = chartOptionsTypes[type];
 
@@ -119,13 +144,14 @@ function givenCountries(): Country[] {
     return countriesJson as Country[];
 }
 
-function givenChartOptionsWithBreaks(type: "stackedColumn" | "line" | "countriesLine"): Highcharts.Options {
+function givenChartOptionsWithBreaks(type: TestTypeValue): Highcharts.Options {
     const chartOptionsTypes = {
         stackedColumn: chartStackedColumnOptionsWithBreaks,
         stackedColumnABreakBeforeFirst: chartStackedColumnABreakBeforeFirstOptionsWithBreaks,
         line: chartLineOptionsWithBreaks,
         countriesLine: chartCountriesLineOptionsWithBreaks,
-    } as Record<string, Highcharts.Options>;
+        lineOneValueBeforeBreak: chartLineOneValueBeforeBreakOptionsWithBreaks,
+    } as Record<TestTypeValue, Highcharts.Options>;
 
     const chartOptions = chartOptionsTypes[type];
 

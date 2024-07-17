@@ -109,7 +109,9 @@ function getCountryBreakInSeries(
     const description = dataValues.find(dataValue => dataValue.dataElement === DESCRIPTION_DATA_ELEMENT_ID)?.value;
 
     const updatedCountryBreakInSeries = {
-        years: years ? [...countryBreakInSeries.years, ...years] : countryBreakInSeries.years,
+        years: years
+            ? [...new Set([...countryBreakInSeries.years, ...years])]
+            : [...new Set([...countryBreakInSeries.years])],
         description: description || countryBreakInSeries.description,
     };
 
