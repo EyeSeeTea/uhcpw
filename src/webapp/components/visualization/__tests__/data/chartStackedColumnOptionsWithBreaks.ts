@@ -1,3 +1,5 @@
+import Highcharts from "highcharts";
+
 export const chartStackedColumnOptionsWithBreaks = {
     chart: {
         alignThresholds: false,

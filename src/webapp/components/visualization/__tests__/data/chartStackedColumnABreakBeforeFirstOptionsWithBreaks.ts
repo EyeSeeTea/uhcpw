@@ -1,0 +1,287 @@
+import Highcharts from "highcharts";
+
+export const chartStackedColumnABreakBeforeFirstOptionsWithBreaks = {
+    chart: {
+        alignThresholds: false,
+        panning: {
+            enabled: false,
+            type: "x",
+        },
+        styledMode: false,
+        borderRadius: 0,
+        colorCount: 10,
+        allowMutatingData: true,
+        defaultSeriesType: "line",
+        ignoreHiddenSeries: true,
+        spacing: [10, 10, 15, 10],
+        resetZoomButton: {
+            theme: {
+                zIndex: 6,
+            },
+            position: {
+                align: "right",
+                x: -10,
+                y: 10,
+            },
+        },
+        zoomBySingleTouch: false,
+        width: null,
+        height: null,
+        borderColor: "#335cad",
+        backgroundColor: "#ffffff",
+        plotBorderColor: "#cccccc",
+        type: "column",
+        spacingTop: 20,
+        style: {
+            fontFamily: "Roboto,Helvetica Neue,Helvetica,Arial,sans-serif",
+        },
+    },
+    legend: {
+        enabled: true,
+        align: "right",
+        alignColumns: true,
+        className: "highcharts-no-tooltip",
+        layout: "vertical",
+        borderColor: "#999999",
+        borderRadius: 0,
+        navigation: {
+            activeColor: "#003399",
+            inactiveColor: "#cccccc",
+        },
+        itemStyle: {
+            fontWeight: "normal",
+            fontSize: "13px",
+        },
+        itemHoverStyle: {
+            color: "#000000",
+        },
+        itemHiddenStyle: {
+            color: "#cccccc",
+        },
+        shadow: false,
+        itemCheckboxStyle: {
+            position: "absolute",
+            width: "13px",
+            height: "13px",
+        },
+        squareSymbol: true,
+        symbolPadding: 5,
+        verticalAlign: "middle",
+        x: 0,
+        y: 0,
+        title: {
+            style: {
+                fontWeight: "bold",
+            },
+        },
+        bubbleLegend: {
+            borderWidth: 2,
+            connectorDistance: 60,
+            connectorWidth: 1,
+            enabled: false,
+            labels: {
+                allowOverlap: false,
+                format: "",
+                align: "right",
+                style: {
+                    fontSize: "10px",
+                    color: "#000000",
+                },
+                x: 0,
+                y: 0,
+            },
+            maxSize: 60,
+            minSize: 10,
+            legendIndex: 0,
+            ranges: {},
+            sizeBy: "area",
+            sizeByAbsoluteValue: false,
+            zIndex: 1,
+            zThreshold: 0,
+        },
+        itemMarginTop: 20,
+        reversed: true,
+    },
+    title: {
+        style: {
+            color: "#212934",
+            fontSize: "18px",
+            fontWeight: "normal",
+            fontStyle: "normal",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            fill: "#212934",
+            width: "1072px",
+        },
+        text: "",
+        align: "center",
+        margin: 30,
+        widthAdjust: -44,
+    },
+    subtitle: {
+        style: {
+            color: "#4a5768",
+            fontSize: "13px",
+            fontWeight: "normal",
+            fontStyle: "normal",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            fill: "#4a5768",
+            width: "1072px",
+        },
+        align: "center",
+        widthAdjust: -44,
+    },
+    xAxis: [
+        {
+            categories: ["2015", "2016", "2017"],
+            title: {
+                text: "",
+            },
+            labels: {
+                style: {
+                    color: "#404b5a",
+                    fontSize: "11px",
+                    fontWeight: "normal",
+                    fontStyle: "normal",
+                },
+            },
+            index: 0,
+            isX: true,
+        },
+    ],
+    yAxis: [
+        {
+            min: 0,
+            title: {
+                align: "middle",
+                margin: 15,
+                style: {
+                    color: "#212934",
+                    fontSize: "13px",
+                    fontWeight: "normal",
+                    fontStyle: "normal",
+                },
+                text: "Households (%)",
+            },
+            gridLineColor: "#F1F1F1",
+            labels: {
+                style: {
+                    color: "#404b5a",
+                    fontSize: "11px",
+                    fontWeight: "normal",
+                    fontStyle: "normal",
+                },
+            },
+            id: "AXIS_0",
+            reversedStacks: false,
+            opposite: false,
+            index: 0,
+        },
+    ],
+    series: [
+        {
+            id: "yYSS1uBgnTE",
+            name: "Further impoverished",
+            data: [0.63, 0.68, 0.55],
+            dataLabels: {
+                enabled: false,
+            },
+            stacking: "normal",
+            color: "#c00000",
+            yAxis: "AXIS_0",
+            legendSet: null,
+            marker: {
+                enabled: false,
+            },
+            animation: {
+                duration: 200,
+            },
+        },
+        {
+            id: "WsUM8TQ7cEh",
+            name: "Impoverished",
+            data: [0.13, 0.11, 0.12],
+            dataLabels: {
+                enabled: false,
+            },
+            stacking: "normal",
+            color: "#e46c09",
+            yAxis: "AXIS_0",
+            legendSet: null,
+            marker: {
+                enabled: false,
+            },
+            animation: {
+                duration: 200,
+            },
+        },
+    ],
+    lang: {
+        viewFullscreen: "View in full screen",
+        exitFullscreen: "Exit from full screen",
+        printChart: "Print chart",
+        downloadPNG: "Download PNG image",
+        downloadJPEG: "Download JPEG image",
+        downloadPDF: "Download PDF document",
+        downloadSVG: "Download SVG vector image",
+        contextButtonTitle: "Chart context menu",
+        loading: "Loading...",
+        months: [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+        shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        weekdays: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        decimalPoint: ".",
+        numericSymbols: ["k", "M", "G", "T", "P", "E"],
+        resetZoom: "Reset zoom",
+        resetZoomTitle: "Reset zoom level 1:1",
+        thousandsSep: " ",
+        noData: "No data",
+    },
+    noData: {
+        attr: {
+            zIndex: 1,
+        },
+        position: {
+            x: 0,
+            y: 0,
+            align: "center",
+            verticalAlign: "middle",
+        },
+        style: {
+            fontWeight: "normal",
+            fontSize: "13px",
+            color: "#666666",
+        },
+    },
+    credits: {
+        enabled: false,
+    },
+    exporting: {
+        enabled: false,
+    },
+    plotOptions: {
+        series: {
+            grouping: false,
+        },
+        line: {
+            events: {
+                legendItemClick: expect.any(Function),
+            },
+        },
+    },
+} as unknown as Highcharts.Options;
