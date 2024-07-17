@@ -5,7 +5,7 @@ import { GlobalMessage, IndicatorExplorerState, IndicatorOption } from "./Indica
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import i18n from "@eyeseetea/d2-ui-components/locales";
-import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { LatestCOVID19, Year2014 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Country, EU27 } from "../../../domain/entities/Country";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
@@ -91,6 +91,11 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             if (!newsVisualization?.isComparative) {
                 setSelectedYearFilter(allYearsFilters.map(year => year.id));
             } else if (newsVisualization?.isComparative) {
+                console.log({ value });
+                // TODO add id to visualizations
+                if (value === "eibYs7QySNk") {
+                    setSelectedYearFilter([Year2014.id, LatestCOVID19.id]);
+                }
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
 
