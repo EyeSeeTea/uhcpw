@@ -51,6 +51,7 @@ export function usePolicyExplorer({
     const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter, showSubRegions: true });
     const [errorMessage, setErrorMessage] = useState<string>("");
 
+    const [policyExplorerCategories, setPolicyExplorerCategories] = useState<PolicyExplorerCategory[]>([]);
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
     const [selectCategoryInfo, setSelectCategoryInfo] = useState<PolicyExplorerSelectCategoryInfo | undefined>(
         undefined
@@ -86,6 +87,7 @@ export function usePolicyExplorer({
     useEffect(() => {
         compositionRoot.policyExplorer.getCategories.execute().run(
             categories => {
+                setPolicyExplorerCategories(categories);
                 setCategoryFilters(buildCategoryFilterOptions(categories));
             },
             () => {
@@ -118,7 +120,7 @@ export function usePolicyExplorer({
                     countryFilter.selected,
                     selectedYearFilter ? selectedYearFilter : [],
                     countriesAndRegions,
-                    categoryFilters
+                    policyExplorerCategories
                 )
                 .run(
                     policyExplorer => {
@@ -145,7 +147,7 @@ export function usePolicyExplorer({
         countryFilter.selected,
         selectedCategoriesWithSubcategoriesFilter,
         selectedYearFilter,
-        categoryFilters,
+        policyExplorerCategories,
     ]);
 
     const onChangeCategoryFilter = useCallback((value: Record<string, string[]> | undefined) => {

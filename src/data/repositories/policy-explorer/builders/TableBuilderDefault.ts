@@ -2,14 +2,14 @@ import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
-import { CategoryOption } from "../../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../PolicyExplorerCategoryD2Repository";
+import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export class TableBuilderDefault implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
-        programCategories?: CategoryOption[];
+        programCategories?: PolicyExplorerCategory[];
         dataSet?: D2DataSet;
     }): PolicyExplorerCell[] {
         const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, programCategories, dataSet } = params;
@@ -26,7 +26,7 @@ export class TableBuilderDefault implements TableBuilder {
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
             ...programSubcategories.map(de => ({
                 type: PolicyExplorerCellType.HEADER,
-                value: "text" in de ? de.text : de.description || de.formName,
+                value: "name" in de ? de.name : de.description || de.formName,
             })),
         ];
     }
@@ -100,12 +100,12 @@ export class TableBuilderDefault implements TableBuilder {
     private getProgramDataElementsSection(
         policyExplorerCategoryId: string,
         policyExplorerSubcategoriesIds: string[],
-        programCategories?: CategoryOption[]
+        programCategories?: PolicyExplorerCategory[]
     ) {
         return (
             programCategories
-                ?.find(section => section.value === policyExplorerCategoryId)
-                ?.subcategories.filter(subcategory => policyExplorerSubcategoriesIds.includes(subcategory.value)) || []
+                ?.find(section => section.id === policyExplorerCategoryId)
+                ?.subcategories.filter(subcategory => policyExplorerSubcategoriesIds.includes(subcategory.id)) || []
         );
     }
 
@@ -118,8 +118,8 @@ export class TableBuilderDefault implements TableBuilder {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
         dataSet?: D2DataSet;
-        programCategories?: CategoryOption[];
-    }): Array<{ text: string } | { description?: string; formName: string }> {
+        programCategories?: PolicyExplorerCategory[];
+    }): Array<{ name: string } | { description?: string; formName: string }> {
         if (policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID) {
             return this.getDataElementsSection(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet);
         } else {

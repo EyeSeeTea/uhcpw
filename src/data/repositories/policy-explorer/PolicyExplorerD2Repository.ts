@@ -28,6 +28,8 @@ import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } fr
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
+import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -77,7 +79,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndRegions: Country[],
-        programCategories: ProgramCategory[]
+        programCategories: PolicyExplorerCategory[]
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
@@ -114,7 +116,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    saveToFile(categories: ProgramCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
+    saveToFile(categories: CategoryOption[], policyExplorer: PolicyExplorer): FutureData<void> {
         const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
             return (
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
@@ -291,7 +293,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         countriesAndRegions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
-        programCategories: ProgramCategory[];
+        programCategories: PolicyExplorerCategory[];
     }): Record<string, PolicyExplorerCell[][]> {
         const {
             policyExplorerCategories,
@@ -519,14 +521,4 @@ export type D2DataSet = MetadataPick<{
 
 type DataValueSetsDataValueWithOrgUnitNames = DataValueSetsDataValue & {
     orgUnitShortName: string;
-};
-
-export type ProgramCategory = {
-    value: string;
-    text: string;
-    subcategories: {
-        value: string;
-        text: string;
-    }[];
-    description: string;
 };
