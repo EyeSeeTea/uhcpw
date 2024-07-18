@@ -6,12 +6,13 @@ import {
     PolicyExplorerSubcategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
-import { policyExplorerDataSet_ID } from "../../../domain/utils";
+import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../../../domain/utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
+import { getMainPagesContent } from "../common/getMainPagesContent";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
+import _ from "lodash";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
     UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
@@ -23,18 +24,82 @@ export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     TYPES_OF_USER_CHARGES: "lHk8jtKonPh",
 };
 
-const POPULATION_COVERAGE_CATEGORY = "uG2PbDfOc0w";
-const SERVICE_COVERAGE_CATEGORY = "W4CqlzcDPB1";
-const VOLUNTARY_HEALTH_INSURANCE_CATEGORY = "uImM4yTeeV3";
-const GAPS_IN_COVERAGE_CATEGORY = "e6cfI6vWYEF";
-const USER_CHARGES_COPAYMENTS_CATEGORY = "mCMVwmnGWJF";
+const PROGRAM_CODE_TO_DATA_ELEMENT_CODE = {
+    UHCW_PE_PopCov_A_BasisEntit_Name: "basis_entit_pub_financed",
+    UHCW_PE_PopCov_B_EntitRefug_Name: "entit_asylum_refu",
+    UHCW_PE_PopCov_C_CharacNumber_Name: "characteristics_noncov",
+    UHCW_PE_PopCov_D_PublicFin_Name: "pub_financed_noncov",
+    UHCW_PE_PopCov_E_AdminReq_Name: "admin_required_text",
+    UHCW_PE_PopCov_F_InstitResp_Name: "institutions_define_entit",
+    UHCW_PE_PopCov_G_InstitMonit_Name: "institutions_monitor_cover_info",
+    UHCW_PE_PopCov_H_MainGaps_Name: "gaps_pop_cover_info",
+    UHCW_PE_PopCov_I_VHIRole_Name: "VHI_role",
+    UHCW_PE_ServCov_A_InstitProc_Name: "institutions_defining_benefits",
+    UHCW_PE_ServCov_B_VariaPub_Name: "variation_pub_financed_benefits",
+    UHCW_PE_ServCov_C_TypeHC_Name: "hc_not_well_cover",
+    UHCW_PE_ServCov_D_RetroReimb_Name: "retrospective_reimbursem",
+    UHCW_PE_ServCov_E_PathCov_Name: "pathway_covered",
+    UHCW_PE_ServCov_F_WaitIssue_Name: "wait_time_issue_info_text",
+    UHCW_PE_ServCov_G_WaitGaran_Name: "wait_time_target_info",
+    UHCW_PE_ServCov_H_OtherPol_Name: "wait_time_policies_info",
+    UHCW_PE_ServCov_I_InstitWait_Name: "institutions_monitoring_w",
+    UHCW_PE_ServCov_J_InfPay_Name: "inf_pay_issue_info_text",
+    UHCW_PE_ServCov_K_ReasInf_Name: "inf_pay_reasons",
+    UHCW_PE_ServCov_L_PolRed_Name: "inf_pay_reduction",
+    UHCW_PE_ServCov_M_InstInf_Name: "institutions_monitor_inf_pay",
+    UHCW_PE_ServCov_N_OtherIss_Name: "access_issues",
+    UHCW_PE_ServCov_O_MainGaps_Name: "gaps_service_cover",
+    UHCW_PE_ServCov_P_VHIRole_Name: "VHI_cover_service_info",
+    UHCW_PE_UserCharges_A_RoleNat_Name: "role_user_charges",
+    UHCW_PE_UserCharges_B_MechProt_Name: "meachanisms_to_protect",
+    UHCW_PE_UserCharges_C_ProtMechAuto_Name: "automatic_protect_mechanisms_info",
+    UHCW_PE_UserCharges_D_ProtMechTarget_Name: "protect_mech_target_text",
+    UHCW_PE_UserCharges_E_InstitResp_Name: "institutions_set_charges",
+    UHCW_PE_UserCharges_F_VarCharges_Name: "variation_in_user",
+    UHCW_PE_UserCharges_G_MainGaps_Name: "user_charges_main_gaps",
+    UHCW_PE_UserCharges_H_VHIRole_Name: "VHI_cover_copay_info",
+    UHCW_PE_VolHeaIns_A_VHIRole_Name: "vhi_roles",
+    UHCW_PE_VolHeaIns_B_SharePop_Name: "share_pop_covered",
+    UHCW_PE_VolHeaIns_C_VHIShare_Name: "share_vhi_health",
+    UHCW_PE_VolHeaIns_D_InstitResp_Name: "insititutions_respons_VHI",
+    UHCW_PE_VolHeaIns_E_CharacVHI_Name: "characteristics_ppl_VIH",
+    UHCW_PE_VolHeaIns_F_PolicAccess_Name: "policies_vhi_accessible",
+    UHCW_PE_VolHeaIns_G_PolicAfford_Name: "policies_vhi_affordable",
+    UHCW_PE_VolHeaIns_H_EntitSell_Name: "entities_sell_vhi",
+    UHCW_PE_VolHeaIns_I_EntitBuy_Name: "entities_buy_vhi",
+    UHCW_PE_VolHeaIns_J_TaxIncent_Name: "tax_incentives_desincentives_vhi",
+    UHCW_PE_MainGaps_A_PopCov_Name: "population_entitlement_main_gaps",
+    UHCW_PE_MainGaps_B_ServCov_Name: "service_coverage_main_gaps",
+    UHCW_PE_MainGaps_C_UserCharges_Name: "user_charges_gaps",
+};
+
+const DATASET_POPULATION_COVERAGE_CATEGORY = "uG2PbDfOc0w";
+const DATASET_SERVICE_COVERAGE_CATEGORY = "W4CqlzcDPB1";
+const DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY = "uImM4yTeeV3";
+const DATASET_GAPS_IN_COVERAGE_CATEGORY = "e6cfI6vWYEF";
+const DATASET_USER_CHARGES_COPAYMENTS_CATEGORY = "mCMVwmnGWJF";
+
+// Program is used to get text and order of each sections
+const PROGRAM_POPULATION_COVERAGE_CATEGORY = "r2HbF3XTeMG";
+const PROGRAM_SERVICE_COVERAGE_CATEGORY = "j53ZTUutgtC";
+const PROGRAM_VOLUNTARY_HEALTH_INSURANCE_CATEGORY = "fqYkOLq51CG";
+const PROGRAM_GAPS_IN_COVERAGE_CATEGORY = "Ex9yvYNHvC4";
+const PROGRAM_USER_CHARGES_COPAYMENTS_CATEGORY = "R09wRQllQ4m";
+
+const CATEGORY_DATASET_TO_PROGRAM = {
+    [DATASET_POPULATION_COVERAGE_CATEGORY]: PROGRAM_POPULATION_COVERAGE_CATEGORY,
+    [DATASET_SERVICE_COVERAGE_CATEGORY]: PROGRAM_SERVICE_COVERAGE_CATEGORY,
+    [DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY]: PROGRAM_VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
+    [DATASET_GAPS_IN_COVERAGE_CATEGORY]: PROGRAM_GAPS_IN_COVERAGE_CATEGORY,
+    [DATASET_USER_CHARGES_COPAYMENTS_CATEGORY]: PROGRAM_USER_CHARGES_COPAYMENTS_CATEGORY,
+};
 
 const sectionsList = [
-    POPULATION_COVERAGE_CATEGORY,
-    SERVICE_COVERAGE_CATEGORY,
-    USER_CHARGES_COPAYMENTS_CATEGORY,
-    GAPS_IN_COVERAGE_CATEGORY,
-    VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
+    DATASET_POPULATION_COVERAGE_CATEGORY,
+    DATASET_SERVICE_COVERAGE_CATEGORY,
+    DATASET_USER_CHARGES_COPAYMENTS_CATEGORY,
+    DATASET_GAPS_IN_COVERAGE_CATEGORY,
+    DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
     CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
     // CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
@@ -61,11 +126,26 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                 })
             ),
             infoNotes: this.cache.getOrFuture("infoNotes", getInfoNotes(this.api)),
-        }).flatMap(({ datasets, infoNotes }) => {
+            programMetadata: apiToFuture(
+                this.api.models.programs.get({
+                    fields: programFields,
+                    filter: { id: { eq: policyExplorerProgram_ID } },
+                })
+            ),
+            sectionsEvent: apiToFuture(
+                this.api.events.get({
+                    fields: eventsFields,
+                    skipPaging: true,
+                    program: policyExplorerProgram_ID,
+                })
+            ),
+        }).flatMap(({ datasets, infoNotes, programMetadata, sectionsEvent }) => {
             const dataSet = datasets.objects[0];
+            const programs = programMetadata.objects[0];
+            const events = sectionsEvent.events[0];
 
-            if (dataSet) {
-                return Future.success(this.buildCategories(dataSet, infoNotes));
+            if (dataSet && programs && events) {
+                return Future.success(this.buildCategories(programs, events, dataSet, infoNotes));
             } else {
                 return Future.error("No categories found");
             }
@@ -83,23 +163,91 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         };
     }
 
-    private buildCategories(data: D2DataSet, infoNotes: InfoNotes): PolicyExplorerCategory[] {
-        const sections = data?.sections.filter(section => sectionsList.includes(section.id)) || [];
-        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
+    private sortSubcategories(
+        sectionDataElements: { id: string; code: string }[],
+        sectionsEvent: D2Event | undefined,
+        dataSetSections: { id: string; code: string }[]
+    ): PolicyExplorerSubcategory[] {
+        const subcategories = _(sectionsEvent?.dataValues)
+            .map(subcategory => {
+                const sectionDataElement = _(sectionDataElements).find({ id: subcategory.dataElement });
+                if (!sectionDataElement) {
+                    return undefined;
+                }
+                return { ...sectionDataElement, name: subcategory.value };
+            })
+            .compact()
+            .value();
 
+        // Find the order object and extract the order
+        const orderArray = subcategories?.find(subcategorie => subcategorie.code?.endsWith("_Order"))?.name.split(";");
+        if (!orderArray) {
+            throw new Error("Order object not found");
+        }
+
+        // Sort the data according to the custom order
+        const sortedSubcategories = _(subcategories)
+            .filter(subcategory => !subcategory.code?.endsWith("_Order")) // Exclude sectionData ending with "_Order"
+            .sortBy(subcategory => {
+                const match = subcategory.code?.match(/_([A-Z])_/);
+                if (match && match[1]) {
+                    return orderArray.indexOf(match[1]);
+                }
+                return Number.MAX_SAFE_INTEGER; // Place objects without a match at the end
+            })
+            .map(subcategory => {
+                const id = _.find(dataSetSections, {
+                    code: PROGRAM_CODE_TO_DATA_ELEMENT_CODE[subcategory.code as DataElementCode],
+                })?.id;
+
+                if (!id) {
+                    return undefined;
+                }
+                return {
+                    id,
+                    name: subcategory.name,
+                };
+            })
+            .compact()
+            .value();
+
+        return sortedSubcategories;
+    }
+
+    private buildCategories(
+        programMetadata: D2Program | undefined,
+        sectionsEvent: D2Event | undefined,
+        dataSet: D2DataSet | undefined,
+        infoNotes: InfoNotes
+    ): PolicyExplorerCategory[] {
+        const dataSetSections = dataSet?.sections.filter(section => sectionsList.includes(section.id)) || [];
+        const programSections = programMetadata?.programStages[0]?.programStageSections || [];
+
+        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
         return [
-            ...sections
+            ...dataSetSections
                 .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
-                .map(section => {
-                    const notes = infoNotes ? infoNotes[section.id] || "" : "";
+                .map((section): PolicyExplorerCategory => {
+                    const notes = infoNotes[section.id] || "";
+
+                    // To prevent fallback on dataSet if section is not in program
+                    const sectionFallback = {
+                        displayName: section.displayName.replace("UHCW_", ""),
+                        dataElements: section.dataElements,
+                    };
+
+                    const { displayName, dataElements } =
+                        _.find(programSections, {
+                            id: CATEGORY_DATASET_TO_PROGRAM[section.id as keyof typeof CATEGORY_DATASET_TO_PROGRAM],
+                        }) || sectionFallback;
 
                     return {
                         id: section.id,
-                        name: section.displayName.replace("UHCW_", ""),
+                        name: displayName.replace("Policy Explorer - ", ""),
                         subcategories:
                             CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
                                 ? []
-                                : this.getSubcategories(section.dataElements),
+                                : this.sortSubcategories(dataElements, sectionsEvent, section.dataElements),
                         description: notes,
                     };
                 }),
@@ -118,19 +266,6 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         };
         return changesInCoveragePolicyMergedCategory;
     }
-
-    private getSubcategories(sectionDataElements?: D2DataElements[]): PolicyExplorerSubcategory[] {
-        const subcategories = sectionDataElements
-            ?.filter(de => de.valueType === "LONG_TEXT")
-            .map(subcategory => {
-                return {
-                    id: subcategory.id,
-                    name: subcategory.description || subcategory.formName,
-                };
-            })
-            .filter(Boolean);
-        return (subcategories as PolicyExplorerSubcategory[]) || [];
-    }
 }
 
 const dataElementsFields = {
@@ -138,16 +273,53 @@ const dataElementsFields = {
     formName: true,
     valueType: true,
     description: true,
+    code: true,
 } as const;
 
 const dataSetFields = {
     sections: { id: true, displayName: true, dataElements: dataElementsFields, description: true },
 } as const;
 
-type D2DataElements = MetadataPick<{
-    dataElements: { fields: typeof dataElementsFields };
-}>["dataElements"][number];
+const programFields = {
+    id: true,
+    programStages: {
+        id: true,
+        programStageSections: {
+            id: true,
+            displayName: true,
+            dataElements: {
+                id: true,
+                code: true,
+            },
+        },
+    },
+} as const;
+
+const eventsFields = {
+    event: true,
+    orgUnit: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
+} as const;
 
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
+
+type D2Program = MetadataPick<{
+    programs: { fields: typeof programFields };
+}>["programs"][number];
+
+export interface D2Event {
+    event: string;
+    orgUnit: string;
+    dataValues: DataValue[];
+    eventDate: string;
+}
+
+export interface DataValue {
+    dataElement: string;
+    value: string;
+}
+
+type DataElementCode = keyof typeof PROGRAM_CODE_TO_DATA_ELEMENT_CODE;

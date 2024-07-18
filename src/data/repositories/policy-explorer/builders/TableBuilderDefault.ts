@@ -2,26 +2,31 @@ import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
+import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../PolicyExplorerCategoryD2Repository";
+import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export class TableBuilderDefault implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
+        programCategories?: PolicyExplorerCategory[];
         dataSet?: D2DataSet;
     }): PolicyExplorerCell[] {
-        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet } = params;
-        const dataElementsSection = this.getDataElementsSection(
+        const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, programCategories, dataSet } = params;
+
+        const programSubcategories = this.getSectionsByCategoryId({
             policyExplorerCategoryId,
             policyExplorerSubcategoriesIds,
-            dataSet
-        );
+            dataSet,
+            programCategories,
+        });
 
         return [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
-            ...dataElementsSection.map(de => ({
+            ...programSubcategories.map(de => ({
                 type: PolicyExplorerCellType.HEADER,
-                value: de.description || de.formName,
+                value: "name" in de ? de.name : de.description || de.formName,
             })),
         ];
     }
@@ -90,5 +95,39 @@ export class TableBuilderDefault implements TableBuilder {
                         policyExplorerSubcategoriesIds.includes(de.id)
                 ) || []
         );
+    }
+
+    private getProgramDataElementsSection(
+        policyExplorerCategoryId: string,
+        policyExplorerSubcategoriesIds: string[],
+        programCategories?: PolicyExplorerCategory[]
+    ) {
+        return (
+            programCategories
+                ?.find(section => section.id === policyExplorerCategoryId)
+                ?.subcategories.filter(subcategory => policyExplorerSubcategoriesIds.includes(subcategory.id)) || []
+        );
+    }
+
+    private getSectionsByCategoryId({
+        policyExplorerCategoryId,
+        policyExplorerSubcategoriesIds,
+        dataSet,
+        programCategories,
+    }: {
+        policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds: string[];
+        dataSet?: D2DataSet;
+        programCategories?: PolicyExplorerCategory[];
+    }): Array<{ name: string } | { description?: string; formName: string }> {
+        if (policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID) {
+            return this.getDataElementsSection(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet);
+        } else {
+            return this.getProgramDataElementsSection(
+                policyExplorerCategoryId,
+                policyExplorerSubcategoriesIds,
+                programCategories
+            );
+        }
     }
 }
