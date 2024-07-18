@@ -1,20 +1,16 @@
 import { ChartSource } from "./chartOptions";
-import { comparativeColumnChartOptions } from "./generic/comparativeColumnChartOptions";
+import { comparativeGroupedColumnChartOptions } from "./generic/comparativeGroupedColumnChartOptions";
 
 const seriesNames: Record<string, string> = {
-    GyiW7dS7BIl: "Households with catastrophic health spending",
+    2014: "2014",
+    2019: "2019",
 };
 
 const seriesColors: Record<string, string> = {
-    GyiW7dS7BIl: "#185698",
+    2014: "#a7bf25",
+    2019: "#0070c0",
 };
 
 export const chart_eibYs7QySNk_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    console.log(chartSource);
-    return {
-        ...comparativeColumnChartOptions(chartSource, seriesNames, seriesColors),
-        legend: {
-            enabled: false,
-        },
-    };
+    return comparativeGroupedColumnChartOptions(chartSource, seriesNames, seriesColors);
 };
