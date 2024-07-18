@@ -2,7 +2,6 @@ import _ from "lodash";
 
 import { ChartSource } from "./chartOptions";
 import { createScratterChart } from "./generic/scratterChart";
-import { NamedRef } from "../../../../domain/entities/Ref";
 
 export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
@@ -87,9 +86,11 @@ interface SerieData {
     y: number;
 }
 
-interface SerieSource extends NamedRef {
+type SerieSource = {
+    id: SerieType;
+    name: string;
     color: string;
-}
+};
 
 type SerieType = "low" | "medium" | "medium-hight" | "hight" | "extra-hight";
 
