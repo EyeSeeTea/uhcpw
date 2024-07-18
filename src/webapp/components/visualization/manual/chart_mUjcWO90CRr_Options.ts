@@ -57,12 +57,16 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         };
     });
 
+    const [yAxisLabel = "", xAxisLabel = ""] = chartSource.visualization.axes
+        .filter(axis => axis.type === "RANGE")
+        .map(axis => axis.title.text);
+
     return createScratterChart(
         series,
         chartSource.visualization,
         currentCountryCode,
-        "Out-of-pocket payments as a share of public spending ($)",
-        "Public spending on health as a share of GDP (%)",
-        "{point.country} <br/> Out-of-pocket payments as a share of public spending ($): {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%"
+        xAxisLabel,
+        yAxisLabel,
+        `{point.country} <br/> ${xAxisLabel}: {point.x} <br/> ${yAxisLabel}: {point.y}%`
     );
 };
