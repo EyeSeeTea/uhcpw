@@ -1,20 +1,12 @@
 import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
-import { sortSerieDataByValueInSerie } from "./utils/sortSerieDataByValueInSerie";
+import { sortSerieDataByCategories } from "./utils/sortSerieDataByCategories";
 
 export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     title: { text: "" },
-    legend: { ...baseLegend },
+    legend: { ...baseLegend, reversed: true },
     series: [
-        {
-            id: "OE8u72wcKty",
-            name: "Public spending on health (HF .1)",
-            color: "#00b050",
-            dataLabels: {
-                enabled: false,
-            },
-        },
         {
             id: "S0rJgTIK3Gv",
             name: "Out-of-pocket payments (HF .3)",
@@ -58,6 +50,19 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             } as unknown as SeriesColumnOptions;
         });
 
-        return sortSerieDataByValueInSerie(seriesWithCategoryInData, "S0rJgTIK3Gv");
+        // TODO get name by id
+        const customCategoriesOrder = [
+            { id: "a2u2ccahVJL", name: "Dental care" },
+            { id: "OuiKmOeXUWQ", name: "Medical products" },
+            { id: "ykAPKvVQusS", name: "Outpatient care" },
+            { id: "qgE5NJ9Nyaq", name: "Medicines" },
+            { id: "OEK4dKvUsOe", name: "Inpatient care" },
+            { id: "qy4W8ZY2g5M", name: "Diagnostic tests" },
+        ];
+
+        return sortSerieDataByCategories(
+            seriesWithCategoryInData,
+            customCategoriesOrder.map(item => item.name)
+        );
     },
 };
