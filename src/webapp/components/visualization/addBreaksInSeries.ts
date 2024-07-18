@@ -1,3 +1,5 @@
+import Highcharts from "highcharts";
+
 import { Country } from "../../../domain/entities/Country";
 import {
     CountryBreakInSeries,
@@ -42,14 +44,19 @@ export function addBreaksInSeries(
             options.chart?.type === "line"
                 ? getPlotOptionsToToggleLegendItemsWithSameName(options)
                 : options.plotOptions,
+        chart:
+            options.chart?.type === "line"
+                ? addMouseOverOnLengendToHighlightSeriesWithSameName(options)
+                : options.chart,
     };
 }
 
-function getPlotOptionsToToggleLegendItemsWithSameName(options: Highcharts.Options) {
+function getPlotOptionsToToggleLegendItemsWithSameName(options: Highcharts.Options): Highcharts.PlotOptions {
     return {
         ...options.plotOptions,
         line: {
             ...options.plotOptions?.line,
+            stickyTracking: false,
             events: {
                 ...options.plotOptions?.line?.events,
                 legendItemClick: function (
@@ -61,6 +68,43 @@ function getPlotOptionsToToggleLegendItemsWithSameName(options: Highcharts.Optio
                     });
                     event.preventDefault();
                 },
+            },
+            point: {
+                ...options.plotOptions?.line?.point,
+                events: {
+                    ...options.plotOptions?.line?.point?.events,
+                    mouseOver: function (this: Highcharts.Point) {
+                        this.series.chart.series.forEach(serie => {
+                            if (serie.name === this.series.name) {
+                                serie.setState("hover");
+                            } else {
+                                serie.setState("inactive");
+                            }
+                        });
+                    },
+                },
+            },
+        },
+    };
+}
+
+function addMouseOverOnLengendToHighlightSeriesWithSameName(options: Highcharts.Options): Highcharts.ChartOptions {
+    return {
+        ...options.chart,
+        events: {
+            ...options.chart?.events,
+            load: function (this: Highcharts.Chart) {
+                this.legend.allItems.forEach((item: any) => {
+                    item.legendGroup.on("mouseover", function () {
+                        item.chart.series.forEach((serie: Highcharts.Series) => {
+                            if (serie.name === item.name) {
+                                serie.setState("hover");
+                            } else {
+                                serie.setState("inactive");
+                            }
+                        });
+                    });
+                });
             },
         },
     };
