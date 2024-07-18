@@ -13,7 +13,10 @@ import _ from "lodash";
 import { SelectedChip } from "../selected-chip/SelectedChip";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
-import { BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../../../data/repositories/countries/CountryD2Repository";
+import {
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+    FEDERACIJA_BOSNE_I_HERCEGOVINE,
+} from "../../../data/repositories/countries/CountryD2Repository";
 
 const EMPTY_IDS_ARRAY: string[] = [];
 
@@ -94,9 +97,12 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         : undefined;
 
                 if (item.name.toLowerCase().includes(searchTerm.toLowerCase()) || filteredItemChildren?.length) {
-                    // When one of Bosnia and Herzegovina child is search don't filter children (Republik Srpska and Federation of Bosnia and Herzegovina)
+                    // When searching Federation of Bosnia and Herzegovina return also Republik Srpska
                     const itemChildren =
-                        item.id === BOSNIA_AND_HERZEGOVINA_LEVEL_4 ? item.children : filteredItemChildren;
+                        item.id === BOSNIA_AND_HERZEGOVINA_LEVEL_4 &&
+                        _(filteredItemChildren).some({ id: FEDERACIJA_BOSNE_I_HERCEGOVINE })
+                            ? item.children
+                            : filteredItemChildren;
                     return [
                         ...acc,
                         item.children?.length && showSubChildren
