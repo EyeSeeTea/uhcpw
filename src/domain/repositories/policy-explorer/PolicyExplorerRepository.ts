@@ -1,4 +1,3 @@
-import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 import { Country } from "../../entities/Country";
 import { FutureData } from "../../entities/Future";
 import { Id } from "../../entities/Ref";
@@ -13,5 +12,5 @@ export interface PolicyExplorerRepository {
         countriesAndRegions: Country[],
         programCategories: PolicyExplorerCategory[]
     ): FutureData<PolicyExplorer>;
-    saveToFile(categories: CategoryOption[], policyExplorer: PolicyExplorer): FutureData<void>;
+    saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void>;
 }

@@ -29,7 +29,6 @@ import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
-import { CategoryOption } from "../../../webapp/components/policy-explorer/category-selector/CategorySelector";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -116,7 +115,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         });
     }
 
-    saveToFile(categories: CategoryOption[], policyExplorer: PolicyExplorer): FutureData<void> {
+    saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
         const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
             return (
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
@@ -128,17 +127,17 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
         const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
-            const category = categories.find(({ value }) => value === categoryId);
+            const category = categories.find(({ id }) => id === categoryId);
 
             if (rows?.length) {
                 const dataRows = this.getDataFromRows(rows);
                 return [
                     ...accTabs,
                     {
-                        data: [[category?.text || categoryId], ...dataRows],
+                        data: [[category?.name || categoryId], ...dataRows],
                         name: Object.keys(categoriesNameWithLessThan31Chars).includes(categoryId)
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
-                            : category?.text || categoryId,
+                            : category?.name || categoryId,
                     },
                 ];
             }

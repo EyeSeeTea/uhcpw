@@ -198,9 +198,9 @@ export function usePolicyExplorer({
         const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
         const data = getInitialDataByTable(initialDataByTable, categoriesIds);
         if (!data) return;
-        compositionRoot.policyExplorer.download.execute(categoryFilters, data).runAsync();
+        compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
     }, [
-        categoryFilters,
+        policyExplorerCategories,
         compositionRoot.policyExplorer.download,
         initialDataByTable,
         selectedCategoriesWithSubcategoriesFilter,
