@@ -500,6 +500,12 @@ export const chartLineOptionsWithBreaks = {
             events: {
                 legendItemClick: expect.any(Function),
             },
+            point: {
+                events: {
+                    mouseOver: expect.any(Function),
+                },
+            },
+            stickyTracking: false,
         },
     },
 } as unknown as Highcharts.Options;
