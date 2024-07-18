@@ -91,11 +91,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             if (!newsVisualization?.isComparative) {
                 setSelectedYearFilter(allYearsFilters.map(year => year.id));
             } else if (newsVisualization?.isComparative) {
-                console.log({ value });
-                // TODO add id to visualizations
-                if (value === "eibYs7QySNk") {
-                    setSelectedYearFilter([Year2014.id, LatestCOVID19.id]);
-                }
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
 
@@ -154,6 +149,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setYearsFilters([
                 { id: LatestCOVID19.id, name: i18n.t("2019 or latest available year before COVID-19"), parents: [] },
             ]);
+        } else if (selectedIndicatorFilter === "eibYs7QySNk") {
+            setYearsFilters(["2014", "2019"].map(year => ({ id: year, name: year, parents: [] })));
         } else {
             setYearsFilters(allYearsFilters);
         }
