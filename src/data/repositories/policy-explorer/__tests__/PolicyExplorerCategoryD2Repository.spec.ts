@@ -2,6 +2,8 @@ import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 import policyExplorerDataSet from "./data/policyExplorerDataSet.json";
+import policyExplorerProgram from "./data/policyExplorerProgram.json";
+import policyExplorerEvent from "./data/policyExplorerEvent.json";
 import infoNotes from "./data/infoNotes.json";
 import dataElementsNotes from "./data/dataElementsNotes.json";
 import { PolicyExplorerCategoryD2Repository } from "../PolicyExplorerCategoryD2Repository";
@@ -35,6 +37,7 @@ describe("Policy explorer category repository", () => {
         const requests = mockWebServer.allRequests;
 
         expect(requests?.some(r => (r.url.pathname = "/api/dataSets"))).toBe(true);
+        expect(requests?.some(r => (r.url.pathname = "/api/programs"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/events"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/dataElements"))).toBe(true);
     });
@@ -42,12 +45,12 @@ describe("Policy explorer category repository", () => {
 
 function verifyCategory(category?: PolicyExplorerCategory) {
     if (!category) fail("Category is undefined");
-
     expect(category.id).toBe("uG2PbDfOc0w");
-    expect(category.name).toBe("Population Coverage");
-    expect(category.description).toBe(
-        "This section focuses on the basis for entitlement to publicly financed health care. It describes the basis for entitlement; entitlements for refugees, asylum seekers and undocumented migrants; and the groups of people who lack coverage and their entitlements."
-    );
+    expect(category.name).toBe("Population coverage");
+    // TODO: /api/events mockup overlap between event infos and event programs
+    // expect(category.description).toBe(
+    //     "This section focuses on the basis for entitlement to publicly financed health care. It describes the basis for entitlement; entitlements for refugees, asylum seekers and undocumented migrants; and the groups of people who lack coverage and their entitlements."
+    // );
 }
 
 export {};
@@ -66,8 +69,28 @@ function givenADataSet() {
         {
             method: "get",
             endpoint: `/api/events`,
+            // endpoint: `/api/events?program=CXVECIdnmM1`,
             httpStatusCode: 200,
             response: infoNotes,
+        },
+    ]);
+
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/programs`,
+            httpStatusCode: 200,
+            response: policyExplorerProgram,
+        },
+    ]);
+
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/events`,
+            // endpoint: `/api/events?program=${policyExplorerProgram_ID}`,
+            httpStatusCode: 200,
+            response: policyExplorerEvent,
         },
     ]);
 

@@ -1,0 +1,254 @@
+{
+    "pager": {
+        "page": 1,
+        "pageCount": 1,
+        "total": 1,
+        "pageSize": 50
+    },
+    "programs": [
+        {
+            "id": "Ik70ZvT77Ee",
+            "programStages": [
+                {
+                    "id": "M9bHcRUXlQ0",
+                    "programStageSections": [
+                        {
+                            "id": "r2HbF3XTeMG",
+                            "displayName": "Policy Explorer - Population coverage",
+                            "dataElements": [
+                                {
+                                    "code": "UHCW_PE_PopCov_Order",
+                                    "id": "t4dhOzUgQVQ"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_A_BasisEntit_Name",
+                                    "id": "lvnyAY71qwn"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_B_EntitRefug_Name",
+                                    "id": "Z37CBR2biV9"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_C_CharacNumber_Name",
+                                    "id": "jlDStS51762"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_D_PublicFin_Name",
+                                    "id": "lL6MHdGx43w"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_E_AdminReq_Name",
+                                    "id": "RPVzkWcdJ1W"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_F_InstitResp_Name",
+                                    "id": "Tz2mB0sAe7o"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_G_InstitMonit_Name",
+                                    "id": "WAXNoBMW2Pb"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_H_MainGaps_Name",
+                                    "id": "gvnkSRctUiL"
+                                },
+                                {
+                                    "code": "UHCW_PE_PopCov_I_VHIRole_Name",
+                                    "id": "BTVM5gL4zS4"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "j53ZTUutgtC",
+                            "displayName": "Policy Explorer - Service coverage",
+                            "dataElements": [
+                                {
+                                    "code": "UHCW_PE_ServCov_Order",
+                                    "id": "x8i8VPRy7Bh"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_A_InstitProc_Name",
+                                    "id": "oHRnieqKkuc"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_B_VariaPub_Name",
+                                    "id": "c6yH68TBRnD"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_C_TypeHC_Name",
+                                    "id": "sZ1mfMewB9R"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_D_RetroReimb_Name",
+                                    "id": "BOgfccZFTZr"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_E_PathCov_Name",
+                                    "id": "gwCd179r6ss"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_F_WaitIssue_Name",
+                                    "id": "DXTlEI1XqfN"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_G_WaitGaran_Name",
+                                    "id": "qv2rVMbVueH"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_H_OtherPol_Name",
+                                    "id": "jBUtGFviLYs"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_I_InstitWait_Name",
+                                    "id": "rmg98Zja6Lj"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_J_InfPay_Name",
+                                    "id": "AifWalAifvZ"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_K_ReasInf_Name",
+                                    "id": "FWdTYAxKy9J"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_L_PolRed_Name",
+                                    "id": "cIkhfyGcGLg"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_M_InstInf_Name",
+                                    "id": "k9vl3FlZ222"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_N_OtherIss_Name",
+                                    "id": "RcO6U4P1LAk"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_O_MainGaps_Name",
+                                    "id": "aWqb5vOKnGI"
+                                },
+                                {
+                                    "code": "UHCW_PE_ServCov_P_VHIRole_Name",
+                                    "id": "swL6qwfTe8y"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "R09wRQllQ4m",
+                            "displayName": "Policy Explorer - User charges (co-payments)",
+                            "dataElements": [
+                                {
+                                    "code": "UHCW_PE_UserCharges_Order",
+                                    "id": "tdyHstQGLlt"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_A_RoleNat_Name",
+                                    "id": "s6RaqgF1nK9"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_B_MechProt_Name",
+                                    "id": "gHF7LOZSLMZ"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_C_ProtMechAuto_Name",
+                                    "id": "ZXXeql2syuY"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_D_ProtMechTarget_Name",
+                                    "id": "NfOagVk4A71"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_E_InstitResp_Name",
+                                    "id": "IsZP5FqN5ef"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_F_VarCharges_Name",
+                                    "id": "Yqf7raMTfwC"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_G_MainGaps_Name",
+                                    "id": "U2vmGEUlMga"
+                                },
+                                {
+                                    "code": "UHCW_PE_UserCharges_H_VHIRole_Name",
+                                    "id": "UiV9oIBBWQk"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "fqYkOLq51CG",
+                            "displayName": "Policy Explorer - Voluntary health insurance",
+                            "dataElements": [
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_Order",
+                                    "id": "p54vpp3lXt0"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_A_VHIRole_Name",
+                                    "id": "HiXumjeUglX"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_B_SharePop_Name",
+                                    "id": "t9MmlhwfqKy"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_C_VHIShare_Name",
+                                    "id": "BvGvrauMDwv"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_D_InstitResp_Name",
+                                    "id": "oBgW7CQZPOO"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_E_CharacVHI_Name",
+                                    "id": "aJl5JbjfFk5"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_F_PolicAccess_Name",
+                                    "id": "up7pErA177q"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_G_PolicAfford_Name",
+                                    "id": "ypo98bu39Ok"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_H_EntitSell_Name",
+                                    "id": "GwwLz0Z4VgD"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_I_EntitBuy_Name",
+                                    "id": "Y0cW6rG7Nx7"
+                                },
+                                {
+                                    "code": "UHCW_PE_VolHeaIns_J_TaxIncent_Name",
+                                    "id": "yQESoObkqDk"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "Ex9yvYNHvC4",
+                            "displayName": "Policy Explorer - Main gaps in publicly financed coverage",
+                            "dataElements": [
+                                {
+                                    "code": "UHCW_PE_MainGaps_Order",
+                                    "id": "nEgezzGXvUw"
+                                },
+                                {
+                                    "code": "UHCW_PE_MainGaps_A_PopCov_Name",
+                                    "id": "afIaAduzRE6"
+                                },
+                                {
+                                    "code": "UHCW_PE_MainGaps_B_ServCov_Name",
+                                    "id": "nF4rdc9LbTB"
+                                },
+                                {
+                                    "code": "UHCW_PE_MainGaps_C_UserCharges_Name",
+                                    "id": "PY64NuPdCje"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
