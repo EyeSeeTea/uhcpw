@@ -262,7 +262,10 @@ function getLineSeriesWithBreaks(
                 if (index + 1 <= allYearsBreakIndex.length && nextYearBreakIndex) {
                     const prevNulls = getNullArrayValues(0, yearBreakIndex);
 
-                    const isLastIndex = nextYearBreakIndex === categories.length - 1;
+                    const isLastIndex =
+                        nextYearBreakIndex === categories.length - 1 &&
+                        nextYearBreakIndex !== allYearsBreakIndex[index + 2];
+
                     const sliceData = serie.data?.slice(
                         yearBreakIndex,
                         isLastIndex ? categories.length : nextYearBreakIndex
