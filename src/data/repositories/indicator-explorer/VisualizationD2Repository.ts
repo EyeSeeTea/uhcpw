@@ -14,7 +14,9 @@ import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
+import { getBreakInSeries } from "./break-in-series/getBreakInSeries";
 import { emptyVisualizationExtra, VisualizationsSeeds } from "./seed/VisualizationsSeeds";
+import { BreakInSeries } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 
 export class VisualizationD2Repository implements VisualizationRepository {
     cache = new InmemoryCache();
@@ -47,15 +49,24 @@ export class VisualizationD2Repository implements VisualizationRepository {
                 )
             ),
             infoNotes: this.cache.getOrFuture("infoNotes", getInfoNotes(this.api)),
-        }).map(({ visualization, infoNotes }) => {
-            return this.buildVisualization(visualization, infoNotes);
+            breakInSeries: this.cache.getOrFuture("breakInSeries", getBreakInSeries(this.api)),
+        }).map(({ visualization, infoNotes, breakInSeries }) => {
+            return this.buildVisualization(visualization, breakInSeries, infoNotes);
         });
     }
 
-    private buildVisualization(d2Visualization: D2Visualization, infoNotes?: InfoNotes): Visualization {
+    private buildVisualization(
+        d2Visualization: D2Visualization,
+        breakInSeries?: BreakInSeries,
+        infoNotes?: InfoNotes
+    ): Visualization {
         const notes = infoNotes ? infoNotes[d2Visualization.id] || "" : "";
 
-        const visualizationExtra = { ...(VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra), notes };
+        const visualizationExtra = {
+            ...(VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra),
+            notes,
+            breakInSeries: breakInSeries?.getVisualization(d2Visualization.id),
+        };
 
         const columns = (d2Visualization.columns as VisualizationDimension[]).reduce(
             (acc: VisualizationDimension[], column: VisualizationDimension) => {

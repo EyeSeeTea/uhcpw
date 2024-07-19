@@ -55,7 +55,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 $marginStart={!useHeaderForCountryPage && !isScreenshot}
             >
                 <VisualizationPluginHeader
-                    visualizationDialogInfo={chartData.visualization.notes || ""}
+                    visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
                     chartFriendlyName={chartData.visualization.friendlyName}
                     categoryTag={chartData.visualization.categoryTag}
                     showInfo={showInfo}
@@ -70,6 +70,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     isScreenshot={isScreenshot}
                 />
                 <ChartPlugin
+                    key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
                     analytics={[chartData.analytics]}
                     visualization={chartData.visualization}
                     legendSets={chartData.legendSets}

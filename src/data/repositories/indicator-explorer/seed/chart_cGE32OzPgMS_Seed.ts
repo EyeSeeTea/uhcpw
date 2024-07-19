@@ -5,4 +5,5 @@ export const chart_cGE32OzPgMS_Seed = {
     friendlyName: " Households with out-of-pocket payments for health care by consumption quintile",
     minCountryFilter: 1,
     maxCountryFilter: 1,
+    allowBreaksInSeries: true,
 };

@@ -6,4 +6,5 @@ export const chart_xJhFIBuwGVC_Seed = {
     friendlyName: "unmet need for health care due to cost, distance and waiting time",
     minCountryFilter: 1,
     hasEur27: true,
+    allowBreaksInSeries: true,
 };

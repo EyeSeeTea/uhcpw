@@ -6,4 +6,5 @@ export const chart_BYAT5Woc9EJ_Seed = {
     friendlyName: "public spending on health as a share of GDP",
     minCountryFilter: 1,
     hasEur27: true,
+    allowBreaksInSeries: true,
 };

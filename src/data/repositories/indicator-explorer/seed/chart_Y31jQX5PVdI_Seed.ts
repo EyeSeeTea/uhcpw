@@ -5,4 +5,5 @@ export const chart_Y31jQX5PVdI_Seed = {
     showCountryTag: true,
     friendlyName: "households with catastrophic health spending",
     maxCountryFilter: 1,
+    allowBreaksInSeries: true,
 };

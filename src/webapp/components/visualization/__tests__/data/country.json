@@ -1,0 +1,81 @@
+[
+    {
+        "id": "DVnpk4xiXGJ",
+        "name": "Spain",
+        "longName": "Kingdom of Spain",
+        "code": "SPA",
+        "coordinates": [-3.68444, 40.3086],
+        "status": "Strong",
+        "parents": [
+            {
+                "id": "dqMsarWCWk6",
+                "name": "UHCW_European Union (EU)"
+            },
+            {
+                "id": "KJm1Af6dksd",
+                "name": "UHCW_European Region"
+            },
+            {
+                "id": "yuNkB9H6l3A",
+                "name": "UHCW_Income group HIC: High income countries"
+            }
+        ],
+        "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=FCuiVk73pT3",
+        "summary": "**Financial hardship (2020)**\r\n\r\n* Impoverishing health spending: 1.6% of households\r\n* Catastrophic health spending: 2.9% of households\r\n* Main drivers: medical products on average; medical products and outpatient medicines for low-income households\r\n\r\n\r\n**Unmet need (2022)**\r\n\r\n* Health care: 1.2% of people\r\n* Dental care: 4.6% of people\r\n\r\n[Financial protection report](https://apps.who.int/iris/handle/10665/347403)",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "**Source text**:  *example 2*",
+                "content": [
+                    {
+                        "title": "Main gaps in population coverage",
+                        "text": "None for residents, but administrative barriers can hinder access to entitlements for undocumented migrants, asylum seekers and foreigners legally reunited with relatives in Spain."
+                    },
+                    {
+                        "title": "Main gaps in service coverage",
+                        "text": "Coverage of dental care, hearing aids and optical care (glasses and contact lenses)is limited, especially for adults. Waiting times are an issue for elective surgery, outpatient specialist visits, diagnostic tests and mental health care."
+                    },
+                    {
+                        "title": "Main gaps caused by user charges",
+                        "text": "Percentage co-payments are applied to outpatient prescribed medicines and medical products (ortho-prosthetic devices such as supportive braces and splints, prostheses, wheelchairs, crutches and hearing aids). There are several protection mechanisms in place: a cap per prescription item for many medicines for chronic conditions, a monthly cap on co-payments for prescribed medicines for pensioners and exemptions from co-payments for prescribed medicines and medical products for several groups of disadvantaged people, including some people with low incomes. However, there are no exemptions from co-payments for children and many low-income households, and caps do not apply to non-pensioners. Access to these protection mechanisms may be hindered by administrative barriers when there is an application process in place (as there is for beneficiaries of the minimum vital income scheme) or delayed until the beginning of the following year because the user database that collects data on income and working status is only updated once a year."
+                    },
+                    {
+                        "title": "VHI role in filling gaps in coverage",
+                        "text": "VHI covers some non-covered services, such as dental care, but mainly plays a supplementary role, providing faster access to access to outpatient specialist care, inpatient care and diagnostic tests. Complementary VHI covered around 11% of the population in 2020 and supplementary VHI covered 21% of the population in 2021. The share of the population with VHI varies widely across regions. In 2020 VHI accounted for 7% of current spending on health. Expanding VHI is likely to increase inequality in access to health care."
+                    },
+                    {
+                        "title": "",
+                        "text": "Source: WHO Regional Office for Europe, based on [UHC watch policy explorer](https://apps.who.int/dhis2/uhcwatch/#/policy-explorer)."
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "**Source text**:  *example 1*",
+                "content": [
+                    {
+                        "title": "Expand coverage of dental care, hearing aids and optical care",
+                        "text": "Address the most important gaps in coverage by expanding publicly financed entitlement to dental care, hearing aids and optical care."
+                    },
+                    {
+                        "title": "Reduce co-payments for households with low incomes",
+                        "text": "Further improve the design of co-payments to strengthen protection for households with low incomes in all age groups – for example, by extending the income-related cap on co-payments for prescribed medicines to all households."
+                    },
+                    {
+                        "title": "Address waiting times for outpatient specialist care",
+                        "text": "Policy options to address waiting times include reinforcing the effectiveness of primary care by ensuring it is resourced and staffed adequately; reviewing the efficiency and equity of tax subsidies for voluntary health insurance premiums, which mainly benefit richer households; and reviewing current policy towards mutual funds, which allow civil servants to opt for private provision."
+                    },
+                    {
+                        "title": "Remove administrative barriers for undocumented migrants",
+                        "text": "Remove the administrative barriers undocumented migrants and others face in obtaining access to services to which they are entitled."
+                    },
+                    {
+                        "title": "Increase public spending on health and use resources to meet equity and efficiency goals",
+                        "text": "Strengthening financial protection is likely to require additional public spending on health. To ensure additional spending meets equity and efficiency goals, it should be targeted carefully to reduce financial hardship and unmet need for households with low incomes.\r\n\r\nSource: WHO Regional Office for Europe, based on [‘Can people afford to pay for health care? New evidence on financial protection in Spain’ (2021)](https://iris.who.int/handle/10665/347403)."
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": true
+    }
+]

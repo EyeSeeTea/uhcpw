@@ -53,7 +53,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 } else if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter >= 1) {
                     setGlobalMessage({
                         text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
-                            count: newsVisualization?.maxCountryFilter,
+                            count: newsVisualization.maxCountryFilter,
                         }),
                         type: "info",
                     });
