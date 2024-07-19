@@ -1,4 +1,5 @@
 import { Id, Ref } from "../Ref";
+import { Year } from "../Year";
 
 export interface VisualizationExtra {
     categoryName: string;
@@ -11,6 +12,8 @@ export interface VisualizationExtra {
     isComparative?: boolean;
     hasEur27?: boolean;
     showCountryTag?: boolean;
+    selectedYearsByDefault?: Year[];
+    allowedYears?: Year[];
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

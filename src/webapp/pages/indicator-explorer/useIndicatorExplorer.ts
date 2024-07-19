@@ -88,7 +88,9 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             );
             setDisabledCountries(disabledCountries);
 
-            if (!newsVisualization?.isComparative) {
+            if (newsVisualization?.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
+                setSelectedYearFilter(newsVisualization.selectedYearsByDefault.map(year => year.id));
+            } else if (!newsVisualization?.isComparative) {
                 setSelectedYearFilter(allYearsFilters.map(year => year.id));
             } else if (newsVisualization?.isComparative) {
                 setSelectedYearFilter([LatestCOVID19.id]);
@@ -145,16 +147,20 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             indicator => indicator.value === selectedIndicatorFilter
         )?.category;
 
-        if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
+        const allowedYears = visualizations.find(
+            visualization => visualization.id === selectedIndicatorFilter
+        )?.allowedYears;
+
+        if (allowedYears) {
+            setYearsFilters(allowedYears.map(year => ({ id: year.id, name: year.id, parents: [] })));
+        } else if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
             setYearsFilters([
                 { id: LatestCOVID19.id, name: i18n.t("2019 or latest available year before COVID-19"), parents: [] },
             ]);
-        } else if (selectedIndicatorFilter === "eibYs7QySNk") {
-            setYearsFilters(["2014", "2019"].map(year => ({ id: year, name: year, parents: [] })));
         } else {
             setYearsFilters(allYearsFilters);
         }
-    }, [indicatorFilters, selectedIndicatorFilter]);
+    }, [indicatorFilters, selectedIndicatorFilter, visualizations]);
 
     useEffect(() => {
         compositionRoot.indicatorExplorer.getPageContent.execute().run(
