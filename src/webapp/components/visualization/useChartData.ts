@@ -45,12 +45,13 @@ export function useChartData(
             }, []);
 
             const breakInSeriesDescriptions = countries.reduce<string[]>((descriptions, country) => {
-                const yearsBeforeBreak = (visualization.breakInSeries?.countries.get(country.id)?.years || []).map(
-                    year => (Number(year) - 1).toString()
-                );
-                const areYearsBeforeBreakInChart = yearsBeforeBreak.some(year => allYearsInChart.includes(year));
+                const breakYears = visualization.breakInSeries?.countries.get(country.id)?.years || [];
 
-                if (areYearsBeforeBreakInChart && visualization.breakInSeries?.countries.get(country.id)?.description) {
+                const areYearsBeforABreak = allYearsInChart.some(year => {
+                    return breakYears.some(breakYear => year < breakYear);
+                });
+
+                if (areYearsBeforABreak && visualization.breakInSeries?.countries.get(country.id)?.description) {
                     return [
                         ...descriptions,
                         `${country.name}: ${visualization.breakInSeries?.countries.get(country.id)?.description}`,

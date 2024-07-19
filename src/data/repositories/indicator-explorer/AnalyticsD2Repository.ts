@@ -135,12 +135,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         return (organisationUnits || [])
             .map(orgUnit => {
-                const yearsBeforeBreak = (visualizationBreakInSeries?.countries.get(orgUnit.id)?.years || []).map(
-                    year => (Number(year) - 1).toString()
-                );
-                const areYearsBeforeBreakInChart = yearsBeforeBreak.some(year => allYearsInDataRows.includes(year));
+                const breakYears = visualizationBreakInSeries?.countries.get(orgUnit.id)?.years || [];
 
-                if (areYearsBeforeBreakInChart && visualizationBreakInSeries?.countries.get(orgUnit.id)?.description) {
+                const areYearsBeforABreak = allYearsInDataRows.some(year => {
+                    return breakYears.some(breakYear => year < breakYear);
+                });
+
+                if (areYearsBeforABreak && visualizationBreakInSeries?.countries.get(orgUnit.id)?.description) {
                     return [
                         `${mapToWhoCountryName(orgUnit.id, orgUnit.shortName || "")}: ${
                             visualizationBreakInSeries?.countries.get(orgUnit.id)?.description
