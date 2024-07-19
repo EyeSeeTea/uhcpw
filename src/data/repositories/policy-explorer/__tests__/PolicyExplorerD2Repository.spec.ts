@@ -166,62 +166,11 @@ const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS = {
 };
 
 const USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY = {
-    u800TAhsIBY: [
-        "mTB12rvpJWd",
-        "giUCPiCe745",
-        "b29bW9mc9C7",
-        "tu36CFgEoh8",
-        "mSgmJhjn4Bi",
-        "wDQRlBezRAs",
-        "SWX96A7gnpA",
-        "ZkElvtoVJSd",
-        "zsiuJlUSvAW",
-        "o6d3FfwRVj7",
-        "ibq7wtqnsns",
-        "WTtArv6Xvsy",
-        "n8jFYyMKDaV",
-        "SiNpgO1L5bG",
-        "sASANfdEGUR",
-        "EruJIoPKO1s",
-        "gMAYqfQ5xAD",
-        "KBW3D8lOlpg",
-        "a67cjmP423S",
-        "sk9g2PsK7vD",
-        "KfHkuuRZdBh",
-        "NJ8zBQdwnd2",
-        "lj174orsYYW",
-        "eRfuZtUFbPK",
-        "Ut93noOXsdK",
-        "CpMWBaXJ91P",
-        "VroSbngmebX",
-        "P7qWfL7oluy",
-        "yhSc51DOubT",
-        "olgegohqR8l",
-        "L2sCkhEbSfM",
-        "OjTsewAuevP",
-        "NkHvpG471tm",
-        "Cm6ngZTrVQR",
-        "JLSGrrzqrW9",
-        "PUXn0hz2JFX",
-        "rZlHlitEiFp",
-        "lXBWfAv1EJE",
-        "M228fF4qKsx",
-        "wZ9JynvumSQ",
-        "Py0PrMRPlUj",
-        "RtLyOZpUtqO",
-        "Bwx3a0w5orN",
-        "KQVn9LNZPlq",
-        "SINKYu3EMgX",
-        "TaS7d80ciTe",
-        "syr5O2Mj2vL",
-        "Urb1llvnJV4",
-        "Ai7ziQeOU53",
-        "L6ly0Y1uCe2",
-    ],
+    u800TAhsIBY: ["Primary care visits", "Outpatient emergency visits", "Outpatient prescribed medicines"],
 };
 
 const USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY_YEARS = {
-    u800TAhsIBY: ["2023"],
+    u800TAhsIBY: ["latest"],
 };
 
 // TODO: Fix 6 skipped tests
@@ -558,12 +507,13 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             const policyExplorerResponse = (response.data || []) as PolicyExplorer;
+
             const expectedPolicyExplorerResponse =
                 policyExplorerResponseByTypeOfHealthcare as unknown as PolicyExplorer;
 
             verifyPolicyExplorerTables(policyExplorerResponse?.tables, expectedPolicyExplorerResponse.tables);
         });
-        it("Then should have a column with the types of healthcare", async () => {
+        it("Then should have a column with the types of healthcare selected", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesByTypeOfHealthcare();
             const countriesAndRegions = givenACountriesAndRegions();
@@ -584,6 +534,7 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             const policyExplorerResponse = (response.data || []) as PolicyExplorer;
+
             const expectedPolicyExplorerResponse = policyExplorerResponseByTypeOfHealthcare?.tables[
                 "u800TAhsIBY"
             ] as unknown as PolicyExplorerCell[][];

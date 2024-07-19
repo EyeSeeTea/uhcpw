@@ -13,6 +13,7 @@ import { getMainPagesContent } from "../common/getMainPagesContent";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
+import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
     UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
@@ -246,7 +247,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                         name: displayName.replace("Policy Explorer - ", ""),
                         subcategories:
                             CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
-                                ? []
+                                ? TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type }))
                                 : this.sortSubcategories(dataElements, sectionsEvent, section.dataElements),
                         description: notes,
                     };
