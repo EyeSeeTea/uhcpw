@@ -42,6 +42,7 @@ export const sortedCharts: string[] = [
     "zkEtsohZTTf",
     "rT39aStYqI3",
     "nhaxK33nlhb",
+    "ToEa2VuZLDt",
     // Health spending (health accounts)
     "OB4SCQfCzwz",
     "d3kq9OCv8tH",
