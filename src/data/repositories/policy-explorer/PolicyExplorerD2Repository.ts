@@ -24,7 +24,7 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "./PolicyExplorerCategoryD2Repository";
-import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
+import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
@@ -303,14 +303,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             programCategories,
         } = params;
 
-        const hasToFillAllSubcategories = Object.keys(policyExplorerCategories).some(
+        const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
                 CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID === categoryId ||
                 CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === categoryId
         );
 
-        const allPolicyExplorerCategoriesAndSubcategories = hasToFillAllSubcategories
-            ? this.fillAllSubcategories(policyExplorerCategories)
+        const allPolicyExplorerCategoriesAndSubcategories = hasToFillSubcategories
+            ? this.fillSubcategories(policyExplorerCategories)
             : policyExplorerCategories;
 
         const tables = {};
@@ -421,7 +421,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         }, [] as DataValueSetsDataValueWithOrgUnitNames[]);
     }
 
-    private fillAllSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
+    private fillSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
         return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
             switch (categoryId) {
                 case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID:
@@ -437,10 +437,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
                     return {
                         ...acc,
-                        [categoryId]: Object.values(
-                            USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS
-                        ).reduce((accSubcategories, subcategoryIds) => {
-                            return [...accSubcategories, ...subcategoryIds];
+                        [categoryId]: Object.entries(
+                            USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS
+                        ).reduce((accSubcategories, subcategories) => {
+                            const subcategoriesSelected = policyExplorerCategories[categoryId];
+                            const [typeOfHealthCare, subcategoriesOfHealthCareIds] = subcategories;
+                            return subcategoriesSelected?.includes(typeOfHealthCare)
+                                ? [...accSubcategories, ...subcategoriesOfHealthCareIds]
+                                : accSubcategories;
                         }, [] as string[]),
                     };
                 default:
