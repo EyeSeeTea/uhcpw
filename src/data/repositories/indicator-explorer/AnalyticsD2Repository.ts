@@ -70,7 +70,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ),
                 orgUnits: apiToFuture(
                     this.api.models.organisationUnits.get({
-                        fields: { id: true, shortName: true },
+                        fields: {
+                            id: true,
+                            shortName: true,
+                        },
                         paging: false,
                         filter: { id: { in: orgUnitUids } },
                     })
@@ -87,9 +90,15 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     seriesIdAndName
                 );
 
+                const orgUnitsInChart = this.getOrgUnitsInChart(
+                    metadata.organisationUnits,
+                    orgUnits,
+                    analyticsResponse.metaData.dimensions
+                );
+
                 const breakInSeriesDescriptions = this.getBreakInSeriesDescription(
                     analyticsResponse,
-                    metadata.organisationUnits,
+                    orgUnitsInChart,
                     visualization.breakInSeries
                 );
 
@@ -114,12 +123,24 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         });
     }
 
+    private getOrgUnitsInChart(
+        metadataOrganisationUnits: Maybe<{ id: string; name: string; shortName: string }[]>,
+        orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>,
+        metaDataDimensions: Analytics["metaData"]["dimensions"]
+    ): { id: string; shortName: string }[] {
+        if (metadataOrganisationUnits) {
+            return metadataOrganisationUnits;
+        }
+
+        const orgUnitIds: Maybe<Id[]> = metaDataDimensions.ou;
+        return orgUnits.objects.filter(orgUnit => orgUnitIds?.includes(orgUnit.id));
+    }
+
     private getBreakInSeriesDescription(
         analytics: Analytics,
         organisationUnits: Maybe<
             {
                 id: string;
-                name: string;
                 shortName: string;
             }[]
         >,
