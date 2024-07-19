@@ -49,12 +49,10 @@ export const comparativeGroupedColumnChartOptions: (
             color: isOnlyOneYearSelected ? defaultColor : seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = isOnlyOneYearSelected
-                    ? mapToWhoCountryCode(chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "")
-                    : mapToWhoCountryName(
-                          orgUnitId,
-                          chartSource.analyticsResponse.metaData.items[orgUnitId]?.name || ""
-                      );
+                const orgUnit = mapToWhoCountryCode(
+                    chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
+                );
+
                 const value = row[2] ? +row[2] : 0;
 
                 return {
@@ -74,7 +72,7 @@ export const comparativeGroupedColumnChartOptions: (
             title: "",
             type: "category",
             labels: {
-                rotation: isOnlyOneYearSelected ? -90 : -45,
+                rotation: -90,
             },
         },
         yAxis: {
