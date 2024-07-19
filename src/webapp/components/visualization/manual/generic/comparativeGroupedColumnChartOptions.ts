@@ -10,8 +10,9 @@ import { baseChartOptions } from "./baseChartOptions";
 export const comparativeGroupedColumnChartOptions: (
     chartSource: ChartSource,
     seriesNames: Record<string, string>,
-    seriesColors: Record<string, string>
-) => Highcharts.Options = (chartSource, seriesNames, seriesColors) => {
+    seriesColors: Record<string, string>,
+    defaultColor?: string
+) => Highcharts.Options = (chartSource, seriesNames, seriesColors, defaultColor) => {
     const filteredYears = chartSource.analyticsResponse.metaData.dimensions.pe || [];
     const isOnlyOneYearSelected = filteredYears.length === 1;
 
@@ -45,7 +46,7 @@ export const comparativeGroupedColumnChartOptions: (
             id: dxId,
             type: "column",
             name: seriesNames[dxId],
-            color: seriesColors[dxId],
+            color: isOnlyOneYearSelected ? defaultColor : seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
                 const orgUnit = isOnlyOneYearSelected
