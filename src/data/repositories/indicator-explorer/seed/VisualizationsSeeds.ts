@@ -25,8 +25,14 @@ import { chart_qipBCG0Hc9Y_Seed } from "./chart_qipBCG0Hc9Y_Seed";
 import { chart_xKmSHeJ1GXq_Seed } from "./chart_xKmSHeJ1GXq_Seed";
 import { chat_fY7K8ATEDgQ_Seed } from "./chat_fY7K8ATEDgQ_Seed";
 import { chart_z6nPPMMbOw5_Seed } from "./chart_z6nPPMMbOw5_Seed";
+import { chart_NOR4oxtMVxP_Seed } from "./chart_NOR4oxtMVxP_Seed";
 import { chart_TzWcDtEOTPX_Seed } from "./chart_TzWcDtEOTPX_Seed";
 import { chart_eEKRLRR4mDk_Seed } from "./chart_eEKRLRR4mDk_Seed";
+import { chart_sjgCABd3zK7_Seed } from "./chart_sjgCABd3zK7_Seed";
+import { chart_mUjcWO90CRr_Seed } from "./chart_mUjcWO90CRr_Seed";
+import { chart_cGE32OzPgMS_Seed } from "./chart_cGE32OzPgMS_Seed";
+import { chart_eibYs7QySNk_Seed } from "./chart_eibYs7QySNk_Seed";
+import { chart_ToEa2VuZLDt_Seed } from "./chart_ToEa2VuZLDt_Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     // Comparative charts
@@ -38,33 +44,36 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     mcNfvQaVbfy: chart_mcNfvQaVbfy_Seed,
     B4CnzUqVR3n: chart_B4CnzUqVR3n_Seed,
     eEKRLRR4mDk: chart_eEKRLRR4mDk_Seed,
+    mUjcWO90CRr: chart_mUjcWO90CRr_Seed,
     // Household spending on health
     pWFRTFfh5mA: chart_pWFRTFfh5mA_Seed,
+    uRZCilOIr1C: chat_uRZCilOIr1C_Seed,
+    qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
+    fY7K8ATEDgQ: chat_fY7K8ATEDgQ_Seed,
+    sjgCABd3zK7: chart_sjgCABd3zK7_Seed,
+    cGE32OzPgMS: chart_cGE32OzPgMS_Seed,
     // Financial hardship
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Seed,
     Y31jQX5PVdI: chart_Y31jQX5PVdI_Seed,
     geNXcoXc3mf: chart_geNXcoXc3mf_Seed,
     hpO1ZyFXpCz: chart_hpO1ZyFXpCz_Seed,
     ZxNdsDM8NSb: chart_ZxNdsDM8NSb_Seed,
+    TzWcDtEOTPX: chart_TzWcDtEOTPX_Seed,
+    NOR4oxtMVxP: chart_NOR4oxtMVxP_Seed,
     // Unmet need
     xJhFIBuwGVC: chart_xJhFIBuwGVC_Seed,
     zkEtsohZTTf: chart_zkEtsohZTTf_Seed,
     rT39aStYqI3: chart_rT39aStYqI3_Seed,
     nhaxK33nlhb: chart_nhaxK33nlhb_Seed,
+    eibYs7QySNk: chart_eibYs7QySNk_Seed,
+    ToEa2VuZLDt: chart_ToEa2VuZLDt_Seed,
     // Health spending (health accounts)
     OB4SCQfCzwz: chart_OB4SCQfCzwz_Seed,
     d3kq9OCv8tH: chart_d3kq9OCv8tH_Seed,
     ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Seed,
     BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Seed,
-    //HSH
-    uRZCilOIr1C: chat_uRZCilOIr1C_Seed,
-    qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
-    fY7K8ATEDgQ: chat_fY7K8ATEDgQ_Seed,
-    //HSHA
     xKmSHeJ1GXq: chart_xKmSHeJ1GXq_Seed,
     z6nPPMMbOw5: chart_z6nPPMMbOw5_Seed,
-    //FH
-    TzWcDtEOTPX: chart_TzWcDtEOTPX_Seed,
 };
 
 export const emptyVisualizationExtra = {

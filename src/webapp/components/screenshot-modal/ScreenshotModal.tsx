@@ -45,7 +45,7 @@ function ScreenshotModal({
                     {!hideTitle && <Title>{_.capitalize(title)}</Title>}
                     <StyledScreenshotButton
                         variant="contained"
-                        startIcon={<ImageRoundedIcon />}
+                        endIcon={<ImageRoundedIcon />}
                         color="primary"
                         onClick={handleDownload}
                     >

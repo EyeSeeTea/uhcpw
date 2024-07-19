@@ -1,0 +1,215 @@
+{
+    "events": [
+        {
+            "orgUnit": "H8RixfF8ugH",
+            "event": "MruBiinokMU",
+            "eventDate": "2024-07-01T00:00:00.000",
+            "dataValues": [
+                {
+                    "dataElement": "x8i8VPRy7Bh",
+                    "value": "A;B;C;D;E;F;G;H;I;J;K;L;M;N;O;P"
+                },
+                {
+                    "dataElement": "jBUtGFviLYs",
+                    "value": "Other policies to reduce waiting times TEST"
+                },
+                {
+                    "dataElement": "aJl5JbjfFk5",
+                    "value": "Characteristics of people with VHI TEST"
+                },
+                {
+                    "dataElement": "swL6qwfTe8y",
+                    "value": "VHI role in filling gaps in service coverage TEST"
+                },
+                {
+                    "dataElement": "t9MmlhwfqKy",
+                    "value": "Share of the population with VHI (%) TEST"
+                },
+                {
+                    "dataElement": "k9vl3FlZ222",
+                    "value": "Institutions monitoring informal payments TEST"
+                },
+                {
+                    "dataElement": "nF4rdc9LbTB",
+                    "value": "Main gaps in service coverage TEST"
+                },
+                {
+                    "dataElement": "cIkhfyGcGLg",
+                    "value": "Policies to reduce informal payments TEST"
+                },
+                {
+                    "dataElement": "gwCd179r6ss",
+                    "value": "User pathway for covered services TEST"
+                },
+                {
+                    "dataElement": "rmg98Zja6Lj",
+                    "value": "Institutions monitoring waiting times TEST"
+                },
+                {
+                    "dataElement": "Y0cW6rG7Nx7",
+                    "value": "Entities buying VHI TEST"
+                },
+                {
+                    "dataElement": "jlDStS51762",
+                    "value": "Characteristics and number of non-covered people TEST"
+                },
+                {
+                    "dataElement": "IsZP5FqN5ef",
+                    "value": "Institutions responsible for defining user charges TEST"
+                },
+                {
+                    "dataElement": "afIaAduzRE6",
+                    "value": "Main gaps in population coverage TEST"
+                },
+                {
+                    "dataElement": "p54vpp3lXt0",
+                    "value": "A;B;C;D;E;F;G;H;I;J"
+                },
+                {
+                    "dataElement": "Z37CBR2biV9",
+                    "value": "Entitlements for refugees, asylum seekers, and undocumented migrants TEST"
+                },
+                {
+                    "dataElement": "gvnkSRctUiL",
+                    "value": "Main gaps in population coverage TEST"
+                },
+                {
+                    "dataElement": "UiV9oIBBWQk",
+                    "value": "VHI role in covering user charges TEST"
+                },
+                {
+                    "dataElement": "gHF7LOZSLMZ",
+                    "value": "Mechanisms to protect people from user charges TEST"
+                },
+                {
+                    "dataElement": "BvGvrauMDwv",
+                    "value": "VHI share of current spending on health (%) TEST"
+                },
+                {
+                    "dataElement": "oHRnieqKkuc",
+                    "value": "Institutions and processes involved in defining the publicly financed benefits package TEST"
+                },
+                {
+                    "dataElement": "ZXXeql2syuY",
+                    "value": "Protection mechanisms are applied automatically TEST"
+                },
+                {
+                    "dataElement": "AifWalAifvZ",
+                    "value": "Informal payments are an issue TEST"
+                },
+                {
+                    "dataElement": "BOgfccZFTZr",
+                    "value": "Use of retrospective reimbursement TEST"
+                },
+                {
+                    "dataElement": "WAXNoBMW2Pb",
+                    "value": "Institutions monitoring population coverage TEST"
+                },
+                {
+                    "dataElement": "Tz2mB0sAe7o",
+                    "value": "Institutions responsible for defining population coverage TEST"
+                },
+                {
+                    "dataElement": "ypo98bu39Ok",
+                    "value": "Policies to make VHI affordable TEST"
+                },
+                {
+                    "dataElement": "aWqb5vOKnGI",
+                    "value": "Main gaps in service coverage TEST"
+                },
+                {
+                    "dataElement": "s6RaqgF1nK9",
+                    "value": "Role and nature of user charges TEST"
+                },
+                {
+                    "dataElement": "BTVM5gL4zS4",
+                    "value": "VHI role in filling gaps in population coverage TEST"
+                },
+                {
+                    "dataElement": "RcO6U4P1LAk",
+                    "value": "Other access issues TEST"
+                },
+                {
+                    "dataElement": "c6yH68TBRnD",
+                    "value": "Variation in the publicly financed benefits package across the country TEST"
+                },
+                {
+                    "dataElement": "t4dhOzUgQVQ",
+                    "value": "B;A;C;E;D;F;G;H;I"
+                },
+                {
+                    "dataElement": "RPVzkWcdJ1W",
+                    "value": "Administrative requirements and documentation needed to access publicly financed health services TEST"
+                },
+                {
+                    "dataElement": "PY64NuPdCje",
+                    "value": "Main gaps caused by user charges (co-payments) TEST"
+                },
+                {
+                    "dataElement": "GwwLz0Z4VgD",
+                    "value": "Entities selling VHI TEST"
+                },
+                {
+                    "dataElement": "nEgezzGXvUw",
+                    "value": "A;B;C"
+                },
+                {
+                    "dataElement": "up7pErA177q",
+                    "value": "Policies to make VHI accessible TEST"
+                },
+                {
+                    "dataElement": "oBgW7CQZPOO",
+                    "value": "Institutions responsible for oversight or regulation of VHI TEST"
+                },
+                {
+                    "dataElement": "HiXumjeUglX",
+                    "value": "VHI role TEST"
+                },
+                {
+                    "dataElement": "yQESoObkqDk",
+                    "value": "Tax incentives or disincentives for selling or buying VHI TEST"
+                },
+                {
+                    "dataElement": "lL6MHdGx43w",
+                    "value": "Publicly financed health care to which non-covered people are entitled TEST"
+                },
+                {
+                    "dataElement": "DXTlEI1XqfN",
+                    "value": "Waiting times are an issue TEST"
+                },
+                {
+                    "dataElement": "tdyHstQGLlt",
+                    "value": "A;B;C;D;E;F;G;H"
+                },
+                {
+                    "dataElement": "sZ1mfMewB9R",
+                    "value": "Types of health care not so well covered by the publicly financed benefits package TEST"
+                },
+                {
+                    "dataElement": "Yqf7raMTfwC",
+                    "value": "Variation in user charges across the country TEST"
+                },
+                {
+                    "dataElement": "U2vmGEUlMga",
+                    "value": "Main gaps caused by user charges TEST"
+                },
+                {
+                    "dataElement": "NfOagVk4A71",
+                    "value": "Protection mechanisms target people with low incomes TEST"
+                },
+                {
+                    "dataElement": "qv2rVMbVueH",
+                    "value": "Waiting time guarantees or targets TEST"
+                },
+                {
+                    "dataElement": "FWdTYAxKy9J",
+                    "value": "Reasons for informal payments TEST"
+                },
+                {
+                    "dataElement": "lvnyAY71qwn",
+                    "value": "Basis for entitlement to publicly financed health services TEST AGAIN"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,333 @@
+[
+    {
+        "id": "uG2PbDfOc0w",
+        "name": "Population coverage",
+        "subcategories": [
+            {
+                "id": "CgM1uTO6z3p",
+                "name": "Entitlements for refugees, asylum seekers, and undocumented migrants TEST"
+            },
+            {
+                "id": "SQQ3ZDRbxGT",
+                "name": "Basis for entitlement to publicly financed health services TEST AGAIN"
+            },
+            {
+                "id": "qqoP7DlH4FC",
+                "name": "Characteristics and number of non-covered people TEST"
+            },
+            {
+                "id": "aOAdLksfSsA",
+                "name": "Administrative requirements and documentation needed to access publicly financed health services TEST"
+            },
+            {
+                "id": "y8qYx7ndhg0",
+                "name": "Publicly financed health care to which non-covered people are entitled TEST"
+            },
+            {
+                "id": "Swqe3nzvYdB",
+                "name": "Institutions responsible for defining population coverage TEST"
+            },
+            {
+                "id": "eQO6YBDAeFf",
+                "name": "Institutions monitoring population coverage TEST"
+            },
+            {
+                "id": "eSyCsKNBnD2",
+                "name": "Main gaps in population coverage TEST"
+            },
+            {
+                "id": "aUK2KCRN9Kx",
+                "name": "VHI role in filling gaps in population coverage TEST"
+            }
+        ],
+        "description": "TEST! This section focuses on the basis for entitlement to publicly financed health care. It describes the basis for entitlement; entitlements for refugees, asylum seekers and undocumented migrants; and the groups of people who lack coverage and their entitlements."
+    },
+    {
+        "id": "W4CqlzcDPB1",
+        "name": "Service coverage",
+        "subcategories": [
+            {
+                "id": "ie6trn3DrnP",
+                "name": "Institutions and processes involved in defining the publicly financed benefits package TEST"
+            },
+            {
+                "id": "eGacPe1ouIu",
+                "name": "Variation in the publicly financed benefits package across the country TEST"
+            },
+            {
+                "id": "u4CY8PmaMRp",
+                "name": "Types of health care not so well covered by the publicly financed benefits package TEST"
+            },
+            {
+                "id": "q8WrIpkXQuR",
+                "name": "Use of retrospective reimbursement TEST"
+            },
+            {
+                "id": "OWmAsT2I3O4",
+                "name": "User pathway for covered services TEST"
+            },
+            {
+                "id": "jo2xNZq4N7b",
+                "name": "Waiting times are an issue TEST"
+            },
+            {
+                "id": "mOsFKwOX1z0",
+                "name": "Waiting time guarantees or targets TEST"
+            },
+            {
+                "id": "Go2bbi3kiLv",
+                "name": "Other policies to reduce waiting times TEST"
+            },
+            {
+                "id": "CgIb9itB4sH",
+                "name": "Institutions monitoring waiting times TEST"
+            },
+            {
+                "id": "NzHSCCHysv6",
+                "name": "Informal payments are an issue TEST"
+            },
+            {
+                "id": "GMI7vM07khc",
+                "name": "Reasons for informal payments TEST"
+            },
+            {
+                "id": "aAwj3aB5ysQ",
+                "name": "Policies to reduce informal payments TEST"
+            },
+            {
+                "id": "GW8CL6T8YnA",
+                "name": "Institutions monitoring informal payments TEST"
+            },
+            {
+                "id": "quWuCSNKLM3",
+                "name": "Other access issues TEST"
+            },
+            {
+                "id": "iAgF9SHMfcB",
+                "name": "Main gaps in service coverage TEST"
+            },
+            {
+                "id": "Om86yyWLAaM",
+                "name": "VHI role in filling gaps in service coverage TEST"
+            }
+        ],
+        "description": "This section focuses on the publicly financed benefits package. It provides information on the institutions and processes involved in defining the benefits package, the types of health care that are not so well covered, the user pathway for covered services, informal payments, waiting times and other access issues."
+    },
+    {
+        "id": "mCMVwmnGWJF",
+        "name": "User charges (co-payments)",
+        "subcategories": [
+            {
+                "id": "eAa8alKgk7f",
+                "name": "Role and nature of user charges TEST"
+            },
+            {
+                "id": "ySKqnU1oG8a",
+                "name": "Mechanisms to protect people from user charges TEST"
+            },
+            {
+                "id": "CWauALI1UTx",
+                "name": "Protection mechanisms are applied automatically TEST"
+            },
+            {
+                "id": "lZg59TLmgoz",
+                "name": "Protection mechanisms target people with low incomes TEST"
+            },
+            {
+                "id": "OSWuAIBIg1A",
+                "name": "Institutions responsible for defining user charges TEST"
+            },
+            {
+                "id": "eq8lKfyq8jT",
+                "name": "Variation in user charges across the country TEST"
+            },
+            {
+                "id": "e8wFwCV7zsz",
+                "name": "Main gaps caused by user charges TEST"
+            },
+            {
+                "id": "ekIncD2R5o7",
+                "name": "VHI role in covering user charges TEST"
+            }
+        ],
+        "description": "This section focuses on user charges (co-payments) for covered services. It provides an overview of the types of user charges and protection mechanisms in place. More detailed information on the level and design of user charges is in the section on user charges by type of health care."
+    },
+    {
+        "id": "u800TAhsIBY",
+        "name": "User charges (co-payments) by type of health care",
+        "subcategories": [],
+        "description": "This section focuses on the design of user charges (co-payments) for covered services. It describes the level and type of user charges and protection mechanisms in place for the following types of health care: outpatient primary care visits, outpatient specialist visits, outpatient emergency visits, outpatient prescribed medicines, medical products, diagnostic tests, dental care visits, dental care treatment, inpatient care and inpatient medicines."
+    },
+    {
+        "id": "uImM4yTeeV3",
+        "name": "Voluntary health insurance",
+        "subcategories": [
+            {
+                "id": "OKGIXiFYHNQ",
+                "name": "VHI role TEST"
+            },
+            {
+                "id": "KWqoxvn1jVH",
+                "name": "Share of the population with VHI (%) TEST"
+            },
+            {
+                "id": "qGWmS9ZiGly",
+                "name": "VHI share of current spending on health (%) TEST"
+            },
+            {
+                "id": "OWMvZQgo9dV",
+                "name": "Institutions responsible for oversight or regulation of VHI TEST"
+            },
+            {
+                "id": "GISip3HaUqt",
+                "name": "Characteristics of people with VHI TEST"
+            },
+            {
+                "id": "uYGS0yaH6ir",
+                "name": "Policies to make VHI accessible TEST"
+            },
+            {
+                "id": "agSA2qB7hfy",
+                "name": "Policies to make VHI affordable TEST"
+            },
+            {
+                "id": "SsssZUWxGZt",
+                "name": "Entities selling VHI TEST"
+            },
+            {
+                "id": "KsOe4RGYdU8",
+                "name": "Entities buying VHI TEST"
+            },
+            {
+                "id": "G04CNOCKHDC",
+                "name": "Tax incentives or disincentives for selling or buying VHI TEST"
+            }
+        ],
+        "description": "This section focuses on the role voluntary health insurance (VHI) plays in relation to publicly financed health care, the share of population covered by VHI and its contribution to spending on health. It provides information on who sells and buys VHI, who regulates VHI and whether there are policies in place to make VHI more accessible or affordable."
+    },
+    {
+        "id": "e6cfI6vWYEF",
+        "name": "Main gaps in publicly financed coverage",
+        "subcategories": [
+            {
+                "id": "Oc0RJz88pBV",
+                "name": "Population entitlement: Main gaps in publicly financed coverage"
+            },
+            {
+                "id": "Cqe4z39igTX",
+                "name": "Service coverage: Main gaps in publicly financed coverage"
+            },
+            {
+                "id": "CCIzcBhaqCZ",
+                "name": "User charges (co-payments): Main gaps in publicly financed coverage"
+            }
+        ],
+        "description": "This section highlights the main gaps in population and service coverage and gaps caused by user charges."
+    },
+    {
+        "id": "Dg4b8bTfEIr",
+        "name": "Changes in coverage policy since 2020",
+        "subcategories": [
+            {
+                "id": "AFxIxVuvvsZ",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "JMYOe9wMIoE",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "FKBHFNqiFM4",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "fgsOChZT1Yp",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "qJ9dWNT1HU1",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "IjpUXUVF9bn",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "dfWsuiDvDlR",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "AZgRUJmVPNi",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "M90TwNwsXjY",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "rxDjH7GshzX",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "Soj201VJFWL",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "tdlh9Z0uktG",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "jq0sGqVVTNW",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "XZbHFY1652W",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "BYbKtpEB0Hn",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "JfqWVc1eCJl",
+                "name": "Area of change in coverage policy"
+            },
+            {
+                "id": "PyBU3BkN3oQ",
+                "name": "Policy of change in coverage policy"
+            },
+            {
+                "id": "zvBP5xebI2D",
+                "name": "Health services targeted in change in coverage policy"
+            },
+            {
+                "id": "b5kKyrRkcHG",
+                "name": "People targeted in change in coverage policy"
+            },
+            {
+                "id": "L9klgnq75d8",
+                "name": "Was this a response to the COVID-19 pandemic?"
+            },
+            {
+                "id": "xP4nCc5rpV4",
+                "name": "Area of change in coverage policy (1)"
+            },
+            {
+                "id": "mQYv2QxdflF",
+                "name": "Policy of change in coverage policy (1)"
+            },
+            {
+                "id": "peIML3XRBaN",
+                "name": "Health services targeted in change in coverage policy (1)"
+            },
+            {
+                "id": "CUSj5kPkJ0W",
+                "name": "People targeted in change in coverage policy (1)"
+            },
+            {
+                "id": "mdnjNf5baYj",
+                "name": "Was this a response to the COVID-19 pandemic? (1)"
+            }
+        ]
+    }
+]

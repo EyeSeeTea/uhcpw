@@ -3,8 +3,41 @@ import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
+import { Id } from "../../../../domain/entities/Ref";
 
-export const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
+type HealthCareType =
+    | "Primary care visits"
+    | "Outpatient specialist visits"
+    | "Outpatient emergency visits"
+    | "Outpatient prescribed medicines"
+    | "Medical products"
+    | "Diagnostics tests"
+    | "Dental care visits"
+    | "Dental care treatment"
+    | "Inpatient care"
+    | "Inpatient medicines";
+
+export const TYPES_OF_HEALTH_CARE: HealthCareType[] = [
+    "Primary care visits",
+    "Outpatient specialist visits",
+    "Outpatient emergency visits",
+    "Outpatient prescribed medicines",
+    "Medical products",
+    "Diagnostics tests",
+    "Dental care visits",
+    "Dental care treatment",
+    "Inpatient care",
+    "Inpatient medicines",
+];
+
+type UserChargesColumn =
+    | "User charges apply"
+    | "Type of user charge"
+    | "Reduced user charges"
+    | "Exemptions from user charges"
+    | "Cap on user charges";
+
+export const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS: Record<UserChargesColumn, Id[]> = {
     "User charges apply": [
         "giUCPiCe745",
         "SWX96A7gnpA",
@@ -67,7 +100,10 @@ export const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS 
     ],
 };
 
-const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
+export const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS: Record<
+    HealthCareType,
+    Id[]
+> = {
     "Primary care visits": ["giUCPiCe745", "mTB12rvpJWd", "b29bW9mc9C7", "tu36CFgEoh8", "mSgmJhjn4Bi"],
     "Outpatient specialist visits": ["SWX96A7gnpA", "wDQRlBezRAs", "ZkElvtoVJSd", "zsiuJlUSvAW", "o6d3FfwRVj7"],
     "Outpatient emergency visits": ["WTtArv6Xvsy", "ibq7wtqnsns", "n8jFYyMKDaV", "SiNpgO1L5bG", "sASANfdEGUR"],
@@ -80,7 +116,15 @@ const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_S
     "Inpatient medicines": ["NJ8zBQdwnd2", "KfHkuuRZdBh", "lj174orsYYW", "eRfuZtUFbPK", "Ut93noOXsdK"],
 };
 
-const TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
+type TypesOfUserChargeColumn =
+    | "Fixed co-payment"
+    | "Percentage co-payment"
+    | "Reference pricing"
+    | "Deductible"
+    | "Balance billing"
+    | "Extra billing/full price";
+
+const TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS: Record<TypesOfUserChargeColumn, Id[]> = {
     "Fixed co-payment": [
         "EboejH0zPz9",
         "oHXaoGjuNBz",
@@ -155,7 +199,7 @@ const TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS = {
     ],
 };
 
-const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS = {
+const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS: Record<HealthCareType, Id[]> = {
     "Primary care visits": ["EboejH0zPz9", "cBXErExkfsP", "uFiUQKJhltM", "xvfbvuNow1z", "BuXscQqeqt3", "AenLLMXSR2j"],
     "Outpatient specialist visits": [
         "oHXaoGjuNBz",
@@ -216,13 +260,21 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
         policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
         references: string;
     }) {
-        const { policyExplorerCategoryId, dataValuesByGroup, orgUnitName, period, references, currentRowsInTable } =
-            params;
+        const {
+            policyExplorerCategoryId,
+            policyExplorerSubcategoriesIds,
+            dataValuesByGroup,
+            orgUnitName,
+            period,
+            references,
+            currentRowsInTable,
+        } = params;
 
         const idsByTypeOfHealthcare =
             policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES
@@ -235,9 +287,17 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
                 : TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS;
 
         const rows = Object.entries(idsByTypeOfHealthcare).reduce(
-            (accRows: PolicyExplorerCell[][], [healthcareType, dataElementsSectionIdsInType], index) => {
+            (accRows: PolicyExplorerCell[][], [healthcareType, dataElementsSectionIdsInType]) => {
+                const healthCareSubcategorySelected = dataElementsSectionIdsInType.every(dataElement =>
+                    policyExplorerSubcategoriesIds.includes(dataElement)
+                );
+
+                if (!healthCareSubcategorySelected) {
+                    return accRows;
+                }
+
                 const initCellsInRow: PolicyExplorerCell[] =
-                    index === 0 || accRows.length === 0
+                    accRows.length === 0
                         ? [
                               { type: PolicyExplorerCellType.DATA, value: orgUnitName },
                               { type: PolicyExplorerCellType.DATA, value: period || EMPTY_DATA },

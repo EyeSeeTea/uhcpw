@@ -16,6 +16,7 @@ import policyExplorerResponseWithMultiplePeriods from "./data/policyExplorerResp
 import policyExplorerResponseByTypeOfHealthcare from "./data/policyExplorerResponseByTypeOfHealthcare.json";
 import policyExplorerResponseMoreThanOneCountry from "./data/policyExplorerResponseMoreThanOneCountry.json";
 import policyExplorerResponseWithoutOneSubcategory from "./data/policyExplorerResponseWithoutOneSubcategory.json";
+import programEventValues from "./data/programEventValues.json";
 
 import {
     PolicyExplorer,
@@ -23,6 +24,7 @@ import {
     PolicyExplorerCellType,
 } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { givenACountriesAndRegions } from "../../../../utils/tests-ui";
+import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 const mockWebServer = new MockWebServer();
 const api = getD2APiFromInstance(new Instance({ url: "/" }));
@@ -164,62 +166,11 @@ const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS = {
 };
 
 const USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY = {
-    u800TAhsIBY: [
-        "mTB12rvpJWd",
-        "giUCPiCe745",
-        "b29bW9mc9C7",
-        "tu36CFgEoh8",
-        "mSgmJhjn4Bi",
-        "wDQRlBezRAs",
-        "SWX96A7gnpA",
-        "ZkElvtoVJSd",
-        "zsiuJlUSvAW",
-        "o6d3FfwRVj7",
-        "ibq7wtqnsns",
-        "WTtArv6Xvsy",
-        "n8jFYyMKDaV",
-        "SiNpgO1L5bG",
-        "sASANfdEGUR",
-        "EruJIoPKO1s",
-        "gMAYqfQ5xAD",
-        "KBW3D8lOlpg",
-        "a67cjmP423S",
-        "sk9g2PsK7vD",
-        "KfHkuuRZdBh",
-        "NJ8zBQdwnd2",
-        "lj174orsYYW",
-        "eRfuZtUFbPK",
-        "Ut93noOXsdK",
-        "CpMWBaXJ91P",
-        "VroSbngmebX",
-        "P7qWfL7oluy",
-        "yhSc51DOubT",
-        "olgegohqR8l",
-        "L2sCkhEbSfM",
-        "OjTsewAuevP",
-        "NkHvpG471tm",
-        "Cm6ngZTrVQR",
-        "JLSGrrzqrW9",
-        "PUXn0hz2JFX",
-        "rZlHlitEiFp",
-        "lXBWfAv1EJE",
-        "M228fF4qKsx",
-        "wZ9JynvumSQ",
-        "Py0PrMRPlUj",
-        "RtLyOZpUtqO",
-        "Bwx3a0w5orN",
-        "KQVn9LNZPlq",
-        "SINKYu3EMgX",
-        "TaS7d80ciTe",
-        "syr5O2Mj2vL",
-        "Urb1llvnJV4",
-        "Ai7ziQeOU53",
-        "L6ly0Y1uCe2",
-    ],
+    u800TAhsIBY: ["Primary care visits", "Outpatient emergency visits", "Outpatient prescribed medicines"],
 };
 
 const USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY_YEARS = {
-    u800TAhsIBY: ["2023"],
+    u800TAhsIBY: ["latest"],
 };
 
 // TODO: Fix 6 skipped tests
@@ -233,6 +184,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             await policyExplorerRepository
                 .get(
@@ -243,7 +195,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -257,6 +210,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             await policyExplorerRepository
                 .get(
@@ -267,7 +221,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -281,6 +236,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -291,7 +247,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -304,6 +261,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -314,7 +272,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -330,6 +289,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCategory();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             await policyExplorerRepository
                 .get(
@@ -340,7 +300,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...TWO_CATEGORIES_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -360,6 +321,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCategory();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -370,7 +332,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...TWO_CATEGORIES_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -384,6 +347,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCategory();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -394,7 +358,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...TWO_CATEGORIES_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -411,6 +376,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesEmpty();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -421,7 +387,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...EMPTY_CATEGORY_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -436,6 +403,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMultiplePeriods();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             await policyExplorerRepository
                 .get(
@@ -446,7 +414,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -466,6 +435,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMultiplePeriods();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -476,7 +446,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -490,6 +461,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMultiplePeriods();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -500,7 +472,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -517,6 +490,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesByTypeOfHealthcare();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -527,20 +501,23 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
             const policyExplorerResponse = (response.data || []) as PolicyExplorer;
+
             const expectedPolicyExplorerResponse =
                 policyExplorerResponseByTypeOfHealthcare as unknown as PolicyExplorer;
 
             verifyPolicyExplorerTables(policyExplorerResponse?.tables, expectedPolicyExplorerResponse.tables);
         });
-        it("Then should have a column with the types of healthcare", async () => {
+        it("Then should have a column with the types of healthcare selected", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesByTypeOfHealthcare();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -551,11 +528,13 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
             const policyExplorerResponse = (response.data || []) as PolicyExplorer;
+
             const expectedPolicyExplorerResponse = policyExplorerResponseByTypeOfHealthcare?.tables[
                 "u800TAhsIBY"
             ] as unknown as PolicyExplorerCell[][];
@@ -571,6 +550,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             await policyExplorerRepository
                 .get(
@@ -581,7 +561,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -601,6 +582,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -611,7 +593,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -625,6 +608,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -635,7 +619,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -652,6 +637,7 @@ describe("Given Policy Explorer repository", () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesWithoutOneSubcategory();
             const countriesAndRegions = givenACountriesAndRegions();
+            const programEventValues = givenAProgramEventValues();
 
             const response = await policyExplorerRepository
                 .get(
@@ -662,7 +648,8 @@ describe("Given Policy Explorer repository", () => {
                     {
                         ...GAPS_IN_COVERAGE_YEARS,
                     },
-                    countriesAndRegions
+                    countriesAndRegions,
+                    programEventValues
                 )
                 .runAsync();
 
@@ -674,6 +661,10 @@ describe("Given Policy Explorer repository", () => {
         });
     });
 });
+
+function givenAProgramEventValues() {
+    return programEventValues as PolicyExplorerCategory[];
+}
 
 function givenAPolicyExplorerDataSet() {
     mockWebServer.addRequestHandlers([
