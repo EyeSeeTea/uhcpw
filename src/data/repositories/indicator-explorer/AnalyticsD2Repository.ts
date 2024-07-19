@@ -12,7 +12,10 @@ import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
 import { mapToWhoCountryName } from "../countries/mapToWhoCountryData";
-import { VisualizationBreakInSeries } from "../../../domain/entities/indicator-explorer/BreakInSeries";
+import {
+    getBreakInSeriesCountryDescription,
+    VisualizationBreakInSeries,
+} from "../../../domain/entities/indicator-explorer/BreakInSeries";
 import { Maybe } from "../../../types/utils";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
@@ -135,18 +138,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         return (organisationUnits || [])
             .map(orgUnit => {
-                const breakYears = visualizationBreakInSeries?.countries.get(orgUnit.id)?.years || [];
+                const description = getBreakInSeriesCountryDescription(
+                    visualizationBreakInSeries,
+                    allYearsInDataRows,
+                    orgUnit.id
+                );
 
-                const areYearsBeforABreak = allYearsInDataRows.some(year => {
-                    return breakYears.some(breakYear => year < breakYear);
-                });
-
-                if (areYearsBeforABreak && visualizationBreakInSeries?.countries.get(orgUnit.id)?.description) {
-                    return [
-                        `${mapToWhoCountryName(orgUnit.id, orgUnit.shortName || "")}: ${
-                            visualizationBreakInSeries?.countries.get(orgUnit.id)?.description
-                        }`,
-                    ];
+                if (description) {
+                    return [`${mapToWhoCountryName(orgUnit.id, orgUnit.shortName || "")}: ${description}`];
                 }
 
                 return [""];

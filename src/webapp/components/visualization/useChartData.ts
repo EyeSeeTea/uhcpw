@@ -10,6 +10,7 @@ import { ChartData, ChartDataLoaded } from "./ChartData";
 import { visualizationCustomizations } from "./customization/visualizationCustomizations";
 import { chartOptions } from "./manual/chartOptions";
 import { Country } from "../../../domain/entities/Country";
+import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -45,17 +46,14 @@ export function useChartData(
             }, []);
 
             const breakInSeriesDescriptions = countries.reduce<string[]>((descriptions, country) => {
-                const breakYears = visualization.breakInSeries?.countries.get(country.id)?.years || [];
+                const description = getBreakInSeriesCountryDescription(
+                    visualization.breakInSeries,
+                    allYearsInChart,
+                    country.id
+                );
 
-                const areYearsBeforABreak = allYearsInChart.some(year => {
-                    return breakYears.some(breakYear => year < breakYear);
-                });
-
-                if (areYearsBeforABreak && visualization.breakInSeries?.countries.get(country.id)?.description) {
-                    return [
-                        ...descriptions,
-                        `${country.name}: ${visualization.breakInSeries?.countries.get(country.id)?.description}`,
-                    ];
+                if (description) {
+                    return [...descriptions, `${country.name}: ${description}`];
                 }
 
                 return descriptions;

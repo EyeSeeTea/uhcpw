@@ -3,6 +3,7 @@ import Highcharts from "highcharts";
 import { Country } from "../../../domain/entities/Country";
 import {
     CountryBreakInSeries,
+    getBreakYearsOrNearestYearsAfterBreak,
     VisualizationBreakInSeries,
 } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 import { getCategories } from "./utils";
@@ -157,10 +158,17 @@ function getXAxisWithBreaks(
           };
 }
 
-function getCategoriesWithBreaks(xAxis: Highcharts.XAxisOptions | undefined, years: string[]): string[] | undefined {
-    return xAxis?.categories?.reduce(
+function getCategoriesWithBreaks(
+    xAxis: Highcharts.XAxisOptions | undefined,
+    breakYears: string[]
+): string[] | undefined {
+    if (!xAxis?.categories) return xAxis?.categories;
+
+    const newBreakYears = getBreakYearsOrNearestYearsAfterBreak(xAxis.categories, breakYears);
+
+    return xAxis.categories.reduce(
         (acc: string[], category, index) =>
-            years.includes(category) && index !== 0 ? [...acc, "", category] : [...acc, category],
+            newBreakYears.includes(category) && index !== 0 ? [...acc, "", category] : [...acc, category],
         []
     );
 }
@@ -245,11 +253,11 @@ function getLineSeriesWithBreaks(
             isCountrySeries
         );
 
-        const breakYearsInCategories = countryBreakInSeries?.years.filter(year => categories.includes(year));
+        if (!countryBreakInSeries?.years?.length) return serie;
 
-        if (!breakYearsInCategories?.length) return serie;
+        const newBreakYears = getBreakYearsOrNearestYearsAfterBreak(categories, countryBreakInSeries.years);
 
-        const yearsBreakIndexes = breakYearsInCategories
+        const yearsBreakIndexes = newBreakYears
             .flatMap((year: string) => categories.indexOf(year))
             .filter(index => index !== -1 && index !== 0);
 

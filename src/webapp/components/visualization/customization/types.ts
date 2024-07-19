@@ -1,5 +1,4 @@
-import { AnalyticsResponse } from "@dhis2/analytics";
-import { SeriesColumnOptions, SeriesOptionsType } from "highcharts";
+import { SeriesColumnOptions } from "highcharts";
 import { CSSProperties } from "react";
 import { Country } from "../../../../domain/entities/Country";
 

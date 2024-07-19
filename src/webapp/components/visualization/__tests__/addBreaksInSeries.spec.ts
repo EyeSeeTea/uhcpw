@@ -6,11 +6,19 @@ import chartLineOptionsJson from "./data/chartLineOptions.json";
 import chartCountriesLineOptionsJson from "./data/chartCountriesLineOptions.json";
 import chartStackedColumnABreakBeforeFirstOptionsJson from "./data/chartStackedColumnABreakBeforeFirstOptions.json";
 import chartLineOneValueBeforeBreakOptionsWithBreaksOptionsJson from "./data/chartLineOneValueBeforeBreakOptionsWithBreaksOptionsJson.json";
+import chartLineABreakLastJson from "./data/chartLineABreakLast.json";
+import chartStackedColumnABreakLastJson from "./data/chartStackedColumnABreakLast.json";
+import chartStackedColumnNotBreakInCategoriesJson from "./data/chartStackedColumnNotBreakInCategories.json";
+import chartLineNotBreakInCategoriesJson from "./data/chartLineNotBreakInCategories.json";
 import { chartStackedColumnOptionsWithBreaks } from "./data/chartStackedColumnOptionsWithBreaks";
 import { chartLineOptionsWithBreaks } from "./data/chartLineOptionsWithBreaks";
 import { chartCountriesLineOptionsWithBreaks } from "./data/chartCountriesLineOptionsWithBreaks";
 import { chartStackedColumnABreakBeforeFirstOptionsWithBreaks } from "./data/chartStackedColumnABreakBeforeFirstOptionsWithBreaks";
 import { chartLineOneValueBeforeBreakOptionsWithBreaks } from "./data/chartLineOneValueBeforeBreakOptionsWithBreaks";
+import { chartLineABreakLast } from "./data/chartLineABreakLast";
+import { chartStackedColumnABreakLast } from "./data/chartStackedColumnABreakLast";
+import { chartStackedColumnNotBreakInCategories } from "./data/chartStackedColumnNotBreakInCategories";
+import { chartLineNotBreakInCategories } from "./data/chartLineNotBreakInCategories";
 import countriesJson from "./data/countries.json";
 import countryJson from "./data/country.json";
 import {
@@ -25,7 +33,11 @@ type TestTypeValue =
     | "line"
     | "countriesLine"
     | "stackedColumnABreakBeforeFirst"
-    | "lineOneValueBeforeBreak";
+    | "lineOneValueBeforeBreak"
+    | "stackedColumnABreakLast"
+    | "lineABreakLast"
+    | "stackedColumnNotBreakInCategories"
+    | "lineNotBreakInCategories";
 
 describe("Given addBreakInSeries", () => {
     describe("When we have a stacked column chart with a break in series", () => {
@@ -86,7 +98,12 @@ describe("Given addBreakInSeries", () => {
             const visualizationBreakInSeries = givenVisualizationBreakInSeries();
             const countries = givenCountries();
 
-            const chartOptionsWithBreaks = addBreaksInSeries(chartOptions, visualizationBreakInSeries, countries, true);
+            const chartOptionsWithBreaks = addBreaksInSeries(
+                chartOptions,
+                visualizationBreakInSeries,
+                countries,
+                false
+            );
 
             const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("stackedColumnABreakBeforeFirst");
 
@@ -107,6 +124,72 @@ describe("Given addBreakInSeries", () => {
             verifyChartOptions(chartOptionsWithBreaks, expectedChartOptionsWithBreaks);
         });
     });
+
+    describe("When we have a stacked column chart with a break in series that is the last value in chart", () => {
+        it("Then should add a break before", () => {
+            const chartOptions = givenChartOptions("stackedColumnABreakLast");
+            const visualizationBreakInSeries = givenVisualizationBreakInSeries();
+            const countries = givenCountries();
+
+            const chartOptionsWithBreaks = addBreaksInSeries(
+                chartOptions,
+                visualizationBreakInSeries,
+                countries,
+                false
+            );
+
+            const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("stackedColumnABreakLast");
+
+            verifyChartOptions(chartOptionsWithBreaks, expectedChartOptionsWithBreaks);
+        });
+    });
+
+    describe("When we have a line chart with a break in series that is the last value in chart", () => {
+        it("Then should add a break before", () => {
+            const chartOptions = givenChartOptions("lineABreakLast");
+            const visualizationBreakInSeries = givenVisualizationBreakInSeries();
+            const countries = givenCountries();
+
+            const chartOptionsWithBreaks = addBreaksInSeries(chartOptions, visualizationBreakInSeries, countries, true);
+
+            const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("lineABreakLast");
+
+            verifyChartOptions(chartOptionsWithBreaks, expectedChartOptionsWithBreaks);
+        });
+    });
+
+    describe("When we have a stacked column chart with a break in series but this break is not in the categories of the chart but there is a category before and after that break", () => {
+        it("Then should add a break", () => {
+            const chartOptions = givenChartOptions("stackedColumnNotBreakInCategories");
+            const visualizationBreakInSeries = givenVisualizationBreakInSeries();
+            const countries = givenCountries();
+
+            const chartOptionsWithBreaks = addBreaksInSeries(
+                chartOptions,
+                visualizationBreakInSeries,
+                countries,
+                false
+            );
+
+            const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("stackedColumnNotBreakInCategories");
+
+            verifyChartOptions(chartOptionsWithBreaks, expectedChartOptionsWithBreaks);
+        });
+    });
+
+    describe("When we have a line chart with a break in series but this break is not in the categories of the chart but there is a category before and after that break", () => {
+        it("Then should add a break", () => {
+            const chartOptions = givenChartOptions("lineNotBreakInCategories");
+            const visualizationBreakInSeries = givenVisualizationBreakInSeries();
+            const countries = givenCountries();
+
+            const chartOptionsWithBreaks = addBreaksInSeries(chartOptions, visualizationBreakInSeries, countries, true);
+
+            const expectedChartOptionsWithBreaks = givenChartOptionsWithBreaks("lineNotBreakInCategories");
+
+            verifyChartOptions(chartOptionsWithBreaks, expectedChartOptionsWithBreaks);
+        });
+    });
 });
 
 function givenChartOptions(type: TestTypeValue): Highcharts.Options {
@@ -117,6 +200,10 @@ function givenChartOptions(type: TestTypeValue): Highcharts.Options {
         countriesLine: chartCountriesLineOptionsJson as unknown as Highcharts.Options,
         lineOneValueBeforeBreak:
             chartLineOneValueBeforeBreakOptionsWithBreaksOptionsJson as unknown as Highcharts.Options,
+        lineABreakLast: chartLineABreakLastJson as unknown as Highcharts.Options,
+        stackedColumnABreakLast: chartStackedColumnABreakLastJson as unknown as Highcharts.Options,
+        stackedColumnNotBreakInCategories: chartStackedColumnNotBreakInCategoriesJson as unknown as Highcharts.Options,
+        lineNotBreakInCategories: chartLineNotBreakInCategoriesJson as unknown as Highcharts.Options,
     } as Record<TestTypeValue, Highcharts.Options>;
 
     const chartOptions = chartOptionsTypes[type];
@@ -151,6 +238,10 @@ function givenChartOptionsWithBreaks(type: TestTypeValue): Highcharts.Options {
         line: chartLineOptionsWithBreaks,
         countriesLine: chartCountriesLineOptionsWithBreaks,
         lineOneValueBeforeBreak: chartLineOneValueBeforeBreakOptionsWithBreaks,
+        lineABreakLast: chartLineABreakLast,
+        stackedColumnABreakLast: chartStackedColumnABreakLast,
+        stackedColumnNotBreakInCategories: chartStackedColumnNotBreakInCategories,
+        lineNotBreakInCategories: chartLineNotBreakInCategories,
     } as Record<TestTypeValue, Highcharts.Options>;
 
     const chartOptions = chartOptionsTypes[type];
