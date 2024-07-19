@@ -1,8 +1,5 @@
 import _ from "lodash";
-import {
-    mapToWhoCountryCode,
-    mapToWhoCountryName,
-} from "../../../../../data/repositories/countries/mapToWhoCountryData";
+import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/mapToWhoCountryData";
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
