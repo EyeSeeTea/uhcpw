@@ -6,4 +6,5 @@ export const chart_rT39aStYqI3_Seed = {
     friendlyName: "unmet need for health care due to cost, distance and waiting time by income quintile",
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
+    hasEur27: true,
 };
