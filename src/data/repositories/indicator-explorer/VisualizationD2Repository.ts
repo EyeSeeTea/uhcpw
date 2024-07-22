@@ -25,15 +25,26 @@ export class VisualizationD2Repository implements VisualizationRepository {
         return apiToFuture(
             this.api.models.visualizations.get({
                 fields: visualizationFields,
-                filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: [Object.keys(VisualizationsSeeds).join(",")] } },
+                filter: {
+                    type: { "!eq": "PIVOT_TABLE" },
+                    id: {
+                        in: [
+                            Object.keys(VisualizationsSeeds)
+                                .map(seed => (seed.includes("_") ? seed.split("_") : seed))
+                                .flat()
+                                .join(","),
+                        ],
+                    },
+                },
             })
-        ).map(response =>
-            _.orderBy(
-                response.objects.map(object => this.buildVisualization(object)),
-                "categoryName",
-                "asc"
-            )
-        );
+        ).map(response => {
+            const ret = _(response.objects)
+                .map(object => this.buildVisualization(object))
+                .uniqBy("id")
+                .orderBy("categoryName", "asc")
+                .value();
+            return ret;
+        });
     }
 
     public getById(id: string): FutureData<Visualization> {
@@ -55,7 +66,14 @@ export class VisualizationD2Repository implements VisualizationRepository {
     private buildVisualization(d2Visualization: D2Visualization, infoNotes?: InfoNotes): Visualization {
         const notes = infoNotes ? infoNotes[d2Visualization.id] || "" : "";
 
-        const visualizationExtra = { ...(VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra), notes };
+        // Handle seeds with multiple visualizations
+        const visualizationsSeedsId =
+            Object.keys(VisualizationsSeeds).find(seeds => seeds.includes(d2Visualization.id)) || "";
+
+        const visualizationExtra = {
+            ...(VisualizationsSeeds[visualizationsSeedsId] || emptyVisualizationExtra),
+            notes,
+        };
 
         const columns = (d2Visualization.columns as VisualizationDimension[]).reduce(
             (acc: VisualizationDimension[], column: VisualizationDimension) => {
@@ -75,7 +93,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
         );
 
         return {
-            id: d2Visualization.id,
+            id: visualizationsSeedsId,
             name: d2Visualization.name,
             rows: d2Visualization.rows as VisualizationDimension[],
             columns: columns,
