@@ -39,6 +39,14 @@ export function useChartData(
                     const visualizationChartOptions = isMultipleVisualizations
                         ? chartOptionsMultiple[visualizationId]
                         : chartOptions[visualizationId];
+
+                    const chartSource = {
+                        analyticsResponse: isMultipleVisualizations ? analytics : analytics[0],
+                        visualization: isMultipleVisualizations ? visualizations : visualizations[0],
+                        countries: countriesAndRegions,
+                        currentCountry,
+                    };
+
                     setChartData({
                         kind: "Loaded",
                         visualizations, // TODO maybe handle friendly names here
@@ -47,21 +55,7 @@ export function useChartData(
                         customization: visualizationCustomizations[visualizationId],
                         countries: countriesAndRegions.filter(country => countries.includes(country.id)),
                         chartOptions: visualizationChartOptions
-                            ? isMultipleVisualizations
-                                ? // @ts-ignore
-                                  visualizationChartOptions({
-                                      analyticsResponse: analytics,
-                                      visualization: visualizations,
-                                      countries: countriesAndRegions,
-                                      currentCountry,
-                                  } as ChartSourceMultiple)
-                                : // @ts-ignore
-                                  visualizationChartOptions({
-                                      analyticsResponse: analytics[0],
-                                      visualization: visualizations[0],
-                                      countries: countriesAndRegions,
-                                      currentCountry,
-                                  } as ChartSource)
+                            ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
                             : undefined,
                     });
                 },
