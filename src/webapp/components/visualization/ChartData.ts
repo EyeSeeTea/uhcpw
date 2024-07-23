@@ -6,8 +6,8 @@ import { ChartCustomization } from "./customization/types";
 
 export type ChartDataLoaded = {
     kind: "Loaded";
-    visualization: Visualization;
-    analytics: Analytics;
+    visualizations: Visualization[];
+    analytics: Analytics[];
     legendSets: LegendSet[];
     customization?: ChartCustomization;
     chartOptions?: Highcharts.Options;

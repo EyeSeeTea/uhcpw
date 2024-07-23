@@ -8,7 +8,7 @@ import { CompositionRoot } from "../../../CompositionRoot";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { ChartData, ChartDataLoaded } from "./ChartData";
 import { visualizationCustomizations } from "./customization/visualizationCustomizations";
-import { chartOptions } from "./manual/chartOptions";
+import { chartOptions, chartOptionsMultiple, ChartSource, ChartSourceMultiple } from "./manual/chartOptions";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -32,31 +32,36 @@ export function useChartData(
 
     useEffect(() => {
         if (visualizationId) {
-            getChartData(compositionRoot, visualizationId, years, countries).run(
-                ({ visualization, analytics, legendSets }) => {
-                    const visualizationChartOptions = chartOptions[visualizationId];
-
+            const isMultipleVisualizations = visualizationId.includes("_");
+            const visualizationIds = isMultipleVisualizations ? visualizationId.split("_") : [visualizationId];
+            getChartData(compositionRoot, visualizationIds, years, countries).run(
+                ({ visualizations, analytics, legendSets }) => {
+                    const visualizationChartOptions = isMultipleVisualizations
+                        ? chartOptionsMultiple[visualizationId]
+                        : chartOptions[visualizationId];
                     setChartData({
                         kind: "Loaded",
-                        visualization: {
-                            ...visualization,
-                            friendlyName: visualization.friendlyName
-                                ? `${visualization.friendlyName
-                                      .charAt(0)
-                                      .toUpperCase()}${visualization.friendlyName.slice(1)}`
-                                : visualization.friendlyName,
-                        },
+                        visualizations, // TODO maybe handle friendly names here
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
                         countries: countriesAndRegions.filter(country => countries.includes(country.id)),
                         chartOptions: visualizationChartOptions
-                            ? visualizationChartOptions({
-                                  analyticsResponse: analytics,
-                                  visualization,
-                                  countries: countriesAndRegions,
-                                  currentCountry,
-                              })
+                            ? isMultipleVisualizations
+                                ? // @ts-ignore
+                                  visualizationChartOptions({
+                                      analyticsResponse: analytics,
+                                      visualization: visualizations,
+                                      countries: countriesAndRegions,
+                                      currentCountry,
+                                  } as ChartSourceMultiple)
+                                : // @ts-ignore
+                                  visualizationChartOptions({
+                                      analyticsResponse: analytics[0],
+                                      visualization: visualizations[0],
+                                      countries: countriesAndRegions,
+                                      currentCountry,
+                                  } as ChartSource)
                             : undefined,
                     });
                 },
@@ -105,29 +110,44 @@ export function useChartData(
 
 function getChartData(
     compositionRoot: CompositionRoot,
-    visualizationId: string,
+    visualizationIds: string[],
     years: string[],
     countries: string[]
 ): FutureData<{
-    visualization: Visualization;
-    analytics: Analytics;
+    visualizations: Visualization[];
+    analytics: Analytics[];
     legendSets: LegendSet[];
 }> {
-    return Future.joinObj({
-        visualization: compositionRoot.indicatorExplorer.getVisualization.execute(visualizationId),
-        analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
-            visualizationId,
-            years || [],
-            countries || []
-        ),
-    }).flatMap(({ visualization, analytics }) => {
-        const legendSetIds = getLegendSetIds(visualization, analytics);
-
+    // Function to fetch data for a single visualizationId
+    const fetchDataForId = (visualizationId: string) => {
         return Future.joinObj({
-            visualization: Future.success(visualization),
-            analytics: Future.success(analytics),
-            legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+            visualization: compositionRoot.indicatorExplorer.getVisualization.execute(visualizationId),
+            analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
+                visualizationId,
+                years || [],
+                countries || []
+            ),
+        }).flatMap(({ visualization, analytics }) => {
+            const legendSetIds = getLegendSetIds(visualization, analytics);
+            return Future.joinObj({
+                visualization: Future.success(visualization),
+                analytics: Future.success(analytics),
+                legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+            });
         });
+    };
+    // Fetch data for all visualization
+    return Future.parallel(visualizationIds.map(fetchDataForId)).map(results => {
+        const visualizations = results.map(result => result.visualization);
+        const analytics = results.map(result => result.analytics);
+        // Flatten the legendSets arrays from each result into a single array
+        const legendSets = results.reduce((acc, result) => [...acc, ...result.legendSets], [] as LegendSet[]);
+
+        return {
+            visualizations: visualizations,
+            analytics: analytics,
+            legendSets: legendSets,
+        };
     });
 }
 

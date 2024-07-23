@@ -41,23 +41,23 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
         const onDirectDownloadImage = useCallback(() => {
             if (chartData.kind === "Loaded" && ref.current) {
-                downloadHtmlElement(ref.current, chartData.visualization.friendlyName || "chart-image", {
+                downloadHtmlElement(ref.current, chartData.visualizations[0]?.friendlyName || "chart-image", {
                     backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
                     exclusionClasses: ["download-button", "info-button", "category"],
                 });
             }
         }, [chartData, useHeaderForCountryPage]);
 
-        return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
+        return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
             <Container
                 ref={ref}
                 $withoutBackground={withoutBackground}
                 $marginStart={!useHeaderForCountryPage && !isScreenshot}
             >
                 <VisualizationPluginHeader
-                    visualizationDialogInfo={chartData.visualization.notes || ""}
-                    chartFriendlyName={chartData.visualization.friendlyName}
-                    categoryTag={chartData.visualization.categoryTag}
+                    visualizationDialogInfo={chartData.visualizations[0]?.notes || ""}
+                    chartFriendlyName={chartData.visualizations[0]?.friendlyName}
+                    categoryTag={chartData.visualizations[0]?.categoryTag}
                     showInfo={showInfo}
                     onDownloadExcel={isScreenshot ? undefined : () => onDownloadExcel(chartData)}
                     onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}
@@ -66,12 +66,12 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     useHeaderForCountryPage={useHeaderForCountryPage}
                     currentCountry={currentCountry}
                     countries={chartData.countries}
-                    showCountryTag={chartData.visualization.showCountryTag}
+                    showCountryTag={chartData.visualizations[0]?.showCountryTag}
                     isScreenshot={isScreenshot}
                 />
                 <ChartPlugin
-                    analytics={[chartData.analytics]}
-                    visualization={chartData.visualization}
+                    analytics={chartData.analytics}
+                    visualizations={chartData.visualizations}
                     legendSets={chartData.legendSets}
                     customizedOptions={chartData.customization}
                     countries={chartData.countries}
@@ -80,7 +80,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 />
                 {!isScreenshot && <Box height={32} />}
             </Container>
-        ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
+        ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
             <Center>
                 <Typography variant="subtitle1">
                     {noDataMessage ? noDataMessage : i18n.t("There may be no data")}

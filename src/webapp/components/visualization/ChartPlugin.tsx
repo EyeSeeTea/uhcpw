@@ -13,7 +13,7 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
-    visualization: Visualization;
+    visualizations: Visualization[];
     legendSets: LegendSet[];
     customizedOptions?: ChartCustomization;
     externalchartOptions?: Highcharts.Options;
@@ -28,7 +28,7 @@ export interface ChartPluginProps {
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
     ({
         analytics,
-        visualization,
+        visualizations,
         legendSets,
         customizedOptions,
         countries,
@@ -46,7 +46,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
             const analyticsConfig = createVisualization(
                 analyticsResponse,
-                visualization,
+                visualizations[0],
                 canvasRef.current,
                 {
                     dashboard: false,
@@ -81,8 +81,8 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                   )
                 : undefined;
 
-            const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
-                ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
+            const maxYAxis = visualizations[0]?.axes.find(({ type }) => type === "RANGE")?.maxValue
+                ? { max: visualizations[0]?.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
 
             const newOptions = {
@@ -177,7 +177,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             });
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();
-        }, [analytics, countries, customizedOptions, legendSets, visualization]);
+        }, [analytics, countries, customizedOptions, legendSets, visualizations]);
 
         const renderFromExternalOptions = useCallback(() => {
             setChartOptions(externalchartOptions);
