@@ -65,6 +65,7 @@ const whoCountrycodes: Record<string, string> = {
     "BIH-4-1": "BIH",
     "BIH-4-2": "BIH-F",
     "BIH-4-3": "BIH-R",
+    GRL: "EU27",
 };
 
 const whoCountryNames: Record<Id, string> = {
