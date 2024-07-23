@@ -8,7 +8,7 @@ import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { ChartCustomization } from "./customization/types";
-import { getCategories, getSeriesChart } from "./utils";
+import { filterEmptyYearsInSeries, getCategories, getSeriesChart } from "./utils";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
 
@@ -160,15 +160,20 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 },
             };
 
+            // NOTICE: This filter is because there is a bug when calling createVisualization in a line country chart with at least two countries and the first one is empty.
+            const newOptionsFilteredEmptyYears = customizedOptions?.countrySerie
+                ? filterEmptyYearsInSeries(newOptions as Highcharts.Options)
+                : newOptions;
+
             const newOptionsWithBreaks =
                 visualization.breakInSeries && visualization.allowBreaksInSeries
                     ? addBreaksInSeries(
-                          newOptions as Highcharts.Options,
+                          newOptionsFilteredEmptyYears as Highcharts.Options,
                           visualization.breakInSeries,
                           countries,
                           !!customizedOptions?.countrySerie
                       )
-                    : newOptions;
+                    : newOptionsFilteredEmptyYears;
 
             setChartOptions({
                 ...(newOptionsWithBreaks as Highcharts.Options),
