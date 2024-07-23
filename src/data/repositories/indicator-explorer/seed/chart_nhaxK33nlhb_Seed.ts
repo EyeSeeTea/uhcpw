@@ -6,4 +6,5 @@ export const chart_nhaxK33nlhb_Seed = {
     friendlyName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
+    hasEur27: true,
 };
