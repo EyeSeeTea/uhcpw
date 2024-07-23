@@ -16,34 +16,25 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
     const [firstChartVisualization, secondChartVisualization] = chartSource.visualization;
     const filteredYears = firstChartAnalyticsResponse?.metaData.dimensions.pe || [];
 
-    const firstChartDataByDx = _(firstChartAnalyticsResponse?.rows)
-        .orderBy(row => row[1])
-        .groupBy(row => row[0])
-        .value();
-    const secondChartDataByDx = _(secondChartAnalyticsResponse?.rows)
-        .orderBy(row => row[1])
-        .groupBy(row => row[0])
-        .value();
-
+    const firstChartDataByDx = formatDxGroupsFromRows(firstChartAnalyticsResponse?.rows, filteredYears);
+    const secondChartDataByDx = formatDxGroupsFromRows(secondChartAnalyticsResponse?.rows, filteredYears);
     const series = [
         ...(firstChartAnalyticsResponse?.metaData.dimensions.dx?.reverse().map(dxId => {
-            const dataSource = firstChartDataByDx[dxId] || [];
             return {
                 id: dxId,
                 type: "column",
                 color: seriesColors[dxId],
                 name: firstChartAnalyticsResponse.metaData.items[dxId]?.name.replace("UHCW_", "") || "",
-                data: dataSource.map(row => (row[2] ? +row[2] : 0)),
+                data: firstChartDataByDx[dxId]?.map(row => (row[2] ? +row[2] : null)),
             };
         }) || []),
         ...(secondChartAnalyticsResponse?.metaData.dimensions.dx?.map(dxId => {
-            const dataSource = secondChartDataByDx[dxId] || [];
             return {
                 id: dxId,
                 type: "scatter",
                 color: seriesColors[dxId],
                 name: secondChartAnalyticsResponse.metaData.items[dxId]?.name.replace("UHCW_", "") || "",
-                data: dataSource.map(row => (row[2] ? +row[2] : 0)),
+                data: secondChartDataByDx[dxId]?.map(row => (row[2] ? +row[2] : null)),
                 yAxis: 1,
             };
         }) || []),
@@ -94,3 +85,18 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         },
     } as Highcharts.Options;
 };
+
+function formatDxGroupsFromRows(rows: string[][] | undefined, filteredYears: string[]) {
+    return _(rows)
+        .orderBy(row => row[1])
+        .groupBy(row => row[0])
+        .mapValues(rows => {
+            if (!rows || !rows[0]) {
+                return [];
+            }
+            const dxId = rows[0][0];
+
+            return filteredYears.map(year => _.find(rows, r => r.includes(year)) || [dxId, year, null]);
+        })
+        .value();
+}
