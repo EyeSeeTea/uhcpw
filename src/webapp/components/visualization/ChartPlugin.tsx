@@ -44,10 +44,10 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 response: { ...item },
                 ...item,
             }));
-
+            const visualization = visualizations[0];
             const analyticsConfig = createVisualization(
                 analyticsResponse,
-                visualizations[0],
+                visualization,
                 canvasRef.current,
                 {
                     dashboard: false,
@@ -82,8 +82,8 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                   )
                 : undefined;
 
-            const maxYAxis = visualizations[0]?.axes.find(({ type }) => type === "RANGE")?.maxValue
-                ? { max: visualizations[0]?.axes.find(({ type }) => type === "RANGE")?.maxValue }
+            const maxYAxis = visualization?.axes.find(({ type }) => type === "RANGE")?.maxValue
+                ? { max: visualization?.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
 
             const newOptions = {
@@ -166,7 +166,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 : newOptions;
 
             const newOptionsWithBreaks =
-                visualization.breakInSeries && visualization.allowBreaksInSeries
+                visualization?.breakInSeries && visualization?.allowBreaksInSeries
                     ? addBreaksInSeries(
                           newOptionsFilteredEmptyYears as Highcharts.Options,
                           visualization.breakInSeries,

@@ -78,9 +78,9 @@ export class VisualizationD2Repository implements VisualizationRepository {
             Object.keys(VisualizationsSeeds).find(seeds => seeds.includes(d2Visualization.id)) || "";
 
         const visualizationExtra = {
-            ...(VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra),
+            ...(VisualizationsSeeds[visualizationsSeedsId] || emptyVisualizationExtra),
             notes,
-            breakInSeries: breakInSeries?.getVisualization(d2Visualization.id),
+            breakInSeries: breakInSeries?.getVisualization(visualizationsSeedsId),
         };
 
         const columns = (d2Visualization.columns as VisualizationDimension[]).reduce(
