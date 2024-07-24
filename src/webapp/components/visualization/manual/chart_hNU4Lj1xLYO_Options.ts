@@ -76,7 +76,8 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
         currentCountryCode,
         "Out-of-pocket payments as a share of current spending on health (%)",
         "Households with catastrophic health spending (%)",
-        "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%"
+        "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
+        countriesWithData
     );
 };
 
