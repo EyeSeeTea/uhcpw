@@ -1,4 +1,5 @@
 import { Id, Ref } from "../Ref";
+import { VisualizationBreakInSeries } from "./BreakInSeries";
 import { Year } from "../Year";
 
 export interface VisualizationExtra {
@@ -12,6 +13,8 @@ export interface VisualizationExtra {
     isComparative?: boolean;
     hasEur27?: boolean;
     showCountryTag?: boolean;
+    breakInSeries?: VisualizationBreakInSeries;
+    allowBreaksInSeries?: boolean;
     selectedYearsByDefault?: Year[];
     allowedYears?: Year[];
 }

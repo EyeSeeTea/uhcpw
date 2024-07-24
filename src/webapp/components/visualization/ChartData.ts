@@ -12,6 +12,7 @@ export type ChartDataLoaded = {
     customization?: ChartCustomization;
     chartOptions?: Highcharts.Options;
     countries: Country[];
+    visualizationDialogInfo?: string;
 };
 
 export type ChartDataLoading = {

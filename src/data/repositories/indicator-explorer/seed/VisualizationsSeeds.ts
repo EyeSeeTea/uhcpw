@@ -68,8 +68,8 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     rT39aStYqI3: chart_rT39aStYqI3_Seed,
     nhaxK33nlhb: chart_nhaxK33nlhb_Seed,
     eibYs7QySNk: chart_eibYs7QySNk_Seed,
-    ToEa2VuZLDt: chart_ToEa2VuZLDt_Seed,
     // Health spending (health accounts)
+    ToEa2VuZLDt: chart_ToEa2VuZLDt_Seed,
     OB4SCQfCzwz: chart_OB4SCQfCzwz_Seed,
     d3kq9OCv8tH: chart_d3kq9OCv8tH_Seed,
     ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Seed,

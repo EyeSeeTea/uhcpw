@@ -5,4 +5,5 @@ export const chart_NOR4oxtMVxP_Seed = {
     showCountryTag: true,
     friendlyName: "Households at risk of impoverishment after out-of-pocket payments",
     maxCountryFilter: 1,
+    allowBreaksInSeries: true,
 };

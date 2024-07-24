@@ -65,6 +65,7 @@ const whoCountrycodes: Record<string, string> = {
     "BIH-4-1": "BIH",
     "BIH-4-2": "BIH-F",
     "BIH-4-3": "BIH-R",
+    GRL: "EU27",
 };
 
 const whoCountryNames: Record<Id, string> = {
@@ -72,6 +73,8 @@ const whoCountryNames: Record<Id, string> = {
     NEPywTBN52g: "Kosovo*",
     j44olg405lZ: "BIH (Federation of Bosnia and Herzegovina)",
     FvoXRc5cEEk: "BIH (Republika Srpska)",
+    IZy3ESdFnp5: "EU27",
+    rqaiYTAnMC6: "Bosnia and Herzegovina",
 };
 
 export function mapToWhoCountryName(countryId: Id, countryName: string): string {

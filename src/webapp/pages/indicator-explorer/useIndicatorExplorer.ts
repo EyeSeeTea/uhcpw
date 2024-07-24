@@ -53,7 +53,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 } else if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter >= 1) {
                     setGlobalMessage({
                         text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
-                            count: newsVisualization?.maxCountryFilter,
+                            count: newsVisualization.maxCountryFilter,
                         }),
                         type: "info",
                     });
@@ -285,7 +285,7 @@ function getUpdatedCountriesSelectionFilter(
     }
 
     if (newsVisualization?.isComparative && newsVisualization?.hasEur27) {
-        return countriesAndRegions.map(c => c.id);
+        return [...countriesAndRegions.map(c => c.id), EU27];
     }
 
     if (newsVisualization?.isComparative) {

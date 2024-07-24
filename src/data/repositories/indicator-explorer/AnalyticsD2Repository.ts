@@ -11,7 +11,12 @@ import { exportToCSV } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
-import { EU27 } from "../../../domain/entities/Country";
+import { mapToWhoCountryName } from "../countries/mapToWhoCountryData";
+import {
+    getBreakInSeriesCountryDescription,
+    VisualizationBreakInSeries,
+} from "../../../domain/entities/indicator-explorer/BreakInSeries";
+import { Maybe } from "../../../types/utils";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 
@@ -65,7 +70,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ),
                 orgUnits: apiToFuture(
                     this.api.models.organisationUnits.get({
-                        fields: { id: true, shortName: true },
+                        fields: {
+                            id: true,
+                            shortName: true,
+                        },
                         paging: false,
                         filter: { id: { in: orgUnitUids } },
                     })
@@ -82,8 +90,20 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     seriesIdAndName
                 );
 
+                const orgUnitsInChart = this.getOrgUnitsInChart(
+                    metadata.organisationUnits,
+                    orgUnits,
+                    analyticsResponse.metaData.dimensions
+                );
+
+                const breakInSeriesDescriptions = this.getBreakInSeriesDescription(
+                    analyticsResponse,
+                    orgUnitsInChart,
+                    visualization.breakInSeries
+                );
+
                 const tabs = [
-                    { name: "Notes", data: [[visualization.notes || ""]] },
+                    { name: "Notes", data: [[visualization.notes || ""], ...breakInSeriesDescriptions] },
                     {
                         name: "Data",
                         data: dataRows,
@@ -101,6 +121,57 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 return Future.success(undefined);
             });
         });
+    }
+
+    private getOrgUnitsInChart(
+        metadataOrganisationUnits: Maybe<{ id: string; name: string; shortName: string }[]>,
+        orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>,
+        metaDataDimensions: Analytics["metaData"]["dimensions"]
+    ): { id: string; shortName: string }[] {
+        if (metadataOrganisationUnits) {
+            return metadataOrganisationUnits;
+        }
+
+        const orgUnitIds: Maybe<Id[]> = metaDataDimensions.ou;
+        return orgUnits.objects.filter(orgUnit => orgUnitIds?.includes(orgUnit.id));
+    }
+
+    private getBreakInSeriesDescription(
+        analytics: Analytics,
+        organisationUnits: Maybe<
+            {
+                id: string;
+                shortName: string;
+            }[]
+        >,
+        visualizationBreakInSeries: Maybe<VisualizationBreakInSeries>
+    ): string[][] {
+        const yearIndexColumn = analytics.headers.findIndex(header => header.name === "pe");
+
+        const allYearsInDataRows = analytics.rows.reduce((years, row) => {
+            if (yearIndexColumn) {
+                const year = row[yearIndexColumn];
+                return year && !years.includes(year) ? [...years, year] : years;
+            }
+
+            return years;
+        }, []);
+
+        return (organisationUnits || [])
+            .map(orgUnit => {
+                const description = getBreakInSeriesCountryDescription(
+                    visualizationBreakInSeries,
+                    allYearsInDataRows,
+                    orgUnit.id
+                );
+
+                if (description) {
+                    return [`${mapToWhoCountryName(orgUnit.id, orgUnit.shortName || "")}: ${description}`];
+                }
+
+                return [""];
+            })
+            .filter(description => description[0] !== "");
     }
 
     private createDataRows(
@@ -148,7 +219,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const dataRowsWithCountryIfRequired = dataRows.map((row, index) => {
             if (addCountryColumn && index > 1) {
                 const country = orgUnits.objects[0];
-                return country ? [country.shortName, ...row] : ["", ...row];
+                const countryName = country ? mapToWhoCountryName(country.id, country.shortName || "") : "";
+                return [countryName, ...row];
             }
             return row;
         });
@@ -186,7 +258,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const orgUnit = organisationUnits?.find(orgUnit => orgUnit.id === id);
 
         if (orgUnit) {
-            return EU27 === id ? "EU27" : orgUnit?.shortName || "";
+            return mapToWhoCountryName(id, orgUnit?.shortName || "");
         } else {
             const objects = Object.values(restMetadata).flat();
 

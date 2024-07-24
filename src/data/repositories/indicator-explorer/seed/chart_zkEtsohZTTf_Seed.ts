@@ -6,4 +6,5 @@ export const chart_zkEtsohZTTf_Seed = {
     friendlyName: "unmet need for dental care due to cost, distance and waiting time",
     minCountryFilter: 1,
     hasEur27: true,
+    allowBreaksInSeries: true,
 };
