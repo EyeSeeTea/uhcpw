@@ -1,11 +1,13 @@
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
+import _ from "lodash";
+
 interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
@@ -38,15 +40,24 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         );
 
         const ref = useRef<HTMLDivElement>(null);
+        const visualization = useMemo(() => {
+            if (chartData.kind === "Loaded") {
+                const friendlyName = chartData.visualizations[0]?.friendlyName;
+                return {
+                    ...chartData.visualizations[0],
+                    friendlyName: (friendlyName && friendlyName[0]?.toUpperCase() + friendlyName.slice(1)) || "",
+                };
+            }
+        }, [chartData]);
 
         const onDirectDownloadImage = useCallback(() => {
             if (chartData.kind === "Loaded" && ref.current) {
-                downloadHtmlElement(ref.current, chartData.visualizations[0]?.friendlyName || "chart-image", {
+                downloadHtmlElement(ref.current, visualization?.friendlyName || "chart-image", {
                     backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
                     exclusionClasses: ["download-button", "info-button", "category"],
                 });
             }
-        }, [chartData, useHeaderForCountryPage]);
+        }, [chartData, useHeaderForCountryPage, visualization]);
 
         return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
             <Container
@@ -56,8 +67,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             >
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
-                    chartFriendlyName={chartData.visualizations[0]?.friendlyName}
-                    categoryTag={chartData.visualizations[0]?.categoryTag}
+                    chartFriendlyName={visualization?.friendlyName}
+                    categoryTag={visualization?.categoryTag}
                     showInfo={showInfo}
                     onDownloadExcel={isScreenshot ? undefined : () => onDownloadExcel(chartData)}
                     onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}

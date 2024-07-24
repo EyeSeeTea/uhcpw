@@ -87,15 +87,15 @@ export function useChartData(
                         currentCountry,
                     };
 
+                    const visualizationDialogInfo =
+                        visualizations[0] &&
+                        analytics[0] &&
+                        getVisualizationDialogInfo(visualizations[0], analytics[0], countriesAndRegions);
+
                     setChartData({
                         kind: "Loaded",
-                        visualizations, // TODO maybe handle friendly names here
-                        visualizationDialogInfo: getVisualizationDialogInfo(
-                            // TODO maybe handle getVisualizationDialogInfo
-                            visualizations[0]!,
-                            analytics[0]!,
-                            countriesAndRegions
-                        ),
+                        visualizations,
+                        visualizationDialogInfo,
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
