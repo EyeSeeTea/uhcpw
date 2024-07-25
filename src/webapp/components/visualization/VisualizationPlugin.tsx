@@ -40,24 +40,15 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         );
 
         const ref = useRef<HTMLDivElement>(null);
-        const visualization = useMemo(() => {
-            if (chartData.kind === "Loaded") {
-                const friendlyName = chartData.visualizations[0]?.friendlyName;
-                return {
-                    ...chartData.visualizations[0],
-                    friendlyName: (friendlyName && friendlyName[0]?.toUpperCase() + friendlyName.slice(1)) || "",
-                };
-            }
-        }, [chartData]);
 
         const onDirectDownloadImage = useCallback(() => {
             if (chartData.kind === "Loaded" && ref.current) {
-                downloadHtmlElement(ref.current, visualization?.friendlyName || "chart-image", {
+                downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
                     backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
                     exclusionClasses: ["download-button", "info-button", "category"],
                 });
             }
-        }, [chartData, useHeaderForCountryPage, visualization]);
+        }, [chartData, useHeaderForCountryPage]);
 
         return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
             <Container
@@ -67,8 +58,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             >
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
-                    chartFriendlyName={visualization?.friendlyName}
-                    categoryTag={visualization?.categoryTag}
+                    chartFriendlyName={chartData?.friendlyName}
+                    categoryTag={chartData?.categoryTag}
                     showInfo={showInfo}
                     onDownloadExcel={isScreenshot ? undefined : () => onDownloadExcel(chartData)}
                     onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}

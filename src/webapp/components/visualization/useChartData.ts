@@ -87,13 +87,20 @@ export function useChartData(
                         currentCountry,
                     };
 
+                    const visualization = visualizations[0];
+
                     const visualizationDialogInfo =
-                        visualizations[0] &&
+                        visualization &&
                         analytics[0] &&
-                        getVisualizationDialogInfo(visualizations[0], analytics[0], countriesAndRegions);
+                        getVisualizationDialogInfo(visualization, analytics[0], countriesAndRegions);
 
                     setChartData({
                         kind: "Loaded",
+                        friendlyName:
+                            (visualization?.friendlyName &&
+                                visualization.friendlyName[0]?.toUpperCase() + visualization.friendlyName.slice(1)) ||
+                            "",
+                        categoryTag: visualization?.categoryTag || "",
                         visualizations,
                         visualizationDialogInfo,
                         analytics,

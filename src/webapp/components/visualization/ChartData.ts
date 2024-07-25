@@ -6,6 +6,8 @@ import { ChartCustomization } from "./customization/types";
 
 export type ChartDataLoaded = {
     kind: "Loaded";
+    friendlyName: Visualization["friendlyName"];
+    categoryTag: Visualization["categoryTag"];
     visualizations: Visualization[];
     analytics: Analytics[];
     legendSets: LegendSet[];
