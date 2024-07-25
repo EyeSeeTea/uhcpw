@@ -1,11 +1,13 @@
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
+import _ from "lodash";
+
 interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
@@ -41,14 +43,14 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
         const onDirectDownloadImage = useCallback(() => {
             if (chartData.kind === "Loaded" && ref.current) {
-                downloadHtmlElement(ref.current, chartData.visualization.friendlyName || "chart-image", {
+                downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
                     backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
                     exclusionClasses: ["download-button", "info-button", "category"],
                 });
             }
         }, [chartData, useHeaderForCountryPage]);
 
-        return chartData.kind === "Loaded" && chartData.analytics.rows.length > 0 ? (
+        return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
             <Container
                 ref={ref}
                 $withoutBackground={withoutBackground}
@@ -56,8 +58,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             >
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
-                    chartFriendlyName={chartData.visualization.friendlyName}
-                    categoryTag={chartData.visualization.categoryTag}
+                    chartFriendlyName={chartData?.friendlyName}
+                    categoryTag={chartData?.categoryTag}
                     showInfo={showInfo}
                     onDownloadExcel={isScreenshot ? undefined : () => onDownloadExcel(chartData)}
                     onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}
@@ -66,13 +68,13 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     useHeaderForCountryPage={useHeaderForCountryPage}
                     currentCountry={currentCountry}
                     countries={chartData.countries}
-                    showCountryTag={chartData.visualization.showCountryTag}
+                    showCountryTag={chartData.visualizations[0]?.showCountryTag}
                     isScreenshot={isScreenshot}
                 />
                 <ChartPlugin
                     key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
-                    analytics={[chartData.analytics]}
-                    visualization={chartData.visualization}
+                    analytics={chartData.analytics}
+                    visualizations={chartData.visualizations}
                     legendSets={chartData.legendSets}
                     customizedOptions={chartData.customization}
                     countries={chartData.countries}
@@ -81,7 +83,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 />
                 {!isScreenshot && <Box height={32} />}
             </Container>
-        ) : chartData.kind === "Loaded" && chartData.analytics.rows.length === 0 ? (
+        ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
             <Center>
                 <Typography variant="subtitle1">
                     {noDataMessage ? noDataMessage : i18n.t("There may be no data")}

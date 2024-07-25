@@ -14,7 +14,7 @@ import { addBreaksInSeries } from "./addBreaksInSeries";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
-    visualization: Visualization;
+    visualizations: Visualization[];
     legendSets: LegendSet[];
     customizedOptions?: ChartCustomization;
     externalchartOptions?: Highcharts.Options;
@@ -29,7 +29,7 @@ export interface ChartPluginProps {
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
     ({
         analytics,
-        visualization,
+        visualizations,
         legendSets,
         customizedOptions,
         countries,
@@ -44,7 +44,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 response: { ...item },
                 ...item,
             }));
-
+            const visualization = visualizations[0];
             const analyticsConfig = createVisualization(
                 analyticsResponse,
                 visualization,
@@ -82,8 +82,8 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                   )
                 : undefined;
 
-            const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
-                ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
+            const maxYAxis = visualization?.axes.find(({ type }) => type === "RANGE")?.maxValue
+                ? { max: visualization?.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
 
             const newOptions = {
@@ -166,7 +166,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 : newOptions;
 
             const newOptionsWithBreaks =
-                visualization.breakInSeries && visualization.allowBreaksInSeries
+                visualization?.breakInSeries && visualization?.allowBreaksInSeries
                     ? addBreaksInSeries(
                           newOptionsFilteredEmptyYears as Highcharts.Options,
                           visualization.breakInSeries,
@@ -180,7 +180,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             });
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();
-        }, [analytics, countries, customizedOptions, legendSets, visualization]);
+        }, [analytics, countries, customizedOptions, legendSets, visualizations]);
 
         const renderFromExternalOptions = useCallback(() => {
             setChartOptions(externalchartOptions);

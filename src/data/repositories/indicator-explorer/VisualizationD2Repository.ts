@@ -27,15 +27,26 @@ export class VisualizationD2Repository implements VisualizationRepository {
         return apiToFuture(
             this.api.models.visualizations.get({
                 fields: visualizationFields,
-                filter: { type: { "!eq": "PIVOT_TABLE" }, id: { in: [Object.keys(VisualizationsSeeds).join(",")] } },
+                filter: {
+                    type: { "!eq": "PIVOT_TABLE" },
+                    id: {
+                        in: [
+                            Object.keys(VisualizationsSeeds)
+                                .map(seed => (seed.includes("_") ? seed.split("_") : seed))
+                                .flat()
+                                .join(","),
+                        ],
+                    },
+                },
             })
-        ).map(response =>
-            _.orderBy(
-                response.objects.map(object => this.buildVisualization(object)),
-                "categoryName",
-                "asc"
-            )
-        );
+        ).map(response => {
+            const ret = _(response.objects)
+                .map(object => this.buildVisualization(object))
+                .uniqBy("id")
+                .orderBy("categoryName", "asc")
+                .value();
+            return ret;
+        });
     }
 
     public getById(id: string): FutureData<Visualization> {
@@ -62,10 +73,14 @@ export class VisualizationD2Repository implements VisualizationRepository {
     ): Visualization {
         const notes = infoNotes ? infoNotes[d2Visualization.id] || "" : "";
 
+        // Handle seeds with multiple visualizations
+        const visualizationsSeedsId =
+            Object.keys(VisualizationsSeeds).find(seeds => seeds.includes(d2Visualization.id)) || "";
+
         const visualizationExtra = {
-            ...(VisualizationsSeeds[d2Visualization.id] || emptyVisualizationExtra),
+            ...(VisualizationsSeeds[visualizationsSeedsId] || emptyVisualizationExtra),
             notes,
-            breakInSeries: breakInSeries?.getVisualization(d2Visualization.id),
+            breakInSeries: breakInSeries?.getVisualization(visualizationsSeedsId),
         };
 
         const columns = (d2Visualization.columns as VisualizationDimension[]).reduce(
@@ -86,7 +101,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
         );
 
         return {
-            id: d2Visualization.id,
+            id: visualizationsSeedsId,
             name: d2Visualization.name,
             rows: d2Visualization.rows as VisualizationDimension[],
             columns: columns,

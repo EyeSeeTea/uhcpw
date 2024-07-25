@@ -11,10 +11,18 @@ import { chart_mcNfvQaVbfy_Options } from "./chart_mcNfvQaVbfy_Options";
 import { chart_eEKRLRR4mDk_Options } from "./chart_eEKRLRR4mDk_Options";
 import { chart_mUjcWO90CRr_Options } from "./chart_mUjcWO90CRr_Options";
 import { chart_eibYs7QySNk_Options } from "./chart_eibYs7QySNk_Options";
+import { chart_Uf4B2PFIO6f_VQyARVycY60_Options } from "./chart_Uf4B2PFIO6f_VQyARVycY60_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
+    countries: Country[];
+    currentCountry?: string;
+}
+
+export interface ChartSourceMultiple {
+    analyticsResponse: Analytics[];
+    visualization: Visualization[];
     countries: Country[];
     currentCountry?: string;
 }
@@ -30,4 +38,8 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     eEKRLRR4mDk: chartSource => chart_eEKRLRR4mDk_Options(chartSource),
     mUjcWO90CRr: chartSource => chart_mUjcWO90CRr_Options(chartSource),
     eibYs7QySNk: chartSource => chart_eibYs7QySNk_Options(chartSource),
+};
+
+export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {
+    Uf4B2PFIO6f_VQyARVycY60: chartSource => chart_Uf4B2PFIO6f_VQyARVycY60_Options(chartSource),
 };
