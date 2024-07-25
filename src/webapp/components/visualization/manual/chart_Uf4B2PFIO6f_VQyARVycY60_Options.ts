@@ -16,8 +16,18 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
     const [firstChartVisualization, secondChartVisualization] = chartSource.visualization;
     const filteredYears = firstChartAnalyticsResponse?.metaData.dimensions.pe || [];
 
-    const firstChartDataByDx = formatDxGroupsFromRows(firstChartAnalyticsResponse?.rows, filteredYears);
-    const secondChartDataByDx = formatDxGroupsFromRows(secondChartAnalyticsResponse?.rows, filteredYears);
+    const allYears = _([
+        ..._.map(firstChartAnalyticsResponse?.rows, row => row[1]),
+        ..._.map(secondChartAnalyticsResponse?.rows, row => row[1]),
+    ])
+        .uniq()
+        .filter(year => !!year && filteredYears.includes(year))
+        .compact()
+        .orderBy()
+        .value();
+
+    const firstChartDataByDx = formatDxGroupsFromRows(firstChartAnalyticsResponse?.rows, allYears);
+    const secondChartDataByDx = formatDxGroupsFromRows(secondChartAnalyticsResponse?.rows, allYears);
     const series = [
         ...(firstChartAnalyticsResponse?.metaData.dimensions.dx?.reverse().map(dxId => {
             return {
@@ -43,7 +53,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
     return {
         ...baseChartOptions,
         xAxis: {
-            categories: filteredYears,
+            categories: allYears,
         },
         yAxis: [
             {
@@ -86,7 +96,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
     } as Highcharts.Options;
 };
 
-function formatDxGroupsFromRows(rows: string[][] | undefined, filteredYears: string[]) {
+function formatDxGroupsFromRows(rows: string[][] | undefined, years: string[]) {
     return _(rows)
         .orderBy(row => row[1])
         .groupBy(row => row[0])
@@ -96,7 +106,7 @@ function formatDxGroupsFromRows(rows: string[][] | undefined, filteredYears: str
             }
             const dxId = rows[0][0];
 
-            return filteredYears.map(year => _.find(rows, r => r.includes(year)) || [dxId, year, null]);
+            return years.map(year => _.find(rows, r => r.includes(year)) || [dxId, year, null]);
         })
         .value();
 }
