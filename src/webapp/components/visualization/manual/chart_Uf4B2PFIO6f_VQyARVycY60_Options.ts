@@ -3,6 +3,12 @@ import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 
+const seriesNames: Record<string, string> = {
+    Oseqbg7Odmn: "Average household capacity to pay",
+    m6YZvOmzqhf: "Cost of meeting basic needs",
+    OeK0H8uJwLU: "Share of households living below the basic needs line (%)",
+};
+
 const seriesColors: Record<string, string> = {
     Oseqbg7Odmn: "#8fa2d4",
     m6YZvOmzqhf: "#2f5597",
@@ -34,7 +40,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                 id: dxId,
                 type: "column",
                 color: seriesColors[dxId],
-                name: firstChartAnalyticsResponse.metaData.items[dxId]?.name.replace("UHCW_", "") || "",
+                name: seriesNames[dxId],
                 data: firstChartDataByDx[dxId]?.map(row => (row[2] ? +row[2] : null)),
             };
         }) || []),
@@ -43,7 +49,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                 id: dxId,
                 type: "scatter",
                 color: seriesColors[dxId],
-                name: secondChartAnalyticsResponse.metaData.items[dxId]?.name.replace("UHCW_", "") || "",
+                name: seriesNames[dxId],
                 data: secondChartDataByDx[dxId]?.map(row => (row[2] ? +row[2] : null)),
                 yAxis: 1,
             };
@@ -72,7 +78,14 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                 opposite: true,
             },
         ],
-        legend: { ...baseLegend, symbolHeight: 10, symbolWidth: 10, symbolRadius: 0 },
+        legend: {
+            ...baseLegend,
+            symbolHeight: 10,
+            symbolWidth: 10,
+            symbolRadius: 0,
+            width: 250,
+            itemStyle: { ...baseLegend.itemStyle, whiteSpace: "normal", textOverflow: "none" },
+        },
         series,
         plotOptions: {
             column: {

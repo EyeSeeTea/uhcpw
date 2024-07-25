@@ -30,6 +30,7 @@ export type LegendCustomization = {
     layout?: "horizontal" | "proximate" | "vertical";
     reversed?: boolean;
     itemMarginTop?: number;
+    itemStyle?: CSSProperties;
 };
 
 export type TitleCustomization = {
