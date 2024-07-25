@@ -67,6 +67,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         currentCountryCode,
         xAxisLabel,
         yAxisLabel,
-        `{point.country} <br/> ${xAxisLabel}: {point.x} <br/> ${yAxisLabel}: {point.y}%`
+        `{point.country} <br/> ${xAxisLabel}: {point.x} <br/> ${yAxisLabel}: {point.y}%`,
+        countriesWithData
     );
 };

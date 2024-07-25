@@ -20,8 +20,17 @@ export const createScratterChart: (
     currentCountryCode: string,
     xAxisTitle: string,
     yAxisTitle: string,
-    pointFormat: string
-) => Highcharts.Options = (series, visualization, currentCountryCode, xAxisTitle, yAxisTitle, pointFormat) => {
+    pointFormat: string,
+    countriesWithData: SerieData[]
+) => Highcharts.Options = (
+    series,
+    visualization,
+    currentCountryCode,
+    xAxisTitle,
+    yAxisTitle,
+    pointFormat,
+    countriesWithData
+) => {
     const finalSeries = series.map(serie => {
         return {
             ...serie,
@@ -38,6 +47,10 @@ export const createScratterChart: (
 
     const maxYAxis = axeItem ? { max: axeItem.maxValue } : {};
 
+    const maxXAxis = getMaxXAxis(countriesWithData);
+
+    const tickInterval = getTickInterval(maxXAxis);
+
     return {
         ...baseChartOptions,
         chart: {
@@ -46,6 +59,8 @@ export const createScratterChart: (
         xAxis: {
             title: { text: xAxisTitle, margin: 20 },
             min: 0,
+            max: maxXAxis,
+            tickInterval: tickInterval,
         },
         yAxis: {
             title: {
@@ -117,4 +132,30 @@ function getTrendLine(data: SerieData[]): number[][] {
     ];
 
     return trendline;
+}
+
+const getMaxXAxis = (countriesWithData: SerieData[]) => {
+    const maxXValue = Math.max(...countriesWithData.map(data => data.x));
+    return Math.ceil(maxXValue / 5) * 5;
+};
+
+function getTickInterval(maxXAxis: number) {
+    switch (true) {
+        case maxXAxis <= 1:
+            return 0.2;
+        case maxXAxis <= 5:
+            return 1;
+        case maxXAxis <= 10:
+            return 2;
+        case maxXAxis <= 24:
+            return 4;
+        case maxXAxis <= 45:
+            return 5;
+        case maxXAxis <= 80:
+            return 10;
+        case maxXAxis <= 90:
+            return 15;
+        default:
+            return 20;
+    }
 }
