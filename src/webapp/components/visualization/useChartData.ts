@@ -142,7 +142,7 @@ export function useChartData(
 
             compositionRoot.indicatorExplorer.downloadAnalytics
                 .execute({
-                    visualizationId,
+                    visualizationIds: visualizationId.split("_"),
                     periods: years || [],
                     orgUnits: countries || [],
                     seriesIdAndName: seriesIdAndName,
