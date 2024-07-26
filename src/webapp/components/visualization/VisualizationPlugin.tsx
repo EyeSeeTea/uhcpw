@@ -1,12 +1,11 @@
 import { Box, CircularProgress, Typography } from "@material-ui/core";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
-import _ from "lodash";
 
 interface VisualizationPluginProps {
     visualizationId: string;
