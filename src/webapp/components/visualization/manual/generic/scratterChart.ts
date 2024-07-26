@@ -51,6 +51,8 @@ export const createScratterChart: (
 
     const tickInterval = getTickInterval(maxXAxis);
 
+    const adjustedMaxXAxis = getMaxXAxis(countriesWithData, tickInterval);
+
     return {
         ...baseChartOptions,
         chart: {
@@ -59,7 +61,7 @@ export const createScratterChart: (
         xAxis: {
             title: { text: xAxisTitle, margin: 20 },
             min: 0,
-            max: maxXAxis,
+            max: adjustedMaxXAxis,
             tickInterval: tickInterval,
         },
         yAxis: {
@@ -134,9 +136,9 @@ function getTrendLine(data: SerieData[]): number[][] {
     return trendline;
 }
 
-const getMaxXAxis = (countriesWithData: SerieData[]) => {
+const getMaxXAxis = (countriesWithData: SerieData[], tickInterval = 5) => {
     const maxXValue = Math.max(...countriesWithData.map(data => data.x));
-    return Math.ceil(maxXValue / 5) * 5;
+    return Math.ceil(maxXValue / tickInterval) * tickInterval;
 };
 
 function getTickInterval(maxXAxis: number) {
