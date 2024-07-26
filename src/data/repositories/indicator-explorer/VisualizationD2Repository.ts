@@ -71,11 +71,11 @@ export class VisualizationD2Repository implements VisualizationRepository {
         breakInSeries?: BreakInSeries,
         infoNotes?: InfoNotes
     ): Visualization {
-        const notes = infoNotes ? infoNotes[d2Visualization.id] || "" : "";
-
         // Handle seeds with multiple visualizations
         const visualizationsSeedsId =
             Object.keys(VisualizationsSeeds).find(seeds => seeds.includes(d2Visualization.id)) || "";
+
+        const notes = infoNotes ? infoNotes[visualizationsSeedsId] || "" : "";
 
         const visualizationExtra = {
             ...(VisualizationsSeeds[visualizationsSeedsId] || emptyVisualizationExtra),
