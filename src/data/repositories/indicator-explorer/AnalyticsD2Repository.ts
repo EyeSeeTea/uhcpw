@@ -17,6 +17,7 @@ import {
     VisualizationBreakInSeries,
 } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 import { Maybe } from "../../../types/utils";
+import { filterRowsByLastAvailableYear } from "./utils/filterRowsByLastAvailableYear";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 
@@ -55,7 +56,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
-        }[]
+        }[],
+        latestAvailableYear: boolean
     ): FutureData<void> {
         return this.get(visualization, periods, orgUnitUids).flatMap(analyticsResponse => {
             const metadataIds = this.extractMetadataIds(analyticsResponse);
@@ -81,10 +83,17 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             }).flatMap(({ analyticsResponse, metadata, orgUnits }) => {
                 const chartName = `${visualization.categoryName}: ${visualization.friendlyName}`;
 
+                const filteredAnalyticsResponse = latestAvailableYear
+                    ? {
+                          ...analyticsResponse,
+                          rows: filterRowsByLastAvailableYear(analyticsResponse.rows),
+                      }
+                    : analyticsResponse;
+
                 const dataRows = this.createDataRows(
                     chartName,
                     visualization,
-                    analyticsResponse,
+                    filteredAnalyticsResponse,
                     orgUnits,
                     metadata,
                     seriesIdAndName
@@ -93,11 +102,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 const orgUnitsInChart = this.getOrgUnitsInChart(
                     metadata.organisationUnits,
                     orgUnits,
-                    analyticsResponse.metaData.dimensions
+                    filteredAnalyticsResponse.metaData.dimensions
                 );
 
                 const breakInSeriesDescriptions = this.getBreakInSeriesDescription(
-                    analyticsResponse,
+                    filteredAnalyticsResponse,
                     orgUnitsInChart,
                     visualization.breakInSeries
                 );

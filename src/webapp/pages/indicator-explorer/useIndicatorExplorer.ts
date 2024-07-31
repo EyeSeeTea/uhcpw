@@ -5,7 +5,7 @@ import { GlobalMessage, IndicatorExplorerState, IndicatorOption } from "./Indica
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import i18n from "@eyeseetea/d2-ui-components/locales";
-import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { LatestAvailable, LatestCOVID19 } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Country, EU27 } from "../../../domain/entities/Country";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
@@ -91,9 +91,15 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             if (newsVisualization?.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
                 setSelectedYearFilter(newsVisualization.selectedYearsByDefault.map(year => year.id));
             } else if (!newsVisualization?.isComparative) {
-                setSelectedYearFilter(allYearsFilters.map(year => year.id));
+                const allAllowedYears = newsVisualization?.allowedYears
+                    ? allYearsFilters
+                          .map(year => year.id)
+                          .filter(id => newsVisualization?.allowedYears?.some(year => year.id === id))
+                    : allYearsFilters.map(year => year.id);
+
+                setSelectedYearFilter(allAllowedYears);
             } else if (newsVisualization?.isComparative) {
-                setSelectedYearFilter([LatestCOVID19.id]);
+                setSelectedYearFilter(newsVisualization?.allowedYears?.map(year => year.id));
             }
 
             showNonComparativeMessageIfRequired(oldVisualization, newsVisualization);
@@ -143,20 +149,29 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     }, [compositionRoot.indicatorExplorer]);
 
     useEffect(() => {
-        const categoryOfIndicatorSelectedFilter = indicatorFilters.find(
-            indicator => indicator.value === selectedIndicatorFilter
-        )?.category;
-
         const allowedYears = visualizations.find(
             visualization => visualization.id === selectedIndicatorFilter
         )?.allowedYears;
 
+        // HERE: habrá charts comparativos que serán SOLO pre2019, habrá charts que serán SOLO LAY, y habrá charts que permitan ambos
         if (allowedYears) {
-            setYearsFilters(allowedYears.map(year => ({ id: year.id, name: year.id, parents: [] })));
-        } else if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
-            setYearsFilters([
-                { id: LatestCOVID19.id, name: i18n.t("2019 or latest available year before COVID-19"), parents: [] },
-            ]);
+            setYearsFilters(
+                allowedYears.map(year =>
+                    year.id === LatestCOVID19.id
+                        ? {
+                              id: LatestCOVID19.id,
+                              name: i18n.t("2019 or latest available year before COVID-19"),
+                              parents: [],
+                          }
+                        : year.id === LatestAvailable.id
+                        ? {
+                              id: LatestAvailable.id,
+                              name: i18n.t("Latest available year"),
+                              parents: [],
+                          }
+                        : { id: year.id, name: year.id, parents: [] }
+                )
+            );
         } else {
             setYearsFilters(allYearsFilters);
         }

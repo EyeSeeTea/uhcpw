@@ -1,6 +1,6 @@
 import { Future, FutureData } from "../../entities/Future";
 import { Visualization } from "../../entities/indicator-explorer/Visualization";
-import { LatestCOVID19 } from "../../entities/Year";
+import { LatestAvailable, LatestCOVID19 } from "../../entities/Year";
 import { AnalyticsRepository } from "../../repositories/indicator-explorer/AnalyticsRepository";
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
 
@@ -27,7 +27,8 @@ export class DownloadAnalyticsUseCase {
 
                 const sortedPeriods = periods.sort();
 
-                const noOverwritePeriods = sortedPeriods[0] === LatestCOVID19.id;
+                const noOverwritePeriods =
+                    sortedPeriods[0] === LatestCOVID19.id || sortedPeriods[0] === LatestAvailable.id;
 
                 const finalPeriods = noOverwritePeriods ? [] : periods;
 
@@ -35,7 +36,8 @@ export class DownloadAnalyticsUseCase {
                     mergedVisualization,
                     finalPeriods,
                     orgUnits,
-                    seriesIdAndName
+                    seriesIdAndName,
+                    sortedPeriods[0] === LatestAvailable.id
                 );
             }
         );

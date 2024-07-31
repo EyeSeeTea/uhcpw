@@ -11,6 +11,7 @@ export interface AnalyticsRepository {
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
-        }[]
+        }[],
+        latestAvailableYear: boolean
     ): FutureData<void>;
 }
