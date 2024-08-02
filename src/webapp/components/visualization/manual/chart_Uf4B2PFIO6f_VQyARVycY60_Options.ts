@@ -67,8 +67,14 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                     text: firstChartVisualization?.axes[0]?.title.text,
                     style: { fontSize: "13px" },
                 },
+                labels: {
+                    formatter: function () {
+                        return this.value.toString();
+                    },
+                },
             },
             {
+                min: 0,
                 title: {
                     text: secondChartVisualization?.axes[0]?.title.text,
                     style: { fontSize: "13px" },
