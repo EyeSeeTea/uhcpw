@@ -1,7 +1,7 @@
 import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
-import { sortSerieDataByCategories } from "./utils/sortSerieDataByCategories";
+import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
 
 export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -65,4 +65,5 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             customCategoriesOrder.map(item => item.name)
         );
     },
+    ...chartSplitYearsAndCategories,
 };
