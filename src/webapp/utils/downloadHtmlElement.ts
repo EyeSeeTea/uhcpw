@@ -8,6 +8,8 @@ export function downloadHtmlElement(
     if (element === null) {
         return;
     }
+    // Prevent overflow and hidden scrollbar
+    element.style.overflow = "hidden";
 
     // Prevent title from wrapping
     const titleElement: HTMLDivElement | null = element.querySelector(".visualization-plugin-header");
