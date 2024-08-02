@@ -80,4 +80,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
     ],
     xAxis: { title: { text: "" } },
     sortLegendByLastDataPoint: true,
+    currencyOfCountryYAxis: (countryCurrencyCode: string) => {
+        return { title: { text: countryCurrencyCode } };
+    },
 };

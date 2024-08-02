@@ -16,6 +16,7 @@ export type Country = {
         finProtecSection: CountrySectionInfo;
     };
     isInCountryPage: boolean;
+    currencyCode: string;
 };
 
 export type CountrySectionInfo = {

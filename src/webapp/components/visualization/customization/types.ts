@@ -14,6 +14,7 @@ export type ChartCustomization = {
     xAxis?: AxisCustomization | AxisCustomization[];
     countryXAxis?: (countries: Country[], xAxis: { categories: string[] }) => AxisCustomization;
     yAxis?: AxisCustomization;
+    currencyOfCountryYAxis?: (countryCurrencyCode: string) => AxisCustomization;
     hideLegendIfNoData?: boolean;
     sortLegendByLastDataPoint?: boolean;
     chart?: ChartPropertyCustomization;
