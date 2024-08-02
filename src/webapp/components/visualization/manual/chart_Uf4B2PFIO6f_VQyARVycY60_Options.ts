@@ -74,12 +74,12 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                 },
             },
             {
+                min: 0,
                 title: {
                     text: secondChartVisualization?.axes[0]?.title.text,
                     style: { fontSize: "13px" },
                     rotation: 270,
                     x: 5,
-                    min: 0,
                 },
                 opposite: true,
             },
