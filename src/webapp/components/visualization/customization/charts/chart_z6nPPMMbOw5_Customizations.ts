@@ -1,7 +1,9 @@
 import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
+import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
 import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
+import _ from "lodash";
 
 export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -32,23 +34,17 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             },
         },
     ],
-    xAxis: {
-        title: { text: "" },
-    },
+    xAxis: [
+        {
+            lineWidth: 0,
+            title: { text: "" },
+        },
+        {
+            lineWidth: 0,
+        },
+    ],
     sortSerieData: (series, categories) => {
         if (!series) return series;
-
-        const seriesWithCategoryInData = series.map(serie => {
-            return {
-                ...serie,
-                data: (serie.data || []).map((item, index) => {
-                    return {
-                        y: item,
-                        name: categories[index],
-                    };
-                }),
-            } as unknown as SeriesColumnOptions;
-        });
 
         // TODO get name by id
         const customCategoriesOrder = [
@@ -60,7 +56,25 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             { id: "qy4W8ZY2g5M", name: "Diagnostic tests" },
         ];
 
-        return sortSerieDataByCategories(
+        // Add empty string for each categories year
+        const categoriesWithLinesOffset = _.chunk(categories, customCategoriesOrder.length).flatMap(category => {
+            return [...category, ""];
+        });
+
+        const seriesWithCategoryInData = series.map(serie => {
+            if (serie.custom?.isTwoCategoryFakeSerie) return serie;
+            return {
+                ...serie,
+                data: (serie.data || []).map((item, index) => {
+                    return {
+                        y: (item as [string | number, number | null])[1] || 0,
+                        name: categoriesWithLinesOffset[index],
+                    };
+                }),
+            } as unknown as SeriesColumnOptions;
+        });
+
+        return sortSerieDataByYearsAndCategories(
             seriesWithCategoryInData,
             customCategoriesOrder.map(item => item.name)
         );

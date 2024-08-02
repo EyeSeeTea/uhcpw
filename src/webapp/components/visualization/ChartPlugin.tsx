@@ -115,7 +115,9 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                               ...item,
                               ...customization,
                               categories:
-                                  categoriesByOrderedByValueInSerie && categoriesByOrderedByValueInSerie.length > 0
+                                  categoriesByOrderedByValueInSerie &&
+                                  categoriesByOrderedByValueInSerie.length > 0 &&
+                                  !item.opposite
                                       ? categoriesByOrderedByValueInSerie
                                       : item.categories,
                           };
