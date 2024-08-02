@@ -68,7 +68,7 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
                 ...serie,
                 data: (serie.data || []).map((item, index) => {
                     return {
-                        y: (item as [string | number, number | null])[1] || 0,
+                        y: Array.isArray(item) && item.length > 1 ? item[1] || 0 : 0,
                         name: categoriesWithLinesOffset[index],
                     };
                 }),
