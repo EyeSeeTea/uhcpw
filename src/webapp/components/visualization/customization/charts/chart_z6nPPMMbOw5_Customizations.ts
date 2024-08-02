@@ -9,7 +9,7 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     series: [
         {
             id: "S0rJgTIK3Gv",
-            name: "Out-of-pocket payments (HF .3)",
+            name: "Out-of-pocket payments",
             color: "#c00000",
             dataLabels: {
                 enabled: false,
@@ -17,7 +17,7 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
         },
         {
             id: "u8ZcWehUz9H",
-            name: "Voluntary health insurance (HF .2)",
+            name: "Voluntary health insurance",
             color: "#ffc112",
             dataLabels: {
                 enabled: false,
@@ -25,7 +25,7 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
         },
         {
             id: "OE8u72wcKty",
-            name: "Public spending on health (HF .1)",
+            name: "Public spending on health",
             color: "#00b050",
             dataLabels: {
                 enabled: false,
