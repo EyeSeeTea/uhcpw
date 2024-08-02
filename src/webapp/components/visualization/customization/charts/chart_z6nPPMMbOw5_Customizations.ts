@@ -54,10 +54,11 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             { id: "qgE5NJ9Nyaq", name: "Medicines" },
             { id: "OEK4dKvUsOe", name: "Inpatient care" },
             { id: "qy4W8ZY2g5M", name: "Diagnostic tests" },
+            { id: "", name: "" },
         ];
 
         // Add empty string for each categories year
-        const categoriesWithLinesOffset = _.chunk(categories, customCategoriesOrder.length).flatMap(category => {
+        const categoriesWithLinesOffset = _.chunk(categories, customCategoriesOrder.length - 1).flatMap(category => {
             return [...category, ""];
         });
 
