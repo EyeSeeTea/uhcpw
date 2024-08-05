@@ -59,11 +59,11 @@ export type AllSeriesCustomization = {
 
 export type AxisCustomization = {
     title?: TitleCustomization;
-    labels?: { rotation?: number };
+    labels?: { rotation?: number; style?: CSSProperties; step?: number };
     categories?: string[];
     lineWidth?: number;
 };
 
 export type ChartPropertyCustomization = {
-    events?: { load: (this: Highcharts.Chart) => void };
+    events?: { load: (this: Highcharts.Chart) => void; render: (this: Highcharts.Chart) => void };
 };

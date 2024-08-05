@@ -1,7 +1,9 @@
 import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
-import { sortSerieDataByCategories } from "./utils/sortSerieDataByCategories";
+import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
+import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
+import _ from "lodash";
 
 export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -9,7 +11,7 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     series: [
         {
             id: "S0rJgTIK3Gv",
-            name: "Out-of-pocket payments (HF .3)",
+            name: "Out-of-pocket payments",
             color: "#c00000",
             dataLabels: {
                 enabled: false,
@@ -17,7 +19,7 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
         },
         {
             id: "u8ZcWehUz9H",
-            name: "Voluntary health insurance (HF .2)",
+            name: "Voluntary health insurance",
             color: "#ffc112",
             dataLabels: {
                 enabled: false,
@@ -25,30 +27,31 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
         },
         {
             id: "OE8u72wcKty",
-            name: "Public spending on health (HF .1)",
+            name: "Public spending on health",
             color: "#00b050",
             dataLabels: {
                 enabled: false,
             },
         },
     ],
-    xAxis: {
-        title: { text: "" },
-    },
+    xAxis: [
+        {
+            lineWidth: 0,
+            title: { text: "" },
+            labels: {
+                style: {
+                    fontSize: "12px", // Change the x-axis label font size
+                },
+                rotation: -45,
+                step: 1,
+            },
+        },
+        {
+            lineWidth: 0,
+        },
+    ],
     sortSerieData: (series, categories) => {
         if (!series) return series;
-
-        const seriesWithCategoryInData = series.map(serie => {
-            return {
-                ...serie,
-                data: (serie.data || []).map((item, index) => {
-                    return {
-                        y: item,
-                        name: categories[index],
-                    };
-                }),
-            } as unknown as SeriesColumnOptions;
-        });
 
         // TODO get name by id
         const customCategoriesOrder = [
@@ -58,11 +61,31 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             { id: "qgE5NJ9Nyaq", name: "Medicines" },
             { id: "OEK4dKvUsOe", name: "Inpatient care" },
             { id: "qy4W8ZY2g5M", name: "Diagnostic tests" },
+            { id: "", name: "" },
         ];
 
-        return sortSerieDataByCategories(
+        // Add empty string for each categories year
+        const categoriesWithLinesOffset = _.chunk(categories, customCategoriesOrder.length - 1).flatMap(category => {
+            return [...category, ""];
+        });
+
+        const seriesWithCategoryInData = series.map(serie => {
+            if (serie.custom?.isTwoCategoryFakeSerie) return serie;
+            return {
+                ...serie,
+                data: (serie.data || []).map((item, index) => {
+                    return {
+                        y: Array.isArray(item) && item.length > 1 ? item[1] || 0 : 0,
+                        name: categoriesWithLinesOffset[index],
+                    };
+                }),
+            } as unknown as SeriesColumnOptions;
+        });
+
+        return sortSerieDataByYearsAndCategories(
             seriesWithCategoryInData,
             customCategoriesOrder.map(item => item.name)
         );
     },
+    ...chartSplitYearsAndCategories,
 };
