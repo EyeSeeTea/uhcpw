@@ -115,24 +115,32 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                               ...item,
                               ...customization,
                               categories:
-                                  categoriesByOrderedByValueInSerie && categoriesByOrderedByValueInSerie.length > 0
+                                  categoriesByOrderedByValueInSerie &&
+                                  categoriesByOrderedByValueInSerie.length > 0 &&
+                                  !item.opposite
                                       ? categoriesByOrderedByValueInSerie
                                       : item.categories,
                           };
                       })
                     : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis },
 
-                yAxis: customizedOptions?.yAxis
-                    ? Array.isArray(originalChartOptions.yAxis)
-                        ? originalChartOptions.yAxis.map((item, index) => {
-                              const customizedYAxis = Array.isArray(customizedOptions?.yAxis)
-                                  ? customizedOptions?.yAxis[index]
-                                  : customizedOptions?.yAxis;
+                yAxis:
+                    customizedOptions?.yAxis || customizedOptions?.currencyOfCountryYAxis
+                        ? Array.isArray(originalChartOptions.yAxis)
+                            ? originalChartOptions.yAxis.map((item, index) => {
+                                  const customizedYAxis = Array.isArray(customizedOptions?.yAxis)
+                                      ? customizedOptions?.yAxis[index]
+                                      : customizedOptions?.yAxis || {};
 
-                              return { ...item, ...customizedYAxis, ...maxYAxis };
-                          })
-                        : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
-                    : originalChartOptions.yAxis,
+                                  const currencyYAxis =
+                                      customizedOptions?.currencyOfCountryYAxis && countries[0]?.currencyCode
+                                          ? customizedOptions?.currencyOfCountryYAxis(countries[0]?.currencyCode)
+                                          : {};
+
+                                  return { ...item, ...customizedYAxis, ...maxYAxis, ...currencyYAxis };
+                              })
+                            : { ...originalChartOptions.yAxis, ...(customizedOptions?.yAxis || {}) }
+                        : originalChartOptions.yAxis,
 
                 series: orderedByValueInSerie?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie

@@ -51,6 +51,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
         return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
             <Container
+                className="VisualizationPlugin-container"
                 ref={ref}
                 $withoutBackground={withoutBackground}
                 $marginStart={!useHeaderForCountryPage && !isScreenshot}

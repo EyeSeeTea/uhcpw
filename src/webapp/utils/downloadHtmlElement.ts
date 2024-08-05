@@ -8,6 +8,16 @@ export function downloadHtmlElement(
     if (element === null) {
         return;
     }
+    // Prevent overflow and hidden scrollbar
+    element.style.overflow = "hidden";
+
+    // Prevent title from wrapping
+    const titleElement: HTMLDivElement | null = element.querySelector(".visualization-plugin-header");
+    if (titleElement !== null) {
+        titleElement.style.whiteSpace = "nowrap";
+        titleElement.style.overflow = "hidden";
+        titleElement.style.textOverflow = "ellipsis";
+    }
 
     const filter = (element: HTMLElement) => {
         return (
@@ -19,6 +29,8 @@ export function downloadHtmlElement(
     toPng(element, {
         backgroundColor: options.backgroundColor,
         filter: filter,
+        width: element.scrollWidth,
+        height: element.scrollHeight,
     }).then(dataUrl => {
         const link = document.createElement("a");
         link.download = name;
