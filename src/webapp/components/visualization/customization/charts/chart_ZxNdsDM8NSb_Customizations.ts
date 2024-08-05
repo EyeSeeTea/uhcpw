@@ -9,6 +9,13 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
     xAxis: [
         {
             lineWidth: 0,
+            labels: {
+                style: {
+                    fontSize: "12px",
+                },
+                rotation: -45,
+                step: 1,
+            },
         },
         {
             lineWidth: 0,
