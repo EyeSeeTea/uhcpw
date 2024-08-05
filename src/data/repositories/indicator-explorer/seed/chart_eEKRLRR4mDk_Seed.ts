@@ -1,4 +1,4 @@
-import { LatestCOVID19 } from "../../../../domain/entities/Year";
+import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames } from "./utils";
 
 export const chart_eEKRLRR4mDk_Seed = {
@@ -6,5 +6,6 @@ export const chart_eEKRLRR4mDk_Seed = {
     showCountryTag: true,
     friendlyName: "Public spending on health as a share of GDP and GDP per person",
     isComparative: true,
-    allowedYears: [LatestCOVID19],
+    allowedYears: [LatestAvailable],
+    hasEur27: true,
 };
