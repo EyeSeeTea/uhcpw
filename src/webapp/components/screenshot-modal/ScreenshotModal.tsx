@@ -93,7 +93,6 @@ const StyledScreenshotButton = styled(Button)`
 `;
 
 const Content = styled.div`
-    overflow: auto;
     width: calc(100% - 5px);
     height: calc(100% - 65px);
     margin-top: 2px;
@@ -107,6 +106,10 @@ const ScreenshotContainer = styled.div`
         -webkit-user-select: none;
         -ms-user-select: none;
         user-select: none;
+    }
+
+    .VisualizationPlugin-container {
+        width: calc(100% - 50px);
     }
 `;
 
