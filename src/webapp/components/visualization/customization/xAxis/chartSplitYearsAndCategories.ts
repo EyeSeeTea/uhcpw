@@ -1,5 +1,14 @@
 import { ChartCustomization } from "../types";
 
+function calculateFontSize(dataLength: number): string {
+    if (dataLength <= 20) return "12px";
+    if (dataLength <= 55) return "10px";
+    if (dataLength <= 100) return "8px";
+    return "6px"; // Fallback for larger datasets
+}
+
+let currentFontSize: string | undefined;
+
 export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
     chart: {
         events: {
@@ -32,6 +41,31 @@ export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
 
                 if (yAxisLastValueTick !== undefined && yAxis?.ticks[yAxisLastValueTick]?.gridLine) {
                     yAxis?.ticks[yAxisLastValueTick]?.gridLine?.hide();
+                }
+            },
+            render: function () {
+                const xAxis = this.xAxis[0];
+                const series = this.series[0];
+                if (series && series.data && xAxis) {
+                    const dataLength = series.data.length;
+                    const fontSize = calculateFontSize(dataLength);
+                    // Update x-axis labels font size
+                    if (currentFontSize !== fontSize) {
+                        currentFontSize = fontSize; // Update the tracked font size
+
+                        // Update x-axis labels font size only if it needs to be changed
+                        xAxis.update(
+                            {
+                                labels: {
+                                    style: {
+                                        fontSize: fontSize,
+                                    },
+                                },
+                            },
+                            false
+                        ); // 'false' to not trigger an immediate redraw
+                        this.redraw(); // Call redraw explicitly after update
+                    }
                 }
             },
         },

@@ -38,6 +38,13 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
         {
             lineWidth: 0,
             title: { text: "" },
+            labels: {
+                style: {
+                    fontSize: "12px", // Change the x-axis label font size
+                },
+                rotation: -45,
+                step: 1,
+            },
         },
         {
             lineWidth: 0,
