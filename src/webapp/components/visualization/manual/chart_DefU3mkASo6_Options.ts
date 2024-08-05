@@ -1,6 +1,6 @@
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
-import { filterRowsByLastAvailableYear } from "../../../../data/repositories/indicator-explorer/utils/filterRowsByLastAvailableYear";
+import { filterRowsByLastAvailableYear } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 
 const seriesNames: Record<string, string> = {
     imkocvILz0h: "Not at risk of impoverishment",

@@ -13,6 +13,7 @@ import { chart_mUjcWO90CRr_Options } from "./chart_mUjcWO90CRr_Options";
 import { chart_eibYs7QySNk_Options } from "./chart_eibYs7QySNk_Options";
 import { chart_Uf4B2PFIO6f_VQyARVycY60_Options } from "./chart_Uf4B2PFIO6f_VQyARVycY60_Options";
 import { chart_DefU3mkASo6_Options } from "./chart_DefU3mkASo6_Options";
+import { chart_EtHaEt6bnm5_nlYSkEMZxgN_Options } from "./chart_EtHaEt6bnm5_nlYSkEMZxgN_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -44,4 +45,5 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {
     Uf4B2PFIO6f_VQyARVycY60: chartSource => chart_Uf4B2PFIO6f_VQyARVycY60_Options(chartSource),
+    EtHaEt6bnm5_nlYSkEMZxgN: chartSource => chart_EtHaEt6bnm5_nlYSkEMZxgN_Options(chartSource),
 };
