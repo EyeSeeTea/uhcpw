@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, SerieData } from "./generic/scratterChart";
+import { createScratterChart, pos, SerieData } from "./generic/scratterChart";
 import { NamedRef } from "../../../../domain/entities/Ref";
 
 const REST_ID = "REST_ID";
@@ -61,6 +61,36 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         .filter(axis => axis.type === "RANGE")
         .map(axis => axis.title.text);
 
+    const countryPositionsAdjustment = {
+        AUT: pos.top,
+        ROM: pos.bottomLeft,
+        BEL: pos.topRight,
+        MAT: pos.top,
+        SWI: pos.bottomLeft,
+        CZH: pos.bottomLeft,
+        "BIH-R": pos.topLeft,
+        CYP: pos.bottom,
+        ICE: pos.topRight,
+        MKD: pos.topLeft,
+        UZB: pos.bottomLeft,
+        UNK: pos.topRight,
+        FRA: pos.topLeft,
+        MDA: pos.topLeft,
+        DEN: pos.bottomLeft,
+        ISR: pos.bottomLeft,
+        HUN: pos.bottomLeft,
+        POL: pos.topLeft,
+        LTU: pos.topLeft,
+        SWE: pos.top,
+        SPA: pos.right,
+        GEO: pos.topLeft,
+        SMR: pos.topLeft,
+        MNE: pos.right,
+        ITA: pos.right,
+        LVA: pos.bottomRight,
+        BIH: pos.topLeft,
+        NET: pos.bottomLeft,
+    };
     return createScratterChart(
         series,
         chartSource.visualization,
@@ -69,6 +99,6 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         yAxisLabel,
         `{point.country} <br/> ${xAxisLabel}: {point.x} <br/> ${yAxisLabel}: {point.y}%`,
         countriesWithData,
-        {}
+        countryPositionsAdjustment
     );
 };
