@@ -61,6 +61,8 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         : undefined;
     const currencyCode = _.find(chartSource.countries, { id: countryId })?.currencyCode || "€";
 
+    const maxScatterValue = _.max(_(series).find(s => s.type === "scatter")?.data || []) || 0;
+
     return {
         ...baseChartOptions,
         xAxis: {
@@ -86,6 +88,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                     rotation: 270,
                     x: 5,
                 },
+                allowDecimals: maxScatterValue <= 1,
                 opposite: true,
             },
         ],
