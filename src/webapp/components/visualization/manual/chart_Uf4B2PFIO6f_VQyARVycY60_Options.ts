@@ -56,6 +56,11 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         }) || []),
     ];
 
+    const countryId = firstChartAnalyticsResponse?.metaData.dimensions.ou?.length
+        ? firstChartAnalyticsResponse?.metaData.dimensions.ou[0]
+        : undefined;
+    const currencyCode = _.find(chartSource.countries, { id: countryId })?.currencyCode || "€";
+
     return {
         ...baseChartOptions,
         xAxis: {
@@ -64,7 +69,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         yAxis: [
             {
                 title: {
-                    text: firstChartVisualization?.axes[0]?.title.text,
+                    text: firstChartVisualization?.axes[0]?.title.text.replace("€", currencyCode),
                     style: { fontSize: "13px" },
                 },
                 labels: {
