@@ -19,7 +19,7 @@ export const getLastAvailableYearByCountry = (rows: Array<string[]>): Record<str
     }, {});
 };
 
-const filterRowsByYearInCountry = (
+export const filterRowsByYearInCountry = (
     rows: Array<string[]>,
     yearsByCountryId: Record<string, string>
 ): Array<string[]> => {

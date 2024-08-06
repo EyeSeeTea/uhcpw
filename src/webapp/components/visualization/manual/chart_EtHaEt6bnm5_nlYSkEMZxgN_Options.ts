@@ -57,6 +57,7 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         const serieChartRows = allRowsFilteredByLAY.filter(row => row[0] === serieId);
 
         return {
+            id: serieId,
             name: seriesNames[serieId],
             color: seriesColors[serieId],
             type: "scatter",
