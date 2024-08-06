@@ -140,7 +140,7 @@ export const pos = {
     topLeft: { x: -1, y: -9 },
     bottomRight: { x: 29, y: 9 },
     bottomLeft: { x: -1, y: 9 },
-    right: { x: 30, y: 0 },
+    right: { x: 37, y: 0 },
     left: { x: -2, y: 0 },
 };
 
