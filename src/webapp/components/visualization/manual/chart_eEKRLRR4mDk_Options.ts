@@ -65,6 +65,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         "GDP per person in current purchasing power parities",
         "Public spending on health as a share of GDP (%)",
         "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
-        countriesWithData
+        countriesWithData,
+        {}
     );
 };

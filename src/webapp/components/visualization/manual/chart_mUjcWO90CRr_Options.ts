@@ -68,6 +68,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         xAxisLabel,
         yAxisLabel,
         `{point.country} <br/> ${xAxisLabel}: {point.x} <br/> ${yAxisLabel}: {point.y}%`,
-        countriesWithData
+        countriesWithData,
+        {}
     );
 };
