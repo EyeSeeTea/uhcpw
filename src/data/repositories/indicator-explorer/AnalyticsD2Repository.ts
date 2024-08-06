@@ -126,40 +126,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
                 const headerRow = dataRowsMerged[0] || [];
                 const dataRowsWithoutHeader = dataRowsMerged.slice(1);
-                const countryIndexInHeader = headerRow.findIndex(header => header === "Country");
-                const yearIndexInHeader = headerRow.findIndex(header => header === "Year");
 
-                const sortDataRowsWithoutHeaderByYear =
-                    yearIndexInHeader && isMultipleVisualizations
-                        ? dataRowsWithoutHeader.sort((rowA, rowB) => {
-                              const yearA = rowA[yearIndexInHeader] ? rowA[yearIndexInHeader]?.toLowerCase() : "";
-                              const yearB = rowB[yearIndexInHeader] ? rowB[yearIndexInHeader]?.toLowerCase() : "";
-
-                              if (yearA && yearB) {
-                                  return yearA < yearB ? -1 : 1;
-                              } else {
-                                  return 0;
-                              }
-                          })
-                        : dataRowsWithoutHeader;
-
-                const sortDataRowsWithoutHeaderByCountryAndYear =
-                    countryIndexInHeader && isMultipleVisualizations
-                        ? sortDataRowsWithoutHeaderByYear.sort((rowA, rowB) => {
-                              const countryA = rowA[countryIndexInHeader]
-                                  ? rowA[countryIndexInHeader]?.toLowerCase()
-                                  : "";
-                              const countryB = rowB[countryIndexInHeader]
-                                  ? rowB[countryIndexInHeader]?.toLowerCase()
-                                  : "";
-
-                              if (countryA && countryB) {
-                                  return countryA < countryB ? -1 : 1;
-                              } else {
-                                  return 0;
-                              }
-                          })
-                        : sortDataRowsWithoutHeaderByYear;
+                const sortedDataRowsWithoutHeader = isMultipleVisualizations
+                    ? this.sortDataRows(headerRow, dataRowsWithoutHeader)
+                    : dataRowsWithoutHeader;
 
                 // TODO: review if this works for multiple visualizations merged
                 const allBreakInSeriesDescriptions = dataRowsAndBreakInSeriesDescriptions.reduce(
@@ -175,11 +145,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     { name: "Notes", data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions] },
                     {
                         name: "Data",
-                        data: [
-                            [chartName || mergedVisualization.name],
-                            headerRow,
-                            ...sortDataRowsWithoutHeaderByCountryAndYear,
-                        ],
+                        data: [[chartName || mergedVisualization.name], headerRow, ...sortedDataRowsWithoutHeader],
                     },
                 ];
 
@@ -194,6 +160,37 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 return Future.success(undefined);
             });
         });
+    }
+
+    private sortDataRows(headerRow: string[], dataRowsWithoutHeader: string[][]): string[][] {
+        const countryIndexInHeader = headerRow.findIndex(header => header === "Country");
+        const yearIndexInHeader = headerRow.findIndex(header => header === "Year");
+
+        const sortDataRowsWithoutHeaderByYear = yearIndexInHeader
+            ? dataRowsWithoutHeader.sort((rowA, rowB) => {
+                  const yearA = rowA[yearIndexInHeader] ? rowA[yearIndexInHeader]?.toLowerCase() : "";
+                  const yearB = rowB[yearIndexInHeader] ? rowB[yearIndexInHeader]?.toLowerCase() : "";
+
+                  if (yearA && yearB) {
+                      return yearA < yearB ? -1 : 1;
+                  } else {
+                      return 0;
+                  }
+              })
+            : dataRowsWithoutHeader;
+
+        return countryIndexInHeader
+            ? sortDataRowsWithoutHeaderByYear.sort((rowA, rowB) => {
+                  const countryA = rowA[countryIndexInHeader] ? rowA[countryIndexInHeader]?.toLowerCase() : "";
+                  const countryB = rowB[countryIndexInHeader] ? rowB[countryIndexInHeader]?.toLowerCase() : "";
+
+                  if (countryA && countryB) {
+                      return countryA < countryB ? -1 : 1;
+                  } else {
+                      return 0;
+                  }
+              })
+            : sortDataRowsWithoutHeaderByYear;
     }
 
     private mergeVisualizations(visualizations: Visualization[]): Visualization {
