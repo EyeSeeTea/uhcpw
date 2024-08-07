@@ -6,6 +6,7 @@ import { useAppContext } from "../../contexts/app-context";
 import { Country } from "../../../domain/entities/Country";
 import { Person } from "../../../domain/entities/Person";
 import { OfficeInfo } from "../../../domain/entities/about/OfficeInfo";
+import { KOSOVO } from "../../../data/repositories/countries/CountryD2Repository";
 
 export function useAbout(): ResourcesState {
     const { compositionRoot, countries } = useAppContext();
@@ -35,7 +36,12 @@ export function useAbout(): ResourcesState {
             persons => {
                 const experts = persons.map(person => mapPersonToExpertState(person, countries));
 
-                const orderedExperts = _(experts).orderBy(["countryName", "firstName"], ["asc", "asc"]).value();
+                const orderedExperts = _(experts)
+                    .orderBy(
+                        [expert => (expert.countryId === KOSOVO ? 1 : 0), "countryName", "firstName"], // Custom sort for Kosovo to be last
+                        ["asc", "asc", "asc"]
+                    )
+                    .value();
 
                 setExperts(orderedExperts);
             },

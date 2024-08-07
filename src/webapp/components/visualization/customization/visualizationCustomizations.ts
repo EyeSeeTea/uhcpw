@@ -13,6 +13,16 @@ import { chart_jFtGKQIQTGp_Customizations } from "./charts/chart_jFtGKQIQTGp_Cus
 import { chart_Y31jQX5PVdI_Customizations } from "./charts/chart_Y31jQX5PVdI_Customizations";
 import { ChartCustomization } from "./types";
 import { chart_pWFRTFfh5mA_Customizations } from "./charts/chart_pWFRTFfh5mA_Customizations";
+import { chart_uRZCilOIr1C_Customizations } from "./charts/chart_uRZCilOIr1C_Customizations";
+import { chart_qipBCG0Hc9Y_Customizations } from "./charts/chart_qipBCG0Hc9Y_Customizations";
+import { chart_xKmSHeJ1GXq_Customizations } from "./charts/chart_xKmSHeJ1GXq_Customizations";
+import { chart_fY7K8ATEDgQ_Customizations } from "./charts/chart_fY7K8ATEDgQ_Customizations";
+import { chart_z6nPPMMbOw5_Customizations } from "./charts/chart_z6nPPMMbOw5_Customizations";
+import { chart_TzWcDtEOTPX_Customizations } from "./charts/chart_TzWcDtEOTPX_Customizations";
+import { chart_sjgCABd3zK7_Customizations } from "./charts/chart_sjgCABd3zK7_Customizations";
+import { chart_NOR4oxtMVxP_Customizations } from "./charts/chart_NOR4oxtMVxP_Customizations";
+import { chart_cGE32OzPgMS_Customizations } from "./charts/chart_cGE32OzPgMS_Customizations";
+import { chart_ToEa2VuZLDt_Customizations } from "./charts/chart_ToEa2VuZLDt_Customizations";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Customizations,
@@ -29,4 +39,14 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Customizations,
     BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Customizations,
     pWFRTFfh5mA: chart_pWFRTFfh5mA_Customizations,
+    uRZCilOIr1C: chart_uRZCilOIr1C_Customizations,
+    qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Customizations,
+    xKmSHeJ1GXq: chart_xKmSHeJ1GXq_Customizations,
+    fY7K8ATEDgQ: chart_fY7K8ATEDgQ_Customizations,
+    z6nPPMMbOw5: chart_z6nPPMMbOw5_Customizations,
+    TzWcDtEOTPX: chart_TzWcDtEOTPX_Customizations,
+    sjgCABd3zK7: chart_sjgCABd3zK7_Customizations,
+    NOR4oxtMVxP: chart_NOR4oxtMVxP_Customizations,
+    cGE32OzPgMS: chart_cGE32OzPgMS_Customizations,
+    ToEa2VuZLDt: chart_ToEa2VuZLDt_Customizations,
 };

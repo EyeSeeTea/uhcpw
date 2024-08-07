@@ -5,21 +5,13 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-06-27T12:16:10.347Z\n"
-"PO-Revision-Date: 2024-06-27T12:16:10.347Z\n"
+"POT-Creation-Date: 2024-07-18T09:33:12.459Z\n"
+"PO-Revision-Date: 2024-07-18T09:33:12.459Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
 
 msgid "All countries and areas"
-msgstr ""
-
-msgid "The Financial Protection Expert Network"
-msgstr ""
-
-msgid ""
-"Experts working with the WHO Barcelona Office to assess financial "
-"protection at country or area level"
 msgstr ""
 
 msgid "Select country or area"
@@ -178,6 +170,9 @@ msgstr ""
 msgid "Search"
 msgstr ""
 
+msgid "Download"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
@@ -186,11 +181,18 @@ msgstr[1] ""
 msgid "There may be no data"
 msgstr ""
 
-msgid "Download"
-msgstr ""
-
 msgid "All years"
 msgstr ""
+
+msgid "You can only select one country at a time with this indicator"
+msgid_plural "You can only select one country at a time with this indicator"
+msgstr[0] ""
+msgstr[1] ""
+
+msgid "You can only select {{count}} countries at a time with this indicator"
+msgid_plural "You can only select {{count}} countries at a time with this indicator"
+msgstr[0] ""
+msgstr[1] ""
 
 msgid "2019 or latest available year before COVID-19"
 msgstr ""
@@ -242,4 +244,7 @@ msgid "Latest avalaible year"
 msgstr ""
 
 msgid "Country analysis"
+msgstr ""
+
+msgid "Search all publications"
 msgstr ""

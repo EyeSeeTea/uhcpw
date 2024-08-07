@@ -1,5 +1,5 @@
-import { createVisualization } from "@dhis2/analytics";
-import Highcharts from "highcharts";
+import { AnalyticsResponse, createVisualization } from "@dhis2/analytics";
+import Highcharts, { PointOptionsObject, SeriesColumnOptions } from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 import React, { useRef, useCallback, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
@@ -8,12 +8,13 @@ import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { ChartCustomization } from "./customization/types";
-import { getSeriesChart } from "./utils";
+import { filterEmptyYearsInSeries, getCategories, getSeriesChart } from "./utils";
 import { colors } from "../../pages/app/themes/dhis2.theme";
+import { addBreaksInSeries } from "./addBreaksInSeries";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
-    visualization: Visualization;
+    visualizations: Visualization[];
     legendSets: LegendSet[];
     customizedOptions?: ChartCustomization;
     externalchartOptions?: Highcharts.Options;
@@ -28,7 +29,7 @@ export interface ChartPluginProps {
 export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
     ({
         analytics,
-        visualization,
+        visualizations,
         legendSets,
         customizedOptions,
         countries,
@@ -39,11 +40,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
 
         const renderWithAnaliticsAndCustomizations = useCallback(() => {
-            const analyticsResponse = analytics.map(item => ({
+            const analyticsResponse: AnalyticsResponse[] = analytics.map(item => ({
                 response: { ...item },
                 ...item,
             }));
-
+            const visualization = visualizations[0];
             const analyticsConfig = createVisualization(
                 analyticsResponse,
                 visualization,
@@ -68,8 +69,21 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 customizedOptions?.hideLegendIfNoData
             );
 
-            const maxYAxis = visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
-                ? { max: visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
+            const orderedByValueInSerie = customizedOptions?.sortSerieData
+                ? customizedOptions?.sortSerieData(
+                      series as SeriesColumnOptions[],
+                      getCategories(originalChartOptions.xAxis)
+                  )
+                : series;
+
+            const categoriesByOrderedByValueInSerie = customizedOptions?.sortSerieData
+                ? (orderedByValueInSerie as SeriesColumnOptions[])[0]?.data?.map(
+                      item => (item as PointOptionsObject).name || ""
+                  )
+                : undefined;
+
+            const maxYAxis = visualization?.axes.find(({ type }) => type === "RANGE")?.maxValue
+                ? { max: visualization?.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
 
             const newOptions = {
@@ -97,23 +111,38 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
                           const customization = countryXAxisCustomization || customizedXAxis;
 
-                          return { ...item, ...customization };
+                          return {
+                              ...item,
+                              ...customization,
+                              categories:
+                                  categoriesByOrderedByValueInSerie &&
+                                  categoriesByOrderedByValueInSerie.length > 0 &&
+                                  !item.opposite
+                                      ? categoriesByOrderedByValueInSerie
+                                      : item.categories,
+                          };
                       })
                     : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis },
 
-                yAxis: customizedOptions?.yAxis
-                    ? Array.isArray(originalChartOptions.yAxis)
-                        ? originalChartOptions.yAxis.map((item, index) => {
-                              const customizedYAxis = Array.isArray(customizedOptions?.yAxis)
-                                  ? customizedOptions?.yAxis[index]
-                                  : customizedOptions?.yAxis;
+                yAxis:
+                    customizedOptions?.yAxis || customizedOptions?.currencyOfCountryYAxis
+                        ? Array.isArray(originalChartOptions.yAxis)
+                            ? originalChartOptions.yAxis.map((item, index) => {
+                                  const customizedYAxis = Array.isArray(customizedOptions?.yAxis)
+                                      ? customizedOptions?.yAxis[index]
+                                      : customizedOptions?.yAxis || {};
 
-                              return { ...item, ...customizedYAxis, ...maxYAxis };
-                          })
-                        : { ...originalChartOptions.yAxis, ...customizedOptions?.yAxis }
-                    : originalChartOptions.yAxis,
+                                  const currencyYAxis =
+                                      customizedOptions?.currencyOfCountryYAxis && countries[0]?.currencyCode
+                                          ? customizedOptions?.currencyOfCountryYAxis(countries[0]?.currencyCode)
+                                          : {};
 
-                series: series?.map(serie => {
+                                  return { ...item, ...customizedYAxis, ...maxYAxis, ...currencyYAxis };
+                              })
+                            : { ...originalChartOptions.yAxis, ...(customizedOptions?.yAxis || {}) }
+                        : originalChartOptions.yAxis,
+
+                series: orderedByValueInSerie?.map(serie => {
                     const countrySerieCustomization = customizedOptions?.countrySerie
                         ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })
                         : undefined;
@@ -139,25 +168,27 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 },
             };
 
-            // analyticsConfig.visualization.update({
-            //     legend: {
-            //         enabled: true,
-            //         align: "right",
-            //         verticalAlign: "middle",
-            //         layout: "vertical",
-            //     },
-            //     series: newOptions.series?.map(serie => ({ ...serie, color: "lightblue" })),
-            // });
+            // NOTICE: This filter is because there is a bug when calling createVisualization in a line country chart with at least two countries and the first one is empty.
+            const newOptionsFilteredEmptyYears = customizedOptions?.countrySerie
+                ? filterEmptyYearsInSeries(newOptions as Highcharts.Options)
+                : newOptions;
 
-            // Render a new chart according to modified options and remove chart generated by analytics
-            // to avoid render chart first with original colors in dhis2
+            const newOptionsWithBreaks =
+                visualization?.breakInSeries && visualization?.allowBreaksInSeries
+                    ? addBreaksInSeries(
+                          newOptionsFilteredEmptyYears as Highcharts.Options,
+                          visualization.breakInSeries,
+                          countries,
+                          !!customizedOptions?.countrySerie
+                      )
+                    : newOptionsFilteredEmptyYears;
 
             setChartOptions({
-                ...(newOptions as Highcharts.Options),
+                ...(newOptionsWithBreaks as Highcharts.Options),
             });
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();
-        }, [analytics, countries, customizedOptions, legendSets, visualization]);
+        }, [analytics, countries, customizedOptions, legendSets, visualizations]);
 
         const renderFromExternalOptions = useCallback(() => {
             setChartOptions(externalchartOptions);

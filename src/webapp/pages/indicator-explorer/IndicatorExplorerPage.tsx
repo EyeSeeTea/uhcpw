@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 
@@ -11,10 +11,12 @@ import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
+import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGet, showVisualization, globalMessage, pageContent, errorMessage } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
     const snackbar = useSnackbar();
+    const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -22,17 +24,24 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         if (globalMessage?.type === "error") {
             snackbar.error(globalMessage.text);
         } else if (globalMessage?.type === "info") {
-            snackbar.info(globalMessage.text);
+            snackbar.info(globalMessage.text, { autoHideDuration: 5000 });
         } else {
             snackbar.success(globalMessage?.text);
         }
     }, [globalMessage, snackbar]);
 
-    useEffect(() => {
-        if (errorMessage) {
-            snackbar.error(i18n.t(errorMessage));
-        }
-    }, [errorMessage, snackbar]);
+    const handleOpenScreenshot = React.useCallback(() => {
+        setOpenScreenshot(true);
+    }, []);
+
+    const handleCloseScreenshot = React.useCallback(() => {
+        setOpenScreenshot(false);
+    }, []);
+
+    const chartName = useMemo(
+        () => filters.indicators.options.find(o => o.value === filters.indicators.selected)?.text || "",
+        [filters.indicators.options, filters.indicators.selected]
+    );
 
     return (
         <Layout>
@@ -50,10 +59,27 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         years={filters.year.selected || []}
                         countries={filters.country.selected || []}
                         noDataMessage={pageContent?.noDataMessage}
+                        onDownloadImage={handleOpenScreenshot}
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
                 )}
+
+                <ScreenshotModal
+                    open={openScreenshot}
+                    onClose={handleCloseScreenshot}
+                    title={chartName}
+                    backgroundColor={"#f1f9fc"}
+                >
+                    <VisualizationPlugin
+                        visualizationId={filters.indicators.selected || ""}
+                        years={filters.year.selected || []}
+                        countries={filters.country.selected || []}
+                        noDataMessage={pageContent?.noDataMessage}
+                        isScreenshot={true}
+                        withoutBackground
+                    />
+                </ScreenshotModal>
             </MainSection>
         </Layout>
     );

@@ -5,6 +5,7 @@ import { SlideGraph } from "./SlideGraph";
 import i18n from "../../../../locales";
 import { useCountrySlider } from "../../../pages/country/useCountrySlider";
 import { SlideInfo } from "./SlideInfo";
+import styled from "styled-components";
 
 function TabPanel(props: { [x: string]: any; children: any; value: any; index: any }) {
     const { children, value, index, ...other } = props;
@@ -81,6 +82,7 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: `${colors.accentPrimary}`,
             minHeight: "60px",
             padding: "15px 25px",
+            paddingInlineStart: "64px",
             "& span": {
                 display: "inline",
                 textAlign: "start",
@@ -139,19 +141,13 @@ export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleRes
 
     return (
         <Grid container aria-label="country-page-slider">
-            <Grid item md={5} lg={4} xs={1} className={classes.gridItem}>
+            <Grid item xs={1} md={5} lg={4} className={classes.gridItem}>
                 <Tabs
                     orientation="vertical"
                     value={tabValue}
                     onChange={handleTabChange}
                     className={classes.tabs}
                     classes={{ indicator: classes.indicator }}
-                    // TabIndicatorProps={{
-                    //     style: {
-                    //         backgroundColor: colors.accentPrimaryDark,
-                    //         width: "10px",
-                    //     },
-                    // }}
                     onWheel={onWheel}
                     onMouseEnter={disableScroll}
                     onMouseLeave={enableScroll}
@@ -168,7 +164,7 @@ export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleRes
                     ))}
                 </Tabs>
             </Grid>
-            <Grid item xs={11} md={7} lg={8}>
+            <RightPanelGrid item xs={11} md={7} lg={8}>
                 {sliderGraphsConfig.map(config => (
                     <TabPanel key={`sliderGraphsConfig_${config.tab}`} value={tabValue} index={config.tab}>
                         <SlideGraph
@@ -190,7 +186,13 @@ export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleRes
                         </TabPanel>
                     ) : null
                 )}
-            </Grid>
+            </RightPanelGrid>
         </Grid>
     );
 };
+
+const RightPanelGrid = styled(Grid)`
+    .MuiBox-root {
+        padding: 0;
+    }
+`;

@@ -5,4 +5,5 @@ export const chart_hpO1ZyFXpCz_Seed = {
     showCountryTag: true,
     friendlyName: "breakdown of catastrophic health spending by type of care",
     maxCountryFilter: 1,
+    allowBreaksInSeries: true,
 };

@@ -24,8 +24,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         options: countryOptions,
     } = useMultiCountryOptionsV2({ showEurRegion: true, showSubRegions: true });
 
-    const [errorMessage, setErrorMessage] = useState<string>("");
-
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
     const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
     const [pageContent, setPageContent] = useState<IndicatorExplorerContent | undefined>(undefined);
@@ -41,6 +39,29 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const [disabledCountries, setDisabledCountries] = useState<string[]>([]);
     const [maxCountrySelection, setMaxCountrySelection] = useState<number | undefined>(undefined);
+
+    const showNonComparativeMessageIfRequired = useCallback(
+        (oldVisualization: Visualization | undefined, newsVisualization: Visualization | undefined) => {
+            if (oldVisualization?.isComparative && !newsVisualization?.isComparative) {
+                if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter === 1) {
+                    setGlobalMessage({
+                        text: i18n.t(`You can only select one country at a time with this indicator`, {
+                            count: newsVisualization.minCountryFilter,
+                        }),
+                        type: "info",
+                    });
+                } else if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter >= 1) {
+                    setGlobalMessage({
+                        text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
+                            count: newsVisualization.maxCountryFilter,
+                        }),
+                        type: "info",
+                    });
+                }
+            }
+        },
+        []
+    );
 
     const onChangeCategoryFilter = useCallback(
         (value: string | undefined) => {
@@ -67,11 +88,15 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             );
             setDisabledCountries(disabledCountries);
 
-            if (!newsVisualization?.isComparative) {
+            if (newsVisualization?.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
+                setSelectedYearFilter(newsVisualization.selectedYearsByDefault.map(year => year.id));
+            } else if (!newsVisualization?.isComparative) {
                 setSelectedYearFilter(allYearsFilters.map(year => year.id));
             } else if (newsVisualization?.isComparative) {
                 setSelectedYearFilter([LatestCOVID19.id]);
             }
+
+            showNonComparativeMessageIfRequired(oldVisualization, newsVisualization);
 
             setMaxCountrySelection(newsVisualization?.maxCountryFilter);
             setSelectedIndicatorFilter(value);
@@ -83,6 +108,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             onSelectedCountryChange,
             selectedCountries,
             selectedIndicatorFilter,
+            showNonComparativeMessageIfRequired,
             visualizations,
         ]
     );
@@ -121,14 +147,20 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             indicator => indicator.value === selectedIndicatorFilter
         )?.category;
 
-        if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
+        const allowedYears = visualizations.find(
+            visualization => visualization.id === selectedIndicatorFilter
+        )?.allowedYears;
+
+        if (allowedYears) {
+            setYearsFilters(allowedYears.map(year => ({ id: year.id, name: year.id, parents: [] })));
+        } else if (categoryOfIndicatorSelectedFilter?.startsWith(sortedCategoryNames.comparative)) {
             setYearsFilters([
                 { id: LatestCOVID19.id, name: i18n.t("2019 or latest available year before COVID-19"), parents: [] },
             ]);
         } else {
             setYearsFilters(allYearsFilters);
         }
-    }, [indicatorFilters, selectedIndicatorFilter]);
+    }, [indicatorFilters, selectedIndicatorFilter, visualizations]);
 
     useEffect(() => {
         compositionRoot.indicatorExplorer.getPageContent.execute().run(
@@ -137,7 +169,10 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             },
             error => {
                 setPageContent(undefined);
-                setErrorMessage(error);
+                setGlobalMessage({
+                    text: error,
+                    type: "error",
+                });
             }
         );
     }, [compositionRoot.indicatorExplorer]);
@@ -214,7 +249,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         showVisualization,
         globalMessage,
         pageContent,
-        errorMessage,
     };
 }
 
@@ -251,7 +285,7 @@ function getUpdatedCountriesSelectionFilter(
     }
 
     if (newsVisualization?.isComparative && newsVisualization?.hasEur27) {
-        return countriesAndRegions.map(c => c.id);
+        return [...countriesAndRegions.map(c => c.id), EU27];
     }
 
     if (newsVisualization?.isComparative) {

@@ -8,10 +8,21 @@ import { chart_B4CnzUqVR3n_Options } from "./chart_B4CnzUqVR3n_Options";
 import { chart_GimM6ANOKhd_Options } from "./chart_GimM6ANOKhd_Options";
 import { chart_VB7bdJ8ZXya_Options } from "./chart_VB7bdJ8ZXya_Options";
 import { chart_mcNfvQaVbfy_Options } from "./chart_mcNfvQaVbfy_Options";
+import { chart_eEKRLRR4mDk_Options } from "./chart_eEKRLRR4mDk_Options";
+import { chart_mUjcWO90CRr_Options } from "./chart_mUjcWO90CRr_Options";
+import { chart_eibYs7QySNk_Options } from "./chart_eibYs7QySNk_Options";
+import { chart_Uf4B2PFIO6f_VQyARVycY60_Options } from "./chart_Uf4B2PFIO6f_VQyARVycY60_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
+    countries: Country[];
+    currentCountry?: string;
+}
+
+export interface ChartSourceMultiple {
+    analyticsResponse: Analytics[];
+    visualization: Visualization[];
     countries: Country[];
     currentCountry?: string;
 }
@@ -24,4 +35,11 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     GimM6ANOKhd: chartSource => chart_GimM6ANOKhd_Options(chartSource),
     VB7bdJ8ZXya: chartSource => chart_VB7bdJ8ZXya_Options(chartSource),
     mcNfvQaVbfy: chartSource => chart_mcNfvQaVbfy_Options(chartSource),
+    eEKRLRR4mDk: chartSource => chart_eEKRLRR4mDk_Options(chartSource),
+    mUjcWO90CRr: chartSource => chart_mUjcWO90CRr_Options(chartSource),
+    eibYs7QySNk: chartSource => chart_eibYs7QySNk_Options(chartSource),
+};
+
+export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {
+    Uf4B2PFIO6f_VQyARVycY60: chartSource => chart_Uf4B2PFIO6f_VQyARVycY60_Options(chartSource),
 };

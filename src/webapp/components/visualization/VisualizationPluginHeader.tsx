@@ -14,14 +14,15 @@ interface VisualizationPluginHeaderProps {
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;
-    onDownloadExcel: () => void;
-    onDownloadImage: () => void;
-    onShowInfo: () => void;
-    onCloseInfo: () => void;
+    onDownloadExcel?: () => void;
+    onDownloadImage?: () => void;
+    onShowInfo?: () => void;
+    onCloseInfo?: () => void;
     useHeaderForCountryPage?: boolean;
     showCountryTag?: boolean;
     countries: Country[];
     currentCountry?: string;
+    isScreenshot?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -38,6 +39,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         currentCountry,
         useHeaderForCountryPage = false,
         showCountryTag = false,
+        isScreenshot = false,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountry) {
@@ -51,9 +53,14 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryPage ? (
                         <>
                             <Row>
-                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
+                                <Title
+                                    isScreenshot={isScreenshot}
+                                    variant="h6"
+                                    color="textPrimary"
+                                    style={{ marginLeft: 20, width: "100%" }}
+                                >
                                     {chartFriendlyName}
-                                </Typography>
+                                </Title>
                             </Row>
 
                             <RowWithGap $gap={20}>
@@ -63,56 +70,75 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     categoryTag && <Tag className="category">{categoryTag}</Tag>
                                 )}
                                 <RowWithGap $gap={0}>
-                                    <StyledIconButton onClick={onShowInfo} $color="#185698">
-                                        <CustomInfoIcon color="primary" className="info-button" />
-                                    </StyledIconButton>
-                                    <StyledIconButton onClick={onDownloadExcel} $color="white">
-                                        <CustomCloudIcon color="primary" className="download-button" />
-                                    </StyledIconButton>
-                                    <StyledIconButton onClick={onDownloadImage} $color="white">
-                                        <CustomImageIcon color="primary" className="download-button" />
-                                    </StyledIconButton>
+                                    {onShowInfo && (
+                                        <StyledIconButton onClick={onShowInfo} $color="#185698">
+                                            <CustomInfoIcon color="primary" className="info-button" />
+                                        </StyledIconButton>
+                                    )}
+
+                                    {onDownloadExcel && (
+                                        <StyledIconButton onClick={onDownloadExcel} $color="white">
+                                            <CustomCloudIcon color="primary" className="download-button" />
+                                        </StyledIconButton>
+                                    )}
+
+                                    {onDownloadImage && (
+                                        <StyledIconButton onClick={onDownloadImage} $color="white">
+                                            <CustomImageIcon color="primary" className="download-button" />
+                                        </StyledIconButton>
+                                    )}
                                 </RowWithGap>
                             </RowWithGap>
                         </>
                     ) : (
                         <>
                             <Row>
-                                <Typography variant="h6" color="textPrimary" style={{ marginLeft: 20 }}>
+                                <Title
+                                    isScreenshot={isScreenshot}
+                                    variant="h6"
+                                    color="textPrimary"
+                                    style={{ marginLeft: 20 }}
+                                >
                                     {chartFriendlyName}
-                                    <Button>
-                                        <CustomInfoIcon
-                                            color="primary"
-                                            className="info-button"
-                                            htmlColor="#185698"
-                                            onClick={onShowInfo}
-                                        />
-                                    </Button>
-                                </Typography>
+                                    {onShowInfo && (
+                                        <Button>
+                                            <CustomInfoIcon
+                                                color="primary"
+                                                className="info-button"
+                                                htmlColor="#185698"
+                                                onClick={onShowInfo}
+                                            />
+                                        </Button>
+                                    )}
+                                </Title>
                             </Row>
 
                             <Column>
-                                <DownloadButton
-                                    variant="contained"
-                                    startIcon={<DownloadIcon />}
-                                    color="primary"
-                                    style={{ marginLeft: 40, marginBottom: 20 }}
-                                    onClick={onDownloadExcel}
-                                    className="download-button"
-                                >
-                                    <Typography>{i18n.t("Download")}</Typography>
-                                </DownloadButton>
+                                {onDownloadExcel && (
+                                    <DownloadButton
+                                        variant="contained"
+                                        endIcon={<DownloadIcon />}
+                                        color="primary"
+                                        style={{ marginLeft: 40, marginBottom: 20 }}
+                                        onClick={onDownloadExcel}
+                                        className="download-button"
+                                    >
+                                        <Typography>{i18n.t("Download")}</Typography>
+                                    </DownloadButton>
+                                )}
 
-                                <DownloadButton
-                                    variant="contained"
-                                    startIcon={<ImageRoundedIcon />}
-                                    color="primary"
-                                    style={{ marginLeft: 40 }}
-                                    onClick={onDownloadImage}
-                                    className="download-button"
-                                >
-                                    <Typography>{i18n.t("Download")}</Typography>
-                                </DownloadButton>
+                                {onDownloadImage && (
+                                    <DownloadButton
+                                        variant="contained"
+                                        endIcon={<ImageRoundedIcon />}
+                                        color="primary"
+                                        style={{ marginLeft: 40 }}
+                                        onClick={onDownloadImage}
+                                        className="download-button"
+                                    >
+                                        <Typography>{i18n.t("Download")}</Typography>
+                                    </DownloadButton>
+                                )}
                             </Column>
                         </>
                     )}
@@ -128,6 +154,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
 const DataHeader = styled.div<{ $isCountryPage?: boolean }>`
     padding-block-start: ${props => (props.$isCountryPage ? "30px" : "48px")};
     padding-block-end: 48px;
+    width: 100%;
 `;
 
 const Row = styled.div`
@@ -136,6 +163,7 @@ const Row = styled.div`
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: flex-start;
+    gap: 1rem;
 `;
 
 const Column = styled.div`
@@ -197,4 +225,8 @@ const Tag = styled.div`
     white-space: nowrap;
     font-size: 14px;
     font-weight: regular;
+`;
+
+const Title = styled(Typography)<{ isScreenshot: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")}; ;
 `;

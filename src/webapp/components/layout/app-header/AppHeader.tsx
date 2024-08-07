@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
         paddingTop: theme.spacing(1.5),
         paddingBottom: theme.spacing(1.5),
         paddingLeft: theme.spacing(8),
-        paddingRight: theme.spacing(8),
+        paddingRight: theme.spacing(7.5),
         "@media (max-width: 500px)": {
             flexWrap: "wrap",
             justifyContent: "flex-end",
@@ -41,6 +41,10 @@ const useStyles = makeStyles(theme => ({
         paddingTop: theme.spacing(0),
         paddingBottom: theme.spacing(0),
         paddingLeft: theme.spacing(6),
+        paddingRight: theme.spacing(8),
+        "@media (max-width: 1279px)": {
+            paddingRight: theme.spacing(10),
+        },
     },
     rest: {
         flexGrow: 1,

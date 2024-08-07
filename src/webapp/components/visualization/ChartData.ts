@@ -6,12 +6,15 @@ import { ChartCustomization } from "./customization/types";
 
 export type ChartDataLoaded = {
     kind: "Loaded";
-    visualization: Visualization;
-    analytics: Analytics;
+    friendlyName: Visualization["friendlyName"];
+    categoryTag: Visualization["categoryTag"];
+    visualizations: Visualization[];
+    analytics: Analytics[];
     legendSets: LegendSet[];
     customization?: ChartCustomization;
     chartOptions?: Highcharts.Options;
     countries: Country[];
+    visualizationDialogInfo?: string;
 };
 
 export type ChartDataLoading = {

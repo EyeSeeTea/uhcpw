@@ -51,6 +51,7 @@ export function usePolicyExplorer({
     const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter, showSubRegions: true });
     const [errorMessage, setErrorMessage] = useState<string>("");
 
+    const [policyExplorerCategories, setPolicyExplorerCategories] = useState<PolicyExplorerCategory[]>([]);
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
     const [selectCategoryInfo, setSelectCategoryInfo] = useState<PolicyExplorerSelectCategoryInfo | undefined>(
         undefined
@@ -86,6 +87,7 @@ export function usePolicyExplorer({
     useEffect(() => {
         compositionRoot.policyExplorer.getCategories.execute().run(
             categories => {
+                setPolicyExplorerCategories(categories);
                 setCategoryFilters(buildCategoryFilterOptions(categories));
             },
             () => {
@@ -117,7 +119,8 @@ export function usePolicyExplorer({
                     selectedCategoriesWithSubcategoriesFilter,
                     countryFilter.selected,
                     selectedYearFilter ? selectedYearFilter : [],
-                    countriesAndRegions
+                    countriesAndRegions,
+                    policyExplorerCategories
                 )
                 .run(
                     policyExplorer => {
@@ -144,6 +147,7 @@ export function usePolicyExplorer({
         countryFilter.selected,
         selectedCategoriesWithSubcategoriesFilter,
         selectedYearFilter,
+        policyExplorerCategories,
     ]);
 
     const onChangeCategoryFilter = useCallback((value: Record<string, string[]> | undefined) => {
@@ -194,9 +198,9 @@ export function usePolicyExplorer({
         const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
         const data = getInitialDataByTable(initialDataByTable, categoriesIds);
         if (!data) return;
-        compositionRoot.policyExplorer.download.execute(categoryFilters, data).runAsync();
+        compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
     }, [
-        categoryFilters,
+        policyExplorerCategories,
         compositionRoot.policyExplorer.download,
         initialDataByTable,
         selectedCategoriesWithSubcategoriesFilter,

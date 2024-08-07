@@ -8,7 +8,9 @@ import { CompositionRoot } from "../../../CompositionRoot";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { ChartData, ChartDataLoaded } from "./ChartData";
 import { visualizationCustomizations } from "./customization/visualizationCustomizations";
-import { chartOptions } from "./manual/chartOptions";
+import { chartOptions, chartOptionsMultiple, ChartSource, ChartSourceMultiple } from "./manual/chartOptions";
+import { Country } from "../../../domain/entities/Country";
+import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -30,33 +32,83 @@ export function useChartData(
     const [showInfo, setShowInfo] = useState<boolean>(false);
     const { countriesAndRegions } = useAppContext();
 
+    const getVisualizationDialogInfo = useCallback(
+        (visualization: Visualization, analytics: Analytics, countries: Country[]) => {
+            const yearIndexColumn = analytics.headers.findIndex(header => header.name === "pe");
+
+            const allYearsInChart = analytics.rows.reduce((years, row) => {
+                if (yearIndexColumn) {
+                    const year = row[yearIndexColumn];
+                    return year && !years.includes(year) ? [...years, year] : years;
+                }
+
+                return years;
+            }, []);
+
+            const breakInSeriesDescriptions = countries.reduce<string[]>((descriptions, country) => {
+                const description = getBreakInSeriesCountryDescription(
+                    visualization.breakInSeries,
+                    allYearsInChart,
+                    country.id
+                );
+
+                if (description) {
+                    return [...descriptions, `${country.name}: ${description}`];
+                }
+
+                return descriptions;
+            }, []);
+
+            if (breakInSeriesDescriptions.length && visualization.notes) {
+                return [`${visualization.notes}  \n`, breakInSeriesDescriptions.join("  \n")].join("  \n");
+            }
+
+            return breakInSeriesDescriptions.length
+                ? breakInSeriesDescriptions.join("  \n")
+                : visualization.notes || "";
+        },
+        []
+    );
+
     useEffect(() => {
         if (visualizationId) {
-            getChartData(compositionRoot, visualizationId, years, countries).run(
-                ({ visualization, analytics, legendSets }) => {
-                    const visualizationChartOptions = chartOptions[visualizationId];
+            const isMultipleVisualizations = visualizationId.includes("_");
+            const visualizationIds = isMultipleVisualizations ? visualizationId.split("_") : [visualizationId];
+            getChartData(compositionRoot, visualizationIds, years, countries).run(
+                ({ visualizations, analytics, legendSets }) => {
+                    const visualizationChartOptions = isMultipleVisualizations
+                        ? chartOptionsMultiple[visualizationId]
+                        : chartOptions[visualizationId];
+
+                    const chartSource = {
+                        analyticsResponse: isMultipleVisualizations ? analytics : analytics[0],
+                        visualization: isMultipleVisualizations ? visualizations : visualizations[0],
+                        countries: countriesAndRegions,
+                        currentCountry,
+                    };
+
+                    const visualization = visualizations[0];
+
+                    const visualizationDialogInfo =
+                        visualization &&
+                        analytics[0] &&
+                        getVisualizationDialogInfo(visualization, analytics[0], countriesAndRegions);
 
                     setChartData({
                         kind: "Loaded",
-                        visualization: {
-                            ...visualization,
-                            friendlyName: visualization.friendlyName
-                                ? `${visualization.friendlyName
-                                      .charAt(0)
-                                      .toUpperCase()}${visualization.friendlyName.slice(1)}`
-                                : visualization.friendlyName,
-                        },
+                        friendlyName:
+                            (visualization?.friendlyName &&
+                                visualization.friendlyName[0]?.toUpperCase() + visualization.friendlyName.slice(1)) ||
+                            "",
+                        categoryTag: visualization?.categoryTag || "",
+                        visualizations,
+                        visualizationDialogInfo,
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
                         countries: countriesAndRegions.filter(country => countries.includes(country.id)),
                         chartOptions: visualizationChartOptions
-                            ? visualizationChartOptions({
-                                  analyticsResponse: analytics,
-                                  visualization,
-                                  countries: countriesAndRegions,
-                                  currentCountry,
-                              })
+                            ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
                             : undefined,
                     });
                 },
@@ -73,7 +125,15 @@ export function useChartData(
                 message: "Missing visualizationId",
             });
         }
-    }, [compositionRoot, visualizationId, countries, years, countriesAndRegions, currentCountry]);
+    }, [
+        compositionRoot,
+        visualizationId,
+        countries,
+        years,
+        countriesAndRegions,
+        currentCountry,
+        getVisualizationDialogInfo,
+    ]);
 
     const onDownloadExcel = useCallback(
         (chartDataLoaded: ChartDataLoaded) => {
@@ -82,7 +142,7 @@ export function useChartData(
 
             compositionRoot.indicatorExplorer.downloadAnalytics
                 .execute({
-                    visualizationId,
+                    visualizationIds: visualizationId.split("_"),
                     periods: years || [],
                     orgUnits: countries || [],
                     seriesIdAndName: seriesIdAndName,
@@ -100,34 +160,55 @@ export function useChartData(
         setShowInfo(false);
     }, []);
 
-    return { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel };
+    return {
+        chartData,
+        showInfo,
+        onShowInfo,
+        onCloseInfo,
+        onDownloadExcel,
+    };
 }
 
 function getChartData(
     compositionRoot: CompositionRoot,
-    visualizationId: string,
+    visualizationIds: string[],
     years: string[],
     countries: string[]
 ): FutureData<{
-    visualization: Visualization;
-    analytics: Analytics;
+    visualizations: Visualization[];
+    analytics: Analytics[];
     legendSets: LegendSet[];
 }> {
-    return Future.joinObj({
-        visualization: compositionRoot.indicatorExplorer.getVisualization.execute(visualizationId),
-        analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
-            visualizationId,
-            years || [],
-            countries || []
-        ),
-    }).flatMap(({ visualization, analytics }) => {
-        const legendSetIds = getLegendSetIds(visualization, analytics);
-
+    // Function to fetch data for a single visualizationId
+    const fetchDataForId = (visualizationId: string) => {
         return Future.joinObj({
-            visualization: Future.success(visualization),
-            analytics: Future.success(analytics),
-            legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+            visualization: compositionRoot.indicatorExplorer.getVisualization.execute(visualizationId),
+            analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
+                visualizationId,
+                years || [],
+                countries || []
+            ),
+        }).flatMap(({ visualization, analytics }) => {
+            const legendSetIds = getLegendSetIds(visualization, analytics);
+            return Future.joinObj({
+                visualization: Future.success(visualization),
+                analytics: Future.success(analytics),
+                legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+            });
         });
+    };
+    // Fetch data for all visualization
+    return Future.parallel(visualizationIds.map(fetchDataForId)).map(results => {
+        const visualizations = results.map(result => result.visualization);
+        const analytics = results.map(result => result.analytics);
+        // Flatten the legendSets arrays from each result into a single array
+        const legendSets = results.reduce((acc, result) => [...acc, ...result.legendSets], [] as LegendSet[]);
+
+        return {
+            visualizations: visualizations,
+            analytics: analytics,
+            legendSets: legendSets,
+        };
     });
 }
 

@@ -5,4 +5,5 @@ export const chart_geNXcoXc3mf_Seed = {
     showCountryTag: true,
     friendlyName: "households with catastrophic health spending by consumption quintile",
     maxCountryFilter: 1,
+    allowBreaksInSeries: true,
 };

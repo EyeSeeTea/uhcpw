@@ -1,4 +1,5 @@
-import { FutureData } from "../../entities/Future";
+import { Future, FutureData } from "../../entities/Future";
+import { Visualization } from "../../entities/indicator-explorer/Visualization";
 import { LatestCOVID19 } from "../../entities/Year";
 import { AnalyticsRepository } from "../../repositories/indicator-explorer/AnalyticsRepository";
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
@@ -10,7 +11,7 @@ export class DownloadAnalyticsUseCase {
     ) {}
 
     public execute(params: {
-        visualizationId: string;
+        visualizationIds: string[];
         periods: string[];
         orgUnits: string[];
         seriesIdAndName: {
@@ -18,15 +19,36 @@ export class DownloadAnalyticsUseCase {
             name: string | undefined;
         }[];
     }): FutureData<void> {
-        const { visualizationId, periods, orgUnits, seriesIdAndName } = params;
-        return this.visualizationRepository.getById(visualizationId).flatMap(visualization => {
-            const sortedPeriods = periods.sort();
+        const { visualizationIds, periods, orgUnits, seriesIdAndName } = params;
 
-            const noOverwritePeriods = sortedPeriods[0] === LatestCOVID19.id;
+        return Future.parallel(visualizationIds.map(id => this.visualizationRepository.getById(id))).flatMap(
+            visualizations => {
+                const mergedVisualization = this.mergeVisualizations(visualizations);
 
-            const finalPeriods = noOverwritePeriods ? [] : periods;
+                const sortedPeriods = periods.sort();
 
-            return this.analyticsRepository.saveToFile(visualization, finalPeriods, orgUnits, seriesIdAndName);
-        });
+                const noOverwritePeriods = sortedPeriods[0] === LatestCOVID19.id;
+
+                const finalPeriods = noOverwritePeriods ? [] : periods;
+
+                return this.analyticsRepository.saveToFile(
+                    mergedVisualization,
+                    finalPeriods,
+                    orgUnits,
+                    seriesIdAndName
+                );
+            }
+        );
+    }
+
+    private mergeVisualizations(visualizations: Visualization[]): Visualization {
+        return visualizations.reduce((merged, current) => ({
+            ...merged,
+            rows: [...merged.rows, ...current.rows],
+            columns: [...merged.columns, ...current.columns],
+            filters: [...merged.filters, ...current.filters],
+            dataDimensionItems: [...merged.dataDimensionItems, ...current.dataDimensionItems],
+            categoryDimensions: [...merged.categoryDimensions, ...current.categoryDimensions],
+        }));
     }
 }

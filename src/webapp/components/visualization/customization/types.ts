@@ -1,3 +1,4 @@
+import { SeriesColumnOptions } from "highcharts";
 import { CSSProperties } from "react";
 import { Country } from "../../../../domain/entities/Country";
 
@@ -13,9 +14,14 @@ export type ChartCustomization = {
     xAxis?: AxisCustomization | AxisCustomization[];
     countryXAxis?: (countries: Country[], xAxis: { categories: string[] }) => AxisCustomization;
     yAxis?: AxisCustomization;
+    currencyOfCountryYAxis?: (countryCurrencyCode: string) => AxisCustomization;
     hideLegendIfNoData?: boolean;
     sortLegendByLastDataPoint?: boolean;
     chart?: ChartPropertyCustomization;
+    sortSerieData?: (
+        series: SeriesColumnOptions[] | undefined,
+        categories: string[]
+    ) => SeriesColumnOptions[] | undefined;
 };
 
 export type LegendCustomization = {
@@ -25,6 +31,7 @@ export type LegendCustomization = {
     layout?: "horizontal" | "proximate" | "vertical";
     reversed?: boolean;
     itemMarginTop?: number;
+    itemStyle?: CSSProperties;
 };
 
 export type TitleCustomization = {
@@ -52,11 +59,11 @@ export type AllSeriesCustomization = {
 
 export type AxisCustomization = {
     title?: TitleCustomization;
-    labels?: { rotation?: number };
+    labels?: { rotation?: number; style?: CSSProperties; step?: number };
     categories?: string[];
     lineWidth?: number;
 };
 
 export type ChartPropertyCustomization = {
-    events?: { load: (this: Highcharts.Chart) => void };
+    events?: { load: (this: Highcharts.Chart) => void; render: (this: Highcharts.Chart) => void };
 };
