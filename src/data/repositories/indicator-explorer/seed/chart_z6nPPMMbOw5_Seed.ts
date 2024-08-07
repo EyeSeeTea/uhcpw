@@ -10,6 +10,8 @@ const TYPES_OF_CARE = [
     "Outpatient care",
 ];
 
+const SORTED_FINANCING_SCHEMES = ["Public spending on health", "Voluntary health insurance", "Out-of-pocket payments"];
+
 export const chart_z6nPPMMbOw5_Seed = {
     categoryName: sortedCategoryNames.healthSpending,
     showCountryTag: true,
@@ -35,17 +37,23 @@ export const chart_z6nPPMMbOw5_Seed = {
         const valueIndex = headerRow.findIndex(header => header === "Value");
         const typeOfCareIndex = headerRow.findIndex(header => header === "Type of care");
 
-        const sortedTypesOfCare = _.orderBy(allDataRowsToSort, row => (!row[valueIndex] ? Infinity : row[valueIndex]), [
-            "asc",
-        ]).map(row => row[typeOfCareIndex]);
+        const sortedTypesOfCare = _.orderBy(
+            allDataRowsToSort,
+            row => (!row[valueIndex] ? Infinity : Number(row[valueIndex])),
+            ["asc"]
+        ).map(row => row[typeOfCareIndex]);
 
         const missingTypesOfCare = TYPES_OF_CARE.filter(typeOfCare => !sortedTypesOfCare.includes(typeOfCare));
         const allSortedTypesOfCare = [...sortedTypesOfCare, ...missingTypesOfCare];
 
         const sortedDataRows = _.orderBy(
             dataRows,
-            [row => row[yearIndex], row => allSortedTypesOfCare.indexOf(row[typeOfCareIndex]?.toString() || "")],
-            ["asc", "asc"]
+            [
+                row => row[yearIndex],
+                row => allSortedTypesOfCare.indexOf(row[typeOfCareIndex]?.toString() || ""),
+                row => SORTED_FINANCING_SCHEMES.indexOf(row[financingSchemeIndex]?.toString() || ""),
+            ],
+            ["asc", "asc", "asc"]
         );
 
         return sortedDataRows;
