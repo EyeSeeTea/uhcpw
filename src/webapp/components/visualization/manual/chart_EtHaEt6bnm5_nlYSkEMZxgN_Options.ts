@@ -124,11 +124,13 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
                 events: {
                     legendItemClick: function () {
                         const chart = this.chart;
+                        const isHide = this.visible;
 
                         const visibleSeries = chart.series.filter(
                             s =>
-                                (!this.visible && s.type === "scatter") ||
-                                (this.visible && s.type === "scatter" && s.name !== this.name)
+                                s.type === "scatter" &&
+                                ((!isHide && (s.visible || s.name === this.name)) ||
+                                    (isHide && s.name !== this.name && s.visible))
                         );
                         const rangeSeries = chart.series.find(s => s.type === "columnrange");
 
