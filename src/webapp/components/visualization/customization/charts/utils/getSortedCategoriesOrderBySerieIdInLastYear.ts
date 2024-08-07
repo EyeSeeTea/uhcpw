@@ -14,18 +14,14 @@ export function getSortedCategoriesOrderBySerieIdInLastYear(
 
     const lastYearAvailableCategoriesOrder = categories.slice(-totalCategories);
 
-    const mergedlastYearAvailableDataAndlastYearAvailableCategoriesOrder = lastYearAvailableCategoriesOrder.map(
-        (category, index) => {
-            return {
-                category,
-                value: lastYearAvailableData[index] || 0,
-            };
-        }
-    );
+    const mergedDataAndOrder = lastYearAvailableCategoriesOrder.map((category, index) => {
+        return {
+            category,
+            value: lastYearAvailableData[index] || 0,
+        };
+    });
 
-    return _.orderBy(
-        mergedlastYearAvailableDataAndlastYearAvailableCategoriesOrder,
-        item => (!item.value ? Infinity : item.value),
-        ["asc"]
-    ).map(item => item.category);
+    return _.orderBy(mergedDataAndOrder, item => (!item.value ? Infinity : item.value), ["asc"]).map(
+        item => item.category
+    );
 }
