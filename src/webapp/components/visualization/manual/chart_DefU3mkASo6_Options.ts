@@ -1,6 +1,6 @@
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
-import { filterRowsByLastAvailableYear } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
+import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 
 const seriesNames: Record<string, string> = {
     imkocvILz0h: "Not at risk of impoverishment",
@@ -17,13 +17,7 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_DefU3mkASo6_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    const chartSourceWithFilteredRows: ChartSource = {
-        ...chartSource,
-        analyticsResponse: {
-            ...chartSource.analyticsResponse,
-            rows: filterRowsByLastAvailableYear(chartSource.analyticsResponse.rows),
-        },
-    };
+    const chartSourceWithFilteredRows = getChartSourceFilteredByLastAvailableYear(chartSource);
 
     return {
         ...comparativeStackedColumnChartOptions({
