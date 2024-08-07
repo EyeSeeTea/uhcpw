@@ -1,11 +1,10 @@
-import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSourceMultiple } from "./chartOptions";
-import { baseChartOptions } from "./generic/baseChartOptions";
 import {
     getAllRowsLatestAvailableYearFromTwoCharts,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
+import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
 
 type SeriesKey = "poorest" | "average" | "richest";
 
@@ -53,100 +52,17 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         secondChartAnalyticsResponse?.rows || []
     );
 
-    const series = Object.values(seriesIds).map(serieId => {
-        const serieChartRows = allRowsFilteredByLAY.filter(row => row[0] === serieId);
-
-        return {
-            id: serieId,
-            name: seriesNames[serieId],
-            color: seriesColors[serieId],
-            type: "scatter",
-            data: Object.keys(latestAvailableYearByCountryId).map((countryId, index) => {
-                const serieChartRow = serieChartRows.find(row => row[0] === serieId && row[1] === countryId) || [];
-                return {
-                    x: index,
-                    y: serieChartRow[3] ? +serieChartRow[3] : 0,
-                    color: seriesColors[serieId],
-                    marker: {
-                        enabled: true,
-                        symbol: "circle",
-                    },
-                    countryId,
-                    year: latestAvailableYearByCountryId[countryId],
-                    name: seriesNames[serieId],
-                };
-            }),
-        };
+    return createDotsWithMaxMinVerticalLineChart({
+        rows: allRowsFilteredByLAY,
+        seriesIds,
+        categories,
+        seriesNames,
+        seriesColors,
+        yAxisTitle:
+            "People 16 years and over (%)" ||
+            firstChartVisualization?.axes[0]?.title.text ||
+            secondChartVisualization?.axes[0]?.title.text,
+        pointFormat: "{point.y}%",
+        latestAvailableYearByCountryId,
     });
-
-    const rangeSerie = {
-        name: "",
-        type: "columnrange",
-        showInLegend: false,
-        centerInCategory: true,
-        data: Object.keys(latestAvailableYearByCountryId).map(countryId => {
-            const countryData = series.map(serie => {
-                const countrySerieData = serie.data.find(data => data.countryId === countryId);
-                return countrySerieData?.y || 0;
-            });
-            return [Math.min(...countryData), Math.max(...countryData)];
-        }),
-    };
-
-    return {
-        ...baseChartOptions,
-        xAxis: {
-            categories: categories,
-            labels: {
-                rotation: -90,
-            },
-        },
-        yAxis: {
-            title: {
-                text: firstChartVisualization?.axes[0]?.title.text || secondChartVisualization?.axes[0]?.title.text,
-                style: { fontSize: "13px" },
-            },
-        },
-        legend: baseLegend,
-        series: [rangeSerie, ...series],
-        plotOptions: {
-            columnrange: {
-                pointWidth: 1,
-                pointPadding: 0,
-                borderWidth: 0,
-                color: "lightgrey",
-            },
-            series: {
-                marker: {
-                    enabled: true,
-                    symbol: "circle",
-                },
-                events: {
-                    legendItemClick: function () {
-                        const chart = this.chart;
-
-                        const visibleSeries = chart.series.filter(
-                            s =>
-                                (!this.visible && s.type === "scatter") ||
-                                (this.visible && s.type === "scatter" && s.name !== this.name)
-                        );
-                        const rangeSeries = chart.series.find(s => s.type === "columnrange");
-
-                        const data = rangeSeries?.data.map(({ category }) => {
-                            const countryData = visibleSeries?.map(serie => {
-                                const countrySerieData = serie.data.find(data => data.category === category);
-                                return countrySerieData?.y || 0;
-                            });
-                            return [Math.min(...countryData), Math.max(...countryData)];
-                        });
-
-                        rangeSeries?.setData(data as Highcharts.PointOptionsType[]);
-                    },
-                },
-            },
-        },
-        tooltip: {
-            pointFormat: "{point.y}%",
-        },
-    } as Highcharts.Options;
 };
