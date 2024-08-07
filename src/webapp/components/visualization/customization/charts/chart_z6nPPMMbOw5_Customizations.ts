@@ -4,6 +4,16 @@ import { ChartCustomization } from "../types";
 import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
 import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
 import _ from "lodash";
+import { getSortedCategoriesOrderBySerieIdInLastYear } from "./utils/getSortedCategoriesOrderBySerieIdInLastYear";
+
+const CATEGORY_ID_BY_NAME = {
+    "Dental care": "a2u2ccahVJL",
+    "Inpatient care": "OEK4dKvUsOe",
+    "Diagnostic tests": "qy4W8ZY2g5M",
+    Medicines: "qgE5NJ9Nyaq",
+    "Medical products": "OuiKmOeXUWQ",
+    "Outpatient care": "ykAPKvVQusS",
+};
 
 export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -53,19 +63,15 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
     sortSerieData: (series, categories) => {
         if (!series) return series;
 
-        // TODO get name by id
-        const customCategoriesOrder = [
-            { id: "a2u2ccahVJL", name: "Dental care" },
-            { id: "OuiKmOeXUWQ", name: "Medical products" },
-            { id: "ykAPKvVQusS", name: "Outpatient care" },
-            { id: "qgE5NJ9Nyaq", name: "Medicines" },
-            { id: "OEK4dKvUsOe", name: "Inpatient care" },
-            { id: "qy4W8ZY2g5M", name: "Diagnostic tests" },
-            { id: "", name: "" },
-        ];
+        const customCategoriesOrder = getSortedCategoriesOrderBySerieIdInLastYear(
+            series,
+            categories,
+            "S0rJgTIK3Gv",
+            Object.keys(CATEGORY_ID_BY_NAME).length
+        );
 
         // Add empty string for each categories year
-        const categoriesWithLinesOffset = _.chunk(categories, customCategoriesOrder.length - 1).flatMap(category => {
+        const categoriesWithLinesOffset = _.chunk(categories, customCategoriesOrder.length).flatMap(category => {
             return [...category, ""];
         });
 
@@ -82,10 +88,7 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             } as unknown as SeriesColumnOptions;
         });
 
-        return sortSerieDataByYearsAndCategories(
-            seriesWithCategoryInData,
-            customCategoriesOrder.map(item => item.name)
-        );
+        return sortSerieDataByYearsAndCategories(seriesWithCategoryInData, [...customCategoriesOrder, ""]);
     },
     ...chartSplitYearsAndCategories,
 };

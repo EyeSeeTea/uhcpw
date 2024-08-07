@@ -20,6 +20,20 @@ import { Maybe } from "../../../types/utils";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 
+const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
+    z6nPPMMbOw5: {
+        ou: "Country",
+        pe: "Year",
+        dx: "Financing scheme",
+        [SERVICE_PRIMARY_NAME_COLUMN]: "Type of care",
+    },
+    default: {
+        ou: "Country",
+        pe: "Year",
+        dx: "Parameter",
+    },
+};
+
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown) {}
 
@@ -182,20 +196,22 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         metadata: Metadata,
         seriesIdAndName: { id: string | undefined; name: string | undefined }[]
     ) {
-        const mapCodeNameToColumnName: Record<string, string> = {
-            ou: "Country",
-            pe: "Year",
-            dx: "Parameter",
-        };
-
         const columns = analyticsResponse.headers.map(header => {
+            const headerNamesInVisualization = HEADER_NAMES_BY_VISUALIZATION[visualization.id];
+            const headerName = headerNamesInVisualization?.[header.name];
+
+            if (headerName) {
+                return headerName;
+            }
+
             if (SERVICE_PRIMARY_NAME_COLUMN === header.name) {
                 return "Parameter";
             }
-            return (
-                mapCodeNameToColumnName[header.name] ??
-                header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase()
-            );
+
+            const defaultHeaderNames = HEADER_NAMES_BY_VISUALIZATION.default;
+            const defaultName = defaultHeaderNames ? defaultHeaderNames[header.name] : undefined;
+
+            return defaultName ?? header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase();
         });
 
         const existsCountryColumn = columns.includes("Country");
@@ -214,17 +230,20 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             .sortBy(row => row[1])
             .value();
 
-        const dataRows = [[chartName || visualization.name], finalColumns, ...mappedRows];
-
-        const dataRowsWithCountryIfRequired = dataRows.map((row, index) => {
-            if (addCountryColumn && index > 1) {
+        const dataRowsWithCountryIfRequired = mappedRows.map(row => {
+            if (addCountryColumn) {
                 const country = orgUnits.objects[0];
                 const countryName = country ? mapToWhoCountryName(country.id, country.shortName || "") : "";
                 return [countryName, ...row];
             }
             return row;
         });
-        return dataRowsWithCountryIfRequired;
+
+        const sortedDataRows = visualization.sortDataRowsInExcel
+            ? visualization.sortDataRowsInExcel(finalColumns, dataRowsWithCountryIfRequired)
+            : dataRowsWithCountryIfRequired;
+
+        return [[chartName || visualization.name], finalColumns, ...sortedDataRows];
     }
 
     mapAnalyticsResponseRows(params: {
