@@ -8,8 +8,6 @@ export function downloadHtmlElement(
     if (element === null) {
         return;
     }
-    // Prevent overflow and hidden scrollbar
-    element.style.overflow = "hidden";
 
     // Prevent title from wrapping
     const titleElement: HTMLDivElement | null = element.querySelector(".visualization-plugin-header");
@@ -29,8 +27,12 @@ export function downloadHtmlElement(
     toPng(element, {
         backgroundColor: options.backgroundColor,
         filter: filter,
-        width: element.scrollWidth,
+        width: element.scrollWidth - 2,
         height: element.scrollHeight,
+        style: {
+            margin: "0", // Remove margins (appear like borders in image)
+            overflow: "hidden", // Prevent overflow and hidden scrollbar
+        },
     }).then(dataUrl => {
         const link = document.createElement("a");
         link.download = name;
