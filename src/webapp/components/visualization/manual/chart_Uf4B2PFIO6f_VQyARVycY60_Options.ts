@@ -56,6 +56,13 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         }) || []),
     ];
 
+    const countryId = firstChartAnalyticsResponse?.metaData.dimensions.ou?.length
+        ? firstChartAnalyticsResponse?.metaData.dimensions.ou[0]
+        : undefined;
+    const currencyCode = _.find(chartSource.countries, { id: countryId })?.currencyCode || "€";
+
+    const maxScatterValue = _.max(_(series).find(s => s.type === "scatter")?.data || []) || 0;
+
     return {
         ...baseChartOptions,
         xAxis: {
@@ -64,17 +71,24 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         yAxis: [
             {
                 title: {
-                    text: firstChartVisualization?.axes[0]?.title.text,
+                    text: firstChartVisualization?.axes[0]?.title.text.replace("€", currencyCode),
                     style: { fontSize: "13px" },
+                },
+                labels: {
+                    formatter: function () {
+                        return this.value.toString();
+                    },
                 },
             },
             {
+                min: 0,
                 title: {
                     text: secondChartVisualization?.axes[0]?.title.text,
                     style: { fontSize: "13px" },
                     rotation: 270,
                     x: 5,
                 },
+                allowDecimals: maxScatterValue <= 1,
                 opposite: true,
             },
         ],
