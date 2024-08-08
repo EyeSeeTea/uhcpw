@@ -48,7 +48,7 @@ export function useMultiCountryOptionsV2(params?: {
     }, [compositionRoot.countries, showEurRegion, eurRegion]);
 
     useEffect(() => {
-        const countryOptions = countries.map(country => ({
+        const countryOptions: TreeOption[] = countries.map(country => ({
             id: country.id,
             name: country.name,
             code: country.code,
@@ -64,6 +64,7 @@ export function useMultiCountryOptionsV2(params?: {
                               ? child.name.match(REGEX_INSIDE_PARENTHESIS)?.[1] || child.name
                               : child.name,
                       code: child.code,
+                      parents: [],
                   }))
                 : undefined,
         }));

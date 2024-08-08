@@ -46,6 +46,7 @@ interface TreeSelectorProps {
     disableSearch?: boolean;
     showParentIfChecked?: boolean;
     showOnlyAllParentSelectedIfChecked?: boolean;
+    allSelectedLabel?: string;
     showSubChildren?: boolean;
     defaultExpanded?: string[];
 }
@@ -70,6 +71,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         showOnlyAllParentSelectedIfChecked = false,
         showSubChildren = false,
         defaultExpanded = EMPTY_IDS_ARRAY,
+        allSelectedLabel,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -333,16 +335,25 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>
-                                {selectedChips.map(item => {
-                                    return (
-                                        <SelectedChip
-                                            key={item.id}
-                                            label={item.name}
-                                            onDelete={() => handleSelectedChange(item.id, false)}
-                                            deleteIcon={<CloseIcon fontSize="small" />}
-                                        />
-                                    );
-                                })}
+                                {selectedChips.length === 1 && selectedChips[0]?.id === ALL_NODE_ID ? (
+                                    <SelectedChip
+                                        key={ALL_NODE_ID}
+                                        label={allSelectedLabel || selectedChips[0]?.name}
+                                        onDelete={() => handleSelectedChange(ALL_NODE_ID, false)}
+                                        deleteIcon={<CloseIcon fontSize="small" />}
+                                    />
+                                ) : (
+                                    selectedChips.map(item => {
+                                        return (
+                                            <SelectedChip
+                                                key={item.id}
+                                                label={item.name}
+                                                onDelete={() => handleSelectedChange(item.id, false)}
+                                                deleteIcon={<CloseIcon fontSize="small" />}
+                                            />
+                                        );
+                                    })
+                                )}
                             </SelectedContainer>
                         ),
                         endAdornment: (
