@@ -16,10 +16,13 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                 <Row>
                     <InfoContainer>
                         <NameContainer isExpert={isExpert}>
-                            <Text gutterBottom style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: 800 }}>
+                            <Text
+                                gutterBottom
+                                style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: "bold" }}
+                            >
                                 {person.firstName}
                             </Text>
-                            <Text gutterBottom style={{ fontWeight: 800 }}>
+                            <Text gutterBottom style={{ fontWeight: "bold" }}>
                                 {person.lastName}
                             </Text>
                         </NameContainer>
@@ -85,4 +88,5 @@ const NameContainer = styled.div<{ isExpert: boolean }>`
 
 const Text = styled(Typography)`
     text-align: center;
+    font-family: Lato;
 `;
