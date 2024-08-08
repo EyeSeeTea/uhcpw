@@ -57,6 +57,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         withoutBackground
                         useHeaderForCountryPage
                         onDownloadImage={handleOpenScreenshot}
+                        paddingEnd={false}
                     />
                 </VisualizationContainer>
 
