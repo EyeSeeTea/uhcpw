@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { CircularProgress, Typography } from "@material-ui/core";
 import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
