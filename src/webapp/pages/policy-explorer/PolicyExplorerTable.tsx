@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
-import React, { RefObject, useCallback, useState, useEffect, useRef } from "react";
+import React, { RefObject, useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
@@ -99,7 +99,6 @@ export const PolicyExplorerTable = React.memo(
 
         // Ref for the table container
         const tableContainerRef = React.useRef<HTMLDivElement>(null);
-
         // Add the double scroll bar effect when the component mounts
         useEffect(() => {
             doubleScroll(tableContainerRef.current);
