@@ -19,13 +19,14 @@ import {
 } from "../../../data/repositories/countries/CountryD2Repository";
 
 const EMPTY_IDS_ARRAY: string[] = [];
+const ALL_NODE_ID = "all";
 
 export type TreeOption = {
     id: string;
     name: string;
     code?: string;
     parents: { id: string; name: string }[];
-    children?: { id: string; name: string; code: string }[];
+    children?: TreeOption[];
 };
 
 interface TreeSelectorProps {
@@ -44,6 +45,7 @@ interface TreeSelectorProps {
     ariaLabel?: string;
     disableSearch?: boolean;
     showParentIfChecked?: boolean;
+    showOnlyAllParentSelectedIfChecked?: boolean;
     showSubChildren?: boolean;
     defaultExpanded?: string[];
 }
@@ -65,6 +67,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         ariaLabel,
         disableSearch,
         showParentIfChecked,
+        showOnlyAllParentSelectedIfChecked = false,
         showSubChildren = false,
         defaultExpanded = EMPTY_IDS_ARRAY,
     }) => {
@@ -154,10 +157,14 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     const isParent = items.find(item => item.parents.some(parent => parent.id === nodeId));
 
                     if (isParent) {
-                        const finalChildren = filteredItemsBySearch.filter(item =>
-                            item.parents.some(p => p.id === nodeId)
-                        );
-                        handleSelectedAllItemsInParent(finalChildren, selected);
+                        if (nodeId === ALL_NODE_ID && showOnlyAllParentSelectedIfChecked) {
+                            onSelectedIdsChange([]);
+                        } else {
+                            const finalChildren = filteredItemsBySearch.filter(item =>
+                                item.parents.some(p => p.id === nodeId)
+                            );
+                            handleSelectedAllItemsInParent(finalChildren, selected);
+                        }
                     } else {
                         const selection = selectedIds.filter(id => id !== nodeId);
 
@@ -167,7 +174,14 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     }
                 }
             },
-            [selectedIds, onSelectedIdsChange, items, filteredItemsBySearch, handleSelectedAllItemsInParent]
+            [
+                selectedIds,
+                onSelectedIdsChange,
+                items,
+                showOnlyAllParentSelectedIfChecked,
+                filteredItemsBySearch,
+                handleSelectedAllItemsInParent,
+            ]
         );
 
         const selectedItems = useMemo(() => {
@@ -276,19 +290,26 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
 
         const handleSelectAll = useCallback(() => {
             if (hasSelectAll) {
-                onSelectedIdsChange(itemsToSelect);
+                onSelectedIdsChange([...itemsToSelect, ...selectedIds]);
             }
-        }, [itemsToSelect, hasSelectAll, onSelectedIdsChange]);
+        }, [hasSelectAll, onSelectedIdsChange, itemsToSelect, selectedIds]);
 
         const selectedChips = useMemo(() => {
+            const allSelectedParent = parents.find(parent => parent.id === ALL_NODE_ID);
+
             const selectedDataToShow =
-                showParentIfChecked && areAllItemsSelected && parents.length > 0 ? parents : selectedItems;
+                showParentIfChecked && areAllItemsSelected && parents.length > 0
+                    ? showOnlyAllParentSelectedIfChecked && allSelectedParent
+                        ? [allSelectedParent]
+                        : parents
+                    : selectedItems;
+
             return selectedDataToShow.sort((a, b) => {
                 if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
                 if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
                 return 0;
             });
-        }, [areAllItemsSelected, parents, selectedItems, showParentIfChecked]);
+        }, [showOnlyAllParentSelectedIfChecked, areAllItemsSelected, parents, selectedItems, showParentIfChecked]);
 
         const finalPlaceholder = useMemo(() => {
             return selectedChips.length === 0 ? placeholder : "";
@@ -429,14 +450,13 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                                     item.parents.some(p => p.id === option.id)
                                 );
                                 const children = items.filter(item => item.parents.some(p => p.id === option.id));
-                                const selectedCount = children.filter(child => selectedIds.includes(child.id)).length;
 
                                 return (
                                     <div key={`first-level-${nindex}`}>
                                         <Node
                                             nodeId={option.id}
                                             name={option.name}
-                                            selectedCount={selectedCount}
+                                            selectedCount={getSelectedCount(selectedIds, children)}
                                             onSelectedChange={(_nodeId: string, selected: boolean) =>
                                                 handleSelectedAllItemsInParent(finalChildren, selected)
                                             }
@@ -501,6 +521,17 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         );
     }
 );
+
+function getSelectedCount(selectedIds: string[], children: TreeOption[]): number {
+    return children.reduce((acc: number, child: TreeOption): number => {
+        if (child?.children) {
+            const childrenCount = getSelectedCount(selectedIds, child.children);
+            return selectedIds.includes(child.id) ? acc + childrenCount + 1 : acc + childrenCount;
+        } else {
+            return selectedIds.includes(child.id) ? acc + 1 : acc;
+        }
+    }, 0);
+}
 
 const Container = styled.div<{ $fullWidth: boolean }>`
     position: relative;

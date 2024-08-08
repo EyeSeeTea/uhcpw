@@ -40,6 +40,8 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         maxSelection={filters.country.maxCountrySelection}
                         showSubChildren={filters.country.showSubRegions}
                         placeholder={i18n.t("Select country or area")}
+                        showParentIfChecked={true}
+                        showOnlyAllParentSelectedIfChecked={true}
                     />
                 </Center>
             </Grid>
