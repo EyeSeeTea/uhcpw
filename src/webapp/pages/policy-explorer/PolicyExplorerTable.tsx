@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
-import React, { RefObject, useCallback, useState } from "react";
+import React, { RefObject, useCallback, useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
@@ -70,6 +70,41 @@ export const PolicyExplorerTable = React.memo(
             [category.value, dataOrientation, rows, width]
         );
 
+        // Function to create and synchronize the double scroll bar
+        const doubleScroll = (element: HTMLDivElement | null) => {
+            if (!element) return;
+
+            const scrollbar = document.createElement("div");
+            scrollbar.appendChild(document.createElement("div"));
+            scrollbar.style.overflow = "auto";
+            scrollbar.style.overflowY = "hidden";
+            scrollbar.style.position = "relative";
+            scrollbar.style.top = "15px"; // Maybe calculate this dynamically
+
+            const scrollbarChild = scrollbar.firstChild as HTMLElement | null;
+            if (scrollbarChild) {
+                scrollbarChild.style.width = `${element.scrollWidth}px`;
+                scrollbarChild.appendChild(document.createTextNode("\xA0"));
+            }
+
+            scrollbar.onscroll = function () {
+                element.scrollLeft = scrollbar.scrollLeft;
+            };
+            element.onscroll = function () {
+                scrollbar.scrollLeft = element.scrollLeft;
+            };
+
+            element.parentNode?.insertBefore(scrollbar, element);
+        };
+
+        // Ref for the table container
+        const tableContainerRef = React.useRef<HTMLDivElement>(null);
+
+        // Add the double scroll bar effect when the component mounts
+        useEffect(() => {
+            doubleScroll(tableContainerRef.current);
+        }, [tableContainerRef]);
+
         return !rows?.length || !dataOrientation ? (
             category && (
                 <NoDataContainer>
@@ -118,7 +153,12 @@ export const PolicyExplorerTable = React.memo(
                         </Row>
                     </Row>
                 </TableHeader>
-                <TableContainer component={TablePaper}>
+                <TableContainer
+                    component={TablePaper}
+                    ref={tableContainerRef}
+                    id="doublescroll"
+                    style={{ overflowX: "auto" }}
+                >
                     <StyledTable orientation={dataOrientation}>
                         <TableBody>
                             {rows.map((row, index) => (
