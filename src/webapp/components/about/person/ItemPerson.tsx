@@ -1,6 +1,8 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import ReactMarkdown from "react-markdown";
+
 import { PersonState } from "../../../pages/about/AboutState";
 
 export interface ItemPersonProps {
@@ -23,12 +25,30 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                                 {person.lastName}
                             </Text>
                         </NameContainer>
-                        <Text variant="body1" gutterBottom>
-                            {person.position}
-                        </Text>
-                        <Text variant="body1" gutterBottom>
-                            {person.institution}
-                        </Text>
+                        <ReactMarkdown
+                            components={{
+                                p: ({ children }) => (
+                                    <Text variant="body1" gutterBottom>
+                                        {children}
+                                    </Text>
+                                ),
+                            }}
+                        >
+                            {person.position.replace(/\\n/g, "\n")}
+                        </ReactMarkdown>
+                        {person.institution && (
+                            <ReactMarkdown
+                                components={{
+                                    p: ({ children }) => (
+                                        <Text variant="body1" gutterBottom>
+                                            {children}
+                                        </Text>
+                                    ),
+                                }}
+                            >
+                                {person.institution.replace(/\\n/g, "\n")}
+                            </ReactMarkdown>
+                        )}
                         <Text variant="body1" gutterBottom>
                             {person.countryName}
                         </Text>
