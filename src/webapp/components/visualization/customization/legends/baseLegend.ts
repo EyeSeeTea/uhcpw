@@ -5,7 +5,8 @@ export const baseLegend = {
     align: "right",
     verticalAlign: "middle",
     layout: "vertical",
-    itemMarginTop: 20,
+    itemMarginTop: 10,
+    itemMarginBottom: 10,
     itemStyle: {
         fontWeight: "normal",
         fontSize: "13px",
