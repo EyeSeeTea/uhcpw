@@ -25,18 +25,7 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                                 {person.lastName}
                             </Text>
                         </NameContainer>
-                        <ReactMarkdown
-                            components={{
-                                p: ({ children }) => (
-                                    <Text variant="body1" gutterBottom>
-                                        {children}
-                                    </Text>
-                                ),
-                            }}
-                        >
-                            {person.position.replace(/\\n/g, "\n")}
-                        </ReactMarkdown>
-                        {person.institution && (
+                        <div>
                             <ReactMarkdown
                                 components={{
                                     p: ({ children }) => (
@@ -46,9 +35,24 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                                     ),
                                 }}
                             >
-                                {person.institution.replace(/\\n/g, "\n")}
+                                {person.position.replace(/\\n/g, "\n")}
                             </ReactMarkdown>
-                        )}
+                        </div>
+                        <div>
+                            {person.institution && (
+                                <ReactMarkdown
+                                    components={{
+                                        p: ({ children }) => (
+                                            <Text variant="body1" gutterBottom>
+                                                {children}
+                                            </Text>
+                                        ),
+                                    }}
+                                >
+                                    {person.institution.replace(/\\n/g, "\n")}
+                                </ReactMarkdown>
+                            )}
+                        </div>
                         <Text variant="body1" gutterBottom>
                             {person.countryName}
                         </Text>
