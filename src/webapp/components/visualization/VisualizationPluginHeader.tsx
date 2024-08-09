@@ -72,7 +72,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 <RowWithGap $gap={0}>
                                     {onShowInfo && (
                                         <StyledIconButton onClick={onShowInfo} $color="#185698">
-                                            <CustomInfoIcon color="primary" className="info-button" />
+                                            <CustomInfoIconCountry color="primary" className="info-button" />
                                         </StyledIconButton>
                                     )}
 
@@ -102,7 +102,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     {chartFriendlyName}
                                     {onShowInfo && (
                                         <Button>
-                                            <CustomInfoIcon
+                                            <CustomInfoIconIndicators
                                                 color="primary"
                                                 className="info-button"
                                                 htmlColor="#185698"
@@ -195,25 +195,31 @@ const StyledIconButton = styled(IconButton)<{ $color: string }>`
     color: ${props => props.$color};
 `;
 
-const CustomInfoIcon = styled(InfoIcon)`
+const CustomInfoIconIndicators = styled(InfoIcon)`
     color: #185698;
     font-size: 26px;
+`;
+
+const CustomInfoIconCountry = styled(InfoIcon)`
+    color: #185698;
+    padding: 4px;
+    font-size: 33px;
 `;
 
 const CustomImageIcon = styled(ImageRoundedIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
-    padding: 3px;
-    font-size: 17px;
+    padding: 4px;
+    font-size: 20px;
 `;
 
 const CustomCloudIcon = styled(DownloadIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
-    padding: 3px;
-    font-size: 17px;
+    padding: 4px;
+    font-size: 20px;
 `;
 
 const Tag = styled.div`
