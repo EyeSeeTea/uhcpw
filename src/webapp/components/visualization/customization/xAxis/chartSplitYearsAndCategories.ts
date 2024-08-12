@@ -62,8 +62,9 @@ export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
                 const gridLinesTranslations = buildGridLinesTranslationMap(xAxis1?.tickPositions);
                 xAxis1?.tickPositions?.forEach((tick, index) => {
                     const gridLine = xAxis1?.ticks[tick]?.gridLine;
-                    if (gridLine && gridLinesTranslations[index] !== undefined) {
-                        gridLine.translate(gridLinesTranslations[index], 0);
+                    const gridLineTranslation = gridLinesTranslations[index];
+                    if (gridLine && gridLineTranslation) {
+                        gridLine.translate(gridLineTranslation, 0);
                     }
                 });
 
