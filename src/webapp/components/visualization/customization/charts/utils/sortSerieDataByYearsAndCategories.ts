@@ -35,7 +35,6 @@ export function sortSerieDataByYearsAndCategories(
     });
 
     const categoriesWithSpacing = [...customCategoriesOrder, ""];
-    if (sortingSerieId === "") return seriesWithCategoryInData;
     return (seriesWithCategoryInData || [])?.flatMap(serie => {
         const currentData = serie ? (serie.data as Highcharts.PointOptionsObject[]) : undefined;
 

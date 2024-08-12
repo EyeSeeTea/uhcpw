@@ -1,10 +1,7 @@
-import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
 import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
 import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
-import _ from "lodash";
-import { getSortedCategoriesOrderBySerieIdInLastYear } from "./utils/getSortedCategoriesOrderBySerieIdInLastYear";
 
 const CATEGORY_ID_BY_NAME = {
     "Dental care": "a2u2ccahVJL",
