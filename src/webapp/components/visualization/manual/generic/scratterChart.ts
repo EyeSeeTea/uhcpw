@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Visualization } from "../../../../../domain/entities/indicator-explorer/Visualization";
 import { baseChartOptions } from "./baseChartOptions";
 
@@ -14,6 +15,10 @@ export interface SerieData {
     y: number;
 }
 
+interface CustomPointOptions extends Highcharts.PointOptionsObject {
+    country?: string; // Assuming country is optional
+}
+
 export const createScratterChart: (
     series: ScratterSerie[],
     visualization: Visualization,
@@ -21,7 +26,8 @@ export const createScratterChart: (
     xAxisTitle: string,
     yAxisTitle: string,
     pointFormat: string,
-    countriesWithData: SerieData[]
+    countriesWithData: SerieData[],
+    countryPositions: Record<string, { x: number; y: number }>
 ) => Highcharts.Options = (
     series,
     visualization,
@@ -29,7 +35,8 @@ export const createScratterChart: (
     xAxisTitle,
     yAxisTitle,
     pointFormat,
-    countriesWithData
+    countriesWithData,
+    countryPositions
 ) => {
     const finalSeries = series.map(serie => {
         return {
@@ -57,6 +64,11 @@ export const createScratterChart: (
         ...baseChartOptions,
         chart: {
             type: "scatter",
+            events: {
+                load: function (this: Highcharts.Chart) {
+                    applyDataLabelsPositions(this.series, countryPositions);
+                },
+            },
         },
         xAxis: {
             title: { text: xAxisTitle, margin: 20 },
@@ -74,7 +86,7 @@ export const createScratterChart: (
         },
         legend: { enabled: false },
         series: [
-            ...series,
+            ...finalSeries,
             {
                 type: "line",
                 name: "Trend Line",
@@ -98,6 +110,9 @@ export const createScratterChart: (
                     enabled: true,
                     align: "right",
                     verticalAlign: "middle",
+                    allowOverlap: true,
+                    overflow: "allow",
+                    crop: false,
                     formatter: function () {
                         const countryPoint = (this.point as unknown as SerieData).country;
                         return countryPoint === currentCountryCode
@@ -119,6 +134,36 @@ export const createScratterChart: (
         },
     } as Highcharts.Options;
 };
+
+export const pos = {
+    top: { x: 17, y: -10 },
+    bottom: { x: 17, y: 10 },
+    topRight: { x: 29, y: -9 },
+    topLeft: { x: -1, y: -9 },
+    bottomRight: { x: 29, y: 9 },
+    bottomLeft: { x: -1, y: 9 },
+    right: { x: 37, y: 0 },
+    left: { x: -2, y: 0 },
+};
+
+function applyDataLabelsPositions(
+    series: Highcharts.Series[],
+    countryPositions: Record<string, { x: number; y: number }>
+) {
+    _.forEach(series, serie => {
+        _.forEach(serie.points, point => {
+            const country = (point as CustomPointOptions).country;
+            const positions = countryPositions[country as keyof typeof countryPositions] || pos.left;
+            point.update(
+                {
+                    dataLabels: positions,
+                },
+                false
+            ); // Set to 'false' to defer redraw
+        });
+        serie.chart.redraw();
+    });
+}
 
 function getTrendLine(data: SerieData[]): number[][] {
     const fixedData = data.filter(item => item.y > 0 && item.x > 0);
