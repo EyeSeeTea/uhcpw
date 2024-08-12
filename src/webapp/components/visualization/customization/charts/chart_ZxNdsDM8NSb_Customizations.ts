@@ -1,9 +1,7 @@
-import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { typeOfCareSeries2 } from "../series/typeOfCareSeries";
 import { ChartCustomization } from "../types";
 import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
-import { getSortedCategoriesOrderBySerieIdInLastYear } from "./utils/getSortedCategoriesOrderBySerieIdInLastYear";
 import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
 import _ from "lodash";
 
@@ -35,33 +33,8 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
     ],
     sortSerieData: (series, categories) => {
         if (!series) return series;
-        const customCategoriesOrder = getSortedCategoriesOrderBySerieIdInLastYear(
-            series,
-            categories,
-            "S0rJgTIK3Gv",
-            Object.keys(CATEGORY_ID_BY_NAME).length
-        );
 
-        // Add empty string for each categories year
-        const categoriesWithLinesOffset = _.chunk(categories, customCategoriesOrder.length).flatMap(category => {
-            return [...category, ""];
-        });
-
-        const seriesWithCategoryInData = series.map(serie => {
-            if (serie.custom?.isTwoCategoryFakeSerie) return serie;
-            return {
-                ...serie,
-                data: (serie.data || []).map((item, index) => {
-                    return {
-                        x: index,
-                        y: Array.isArray(item) && item.length > 1 ? item[1] || 0 : 0,
-                        name: categoriesWithLinesOffset[index],
-                    };
-                }),
-            } as unknown as SeriesColumnOptions;
-        });
-
-        return sortSerieDataByYearsAndCategories(seriesWithCategoryInData, [...customCategoriesOrder, ""]);
+        return sortSerieDataByYearsAndCategories(series, categories, "", Object.keys(CATEGORY_ID_BY_NAME).length);
     },
     series: typeOfCareSeries2,
     ...chartSplitYearsAndCategories,
