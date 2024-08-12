@@ -9,13 +9,9 @@ import _ from "lodash";
 
 const CATEGORY_ID_BY_NAME = {
     Poorest: "GeiKSyJLeKt",
-
     "2nd": "GuypYXqveWn",
-
     "3nd": "ii0MC8x9D7i",
-
     "4th": "O0MXmTdpf4m",
-
     Richest: "yiucIy5NIAw",
 };
 
@@ -39,7 +35,6 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
     ],
     sortSerieData: (series, categories) => {
         if (!series) return series;
-        // console.log({ series, categories });
         const customCategoriesOrder = getSortedCategoriesOrderBySerieIdInLastYear(
             series,
             categories,
@@ -58,6 +53,7 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
                 ...serie,
                 data: (serie.data || []).map((item, index) => {
                     return {
+                        x: index,
                         y: Array.isArray(item) && item.length > 1 ? item[1] || 0 : 0,
                         name: categoriesWithLinesOffset[index],
                     };
@@ -65,9 +61,7 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
             } as unknown as SeriesColumnOptions;
         });
 
-        const ret = sortSerieDataByYearsAndCategories(seriesWithCategoryInData, [...customCategoriesOrder, ""]);
-        // console.log(ret);
-        return ret;
+        return sortSerieDataByYearsAndCategories(seriesWithCategoryInData, [...customCategoriesOrder, ""]);
     },
     series: typeOfCareSeries2,
     ...chartSplitYearsAndCategories,
