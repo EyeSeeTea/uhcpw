@@ -1,10 +1,37 @@
 import { ChartCustomization } from "../types";
+import _ from "lodash";
 
 function calculateFontSize(dataLength: number): string {
     if (dataLength <= 20) return "12px";
     if (dataLength <= 55) return "10px";
     if (dataLength <= 100) return "8px";
     return "6px"; // Fallback for larger datasets
+}
+
+/**
+ * Maps tick positions to a specified interval, transforming the array to have mirrored negative and positive values.
+ *
+ * Examples:
+ * tickPositions = [0, 1, 2, 3, 4] with interval = 10 expected result with symmetry: [-10, -5, 5, 10]
+ * tickPositions = [0, 1, 2, 3] with interval = 10 expected result with symmetry: [-10, 0, 10]
+ */
+function mapTicksToPixelsWithMaxInterval(tickPositions: number[] | undefined, maxInterval: number) {
+    if (!tickPositions) return [];
+    const [, ...ticks] = tickPositions; // Remove 0 at the beginning
+
+    const len = ticks.length;
+    const halfLen = _.floor(len / 2);
+    const isEven = len % 2 === 0;
+
+    // Calculate interval so that the furthest ticks are at +/- maxInterval
+    const interval = maxInterval / halfLen;
+    // Generate the negative and positive halves
+    const halfTicks = _(ticks).take(halfLen).value();
+    const negativeHalf = halfTicks.map(t => -1 * t * interval).reverse();
+    const positiveHalf = halfTicks.map(t => t * interval);
+
+    // Return combined array depending on whether the length is even or odd
+    return isEven ? [...negativeHalf, ...positiveHalf] : [...negativeHalf, 0, ...positiveHalf];
 }
 
 let currentFontSize: string | undefined;
@@ -26,6 +53,16 @@ export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
                 if (xAxis1LastValueTick !== undefined && xAxis1?.ticks[xAxis1LastValueTick]?.gridLine) {
                     xAxis1?.ticks[xAxis1LastValueTick]?.gridLine?.hide();
                 }
+
+                // Adjust gridLine positions
+                const maxInterval = 10;
+                const gridLinesTranslations = mapTicksToPixelsWithMaxInterval(xAxis1?.tickPositions, maxInterval);
+                xAxis1?.tickPositions?.forEach((tick, index) => {
+                    const gridLine = xAxis1?.ticks[tick]?.gridLine;
+                    if (gridLine && gridLinesTranslations[index] !== undefined) {
+                        gridLine.translate(gridLinesTranslations[index], 0);
+                    }
+                });
 
                 const yAxis = this.yAxis[0];
                 const yAxisFirstValueTick =
