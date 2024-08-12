@@ -20,6 +20,12 @@ const COLUMN_WIDTHS = {
     default: 60,
 };
 
+const USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS = {
+    firstColumn: 20,
+    typeOfHealthCareColumnOrUserChargesApplyColumn: 20,
+    default: 40,
+};
+
 const CELL_STYLES = {
     tabTitleCell: {
         wrapText: false,
@@ -152,7 +158,9 @@ export function setHeight(sheet: Sheet, data: string[][]) {
 
 function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number): number {
     if (columnDataIndex === 0) {
-        return COLUMN_WIDTHS.firstColumn;
+        return categoriesNameWithLessThan31Chars.u800TAhsIBY
+            ? USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.firstColumn
+            : COLUMN_WIDTHS.firstColumn;
     }
 
     if (tabName === REFERENCES_TAB_NAME && columnDataIndex === 1) {
@@ -174,19 +182,22 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
     }
 
     if (
-        (tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-            headerColumnValue === "Area of change") ||
-        (tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY &&
-            headerColumnValue === TYPE_OF_HEALTH_CARE_HEADER_NAME)
+        tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
+        headerColumnValue === "Area of change"
     ) {
         return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
     }
 
-    if (tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY && headerColumnValue === "User charges apply") {
-        return COLUMN_WIDTHS.userChargesApplyColumn;
+    if (
+        tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY &&
+        (headerColumnValue === "User charges apply" || headerColumnValue === TYPE_OF_HEALTH_CARE_HEADER_NAME)
+    ) {
+        return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.typeOfHealthCareColumnOrUserChargesApplyColumn;
     }
 
-    return COLUMN_WIDTHS.default;
+    return tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY
+        ? USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.default
+        : COLUMN_WIDTHS.default;
 }
 
 export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number) {
