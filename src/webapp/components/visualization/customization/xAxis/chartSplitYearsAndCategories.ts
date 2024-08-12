@@ -9,13 +9,13 @@ function calculateFontSize(dataLength: number): string {
 }
 
 /**
- * Maps tick positions to a specified interval, transforming the array to have mirrored negative and positive values.
+ * Maps tick positions, transforming the array to have mirrored negative and positive values, between max interval.
  *
  * Examples:
  * tickPositions = [0, 1, 2, 3, 4] with interval = 10 expected result with symmetry: [-10, -5, 5, 10]
  * tickPositions = [0, 1, 2, 3] with interval = 10 expected result with symmetry: [-10, 0, 10]
  */
-function mapTicksToPixelsWithMaxInterval(tickPositions: number[] | undefined, maxInterval: number) {
+function buildGridLinesTranslationMap(tickPositions: number[] | undefined) {
     if (!tickPositions) return [];
     const [, ...ticks] = tickPositions; // Remove 0 at the beginning
 
@@ -23,8 +23,12 @@ function mapTicksToPixelsWithMaxInterval(tickPositions: number[] | undefined, ma
     const halfLen = _.floor(len / 2);
     const isEven = len % 2 === 0;
 
-    // Calculate interval so that the furthest ticks are at +/- maxInterval
-    const interval = maxInterval / halfLen;
+    // Calculate interval with linear function so that the furthest ticks are at +/- maxInterval
+    const maxInterval = 13;
+    const linearConstant = -0.5;
+    const linearInterval = linearConstant * len + maxInterval;
+    const interval = linearInterval / halfLen;
+
     // Generate the negative and positive halves
     const halfTicks = _(ticks).take(halfLen).value();
     const negativeHalf = halfTicks.map(t => -1 * t * interval).reverse();
@@ -55,8 +59,7 @@ export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
                 }
 
                 // Adjust gridLine positions
-                const maxInterval = 10;
-                const gridLinesTranslations = mapTicksToPixelsWithMaxInterval(xAxis1?.tickPositions, maxInterval);
+                const gridLinesTranslations = buildGridLinesTranslationMap(xAxis1?.tickPositions);
                 xAxis1?.tickPositions?.forEach((tick, index) => {
                     const gridLine = xAxis1?.ticks[tick]?.gridLine;
                     if (gridLine && gridLinesTranslations[index] !== undefined) {
