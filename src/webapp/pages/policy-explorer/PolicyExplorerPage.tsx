@@ -260,6 +260,7 @@ const CreditsText = styled(Typography)<{ $noWrap?: boolean }>`
     font-weight: 500;
     font-size: 0.875rem;
     white-space: ${props => (props.$noWrap ? "nowrap" : "unset")};
+    font-family: Lato;
 `;
 
 const Link = styled.a`

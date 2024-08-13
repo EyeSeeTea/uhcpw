@@ -18,9 +18,9 @@ export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) =>
                         <Row>
                             <Image src={expert.image} alt={`${expert.firstName} ${expert.lastName}`} />
                             <ExpertDetailsContainer>
-                                <Typography variant="body1" style={{ fontWeight: "bold" }}>
+                                <StyledTypography variant="body1" style={{ fontWeight: "bold" }}>
                                     {i18n.t(`${expert.firstName} ${expert.lastName}`)}
-                                </Typography>
+                                </StyledTypography>
                                 <Typography variant="body1">{i18n.t(expert.position)}</Typography>
                                 {expert.institution && (
                                     <Typography variant="body1">{i18n.t(expert.institution)}</Typography>
@@ -43,6 +43,10 @@ const Container = styled.div`
 
 const GridContainer = styled(Grid)`
     margin: 30px 0px;
+`;
+
+const StyledTypography = styled(Typography)`
+    font-family: Lato;
 `;
 
 const Row = styled.div`
