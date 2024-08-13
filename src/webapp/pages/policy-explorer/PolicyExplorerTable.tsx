@@ -102,7 +102,7 @@ export const PolicyExplorerTable = React.memo(
         // Add the double scroll bar effect when the component mounts
         useEffect(() => {
             doubleScroll(tableContainerRef.current);
-        }, [tableContainerRef]);
+        }, [tableContainerRef, dataOrientation]);
 
         return !rows?.length || !dataOrientation ? (
             category && (
