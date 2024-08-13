@@ -335,14 +335,22 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             return defaultName ?? header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase();
         });
 
-        const existsCountryColumn = columns.includes("Country");
+        const sortedColumns = visualization.sortColumnsInExcel ? visualization.sortColumnsInExcel(columns) : columns;
+
+        const newColumnsIndexOrder = sortedColumns.map(header => columns.indexOf(header));
+
+        const sortedRows: Array<string[]> = analyticsResponse.rows.map(row =>
+            _.compact(newColumnsIndexOrder.map(index => row[index]))
+        );
+
+        const existsCountryColumn = sortedColumns.includes("Country");
         const addCountryColumn = !existsCountryColumn && orgUnits.objects.length === 1;
 
-        const finalColumns = addCountryColumn ? ["Country", ...columns] : columns;
+        const finalColumns = addCountryColumn ? ["Country", ...sortedColumns] : sortedColumns;
 
         const mappedRows = _(
             this.mapAnalyticsResponseRows({
-                analyticsResponse,
+                rows: sortedRows,
                 metadata,
                 visualizationId: visualization.id,
                 seriesIdAndName,
@@ -368,7 +376,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     }
 
     mapAnalyticsResponseRows(params: {
-        analyticsResponse: Analytics;
+        rows: Array<string[]>;
         metadata: Metadata;
         visualizationId: Id;
         seriesIdAndName: {
@@ -376,9 +384,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             name: string | undefined;
         }[];
     }): string[][] {
-        const { analyticsResponse, metadata, visualizationId, seriesIdAndName } = params;
+        const { rows, metadata, visualizationId, seriesIdAndName } = params;
 
-        return analyticsResponse.rows.map(row =>
+        return rows.map(row =>
             row.map(cell => {
                 if (isValidUid(cell)) {
                     return (
