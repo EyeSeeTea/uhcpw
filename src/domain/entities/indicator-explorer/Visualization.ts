@@ -17,6 +17,7 @@ export interface VisualizationExtra {
     allowBreaksInSeries?: boolean;
     selectedYearsByDefault?: Year[];
     allowedYears?: Year[];
+    sortColumnsInExcel?: (headerRow: string[]) => string[];
     sortDataRowsInExcel?: (headerRow: string[], dataRows: string[][]) => string[][];
 }
 
