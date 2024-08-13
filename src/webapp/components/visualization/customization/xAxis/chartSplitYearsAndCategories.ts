@@ -9,7 +9,7 @@ function getFontSize(dataLength: number): string {
 }
 
 function getLabelRotation(dataLength: number): number {
-    if (dataLength <= 20) return 0;
+    if (dataLength < 20) return 0;
     return -90;
 }
 
@@ -91,7 +91,9 @@ export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
                 const xAxis = this.xAxis[0];
                 const series = this.series[0];
                 if (series && series.data && xAxis) {
+                    console.log(xAxis);
                     const dataLength = series.data.length;
+                    console.log(dataLength);
                     const fontSize = getFontSize(dataLength);
                     const labelRotation = getLabelRotation(dataLength);
                     // Update x-axis labels font size and rotation
