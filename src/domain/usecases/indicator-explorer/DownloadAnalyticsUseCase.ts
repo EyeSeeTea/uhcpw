@@ -1,5 +1,4 @@
 import { Future, FutureData } from "../../entities/Future";
-import { Visualization } from "../../entities/indicator-explorer/Visualization";
 import { LatestAvailable, LatestCOVID19 } from "../../entities/Year";
 import { AnalyticsRepository } from "../../repositories/indicator-explorer/AnalyticsRepository";
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
@@ -23,8 +22,6 @@ export class DownloadAnalyticsUseCase {
 
         return Future.parallel(visualizationIds.map(id => this.visualizationRepository.getById(id))).flatMap(
             visualizations => {
-                const mergedVisualization = this.mergeVisualizations(visualizations);
-
                 const sortedPeriods = periods.sort();
 
                 const noOverwritePeriods =
@@ -33,7 +30,7 @@ export class DownloadAnalyticsUseCase {
                 const finalPeriods = noOverwritePeriods ? [] : periods;
 
                 return this.analyticsRepository.saveToFile(
-                    mergedVisualization,
+                    visualizations,
                     finalPeriods,
                     orgUnits,
                     seriesIdAndName,
@@ -41,16 +38,5 @@ export class DownloadAnalyticsUseCase {
                 );
             }
         );
-    }
-
-    private mergeVisualizations(visualizations: Visualization[]): Visualization {
-        return visualizations.reduce((merged, current) => ({
-            ...merged,
-            rows: [...merged.rows, ...current.rows],
-            columns: [...merged.columns, ...current.columns],
-            filters: [...merged.filters, ...current.filters],
-            dataDimensionItems: [...merged.dataDimensionItems, ...current.dataDimensionItems],
-            categoryDimensions: [...merged.categoryDimensions, ...current.categoryDimensions],
-        }));
     }
 }

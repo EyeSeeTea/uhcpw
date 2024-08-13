@@ -17,9 +17,27 @@ import {
     VisualizationBreakInSeries,
 } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 import { Maybe } from "../../../types/utils";
-import { filterRowsByLastAvailableYear } from "./utils/filterRowsByLastAvailableYear";
+import {
+    filterRowsByYearInCountry,
+    getLastAvailableYearByCountry,
+    getLatestAvailableYearByCountryIdFromTwoCharts,
+} from "./utils/lastAvailableYearHelpers";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
+
+const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
+    z6nPPMMbOw5: {
+        ou: "Country",
+        pe: "Year",
+        dx: "Financing scheme",
+        [SERVICE_PRIMARY_NAME_COLUMN]: "Type of care",
+    },
+    default: {
+        ou: "Country",
+        pe: "Year",
+        dx: "Parameter",
+    },
+};
 
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown) {}
@@ -50,7 +68,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     }
 
     saveToFile(
-        visualization: Visualization,
+        visualizations: Visualization[],
         periods: string[],
         orgUnitUids: string[],
         seriesIdAndName: {
@@ -59,11 +77,16 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         }[],
         latestAvailableYear: boolean
     ): FutureData<void> {
-        return this.get(visualization, periods, orgUnitUids).flatMap(analyticsResponse => {
-            const metadataIds = this.extractMetadataIds(analyticsResponse);
+        return Future.parallel(
+            visualizations.map(visualization => this.get(visualization, periods, orgUnitUids))
+        ).flatMap(analyticsResponses => {
+            const analyticsResponseRows = analyticsResponses.reduce((acc: string[][], analyticsResponse) => {
+                return [...acc, ...analyticsResponse.rows];
+            }, []);
+            const metadataIds = this.extractMetadataIds(analyticsResponseRows);
 
             return Future.joinObj({
-                analyticsResponse: Future.success(analyticsResponse),
+                analyticsResponses: Future.success(analyticsResponses),
                 metadata: apiToFuture(
                     this.api.get<Metadata>("/metadata", {
                         fields: "id,shortName,name",
@@ -80,56 +103,160 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         filter: { id: { in: orgUnitUids } },
                     })
                 ),
-            }).flatMap(({ analyticsResponse, metadata, orgUnits }) => {
-                const chartName = `${visualization.categoryName}: ${visualization.friendlyName}`;
+            }).flatMap(({ analyticsResponses, metadata, orgUnits }) => {
+                const mergedVisualization = this.mergeVisualizations(visualizations);
 
-                const filteredAnalyticsResponse = latestAvailableYear
-                    ? {
-                          ...analyticsResponse,
-                          rows: filterRowsByLastAvailableYear(analyticsResponse.rows),
-                      }
-                    : analyticsResponse;
+                const isMultipleVisualizations = mergedVisualization.id.includes("_");
 
-                const dataRows = this.createDataRows(
-                    chartName,
-                    visualization,
-                    filteredAnalyticsResponse,
-                    orgUnits,
-                    metadata,
-                    seriesIdAndName
+                // NOTICE: This works for two visualizations merged
+                const [firstChartAnalyticsResponse, secondChartAnalyticsResponse] = analyticsResponses;
+                const latestAvailableYearByCountryId = latestAvailableYear
+                    ? isMultipleVisualizations
+                        ? getLatestAvailableYearByCountryIdFromTwoCharts(
+                              firstChartAnalyticsResponse?.rows || [],
+                              secondChartAnalyticsResponse?.rows || []
+                          )
+                        : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [])
+                    : undefined;
+
+                const dataRowsAndBreakInSeriesDescriptions = analyticsResponses.map(analyticsResponse => {
+                    return this.getDataRowsAndBreakInSeriesDescriptions(
+                        mergedVisualization,
+                        analyticsResponse,
+                        metadata,
+                        orgUnits,
+                        seriesIdAndName,
+                        latestAvailableYearByCountryId
+                    );
+                });
+
+                const dataRowsMerged = dataRowsAndBreakInSeriesDescriptions.reduce(
+                    (acc: string[][], { dataRows }, index) => {
+                        // Get header row from first one only
+                        return index === 0 ? [...acc, ...dataRows] : [...acc, ...dataRows.slice(1)];
+                    },
+                    []
                 );
 
-                const orgUnitsInChart = this.getOrgUnitsInChart(
-                    metadata.organisationUnits,
-                    orgUnits,
-                    filteredAnalyticsResponse.metaData.dimensions
+                const headerRow = dataRowsMerged[0] || [];
+                const dataRowsWithoutHeader = dataRowsMerged.slice(1);
+
+                const sortedDataRowsWithoutHeader = isMultipleVisualizations
+                    ? this.sortDataRows(headerRow, dataRowsWithoutHeader)
+                    : dataRowsWithoutHeader;
+
+                // TODO: review if this works for multiple visualizations merged
+                const allBreakInSeriesDescriptions = dataRowsAndBreakInSeriesDescriptions.reduce(
+                    (acc: string[][], { breakInSeriesDescriptions }) => {
+                        return [...acc, ...breakInSeriesDescriptions];
+                    },
+                    []
                 );
 
-                const breakInSeriesDescriptions = this.getBreakInSeriesDescription(
-                    filteredAnalyticsResponse,
-                    orgUnitsInChart,
-                    visualization.breakInSeries
-                );
+                const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
                 const tabs = [
-                    { name: "Notes", data: [[visualization.notes || ""], ...breakInSeriesDescriptions] },
+                    { name: "Notes", data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions] },
                     {
                         name: "Data",
-                        data: dataRows,
+                        data: [[chartName || mergedVisualization.name], headerRow, ...sortedDataRowsWithoutHeader],
                     },
                 ];
 
                 if (tabs.length > 0) {
                     exportToCSV(
                         tabs,
-                        visualization.downloadedFileName
-                            ? `${visualization.categoryName}: ${visualization.downloadedFileName}`
+                        mergedVisualization.downloadedFileName
+                            ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
                             : chartName
                     );
                 }
                 return Future.success(undefined);
             });
         });
+    }
+
+    private sortDataRows(headerRow: string[], dataRowsWithoutHeader: string[][]): string[][] {
+        const countryIndexInHeader = headerRow.findIndex(header => header === "Country");
+        const yearIndexInHeader = headerRow.findIndex(header => header === "Year");
+
+        const sortDataRowsWithoutHeaderByYear = yearIndexInHeader
+            ? dataRowsWithoutHeader.sort((rowA, rowB) => {
+                  const yearA = rowA[yearIndexInHeader] ? rowA[yearIndexInHeader]?.toLowerCase() : "";
+                  const yearB = rowB[yearIndexInHeader] ? rowB[yearIndexInHeader]?.toLowerCase() : "";
+
+                  if (yearA && yearB) {
+                      return yearA < yearB ? -1 : 1;
+                  } else {
+                      return 0;
+                  }
+              })
+            : dataRowsWithoutHeader;
+
+        return countryIndexInHeader
+            ? sortDataRowsWithoutHeaderByYear.sort((rowA, rowB) => {
+                  const countryA = rowA[countryIndexInHeader] ? rowA[countryIndexInHeader]?.toLowerCase() : "";
+                  const countryB = rowB[countryIndexInHeader] ? rowB[countryIndexInHeader]?.toLowerCase() : "";
+
+                  if (countryA && countryB) {
+                      return countryA < countryB ? -1 : 1;
+                  } else {
+                      return 0;
+                  }
+              })
+            : sortDataRowsWithoutHeaderByYear;
+    }
+
+    private mergeVisualizations(visualizations: Visualization[]): Visualization {
+        return visualizations.reduce((merged, current) => ({
+            ...merged,
+            rows: [...merged.rows, ...current.rows],
+            columns: [...merged.columns, ...current.columns],
+            filters: [...merged.filters, ...current.filters],
+            dataDimensionItems: [...merged.dataDimensionItems, ...current.dataDimensionItems],
+            categoryDimensions: [...merged.categoryDimensions, ...current.categoryDimensions],
+        }));
+    }
+
+    private getDataRowsAndBreakInSeriesDescriptions(
+        visualization: Visualization,
+        analyticsResponse: Analytics,
+        metadata: Metadata,
+        orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>,
+        seriesIdAndName: {
+            id: string | undefined;
+            name: string | undefined;
+        }[],
+        lastAvailableYearByCountry?: Record<string, string>
+    ): { breakInSeriesDescriptions: string[][]; dataRows: string[][] } {
+        const filteredAnalyticsResponse = lastAvailableYearByCountry
+            ? {
+                  ...analyticsResponse,
+                  rows: filterRowsByYearInCountry(analyticsResponse.rows, lastAvailableYearByCountry),
+              }
+            : analyticsResponse;
+
+        const dataRows = this.createDataRows(
+            visualization,
+            filteredAnalyticsResponse,
+            orgUnits,
+            metadata,
+            seriesIdAndName
+        );
+
+        const orgUnitsInChart = this.getOrgUnitsInChart(
+            metadata.organisationUnits,
+            orgUnits,
+            filteredAnalyticsResponse.metaData.dimensions
+        );
+
+        const breakInSeriesDescriptions = this.getBreakInSeriesDescription(
+            filteredAnalyticsResponse,
+            orgUnitsInChart,
+            visualization.breakInSeries
+        );
+
+        return { breakInSeriesDescriptions, dataRows };
     }
 
     private getOrgUnitsInChart(
@@ -184,37 +311,46 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     }
 
     private createDataRows(
-        chartName: string,
         visualization: Visualization,
         analyticsResponse: Analytics,
         orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>,
         metadata: Metadata,
         seriesIdAndName: { id: string | undefined; name: string | undefined }[]
     ) {
-        const mapCodeNameToColumnName: Record<string, string> = {
-            ou: "Country",
-            pe: "Year",
-            dx: "Parameter",
-        };
-
         const columns = analyticsResponse.headers.map(header => {
+            const headerNamesInVisualization = HEADER_NAMES_BY_VISUALIZATION[visualization.id];
+            const headerName = headerNamesInVisualization?.[header.name];
+
+            if (headerName) {
+                return headerName;
+            }
+
             if (SERVICE_PRIMARY_NAME_COLUMN === header.name) {
                 return "Parameter";
             }
-            return (
-                mapCodeNameToColumnName[header.name] ??
-                header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase()
-            );
+
+            const defaultHeaderNames = HEADER_NAMES_BY_VISUALIZATION.default;
+            const defaultName = defaultHeaderNames ? defaultHeaderNames[header.name] : undefined;
+
+            return defaultName ?? header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase();
         });
 
-        const existsCountryColumn = columns.includes("Country");
+        const sortedColumns = visualization.sortColumnsInExcel ? visualization.sortColumnsInExcel(columns) : columns;
+
+        const newColumnsIndexOrder = sortedColumns.map(header => columns.indexOf(header));
+
+        const sortedRows: Array<string[]> = analyticsResponse.rows.map(row =>
+            _.compact(newColumnsIndexOrder.map(index => row[index]))
+        );
+
+        const existsCountryColumn = sortedColumns.includes("Country");
         const addCountryColumn = !existsCountryColumn && orgUnits.objects.length === 1;
 
-        const finalColumns = addCountryColumn ? ["Country", ...columns] : columns;
+        const finalColumns = addCountryColumn ? ["Country", ...sortedColumns] : sortedColumns;
 
         const mappedRows = _(
             this.mapAnalyticsResponseRows({
-                analyticsResponse,
+                rows: sortedRows,
                 metadata,
                 visualizationId: visualization.id,
                 seriesIdAndName,
@@ -223,21 +359,24 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             .sortBy(row => row[1])
             .value();
 
-        const dataRows = [[chartName || visualization.name], finalColumns, ...mappedRows];
-
-        const dataRowsWithCountryIfRequired = dataRows.map((row, index) => {
-            if (addCountryColumn && index > 1) {
+        const dataRowsWithCountryIfRequired = mappedRows.map(row => {
+            if (addCountryColumn) {
                 const country = orgUnits.objects[0];
                 const countryName = country ? mapToWhoCountryName(country.id, country.shortName || "") : "";
                 return [countryName, ...row];
             }
             return row;
         });
-        return dataRowsWithCountryIfRequired;
+
+        const sortedDataRows = visualization.sortDataRowsInExcel
+            ? visualization.sortDataRowsInExcel(finalColumns, dataRowsWithCountryIfRequired)
+            : dataRowsWithCountryIfRequired;
+
+        return [finalColumns, ...sortedDataRows];
     }
 
     mapAnalyticsResponseRows(params: {
-        analyticsResponse: Analytics;
+        rows: Array<string[]>;
         metadata: Metadata;
         visualizationId: Id;
         seriesIdAndName: {
@@ -245,9 +384,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             name: string | undefined;
         }[];
     }): string[][] {
-        const { analyticsResponse, metadata, visualizationId, seriesIdAndName } = params;
+        const { rows, metadata, visualizationId, seriesIdAndName } = params;
 
-        return analyticsResponse.rows.map(row =>
+        return rows.map(row =>
             row.map(cell => {
                 if (isValidUid(cell)) {
                     return (
@@ -277,9 +416,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         }
     }
 
-    extractMetadataIds(analyticsResponse: Analytics) {
+    extractMetadataIds(analyticsResponseRows: string[][]) {
         return _.uniq(
-            analyticsResponse.rows
+            analyticsResponseRows
                 .map(row => {
                     return row.reduce((acc: string[], cell: string) => {
                         if (isValidUid(cell)) {

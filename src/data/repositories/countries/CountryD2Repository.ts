@@ -8,6 +8,7 @@ import { apiToFuture } from "../../../utils/futures";
 import { coordinatesFromString } from "./coordinatesFromString";
 import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData";
 import { Maybe } from "../../../types/utils";
+import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -225,6 +226,7 @@ export class CountryD2Repository implements CountryRepository {
             summary,
             sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
             isInCountryPage: isInCountryPage,
+            currencyCode: getCurrencyCodeFromCountryId(countryId),
         };
     }
 
