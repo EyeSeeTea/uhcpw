@@ -1,11 +1,16 @@
 import { ChartCustomization } from "../types";
 import _ from "lodash";
 
-function calculateFontSize(dataLength: number): string {
+function getFontSize(dataLength: number): string {
     if (dataLength <= 20) return "12px";
     if (dataLength <= 55) return "10px";
     if (dataLength <= 100) return "8px";
     return "6px"; // Fallback for larger datasets
+}
+
+function getLabelRotation(dataLength: number): number {
+    if (dataLength < 20) return 0;
+    return -90;
 }
 
 /**
@@ -37,8 +42,6 @@ function buildGridLinesTranslationMap(tickPositions: number[] | undefined) {
     // Return combined array depending on whether the length is even or odd
     return isEven ? [...negativeHalf, ...positiveHalf] : [...negativeHalf, 0, ...positiveHalf];
 }
-
-let currentFontSize: string | undefined;
 
 export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
     chart: {
@@ -88,24 +91,24 @@ export const chartSplitYearsAndCategories: Pick<ChartCustomization, "chart"> = {
                 const xAxis = this.xAxis[0];
                 const series = this.series[0];
                 if (series && series.data && xAxis) {
+                    console.log(xAxis);
                     const dataLength = series.data.length;
-                    const fontSize = calculateFontSize(dataLength);
-                    // Update x-axis labels font size
-                    if (currentFontSize !== fontSize) {
-                        currentFontSize = fontSize; // Update the tracked font size
-
-                        // Update x-axis labels font size only if it needs to be changed
-                        xAxis.update(
-                            {
-                                labels: {
-                                    style: {
-                                        fontSize: fontSize,
-                                    },
+                    console.log(dataLength);
+                    const fontSize = getFontSize(dataLength);
+                    const labelRotation = getLabelRotation(dataLength);
+                    // Update x-axis labels font size and rotation
+                    if (
+                        fontSize !== xAxis.options.labels?.style?.fontSize ||
+                        labelRotation !== xAxis.options.labels?.rotation
+                    ) {
+                        xAxis.update({
+                            labels: {
+                                style: {
+                                    fontSize: fontSize,
                                 },
+                                rotation: labelRotation,
                             },
-                            false
-                        ); // 'false' to not trigger an immediate redraw
-                        this.redraw(); // Call redraw explicitly after update
+                        });
                     }
                 }
             },

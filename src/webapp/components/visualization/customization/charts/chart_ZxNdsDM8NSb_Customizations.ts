@@ -23,7 +23,6 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
                 style: {
                     fontSize: "12px",
                 },
-                rotation: -45,
                 step: 1,
             },
         },
