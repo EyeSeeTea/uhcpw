@@ -201,6 +201,9 @@ msgstr[1] ""
 msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
+msgid "Latest available year"
+msgstr ""
+
 msgid "This indicator needs at least {{count}} countries"
 msgid_plural "This indicator needs at least {{count}} countries"
 msgstr[0] ""

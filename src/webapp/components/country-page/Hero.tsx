@@ -57,6 +57,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         withoutBackground
                         useHeaderForCountryPage
                         onDownloadImage={handleOpenScreenshot}
+                        paddingEnd={false}
                     />
                 </VisualizationContainer>
 
@@ -83,7 +84,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
 
 const InfoGrid = styled(Grid)`
     background-color: ${colors.accentPrimary};
-    padding: 40px 30px 60px 30px;
+    padding: 20px 30px 60px 30px;
     padding-inline-start: 4.1rem;
     color: white;
     overflow-y: auto;

@@ -14,7 +14,7 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_dbc87Ljw8uN_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    const chartOptions = comparativeStackedColumnChartOptions(chartSource, seriesNames, seriesColors);
+    const chartOptions = comparativeStackedColumnChartOptions({ chartSource, seriesNames, seriesColors });
     return {
         ...chartOptions,
         series: sortSerieDataByValueInSerie(chartOptions.series as SeriesColumnOptions[], "MDhStd9lvOc"),

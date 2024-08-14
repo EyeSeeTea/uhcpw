@@ -1,3 +1,4 @@
+import { LatestCOVID19 } from "../../../../domain/entities/Year";
 import { sortedCategoryNames } from "./utils";
 
 export const chart_mUjcWO90CRr_Seed = {
@@ -6,4 +7,5 @@ export const chart_mUjcWO90CRr_Seed = {
     friendlyName:
         "Public spending on health as a share of GDP and out-of-pocket payments as a share of current spending on health",
     isComparative: true,
+    allowedYears: [LatestCOVID19],
 };

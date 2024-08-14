@@ -4,13 +4,21 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 
-export const comparativeColumnChartOptions: (
-    chartSource: ChartSource,
-    seriesNames: Record<string, string>,
-    seriesColors: Record<string, string>,
-    currentSerieColor?: string,
-    orderByValueInSerie?: string
-) => Highcharts.Options = (chartSource, seriesNames, seriesColors, currentSerieColor, orderByValueInSerie) => {
+export const comparativeColumnChartOptions: (params: {
+    chartSource: ChartSource;
+    seriesNames: Record<string, string>;
+    seriesColors: Record<string, string>;
+    currentSerieColor?: string;
+    orderByValueInSerie?: string;
+    stackedValuesUpTo100?: boolean;
+}) => Highcharts.Options = ({
+    chartSource,
+    seriesNames,
+    seriesColors,
+    currentSerieColor,
+    orderByValueInSerie,
+    stackedValuesUpTo100,
+}) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
@@ -43,15 +51,31 @@ export const comparativeColumnChartOptions: (
     const currentCountryCode =
         chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
 
+    const maxLengthInDx = Math.max(...keys.map(key => (groupByDx[key] || []).length));
+    const groupByDxWithMaxLength =
+        Object.values(groupByDx).find(groupOfDx => (groupOfDx || []).length === maxLengthInDx) || [];
+
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
-        return {
+        const filledDataSourceWithEmptyData =
+            dataSource.length < maxLengthInDx && !!orderByValueInSerie
+                ? groupByDxWithMaxLength.reduce((acc: Array<string[]>, row) => {
+                      const countryId = row[1]?.toString() || "";
+                      const year = row[2] || "";
+                      const currentDataSourceFound = dataSource.find(row => row[1] === countryId && row[2] === year);
+                      return currentDataSourceFound
+                          ? [...acc, currentDataSourceFound]
+                          : [...acc, [dxId, countryId, year, "0"]];
+                  }, [])
+                : dataSource;
+
+        const serie = {
             id: dxId,
             type: "column",
             name: seriesNames[dxId],
             color: seriesColors[dxId],
-            data: dataSource.map(row => {
+            data: filledDataSourceWithEmptyData.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
                 const orgUnit = mapToWhoCountryCode(
                     chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
@@ -69,6 +93,8 @@ export const comparativeColumnChartOptions: (
                 };
             }),
         };
+
+        return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
     const maxYAxis = chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue

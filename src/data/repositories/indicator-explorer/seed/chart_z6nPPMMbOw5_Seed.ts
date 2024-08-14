@@ -18,7 +18,7 @@ export const chart_z6nPPMMbOw5_Seed = {
     friendlyName: "Breakdown of current spending on health by financing scheme and type of care",
     maxCountryFilter: 1,
     hasEur27: true,
-    sortDataRowsInExcel: (headerRow: string[], dataRows: string[][]) => {
+    sortDataRows: (headerRow: string[], dataRows: string[][]) => {
         const yearIndex = headerRow.findIndex(header => header === "Year");
         const sortedByYear = _(dataRows)
             .sortBy(row => row[yearIndex])

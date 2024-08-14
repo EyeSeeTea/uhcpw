@@ -8,4 +8,7 @@ export const chart_sjgCABd3zK7_Customizations: ChartCustomization = {
     series: typeOfCareSeries3,
     xAxis: { title: { text: "" } },
     sortLegendByLastDataPoint: true,
+    currencyOfCountryYAxis: (countryCurrencyCode: string) => {
+        return { title: { text: countryCurrencyCode } };
+    },
 };

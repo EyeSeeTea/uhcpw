@@ -1,6 +1,8 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
+import ReactMarkdown from "react-markdown";
+
 import { PersonState } from "../../../pages/about/AboutState";
 
 export interface ItemPersonProps {
@@ -16,19 +18,44 @@ export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExp
                 <Row>
                     <InfoContainer>
                         <NameContainer isExpert={isExpert}>
-                            <Text gutterBottom style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: 800 }}>
+                            <Text
+                                gutterBottom
+                                style={{ marginBottom: "-1px", paddingRight: "5px", fontWeight: "bold" }}
+                            >
                                 {person.firstName}
                             </Text>
-                            <Text gutterBottom style={{ fontWeight: 800 }}>
+                            <Text gutterBottom style={{ fontWeight: "bold" }}>
                                 {person.lastName}
                             </Text>
                         </NameContainer>
-                        <Text variant="body1" gutterBottom>
-                            {person.position}
-                        </Text>
-                        <Text variant="body1" gutterBottom>
-                            {person.institution}
-                        </Text>
+                        <div>
+                            <ReactMarkdown
+                                components={{
+                                    p: ({ children }) => (
+                                        <Text variant="body1" gutterBottom>
+                                            {children}
+                                        </Text>
+                                    ),
+                                }}
+                            >
+                                {person.position.replace(/\\n/g, "\n")}
+                            </ReactMarkdown>
+                        </div>
+                        <div>
+                            {person.institution && (
+                                <ReactMarkdown
+                                    components={{
+                                        p: ({ children }) => (
+                                            <Text variant="body1" gutterBottom>
+                                                {children}
+                                            </Text>
+                                        ),
+                                    }}
+                                >
+                                    {person.institution.replace(/\\n/g, "\n")}
+                                </ReactMarkdown>
+                            )}
+                        </div>
                         <Text variant="body1" gutterBottom>
                             {person.countryName}
                         </Text>
@@ -85,4 +112,5 @@ const NameContainer = styled.div<{ isExpert: boolean }>`
 
 const Text = styled(Typography)`
     text-align: center;
+    font-family: Lato;
 `;
