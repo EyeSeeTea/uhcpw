@@ -302,6 +302,14 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         }, [hasSelectAll, onSelectedIdsChange, itemsToSelect, selectedIds]);
 
         const selectedChips = useMemo(() => {
+            if (maxSelection === 1) {
+                return selectedItems.sort((a, b) => {
+                    if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+                    if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
+                    return 0;
+                });
+            }
+
             const allSelectedParent = parents.find(parent => parent.id === ALL_NODE_ID);
 
             const dataToShow =
@@ -326,6 +334,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                 return 0;
             });
         }, [
+            maxSelection,
             parents,
             showParentIfChecked,
             areAllItemsSelected,
