@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-07-18T09:33:12.459Z\n"
-"PO-Revision-Date: 2024-07-18T09:33:12.459Z\n"
+"POT-Creation-Date: 2024-07-31T09:01:03.322Z\n"
+"PO-Revision-Date: 2024-07-31T09:01:03.322Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -195,6 +195,9 @@ msgstr[0] ""
 msgstr[1] ""
 
 msgid "2019 or latest available year before COVID-19"
+msgstr ""
+
+msgid "Latest available year"
 msgstr ""
 
 msgid "This indicator needs at least {{count}} countries"

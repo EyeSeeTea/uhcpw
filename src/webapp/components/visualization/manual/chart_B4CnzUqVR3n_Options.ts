@@ -11,12 +11,13 @@ const seriesColors: Record<string, string> = {
 
 export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     return {
-        ...comparativeColumnChartOptions(chartSource, seriesNames, seriesColors, "#c00000"),
+        ...comparativeColumnChartOptions({ chartSource, seriesNames, seriesColors, currentSerieColor: "#c00000" }),
         legend: {
             enabled: false,
         },
         yAxis: {
-            ...comparativeColumnChartOptions(chartSource, seriesNames, seriesColors, "#c00000")?.yAxis,
+            ...comparativeColumnChartOptions({ chartSource, seriesNames, seriesColors, currentSerieColor: "#c00000" })
+                ?.yAxis,
             title: {
                 text: "Government spending (%)",
                 style: { fontSize: "13px" },
