@@ -42,6 +42,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         placeholder={i18n.t("Select country or area")}
                         showParentIfChecked={true}
                         showOnlyAllParentSelectedIfChecked={true}
+                        selectedItemsToShowWhenAllSelected={filters.country.selectedItemsToShowWhenAllSelected}
                         allSelectedLabel={i18n.t("All countries/areas")}
                     />
                 </Center>

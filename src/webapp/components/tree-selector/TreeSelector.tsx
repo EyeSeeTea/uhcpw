@@ -49,6 +49,7 @@ interface TreeSelectorProps {
     allSelectedLabel?: string;
     showSubChildren?: boolean;
     defaultExpanded?: string[];
+    selectedItemsToShowWhenAllSelected?: string[];
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
@@ -72,6 +73,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         showSubChildren = false,
         defaultExpanded = EMPTY_IDS_ARRAY,
         allSelectedLabel,
+        selectedItemsToShowWhenAllSelected = EMPTY_IDS_ARRAY,
     }) => {
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -160,7 +162,9 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
 
                     if (isParent) {
                         if (nodeId === ALL_NODE_ID && showOnlyAllParentSelectedIfChecked) {
-                            onSelectedIdsChange([]);
+                            onSelectedIdsChange([
+                                ...selectedIds.filter(id => selectedItemsToShowWhenAllSelected.includes(id)),
+                            ]);
                         } else {
                             const finalChildren = filteredItemsBySearch.filter(item =>
                                 item.parents.some(p => p.id === nodeId)
@@ -181,6 +185,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                 onSelectedIdsChange,
                 items,
                 showOnlyAllParentSelectedIfChecked,
+                selectedItemsToShowWhenAllSelected,
                 filteredItemsBySearch,
                 handleSelectedAllItemsInParent,
             ]
@@ -299,19 +304,36 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         const selectedChips = useMemo(() => {
             const allSelectedParent = parents.find(parent => parent.id === ALL_NODE_ID);
 
-            const selectedDataToShow =
+            const dataToShow =
                 showParentIfChecked && areAllItemsSelected && parents.length > 0
-                    ? showOnlyAllParentSelectedIfChecked && allSelectedParent
-                        ? [allSelectedParent]
-                        : parents
+                    ? [
+                          ...parents,
+                          ...selectedItems.filter(item => selectedItemsToShowWhenAllSelected.includes(item.id)),
+                      ]
                     : selectedItems;
+
+            const selectedDataToShow =
+                allSelectedParent && isAllItemParentSelected(allSelectedParent.id) && showOnlyAllParentSelectedIfChecked
+                    ? [
+                          allSelectedParent,
+                          ...selectedItems.filter(item => selectedItemsToShowWhenAllSelected.includes(item.id)),
+                      ]
+                    : dataToShow;
 
             return selectedDataToShow.sort((a, b) => {
                 if (a.name.toLowerCase() < b.name.toLowerCase()) return -1;
                 if (a.name.toLowerCase() > b.name.toLowerCase()) return 1;
                 return 0;
             });
-        }, [showOnlyAllParentSelectedIfChecked, areAllItemsSelected, parents, selectedItems, showParentIfChecked]);
+        }, [
+            parents,
+            showParentIfChecked,
+            areAllItemsSelected,
+            selectedItems,
+            isAllItemParentSelected,
+            showOnlyAllParentSelectedIfChecked,
+            selectedItemsToShowWhenAllSelected,
+        ]);
 
         const finalPlaceholder = useMemo(() => {
             return selectedChips.length === 0 ? placeholder : "";
@@ -335,25 +357,20 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     InputProps={{
                         startAdornment: (
                             <SelectedContainer>
-                                {selectedChips.length === 1 && selectedChips[0]?.id === ALL_NODE_ID ? (
-                                    <SelectedChip
-                                        key={ALL_NODE_ID}
-                                        label={allSelectedLabel || selectedChips[0]?.name}
-                                        onDelete={() => handleSelectedChange(ALL_NODE_ID, false)}
-                                        deleteIcon={<CloseIcon fontSize="small" />}
-                                    />
-                                ) : (
-                                    selectedChips.map(item => {
-                                        return (
-                                            <SelectedChip
-                                                key={item.id}
-                                                label={item.name}
-                                                onDelete={() => handleSelectedChange(item.id, false)}
-                                                deleteIcon={<CloseIcon fontSize="small" />}
-                                            />
-                                        );
-                                    })
-                                )}
+                                {selectedChips.map(item => {
+                                    return (
+                                        <SelectedChip
+                                            key={item.id}
+                                            label={
+                                                item.id === ALL_NODE_ID && allSelectedLabel
+                                                    ? allSelectedLabel
+                                                    : item.name
+                                            }
+                                            onDelete={() => handleSelectedChange(item.id, false)}
+                                            deleteIcon={<CloseIcon fontSize="small" />}
+                                        />
+                                    );
+                                })}
                             </SelectedContainer>
                         ),
                         endAdornment: (
