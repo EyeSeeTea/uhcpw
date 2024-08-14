@@ -248,6 +248,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 disabledCountries,
                 maxCountrySelection,
                 showSubRegions: true,
+                selectedItemsToShowWhenAllSelected: [EU27],
             },
             indicators: {
                 options: indicatorFilters,
