@@ -59,7 +59,12 @@ export type AllSeriesCustomization = {
 
 export type AxisCustomization = {
     title?: TitleCustomization;
-    labels?: { rotation?: number; style?: CSSProperties; step?: number };
+    labels?: {
+        rotation?: number;
+        style?: CSSProperties;
+        step?: number;
+        formatter?: (this: Highcharts.AxisLabelsFormatterContextObject) => void;
+    };
     categories?: string[];
     lineWidth?: number;
 };

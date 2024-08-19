@@ -1,5 +1,6 @@
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
+import { yAxisformatNumberLabel } from "../yAxis/formatNumberLabel";
 
 export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -79,6 +80,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
         },
     ],
     xAxis: { title: { text: "" } },
+    ...yAxisformatNumberLabel,
     sortLegendByLastDataPoint: true,
     currencyOfCountryYAxis: (countryCurrencyCode: string) => {
         return { title: { text: countryCurrencyCode } };

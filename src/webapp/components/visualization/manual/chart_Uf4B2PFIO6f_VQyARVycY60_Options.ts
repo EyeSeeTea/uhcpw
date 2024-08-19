@@ -2,6 +2,7 @@ import _ from "lodash";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
+import { yAxisformatNumberLabel } from "../customization/yAxis/formatNumberLabel";
 
 const seriesNames: Record<string, string> = {
     Oseqbg7Odmn: "Average household capacity to pay",
@@ -74,11 +75,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                     text: firstChartVisualization?.axes[0]?.title.text.replace("€", currencyCode),
                     style: { fontSize: "13px" },
                 },
-                labels: {
-                    formatter: function () {
-                        return this.value.toString();
-                    },
-                },
+                labels: yAxisformatNumberLabel.yAxis?.labels,
             },
             {
                 min: 0,
