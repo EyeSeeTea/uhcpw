@@ -82,6 +82,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         ITA: pos.top,
         LVA: pos.right,
         SVN: pos.bottomLeft,
+        EU27: pos.top,
     };
 
     return createScratterChart(

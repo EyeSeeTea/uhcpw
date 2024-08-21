@@ -92,6 +92,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         LVA: pos.bottomRight,
         BIH: pos.topLeft,
         NET: pos.bottomLeft,
+        EU27: pos.left,
     };
     return createScratterChart(
         series,
