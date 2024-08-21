@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, SerieData } from "./generic/scratterChart";
+import { createScratterChart, pos, SerieData } from "./generic/scratterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
 
 const REST_ID = "REST_ID";
@@ -59,6 +59,30 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
             data: serieData,
         };
     });
+    const countryPositionsAdjustment = {
+        EST: pos.right,
+        "KOS*": pos.right,
+        BUL: pos.topLeft,
+        AUT: pos.topLeft,
+        ROM: pos.right,
+        BEL: pos.right,
+        CZH: pos.bottomRight,
+        ARM: pos.bottomLeft,
+        MKD: pos.topLeft,
+        UNK: pos.topLeft,
+        GRE: pos.bottomLeft,
+        ISR: pos.topLeft,
+        HUN: pos.bottomLeft,
+        POL: pos.topRight,
+        SWE: pos.top,
+        SPA: pos.topLeft,
+        GEO: pos.right,
+        TKM: pos.right,
+        DEU: pos.right,
+        ITA: pos.top,
+        LVA: pos.right,
+        SVN: pos.bottomLeft,
+    };
 
     return createScratterChart(
         series,
@@ -67,6 +91,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         "GDP per person in current purchasing power parities",
         "Public spending on health as a share of GDP (%)",
         "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
-        countriesWithData
+        countriesWithData,
+        countryPositionsAdjustment
     );
 };

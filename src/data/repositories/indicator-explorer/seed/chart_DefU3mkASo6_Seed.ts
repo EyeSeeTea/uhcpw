@@ -1,44 +1,22 @@
-import _ from "lodash";
 import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames } from "./utils";
+import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 
-const SORTED_PARAMETER = [
+const PARAMETER_ORDER = [
     "Further impoverished",
     "Impoverished",
     "At risk of impoverishment",
     "Not at risk of impoverishment",
 ];
 
-const HEADER_ORDER = ["Country", "Year", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
 
 export const chart_DefU3mkASo6_Seed = {
     categoryName: sortedCategoryNames.comparative,
     friendlyName: "breakdown of households with catastrophic health spending by risk of impoverishment",
     isComparative: true,
     allowedYears: [LatestAvailable],
-    sortColumnsInExcel: (headerRow: string[]) => {
-        const sortedHeader = _.sortBy(headerRow, header => {
-            const index = HEADER_ORDER.indexOf(header);
-            return index === -1 ? Infinity : index;
-        });
-
-        return sortedHeader;
-    },
-    sortDataRowsInExcel: (headerRow: string[], dataRows: string[][]) => {
-        const yearIndex = headerRow.findIndex(header => header === "Year");
-
-        const countryIndex = headerRow.findIndex(header => header === "Country");
-        const parameterIndex = headerRow.findIndex(header => header === "Parameter");
-
-        const sortedDataRows = _.orderBy(
-            dataRows,
-            [
-                row => row[yearIndex],
-                row => row[countryIndex],
-                row => SORTED_PARAMETER.indexOf(row[parameterIndex]?.toString() || ""),
-            ],
-            ["asc", "asc"]
-        );
-        return sortedDataRows;
-    },
+    sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
+    sortDataRows: (headerRow: string[], dataRows: string[][]) =>
+        sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),
 };

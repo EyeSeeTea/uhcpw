@@ -92,6 +92,9 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         disabledItems={filters.country.disabledCountries}
                         showSubChildren={filters.country.showSubRegions}
                         defaultExpanded={filters.country.defaultExpandedCountries}
+                        showParentIfChecked={true}
+                        showOnlyAllParentSelectedIfChecked={true}
+                        allSelectedLabel={i18n.t("All countries/areas")}
                     />
                 </Wrapper>
             </Grid>

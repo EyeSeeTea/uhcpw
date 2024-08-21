@@ -5,6 +5,7 @@ import UnCheckedIcon from "material-ui/svg-icons/toggle/check-box-outline-blank"
 import styled from "styled-components";
 import { Leaf } from "./Leaf";
 import { Id } from "../../../domain/entities/Ref";
+import { TreeOption } from "./TreeSelector";
 
 interface ChildAndSubChildrenProps {
     nodeId: string;
@@ -12,7 +13,7 @@ interface ChildAndSubChildrenProps {
     selected: boolean;
     onSelectedChange: (nodeId: string, selected: boolean) => void;
     selectedIds: string[];
-    subChildren: { id: string; name: string; code: string }[];
+    subChildren: TreeOption[];
     disabled?: boolean;
     disabledItems?: string[];
     maxSelection?: number;
