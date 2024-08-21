@@ -114,14 +114,21 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
                 // NOTICE: This works for two visualizations merged
                 const [firstChartAnalyticsResponse, secondChartAnalyticsResponse] = analyticsResponses;
-                const latestAvailableYearByCountryId = latestAvailableYear
-                    ? isMultipleVisualizations
-                        ? getLatestAvailableYearByCountryIdFromTwoCharts(
-                              firstChartAnalyticsResponse?.rows || [],
-                              secondChartAnalyticsResponse?.rows || []
-                          )
-                        : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [])
-                    : undefined;
+
+                // Some charts don't have years in rows but we still want latest available years filter
+                const isRowsContainsYears =
+                    firstChartAnalyticsResponse?.rows[0] &&
+                    firstChartAnalyticsResponse?.rows[0][2]?.match(/^(20)\d{2}$/);
+
+                const latestAvailableYearByCountryId =
+                    latestAvailableYear && isRowsContainsYears
+                        ? isMultipleVisualizations
+                            ? getLatestAvailableYearByCountryIdFromTwoCharts(
+                                  firstChartAnalyticsResponse?.rows || [],
+                                  secondChartAnalyticsResponse?.rows || []
+                              )
+                            : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [])
+                        : undefined;
 
                 const dataRowsAndBreakInSeriesDescriptions = analyticsResponses.map(analyticsResponse => {
                     return this.getDataRowsAndBreakInSeriesDescriptions({
