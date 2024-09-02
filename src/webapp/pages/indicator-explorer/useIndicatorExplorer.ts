@@ -103,6 +103,15 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 setSelectedYearFilter(newsVisualization?.allowedYears?.map(year => year.id));
             }
 
+            // Reset countries filter depending on maxCountryFilter
+            if (
+                selectedCountries &&
+                newsVisualization?.maxCountryFilter &&
+                selectedCountries?.length > newsVisualization?.maxCountryFilter
+            ) {
+                onSelectedCountryChange([]);
+            }
+
             showNonComparativeMessageIfRequired(oldVisualization, newsVisualization);
 
             setMaxCountrySelection(newsVisualization?.maxCountryFilter);
