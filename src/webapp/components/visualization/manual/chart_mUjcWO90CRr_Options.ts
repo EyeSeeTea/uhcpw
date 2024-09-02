@@ -2,6 +2,7 @@ import _ from "lodash";
 import { ChartSource } from "./chartOptions";
 import { createScratterChart, pos, SerieData } from "./generic/scratterChart";
 import { NamedRef } from "../../../../domain/entities/Ref";
+import { getEU27Label } from "../customization/charts/utils/getEU27Label";
 
 const REST_ID = "REST_ID";
 
@@ -36,12 +37,13 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
             const xSource = rowsByCountry[countryId]?.find(row => row[0] === "SKi7UzTsnJS") || [];
             const ySource = rowsByCountry[countryId]?.find(row => row[0] === "qO6diSOTqhL") || [];
             const country = chartSource.countries.find(country => country.id === countryId);
+            const eur27Code = getEU27Label(countryId);
 
             const x = xSource[2] ? +xSource[2] : 0;
             const y = ySource[2] ? +ySource[2] : 0;
 
             return {
-                country: country?.code || "",
+                country: country?.code || eur27Code || "",
                 x,
                 y,
             };
@@ -90,6 +92,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         LVA: pos.bottomRight,
         BIH: pos.topLeft,
         NET: pos.bottomLeft,
+        EU27: pos.left,
     };
     return createScratterChart(
         series,
