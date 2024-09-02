@@ -33,10 +33,14 @@ export function useResources(): ResourcesState {
     const filteredByTextResources = useMemo(() => {
         return items && !!filters.search.term
             ? {
-                  countryAnalysis: items.filter(item => item.kind === "country-analysis") as CountryAnalysisState[],
-                  comparativeAnalysis: getComparativeAnalysis(items, false),
-                  news: getNews(items, false),
-                  multimedia: getMultimedia(items, false),
+                  countryAnalysis: _.orderBy(
+                      items.filter(item => item.kind === "country-analysis"),
+                      "date",
+                      "desc"
+                  ) as CountryAnalysisState[],
+                  comparativeAnalysis: _.orderBy(getComparativeAnalysis(items, false), "date", "desc"),
+                  news: _.orderBy(getNews(items, false), "date", "desc"),
+                  multimedia: _.orderBy(getMultimedia(items, false), "date", "desc"),
               }
             : undefined;
     }, [filters.search.term, items]);
@@ -48,6 +52,7 @@ export function useResources(): ResourcesState {
         onGetResources,
     };
 }
+
 function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
     return _.unionBy(
         _.orderBy(
