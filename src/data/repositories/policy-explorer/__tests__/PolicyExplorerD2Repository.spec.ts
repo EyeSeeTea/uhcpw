@@ -166,7 +166,7 @@ const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS = {
 };
 
 const USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY = {
-    u800TAhsIBY: ["Primary care visits", "Outpatient emergency visits", "Outpatient prescribed medicines"],
+    u800TAhsIBY: ["Primary care visits", "Emergency care", "Outpatient prescribed medicines"],
 };
 
 const USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY_YEARS = {
