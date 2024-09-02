@@ -33,6 +33,7 @@ type ExtraCountryFilterState = CountryFilterState & {
     maxCountrySelection: number | undefined;
     showSubRegions: boolean;
     selectedItemsToShowWhenAllSelected: string[];
+    isOnlyEu27Comparison: boolean;
 };
 
 export type IndicatorExplorerFiltersState = {

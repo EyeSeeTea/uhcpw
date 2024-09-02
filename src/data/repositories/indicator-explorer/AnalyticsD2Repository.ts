@@ -372,7 +372,6 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         }[];
     }): string[][] {
         const { rows, metadata, visualizationId, seriesIdAndName } = params;
-
         return rows.map(row =>
             row.map(cell => {
                 if (isValidUid(cell)) {

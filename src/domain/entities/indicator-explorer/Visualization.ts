@@ -19,6 +19,7 @@ export interface VisualizationExtra {
     allowedYears?: Year[];
     sortColumns?: (headerRow: string[]) => string[];
     sortDataRows?: (headerRow: string[], dataRows: string[][]) => string[][];
+    isOnlyEu27Comparison?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

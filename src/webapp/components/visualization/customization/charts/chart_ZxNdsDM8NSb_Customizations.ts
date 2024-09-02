@@ -3,7 +3,6 @@ import { typeOfCareSeries2 } from "../series/typeOfCareSeries";
 import { ChartCustomization } from "../types";
 import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
 import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
-import _ from "lodash";
 
 const CATEGORY_ID_BY_NAME = {
     Poorest: "GeiKSyJLeKt",

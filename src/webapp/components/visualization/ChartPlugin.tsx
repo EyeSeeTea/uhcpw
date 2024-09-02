@@ -86,6 +86,36 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 ? { max: visualization?.axes.find(({ type }) => type === "RANGE")?.maxValue }
                 : {};
 
+            const xAxis = Array.isArray(originalChartOptions.xAxis)
+                ? originalChartOptions.xAxis.map((item, index) => {
+                      const countryXAxisCustomization = customizedOptions?.countryXAxis
+                          ? customizedOptions?.countryXAxis(countries, { categories: item.categories || [] })
+                          : undefined;
+
+                      const customizedXAxis = Array.isArray(customizedOptions?.xAxis)
+                          ? customizedOptions?.xAxis[index]
+                          : customizedOptions?.xAxis;
+
+                      const customization = countryXAxisCustomization || customizedXAxis;
+
+                      const categories =
+                          categoriesByOrderedByValueInSerie &&
+                          categoriesByOrderedByValueInSerie.length > 0 &&
+                          !item.opposite
+                              ? categoriesByOrderedByValueInSerie
+                              : item.categories;
+
+                      return {
+                          ...item,
+                          ...customization,
+                          categories:
+                              customizedOptions?.renameCategoriesXAxis && categories
+                                  ? customizedOptions?.renameCategoriesXAxis(categories)
+                                  : categories,
+                      };
+                  })
+                : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis };
+
             const newOptions = {
                 chart: {
                     ...originalChartOptions.chart,
@@ -99,31 +129,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 },
                 title: { ...originalChartOptions.title, ...customizedOptions?.title },
                 subtitle: { ...originalChartOptions.subtitle, ...customizedOptions?.subtitle },
-                xAxis: Array.isArray(originalChartOptions.xAxis)
-                    ? originalChartOptions.xAxis.map((item, index) => {
-                          const countryXAxisCustomization = customizedOptions?.countryXAxis
-                              ? customizedOptions?.countryXAxis(countries, { categories: item.categories || [] })
-                              : undefined;
-
-                          const customizedXAxis = Array.isArray(customizedOptions?.xAxis)
-                              ? customizedOptions?.xAxis[index]
-                              : customizedOptions?.xAxis;
-
-                          const customization = countryXAxisCustomization || customizedXAxis;
-
-                          return {
-                              ...item,
-                              ...customization,
-                              categories:
-                                  categoriesByOrderedByValueInSerie &&
-                                  categoriesByOrderedByValueInSerie.length > 0 &&
-                                  !item.opposite
-                                      ? categoriesByOrderedByValueInSerie
-                                      : item.categories,
-                          };
-                      })
-                    : { ...originalChartOptions.xAxis, ...customizedOptions?.xAxis },
-
+                xAxis: xAxis,
                 yAxis:
                     customizedOptions?.yAxis || customizedOptions?.currencyOfCountryYAxis
                         ? Array.isArray(originalChartOptions.yAxis)
@@ -161,11 +167,13 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 noData: originalChartOptions.noData,
                 credits: { enabled: false },
                 exporting: { enabled: false },
-                plotOptions: {
-                    series: {
-                        grouping: false,
-                    },
-                },
+                plotOptions: customizedOptions?.plotOptions
+                    ? { ...customizedOptions?.plotOptions }
+                    : {
+                          series: {
+                              grouping: false,
+                          },
+                      },
             };
 
             // NOTICE: This filter is because there is a bug when calling createVisualization in a line country chart with at least two countries and the first one is empty.

@@ -24,6 +24,18 @@ const axesIdsByVisualizationId: Record<Id, AxesIds> = {
     },
 };
 
+type CellNamesByCellId = {
+    [cellId: string]: string;
+};
+
+const cellNameByVisualizationAndCellId: Record<Id, CellNamesByCellId> = {
+    MfLZYD6QCPy: {
+        f3t7eoXUzn8: "Poorest",
+        dVcHTdCFpNv: "Richest",
+        GyiW7dS7BIl: "Average",
+    },
+};
+
 function isXAxes(visualizationId: Id, axeId: Id): boolean {
     const axes = axesIdsByVisualizationId[visualizationId];
     return !!axes && axes.x === axeId;
@@ -42,6 +54,12 @@ export function getCustomCellName(
     }[],
     cell: string
 ): string | undefined {
+    const cellNamesInVisualization = cellNameByVisualizationAndCellId[visualizationId];
+    const cellName = cellNamesInVisualization?.[cell];
+    if (cellName) {
+        return cellName;
+    }
+
     const axesNames = cellNameByVisualizationId[visualizationId];
     if (axesNames) {
         const xAxesName = isXAxes(visualizationId, cell) && axesNames?.x ? axesNames?.x : undefined;

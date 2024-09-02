@@ -39,6 +39,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const [disabledCountries, setDisabledCountries] = useState<string[]>([]);
     const [maxCountrySelection, setMaxCountrySelection] = useState<number | undefined>(undefined);
+    const [isOnlyEu27Comparison, setIsOnlyEu27Comparison] = useState(false);
 
     const showNonComparativeMessageIfRequired = useCallback(
         (oldVisualization: Visualization | undefined, newsVisualization: Visualization | undefined) => {
@@ -105,6 +106,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             showNonComparativeMessageIfRequired(oldVisualization, newsVisualization);
 
             setMaxCountrySelection(newsVisualization?.maxCountryFilter);
+            setIsOnlyEu27Comparison(!!newsVisualization?.isOnlyEu27Comparison);
             setSelectedIndicatorFilter(value);
             setShowVisualization(false);
         },
@@ -221,22 +223,23 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const onCountriesChange = useCallback(
         (countries: string[] | undefined) => {
             const visualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
+            const totalCountriesSelected = countries?.length || 0;
 
-            if ((countries?.length || 0) === visualization?.maxCountryFilter) {
-                const countriesToDisabled = countryOptions.map(op => op.id).filter(id => !countries?.includes(id));
-
-                const subregionsToDisabled = countryOptions
-                    .flatMap(countryOption => (countryOption.children ? countryOption.children : []))
-                    .map(op => op.id)
-                    .filter(id => !countries?.includes(id));
-                setDisabledCountries([...countriesToDisabled, ...subregionsToDisabled]);
+            if (totalCountriesSelected === visualization?.maxCountryFilter) {
+                setDisabledCountries(getCountriesNotSelected(countryOptions, countries));
+            } else if (
+                isOnlyEu27Comparison &&
+                totalCountriesSelected + 1 === visualization?.maxCountryFilter &&
+                !countries?.includes(EU27)
+            ) {
+                setDisabledCountries(getCountriesNotSelected(countryOptions, countries).filter(id => id !== EU27));
             } else {
                 setDisabledCountries(visualization && !visualization.hasEur27 ? [EU27] : []);
             }
 
             onSelectedCountryChange(countries);
         },
-        [countryOptions, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
+        [countryOptions, isOnlyEu27Comparison, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
     );
 
     return {
@@ -249,6 +252,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 maxCountrySelection,
                 showSubRegions: true,
                 selectedItemsToShowWhenAllSelected: [EU27],
+                isOnlyEu27Comparison: isOnlyEu27Comparison,
             },
             indicators: {
                 options: indicatorFilters,
@@ -266,6 +270,17 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         globalMessage,
         pageContent,
     };
+}
+
+function getCountriesNotSelected(countryOptions: TreeOption[], countries: string[] | undefined): string[] {
+    const countriesToDisabled = countryOptions.map(op => op.id).filter(id => !countries?.includes(id));
+
+    const subregionsToDisabled = countryOptions
+        .flatMap(countryOption => (countryOption.children ? countryOption.children : []))
+        .map(op => op.id)
+        .filter(id => !countries?.includes(id));
+
+    return [...countriesToDisabled, ...subregionsToDisabled];
 }
 
 function buildIndicatorOptionsAndSortByCategories(visualizations: Visualization[]): IndicatorOption[] {
