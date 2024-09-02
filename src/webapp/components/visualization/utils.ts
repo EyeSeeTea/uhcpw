@@ -68,11 +68,15 @@ export function filterEmptyYearsInSeries(options: Highcharts.Options): Highchart
     const categories = getCategories(options.xAxis);
 
     const someFirstOrLastDataIsNull = (options.series as Array<Highcharts.SeriesLineOptions>)?.some(serie => {
-        return (
-            serie.data?.[0] === null ||
-            serie.data?.[0] === undefined ||
-            (serie.data?.length === categories.length && serie.data?.[categories.length - 1] === null)
-        );
+        if (serie?.custom?.isTwoCategoryFakeSerie) {
+            return false;
+        } else {
+            return (
+                serie.data?.[0] === null ||
+                serie.data?.[0] === undefined ||
+                (serie.data?.length === categories.length && serie.data?.[categories.length - 1] === null)
+            );
+        }
     });
 
     if (!someFirstOrLastDataIsNull) {
