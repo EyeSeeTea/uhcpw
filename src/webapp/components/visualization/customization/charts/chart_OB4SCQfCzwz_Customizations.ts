@@ -45,4 +45,7 @@ export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
     ],
     ...yAxisformatNumberLabel,
     sortLegendByLastDataPoint: true,
+    currencyOfCountryYAxis: (countryCurrencyCode: string) => {
+        return { title: { text: `Constant LAY ${countryCurrencyCode} per person` } };
+    },
 };
