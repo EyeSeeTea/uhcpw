@@ -43,37 +43,48 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
     const showNonComparativeMessageIfRequired = useCallback(
         (oldVisualization: Visualization | undefined, newsVisualization: Visualization | undefined) => {
-            if (oldVisualization?.isComparative && !newsVisualization?.isComparative) {
-                if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter === 1) {
-                    setGlobalMessage({
-                        text: i18n.t(`You can only select one country at a time with this indicator`, {
-                            count: newsVisualization.minCountryFilter,
-                        }),
-                        type: "info",
-                    });
-                } else if (newsVisualization?.maxCountryFilter && newsVisualization?.maxCountryFilter >= 1) {
-                    setGlobalMessage({
-                        text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
-                            count: newsVisualization.maxCountryFilter,
-                        }),
-                        type: "info",
-                    });
-                }
+            const isOldComparativeAndNewNotComparative =
+                oldVisualization?.isComparative && !newsVisualization?.isComparative;
+
+            if (
+                isOldComparativeAndNewNotComparative &&
+                newsVisualization?.maxCountryFilter &&
+                newsVisualization?.maxCountryFilter >= 1
+            ) {
+                setGlobalMessage({
+                    text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
+                        count: newsVisualization.maxCountryFilter,
+                    }),
+                    type: "info",
+                });
+            }
+
+            const isNewSingleCountrySelection = newsVisualization?.maxCountryFilter === 1;
+            const isOldMultipleCountrySelection =
+                !oldVisualization?.maxCountryFilter ||
+                (oldVisualization?.maxCountryFilter || 0) > 1 ||
+                oldVisualization?.isComparative;
+            const isMoreThanOneCountrySelected = selectedCountries?.length && selectedCountries.length > 1;
+
+            if (isOldMultipleCountrySelection && isNewSingleCountrySelection && isMoreThanOneCountrySelected) {
+                setGlobalMessage({
+                    text: i18n.t(`You can only select one country at a time with this indicator`),
+                    type: "info",
+                });
             }
         },
-        []
+        [selectedCountries?.length]
     );
 
     const onChangeCategoryFilter = useCallback(
         (value: string | undefined) => {
             const oldVisualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
             const newsVisualization = visualizations.find(visualization => visualization.id === value);
-            const isEu27Selected = !!selectedCountries?.find(selectedCountry => selectedCountry === EU27);
 
             const maybeUpdatedCountrySelection = getUpdatedCountriesSelectionFilter(
                 oldVisualization,
                 newsVisualization,
-                isEu27Selected,
+                selectedCountries,
                 countriesAndRegions
             );
 
@@ -314,12 +325,25 @@ function buildIndicatorOptionsAndSortByCategories(visualizations: Visualization[
 function getUpdatedCountriesSelectionFilter(
     oldVisualization: Visualization | undefined,
     newsVisualization: Visualization | undefined,
-    isEu27Selected: boolean,
+    selectedCountries: string[] | undefined,
     countriesAndRegions: Country[]
 ): string[] | undefined {
+    const isEu27Selected = !!selectedCountries?.find(selectedCountry => selectedCountry === EU27);
+    const isMoreThanOneCountrySelected = selectedCountries?.length && selectedCountries.length > 1;
+
+    const isOldComparativeAndNewNotComparative = oldVisualization?.isComparative && !newsVisualization?.isComparative;
+    const isNewNotComparativeAndNotHaveEur27 = !newsVisualization?.isComparative && !newsVisualization?.hasEur27;
+
+    const isNewSingleCountrySelection = newsVisualization?.maxCountryFilter === 1;
+    const isOldMultipleCountrySelection =
+        !oldVisualization?.maxCountryFilter ||
+        (oldVisualization?.maxCountryFilter || 0) > 1 ||
+        oldVisualization?.isComparative;
+
     if (
-        (oldVisualization?.isComparative && !newsVisualization?.isComparative) ||
-        (!newsVisualization?.isComparative && !newsVisualization?.hasEur27 && isEu27Selected)
+        isOldComparativeAndNewNotComparative ||
+        (isNewNotComparativeAndNotHaveEur27 && isEu27Selected) ||
+        (isOldMultipleCountrySelection && isNewSingleCountrySelection && isMoreThanOneCountrySelected)
     ) {
         return [];
     }
