@@ -85,7 +85,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         EU27: pos.top,
     };
 
-    return createScratterChart(
+    const scratterChart = createScratterChart(
         series,
         chartSource.visualization,
         currentCountryCode,
@@ -95,4 +95,17 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         countriesWithData,
         countryPositionsAdjustment
     );
+
+    return {
+        ...scratterChart,
+        xAxis: {
+            ...scratterChart.xAxis,
+            labels: {
+                rotation: -90,
+                formatter: function () {
+                    return `${this.value}`;
+                },
+            },
+        },
+    };
 };
