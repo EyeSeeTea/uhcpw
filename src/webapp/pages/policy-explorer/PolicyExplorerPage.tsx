@@ -5,6 +5,7 @@ import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import ReactMarkdown from "react-markdown";
+import _ from "lodash";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -65,11 +66,11 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
     const getCleanReferencesByCountry = useCallback(
         (country: string) => {
-            return data?.references
-                ?.find(references => references.country === country)
-                ?.references?.map(reference => {
-                    return reference.split("]:")[1]?.replace(/"/g, "") || reference;
-                });
+            return _.compact(
+                data?.references
+                    ?.find(references => references.country === country)
+                    ?.references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
+            );
         },
         [data?.references]
     );
@@ -186,17 +187,23 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {info.country &&
-                                        getCleanReferencesByCountry(info.country)?.map(reference => (
-                                            <ReactMarkdown
-                                                key={reference}
-                                                components={{
-                                                    p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
-                                                }}
-                                            >
-                                                {reference}
-                                            </ReactMarkdown>
-                                        ))}
+                                    {info.country && getCleanReferencesByCountry(info.country)?.length ? (
+                                        <>
+                                            <ReferencesTitle>
+                                                {i18n.t("References:", { nsSeparator: false })}
+                                            </ReferencesTitle>
+                                            {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                                <ReactMarkdown
+                                                    key={reference}
+                                                    components={{
+                                                        p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
+                                                    }}
+                                                >
+                                                    {reference}
+                                                </ReactMarkdown>
+                                            ))}
+                                        </>
+                                    ) : null}
                                 </ReferencesContainer>
                             </div>
                         );
@@ -215,7 +222,6 @@ const Content = styled.div`
 const GeneralDataContainer = styled.div`
     font-size: 16px;
     margin-top: 24px;
-    margin-bottom: 24px;
 `;
 
 const ReferencesContainer = styled.div`
@@ -261,6 +267,14 @@ const CreditsText = styled(Typography)<{ $noWrap?: boolean }>`
     font-size: 0.875rem;
     white-space: ${props => (props.$noWrap ? "nowrap" : "unset")};
     font-family: Lato;
+`;
+
+const ReferencesTitle = styled(Typography)`
+    color: black;
+    font-weight: 500;
+    font-size: 0.875rem;
+    font-family: Lato;
+    margin-bottom: 12px;
 `;
 
 const Link = styled.a`
