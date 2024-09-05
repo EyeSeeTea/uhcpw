@@ -5,6 +5,7 @@ import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import ReactMarkdown from "react-markdown";
+import _ from "lodash";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -65,11 +66,11 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
     const getCleanReferencesByCountry = useCallback(
         (country: string) => {
-            return data?.references
-                ?.find(references => references.country === country)
-                ?.references?.map(reference => {
-                    return reference.split("]:")[1]?.replace(/"/g, "") || reference;
-                });
+            return _.compact(
+                data?.references
+                    ?.find(references => references.country === country)
+                    ?.references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
+            );
         },
         [data?.references]
     );
@@ -186,7 +187,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {info.country && (
+                                    {info.country && getCleanReferencesByCountry(info.country)?.length ? (
                                         <>
                                             <ReferencesTitle>
                                                 {i18n.t("References:", { nsSeparator: false })}
@@ -202,7 +203,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                                 </ReactMarkdown>
                                             ))}
                                         </>
-                                    )}
+                                    ) : null}
                                 </ReferencesContainer>
                             </div>
                         );
