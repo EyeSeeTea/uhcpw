@@ -73,8 +73,16 @@ export const PolicyExplorerTable = React.memo(
         // Function to create and synchronize the double scroll bar
         const doubleScroll = (element: HTMLDivElement | null) => {
             if (!element) return;
+            const className = `custom-scrollbar-${category.value}`;
+
+            const existingScrollbar = element.parentNode?.querySelector(`.${className}`);
+
+            if (existingScrollbar) {
+                existingScrollbar.remove();
+            }
 
             const scrollbar = document.createElement("div");
+            scrollbar.className = className;
             scrollbar.appendChild(document.createElement("div"));
             scrollbar.style.overflow = "auto";
             scrollbar.style.overflowY = "hidden";
@@ -97,11 +105,12 @@ export const PolicyExplorerTable = React.memo(
             element.parentNode?.insertBefore(scrollbar, element);
         };
 
-        // Ref for the table container
         const tableContainerRef = React.useRef<HTMLDivElement>(null);
+
         // Add the double scroll bar effect when the component mounts
         useEffect(() => {
             doubleScroll(tableContainerRef.current);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [tableContainerRef, dataOrientation]);
 
         return !rows?.length || !dataOrientation ? (
