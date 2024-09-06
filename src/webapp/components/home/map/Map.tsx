@@ -126,8 +126,9 @@ const Container = styled.div`
 `;
 
 const MapContent = styled.div`
-    overflow: hidden;
+    overflow: visible;
     height: 100%;
+    position: relative;
     .marker-weak {
         background-image: url(${() => weakPin});
     }
@@ -150,6 +151,7 @@ const MapContent = styled.div`
         background-size: cover;
         width: 15px;
         height: 20px;
+        position: absolute;
     }
     .marker:hover {
         width: 35px;
