@@ -15,6 +15,12 @@ import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyEx
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
+import {
+    DataOrientation,
+    PolicyExplorerCell,
+    PolicyExplorerCellType,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
@@ -75,6 +81,37 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         [data?.references]
     );
 
+    const checkIfMoreThanOneCountry = useCallback(
+        (dataOrientation: DataOrientation | undefined, rows: PolicyExplorerCell[][] | undefined) => {
+            if (dataOrientation === "normal" && rows?.length) {
+                const countryColumnIndex = rows[0]?.findIndex(
+                    cell => cell.type === PolicyExplorerCellType.HEADER && cell.value === COUNTRY_HEADER_NAME
+                );
+
+                return countryColumnIndex !== undefined && countryColumnIndex !== -1
+                    ? rows?.filter(
+                          row =>
+                              row[countryColumnIndex]?.value && row[countryColumnIndex]?.value !== COUNTRY_HEADER_NAME
+                      ).length > 1
+                    : false;
+            }
+
+            if (dataOrientation === "inverted" && rows?.length) {
+                const countryRowIndex = rows.findIndex(
+                    row => row[0]?.type === PolicyExplorerCellType.HEADER && row[0]?.value === COUNTRY_HEADER_NAME
+                );
+
+                const countryRow = rows[countryRowIndex];
+
+                return countryRow
+                    ? countryRow?.filter(cell => cell?.value && cell?.value !== COUNTRY_HEADER_NAME)?.length > 1
+                    : false;
+            }
+            return false;
+        },
+        []
+    );
+
     return (
         <Layout>
             <TitleContainer>
@@ -106,6 +143,10 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                 onSwitchRowColumn={onSwitchRowColumn}
                                 dataOrientation={dataOrientationByTable[category.value]}
                                 referencesRef={referencesRef}
+                                hasMoreThanOneCountry={checkIfMoreThanOneCountry(
+                                    dataOrientationByTable[category.value],
+                                    data.tables[category.value]
+                                )}
                             />
                         ))}
                     </Content>
