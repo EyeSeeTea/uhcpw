@@ -75,6 +75,7 @@ export type AxisCustomization = {
     };
     categories?: string[];
     lineWidth?: number;
+    gridLineWidth?: number;
 };
 
 export type ChartPropertyCustomization = {
