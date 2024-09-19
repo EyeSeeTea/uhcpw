@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export function filterRowsByLastAvailableYear(rows: Array<string[]>): Array<string[]> {
     const lastAvailableYearByCountry = getLastAvailableYearByCountry(rows);
 
@@ -64,4 +66,32 @@ export function getAllRowsLatestAvailableYearFromTwoCharts(
     const filteredSecondChartRows = filterRowsByYearInCountry(secondChartRows || [], latestAvailableYearByCountryId);
 
     return [...filteredFirstChartRows, ...filteredSecondChartRows];
+}
+
+export function orderLatestAvailableYearByAverageAndPoorest(
+    latestAvailableYearByCountryId: Record<string, string>,
+    allRowsFilteredByLAY: string[][],
+    seriesIds: Record<string, string>
+) {
+    return _(allRowsFilteredByLAY)
+        .filter(
+            ([serieId, countryId]) =>
+                !!serieId &&
+                [seriesIds.average, seriesIds.poorest].includes(serieId) &&
+                !!countryId &&
+                !!latestAvailableYearByCountryId[countryId]
+        )
+        .map(([serieId, countryId, year, value]) => ({
+            serieId,
+            countryId,
+            year,
+            [serieId === seriesIds.average ? "average" : "poorest"]: parseFloat(value || "0"),
+        }))
+        .groupBy(row => `${row.countryId}-${row.year}`)
+        .map(group => _.merge({}, ...group))
+        .orderBy(["average", "poorest"], ["asc", "asc"])
+        .reduce((acc, { countryId, year }) => {
+            if (countryId && year) acc[countryId] = year;
+            return acc;
+        }, {} as Record<string, string>);
 }

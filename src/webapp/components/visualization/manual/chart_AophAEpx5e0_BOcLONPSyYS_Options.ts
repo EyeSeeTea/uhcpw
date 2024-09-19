@@ -3,6 +3,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import {
     getAllRowsLatestAvailableYearFromTwoCharts,
     getLatestAvailableYearByCountryIdFromTwoCharts,
+    orderLatestAvailableYearByAverageAndPoorest,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
@@ -44,27 +45,11 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
     );
 
     // By ordering latestAvailableYearByCountryId it order data and labels
-    const latestAvailableYearByCountryIdOrdered = _(allRowsFilteredByLAY)
-        .filter(
-            ([serieId, countryId]) =>
-                !!serieId &&
-                [seriesIds.average, seriesIds.poorest].includes(serieId) &&
-                !!countryId &&
-                !!latestAvailableYearByCountryId[countryId]
-        )
-        .map(([serieId, countryId, year, value]) => ({
-            serieId,
-            countryId,
-            year,
-            [serieId === seriesIds.average ? "average" : "poorest"]: parseFloat(value || "0"),
-        }))
-        .groupBy(row => `${row.countryId}-${row.year}`)
-        .map(group => _.merge({}, ...group))
-        .orderBy(["average", "poorest"], ["asc", "asc"])
-        .reduce((acc, { countryId, year }) => {
-            if (countryId && year) acc[countryId] = year;
-            return acc;
-        }, {} as Record<string, string>);
+    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest(
+        latestAvailableYearByCountryId,
+        allRowsFilteredByLAY,
+        seriesIds
+    );
 
     const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(countryId => {
         const countryCodeFoundInFirst = mapToWhoCountryCode(
