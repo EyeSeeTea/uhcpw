@@ -2,6 +2,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import {
     getAllRowsLatestAvailableYearFromTwoCharts,
     getLatestAvailableYearByCountryIdFromTwoCharts,
+    orderLatestAvailableYearByAverageAndPoorest,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
@@ -37,20 +38,28 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         secondChartAnalyticsResponse?.rows || []
     );
 
-    const categories = Object.keys(latestAvailableYearByCountryId).map(countryId => {
+    const allRowsFilteredByLAY = getAllRowsLatestAvailableYearFromTwoCharts(
+        firstChartAnalyticsResponse?.rows || [],
+        secondChartAnalyticsResponse?.rows || []
+    );
+
+    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest(
+        latestAvailableYearByCountryId,
+        allRowsFilteredByLAY,
+        seriesIds
+    );
+
+    const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(countryId => {
         const countryCodeFoundInFirst = mapToWhoCountryCode(
             firstChartAnalyticsResponse?.metaData.items[countryId]?.code || ""
         );
         const countryCodeFoundInSecond = mapToWhoCountryCode(
             secondChartAnalyticsResponse?.metaData.items[countryId]?.code || ""
         );
-        return `${countryCodeFoundInFirst || countryCodeFoundInSecond} ${latestAvailableYearByCountryId[countryId]}`;
+        return `${countryCodeFoundInFirst || countryCodeFoundInSecond} ${
+            latestAvailableYearByCountryIdOrdered[countryId]
+        }`;
     });
-
-    const allRowsFilteredByLAY = getAllRowsLatestAvailableYearFromTwoCharts(
-        firstChartAnalyticsResponse?.rows || [],
-        secondChartAnalyticsResponse?.rows || []
-    );
 
     return createDotsWithMaxMinVerticalLineChart({
         rows: allRowsFilteredByLAY,
@@ -63,6 +72,6 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
             firstChartVisualization?.axes[0]?.title.text ||
             secondChartVisualization?.axes[0]?.title.text,
         pointFormat: "{point.y}%",
-        latestAvailableYearByCountryId,
+        latestAvailableYearByCountryId: latestAvailableYearByCountryIdOrdered,
     });
 };
