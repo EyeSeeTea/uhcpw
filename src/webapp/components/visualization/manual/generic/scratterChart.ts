@@ -18,6 +18,7 @@ type CreateScratterChartParams = {
     pointFormat: string;
     countriesWithData: SerieData[];
     countryPositions: Record<string, { x: number; y: number }>;
+    displayTendencyLine?: boolean;
 };
 
 export interface SerieData {
@@ -39,6 +40,7 @@ export const createScratterChart: ({
     pointFormat,
     countriesWithData,
     countryPositions,
+    displayTendencyLine,
 }: CreateScratterChartParams) => Highcharts.Options = ({
     series,
     visualization,
@@ -48,6 +50,7 @@ export const createScratterChart: ({
     pointFormat,
     countriesWithData,
     countryPositions,
+    displayTendencyLine = true,
 }) => {
     const finalSeries = series.map(serie => {
         return {
@@ -98,7 +101,7 @@ export const createScratterChart: ({
         legend: { enabled: false },
         series: [
             ...finalSeries,
-            {
+            displayTendencyLine && {
                 type: "line",
                 name: "Trend Line",
                 color: "lightgrey",

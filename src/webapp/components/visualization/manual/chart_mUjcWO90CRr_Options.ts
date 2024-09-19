@@ -118,5 +118,6 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         pointFormat: `{point.country} <br/> ${xAxisTitle}: {point.x} <br/> ${yAxisTitle}: {point.y}%`,
         countriesWithData,
         countryPositions: countryPositionsAdjustment,
+        displayTendencyLine: false,
     });
 };
