@@ -1,16 +1,11 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, pos, SerieData } from "./generic/scratterChart";
-import { NamedRef } from "../../../../domain/entities/Ref";
-import { EU27_LABEL, getEU27Label } from "../customization/charts/utils/getEU27Label";
+import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
+import { getEU27Label } from "../customization/charts/utils/getEU27Label";
 import { EU27Color } from "../customization/palettes/countryPalette";
 import { EU27 } from "../../../../domain/entities/Country";
 
 const REST_ID = "REST_ID";
-
-interface SerieSource extends NamedRef {
-    color: string;
-}
 
 export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
@@ -57,22 +52,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         })
         .value();
 
-    const series = seriesSource.map(serie => {
-        // Handle the EU27 series separately
-        if (serie.id === EU27) {
-            return {
-                ...serie,
-                data: countriesWithData.filter(country => country.country === getEU27Label(serie.id)),
-            };
-        }
-
-        return {
-            ...serie,
-            data: countriesWithData.filter(
-                country => (serie.id === REST_ID || country.country === serie.id) && country.country !== EU27_LABEL
-            ),
-        };
-    });
+    const series = getScatterSeries(seriesSource, countriesWithData, REST_ID);
 
     const [yAxisTitle = "", xAxisTitle = ""] = chartSource.visualization.axes
         .filter(axis => axis.type === "RANGE")

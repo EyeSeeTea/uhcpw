@@ -1,6 +1,10 @@
 import _ from "lodash";
 import { Visualization } from "../../../../../domain/entities/indicator-explorer/Visualization";
 import { baseChartOptions } from "./baseChartOptions";
+import { EU27 } from "../../../../../domain/entities/Country";
+import { SeriesColumnOptions } from "highcharts";
+import { getEU27Label, EU27_LABEL } from "../../customization/charts/utils/getEU27Label";
+import { NamedRef } from "../../../../../domain/entities/Ref";
 
 export type ScratterSerie = {
     id: string;
@@ -21,6 +25,9 @@ type CreateScratterChartParams = {
     displayTendencyLine?: boolean;
 };
 
+export interface SerieSource extends NamedRef {
+    color: string;
+}
 export interface SerieData {
     country: string;
     x: number;
@@ -158,6 +165,25 @@ export const pos = {
     bottomLeft: { x: -1, y: 9 },
     right: { x: 37, y: 0 },
     left: { x: -2, y: 0 },
+};
+
+export const getScatterSeries = (seriesSource: SerieSource[], countriesWithData: SerieData[], REST_ID: string) => {
+    return seriesSource.map(serie => {
+        // Handle the EU27 series separately
+        if (serie.id === EU27) {
+            return {
+                ...serie,
+                data: countriesWithData.filter(country => country.country === getEU27Label(serie.id)),
+            };
+        }
+
+        return {
+            ...serie,
+            data: countriesWithData.filter(
+                country => (serie.id === REST_ID || country.country === serie.id) && country.country !== EU27_LABEL
+            ),
+        };
+    });
 };
 
 function applyDataLabelsPositions(
