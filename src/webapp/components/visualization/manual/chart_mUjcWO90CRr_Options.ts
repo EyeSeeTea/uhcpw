@@ -74,7 +74,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         };
     });
 
-    const [yAxisLabel = "", xAxisLabel = ""] = chartSource.visualization.axes
+    const [yAxisTitle = "", xAxisTitle = ""] = chartSource.visualization.axes
         .filter(axis => axis.type === "RANGE")
         .map(axis => axis.title.text);
 
@@ -109,14 +109,14 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         NET: pos.bottomLeft,
         EU27: pos.left,
     };
-    return createScratterChart(
+    return createScratterChart({
         series,
-        chartSource.visualization,
+        visualization: chartSource.visualization,
         currentCountryCode,
-        xAxisLabel,
-        yAxisLabel,
-        `{point.country} <br/> ${xAxisLabel}: {point.x} <br/> ${yAxisLabel}: {point.y}%`,
+        xAxisTitle,
+        yAxisTitle,
+        pointFormat: `{point.country} <br/> ${xAxisTitle}: {point.x} <br/> ${yAxisTitle}: {point.y}%`,
         countriesWithData,
-        countryPositionsAdjustment
-    );
+        countryPositions: countryPositionsAdjustment,
+    });
 };

@@ -9,6 +9,17 @@ export type ScratterSerie = {
     data: SerieData[];
 };
 
+type CreateScratterChartParams = {
+    series: ScratterSerie[];
+    visualization: Visualization;
+    currentCountryCode: string;
+    xAxisTitle: string;
+    yAxisTitle: string;
+    pointFormat: string;
+    countriesWithData: SerieData[];
+    countryPositions: Record<string, { x: number; y: number }>;
+};
+
 export interface SerieData {
     country: string;
     x: number;
@@ -19,16 +30,7 @@ interface CustomPointOptions extends Highcharts.PointOptionsObject {
     country?: string; // Assuming country is optional
 }
 
-export const createScratterChart: (
-    series: ScratterSerie[],
-    visualization: Visualization,
-    currentCountryCode: string,
-    xAxisTitle: string,
-    yAxisTitle: string,
-    pointFormat: string,
-    countriesWithData: SerieData[],
-    countryPositions: Record<string, { x: number; y: number }>
-) => Highcharts.Options = (
+export const createScratterChart: ({
     series,
     visualization,
     currentCountryCode,
@@ -36,8 +38,17 @@ export const createScratterChart: (
     yAxisTitle,
     pointFormat,
     countriesWithData,
-    countryPositions
-) => {
+    countryPositions,
+}: CreateScratterChartParams) => Highcharts.Options = ({
+    series,
+    visualization,
+    currentCountryCode,
+    xAxisTitle,
+    yAxisTitle,
+    pointFormat,
+    countriesWithData,
+    countryPositions,
+}) => {
     const finalSeries = series.map(serie => {
         return {
             ...serie,

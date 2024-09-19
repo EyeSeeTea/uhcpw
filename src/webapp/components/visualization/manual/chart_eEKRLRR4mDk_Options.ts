@@ -85,16 +85,17 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         EU27: pos.top,
     };
 
-    const scratterChart = createScratterChart(
+    const scratterChart = createScratterChart({
         series,
-        chartSource.visualization,
+        visualization: chartSource.visualization,
         currentCountryCode,
-        "GDP per person in current purchasing power parities",
-        "Public spending on health as a share of GDP (%)",
-        "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
+        xAxisTitle: "GDP per person in current purchasing power parities",
+        yAxisTitle: "Public spending on health as a share of GDP (%)",
+        pointFormat:
+            "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
         countriesWithData,
-        countryPositionsAdjustment
-    );
+        countryPositions: countryPositionsAdjustment,
+    });
 
     return {
         ...scratterChart,
