@@ -23,6 +23,7 @@ type CreateScratterChartParams = {
     countriesWithData: SerieData[];
     countryPositions: Record<string, { x: number; y: number }>;
     displayTendencyLine?: boolean;
+    tickInterval?: number;
 };
 
 export interface SerieSource extends NamedRef {
@@ -48,6 +49,7 @@ export const createScratterChart: ({
     countriesWithData,
     countryPositions,
     displayTendencyLine,
+    tickInterval,
 }: CreateScratterChartParams) => Highcharts.Options = ({
     series,
     visualization,
@@ -58,6 +60,7 @@ export const createScratterChart: ({
     countriesWithData,
     countryPositions,
     displayTendencyLine = true,
+    tickInterval,
 }) => {
     const finalSeries = series.map(serie => {
         return {
@@ -77,9 +80,9 @@ export const createScratterChart: ({
 
     const maxXAxis = getMaxXAxis(countriesWithData);
 
-    const tickInterval = getTickInterval(maxXAxis);
+    const tickIntervalDefault = tickInterval ?? getTickInterval(maxXAxis);
 
-    const adjustedMaxXAxis = getMaxXAxis(countriesWithData, tickInterval);
+    const adjustedMaxXAxis = getMaxXAxis(countriesWithData, tickIntervalDefault);
 
     return {
         ...baseChartOptions,
@@ -95,7 +98,7 @@ export const createScratterChart: ({
             title: { text: xAxisTitle, margin: 20 },
             min: 0,
             max: adjustedMaxXAxis,
-            tickInterval: tickInterval,
+            tickInterval: tickIntervalDefault,
         },
         yAxis: {
             title: {
