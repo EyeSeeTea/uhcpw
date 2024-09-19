@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { ChartSourceMultiple } from "./chartOptions";
 import {
     getAllRowsLatestAvailableYearFromTwoCharts,
@@ -37,20 +38,45 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
         secondChartAnalyticsResponse?.rows || []
     );
 
-    const categories = Object.keys(latestAvailableYearByCountryId).map(countryId => {
+    const allRowsFilteredByLAY = getAllRowsLatestAvailableYearFromTwoCharts(
+        firstChartAnalyticsResponse?.rows || [],
+        secondChartAnalyticsResponse?.rows || []
+    );
+
+    // By ordering latestAvailableYearByCountryId it order data and labels
+    const latestAvailableYearByCountryIdOrdered = _(allRowsFilteredByLAY)
+        .filter(
+            ([serieId, countryId]) =>
+                !!serieId &&
+                [seriesIds.average, seriesIds.poorest].includes(serieId) &&
+                !!countryId &&
+                !!latestAvailableYearByCountryId[countryId]
+        )
+        .map(([serieId, countryId, year, value]) => ({
+            serieId,
+            countryId,
+            year,
+            [serieId === seriesIds.average ? "average" : "poorest"]: parseFloat(value || "0"),
+        }))
+        .groupBy(row => `${row.countryId}-${row.year}`)
+        .map(group => _.merge({}, ...group))
+        .orderBy(["average", "poorest"], ["asc", "asc"])
+        .reduce((acc, { countryId, year }) => {
+            if (countryId && year) acc[countryId] = year;
+            return acc;
+        }, {} as Record<string, string>);
+
+    const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(countryId => {
         const countryCodeFoundInFirst = mapToWhoCountryCode(
             firstChartAnalyticsResponse?.metaData.items[countryId]?.code || ""
         );
         const countryCodeFoundInSecond = mapToWhoCountryCode(
             secondChartAnalyticsResponse?.metaData.items[countryId]?.code || ""
         );
-        return `${countryCodeFoundInFirst || countryCodeFoundInSecond} ${latestAvailableYearByCountryId[countryId]}`;
+        return `${countryCodeFoundInFirst || countryCodeFoundInSecond} ${
+            latestAvailableYearByCountryIdOrdered[countryId]
+        }`;
     });
-
-    const allRowsFilteredByLAY = getAllRowsLatestAvailableYearFromTwoCharts(
-        firstChartAnalyticsResponse?.rows || [],
-        secondChartAnalyticsResponse?.rows || []
-    );
 
     return createDotsWithMaxMinVerticalLineChart({
         rows: allRowsFilteredByLAY,
@@ -63,6 +89,6 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
             firstChartVisualization?.axes[0]?.title.text ||
             secondChartVisualization?.axes[0]?.title.text,
         pointFormat: "{point.y}%",
-        latestAvailableYearByCountryId,
+        latestAvailableYearByCountryId: latestAvailableYearByCountryIdOrdered,
     });
 };
