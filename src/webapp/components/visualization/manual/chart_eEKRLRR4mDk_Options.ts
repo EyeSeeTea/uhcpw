@@ -1,15 +1,11 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, pos, SerieData } from "./generic/scratterChart";
+import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
+import { EU27 } from "../../../../domain/entities/Country";
+import { EU27Color } from "../customization/palettes/countryPalette";
 
 const REST_ID = "REST_ID";
-
-type SerieSource = {
-    id: string;
-    name: string;
-    color: string;
-};
 
 export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
@@ -20,6 +16,11 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
 
     const seriesSource: SerieSource[] = [
+        {
+            name: "",
+            id: EU27,
+            color: EU27Color,
+        },
         {
             name: "",
             id: REST_ID,
@@ -51,14 +52,8 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         })
         .value();
 
-    const series = seriesSource.map(serie => {
-        const serieData = countriesWithData.filter(country => serie.id === REST_ID || country.country === serie.id);
+    const series = getScatterSeries(seriesSource, countriesWithData, REST_ID);
 
-        return {
-            ...serie,
-            data: serieData,
-        };
-    });
     const countryPositionsAdjustment = {
         EST: pos.right,
         "KOS*": pos.right,
@@ -85,16 +80,19 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         EU27: pos.top,
     };
 
-    const scratterChart = createScratterChart(
+    const scratterChart = createScratterChart({
         series,
-        chartSource.visualization,
+        visualization: chartSource.visualization,
         currentCountryCode,
-        "GDP per person in current purchasing power parities",
-        "Public spending on health as a share of GDP (%)",
-        "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
+        xAxisTitle: "GDP per person in current purchasing power parities",
+        yAxisTitle: "Public spending on health as a share of GDP (%)",
+        pointFormat:
+            "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
         countriesWithData,
-        countryPositionsAdjustment
-    );
+        countryPositions: countryPositionsAdjustment,
+        displayTendencyLine: false,
+        tickInterval: 10000,
+    });
 
     return {
         ...scratterChart,

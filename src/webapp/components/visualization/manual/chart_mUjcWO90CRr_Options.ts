@@ -1,14 +1,11 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, pos, SerieData } from "./generic/scratterChart";
-import { NamedRef } from "../../../../domain/entities/Ref";
+import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
+import { EU27Color } from "../customization/palettes/countryPalette";
+import { EU27 } from "../../../../domain/entities/Country";
 
 const REST_ID = "REST_ID";
-
-interface SerieSource extends NamedRef {
-    color: string;
-}
 
 export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
@@ -19,6 +16,11 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
 
     const seriesSource: SerieSource[] = [
+        {
+            name: "",
+            id: EU27,
+            color: EU27Color,
+        },
         {
             name: "",
             id: REST_ID,
@@ -50,16 +52,9 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         })
         .value();
 
-    const series = seriesSource.map(serie => {
-        const serieData = countriesWithData.filter(country => serie.id === REST_ID || country.country === serie.id);
+    const series = getScatterSeries(seriesSource, countriesWithData, REST_ID);
 
-        return {
-            ...serie,
-            data: serieData,
-        };
-    });
-
-    const [yAxisLabel = "", xAxisLabel = ""] = chartSource.visualization.axes
+    const [yAxisTitle = "", xAxisTitle = ""] = chartSource.visualization.axes
         .filter(axis => axis.type === "RANGE")
         .map(axis => axis.title.text);
 
@@ -94,14 +89,15 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         NET: pos.bottomLeft,
         EU27: pos.left,
     };
-    return createScratterChart(
+    return createScratterChart({
         series,
-        chartSource.visualization,
+        visualization: chartSource.visualization,
         currentCountryCode,
-        xAxisLabel,
-        yAxisLabel,
-        `{point.country} <br/> ${xAxisLabel}: {point.x} <br/> ${yAxisLabel}: {point.y}%`,
+        xAxisTitle,
+        yAxisTitle,
+        pointFormat: `{point.country} <br/> ${xAxisTitle}: {point.x} <br/> ${yAxisTitle}: {point.y}%`,
         countriesWithData,
-        countryPositionsAdjustment
-    );
+        countryPositions: countryPositionsAdjustment,
+        displayTendencyLine: false,
+    });
 };

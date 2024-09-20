@@ -97,16 +97,17 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
         SRB: pos.topLeft,
     };
 
-    return createScratterChart(
+    return createScratterChart({
         series,
-        chartSource.visualization,
+        visualization: chartSource.visualization,
         currentCountryCode,
-        "Out-of-pocket payments as a share of current spending on health (%)",
-        "Households with catastrophic health spending (%)",
-        "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
+        xAxisTitle: "Out-of-pocket payments as a share of current spending on health (%)",
+        yAxisTitle: "Households with catastrophic health spending (%)",
+        pointFormat:
+            "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
         countriesWithData,
-        countryPositionsAdjustment
-    );
+        countryPositions: countryPositionsAdjustment,
+    });
 };
 
 interface SerieData {
