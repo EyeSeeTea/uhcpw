@@ -19,6 +19,15 @@ export const chart_MfLZYD6QCPy_Cuztomizations: ChartCustomization = {
             style: { fontSize: "13px" },
         },
     },
+    xAxis: [
+        {
+            gridLineWidth: 0,
+        },
+        {
+            gridLineWidth: 0,
+            lineWidth: 0,
+        },
+    ],
     plotOptions: {
         series: {
             grouping: true,
