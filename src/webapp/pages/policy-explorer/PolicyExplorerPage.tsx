@@ -231,7 +231,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     {info.country && getCleanReferencesByCountry(info.country)?.length ? (
                                         <>
                                             <ReferencesTitle>
-                                                {i18n.t("References:", { nsSeparator: false })}
+                                                {i18n.t("References", { nsSeparator: false })}
                                             </ReferencesTitle>
                                             {getCleanReferencesByCountry(info.country)?.map(reference => (
                                                 <ReactMarkdown
