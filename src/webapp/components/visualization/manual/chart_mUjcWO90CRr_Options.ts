@@ -36,8 +36,8 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
     const countriesWithData: SerieData[] = _(rowsByCountry)
         .keys()
         .map(countryId => {
-            const xSource = rowsByCountry[countryId]?.find(row => row[0] === "SKi7UzTsnJS") || [];
-            const ySource = rowsByCountry[countryId]?.find(row => row[0] === "qO6diSOTqhL") || [];
+            const xSource = rowsByCountry[countryId]?.find(row => row[0] === "qO6diSOTqhL") || [];
+            const ySource = rowsByCountry[countryId]?.find(row => row[0] === "SKi7UzTsnJS") || [];
             const country = chartSource.countries.find(country => country.id === countryId);
             const eur27Code = getEU27Label(countryId);
 
