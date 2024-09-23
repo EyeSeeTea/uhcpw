@@ -36,8 +36,8 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
     const countriesWithData: SerieData[] = _(rowsByCountry)
         .keys()
         .map(countryId => {
-            const xSource = rowsByCountry[countryId]?.find(row => row[0] === "SKi7UzTsnJS") || [];
-            const ySource = rowsByCountry[countryId]?.find(row => row[0] === "qO6diSOTqhL") || [];
+            const xSource = rowsByCountry[countryId]?.find(row => row[0] === "qO6diSOTqhL") || [];
+            const ySource = rowsByCountry[countryId]?.find(row => row[0] === "SKi7UzTsnJS") || [];
             const country = chartSource.countries.find(country => country.id === countryId);
             const eur27Code = getEU27Label(countryId);
 
@@ -60,34 +60,39 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
 
     const countryPositionsAdjustment = {
         AUT: pos.top,
-        ROM: pos.bottomLeft,
+        ROM: pos.left,
         BEL: pos.topRight,
-        MAT: pos.top,
+        MAT: pos.topLeft,
         SWI: pos.bottomLeft,
-        CZH: pos.bottomLeft,
+        CZH: pos.bottom,
         "BIH-R": pos.topLeft,
-        CYP: pos.bottom,
+        CYP: pos.left,
         ICE: pos.topRight,
-        MKD: pos.topLeft,
+        MKD: pos.top,
         UZB: pos.bottomLeft,
-        UNK: pos.topRight,
-        FRA: pos.topLeft,
-        MDA: pos.topLeft,
-        DEN: pos.bottomLeft,
-        ISR: pos.bottomLeft,
+        UNK: pos.left,
+        FRA: pos.bottom,
+        MDA: pos.left,
+        DEN: pos.left,
+        NOR: pos.right,
+        ISR: pos.top,
         HUN: pos.bottomLeft,
-        POL: pos.topLeft,
+        POL: pos.bottomRight,
         LTU: pos.topLeft,
         SWE: pos.top,
         SPA: pos.right,
+        SRB: pos.bottomLeft,
         GEO: pos.topLeft,
         SMR: pos.topLeft,
-        MNE: pos.right,
-        ITA: pos.right,
-        LVA: pos.bottomRight,
+        MNE: pos.topLeft,
+        ITA: pos.topLeft,
+        LVA: pos.topLeft,
         BIH: pos.topLeft,
-        NET: pos.bottomLeft,
+        NET: pos.bottom,
         EU27: pos.left,
+        UKR: pos.right,
+        GRE: pos.bottomLeft,
+        DEU: pos.bottomLeft,
     };
     return createScratterChart({
         series,

@@ -2,7 +2,6 @@ import _ from "lodash";
 import { Visualization } from "../../../../../domain/entities/indicator-explorer/Visualization";
 import { baseChartOptions } from "./baseChartOptions";
 import { EU27 } from "../../../../../domain/entities/Country";
-import { SeriesColumnOptions } from "highcharts";
 import { getEU27Label, EU27_LABEL } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
 
