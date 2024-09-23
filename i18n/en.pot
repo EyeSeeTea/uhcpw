@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-09-05T07:20:31.320Z\n"
-"PO-Revision-Date: 2024-09-05T07:20:31.320Z\n"
+"POT-Creation-Date: 2024-09-20T15:53:37.081Z\n"
+"PO-Revision-Date: 2024-09-20T15:53:37.082Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -15,6 +15,9 @@ msgid "All countries and areas"
 msgstr ""
 
 msgid "Select country or area"
+msgstr ""
+
+msgid "All countries/areas"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing"
@@ -87,9 +90,6 @@ msgid "Select category and indicator"
 msgstr ""
 
 msgid "Countries and areas"
-msgstr ""
-
-msgid "All countries/areas"
 msgstr ""
 
 msgid "Years"

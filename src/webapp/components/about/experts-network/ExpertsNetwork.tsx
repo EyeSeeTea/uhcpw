@@ -38,6 +38,9 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
                     selectedIds={countryFilter.selected}
                     onSelectedIdsChange={countryFilter.onSelectedChange}
                     placeholder={i18n.t("Select country or area")}
+                    showParentIfChecked={true}
+                    showOnlyAllParentSelectedIfChecked={true}
+                    allSelectedLabel={i18n.t("All countries/areas")}
                 />
             </Row>
 
