@@ -239,7 +239,7 @@ msgstr ""
 msgid "Suggested citation: "
 msgstr ""
 
-msgid "References:"
+msgid "References"
 msgstr ""
 
 msgid "Country information coming soon"
