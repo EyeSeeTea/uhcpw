@@ -4,6 +4,7 @@ import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
 import ReactMarkdown from "react-markdown";
+import { colors } from "../../pages/app/themes/dhis2.theme";
 
 import i18n from "../../../locales";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
@@ -81,12 +82,38 @@ export const PolicyExplorerTable = React.memo(
             }
 
             const scrollbar = document.createElement("div");
-            scrollbar.className = className;
             scrollbar.appendChild(document.createElement("div"));
             scrollbar.style.overflow = "auto";
             scrollbar.style.overflowY = "hidden";
             scrollbar.style.position = "relative";
             scrollbar.style.top = "15px"; // Maybe calculate this dynamically
+
+            const style = document.createElement("style");
+            style.innerHTML = `
+                .${className} {
+                    scrollbar-color: ${colors.accentPrimaryLight} ${colors.accentPrimaryLightest};
+                    scrollbar-width: thin;
+                }
+
+                .${className}::-webkit-scrollbar {
+                    width: 10px;
+                }
+
+                .${className}::-webkit-scrollbar-track {
+                    background:  ${colors.accentPrimaryLightest};
+                }
+
+                .${className}::-webkit-scrollbar-thumb {
+                    background-color: ${colors.accentPrimaryLight};
+                    border-radius: 10px;
+                }
+
+                .${className}::-webkit-scrollbar-thumb:hover {
+                    background: ${colors.accentPrimaryLight};
+                }
+            `;
+            document.head.appendChild(style);
+            scrollbar.className = className;
 
             const scrollbarChild = scrollbar.firstChild as HTMLElement | null;
             if (scrollbarChild) {
@@ -102,6 +129,7 @@ export const PolicyExplorerTable = React.memo(
             };
 
             element.parentNode?.insertBefore(scrollbar, element);
+            element.classList.add(className);
         };
 
         const tableContainerRef = React.useRef<HTMLDivElement>(null);
