@@ -18,7 +18,7 @@ const mapperCountryIdToCurrencyCode: Record<string, string> = {
     fg8TSIHSGHX: "GEL",
     g49fuSiB623: "HUF",
     Bc3mYAhlY1a: "ISK",
-    XebDUbuPqVx: "ILS",
+    XebDUbuPqVx: "NIS",
     ibGsqmiVkoU: "KZT",
     tDFavWinSwr: "KGS",
     cfBaKMnsXd1: "MKD",
