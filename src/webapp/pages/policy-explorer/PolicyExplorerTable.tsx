@@ -14,6 +14,8 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 import useWindowSize from "../../common/hooks/screen/useWindowSize";
+import _ from "lodash";
+import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -24,6 +26,16 @@ interface PolicyExplorerTableProps {
     hasMoreThanOneCountry: boolean;
 }
 
+const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
+    country: 90,
+    year: 30,
+    typeOfHealthCare: 90,
+    userChargesApply: 90,
+    typeOfUserCharge: 160,
+    reducedUserCharges: 90,
+    exemptionsFromUserCharges: 160,
+    capOnUserCharges: 90,
+};
 const EMPTY_URL = "/";
 const MIN_DATA_CELL_WIDTH = 200;
 
@@ -65,8 +77,19 @@ export const PolicyExplorerTable = React.memo(
                         ? MIN_DATA_CELL_WIDTH
                         : columnWidth;
                 }
+                const columnName = _.camelCase(rows?.[0]?.[columnIndex]?.value);
+
+                if (
+                    category.value === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES &&
+                    columnName &&
+                    columnName in CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE
+                ) {
+                    return CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE[
+                        columnName as keyof typeof CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE
+                    ];
+                }
             },
-            [dataOrientation, hasMoreThanOneCountry, rows, width]
+            [category.value, dataOrientation, hasMoreThanOneCountry, rows, width]
         );
 
         // Function to create and synchronize the double scroll bar
