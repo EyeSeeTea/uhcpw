@@ -99,7 +99,6 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         xAxis: {
             ...scratterChart.xAxis,
             labels: {
-                rotation: -90,
                 formatter: function () {
                     return `${this.value}`;
                 },
