@@ -1,5 +1,6 @@
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
+import { yAxisformatNumberLabel } from "../yAxis/formatNumberLabel";
 
 export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -42,5 +43,9 @@ export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
             },
         },
     ],
+    ...yAxisformatNumberLabel,
     sortLegendByLastDataPoint: true,
+    currencyOfCountryYAxis: (countryCurrencyCode: string) => {
+        return { title: { text: `Constant LAY ${countryCurrencyCode} per person` } };
+    },
 };

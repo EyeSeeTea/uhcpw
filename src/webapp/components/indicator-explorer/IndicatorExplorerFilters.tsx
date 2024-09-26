@@ -30,7 +30,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                 <Center>
                     <TreeSelector
                         fullWidth
-                        hasSelectAll
+                        hasSelectAll={!filters.country.isOnlyEu27Comparison}
                         hasClearAll
                         label={i18n.t("Countries and areas")}
                         items={filters.country.options}
@@ -40,6 +40,10 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         maxSelection={filters.country.maxCountrySelection}
                         showSubChildren={filters.country.showSubRegions}
                         placeholder={i18n.t("Select country or area")}
+                        showParentIfChecked={!filters.country.isOnlyEu27Comparison}
+                        showOnlyAllParentSelectedIfChecked={!filters.country.isOnlyEu27Comparison}
+                        selectedItemsToShowWhenAllSelected={filters.country.selectedItemsToShowWhenAllSelected}
+                        allSelectedLabel={i18n.t("All countries/areas")}
                     />
                 </Center>
             </Grid>

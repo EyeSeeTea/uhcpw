@@ -8,7 +8,7 @@ import { Id } from "../../../../domain/entities/Ref";
 type HealthCareType =
     | "Primary care visits"
     | "Outpatient specialist visits"
-    | "Outpatient emergency visits"
+    | "Emergency care"
     | "Outpatient prescribed medicines"
     | "Medical products"
     | "Diagnostics tests"
@@ -20,7 +20,7 @@ type HealthCareType =
 export const TYPES_OF_HEALTH_CARE: HealthCareType[] = [
     "Primary care visits",
     "Outpatient specialist visits",
-    "Outpatient emergency visits",
+    "Emergency care",
     "Outpatient prescribed medicines",
     "Medical products",
     "Diagnostics tests",
@@ -106,7 +106,7 @@ export const USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_EL
 > = {
     "Primary care visits": ["giUCPiCe745", "mTB12rvpJWd", "b29bW9mc9C7", "tu36CFgEoh8", "mSgmJhjn4Bi"],
     "Outpatient specialist visits": ["SWX96A7gnpA", "wDQRlBezRAs", "ZkElvtoVJSd", "zsiuJlUSvAW", "o6d3FfwRVj7"],
-    "Outpatient emergency visits": ["WTtArv6Xvsy", "ibq7wtqnsns", "n8jFYyMKDaV", "SiNpgO1L5bG", "sASANfdEGUR"],
+    "Emergency care": ["WTtArv6Xvsy", "ibq7wtqnsns", "n8jFYyMKDaV", "SiNpgO1L5bG", "sASANfdEGUR"],
     "Outpatient prescribed medicines": ["gMAYqfQ5xAD", "EruJIoPKO1s", "KBW3D8lOlpg", "a67cjmP423S", "sk9g2PsK7vD"],
     "Medical products": ["VroSbngmebX", "CpMWBaXJ91P", "P7qWfL7oluy", "yhSc51DOubT", "olgegohqR8l"],
     "Diagnostics tests": ["OjTsewAuevP", "L2sCkhEbSfM", "NkHvpG471tm", "Cm6ngZTrVQR", "JLSGrrzqrW9"],
@@ -209,14 +209,7 @@ const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS: R
         "gxOwKGHM5uM",
         "OVMONRywtGy",
     ],
-    "Outpatient emergency visits": [
-        "NnTynkwUOLd",
-        "AumlNzFYLzS",
-        "RnRU6QWQtFO",
-        "y1ZQGX2JSfk",
-        "ZVvNouUFwSj",
-        "U3EM7x9wA7q",
-    ],
+    "Emergency care": ["NnTynkwUOLd", "AumlNzFYLzS", "RnRU6QWQtFO", "y1ZQGX2JSfk", "ZVvNouUFwSj", "U3EM7x9wA7q"],
     "Outpatient prescribed medicines": [
         "FPWimBd7wCe",
         "c6VoqBpnpxd",

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 import ReactMarkdown from "react-markdown";
+import _ from "lodash";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
@@ -14,6 +15,12 @@ import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyEx
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
+import {
+    DataOrientation,
+    PolicyExplorerCell,
+    PolicyExplorerCellType,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
@@ -65,13 +72,44 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
     const getCleanReferencesByCountry = useCallback(
         (country: string) => {
-            return data?.references
-                ?.find(references => references.country === country)
-                ?.references?.map(reference => {
-                    return reference.split("]:")[1]?.replace(/"/g, "") || reference;
-                });
+            return _.compact(
+                data?.references
+                    ?.find(references => references.country === country)
+                    ?.references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
+            );
         },
         [data?.references]
+    );
+
+    const checkIfMoreThanOneCountry = useCallback(
+        (dataOrientation: DataOrientation | undefined, rows: PolicyExplorerCell[][] | undefined) => {
+            if (dataOrientation === "normal" && rows?.length) {
+                const countryColumnIndex = rows[0]?.findIndex(
+                    cell => cell.type === PolicyExplorerCellType.HEADER && cell.value === COUNTRY_HEADER_NAME
+                );
+
+                return countryColumnIndex !== undefined && countryColumnIndex !== -1
+                    ? rows?.filter(
+                          row =>
+                              row[countryColumnIndex]?.value && row[countryColumnIndex]?.value !== COUNTRY_HEADER_NAME
+                      ).length > 1
+                    : false;
+            }
+
+            if (dataOrientation === "inverted" && rows?.length) {
+                const countryRowIndex = rows.findIndex(
+                    row => row[0]?.type === PolicyExplorerCellType.HEADER && row[0]?.value === COUNTRY_HEADER_NAME
+                );
+
+                const countryRow = rows[countryRowIndex];
+
+                return countryRow
+                    ? countryRow?.filter(cell => cell?.value && cell?.value !== COUNTRY_HEADER_NAME)?.length > 1
+                    : false;
+            }
+            return false;
+        },
+        []
     );
 
     return (
@@ -105,6 +143,10 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                 onSwitchRowColumn={onSwitchRowColumn}
                                 dataOrientation={dataOrientationByTable[category.value]}
                                 referencesRef={referencesRef}
+                                hasMoreThanOneCountry={checkIfMoreThanOneCountry(
+                                    dataOrientationByTable[category.value],
+                                    data.tables[category.value]
+                                )}
                             />
                         ))}
                     </Content>
@@ -120,7 +162,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     <GeneralRow>
                                         <CreditsText
                                             style={{ fontWeight: 500 }}
-                                        >{`${info.country} (${info.year})`}</CreditsText>
+                                        ><strong>{`${info.country} (${info.year})`}</strong></CreditsText>
                                     </GeneralRow>
 
                                     {info.lastUpdate ? (
@@ -186,17 +228,23 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {info.country &&
-                                        getCleanReferencesByCountry(info.country)?.map(reference => (
-                                            <ReactMarkdown
-                                                key={reference}
-                                                components={{
-                                                    p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
-                                                }}
-                                            >
-                                                {reference}
-                                            </ReactMarkdown>
-                                        ))}
+                                    {info.country && getCleanReferencesByCountry(info.country)?.length ? (
+                                        <>
+                                            <ReferencesTitle>
+                                                {i18n.t("References", { nsSeparator: false })}
+                                            </ReferencesTitle>
+                                            {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                                <ReactMarkdown
+                                                    key={reference}
+                                                    components={{
+                                                        p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
+                                                    }}
+                                                >
+                                                    {reference}
+                                                </ReactMarkdown>
+                                            ))}
+                                        </>
+                                    ) : null}
                                 </ReferencesContainer>
                             </div>
                         );
@@ -215,7 +263,6 @@ const Content = styled.div`
 const GeneralDataContainer = styled.div`
     font-size: 16px;
     margin-top: 24px;
-    margin-bottom: 24px;
 `;
 
 const ReferencesContainer = styled.div`
@@ -260,6 +307,15 @@ const CreditsText = styled(Typography)<{ $noWrap?: boolean }>`
     font-weight: 500;
     font-size: 0.875rem;
     white-space: ${props => (props.$noWrap ? "nowrap" : "unset")};
+    font-family: Lato;
+`;
+
+const ReferencesTitle = styled(Typography)`
+    color: black;
+    font-weight: 500;
+    font-size: 0.875rem;
+    font-family: Lato;
+    margin-bottom: 12px;
 `;
 
 const Link = styled.a`

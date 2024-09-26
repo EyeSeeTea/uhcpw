@@ -13,6 +13,7 @@ export type ChartCustomization = {
     subtitle?: TitleCustomization;
     xAxis?: AxisCustomization | AxisCustomization[];
     countryXAxis?: (countries: Country[], xAxis: { categories: string[] }) => AxisCustomization;
+    renameCategoriesXAxis?: (categories: (string | number)[]) => (string | number)[];
     yAxis?: AxisCustomization;
     currencyOfCountryYAxis?: (countryCurrencyCode: string) => AxisCustomization;
     hideLegendIfNoData?: boolean;
@@ -22,6 +23,13 @@ export type ChartCustomization = {
         series: SeriesColumnOptions[] | undefined,
         categories: string[]
     ) => SeriesColumnOptions[] | undefined;
+    plotOptions?: PlotOptionsCustomization;
+};
+
+export type PlotOptionsCustomization = {
+    series: {
+        grouping: boolean;
+    };
 };
 
 export type LegendCustomization = {
@@ -59,9 +67,15 @@ export type AllSeriesCustomization = {
 
 export type AxisCustomization = {
     title?: TitleCustomization;
-    labels?: { rotation?: number; style?: CSSProperties; step?: number };
+    labels?: {
+        rotation?: number;
+        style?: CSSProperties;
+        step?: number;
+        formatter?: (this: Highcharts.AxisLabelsFormatterContextObject) => void;
+    };
     categories?: string[];
     lineWidth?: number;
+    gridLineWidth?: number;
 };
 
 export type ChartPropertyCustomization = {

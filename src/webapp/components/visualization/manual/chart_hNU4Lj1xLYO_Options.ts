@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 import { ChartSource } from "./chartOptions";
-import { createScratterChart } from "./generic/scratterChart";
+import { createScratterChart, pos } from "./generic/scratterChart";
 
 export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
@@ -70,15 +70,44 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
         };
     });
 
-    return createScratterChart(
+    const countryPositionsAdjustment = {
+        // Serie 1
+        NET: pos.bottomLeft,
+        SVN: pos.bottomRight,
+        IRE: pos.right,
+        SWE: pos.top,
+        UNK: pos.bottom,
+        SPA: pos.left,
+
+        // Serie 2
+        FRA: pos.bottomLeft,
+        LUX: pos.topLeft,
+        CRO: pos.topLeft,
+        DEU: pos.bottomLeft,
+        DEN: pos.top,
+        CZH: pos.topLeft,
+        TUR: pos.topLeft,
+        BEL: pos.left,
+        AUT: pos.bottom,
+        FIN: pos.right,
+        SWI: pos.left,
+
+        SVK: pos.topLeft,
+
+        SRB: pos.topLeft,
+    };
+
+    return createScratterChart({
         series,
-        chartSource.visualization,
+        visualization: chartSource.visualization,
         currentCountryCode,
-        "Out-of-pocket payments as a share of current spending on health (%)",
-        "Households with catastrophic health spending (%)",
-        "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
-        countriesWithData
-    );
+        xAxisTitle: "Out-of-pocket payments as a share of current spending on health (%)",
+        yAxisTitle: "Households with catastrophic health spending (%)",
+        pointFormat:
+            "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
+        countriesWithData,
+        countryPositions: countryPositionsAdjustment,
+    });
 };
 
 interface SerieData {

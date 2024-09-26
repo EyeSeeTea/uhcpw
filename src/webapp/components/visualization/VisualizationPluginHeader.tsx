@@ -63,7 +63,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 </Title>
                             </Row>
 
-                            <RowWithGap $gap={20}>
+                            <RowWithGap $gap={6}>
                                 {showCountryTag && currentCountryName ? (
                                     <Tag className="category">{currentCountryName}</Tag>
                                 ) : (
@@ -71,19 +71,19 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 )}
                                 <RowWithGap $gap={0}>
                                     {onShowInfo && (
-                                        <StyledIconButton onClick={onShowInfo} $color="#185698">
-                                            <CustomInfoIcon color="primary" className="info-button" />
+                                        <StyledIconButton onClick={onShowInfo} $color="#185698" padding="4px">
+                                            <CustomInfoIconCountry color="primary" className="info-button" />
                                         </StyledIconButton>
                                     )}
 
                                     {onDownloadExcel && (
-                                        <StyledIconButton onClick={onDownloadExcel} $color="white">
+                                        <StyledIconButton onClick={onDownloadExcel} $color="white" padding="6px">
                                             <CustomCloudIcon color="primary" className="download-button" />
                                         </StyledIconButton>
                                     )}
 
                                     {onDownloadImage && (
-                                        <StyledIconButton onClick={onDownloadImage} $color="white">
+                                        <StyledIconButton onClick={onDownloadImage} $color="white" padding="6px">
                                             <CustomImageIcon color="primary" className="download-button" />
                                         </StyledIconButton>
                                     )}
@@ -102,7 +102,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     {chartFriendlyName}
                                     {onShowInfo && (
                                         <Button>
-                                            <CustomInfoIcon
+                                            <CustomInfoIconIndicators
                                                 color="primary"
                                                 className="info-button"
                                                 htmlColor="#185698"
@@ -152,7 +152,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
 );
 
 const DataHeader = styled.div<{ $isCountryPage?: boolean }>`
-    padding-block-start: ${props => (props.$isCountryPage ? "30px" : "48px")};
+    padding-block-start: ${props => (props.$isCountryPage ? "10px" : "48px")};
     padding-block-end: 48px;
     width: 100%;
 `;
@@ -190,30 +190,35 @@ const DownloadButton = styled(Button)`
     text-transform: initial;
 `;
 
-const StyledIconButton = styled(IconButton)<{ $color: string }>`
-    padding: 5px;
+const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`
+    padding: ${props => props.padding};
     color: ${props => props.$color};
 `;
 
-const CustomInfoIcon = styled(InfoIcon)`
+const CustomInfoIconIndicators = styled(InfoIcon)`
     color: #185698;
     font-size: 26px;
+`;
+
+const CustomInfoIconCountry = styled(InfoIcon)`
+    color: #185698;
+    font-size: 33px;
 `;
 
 const CustomImageIcon = styled(ImageRoundedIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
-    padding: 3px;
-    font-size: 17px;
+    padding: 4px;
+    font-size: 20px;
 `;
 
 const CustomCloudIcon = styled(DownloadIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
-    padding: 3px;
-    font-size: 17px;
+    padding: 4px;
+    font-size: 20px;
 `;
 
 const Tag = styled.div`

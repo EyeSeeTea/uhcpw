@@ -1,4 +1,4 @@
-import { Box, CircularProgress, Typography } from "@material-ui/core";
+import { CircularProgress, Typography } from "@material-ui/core";
 import React, { useCallback, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
@@ -17,6 +17,7 @@ interface VisualizationPluginProps {
     noDataMessage?: string;
     onDownloadImage?: () => void;
     isScreenshot?: boolean;
+    paddingEnd?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
@@ -30,6 +31,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         noDataMessage = "",
         onDownloadImage,
         isScreenshot = false,
+        paddingEnd = true,
     }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
@@ -55,6 +57,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 ref={ref}
                 $withoutBackground={withoutBackground}
                 $marginStart={!useHeaderForCountryPage && !isScreenshot}
+                $paddingEnd={paddingEnd}
             >
                 <VisualizationPluginHeader
                     visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
@@ -81,7 +84,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     withoutBackground={withoutBackground}
                     externalchartOptions={chartData.chartOptions}
                 />
-                {!isScreenshot && <Box height={32} />}
             </Container>
         ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
             <Center>
@@ -101,10 +103,11 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     }
 );
 
-const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean }>`
+const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean; $paddingEnd?: boolean }>`
     margin-block-start: ${props => (props.$marginStart ? "48px" : "0px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
-    padding: 0px 32px 32px 16px;
+    padding-block-end: ${props => (props.$paddingEnd ? "32px" : "0px")};
+    padding-inline: 16px 32px;
     width: 100%;
 `;
 

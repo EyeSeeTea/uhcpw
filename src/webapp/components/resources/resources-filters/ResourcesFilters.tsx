@@ -102,6 +102,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             selectedIds={filters.country.selected}
                             disabled={disabledCountryFilter}
                             onSelectedIdsChange={onCountryChange}
+                            showParentIfChecked={true}
+                            showOnlyAllParentSelectedIfChecked={true}
+                            allSelectedLabel={i18n.t("All countries/areas")}
                         />
                     </Center>
                 </Grid>

@@ -7,4 +7,5 @@ export const chart_d3kq9OCv8tH_Seed = {
     minCountryFilter: 1,
     hasEur27: true,
     allowBreaksInSeries: true,
+    isComparative: false,
 };

@@ -1,9 +1,10 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
-import React, { RefObject, useCallback, useState } from "react";
+import React, { RefObject, useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
 import ReactMarkdown from "react-markdown";
+import { colors } from "../../pages/app/themes/dhis2.theme";
 
 import i18n from "../../../locales";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
@@ -14,7 +15,8 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 import useWindowSize from "../../common/hooks/screen/useWindowSize";
-import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+import _ from "lodash";
+import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -22,13 +24,31 @@ interface PolicyExplorerTableProps {
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;
     referencesRef: RefObject<HTMLDivElement>;
+    hasMoreThanOneCountry: boolean;
 }
 
+const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
+    country: 90,
+    year: 30,
+    typeOfHealthCare: 90,
+    userChargesApply: 90,
+    typeOfUserCharge: 160,
+    reducedUserCharges: 90,
+    exemptionsFromUserCharges: 160,
+    capOnUserCharges: 90,
+};
 const EMPTY_URL = "/";
-const MIN_CELL_WIDTH = 200;
+const MIN_DATA_CELL_WIDTH = 200;
 
 export const PolicyExplorerTable = React.memo(
-    ({ category, rows, onSwitchRowColumn, dataOrientation, referencesRef }: PolicyExplorerTableProps) => {
+    ({
+        category,
+        rows,
+        onSwitchRowColumn,
+        dataOrientation,
+        referencesRef,
+        hasMoreThanOneCountry,
+    }: PolicyExplorerTableProps) => {
         const { width } = useWindowSize();
 
         const handleClickEmptyUrl = useCallback(
@@ -50,25 +70,98 @@ export const PolicyExplorerTable = React.memo(
                 // 128 is the padding of the screen
                 const totalWidth = width - 128;
 
-                if (dataOrientation === "normal" && rows?.[0]?.[columnIndex]) {
-                    const columnWidth =
-                        rows?.[0]?.[columnIndex]?.value === "Year" ||
-                        rows?.[0]?.[columnIndex]?.value === "Country" ||
-                        (category.value === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-                            rows?.[0]?.[columnIndex]?.value === "")
-                            ? MIN_CELL_WIDTH
-                            : category.value === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID
-                            ? (totalWidth - 300) / (rows?.[0]?.length || 1)
-                            : (totalWidth - 200) / (rows?.[0]?.length || 1);
+                if (dataOrientation === "inverted" && hasMoreThanOneCountry) {
+                    const columnWidth = (totalWidth - MIN_DATA_CELL_WIDTH) / (rows?.[0]?.length || 1);
+                    return columnIndex === 0
+                        ? MIN_DATA_CELL_WIDTH
+                        : columnWidth < MIN_DATA_CELL_WIDTH
+                        ? MIN_DATA_CELL_WIDTH
+                        : columnWidth;
+                }
+                const columnName = _.camelCase(rows?.[0]?.[columnIndex]?.value);
 
-                    return columnWidth < MIN_CELL_WIDTH ? MIN_CELL_WIDTH : columnWidth;
+                if (
+                    category.value === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES &&
+                    columnName &&
+                    columnName in CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE
+                ) {
+                    return CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE[
+                        columnName as keyof typeof CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE
+                    ];
+                }
+            },
+            [category.value, dataOrientation, hasMoreThanOneCountry, rows, width]
+        );
+
+        // Function to create and synchronize the double scroll bar
+        const doubleScroll = (element: HTMLDivElement | null) => {
+            if (!element) return;
+            const className = `custom-scrollbar-${category.value}`;
+
+            const existingScrollbar = element.parentNode?.querySelector(`.${className}`);
+
+            if (existingScrollbar) {
+                existingScrollbar.remove();
+            }
+
+            const scrollbar = document.createElement("div");
+            scrollbar.appendChild(document.createElement("div"));
+            scrollbar.style.overflow = "auto";
+            scrollbar.style.overflowY = "hidden";
+            scrollbar.style.position = "relative";
+            scrollbar.style.top = "15px"; // Maybe calculate this dynamically
+
+            const style = document.createElement("style");
+            style.innerHTML = `
+                .${className} {
+                    scrollbar-color: ${colors.accentPrimaryLight} ${colors.accentPrimaryLightest};
+                    scrollbar-width: thin;
                 }
 
-                const columnWidth = (totalWidth - MIN_CELL_WIDTH) / (rows?.[0]?.length || 1);
-                return columnIndex === 0 ? MIN_CELL_WIDTH : columnWidth < MIN_CELL_WIDTH ? MIN_CELL_WIDTH : columnWidth;
-            },
-            [category.value, dataOrientation, rows, width]
-        );
+                .${className}::-webkit-scrollbar {
+                    width: 10px;
+                }
+
+                .${className}::-webkit-scrollbar-track {
+                    background:  ${colors.accentPrimaryLightest};
+                }
+
+                .${className}::-webkit-scrollbar-thumb {
+                    background-color: ${colors.accentPrimaryLight};
+                    border-radius: 10px;
+                }
+
+                .${className}::-webkit-scrollbar-thumb:hover {
+                    background: ${colors.accentPrimaryLight};
+                }
+            `;
+            document.head.appendChild(style);
+            scrollbar.className = className;
+
+            const scrollbarChild = scrollbar.firstChild as HTMLElement | null;
+            if (scrollbarChild) {
+                scrollbarChild.style.width = `${element.scrollWidth}px`;
+                scrollbarChild.appendChild(document.createTextNode("\xA0"));
+            }
+
+            scrollbar.onscroll = function () {
+                element.scrollLeft = scrollbar.scrollLeft;
+            };
+            element.onscroll = function () {
+                scrollbar.scrollLeft = element.scrollLeft;
+            };
+
+            element.parentNode?.insertBefore(scrollbar, element);
+            element.classList.add(className);
+        };
+
+        const tableContainerRef = React.useRef<HTMLDivElement>(null);
+
+        // Add the double scroll bar effect when the component mounts
+        useEffect(() => {
+            doubleScroll(tableContainerRef.current);
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [tableContainerRef, dataOrientation]);
 
         return !rows?.length || !dataOrientation ? (
             category && (
@@ -118,7 +211,12 @@ export const PolicyExplorerTable = React.memo(
                         </Row>
                     </Row>
                 </TableHeader>
-                <TableContainer component={TablePaper}>
+                <TableContainer
+                    component={TablePaper}
+                    ref={tableContainerRef}
+                    id="doublescroll"
+                    style={{ overflowX: "auto" }}
+                >
                     <StyledTable orientation={dataOrientation}>
                         <TableBody>
                             {rows.map((row, index) => (
@@ -204,11 +302,11 @@ const StyledNormalTable = styled(Table)`
     }
 `;
 
-const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwidth: number }>`
+const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwidth?: number }>`
     color: #0460a7;
     font-weight: 500;
-    width: ${props => `${props.cellwidth}px`};
-    min-width: ${props => `${props.cellwidth}px`};
+    width: ${props => (props.cellwidth ? `${props.cellwidth}px` : "initial")};
+    min-width: ${props => (props.cellwidth ? `${props.cellwidth}px` : "initial")};
     background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
 `;

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-07-18T09:33:12.459Z\n"
-"PO-Revision-Date: 2024-07-18T09:33:12.459Z\n"
+"POT-Creation-Date: 2024-09-20T15:53:37.081Z\n"
+"PO-Revision-Date: 2024-09-20T15:53:37.082Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -15,6 +15,9 @@ msgid "All countries and areas"
 msgstr ""
 
 msgid "Select country or area"
+msgstr ""
+
+msgid "All countries/areas"
 msgstr ""
 
 msgid "WHO Barcelona Office for Health Systems Financing"
@@ -184,17 +187,18 @@ msgstr ""
 msgid "All years"
 msgstr ""
 
-msgid "You can only select one country at a time with this indicator"
-msgid_plural "You can only select one country at a time with this indicator"
-msgstr[0] ""
-msgstr[1] ""
-
 msgid "You can only select {{count}} countries at a time with this indicator"
 msgid_plural "You can only select {{count}} countries at a time with this indicator"
 msgstr[0] ""
 msgstr[1] ""
 
+msgid "You can only select one country at a time with this indicator"
+msgstr ""
+
 msgid "2019 or latest available year before COVID-19"
+msgstr ""
+
+msgid "Latest available year"
 msgstr ""
 
 msgid "This indicator needs at least {{count}} countries"
@@ -232,6 +236,9 @@ msgid "Notes: "
 msgstr ""
 
 msgid "Suggested citation: "
+msgstr ""
+
+msgid "References"
 msgstr ""
 
 msgid "Country information coming soon"
