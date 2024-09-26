@@ -162,7 +162,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     <GeneralRow>
                                         <CreditsText
                                             style={{ fontWeight: 500 }}
-                                        >{`${info.country} (${info.year})`}</CreditsText>
+                                        ><strong>{`${info.country} (${info.year})`}</strong></CreditsText>
                                     </GeneralRow>
 
                                     {info.lastUpdate ? (
