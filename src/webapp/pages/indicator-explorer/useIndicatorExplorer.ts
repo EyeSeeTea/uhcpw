@@ -42,6 +42,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [isOnlyEu27Comparison, setIsOnlyEu27Comparison] = useState(false);
     const [isYearSingleSelection, setIsYearSingleSelection] = useState(false);
     const [disabledYears, setDisabledYears] = useState<string[]>([]);
+    const [hideBosniaAndHerzegovinaRegions, setHideBosniaAndHerzegovinaRegions] = useState(false);
 
     const showNonComparativeMessageIfRequired = useCallback(
         (oldVisualization: Visualization | undefined, newsVisualization: Visualization | undefined) => {
@@ -132,6 +133,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setSelectedIndicatorFilter(value);
             setShowVisualization(false);
             setIsYearSingleSelection(!!newsVisualization?.isYearSingleSelection);
+            setHideBosniaAndHerzegovinaRegions(!!newsVisualization?.hideBosniaAndHerzegovinaRegions);
             setDisabledYears([]);
         },
         [
@@ -286,7 +288,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 options: countryOptions,
                 disabledCountries,
                 maxCountrySelection,
-                showSubRegions: true,
+                showSubRegions: !hideBosniaAndHerzegovinaRegions,
                 selectedItemsToShowWhenAllSelected: [EU27],
                 isOnlyEu27Comparison: isOnlyEu27Comparison,
             },

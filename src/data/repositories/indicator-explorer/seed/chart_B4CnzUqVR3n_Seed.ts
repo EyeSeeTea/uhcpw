@@ -8,4 +8,5 @@ export const chart_B4CnzUqVR3n_Seed = {
     isComparative: true,
     hasEur27: true,
     allowedYears: [LatestCOVID19],
+    hideBosniaAndHerzegovinaRegions: true,
 };

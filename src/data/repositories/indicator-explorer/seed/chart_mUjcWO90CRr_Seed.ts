@@ -18,4 +18,5 @@ export const chart_mUjcWO90CRr_Seed = {
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>
         sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),
+    hideBosniaAndHerzegovinaRegions: true,
 };

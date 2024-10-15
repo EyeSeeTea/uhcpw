@@ -7,4 +7,5 @@ export const chart_iMI82inOBiD_Seed = {
     isComparative: true,
     hasEur27: true,
     isYearSingleSelection: true,
+    hideBosniaAndHerzegovinaRegions: true,
 };

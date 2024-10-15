@@ -21,6 +21,7 @@ export interface VisualizationExtra {
     sortDataRows?: (headerRow: string[], dataRows: string[][]) => string[][];
     isOnlyEu27Comparison?: boolean;
     isYearSingleSelection?: boolean;
+    hideBosniaAndHerzegovinaRegions?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
