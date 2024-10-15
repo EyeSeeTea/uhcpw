@@ -40,6 +40,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [disabledCountries, setDisabledCountries] = useState<string[]>([]);
     const [maxCountrySelection, setMaxCountrySelection] = useState<number | undefined>(undefined);
     const [isOnlyEu27Comparison, setIsOnlyEu27Comparison] = useState(false);
+    const [isYearSingleSelection, setIsYearSingleSelection] = useState(false);
+    const [disabledYears, setDisabledYears] = useState<string[]>([]);
 
     const showNonComparativeMessageIfRequired = useCallback(
         (oldVisualization: Visualization | undefined, newsVisualization: Visualization | undefined) => {
@@ -102,7 +104,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
             if (newsVisualization?.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
                 setSelectedYearFilter(newsVisualization.selectedYearsByDefault.map(year => year.id));
-            } else if (!newsVisualization?.isComparative) {
+            } else if (newsVisualization && !newsVisualization.isComparative) {
                 const allAllowedYears = newsVisualization?.allowedYears
                     ? allYearsFilters
                           .map(year => year.id)
@@ -129,6 +131,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setIsOnlyEu27Comparison(!!newsVisualization?.isOnlyEu27Comparison);
             setSelectedIndicatorFilter(value);
             setShowVisualization(false);
+            setIsYearSingleSelection(!!newsVisualization?.isYearSingleSelection);
+            setDisabledYears([]);
         },
         [
             countriesAndRegions,
@@ -141,11 +145,20 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         ]
     );
 
-    const onChangeYearFilter = useCallback((value: string[] | undefined) => {
-        setSelectedYearFilter(value);
+    const onChangeYearFilter = useCallback(
+        (value: string[] | undefined) => {
+            setSelectedYearFilter(value);
 
-        setShowVisualization(false);
-    }, []);
+            setShowVisualization(false);
+
+            if (isYearSingleSelection) {
+                const disabled =
+                    value && value.length ? yearFilters.map(year => year.id).filter(id => !value.includes(id)) : [];
+                setDisabledYears(disabled);
+            }
+        },
+        [isYearSingleSelection, yearFilters]
+    );
 
     useEffect(() => {
         setShowVisualization(false);
@@ -154,6 +167,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     useEffect(() => {
         if (!selectedIndicatorFilter) {
             setDisabledCountries([]);
+            setDisabledYears([]);
         }
     }, [selectedIndicatorFilter]);
 
@@ -175,7 +189,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             visualization => visualization.id === selectedIndicatorFilter
         )?.allowedYears;
 
-        // HERE: habrá charts comparativos que serán SOLO pre2019, habrá charts que serán SOLO LAY, y habrá charts que permitan ambos
+        // HERE: there are charts that are ONLY latest COVID19, there are charts that are ONLY LAY, and there are charts that allow both and another years
         if (allowedYears) {
             setYearsFilters(
                 allowedYears.map(year =>
@@ -195,9 +209,11 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 )
             );
         } else {
-            setYearsFilters(allYearsFilters);
+            setYearsFilters(
+                isYearSingleSelection ? allYearsFilters.map(year => ({ ...year, parents: [] })) : allYearsFilters
+            );
         }
-    }, [indicatorFilters, selectedIndicatorFilter, visualizations]);
+    }, [indicatorFilters, isYearSingleSelection, selectedIndicatorFilter, visualizations]);
 
     useEffect(() => {
         compositionRoot.indicatorExplorer.getPageContent.execute().run(
@@ -283,6 +299,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 options: yearFilters,
                 selected: selectedYearFilter,
                 onSelectedChange: onChangeYearFilter,
+                disabledYears: disabledYears,
+                isSingleSelection: isYearSingleSelection,
             },
         },
         onGet,
