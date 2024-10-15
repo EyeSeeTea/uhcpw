@@ -74,6 +74,7 @@ export function useChartData(
         if (visualizationId) {
             const isMultipleVisualizations = visualizationId.includes("_");
             const visualizationIds = isMultipleVisualizations ? visualizationId.split("_") : [visualizationId];
+
             getChartData(compositionRoot, visualizationIds, years, countries).run(
                 ({ visualizations, analytics, legendSets }) => {
                     const visualizationChartOptions = isMultipleVisualizations
@@ -85,6 +86,7 @@ export function useChartData(
                         visualization: isMultipleVisualizations ? visualizations : visualizations[0],
                         countries: countriesAndRegions,
                         currentCountry,
+                        currentYear: years.length === 1 ? years[0] : undefined,
                     };
 
                     const visualization = visualizations[0];

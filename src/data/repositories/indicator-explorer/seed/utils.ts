@@ -23,6 +23,7 @@ export const sortedCharts: string[] = [
     "VB7bdJ8ZXya",
     "mcNfvQaVbfy",
     "B4CnzUqVR3n",
+    "iMI82inOBiD",
     "mUjcWO90CRr",
     "DefU3mkASo6",
     // Household spending on health"
