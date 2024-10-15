@@ -24,6 +24,10 @@ export class VisualizationD2Repository implements VisualizationRepository {
     constructor(private api: D2Api) {}
 
     public getAll(): FutureData<Visualization[]> {
+        const visibleVisualizationsSeedKeys = Object.keys(VisualizationsSeeds).filter(
+            key => VisualizationsSeeds[key]?.hide !== true
+        );
+
         return apiToFuture(
             this.api.models.visualizations.get({
                 fields: visualizationFields,
@@ -31,7 +35,7 @@ export class VisualizationD2Repository implements VisualizationRepository {
                     type: { "!eq": "PIVOT_TABLE" },
                     id: {
                         in: [
-                            Object.keys(VisualizationsSeeds)
+                            visibleVisualizationsSeedKeys
                                 .map(seed => (seed.includes("_") ? seed.split("_") : seed))
                                 .flat()
                                 .join(","),

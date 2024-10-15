@@ -20,6 +20,7 @@ export interface VisualizationExtra {
     sortColumns?: (headerRow: string[]) => string[];
     sortDataRows?: (headerRow: string[], dataRows: string[][]) => string[][];
     isOnlyEu27Comparison?: boolean;
+    hide?: boolean
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

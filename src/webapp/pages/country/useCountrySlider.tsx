@@ -157,8 +157,8 @@ export function useCountrySlider(countryId: string): CountrySlider {
                     countries: [countryId],
                 },
                 graphTwo: {
-                    visualizationId: "ZxNdsDM8NSb",
-                    visualizationName: VisualizationsSeeds["ZxNdsDM8NSb"]?.friendlyName,
+                    visualizationId: "q5ldoFcgkSn",
+                    visualizationName: VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },

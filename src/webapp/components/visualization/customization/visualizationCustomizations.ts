@@ -24,6 +24,7 @@ import { chart_NOR4oxtMVxP_Customizations } from "./charts/chart_NOR4oxtMVxP_Cus
 import { chart_cGE32OzPgMS_Customizations } from "./charts/chart_cGE32OzPgMS_Customizations";
 import { chart_ToEa2VuZLDt_Customizations } from "./charts/chart_ToEa2VuZLDt_Customizations";
 import { chart_MfLZYD6QCPy_Cuztomizations } from "./charts/chart_MfLZYD6QCPy_Cuztomizations";
+import { chart_q5ldoFcgkSn_Customizations } from "./charts/chart_q5ldoFcgkSn_Customizations";
 
 export const visualizationCustomizations: Record<string, ChartCustomization> = {
     jFtGKQIQTGp: chart_jFtGKQIQTGp_Customizations,
@@ -31,6 +32,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     geNXcoXc3mf: chart_geNXcoXc3mf_Customizations,
     hpO1ZyFXpCz: chart_hpO1ZyFXpCz_Customizations,
     ZxNdsDM8NSb: chart_ZxNdsDM8NSb_Customizations,
+    q5ldoFcgkSn: chart_q5ldoFcgkSn_Customizations, 
     xJhFIBuwGVC: chart_xJhFIBuwGVC_Customizations,
     zkEtsohZTTf: chart_zkEtsohZTTf_Customizations,
     rT39aStYqI3: chart_rT39aStYqI3_Customizations,
