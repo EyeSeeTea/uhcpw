@@ -32,7 +32,7 @@ export const visualizationCustomizations: Record<string, ChartCustomization> = {
     geNXcoXc3mf: chart_geNXcoXc3mf_Customizations,
     hpO1ZyFXpCz: chart_hpO1ZyFXpCz_Customizations,
     ZxNdsDM8NSb: chart_ZxNdsDM8NSb_Customizations,
-    q5ldoFcgkSn: chart_q5ldoFcgkSn_Customizations, 
+    q5ldoFcgkSn: chart_q5ldoFcgkSn_Customizations,
     xJhFIBuwGVC: chart_xJhFIBuwGVC_Customizations,
     zkEtsohZTTf: chart_zkEtsohZTTf_Customizations,
     rT39aStYqI3: chart_rT39aStYqI3_Customizations,
