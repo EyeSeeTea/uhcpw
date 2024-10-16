@@ -1,4 +1,4 @@
-import { LatestAvailable } from "../../../../domain/entities/Year";
+import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
 import { sortedCategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 
@@ -15,7 +15,9 @@ export const chart_DefU3mkASo6_Seed = {
     categoryName: sortedCategoryNames.comparative,
     friendlyName: "breakdown of households with catastrophic health spending by risk of impoverishment",
     isComparative: true,
-    allowedYears: [LatestAvailable],
+    allowedYears: [LatestAvailable, LatestCOVID19],
+    selectedYearsByDefault: [LatestAvailable],
+    isYearSingleSelection: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>
         sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),

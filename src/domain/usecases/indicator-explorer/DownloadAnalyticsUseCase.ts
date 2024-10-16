@@ -34,7 +34,8 @@ export class DownloadAnalyticsUseCase {
                     finalPeriods,
                     orgUnits,
                     seriesIdAndName,
-                    sortedPeriods[0] === LatestAvailable.id
+                    sortedPeriods[0] === LatestAvailable.id,
+                    sortedPeriods[0] === LatestCOVID19.id
                 );
             }
         );

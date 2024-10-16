@@ -24,6 +24,7 @@ export interface ChartSource {
     countries: Country[];
     currentCountry?: string;
     currentYear?: string;
+    isLatestCOVID19?: boolean;
 }
 
 export interface ChartSourceMultiple {
@@ -32,6 +33,7 @@ export interface ChartSourceMultiple {
     countries: Country[];
     currentCountry?: string;
     currentYear?: string;
+    isLatestCOVID19?: boolean;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {

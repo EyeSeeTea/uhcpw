@@ -6,7 +6,7 @@ export function getChartSourceFilteredByLastAvailableYear(chartSource: ChartSour
         ...chartSource,
         analyticsResponse: {
             ...chartSource.analyticsResponse,
-            rows: filterRowsByLastAvailableYear(chartSource.analyticsResponse.rows),
+            rows: filterRowsByLastAvailableYear(chartSource.analyticsResponse.rows, chartSource.isLatestCOVID19),
         },
     };
 }
