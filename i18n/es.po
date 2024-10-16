@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2024-09-20T15:53:37.081Z\n"
+"POT-Creation-Date: 2024-10-16T11:03:08.841Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -196,12 +196,6 @@ msgstr[1] ""
 msgid "You can only select one country at a time with this indicator"
 msgstr ""
 
-msgid "2019 or latest available year before COVID-19"
-msgstr ""
-
-msgid "Latest available year"
-msgstr ""
-
 msgid "This indicator needs at least {{count}} countries"
 msgid_plural "This indicator needs at least {{count}} countries"
 msgstr[0] ""
@@ -211,6 +205,12 @@ msgid "This indicator needs to select only {{count}} country"
 msgid_plural "This indicator needs to select only {{count}} country"
 msgstr[0] ""
 msgstr[1] ""
+
+msgid "2019 or latest available year before COVID-19"
+msgstr ""
+
+msgid "Latest available year"
+msgstr ""
 
 msgid "Read more"
 msgstr ""
