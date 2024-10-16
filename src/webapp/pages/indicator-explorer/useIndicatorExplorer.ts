@@ -325,7 +325,6 @@ function getCountriesNotSelected(countryOptions: TreeOption[], countries: string
 
 function buildIndicatorOptionsAndSortByCategories(visualizations: Visualization[]): IndicatorOption[] {
     return visualizations
-        .filter(visualization => visualization.id !== "B4CnzUqVR3n")
         .map(visualization => ({
             value: visualization.id,
             text: `${visualization.friendlyName.charAt(0).toUpperCase()}${visualization.friendlyName.slice(1)}`,

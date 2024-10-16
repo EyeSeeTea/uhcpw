@@ -22,6 +22,7 @@ export interface VisualizationExtra {
     isOnlyEu27Comparison?: boolean;
     isYearSingleSelection?: boolean;
     hideBosniaAndHerzegovinaRegions?: boolean;
+    hide?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
