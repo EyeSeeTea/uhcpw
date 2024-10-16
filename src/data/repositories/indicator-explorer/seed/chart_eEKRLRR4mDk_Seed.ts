@@ -15,4 +15,5 @@ export const chart_eEKRLRR4mDk_Seed = {
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>
         sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),
     hideBosniaAndHerzegovinaRegions: true,
+    showYearInDownloadFile: true,
 };
