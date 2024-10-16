@@ -1,4 +1,8 @@
 import { Id } from "../../../../domain/entities/Ref";
+import {
+    hNU4Lj1xLYO_xAxisOutOfPocket,
+    hNU4Lj1xLYO_yAxisHouseholds,
+} from "../../../../webapp/components/visualization/manual/chart_hNU4Lj1xLYO_Options";
 
 type CellNames = {
     x: string;
@@ -19,8 +23,8 @@ const cellNameByVisualizationId: Record<Id, CellNames> = {
 
 const axesIdsByVisualizationId: Record<Id, AxesIds> = {
     hNU4Lj1xLYO: {
-        x: "rX0nLoxvSAi",
-        y: "kBOh0hUi5bW",
+        x: hNU4Lj1xLYO_xAxisOutOfPocket,
+        y: hNU4Lj1xLYO_yAxisHouseholds,
     },
 };
 
