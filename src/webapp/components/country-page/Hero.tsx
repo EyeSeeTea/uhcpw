@@ -5,7 +5,7 @@ import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import ReactMarkdown from "react-markdown";
 import { ButtonItem } from "../home/country-panel/CountryPanel";
 import { VisualizationPlugin } from "../visualization/VisualizationPlugin";
-import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
 import React from "react";
 import ScreenshotModal from "../screenshot-modal/ScreenshotModal";
@@ -51,7 +51,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     <VisualizationPlugin
                         key={countryId}
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
-                        years={[LatestCOVID19.id]}
+                        years={[LatestAvailable.id]}
                         countries={countriesAndRegions.map(({ id }) => id)}
                         currentCountry={countryId}
                         withoutBackground
@@ -69,7 +69,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
-                        years={[LatestCOVID19.id]}
+                        years={[LatestAvailable.id]}
                         countries={countriesAndRegions.map(({ id }) => id)}
                         currentCountry={countryId}
                         withoutBackground
