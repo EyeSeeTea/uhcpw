@@ -8,4 +8,5 @@ export const chart_iMI82inOBiD_Seed = {
     hasEur27: true,
     isYearSingleSelection: true,
     hideBosniaAndHerzegovinaRegions: true,
+    showYearInDownloadFile: true,
 };
