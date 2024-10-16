@@ -1,23 +1,35 @@
 import { ChartSource } from "./chartOptions";
 import { comparativeColumnChartOptions } from "./generic/comparativeColumnChartOptions";
+import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 
 const seriesNames: Record<string, string> = {
-    Ce6oTgNCapd: "Public spending on health as a share of government spending",
+    aYK8f4GuHBP: "Public spending on health as a share of government spending",
 };
 
 const seriesColors: Record<string, string> = {
-    Ce6oTgNCapd: "#00b050",
+    aYK8f4GuHBP: "#00b050",
 };
 
 export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const chartSourceWithFilteredRows = getChartSourceFilteredByLastAvailableYear(chartSource);
+
     return {
-        ...comparativeColumnChartOptions({ chartSource, seriesNames, seriesColors, currentSerieColor: "#c00000" }),
+        ...comparativeColumnChartOptions({
+            chartSource: chartSourceWithFilteredRows,
+            seriesNames,
+            seriesColors,
+            currentSerieColor: "#c00000",
+        }),
         legend: {
             enabled: false,
         },
         yAxis: {
-            ...comparativeColumnChartOptions({ chartSource, seriesNames, seriesColors, currentSerieColor: "#c00000" })
-                ?.yAxis,
+            ...comparativeColumnChartOptions({
+                chartSource: chartSourceWithFilteredRows,
+                seriesNames,
+                seriesColors,
+                currentSerieColor: "#c00000",
+            })?.yAxis,
             title: {
                 text: "Government spending (%)",
                 style: { fontSize: "13px" },

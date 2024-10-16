@@ -3,7 +3,7 @@ import { useAppContext } from "../../contexts/app-context";
 import { SliderInfo } from "../../../domain/entities/country-page/SliderInfo";
 import { useCountryInfo } from "./useCountryInfo";
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
-import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { LatestAvailable } from "../../../domain/entities/Year";
 import { CountrySectionInfo, EU27 } from "../../../domain/entities/Country";
 import UmbrellaGreen from "../../assets/country-page/umbrellaGreen.png";
 import UmbrellaRed from "../../assets/country-page/umbrella-3.svg";
@@ -111,7 +111,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "dbc87Ljw8uN",
                     visualizationName: VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
-                    years: [LatestCOVID19.id],
+                    years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
@@ -127,7 +127,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "NOukqSxCI63",
                     visualizationName: VisualizationsSeeds["NOukqSxCI63"]?.friendlyName,
-                    years: [LatestCOVID19.id],
+                    years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
@@ -143,7 +143,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphTwo: {
                     visualizationId: "GimM6ANOKhd",
                     visualizationName: VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
-                    years: [LatestCOVID19.id],
+                    years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
@@ -169,13 +169,13 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphOne: {
                     visualizationId: "VB7bdJ8ZXya",
                     visualizationName: VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
-                    years: [LatestCOVID19.id],
+                    years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
                 graphTwo: {
                     visualizationId: "mcNfvQaVbfy",
                     visualizationName: VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
-                    years: [LatestCOVID19.id],
+                    years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
             },
@@ -233,13 +233,13 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 graphOne: {
                     visualizationId: "B4CnzUqVR3n",
                     visualizationName: VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
-                    years: [LatestCOVID19.id],
+                    years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
                 graphTwo: {
                     visualizationId: "BYAT5Woc9EJ",
                     visualizationName: VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
-                    years: [LatestCOVID19.id],
+                    years: [LatestAvailable.id],
                     countries: [countryId, EU27],
                 },
             },
