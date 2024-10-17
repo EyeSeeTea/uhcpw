@@ -4,6 +4,7 @@ import { baseChartOptions } from "./baseChartOptions";
 import { EU27 } from "../../../../../domain/entities/Country";
 import { getEU27Label, EU27_LABEL } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
+import { getMaxAxisAndTickInterval, getMaxAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 
 export type ScratterSerie = {
     id: string;
@@ -22,7 +23,7 @@ type CreateScratterChartParams = {
     countriesWithData: SerieData[];
     countryPositions: Record<string, { x: number; y: number }>;
     displayTendencyLine?: boolean;
-    tickInterval?: number;
+    xTickInterval?: number;
 };
 
 export interface SerieSource extends NamedRef {
@@ -48,10 +49,10 @@ export const createScratterChart: ({
     countriesWithData,
     countryPositions,
     displayTendencyLine,
-    tickInterval,
+    xTickInterval,
 }: CreateScratterChartParams) => Highcharts.Options = ({
     series,
-    visualization,
+    visualization: _visualization,
     currentCountryCode,
     xAxisTitle,
     yAxisTitle,
@@ -59,7 +60,7 @@ export const createScratterChart: ({
     countriesWithData,
     countryPositions,
     displayTendencyLine = true,
-    tickInterval,
+    xTickInterval,
 }) => {
     const finalSeries = series.map(serie => {
         return {
@@ -73,15 +74,16 @@ export const createScratterChart: ({
 
     const allData = finalSeries.flatMap(serie => serie.data);
 
-    const axeItem = visualization.axes.find(({ type, title }) => type === "RANGE" && title.text === yAxisTitle);
+    const maxXAxis = getMaxAxisValue(countriesWithData.map(data => data.x));
+    const xTickIntervalDefault = xTickInterval ?? getXTickInterval(maxXAxis);
+    const adjustedMaxXAxis = getMaxAxisValue(
+        countriesWithData.map(data => data.x),
+        xTickIntervalDefault
+    );
 
-    const maxYAxis = axeItem ? { max: axeItem.maxValue } : {};
-
-    const maxXAxis = getMaxXAxis(countriesWithData);
-
-    const tickIntervalDefault = tickInterval ?? getTickInterval(maxXAxis);
-
-    const adjustedMaxXAxis = getMaxXAxis(countriesWithData, tickIntervalDefault);
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(
+        countriesWithData.map(data => data.y)
+    );
 
     return {
         ...baseChartOptions,
@@ -97,7 +99,7 @@ export const createScratterChart: ({
             title: { text: xAxisTitle, margin: 20 },
             min: 0,
             max: adjustedMaxXAxis,
-            tickInterval: tickIntervalDefault,
+            tickInterval: xTickIntervalDefault,
         },
         yAxis: {
             title: {
@@ -105,7 +107,8 @@ export const createScratterChart: ({
                 margin: 20,
                 style: { fontSize: "13px" },
             },
-            ...maxYAxis,
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
         },
         legend: { enabled: false },
         series: [
@@ -221,30 +224,4 @@ function getTrendLine(data: SerieData[]): number[][] {
     ];
 
     return trendline;
-}
-
-const getMaxXAxis = (countriesWithData: SerieData[], tickInterval = 5) => {
-    const maxXValue = Math.max(...countriesWithData.map(data => data.x));
-    return Math.ceil(maxXValue / tickInterval) * tickInterval;
-};
-
-function getTickInterval(maxXAxis: number) {
-    switch (true) {
-        case maxXAxis <= 1:
-            return 0.2;
-        case maxXAxis <= 5:
-            return 1;
-        case maxXAxis <= 10:
-            return 2;
-        case maxXAxis <= 24:
-            return 4;
-        case maxXAxis <= 45:
-            return 5;
-        case maxXAxis <= 80:
-            return 10;
-        case maxXAxis <= 90:
-            return 15;
-        default:
-            return 20;
-    }
 }

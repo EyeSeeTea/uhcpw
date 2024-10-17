@@ -3,6 +3,7 @@ import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 import { yAxisformatNumberLabel } from "../customization/yAxis/formatNumberLabel";
+import { getMaxAxisAndTickInterval, sumSeriesData } from "../utils/getMaxAxisAndTickInterval";
 
 const seriesNames: Record<string, string> = {
     Oseqbg7Odmn: "Average household capacity to pay",
@@ -62,7 +63,13 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         : undefined;
     const currencyCode = _.find(chartSource.countries, { id: countryId })?.currencyCode || "€";
 
-    const maxScatterValue = _.max(_(series).find(s => s.type === "scatter")?.data || []) || 0;
+    const columnSeriesData = series.filter(s => s.type === "column").map(s => s.data || []);
+    const sumOfColumnSeriesData = sumSeriesData(columnSeriesData);
+    const { max: adjustedMaxColumnYAxis, tickInterval: yColumnTickInterval } =
+        getMaxAxisAndTickInterval(sumOfColumnSeriesData);
+
+    const scatterData = _.compact(series.find(s => s.type === "scatter")?.data || []);
+    const { max: adjustedMaxScatterYAxis, tickInterval: yScatterTickInterval } = getMaxAxisAndTickInterval(scatterData);
 
     return {
         ...baseChartOptions,
@@ -76,6 +83,8 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                     style: { fontSize: "13px" },
                 },
                 labels: yAxisformatNumberLabel.yAxis?.labels,
+                max: adjustedMaxColumnYAxis,
+                tickInterval: yColumnTickInterval,
             },
             {
                 min: 0,
@@ -85,8 +94,10 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                     rotation: 270,
                     x: 5,
                 },
-                allowDecimals: maxScatterValue <= 1,
+                allowDecimals: Math.max(...scatterData) <= 1,
                 opposite: true,
+                max: adjustedMaxScatterYAxis,
+                tickInterval: yScatterTickInterval,
             },
         ],
         legend: {

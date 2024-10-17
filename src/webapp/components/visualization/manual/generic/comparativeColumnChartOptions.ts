@@ -3,6 +3,7 @@ import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
+import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -97,9 +98,8 @@ export const comparativeColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const maxYAxis = chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
-        ? { max: chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
-        : {};
+    const allYValuesInSeriesData = series.flatMap(serie => serie.data.map(data => data.y));
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(allYValuesInSeriesData);
 
     return {
         ...baseChartOptions,
@@ -127,7 +127,8 @@ export const comparativeColumnChartOptions: (params: {
                 text: "Households (%)",
                 style: { fontSize: "13px" },
             },
-            ...maxYAxis,
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
         },
         legend: baseLegend,
         series,

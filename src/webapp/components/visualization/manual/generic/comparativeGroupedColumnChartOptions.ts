@@ -3,6 +3,7 @@ import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
+import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 
 export const comparativeGroupedColumnChartOptions: (
     chartSource: ChartSource,
@@ -60,6 +61,9 @@ export const comparativeGroupedColumnChartOptions: (
         };
     });
 
+    const allYDataValues = series.flatMap(serie => serie.data.map(data => data.y));
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(allYDataValues);
+
     return {
         ...baseChartOptions,
         chart: {
@@ -77,6 +81,8 @@ export const comparativeGroupedColumnChartOptions: (
                 text: chartSource.visualization.axes[0]?.title.text,
                 style: { fontSize: "13px" },
             },
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
         },
         legend: isOnlyOneYearSelected ? { enabled: false } : baseLegend, // Hide legend if filtering on one year
         series,
