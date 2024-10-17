@@ -1,24 +1,7 @@
-export function getMaxAxisValue(data: number[], tickInterval?: number): number {
+export function getMaxXAxisValue(data: number[], tickInterval?: number): number {
     const maxXValue = Math.max(...data);
     const tick = tickInterval || (maxXValue <= 1 ? 0.2 : maxXValue <= 5 ? 1 : 5);
     return Math.ceil(maxXValue / tick) * tick;
-}
-
-export function getTickIntervalByMaxAxisValue(maxAxisValue: number): number {
-    if (maxAxisValue <= 1) return 0.2;
-    if (maxAxisValue <= 5) return 1;
-    if (maxAxisValue <= 10) return 2;
-
-    const magnitude = Math.floor(Math.log10(maxAxisValue));
-    const baseInterval = 10 ** magnitude;
-
-    if (maxAxisValue <= 1 * baseInterval) return baseInterval * 0.2;
-    if (maxAxisValue <= 2.4 * baseInterval) return baseInterval * 0.4;
-    if (maxAxisValue <= 4.5 * baseInterval) return baseInterval * 0.5;
-    if (maxAxisValue <= 8 * baseInterval) return baseInterval * 1;
-    if (maxAxisValue <= 9 * baseInterval) return baseInterval * 1.5;
-
-    return baseInterval * 2;
 }
 
 export function getXTickInterval(maxXAxis: number) {
@@ -42,13 +25,37 @@ export function getXTickInterval(maxXAxis: number) {
     }
 }
 
+export function getRoundedMaxValue(maxValue: number): number {
+    const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
+    const factor = maxValue <= 100 ? 5 : magnitude;
+
+    return Math.ceil(maxValue / factor) * factor;
+}
+
+export function getTickIntervalByMaxAxisValue(maxAxisValue: number): number {
+    if (maxAxisValue <= 1) return 0.2;
+    if (maxAxisValue <= 5) return 1;
+    if (maxAxisValue <= 10) return 2;
+
+    const magnitude = Math.floor(Math.log10(maxAxisValue));
+    const baseInterval = 10 ** magnitude;
+
+    if (maxAxisValue <= 1 * baseInterval) return baseInterval * 0.2;
+    if (maxAxisValue <= 2.4 * baseInterval) return baseInterval * 0.4;
+    if (maxAxisValue <= 4.5 * baseInterval) return baseInterval * 0.5;
+    if (maxAxisValue <= 8 * baseInterval) return baseInterval * 1;
+    if (maxAxisValue <= 9 * baseInterval) return baseInterval * 1.5;
+
+    return baseInterval * 2;
+}
+
 export function getMaxAxisAndTickInterval(maxValuesInSeriesData: number[]): { max: number; tickInterval: number } {
-    const maxAxis = getMaxAxisValue(maxValuesInSeriesData);
-    const tickInterval = getTickIntervalByMaxAxisValue(maxAxis);
-    const adjustedMaxAxis = getMaxAxisValue(maxValuesInSeriesData, tickInterval);
+    const maxAxisValue = Math.max(...maxValuesInSeriesData);
+    const maxAxisRoundedValue = getRoundedMaxValue(maxAxisValue);
+    const tickInterval = getTickIntervalByMaxAxisValue(maxAxisRoundedValue);
 
     return {
-        max: adjustedMaxAxis,
+        max: maxAxisRoundedValue,
         tickInterval: tickInterval,
     };
 }

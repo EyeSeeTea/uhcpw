@@ -4,7 +4,7 @@ import { baseChartOptions } from "./baseChartOptions";
 import { EU27 } from "../../../../../domain/entities/Country";
 import { getEU27Label, EU27_LABEL } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
-import { getMaxAxisAndTickInterval, getMaxAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
+import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 
 export type ScratterSerie = {
     id: string;
@@ -74,9 +74,9 @@ export const createScratterChart: ({
 
     const allData = finalSeries.flatMap(serie => serie.data);
 
-    const maxXAxis = getMaxAxisValue(countriesWithData.map(data => data.x));
+    const maxXAxis = getMaxXAxisValue(countriesWithData.map(data => data.x));
     const xTickIntervalDefault = xTickInterval ?? getXTickInterval(maxXAxis);
-    const adjustedMaxXAxis = getMaxAxisValue(
+    const adjustedMaxXAxis = getMaxXAxisValue(
         countriesWithData.map(data => data.x),
         xTickIntervalDefault
     );
