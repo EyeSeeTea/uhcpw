@@ -20,6 +20,7 @@ import { Maybe } from "../../../types/utils";
 import {
     filterRowsByYearInCountry,
     getLastAvailableYearByCountry,
+    getLastAvailableYearUpTo2019ByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "./utils/lastAvailableYearHelpers";
 
@@ -79,7 +80,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             id: string | undefined;
             name: string | undefined;
         }[],
-        latestAvailableYear: boolean
+        latestAvailableYear: boolean,
+        isLatestCOVID19: boolean
     ): FutureData<void> {
         return Future.parallel(
             visualizations.map(visualization => this.get(visualization, periods, orgUnitUids))
@@ -121,12 +123,15 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     firstChartAnalyticsResponse?.rows[0][2]?.match(/^(20)\d{2}$/);
 
                 const latestAvailableYearByCountryId =
-                    latestAvailableYear && isRowsContainsYears
+                    (latestAvailableYear || isLatestCOVID19) && isRowsContainsYears
                         ? isMultipleVisualizations
                             ? getLatestAvailableYearByCountryIdFromTwoCharts(
                                   firstChartAnalyticsResponse?.rows || [],
-                                  secondChartAnalyticsResponse?.rows || []
+                                  secondChartAnalyticsResponse?.rows || [],
+                                  isLatestCOVID19
                               )
+                            : isLatestCOVID19
+                            ? getLastAvailableYearUpTo2019ByCountry(firstChartAnalyticsResponse?.rows || [])
                             : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [])
                         : undefined;
 
