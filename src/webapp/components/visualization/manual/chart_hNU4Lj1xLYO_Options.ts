@@ -3,6 +3,9 @@ import _ from "lodash";
 import { ChartSource } from "./chartOptions";
 import { createScratterChart, pos } from "./generic/scratterChart";
 
+export const hNU4Lj1xLYO_yAxisHouseholds = "WmOGqGcov4f";
+export const hNU4Lj1xLYO_xAxisOutOfPocket = "S8OMD0f9IZp";
+
 export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const rowsByCountry = _(chartSource.analyticsResponse.rows)
         .groupBy(row => row[1])
@@ -42,8 +45,8 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
     const countriesWithData: SerieData[] = _(rowsByCountry)
         .keys()
         .map(countryId => {
-            const xSource = rowsByCountry[countryId]?.find(row => row[0] === "rX0nLoxvSAi") || [];
-            const ySource = rowsByCountry[countryId]?.find(row => row[0] === "kBOh0hUi5bW") || [];
+            const xSource = rowsByCountry[countryId]?.find(row => row[0] === hNU4Lj1xLYO_xAxisOutOfPocket) || [];
+            const ySource = rowsByCountry[countryId]?.find(row => row[0] === hNU4Lj1xLYO_yAxisHouseholds) || [];
             const country = chartSource.countries.find(country => country.id === countryId);
 
             const x = xSource[2] ? +xSource[2] : 0;

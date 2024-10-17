@@ -1,4 +1,4 @@
-import { LatestCOVID19 } from "../../../../domain/entities/Year";
+import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
 import { sortedCategoryNames } from "./utils";
 
 export const chart_hNU4Lj1xLYO_Seed = {
@@ -8,5 +8,7 @@ export const chart_hNU4Lj1xLYO_Seed = {
     downloadedFileName:
         "households with catastrophic health spending and out-of-pocket payments in Europe and central Asia",
     isComparative: true,
-    allowedYears: [LatestCOVID19],
+    allowedYears: [LatestAvailable, LatestCOVID19],
+    selectedYearsByDefault: [LatestAvailable],
+    isYearSingleSelection: true,
 };

@@ -11,6 +11,7 @@ import { visualizationCustomizations } from "./customization/visualizationCustom
 import { chartOptions, chartOptionsMultiple, ChartSource, ChartSourceMultiple } from "./manual/chartOptions";
 import { Country } from "../../../domain/entities/Country";
 import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
+import { LatestCOVID19 } from "../../../domain/entities/Year";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -74,6 +75,7 @@ export function useChartData(
         if (visualizationId) {
             const isMultipleVisualizations = visualizationId.includes("_");
             const visualizationIds = isMultipleVisualizations ? visualizationId.split("_") : [visualizationId];
+
             getChartData(compositionRoot, visualizationIds, years, countries).run(
                 ({ visualizations, analytics, legendSets }) => {
                     const visualizationChartOptions = isMultipleVisualizations
@@ -85,6 +87,8 @@ export function useChartData(
                         visualization: isMultipleVisualizations ? visualizations : visualizations[0],
                         countries: countriesAndRegions,
                         currentCountry,
+                        currentYear: years.length === 1 ? years[0] : undefined,
+                        isLatestCOVID19: years.includes(LatestCOVID19.id),
                     };
 
                     const visualization = visualizations[0];

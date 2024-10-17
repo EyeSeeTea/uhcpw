@@ -8,4 +8,5 @@ export const chart_BYAT5Woc9EJ_Seed = {
     hasEur27: true,
     allowBreaksInSeries: true,
     isComparative: false,
+    hideBosniaAndHerzegovinaRegions: true,
 };

@@ -51,15 +51,16 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                 <Center>
                     <TreeSelector
                         fullWidth
-                        hasSelectAll
                         hasClearAll
                         label={i18n.t("Years")}
                         items={filters.year.options}
                         selectedIds={filters.year.selected}
                         onSelectedIdsChange={filters.year.onSelectedChange}
+                        disabledItems={filters.year.disabledYears}
                         placeholder={i18n.t("Select year")}
                         disableSearch={true}
                         showParentIfChecked={true}
+                        hasSelectAll={!filters.year.isSingleSelection}
                     />
                 </Center>
             </Grid>

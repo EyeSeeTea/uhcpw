@@ -16,12 +16,15 @@ import { chart_DefU3mkASo6_Options } from "./chart_DefU3mkASo6_Options";
 import { chart_EtHaEt6bnm5_nlYSkEMZxgN_Options } from "./chart_EtHaEt6bnm5_nlYSkEMZxgN_Options";
 import { chart_GNUHM5lQMTp_Options } from "./chart_GNUHM5lQMTp_Options";
 import { chart_AophAEpx5e0_BOcLONPSyYS_Options } from "./chart_AophAEpx5e0_BOcLONPSyYS_Options";
+import { chart_iMI82inOBiD_Options } from "./chart_iMI82inOBiD_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
     countries: Country[];
     currentCountry?: string;
+    currentYear?: string;
+    isLatestCOVID19?: boolean;
 }
 
 export interface ChartSourceMultiple {
@@ -29,6 +32,8 @@ export interface ChartSourceMultiple {
     visualization: Visualization[];
     countries: Country[];
     currentCountry?: string;
+    currentYear?: string;
+    isLatestCOVID19?: boolean;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
@@ -36,6 +41,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     dbc87Ljw8uN: chartSource => chart_dbc87Ljw8uN_Options(chartSource),
     NOukqSxCI63: chartSource => chart_NOukqSxCI63_Options(chartSource),
     B4CnzUqVR3n: chartSource => chart_B4CnzUqVR3n_Options(chartSource),
+    iMI82inOBiD: chartSource => chart_iMI82inOBiD_Options(chartSource),
     GimM6ANOKhd: chartSource => chart_GimM6ANOKhd_Options(chartSource),
     VB7bdJ8ZXya: chartSource => chart_VB7bdJ8ZXya_Options(chartSource),
     mcNfvQaVbfy: chartSource => chart_mcNfvQaVbfy_Options(chartSource),
