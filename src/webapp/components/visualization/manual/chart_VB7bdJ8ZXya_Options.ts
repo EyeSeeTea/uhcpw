@@ -1,5 +1,6 @@
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
+import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 
 const seriesNames: Record<string, string> = {
     qy4W8ZY2g5M: "Diagnostic tests",
@@ -20,15 +21,21 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear(chartSource);
+
     return {
         ...comparativeStackedColumnChartOptions({
-            chartSource,
+            chartSource: chartSourceWithFilteredRowsByLAY,
             seriesNames,
             seriesColors,
             orderByValueInSerie: "qgE5NJ9Nyaq",
         }),
         yAxis: {
-            ...comparativeStackedColumnChartOptions({ chartSource, seriesNames, seriesColors })?.yAxis,
+            ...comparativeStackedColumnChartOptions({
+                chartSource: chartSourceWithFilteredRowsByLAY,
+                seriesNames,
+                seriesColors,
+            })?.yAxis,
             title: {
                 text: "Catastrophic health spending (%)",
                 style: { fontSize: "13px" },

@@ -20,6 +20,7 @@ import { Maybe } from "../../../types/utils";
 import {
     filterRowsByYearInCountry,
     getLastAvailableYearByCountry,
+    getLastAvailableYearUpTo2019ByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "./utils/lastAvailableYearHelpers";
 
@@ -79,7 +80,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             id: string | undefined;
             name: string | undefined;
         }[],
-        latestAvailableYear: boolean
+        latestAvailableYear: boolean,
+        isLatestCOVID19: boolean
     ): FutureData<void> {
         return Future.parallel(
             visualizations.map(visualization => this.get(visualization, periods, orgUnitUids))
@@ -121,12 +123,15 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     firstChartAnalyticsResponse?.rows[0][2]?.match(/^(20)\d{2}$/);
 
                 const latestAvailableYearByCountryId =
-                    latestAvailableYear && isRowsContainsYears
+                    (latestAvailableYear || isLatestCOVID19) && isRowsContainsYears
                         ? isMultipleVisualizations
                             ? getLatestAvailableYearByCountryIdFromTwoCharts(
                                   firstChartAnalyticsResponse?.rows || [],
-                                  secondChartAnalyticsResponse?.rows || []
+                                  secondChartAnalyticsResponse?.rows || [],
+                                  isLatestCOVID19
                               )
+                            : isLatestCOVID19
+                            ? getLastAvailableYearUpTo2019ByCountry(firstChartAnalyticsResponse?.rows || [])
                             : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [])
                         : undefined;
 
@@ -160,13 +165,18 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     []
                 );
 
+                const allRowsSortedToDownload =
+                    mergedVisualization.showYearInDownloadFile && periods.length === 1 && periods[0]
+                        ? this.addYearToDataRows(allRowsSorted, periods[0])
+                        : allRowsSorted;
+
                 const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
                 const tabs = [
                     { name: "Notes", data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions] },
                     {
                         name: "Data",
-                        data: [[chartName || mergedVisualization.name], ...allRowsSorted],
+                        data: [[chartName || mergedVisualization.name], ...allRowsSortedToDownload],
                     },
                 ];
 
@@ -181,6 +191,19 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 return Future.success(undefined);
             });
         });
+    }
+
+    private addYearToDataRows(dataRows: string[][], period: string): string[][] {
+        const header = dataRows[0];
+        const restRows = dataRows.slice(1);
+
+        const yearColumnIndex = header?.findIndex(header => header === "Year");
+        if (yearColumnIndex !== -1) return dataRows;
+
+        const newHeaderRow = ["Year", ...(header || [])];
+        const newDataRows = restRows.map(row => [period, ...row]);
+
+        return [newHeaderRow || [], ...newDataRows];
     }
 
     private sortColumnsAndDataRows(allRows: string[][], visualization: Visualization): string[][] {

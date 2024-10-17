@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-09-20T15:53:37.081Z\n"
-"PO-Revision-Date: 2024-09-20T15:53:37.082Z\n"
+"POT-Creation-Date: 2024-10-16T11:03:08.841Z\n"
+"PO-Revision-Date: 2024-10-16T11:03:08.841Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -195,12 +195,6 @@ msgstr[1] ""
 msgid "You can only select one country at a time with this indicator"
 msgstr ""
 
-msgid "2019 or latest available year before COVID-19"
-msgstr ""
-
-msgid "Latest available year"
-msgstr ""
-
 msgid "This indicator needs at least {{count}} countries"
 msgid_plural "This indicator needs at least {{count}} countries"
 msgstr[0] ""
@@ -210,6 +204,12 @@ msgid "This indicator needs to select only {{count}} country"
 msgid_plural "This indicator needs to select only {{count}} country"
 msgstr[0] ""
 msgstr[1] ""
+
+msgid "2019 or latest available year before COVID-19"
+msgstr ""
+
+msgid "Latest available year"
+msgstr ""
 
 msgid "Read more"
 msgstr ""

@@ -12,6 +12,7 @@ export interface AnalyticsRepository {
             id: string | undefined;
             name: string | undefined;
         }[],
-        latestAvailableYear: boolean
+        latestAvailableYear: boolean,
+        isUpTo2019: boolean
     ): FutureData<void>;
 }

@@ -6,4 +6,5 @@ export const chart_OB4SCQfCzwz_Seed = {
     friendlyName: "current spending on health per person by financing scheme",
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
+    hideBosniaAndHerzegovinaRegions: true,
 };

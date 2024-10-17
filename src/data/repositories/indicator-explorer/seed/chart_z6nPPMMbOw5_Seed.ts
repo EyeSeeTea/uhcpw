@@ -58,4 +58,5 @@ export const chart_z6nPPMMbOw5_Seed = {
 
         return sortedDataRows;
     },
+    hideBosniaAndHerzegovinaRegions: true,
 };
