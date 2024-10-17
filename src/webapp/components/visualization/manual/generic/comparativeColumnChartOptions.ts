@@ -3,7 +3,11 @@ import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
-import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
+import {
+    getMaxAxisAndTickInterval,
+    getMaxValuesInSeriesData,
+    sumSeriesData,
+} from "../../utils/getMaxAxisAndTickInterval";
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -12,6 +16,7 @@ export const comparativeColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
+    isStacked?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -19,6 +24,7 @@ export const comparativeColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
+    isStacked,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -98,8 +104,11 @@ export const comparativeColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const allYValuesInSeriesData = series.flatMap(serie => serie.data.map(data => data.y));
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(allYValuesInSeriesData);
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(
+        series,
+        isStacked,
+        stackedValuesUpTo100
+    );
 
     return {
         ...baseChartOptions,
@@ -134,3 +143,29 @@ export const comparativeColumnChartOptions: (params: {
         series,
     } as Highcharts.Options;
 };
+
+function getMaxYAxisAndYTckInterval(
+    series: {
+        data: {
+            color?: string | undefined;
+            name: string;
+            y: number;
+        }[];
+    }[],
+    isStacked?: boolean,
+    stackedValuesUpTo100?: boolean
+) {
+    if (stackedValuesUpTo100) {
+        return {
+            max: 100,
+            tickInterval: 20,
+        };
+    } else {
+        const allYValuesInSeriesData = (series || []).map(serie => (serie.data || []).map(data => data.y));
+        const columnSeriesData = isStacked
+            ? sumSeriesData(allYValuesInSeriesData)
+            : getMaxValuesInSeriesData(allYValuesInSeriesData);
+
+        return getMaxAxisAndTickInterval(columnSeriesData);
+    }
+}

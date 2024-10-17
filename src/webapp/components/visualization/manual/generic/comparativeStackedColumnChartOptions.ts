@@ -14,6 +14,7 @@ export const comparativeStackedColumnChartOptions: (params: {
         seriesColors,
         orderByValueInSerie,
         stackedValuesUpTo100,
+        isStacked: true,
     });
 
     return {

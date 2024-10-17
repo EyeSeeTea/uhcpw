@@ -29,12 +29,14 @@ export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts
             seriesNames,
             seriesColors,
             orderByValueInSerie: "qgE5NJ9Nyaq",
+            stackedValuesUpTo100: true,
         }),
         yAxis: {
             ...comparativeStackedColumnChartOptions({
                 chartSource: chartSourceWithFilteredRowsByLAY,
                 seriesNames,
                 seriesColors,
+                stackedValuesUpTo100: true,
             })?.yAxis,
             title: {
                 text: "Catastrophic health spending (%)",

@@ -81,8 +81,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const allYDataValues = series.flatMap(serie => serie.data.map(data => data.y));
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(allYDataValues);
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(series);
 
     return {
         ...baseChartOptions,
@@ -115,3 +114,24 @@ export const comparativeSingleYearColumnChartOptions: (params: {
         series,
     } as Highcharts.Options;
 };
+
+function getMaxYAxisAndYTckInterval(
+    series: {
+        data: {
+            color?: string | undefined;
+            name: string;
+            y: number;
+        }[];
+    }[],
+    stackedValuesUpTo100?: boolean
+) {
+    if (stackedValuesUpTo100) {
+        return {
+            max: 100,
+            tickInterval: 20,
+        };
+    } else {
+        const allYDataValues = series.flatMap(serie => serie.data.map(data => data.y));
+        return getMaxAxisAndTickInterval(allYDataValues);
+    }
+}
