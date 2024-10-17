@@ -94,7 +94,7 @@ export const createScratterChart: ({
             },
         },
         xAxis: {
-            title: { text: xAxisTitle, margin: 20 },
+            title: { text: xAxisTitle, margin: 20, style: { fontSize: "13px" } },
             min: 0,
             max: adjustedMaxXAxis,
             tickInterval: tickIntervalDefault,
