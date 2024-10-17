@@ -22,7 +22,7 @@ export class GetAnalyticsUseCase {
                     ? generateYears().map(year => year.id)
                     : periods;
 
-            return this.analyticsRepository.get(visualization, finalPeriods, countries);
+            return this.analyticsRepository.get(visualization, finalPeriods.sort(), countries);
         });
     }
 }
