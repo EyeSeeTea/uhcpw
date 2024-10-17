@@ -1,6 +1,8 @@
+import { SeriesColumnOptions } from "highcharts";
 import { createCountrySerie } from "../builders/buildCountrySerie";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
+import { getMaxYAxisAndYTickIntervalForGroupedColumns } from "../yAxis/getMaxYAxisAndYTickInterval";
 
 const MAP_CATEGORY_NAME: Record<string, string> = {
     "UHCW_Self-reported unmet need for prescribed medicines due to cost (average)": "Average",
@@ -32,5 +34,8 @@ export const chart_MfLZYD6QCPy_Cuztomizations: ChartCustomization = {
         series: {
             grouping: true,
         },
+    },
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForGroupedColumns(series);
     },
 };

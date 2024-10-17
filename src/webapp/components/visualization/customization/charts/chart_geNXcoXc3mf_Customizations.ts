@@ -1,5 +1,7 @@
+import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
+import { getMaxYAxisAndYTickIntervalForStackedColumns } from "../yAxis/getMaxYAxisAndYTickInterval";
 
 export const chart_geNXcoXc3mf_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -37,4 +39,7 @@ export const chart_geNXcoXc3mf_Customizations: ChartCustomization = {
         },
     ],
     xAxis: { title: { text: "" } },
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForStackedColumns(series);
+    },
 };

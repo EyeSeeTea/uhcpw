@@ -1,6 +1,8 @@
+import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
 import { yAxisformatNumberLabel } from "../yAxis/formatNumberLabel";
+import { getMaxYAxisAndYTickIntervalForLineAndColumns } from "../yAxis/getMaxYAxisAndYTickInterval";
 
 export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -84,5 +86,8 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
     sortLegendByLastDataPoint: true,
     currencyOfCountryYAxis: (countryCurrencyCode: string) => {
         return { title: { text: countryCurrencyCode } };
+    },
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForLineAndColumns(series);
     },
 };

@@ -23,6 +23,12 @@ export type ChartCustomization = {
         series: SeriesColumnOptions[] | undefined,
         categories: string[]
     ) => SeriesColumnOptions[] | undefined;
+    getMaxYAxisAndYTickInterval?: (series: SeriesColumnOptions[] | undefined) =>
+        | {
+              max: number;
+              tickInterval: number;
+          }
+        | undefined;
     plotOptions?: PlotOptionsCustomization;
 };
 
