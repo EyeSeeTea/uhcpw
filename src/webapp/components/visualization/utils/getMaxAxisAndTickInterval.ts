@@ -55,7 +55,7 @@ export function getMaxAxisAndTickInterval(maxValuesInSeriesData: number[]): { ma
     const tickInterval = getTickIntervalByMaxAxisValue(maxAxisRoundedValue);
 
     return {
-        max: maxAxisRoundedValue,
+        max: Math.ceil(maxAxisRoundedValue / tickInterval) * tickInterval,
         tickInterval: tickInterval,
     };
 }
