@@ -8,12 +8,18 @@ import { CountrySectionInfo, EU27 } from "../../../domain/entities/Country";
 import UmbrellaGreen from "../../assets/country-page/umbrellaGreen.png";
 import UmbrellaRed from "../../assets/country-page/umbrella-3.svg";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
+import {
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+    FEDERACIJA_BOSNE_I_HERCEGOVINE,
+    REPUBLICA_SERPSKA,
+} from "../../../data/repositories/countries/CountryD2Repository";
 
 type SliderGraph = {
     visualizationId: string;
     visualizationName?: string;
     years: string[];
     countries: string[];
+    currentCountry?: string;
 };
 
 type SliderGraphsConfig = {
@@ -96,6 +102,14 @@ export function useCountrySlider(countryId: string): CountrySlider {
         },
         [tabValue]
     );
+
+    const countrySelected = useMemo(() => {
+        if (countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA) {
+            return countriesAndRegions.find(({ id }) => id === BOSNIA_AND_HERZEGOVINA_LEVEL_4)?.id || countryId;
+        } else {
+            return countryId;
+        }
+    }, [countriesAndRegions, countryId]);
 
     const sliderGraphsConfig: SliderGraphsConfig = useMemo(
         () => [
@@ -218,13 +232,13 @@ export function useCountrySlider(countryId: string): CountrySlider {
                     visualizationId: "OB4SCQfCzwz",
                     visualizationName: VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
                     years: generateYears().map(year => year.id),
-                    countries: [countryId],
+                    countries: [countrySelected],
                 },
                 graphTwo: {
                     visualizationId: "d3kq9OCv8tH",
                     visualizationName: VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
                     years: generateYears().map(year => year.id),
-                    countries: [countryId, EU27],
+                    countries: [countrySelected, EU27],
                 },
             },
             {
@@ -235,18 +249,20 @@ export function useCountrySlider(countryId: string): CountrySlider {
                     visualizationName: VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
+                    currentCountry: countrySelected,
                 },
                 graphTwo: {
                     visualizationId: "BYAT5Woc9EJ",
                     visualizationName: VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
                     years: [LatestAvailable.id],
-                    countries: [countryId, EU27],
+                    countries: [countrySelected, EU27],
                 },
             },
         ],
         [
             countriesAndRegions,
             countryId,
+            countrySelected,
             sliderInfo?.sliderEight,
             sliderInfo?.sliderFive,
             sliderInfo?.sliderFour,

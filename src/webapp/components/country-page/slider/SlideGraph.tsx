@@ -11,6 +11,7 @@ type VisualizationProps = {
     visualizationName?: string;
     years: string[];
     countries: string[];
+    currentCountry?: string;
 };
 
 type SlideGraphType = {
@@ -44,7 +45,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     countries={(graphOne as VisualizationProps).countries}
                     withoutBackground
                     useHeaderForCountryPage
-                    currentCountry={countryId}
+                    currentCountry={(graphOne as VisualizationProps).currentCountry || countryId}
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
                     noDataMessage={pageContent?.noDataMessage}
                 />
@@ -57,7 +58,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         countries={(graphTwo as VisualizationProps).countries}
                         withoutBackground
                         useHeaderForCountryPage
-                        currentCountry={countryId}
+                        currentCountry={(graphTwo as VisualizationProps).currentCountry || countryId}
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                         noDataMessage={pageContent?.noDataMessage}
                     />
