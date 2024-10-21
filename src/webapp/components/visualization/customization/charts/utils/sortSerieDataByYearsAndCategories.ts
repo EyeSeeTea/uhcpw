@@ -45,6 +45,11 @@ export function sortSerieDataByYearsAndCategories(
             })
             .value();
 
-        return { ...serie, data };
+        const dataWithXSorted = data.map((item, index) => ({
+            ...item,
+            x: index,
+        }));
+
+        return { ...serie, data: dataWithXSorted };
     });
 }
