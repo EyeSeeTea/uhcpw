@@ -19,8 +19,8 @@ import {
 import { Maybe } from "../../../types/utils";
 import {
     filterRowsByYearInCountry,
+    getCommonLastAvailableYearInBothAxis,
     getLastAvailableYearByCountry,
-    getLastAvailableYearUpTo2019ByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "./utils/lastAvailableYearHelpers";
 
@@ -72,17 +72,31 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             });
     }
 
-    saveToFile(
-        visualizations: Visualization[],
-        periods: string[],
-        orgUnitUids: string[],
+    saveToFile(params: {
+        visualizations: Visualization[];
+        periods: string[];
+        orgUnitUids: string[];
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
-        }[],
-        latestAvailableYear: boolean,
-        isLatestCOVID19: boolean
-    ): FutureData<void> {
+        }[];
+        isLatestAvailableYear: boolean;
+        isUpTo2019: boolean;
+        isScatter?: boolean;
+        xAxis?: string;
+        yAxis?: string;
+    }): FutureData<void> {
+        const {
+            visualizations,
+            periods,
+            orgUnitUids,
+            seriesIdAndName,
+            isLatestAvailableYear,
+            isUpTo2019,
+            isScatter,
+            xAxis,
+            yAxis,
+        } = params;
         return Future.parallel(
             visualizations.map(visualization => this.get(visualization, periods, orgUnitUids))
         ).flatMap(analyticsResponses => {
@@ -123,16 +137,21 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     firstChartAnalyticsResponse?.rows[0][2]?.match(/^(20)\d{2}$/);
 
                 const latestAvailableYearByCountryId =
-                    (latestAvailableYear || isLatestCOVID19) && isRowsContainsYears
+                    (isLatestAvailableYear || isUpTo2019) && isRowsContainsYears
                         ? isMultipleVisualizations
                             ? getLatestAvailableYearByCountryIdFromTwoCharts(
                                   firstChartAnalyticsResponse?.rows || [],
                                   secondChartAnalyticsResponse?.rows || [],
-                                  isLatestCOVID19
+                                  isUpTo2019
                               )
-                            : isLatestCOVID19
-                            ? getLastAvailableYearUpTo2019ByCountry(firstChartAnalyticsResponse?.rows || [])
-                            : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [])
+                            : isScatter && xAxis && yAxis
+                            ? getCommonLastAvailableYearInBothAxis(
+                                  firstChartAnalyticsResponse?.rows || [],
+                                  xAxis,
+                                  yAxis,
+                                  isUpTo2019
+                              )
+                            : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [], isUpTo2019)
                         : undefined;
 
                 const dataRowsAndBreakInSeriesDescriptions = analyticsResponses.map(analyticsResponse => {

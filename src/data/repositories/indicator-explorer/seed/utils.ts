@@ -16,7 +16,7 @@ export const sortedCategoryNames: SortedCategoryNames = {
 
 export const sortedCharts: string[] = [
     // Comparative charts
-    "hNU4Lj1xLYO",
+    "kIpnMBaBvZ9",
     "dbc87Ljw8uN",
     "NOukqSxCI63",
     "GimM6ANOKhd",
