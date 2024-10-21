@@ -34,7 +34,10 @@ export type ChartCustomization = {
 
 export type PlotOptionsCustomization = {
     series: {
-        grouping: boolean;
+        grouping?: boolean;
+        events?: {
+            legendItemClick: (this: Highcharts.Series) => boolean;
+        };
     };
 };
 

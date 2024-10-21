@@ -20,8 +20,10 @@ export const comparativeStackedColumnChartOptions: (params: {
     return {
         ...options,
         plotOptions: {
+            ...options.plotOptions,
             column: {
                 stacking: "normal",
+                ...options.plotOptions?.column,
             },
         },
     } as Highcharts.Options;

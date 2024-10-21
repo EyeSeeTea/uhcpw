@@ -6,6 +6,7 @@ import { baseChartOptions } from "./baseChartOptions";
 import {
     getMaxAxisAndTickInterval,
     getMaxValuesInSeriesData,
+    setYAxisMaxAxisAndTickIntervalWhenLegendItemClick,
     sumSeriesData,
 } from "../../utils/getMaxAxisAndTickInterval";
 
@@ -141,17 +142,34 @@ export const comparativeColumnChartOptions: (params: {
         },
         legend: baseLegend,
         series,
+        plotOptions: {
+            column: {
+                stacking: "normal",
+                events: {
+                    legendItemClick: function (this: Highcharts.Series) {
+                        return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, isStacked, stackedValuesUpTo100);
+                    },
+                },
+            },
+        },
     } as Highcharts.Options;
 };
 
-function getMaxYAxisAndYTckInterval(
-    series: {
-        data: {
-            color?: string | undefined;
-            name: string;
-            y: number;
-        }[];
-    }[],
+export type SeriesWithData = {
+    data: {
+        color?: string | undefined;
+        name: string;
+        y: number;
+    }[];
+    name?: string;
+    visible?: boolean;
+    options?: {
+        type: string;
+    };
+};
+
+export function getMaxYAxisAndYTckInterval(
+    series: SeriesWithData[],
     isStacked?: boolean,
     stackedValuesUpTo100?: boolean
 ) {

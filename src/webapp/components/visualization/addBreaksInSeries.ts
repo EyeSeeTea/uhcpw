@@ -9,6 +9,7 @@ import {
 import { getCategories } from "./utils";
 import { SerieCustomization } from "./customization/types";
 import { Id } from "../../../domain/entities/Ref";
+import { getMaxYAxisAndYTckInterval, SeriesWithData } from "./manual/generic/comparativeColumnChartOptions";
 
 export function addBreaksInSeries(
     options: Highcharts.Options,
@@ -64,8 +65,29 @@ function getPlotOptionsToToggleLegendItemsWithSameName(options: Highcharts.Optio
                     this: Highcharts.Series,
                     event: Highcharts.SeriesLegendItemClickEventObject
                 ) {
+                    const isSelectedSerieHide = this.visible;
+                    const selectedSerieName = this.name;
+                    const seriesInChart = this.chart.series as SeriesWithData[];
+
+                    const visibleSeries = seriesInChart.filter(serie => {
+                        const isSelectedSerie = serie.name === selectedSerieName;
+                        const isSelectedSerieVisible = !isSelectedSerieHide && isSelectedSerie;
+                        const isNotSelectedSeriesVisible = !isSelectedSerie && serie.visible;
+                        return isSelectedSerieVisible || isNotSelectedSeriesVisible;
+                    });
+
+                    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
+                        getMaxYAxisAndYTckInterval(visibleSeries);
+
+                    this.chart.yAxis.forEach(yAxis => {
+                        yAxis.update({
+                            max: adjustedMaxYAxis,
+                            tickInterval: yTickInterval,
+                        });
+                    });
+
                     this.chart.series.forEach(serie => {
-                        if (serie.name === this.name) serie.setVisible(!serie.visible, true);
+                        if (serie.name === selectedSerieName) serie.setVisible(!serie.visible, true);
                     });
                     event.preventDefault();
                 },

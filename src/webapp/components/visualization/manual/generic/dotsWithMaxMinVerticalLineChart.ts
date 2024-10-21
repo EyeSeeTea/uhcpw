@@ -159,6 +159,19 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
                                 ((!isHide && (s.visible || s.name === this.name)) ||
                                     (isHide && s.name !== this.name && s.visible))
                         );
+
+                        const visibleSeriesData = visibleSeries.map(serie => serie.data.map(data => data.y || 0));
+                        const maxValuesInVisibleSeriesData = getMaxValuesInSeriesData(visibleSeriesData);
+                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
+                            getMaxAxisAndTickInterval(maxValuesInVisibleSeriesData);
+
+                        this.chart.yAxis.forEach(yAxis => {
+                            yAxis.update({
+                                max: adjustedMaxYAxis,
+                                tickInterval: yTickInterval,
+                            });
+                        });
+
                         const rangeSeries = chart.series.find(s => s.type === "columnrange");
 
                         const data = rangeSeries?.data.map(({ category }) => {

@@ -4,6 +4,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 import { yAxisformatNumberLabel } from "../customization/yAxis/formatNumberLabel";
 import { getMaxAxisAndTickInterval, sumSeriesData } from "../utils/getMaxAxisAndTickInterval";
+import { getMaxYAxisAndYTckInterval, SeriesWithData } from "./generic/comparativeColumnChartOptions";
 
 const seriesNames: Record<string, string> = {
     Oseqbg7Odmn: "Average household capacity to pay",
@@ -124,6 +125,46 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                         color: "black",
                         fontWeight: "bold",
                         textOutline: "none",
+                    },
+                },
+            },
+            series: {
+                events: {
+                    legendItemClick: function (this: Highcharts.Series) {
+                        const isSelectedSerieHide = this.visible;
+                        const typeSelectedSerie = this.options.type;
+                        const selectedSerieIndex = this.index;
+                        const seriesInChart = this.chart.series as SeriesWithData[];
+
+                        const visibleSeries = seriesInChart.filter((serie, index) => {
+                            const isSelectedSerie = index === selectedSerieIndex;
+                            const isSelectedSerieVisible = !isSelectedSerieHide && isSelectedSerie;
+                            const isNotSelectedSeriesVisible = !isSelectedSerie && serie.visible;
+                            return (
+                                serie.options?.type === typeSelectedSerie &&
+                                (isSelectedSerieVisible || isNotSelectedSeriesVisible)
+                            );
+                        });
+
+                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(
+                            visibleSeries,
+                            typeSelectedSerie === "column"
+                        );
+
+                        this.chart.yAxis.forEach(yAxis => {
+                            const isYAxisFromSelectedChartType = yAxis.series.every(
+                                s => s.options.type === typeSelectedSerie
+                            );
+
+                            if (isYAxisFromSelectedChartType) {
+                                yAxis.update({
+                                    max: adjustedMaxYAxis,
+                                    tickInterval: yTickInterval,
+                                });
+                            }
+                        });
+
+                        return true;
                     },
                 },
             },

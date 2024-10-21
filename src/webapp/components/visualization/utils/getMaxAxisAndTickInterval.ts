@@ -1,3 +1,5 @@
+import { getMaxYAxisAndYTckInterval, SeriesWithData } from "../manual/generic/comparativeColumnChartOptions";
+
 export function getMaxXAxisValue(data: number[], tickInterval?: number): number {
     const maxXValue = Math.max(...data);
     const tick = tickInterval || (maxXValue <= 1 ? 0.2 : maxXValue <= 5 ? 1 : 5);
@@ -50,8 +52,12 @@ export function getTickIntervalByMaxAxisValue(maxAxisValue: number): number {
 }
 
 export function getMaxAxisAndTickInterval(maxValuesInSeriesData: number[]): { max: number; tickInterval: number } {
-    const maxAxisValue = Math.max(...maxValuesInSeriesData);
-    const maxAxisRoundedValue = getRoundedMaxValue(maxAxisValue === 0 ? 1 : maxAxisValue);
+    if (maxValuesInSeriesData.length === 0) {
+        return { max: 0, tickInterval: 0 };
+    }
+
+    const maxAxisValue = Math.max(...maxValuesInSeriesData) === 0 ? 1 : Math.max(...maxValuesInSeriesData);
+    const maxAxisRoundedValue = getRoundedMaxValue(maxAxisValue);
 
     const tickInterval = getTickIntervalByMaxAxisValue(maxAxisRoundedValue);
 
@@ -75,4 +81,36 @@ export function getMaxValuesInSeriesData(seriesData: number[][]): number[] {
 
 export function isNumberData(value: unknown): value is number {
     return typeof value === "number" && !isNaN(value);
+}
+
+export function setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(
+    series: Highcharts.Series,
+    isStacked?: boolean,
+    stackedValuesUpTo100?: boolean
+): boolean {
+    const isSelectedSerieHide = series.visible;
+    const selectedSerieIndex = series.index;
+    const seriesInChart = series.chart.series as SeriesWithData[];
+
+    const visibleSeries = seriesInChart.filter((serie, index) => {
+        const isSelectedSerie = index === selectedSerieIndex;
+        const isSelectedSerieVisible = !isSelectedSerieHide && isSelectedSerie;
+        const isNotSelectedSeriesVisible = !isSelectedSerie && serie.visible;
+        return isSelectedSerieVisible || isNotSelectedSeriesVisible;
+    });
+
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(
+        visibleSeries,
+        isStacked,
+        stackedValuesUpTo100
+    );
+
+    series.chart.yAxis.forEach(yAxis => {
+        yAxis.update({
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
+        });
+    });
+
+    return true;
 }
