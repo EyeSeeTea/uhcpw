@@ -27,7 +27,7 @@ export function getXTickInterval(maxXAxis: number) {
 
 export function getRoundedMaxValue(maxValue: number): number {
     const magnitude = Math.pow(10, Math.floor(Math.log10(maxValue)));
-    const factor = maxValue <= 100 ? 5 : magnitude;
+    const factor = maxValue <= 100 ? (maxValue <= 1 ? 1 : 5) : magnitude;
 
     return Math.ceil(maxValue / factor) * factor;
 }
@@ -51,7 +51,8 @@ export function getTickIntervalByMaxAxisValue(maxAxisValue: number): number {
 
 export function getMaxAxisAndTickInterval(maxValuesInSeriesData: number[]): { max: number; tickInterval: number } {
     const maxAxisValue = Math.max(...maxValuesInSeriesData);
-    const maxAxisRoundedValue = getRoundedMaxValue(maxAxisValue);
+    const maxAxisRoundedValue = getRoundedMaxValue(maxAxisValue === 0 ? 1 : maxAxisValue);
+
     const tickInterval = getTickIntervalByMaxAxisValue(maxAxisRoundedValue);
 
     return {
