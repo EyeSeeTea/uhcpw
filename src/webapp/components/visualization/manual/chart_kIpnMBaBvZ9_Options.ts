@@ -2,17 +2,27 @@ import _ from "lodash";
 
 import { ChartSource } from "./chartOptions";
 import { createScratterChart, pos } from "./generic/scratterChart";
+import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
+import {
+    kIpnMBaBvZ9_xAxisOutOfPocket,
+    kIpnMBaBvZ9_yAxisHouseholds,
+} from "../../../../data/repositories/indicator-explorer/seed/chart_kIpnMBaBvZ9_Seed";
 
-export const hNU4Lj1xLYO_yAxisHouseholds = "WmOGqGcov4f";
-export const hNU4Lj1xLYO_xAxisOutOfPocket = "S8OMD0f9IZp";
+export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear(chartSource, {
+        isScatter: true,
+        xAxis: kIpnMBaBvZ9_xAxisOutOfPocket,
+        yAxis: kIpnMBaBvZ9_yAxisHouseholds,
+    });
 
-export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    const rowsByCountry = _(chartSource.analyticsResponse.rows)
+    const rowsByCountry = _(chartSourceWithFilteredRowsByLAY.analyticsResponse.rows)
         .groupBy(row => row[1])
         .value();
 
     const currentCountryCode =
-        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+        chartSourceWithFilteredRowsByLAY.countries.find(
+            country => country.id === chartSourceWithFilteredRowsByLAY.currentCountry
+        )?.code || "";
 
     const seriesSource: SerieSource[] = [
         {
@@ -45,15 +55,16 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
     const countriesWithData: SerieData[] = _(rowsByCountry)
         .keys()
         .map(countryId => {
-            const xSource = rowsByCountry[countryId]?.find(row => row[0] === hNU4Lj1xLYO_xAxisOutOfPocket) || [];
-            const ySource = rowsByCountry[countryId]?.find(row => row[0] === hNU4Lj1xLYO_yAxisHouseholds) || [];
-            const country = chartSource.countries.find(country => country.id === countryId);
+            const xSource = rowsByCountry[countryId]?.find(row => row[0] === kIpnMBaBvZ9_xAxisOutOfPocket) || [];
+            const ySource = rowsByCountry[countryId]?.find(row => row[0] === kIpnMBaBvZ9_yAxisHouseholds) || [];
+            const country = chartSourceWithFilteredRowsByLAY.countries.find(country => country.id === countryId);
 
-            const x = xSource[2] ? +xSource[2] : 0;
-            const y = ySource[2] ? +ySource[2] : 0;
+            const x = xSource[3] ? +xSource[3] : 0;
+            const y = ySource[3] ? +ySource[3] : 0;
 
             return {
                 country: country?.code || "",
+                year: `${xSource[2]}`,
                 x,
                 y,
             };
@@ -102,12 +113,12 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
 
     return createScratterChart({
         series,
-        visualization: chartSource.visualization,
+        visualization: chartSourceWithFilteredRowsByLAY.visualization,
         currentCountryCode,
         xAxisTitle: "Out-of-pocket payments as a share of current spending on health (%)",
         yAxisTitle: "Households with catastrophic health spending (%)",
         pointFormat:
-            "{point.country} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
+            "{point.country} {point.year} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
         countriesWithData,
         countryPositions: countryPositionsAdjustment,
     });
@@ -115,6 +126,7 @@ export const chart_hNU4Lj1xLYO_Options: (chartSource: ChartSource) => Highcharts
 
 interface SerieData {
     country: string;
+    year: string;
     x: number;
     y: number;
 }

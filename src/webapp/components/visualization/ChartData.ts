@@ -15,6 +15,9 @@ export type ChartDataLoaded = {
     chartOptions?: Highcharts.Options;
     countries: Country[];
     visualizationDialogInfo?: string;
+    isScatter?: boolean;
+    xAxis?: string;
+    yAxis?: string;
 };
 
 export type ChartDataLoading = {

@@ -24,6 +24,9 @@ export interface VisualizationExtra {
     hideBosniaAndHerzegovinaRegions?: boolean;
     hide?: boolean;
     showYearInDownloadFile?: boolean;
+    isScatter?: boolean;
+    xAxis?: string;
+    yAxis?: string;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
