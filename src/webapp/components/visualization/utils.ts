@@ -97,12 +97,12 @@ export function filterEmptyYearsInSeries(options: Highcharts.Options): Highchart
         return {
             firstIndex: !acc.firstIndex
                 ? firstIndexWithData
-                : firstIndexWithData < acc.firstIndex
+                : firstIndexWithData < acc.firstIndex && firstIndexWithData !== -1
                 ? firstIndexWithData
                 : acc.firstIndex,
             lastIndex: !acc.lastIndex
                 ? lastIndexWithData
-                : lastIndexWithData > acc.lastIndex
+                : lastIndexWithData > acc.lastIndex && lastIndexWithData !== -1
                 ? lastIndexWithData
                 : acc.lastIndex,
         };
