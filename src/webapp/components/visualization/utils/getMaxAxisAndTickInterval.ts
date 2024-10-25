@@ -1,4 +1,5 @@
-import { getMaxYAxisAndYTckInterval, SeriesWithData } from "../manual/generic/comparativeColumnChartOptions";
+import { getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories } from "../customization/yAxis/getMaxYAxisAndYTickInterval";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "../manual/generic/comparativeColumnChartOptions";
 
 export function getMaxXAxisValue(data: number[], tickInterval?: number): number {
     const maxXValue = Math.max(...data);
@@ -51,18 +52,30 @@ export function getTickIntervalByMaxAxisValue(maxAxisValue: number): number {
     return baseInterval * 2;
 }
 
-export function getMaxAxisAndTickInterval(maxValuesInSeriesData: number[]): { max: number; tickInterval: number } {
+// NOTICE: At the moment the max value will be the maximum value of the chart instead of auto-calculating.
+export function getMaxAxisAndTickInterval(
+    maxValuesInSeriesData: number[],
+    stackedValuesUpTo100?: boolean
+): { max: number; tickInterval: number } {
     if (maxValuesInSeriesData.length === 0) {
         return { max: 0, tickInterval: 0 };
     }
 
-    const maxAxisValue = Math.max(...maxValuesInSeriesData) === 0 ? 1 : Math.max(...maxValuesInSeriesData);
-    const maxAxisRoundedValue = getRoundedMaxValue(maxAxisValue);
+    if (stackedValuesUpTo100) {
+        return {
+            max: 100,
+            tickInterval: 20,
+        };
+    }
 
-    const tickInterval = getTickIntervalByMaxAxisValue(maxAxisRoundedValue);
+    const maxAxisValue = Math.max(...maxValuesInSeriesData) === 0 ? 1 : Math.max(...maxValuesInSeriesData);
+    // const maxAxisRoundedValue = getRoundedMaxValue(maxAxisValue);
+
+    const tickInterval = getTickIntervalByMaxAxisValue(maxAxisValue);
 
     return {
-        max: Math.ceil(maxAxisRoundedValue / tickInterval) * tickInterval,
+        // max: Math.ceil(maxAxisRoundedValue / tickInterval) * tickInterval,
+        max: maxAxisValue,
         tickInterval: tickInterval,
     };
 }
@@ -99,11 +112,40 @@ export function setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(
         return isSelectedSerieVisible || isNotSelectedSeriesVisible;
     });
 
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
         visibleSeries,
         isStacked,
         stackedValuesUpTo100
     );
+
+    series.chart.yAxis.forEach(yAxis => {
+        yAxis.update({
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
+        });
+    });
+
+    return true;
+}
+
+export function setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(
+    series: Highcharts.Series
+): boolean {
+    const isSelectedSerieHide = series.visible;
+    const selectedSerieIndex = series.index;
+    const seriesInChart = series.chart.series as SeriesWithData[];
+
+    const visibleSeries = seriesInChart.filter((serie, index) => {
+        const isSelectedSerie = index === selectedSerieIndex;
+        const isSelectedSerieVisible = !isSelectedSerieHide && isSelectedSerie;
+        const isNotSelectedSeriesVisible = !isSelectedSerie && serie.visible;
+        return isSelectedSerieVisible || isNotSelectedSeriesVisible;
+    });
+
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
+        getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(
+            visibleSeries as Highcharts.SeriesColumnOptions[]
+        );
 
     series.chart.yAxis.forEach(yAxis => {
         yAxis.update({

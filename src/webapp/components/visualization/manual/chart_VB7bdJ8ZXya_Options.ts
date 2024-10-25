@@ -22,6 +22,7 @@ const seriesColors: Record<string, string> = {
 
 export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear(chartSource);
+    const stackedValuesUpTo100 = chartSource.visualization.percentStackedValues;
 
     return {
         ...comparativeStackedColumnChartOptions({
@@ -29,14 +30,14 @@ export const chart_VB7bdJ8ZXya_Options: (chartSource: ChartSource) => Highcharts
             seriesNames,
             seriesColors,
             orderByValueInSerie: "qgE5NJ9Nyaq",
-            stackedValuesUpTo100: true,
+            stackedValuesUpTo100: stackedValuesUpTo100,
         }),
         yAxis: {
             ...comparativeStackedColumnChartOptions({
                 chartSource: chartSourceWithFilteredRowsByLAY,
                 seriesNames,
                 seriesColors,
-                stackedValuesUpTo100: true,
+                stackedValuesUpTo100: stackedValuesUpTo100,
             })?.yAxis,
             title: {
                 text: "Catastrophic health spending (%)",

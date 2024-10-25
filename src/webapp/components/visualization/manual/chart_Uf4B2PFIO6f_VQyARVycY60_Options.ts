@@ -4,7 +4,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 import { yAxisformatNumberLabel } from "../customization/yAxis/formatNumberLabel";
 import { getMaxAxisAndTickInterval, sumSeriesData } from "../utils/getMaxAxisAndTickInterval";
-import { getMaxYAxisAndYTckInterval, SeriesWithData } from "./generic/comparativeColumnChartOptions";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./generic/comparativeColumnChartOptions";
 
 const seriesNames: Record<string, string> = {
     Oseqbg7Odmn: "Average household capacity to pay",
@@ -146,7 +146,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                             );
                         });
 
-                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(
+                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
                             visibleSeries,
                             typeSelectedSerie === "column"
                         );
@@ -157,10 +157,17 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                             );
 
                             if (isYAxisFromSelectedChartType) {
-                                yAxis.update({
-                                    max: adjustedMaxYAxis,
-                                    tickInterval: yTickInterval,
-                                });
+                                yAxis.update(
+                                    {
+                                        max:
+                                            typeSelectedSerie === "scatter" && isSelectedSerieHide
+                                                ? undefined
+                                                : adjustedMaxYAxis,
+                                        tickInterval:
+                                            typeSelectedSerie === "scatter" && isSelectedSerieHide ? 1 : yTickInterval,
+                                    },
+                                    true
+                                );
                             }
                         });
 

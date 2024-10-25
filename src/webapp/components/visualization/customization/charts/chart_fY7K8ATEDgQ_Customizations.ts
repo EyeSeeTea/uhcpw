@@ -1,8 +1,11 @@
+import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { typeOfCareSeries1 } from "../series/typeOfCareSeries";
 import { ChartCustomization } from "../types";
 import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
+import { getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories } from "../yAxis/getMaxYAxisAndYTickInterval";
 import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
+import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories } from "../../utils/getMaxAxisAndTickInterval";
 
 const CATEGORY_ID_BY_NAME = {
     Poorest: "GeiKSyJLeKt",
@@ -33,6 +36,18 @@ export const chart_fY7K8ATEDgQ_Customizations: ChartCustomization = {
     sortSerieData: (series, categories) => {
         if (!series) return series;
         return sortSerieDataByYearsAndCategories(series, categories, "", Object.keys(CATEGORY_ID_BY_NAME).length);
+    },
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(series);
+    },
+    plotOptions: {
+        series: {
+            events: {
+                legendItemClick: function (this: Highcharts.Series) {
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(this);
+                },
+            },
+        },
     },
     ...chartSplitYearsAndCategories,
 };

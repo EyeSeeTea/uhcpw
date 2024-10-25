@@ -81,7 +81,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(series);
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(series);
 
     return {
         ...baseChartOptions,
@@ -115,7 +115,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     } as Highcharts.Options;
 };
 
-function getMaxYAxisAndYTckInterval(
+function getMaxYAxisAndYTickInterval(
     series: {
         data: {
             color?: string | undefined;

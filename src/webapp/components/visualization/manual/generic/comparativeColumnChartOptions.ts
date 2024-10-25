@@ -105,7 +105,7 @@ export const comparativeColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTckInterval(
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
         series,
         isStacked,
         stackedValuesUpTo100
@@ -168,7 +168,7 @@ export type SeriesWithData = {
     };
 };
 
-export function getMaxYAxisAndYTckInterval(
+export function getMaxYAxisAndYTickInterval(
     series: SeriesWithData[],
     isStacked?: boolean,
     stackedValuesUpTo100?: boolean

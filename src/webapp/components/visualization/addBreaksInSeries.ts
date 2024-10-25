@@ -9,7 +9,7 @@ import {
 import { getCategories } from "./utils";
 import { SerieCustomization } from "./customization/types";
 import { Id } from "../../../domain/entities/Ref";
-import { getMaxYAxisAndYTckInterval, SeriesWithData } from "./manual/generic/comparativeColumnChartOptions";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./manual/generic/comparativeColumnChartOptions";
 
 export function addBreaksInSeries(
     options: Highcharts.Options,
@@ -77,7 +77,7 @@ function getPlotOptionsToToggleLegendItemsWithSameName(options: Highcharts.Optio
                     });
 
                     const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
-                        getMaxYAxisAndYTckInterval(visibleSeries);
+                        getMaxYAxisAndYTickInterval(visibleSeries);
 
                     this.chart.yAxis.forEach(yAxis => {
                         yAxis.update({
