@@ -177,9 +177,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             };
 
             // NOTICE: This filter is because there is a bug when calling createVisualization in a line country chart with at least two countries and the first one is empty.
-            const newOptionsFilteredEmptyYears = customizedOptions?.countrySerie
-                ? filterEmptyYearsInSeries(newOptions as Highcharts.Options)
-                : newOptions;
+            const newOptionsFilteredEmptyYears =
+                customizedOptions?.countrySerie ||
+                (visualization?.hideEmptyRowItems === "ALL" && customizedOptions?.fixHideEmptyCategories)
+                    ? filterEmptyYearsInSeries(newOptions as Highcharts.Options)
+                    : newOptions;
 
             const newOptionsWithBreaks =
                 visualization?.breakInSeries && visualization?.allowBreaksInSeries

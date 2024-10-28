@@ -15,8 +15,8 @@ type HeroProps = {
     countryId: string;
 };
 
-const CHART_1_SCATTER_VISUALIZATION_ID = "hNU4Lj1xLYO";
-const CHART_1_SCATTER_VISUALIZATION_NAME = VisualizationsSeeds["hNU4Lj1xLYO"]?.friendlyName;
+const CHART_1_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
+const CHART_1_SCATTER_VISUALIZATION_NAME = VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName;
 
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndRegions } = useAppContext();

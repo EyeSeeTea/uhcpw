@@ -24,6 +24,7 @@ export type ChartCustomization = {
         categories: string[]
     ) => SeriesColumnOptions[] | undefined;
     plotOptions?: PlotOptionsCustomization;
+    fixHideEmptyCategories?: boolean;
 };
 
 export type PlotOptionsCustomization = {

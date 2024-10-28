@@ -1,41 +1,74 @@
 import _ from "lodash";
 
 export function filterRowsByLastAvailableYear(rows: Array<string[]>, isUpTo2019?: boolean): Array<string[]> {
-    const lastAvailableYearByCountry = isUpTo2019
-        ? getLastAvailableYearUpTo2019ByCountry(rows)
-        : getLastAvailableYearByCountry(rows);
+    const lastAvailableYearByCountry = getLastAvailableYearByCountry(rows, isUpTo2019);
 
-    return rows.filter(row => {
-        const countryId = row[1]?.toString() || "";
-        const year = row[2] || "";
-        return lastAvailableYearByCountry[countryId] === year;
-    });
+    return filterRowsByYearInCountry(rows, lastAvailableYearByCountry);
 }
 
-export const getLastAvailableYearUpTo2019ByCountry = (rows: Array<string[]>): Record<string, string> => {
+export function filterXAxisAndYAxisByLastAvailableYear(
+    rows: Array<string[]>,
+    xAxis: string,
+    yAxis: string,
+    isUpTo2019?: boolean
+): Array<string[]> {
+    const lastAvailableYearByCountry = getCommonLastAvailableYearInBothAxis(rows, xAxis, yAxis, isUpTo2019);
+
+    return filterRowsByYearInCountry(rows, lastAvailableYearByCountry);
+}
+
+export const getLastAvailableYearByCountry = (rows: Array<string[]>, isUpTo2019?: boolean): Record<string, string> => {
     return rows.reduce((acc: Record<string, string>, row) => {
         const countryId = row[1]?.toString() || "";
         const year = row[2] || "";
 
-        const isUpTo2019 = Number(year) <= 2019;
-
-        return isUpTo2019 &&
+        return ((isUpTo2019 && Number(year) <= 2019) || !isUpTo2019) &&
             (!acc[countryId] || (acc[countryId] !== undefined && Number(acc[countryId]) < Number(year)))
             ? { ...acc, [countryId]: year }
             : acc;
     }, {});
 };
 
-export const getLastAvailableYearByCountry = (rows: Array<string[]>): Record<string, string> => {
-    return rows.reduce((acc: Record<string, string>, row) => {
+export function getCommonLastAvailableYearInBothAxis(
+    rows: Array<string[]>,
+    xAxis: string,
+    yAxis: string,
+    isUpTo2019?: boolean
+): Record<string, string> {
+    const groupedByCountry = rows.reduce((acc, row) => {
+        const dataId = row[0]?.toString() || "";
         const countryId = row[1]?.toString() || "";
         const year = row[2] || "";
 
-        return !acc[countryId] || (acc[countryId] !== undefined && Number(acc[countryId]) < Number(year))
-            ? { ...acc, [countryId]: year }
-            : acc;
-    }, {});
-};
+        const countryData = acc[countryId] || { xYears: new Set<string>(), yYears: new Set<string>() };
+
+        if (dataId === xAxis) {
+            countryData.xYears.add(year);
+        } else if (dataId === yAxis) {
+            countryData.yYears.add(year);
+        }
+
+        return { ...acc, [countryId]: countryData };
+    }, {} as Record<string, { xYears: Set<string>; yYears: Set<string> }>);
+
+    return Object.keys(groupedByCountry).reduce((acc, countryId) => {
+        const filteredXYears = [...(groupedByCountry[countryId]?.xYears || [])].filter(year => {
+            return isUpTo2019 ? Number(year) <= 2019 : true;
+        });
+        const filteredYYears = [...(groupedByCountry[countryId]?.yYears || [])].filter(year => {
+            return isUpTo2019 ? Number(year) <= 2019 : true;
+        });
+
+        const commonYears = filteredXYears
+            .filter(year => filteredYYears.includes(year))
+            .sort((a, b) => parseInt(b) - parseInt(a));
+
+        return {
+            ...acc,
+            [countryId]: commonYears.length > 0 && commonYears[0] ? commonYears[0] : "",
+        };
+    }, {} as Record<string, string>);
+}
 
 export const filterRowsByYearInCountry = (
     rows: Array<string[]>,
@@ -53,12 +86,8 @@ export function getLatestAvailableYearByCountryIdFromTwoCharts(
     secondChartRows: Array<string[]>,
     isUpTo2019?: boolean
 ): Record<string, string> {
-    const firstChartLatestAvailableYearByCountry = isUpTo2019
-        ? getLastAvailableYearUpTo2019ByCountry(firstChartRows)
-        : getLastAvailableYearByCountry(firstChartRows);
-    const secondChartLatestAvailableYearByCountry = isUpTo2019
-        ? getLastAvailableYearUpTo2019ByCountry(secondChartRows)
-        : getLastAvailableYearByCountry(secondChartRows);
+    const firstChartLatestAvailableYearByCountry = getLastAvailableYearByCountry(firstChartRows, isUpTo2019);
+    const secondChartLatestAvailableYearByCountry = getLastAvailableYearByCountry(secondChartRows, isUpTo2019);
 
     const allCountryIdsUnique = [
         ...new Set([

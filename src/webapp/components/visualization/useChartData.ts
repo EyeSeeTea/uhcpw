@@ -114,6 +114,9 @@ export function useChartData(
                         chartOptions: visualizationChartOptions
                             ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
                             : undefined,
+                        isScatter: visualization?.isScatter,
+                        xAxis: visualization?.xAxis,
+                        yAxis: visualization?.yAxis,
                     });
                 },
                 error => {
@@ -150,6 +153,9 @@ export function useChartData(
                     periods: years || [],
                     orgUnits: countries || [],
                     seriesIdAndName: seriesIdAndName,
+                    isScatter: chartDataLoaded?.isScatter,
+                    xAxis: chartDataLoaded?.xAxis,
+                    yAxis: chartDataLoaded?.yAxis,
                 })
                 .runAsync();
         },
