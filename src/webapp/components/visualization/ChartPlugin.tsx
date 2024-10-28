@@ -20,6 +20,7 @@ export interface ChartPluginProps {
     externalchartOptions?: Highcharts.Options;
     countries: Country[];
     withoutBackground?: boolean;
+    isSquareChart?: boolean;
 }
 
 /**
@@ -35,6 +36,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         countries,
         externalchartOptions,
         withoutBackground = false,
+        isSquareChart = false,
     }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
@@ -219,15 +221,22 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         }, [renderVisualization]);
 
         return (
-            <div>
-                <Container style={{ width: "100%" }} $withoutBackground={withoutBackground}>
+            <ChartPluginContainer $isSquareChart={isSquareChart}>
+                <Container $withoutBackground={withoutBackground} $isSquareChart={isSquareChart}>
                     <div ref={canvasRef} />
                     {chartOptions && <HighchartsReact highcharts={Highcharts} options={chartOptions} />}
                 </Container>
-            </div>
+            </ChartPluginContainer>
         );
     }
 );
+
+const ChartPluginContainer = styled.div<{
+    $isSquareChart: boolean;
+}>`
+    display: ${props => (props.$isSquareChart ? "flex" : "block")};
+    justify-content: ${props => (props.$isSquareChart ? "center" : "flex-start")};
+`;
 
 const customCss = css`
     .highcharts-grid-line {
@@ -245,7 +254,9 @@ const customCss = css`
     }
 `;
 
-const Container = styled.div<{ $withoutBackground: boolean }>`
+const Container = styled.div<{ $withoutBackground: boolean; $isSquareChart?: boolean }>`
+    width: ${props => (props.$isSquareChart ? "75%" : "100%")};
+
     .highcharts-container * {
         font-family: "Roboto";
     }

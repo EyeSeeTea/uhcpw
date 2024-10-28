@@ -233,5 +233,6 @@ const Tag = styled.div`
 `;
 
 const Title = styled(Typography)<{ isScreenshot: boolean }>`
-    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")}; ;
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
+    white-space: "normal";
 `;
