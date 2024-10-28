@@ -55,16 +55,28 @@ export function useCountrySlider(countryId: string): CountrySlider {
     const [tabValue, setTabValue] = useState(0);
     const [sliderInfo, setSliderInfo] = useState<SliderInfo | undefined>(undefined);
 
+    const countrySelected = useMemo(() => {
+        if (countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA) {
+            return countriesAndRegions.find(({ id }) => id === BOSNIA_AND_HERZEGOVINA_LEVEL_4)?.id || countryId;
+        } else {
+            return countryId;
+        }
+    }, [countriesAndRegions, countryId]);
+
     useEffect(() => {
         if (country?.name) {
-            compositionRoot.countryPage.getSliderInfo.execute(country?.name).run(
+            const nameBIH =
+                countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA
+                    ? countriesAndRegions.find(({ id }) => id === BOSNIA_AND_HERZEGOVINA_LEVEL_4)?.name
+                    : undefined;
+            compositionRoot.countryPage.getSliderInfo.execute(country?.name, nameBIH).run(
                 info => {
                     setSliderInfo(info);
                 },
                 () => setSliderInfo(undefined)
             );
         }
-    }, [compositionRoot.countryPage.getSliderInfo, country?.name]);
+    }, [compositionRoot.countryPage.getSliderInfo, countriesAndRegions, country?.name, countryId]);
 
     const handleTabChange = useCallback((_event: React.ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
@@ -102,14 +114,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
         },
         [tabValue]
     );
-
-    const countrySelected = useMemo(() => {
-        if (countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA) {
-            return countriesAndRegions.find(({ id }) => id === BOSNIA_AND_HERZEGOVINA_LEVEL_4)?.id || countryId;
-        } else {
-            return countryId;
-        }
-    }, [countriesAndRegions, countryId]);
 
     const sliderGraphsConfig: SliderGraphsConfig = useMemo(
         () => [
