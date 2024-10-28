@@ -84,32 +84,55 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         };
     });
 
-    const countryPositionsAdjustment = {
-        // Serie 1
-        NET: pos.bottomLeft,
-        SVN: pos.bottomRight,
-        IRE: pos.right,
-        SWE: pos.top,
-        UNK: pos.bottom,
-        SPA: pos.left,
-
-        // Serie 2
-        FRA: pos.bottomLeft,
-        LUX: pos.topLeft,
-        CRO: pos.topLeft,
-        DEU: pos.bottomLeft,
-        DEN: pos.top,
-        CZH: pos.topLeft,
-        TUR: pos.topLeft,
-        BEL: pos.left,
-        AUT: pos.bottom,
-        FIN: pos.right,
-        SWI: pos.left,
-
-        SVK: pos.topLeft,
-
-        SRB: pos.topLeft,
-    };
+    const countryPositionsAdjustment = chartSource.isLatestCOVID19
+        ? {
+              NET: pos.bottomLeft,
+              SVN: pos.bottomRight,
+              IRE: pos.left,
+              SWE: pos.top,
+              UNK: pos.bottom,
+              SPA: pos.left,
+              "BIH-R": pos.top,
+              "BIH-F": pos.left,
+              FRA: pos.bottomLeft,
+              LUX: pos.topLeft,
+              CRO: pos.topLeft,
+              DEU: pos.bottomLeft,
+              DEN: pos.top,
+              CZH: pos.topLeft,
+              TUR: pos.topLeft,
+              BEL: pos.left,
+              AUT: pos.top,
+              FIN: pos.right,
+              SWI: pos.left,
+              SVK: pos.topLeft,
+              SRB: pos.topLeft,
+              MDA: pos.left,
+          }
+        : {
+              NET: pos.bottomLeft,
+              SVN: pos.bottomRight,
+              IRE: pos.left,
+              SWE: pos.top,
+              UNK: pos.bottom,
+              SPA: pos.left,
+              "BIH-R": pos.left,
+              "BIH-F": pos.topRight,
+              FRA: pos.bottomLeft,
+              LUX: pos.topLeft,
+              CRO: pos.topLeft,
+              DEU: pos.bottomLeft,
+              DEN: pos.top,
+              CZH: pos.topLeft,
+              TUR: pos.top,
+              BEL: pos.bottomLeft,
+              AUT: pos.bottom,
+              FIN: pos.right,
+              SWI: pos.left,
+              SVK: pos.topLeft,
+              SRB: pos.topLeft,
+              MDA: pos.right,
+          };
 
     const scatterChart = createScratterChart({
         series,
