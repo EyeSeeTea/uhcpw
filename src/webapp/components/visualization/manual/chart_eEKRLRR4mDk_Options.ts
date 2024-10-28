@@ -96,6 +96,10 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
 
     return {
         ...scratterChart,
+        yAxis: {
+            ...scratterChart.yAxis,
+            min: 0,
+        },
         xAxis: {
             ...scratterChart.xAxis,
             labels: {
