@@ -15,6 +15,8 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
     const currentCountryCode =
         chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
 
+    const currentYear = chartSource.currentYear;
+
     const seriesSource: SerieSource[] = [
         {
             name: "",
@@ -46,6 +48,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
 
             return {
                 country: country?.code || eur27Code || "",
+                year: currentYear || "",
                 x,
                 y,
             };
@@ -100,7 +103,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         currentCountryCode,
         xAxisTitle,
         yAxisTitle,
-        pointFormat: `{point.country} <br/> ${xAxisTitle}: {point.x} <br/> ${yAxisTitle}: {point.y}%`,
+        pointFormat: `{point.country} {point.year} <br/> ${xAxisTitle}: {point.x} <br/> ${yAxisTitle}: {point.y}%`,
         countriesWithData,
         countryPositions: countryPositionsAdjustment,
         displayTendencyLine: false,

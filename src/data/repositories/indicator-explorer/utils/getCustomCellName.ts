@@ -1,4 +1,5 @@
 import { Id } from "../../../../domain/entities/Ref";
+import { whoCountryNames } from "../../countries/mapToWhoCountryData";
 import { kIpnMBaBvZ9_xAxisOutOfPocket, kIpnMBaBvZ9_yAxisHouseholds } from "../seed/chart_kIpnMBaBvZ9_Seed";
 
 type CellNames = {
@@ -55,6 +56,11 @@ export function getCustomCellName(
     }[],
     cell: string
 ): string | undefined {
+    const countryName = whoCountryNames[cell];
+    if (countryName) {
+        return countryName;
+    }
+
     const cellNamesInVisualization = cellNameByVisualizationAndCellId[visualizationId];
     const cellName = cellNamesInVisualization?.[cell];
     if (cellName) {
