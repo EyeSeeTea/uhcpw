@@ -36,7 +36,7 @@ function ScreenshotModal({
     }, [backgroundColor, exclusionClasses, title]);
 
     return (
-        <Modal
+        <StyledModal
             open={open}
             onClose={onClose}
             aria-labelledby="modal-modal-title"
@@ -58,7 +58,7 @@ function ScreenshotModal({
                     <ScreenshotContainer className="screenshot-container">{children}</ScreenshotContainer>
                 </Content>
             </StyledBox>
-        </Modal>
+        </StyledModal>
     );
 }
 
@@ -71,6 +71,10 @@ const StyledBox = styled(Box)<{ backgroundColor: string; $isSquareChart?: boolea
     width: 90vw;
     background-color: ${props => props?.backgroundColor ?? "#FFFFFF"};
     border-radius: 10px;
+`;
+
+const StyledModal = styled(Modal)`
+    overflow-y: auto;
 `;
 
 const Title = styled.h2`

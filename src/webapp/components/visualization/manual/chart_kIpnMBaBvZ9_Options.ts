@@ -150,7 +150,7 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         ...scatterChart,
         chart: {
             ...scatterChart.chart,
-            height: "100%",
+            height: "90%",
         },
     };
 };

@@ -253,7 +253,7 @@ const customCss = css`
 `;
 
 const Container = styled.div<{ $withoutBackground: boolean; $isSquareChart?: boolean }>`
-    width: ${props => (props.$isSquareChart ? "80%" : "100%")};
+    width: ${props => (props.$isSquareChart ? "75%" : "100%")};
 
     .highcharts-container * {
         font-family: "Roboto";
