@@ -66,6 +66,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     onClose={handleCloseScreenshot}
                     title={CHART_1_SCATTER_VISUALIZATION_NAME || ""}
                     backgroundColor={"#f1f9fc"}
+                    isSquareChart={true}
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
@@ -75,6 +76,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         withoutBackground
                         useHeaderForCountryPage
                         isScreenshot={true}
+                        isSquareChart={true}
                     />
                 </ScreenshotModal>
             </GraphGrid>

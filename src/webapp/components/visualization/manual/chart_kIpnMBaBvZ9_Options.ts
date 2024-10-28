@@ -111,7 +111,7 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         SRB: pos.topLeft,
     };
 
-    return createScratterChart({
+    const scatterChart = createScratterChart({
         series,
         visualization: chartSourceWithFilteredRowsByLAY.visualization,
         currentCountryCode,
@@ -122,6 +122,14 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         countriesWithData,
         countryPositions: countryPositionsAdjustment,
     });
+
+    return {
+        ...scatterChart,
+        chart: {
+            ...scatterChart.chart,
+            height: "100%",
+        },
+    };
 };
 
 interface SerieData {

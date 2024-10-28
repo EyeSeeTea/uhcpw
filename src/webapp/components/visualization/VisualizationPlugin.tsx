@@ -18,6 +18,7 @@ interface VisualizationPluginProps {
     onDownloadImage?: () => void;
     isScreenshot?: boolean;
     paddingEnd?: boolean;
+    isSquareChart?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
@@ -32,6 +33,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         onDownloadImage,
         isScreenshot = false,
         paddingEnd = true,
+        isSquareChart = false,
     }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
@@ -83,6 +85,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     countries={chartData.countries}
                     withoutBackground={withoutBackground}
                     externalchartOptions={chartData.chartOptions}
+                    isSquareChart={isSquareChart}
                 />
             </Container>
         ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
