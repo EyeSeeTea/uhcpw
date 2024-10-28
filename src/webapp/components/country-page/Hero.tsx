@@ -10,6 +10,11 @@ import { useAppContext } from "../../contexts/app-context";
 import React from "react";
 import ScreenshotModal from "../screenshot-modal/ScreenshotModal";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
+import {
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+    FEDERACIJA_BOSNE_I_HERCEGOVINE,
+    REPUBLICA_SERPSKA,
+} from "../../../data/repositories/countries/CountryD2Repository";
 
 type HeroProps = {
     countryId: string;
@@ -31,7 +36,15 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
         setOpenScreenshot(false);
     }, []);
 
-    if (!countryId) return <CircularProgress />;
+    const countryIdSelected = React.useMemo(() => {
+        if (countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA) {
+            return BOSNIA_AND_HERZEGOVINA_LEVEL_4;
+        } else {
+            return countryId;
+        }
+    }, [countryId]);
+
+    if (!countryIdSelected) return <CircularProgress />;
 
     return (
         <Grid container aria-label="country-page-hero">
@@ -49,11 +62,11 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
             <GraphGrid item xs={12} md={7} lg={8}>
                 <VisualizationContainer>
                     <VisualizationPlugin
-                        key={countryId}
+                        key={countryIdSelected}
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
                         years={[LatestAvailable.id]}
                         countries={countriesAndRegions.map(({ id }) => id)}
-                        currentCountry={countryId}
+                        currentCountry={countryIdSelected}
                         withoutBackground
                         useHeaderForCountryPage
                         onDownloadImage={handleOpenScreenshot}
@@ -71,7 +84,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
                         years={[LatestAvailable.id]}
                         countries={countriesAndRegions.map(({ id }) => id)}
-                        currentCountry={countryId}
+                        currentCountry={countryIdSelected}
                         withoutBackground
                         useHeaderForCountryPage
                         isScreenshot={true}
