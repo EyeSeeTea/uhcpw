@@ -33,4 +33,5 @@ export const chart_NOR4oxtMVxP_Customizations: ChartCustomization = {
     xAxis: {
         title: { text: "" },
     },
+    fixHideEmptyCategories: true,
 };
