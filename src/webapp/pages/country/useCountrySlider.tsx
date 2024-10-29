@@ -8,12 +8,18 @@ import { CountrySectionInfo, EU27 } from "../../../domain/entities/Country";
 import UmbrellaGreen from "../../assets/country-page/umbrellaGreen.png";
 import UmbrellaRed from "../../assets/country-page/umbrella-3.svg";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
+import {
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+    FEDERACIJA_BOSNE_I_HERCEGOVINE,
+    REPUBLICA_SERPSKA,
+} from "../../../data/repositories/countries/CountryD2Repository";
 
 type SliderGraph = {
     visualizationId: string;
     visualizationName?: string;
     years: string[];
     countries: string[];
+    currentCountry?: string;
 };
 
 type SliderGraphsConfig = {
@@ -49,16 +55,28 @@ export function useCountrySlider(countryId: string): CountrySlider {
     const [tabValue, setTabValue] = useState(0);
     const [sliderInfo, setSliderInfo] = useState<SliderInfo | undefined>(undefined);
 
+    const countrySelected = useMemo(() => {
+        if (countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA) {
+            return countriesAndRegions.find(({ id }) => id === BOSNIA_AND_HERZEGOVINA_LEVEL_4)?.id || countryId;
+        } else {
+            return countryId;
+        }
+    }, [countriesAndRegions, countryId]);
+
     useEffect(() => {
         if (country?.name) {
-            compositionRoot.countryPage.getSliderInfo.execute(country?.name).run(
+            const nameBIH =
+                countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA
+                    ? countriesAndRegions.find(({ id }) => id === BOSNIA_AND_HERZEGOVINA_LEVEL_4)?.name
+                    : undefined;
+            compositionRoot.countryPage.getSliderInfo.execute(country?.name, nameBIH).run(
                 info => {
                     setSliderInfo(info);
                 },
                 () => setSliderInfo(undefined)
             );
         }
-    }, [compositionRoot.countryPage.getSliderInfo, country?.name]);
+    }, [compositionRoot.countryPage.getSliderInfo, countriesAndRegions, country?.name, countryId]);
 
     const handleTabChange = useCallback((_event: React.ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
@@ -218,13 +236,13 @@ export function useCountrySlider(countryId: string): CountrySlider {
                     visualizationId: "OB4SCQfCzwz",
                     visualizationName: VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
                     years: generateYears().map(year => year.id),
-                    countries: [countryId],
+                    countries: [countrySelected],
                 },
                 graphTwo: {
                     visualizationId: "d3kq9OCv8tH",
                     visualizationName: VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
                     years: generateYears().map(year => year.id),
-                    countries: [countryId, EU27],
+                    countries: [countrySelected, EU27],
                 },
             },
             {
@@ -235,18 +253,20 @@ export function useCountrySlider(countryId: string): CountrySlider {
                     visualizationName: VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
+                    currentCountry: countrySelected,
                 },
                 graphTwo: {
                     visualizationId: "BYAT5Woc9EJ",
                     visualizationName: VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
                     years: [LatestAvailable.id],
-                    countries: [countryId, EU27],
+                    countries: [countrySelected, EU27],
                 },
             },
         ],
         [
             countriesAndRegions,
             countryId,
+            countrySelected,
             sliderInfo?.sliderEight,
             sliderInfo?.sliderFive,
             sliderInfo?.sliderFour,

@@ -212,7 +212,7 @@ function givenSliderTitles(): SliderInfo {
         sliderEleven: "How can Spain strengthen financial protection?",
     };
 
-    when(mockedRepository.getSliderInfo("Spain")).thenReturn(Future.success(sliderInfo));
+    when(mockedRepository.getSliderInfo("Spain", undefined)).thenReturn(Future.success(sliderInfo));
 
     countryPageInfoRepository = instance(mockedRepository);
 
