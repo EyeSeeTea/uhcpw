@@ -4,6 +4,8 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
+import { EU27 } from "../../../../../domain/entities/Country";
+import { EU27Color } from "../../customization/palettes/countryPalette";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -13,6 +15,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
+    highlightEU27?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -21,6 +24,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
+    highlightEU27,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -67,8 +71,10 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 );
                 const value = row[2] ? +row[2] : 0;
 
+                const colorUE27 = EU27 === orgUnitId && highlightEU27 ? { color: EU27Color } : undefined;
+
                 const color =
-                    currentCountryCode === orgUnit && currentSerieColor ? { color: currentSerieColor } : undefined;
+                    currentCountryCode === orgUnit && currentSerieColor ? { color: currentSerieColor } : colorUE27;
 
                 return {
                     name: `${orgUnit} ${currentYear ?? ""}`,
