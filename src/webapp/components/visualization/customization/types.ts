@@ -30,6 +30,7 @@ export type ChartCustomization = {
           }
         | undefined;
     plotOptions?: PlotOptionsCustomization;
+    fixHideEmptyCategories?: boolean;
 };
 
 export type PlotOptionsCustomization = {

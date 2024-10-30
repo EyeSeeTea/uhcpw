@@ -24,7 +24,7 @@ const sliderInfoDataElements: Record<string, Id> = {
 export class CountryPageInfoD2Repository implements CountryPageInfoRepository {
     constructor(private api: D2Api) {}
 
-    getSliderInfo(countryName: string): FutureData<SliderInfo> {
+    getSliderInfo(countryName: string, nameBIH?: string): FutureData<SliderInfo> {
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
@@ -33,13 +33,13 @@ export class CountryPageInfoD2Repository implements CountryPageInfoRepository {
             })
         ).flatMap(response => {
             if (response.events[0]) {
-                return Future.success(this.buildSliderInfo(countryName, response.events[0]));
+                return Future.success(this.buildSliderInfo(countryName, response.events[0], nameBIH));
             }
             return Future.error("An error has ocurred fetching slider info");
         });
     }
 
-    private buildSliderInfo(countryName: string, event: D2Event): SliderInfo {
+    private buildSliderInfo(countryName: string, event: D2Event, nameBIH?: string): SliderInfo {
         return {
             sliderOne:
                 event?.dataValues
@@ -72,11 +72,11 @@ export class CountryPageInfoD2Repository implements CountryPageInfoRepository {
             sliderEight:
                 event?.dataValues
                     ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderEight)
-                    ?.value.replace(/<country>/g, countryName) || "",
+                    ?.value.replace(/<country>/g, nameBIH || countryName) || "",
             sliderNine:
                 event?.dataValues
                     ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderNine)
-                    ?.value.replace(/<country>/g, countryName) || "",
+                    ?.value.replace(/<country>/g, nameBIH || countryName) || "",
             sliderTen:
                 event?.dataValues
                     ?.find(dv => dv.dataElement === sliderInfoDataElements.sliderTen)
