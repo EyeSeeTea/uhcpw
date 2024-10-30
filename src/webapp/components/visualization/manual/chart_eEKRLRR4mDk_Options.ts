@@ -94,11 +94,15 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         countriesWithData,
         countryPositions: countryPositionsAdjustment,
         displayTendencyLine: false,
-        tickInterval: 10000,
+        xTickInterval: 10000,
     });
 
     return {
         ...scratterChart,
+        yAxis: {
+            ...scratterChart.yAxis,
+            min: 0,
+        },
         xAxis: {
             ...scratterChart.xAxis,
             labels: {

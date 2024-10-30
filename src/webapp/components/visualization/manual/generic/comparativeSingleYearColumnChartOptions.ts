@@ -3,6 +3,7 @@ import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
+import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -80,9 +81,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const maxYAxis = chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
-        ? { max: chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
-        : {};
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(series);
 
     return {
         ...baseChartOptions,
@@ -108,9 +107,31 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 text: "Households (%)",
                 style: { fontSize: "13px" },
             },
-            ...maxYAxis,
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
         },
         legend: baseLegend,
         series,
     } as Highcharts.Options;
 };
+
+function getMaxYAxisAndYTickInterval(
+    series: {
+        data: {
+            color?: string | undefined;
+            name: string;
+            y: number;
+        }[];
+    }[],
+    stackedValuesUpTo100?: boolean
+) {
+    if (stackedValuesUpTo100) {
+        return {
+            max: 100,
+            tickInterval: 20,
+        };
+    } else {
+        const allYDataValues = series.flatMap(serie => serie.data.map(data => data.y));
+        return getMaxAxisAndTickInterval(allYDataValues);
+    }
+}

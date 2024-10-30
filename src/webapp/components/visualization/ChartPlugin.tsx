@@ -195,8 +195,27 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                       )
                     : newOptionsFilteredEmptyYears;
 
+            const maxYAxisAndYTickInterval = customizedOptions?.getMaxYAxisAndYTickInterval
+                ? customizedOptions?.getMaxYAxisAndYTickInterval(newOptionsWithBreaks.series as SeriesColumnOptions[])
+                : undefined;
+
+            const yAxisWithMaxAndTickIntervalValue = Array.isArray(newOptionsWithBreaks.yAxis)
+                ? newOptionsWithBreaks.yAxis.map(yAxis => {
+                      return {
+                          ...yAxis,
+                          ...(maxYAxisAndYTickInterval || {}),
+                      };
+                  })
+                : {
+                      ...newOptionsWithBreaks.yAxis,
+                      ...(maxYAxisAndYTickInterval || {}),
+                  };
+
             setChartOptions({
-                ...(newOptionsWithBreaks as Highcharts.Options),
+                ...({
+                    ...newOptionsWithBreaks,
+                    yAxis: yAxisWithMaxAndTickIntervalValue,
+                } as Highcharts.Options),
             });
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();

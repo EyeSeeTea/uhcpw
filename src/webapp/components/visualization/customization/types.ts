@@ -23,13 +23,22 @@ export type ChartCustomization = {
         series: SeriesColumnOptions[] | undefined,
         categories: string[]
     ) => SeriesColumnOptions[] | undefined;
+    getMaxYAxisAndYTickInterval?: (series: SeriesColumnOptions[] | undefined) =>
+        | {
+              max: number;
+              tickInterval: number;
+          }
+        | undefined;
     plotOptions?: PlotOptionsCustomization;
     fixHideEmptyCategories?: boolean;
 };
 
 export type PlotOptionsCustomization = {
     series: {
-        grouping: boolean;
+        grouping?: boolean;
+        events?: {
+            legendItemClick: (this: Highcharts.Series) => boolean;
+        };
     };
 };
 

@@ -2,6 +2,7 @@ import { AnalyticsMetadataItem } from "@dhis2/analytics";
 import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/mapToWhoCountryData";
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { baseChartOptions } from "./baseChartOptions";
+import { getMaxAxisAndTickInterval, getMaxValuesInSeriesData } from "../../utils/getMaxAxisAndTickInterval";
 
 type SerieData = {
     name: string | undefined;
@@ -113,6 +114,10 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
               }
             : undefined;
 
+    const seriesData = series.map(serie => serie.data.map(data => data.y));
+    const maxValuesInSeriesData = getMaxValuesInSeriesData(seriesData);
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(maxValuesInSeriesData);
+
     return {
         ...baseChartOptions,
         xAxis: {
@@ -126,6 +131,8 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
                 text: yAxisTitle,
                 style: { fontSize: "13px" },
             },
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
         },
         legend: baseLegend,
         series: rangeSerie ? [rangeSerie, ...series] : series,
@@ -152,6 +159,19 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
                                 ((!isHide && (s.visible || s.name === this.name)) ||
                                     (isHide && s.name !== this.name && s.visible))
                         );
+
+                        const visibleSeriesData = visibleSeries.map(serie => serie.data.map(data => data.y || 0));
+                        const maxValuesInVisibleSeriesData = getMaxValuesInSeriesData(visibleSeriesData);
+                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
+                            getMaxAxisAndTickInterval(maxValuesInVisibleSeriesData);
+
+                        this.chart.yAxis.forEach(yAxis => {
+                            yAxis.update({
+                                max: adjustedMaxYAxis,
+                                tickInterval: yTickInterval,
+                            });
+                        });
+
                         const rangeSeries = chart.series.find(s => s.type === "columnrange");
 
                         const data = rangeSeries?.data.map(({ category }) => {

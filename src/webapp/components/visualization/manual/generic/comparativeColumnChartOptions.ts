@@ -3,6 +3,8 @@ import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
+import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/getMaxAxisAndTickInterval";
+import { getMaxYAxisAndYTickInterval } from "../utils/getMaxYAxisAndYTickInterval";
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -11,6 +13,8 @@ export const comparativeColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
+    isStacked?: boolean;
+    maxValueUpTo100?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -18,6 +22,8 @@ export const comparativeColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
+    isStacked,
+    maxValueUpTo100,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -97,9 +103,11 @@ export const comparativeColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const maxYAxis = chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
-        ? { max: chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
-        : {};
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(series, {
+        isStacked,
+        stackedValuesUpTo100,
+        maxValueUpTo100,
+    });
 
     return {
         ...baseChartOptions,
@@ -127,9 +135,24 @@ export const comparativeColumnChartOptions: (params: {
                 text: "Households (%)",
                 style: { fontSize: "13px" },
             },
-            ...maxYAxis,
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
         },
         legend: baseLegend,
         series,
+        plotOptions: {
+            column: {
+                stacking: "normal",
+                events: {
+                    legendItemClick: function (this: Highcharts.Series) {
+                        return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, {
+                            isStacked,
+                            stackedValuesUpTo100,
+                            maxValueUpTo100,
+                        });
+                    },
+                },
+            },
+        },
     } as Highcharts.Options;
 };
