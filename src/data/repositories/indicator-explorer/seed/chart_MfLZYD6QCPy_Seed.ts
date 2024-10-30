@@ -2,7 +2,7 @@ import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../u
 import { sortedCategoryNames } from "./utils";
 
 const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["Poorest", "Average", "Richest"];
+const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 
 export const chart_MfLZYD6QCPy_Seed = {
     categoryName: sortedCategoryNames.unmetNeed,
