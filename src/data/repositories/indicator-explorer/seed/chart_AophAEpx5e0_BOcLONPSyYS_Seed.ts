@@ -3,7 +3,7 @@ import { sortedCategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 
 const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["Poorest", "Average", "Richest"];
+const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 
 export const chart_AophAEpx5e0_BOcLONPSyYS_Seed = {
     categoryName: sortedCategoryNames.comparative,

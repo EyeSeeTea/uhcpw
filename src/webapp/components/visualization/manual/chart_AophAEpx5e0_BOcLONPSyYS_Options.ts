@@ -17,7 +17,7 @@ const seriesIds: Record<SeriesKey, string> = {
 
 const seriesNames: Record<typeof seriesIds[keyof typeof seriesIds], string> = {
     [seriesIds.poorest]: "Poorest",
-    [seriesIds.average]: "Average",
+    [seriesIds.average]: "Total",
     [seriesIds.richest]: "Richest",
 };
 
