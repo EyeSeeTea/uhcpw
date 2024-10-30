@@ -6,7 +6,10 @@ import {
     sumSeriesData,
 } from "../../utils/getMaxAxisAndTickInterval";
 
-export function getMaxYAxisAndYTickIntervalForStackedColumns(series: SeriesColumnOptions[] | undefined):
+export function getMaxYAxisAndYTickIntervalForStackedColumns(
+    series: SeriesColumnOptions[] | undefined,
+    maxValueUpTo100?: boolean
+):
     | {
           max: number;
           tickInterval: number;
@@ -18,7 +21,9 @@ export function getMaxYAxisAndYTickIntervalForStackedColumns(series: SeriesColum
 
     if (seriesNumberData) {
         const sumOfSeriesData = sumSeriesData(seriesNumberData);
-        return getMaxAxisAndTickInterval(sumOfSeriesData);
+        const { max, tickInterval } = getMaxAxisAndTickInterval(sumOfSeriesData);
+
+        return maxValueUpTo100 && max > 100 ? { max: 100, tickInterval: 20 } : { max, tickInterval };
     }
 }
 
@@ -49,11 +54,15 @@ export function getMaxYAxisAndYTickIntervalForStackedColumnsWithYData(
 }
 
 export function getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(
-    series: SeriesColumnOptions[] | undefined
+    series: SeriesColumnOptions[] | undefined,
+    options?: {
+        maxValueUpTo100?: boolean;
+    }
 ): {
     max: number;
     tickInterval: number;
 } {
+    const { maxValueUpTo100 = false } = options ?? {};
     const sumYDataByCategoryAndChart = (series as ChartSeriesWithYData[])?.reduce((accSerie, serie) => {
         const yDataByCategoryAndChart = serie.data?.reduce((acc, data) => {
             const categoryName = data?.name;
@@ -116,7 +125,19 @@ export function getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAnd
 
     const maxYDataValuesInCharts = Object.values(maxYDataByChart);
 
-    return getMaxAxisAndTickInterval(maxYDataValuesInCharts);
+    const { max, tickInterval } = getMaxAxisAndTickInterval(maxYDataValuesInCharts);
+
+    if (maxValueUpTo100 && max > 100) {
+        return {
+            max: 100,
+            tickInterval: 20,
+        };
+    } else {
+        return {
+            max,
+            tickInterval,
+        };
+    }
 }
 
 export function getMaxYAxisAndYTickIntervalForLineAndColumns(series: SeriesColumnOptions[] | undefined):

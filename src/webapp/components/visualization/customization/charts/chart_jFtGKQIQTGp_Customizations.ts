@@ -29,7 +29,9 @@ export const chart_jFtGKQIQTGp_Customizations: ChartCustomization = {
         series: {
             events: {
                 legendItemClick: function (this: Highcharts.Series) {
-                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, true);
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, {
+                        isStacked: true,
+                    });
                 },
             },
         },

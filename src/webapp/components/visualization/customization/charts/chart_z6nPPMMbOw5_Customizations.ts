@@ -70,13 +70,17 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
         );
     },
     getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
-        return getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(series);
+        return getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(series, {
+            maxValueUpTo100: true,
+        });
     },
     plotOptions: {
         series: {
             events: {
                 legendItemClick: function (this: Highcharts.Series) {
-                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(this);
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(this, {
+                        maxValueUpTo100: true,
+                    });
                 },
             },
         },

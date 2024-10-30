@@ -39,13 +39,17 @@ export const chart_ZxNdsDM8NSb_Customizations: ChartCustomization = {
     },
     series: typeOfCareSeries2,
     getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
-        return getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(series);
+        return getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(series, {
+            maxValueUpTo100: true,
+        });
     },
     plotOptions: {
         series: {
             events: {
                 legendItemClick: function (this: Highcharts.Series) {
-                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(this);
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(this, {
+                        maxValueUpTo100: true,
+                    });
                 },
             },
         },

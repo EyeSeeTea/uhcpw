@@ -69,7 +69,10 @@ export const chart_TzWcDtEOTPX_Customizations: ChartCustomization = {
         series: {
             events: {
                 legendItemClick: function (this: Highcharts.Series) {
-                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, true, true);
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, {
+                        isStacked: true,
+                        stackedValuesUpTo100: true,
+                    });
                 },
             },
         },

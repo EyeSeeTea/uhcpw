@@ -47,7 +47,9 @@ export const chart_geNXcoXc3mf_Customizations: ChartCustomization = {
         series: {
             events: {
                 legendItemClick: function (this: Highcharts.Series) {
-                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, true);
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, {
+                        isStacked: true,
+                    });
                 },
             },
         },

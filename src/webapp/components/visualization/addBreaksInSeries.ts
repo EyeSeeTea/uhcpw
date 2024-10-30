@@ -9,7 +9,7 @@ import {
 import { getCategories } from "./utils";
 import { SerieCustomization } from "./customization/types";
 import { Id } from "../../../domain/entities/Ref";
-import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./manual/generic/comparativeColumnChartOptions";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./manual/utils/getMaxYAxisAndYTickInterval";
 
 export function addBreaksInSeries(
     options: Highcharts.Options,

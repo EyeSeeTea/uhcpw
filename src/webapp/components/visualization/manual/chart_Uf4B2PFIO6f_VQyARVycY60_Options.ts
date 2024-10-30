@@ -4,7 +4,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 import { yAxisformatNumberLabel } from "../customization/yAxis/formatNumberLabel";
 import { getMaxAxisAndTickInterval, sumSeriesData } from "../utils/getMaxAxisAndTickInterval";
-import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./generic/comparativeColumnChartOptions";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./utils/getMaxYAxisAndYTickInterval";
 
 const seriesNames: Record<string, string> = {
     Oseqbg7Odmn: "Average household capacity to pay",
@@ -148,7 +148,9 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
 
                         const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
                             visibleSeries,
-                            typeSelectedSerie === "column"
+                            {
+                                isStacked: typeSelectedSerie === "column",
+                            }
                         );
 
                         this.chart.yAxis.forEach(yAxis => {

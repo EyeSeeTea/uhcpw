@@ -12,13 +12,16 @@ export const chart_qipBCG0Hc9Y_Customizations: ChartCustomization = {
     series: typeOfCareSeries1,
     xAxis: { title: { text: "" } },
     getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
-        return getMaxYAxisAndYTickIntervalForStackedColumns(series);
+        return getMaxYAxisAndYTickIntervalForStackedColumns(series, true);
     },
     plotOptions: {
         series: {
             events: {
                 legendItemClick: function (this: Highcharts.Series) {
-                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, true);
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, {
+                        isStacked: true,
+                        maxValueUpTo100: true,
+                    });
                 },
             },
         },

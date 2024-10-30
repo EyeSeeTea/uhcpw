@@ -1,5 +1,5 @@
 import { getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories } from "../customization/yAxis/getMaxYAxisAndYTickInterval";
-import { getMaxYAxisAndYTickInterval, SeriesWithData } from "../manual/generic/comparativeColumnChartOptions";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "../manual/utils/getMaxYAxisAndYTickInterval";
 
 export function getMaxXAxisValue(data: number[], tickInterval?: number): number {
     const maxXValue = Math.max(...data);
@@ -98,9 +98,13 @@ export function isNumberData(value: unknown): value is number {
 
 export function setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(
     series: Highcharts.Series,
-    isStacked?: boolean,
-    stackedValuesUpTo100?: boolean
+    options?: {
+        isStacked?: boolean;
+        stackedValuesUpTo100?: boolean;
+        maxValueUpTo100?: boolean;
+    }
 ): boolean {
+    const { isStacked = false, stackedValuesUpTo100 = false, maxValueUpTo100 = false } = options || {};
     const isSelectedSerieHide = series.visible;
     const selectedSerieIndex = series.index;
     const seriesInChart = series.chart.series as SeriesWithData[];
@@ -112,25 +116,37 @@ export function setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(
         return isSelectedSerieVisible || isNotSelectedSeriesVisible;
     });
 
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
-        visibleSeries,
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(visibleSeries, {
         isStacked,
-        stackedValuesUpTo100
-    );
-
-    series.chart.yAxis.forEach(yAxis => {
-        yAxis.update({
-            max: adjustedMaxYAxis,
-            tickInterval: yTickInterval,
-        });
+        stackedValuesUpTo100,
     });
+
+    if (maxValueUpTo100 && adjustedMaxYAxis > 100) {
+        series.chart.yAxis.forEach(yAxis => {
+            yAxis.update({
+                max: 100,
+                tickInterval: 20,
+            });
+        });
+    } else {
+        series.chart.yAxis.forEach(yAxis => {
+            yAxis.update({
+                max: adjustedMaxYAxis,
+                tickInterval: yTickInterval,
+            });
+        });
+    }
 
     return true;
 }
 
 export function setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(
-    series: Highcharts.Series
+    series: Highcharts.Series,
+    options?: {
+        maxValueUpTo100?: boolean;
+    }
 ): boolean {
+    const { maxValueUpTo100 = false } = options || {};
     const isSelectedSerieHide = series.visible;
     const selectedSerieIndex = series.index;
     const seriesInChart = series.chart.series as SeriesWithData[];
@@ -147,12 +163,21 @@ export function setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYea
             visibleSeries as Highcharts.SeriesColumnOptions[]
         );
 
-    series.chart.yAxis.forEach(yAxis => {
-        yAxis.update({
-            max: adjustedMaxYAxis,
-            tickInterval: yTickInterval,
+    if (maxValueUpTo100 && adjustedMaxYAxis > 100) {
+        series.chart.yAxis.forEach(yAxis => {
+            yAxis.update({
+                max: 100,
+                tickInterval: 20,
+            });
         });
-    });
+    } else {
+        series.chart.yAxis.forEach(yAxis => {
+            yAxis.update({
+                max: adjustedMaxYAxis,
+                tickInterval: yTickInterval,
+            });
+        });
+    }
 
     return true;
 }
