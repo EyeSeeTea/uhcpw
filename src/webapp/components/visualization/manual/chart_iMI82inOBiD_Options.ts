@@ -10,25 +10,22 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_iMI82inOBiD_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const chart = comparativeSingleYearColumnChartOptions({
+        chartSource,
+        seriesNames,
+        seriesColors,
+        currentYear: chartSource.currentYear,
+        currentSerieColor: "#c00000",
+        highlightEU27: true,
+    });
+
     return {
-        ...comparativeSingleYearColumnChartOptions({
-            chartSource,
-            seriesNames,
-            seriesColors,
-            currentYear: chartSource.currentYear,
-            currentSerieColor: "#c00000",
-        }),
+        ...chart,
         legend: {
             enabled: false,
         },
         yAxis: {
-            ...comparativeSingleYearColumnChartOptions({
-                chartSource,
-                seriesNames,
-                seriesColors,
-                currentYear: chartSource.currentYear,
-                currentSerieColor: "#c00000",
-            })?.yAxis,
+            ...chart?.yAxis,
             title: {
                 text: "Government spending (%)",
                 style: { fontSize: "13px" },
