@@ -1,3 +1,4 @@
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { sortedCategoryNames } from "./utils";
 
@@ -7,8 +8,8 @@ const PARAMETER_ORDER = [
     "Public spending on health as a share of GDP",
 ];
 
-export const chart_mUjcWO90CRr_Seed = {
-    categoryName: sortedCategoryNames.comparative,
+export const chart_mUjcWO90CRr_Seed: VisualizationExtra = {
+    categoryName: sortedCategoryNames.combinedIndicators,
     showCountryTag: true,
     friendlyName:
         "Public spending on health as a share of GDP and out-of-pocket payments as a share of current spending on health",

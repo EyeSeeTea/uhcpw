@@ -1,11 +1,13 @@
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
-import { sortedCategoryNames } from "./utils";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
-export const chart_VB7bdJ8ZXya_Seed = {
-    categoryName: sortedCategoryNames.comparative,
+export const chart_VB7bdJ8ZXya_Seed: VisualizationExtra = {
+    categoryName: sortedCategoryNames.financialHardship,
     categoryTag: "International comparison",
     friendlyName: "breakdown of catastrophic health spending by type of care",
     isComparative: true,
+    subcategoryName: sortedSubcategoryNames.comparative,
     allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,

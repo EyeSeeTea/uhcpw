@@ -4,7 +4,9 @@ import { Year } from "../Year";
 
 export interface VisualizationExtra {
     categoryName: string;
+    subcategoryName?: string;
     friendlyName: string;
+    countryPageName?: string;
     downloadedFileName?: string;
     categoryTag?: string;
     notes?: string;
