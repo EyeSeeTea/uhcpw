@@ -25,6 +25,7 @@ import {
 } from "./utils/lastAvailableYearHelpers";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
+export const DATA_TAB_NAME = "Data";
 
 const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
     z6nPPMMbOw5: {
@@ -194,7 +195,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 const tabs = [
                     { name: "Notes", data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions] },
                     {
-                        name: "Data",
+                        name: DATA_TAB_NAME,
                         data: [[chartName || mergedVisualization.name], ...allRowsSortedToDownload],
                     },
                 ];
