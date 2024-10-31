@@ -122,13 +122,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderOne || "",
                 graphOne: {
                     visualizationId: "jFtGKQIQTGp",
-                    visualizationName: VisualizationsSeeds["jFtGKQIQTGp"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["jFtGKQIQTGp"]?.countryPageName ||
+                        VisualizationsSeeds["jFtGKQIQTGp"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },
                 graphTwo: {
                     visualizationId: "dbc87Ljw8uN",
-                    visualizationName: VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["dbc87Ljw8uN"]?.countryPageName ||
+                        VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
@@ -138,13 +142,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderTwo || "",
                 graphOne: {
                     visualizationId: "Y31jQX5PVdI",
-                    visualizationName: VisualizationsSeeds["Y31jQX5PVdI"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["Y31jQX5PVdI"]?.countryPageName ||
+                        VisualizationsSeeds["Y31jQX5PVdI"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },
                 graphTwo: {
                     visualizationId: "NOukqSxCI63",
-                    visualizationName: VisualizationsSeeds["NOukqSxCI63"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["NOukqSxCI63"]?.countryPageName ||
+                        VisualizationsSeeds["NOukqSxCI63"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
@@ -154,13 +162,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderThree || "",
                 graphOne: {
                     visualizationId: "geNXcoXc3mf",
-                    visualizationName: VisualizationsSeeds["geNXcoXc3mf"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["geNXcoXc3mf"]?.countryPageName ||
+                        VisualizationsSeeds["geNXcoXc3mf"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },
                 graphTwo: {
                     visualizationId: "GimM6ANOKhd",
-                    visualizationName: VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["GimM6ANOKhd"]?.countryPageName ||
+                        VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
@@ -170,13 +182,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderFour || "",
                 graphOne: {
                     visualizationId: "hpO1ZyFXpCz",
-                    visualizationName: VisualizationsSeeds["hpO1ZyFXpCz"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["hpO1ZyFXpCz"]?.countryPageName ||
+                        VisualizationsSeeds["hpO1ZyFXpCz"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },
                 graphTwo: {
                     visualizationId: "q5ldoFcgkSn",
-                    visualizationName: VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["q5ldoFcgkSn"]?.countryPageName ||
+                        VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },
@@ -186,13 +202,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderFive || "",
                 graphOne: {
                     visualizationId: "VB7bdJ8ZXya",
-                    visualizationName: VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["VB7bdJ8ZXya"]?.countryPageName ||
+                        VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
                 graphTwo: {
                     visualizationId: "mcNfvQaVbfy",
-                    visualizationName: VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["mcNfvQaVbfy"]?.countryPageName ||
+                        VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                 },
@@ -202,13 +222,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderSix || "",
                 graphOne: {
                     visualizationId: "xJhFIBuwGVC",
-                    visualizationName: VisualizationsSeeds["xJhFIBuwGVC"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["xJhFIBuwGVC"]?.countryPageName ||
+                        VisualizationsSeeds["xJhFIBuwGVC"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId, EU27],
                 },
                 graphTwo: {
                     visualizationId: "zkEtsohZTTf",
-                    visualizationName: VisualizationsSeeds["zkEtsohZTTf"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["zkEtsohZTTf"]?.countryPageName ||
+                        VisualizationsSeeds["zkEtsohZTTf"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId, EU27],
                 },
@@ -218,13 +242,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderSeven || "",
                 graphOne: {
                     visualizationId: "rT39aStYqI3",
-                    visualizationName: VisualizationsSeeds["rT39aStYqI3"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["rT39aStYqI3"]?.countryPageName ||
+                        VisualizationsSeeds["rT39aStYqI3"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },
                 graphTwo: {
                     visualizationId: "nhaxK33nlhb",
-                    visualizationName: VisualizationsSeeds["nhaxK33nlhb"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["nhaxK33nlhb"]?.countryPageName ||
+                        VisualizationsSeeds["nhaxK33nlhb"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countryId],
                 },
@@ -234,13 +262,17 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderEight || "",
                 graphOne: {
                     visualizationId: "OB4SCQfCzwz",
-                    visualizationName: VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["OB4SCQfCzwz"]?.countryPageName ||
+                        VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countrySelected],
                 },
                 graphTwo: {
                     visualizationId: "d3kq9OCv8tH",
-                    visualizationName: VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["d3kq9OCv8tH"]?.countryPageName ||
+                        VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
                     years: generateYears().map(year => year.id),
                     countries: [countrySelected, EU27],
                 },
@@ -250,14 +282,18 @@ export function useCountrySlider(countryId: string): CountrySlider {
                 tabTitle: sliderInfo?.sliderNine || "",
                 graphOne: {
                     visualizationId: "B4CnzUqVR3n",
-                    visualizationName: VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
+                        VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: countriesAndRegions.map(({ id }) => id),
                     currentCountry: countrySelected,
                 },
                 graphTwo: {
                     visualizationId: "BYAT5Woc9EJ",
-                    visualizationName: VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
+                    visualizationName:
+                        VisualizationsSeeds["BYAT5Woc9EJ"]?.countryPageName ||
+                        VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
                     years: [LatestAvailable.id],
                     countries: [countrySelected, EU27],
                 },

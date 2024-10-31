@@ -14,6 +14,7 @@ export type IndicatorOption = {
     value: string;
     text: string;
     category: string;
+    subcategory?: string;
 };
 
 export type IndicatorFilterState = {

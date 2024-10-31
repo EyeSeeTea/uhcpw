@@ -19,11 +19,13 @@ interface VisualizationPluginProps {
     isScreenshot?: boolean;
     paddingEnd?: boolean;
     isSquareChart?: boolean;
+    visualizationName?: string;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
     ({
         visualizationId,
+        visualizationName,
         years,
         currentCountry,
         countries,
@@ -39,7 +41,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             visualizationId,
             years,
             countries,
-            currentCountry
+            currentCountry,
+            visualizationName
         );
 
         const ref = useRef<HTMLDivElement>(null);
