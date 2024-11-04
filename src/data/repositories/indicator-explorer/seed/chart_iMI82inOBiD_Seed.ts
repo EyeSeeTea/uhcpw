@@ -1,10 +1,13 @@
-import { sortedCategoryNames } from "./utils";
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
-export const chart_iMI82inOBiD_Seed = {
-    categoryName: sortedCategoryNames.comparative,
+export const chart_iMI82inOBiD_Seed: VisualizationExtra = {
+    categoryName: sortedCategoryNames.healthSpending,
     categoryTag: "International comparison",
-    friendlyName: "public spending on health as a share of government spending",
+    friendlyName: "Public spending on health as a share of government spending (bar chart)",
+    countryPageName: "public spending on health as a share of government spending",
     isComparative: true,
+    subcategoryName: sortedSubcategoryNames.comparative,
     hasEur27: true,
     isYearSingleSelection: true,
     hideBosniaAndHerzegovinaRegions: true,

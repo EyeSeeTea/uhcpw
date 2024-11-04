@@ -41,6 +41,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
             <VisualizationContainer>
                 <VisualizationPlugin
                     visualizationId={(graphOne as VisualizationProps).visualizationId}
+                    visualizationName={(graphOne as VisualizationProps).visualizationName}
                     years={(graphOne as VisualizationProps).years}
                     countries={(graphOne as VisualizationProps).countries}
                     withoutBackground
@@ -54,6 +55,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                 <VisualizationContainer>
                     <VisualizationPlugin
                         visualizationId={(graphTwo as VisualizationProps).visualizationId}
+                        visualizationName={(graphTwo as VisualizationProps).visualizationName}
                         years={(graphTwo as VisualizationProps).years}
                         countries={(graphTwo as VisualizationProps).countries}
                         withoutBackground
@@ -74,6 +76,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}
+                        visualizationName={currentGraphScreenshot.visualizationName}
                         years={currentGraphScreenshot.years}
                         countries={currentGraphScreenshot.countries}
                         withoutBackground

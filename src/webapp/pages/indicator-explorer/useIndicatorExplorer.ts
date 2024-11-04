@@ -9,7 +9,11 @@ import { LatestAvailable, LatestCOVID19, Year } from "../../../domain/entities/Y
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Country, EU27 } from "../../../domain/entities/Country";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
-import { sortedCategoryNames, sortedCharts } from "../../../data/repositories/indicator-explorer/seed/utils";
+import {
+    sortedCategoryNames,
+    sortedCharts,
+    sortedSubcategoryNames,
+} from "../../../data/repositories/indicator-explorer/seed/utils";
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 
 export const allYearsItem = { id: "all", name: i18n.t("All years"), parents: [] };
@@ -189,7 +193,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 ? yearOptionsInFilter.map(year => year.id).filter(id => !selectedYearFilter.includes(id))
                 : [];
         setDisabledYears(disabledYears);
-    }, [indicatorFilters, isYearSingleSelection, selectedIndicatorFilter, selectedYearFilter, visualizations]);
+    }, [isYearSingleSelection, selectedIndicatorFilter, selectedYearFilter, visualizations]);
 
     useEffect(() => {
         compositionRoot.indicatorExplorer.getPageContent.execute().run(
@@ -303,15 +307,20 @@ function buildIndicatorOptionsAndSortByCategories(visualizations: Visualization[
             value: visualization.id,
             text: `${visualization.friendlyName.charAt(0).toUpperCase()}${visualization.friendlyName.slice(1)}`,
             category: visualization.categoryName,
+            subcategory: visualization.subcategoryName || "",
         }))
         .sort((optionA, optionB) => {
             const indexCategoryA = Object.values(sortedCategoryNames).indexOf(optionA.category);
             const indexCategoryB = Object.values(sortedCategoryNames).indexOf(optionB.category);
+            const indexSubcategoryA = Object.values(sortedSubcategoryNames).indexOf(optionA.subcategory);
+            const indexSubcategoryB = Object.values(sortedSubcategoryNames).indexOf(optionB.subcategory);
             const indexIndicatorA = sortedCharts.indexOf(optionA.value);
             const indexIndicatorB = sortedCharts.indexOf(optionB.value);
 
             return indexCategoryA !== indexCategoryB
                 ? indexCategoryA - indexCategoryB
+                : indexSubcategoryA !== indexSubcategoryB
+                ? indexSubcategoryA - indexSubcategoryB
                 : indexIndicatorA - indexIndicatorB;
         });
 }

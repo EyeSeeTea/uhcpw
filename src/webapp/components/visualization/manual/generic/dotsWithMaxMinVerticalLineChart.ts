@@ -114,7 +114,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
               }
             : undefined;
 
-    const seriesData = series.map(serie => serie.data.map(data => data.y));
+    const seriesData = series.map(serie => serie.data.map(data => data?.y || 0));
     const maxValuesInSeriesData = getMaxValuesInSeriesData(seriesData);
     const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(maxValuesInSeriesData);
 
@@ -160,7 +160,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
                                     (isHide && s.name !== this.name && s.visible))
                         );
 
-                        const visibleSeriesData = visibleSeries.map(serie => serie.data.map(data => data.y || 0));
+                        const visibleSeriesData = visibleSeries.map(serie => serie.data.map(data => data?.y || 0));
                         const maxValuesInVisibleSeriesData = getMaxValuesInSeriesData(visibleSeriesData);
                         const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
                             getMaxAxisAndTickInterval(maxValuesInVisibleSeriesData);

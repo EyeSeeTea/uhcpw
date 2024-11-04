@@ -1,6 +1,7 @@
-import { sortedCategoryNames } from "./utils";
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
-export const chart_xJhFIBuwGVC_Seed = {
+export const chart_xJhFIBuwGVC_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
     categoryTag: "International comparison",
     friendlyName: "unmet need for health care due to cost, distance and waiting time",
@@ -8,4 +9,5 @@ export const chart_xJhFIBuwGVC_Seed = {
     hasEur27: true,
     allowBreaksInSeries: true,
     isComparative: false,
+    subcategoryName: sortedSubcategoryNames.comparative,
 };

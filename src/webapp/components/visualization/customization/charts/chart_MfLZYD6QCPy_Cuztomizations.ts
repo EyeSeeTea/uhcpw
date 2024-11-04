@@ -53,7 +53,7 @@ export const chart_MfLZYD6QCPy_Cuztomizations: ChartCustomization = {
                     });
 
                     const seriesNumberData = visibleSeries.map(serie =>
-                        serie.data.map(data => (isNumberData(data.y) ? data.y : 0))
+                        serie.data.map(data => (isNumberData(data?.y) ? data?.y : 0))
                     );
 
                     const allDataIsZero = seriesNumberData.every(serieData => serieData.every(data => data === 0));

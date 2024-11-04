@@ -25,7 +25,8 @@ export function useChartData(
     visualizationId: string,
     years: string[],
     countries: string[],
-    currentCountry?: string
+    currentCountry?: string,
+    visualizationName?: string
 ): ChartDataState {
     const { compositionRoot } = useAppContext();
 
@@ -98,12 +99,15 @@ export function useChartData(
                         analytics[0] &&
                         getVisualizationDialogInfo(visualization, analytics[0], countriesAndRegions);
 
+                    const chartName =
+                        visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
                     setChartData({
                         kind: "Loaded",
-                        friendlyName:
-                            (visualization?.friendlyName &&
-                                visualization.friendlyName[0]?.toUpperCase() + visualization.friendlyName.slice(1)) ||
-                            "",
+                        friendlyName: chartName
+                            ? chartName
+                            : (visualization?.friendlyName &&
+                                  visualization.friendlyName[0]?.toUpperCase() + visualization.friendlyName.slice(1)) ||
+                              "",
                         categoryTag: visualization?.categoryTag || "",
                         visualizations,
                         visualizationDialogInfo,
@@ -140,6 +144,7 @@ export function useChartData(
         countriesAndRegions,
         currentCountry,
         getVisualizationDialogInfo,
+        visualizationName,
     ]);
 
     const onDownloadExcel = useCallback(

@@ -21,7 +21,8 @@ type HeroProps = {
 };
 
 const CHART_1_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
-const CHART_1_SCATTER_VISUALIZATION_NAME = VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName;
+const CHART_1_SCATTER_VISUALIZATION_NAME =
+    VisualizationsSeeds["kIpnMBaBvZ9"]?.countryPageName || VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName;
 
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndRegions } = useAppContext();
@@ -64,6 +65,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     <VisualizationPlugin
                         key={countryIdSelected}
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
+                        visualizationName={CHART_1_SCATTER_VISUALIZATION_NAME}
                         years={[LatestAvailable.id]}
                         countries={countriesAndRegions.map(({ id }) => id)}
                         currentCountry={countryIdSelected}
@@ -83,6 +85,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
+                        visualizationName={CHART_1_SCATTER_VISUALIZATION_NAME}
                         years={[LatestAvailable.id]}
                         countries={countriesAndRegions.map(({ id }) => id)}
                         currentCountry={countryIdSelected}
