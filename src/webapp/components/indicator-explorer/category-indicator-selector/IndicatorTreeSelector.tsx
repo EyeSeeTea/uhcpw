@@ -252,6 +252,7 @@ const Label = styled(Typography)`
 `;
 
 const StyledMenu = styled.div`
+    z-index: 1;
     position: absolute;
     background-color: #ffffff;
     border-radius: 4px;
