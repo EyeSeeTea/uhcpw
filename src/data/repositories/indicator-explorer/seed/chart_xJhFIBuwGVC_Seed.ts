@@ -8,6 +8,6 @@ export const chart_xJhFIBuwGVC_Seed: VisualizationExtra = {
     minCountryFilter: 1,
     hasEur27: true,
     allowBreaksInSeries: true,
-    isComparative: true,
+    isComparative: false,
     subcategoryName: sortedSubcategoryNames.comparative,
 };
