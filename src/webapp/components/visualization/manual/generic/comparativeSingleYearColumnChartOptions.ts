@@ -137,7 +137,7 @@ function getMaxYAxisAndYTickInterval(
             tickInterval: 20,
         };
     } else {
-        const allYDataValues = series.flatMap(serie => serie.data.map(data => data.y));
+        const allYDataValues = series.flatMap(serie => serie.data.map(data => data?.y || 0));
         return getMaxAxisAndTickInterval(allYDataValues);
     }
 }

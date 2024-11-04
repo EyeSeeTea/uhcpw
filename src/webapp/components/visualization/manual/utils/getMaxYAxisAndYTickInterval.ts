@@ -33,7 +33,7 @@ export function getMaxYAxisAndYTickInterval(
             tickInterval: 20,
         };
     } else {
-        const allYValuesInSeriesData = (series || []).map(serie => (serie.data || []).map(data => data.y));
+        const allYValuesInSeriesData = (series || []).map(serie => (serie.data || []).map(data => data?.y || 0));
         const columnSeriesData = isStacked
             ? sumSeriesData(allYValuesInSeriesData)
             : getMaxValuesInSeriesData(allYValuesInSeriesData);

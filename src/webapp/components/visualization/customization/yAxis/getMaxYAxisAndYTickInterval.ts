@@ -45,7 +45,7 @@ export function getMaxYAxisAndYTickIntervalForStackedColumnsWithYData(
     | undefined {
     const seriesNumberData = (series as ChartSeriesWithYData[])
         ?.map(serie => serie.data)
-        .map(serieData => (serieData || [])?.map(data => (isNumberData(data.y) ? data.y : 0)));
+        .map(serieData => (serieData || [])?.map(data => (isNumberData(data?.y) ? data?.y : 0)));
 
     if (seriesNumberData) {
         const sumOfSeriesData = sumSeriesData(seriesNumberData);

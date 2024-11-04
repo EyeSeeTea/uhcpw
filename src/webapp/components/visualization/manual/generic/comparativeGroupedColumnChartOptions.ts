@@ -61,7 +61,7 @@ export const comparativeGroupedColumnChartOptions: (
         };
     });
 
-    const allYDataValues = series.flatMap(serie => serie.data.map(data => data.y));
+    const allYDataValues = series.flatMap(serie => serie.data.map(data => data?.y || 0));
     const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(allYDataValues);
 
     return {
