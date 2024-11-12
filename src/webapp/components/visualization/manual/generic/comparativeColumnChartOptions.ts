@@ -15,6 +15,7 @@ export const comparativeColumnChartOptions: (params: {
     stackedValuesUpTo100?: boolean;
     isStacked?: boolean;
     maxValueUpTo100?: boolean;
+    categoryIdsOrder?: string[];
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -24,6 +25,7 @@ export const comparativeColumnChartOptions: (params: {
     stackedValuesUpTo100,
     isStacked,
     maxValueUpTo100,
+    categoryIdsOrder,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -95,6 +97,7 @@ export const comparativeColumnChartOptions: (params: {
                 return {
                     name: `${orgUnit} ${year} `,
                     y: value,
+                    categoryId: row[1] || "",
                     ...color,
                 };
             }),
@@ -108,6 +111,21 @@ export const comparativeColumnChartOptions: (params: {
         stackedValuesUpTo100,
         maxValueUpTo100,
     });
+
+    const sortedSeries = categoryIdsOrder
+        ? series.map(serie => {
+              const sortedData = serie.data.sort((a, b) => {
+                  const aIndex = categoryIdsOrder.indexOf(a?.categoryId);
+                  const bIndex = categoryIdsOrder.indexOf(b?.categoryId);
+
+                  return aIndex - bIndex;
+              });
+              return {
+                  ...serie,
+                  data: sortedData,
+              };
+          })
+        : series;
 
     return {
         ...baseChartOptions,
@@ -139,7 +157,7 @@ export const comparativeColumnChartOptions: (params: {
             tickInterval: yTickInterval,
         },
         legend: baseLegend,
-        series,
+        series: sortedSeries,
         plotOptions: {
             column: {
                 stacking: "normal",

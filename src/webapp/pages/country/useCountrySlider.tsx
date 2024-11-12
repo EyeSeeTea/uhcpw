@@ -193,7 +193,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                     visualizationName:
                         VisualizationsSeeds["q5ldoFcgkSn"]?.countryPageName ||
                         VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
+                    years: [LatestAvailable.id],
                     countries: [countryId],
                 },
             },
