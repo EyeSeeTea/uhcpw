@@ -68,12 +68,20 @@ export function getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAnd
             const categoryName = data?.name;
             if (!categoryName) return acc;
 
+            const maxChartNumberOfCurrentCategory = Object.keys(acc).reduce((maxKey, key) => {
+                const [keyCategoryName, keyChartNumber] = key.split("-");
+                return keyCategoryName === categoryName && keyChartNumber
+                    ? Math.max(maxKey, parseInt(keyChartNumber))
+                    : maxKey;
+            }, 1);
+
             const yData = data?.y ?? 0;
             const firstChartNumber = 1;
-            const initialKey = `${categoryName}-${firstChartNumber}`;
-            if (acc[initialKey]) {
-                const splitKey = initialKey.split("-");
+            const key = `${categoryName}-${maxChartNumberOfCurrentCategory}`;
+            if (acc[key]) {
+                const splitKey = key.split("-");
                 const chartNumber = splitKey[1] ? parseInt(splitKey[1]) : firstChartNumber;
+
                 const newKey = `${categoryName}-${chartNumber + 1}`;
                 return {
                     ...acc,
@@ -82,7 +90,7 @@ export function getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAnd
             } else {
                 return {
                     ...acc,
-                    [initialKey]: yData,
+                    [key]: yData,
                 };
             }
         }, {} as Record<string, number>);
