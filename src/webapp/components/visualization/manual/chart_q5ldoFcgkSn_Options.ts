@@ -80,6 +80,7 @@ export const chart_q5ldoFcgkSn_Options: (chartSource: ChartSource) => Highcharts
                     offset: 16,
                 },
                 opposite: true,
+                lineWidth: 0,
             },
         ],
     };
