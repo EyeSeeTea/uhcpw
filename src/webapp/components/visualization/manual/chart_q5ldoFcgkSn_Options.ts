@@ -40,7 +40,21 @@ export const chart_q5ldoFcgkSn_Options: (chartSource: ChartSource) => Highcharts
         stackedValuesUpTo100: stackedValuesUpTo100,
         maxValueUpTo100: true,
         categoryIdsOrder: Object.values(categoryIdByNameOrder),
+        hideYear: true,
     });
+
+    const yearIndexColumn = chartSourceWithFilteredRowsByLAY.analyticsResponse.headers.findIndex(
+        header => header.name === "pe"
+    );
+
+    const allYearsInDataRows = chartSourceWithFilteredRowsByLAY.analyticsResponse.rows.reduce((years, row) => {
+        if (yearIndexColumn) {
+            const year = row[yearIndexColumn];
+            return year && !years.includes(year) ? [...years, year] : years;
+        }
+
+        return years;
+    }, []);
 
     return {
         ...chart,
@@ -51,12 +65,22 @@ export const chart_q5ldoFcgkSn_Options: (chartSource: ChartSource) => Highcharts
                 style: { fontSize: "13px" },
             },
         },
-        xAxis: {
-            ...chart?.xAxis,
-            labels: {
-                ...(chart?.xAxis as XAxisOptions)?.labels,
-                rotation: 0,
+        xAxis: [
+            {
+                ...chart?.xAxis,
+                labels: {
+                    ...(chart?.xAxis as XAxisOptions)?.labels,
+                    rotation: 0,
+                },
             },
-        },
+            {
+                title: {
+                    text: allYearsInDataRows.join(", "),
+                    style: { fontSize: "13px" },
+                    offset: 16,
+                },
+                opposite: true,
+            },
+        ],
     };
 };
