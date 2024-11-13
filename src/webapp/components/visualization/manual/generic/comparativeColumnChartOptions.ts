@@ -15,6 +15,8 @@ export const comparativeColumnChartOptions: (params: {
     stackedValuesUpTo100?: boolean;
     isStacked?: boolean;
     maxValueUpTo100?: boolean;
+    categoryIdsOrder?: string[];
+    hideYear?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -24,6 +26,8 @@ export const comparativeColumnChartOptions: (params: {
     stackedValuesUpTo100,
     isStacked,
     maxValueUpTo100,
+    categoryIdsOrder,
+    hideYear,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -82,19 +86,22 @@ export const comparativeColumnChartOptions: (params: {
             name: seriesNames[dxId],
             color: seriesColors[dxId],
             data: filledDataSourceWithEmptyData.map(row => {
-                const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
+                const orgUnitIdOrCategoryId = row[1]?.toString() || "";
+                const orgUnitCodeOrCategory = mapToWhoCountryCode(
+                    chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
                 );
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
                 const color =
-                    currentCountryCode === orgUnit && currentSerieColor ? { color: currentSerieColor } : undefined;
+                    currentCountryCode === orgUnitCodeOrCategory && currentSerieColor
+                        ? { color: currentSerieColor }
+                        : undefined;
 
                 return {
-                    name: `${orgUnit} ${year} `,
+                    name: hideYear ? orgUnitCodeOrCategory : `${orgUnitCodeOrCategory} ${year} `,
                     y: value,
+                    categoryId: row[1] || "",
                     ...color,
                 };
             }),
@@ -108,6 +115,21 @@ export const comparativeColumnChartOptions: (params: {
         stackedValuesUpTo100,
         maxValueUpTo100,
     });
+
+    const sortedSeries = categoryIdsOrder
+        ? series.map(serie => {
+              const sortedData = serie.data.sort((a, b) => {
+                  const aIndex = categoryIdsOrder.indexOf(a?.categoryId);
+                  const bIndex = categoryIdsOrder.indexOf(b?.categoryId);
+
+                  return aIndex - bIndex;
+              });
+              return {
+                  ...serie,
+                  data: sortedData,
+              };
+          })
+        : series;
 
     return {
         ...baseChartOptions,
@@ -139,7 +161,7 @@ export const comparativeColumnChartOptions: (params: {
             tickInterval: yTickInterval,
         },
         legend: baseLegend,
-        series,
+        series: sortedSeries,
         plotOptions: {
             column: {
                 stacking: "normal",
