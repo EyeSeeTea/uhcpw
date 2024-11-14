@@ -7,6 +7,8 @@ import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
 
+const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
+
 interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
@@ -78,6 +80,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     countries={chartData.countries}
                     showCountryTag={chartData.visualizations[0]?.showCountryTag}
                     isScreenshot={isScreenshot}
+                    reducePaddingBottom={visualizationId === CHART_SCATTER_VISUALIZATION_ID}
                 />
                 <ChartPlugin
                     key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
