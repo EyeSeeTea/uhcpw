@@ -23,6 +23,7 @@ interface VisualizationPluginHeaderProps {
     countries: Country[];
     currentCountry?: string;
     isScreenshot?: boolean;
+    reducePaddingBottom?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -40,6 +41,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         useHeaderForCountryPage = false,
         showCountryTag = false,
         isScreenshot = false,
+        reducePaddingBottom = false,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountry) {
@@ -48,7 +50,11 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         }, [countries, currentCountry]);
 
         return (
-            <DataHeader className="visualization-plugin-header" $isCountryPage={useHeaderForCountryPage}>
+            <DataHeader
+                className="visualization-plugin-header"
+                $isCountryPage={useHeaderForCountryPage}
+                $reducePaddingBottom={reducePaddingBottom}
+            >
                 <Row>
                     {useHeaderForCountryPage ? (
                         <>
@@ -151,9 +157,9 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
     }
 );
 
-const DataHeader = styled.div<{ $isCountryPage?: boolean }>`
+const DataHeader = styled.div<{ $isCountryPage?: boolean; $reducePaddingBottom?: boolean }>`
     padding-block-start: ${props => (props.$isCountryPage ? "10px" : "48px")};
-    padding-block-end: 48px;
+    padding-block-end: ${props => (props.$reducePaddingBottom ? "10px" : "48px")};
     width: 100%;
 `;
 
