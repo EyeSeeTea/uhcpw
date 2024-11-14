@@ -21,4 +21,5 @@ export const chart_mUjcWO90CRr_Seed: VisualizationExtra = {
         sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),
     hideBosniaAndHerzegovinaRegions: true,
     showYearInDownloadFile: true,
+    yearsFilterUpTo2YearsAgo: true,
 };

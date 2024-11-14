@@ -13,4 +13,5 @@ export const chart_B4CnzUqVR3n_Seed: VisualizationExtra = {
     allowedYears: [LatestCOVID19],
     hideBosniaAndHerzegovinaRegions: true,
     hide: true,
+    yearsFilterUpTo2YearsAgo: true,
 };

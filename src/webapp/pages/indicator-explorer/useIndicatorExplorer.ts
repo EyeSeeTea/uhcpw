@@ -17,8 +17,16 @@ import {
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 
 export const allYearsItem = { id: "all", name: i18n.t("All years"), parents: [] };
-export const yearsItems = generateYears().map(year => ({ id: year.id, name: year.id, parents: [allYearsItem] }));
-const allYearsFilters: TreeOption[] = yearsItems;
+const allYearsFiltersUpToLastYear: TreeOption[] = generateYears().map(year => ({
+    id: year.id,
+    name: year.id,
+    parents: [allYearsItem],
+}));
+const allYearsFiltersUpTo2YearsAgo: TreeOption[] = generateYears(new Date().getFullYear() - 2).map(year => ({
+    id: year.id,
+    name: year.id,
+    parents: [allYearsItem],
+}));
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
     const { compositionRoot, countriesAndRegions } = useAppContext();
@@ -180,11 +188,15 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     }, [compositionRoot.indicatorExplorer]);
 
     useEffect(() => {
-        const allowedYears = visualizations.find(
+        const selectedVisualization = visualizations.find(
             visualization => visualization.id === selectedIndicatorFilter
-        )?.allowedYears;
+        );
 
-        const yearOptionsInFilter = getYearOptionsInFilter(allowedYears, isYearSingleSelection);
+        const yearOptionsInFilter = getYearOptionsInFilter(
+            selectedVisualization?.allowedYears,
+            isYearSingleSelection,
+            selectedVisualization?.yearsFilterUpTo2YearsAgo
+        );
 
         setYearsFilters(yearOptionsInFilter);
 
@@ -388,11 +400,12 @@ function getSelectedYearsInFilter(newsVisualization: Visualization | undefined):
     if (newsVisualization?.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
         return newsVisualization.selectedYearsByDefault.map(year => year.id);
     } else if (newsVisualization && !newsVisualization.isComparative) {
+        const allYears = newsVisualization?.yearsFilterUpTo2YearsAgo
+            ? allYearsFiltersUpTo2YearsAgo
+            : allYearsFiltersUpToLastYear;
         const allAllowedYears = newsVisualization?.allowedYears
-            ? allYearsFilters
-                  .map(year => year.id)
-                  .filter(id => newsVisualization?.allowedYears?.some(year => year.id === id))
-            : allYearsFilters.map(year => year.id);
+            ? allYears.map(year => year.id).filter(id => newsVisualization?.allowedYears?.some(year => year.id === id))
+            : allYears.map(year => year.id);
 
         return allAllowedYears;
     } else if (newsVisualization?.isComparative) {
@@ -400,7 +413,12 @@ function getSelectedYearsInFilter(newsVisualization: Visualization | undefined):
     }
 }
 
-function getYearOptionsInFilter(allowedYears: Year[] | undefined, isYearSingleSelection: boolean): TreeOption[] {
+function getYearOptionsInFilter(
+    allowedYears: Year[] | undefined,
+    isYearSingleSelection: boolean,
+    isYearsFilterUpTo2YearsAgo?: boolean
+): TreeOption[] {
+    const allYears = isYearsFilterUpTo2YearsAgo ? allYearsFiltersUpTo2YearsAgo : allYearsFiltersUpToLastYear;
     if (allowedYears) {
         // HERE: there are charts that are ONLY latest COVID19, there are charts that are ONLY LAY, and there are charts that allow both and another years
         return allowedYears.map(year =>
@@ -419,8 +437,8 @@ function getYearOptionsInFilter(allowedYears: Year[] | undefined, isYearSingleSe
                 : { id: year.id, name: year.id, parents: [] }
         );
     } else if (isYearSingleSelection) {
-        return allYearsFilters.map(year => ({ ...year, parents: [] }));
+        return allYears.map(year => ({ ...year, parents: [] }));
     } else {
-        return allYearsFilters;
+        return allYears;
     }
 }

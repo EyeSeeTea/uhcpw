@@ -10,4 +10,5 @@ export const chart_OB4SCQfCzwz_Seed: VisualizationExtra = {
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
     hideBosniaAndHerzegovinaRegions: true,
+    yearsFilterUpTo2YearsAgo: true,
 };
