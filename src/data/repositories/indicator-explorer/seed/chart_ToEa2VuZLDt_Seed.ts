@@ -11,4 +11,5 @@ export const chart_ToEa2VuZLDt_Seed: VisualizationExtra = {
     isComparative: false,
     subcategoryName: sortedSubcategoryNames.comparative,
     hideBosniaAndHerzegovinaRegions: true,
+    yearsFilterUpTo2YearsAgo: true,
 };

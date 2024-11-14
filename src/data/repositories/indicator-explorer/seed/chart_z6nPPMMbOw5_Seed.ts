@@ -62,4 +62,5 @@ export const chart_z6nPPMMbOw5_Seed: VisualizationExtra = {
         return sortedDataRows;
     },
     hideBosniaAndHerzegovinaRegions: true,
+    yearsFilterUpTo2YearsAgo: true,
 };

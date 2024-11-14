@@ -12,4 +12,5 @@ export const chart_iMI82inOBiD_Seed: VisualizationExtra = {
     isYearSingleSelection: true,
     hideBosniaAndHerzegovinaRegions: true,
     showYearInDownloadFile: true,
+    yearsFilterUpTo2YearsAgo: true,
 };

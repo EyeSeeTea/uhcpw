@@ -29,6 +29,7 @@ export interface VisualizationExtra {
     isScatter?: boolean;
     xAxis?: string;
     yAxis?: string;
+    yearsFilterUpTo2YearsAgo?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
