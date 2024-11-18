@@ -11,6 +11,7 @@ type VisualizationProps = {
     visualizationName?: string;
     years: string[];
     countries: string[];
+    currentCountry?: string;
 };
 
 type SlideGraphType = {
@@ -40,11 +41,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
             <VisualizationContainer>
                 <VisualizationPlugin
                     visualizationId={(graphOne as VisualizationProps).visualizationId}
+                    visualizationName={(graphOne as VisualizationProps).visualizationName}
                     years={(graphOne as VisualizationProps).years}
                     countries={(graphOne as VisualizationProps).countries}
                     withoutBackground
                     useHeaderForCountryPage
-                    currentCountry={countryId}
+                    currentCountry={(graphOne as VisualizationProps).currentCountry || countryId}
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
                     noDataMessage={pageContent?.noDataMessage}
                 />
@@ -53,11 +55,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                 <VisualizationContainer>
                     <VisualizationPlugin
                         visualizationId={(graphTwo as VisualizationProps).visualizationId}
+                        visualizationName={(graphTwo as VisualizationProps).visualizationName}
                         years={(graphTwo as VisualizationProps).years}
                         countries={(graphTwo as VisualizationProps).countries}
                         withoutBackground
                         useHeaderForCountryPage
-                        currentCountry={countryId}
+                        currentCountry={(graphTwo as VisualizationProps).currentCountry || countryId}
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                         noDataMessage={pageContent?.noDataMessage}
                     />
@@ -73,6 +76,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}
+                        visualizationName={currentGraphScreenshot.visualizationName}
                         years={currentGraphScreenshot.years}
                         countries={currentGraphScreenshot.countries}
                         withoutBackground

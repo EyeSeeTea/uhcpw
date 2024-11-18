@@ -4,7 +4,7 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
 import { TreeSelector } from "../tree-selector/TreeSelector";
-import { IndicatorSelector } from "./category-indicator-selector/IndicatorSelector";
+import { IndicatorTreeSelector } from "./category-indicator-selector/IndicatorTreeSelector";
 
 export interface ResourcesFiltersProps {
     filters: IndicatorExplorerFiltersState;
@@ -16,7 +16,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
         <Grid container alignItems="flex-end" justifyContent="center">
             <Grid item md={4} sm={6}>
                 <Center>
-                    <IndicatorSelector
+                    <IndicatorTreeSelector
                         fullWidth
                         label={i18n.t("Indicators")}
                         placeholder={i18n.t("Select category and indicator")}
@@ -51,15 +51,16 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                 <Center>
                     <TreeSelector
                         fullWidth
-                        hasSelectAll
                         hasClearAll
                         label={i18n.t("Years")}
                         items={filters.year.options}
                         selectedIds={filters.year.selected}
                         onSelectedIdsChange={filters.year.onSelectedChange}
+                        disabledItems={filters.year.disabledYears}
                         placeholder={i18n.t("Select year")}
                         disableSearch={true}
                         showParentIfChecked={true}
+                        hasSelectAll={!filters.year.isSingleSelection}
                     />
                 </Center>
             </Grid>

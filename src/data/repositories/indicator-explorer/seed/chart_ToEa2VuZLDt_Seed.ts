@@ -1,6 +1,7 @@
-import { sortedCategoryNames } from "./utils";
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
-export const chart_ToEa2VuZLDt_Seed = {
+export const chart_ToEa2VuZLDt_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     categoryTag: "International comparison",
     friendlyName: "Voluntary health insurance spending as a share of current spending on health",
@@ -8,4 +9,7 @@ export const chart_ToEa2VuZLDt_Seed = {
     hasEur27: true,
     allowBreaksInSeries: true,
     isComparative: false,
+    subcategoryName: sortedSubcategoryNames.comparative,
+    hideBosniaAndHerzegovinaRegions: true,
+    yearsFilterUpTo2YearsAgo: true,
 };

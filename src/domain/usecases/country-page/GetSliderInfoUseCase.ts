@@ -5,7 +5,7 @@ import { CountryPageInfoRepository } from "../../repositories/country-page/Count
 export class GetSliderInfoUseCase {
     constructor(private countryPageInfoRepository: CountryPageInfoRepository) {}
 
-    public execute(countryName: string): FutureData<SliderInfo> {
-        return this.countryPageInfoRepository.getSliderInfo(countryName);
+    public execute(countryName: string, nameBIH?: string): FutureData<SliderInfo> {
+        return this.countryPageInfoRepository.getSliderInfo(countryName, nameBIH);
     }
 }

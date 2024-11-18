@@ -11,6 +11,7 @@ import { visualizationCustomizations } from "./customization/visualizationCustom
 import { chartOptions, chartOptionsMultiple, ChartSource, ChartSourceMultiple } from "./manual/chartOptions";
 import { Country } from "../../../domain/entities/Country";
 import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
+import { LatestCOVID19 } from "../../../domain/entities/Year";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -24,7 +25,8 @@ export function useChartData(
     visualizationId: string,
     years: string[],
     countries: string[],
-    currentCountry?: string
+    currentCountry?: string,
+    visualizationName?: string
 ): ChartDataState {
     const { compositionRoot } = useAppContext();
 
@@ -74,6 +76,7 @@ export function useChartData(
         if (visualizationId) {
             const isMultipleVisualizations = visualizationId.includes("_");
             const visualizationIds = isMultipleVisualizations ? visualizationId.split("_") : [visualizationId];
+
             getChartData(compositionRoot, visualizationIds, years, countries).run(
                 ({ visualizations, analytics, legendSets }) => {
                     const visualizationChartOptions = isMultipleVisualizations
@@ -85,6 +88,8 @@ export function useChartData(
                         visualization: isMultipleVisualizations ? visualizations : visualizations[0],
                         countries: countriesAndRegions,
                         currentCountry,
+                        currentYear: years.length === 1 ? years[0] : undefined,
+                        isLatestCOVID19: years.includes(LatestCOVID19.id),
                     };
 
                     const visualization = visualizations[0];
@@ -94,12 +99,15 @@ export function useChartData(
                         analytics[0] &&
                         getVisualizationDialogInfo(visualization, analytics[0], countriesAndRegions);
 
+                    const chartName =
+                        visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
                     setChartData({
                         kind: "Loaded",
-                        friendlyName:
-                            (visualization?.friendlyName &&
-                                visualization.friendlyName[0]?.toUpperCase() + visualization.friendlyName.slice(1)) ||
-                            "",
+                        friendlyName: chartName
+                            ? chartName
+                            : (visualization?.friendlyName &&
+                                  visualization.friendlyName[0]?.toUpperCase() + visualization.friendlyName.slice(1)) ||
+                              "",
                         categoryTag: visualization?.categoryTag || "",
                         visualizations,
                         visualizationDialogInfo,
@@ -110,6 +118,9 @@ export function useChartData(
                         chartOptions: visualizationChartOptions
                             ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
                             : undefined,
+                        isScatter: visualization?.isScatter,
+                        xAxis: visualization?.xAxis,
+                        yAxis: visualization?.yAxis,
                     });
                 },
                 error => {
@@ -133,6 +144,7 @@ export function useChartData(
         countriesAndRegions,
         currentCountry,
         getVisualizationDialogInfo,
+        visualizationName,
     ]);
 
     const onDownloadExcel = useCallback(
@@ -146,6 +158,9 @@ export function useChartData(
                     periods: years || [],
                     orgUnits: countries || [],
                     seriesIdAndName: seriesIdAndName,
+                    isScatter: chartDataLoaded?.isScatter,
+                    xAxis: chartDataLoaded?.xAxis,
+                    yAxis: chartDataLoaded?.yAxis,
                 })
                 .runAsync();
         },

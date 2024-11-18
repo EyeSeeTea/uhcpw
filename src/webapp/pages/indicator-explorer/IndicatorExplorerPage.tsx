@@ -60,6 +60,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         countries={filters.country.selected || []}
                         noDataMessage={pageContent?.noDataMessage}
                         onDownloadImage={handleOpenScreenshot}
+                        isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
@@ -70,6 +71,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     onClose={handleCloseScreenshot}
                     title={chartName}
                     backgroundColor={"#f1f9fc"}
+                    isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                 >
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}
@@ -78,6 +80,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         noDataMessage={pageContent?.noDataMessage}
                         isScreenshot={true}
                         withoutBackground
+                        isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                     />
                 </ScreenshotModal>
             </MainSection>

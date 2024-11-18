@@ -2,6 +2,8 @@ import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
 import { sortSerieDataByValueInSerie } from "./utils/sortSerieDataByValueInSerie";
+import { getMaxYAxisAndYTickIntervalForStackedColumnsWithYData } from "../yAxis/getMaxYAxisAndYTickInterval";
+import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/getMaxAxisAndTickInterval";
 
 export const chart_TzWcDtEOTPX_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -59,5 +61,20 @@ export const chart_TzWcDtEOTPX_Customizations: ChartCustomization = {
         });
 
         return sortSerieDataByValueInSerie(seriesWithCategoryInData, "S0rJgTIK3Gv");
+    },
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForStackedColumnsWithYData(series, true);
+    },
+    plotOptions: {
+        series: {
+            events: {
+                legendItemClick: function (this: Highcharts.Series) {
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, {
+                        isStacked: true,
+                        stackedValuesUpTo100: true,
+                    });
+                },
+            },
+        },
     },
 };

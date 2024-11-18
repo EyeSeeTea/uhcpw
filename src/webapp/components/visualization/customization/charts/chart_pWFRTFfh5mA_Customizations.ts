@@ -1,6 +1,9 @@
+import { SeriesColumnOptions } from "highcharts";
 import { baseLegend } from "../legends/baseLegend";
 import { linearHouseholdHealthQuintileSeries } from "../series/linearHouseholdHealthQuintileSeries";
 import { ChartCustomization } from "../types";
+import { getMaxYAxisAndYTickIntervalForLineAndColumns } from "../yAxis/getMaxYAxisAndYTickInterval";
+import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/getMaxAxisAndTickInterval";
 
 export const chart_pWFRTFfh5mA_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -9,4 +12,16 @@ export const chart_pWFRTFfh5mA_Customizations: ChartCustomization = {
     xAxis: { title: { text: "" } },
     yAxis: { title: { text: "Household budget (%)" } },
     sortLegendByLastDataPoint: true,
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForLineAndColumns(series);
+    },
+    plotOptions: {
+        series: {
+            events: {
+                legendItemClick: function (this: Highcharts.Series) {
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this);
+                },
+            },
+        },
+    },
 };

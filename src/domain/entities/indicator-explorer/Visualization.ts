@@ -4,7 +4,9 @@ import { Year } from "../Year";
 
 export interface VisualizationExtra {
     categoryName: string;
+    subcategoryName?: string;
     friendlyName: string;
+    countryPageName?: string;
     downloadedFileName?: string;
     categoryTag?: string;
     notes?: string;
@@ -20,6 +22,14 @@ export interface VisualizationExtra {
     sortColumns?: (headerRow: string[]) => string[];
     sortDataRows?: (headerRow: string[], dataRows: string[][]) => string[][];
     isOnlyEu27Comparison?: boolean;
+    isYearSingleSelection?: boolean;
+    hideBosniaAndHerzegovinaRegions?: boolean;
+    hide?: boolean;
+    showYearInDownloadFile?: boolean;
+    isScatter?: boolean;
+    xAxis?: string;
+    yAxis?: string;
+    yearsFilterUpTo2YearsAgo?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

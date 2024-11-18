@@ -68,7 +68,7 @@ const whoCountrycodes: Record<string, string> = {
     GRL: "EU27",
 };
 
-const whoCountryNames: Record<Id, string> = {
+export const whoCountryNames: Record<Id, string> = {
     rEQqufy2KNi: "Netherlands (Kingdom of the)",
     NEPywTBN52g: "Kosovo*",
     j44olg405lZ: "BIH (Federation of Bosnia and Herzegovina)",

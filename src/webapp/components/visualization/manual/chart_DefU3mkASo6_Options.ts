@@ -18,6 +18,7 @@ const seriesColors: Record<string, string> = {
 
 export const chart_DefU3mkASo6_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const chartSourceWithFilteredRows = getChartSourceFilteredByLastAvailableYear(chartSource);
+    const stackedValuesUpTo100 = chartSource.visualization.percentStackedValues;
 
     return {
         ...comparativeStackedColumnChartOptions({
@@ -25,7 +26,7 @@ export const chart_DefU3mkASo6_Options: (chartSource: ChartSource) => Highcharts
             seriesNames,
             seriesColors,
             orderByValueInSerie: "yYSS1uBgnTE",
-            stackedValuesUpTo100: true,
+            stackedValuesUpTo100: stackedValuesUpTo100,
         }),
     };
 };

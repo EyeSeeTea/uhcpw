@@ -160,9 +160,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             <div key={info.country}>
                                 <GeneralDataContainer>
                                     <GeneralRow>
-                                        <CreditsText
-                                            style={{ fontWeight: 500 }}
-                                        ><strong>{`${info.country} (${info.year})`}</strong></CreditsText>
+                                        <CreditsText style={{ fontWeight: 500 }}>
+                                            <strong>{`${info.country} (${info.year})`}</strong>
+                                        </CreditsText>
                                     </GeneralRow>
 
                                     {info.lastUpdate ? (

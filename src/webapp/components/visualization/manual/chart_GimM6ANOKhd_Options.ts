@@ -1,5 +1,6 @@
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
+import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 
 const seriesNames: Record<string, string> = {
     yiucIy5NIAw: "Richest",
@@ -18,8 +19,10 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_GimM6ANOKhd_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear(chartSource);
+
     return comparativeStackedColumnChartOptions({
-        chartSource,
+        chartSource: chartSourceWithFilteredRowsByLAY,
         seriesNames,
         seriesColors,
         orderByValueInSerie: "GeiKSyJLeKt",

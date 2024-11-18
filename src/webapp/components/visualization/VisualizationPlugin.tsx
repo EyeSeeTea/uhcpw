@@ -7,6 +7,8 @@ import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
 
+const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
+
 interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
@@ -18,11 +20,14 @@ interface VisualizationPluginProps {
     onDownloadImage?: () => void;
     isScreenshot?: boolean;
     paddingEnd?: boolean;
+    isSquareChart?: boolean;
+    visualizationName?: string;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
     ({
         visualizationId,
+        visualizationName,
         years,
         currentCountry,
         countries,
@@ -32,12 +37,14 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         onDownloadImage,
         isScreenshot = false,
         paddingEnd = true,
+        isSquareChart = false,
     }) => {
         const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
             visualizationId,
             years,
             countries,
-            currentCountry
+            currentCountry,
+            visualizationName
         );
 
         const ref = useRef<HTMLDivElement>(null);
@@ -73,6 +80,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     countries={chartData.countries}
                     showCountryTag={chartData.visualizations[0]?.showCountryTag}
                     isScreenshot={isScreenshot}
+                    reducePaddingBottom={visualizationId === CHART_SCATTER_VISUALIZATION_ID}
                 />
                 <ChartPlugin
                     key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
@@ -83,6 +91,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     countries={chartData.countries}
                     withoutBackground={withoutBackground}
                     externalchartOptions={chartData.chartOptions}
+                    isSquareChart={isSquareChart}
                 />
             </Container>
         ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (

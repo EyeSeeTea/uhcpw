@@ -6,6 +6,7 @@ import {
     REFERENCES_TAB_NAME,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { addDataValue, getCellStyles, setHeight, setWidth } from "./utils";
+import { DATA_TAB_NAME } from "../repositories/indicator-explorer/AnalyticsD2Repository";
 
 const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
 const fileExtension = ".xlsx";
@@ -16,19 +17,41 @@ export type Tab = {
 };
 
 export const exportToCSV = (tabs: Tab[], fileName: string) => {
-    const xlsxTabs = tabs.map(tab => ({
+    const tabsWithNumbers = tabs.map(tab => {
+        if (tab.name === DATA_TAB_NAME) {
+            return {
+                ...tab,
+                data: tab.data.map(row => row.map(cell => parseDataValueFromStringToNumber(cell))),
+            };
+        } else {
+            return tab;
+        }
+    });
+
+    const xlsxTabs = tabsWithNumbers.map(tab => ({
         ...tab,
         xlsx: XLSX.utils.aoa_to_sheet(tab.data),
     }));
+
     const Sheets = xlsxTabs.reduce((acc, tab) => ({ ...acc, [tab.name]: tab.xlsx }), {});
     const wb = {
         Sheets,
-        SheetNames: tabs.map(tab => tab.name),
+        SheetNames: tabsWithNumbers.map(tab => tab.name),
     };
     const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     const data = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
 };
+
+function parseDataValueFromStringToNumber(value: string): string | number {
+    if (value === "") {
+        return value;
+    } else if (!isNaN(Number(value))) {
+        return Number(value);
+    } else {
+        return value;
+    }
+}
 
 export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
     const workbook = await XlsxPopulate.fromBlankAsync();

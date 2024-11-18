@@ -14,6 +14,7 @@ interface ScreenshotModalProps {
     backgroundColor?: string;
     exclusionClasses?: string[];
     hideTitle?: boolean;
+    isSquareChart?: boolean;
 }
 
 function ScreenshotModal({
@@ -24,6 +25,7 @@ function ScreenshotModal({
     exclusionClasses,
     children,
     hideTitle = true,
+    isSquareChart = false,
 }: ScreenshotModalProps) {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -34,13 +36,13 @@ function ScreenshotModal({
     }, [backgroundColor, exclusionClasses, title]);
 
     return (
-        <Modal
+        <StyledModal
             open={open}
             onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <StyledBox backgroundColor={backgroundColor}>
+            <StyledBox backgroundColor={backgroundColor} $isSquareChart={isSquareChart}>
                 <Header>
                     {!hideTitle && <Title>{_.capitalize(title)}</Title>}
                     <StyledScreenshotButton
@@ -56,20 +58,23 @@ function ScreenshotModal({
                     <ScreenshotContainer className="screenshot-container">{children}</ScreenshotContainer>
                 </Content>
             </StyledBox>
-        </Modal>
+        </StyledModal>
     );
 }
 
 export default ScreenshotModal;
 
-const StyledBox = styled(Box)<{ backgroundColor: string }>`
+const StyledBox = styled(Box)<{ backgroundColor: string; $isSquareChart?: boolean }>`
     position: absolute;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    top: 54%;
+    left: 5%;
+    top: ${props => (props?.$isSquareChart ? "1%" : "5%")};
     width: 90vw;
     background-color: ${props => props?.backgroundColor ?? "#FFFFFF"};
     border-radius: 10px;
+`;
+
+const StyledModal = styled(Modal)`
+    overflow-y: auto;
 `;
 
 const Title = styled.h2`

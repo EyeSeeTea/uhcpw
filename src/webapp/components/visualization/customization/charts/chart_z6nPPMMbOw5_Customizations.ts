@@ -2,6 +2,9 @@ import { baseLegend } from "../legends/baseLegend";
 import { ChartCustomization } from "../types";
 import { sortSerieDataByYearsAndCategories } from "./utils/sortSerieDataByYearsAndCategories";
 import { chartSplitYearsAndCategories } from "../xAxis/chartSplitYearsAndCategories";
+import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories } from "../../utils/getMaxAxisAndTickInterval";
+import { getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories } from "../yAxis/getMaxYAxisAndYTickInterval";
+import { SeriesColumnOptions } from "highcharts";
 
 const CATEGORY_ID_BY_NAME = {
     "Dental care": "a2u2ccahVJL",
@@ -65,6 +68,22 @@ export const chart_z6nPPMMbOw5_Customizations: ChartCustomization = {
             "S0rJgTIK3Gv",
             Object.keys(CATEGORY_ID_BY_NAME).length
         );
+    },
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForStackedColumnsInChartSplitYearsAndCategories(series, {
+            maxValueUpTo100: true,
+        });
+    },
+    plotOptions: {
+        series: {
+            events: {
+                legendItemClick: function (this: Highcharts.Series) {
+                    return setYAxisMaxAxisAndTickIntervalWhenLegendItemClickInChartSplitYearsAndCategories(this, {
+                        maxValueUpTo100: true,
+                    });
+                },
+            },
+        },
     },
     ...chartSplitYearsAndCategories,
 };

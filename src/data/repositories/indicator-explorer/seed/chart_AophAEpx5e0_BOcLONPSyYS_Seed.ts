@@ -1,15 +1,21 @@
-import { LatestAvailable } from "../../../../domain/entities/Year";
-import { sortedCategoryNames } from "./utils";
+import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 
 const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["Poorest", "Average", "Richest"];
+const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 
-export const chart_AophAEpx5e0_BOcLONPSyYS_Seed = {
-    categoryName: sortedCategoryNames.comparative,
-    friendlyName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
+export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
+    categoryName: sortedCategoryNames.unmetNeed,
+    friendlyName:
+        "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, total, richest quintile)",
+    countryPageName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
+    subcategoryName: sortedSubcategoryNames.comparative,
     isComparative: true,
-    allowedYears: [LatestAvailable],
+    allowedYears: [LatestAvailable, LatestCOVID19],
+    selectedYearsByDefault: [LatestAvailable],
+    isYearSingleSelection: true,
     hasEur27: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>

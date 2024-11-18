@@ -1,4 +1,6 @@
+import { SeriesColumnOptions } from "highcharts";
 import { ChartCustomization } from "../types";
+import { getMaxYAxisAndYTickIntervalForLineAndColumns } from "../yAxis/getMaxYAxisAndYTickInterval";
 
 export const chart_Y31jQX5PVdI_Customizations: ChartCustomization = {
     title: { text: "" },
@@ -11,4 +13,7 @@ export const chart_Y31jQX5PVdI_Customizations: ChartCustomization = {
             dataLabels: { enabled: false },
         },
     ],
+    getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
+        return getMaxYAxisAndYTickIntervalForLineAndColumns(series);
+    },
 };

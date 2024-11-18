@@ -7,20 +7,38 @@ export const comparativeStackedColumnChartOptions: (params: {
     seriesColors: Record<string, string>;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
-}) => Highcharts.Options = ({ chartSource, seriesNames, seriesColors, orderByValueInSerie, stackedValuesUpTo100 }) => {
+    maxValueUpTo100?: boolean;
+    categoryIdsOrder?: string[];
+    hideYear?: boolean;
+}) => Highcharts.Options = ({
+    chartSource,
+    seriesNames,
+    seriesColors,
+    orderByValueInSerie,
+    stackedValuesUpTo100,
+    maxValueUpTo100,
+    categoryIdsOrder,
+    hideYear,
+}) => {
     const options = comparativeColumnChartOptions({
         chartSource,
         seriesNames,
         seriesColors,
         orderByValueInSerie,
         stackedValuesUpTo100,
+        isStacked: true,
+        maxValueUpTo100: maxValueUpTo100,
+        categoryIdsOrder,
+        hideYear,
     });
 
     return {
         ...options,
         plotOptions: {
+            ...options.plotOptions,
             column: {
                 stacking: "normal",
+                ...options.plotOptions?.column,
             },
         },
     } as Highcharts.Options;

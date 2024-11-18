@@ -17,7 +17,7 @@ const seriesIds: Record<SeriesKey, string> = {
 
 const seriesNames: Record<typeof seriesIds[keyof typeof seriesIds], string> = {
     [seriesIds.poorest]: "Poorest",
-    [seriesIds.average]: "Average",
+    [seriesIds.average]: "Total",
     [seriesIds.richest]: "Richest",
 };
 
@@ -31,16 +31,17 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
     chartSource: ChartSourceMultiple
 ) => Highcharts.Options = chartSource => {
     const [firstChartAnalyticsResponse, secondChartAnalyticsResponse] = chartSource.analyticsResponse;
-    const [firstChartVisualization, secondChartVisualization] = chartSource.visualization;
 
     const latestAvailableYearByCountryId = getLatestAvailableYearByCountryIdFromTwoCharts(
         firstChartAnalyticsResponse?.rows || [],
-        secondChartAnalyticsResponse?.rows || []
+        secondChartAnalyticsResponse?.rows || [],
+        chartSource.isLatestCOVID19
     );
 
     const allRowsFilteredByLAY = getAllRowsLatestAvailableYearFromTwoCharts(
         firstChartAnalyticsResponse?.rows || [],
-        secondChartAnalyticsResponse?.rows || []
+        secondChartAnalyticsResponse?.rows || [],
+        chartSource.isLatestCOVID19
     );
 
     const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest(
@@ -67,10 +68,7 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         categories,
         seriesNames,
         seriesColors,
-        yAxisTitle:
-            "People 16 years and over (%)" ||
-            firstChartVisualization?.axes[0]?.title.text ||
-            secondChartVisualization?.axes[0]?.title.text,
+        yAxisTitle: "People 16 years and over (%)",
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: latestAvailableYearByCountryIdOrdered,
     });

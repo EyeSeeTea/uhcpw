@@ -3,6 +3,8 @@ import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
+import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/getMaxAxisAndTickInterval";
+import { getMaxYAxisAndYTickInterval } from "../utils/getMaxYAxisAndYTickInterval";
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -11,6 +13,10 @@ export const comparativeColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
+    isStacked?: boolean;
+    maxValueUpTo100?: boolean;
+    categoryIdsOrder?: string[];
+    hideYear?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -18,6 +24,10 @@ export const comparativeColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
+    isStacked,
+    maxValueUpTo100,
+    categoryIdsOrder,
+    hideYear,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -76,19 +86,22 @@ export const comparativeColumnChartOptions: (params: {
             name: seriesNames[dxId],
             color: seriesColors[dxId],
             data: filledDataSourceWithEmptyData.map(row => {
-                const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
+                const orgUnitIdOrCategoryId = row[1]?.toString() || "";
+                const orgUnitCodeOrCategory = mapToWhoCountryCode(
+                    chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
                 );
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
                 const color =
-                    currentCountryCode === orgUnit && currentSerieColor ? { color: currentSerieColor } : undefined;
+                    currentCountryCode === orgUnitCodeOrCategory && currentSerieColor
+                        ? { color: currentSerieColor }
+                        : undefined;
 
                 return {
-                    name: `${orgUnit} ${year} `,
+                    name: hideYear ? orgUnitCodeOrCategory : `${orgUnitCodeOrCategory} ${year} `,
                     y: value,
+                    categoryId: row[1] || "",
                     ...color,
                 };
             }),
@@ -97,9 +110,26 @@ export const comparativeColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const maxYAxis = chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue
-        ? { max: chartSource.visualization.axes.find(({ type }) => type === "RANGE")?.maxValue }
-        : {};
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(series, {
+        isStacked,
+        stackedValuesUpTo100,
+        maxValueUpTo100,
+    });
+
+    const sortedSeries = categoryIdsOrder
+        ? series.map(serie => {
+              const sortedData = serie.data.sort((a, b) => {
+                  const aIndex = categoryIdsOrder.indexOf(a?.categoryId);
+                  const bIndex = categoryIdsOrder.indexOf(b?.categoryId);
+
+                  return aIndex - bIndex;
+              });
+              return {
+                  ...serie,
+                  data: sortedData,
+              };
+          })
+        : series;
 
     return {
         ...baseChartOptions,
@@ -127,9 +157,24 @@ export const comparativeColumnChartOptions: (params: {
                 text: "Households (%)",
                 style: { fontSize: "13px" },
             },
-            ...maxYAxis,
+            max: adjustedMaxYAxis,
+            tickInterval: yTickInterval,
         },
         legend: baseLegend,
-        series,
+        series: sortedSeries,
+        plotOptions: {
+            column: {
+                stacking: "normal",
+                events: {
+                    legendItemClick: function (this: Highcharts.Series) {
+                        return setYAxisMaxAxisAndTickIntervalWhenLegendItemClick(this, {
+                            isStacked,
+                            stackedValuesUpTo100,
+                            maxValueUpTo100,
+                        });
+                    },
+                },
+            },
+        },
     } as Highcharts.Options;
 };

@@ -1,10 +1,14 @@
-import { LatestCOVID19 } from "../../../../domain/entities/Year";
-import { sortedCategoryNames } from "./utils";
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
+import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
-export const chart_GimM6ANOKhd_Seed = {
-    categoryName: sortedCategoryNames.comparative,
+export const chart_GimM6ANOKhd_Seed: VisualizationExtra = {
+    categoryName: sortedCategoryNames.financialHardship,
     friendlyName: "households with catastrophic health spending by consumption quintile",
     categoryTag: "International comparison",
     isComparative: true,
-    allowedYears: [LatestCOVID19],
+    subcategoryName: sortedSubcategoryNames.comparative,
+    allowedYears: [LatestAvailable, LatestCOVID19],
+    selectedYearsByDefault: [LatestAvailable],
+    isYearSingleSelection: true,
 };

@@ -1,12 +1,16 @@
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
-import { sortedCategoryNames } from "./utils";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
 const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["Poorest", "Average", "Richest"];
+const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 
-export const chart_MfLZYD6QCPy_Seed = {
+export const chart_MfLZYD6QCPy_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
-    friendlyName: "unmet need for prescribed medicines due to cost by income quintile",
+    friendlyName: "Unmet need for prescribed medicines due to cost (poorest quintile, total, richest quintile)",
+    countryPageName: "unmet need for prescribed medicines due to cost by income quintile",
+    isComparative: false,
+    subcategoryName: sortedSubcategoryNames.comparative,
     selectedYearsByDefault: [{ id: "2019" }],
     allowedYears: [{ id: "2014" }, { id: "2019" }],
     hasEur27: true,

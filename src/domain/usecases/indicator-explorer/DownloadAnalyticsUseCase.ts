@@ -17,8 +17,11 @@ export class DownloadAnalyticsUseCase {
             id: string | undefined;
             name: string | undefined;
         }[];
+        isScatter?: boolean;
+        xAxis?: string;
+        yAxis?: string;
     }): FutureData<void> {
-        const { visualizationIds, periods, orgUnits, seriesIdAndName } = params;
+        const { visualizationIds, periods, orgUnits, seriesIdAndName, isScatter, xAxis, yAxis } = params;
 
         return Future.parallel(visualizationIds.map(id => this.visualizationRepository.getById(id))).flatMap(
             visualizations => {
@@ -29,13 +32,17 @@ export class DownloadAnalyticsUseCase {
 
                 const finalPeriods = noOverwritePeriods ? [] : periods;
 
-                return this.analyticsRepository.saveToFile(
-                    visualizations,
-                    finalPeriods,
-                    orgUnits,
-                    seriesIdAndName,
-                    sortedPeriods[0] === LatestAvailable.id
-                );
+                return this.analyticsRepository.saveToFile({
+                    visualizations: visualizations,
+                    periods: finalPeriods,
+                    orgUnitUids: orgUnits,
+                    seriesIdAndName: seriesIdAndName,
+                    isLatestAvailableYear: sortedPeriods[0] === LatestAvailable.id,
+                    isUpTo2019: sortedPeriods[0] === LatestCOVID19.id,
+                    isScatter: isScatter,
+                    xAxis: xAxis,
+                    yAxis: yAxis,
+                });
             }
         );
     }

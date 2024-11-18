@@ -19,11 +19,13 @@ import {
 import { Maybe } from "../../../types/utils";
 import {
     filterRowsByYearInCountry,
+    getCommonLastAvailableYearInBothAxis,
     getLastAvailableYearByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "./utils/lastAvailableYearHelpers";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
+export const DATA_TAB_NAME = "Data";
 
 const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
     z6nPPMMbOw5: {
@@ -71,16 +73,31 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             });
     }
 
-    saveToFile(
-        visualizations: Visualization[],
-        periods: string[],
-        orgUnitUids: string[],
+    saveToFile(params: {
+        visualizations: Visualization[];
+        periods: string[];
+        orgUnitUids: string[];
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
-        }[],
-        latestAvailableYear: boolean
-    ): FutureData<void> {
+        }[];
+        isLatestAvailableYear: boolean;
+        isUpTo2019: boolean;
+        isScatter?: boolean;
+        xAxis?: string;
+        yAxis?: string;
+    }): FutureData<void> {
+        const {
+            visualizations,
+            periods,
+            orgUnitUids,
+            seriesIdAndName,
+            isLatestAvailableYear,
+            isUpTo2019,
+            isScatter,
+            xAxis,
+            yAxis,
+        } = params;
         return Future.parallel(
             visualizations.map(visualization => this.get(visualization, periods, orgUnitUids))
         ).flatMap(analyticsResponses => {
@@ -121,13 +138,21 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     firstChartAnalyticsResponse?.rows[0][2]?.match(/^(20)\d{2}$/);
 
                 const latestAvailableYearByCountryId =
-                    latestAvailableYear && isRowsContainsYears
+                    (isLatestAvailableYear || isUpTo2019) && isRowsContainsYears
                         ? isMultipleVisualizations
                             ? getLatestAvailableYearByCountryIdFromTwoCharts(
                                   firstChartAnalyticsResponse?.rows || [],
-                                  secondChartAnalyticsResponse?.rows || []
+                                  secondChartAnalyticsResponse?.rows || [],
+                                  isUpTo2019
                               )
-                            : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [])
+                            : isScatter && xAxis && yAxis
+                            ? getCommonLastAvailableYearInBothAxis(
+                                  firstChartAnalyticsResponse?.rows || [],
+                                  xAxis,
+                                  yAxis,
+                                  isUpTo2019
+                              )
+                            : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [], isUpTo2019)
                         : undefined;
 
                 const dataRowsAndBreakInSeriesDescriptions = analyticsResponses.map(analyticsResponse => {
@@ -160,13 +185,18 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     []
                 );
 
+                const allRowsSortedToDownload =
+                    mergedVisualization.showYearInDownloadFile && periods.length === 1 && periods[0]
+                        ? this.addYearToDataRows(allRowsSorted, periods[0])
+                        : allRowsSorted;
+
                 const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
                 const tabs = [
                     { name: "Notes", data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions] },
                     {
-                        name: "Data",
-                        data: [[chartName || mergedVisualization.name], ...allRowsSorted],
+                        name: DATA_TAB_NAME,
+                        data: [[chartName || mergedVisualization.name], ...allRowsSortedToDownload],
                     },
                 ];
 
@@ -181,6 +211,19 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 return Future.success(undefined);
             });
         });
+    }
+
+    private addYearToDataRows(dataRows: string[][], period: string): string[][] {
+        const header = dataRows[0];
+        const restRows = dataRows.slice(1);
+
+        const yearColumnIndex = header?.findIndex(header => header === "Year");
+        if (yearColumnIndex !== -1) return dataRows;
+
+        const newHeaderRow = ["Year", ...(header || [])];
+        const newDataRows = restRows.map(row => [period, ...row]);
+
+        return [newHeaderRow || [], ...newDataRows];
     }
 
     private sortColumnsAndDataRows(allRows: string[][], visualization: Visualization): string[][] {

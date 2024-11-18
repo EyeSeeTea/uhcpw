@@ -15,6 +15,8 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
     const currentCountryCode =
         chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
 
+    const currentYear = chartSource.currentYear;
+
     const seriesSource: SerieSource[] = [
         {
             name: "",
@@ -46,6 +48,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
 
             return {
                 country: country?.code || eur27Code || "",
+                year: currentYear || "",
                 x,
                 y,
             };
@@ -87,15 +90,19 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         xAxisTitle: "GDP per person in current purchasing power parities",
         yAxisTitle: "Public spending on health as a share of GDP (%)",
         pointFormat:
-            "{point.country} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
+            "{point.country} {point.year} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
         countriesWithData,
         countryPositions: countryPositionsAdjustment,
         displayTendencyLine: false,
-        tickInterval: 10000,
+        xTickInterval: 10000,
     });
 
     return {
         ...scratterChart,
+        yAxis: {
+            ...scratterChart.yAxis,
+            min: 0,
+        },
         xAxis: {
             ...scratterChart.xAxis,
             labels: {

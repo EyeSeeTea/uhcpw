@@ -14,6 +14,7 @@ export type IndicatorOption = {
     value: string;
     text: string;
     category: string;
+    subcategory?: string;
 };
 
 export type IndicatorFilterState = {
@@ -26,6 +27,8 @@ export type YeasrFilterState = {
     options: TreeOption[];
     selected: string[] | undefined;
     onSelectedChange: (value: string[] | undefined) => void;
+    disabledYears: string[];
+    isSingleSelection: boolean;
 };
 
 type ExtraCountryFilterState = CountryFilterState & {

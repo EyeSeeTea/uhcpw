@@ -1,5 +1,6 @@
 import _ from "lodash";
-import { sortedCategoryNames } from "./utils";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 
 const TYPES_OF_CARE = [
     "Dental care",
@@ -12,10 +13,12 @@ const TYPES_OF_CARE = [
 
 const SORTED_FINANCING_SCHEMES = ["Public spending on health", "Voluntary health insurance", "Out-of-pocket payments"];
 
-export const chart_z6nPPMMbOw5_Seed = {
+export const chart_z6nPPMMbOw5_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     showCountryTag: true,
     friendlyName: "Breakdown of current spending on health by financing scheme and type of care",
+    isComparative: false,
+    subcategoryName: sortedSubcategoryNames.countryLevel,
     maxCountryFilter: 1,
     hasEur27: true,
     sortDataRows: (headerRow: string[], dataRows: string[][]) => {
@@ -58,4 +61,6 @@ export const chart_z6nPPMMbOw5_Seed = {
 
         return sortedDataRows;
     },
+    hideBosniaAndHerzegovinaRegions: true,
+    yearsFilterUpTo2YearsAgo: true,
 };

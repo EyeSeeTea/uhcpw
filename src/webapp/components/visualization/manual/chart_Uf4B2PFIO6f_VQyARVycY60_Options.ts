@@ -3,6 +3,8 @@ import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 import { yAxisformatNumberLabel } from "../customization/yAxis/formatNumberLabel";
+import { getMaxAxisAndTickInterval, sumSeriesData } from "../utils/getMaxAxisAndTickInterval";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./utils/getMaxYAxisAndYTickInterval";
 
 const seriesNames: Record<string, string> = {
     Oseqbg7Odmn: "Average household capacity to pay",
@@ -62,7 +64,13 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         : undefined;
     const currencyCode = _.find(chartSource.countries, { id: countryId })?.currencyCode || "€";
 
-    const maxScatterValue = _.max(_(series).find(s => s.type === "scatter")?.data || []) || 0;
+    const columnSeriesData = series.filter(s => s.type === "column").map(s => s.data || []);
+    const sumOfColumnSeriesData = sumSeriesData(columnSeriesData);
+    const { max: adjustedMaxColumnYAxis, tickInterval: yColumnTickInterval } =
+        getMaxAxisAndTickInterval(sumOfColumnSeriesData);
+
+    const scatterData = _.compact(series.find(s => s.type === "scatter")?.data || []);
+    const { max: adjustedMaxScatterYAxis, tickInterval: yScatterTickInterval } = getMaxAxisAndTickInterval(scatterData);
 
     return {
         ...baseChartOptions,
@@ -76,6 +84,8 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                     style: { fontSize: "13px" },
                 },
                 labels: yAxisformatNumberLabel.yAxis?.labels,
+                max: adjustedMaxColumnYAxis,
+                tickInterval: yColumnTickInterval,
             },
             {
                 min: 0,
@@ -85,8 +95,10 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                     rotation: 270,
                     x: 5,
                 },
-                allowDecimals: maxScatterValue <= 1,
+                allowDecimals: Math.max(...scatterData) <= 1,
                 opposite: true,
+                max: adjustedMaxScatterYAxis,
+                tickInterval: yScatterTickInterval,
             },
         ],
         legend: {
@@ -113,6 +125,55 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                         color: "black",
                         fontWeight: "bold",
                         textOutline: "none",
+                    },
+                },
+            },
+            series: {
+                events: {
+                    legendItemClick: function (this: Highcharts.Series) {
+                        const isSelectedSerieHide = this.visible;
+                        const typeSelectedSerie = this.options.type;
+                        const selectedSerieIndex = this.index;
+                        const seriesInChart = this.chart.series as SeriesWithData[];
+
+                        const visibleSeries = seriesInChart.filter((serie, index) => {
+                            const isSelectedSerie = index === selectedSerieIndex;
+                            const isSelectedSerieVisible = !isSelectedSerieHide && isSelectedSerie;
+                            const isNotSelectedSeriesVisible = !isSelectedSerie && serie.visible;
+                            return (
+                                serie.options?.type === typeSelectedSerie &&
+                                (isSelectedSerieVisible || isNotSelectedSeriesVisible)
+                            );
+                        });
+
+                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
+                            visibleSeries,
+                            {
+                                isStacked: typeSelectedSerie === "column",
+                            }
+                        );
+
+                        this.chart.yAxis.forEach(yAxis => {
+                            const isYAxisFromSelectedChartType = yAxis.series.every(
+                                s => s.options.type === typeSelectedSerie
+                            );
+
+                            if (isYAxisFromSelectedChartType) {
+                                yAxis.update(
+                                    {
+                                        max:
+                                            typeSelectedSerie === "scatter" && isSelectedSerieHide
+                                                ? undefined
+                                                : adjustedMaxYAxis,
+                                        tickInterval:
+                                            typeSelectedSerie === "scatter" && isSelectedSerieHide ? 1 : yTickInterval,
+                                    },
+                                    true
+                                );
+                            }
+                        });
+
+                        return true;
                     },
                 },
             },

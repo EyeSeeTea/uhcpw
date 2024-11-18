@@ -1,4 +1,6 @@
 import { Id } from "../../../../domain/entities/Ref";
+import { whoCountryNames } from "../../countries/mapToWhoCountryData";
+import { kIpnMBaBvZ9_xAxisOutOfPocket, kIpnMBaBvZ9_yAxisHouseholds } from "../seed/chart_kIpnMBaBvZ9_Seed";
 
 type CellNames = {
     x: string;
@@ -11,16 +13,16 @@ type AxesIds = {
 };
 
 const cellNameByVisualizationId: Record<Id, CellNames> = {
-    hNU4Lj1xLYO: {
+    kIpnMBaBvZ9: {
         x: "Out-of-pocket payments as a share of current spending on health",
         y: "Households with catastrophic health spending",
     },
 };
 
 const axesIdsByVisualizationId: Record<Id, AxesIds> = {
-    hNU4Lj1xLYO: {
-        x: "rX0nLoxvSAi",
-        y: "kBOh0hUi5bW",
+    kIpnMBaBvZ9: {
+        x: kIpnMBaBvZ9_xAxisOutOfPocket,
+        y: kIpnMBaBvZ9_yAxisHouseholds,
     },
 };
 
@@ -32,7 +34,7 @@ const cellNameByVisualizationAndCellId: Record<Id, CellNamesByCellId> = {
     MfLZYD6QCPy: {
         f3t7eoXUzn8: "Poorest",
         dVcHTdCFpNv: "Richest",
-        GyiW7dS7BIl: "Average",
+        GyiW7dS7BIl: "Total",
     },
 };
 
@@ -54,6 +56,11 @@ export function getCustomCellName(
     }[],
     cell: string
 ): string | undefined {
+    const countryName = whoCountryNames[cell];
+    if (countryName) {
+        return countryName;
+    }
+
     const cellNamesInVisualization = cellNameByVisualizationAndCellId[visualizationId];
     const cellName = cellNamesInVisualization?.[cell];
     if (cellName) {
