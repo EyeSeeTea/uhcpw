@@ -152,6 +152,12 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
             ...scatterChart.chart,
             height: "55%",
         },
+        xAxis: {
+            ...scatterChart.xAxis,
+            min: 0,
+            max: 90,
+            tickInterval: 15,
+        },
     };
 };
 
