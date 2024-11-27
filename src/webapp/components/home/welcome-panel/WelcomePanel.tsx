@@ -18,7 +18,7 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent 
     return (
         <Container>
             <LogoContainer>
-                <img src={uhcwLogo} width={300} alt="WHO logo" />
+                <img src={uhcwLogo} width={300} alt="UHC watch title logo" />
             </LogoContainer>
             <ParagraphContainer>
                 <ReactMarkdown
