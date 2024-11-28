@@ -1,14 +1,13 @@
 import React from "react";
+import ReactMarkdown from "react-markdown";
 import { Typography } from "@material-ui/core";
 import styled from "styled-components";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
-import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
-import ReactMarkdown from "react-markdown";
 
 interface WelcomePanelProps {
     welcomePanelContent: MainMapPanelContent;
@@ -17,9 +16,6 @@ interface WelcomePanelProps {
 export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent }) => {
     return (
         <Container>
-            <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
-                {welcomePanelContent.title}
-            </Typography>
             <ParagraphContainer>
                 <ReactMarkdown
                     components={{
@@ -42,10 +38,11 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent 
                     <span>{i18n.t("Stronger financial protection")}</span>
                 </UmbrellaItem>
             </UmbrellaItemsContainer>
-            <VideoLink href={welcomePanelContent.buttonLink} target="_blank" rel="noreferrer">
-                <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
-                <Typography>{welcomePanelContent.buttonText}</Typography>
-            </VideoLink>
+            {welcomePanelContent.buttonText && welcomePanelContent.buttonLink ? (
+                <VideoLink href={welcomePanelContent.buttonLink} target="_blank" rel="noreferrer">
+                    <Typography>{welcomePanelContent.buttonText}</Typography>
+                </VideoLink>
+            ) : null}
         </Container>
     );
 };
@@ -57,6 +54,7 @@ const Container = styled.div`
 `;
 
 const ParagraphContainer = styled.div`
+    margin-block-start: 100px;
     max-width: 46ch;
 `;
 
