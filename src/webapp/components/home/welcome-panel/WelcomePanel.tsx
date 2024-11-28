@@ -8,7 +8,6 @@ import gapsIcon from "../../../assets/map/icon-normal.svg";
 import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
-import uhcwLogo from "../../../assets/uhcw-logo.png";
 
 interface WelcomePanelProps {
     welcomePanelContent: MainMapPanelContent;
@@ -17,9 +16,6 @@ interface WelcomePanelProps {
 export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent }) => {
     return (
         <Container>
-            <LogoContainer>
-                <img src={uhcwLogo} width={300} alt="UHC watch title logo" />
-            </LogoContainer>
             <ParagraphContainer>
                 <ReactMarkdown
                     components={{
@@ -51,10 +47,6 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent 
     );
 };
 
-const LogoContainer = styled.div`
-    margin-block-end: 16px;
-`;
-
 const Container = styled.div`
     overflow-y: auto;
     font-size: 16px;
@@ -62,6 +54,7 @@ const Container = styled.div`
 `;
 
 const ParagraphContainer = styled.div`
+    margin-block-start: 100px;
     max-width: 46ch;
 `;
 

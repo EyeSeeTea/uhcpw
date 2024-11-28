@@ -17,6 +17,7 @@ import gapsPin from "../../../assets/map/pin-gaps.svg";
 import { MapState } from "./MapState";
 import i18n from "../../../../locales";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
+import uhcwLogo from "../../../assets/uhcw-logo.png";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -97,6 +98,11 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
     return (
         <Container ref={mainContainerRef}>
             <MapContent ref={mapContainerRef} />
+            {mapState.selectedCountry ? null : (
+                <WelcomePanelLogoContainer>
+                    <img src={uhcwLogo} width={300} alt="UHC watch title logo" />
+                </WelcomePanelLogoContainer>
+            )}
             <MapSidePanel>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} />
@@ -172,6 +178,19 @@ const MapSidePanel = styled.div`
     color: white;
     padding: 48px;
     opacity: 0.9;
+    z-index: 1;
+`;
+
+const WelcomePanelLogoContainer = styled.div`
+    width: 300px;
+    height: 85px;
+    position: absolute;
+    z-index: 2;
+    top: 65px;
+    left: 60px;
+    img {
+        opacity: 1;
+    }
 `;
 
 const MapControls = styled.div`
