@@ -8,6 +8,7 @@ import gapsIcon from "../../../assets/map/icon-normal.svg";
 import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
+import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 
 interface WelcomePanelProps {
     welcomePanelContent: MainMapPanelContent;
@@ -40,6 +41,7 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent 
             </UmbrellaItemsContainer>
             {welcomePanelContent.buttonText && welcomePanelContent.buttonLink ? (
                 <VideoLink href={welcomePanelContent.buttonLink} target="_blank" rel="noreferrer">
+                    <PlayCircleFilledIcon style={{ color: "#FFFF" }} />
                     <Typography>{welcomePanelContent.buttonText}</Typography>
                 </VideoLink>
             ) : null}
@@ -83,12 +85,12 @@ const VideoLink = styled.a`
     gap: 5px;
     width: fit-content;
     text-decoration: none;
-    background-color: white;
-    padding: 5px 15px;
-    color: ${colors.accentPrimary};
+    padding: 5px 0px;
+    color: ${colors.white};
     text-transform: initial;
     border-radius: 40px;
     &:hover {
-        background-color: ${colors.greyLight};
+        background-color: ${colors.accentPrimary};
+        opacity: 0.8;
     }
 `;
