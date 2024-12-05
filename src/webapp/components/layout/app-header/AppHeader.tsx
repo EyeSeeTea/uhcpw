@@ -6,9 +6,9 @@ import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/co
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 
 import whoLogoBlue from "../../../assets/who-logo-blue.png";
+import uhcwHomeLogo from "../../../assets/uhcw-home-logo.png";
 import i18n from "../../../../locales";
 import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
@@ -94,16 +94,22 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                     <LogoContainer>
                         <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={() => goToHome()} />;
                     </LogoContainer>
+                    {!isHomePage ? (
+                        <LogoContainer>
+                            <img
+                                src={uhcwHomeLogo}
+                                width={150}
+                                alt="UHC watch logo to go home"
+                                onClick={() => goToHome()}
+                            />
+                            ;
+                        </LogoContainer>
+                    ) : null}
                     <Box className={classes.rest} />
                     <Hidden lgUp>
                         <MobileMenu />
                     </Hidden>
                     <Hidden mdDown>
-                        {!isHomePage ? (
-                            <HomeButton className={classes.menu} onClick={() => goToHome()}>
-                                <HomeOutlinedIcon style={{ color: "#3D3D3D" }} />
-                            </HomeButton>
-                        ) : null}
                         <Button
                             className={classes.menu}
                             activeClassName={classes.menuActive}
@@ -227,8 +233,4 @@ const Tag = styled.div`
     color: white;
     border-radius: 30px;
     padding: 5px 10px;
-`;
-
-const HomeButton = styled(Button)`
-    min-width: unset;
 `;
