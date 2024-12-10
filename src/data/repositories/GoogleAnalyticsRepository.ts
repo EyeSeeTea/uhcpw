@@ -27,7 +27,11 @@ class Analytics {
 
     sendAnalytics(event: AnalyticsEvent) {
         console.debug("GA4: send analytics event", event.name, buildAnalyticsEvent(event));
-        window.gtag("event", event.name, buildAnalyticsEvent(event));
+
+        const mappedEvent = buildAnalyticsEvent(event);
+        const { name, ...rest } = mappedEvent;
+
+        window.gtag("event", name, rest);
     }
 
     setAnalyticsConfig(event: AnalyticsEvent) {
@@ -45,8 +49,9 @@ class Analytics {
         document.body.appendChild(script);
 
         window.dataLayer = window.dataLayer || [];
-        window.gtag = function gtag(...args: any[]) {
-            window.dataLayer.push(args);
+        window.gtag = function gtag() {
+            // eslint-disable-next-line prefer-rest-params
+            window.dataLayer.push(arguments);
         };
     }
 }
@@ -55,12 +60,21 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
     switch (event.name) {
         case "file_download":
             return {
+                name: event.name,
                 file_name: event.filename,
             };
         case "page_view":
             return {
+                name: event.name,
                 page_location: event.pageLocation,
                 page_title: event.pageTitle,
+            };
+        case "country_page_view":
+            return {
+                name: "page_view",
+                page_title: event.title,
+                page_location: window.location.hash.split("?")[0] ?? "",
+                country: event.country,
             };
         default:
             return {};

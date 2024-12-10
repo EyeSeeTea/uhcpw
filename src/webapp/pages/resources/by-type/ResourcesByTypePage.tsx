@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -9,10 +10,13 @@ import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const history = useHistory();
+    const { sendPageView } = useAnalytics();
     const { category } = useParams<{ category: string }>();
+
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
 
@@ -34,6 +38,10 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     const disabledCountryFilter = useMemo(() => {
         return category === "news" || category === "multimedia";
     }, [category]);
+
+    React.useEffect(() => {
+        sendPageView({ title: "Resources - " + _.startCase(category) });
+    }, [sendPageView, category]);
 
     return (
         <Layout>

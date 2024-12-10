@@ -12,9 +12,11 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
+    const { sendPageView } = useAnalytics();
     const snackbar = useSnackbar();
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
@@ -29,6 +31,10 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             snackbar.success(globalMessage?.text);
         }
     }, [globalMessage, snackbar]);
+
+    useEffect(() => {
+        sendPageView({ title: "About us" });
+    }, [sendPageView]);
 
     const handleOpenScreenshot = React.useCallback(() => {
         setOpenScreenshot(true);

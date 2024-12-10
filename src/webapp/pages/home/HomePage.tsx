@@ -10,11 +10,17 @@ import { useMap } from "../../components/home/map/useMap";
 import { useHomeResources } from "./useHomeResources";
 import { NewsletterButton } from "../../components/home/buttons/NewsletterButton";
 import { useHomePageContent } from "./useHomePageContent";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const HomePage: React.FC = React.memo(() => {
     const mapState = useMap();
     const { resources } = useHomeResources();
+    const { sendPageView } = useAnalytics();
     const homePageContent = useHomePageContent();
+
+    React.useEffect(() => {
+        sendPageView({ title: "Homepage" });
+    }, [sendPageView]);
 
     return (
         <Layout>

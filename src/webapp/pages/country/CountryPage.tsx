@@ -9,11 +9,13 @@ import { useHistory } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
 import { useCountryPage } from "./useCountryPage";
 import { useCountryInfo } from "./useCountryInfo";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
     const { countryFilter, resetTab, handleResetTab } = useCountryPage();
     const country = useCountryInfo(countryFilter.selectedCountry);
+    const { sendEvent } = useAnalytics();
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -33,6 +35,16 @@ export const CountryPage: React.FC = () => {
             !resetTab && handleResetTab(true);
         }
     }, [countryFilter, filterInParams.country, handleResetTab, history.location.search, resetTab]);
+
+    const selectedCountryName = useMemo(
+        () => countryFilter.countryOptions.find(country => country.value === countryFilter.selectedCountry)?.text,
+        [countryFilter.countryOptions, countryFilter.selectedCountry]
+    );
+
+    useEffect(() => {
+        if (selectedCountryName)
+            sendEvent({ name: "country_page_view", title: "Country page", country: selectedCountryName });
+    }, [sendEvent, selectedCountryName]);
 
     const handleCountryChange = useCallback(
         (value: string) => {

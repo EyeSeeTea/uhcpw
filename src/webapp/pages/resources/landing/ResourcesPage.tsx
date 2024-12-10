@@ -10,9 +10,16 @@ import { useResources } from "./useResources";
 import SearchInput from "../../../components/search-input/SearchInput";
 import { FilteredByTextResources } from "./FilteredByTextResources";
 import { LandingResources } from "./LandingResources";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const ResourcesPage: React.FC = React.memo(() => {
     const { filters, landingResources, filteredByTextResources, onGetResources } = useResources();
+
+    const { sendPageView } = useAnalytics();
+
+    React.useEffect(() => {
+        sendPageView({ title: "Resources" });
+    }, [sendPageView]);
 
     return (
         <Layout>
