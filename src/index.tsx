@@ -8,8 +8,6 @@ import { Instance } from "./data/entities/Instance";
 import { getD2APiFromInstance } from "./utils/d2-api";
 import { App } from "./webapp/pages/app/App";
 import { D2Api } from "./types/d2-api";
-import ReactGA from "react-ga4";
-import { appConfig } from "./app-config";
 
 declare global {
     interface Window {
@@ -18,7 +16,6 @@ declare global {
 }
 
 const isDev = process.env.NODE_ENV === "development";
-const { gaTagId } = appConfig;
 
 async function getBaseUrl() {
     if (isDev) {
@@ -48,8 +45,6 @@ async function main() {
         const instance = new Instance({ url: baseUrl });
         const api = getD2APiFromInstance(instance);
         if (isDev) window.api = api;
-
-        ReactGA.initialize(gaTagId);
 
         const userSettings = await api.get<{ keyUiLocale: string }>("/userSettings").getData();
         configI18n(userSettings);

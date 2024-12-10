@@ -1,6 +1,6 @@
 export const appConfig: AppConfig = {
     appKey: "uhcpw-app",
-    gaTagId: "G-NMLFDE4DY7",
+    gaTagId: "G-5DKB563RGC", // Prod: G-NMLFDE4DY7, Dev: G-5DKB563RGC
 };
 
 export interface AppConfig {
