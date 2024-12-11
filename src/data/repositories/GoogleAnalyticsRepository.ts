@@ -13,19 +13,29 @@ export class GoogleAnalyticsRepository implements AnalyticsRepository {
     private analytics?: Analytics;
 
     send(event: AnalyticsEvent) {
-        if (!this.analytics) this.analytics = new Analytics(event);
+        if (!this.analytics) this.analytics = new Analytics();
         this.analytics.sendAnalytics(event);
     }
 }
 
 class Analytics {
-    constructor(event: AnalyticsEvent) {
-        if (!window.gtag) this.intialize();
-        window.gtag("js", new Date());
-        this.setAnalyticsConfig(event);
+    initialized = false;
+    queue: AnalyticsEvent[] = [];
+
+    constructor() {
+        if (!window.gtag) this.intialize().then(() => this.queue.forEach(e => this.sendAnalytics(e)));
+        else {
+            this.initialized = true;
+            this.setAnalyticsConfig();
+        }
     }
 
     sendAnalytics(event: AnalyticsEvent) {
+        if (!this.initialized) {
+            this.queue.push(event);
+            return;
+        }
+
         console.debug("GA4: send analytics event", event.name, buildAnalyticsEvent(event));
 
         const mappedEvent = buildAnalyticsEvent(event);
@@ -34,15 +44,23 @@ class Analytics {
         window.gtag("event", name, rest);
     }
 
-    setAnalyticsConfig(event: AnalyticsEvent) {
+    setAnalyticsConfig() {
         /** When using HashRouter, set send_page_view to false to avoid sending dynamic page
          * events. When HashRouter is not used, set to true to avoid duplicated events.
          * */
-        console.debug("GA4: config", appConfig.gaTagId, { ...buildAnalyticsEvent(event), send_page_view: false });
-        window.gtag("config", appConfig.gaTagId, { ...buildAnalyticsEvent(event), send_page_view: false });
+        console.debug("GA4: config", appConfig.gaTagId, {
+            page_title: "Config",
+            page_location: window.location.pathname,
+            send_page_view: false,
+        });
+        window.gtag("config", appConfig.gaTagId, {
+            page_title: "Config",
+            page_location: window.location.pathname,
+            send_page_view: false,
+        });
     }
 
-    private intialize() {
+    private async intialize() {
         const script = document.createElement("script");
         script.async = true;
         script.src = `https://www.googletagmanager.com/gtag/js?id=${appConfig.gaTagId}`;
@@ -53,6 +71,17 @@ class Analytics {
             // eslint-disable-next-line prefer-rest-params
             window.dataLayer.push(arguments);
         };
+
+        await new Promise<void>((resolve, reject) => {
+            script.onload = () => {
+                console.debug("GA4: script loaded");
+                window.gtag("js", new Date());
+                this.setAnalyticsConfig();
+                this.initialized = true;
+                resolve();
+            };
+            script.onerror = reject;
+        });
     }
 }
 
@@ -62,20 +91,20 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
             return {
                 name: event.name,
                 file_name: event.filename,
-            };
+            } as const;
         case "page_view":
             return {
                 name: event.name,
                 page_location: event.pageLocation,
                 page_title: event.pageTitle,
-            };
+            } as const;
         case "country_page_view":
             return {
                 name: "page_view",
                 page_title: event.title,
                 page_location: window.location.hash.split("?")[0] ?? "",
-                country: event.country,
-            };
+                selected_country: event.country,
+            } as const;
         default:
             return {};
     }
