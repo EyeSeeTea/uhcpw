@@ -77,6 +77,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
 
     const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
     const glossaryPageView = redirectWithPageView({ title: "Glossary" });
+    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
         <div className={classes.root}>
@@ -168,7 +169,13 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                                 );
                             })}
                         </Menu>
-                        <MenuTopLink id="regions" aria-controls="regions" target="_blank" href={regionalReport}>
+                        <MenuTopLink
+                            id="regions"
+                            aria-controls="regions"
+                            target="_blank"
+                            href={regionalReport}
+                            onClick={regionalReportPageView}
+                        >
                             {i18n.t("Regional report")}
                         </MenuTopLink>
                         <Button

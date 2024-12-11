@@ -43,7 +43,7 @@ export const CountryPage: React.FC = () => {
 
     useEffect(() => {
         if (selectedCountryName)
-            sendEvent({ name: "country_page_view", title: "Country page", country: selectedCountryName });
+            sendEvent({ name: "country_page_view", pageTitle: "Country page", country: selectedCountryName });
     }, [sendEvent, selectedCountryName]);
 
     const handleCountryChange = useCallback(

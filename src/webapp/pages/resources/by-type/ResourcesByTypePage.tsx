@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
 import { useHistory, useParams } from "react-router-dom";
@@ -14,7 +13,7 @@ import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const history = useHistory();
-    const { sendPageView } = useAnalytics();
+    const { sendEvent } = useAnalytics();
     const { category } = useParams<{ category: string }>();
 
     const filterInParams = useMemo(() => {
@@ -40,8 +39,8 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     }, [category]);
 
     React.useEffect(() => {
-        sendPageView({ title: "Resources - " + _.startCase(category) });
-    }, [sendPageView, category]);
+        sendEvent({ name: "resource_kind_page_view", pageTitle: "Resources", category: category });
+    }, [sendEvent, category]);
 
     return (
         <Layout>
