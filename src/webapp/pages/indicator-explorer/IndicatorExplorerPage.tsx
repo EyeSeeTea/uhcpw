@@ -80,6 +80,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     title={chartName}
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
+                    analyticsEventTitle="Indicator explorer"
                 >
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}

@@ -82,6 +82,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     title={CHART_1_SCATTER_VISUALIZATION_NAME || ""}
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={true}
+                    analyticsEventTitle="Country page"
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}

@@ -73,6 +73,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     onClose={handleCloseScreenshot}
                     title={currentGraphScreenshot.visualizationName || ""}
                     backgroundColor={"#f1f9fc"}
+                    analyticsEventTitle="Country page"
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}
