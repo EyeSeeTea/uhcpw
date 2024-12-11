@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { appConfig } from "../../app-config";
 import { AnalyticsEvent } from "../../domain/entities/AnalyticsEvent";
 import { AnalyticsRepository } from "../../domain/repositories/AnalyticsRepository";
@@ -90,7 +91,8 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
         case "file_download":
             return {
                 name: event.name,
-                file_name: event.filename,
+                page_title: event.pageTitle,
+                content_type: event.contentType,
             } as const;
         case "page_view":
             return {
@@ -101,9 +103,27 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
         case "country_page_view":
             return {
                 name: "page_view",
-                page_title: event.title,
+                page_title: event.pageTitle,
                 page_location: window.location.hash.split("?")[0] ?? "",
                 selected_country: event.country,
+            } as const;
+        case "resource_kind_page_view":
+            return {
+                name: "page_view",
+                page_title: event.pageTitle,
+                page_location: window.location.hash.split("?")[0] ?? "",
+                category: _.startCase(event.category),
+            } as const;
+        case "resource":
+            return {
+                name: "resource",
+                page_title: event.pageTitle,
+                category: _.startCase(event.category),
+                resource_name: event.resourceName,
+                year: event.year,
+                theme: event.theme,
+                lang: event.lang,
+                country: event.country,
             } as const;
         default:
             return {};

@@ -1,18 +1,41 @@
-export type PageViewEvent = {
+type PageViewEvent = {
     name: "page_view";
     pageLocation: string;
     pageTitle: string;
 };
 
-export type CountryPageViewEvent = {
+type CountryPageViewEvent = {
     name: "country_page_view";
-    title: string;
+    pageTitle: string;
     country: string;
 };
 
-export type FileDownloadEvent = {
-    name: "file_download";
-    filename: string;
+type ResourceKindPageViewEvent = {
+    name: "resource_kind_page_view";
+    pageTitle: string;
+    category: string;
 };
 
-export type AnalyticsEvent = PageViewEvent | FileDownloadEvent | CountryPageViewEvent;
+type FileDownloadEvent = {
+    name: "file_download";
+    pageTitle: string;
+    contentType: string;
+};
+
+type ResourceEvent = {
+    name: "resource";
+    category: string;
+    pageTitle: string;
+    resourceName: string;
+    year: number;
+    theme?: string;
+    lang?: string;
+    country?: string;
+};
+
+export type AnalyticsEvent =
+    | PageViewEvent
+    | FileDownloadEvent
+    | CountryPageViewEvent
+    | ResourceKindPageViewEvent
+    | ResourceEvent;
