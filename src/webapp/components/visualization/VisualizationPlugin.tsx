@@ -6,6 +6,7 @@ import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 
@@ -22,10 +23,11 @@ interface VisualizationPluginProps {
     paddingEnd?: boolean;
     isSquareChart?: boolean;
     visualizationName?: string;
+    analyticsEventTitle: string;
 }
 
-export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(
-    ({
+export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
+    const {
         visualizationId,
         visualizationName,
         years,
@@ -38,79 +40,91 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         isScreenshot = false,
         paddingEnd = true,
         isSquareChart = false,
-    }) => {
-        const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
-            visualizationId,
-            years,
-            countries,
-            currentCountry,
-            visualizationName
-        );
+        analyticsEventTitle,
+    } = props;
 
-        const ref = useRef<HTMLDivElement>(null);
+    const { sendEvent } = useAnalytics();
+    const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
+        visualizationId,
+        years,
+        countries,
+        currentCountry,
+        visualizationName
+    );
 
-        const onDirectDownloadImage = useCallback(() => {
-            if (chartData.kind === "Loaded" && ref.current) {
-                downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
-                    backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
-                    exclusionClasses: ["download-button", "info-button", "category"],
-                });
-            }
-        }, [chartData, useHeaderForCountryPage]);
+    const ref = useRef<HTMLDivElement>(null);
 
-        return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
-            <Container
-                className="VisualizationPlugin-container"
-                ref={ref}
-                $withoutBackground={withoutBackground}
-                $marginStart={!useHeaderForCountryPage && !isScreenshot}
-                $paddingEnd={paddingEnd}
-            >
-                <VisualizationPluginHeader
-                    visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
-                    chartFriendlyName={chartData?.friendlyName}
-                    categoryTag={chartData?.categoryTag}
-                    showInfo={showInfo}
-                    onDownloadExcel={isScreenshot ? undefined : () => onDownloadExcel(chartData)}
-                    onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}
-                    onShowInfo={isScreenshot ? undefined : onShowInfo}
-                    onCloseInfo={isScreenshot ? undefined : onCloseInfo}
-                    useHeaderForCountryPage={useHeaderForCountryPage}
-                    currentCountry={currentCountry}
-                    countries={chartData.countries}
-                    showCountryTag={chartData.visualizations[0]?.showCountryTag}
-                    isScreenshot={isScreenshot}
-                    reducePaddingBottom={visualizationId === CHART_SCATTER_VISUALIZATION_ID}
-                />
-                <ChartPlugin
-                    key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
-                    analytics={chartData.analytics}
-                    visualizations={chartData.visualizations}
-                    legendSets={chartData.legendSets}
-                    customizedOptions={chartData.customization}
-                    countries={chartData.countries}
-                    withoutBackground={withoutBackground}
-                    externalchartOptions={chartData.chartOptions}
-                    isSquareChart={isSquareChart}
-                />
-            </Container>
-        ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
-            <Center>
-                <Typography variant="subtitle1">
-                    {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
-                </Typography>
-            </Center>
-        ) : chartData.kind === "Error" ? (
-            <Center>
-                <Typography variant="subtitle1">{chartData.message}</Typography>
-            </Center>
-        ) : (
-            <Center>
-                <CircularProgress />
-            </Center>
-        );
-    }
-);
+    const onDirectDownloadImage = useCallback(() => {
+        if (chartData.kind === "Loaded" && ref.current) {
+            sendEvent({ name: "file_download", pageTitle: analyticsEventTitle, contentType: "image" });
+            downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
+                backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
+                exclusionClasses: ["download-button", "info-button", "category"],
+            });
+        }
+    }, [chartData, useHeaderForCountryPage, sendEvent, analyticsEventTitle]);
+
+    const downloadExcel = React.useCallback(() => {
+        if (chartData.kind === "Loaded") {
+            sendEvent({ name: "file_download", pageTitle: analyticsEventTitle, contentType: "csv" });
+            onDownloadExcel(chartData);
+        } else {
+            console.error("No data to download");
+        }
+    }, [analyticsEventTitle, chartData, onDownloadExcel, sendEvent]);
+
+    return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
+        <Container
+            className="VisualizationPlugin-container"
+            ref={ref}
+            $withoutBackground={withoutBackground}
+            $marginStart={!useHeaderForCountryPage && !isScreenshot}
+            $paddingEnd={paddingEnd}
+        >
+            <VisualizationPluginHeader
+                visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
+                chartFriendlyName={chartData?.friendlyName}
+                categoryTag={chartData?.categoryTag}
+                showInfo={showInfo}
+                onDownloadExcel={isScreenshot ? undefined : downloadExcel}
+                onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}
+                onShowInfo={isScreenshot ? undefined : onShowInfo}
+                onCloseInfo={isScreenshot ? undefined : onCloseInfo}
+                useHeaderForCountryPage={useHeaderForCountryPage}
+                currentCountry={currentCountry}
+                countries={chartData.countries}
+                showCountryTag={chartData.visualizations[0]?.showCountryTag}
+                isScreenshot={isScreenshot}
+                reducePaddingBottom={visualizationId === CHART_SCATTER_VISUALIZATION_ID}
+            />
+            <ChartPlugin
+                key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
+                analytics={chartData.analytics}
+                visualizations={chartData.visualizations}
+                legendSets={chartData.legendSets}
+                customizedOptions={chartData.customization}
+                countries={chartData.countries}
+                withoutBackground={withoutBackground}
+                externalchartOptions={chartData.chartOptions}
+                isSquareChart={isSquareChart}
+            />
+        </Container>
+    ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
+        <Center>
+            <Typography variant="subtitle1">
+                {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
+            </Typography>
+        </Center>
+    ) : chartData.kind === "Error" ? (
+        <Center>
+            <Typography variant="subtitle1">{chartData.message}</Typography>
+        </Center>
+    ) : (
+        <Center>
+            <CircularProgress />
+        </Center>
+    );
+});
 
 const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean; $paddingEnd?: boolean }>`
     margin-block-start: ${props => (props.$marginStart ? "48px" : "0px")};

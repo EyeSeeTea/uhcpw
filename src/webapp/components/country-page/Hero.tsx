@@ -73,6 +73,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         useHeaderForCountryPage
                         onDownloadImage={handleOpenScreenshot}
                         paddingEnd={false}
+                        analyticsEventTitle="Country page"
                     />
                 </VisualizationContainer>
 
@@ -94,6 +95,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         useHeaderForCountryPage
                         isScreenshot={true}
                         isSquareChart={true}
+                        analyticsEventTitle="Country page"
                     />
                 </ScreenshotModal>
             </GraphGrid>
