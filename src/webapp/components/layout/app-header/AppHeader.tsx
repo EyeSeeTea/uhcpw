@@ -15,6 +15,7 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -72,6 +73,11 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
     const { regionalReport, anchorEl, isHomePage, goToHome, handleCountryClick, handleClose, handleSetAnchorEl } =
         useAppHeader();
 
+    const { redirectWithPageView } = useAnalytics();
+
+    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
+    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
+
     return (
         <div className={classes.root}>
             <MuiAppBar position="static">
@@ -83,10 +89,14 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
                         </Tag>
                     </TagContainer>
-                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/abbreviations">
+                    <MenuTopLink
+                        target="_blank"
+                        href="https://cmyn.short.gy/abbreviations"
+                        onClick={abbreviationsPageView}
+                    >
                         {i18n.t("Abbreviations")}
                     </MenuTopLink>
-                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary">
+                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
                         {i18n.t("Glossary")}
                     </MenuTopLink>
                 </Toolbar>

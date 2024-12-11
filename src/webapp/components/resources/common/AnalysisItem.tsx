@@ -44,7 +44,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(
                 <Box height={20} />
                 {themeName ? (
                     <Tag
-                        theme={themeName}
+                        theme={themeName + "x"}
                         color={themeColor[themeCode?.toLowerCase()] || themeColor.default}
                         onClick={handleTagClick}
                     />

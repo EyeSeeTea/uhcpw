@@ -33,7 +33,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     }, [globalMessage, snackbar]);
 
     useEffect(() => {
-        sendPageView({ title: "About us" });
+        sendPageView({ title: "Indicator explorer" });
     }, [sendPageView]);
 
     const handleOpenScreenshot = React.useCallback(() => {
