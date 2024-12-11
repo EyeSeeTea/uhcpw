@@ -1,16 +1,36 @@
 import { Box, Card, Typography } from "@material-ui/core";
 
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { CountryAnalysisState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { AnalysisItem } from "../common/AnalysisItem";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export interface CountryAnalysisItemProps {
     countryAnalysis: CountryAnalysisState;
+    analyticsPageTitle: string;
 }
 
-export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.memo(({ countryAnalysis }) => {
+export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.memo(props => {
+    const { countryAnalysis, analyticsPageTitle } = props;
+    const { redirectWithEvent } = useAnalytics();
+
+    const analyticsEvent = useCallback(
+        (language: string) =>
+            redirectWithEvent({
+                name: "resource",
+                pageTitle: analyticsPageTitle,
+                year: countryAnalysis.date.getFullYear(),
+                resourceName: countryAnalysis.title,
+                category: countryAnalysis.kind,
+                theme: countryAnalysis.themeName,
+                language: language,
+                country: countryAnalysis.countryName,
+            }),
+        [analyticsPageTitle, countryAnalysis, redirectWithEvent]
+    );
+
     return (
         <Item elevation={0} role="listitem">
             <Row>
@@ -28,6 +48,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
                 links={countryAnalysis.links}
                 image={countryAnalysis.imageOriginal}
                 date={countryAnalysis.date}
+                redirectWithEvent={analyticsEvent}
             />
         </Item>
     );

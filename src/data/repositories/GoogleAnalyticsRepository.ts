@@ -120,9 +120,9 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
                 page_title: event.pageTitle,
                 category: _.startCase(event.category),
                 resource_name: event.resourceName,
+                resource_theme: event.theme,
                 year: event.year,
-                theme: event.theme,
-                lang: event.lang,
+                lang: event.language,
                 country: event.country,
             } as const;
         default:

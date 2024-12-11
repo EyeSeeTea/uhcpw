@@ -61,7 +61,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                         {countryAnalysisResource.map((resource, i) => {
                             return (
                                 <Grid key={`country-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
-                                    <ResourceItem resource={resource} />
+                                    <ResourceItem resource={resource} analyticsPageTitle="Country page" />
                                 </Grid>
                             );
                         })}
@@ -93,7 +93,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                         {comparativeAnalysisResources.map((resource, i) => {
                             return (
                                 <Grid key={`comparative-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
-                                    <ResourceItem resource={resource} />
+                                    <ResourceItem resource={resource} analyticsPageTitle="Country page" />
                                 </Grid>
                             );
                         })}

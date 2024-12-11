@@ -65,7 +65,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
 
                                     return (
                                         <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
-                                            <ResourceItem resource={item} />
+                                            <ResourceItem resource={item} analyticsPageTitle="Resources" />
                                         </Grid>
                                     );
                                 })}

@@ -29,7 +29,7 @@ type ResourceEvent = {
     resourceName: string;
     year: number;
     theme?: string;
-    lang?: string;
+    language?: string;
     country?: string;
 };
 

@@ -16,12 +16,17 @@ export function useAnalytics() {
         [compositionRoot]
     );
 
+    const handleRedirect = (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>, callback: () => void) => {
+        mouseEvent.preventDefault();
+        const href = mouseEvent.currentTarget.href;
+        const isBlank = mouseEvent.currentTarget.target === "_blank";
+        callback();
+        window.open(href, isBlank ? "_blank" : undefined);
+    };
+
     const redirectWithEvent = React.useCallback(
         (anlyticsEvent: AnalyticsEvent) => (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-            mouseEvent.preventDefault();
-            const href = mouseEvent.currentTarget.href;
-            compositionRoot.googleAnalytics.sendEvent.execute(anlyticsEvent);
-            window.location.href = href;
+            handleRedirect(mouseEvent, () => compositionRoot.googleAnalytics.sendEvent.execute(anlyticsEvent));
         },
         [compositionRoot.googleAnalytics.sendEvent]
     );
@@ -29,10 +34,7 @@ export function useAnalytics() {
     const redirectWithPageView = React.useCallback(
         (overrideProps: { location?: string; title?: string }) =>
             (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-                mouseEvent.preventDefault();
-                const href = mouseEvent.currentTarget.href;
-                compositionRoot.googleAnalytics.sendPageView.execute(overrideProps);
-                window.location.href = href;
+                handleRedirect(mouseEvent, () => compositionRoot.googleAnalytics.sendPageView.execute(overrideProps));
             },
         [compositionRoot.googleAnalytics.sendPageView]
     );

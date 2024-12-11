@@ -8,9 +8,11 @@ import { ComparativeAnalysisItem } from "../../../components/resources/comparati
 import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { LandingResourcesState } from "./ResourcesState";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const LandingResources: React.FC<{ resources: LandingResourcesState }> = React.memo(({ resources }) => {
     const history = useHistory();
+    const { redirectWithEvent } = useAnalytics();
 
     return (
         <>
@@ -42,7 +44,11 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                         {resources.comparativeAnalysis.map(comparativeItem => {
                             return (
                                 <Grid item key={comparativeItem.id}>
-                                    <ComparativeAnalysisItem comparativeAnalysis={comparativeItem} minimalVersion />
+                                    <ComparativeAnalysisItem
+                                        comparativeAnalysis={comparativeItem}
+                                        minimalVersion
+                                        analyticsPageTitle="Resources"
+                                    />
                                 </Grid>
                             );
                         })}
@@ -53,6 +59,15 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                 {resources.multimedia.length > 0 && (
                     <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
                         {resources.multimedia.map(multimediaItem => {
+                            const analyticsEvent = redirectWithEvent({
+                                name: "resource",
+                                pageTitle: "Resources",
+                                year: multimediaItem.date.getFullYear(),
+                                resourceName: multimediaItem.title,
+                                category: multimediaItem.kind,
+                                theme: multimediaItem.themeName,
+                            });
+
                             return (
                                 <Grid item xs={12} key={multimediaItem.id}>
                                     <SimpleResourceItem
@@ -60,6 +75,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                                         url={multimediaItem.url}
                                         image={multimediaItem.imageOriginal}
                                         date={multimediaItem.date}
+                                        redirectWithEvent={analyticsEvent}
                                         maintainAspectRatio
                                         fullWidth
                                     />
@@ -73,6 +89,14 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                 {resources.news.length > 0 && (
                     <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
                         {resources.news.map(newsItem => {
+                            const analyticsEvent = redirectWithEvent({
+                                name: "resource",
+                                pageTitle: "Resources",
+                                year: newsItem.date.getFullYear(),
+                                resourceName: newsItem.title,
+                                category: newsItem.kind,
+                            });
+
                             return (
                                 <Grid item xs={12} spacing={5} key={newsItem.id}>
                                     <SimpleResourceItem
@@ -80,6 +104,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                                         url={newsItem.url}
                                         image={newsItem.imageOriginal}
                                         date={newsItem.date}
+                                        redirectWithEvent={analyticsEvent}
                                         maintainAspectRatio
                                         fullWidth
                                     />
