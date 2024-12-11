@@ -13,7 +13,6 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const AboutPage: React.FC = React.memo(() => {
     const { team, experts, countryFilter, officeInfo } = useAbout();
-
     const { sendPageView } = useAnalytics();
 
     React.useEffect(() => {

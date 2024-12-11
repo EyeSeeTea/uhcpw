@@ -4,6 +4,7 @@ import moment from "moment";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Tag } from "../tag/Tag";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export interface SimpleResourceItemProps {
     title: string;
@@ -33,6 +34,8 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         maintainAspectRatio = false,
         fullWidth = true,
     }) => {
+        const { redirectWithEvent } = useAnalytics();
+
         const [imgSrc, setImgSrc] = useState(image);
 
         const handleImageError = useCallback(() => {

@@ -69,11 +69,10 @@ interface AppHeaderProps {
 
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
+    const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
     const { regionalReport, anchorEl, isHomePage, goToHome, handleCountryClick, handleClose, handleSetAnchorEl } =
         useAppHeader();
-
-    const { redirectWithPageView } = useAnalytics();
 
     const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
     const glossaryPageView = redirectWithPageView({ title: "Glossary" });

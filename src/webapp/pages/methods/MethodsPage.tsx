@@ -47,14 +47,13 @@ const MarkdownLink: React.FC<{
 
 export const MethodsPage: React.FC = () => {
     const { methods, isExpanded, setExpanded } = useMethods();
+    const { sendPageView, redirectWithPageView } = useAnalytics();
 
     const handleClick = (index: number) => {
         const updatedExpanded = [...isExpanded];
         updatedExpanded[index] = !updatedExpanded[index];
         setExpanded(updatedExpanded);
     };
-
-    const { sendPageView, redirectWithPageView } = useAnalytics();
 
     React.useEffect(() => {
         sendPageView({ title: "Methods" });

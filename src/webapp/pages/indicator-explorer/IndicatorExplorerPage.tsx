@@ -15,9 +15,11 @@ import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
+    const snackbar = useSnackbar();
+
     const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
     const { sendPageView } = useAnalytics();
-    const snackbar = useSnackbar();
+
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
     useEffect(() => {

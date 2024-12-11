@@ -14,7 +14,6 @@ import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const ResourcesPage: React.FC = React.memo(() => {
     const { filters, landingResources, filteredByTextResources, onGetResources } = useResources();
-
     const { sendPageView } = useAnalytics();
 
     React.useEffect(() => {

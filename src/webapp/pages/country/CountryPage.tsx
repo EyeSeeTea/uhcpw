@@ -14,8 +14,9 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 export const CountryPage: React.FC = () => {
     const history = useHistory();
     const { countryFilter, resetTab, handleResetTab } = useCountryPage();
-    const country = useCountryInfo(countryFilter.selectedCountry);
     const { sendEvent } = useAnalytics();
+
+    const country = useCountryInfo(countryFilter.selectedCountry);
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
