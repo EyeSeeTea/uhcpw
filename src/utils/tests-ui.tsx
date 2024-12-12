@@ -151,8 +151,8 @@ export function givenACountries(): Country[] {
             children: [
                 {
                     id: "j44olg405lZ",
-                    name: "BIH (Federation of Bosnia and Herzegovina)",
-                    longName: "BIH (Federation of Bosnia and Herzegovina)",
+                    name: "BIH (the Federation of Bosnia and Herzegovina)",
+                    longName: "BIH (the Federation of Bosnia and Herzegovina)",
                     code: "BIH-F",
                     currencyCode: "BAM",
                     coordinates: [18.6315, 45.0505],
@@ -218,8 +218,8 @@ export function givenACountries(): Country[] {
                 },
                 {
                     id: "FvoXRc5cEEk",
-                    name: "BIH (Republika Srpska)",
-                    longName: "BIH (Republika Srpska)",
+                    name: "BIH (the Republika Srpska)",
+                    longName: "BIH (the Republika Srpska)",
                     code: "BIH-R",
                     currencyCode: "BAM",
                     coordinates: [18.341, 42.993],
@@ -412,8 +412,8 @@ export function givenACountriesAndRegions(): Country[] {
             children: [
                 {
                     id: "j44olg405lZ",
-                    name: "BIH (Federation of Bosnia and Herzegovina)",
-                    longName: "BIH (Federation of Bosnia and Herzegovina)",
+                    name: "BIH (the Federation of Bosnia and Herzegovina)",
+                    longName: "BIH (the Federation of Bosnia and Herzegovina)",
                     code: "BIH-F",
                     currencyCode: "BAM",
                     coordinates: [18.6315, 45.0505],
@@ -479,8 +479,8 @@ export function givenACountriesAndRegions(): Country[] {
                 },
                 {
                     id: "FvoXRc5cEEk",
-                    name: "BIH (Republika Srpska)",
-                    longName: "BIH (Republika Srpska)",
+                    name: "BIH (the Republika Srpska)",
+                    longName: "BIH (the Republika Srpska)",
                     code: "BIH-R",
                     currencyCode: "BAM",
                     coordinates: [18.341, 42.993],
@@ -548,8 +548,8 @@ export function givenACountriesAndRegions(): Country[] {
         },
         {
             id: "FvoXRc5cEEk",
-            name: "BIH (Republika Srpska)",
-            longName: "BIH (Republika Srpska)",
+            name: "BIH (the Republika Srpska)",
+            longName: "BIH (the Republika Srpska)",
             code: "BIH-R",
             currencyCode: "BAM",
             coordinates: [18.341, 42.993],
@@ -615,8 +615,8 @@ export function givenACountriesAndRegions(): Country[] {
         },
         {
             id: "j44olg405lZ",
-            name: "BIH (Federation of Bosnia and Herzegovina)",
-            longName: "BIH (Federation of Bosnia and Herzegovina)",
+            name: "BIH (the Federation of Bosnia and Herzegovina)",
+            longName: "BIH (the Federation of Bosnia and Herzegovina)",
             code: "BIH-F",
             currencyCode: "BAM",
             coordinates: [18.6315, 45.0505],

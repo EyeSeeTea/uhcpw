@@ -71,8 +71,8 @@ const whoCountrycodes: Record<string, string> = {
 export const whoCountryNames: Record<Id, string> = {
     rEQqufy2KNi: "Netherlands (Kingdom of the)",
     NEPywTBN52g: "Kosovo*",
-    j44olg405lZ: "BIH (Federation of Bosnia and Herzegovina)",
-    FvoXRc5cEEk: "BIH (Republika Srpska)",
+    j44olg405lZ: "BIH (the Federation of Bosnia and Herzegovina)",
+    FvoXRc5cEEk: "BIH (the Republika Srpska)",
     IZy3ESdFnp5: "EU27",
     rqaiYTAnMC6: "Bosnia and Herzegovina",
 };
