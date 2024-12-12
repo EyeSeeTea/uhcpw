@@ -505,7 +505,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private getCountryName(orgUnitId: Id, countriesAndRegions: Country[]): string {
         const orgUnitName = countriesAndRegions.find(country => country.id === orgUnitId)?.name || EMPTY_DATA;
         return orgUnitId === REPUBLICA_SERPSKA || orgUnitId === FEDERACIJA_BOSNE_I_HERCEGOVINE
-            ? orgUnitName.match(REGEX_INSIDE_PARENTHESIS)?.[1] || ""
+            ? `Bosnia and Herzegovina (${orgUnitName.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || ""
             : orgUnitName || "";
     }
 }
