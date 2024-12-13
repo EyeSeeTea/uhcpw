@@ -83,6 +83,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         >
             <VisualizationPluginHeader
                 visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
+                visualizationId={visualizationId}
                 chartFriendlyName={chartData?.friendlyName}
                 categoryTag={chartData?.categoryTag}
                 showInfo={showInfo}
