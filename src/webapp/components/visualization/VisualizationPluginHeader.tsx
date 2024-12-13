@@ -8,9 +8,15 @@ import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
 import { Country } from "../../../domain/entities/Country";
+import {
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+    FEDERACIJA_BOSNE_I_HERCEGOVINE,
+    REPUBLICA_SERPSKA,
+} from "../../../data/repositories/countries/CountryD2Repository";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: string;
+    visualizationId: string;
     chartFriendlyName?: string;
     categoryTag?: string;
     showInfo: boolean;
@@ -29,6 +35,7 @@ interface VisualizationPluginHeaderProps {
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
     ({
         visualizationDialogInfo,
+        visualizationId,
         chartFriendlyName,
         showInfo,
         categoryTag,
@@ -45,9 +52,15 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountry) {
-                return countries.find(({ id }) => id === currentCountry)?.name;
+                const countryId =
+                    (currentCountry === FEDERACIJA_BOSNE_I_HERCEGOVINE || currentCountry === REPUBLICA_SERPSKA) &&
+                    visualizationId === "OB4SCQfCzwz"
+                        ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
+                        : currentCountry;
+
+                return countries.find(({ id }) => id === countryId)?.name;
             }
-        }, [countries, currentCountry]);
+        }, [countries, currentCountry, visualizationId]);
 
         return (
             <DataHeader
