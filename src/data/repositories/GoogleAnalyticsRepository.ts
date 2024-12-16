@@ -118,6 +118,7 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
             return {
                 name: "resource",
                 page_title: event.pageTitle,
+                page_location: window.location.hash.split("?")[0] ?? "",
                 category: _.startCase(event.category),
                 resource_name: event.resourceName,
                 resource_theme: event.theme,
