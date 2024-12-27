@@ -7,7 +7,7 @@ import { AnalyticsRepository } from "../../../domain/repositories/indicator-expl
 import { D2Api, NonPaginatedObjects } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { isValidUid } from "../../../utils/uid";
-import { exportToCSV } from "../../export/exportToCSV";
+import { exportToCSV, exportToCSVTest } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
@@ -201,16 +201,30 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ];
 
                 if (tabs.length > 0) {
-                    exportToCSV(
-                        tabs,
-                        mergedVisualization.downloadedFileName
-                            ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
-                            : chartName
-                    );
+                    return this.download().flatMap(blob => {
+                        return this.fromBlobToArrayBuffer(blob).flatMap(arrayBuffer => {
+                            exportToCSVTest(arrayBuffer);
+                            exportToCSV(
+                                tabs,
+                                mergedVisualization.downloadedFileName
+                                    ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
+                                    : chartName
+                            );
+                            return Future.success(undefined);
+                        });
+                    });
                 }
                 return Future.success(undefined);
             });
         });
+    }
+
+    private download(): FutureData<Blob> {
+        return apiToFuture(this.api.files.get("ot0Y1y9375k"));
+    }
+
+    private fromBlobToArrayBuffer(blob: Blob): FutureData<ArrayBuffer> {
+        return Future.fromPromise(blob.arrayBuffer());
     }
 
     private addYearToDataRows(dataRows: string[][], period: string): string[][] {
