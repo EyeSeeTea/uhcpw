@@ -60,7 +60,7 @@ const SelectsContainer = styled(Container)`
 `;
 
 const SearchContainer = styled.div`
-    margin: -24px;
+    margin-block: -24px;
     display: flex;
     flex-direction: row;
     justify-content: center;

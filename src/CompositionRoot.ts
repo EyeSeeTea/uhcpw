@@ -42,6 +42,9 @@ import { GetEurCountriesRegionUseCase } from "./domain/usecases/GetEurCountriesR
 import { GetRegionalReportLinkUseCase } from "./domain/usecases/GetRegionalReportLinkUseCase";
 import { GeneralContentD2Repository } from "./data/repositories/GeneralContentD2Repository";
 import { GetGeneralContentUseCase } from "./domain/usecases/GetGeneralContentUseCase";
+import { BlogD2Repository } from "./data/repositories/BlogD2Repository";
+import { GetPostByIdUseCase } from "./domain/usecases/GetPostByIdUseCase";
+import { GetPostsUseCase } from "./domain/usecases/GetPostsUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     return {
@@ -63,6 +66,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         indicatorExplorer: new IndicatorExplorerD2Repository(api),
         homePage: new HomePageContentD2Repository(api),
         generalContent: new GeneralContentD2Repository(api),
+        blog: new BlogD2Repository(api),
     };
 }
 
@@ -122,6 +126,10 @@ export function getCompositionRoot(
         },
         general: {
             getContent: new GetGeneralContentUseCase(repositories.generalContent),
+        },
+        blog: {
+            get: new GetPostsUseCase(repositories.blog),
+            getById: new GetPostByIdUseCase(repositories.blog),
         },
     };
 }

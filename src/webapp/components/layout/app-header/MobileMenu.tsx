@@ -97,6 +97,8 @@ export const MobileMenu: React.FC = () => {
                 <StyledDivider />
                 <MenuItem onClick={() => handleMenuItemClick("/resources")}>{i18n.t("Resources")}</MenuItem>
                 <StyledDivider />
+                <MenuItem onClick={() => handleMenuItemClick("/blog")}>{i18n.t("Blog")}</MenuItem>
+                <StyledDivider />
                 <MenuItem onClick={() => handleMenuItemClick("/about")}>{i18n.t("About us")}</MenuItem>
             </StyledMenu>
         </div>

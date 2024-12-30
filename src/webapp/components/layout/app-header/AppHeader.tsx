@@ -6,11 +6,11 @@ import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/co
 import styled from "styled-components";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import { NavLink } from "react-router-dom";
 
 import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import uhcwHomeLogo from "../../../assets/uhcw-home-logo.png";
 import i18n from "../../../../locales";
-import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
@@ -176,6 +176,14 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             to={"/resources"}
                         >
                             {i18n.t("Resources")}
+                        </Button>
+                        <Button
+                            className={classes.menu}
+                            activeClassName={classes.menuActive}
+                            component={NavLink}
+                            to={"/blog"}
+                        >
+                            {i18n.t("Blog")}
                         </Button>
                         <Button
                             className={classes.menu}

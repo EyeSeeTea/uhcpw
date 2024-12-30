@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { HashRouter, Route, Switch, useLocation } from "react-router-dom";
+
 import { AboutPage } from "./about/AboutPage";
 import { HomePage } from "./home/HomePage";
 import { PolicyExplorerPage } from "./policy-explorer/PolicyExplorerPage";
@@ -8,6 +9,8 @@ import { ResourcesPage } from "./resources/landing/ResourcesPage";
 import { CountryPage } from "./country/CountryPage";
 import { MethodsPage } from "./methods/MethodsPage";
 import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPage";
+import { BlogPage } from "./blog/BlogPage";
+import { PostPage } from "./blog/PostPage";
 
 const ScrollToTop = (): JSX.Element | null => {
     const { pathname } = useLocation();
@@ -37,6 +40,9 @@ export const Router: React.FC = React.memo(() => {
                 <Route path="/country-page" render={() => <CountryPage />} />
                 <Route path="/resources" render={() => <ResourcesPage />} />
                 <Route path="/methods" render={() => <MethodsPage />} />
+
+                <Route path="/blog/:id" render={() => <PostPage />} />
+                <Route path="/blog" render={props => <BlogPage searchParams={props.location.search} />} />
 
                 {/* Default route */}
                 <Route render={() => <HomePage />} />
