@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-10-16T11:03:08.841Z\n"
-"PO-Revision-Date: 2024-10-16T11:03:08.841Z\n"
+"POT-Creation-Date: 2024-12-30T15:53:07.879Z\n"
+"PO-Revision-Date: 2024-12-30T15:53:07.879Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -146,6 +146,9 @@ msgstr ""
 msgid "Methods"
 msgstr ""
 
+msgid "Blog"
+msgstr ""
+
 msgid "Back"
 msgstr ""
 
@@ -184,6 +187,9 @@ msgstr[1] ""
 msgid "There may be no data"
 msgstr ""
 
+msgid "Read more"
+msgstr ""
+
 msgid "All years"
 msgstr ""
 
@@ -209,9 +215,6 @@ msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
 msgid "Latest available year"
-msgstr ""
-
-msgid "Read more"
 msgstr ""
 
 msgid "Read less"
