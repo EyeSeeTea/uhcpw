@@ -8,9 +8,3 @@ export type Post = {
     image: string;
     content: string;
 };
-
-export type PaginatedPosts = {
-    currentPage: number;
-    totalPages: number;
-    data: Post[];
-};

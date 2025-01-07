@@ -1,6 +1,7 @@
-import { PaginatedPosts, Post } from "../entities/blog/Post";
+import { Post } from "../entities/blog/Post";
 import { FutureData } from "../entities/Future";
 import { Id } from "../entities/Ref";
+import { PaginatedReponse, Pagination, Sorting } from "../entities/Pagination";
 
 export interface BlogFilters {
     searchTerm?: string;
@@ -8,6 +9,10 @@ export interface BlogFilters {
 }
 
 export interface BlogRepository {
-    get(page: number, filters: BlogFilters): FutureData<PaginatedPosts>;
+    get(params: {
+        paging: Pagination;
+        sorting?: Sorting<Post>;
+        filters?: BlogFilters;
+    }): FutureData<PaginatedReponse<Post>>;
     getById(id: Id): FutureData<Post>;
 }

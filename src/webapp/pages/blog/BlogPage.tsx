@@ -12,8 +12,6 @@ import { PostItem } from "./PostItem";
 import SearchInput from "../../components/search-input/SearchInput";
 import { BlogFilters } from "./BlogFilters";
 
-const DEFAULT_PAGE = 1;
-
 export const BlogPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
 
@@ -24,12 +22,10 @@ export const BlogPage: React.FC<{ searchParams?: string }> = React.memo(props =>
             filters: {
                 year: year ? year.split(",") : undefined,
             },
-            currentPage: searchParams.get("page") || "1",
         };
     }, [props.searchParams]);
 
-    const { blogState, filters, onGetBlogData, onGetBlogByPage, globalMessage } = useBlog({
-        currentPage: urlParams.currentPage ? parseInt(urlParams.currentPage) : DEFAULT_PAGE,
+    const { blogState, filters, onGetPosts, onGetPostsByPage, globalMessage } = useBlog({
         yearsFilter: urlParams.filters.year,
     });
 
@@ -58,13 +54,13 @@ export const BlogPage: React.FC<{ searchParams?: string }> = React.memo(props =>
                     </Backdrop>
                 ) : (
                     <BlogContainer maxWidth="xl">
-                        <BlogFilters filters={filters} onGetBlogData={onGetBlogData} />
+                        <BlogFilters filters={filters} onGetPosts={onGetPosts} />
 
                         <StyledGridContainer spacing={2} container direction="row">
-                            {blogState.data.paginatedPosts.data &&
-                                blogState.data.paginatedPosts.data.map((post, index) => {
+                            {blogState.data.paginatedPosts.objects &&
+                                blogState.data.paginatedPosts.objects.map((post, index) => {
                                     return (
-                                        <Grid key={index} item lg={4} md={6} xs={12}>
+                                        <Grid key={`${post.id}_${index}`} item lg={4} md={6} xs={12}>
                                             <PostItem
                                                 id={post.id}
                                                 title={post.title}
@@ -78,9 +74,9 @@ export const BlogPage: React.FC<{ searchParams?: string }> = React.memo(props =>
                         </StyledGridContainer>
 
                         <Pagination
-                            count={blogState.data.paginatedPosts.totalPages}
-                            page={blogState.data.paginatedPosts.currentPage}
-                            onChange={onGetBlogByPage}
+                            count={blogState.data.paginatedPosts.pager.pageCount}
+                            page={blogState.data.paginatedPosts.pager.page}
+                            onChange={onGetPostsByPage}
                             color="primary"
                         />
                     </BlogContainer>

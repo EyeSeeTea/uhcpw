@@ -6,7 +6,8 @@ import { customRenderWithRouterMatch } from "../../../../utils/tests-ui";
 import { BlogPage } from "../BlogPage";
 import { BlogD2Repository } from "../../../../data/repositories/BlogD2Repository";
 import { Future } from "../../../../domain/entities/Future";
-import { PaginatedPosts } from "../../../../domain/entities/blog/Post";
+import { Post } from "../../../../domain/entities/blog/Post";
+import { PaginatedReponse } from "../../../../domain/entities/Pagination";
 
 let blogRepository: BlogD2Repository;
 
@@ -30,13 +31,17 @@ function renderPage() {
     );
 }
 
-function givenPosts(): PaginatedPosts {
+function givenPosts(): PaginatedReponse<Post> {
     const mockedRepository = mock(BlogD2Repository);
 
-    const posts: PaginatedPosts = {
-        currentPage: 1,
-        totalPages: 5,
-        data: [
+    const posts: PaginatedReponse<Post> = {
+        pager: {
+            page: 1,
+            pageCount: 1,
+            total: 8,
+            pageSize: 9,
+        },
+        objects: [
             {
                 id: "QXXZpHYfIrj",
                 title: "Kosovo Test",
@@ -124,7 +129,7 @@ function givenPosts(): PaginatedPosts {
         ],
     };
 
-    when(mockedRepository.get(anything(), anything())).thenReturn(Future.success(posts));
+    when(mockedRepository.get(anything())).thenReturn(Future.success(posts));
 
     blogRepository = instance(mockedRepository);
 

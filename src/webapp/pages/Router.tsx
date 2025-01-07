@@ -11,6 +11,8 @@ import { MethodsPage } from "./methods/MethodsPage";
 import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPage";
 import { BlogPage } from "./blog/BlogPage";
 import { PostPage } from "./blog/PostPage";
+import { AdminBlogPage } from "./admin-blog/AdminBlogPage";
+import { EditPostPage } from "./admin-blog/EditPostPage";
 
 const ScrollToTop = (): JSX.Element | null => {
     const { pathname } = useLocation();
@@ -43,6 +45,10 @@ export const Router: React.FC = React.memo(() => {
 
                 <Route path="/blog/:id" render={() => <PostPage />} />
                 <Route path="/blog" render={props => <BlogPage searchParams={props.location.search} />} />
+
+                <Route path="/edit-blog/:id" render={() => <EditPostPage />} />
+                <Route path="/create-blog" render={() => <EditPostPage />} />
+                <Route path="/admin-blog" render={() => <AdminBlogPage />} />
 
                 {/* Default route */}
                 <Route render={() => <HomePage />} />

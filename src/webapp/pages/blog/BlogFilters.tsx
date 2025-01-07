@@ -8,11 +8,11 @@ import i18n from "../../../locales";
 
 export interface BlogFiltersProps {
     filters: BlogFiltersState;
-    onGetBlogData: () => void;
+    onGetPosts: () => void;
 }
 
 export const BlogFilters: React.FC<BlogFiltersProps> = React.memo(props => {
-    const { filters, onGetBlogData } = props;
+    const { filters, onGetPosts } = props;
 
     return (
         <Grid container spacing={2} direction="row" alignItems="flex-end" justifyContent="flex-end">
@@ -29,7 +29,7 @@ export const BlogFilters: React.FC<BlogFiltersProps> = React.memo(props => {
                 </Center>
             </Grid>
             <Grid item md={1} sm={3} xs={6}>
-                <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetBlogData}>
+                <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetPosts}>
                     <Typography>{i18n.t("Search")}</Typography>
                 </SearchButton>
             </Grid>

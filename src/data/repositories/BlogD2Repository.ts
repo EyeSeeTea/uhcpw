@@ -4,8 +4,9 @@ import { Future, FutureData } from "../../domain/entities/Future";
 import { D2Api } from "../../types/d2-api";
 import { apiToFuture } from "../../utils/futures";
 import { BlogFilters, BlogRepository } from "../../domain/repositories/BlogRepository";
-import { PaginatedPosts, Post } from "../../domain/entities/blog/Post";
+import { Post } from "../../domain/entities/blog/Post";
 import { Id } from "../../domain/entities/Ref";
+import { PaginatedReponse, Pagination, Sorting } from "../../domain/entities/Pagination";
 
 export const BLOG_DATA_ELEMENTS = {
     image: "uund7zjS1Yt",
@@ -17,12 +18,18 @@ export const BLOG_PROGRAM = "wWo0lhm5GsY";
 export class BlogD2Repository implements BlogRepository {
     constructor(private api: D2Api) {}
 
-    get(page: number, filters: BlogFilters): FutureData<PaginatedPosts> {
-        const filter = _([filters.searchTerm ? `${BLOG_DATA_ELEMENTS.title}:like:${filters.searchTerm}` : undefined])
+    get(params: {
+        paging: Pagination;
+        sorting?: Sorting<Post>;
+        filters?: BlogFilters;
+    }): FutureData<PaginatedReponse<Post>> {
+        const { paging, sorting, filters } = params;
+
+        const filter = _([filters?.searchTerm ? `${BLOG_DATA_ELEMENTS.title}:like:${filters.searchTerm}` : undefined])
             .compact()
             .join(",");
 
-        const years = filters.years?.sort();
+        const years = filters?.years?.sort();
         const startYear = years ? years[0] : undefined;
         const endYear = years ? years[years.length - 1] : undefined;
 
@@ -30,16 +37,21 @@ export class BlogD2Repository implements BlogRepository {
             this.api.events.get({
                 fields: eventsFields,
                 program: BLOG_PROGRAM,
-                order: "eventDate:desc",
+                order: sorting ? `${sorting.field}:${sorting.order}` : "eventDate:desc",
                 startDate: startYear ? `${startYear}-01-01` : undefined,
                 endDate: endYear ? `${endYear}-12-31` : undefined,
                 filter: filter,
                 totalPages: true,
-                page: page,
-                pageSize: 9,
+                page: paging.page,
+                pageSize: paging.pageSize,
             })
-        ).map((response: PaginatedD2Event) => {
-            return this.buildPaginatedPosts(response);
+        ).map(response => {
+            const posts: Post[] = response.events.map(event => this.buildPost(event));
+
+            return {
+                pager: response.pager,
+                objects: posts,
+            };
         });
     }
 
@@ -85,16 +97,6 @@ Este es un ejemplo de **Markdown** con _React_.
             date: new Date(event.eventDate),
         };
     }
-
-    private buildPaginatedPosts(paginatedD2Events: PaginatedD2Event): PaginatedPosts {
-        const posts: Post[] = paginatedD2Events.events.map(event => this.buildPost(event));
-
-        return {
-            currentPage: paginatedD2Events.pager.page,
-            totalPages: paginatedD2Events.pager.pageCount,
-            data: posts,
-        };
-    }
 }
 
 const eventsFields = {
@@ -107,16 +109,6 @@ interface D2Event {
     event: string;
     dataValues: DataValue[];
     eventDate: string;
-}
-
-interface PaginatedD2Event {
-    events: D2Event[];
-    pager: {
-        page: number;
-        pageCount: number;
-        pageSize: number;
-        total: number;
-    };
 }
 
 interface DataValue {

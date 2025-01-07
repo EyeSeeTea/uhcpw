@@ -1,36 +1,22 @@
 import { useCallback, useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
 
 import { useAppContext } from "../../contexts/app-context";
 import { Maybe } from "../../../types/utils";
 import i18n from "../../../locales";
-import { Id } from "../../../domain/entities/Ref";
 import { BlogFiltersState, useBlogFilters } from "./useBlogFilter";
-import { PaginatedPosts, Post } from "../../../domain/entities/blog/Post";
+import { Post } from "../../../domain/entities/blog/Post";
+import { PaginatedReponse, Pagination } from "../../../domain/entities/Pagination";
 
 type State = {
     blogState: BlogLoadState;
     globalMessage: Maybe<GlobalMessage>;
     filters: BlogFiltersState;
-    onGetBlogData: () => void;
-    onGetBlogByPage: (_event: React.ChangeEvent<unknown>, page: number) => void;
-};
-
-type PostState = {
-    id: Id;
-    title: string;
-    description: string;
-    date: Date;
-    image: string;
-    content: string;
+    onGetPosts: () => void;
+    onGetPostsByPage: (_event: React.ChangeEvent<unknown>, page: number) => void;
 };
 
 type BlogState = {
-    paginatedPosts: {
-        currentPage: number;
-        totalPages: number;
-        data: PostState[];
-    };
+    paginatedPosts: PaginatedReponse<Post>;
 };
 
 export type GlobalMessage = {
@@ -54,91 +40,82 @@ export type BlogStateError = {
 
 export type BlogLoadState = BlogStateLoaded | BlogStateLoading | BlogStateError;
 
-export function useBlog({ yearsFilter, currentPage }: { yearsFilter?: string[]; currentPage: number }): State {
+const PAGE_SIZE = 9;
+const INITIAL_PAGINATION: Pagination = {
+    page: 1,
+    pageSize: PAGE_SIZE,
+    total: 0,
+};
+
+export function useBlog({ yearsFilter }: { yearsFilter?: string[] }): State {
     const { compositionRoot } = useAppContext();
-    const history = useHistory();
-    const location = useLocation();
 
     const filters = useBlogFilters({ yearsFilter });
 
     const [blogState, setBlogState] = useState<BlogLoadState>({ kind: "loading" });
     const [globalMessage, setGlobalMessage] = useState<Maybe<GlobalMessage>>();
 
-    const onGetBlogData = useCallback(
-        (page?: number) => {
+    const onGetPosts = useCallback(
+        (paging?: Pagination) => {
             setBlogState({
                 kind: "loading",
             });
-            const cancel = compositionRoot.blog.get
-                .execute(page || currentPage, {
+
+            const params = {
+                paging: paging || INITIAL_PAGINATION,
+                filters: {
                     searchTerm: filters.search.term,
                     years: filters.year.selected,
-                })
-                .run(
-                    (paginatedPosts: PaginatedPosts) => {
-                        setBlogState({
-                            kind: "loaded",
-                            data: {
-                                paginatedPosts: {
-                                    currentPage: paginatedPosts.currentPage,
-                                    totalPages: paginatedPosts.totalPages,
-                                    data: paginatedPosts.data.map(mapPostToPostState),
-                                },
-                            },
-                        });
-                    },
-                    error => {
-                        console.error(error);
-                        setBlogState({
-                            kind: "error",
-                            message: i18n.t(`Error loading blog: ${error}`),
-                        });
-                        setGlobalMessage({
-                            text: i18n.t(`Error loading blog: ${error}`),
-                            type: "error",
-                        });
-                    }
-                );
+                },
+            };
+
+            const cancel = compositionRoot.blog.get.execute(params).run(
+                paginatedPosts => {
+                    setBlogState({
+                        kind: "loaded",
+                        data: {
+                            paginatedPosts: paginatedPosts,
+                        },
+                    });
+                },
+                error => {
+                    console.error(error);
+                    setBlogState({
+                        kind: "error",
+                        message: i18n.t(`Error loading blog: ${error}`),
+                    });
+                    setGlobalMessage({
+                        text: i18n.t(`Error loading blog: ${error}`),
+                        type: "error",
+                    });
+                }
+            );
 
             return cancel;
         },
-        [compositionRoot.blog.get, currentPage, filters.search.term, filters.year.selected]
+        [compositionRoot.blog.get, filters.search.term, filters.year.selected]
     );
 
-    const onGetBlogByPage = useCallback(
+    const onGetPostsByPage = useCallback(
         (_event: React.ChangeEvent<unknown>, page: number) => {
-            const queryParameters = new URLSearchParams(location.search);
-
-            if (page) {
-                queryParameters.set("page", page.toString());
-            } else {
-                queryParameters.delete("page");
+            if (blogState.kind === "loaded") {
+                onGetPosts({
+                    page: page,
+                    pageSize: blogState.data.paginatedPosts.pager.pageSize,
+                    total: blogState.data.paginatedPosts.pager.total,
+                });
             }
-
-            history.push({ search: queryParameters.toString() });
-            onGetBlogData(page);
         },
-        [history, location.search, onGetBlogData]
+        [blogState, onGetPosts]
     );
 
-    useEffect(() => onGetBlogData(), [onGetBlogData]);
+    useEffect(() => onGetPosts(), [onGetPosts]);
 
     return {
         blogState: blogState,
         globalMessage: globalMessage,
         filters: filters,
-        onGetBlogData: onGetBlogData,
-        onGetBlogByPage: onGetBlogByPage,
-    };
-}
-
-function mapPostToPostState(post: Post): PostState {
-    return {
-        id: post.id,
-        title: post.title,
-        description: post.description,
-        date: post.date,
-        image: post.image,
-        content: post.content,
+        onGetPosts: onGetPosts,
+        onGetPostsByPage: onGetPostsByPage,
     };
 }
