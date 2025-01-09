@@ -7,6 +7,9 @@ import { BlogD2Repository } from "../../../../data/repositories/BlogD2Repository
 import { Future } from "../../../../domain/entities/Future";
 import { Post } from "../../../../domain/entities/blog/Post";
 import { PostPage } from "../PostPage";
+import moment from "moment";
+
+const DATE_FORMAT = "DD MMMM YYYY";
 
 let blogRepository: BlogD2Repository;
 
@@ -46,7 +49,8 @@ function givenAPost(): Post {
         title: "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary.",
         description:
             "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary.",
-        date: new Date("2024-06-16T22:00:00.000Z"),
+        createdDate: "2024-06-16T22:00:00.000Z",
+        updatedDate: "2024-06-16T22:00:00.000Z",
         image: "/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=qgw0lMQo87H",
         content:
             "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=qgw0lMQo87H)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -62,7 +66,7 @@ async function verifyPost(post: Post) {
     await waitFor(() => {
         expect(screen.getByText(post.title)).toBeInTheDocument();
         expect(screen.getByText(post.description)).toBeInTheDocument();
-        expect(screen.getByText(post.date.toDateString())).toBeInTheDocument();
+        expect(screen.getByText(moment(post.createdDate).format(DATE_FORMAT))).toBeInTheDocument();
         expect(screen.getByAltText(post.title)).toBeInTheDocument();
         expect(screen.getByText(post.content)).toBeInTheDocument();
     });
