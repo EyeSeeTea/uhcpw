@@ -15,7 +15,8 @@ type PostState = {
     id: Id;
     title: string;
     description: string;
-    date: Date;
+    createdDate: string;
+    updatedDate: string;
     image: string;
     content: string;
 };
@@ -80,7 +81,8 @@ function mapPostToPostState(post: Post): PostState {
         id: post.id,
         title: post.title,
         description: post.description,
-        date: post.date,
+        createdDate: post.createdDate,
+        updatedDate: post.updatedDate,
         image: post.image,
         content: post.content,
     };

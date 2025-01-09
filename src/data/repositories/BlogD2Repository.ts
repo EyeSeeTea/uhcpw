@@ -8,9 +8,12 @@ import { Post } from "../../domain/entities/blog/Post";
 import { Id } from "../../domain/entities/Ref";
 import { PaginatedReponse, Pagination, Sorting } from "../../domain/entities/Pagination";
 
+// TODO: Add correct Blog Ids, now it uses Resources Ids
 export const BLOG_DATA_ELEMENTS = {
     image: "uund7zjS1Yt",
     title: "iBxOUseHUtO",
+    content: "iBxOUseHUtO",
+    description: "iBxOUseHUtO",
 } as const;
 
 export const BLOG_PROGRAM = "wWo0lhm5GsY";
@@ -67,10 +70,21 @@ export class BlogD2Repository implements BlogRepository {
         });
     }
 
-    private buildPost(event: D2Event): Post {
-        const title = event.dataValues.find(dv => dv.dataElement === BLOG_DATA_ELEMENTS.title)?.value || "";
-        const image = event.dataValues.find(dv => dv.dataElement === BLOG_DATA_ELEMENTS.image)?.value;
-        const markdownContent = `
+    private buildPost(d2Event: D2Event): Post {
+        const id = d2Event.event;
+        const createdDateString = d2Event.eventDate;
+        const updatedDateString = d2Event.lastUpdated;
+
+        const title = d2Event.dataValues.find(dv => dv.dataElement === BLOG_DATA_ELEMENTS.title)?.value || "Title test";
+        const image =
+            d2Event.dataValues.find(dv => dv.dataElement === BLOG_DATA_ELEMENTS.image)?.value ||
+            "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp";
+
+        const description =
+            d2Event.dataValues.find(dv => dv.dataElement === BLOG_DATA_ELEMENTS.description)?.value ||
+            "Description test";
+
+        const markdownContentTest = `
 # Título en Markdown
 ## Subtítulo
 Este es un ejemplo de **Markdown** con _React_.
@@ -79,22 +93,24 @@ Este es un ejemplo de **Markdown** con _React_.
 - Elemento de lista 2
 - Elemento de lista 3
 
-![React Logo](${this.api.baseUrl}/api/events/files?dataElementUid=${BLOG_DATA_ELEMENTS.image}&eventUid=${event.event})
-
 > Esto es una cita en Markdown.
 
 [Enlace a GitHub](https://github.com)
 
 `;
+        const content =
+            d2Event.dataValues.find(dv => dv.dataElement === BLOG_DATA_ELEMENTS.content)?.value || markdownContentTest;
+
         return {
-            id: event.event,
+            id: id,
             title: title,
-            description: title,
-            content: markdownContent,
+            description: description,
+            content: content,
             image: image
-                ? `${this.api.baseUrl}/api/events/files?dataElementUid=${BLOG_DATA_ELEMENTS.image}&eventUid=${event.event}`
+                ? `${this.api.baseUrl}/api/events/files?dataElementUid=${BLOG_DATA_ELEMENTS.image}&eventUid=${id}`
                 : "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
-            date: new Date(event.eventDate),
+            createdDate: createdDateString,
+            updatedDate: updatedDateString,
         };
     }
 }
@@ -103,12 +119,14 @@ const eventsFields = {
     event: true,
     dataValues: { dataElement: true, value: true },
     eventDate: true,
+    lastUpdated: true,
 } as const;
 
 interface D2Event {
     event: string;
     dataValues: DataValue[];
     eventDate: string;
+    lastUpdated: string;
 }
 
 interface DataValue {

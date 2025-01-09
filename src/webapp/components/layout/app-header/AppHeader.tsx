@@ -189,14 +189,6 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             className={classes.menu}
                             activeClassName={classes.menuActive}
                             component={NavLink}
-                            to={"/admin-blog"}
-                        >
-                            {i18n.t("Admin blog")}
-                        </Button>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
                             to={"/about"}
                         >
                             {i18n.t("About us")}

@@ -46,7 +46,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 id: "QXXZpHYfIrj",
                 title: "Kosovo Test",
                 description: "Kosovo Test",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=QXXZpHYfIrj)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -55,7 +56,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 id: "TkKXRdXAb3N",
                 title: "Bosnia and Herzegovina",
                 description: "Bosnia and Herzegovina",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=TkKXRdXAb3N)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -65,7 +67,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 title: "Test!! Can people afford to pay for health care? New evidence on financial protection in Europe: summary",
                 description:
                     "Test!! Can people afford to pay for health care? New evidence on financial protection in Europe: summary",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ESI1B0zxHfk",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ESI1B0zxHfk)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -75,7 +78,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 title: "New WHO report outlines concrete steps to make health care more accessible for people in Ukraine",
                 description:
                     "New WHO report outlines concrete steps to make health care more accessible for people in Ukraine",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ckY8Z4ZmTDe",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ckY8Z4ZmTDe)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -85,7 +89,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 title: "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary.",
                 description:
                     "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary.",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=qgw0lMQo87H",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=qgw0lMQo87H)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -94,7 +99,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 id: "FjIHUs5IwOu",
                 title: "Budget execution in health: case study: Ukraine",
                 description: "Budget execution in health: case study: Ukraine",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=FjIHUs5IwOu)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -103,7 +109,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 id: "kAn748TgALi",
                 title: "WHO/Europe supports countries to improve quality of data on health spending",
                 description: "WHO/Europe supports countries to improve quality of data on health spending",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=kAn748TgALi)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -112,7 +119,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 id: "AMNmHHBpedc",
                 title: "WHO and partners highlight way forward to improve health equity across North Macedonia",
                 description: "WHO and partners highlight way forward to improve health equity across North Macedonia",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=AMNmHHBpedc)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",
@@ -121,7 +129,8 @@ function givenPosts(): PaginatedReponse<Post> {
                 id: "lxQWoDTZVRl",
                 title: "WHO and partners highlight way forward to improve health equity across North Macedonia",
                 description: "WHO and partners highlight way forward to improve health equity across North Macedonia",
-                date: new Date("2024-06-16T22:00:00.000Z"),
+                createdDate: "2024-06-16T22:00:00.000Z",
+                updatedDate: "2024-06-16T22:00:00.000Z",
                 image: "/dhis2/api/events/files?dataElementUid=fIrafA0Qbh3&eventUid=losyBXc2SGp",
                 content:
                     "\n# Título en Markdown\n## Subtítulo\nEste es un ejemplo de **Markdown** con _React_.\n\n- Elemento de lista 1\n- Elemento de lista 2\n- Elemento de lista 3\n\n![React Logo](/dhis2/api/events/files?dataElementUid=uund7zjS1Yt&eventUid=lxQWoDTZVRl)\n\n> Esto es una cita en Markdown.\n\n[Enlace a GitHub](https://github.com)\n\n",

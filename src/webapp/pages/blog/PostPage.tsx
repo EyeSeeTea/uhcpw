@@ -76,7 +76,7 @@ export const PostPage: React.FC = React.memo(() => {
                 <PostContainer>
                     <Image src={postState.data.image} alt={postState.data.title} />
 
-                    <TextDate gutterBottom>{moment(postState.data.date).format(DATE_FORMAT)}</TextDate>
+                    <TextDate gutterBottom>{moment(postState.data.createdDate).format(DATE_FORMAT)}</TextDate>
 
                     <PostTitle variant="h5">{postState.data.title}</PostTitle>
 

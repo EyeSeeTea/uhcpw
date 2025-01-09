@@ -12,21 +12,21 @@ export type PostItemProps = {
     title: string;
     description?: string;
     image?: string;
-    date: Date;
+    createdDate: string;
     fullWidth?: boolean;
 };
 
 const DATE_FORMAT = "DD MMMM YYYY";
 
 export const PostItem: React.FC<PostItemProps> = React.memo(props => {
-    const { id, title, description, image, date, fullWidth = true } = props;
+    const { id, title, description, image, createdDate, fullWidth = true } = props;
 
     return (
         <Item elevation={0} role="listitem">
             <Column>
                 <Image src={image} alt={title} $fullWidth={fullWidth} />
 
-                <TextDate gutterBottom>{moment(date).format(DATE_FORMAT)}</TextDate>
+                <TextDate gutterBottom>{moment(createdDate).format(DATE_FORMAT)}</TextDate>
 
                 <Title>{title}</Title>
 

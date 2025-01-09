@@ -66,7 +66,7 @@ export const BlogPage: React.FC<{ searchParams?: string }> = React.memo(props =>
                                                 title={post.title}
                                                 description={post.description}
                                                 image={post.image}
-                                                date={post.date}
+                                                createdDate={post.createdDate}
                                             />
                                         </Grid>
                                     );
