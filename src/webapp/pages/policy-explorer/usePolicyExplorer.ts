@@ -21,6 +21,7 @@ import {
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../../../data/repositories/countries/CountryD2Repository";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
@@ -48,6 +49,8 @@ export function usePolicyExplorer({
     yearsFilter?: string[];
 }): PolicyExplorerState {
     const { compositionRoot, countriesAndRegions } = useAppContext();
+    const { sendEvent } = useAnalytics();
+
     const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter, showSubRegions: true });
     const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -198,12 +201,15 @@ export function usePolicyExplorer({
         const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
         const data = getInitialDataByTable(initialDataByTable, categoriesIds);
         if (!data) return;
+
+        sendEvent({ name: "file_download", pageTitle: "Policy Explorer", contentType: "csv" });
         compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
     }, [
-        policyExplorerCategories,
-        compositionRoot.policyExplorer.download,
         initialDataByTable,
         selectedCategoriesWithSubcategoriesFilter,
+        sendEvent,
+        compositionRoot.policyExplorer.download,
+        policyExplorerCategories,
     ]);
 
     return {

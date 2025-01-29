@@ -15,6 +15,7 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -68,9 +69,14 @@ interface AppHeaderProps {
 
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
+    const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
     const { regionalReport, anchorEl, isHomePage, goToHome, handleCountryClick, handleClose, handleSetAnchorEl } =
         useAppHeader();
+
+    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
+    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
+    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
         <div className={classes.root}>
@@ -83,10 +89,14 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
                         </Tag>
                     </TagContainer>
-                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/abbreviations">
+                    <MenuTopLink
+                        target="_blank"
+                        href="https://cmyn.short.gy/abbreviations"
+                        onClick={abbreviationsPageView}
+                    >
                         {i18n.t("Abbreviations")}
                     </MenuTopLink>
-                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary">
+                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
                         {i18n.t("Glossary")}
                     </MenuTopLink>
                 </Toolbar>
@@ -158,7 +168,13 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                                 );
                             })}
                         </Menu>
-                        <MenuTopLink id="regions" aria-controls="regions" target="_blank" href={regionalReport}>
+                        <MenuTopLink
+                            id="regions"
+                            aria-controls="regions"
+                            target="_blank"
+                            href={regionalReport}
+                            onClick={regionalReportPageView}
+                        >
                             {i18n.t("Regional report")}
                         </MenuTopLink>
                         <Button

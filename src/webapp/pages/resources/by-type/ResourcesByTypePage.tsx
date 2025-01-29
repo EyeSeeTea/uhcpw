@@ -9,10 +9,13 @@ import SearchInput from "../../../components/search-input/SearchInput";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const history = useHistory();
+    const { sendEvent } = useAnalytics();
     const { category } = useParams<{ category: string }>();
+
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
 
@@ -34,6 +37,10 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     const disabledCountryFilter = useMemo(() => {
         return category === "news" || category === "multimedia";
     }, [category]);
+
+    React.useEffect(() => {
+        sendEvent({ name: "resource_kind_page_view", pageTitle: "Resources", category: category });
+    }, [sendEvent, category]);
 
     return (
         <Layout>
@@ -58,7 +65,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
 
                                     return (
                                         <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
-                                            <ResourceItem resource={item} />
+                                            <ResourceItem resource={item} analyticsPageTitle="Resources" />
                                         </Grid>
                                     );
                                 })}

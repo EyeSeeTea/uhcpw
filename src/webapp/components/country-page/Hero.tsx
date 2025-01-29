@@ -73,6 +73,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         useHeaderForCountryPage
                         onDownloadImage={handleOpenScreenshot}
                         paddingEnd={false}
+                        analyticsEventTitle="Country page"
                     />
                 </VisualizationContainer>
 
@@ -82,6 +83,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     title={CHART_1_SCATTER_VISUALIZATION_NAME || ""}
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={true}
+                    analyticsEventTitle="Country page"
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
@@ -93,6 +95,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         useHeaderForCountryPage
                         isScreenshot={true}
                         isSquareChart={true}
+                        analyticsEventTitle="Country page"
                     />
                 </ScreenshotModal>
             </GraphGrid>

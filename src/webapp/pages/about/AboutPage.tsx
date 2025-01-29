@@ -9,9 +9,15 @@ import { Team } from "../../components/about/team/Team";
 import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
 import { useAbout } from "./useAbout";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const AboutPage: React.FC = React.memo(() => {
     const { team, experts, countryFilter, officeInfo } = useAbout();
+    const { sendPageView } = useAnalytics();
+
+    React.useEffect(() => {
+        sendPageView({ title: "About us" });
+    }, [sendPageView]);
 
     return (
         <Layout>

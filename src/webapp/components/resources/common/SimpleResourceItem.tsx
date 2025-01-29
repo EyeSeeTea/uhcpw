@@ -17,6 +17,7 @@ export interface SimpleResourceItemProps {
     onTagClick?: () => void;
     maintainAspectRatio?: boolean;
     fullWidth?: boolean;
+    redirectWithEvent: (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 }
 
 export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
@@ -30,6 +31,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         tag,
         tagColor,
         onTagClick,
+        redirectWithEvent,
         maintainAspectRatio = false,
         fullWidth = true,
     }) => {
@@ -44,7 +46,13 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         return (
             <Item elevation={0} role="listitem">
                 <Column>
-                    <a href={url} style={{ width: "100%" }} target="_blank" rel="noreferrer">
+                    <a
+                        href={url}
+                        style={{ width: "100%" }}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={redirectWithEvent}
+                    >
                         <Image
                             src={imgSrc || fallbackImage}
                             onError={handleImageError}
@@ -60,7 +68,13 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
 
                         <Text gutterBottom>{moment(date).format(dateFormat || "YYYY")}</Text>
                     </Row>
-                    <a href={url} style={{ textDecoration: "none", color: "black" }} target="_blank" rel="noreferrer">
+                    <a
+                        href={url}
+                        style={{ textDecoration: "none", color: "black" }}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={redirectWithEvent}
+                    >
                         <Text>{title}</Text>
                     </a>
                 </Column>

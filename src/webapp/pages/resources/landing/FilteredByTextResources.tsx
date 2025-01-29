@@ -16,7 +16,7 @@ export const FilteredByTextResources: React.FC<{ resources: FilteredByTextResour
                     <ResourceGroup title={i18n.t("Country or area analysis")} seeAllUrl={"/resources/country-analysis"}>
                         {resources.countryAnalysis.map(countryAnalysis => (
                             <StyledGrid key={countryAnalysis.id} item lg={2} md={3} xs={6}>
-                                <ResourceItem resource={countryAnalysis} />
+                                <ResourceItem resource={countryAnalysis} analyticsPageTitle="Resources" />
                             </StyledGrid>
                         ))}
                     </ResourceGroup>
@@ -27,7 +27,7 @@ export const FilteredByTextResources: React.FC<{ resources: FilteredByTextResour
                     <ResourceGroup title={i18n.t("Comparative analysis")} seeAllUrl={"/resources/comparative-analysis"}>
                         {resources.comparativeAnalysis.map(comparativeItem => (
                             <StyledGrid key={comparativeItem.id} item lg={2} md={3} xs={6}>
-                                <ResourceItem resource={comparativeItem} />
+                                <ResourceItem resource={comparativeItem} analyticsPageTitle="Resources" />
                             </StyledGrid>
                         ))}
                     </ResourceGroup>
@@ -38,7 +38,10 @@ export const FilteredByTextResources: React.FC<{ resources: FilteredByTextResour
                     <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
                         {resources.multimedia.map(multimediaItem => (
                             <StyledGrid key={multimediaItem.id} item lg={4} md={6} xs={12}>
-                                <ResourceItem resource={multimediaItem as MultimediaState} />
+                                <ResourceItem
+                                    resource={multimediaItem as MultimediaState}
+                                    analyticsPageTitle="Resources"
+                                />
                             </StyledGrid>
                         ))}
                     </ResourceGroup>
@@ -49,7 +52,7 @@ export const FilteredByTextResources: React.FC<{ resources: FilteredByTextResour
                     <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"}>
                         {resources.news.map(newsItem => (
                             <StyledGrid key={newsItem.id} item lg={4} md={6} xs={12}>
-                                <ResourceItem resource={newsItem} />
+                                <ResourceItem resource={newsItem} analyticsPageTitle="Resources" />
                             </StyledGrid>
                         ))}
                     </ResourceGroup>
