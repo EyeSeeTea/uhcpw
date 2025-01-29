@@ -8,6 +8,8 @@ import { useMethods } from "./useMethods";
 import ReactMarkdown from "react-markdown";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import React from "react";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
@@ -45,12 +47,20 @@ const MarkdownLink: React.FC<{
 
 export const MethodsPage: React.FC = () => {
     const { methods, isExpanded, setExpanded } = useMethods();
+    const { sendPageView, redirectWithPageView } = useAnalytics();
 
     const handleClick = (index: number) => {
         const updatedExpanded = [...isExpanded];
         updatedExpanded[index] = !updatedExpanded[index];
         setExpanded(updatedExpanded);
     };
+
+    React.useEffect(() => {
+        sendPageView({ title: "Methods" });
+    }, [sendPageView]);
+
+    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
+    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
 
     return (
         <Layout>
@@ -82,10 +92,14 @@ export const MethodsPage: React.FC = () => {
                         </Grid>
                     ))}
                     <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
-                        <DownloadLink target="_blank" href="https://cmyn.short.gy/abbreviations">
+                        <DownloadLink
+                            target="_blank"
+                            href="https://cmyn.short.gy/abbreviations"
+                            onClick={abbreviationsPageView}
+                        >
                             {i18n.t("Abbreviations")}
                         </DownloadLink>
-                        <DownloadLink target="_blank" href="https://cmyn.short.gy/glossary">
+                        <DownloadLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
                             {i18n.t("Glossary")}
                         </DownloadLink>
                     </ButtonsGridItem>

@@ -5,6 +5,7 @@ import _ from "lodash";
 import styled from "styled-components";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import i18n from "../../../locales";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 interface ScreenshotModalProps {
     open?: boolean;
@@ -15,6 +16,7 @@ interface ScreenshotModalProps {
     exclusionClasses?: string[];
     hideTitle?: boolean;
     isSquareChart?: boolean;
+    analyticsEventTitle: string;
 }
 
 function ScreenshotModal({
@@ -26,14 +28,18 @@ function ScreenshotModal({
     children,
     hideTitle = true,
     isSquareChart = false,
+    analyticsEventTitle,
 }: ScreenshotModalProps) {
     const ref = useRef<HTMLDivElement>(null);
+
+    const { sendEvent } = useAnalytics();
 
     const handleDownload = useCallback(() => {
         if (ref.current) {
             downloadHtmlElement(ref.current, title.replace(".", "_"), { backgroundColor, exclusionClasses });
+            sendEvent({ name: "file_download", pageTitle: analyticsEventTitle, contentType: "image" });
         }
-    }, [backgroundColor, exclusionClasses, title]);
+    }, [analyticsEventTitle, backgroundColor, exclusionClasses, sendEvent, title]);
 
     return (
         <StyledModal

@@ -12,10 +12,14 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
-    const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
     const snackbar = useSnackbar();
+
+    const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
+    const { sendPageView } = useAnalytics();
+
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
     useEffect(() => {
@@ -29,6 +33,10 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             snackbar.success(globalMessage?.text);
         }
     }, [globalMessage, snackbar]);
+
+    useEffect(() => {
+        sendPageView({ title: "Indicator explorer" });
+    }, [sendPageView]);
 
     const handleOpenScreenshot = React.useCallback(() => {
         setOpenScreenshot(true);
@@ -61,6 +69,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         noDataMessage={pageContent?.noDataMessage}
                         onDownloadImage={handleOpenScreenshot}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
+                        analyticsEventTitle="Indicator explorer"
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
@@ -72,6 +81,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     title={chartName}
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
+                    analyticsEventTitle="Indicator explorer"
                 >
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}
@@ -81,6 +91,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         isScreenshot={true}
                         withoutBackground
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
+                        analyticsEventTitle="Indicator explorer"
                     />
                 </ScreenshotModal>
             </MainSection>

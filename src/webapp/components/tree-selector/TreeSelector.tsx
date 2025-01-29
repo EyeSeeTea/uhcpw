@@ -104,7 +104,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         : undefined;
 
                 if (item.name.toLowerCase().includes(searchTerm.toLowerCase()) || filteredItemChildren?.length) {
-                    // When searching Federation of Bosnia and Herzegovina return also Republik Srpska
+                    // When searching the Federation of Bosnia and Herzegovina return also the Republika Srpska
                     const itemChildren =
                         item.id === BOSNIA_AND_HERZEGOVINA_LEVEL_4 &&
                         _(filteredItemChildren).some({ id: FEDERACIJA_BOSNE_I_HERCEGOVINE })

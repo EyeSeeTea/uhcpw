@@ -21,9 +21,12 @@ import {
     PolicyExplorerCellType,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
+
+    const { sendPageView } = useAnalytics();
 
     const referencesRef = useRef<HTMLDivElement>(null);
 
@@ -57,6 +60,10 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         categories: filterInParams.category,
         yearsFilter: filterInParams.year,
     });
+
+    useEffect(() => {
+        sendPageView({ title: "Policy explorer" });
+    }, [sendPageView]);
 
     useEffect(() => {
         if (errorMessage) {

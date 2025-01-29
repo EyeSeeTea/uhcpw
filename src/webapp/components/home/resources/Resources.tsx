@@ -1,12 +1,12 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { SectionHeader } from "../section-header/SectionHeader";
 import i18n from "../../../../locales";
 import styled from "styled-components";
-import { Resource } from "../../../../domain/entities/resources/Resource";
 import { SimpleResourceItem } from "../../resources/common/SimpleResourceItem";
 import { ResourceState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { Grid } from "@material-ui/core";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export interface ResourcesProps {
     resources?: ResourceState[];
@@ -41,8 +41,48 @@ export const Resources: React.FC<ResourcesProps> = ({ resources }) => {
     );
 };
 
-const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => void }> = React.memo(
+const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) => void }> = React.memo(
     ({ resource, handleOnTagClick }) => {
+        const { redirectWithEvent } = useAnalytics();
+
+        const analyticsEvent = useMemo(() => {
+            const common = {
+                name: "resource" as const,
+                pageTitle: "Homepage",
+                year: resource.date.getFullYear(),
+                resourceName: resource.title,
+                category: resource.kind,
+            };
+
+            switch (resource.kind) {
+                case "comparative-analysis":
+                    return redirectWithEvent({
+                        ...common,
+                        theme: resource.themeName,
+                        language: resource.links[0]?.language,
+                    });
+                case "country-analysis":
+                    return redirectWithEvent({
+                        ...common,
+                        theme: resource.themeName,
+                        country: resource.countryName,
+                        language: resource.links[0]?.language,
+                    });
+                case "news":
+                    return redirectWithEvent(common);
+                case "multimedia":
+                    return redirectWithEvent({
+                        ...common,
+                        theme: resource.themeName,
+                    });
+            }
+        }, [redirectWithEvent, resource]);
+
+        const goToCategory = useCallback(
+            () => handleOnTagClick(`/resources/${resource.kind}`),
+            [handleOnTagClick, resource.kind]
+        );
+
         switch (resource.kind) {
             case "comparative-analysis":
                 return (
@@ -52,8 +92,9 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
+                        redirectWithEvent={analyticsEvent}
                         tag={i18n.t("Comparative analysis")}
-                        onTagClick={() => handleOnTagClick("/resources/comparative-analysis")}
+                        onTagClick={goToCategory}
                         maintainAspectRatio
                     />
                 );
@@ -65,8 +106,9 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
+                        redirectWithEvent={analyticsEvent}
                         tag={i18n.t("Country or area analysis")}
-                        onTagClick={() => handleOnTagClick("/resources/country-analysis")}
+                        onTagClick={goToCategory}
                         maintainAspectRatio
                     />
                 );
@@ -78,8 +120,9 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
+                        redirectWithEvent={analyticsEvent}
                         tag={i18n.t("News")}
-                        onTagClick={() => handleOnTagClick("/resources/news")}
+                        onTagClick={goToCategory}
                         maintainAspectRatio
                     />
                 );
@@ -91,8 +134,9 @@ const Item: React.FC<{ resource: Resource; handleOnTagClick: (url: string) => vo
                         image={resource.imageOriginal}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
+                        redirectWithEvent={analyticsEvent}
                         tag={i18n.t("Multimedia")}
-                        onTagClick={() => handleOnTagClick("/resources/multimedia")}
+                        onTagClick={goToCategory}
                         maintainAspectRatio
                     />
                 );
