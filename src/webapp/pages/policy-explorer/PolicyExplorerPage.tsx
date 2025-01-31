@@ -19,9 +19,11 @@ import {
     DataOrientation,
     PolicyExplorerCell,
     PolicyExplorerCellType,
+    PolicyExplorerGeneralInfo,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { isObjectEmpty } from "../../utils/objectUtil";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
@@ -119,6 +121,10 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         []
     );
 
+    const checkIfCountryHasReferences = useCallback((info: PolicyExplorerGeneralInfo) => {
+        return !isObjectEmpty(info, { excludeProps: ["year", "country"] });
+    }, []);
+
     return (
         <Layout>
             <TitleContainer>
@@ -162,7 +168,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                 )}
 
                 <div ref={referencesRef}>
-                    {data?.generalInfo.map(info => {
+                    {data?.generalInfo.filter(checkIfCountryHasReferences).map(info => {
                         return (
                             <div key={info.country}>
                                 <GeneralDataContainer>
