@@ -139,19 +139,18 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         );
 
         const formattedReferences = data
-            ? data.generalInfo.map(info => {
-                  return {
-                      ...info,
-                      lastUpdate: moment(info.lastUpdate).isValid() ? moment(info.lastUpdate) : undefined,
-                      references: getCleanReferencesByCountry(info.country),
-                      hasData: countriesWithData.includes(info.country),
-                  };
-              })
+            ? data.generalInfo
+                  .filter(info => countriesWithData.includes(info.country))
+                  .map(info => {
+                      return {
+                          ...info,
+                          lastUpdate: moment(info.lastUpdate).isValid() ? moment(info.lastUpdate) : undefined,
+                          references: getCleanReferencesByCountry(info.country),
+                      };
+                  })
             : [];
 
-        return formattedReferences.filter(
-            info => !isObjectEmpty(info, { excludeProps: ["year", "country"] }) && info.hasData
-        );
+        return formattedReferences.filter(info => !isObjectEmpty(info, { excludeProps: ["year", "country"] }));
     }, [categories, dataOrientationByTable, data, getCleanReferencesByCountry]);
 
     return (
