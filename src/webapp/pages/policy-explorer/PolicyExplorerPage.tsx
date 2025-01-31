@@ -19,7 +19,6 @@ import {
     DataOrientation,
     PolicyExplorerCell,
     PolicyExplorerCellType,
-    PolicyExplorerGeneralInfo,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
@@ -121,9 +120,39 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         []
     );
 
-    const checkIfCountryHasReferences = useCallback((info: PolicyExplorerGeneralInfo) => {
-        return !isObjectEmpty(info, { excludeProps: ["year", "country"] });
-    }, []);
+    const countryReferences = useMemo(() => {
+        const countriesWithData = _.uniq(
+            _.compact(
+                categories.flatMap(category => {
+                    const orientation = dataOrientationByTable?.[category.value];
+                    const tableData = data?.tables[category.value] ?? [];
+
+                    if (orientation === "normal") {
+                        return tableData.map(row => row?.[0]?.value);
+                    }
+                    if (orientation === "inverted") {
+                        return tableData[0]?.map(cell => cell?.value);
+                    }
+                    return [];
+                })
+            )
+        );
+
+        const formattedReferences = data
+            ? data.generalInfo.map(info => {
+                  return {
+                      ...info,
+                      lastUpdate: moment(info.lastUpdate).isValid() ? moment(info.lastUpdate) : undefined,
+                      references: getCleanReferencesByCountry(info.country),
+                      hasData: countriesWithData.includes(info.country),
+                  };
+              })
+            : [];
+
+        return formattedReferences.filter(
+            info => !isObjectEmpty(info, { excludeProps: ["year", "country"] }) && info.hasData
+        );
+    }, [categories, dataOrientationByTable, data, getCleanReferencesByCountry]);
 
     return (
         <Layout>
@@ -168,7 +197,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                 )}
 
                 <div ref={referencesRef}>
-                    {data?.generalInfo.filter(checkIfCountryHasReferences).map(info => {
+                    {countryReferences.map(info => {
                         return (
                             <div key={info.country}>
                                 <GeneralDataContainer>
@@ -184,21 +213,27 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                                 {i18n.t("Last updated: ", { nsSeparator: false })}
                                             </CreditsText>
                                             &nbsp;
-                                            <CreditsText>{moment(info.lastUpdate).format("D MMMM YYYY")}</CreditsText>
+                                            <CreditsText>{info.lastUpdate.format("D MMMM YYYY")}</CreditsText>
                                         </GeneralRow>
                                     ) : null}
 
-                                    <GeneralRow>
-                                        <CreditsText $noWrap>{i18n.t("Experts: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{info.countryExperts}</CreditsText>
-                                    </GeneralRow>
+                                    {info.countryExperts && (
+                                        <GeneralRow>
+                                            <CreditsText $noWrap>
+                                                {i18n.t("Experts: ", { nsSeparator: false })}
+                                            </CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.countryExperts}</CreditsText>
+                                        </GeneralRow>
+                                    )}
 
-                                    <GeneralRow>
-                                        <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{info.editors}</CreditsText>
-                                    </GeneralRow>
+                                    {info.editors && (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.editors}</CreditsText>
+                                        </GeneralRow>
+                                    )}
 
                                     {info.reviewers ? (
                                         <GeneralRow>
@@ -241,12 +276,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {info.country && getCleanReferencesByCountry(info.country)?.length ? (
+                                    {info.references?.length ? (
                                         <>
                                             <ReferencesTitle>
                                                 {i18n.t("References", { nsSeparator: false })}
                                             </ReferencesTitle>
-                                            {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                            {info.references?.map(reference => (
                                                 <ReactMarkdown
                                                     key={reference}
                                                     components={{
