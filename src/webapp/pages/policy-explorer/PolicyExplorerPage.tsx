@@ -78,16 +78,14 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         );
     }, [filters.category]);
 
-    const getCleanReferencesByCountry = useCallback(
-        (country: string) => {
-            return _.compact(
-                data?.references
-                    ?.find(references => references.country === country)
-                    ?.references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
+    const countryReferenceMap = useMemo(() => {
+        return data?.references?.reduce((acc, { country, references }) => {
+            acc[country] = _.compact(
+                references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
             );
-        },
-        [data?.references]
-    );
+            return acc;
+        }, {} as Record<string, string[]>);
+    }, [data?.references]);
 
     const checkIfMoreThanOneCountry = useCallback(
         (dataOrientation: DataOrientation | undefined, rows: PolicyExplorerCell[][] | undefined) => {
@@ -139,19 +137,20 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         );
 
         const formattedReferences = data
-            ? data.generalInfo
-                  .filter(info => countriesWithData.includes(info.country))
-                  .map(info => {
-                      return {
-                          ...info,
-                          lastUpdate: moment(info.lastUpdate).isValid() ? moment(info.lastUpdate) : undefined,
-                          references: getCleanReferencesByCountry(info.country),
-                      };
-                  })
+            ? data.generalInfo.map(info => {
+                  return {
+                      ...info,
+                      lastUpdate: moment(info.lastUpdate).isValid() ? moment(info.lastUpdate) : undefined,
+                      references: countryReferenceMap?.[info.country],
+                      hasData: countriesWithData.includes(info.country),
+                  };
+              })
             : [];
 
-        return formattedReferences.filter(info => !isObjectEmpty(info, { excludeProps: ["year", "country"] }));
-    }, [categories, dataOrientationByTable, data, getCleanReferencesByCountry]);
+        return formattedReferences.filter(
+            info => !isObjectEmpty(info, { excludeProps: ["year", "country"] }) && info.hasData
+        );
+    }, [categories, dataOrientationByTable, data, countryReferenceMap]);
 
     return (
         <Layout>
