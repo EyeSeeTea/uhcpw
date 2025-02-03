@@ -79,12 +79,15 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
     }, [filters.category]);
 
     const countryReferenceMap = useMemo(() => {
-        return data?.references?.reduce((acc, { country, references }) => {
-            acc[country] = _.compact(
-                references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
-            );
-            return acc;
-        }, {} as Record<string, string[]>);
+        return data?.references?.reduce(
+            (acc, { country, references }) => ({
+                ...acc,
+                [country]: _.compact(
+                    references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
+                ),
+            }),
+            {} as Record<string, string[]>
+        );
     }, [data?.references]);
 
     const checkIfMoreThanOneCountry = useCallback(
