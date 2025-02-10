@@ -9,6 +9,7 @@ import {
     PolicyExplorerReferences,
     PolicyExplorerGeneralInfoToDownload,
     PolicyExplorerGeneralInfoToDownloadKeys,
+    firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID } from "../../../domain/utils";
@@ -29,6 +30,7 @@ import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { generate } from "../../../domain/usecases/utils/generateYears";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -213,7 +215,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private getPeriods(yearsByCategory: Record<string, string[]>): string[] {
         const years = Object.values(yearsByCategory).reduce((accYears, years) => {
-            const yearsToAdd = years.includes(latestAvailableYear) ? "2023,2024" : years;
+            const yearsFrom2023UntilCurrent = generate(new Date().getFullYear(), firstYearInFilter - 1).map(
+                year => year.id
+            );
+            const yearsToAdd = years.includes(latestAvailableYear) ? yearsFrom2023UntilCurrent.join(",") : years;
             return accYears.concat(yearsToAdd);
         }, []);
         return _.uniq(_.sortBy(years));

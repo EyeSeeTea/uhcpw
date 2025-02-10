@@ -49,3 +49,4 @@ export type DataOrientation = "inverted" | "normal";
 
 export type DataOrientationByTable = Record<string, DataOrientation>;
 export const latestAvailableYear = "latest";
+export const firstYearInFilter = 2023;
