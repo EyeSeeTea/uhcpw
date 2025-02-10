@@ -18,6 +18,7 @@ import { chart_GNUHM5lQMTp_Options } from "./chart_GNUHM5lQMTp_Options";
 import { chart_AophAEpx5e0_BOcLONPSyYS_Options } from "./chart_AophAEpx5e0_BOcLONPSyYS_Options";
 import { chart_iMI82inOBiD_Options } from "./chart_iMI82inOBiD_Options";
 import { chart_q5ldoFcgkSn_Options } from "./chart_q5ldoFcgkSn_Options";
+import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -52,6 +53,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     eibYs7QySNk: chartSource => chart_eibYs7QySNk_Options(chartSource),
     DefU3mkASo6: chartSource => chart_DefU3mkASo6_Options(chartSource),
     GNUHM5lQMTp: chartSource => chart_GNUHM5lQMTp_Options(chartSource),
+    WDUV9ZrJiNC: chartSource => chart_WDUV9ZrJiNC_Options(chartSource),
 };
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {
