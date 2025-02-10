@@ -47,7 +47,9 @@ export function useResourcesFilters(params: {
     useEffect(() => {
         // NOTICE: use theme name to filter resources by theme in ResourceRepository get()
         setThemeFilters(
-            themes.map(theme => ({ value: theme.name, text: theme.name })).sort((a, b) => a.text.localeCompare(b.text))
+            themes
+                .map(theme => ({ value: theme.name, text: theme.displayedName }))
+                .sort((a, b) => a.text.localeCompare(b.text))
         );
     }, [themes]);
 
