@@ -23,7 +23,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{i18n.t("Resources")}</Typography>
+                <Typography variant="h3">{i18n.t("Resources")}</Typography>
             </TitleContainer>
             <SearchContainer>
                 <SearchInput
@@ -56,7 +56,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 32px 64px;
+    padding: 24px 64px;
 `;
 
 const SelectsContainer = styled(Container)`

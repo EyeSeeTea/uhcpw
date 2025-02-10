@@ -107,7 +107,7 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 25px 200px 25px 64px;
+    padding: 24px 200px 24px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
