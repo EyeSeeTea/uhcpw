@@ -28,9 +28,9 @@ interface PolicyExplorerTableProps {
 }
 
 const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
-    country: 90,
-    year: 30,
-    typeOfHealthCare: 90,
+    country: 10,
+    year: 10,
+    typeOfHealthCare: 10,
     userChargesApply: 90,
     typeOfUserCharge: 160,
     reducedUserCharges: 90,
