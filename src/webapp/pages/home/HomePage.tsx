@@ -13,10 +13,6 @@ import { useHomePageContent } from "./useHomePageContent";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { useHomeMobile } from "./useHomeMobile";
 import { MobileDialog } from "../../components/home/mobile-dialog/MobileDialog";
-import { Hidden } from "@material-ui/core";
-
-const text =
-    "UHC watch has not yet been adapted to be fully functional on mobiles (but we're working on it). We recommend using the platform from a desktop to explore all its functionalities";
 
 export const HomePage: React.FC = React.memo(() => {
     const mapState = useMap();
