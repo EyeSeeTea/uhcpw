@@ -59,7 +59,7 @@ const Content = styled.div`
 `;
 
 const TextWrapper = styled.div`
-    max-width: 340px;
+    max-width: 50vw;
 `;
 
 const Title = styled(Typography)`
