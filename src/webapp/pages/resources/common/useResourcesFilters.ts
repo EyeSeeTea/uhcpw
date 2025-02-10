@@ -28,7 +28,10 @@ export function useResourcesFilters(params: {
 
     useEffect(() => {
         setSelectedCategoryFilter(category);
-        setSelectedThemeFilter(theme);
+
+        if (theme) {
+            setSelectedThemeFilter(theme);
+        }
 
         if (countries?.length === 0) {
             countryFilter.onSelectedChange([]);
