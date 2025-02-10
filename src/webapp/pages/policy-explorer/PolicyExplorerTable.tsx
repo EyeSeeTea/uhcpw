@@ -59,6 +59,14 @@ export const PolicyExplorerTable = React.memo(
             [referencesRef]
         );
 
+        const cleanMarkdownEmptyLinks = (value: string) => {
+            const regex = /\[[^\]]+\](?!\([^)]+\))/gu;
+
+            return value.replace(regex, match => {
+                return match + `(${EMPTY_URL})`;
+            });
+        };
+
         const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
 
         const handleClose = useCallback(() => {
@@ -248,7 +256,9 @@ export const PolicyExplorerTable = React.memo(
                                                     ),
                                                 }}
                                             >
-                                                {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
+                                                {cell.references
+                                                    ? `${cleanMarkdownEmptyLinks(cell.value)}\n\n${cell.references}`
+                                                    : cleanMarkdownEmptyLinks(cell.value)}
                                             </ReactMarkdown>
                                         </StyledTableCell>
                                     ))}
