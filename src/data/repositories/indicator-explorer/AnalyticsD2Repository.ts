@@ -7,7 +7,7 @@ import { AnalyticsRepository } from "../../../domain/repositories/indicator-expl
 import { D2Api, NonPaginatedObjects } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { isValidUid } from "../../../utils/uid";
-import { exportToCSV } from "../../export/exportToCSV";
+import { exportToCSVIncludingChart } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
@@ -23,9 +23,14 @@ import {
     getLastAvailableYearByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "./utils/lastAvailableYearHelpers";
+import { DataStoreClient } from "../../DataStoreClient";
+import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
+import { visualizationsExportedDataChartBuilder } from "../../export/visualizationsExportedDataChartBuilder";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
+export const CHART_TAB_NAME = "Chart";
+export const NOTES_TAB_NAME = "Notes";
 
 const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
     z6nPPMMbOw5: {
@@ -46,7 +51,7 @@ const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
 };
 
 export class AnalyticsD2Repository implements AnalyticsRepository {
-    constructor(private api: D2Api, private d2DataEngine: unknown) {}
+    constructor(private api: D2Api, private d2DataEngine: unknown, private dataStoreClient: DataStoreClient) {}
 
     public get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics> {
         const overwrittenVisualization = {
@@ -193,7 +198,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
                 const tabs = [
-                    { name: "Notes", data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions] },
+                    {
+                        name: NOTES_TAB_NAME,
+                        data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions],
+                    },
                     {
                         name: DATA_TAB_NAME,
                         data: [[chartName || mergedVisualization.name], ...allRowsSortedToDownload],
@@ -201,11 +209,34 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ];
 
                 if (tabs.length > 0) {
-                    exportToCSV(
-                        tabs,
-                        mergedVisualization.downloadedFileName
-                            ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
-                            : chartName
+                    return this.getChartFileTemplateIdFromDataStore(mergedVisualization.id).flatMap(
+                        chartFileTemplateId => {
+                            const exportedDataChartBuilder =
+                                visualizationsExportedDataChartBuilder[mergedVisualization.id];
+
+                            if (chartFileTemplateId && exportedDataChartBuilder) {
+                                return this.downloadChartFileArrayBufferTemplate(chartFileTemplateId).flatMap(
+                                    fileArrayBuffer => {
+                                        const tabsWithChart = exportedDataChartBuilder(
+                                            tabs,
+                                            chartName || mergedVisualization.name
+                                        );
+
+                                        exportToCSVIncludingChart(
+                                            tabsWithChart,
+                                            fileArrayBuffer,
+                                            mergedVisualization.downloadedFileName
+                                                ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
+                                                : chartName
+                                        );
+
+                                        return Future.success(undefined);
+                                    }
+                                );
+                            } else {
+                                return Future.success(undefined);
+                            }
+                        }
                     );
                 }
                 return Future.success(undefined);
@@ -493,6 +524,30 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         return dimensions.length > 0 ? dimensions : undefined;
     };
+
+    private downloadChartFileArrayBufferTemplate(chartFileTemplateId: string): FutureData<ArrayBuffer> {
+        return apiToFuture(this.api.files.get(chartFileTemplateId)).flatMap(blob => {
+            return Future.fromPromise(blob.arrayBuffer());
+        });
+    }
+
+    private getChartFileTemplateIdFromDataStore(visualizationId: string): FutureData<Id> {
+        return this.dataStoreClient
+            .getObject<ChartFileTemplateIdsByVisualization>("chart-file-templates")
+            .flatMap(chartFileTemplates => {
+                if (!chartFileTemplates) {
+                    return Future.error("Chart file templates not found in Datastore");
+                }
+
+                const chartFileTemplateId = chartFileTemplates[visualizationId];
+
+                if (!chartFileTemplateId) {
+                    return Future.error("Chart file template not found in Datastore");
+                }
+
+                return Future.success(chartFileTemplateId);
+            });
+    }
 }
 export type VisualizationProp = "filters" | "rows" | "columns";
 

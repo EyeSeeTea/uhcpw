@@ -6,13 +6,22 @@ import {
     REFERENCES_TAB_NAME,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { addDataValue, getCellStyles, setHeight, setWidth } from "./utils";
-import { DATA_TAB_NAME } from "../repositories/indicator-explorer/AnalyticsD2Repository";
+import {
+    CHART_TAB_NAME,
+    DATA_TAB_NAME,
+    NOTES_TAB_NAME,
+} from "../repositories/indicator-explorer/AnalyticsD2Repository";
 
 const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
 const fileExtension = ".xlsx";
 
 export type Tab = {
     data: string[][];
+    name: string;
+};
+
+export type TabsWithStringOrNumbers = {
+    data: (string | number)[][];
     name: string;
 };
 
@@ -84,3 +93,44 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
     const data = new Blob([blob], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
 };
+
+export const exportToCSVIncludingChart = async (
+    tabs: TabsWithStringOrNumbers[],
+    arrayBuffer: ArrayBuffer,
+    fileName: string
+) => {
+    const workbook = await XlsxPopulate.fromDataAsync(arrayBuffer);
+
+    const chartSheet = workbook.sheet(CHART_TAB_NAME);
+    const chartTab = tabs.find(tab => tab.name === CHART_TAB_NAME);
+
+    if (chartTab) {
+        addDataToSheet(chartSheet, chartTab.data);
+    }
+
+    const notesTab = tabs.find(tab => tab.name === NOTES_TAB_NAME);
+    const notesSheet = workbook.addSheet(NOTES_TAB_NAME);
+    if (notesTab) {
+        addDataToSheet(notesSheet, notesTab?.data);
+    }
+
+    const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
+    const dataSheet = workbook.addSheet(DATA_TAB_NAME);
+    if (dataTab) {
+        addDataToSheet(dataSheet, dataTab?.data);
+    }
+
+    const blob = await workbook.outputAsync();
+    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+};
+
+function addDataToSheet(sheet: XlsxPopulate.Sheet, data: (string | number)[][]) {
+    data.forEach((row, rowIndex) => {
+        const rowNumber = rowIndex + 1;
+        row.forEach((cell, columnIndex) => {
+            const column = String.fromCharCode("A".charCodeAt(0) + columnIndex);
+            const cellRef = `${column}${rowNumber}`;
+            sheet.cell(cellRef).value(cell);
+        });
+    });
+}
