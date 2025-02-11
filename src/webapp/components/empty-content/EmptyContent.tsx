@@ -26,7 +26,6 @@ export const EmptyContent: React.FC<{ info?: PolicyExplorerSelectCategoryInfo | 
                                 {info.text}
                             </ReactMarkdown>
                         </TextWrapper>
-                        <GridOnIcon htmlColor="white" fontSize="large" />
                     </Row>
                 </Content>
             </Container>
