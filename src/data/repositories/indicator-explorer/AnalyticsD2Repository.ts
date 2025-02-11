@@ -220,7 +220,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     }
 
     private download(): FutureData<Blob> {
-        return apiToFuture(this.api.files.get("ot0Y1y9375k"));
+        return apiToFuture(this.api.files.get("upgCtRo7Mdg"));
     }
 
     private fromBlobToArrayBuffer(blob: Blob): FutureData<ArrayBuffer> {
