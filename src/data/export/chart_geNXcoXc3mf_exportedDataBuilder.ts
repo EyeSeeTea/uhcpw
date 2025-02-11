@@ -13,10 +13,12 @@ export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: str
         throw new Error("Data tab not found");
     }
 
-    const countryIndex = dataTab.data[1]?.indexOf("Country");
-    const quintileIndex = dataTab.data[1]?.indexOf("Quintile");
-    const yearIndex = dataTab.data[1]?.indexOf("Year");
-    const valueIndex = dataTab.data[1]?.indexOf("Value");
+    const headers = dataTab.data[1];
+
+    const countryIndex = headers?.indexOf("Country");
+    const quintileIndex = headers?.indexOf("Quintile");
+    const yearIndex = headers?.indexOf("Year");
+    const valueIndex = headers?.indexOf("Value");
 
     if (
         countryIndex === undefined ||

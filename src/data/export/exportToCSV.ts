@@ -125,12 +125,22 @@ export const exportToCSVIncludingChart = async (
 };
 
 function addDataToSheet(sheet: XlsxPopulate.Sheet, data: (string | number)[][]) {
-    data.forEach((row, rowIndex) => {
-        const rowNumber = rowIndex + 1;
-        row.forEach((cell, columnIndex) => {
-            const column = String.fromCharCode("A".charCodeAt(0) + columnIndex);
-            const cellRef = `${column}${rowNumber}`;
-            sheet.cell(cellRef).value(cell);
+    try {
+        data.forEach((row, rowIndex) => {
+            const rowNumber = rowIndex + 1;
+            row.forEach((cell, columnIndex) => {
+                const column = getColumnLetter(columnIndex);
+                const cellRef = `${column}${rowNumber}`;
+                sheet.cell(cellRef).value(cell);
+            });
         });
-    });
+    } catch (error) {
+        console.error("Error adding data to sheet", error);
+    }
+}
+
+function getColumnLetter(columnIndex: number): string {
+    return columnIndex >= 0
+        ? getColumnLetter(Math.floor(columnIndex / 26) - 1) + String.fromCharCode((columnIndex % 26) + 65)
+        : "";
 }
