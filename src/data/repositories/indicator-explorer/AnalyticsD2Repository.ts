@@ -7,7 +7,7 @@ import { AnalyticsRepository } from "../../../domain/repositories/indicator-expl
 import { D2Api, NonPaginatedObjects } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { isValidUid } from "../../../utils/uid";
-import { exportToCSVIncludingChart } from "../../export/exportToCSV";
+import { exportToCSV, exportToCSVIncludingChart } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
@@ -25,7 +25,7 @@ import {
 } from "./utils/lastAvailableYearHelpers";
 import { DataStoreClient } from "../../DataStoreClient";
 import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
-import { visualizationsExportedDataChartBuilder } from "../../export/visualizationsExportedDataChartBuilder";
+import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -217,19 +217,23 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                             if (chartFileTemplateId && exportedDataChartBuilder) {
                                 return this.downloadChartFileArrayBufferTemplate(chartFileTemplateId).flatMap(
                                     fileArrayBuffer => {
-                                        const tabsWithChart = exportedDataChartBuilder(
-                                            tabs,
-                                            chartName || mergedVisualization.name
-                                        );
+                                        try {
+                                            const tabsWithChart = exportedDataChartBuilder(
+                                                tabs,
+                                                chartName || mergedVisualization.name
+                                            );
 
-                                        exportToCSVIncludingChart(
-                                            tabsWithChart,
-                                            fileArrayBuffer,
-                                            mergedVisualization.downloadedFileName
-                                                ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
-                                                : chartName
-                                        );
-
+                                            exportToCSVIncludingChart(
+                                                tabsWithChart,
+                                                fileArrayBuffer,
+                                                mergedVisualization.downloadedFileName
+                                                    ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
+                                                    : chartName
+                                            );
+                                        } catch (error) {
+                                            console.error("Error creating exported data for chart: ", error);
+                                            exportToCSV(tabs, chartName);
+                                        }
                                         return Future.success(undefined);
                                     }
                                 );

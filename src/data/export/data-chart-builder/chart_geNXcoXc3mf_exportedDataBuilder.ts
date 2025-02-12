@@ -1,9 +1,9 @@
-import { DATA_TAB_NAME, CHART_TAB_NAME } from "../repositories/indicator-explorer/AnalyticsD2Repository";
-import { Tab, TabsWithStringOrNumbers } from "./exportToCSV";
+import { CHART_TAB_NAME, DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
 
-export const chart_GimM6ANOKhd_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
+export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,
     chartName
 ) => {
@@ -33,21 +33,23 @@ export const chart_GimM6ANOKhd_exportedDataBuilder: (tabs: Tab[], chartName: str
         throw new Error("Missing required columns in the data tab");
     }
 
-    const allCountriesAndYears = dataTab.data
+    const country = dataTab.data[2] ? dataTab.data[2][countryIndex] : "";
+
+    if (!country) {
+        throw new Error("Missing country in the data tab");
+    }
+
+    const allYears = dataTab.data
         .slice(2)
-        .map(row => (row[countryIndex] && row[yearIndex] ? `${row[countryIndex]}-${row[yearIndex]}` : undefined))
-        .filter((countryAndYear): countryAndYear is string => countryAndYear !== undefined);
+        .map(row => row[yearIndex])
+        .filter((year): year is string => year !== undefined);
+    const allYearsUnique = [...new Set(allYears)].map(year => Number(year));
 
-    const countriesAndYearsUnique = [...new Set(allCountriesAndYears)];
-
-    const headersBase = [["Quintile / Country - Year", ...countriesAndYearsUnique]];
+    const headersBase = [["Country", "Quintile / Year", ...allYearsUnique]];
 
     const data = SORTED_QUINTILES.reduce((acc: (string | number)[][], quintile): (string | number)[][] => {
-        const quintileData = countriesAndYearsUnique.map(countryAndYear => {
-            const [country, year] = countryAndYear.split("-");
-            const row = dataTab.data.find(
-                row => row[quintileIndex] === quintile && row[yearIndex] === year && row[countryIndex] === country
-            );
+        const quintileData = allYearsUnique.map(year => {
+            const row = dataTab.data.find(row => row[quintileIndex] === quintile && row[yearIndex] === year.toString());
             const value = row ? row[valueIndex] : undefined;
 
             if (!row || !value) {
@@ -58,7 +60,7 @@ export const chart_GimM6ANOKhd_exportedDataBuilder: (tabs: Tab[], chartName: str
         });
 
         return [...acc, [quintile, ...quintileData]];
-    }, []);
+    }, []).map(row => [country, ...row]);
 
     const chartTab = {
         name: CHART_TAB_NAME,
