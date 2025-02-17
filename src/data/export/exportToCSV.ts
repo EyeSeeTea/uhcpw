@@ -109,13 +109,13 @@ export const exportToCSVIncludingChart = async (
     }
 
     const notesTab = tabs.find(tab => tab.name === NOTES_TAB_NAME);
-    const notesSheet = workbook.addSheet(NOTES_TAB_NAME);
+    const notesSheet = workbook.sheet(NOTES_TAB_NAME);
     if (notesTab) {
         addDataToSheet(notesSheet, notesTab?.data);
     }
 
     const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
-    const dataSheet = workbook.addSheet(DATA_TAB_NAME);
+    const dataSheet = workbook.sheet(DATA_TAB_NAME);
     if (dataTab) {
         addDataToSheet(dataSheet, dataTab?.data);
     }
