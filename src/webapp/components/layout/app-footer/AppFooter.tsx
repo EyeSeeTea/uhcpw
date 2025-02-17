@@ -43,6 +43,11 @@ export const AppFooter: React.FC = () => {
                                     {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                                 </Typography>
                             </Link>
+                            <Cookies href={generalContent?.cookies.policyUrl} target="_blank">
+                                <Typography variant="body1" gutterBottom>
+                                    {i18n.t("WHO privacy policy")}
+                                </Typography>
+                            </Cookies>
                         </Grid>
                         <Grid item lg={3} md={6} xs={12}>
                             <Typography variant="body1" gutterBottom>
@@ -108,6 +113,12 @@ const FooterBottom = styled.div`
 const StyledNavLink = styled(NavLink)`
     color: white;
     text-decoration: none;
+`;
+
+const Cookies = styled(Link)`
+    color: white;
+    margin-block-start: 16px;
+    display: flex;
 `;
 
 const MailLink = styled.a`

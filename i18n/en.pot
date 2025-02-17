@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2024-10-16T11:03:08.841Z\n"
-"PO-Revision-Date: 2024-10-16T11:03:08.841Z\n"
+"POT-Creation-Date: 2025-02-17T10:04:05.555Z\n"
+"PO-Revision-Date: 2025-02-17T10:04:05.555Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -105,6 +105,9 @@ msgid "Co-funded by the European Union"
 msgstr ""
 
 msgid "About us"
+msgstr ""
+
+msgid "WHO privacy policy"
 msgstr ""
 
 msgid "Contact our office"

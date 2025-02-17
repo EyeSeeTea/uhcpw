@@ -20,6 +20,9 @@ export class GeneralContentD2Repository implements GeneralContentRepository {
                 title: dataValues.find(dv => dv.dataElement === "gYzFGI0mMLQ")?.value || "",
                 subtitle: dataValues.find(dv => dv.dataElement === "aY5eSBLrOMc")?.value || "",
             },
+            cookies: {
+                policyUrl: dataValues.find(dv => dv.dataElement === "FQr8rUGtOVC")?.value || "",
+            },
         };
     }
 }
