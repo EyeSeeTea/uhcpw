@@ -103,7 +103,6 @@ export const exportToCSVIncludingChart = async (
 
     const chartSheet = workbook.sheet(CHART_TAB_NAME);
     const chartTab = tabs.find(tab => tab.name === CHART_TAB_NAME);
-
     if (chartTab) {
         addDataToSheet(chartSheet, chartTab.data);
     }
