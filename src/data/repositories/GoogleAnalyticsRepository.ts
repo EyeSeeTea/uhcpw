@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { appConfig } from "../../app-config";
-import { AnalyticsEvent } from "../../domain/entities/AnalyticsEvent";
+import { AnalyticsEvent, getCurrentPageLocation } from "../../domain/entities/AnalyticsEvent";
 import { AnalyticsRepository } from "../../domain/repositories/AnalyticsRepository";
 
 declare global {
@@ -106,21 +106,21 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
             return {
                 name: "page_view",
                 page_title: event.pageTitle,
-                page_location: window.location.hash.split("?")[0] ?? "",
+                page_location: getCurrentPageLocation(),
                 selected_country: event.country,
             } as const;
         case "resource_kind_page_view":
             return {
                 name: "page_view",
                 page_title: event.pageTitle,
-                page_location: window.location.hash.split("?")[0] ?? "",
+                page_location: getCurrentPageLocation(),
                 category: _.startCase(event.category),
             } as const;
         case "resource":
             return {
                 name: "resource",
                 page_title: event.pageTitle,
-                page_location: window.location.hash.split("?")[0] ?? "",
+                page_location: getCurrentPageLocation(),
                 category: _.startCase(event.category),
                 resource_name: event.resourceName,
                 resource_theme: event.theme,

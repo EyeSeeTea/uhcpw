@@ -43,3 +43,7 @@ export type AnalyticsEvent =
     | CountryPageViewEvent
     | ResourceKindPageViewEvent
     | ResourceEvent;
+
+export function getCurrentPageLocation(): string {
+    return window.location.hash.split("?")[0] ?? "";
+}
