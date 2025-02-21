@@ -16,7 +16,7 @@ interface ScreenshotModalProps {
     exclusionClasses?: string[];
     hideTitle?: boolean;
     isSquareChart?: boolean;
-    analyticsEventTitle: string;
+    analyticsPageTitle: string;
 }
 
 function ScreenshotModal({
@@ -28,7 +28,7 @@ function ScreenshotModal({
     children,
     hideTitle = true,
     isSquareChart = false,
-    analyticsEventTitle,
+    analyticsPageTitle,
 }: ScreenshotModalProps) {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -37,9 +37,13 @@ function ScreenshotModal({
     const handleDownload = useCallback(() => {
         if (ref.current) {
             downloadHtmlElement(ref.current, title.replace(".", "_"), { backgroundColor, exclusionClasses });
-            sendEvent({ name: "file_download", pageTitle: analyticsEventTitle, contentType: "image" });
+            sendEvent({
+                name: "file_download",
+                pageTitle: analyticsPageTitle,
+                contentType: "image",
+            });
         }
-    }, [analyticsEventTitle, backgroundColor, exclusionClasses, sendEvent, title]);
+    }, [analyticsPageTitle, backgroundColor, exclusionClasses, sendEvent, title]);
 
     return (
         <StyledModal

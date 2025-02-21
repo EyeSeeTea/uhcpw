@@ -23,7 +23,7 @@ interface VisualizationPluginProps {
     paddingEnd?: boolean;
     isSquareChart?: boolean;
     visualizationName?: string;
-    analyticsEventTitle: string;
+    analyticsPageTitle: string;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -40,7 +40,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         isScreenshot = false,
         paddingEnd = true,
         isSquareChart = false,
-        analyticsEventTitle,
+        analyticsPageTitle,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -56,22 +56,22 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
     const onDirectDownloadImage = useCallback(() => {
         if (chartData.kind === "Loaded" && ref.current) {
-            sendEvent({ name: "file_download", pageTitle: analyticsEventTitle, contentType: "image" });
+            sendEvent({ name: "file_download", pageTitle: analyticsPageTitle, contentType: "image" });
             downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
                 backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
                 exclusionClasses: ["download-button", "info-button", "category"],
             });
         }
-    }, [chartData, useHeaderForCountryPage, sendEvent, analyticsEventTitle]);
+    }, [chartData, useHeaderForCountryPage, sendEvent, analyticsPageTitle]);
 
     const downloadExcel = React.useCallback(() => {
         if (chartData.kind === "Loaded") {
-            sendEvent({ name: "file_download", pageTitle: analyticsEventTitle, contentType: "csv" });
+            sendEvent({ name: "file_download", pageTitle: analyticsPageTitle, contentType: "csv" });
             onDownloadExcel(chartData);
         } else {
             console.error("No data to download");
         }
-    }, [analyticsEventTitle, chartData, onDownloadExcel, sendEvent]);
+    }, [analyticsPageTitle, chartData, onDownloadExcel, sendEvent]);
 
     return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
         <Container

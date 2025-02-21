@@ -49,7 +49,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     currentCountry={(graphOne as VisualizationProps).currentCountry || countryId}
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
                     noDataMessage={pageContent?.noDataMessage}
-                    analyticsEventTitle="Country page"
+                    analyticsPageTitle="Country page"
                 />
             </VisualizationContainer>
             {graphTwo && (
@@ -64,7 +64,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         currentCountry={(graphTwo as VisualizationProps).currentCountry || countryId}
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                         noDataMessage={pageContent?.noDataMessage}
-                        analyticsEventTitle="Country page"
+                        analyticsPageTitle="Country page"
                     />
                 </VisualizationContainer>
             )}
@@ -75,7 +75,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     onClose={handleCloseScreenshot}
                     title={currentGraphScreenshot.visualizationName || ""}
                     backgroundColor={"#f1f9fc"}
-                    analyticsEventTitle="Country page"
+                    analyticsPageTitle="Country page"
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}
@@ -86,7 +86,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         useHeaderForCountryPage
                         currentCountry={countryId}
                         isScreenshot={true}
-                        analyticsEventTitle="Country page"
+                        analyticsPageTitle="Country page"
                     />
                 </ScreenshotModal>
             )}
