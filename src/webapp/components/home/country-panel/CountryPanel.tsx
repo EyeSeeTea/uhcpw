@@ -8,6 +8,7 @@ import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
 import { Divider } from "material-ui";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 export interface CountryPanelProps {
     country: Country;
 }
@@ -18,8 +19,10 @@ type ButtonItemType = {
 };
 
 export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
+    const { redirectWithExternalLink } = useAnalytics();
+
     return (
-        <a href={href} target="_blank" rel="noreferrer">
+        <a href={href} target="_blank" rel="noreferrer" onClick={redirectWithExternalLink}>
             <StyledButton>{children}</StyledButton>
         </a>
     );

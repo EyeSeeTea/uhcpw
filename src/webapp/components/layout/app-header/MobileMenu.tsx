@@ -9,8 +9,10 @@ import i18n from "../../../../locales";
 import { MobileMenuSubItem } from "./MobileMenuSubItem";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const MobileMenu: React.FC = () => {
+    const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
     const {
         regionalReport,
@@ -23,6 +25,8 @@ export const MobileMenu: React.FC = () => {
         handleSetAnchorEl,
     } = useAppHeader();
     const open = Boolean(anchorEl);
+
+    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     const StyledMenu = withStyles({
         paper: {
@@ -88,7 +92,7 @@ export const MobileMenu: React.FC = () => {
                 </MenuItem>
                 <StyledDivider />
                 <MenuItem>
-                    <MenuLink target="_blank" href={regionalReport} rel="noreferrer">
+                    <MenuLink target="_blank" href={regionalReport} rel="noreferrer" onClick={regionalReportPageView}>
                         {i18n.t("Regional report")}
                     </MenuLink>
                 </MenuItem>

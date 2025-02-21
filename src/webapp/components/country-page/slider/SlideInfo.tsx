@@ -1,3 +1,4 @@
+import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import ReactMarkdown from "react-markdown";
 import styled, { css } from "styled-components";
@@ -5,33 +6,41 @@ import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import Rain from "../../../assets/country-page/rain.png";
 import { CountrySectionInfo } from "../../../../domain/entities/Country";
-
-const markdownComponents = {
-    p: ({ children }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>) => (
-        <Typography variant="body2" style={{ marginBottom: "0px" }}>
-            {children}
-        </Typography>
-    ),
-    ul: ({ children }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLUListElement>, HTMLUListElement>) => (
-        <ul style={{ paddingLeft: "1.2em" }}>{children}</ul>
-    ),
-    li: ({ children }: React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>) => (
-        <li>
-            <Typography variant="body2">{children}</Typography>
-        </li>
-    ),
-    a: ({ ...props }) => (
-        <TextLink href={props.href} target="_blank" rel="noreferrer">
-            {props.children}
-        </TextLink>
-    ),
-};
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: string; icon: string }> = ({
     sliderInfo,
     titleColor,
     icon,
 }) => {
+    const { redirectWithExternalLink } = useAnalytics();
+
+    const markdownComponents = React.useMemo(
+        () => ({
+            p: ({
+                children,
+            }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>) => (
+                <Typography variant="body2" style={{ marginBottom: "0px" }}>
+                    {children}
+                </Typography>
+            ),
+            ul: ({ children }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLUListElement>, HTMLUListElement>) => (
+                <ul style={{ paddingLeft: "1.2em" }}>{children}</ul>
+            ),
+            li: ({ children }: React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>) => (
+                <li>
+                    <Typography variant="body2">{children}</Typography>
+                </li>
+            ),
+            a: ({ ...props }) => (
+                <TextLink href={props.href} target="_blank" rel="noreferrer" onClick={redirectWithExternalLink}>
+                    {props.children}
+                </TextLink>
+            ),
+        }),
+        [redirectWithExternalLink]
+    );
+
     return (
         <Container>
             <Typography variant="h3" style={{ fontWeight: 500 }}>

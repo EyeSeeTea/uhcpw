@@ -10,6 +10,7 @@ declare global {
     }
 }
 
+/* Set accessToConsole key in localStorage to see debug logs */
 export class GoogleAnalyticsRepository implements AnalyticsRepository {
     private analytics?: Analytics;
 
@@ -22,8 +23,11 @@ export class GoogleAnalyticsRepository implements AnalyticsRepository {
 class Analytics {
     initialized = false;
     queue: AnalyticsEvent[] = [];
+    accessToConsole = false;
 
     constructor() {
+        this.accessToConsole = localStorage.getItem("accessToConsole") === "true";
+
         if (!window.gtag) this.intialize().then(() => this.queue.forEach(e => this.sendAnalytics(e)));
         else {
             this.initialized = true;
@@ -37,7 +41,7 @@ class Analytics {
             return;
         }
 
-        console.debug("GA4: send analytics event", event.name, buildAnalyticsEvent(event));
+        if (this.accessToConsole) console.debug("GA4: send analytics event", event.name, buildAnalyticsEvent(event));
 
         const mappedEvent = buildAnalyticsEvent(event);
         const { name, ...rest } = mappedEvent;
@@ -49,11 +53,13 @@ class Analytics {
         /** When using HashRouter, set send_page_view to false to avoid sending dynamic page
          * events. When HashRouter is not used, set to true to avoid duplicated events.
          * */
-        console.debug("GA4: config", appConfig.gaTagId, {
-            page_title: "Config",
-            page_location: window.location.pathname,
-            send_page_view: false,
-        });
+        if (this.accessToConsole)
+            console.debug("GA4: config", appConfig.gaTagId, {
+                page_title: "Config",
+                page_location: window.location.pathname,
+                send_page_view: false,
+            });
+
         window.gtag("config", appConfig.gaTagId, {
             page_title: "Config",
             page_location: window.location.pathname,
@@ -75,7 +81,7 @@ class Analytics {
 
         await new Promise<void>((resolve, reject) => {
             script.onload = () => {
-                console.debug("GA4: script loaded");
+                if (this.accessToConsole) console.debug("GA4: script loaded");
                 window.gtag("js", new Date());
                 this.setAnalyticsConfig();
                 this.initialized = true;
@@ -127,6 +133,12 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
                 year: event.year,
                 lang: event.language,
                 country: event.country,
+            } as const;
+        case "external_link":
+            return {
+                name: "external_link",
+                href: event.href,
+                text: event.text,
             } as const;
         default:
             return {};

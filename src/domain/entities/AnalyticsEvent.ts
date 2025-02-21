@@ -37,12 +37,19 @@ type ResourceEvent = {
     country?: string;
 };
 
+type ExternalLinkEvent = {
+    name: "external_link";
+    text: string;
+    href: string;
+};
+
 export type AnalyticsEvent =
     | PageViewEvent
     | FileDownloadEvent
     | CountryPageViewEvent
     | ResourceKindPageViewEvent
-    | ResourceEvent;
+    | ResourceEvent
+    | ExternalLinkEvent;
 
 export function getCurrentPageLocation(): string {
     return window.location.hash.split("?")[0] ?? "";
