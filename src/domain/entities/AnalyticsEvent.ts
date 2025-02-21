@@ -1,3 +1,5 @@
+import { Maybe } from "../../types/utils";
+
 type PageViewEvent = {
     name: "page_view";
     pageLocation: string;
@@ -20,6 +22,8 @@ type FileDownloadEvent = {
     name: "file_download";
     pageTitle: string;
     contentType: string;
+    contentGroup: string;
+    contentId: Maybe<string>;
 };
 
 type ResourceEvent = {

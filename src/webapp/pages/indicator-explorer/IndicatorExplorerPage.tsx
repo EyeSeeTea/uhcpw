@@ -51,6 +51,14 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         [filters.indicators.options, filters.indicators.selected]
     );
 
+    const analyticsContent = useMemo(
+        () => ({
+            contentGroup: "chart",
+            contentId: chartName,
+        }),
+        [chartName]
+    );
+
     return (
         <Layout>
             <TitleContainer>
@@ -82,6 +90,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                     analyticsPageTitle="Indicator explorer"
+                    analyticsContent={analyticsContent}
                 >
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}

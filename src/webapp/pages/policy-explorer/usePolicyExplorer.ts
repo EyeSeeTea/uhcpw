@@ -202,7 +202,13 @@ export function usePolicyExplorer({
         const data = getInitialDataByTable(initialDataByTable, categoriesIds);
         if (!data) return;
 
-        sendEvent({ name: "file_download", pageTitle: "Policy Explorer", contentType: "csv" });
+        sendEvent({
+            name: "file_download",
+            pageTitle: "Policy Explorer",
+            contentType: "csv",
+            contentGroup: "policy",
+            contentId: undefined,
+        });
         compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
     }, [
         initialDataByTable,

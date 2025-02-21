@@ -33,6 +33,14 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
     }, []);
     const { pageContent } = useIndicatorExplorer();
 
+    const analyticsContent = React.useMemo(
+        () => ({
+            contentGroup: "chart",
+            contentId: currentGraphScreenshot?.visualizationName,
+        }),
+        [currentGraphScreenshot?.visualizationName]
+    );
+
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
@@ -76,6 +84,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     title={currentGraphScreenshot.visualizationName || ""}
                     backgroundColor={"#f1f9fc"}
                     analyticsPageTitle="Country page"
+                    analyticsContent={analyticsContent}
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}

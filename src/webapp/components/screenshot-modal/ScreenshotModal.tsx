@@ -6,6 +6,7 @@ import styled from "styled-components";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import i18n from "../../../locales";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { Maybe } from "../../../types/utils";
 
 interface ScreenshotModalProps {
     open?: boolean;
@@ -17,6 +18,10 @@ interface ScreenshotModalProps {
     hideTitle?: boolean;
     isSquareChart?: boolean;
     analyticsPageTitle: string;
+    analyticsContent: {
+        contentGroup: string;
+        contentId: Maybe<string>;
+    };
 }
 
 function ScreenshotModal({
@@ -29,6 +34,7 @@ function ScreenshotModal({
     hideTitle = true,
     isSquareChart = false,
     analyticsPageTitle,
+    analyticsContent,
 }: ScreenshotModalProps) {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -41,9 +47,19 @@ function ScreenshotModal({
                 name: "file_download",
                 pageTitle: analyticsPageTitle,
                 contentType: "image",
+                contentGroup: analyticsContent.contentGroup,
+                contentId: analyticsContent.contentId,
             });
         }
-    }, [analyticsPageTitle, backgroundColor, exclusionClasses, sendEvent, title]);
+    }, [
+        analyticsContent.contentGroup,
+        analyticsContent.contentId,
+        analyticsPageTitle,
+        backgroundColor,
+        exclusionClasses,
+        sendEvent,
+        title,
+    ]);
 
     return (
         <StyledModal

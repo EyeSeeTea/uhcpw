@@ -93,6 +93,8 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
                 name: event.name,
                 page_title: event.pageTitle,
                 content_type: event.contentType,
+                content_group: event.contentGroup,
+                content_id: event.contentId,
             } as const;
         case "page_view":
             return {

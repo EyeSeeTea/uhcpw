@@ -24,6 +24,11 @@ const CHART_1_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 const CHART_1_SCATTER_VISUALIZATION_NAME =
     VisualizationsSeeds["kIpnMBaBvZ9"]?.countryPageName || VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName;
 
+const ANALYTICS_CONTENT = {
+    contentGroup: "chart",
+    contentId: CHART_1_SCATTER_VISUALIZATION_NAME,
+};
+
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndRegions } = useAppContext();
     const country = useCountryInfo(countryId);
@@ -84,6 +89,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={true}
                     analyticsPageTitle="Country page"
+                    analyticsContent={ANALYTICS_CONTENT}
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}

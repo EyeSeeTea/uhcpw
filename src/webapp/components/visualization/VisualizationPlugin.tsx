@@ -56,17 +56,29 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
     const onDirectDownloadImage = useCallback(() => {
         if (chartData.kind === "Loaded" && ref.current) {
-            sendEvent({ name: "file_download", pageTitle: analyticsPageTitle, contentType: "image" });
+            sendEvent({
+                name: "file_download",
+                pageTitle: analyticsPageTitle,
+                contentType: "image",
+                contentGroup: "chart",
+                contentId: chartData.friendlyName,
+            });
             downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
                 backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
                 exclusionClasses: ["download-button", "info-button", "category"],
             });
         }
-    }, [chartData, useHeaderForCountryPage, sendEvent, analyticsPageTitle]);
+    }, [chartData, sendEvent, analyticsPageTitle, useHeaderForCountryPage]);
 
     const downloadExcel = React.useCallback(() => {
         if (chartData.kind === "Loaded") {
-            sendEvent({ name: "file_download", pageTitle: analyticsPageTitle, contentType: "csv" });
+            sendEvent({
+                name: "file_download",
+                pageTitle: analyticsPageTitle,
+                contentType: "csv",
+                contentGroup: "chart",
+                contentId: chartData.friendlyName,
+            });
             onDownloadExcel(chartData);
         } else {
             console.error("No data to download");
