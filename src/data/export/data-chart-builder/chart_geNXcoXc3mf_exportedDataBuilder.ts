@@ -16,20 +16,9 @@ export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: str
     const headers = dataTab.data[1];
 
     const countryIndex = headers?.indexOf("Country");
-    const quintileIndex = headers?.indexOf("Quintile");
-    const yearIndex = headers?.indexOf("Year");
     const valueIndex = headers?.indexOf("Value");
 
-    if (
-        countryIndex === undefined ||
-        countryIndex === -1 ||
-        quintileIndex === undefined ||
-        quintileIndex === -1 ||
-        yearIndex === undefined ||
-        yearIndex === -1 ||
-        valueIndex === undefined ||
-        valueIndex === -1
-    ) {
+    if (countryIndex === undefined || countryIndex === -1 || valueIndex === undefined || valueIndex === -1) {
         throw new Error("Missing required columns in the data tab");
     }
 
@@ -39,27 +28,10 @@ export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: str
         throw new Error("Missing country in the data tab");
     }
 
-    const allYears = dataTab.data
-        .slice(2)
-        .map(row => row[yearIndex])
-        .filter((year): year is string => year !== undefined);
-    const allYearsUnique = [...new Set(allYears)].map(year => Number(year));
-
-    const headersBase = [["Country", "Quintile / Year", ...allYearsUnique]];
+    const headersBase = [["Country", "Quintile / Year"]];
 
     const data = SORTED_QUINTILES.reduce((acc: (string | number)[][], quintile): (string | number)[][] => {
-        const quintileData = allYearsUnique.map(year => {
-            const row = dataTab.data.find(row => row[quintileIndex] === quintile && row[yearIndex] === year.toString());
-            const value = row ? row[valueIndex] : undefined;
-
-            if (!row || !value) {
-                return 0;
-            }
-
-            return Number(value?.replace(",", "."));
-        });
-
-        return [...acc, [quintile, ...quintileData]];
+        return [...acc, [quintile]];
     }, []).map(row => [country, ...row]);
 
     const chartTab = {
@@ -67,5 +39,21 @@ export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: str
         data: [[chartName], ...headersBase, ...data],
     };
 
-    return [...tabs, chartTab];
+    const dataWithValueNumbers = dataTab.data.map((row, rowNumber) => {
+        const value = row[valueIndex];
+        if (!value || rowNumber === 0 || rowNumber === 1) {
+            return row;
+        }
+
+        return [...row.slice(0, valueIndex), Number(value.replace(",", ".")), ...row.slice(valueIndex + 1)];
+    });
+
+    const dataTabWithNumbers = {
+        name: DATA_TAB_NAME,
+        data: dataWithValueNumbers,
+    };
+
+    const tabsWithoutDataTab = tabs.filter(tab => tab.name !== DATA_TAB_NAME);
+
+    return [...tabsWithoutDataTab, dataTabWithNumbers, chartTab];
 };

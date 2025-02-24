@@ -209,14 +209,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ];
 
                 if (tabs.length > 0) {
-                    return this.getChartFileTemplateIdFromDataStore(mergedVisualization.id).flatMap(
-                        chartFileTemplateId => {
+                    return this.getChartFileTemplateIdFromDataStore(mergedVisualization.id)
+                        .flatMap(chartFileTemplateId => {
                             const exportedDataChartBuilder =
                                 visualizationsExportedDataChartBuilder[mergedVisualization.id];
 
                             if (chartFileTemplateId && exportedDataChartBuilder) {
-                                return this.downloadChartFileArrayBufferTemplate(chartFileTemplateId).flatMap(
-                                    fileArrayBuffer => {
+                                return this.downloadChartFileArrayBufferTemplate(chartFileTemplateId)
+                                    .flatMap(fileArrayBuffer => {
                                         try {
                                             const tabsWithChart = exportedDataChartBuilder(
                                                 tabs,
@@ -232,16 +232,28 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                                             );
                                         } catch (error) {
                                             console.error("Error creating exported data for chart: ", error);
+
                                             exportToCSV(tabs, chartName);
                                         }
                                         return Future.success(undefined);
-                                    }
-                                );
+                                    })
+                                    .flatMapError(error => {
+                                        console.error("Error while downloading chart template: ", error);
+
+                                        exportToCSV(tabs, chartName);
+                                        return Future.success(undefined);
+                                    });
                             } else {
+                                exportToCSV(tabs, chartName);
                                 return Future.success(undefined);
                             }
-                        }
-                    );
+                        })
+                        .flatMapError(error => {
+                            console.error("Error while getting file template id from Datastore: ", error);
+
+                            exportToCSV(tabs, chartName);
+                            return Future.success(undefined);
+                        });
                 }
                 return Future.success(undefined);
             });
