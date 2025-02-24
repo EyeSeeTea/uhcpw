@@ -1,0 +1,173 @@
+{
+    "id": "kIpnMBaBvZ9",
+    "name": "45. Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health in the WHO European Region YEAR INFO",
+    "rows": [
+        {
+            "id": "ou",
+            "dimension": "ou",
+            "items": [
+                {
+                    "id": "DVnpk4xiXGJ"
+                },
+                {
+                    "id": "XKKI1hhyFxk"
+                },
+                {
+                    "id": "cWrL45je7mw"
+                }
+            ]
+        },
+        {
+            "id": "pe",
+            "dimension": "pe",
+            "items": [
+                {
+                    "id": "2010"
+                },
+                {
+                    "id": "2011"
+                },
+                {
+                    "id": "2012"
+                },
+                {
+                    "id": "2013"
+                },
+                {
+                    "id": "2014"
+                },
+                {
+                    "id": "2015"
+                },
+                {
+                    "id": "2016"
+                },
+                {
+                    "id": "2017"
+                },
+                {
+                    "id": "2018"
+                },
+                {
+                    "id": "2019"
+                },
+                {
+                    "id": "2020"
+                },
+                {
+                    "id": "2021"
+                },
+                {
+                    "id": "2022"
+                },
+                {
+                    "id": "2023"
+                },
+                {
+                    "id": "2024"
+                }
+            ]
+        }
+    ],
+    "columns": [
+        {
+            "id": "dx",
+            "dimension": "dx",
+            "items": [
+                {
+                    "dimensionItem": "WmOGqGcov4f",
+                    "id": "WmOGqGcov4f"
+                },
+                {
+                    "dimensionItem": "S8OMD0f9IZp",
+                    "id": "S8OMD0f9IZp"
+                }
+            ]
+        }
+    ],
+    "filters": [],
+    "dataDimensionItems": [
+        {
+            "dataDimensionItemType": "DATA_ELEMENT",
+            "dataElement": {
+                "id": "WmOGqGcov4f"
+            }
+        },
+        {
+            "dataDimensionItemType": "DATA_ELEMENT",
+            "dataElement": {
+                "id": "S8OMD0f9IZp"
+            }
+        }
+    ],
+    "categoryDimensions": [],
+    "showData": true,
+    "regressionType": "NONE",
+    "type": "COLUMN",
+    "cumulativeValues": false,
+    "sortOrder": 0,
+    "fontSize": "NORMAL",
+    "aggregationType": "DEFAULT",
+    "hideSubtitle": false,
+    "percentStackedValues": false,
+    "noSpaceBetweenColumns": false,
+    "hideTitle": false,
+    "regression": false,
+    "skipRounding": false,
+    "legend": {
+        "showKey": false
+    },
+    "yearlySeries": [],
+    "hideEmptyRowItems": "NONE",
+    "axes": [
+        {
+            "index": 0,
+            "type": "DOMAIN",
+            "title": {
+                "textMode": "CUSTOM",
+                "text": "Out-of-pocket payments as a share of current spending on health (%)"
+            }
+        },
+        {
+            "index": 1,
+            "type": "RANGE",
+            "title": {
+                "textMode": "CUSTOM",
+                "text": "Out-of-pocket payments as a share of current spending on health (%)"
+            }
+        },
+        {
+            "index": 0,
+            "type": "RANGE",
+            "title": {
+                "textMode": "CUSTOM",
+                "text": "Households with catastrophic health spending (%)"
+            }
+        }
+    ],
+    "seriesKey": {
+        "hidden": false
+    },
+    "categoryName": "Combined indicators",
+    "friendlyName": "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health",
+    "downloadedFileName": "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health",
+    "isComparative": true,
+    "allowedYears": [
+        {
+            "id": "Latest_Available_Year"
+        },
+        {
+            "id": "2019-Latest_COVID-19"
+        }
+    ],
+    "selectedYearsByDefault": [
+        {
+            "id": "Latest_Available_Year"
+        }
+    ],
+    "isYearSingleSelection": true,
+    "isScatter": true,
+    "xAxis": "S8OMD0f9IZp",
+    "yAxis": "WmOGqGcov4f",
+    "notes": ""
+}

@@ -2,7 +2,6 @@ import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
-import GridOnIcon from "@material-ui/icons/GridOn";
 
 import i18n from "../../../locales";
 import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";

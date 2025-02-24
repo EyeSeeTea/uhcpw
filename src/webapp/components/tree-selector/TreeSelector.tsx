@@ -351,11 +351,14 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         return (
             <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
+                    id="tree-selector-input"
                     label={label}
                     aria-label={ariaLabel || placeholder || "Tree selector"}
                     onClick={handleClick}
                     placeholder={finalPlaceholder}
-                    role={"textbox"}
+                    role="textbox"
+                    aria-haspopup="listbox"
+                    aria-controls="tree-selector-menu"
                     fullWidth={fullWidth}
                     value={""}
                     disabled={disabled}
@@ -385,7 +388,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         endAdornment: (
                             <InputAdornment
                                 position="start"
-                                aria-label="expand"
+                                aria-label={`expand-tree-${ariaLabel || placeholder || "icon"}`}
                                 style={{
                                     top: "calc(50% - 14px)",
                                     right: 0,
@@ -403,6 +406,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     }}
                 />
                 <StyledMenu
+                    id="tree-selector-menu"
                     PaperProps={{ style: { width: "600px", padding: "16px" } }}
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
@@ -410,6 +414,8 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
                     transformOrigin={{ vertical: "top", horizontal: "left" }}
                     onClose={handleClose}
+                    role="listbox"
+                    aria-labelledby="tree-selector-input"
                 >
                     <div role="listbox">
                         {!disableSearch && (
