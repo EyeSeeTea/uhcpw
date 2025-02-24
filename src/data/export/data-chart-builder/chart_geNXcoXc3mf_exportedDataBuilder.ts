@@ -1,5 +1,6 @@
 import { CHART_TAB_NAME, DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
+import { parseDataValuesStringToNumber } from "../utils";
 
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
 
@@ -39,14 +40,7 @@ export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: str
         data: [[chartName], ...headersBase, ...data],
     };
 
-    const dataWithValueNumbers = dataTab.data.map((row, rowNumber) => {
-        const value = row[valueIndex];
-        if (!value || rowNumber === 0 || rowNumber === 1) {
-            return row;
-        }
-
-        return [...row.slice(0, valueIndex), Number(value.replace(",", ".")), ...row.slice(valueIndex + 1)];
-    });
+    const dataWithValueNumbers = parseDataValuesStringToNumber(dataTab.data, valueIndex);
 
     const dataTabWithNumbers = {
         name: DATA_TAB_NAME,

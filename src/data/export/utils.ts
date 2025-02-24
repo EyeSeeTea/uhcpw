@@ -204,3 +204,14 @@ export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number)
     const width = getColumnWidth(sheet, tabName, columnDataIndex);
     sheet.column(columnDataIndex + 1).width(width);
 }
+
+export function parseDataValuesStringToNumber(data: string[][], valueIndex: number): (string | number)[][] {
+    return data.map((row, rowNumber) => {
+        const value = row[valueIndex];
+        if (!value || rowNumber === 0 || rowNumber === 1) {
+            return row;
+        }
+
+        return [...row.slice(0, valueIndex), Number(value.replace(",", ".")), ...row.slice(valueIndex + 1)];
+    });
+}
