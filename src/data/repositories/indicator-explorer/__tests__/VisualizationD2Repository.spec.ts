@@ -17,14 +17,10 @@ const visualizationRepository = new VisualizationD2Repository(api);
 
 describe("Visualization repository", () => {
     beforeAll(() => mockWebServer.start());
-    afterEach(() => {
-        mockWebServer.resetRequests();
-        mockWebServer.resetHandlers();
-    });
+    afterEach(() => mockWebServer.resetHandlers());
     afterAll(() => mockWebServer.close());
 
-    // TODO: Fix test - returned error "TypeError: Only absolute URLs are supported"
-    it.skip("should return a expected visualization", async () => {
+    it("should return a expected visualization", async () => {
         givenAVisualization();
 
         const response = await visualizationRepository.getById("kIpnMBaBvZ9").runAsync();
@@ -99,7 +95,7 @@ function givenAVisualization() {
     mockWebServer.addRequestHandlers([
         {
             method: "get",
-            endpoint: `/api/models/programs`,
+            endpoint: `/api/programs`,
             httpStatusCode: 200,
             response: breaksInSeriesProgram,
         },
