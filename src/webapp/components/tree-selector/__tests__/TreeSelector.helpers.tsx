@@ -35,12 +35,9 @@ export function collapseCountriesParentNode(index: 0 | 1 | 2) {
     }
 }
 
-export function focusComponent() {
-    const autocompleteInput = screen.getByRole("textbox", {
-        name: "Select country or area",
-    });
-
-    userEvent.click(autocompleteInput);
+export async function focusComponent() {
+    const countrySelectorTextBox = await screen.findByLabelText(/expand-tree-Select country or area/i);
+    await userEvent.click(countrySelectorTextBox);
 }
 
 export function getChild(child: number) {

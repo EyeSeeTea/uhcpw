@@ -1,10 +1,10 @@
 {
-    "id": "hNU4Lj1xLYO",
-    "name": "1. Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health in the WHO European Region",
+    "id": "kIpnMBaBvZ9",
+    "name": "45. Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health in the WHO European Region YEAR INFO",
     "showData": true,
     "aggregationType": "DEFAULT",
     "hideSubtitle": false,
-    "type": "SCATTER",
+    "type": "COLUMN",
     "percentStackedValues": false,
     "noSpaceBetweenColumns": false,
     "regressionType": "NONE",
@@ -25,13 +25,13 @@
         {
             "dataDimensionItemType": "DATA_ELEMENT",
             "dataElement": {
-                "id": "kBOh0hUi5bW"
+                "id": "WmOGqGcov4f"
             }
         },
         {
             "dataDimensionItemType": "DATA_ELEMENT",
             "dataElement": {
-                "id": "rX0nLoxvSAi"
+                "id": "S8OMD0f9IZp"
             }
         }
     ],
@@ -41,23 +41,15 @@
             "dimension": "dx",
             "items": [
                 {
-                    "id": "kBOh0hUi5bW"
+                    "dimensionItem": "WmOGqGcov4f"
                 },
                 {
-                    "id": "rX0nLoxvSAi"
+                    "dimensionItem": "S8OMD0f9IZp"
                 }
             ]
         }
     ],
     "axes": [
-        {
-            "index": 0,
-            "type": "RANGE",
-            "title": {
-                "textMode": "CUSTOM",
-                "text": "Households with catastrophic health spending (%)"
-            }
-        },
         {
             "index": 0,
             "type": "DOMAIN",
@@ -73,11 +65,35 @@
                 "textMode": "CUSTOM",
                 "text": "Out-of-pocket payments as a share of current spending on health (%)"
             }
+        },
+        {
+            "index": 0,
+            "type": "RANGE",
+            "title": {
+                "textMode": "CUSTOM",
+                "text": "Households with catastrophic health spending (%)"
+            }
         }
     ],
     "yearlySeries": [],
     "categoryDimensions": [],
-    "filters": [
+    "filters": [],
+    "rows": [
+        {
+            "id": "ou",
+            "dimension": "ou",
+            "items": [
+                {
+                    "id": "DVnpk4xiXGJ"
+                },
+                {
+                    "id": "XKKI1hhyFxk"
+                },
+                {
+                    "id": "cWrL45je7mw"
+                }
+            ]
+        },
         {
             "id": "pe",
             "dimension": "pe",
@@ -111,20 +127,21 @@
                 },
                 {
                     "id": "2019"
-                }
-            ]
-        }
-    ],
-    "rows": [
-        {
-            "id": "ou",
-            "dimension": "ou",
-            "items": [
-                {
-                    "id": "DVnpk4xiXGJ"
                 },
                 {
-                    "id": "XKKI1hhyFxk"
+                    "id": "2020"
+                },
+                {
+                    "id": "2021"
+                },
+                {
+                    "id": "2022"
+                },
+                {
+                    "id": "2023"
+                },
+                {
+                    "id": "2024"
                 }
             ]
         }

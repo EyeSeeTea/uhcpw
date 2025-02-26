@@ -86,16 +86,23 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch();
-
             expect(screen.getByRole("heading", { name: /news/i })).toBeInTheDocument();
+        });
+        it("should has country selector disabled", async () => {
+            givenANewsResources(0);
+
+            renderPage("news");
+
+            const input = await screen.findByLabelText(/input Select country or area/i);
+
+            expect(input).toBeDisabled();
         });
         it("should render any items if there not resources", async () => {
             givenANewsResources(0);
 
             renderPage("news");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -104,7 +111,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -113,7 +120,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             await screen.findAllByRole("listitem");
 
@@ -124,7 +131,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             await verifyNewsItems(resources);
         });
@@ -136,16 +143,23 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch();
-
             expect(screen.getByRole("heading", { name: /multimedia/i })).toBeInTheDocument();
+        });
+        it("should has country selector disabled", async () => {
+            givenAMultimediaResources(0);
+
+            renderPage("multimedia");
+
+            const input = await screen.findByLabelText(/input Select country or area/i);
+
+            expect(input).toBeDisabled();
         });
         it("should render any items if there not resources", async () => {
             givenAMultimediaResources(0);
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -154,7 +168,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -163,7 +177,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             await screen.findAllByRole("listitem");
 
@@ -174,7 +188,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch();
+            await selectFiltersAndSearch({ isCountryDisabled: true });
 
             await verifyMultimediaItems(resources);
         });
@@ -185,8 +199,6 @@ describe("ResourcesByTypePage for ", () => {
             givenACountryAnalysisResources(0);
 
             renderPage("country-analysis");
-
-            await selectFiltersAndSearch();
 
             expect(screen.getByRole("heading", { name: /country analysis/i })).toBeInTheDocument();
         });
@@ -429,43 +441,73 @@ function givenAResourceCategories(): ResourceCategory[] {
     return data;
 }
 
-async function selectFiltersAndSearch(theme?: string, country?: string, year?: string) {
+async function selectFiltersAndSearch(options?: {
+    theme?: string;
+    country?: string;
+    year?: string;
+    isCountryDisabled?: boolean;
+}) {
     const mainElement = screen.getByRole("main");
     const main = within(mainElement);
 
-    //await selectFilter(main, "Theme", theme || "Financial Protection");
+    await selectThemeFilter(main, options?.theme || "Financial Protection");
 
-    //await selectCountry(main, country || "Spain");
+    await selectYearsFilter(main, options?.year || "2019");
 
-    //await selectFilter(main, "Years", year || "2020");
+    if (!options?.isCountryDisabled) {
+        await selectCountry(main, options?.country || "Spain");
+    }
 
     const searchButton = main.getByLabelText(/search/i);
 
     userEvent.click(searchButton);
 }
 
-async function selectFilter(scope: BoundFunctions<typeof queries>, name: string, value: string) {
-    const autocompleteInput = scope.getByLabelText(name);
+async function selectThemeFilter(scope: BoundFunctions<typeof queries>, value: string) {
+    const autocompleteThemeInput = scope.getByRole("textbox", {
+        name: /select theme/i,
+    });
 
-    userEvent.click(autocompleteInput);
+    await userEvent.click(autocompleteThemeInput);
 
     const targetItem = await waitFor(() => screen.getByRole("option", { name: value }));
+    await userEvent.click(targetItem);
+    await userEvent.keyboard("{Escape}");
 
-    userEvent.click(targetItem);
+    await waitFor(() => expect(autocompleteThemeInput).toHaveValue(value));
 }
 
 async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
-    const countrySelector = scope.getByLabelText(/countries/i);
+    const countrySelectorTextBox = await scope.findByLabelText(/expand-tree-Select country or area/i);
+    await userEvent.click(countrySelectorTextBox);
 
-    userEvent.click(countrySelector);
+    const menu = screen.getByRole("menu");
+    const openedMenuElement = within(menu).getByRole("listbox");
+    await waitFor(() => expect(openedMenuElement).toBeInTheDocument());
 
-    userEvent.click(await screen.findByRole("checkbox", { name: value }));
+    const checkbox = within(openedMenuElement).getByRole("checkbox", { name: value });
+    await userEvent.click(checkbox);
+    await userEvent.keyboard("{Escape}");
 
-    userEvent.keyboard("{Escape}");
-
-    const textbox = await scope.findByRole("textbox", {
-        name: "Select country or area",
+    const chip = scope.getByRole("button", {
+        name: value,
     });
+    await waitFor(() => expect(chip).toBeInTheDocument());
+}
 
-    within(textbox).getByText(/countries/i);
+async function selectYearsFilter(scope: BoundFunctions<typeof queries>, year: string) {
+    const autocompleteInput = scope.getByRole("textbox", {
+        name: /select year/i,
+    });
+    await userEvent.click(autocompleteInput);
+
+    const targetItem = await waitFor(() => screen.getByRole("option", { name: year }));
+
+    await userEvent.click(targetItem);
+    await userEvent.keyboard("{Escape}");
+
+    const chip = scope.getByRole("button", {
+        name: year,
+    });
+    await waitFor(() => expect(chip).toBeInTheDocument());
 }

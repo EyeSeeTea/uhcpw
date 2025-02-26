@@ -208,7 +208,10 @@ function getChartData(
             return Future.joinObj({
                 visualization: Future.success(visualization),
                 analytics: Future.success(analytics),
-                legendSets: compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds),
+                legendSets:
+                    legendSetIds.length > 0
+                        ? compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds)
+                        : Future.success([]),
             });
         });
     };

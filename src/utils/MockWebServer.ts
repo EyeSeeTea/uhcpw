@@ -41,6 +41,11 @@ export class MockWebServer {
         this.server.resetHandlers();
     }
 
+    resetRequests(): void {
+        this.lastRequest = undefined;
+        this.allRequests = [];
+    }
+
     close(): void {
         this.server.close();
     }
