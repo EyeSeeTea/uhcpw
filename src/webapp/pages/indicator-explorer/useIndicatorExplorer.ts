@@ -343,10 +343,11 @@ function getUpdatedCountriesSelectionFilter(
     selectedCountries: string[] | undefined,
     countriesAndRegions: Country[]
 ): string[] | undefined {
-    const isEu27Selected = !!selectedCountries?.find(selectedCountry => selectedCountry === EU27);
+    const isEu27Selected = selectedCountries?.some(selectedCountry => selectedCountry === EU27);
     const isMoreThanOneCountrySelected = selectedCountries?.length && selectedCountries.length > 1;
 
     const isOldComparativeAndNewNotComparative = oldVisualization?.isComparative && !newsVisualization?.isComparative;
+    const areOldAndNewComparative = oldVisualization?.isComparative && newsVisualization?.isComparative;
     const isNewNotComparativeAndNotHaveEur27 = !newsVisualization?.isComparative && !newsVisualization?.hasEur27;
 
     const isNewSingleCountrySelection = newsVisualization?.maxCountryFilter === 1;
@@ -361,6 +362,18 @@ function getUpdatedCountriesSelectionFilter(
         (isOldMultipleCountrySelection && isNewSingleCountrySelection && isMoreThanOneCountrySelected)
     ) {
         return [];
+    }
+
+    if (areOldAndNewComparative && selectedCountries?.length) {
+        const totalCountries = countriesAndRegions.length + (oldVisualization?.hasEur27 ? 1 : 0);
+        const areAllCountriesSelected = selectedCountries.length === totalCountries;
+
+        if (!areAllCountriesSelected) {
+            const newSelection = newsVisualization?.hasEur27
+                ? selectedCountries
+                : selectedCountries.filter(country => country !== EU27);
+            if (newSelection.length) return newSelection;
+        }
     }
 
     if (newsVisualization?.isComparative && newsVisualization?.hasEur27) {
