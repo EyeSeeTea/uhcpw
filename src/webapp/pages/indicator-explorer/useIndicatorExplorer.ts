@@ -397,19 +397,19 @@ function getDisabledCountriesFilter(
 }
 
 function getSelectedYearsInFilter(newsVisualization: Visualization | undefined): string[] | undefined {
-    if (newsVisualization?.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
+    if (!newsVisualization) {
+        return;
+    } else if (newsVisualization.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
         return newsVisualization.selectedYearsByDefault.map(year => year.id);
-    } else if (newsVisualization && !newsVisualization.isComparative) {
-        const allYears = newsVisualization?.yearsFilterUpTo2YearsAgo
-            ? allYearsFiltersUpTo2YearsAgo
-            : allYearsFiltersUpToLastYear;
-        const allAllowedYears = newsVisualization?.allowedYears
-            ? allYears.map(year => year.id).filter(id => newsVisualization?.allowedYears?.some(year => year.id === id))
-            : allYears.map(year => year.id);
-
-        return allAllowedYears;
-    } else if (newsVisualization?.isComparative) {
-        return newsVisualization?.allowedYears?.map(year => year.id);
+    } else if (!newsVisualization.isYearSingleSelection) {
+        if (newsVisualization.allowedYears?.length) {
+            return newsVisualization.allowedYears.map(year => year.id);
+        } else {
+            const allYears = newsVisualization?.yearsFilterUpTo2YearsAgo
+                ? allYearsFiltersUpTo2YearsAgo
+                : allYearsFiltersUpToLastYear;
+            return allYears.map(year => year.id);
+        }
     }
 }
 
