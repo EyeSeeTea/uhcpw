@@ -11,12 +11,15 @@ import { useHomeResources } from "./useHomeResources";
 import { NewsletterButton } from "../../components/home/buttons/NewsletterButton";
 import { useHomePageContent } from "./useHomePageContent";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { useHomeMobile } from "./useHomeMobile";
+import { MobileDialog } from "../../components/home/mobile-dialog/MobileDialog";
 
 export const HomePage: React.FC = React.memo(() => {
     const mapState = useMap();
     const { resources } = useHomeResources();
     const { sendPageView } = useAnalytics();
     const homePageContent = useHomePageContent();
+    const { showMobileDialog, onCloseMobileDialog } = useHomeMobile();
 
     React.useEffect(() => {
         sendPageView({ title: "Homepage" });
@@ -40,6 +43,12 @@ export const HomePage: React.FC = React.memo(() => {
             <section>
                 <Resources resources={resources} />
             </section>
+
+            <MobileDialog
+                isOpen={showMobileDialog}
+                onClose={onCloseMobileDialog}
+                content={homePageContent.mobileDialog.text}
+            />
         </Layout>
     );
 });

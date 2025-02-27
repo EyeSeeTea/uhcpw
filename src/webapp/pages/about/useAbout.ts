@@ -25,7 +25,9 @@ export function useAbout(): ResourcesState {
     useEffect(() => {
         compositionRoot.about.getPersons.execute(true).run(
             persons => {
-                setOfficeTeam(persons.map(person => mapPersonToExpertState(person, countries)));
+                const team = persons.map(person => mapPersonToExpertState(person, countries));
+                const orderedTeam = _(team).orderBy(["firstName"], ["asc"]).value();
+                setOfficeTeam(orderedTeam);
             },
             () => setOfficeTeam([])
         );

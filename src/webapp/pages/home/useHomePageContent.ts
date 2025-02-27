@@ -80,4 +80,5 @@ const emptyHomePageContent: HomePageContent = {
         buttonText: "",
         buttonLink: "",
     },
+    mobileDialog: { text: "" },
 };
