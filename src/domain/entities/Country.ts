@@ -44,5 +44,6 @@ export type CountriesRegion = {
 export const EU27: Id = "IZy3ESdFnp5";
 
 // included in countries list
+export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";
 export const FederationOfBosniaAndHerzegovina: Id = "j44olg405lZ";
 export const RepublikaSrpska: Id = "FvoXRc5cEEk";

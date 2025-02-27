@@ -7,7 +7,13 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestAvailable, LatestCOVID19, Year } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { Country, EU27, FederationOfBosniaAndHerzegovina, RepublikaSrpska } from "../../../domain/entities/Country";
+import {
+    BosniaAndHerzegovina,
+    Country,
+    EU27,
+    FederationOfBosniaAndHerzegovina,
+    RepublikaSrpska,
+} from "../../../domain/entities/Country";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import {
     sortedCategoryNames,
@@ -363,11 +369,14 @@ function getUpdatedCountriesSelectionFilter(
     }
 
     if (areOldAndNewNotComparative) {
-        return removeSubRegions(newsVisualization?.hideBosniaAndHerzegovinaRegions, selectedCountries);
+        return handleBosniaAndHerzegovina(oldVisualization, newsVisualization, selectedCountries);
     }
 
     if (areOldAndNewComparative && selectedCountries?.length) {
-        const totalCountries = countriesAndRegions.length + (oldVisualization?.hasEur27 ? 1 : 0);
+        const totalCountries =
+            countriesAndRegions.length +
+            (oldVisualization?.hasEur27 ? 1 : 0) +
+            (oldVisualization?.hideBosniaAndHerzegovinaRegions ? -2 : 0);
         const areAllCountriesSelected = selectedCountries.length === totalCountries;
 
         if (!areAllCountriesSelected) {
@@ -375,28 +384,46 @@ function getUpdatedCountriesSelectionFilter(
                 ? selectedCountries
                 : selectedCountries.filter(country => country !== EU27);
             if (newSelection.length)
-                return removeSubRegions(newsVisualization?.hideBosniaAndHerzegovinaRegions, newSelection);
+                return handleBosniaAndHerzegovina(oldVisualization, newsVisualization, newSelection);
         }
     }
 
     if (newsVisualization?.isComparative) {
-        const countriesToSelect = removeSubRegions(
-            newsVisualization?.hideBosniaAndHerzegovinaRegions,
+        const countriesToSelect = handleBosniaAndHerzegovina(
+            oldVisualization,
+            newsVisualization,
             countriesAndRegions.map(c => c.id)
         );
         return newsVisualization?.hasEur27 ? [...countriesToSelect, EU27] : countriesToSelect;
     }
 }
 
-function removeSubRegions(
-    hideBosniaAndHerzegovinaRegions: boolean | undefined,
+function handleBosniaAndHerzegovina(
+    oldVisualization: Visualization | undefined,
+    newsVisualization: Visualization | undefined,
     countriesToSelect: string[] | undefined
 ): string[] {
     countriesToSelect = countriesToSelect ?? [];
-    if (hideBosniaAndHerzegovinaRegions) {
-        return countriesToSelect.filter(
-            country => ![FederationOfBosniaAndHerzegovina, RepublikaSrpska].includes(country)
-        );
+    const oldHide = oldVisualization?.hideBosniaAndHerzegovinaRegions;
+    const newHide = newsVisualization?.hideBosniaAndHerzegovinaRegions;
+
+    const bihSubRegions = [FederationOfBosniaAndHerzegovina, RepublikaSrpska];
+    if (newHide) {
+        if (
+            countriesToSelect.some(country => bihSubRegions.includes(country)) &&
+            !countriesToSelect.includes(BosniaAndHerzegovina) &&
+            newsVisualization?.isComparative
+        ) {
+            countriesToSelect = [...countriesToSelect, BosniaAndHerzegovina];
+        }
+        return countriesToSelect.filter(country => !bihSubRegions.includes(country));
+    } else if (
+        oldHide &&
+        !newHide &&
+        countriesToSelect.includes(BosniaAndHerzegovina) &&
+        newsVisualization?.isComparative
+    ) {
+        return [...countriesToSelect, ...bihSubRegions];
     }
     return countriesToSelect;
 }
