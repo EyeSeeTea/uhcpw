@@ -9,7 +9,7 @@ export const chart_MfLZYD6QCPy_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
     friendlyName: "Unmet need for prescribed medicines due to cost (poorest quintile, total, richest quintile)",
     countryPageName: "unmet need for prescribed medicines due to cost by income quintile",
-    isComparative: false,
+    isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     selectedYearsByDefault: [{ id: "2019" }],
     allowedYears: [{ id: "2014" }, { id: "2019" }],
