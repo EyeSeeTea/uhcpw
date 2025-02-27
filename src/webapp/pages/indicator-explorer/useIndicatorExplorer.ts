@@ -381,7 +381,7 @@ function getUpdatedCountriesSelectionFilter(
     }
 
     if (newsVisualization?.isComparative) {
-        return countriesAndRegions.map(c => c.id).filter(id => id !== EU27);
+        return countriesAndRegions.map(c => c.id);
     }
 }
 
