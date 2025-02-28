@@ -161,8 +161,8 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
         case "policy_explorer_summary":
             return {
                 name: event.name,
-                number_of_categories: event.numberOfCategories,
-                number_of_subcategories: event.numberOfSubcategories,
+                number_of_policy_categories: event.numberOfCategories,
+                number_of_policy_subcategories: event.numberOfSubcategories,
                 all_countries_selected: booleanToYesNo(event.allCountriesSelected),
                 number_of_countries: event.numberOfCategories,
                 year: event.year,
@@ -170,8 +170,8 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
         case "policy_explorer_category":
             return {
                 name: event.name,
-                category: event.category,
-                subcategory: event.subcategory,
+                policy_category: event.category,
+                policy_subcategory: event.subcategory,
                 country: event.country,
                 year: event.year,
             } as const;
