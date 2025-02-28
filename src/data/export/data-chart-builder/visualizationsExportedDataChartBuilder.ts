@@ -11,3 +11,8 @@ export const visualizationsExportedDataChartBuilder: Record<
     kIpnMBaBvZ9: (tabs, chartName) => chart_kIpnMBaBvZ9_exportedDataBuilder(tabs, chartName),
     GimM6ANOKhd: (tabs, chartName) => chart_GimM6ANOKhd_exportedDataBuilder(tabs, chartName),
 };
+
+export const columnLimitForDataChartById: Record<string, string> = {
+    geNXcoXc3mf: "CZ",
+    GimM6ANOKhd: "CZ",
+};

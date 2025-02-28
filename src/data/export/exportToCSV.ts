@@ -11,6 +11,7 @@ import {
     DATA_TAB_NAME,
     NOTES_TAB_NAME,
 } from "../repositories/indicator-explorer/AnalyticsD2Repository";
+import { columnLimitForDataChartById } from "./data-chart-builder/visualizationsExportedDataChartBuilder";
 
 const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
 const fileExtension = ".xlsx";
@@ -95,6 +96,7 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
 };
 
 export const exportToCSVIncludingChart = async (
+    chartId: string,
     tabs: TabsWithStringOrNumbers[],
     arrayBuffer: ArrayBuffer,
     fileName: string
@@ -105,6 +107,9 @@ export const exportToCSVIncludingChart = async (
     const chartTab = tabs.find(tab => tab.name === CHART_TAB_NAME);
     if (chartTab) {
         addDataToSheet(chartSheet, chartTab.data);
+        if (columnLimitForDataChartById && columnLimitForDataChartById[chartId]) {
+            hideEmptyColumn(chartSheet, columnLimitForDataChartById[chartId]);
+        }
     }
 
     const notesTab = tabs.find(tab => tab.name === NOTES_TAB_NAME);
@@ -142,4 +147,27 @@ function getColumnLetter(columnIndex: number): string {
     return columnIndex >= 0
         ? getColumnLetter(Math.floor(columnIndex / 26) - 1) + String.fromCharCode((columnIndex % 26) + 65)
         : "";
+}
+
+function generateExcelColumnsUntilLimit(limit: string): string[] {
+    const alphabet = [...Array(26)].map((_, i) => String.fromCharCode(65 + i)); // ["A" - "Z"]
+
+    const columns = [
+        ...alphabet,
+        ...alphabet.flatMap(a => alphabet.map(b => a + b)), // ["AA" - "ZZ"]
+    ];
+
+    return columns.slice(0, columns.indexOf(limit) + 1);
+}
+
+function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string) {
+    generateExcelColumnsUntilLimit(columnLimit).forEach(columnLetter => {
+        const columnValues: (string | number)[][] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
+        const columnIsEmpty = columnValues.every((value: (string | number)[]) =>
+            value.every(cell => cell === "" || cell === 0 || cell === undefined)
+        );
+        if (columnIsEmpty) {
+            sheet.column(columnLetter).hidden(true);
+        }
+    });
 }

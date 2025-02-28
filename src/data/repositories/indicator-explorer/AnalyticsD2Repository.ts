@@ -29,7 +29,7 @@ import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
-export const CHART_TAB_NAME = "Chart";
+export const CHART_TAB_NAME = "New Data";
 export const NOTES_TAB_NAME = "Notes";
 
 const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
@@ -224,6 +224,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                                             );
 
                                             exportToCSVIncludingChart(
+                                                mergedVisualization.id,
                                                 tabsWithChart,
                                                 fileArrayBuffer,
                                                 mergedVisualization.downloadedFileName
