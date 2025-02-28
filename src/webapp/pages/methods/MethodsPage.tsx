@@ -38,8 +38,16 @@ const MarkdownLink: React.FC<{
     href?: string | undefined;
     children: React.ReactNode;
 }> = ({ href, children }) => {
+    const { redirectWithExternalLink } = useAnalytics();
+
     return (
-        <TextLink href={href} style={{ paddingInline: 0 }} target="_blank" rel="noreferrer">
+        <TextLink
+            href={href}
+            style={{ paddingInline: 0 }}
+            target="_blank"
+            rel="noreferrer"
+            onClick={redirectWithExternalLink}
+        >
             {children}
         </TextLink>
     );

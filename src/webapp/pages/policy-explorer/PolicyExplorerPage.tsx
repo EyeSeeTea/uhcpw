@@ -27,7 +27,7 @@ import { isObjectEmpty } from "../../utils/objectUtil";
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
 
-    const { sendPageView } = useAnalytics();
+    const { sendPageView, redirectWithExternalLink } = useAnalytics();
 
     const referencesRef = useRef<HTMLDivElement>(null);
 
@@ -267,7 +267,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                             </CreditsText>
                                             &nbsp;
                                             {info.sourceUrl ? (
-                                                <Link href={info.sourceUrl} target="_blank" rel="noreferrer">
+                                                <Link
+                                                    href={info.sourceUrl}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    onClick={redirectWithExternalLink}
+                                                >
                                                     {info.sourceText}
                                                 </Link>
                                             ) : (

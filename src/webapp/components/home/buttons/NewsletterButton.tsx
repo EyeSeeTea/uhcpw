@@ -2,12 +2,15 @@ import React from "react";
 import { Button, Link } from "@material-ui/core";
 import styled from "styled-components";
 import { NewsletterContent } from "../../../../domain/entities/HomePageContent";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 type NewsletterButtonProps = { content: NewsletterContent };
 
 export const NewsletterButton: React.FC<NewsletterButtonProps> = ({ content }) => {
+    const { redirectWithExternalLink } = useAnalytics();
+
     return (
-        <Link target="_blank" href={content.buttonLink}>
+        <Link target="_blank" href={content.buttonLink} onClick={redirectWithExternalLink}>
             <StyledButton variant="outlined">{content.buttonText}</StyledButton>
         </Link>
     );

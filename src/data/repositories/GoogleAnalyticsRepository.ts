@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { appConfig } from "../../app-config";
-import { AnalyticsEvent } from "../../domain/entities/AnalyticsEvent";
+import { AnalyticsEvent, getCurrentPageLocation } from "../../domain/entities/AnalyticsEvent";
 import { AnalyticsRepository } from "../../domain/repositories/AnalyticsRepository";
 
 declare global {
@@ -10,6 +10,7 @@ declare global {
     }
 }
 
+/* Set accessToConsole key in localStorage to see debug logs */
 export class GoogleAnalyticsRepository implements AnalyticsRepository {
     private analytics?: Analytics;
 
@@ -22,8 +23,11 @@ export class GoogleAnalyticsRepository implements AnalyticsRepository {
 class Analytics {
     initialized = false;
     queue: AnalyticsEvent[] = [];
+    accessToConsole = false;
 
     constructor() {
+        this.accessToConsole = localStorage.getItem("accessToConsole") === "true";
+
         if (!window.gtag) this.intialize().then(() => this.queue.forEach(e => this.sendAnalytics(e)));
         else {
             this.initialized = true;
@@ -37,7 +41,7 @@ class Analytics {
             return;
         }
 
-        console.debug("GA4: send analytics event", event.name, buildAnalyticsEvent(event));
+        if (this.accessToConsole) console.debug("GA4: send analytics event", event.name, buildAnalyticsEvent(event));
 
         const mappedEvent = buildAnalyticsEvent(event);
         const { name, ...rest } = mappedEvent;
@@ -49,11 +53,13 @@ class Analytics {
         /** When using HashRouter, set send_page_view to false to avoid sending dynamic page
          * events. When HashRouter is not used, set to true to avoid duplicated events.
          * */
-        console.debug("GA4: config", appConfig.gaTagId, {
-            page_title: "Config",
-            page_location: window.location.pathname,
-            send_page_view: false,
-        });
+        if (this.accessToConsole)
+            console.debug("GA4: config", appConfig.gaTagId, {
+                page_title: "Config",
+                page_location: window.location.pathname,
+                send_page_view: false,
+            });
+
         window.gtag("config", appConfig.gaTagId, {
             page_title: "Config",
             page_location: window.location.pathname,
@@ -75,7 +81,7 @@ class Analytics {
 
         await new Promise<void>((resolve, reject) => {
             script.onload = () => {
-                console.debug("GA4: script loaded");
+                if (this.accessToConsole) console.debug("GA4: script loaded");
                 window.gtag("js", new Date());
                 this.setAnalyticsConfig();
                 this.initialized = true;
@@ -93,6 +99,8 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
                 name: event.name,
                 page_title: event.pageTitle,
                 content_type: event.contentType,
+                content_group: event.contentGroup,
+                content_id: event.contentId,
             } as const;
         case "page_view":
             return {
@@ -104,21 +112,21 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
             return {
                 name: "page_view",
                 page_title: event.pageTitle,
-                page_location: window.location.hash.split("?")[0] ?? "",
+                page_location: getCurrentPageLocation(),
                 selected_country: event.country,
             } as const;
         case "resource_kind_page_view":
             return {
                 name: "page_view",
                 page_title: event.pageTitle,
-                page_location: window.location.hash.split("?")[0] ?? "",
+                page_location: getCurrentPageLocation(),
                 category: _.startCase(event.category),
             } as const;
         case "resource":
             return {
-                name: "resource",
+                name: event.name,
                 page_title: event.pageTitle,
-                page_location: window.location.hash.split("?")[0] ?? "",
+                page_location: getCurrentPageLocation(),
                 category: _.startCase(event.category),
                 resource_name: event.resourceName,
                 resource_theme: event.theme,
@@ -126,7 +134,52 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
                 lang: event.language,
                 country: event.country,
             } as const;
+        case "external_link":
+            return {
+                name: event.name,
+                href: event.href,
+                text: event.text,
+            } as const;
+        case "indicator_explorer_summary":
+            return {
+                name: event.name,
+                indicator: event.indicator,
+                all_countries_selected: booleanToYesNo(event.allCountriesSelected),
+                all_years_selected: booleanToYesNo(event.allYearsSelected),
+                years: event.yearsSelected.join(", "),
+                most_recent_year_selected: event.yearsSelected.sort().reverse()[0],
+                eu_27_average_selected: booleanToYesNo(event.eu27average),
+                number_of_countries: event.numberOfCountries,
+            } as const;
+        case "indicator_explorer":
+            return {
+                name: event.name,
+                indicator: event.indicator,
+                country: event.country,
+                year: event.year,
+            } as const;
+        case "policy_explorer_summary":
+            return {
+                name: event.name,
+                number_of_policy_categories: event.numberOfCategories,
+                number_of_policy_subcategories: event.numberOfSubcategories,
+                all_countries_selected: booleanToYesNo(event.allCountriesSelected),
+                number_of_countries: event.numberOfCategories,
+                year: event.year,
+            } as const;
+        case "policy_explorer_category":
+            return {
+                name: event.name,
+                policy_category: event.category,
+                policy_subcategory: event.subcategory,
+                country: event.country,
+                year: event.year,
+            } as const;
         default:
             return {};
     }
+}
+
+function booleanToYesNo(value: boolean) {
+    return value ? "yes" : "no";
 }

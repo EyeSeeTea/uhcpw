@@ -24,6 +24,11 @@ const CHART_1_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 const CHART_1_SCATTER_VISUALIZATION_NAME =
     VisualizationsSeeds["kIpnMBaBvZ9"]?.countryPageName || VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName;
 
+const ANALYTICS_CONTENT = {
+    contentGroup: "chart",
+    contentId: CHART_1_SCATTER_VISUALIZATION_NAME,
+};
+
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndRegions } = useAppContext();
     const country = useCountryInfo(countryId);
@@ -73,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         useHeaderForCountryPage
                         onDownloadImage={handleOpenScreenshot}
                         paddingEnd={false}
-                        analyticsEventTitle="Country page"
+                        analyticsPageTitle="Country page"
                     />
                 </VisualizationContainer>
 
@@ -83,7 +88,8 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     title={CHART_1_SCATTER_VISUALIZATION_NAME || ""}
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={true}
-                    analyticsEventTitle="Country page"
+                    analyticsPageTitle="Country page"
+                    analyticsContent={ANALYTICS_CONTENT}
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
@@ -95,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         useHeaderForCountryPage
                         isScreenshot={true}
                         isSquareChart={true}
-                        analyticsEventTitle="Country page"
+                        analyticsPageTitle="Country page"
                     />
                 </ScreenshotModal>
             </GraphGrid>

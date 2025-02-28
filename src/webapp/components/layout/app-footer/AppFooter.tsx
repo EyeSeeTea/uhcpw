@@ -6,12 +6,15 @@ import whoLogoWhite from "../../../assets/who-logo-white.png";
 import europeFlag from "../../../assets/europe-flag.png";
 import { NavLink } from "react-router-dom";
 import { useAppContext } from "../../../contexts/app-context";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 const URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING =
     "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)";
 
 export const AppFooter: React.FC = () => {
     const { generalContent } = useAppContext();
+    const { redirectWithExternalLink } = useAnalytics();
+
     return (
         <>
             <FooterTop>
@@ -38,7 +41,11 @@ export const AppFooter: React.FC = () => {
                                     {i18n.t("About us")}
                                 </Typography>
                             </StyledNavLink>
-                            <Link href={URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING} target="_blank">
+                            <Link
+                                href={URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING}
+                                target="_blank"
+                                onClick={redirectWithExternalLink}
+                            >
                                 <Typography variant="body2" gutterBottom style={{ maxWidth: "60%", color: "white" }}>
                                     {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                                 </Typography>
@@ -67,7 +74,12 @@ export const AppFooter: React.FC = () => {
                             </Typography>
                             <Typography variant="body2" gutterBottom>
                                 {i18n.t("Email:")}{" "}
-                                <MailLink href="mailto:uhcwatch@who.int" target="_blank" rel="noopener noreferrer">
+                                <MailLink
+                                    href="mailto:uhcwatch@who.int"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={redirectWithExternalLink}
+                                >
                                     uhcwatch@who.int
                                 </MailLink>
                             </Typography>

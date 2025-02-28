@@ -21,6 +21,8 @@ import {
     sortedSubcategoryNames,
 } from "../../../data/repositories/indicator-explorer/seed/utils";
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 
 export const allYearsItem = { id: "all", name: i18n.t("All years"), parents: [] };
 const allYearsFiltersUpToLastYear: TreeOption[] = generateYears().map(year => ({
@@ -41,6 +43,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         onSelectedChange: onSelectedCountryChange,
         options: countryOptions,
     } = useMultiCountryOptionsV2({ showEurRegion: true, showSubRegions: true });
+    const { sendEvent } = useAnalytics();
 
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
     const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
@@ -228,6 +231,51 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         );
     }, [compositionRoot.indicatorExplorer]);
 
+    const sendAnalyticsEvents = useCallback(() => {
+        const indicator = indicatorFilters.find(indicator => indicator.value === selectedIndicatorFilter)?.text;
+        if (!indicator || !selectedCountries || !selectedYearFilter) return;
+
+        const allCountriesSelected = selectedCountries?.length === countriesAndRegions.length;
+
+        const renamedLastAvailableYear = selectedYearFilter.map(year =>
+            year === LatestAvailable.id ? "Latest available year" : year
+        );
+
+        const allYearsSelected = renamedLastAvailableYear.some(year => year === allYearsItem.id);
+
+        sendEvent({
+            name: "indicator_explorer_summary",
+            indicator: indicator,
+            allCountriesSelected: allCountriesSelected,
+            allYearsSelected: allYearsSelected,
+            yearsSelected: renamedLastAvailableYear,
+            eu27average: selectedCountries.some(country => country === EU27),
+            numberOfCountries: selectedCountries.length,
+        });
+
+        const selectedCountriesNames = selectedCountries
+            .map(countryId => countriesAndRegions.find(country => country.id === countryId)?.name)
+            .filter((x): x is string => Boolean(x));
+
+        const bulkEvents = generateBulkAnalyticsEvents({
+            indicator: indicator,
+            allCountriesSelected,
+            countries: selectedCountriesNames,
+            years: renamedLastAvailableYear,
+            allYearsSelected,
+        });
+
+        /* GA4 has no way support for sending events in bulk, but maybe this "technology" info might suggest that should live only in "data" */
+        bulkEvents.forEach(event => sendEvent(event));
+    }, [
+        indicatorFilters,
+        selectedIndicatorFilter,
+        selectedCountries,
+        selectedYearFilter,
+        countriesAndRegions,
+        sendEvent,
+    ]);
+
     const onGet = useCallback(() => {
         const visualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
 
@@ -251,8 +299,9 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             });
         } else {
             setShowVisualization(true);
+            sendAnalyticsEvents();
         }
-    }, [selectedCountries, selectedIndicatorFilter, visualizations]);
+    }, [selectedCountries, selectedIndicatorFilter, visualizations, sendAnalyticsEvents]);
 
     const onCountriesChange = useCallback(
         (countries: string[] | undefined) => {
@@ -497,4 +546,32 @@ function getYearOptionsInFilter(
     } else {
         return allYears;
     }
+}
+
+function generateBulkAnalyticsEvents(args: {
+    indicator: string;
+    allCountriesSelected: boolean;
+    countries: string[];
+    years: string[];
+    allYearsSelected: boolean;
+}): AnalyticsEvent[] {
+    const { indicator, allCountriesSelected, countries, years, allYearsSelected } = args;
+
+    return (allYearsSelected ? ["All years"] : years)
+        .flatMap((year): Array<[string, string]> => [[indicator, year]])
+        .flatMap(([indicator, year]): Array<[string, string, string]> => {
+            if (allCountriesSelected) {
+                return [[indicator, "All countries and areas", year]];
+            } else {
+                return countries.flatMap(country => [[indicator, country, year]]);
+            }
+        })
+        .map(
+            ([indicator, country, year]): AnalyticsEvent => ({
+                name: "indicator_explorer",
+                indicator: indicator,
+                country: country,
+                year: year,
+            })
+        );
 }
