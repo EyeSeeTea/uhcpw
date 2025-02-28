@@ -124,7 +124,7 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
             } as const;
         case "resource":
             return {
-                name: "resource",
+                name: event.name,
                 page_title: event.pageTitle,
                 page_location: getCurrentPageLocation(),
                 category: _.startCase(event.category),
@@ -136,11 +136,50 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
             } as const;
         case "external_link":
             return {
-                name: "external_link",
+                name: event.name,
                 href: event.href,
                 text: event.text,
+            } as const;
+        case "indicator_explorer_summary":
+            return {
+                name: event.name,
+                indicator: event.indicator,
+                all_countries_selected: booleanToYesNo(event.allCountriesSelected),
+                all_years_selected: booleanToYesNo(event.allYearsSelected),
+                years: event.yearsSelected.join(", "),
+                most_recent_year_selected: event.yearsSelected.sort().reverse()[0],
+                eu_27_average_selected: booleanToYesNo(event.eu27average),
+                number_of_countries: event.numberOfCountries,
+            } as const;
+        case "indicator_explorer":
+            return {
+                name: event.name,
+                indicator: event.indicator,
+                country: event.country,
+                year: event.year,
+            } as const;
+        case "policy_explorer_summary":
+            return {
+                name: event.name,
+                number_of_categories: event.numberOfCategories,
+                number_of_subcategories: event.numberOfSubcategories,
+                all_countries_selected: booleanToYesNo(event.allCountriesSelected),
+                number_of_countries: event.numberOfCategories,
+                year: event.year,
+            } as const;
+        case "policy_explorer_category":
+            return {
+                name: event.name,
+                category: event.category,
+                subcategory: event.subcategory,
+                country: event.country,
+                year: event.year,
             } as const;
         default:
             return {};
     }
+}
+
+function booleanToYesNo(value: boolean) {
+    return value ? "yes" : "no";
 }
