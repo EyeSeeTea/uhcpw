@@ -717,6 +717,9 @@ export function givenAGeneralContent(): GeneralContent {
             subtitle:
                 "Experts working with the WHO Barcelona Office to assess financial protection at country or area level",
         },
+        cookies: {
+            policyUrl: "https://www.who.int/about/policies/privacy",
+        },
     };
 }
 
