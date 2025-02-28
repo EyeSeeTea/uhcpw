@@ -107,8 +107,12 @@ export const exportToCSVIncludingChart = async (
     const chartTab = tabs.find(tab => tab.name === CHART_TAB_NAME);
     if (chartTab) {
         addDataToSheet(chartSheet, chartTab.data);
-        if (columnLimitForDataChartById && columnLimitForDataChartById[chartId]) {
-            hideEmptyColumn(chartSheet, columnLimitForDataChartById[chartId]);
+        const columnLimit =
+            columnLimitForDataChartById && columnLimitForDataChartById[chartId]
+                ? columnLimitForDataChartById[chartId]
+                : undefined;
+        if (columnLimit) {
+            hideEmptyColumn(chartSheet, columnLimit);
         }
     }
 
