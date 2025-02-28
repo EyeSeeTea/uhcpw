@@ -685,9 +685,24 @@ export function givenACountriesAndRegions(): Country[] {
 
 export function givenAThemes(): ResourceTheme[] {
     return [
-        { id: "QQMVsTNPJbB", name: "Spending on Health", code: "Spending on Health" },
-        { id: "XtkFOVtkBtT", name: "Financial Protection", code: "Financial Protection" },
-        { id: "nyzMcROMpmY", name: "Voluntary Health Insurance", code: "Voluntary Health Insurance" },
+        {
+            id: "QQMVsTNPJbB",
+            name: "Spending on Health",
+            code: "Spending on Health",
+            displayedName: "Spending on Health",
+        },
+        {
+            id: "XtkFOVtkBtT",
+            name: "Financial Protection",
+            code: "Financial Protection",
+            displayedName: "Financial Protection",
+        },
+        {
+            id: "nyzMcROMpmY",
+            name: "Voluntary Health Insurance",
+            code: "Voluntary Health Insurance",
+            displayedName: "Voluntary Health Insurance",
+        },
     ];
 }
 

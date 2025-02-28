@@ -116,13 +116,12 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 48px 200px 48px 64px;
+    padding: 24px 200px 24px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 `;
 
 const Image = styled.img`
-    width: 160px;
-    height: 160px;
+    height: 56px;
 `;

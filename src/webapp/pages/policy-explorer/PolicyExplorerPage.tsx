@@ -22,6 +22,7 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { isObjectEmpty } from "../../utils/objectUtil";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
@@ -77,16 +78,17 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         );
     }, [filters.category]);
 
-    const getCleanReferencesByCountry = useCallback(
-        (country: string) => {
-            return _.compact(
-                data?.references
-                    ?.find(references => references.country === country)
-                    ?.references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
-            );
-        },
-        [data?.references]
-    );
+    const countryReferenceMap = useMemo(() => {
+        return data?.references?.reduce(
+            (acc, { country, references }) => ({
+                ...acc,
+                [country]: _.compact(
+                    references?.map(reference => reference.split("]:")[1]?.replace(/"/g, "") || reference)
+                ),
+            }),
+            {} as Record<string, string[]>
+        );
+    }, [data?.references]);
 
     const checkIfMoreThanOneCountry = useCallback(
         (dataOrientation: DataOrientation | undefined, rows: PolicyExplorerCell[][] | undefined) => {
@@ -118,6 +120,40 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         },
         []
     );
+
+    const countryReferences = useMemo(() => {
+        const countriesWithData = _.uniq(
+            _.compact(
+                categories.flatMap(category => {
+                    const orientation = dataOrientationByTable?.[category.value];
+                    const tableData = data?.tables[category.value] ?? [];
+
+                    if (orientation === "normal") {
+                        return tableData.map(row => row?.[0]?.value);
+                    }
+                    if (orientation === "inverted") {
+                        return tableData[0]?.map(cell => cell?.value);
+                    }
+                    return [];
+                })
+            )
+        );
+
+        const formattedReferences = data
+            ? data.generalInfo
+                  .filter(info => countriesWithData.includes(info.country))
+                  .map(info => {
+                      return {
+                          ...info,
+                          lastUpdate: moment(info.lastUpdate).isValid() ? moment(info.lastUpdate) : undefined,
+                          references: countryReferenceMap?.[info.country],
+                          hasData: countriesWithData.includes(info.country),
+                      };
+                  })
+            : [];
+
+        return formattedReferences.filter(info => !isObjectEmpty(info, { excludeProps: ["year", "country"] }));
+    }, [categories, dataOrientationByTable, data, countryReferenceMap]);
 
     return (
         <Layout>
@@ -162,7 +198,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                 )}
 
                 <div ref={referencesRef}>
-                    {data?.generalInfo.map(info => {
+                    {countryReferences.map(info => {
                         return (
                             <div key={info.country}>
                                 <GeneralDataContainer>
@@ -178,21 +214,27 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                                 {i18n.t("Last updated: ", { nsSeparator: false })}
                                             </CreditsText>
                                             &nbsp;
-                                            <CreditsText>{moment(info.lastUpdate).format("D MMMM YYYY")}</CreditsText>
+                                            <CreditsText>{info.lastUpdate.format("D MMMM YYYY")}</CreditsText>
                                         </GeneralRow>
                                     ) : null}
 
-                                    <GeneralRow>
-                                        <CreditsText $noWrap>{i18n.t("Experts: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{info.countryExperts}</CreditsText>
-                                    </GeneralRow>
+                                    {info.countryExperts && (
+                                        <GeneralRow>
+                                            <CreditsText $noWrap>
+                                                {i18n.t("Experts: ", { nsSeparator: false })}
+                                            </CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.countryExperts}</CreditsText>
+                                        </GeneralRow>
+                                    )}
 
-                                    <GeneralRow>
-                                        <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{info.editors}</CreditsText>
-                                    </GeneralRow>
+                                    {info.editors && (
+                                        <GeneralRow>
+                                            <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
+                                            &nbsp;
+                                            <CreditsText>{info.editors}</CreditsText>
+                                        </GeneralRow>
+                                    )}
 
                                     {info.reviewers ? (
                                         <GeneralRow>
@@ -240,12 +282,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                     ) : null}
                                 </GeneralDataContainer>
                                 <ReferencesContainer>
-                                    {info.country && getCleanReferencesByCountry(info.country)?.length ? (
+                                    {info.references?.length ? (
                                         <>
                                             <ReferencesTitle>
                                                 {i18n.t("References", { nsSeparator: false })}
                                             </ReferencesTitle>
-                                            {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                            {info.references?.map(reference => (
                                                 <ReactMarkdown
                                                     key={reference}
                                                     components={{
@@ -296,15 +338,14 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 48px 200px 48px 64px;
+    padding: 24px 200px 24px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 `;
 
 const Image = styled.img`
-    width: 160px;
-    height: 160px;
+    height: 56px;
 `;
 
 const GeneralRow = styled.div`

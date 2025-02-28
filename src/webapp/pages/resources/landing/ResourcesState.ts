@@ -9,7 +9,7 @@ export type LandingResourcesState = {
     multimedia: MultimediaState[];
 };
 
-export type FilteredByTextResourcesState = {
+export type FilteredByTextOrThemeResourcesState = {
     countryAnalysis: CountryAnalysisState[];
     comparativeAnalysis: ComparativeAnalysisState[];
     news: News[];
@@ -19,7 +19,7 @@ export type FilteredByTextResourcesState = {
 export type ResourcesState = {
     filters: ResourcesFiltersState;
     landingResources?: LandingResourcesState;
-    filteredByTextResources?: FilteredByTextResourcesState;
+    filteredByTextOrThemeResources?: FilteredByTextOrThemeResourcesState;
     onGetResources: () => void;
 };
 

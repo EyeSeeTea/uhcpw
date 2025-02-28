@@ -55,6 +55,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                             variant="standard"
                             label={label}
                             placeholder={placeholder}
+                            aria-label={label || placeholder || "Dropdown Multiple"}
                         />
                     )}
                     renderTags={(value: unknown[], getTagProps) =>

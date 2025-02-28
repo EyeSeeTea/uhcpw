@@ -121,7 +121,7 @@ const TitleContainer = styled.div`
     background: url(${bubblePattern}) no-repeat right top;
     background-color: ${colors.accentPrimary};
     color: white;
-    padding: 48px 200px 48px 64px;
+    padding: 24px 200px 24px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;

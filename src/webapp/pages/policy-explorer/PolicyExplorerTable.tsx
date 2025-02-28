@@ -29,9 +29,9 @@ interface PolicyExplorerTableProps {
 }
 
 const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
-    country: 90,
-    year: 30,
-    typeOfHealthCare: 90,
+    country: 10,
+    year: 10,
+    typeOfHealthCare: 10,
     userChargesApply: 90,
     typeOfUserCharge: 160,
     reducedUserCharges: 90,
@@ -60,6 +60,14 @@ export const PolicyExplorerTable = React.memo(
             },
             [referencesRef]
         );
+
+        const cleanMarkdownEmptyLinks = (value: string) => {
+            const regex = /\[[^\]]+\](?!\([^)]+\))/gu;
+
+            return value.replace(regex, match => {
+                return match + `(${EMPTY_URL})`;
+            });
+        };
 
         const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
 
@@ -249,7 +257,9 @@ export const PolicyExplorerTable = React.memo(
                                             cellwidth={getCellWidth(i)}
                                         >
                                             <ReactMarkdown components={markdownComponents}>
-                                                {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
+                                                {cell.references
+                                                    ? `${cleanMarkdownEmptyLinks(cell.value)}\n\n${cell.references}`
+                                                    : cleanMarkdownEmptyLinks(cell.value)}
                                             </ReactMarkdown>
                                         </StyledTableCell>
                                     ))}

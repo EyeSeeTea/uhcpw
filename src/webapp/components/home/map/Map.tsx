@@ -122,12 +122,14 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
 
 const Container = styled.div`
     height: 100%;
+    width: 100%;
     position: relative;
 `;
 
 const MapContent = styled.div`
-    overflow: visible;
+    overflow: hidden;
     height: 100%;
+    width: 100%;
     position: relative;
     .marker-weak {
         background-image: url(${() => weakPin});

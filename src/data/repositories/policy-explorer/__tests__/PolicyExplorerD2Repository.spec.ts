@@ -173,14 +173,16 @@ const USER_CHARGES_BY_TYPE_OF_HEALTHCARE_CATEGORY_YEARS = {
     u800TAhsIBY: ["latest"],
 };
 
-// TODO: Fix 6 skipped tests
 describe("Given Policy Explorer repository", () => {
     beforeAll(() => mockWebServer.start());
-    afterEach(() => mockWebServer.resetHandlers());
+    afterEach(() => {
+        mockWebServer.resetRequests();
+        mockWebServer.resetHandlers();
+    });
     afterAll(() => mockWebServer.close());
 
     describe("When get one category Gaps in coverage policy explorer category with country Spain", () => {
-        it.skip("Then should request with correct param orgUnit", async () => {
+        it("Then should request with correct param orgUnit", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
@@ -201,12 +203,11 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             if (!mockWebServer?.allRequests?.length) throw new Error(`Request failed`);
-            const indexDataValuesLastRequest = mockWebServer?.allRequests?.length - 2;
-            const dataValuesRequest = mockWebServer?.allRequests[indexDataValuesLastRequest];
+            const dataValuesRequest = mockWebServer?.lastRequest;
 
             expect(dataValuesRequest?.params.get("orgUnit")).toBe(SPAIN_COUNTRY);
         });
-        it.skip("Then should request with correct param period", async () => {
+        it("Then should request with correct param period", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
@@ -227,8 +228,7 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             if (!mockWebServer?.allRequests?.length) throw new Error(`Request failed`);
-            const indexDataValuesLastRequest = mockWebServer?.allRequests?.length - 2;
-            const dataValuesRequest = mockWebServer?.allRequests[indexDataValuesLastRequest];
+            const dataValuesRequest = mockWebServer?.lastRequest;
 
             expect(dataValuesRequest?.params.get("period")).toBe("2023");
         });
@@ -285,7 +285,7 @@ describe("Given Policy Explorer repository", () => {
     });
 
     describe("When get two policy explorer categories with country Spain", () => {
-        it.skip("Then should request with correct param period", async () => {
+        it("Then should request with correct param period", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCategory();
             const countriesAndRegions = givenACountriesAndRegions();
@@ -306,8 +306,7 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             if (!mockWebServer?.allRequests?.length) throw new Error(`Request failed`);
-            const indexDataValuesLastRequest = mockWebServer?.allRequests?.length - 2;
-            const dataValuesRequest = mockWebServer?.allRequests[indexDataValuesLastRequest];
+            const dataValuesRequest = mockWebServer?.lastRequest;
             const periods = dataValuesRequest?.params.getAll("period");
 
             expect(periods?.length).toBe(["2020", "2021", "2022", "2023"].length);
@@ -399,7 +398,7 @@ describe("Given Policy Explorer repository", () => {
     });
 
     describe("When get Changes in coverage policy since 2020 policy explorer category with country Spain", () => {
-        it.skip("Then should request with correct param period", async () => {
+        it("Then should request with correct param period", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMultiplePeriods();
             const countriesAndRegions = givenACountriesAndRegions();
@@ -420,8 +419,7 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             if (!mockWebServer?.allRequests?.length) throw new Error(`Request failed`);
-            const indexDataValuesLastRequest = mockWebServer?.allRequests?.length - 2;
-            const dataValuesRequest = mockWebServer?.allRequests[indexDataValuesLastRequest];
+            const dataValuesRequest = mockWebServer?.lastRequest;
             const periods = dataValuesRequest?.params.getAll("period");
 
             expect(periods?.length).toBe(["2020", "2021", "2022", "2023"].length);
@@ -546,7 +544,7 @@ describe("Given Policy Explorer repository", () => {
     });
 
     describe("When get one category Gaps in coverage policy explorer category with country Spain and Belgium", () => {
-        it.skip("Then should request with correct param orgUnit", async () => {
+        it("Then should request with correct param orgUnit", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();
@@ -567,8 +565,7 @@ describe("Given Policy Explorer repository", () => {
                 .runAsync();
 
             if (!mockWebServer?.allRequests?.length) throw new Error(`Request failed`);
-            const indexDataValuesLastRequest = mockWebServer?.allRequests?.length - 2;
-            const dataValuesRequest = mockWebServer?.allRequests[indexDataValuesLastRequest];
+            const dataValuesRequest = mockWebServer?.lastRequest;
             const orgUnits = dataValuesRequest?.params.getAll("orgUnit");
 
             expect(orgUnits?.length).toBe([SPAIN_COUNTRY, BELGIUM_COUNTRY].length);
@@ -604,7 +601,7 @@ describe("Given Policy Explorer repository", () => {
 
             verifyMoreThanOneCountryData(policyExplorerResponse?.tables["e6cfI6vWYEF"]);
         });
-        it.skip("Then should have corresponding table columns and rows in response", async () => {
+        it("Then should have corresponding table columns and rows in response", async () => {
             givenAPolicyExplorerDataSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();

@@ -5,6 +5,7 @@ import {
     PolicyExplorerCellType,
     DataOrientationByTable,
     latestAvailableYear,
+    firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
@@ -25,6 +26,7 @@ import { BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../../../data/repositories/count
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 import { Maybe } from "../../../types/utils";
+import { generate } from "../../../domain/usecases/utils/generateYears";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
@@ -34,12 +36,6 @@ const INITIAL_NORMAL_ORIENTED_TABLES = [
 export const CATEGORIES_WITHOUT_SUBCATEGORIES = [
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
-];
-
-const yearFilters: Option[] = [
-    { value: "2023", text: "2023" },
-    { value: "2024", text: "2024" },
-    { value: latestAvailableYear, text: i18n.t("Latest avalaible year") },
 ];
 
 export function usePolicyExplorer({
@@ -282,7 +278,7 @@ export function usePolicyExplorer({
                 onSelectedChange: onChangeCategoryFilter,
             },
             year: {
-                options: yearFilters,
+                options: getYearOptions(),
                 selected: selectedYearFilter,
                 onSelectedChange: onChangeYearFilter,
             },
@@ -349,6 +345,14 @@ function generateBulkAnalyticsEvents(args: {
             })
         )
         .value();
+}
+
+function getYearOptions(): Option[] {
+    const yearsFrom2023UntilCurrent = generate(new Date().getFullYear(), firstYearInFilter - 1).map(
+        (year): Option => ({ value: year.id, text: year.id })
+    );
+
+    return [...yearsFrom2023UntilCurrent, { value: latestAvailableYear, text: i18n.t("Latest avalaible year") }];
 }
 
 function invertDataByCategoryId(
