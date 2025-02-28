@@ -334,7 +334,7 @@ function generateBulkAnalyticsEvents(args: {
         )
         .flatMap(([category, subcategory]): Array<[category: string, subcategory: string, country: string]> => {
             if (allCountriesSelected) {
-                return [[category, subcategory, "All countries"]];
+                return [[category, subcategory, "All countries and areas"]];
             } else {
                 return selectedCountriesNames.map(country => [category, subcategory, country]);
             }
