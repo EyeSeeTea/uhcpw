@@ -22,7 +22,7 @@ export type Tab = {
 };
 
 export type TabsWithStringOrNumbers = {
-    data: (string | number)[][];
+    data: (string | number | null)[][];
     name: string;
 };
 
@@ -134,7 +134,7 @@ export const exportToCSVIncludingChart = async (params: {
     FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
 };
 
-function addDataToSheet(sheet: XlsxPopulate.Sheet, data: (string | number)[][]) {
+function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"]) {
     try {
         data.forEach((row, rowIndex) => {
             const rowNumber = rowIndex + 1;
@@ -168,9 +168,9 @@ function generateExcelColumnsUntilLimit(limit: string): string[] {
 
 function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string) {
     generateExcelColumnsUntilLimit(columnLimit).forEach(columnLetter => {
-        const columnValues: (string | number)[][] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
-        const columnIsEmpty = columnValues.every((value: (string | number)[]) =>
-            value.every(cell => cell === "" || cell === 0 || cell === undefined)
+        const columnValues: TabsWithStringOrNumbers["data"] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
+        const columnIsEmpty = columnValues.every((value: (string | number | null)[]) =>
+            value.every(cell => cell === "" || cell === undefined || cell === null)
         );
         if (columnIsEmpty) {
             sheet.column(columnLetter).hidden(true);

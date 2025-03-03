@@ -39,25 +39,51 @@ export const chart_GimM6ANOKhd_exportedDataBuilder: (tabs: Tab[], chartName: str
 
     const headersBase = [["Quintile / Country - Year", ...countriesAndYearsUnique]];
 
-    const data = SORTED_QUINTILES.reduce((acc: (string | number)[][], quintile): (string | number)[][] => {
-        const quintileData = countriesAndYearsUnique.map(countryAndYear => {
-            const [country, year] = countryAndYear.split("-");
-            const row = dataTab.data.find(
-                row => row[quintileIndex] === quintile && row[yearIndex] === year && row[countryIndex] === country
-            );
-            const value = row ? row[valueIndex] : undefined;
-            if (!row || !value) {
-                return 0;
-            }
-            return Number(value?.replace(",", "."));
-        });
-        return [...acc, [quintile, ...quintileData]];
-    }, []);
+    const dataByQuintile = SORTED_QUINTILES.reduce(
+        (acc: TabsWithStringOrNumbers["data"], quintile): TabsWithStringOrNumbers["data"] => {
+            const quintileData = countriesAndYearsUnique.map(countryAndYear => {
+                const [country, year] = countryAndYear.split("-");
+                const row = dataTab.data.find(
+                    row => row[quintileIndex] === quintile && row[yearIndex] === year && row[countryIndex] === country
+                );
+                const value = row ? row[valueIndex] : undefined;
+                if (!row || !value) {
+                    return 0;
+                }
+                return Number(value?.replace(",", "."));
+            });
+            return [...acc, [quintile, ...quintileData]];
+        },
+        []
+    );
+
+    const data = [[chartName], ...headersBase, ...dataByQuintile];
+    const sortedData = sortDataByPoorest(data);
 
     const chartTab = {
         name: CHART_TAB_NAME,
-        data: [[chartName], ...headersBase, ...data],
+        data: sortedData,
     };
 
     return [...tabs, chartTab];
 };
+
+function sortDataByPoorest(data: TabsWithStringOrNumbers["data"]): TabsWithStringOrNumbers["data"] {
+    const [chartName, headers, ...rows] = data;
+    const poorestRow = rows.find(row => row[0] === "Poorest");
+
+    if (!poorestRow || !headers || !chartName) {
+        throw new Error("Missing poorest row or headers");
+    }
+
+    const sortedIndices = poorestRow
+        .map((value, index) => ({ value: typeof value === "number" ? value : 0, index })) // Asegurar que es número
+        .sort((a, b) => a.value - b.value)
+        .map(item => item.index);
+
+    const sortedHeaders = [...sortedIndices.map(i => headers[i]).map(value => (!value ? null : value))];
+
+    const sortedRows = rows.map(row => [...sortedIndices.map(i => row[i]).map(value => (!value ? null : value))]);
+
+    return [chartName, sortedHeaders, ...sortedRows];
+}

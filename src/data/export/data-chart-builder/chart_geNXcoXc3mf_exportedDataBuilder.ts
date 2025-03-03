@@ -44,17 +44,22 @@ export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: str
 
     const headersBase = [["Country", "Quintile / Year", ...allYearsUnique]];
 
-    const data = SORTED_QUINTILES.reduce((acc: (string | number)[][], quintile): (string | number)[][] => {
-        const quintileData = allYearsUnique.map(year => {
-            const row = dataTab.data.find(row => row[quintileIndex] === quintile && row[yearIndex] === year.toString());
-            const value = row ? row[valueIndex] : undefined;
-            if (!row || !value) {
-                return 0;
-            }
-            return Number(value?.replace(",", "."));
-        });
-        return [...acc, [quintile, ...quintileData]];
-    }, []).map(row => [country, ...row]);
+    const data = SORTED_QUINTILES.reduce(
+        (acc: TabsWithStringOrNumbers["data"], quintile): TabsWithStringOrNumbers["data"] => {
+            const quintileData = allYearsUnique.map(year => {
+                const row = dataTab.data.find(
+                    row => row[quintileIndex] === quintile && row[yearIndex] === year.toString()
+                );
+                const value = row ? row[valueIndex] : undefined;
+                if (!row || !value) {
+                    return 0;
+                }
+                return Number(value?.replace(",", "."));
+            });
+            return [...acc, [quintile, ...quintileData]];
+        },
+        []
+    ).map(row => [country, ...row]);
 
     const chartTab = {
         name: CHART_TAB_NAME,

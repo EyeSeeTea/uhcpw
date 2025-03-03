@@ -70,36 +70,39 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
         ],
     ];
 
-    const data = allCountriesUnique.reduce((acc: (string | number)[][], countryName): (string | number)[][] => {
-        const year = dataTab.data.find(row => row[parameterIndex] === PARAMETER_NAMES.x)?.[yearIndex];
-        if (!year) {
-            return acc;
-        }
+    const data = allCountriesUnique.reduce(
+        (acc: TabsWithStringOrNumbers["data"], countryName): TabsWithStringOrNumbers["data"] => {
+            const year = dataTab.data.find(row => row[parameterIndex] === PARAMETER_NAMES.x)?.[yearIndex];
+            if (!year) {
+                return acc;
+            }
 
-        const rowXAxis = dataTab.data.find(
-            row => row[parameterIndex] === PARAMETER_NAMES.x && row[countryIndex] === countryName
-        );
-        const rowYAxis = dataTab.data.find(
-            row => row[parameterIndex] !== PARAMETER_NAMES.x && row[countryIndex] === countryName
-        );
-        const valueXAxis = rowXAxis ? rowXAxis[valueIndex] : "";
-        const valueYAxis = rowYAxis ? rowYAxis[valueIndex] : "";
+            const rowXAxis = dataTab.data.find(
+                row => row[parameterIndex] === PARAMETER_NAMES.x && row[countryIndex] === countryName
+            );
+            const rowYAxis = dataTab.data.find(
+                row => row[parameterIndex] !== PARAMETER_NAMES.x && row[countryIndex] === countryName
+            );
+            const valueXAxis = rowXAxis ? rowXAxis[valueIndex] : "";
+            const valueYAxis = rowYAxis ? rowYAxis[valueIndex] : "";
 
-        const parametersData = getParametersData(
-            Number(valueXAxis?.replace(",", ".")),
-            Number(valueYAxis?.replace(",", "."))
-        );
+            const parametersData = getParametersData(
+                Number(valueXAxis?.replace(",", ".")),
+                Number(valueYAxis?.replace(",", "."))
+            );
 
-        const d2CountryName = mapFromWhoToD2CountryName(countryName);
-        const countryCode = orgUnits.find(ou => ou.shortName === d2CountryName)?.code;
-        const whoCountryCode = countryCode ? mapToWhoCountryCode(countryCode) : countryCode;
+            const d2CountryName = mapFromWhoToD2CountryName(countryName);
+            const countryCode = orgUnits.find(ou => ou.shortName === d2CountryName)?.code;
+            const whoCountryCode = countryCode ? mapToWhoCountryCode(countryCode) : countryCode;
 
-        if (whoCountryCode === undefined) {
-            throw new Error("Country code not found");
-        }
+            if (whoCountryCode === undefined) {
+                throw new Error("Country code not found");
+            }
 
-        return [...acc, [countryName, year, whoCountryCode, ...parametersData]];
-    }, []);
+            return [...acc, [countryName, year, whoCountryCode, ...parametersData]];
+        },
+        []
+    );
 
     const chartTab = {
         name: CHART_TAB_NAME,
@@ -109,7 +112,7 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
     return [...tabs, chartTab];
 };
 
-function getParametersData(valueXAxis: number, valueYAxis: number): (number | string)[] {
+function getParametersData(valueXAxis: number, valueYAxis: number): (number | string | null)[] {
     const defaultData = [valueXAxis, "", "", "", "", ""];
 
     if (valueXAxis < 0) return defaultData;
@@ -128,7 +131,7 @@ function getParametersData(valueXAxis: number, valueYAxis: number): (number | st
             if (valueYAxis >= r.min && valueYAxis < r.max) {
                 return valueYAxis;
             } else {
-                return "";
+                return null;
             }
         }),
     ];
