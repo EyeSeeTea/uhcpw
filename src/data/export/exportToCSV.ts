@@ -95,13 +95,15 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
     FileSaver.saveAs(data, fileName + fileExtension);
 };
 
-export const exportToCSVIncludingChart = async (
-    chartId: string,
-    tabs: TabsWithStringOrNumbers[],
-    arrayBuffer: ArrayBuffer,
-    fileName: string
-) => {
-    const workbook = await XlsxPopulate.fromDataAsync(arrayBuffer);
+export const exportToCSVIncludingChart = async (params: {
+    chartId: string;
+    tabs: TabsWithStringOrNumbers[];
+    templateArrayBuffer: ArrayBuffer;
+    fileName: string;
+}) => {
+    const { chartId, tabs, templateArrayBuffer, fileName } = params;
+
+    const workbook = await XlsxPopulate.fromDataAsync(templateArrayBuffer);
 
     const chartSheet = workbook.sheet(CHART_TAB_NAME);
     const chartTab = tabs.find(tab => tab.name === CHART_TAB_NAME);

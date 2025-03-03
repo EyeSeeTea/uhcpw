@@ -1,4 +1,5 @@
-import { DATA_TAB_NAME, CHART_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { mapFromWhoToD2CountryName, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
+import { DATA_TAB_NAME, CHART_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { cellNameByVisualizationId } from "../../repositories/indicator-explorer/utils/getCustomCellName";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
@@ -13,15 +14,16 @@ const PARAMETER_NAMES: {
     x: cellNameByVisualizationId?.kIpnMBaBvZ9?.x || "Out-of-pocket payments as a share of current spending on health",
     y_low: "LOW - Households with catastrophic health spending",
     y_medium: "MEDIUM - Households with catastrophic health spending",
-    y_medium_hight: "MEDIUM-HIGHT - Households with catastrophic health spending",
-    y_hight: "HIGHT - Households with catastrophic health spending",
-    y_extra_hight: "EXTRA-HIGHT - Households with catastrophic health spending",
+    y_medium_hight: "MEDIUM-HIGH - Households with catastrophic health spending",
+    y_hight: "HIGH - Households with catastrophic health spending",
+    y_extra_hight: "EXTRA-HIGH - Households with catastrophic health spending",
 };
 
-export const chart_kIpnMBaBvZ9_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
-    tabs,
-    chartName
-) => {
+export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
+    tabs: Tab[],
+    chartName: string,
+    orgUnits: D2OrgUnit[]
+) => TabsWithStringOrNumbers[] = (tabs, chartName, orgUnits) => {
     const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
 
     if (!dataTab) {
@@ -68,17 +70,17 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (tabs: Tab[], chartName: str
         ],
     ];
 
-    const data = allCountriesUnique.reduce((acc: (string | number)[][], country): (string | number)[][] => {
+    const data = allCountriesUnique.reduce((acc: (string | number)[][], countryName): (string | number)[][] => {
         const year = dataTab.data.find(row => row[parameterIndex] === PARAMETER_NAMES.x)?.[yearIndex];
         if (!year) {
             return acc;
         }
 
         const rowXAxis = dataTab.data.find(
-            row => row[parameterIndex] === PARAMETER_NAMES.x && row[countryIndex] === country
+            row => row[parameterIndex] === PARAMETER_NAMES.x && row[countryIndex] === countryName
         );
         const rowYAxis = dataTab.data.find(
-            row => row[parameterIndex] !== PARAMETER_NAMES.x && row[countryIndex] === country
+            row => row[parameterIndex] !== PARAMETER_NAMES.x && row[countryIndex] === countryName
         );
         const valueXAxis = rowXAxis ? rowXAxis[valueIndex] : "";
         const valueYAxis = rowYAxis ? rowYAxis[valueIndex] : "";
@@ -88,7 +90,15 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (tabs: Tab[], chartName: str
             Number(valueYAxis?.replace(",", "."))
         );
 
-        return [...acc, [country, year, `${country} ${year}`, ...parametersData]];
+        const d2CountryName = mapFromWhoToD2CountryName(countryName);
+        const countryCode = orgUnits.find(ou => ou.shortName === d2CountryName)?.code;
+        const whoCountryCode = countryCode ? mapToWhoCountryCode(countryCode) : countryCode;
+
+        if (whoCountryCode === undefined) {
+            throw new Error("Country code not found");
+        }
+
+        return [...acc, [countryName, year, whoCountryCode, ...parametersData]];
     }, []);
 
     const chartTab = {
