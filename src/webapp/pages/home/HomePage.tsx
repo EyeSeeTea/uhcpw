@@ -64,7 +64,7 @@ const MapSection = styled.section`
         flex-direction: column;
         height: 170vh;
     }
-    @media (orientation: landscape) {
+    @media (orientation: landscape) and (max-width: 960px) {
         height: 240vh;
     }
     height: 80vh;
