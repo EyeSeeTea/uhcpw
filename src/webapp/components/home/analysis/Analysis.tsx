@@ -8,10 +8,13 @@ import bubblePatternWhite from "../../../assets/bubble-pattern-white.png";
 import { Divider } from "../common/Divider";
 import { AnalysisContent } from "../../../../domain/entities/HomePageContent";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 type AnalysisProps = { content: AnalysisContent };
 
 export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
+    const { redirectWithExternalLink } = useAnalytics();
+
     return (
         <>
             <SectionHeader header={content.title} subheader={content.subtitle} />
@@ -27,7 +30,13 @@ export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
                 <Region item md={6} xs={12}>
                     <SectionBlock title={content.regional.title} text={content.regional.text} />
                     <ButtonContainer>
-                        <Link href={content.regional.buttonLink || ""} target="_blank" rel="noreferrer" isRegional>
+                        <Link
+                            href={content.regional.buttonLink || ""}
+                            target="_blank"
+                            rel="noreferrer"
+                            isRegional
+                            onClick={redirectWithExternalLink}
+                        >
                             {i18n.t(content.regional.buttonText || "")}
                         </Link>
                     </ButtonContainer>

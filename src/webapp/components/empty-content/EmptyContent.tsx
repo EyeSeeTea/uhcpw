@@ -2,7 +2,6 @@ import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
-import GridOnIcon from "@material-ui/icons/GridOn";
 
 import i18n from "../../../locales";
 import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
@@ -26,7 +25,6 @@ export const EmptyContent: React.FC<{ info?: PolicyExplorerSelectCategoryInfo | 
                                 {info.text}
                             </ReactMarkdown>
                         </TextWrapper>
-                        <GridOnIcon htmlColor="white" fontSize="large" />
                     </Row>
                 </Content>
             </Container>
@@ -59,7 +57,7 @@ const Content = styled.div`
 `;
 
 const TextWrapper = styled.div`
-    max-width: 340px;
+    max-width: 50vw;
 `;
 
 const Title = styled(Typography)`

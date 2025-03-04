@@ -11,16 +11,28 @@ import {
 } from "../by-type/ResourcesByTypeState";
 import { useResourcesByType } from "../by-type/useResourcesByType";
 import { ResourcesState } from "./ResourcesState";
+import { useHistory } from "react-router-dom";
 
 export function useResources(): ResourcesState {
     const { countries } = useAppContext();
+    const history = useHistory();
+
+    const themeFilter = useMemo(() => {
+        const searchParams = new URLSearchParams(history.location.search);
+
+        const theme = searchParams.get("theme");
+
+        return theme ?? undefined;
+    }, [history.location.search]);
+
     const { filters, items, onGetResources } = useResourcesByType({
         favouriteSection: true,
         includeAdvancedSearch: true,
+        themeFilter: themeFilter,
     });
 
     const landingResources = useMemo(() => {
-        return items && !filters.search.term
+        return items && !filters.search.term && !filters.theme.selected
             ? {
                   countryAnalysisByCountry: getAnalysisCountries(items, countries),
                   comparativeAnalysis: getComparativeAnalysis(items, true),
@@ -28,10 +40,10 @@ export function useResources(): ResourcesState {
                   multimedia: getMultimedia(items, true),
               }
             : undefined;
-    }, [countries, filters.search.term, items]);
+    }, [countries, filters.search.term, filters.theme.selected, items]);
 
-    const filteredByTextResources = useMemo(() => {
-        return items && !!filters.search.term
+    const filteredByTextOrThemeResources = useMemo(() => {
+        return items && (!!filters.search.term || !!filters.theme.selected)
             ? {
                   countryAnalysis: _.orderBy(
                       items.filter(item => item.kind === "country-analysis"),
@@ -43,12 +55,12 @@ export function useResources(): ResourcesState {
                   multimedia: _.orderBy(getMultimedia(items, false), "date", "desc"),
               }
             : undefined;
-    }, [filters.search.term, items]);
+    }, [filters.search.term, filters.theme.selected, items]);
 
     return {
         filters,
         landingResources,
-        filteredByTextResources,
+        filteredByTextOrThemeResources,
         onGetResources,
     };
 }

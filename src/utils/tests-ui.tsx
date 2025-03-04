@@ -685,9 +685,24 @@ export function givenACountriesAndRegions(): Country[] {
 
 export function givenAThemes(): ResourceTheme[] {
     return [
-        { id: "QQMVsTNPJbB", name: "Spending on Health", code: "Spending on Health" },
-        { id: "XtkFOVtkBtT", name: "Financial Protection", code: "Financial Protection" },
-        { id: "nyzMcROMpmY", name: "Voluntary Health Insurance", code: "Voluntary Health Insurance" },
+        {
+            id: "QQMVsTNPJbB",
+            name: "Spending on Health",
+            code: "Spending on Health",
+            displayedName: "Spending on Health",
+        },
+        {
+            id: "XtkFOVtkBtT",
+            name: "Financial Protection",
+            code: "Financial Protection",
+            displayedName: "Financial Protection",
+        },
+        {
+            id: "nyzMcROMpmY",
+            name: "Voluntary Health Insurance",
+            code: "Voluntary Health Insurance",
+            displayedName: "Voluntary Health Insurance",
+        },
     ];
 }
 
@@ -701,6 +716,9 @@ export function givenAGeneralContent(): GeneralContent {
             title: "The Financial Protection Expert Network",
             subtitle:
                 "Experts working with the WHO Barcelona Office to assess financial protection at country or area level",
+        },
+        cookies: {
+            policyUrl: "https://www.who.int/about/policies/privacy",
         },
     };
 }

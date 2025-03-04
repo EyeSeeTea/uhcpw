@@ -5,6 +5,66 @@
             "eventDate": "2024-07-15T00:00:00.000",
             "dataValues": [
                 {
+                    "dataElement": "MBLYdRajBIW",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "EQupkhKZDx3",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Qes8ylBGHOw",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "ULemve5LPPR",
+                    "value": "DVnpk4xiXGJ"
+                },
+                {
+                    "dataElement": "NJXeGWc1zWm",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "WaoeTnhdZsc",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "SZrQQswWh1B",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "gfz0nFuTLxR",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "F76ApOTMt9Q",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "D2s74Z1oOr5",
+                    "value": "During 2015 and 2018 there were some changes that affected how this is measured. Therefore, we are applying break in series."
+                },
+                {
+                    "dataElement": "wYFA3Q0bnkw",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "vuszOlgWJIX",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "WzQFgDdng33",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "vRgMhEHG1Wi",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "AiN4YcqHC5m",
+                    "value": "true"
+                },
+                {
                     "dataElement": "l9H4rmLGiKp",
                     "value": "true"
                 },
@@ -13,52 +73,28 @@
                     "value": "2015;2018"
                 },
                 {
-                    "dataElement": "ULemve5LPPR",
-                    "value": "DVnpk4xiXGJ"
+                    "dataElement": "LcGbakau6us",
+                    "value": "true"
                 },
                 {
-                    "dataElement": "D2s74Z1oOr5",
-                    "value": "During 2015 and 2018 there were some changes that affected how this is measured. Therefore, we are applying break in series."
-                }
-            ]
-        },
-        {
-            "event": "CPNXw5rVvgu",
-            "eventDate": "2024-07-05T00:00:00.000",
-            "dataValues": [
-                {
-                    "dataElement": "xH7Z4T1S9Pg",
-                    "value": "2015;2018"
+                    "dataElement": "C87sa3QSMvI",
+                    "value": "true"
                 },
                 {
-                    "dataElement": "ULemve5LPPR",
-                    "value": "DVnpk4xiXGJ"
+                    "dataElement": "R0gmCymCyDS",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "nq7L9hFeHso",
+                    "value": "true"
+                },
+                {
+                    "dataElement": "Gv8wW8euvLx",
+                    "value": "true"
                 },
                 {
                     "dataElement": "ZBaBjQxc104",
                     "value": "true"
-                },
-                {
-                    "dataElement": "D2s74Z1oOr5",
-                    "value": "This break corresponds to COVID-19"
-                }
-            ]
-        },
-        {
-            "event": "i6gQ5noK1x5",
-            "eventDate": "2024-07-01T00:00:00.000",
-            "dataValues": [
-                {
-                    "dataElement": "xH7Z4T1S9Pg",
-                    "value": "2015;2018"
-                },
-                {
-                    "dataElement": "ULemve5LPPR",
-                    "value": "DVnpk4xiXGJ"
-                },
-                {
-                    "dataElement": "D2s74Z1oOr5",
-                    "value": "During 2015 and 2018 there were some changes that affected how this is measured.\n\nTherefore, we are applying break in series."
                 },
                 {
                     "dataElement": "ykSVfaOeweJ",

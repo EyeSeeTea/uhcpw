@@ -31,6 +31,19 @@ export function useAnalytics() {
         [compositionRoot.googleAnalytics.sendEvent]
     );
 
+    const redirectWithExternalLink = React.useCallback(
+        (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+            handleRedirect(mouseEvent, () =>
+                compositionRoot.googleAnalytics.sendEvent.execute({
+                    name: "external_link",
+                    href: mouseEvent.currentTarget.href,
+                    text: mouseEvent.currentTarget.innerText,
+                })
+            );
+        },
+        [compositionRoot.googleAnalytics.sendEvent]
+    );
+
     const redirectWithPageView = React.useCallback(
         (overrideProps: { location?: string; title?: string }) =>
             (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -61,6 +74,7 @@ export function useAnalytics() {
         redirectWithEvent,
         redirectWithPageView,
         clickWithEvent,
+        redirectWithExternalLink,
         clickWithPageView,
     };
 }

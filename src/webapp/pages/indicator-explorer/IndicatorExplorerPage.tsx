@@ -51,6 +51,14 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         [filters.indicators.options, filters.indicators.selected]
     );
 
+    const analyticsContent = useMemo(
+        () => ({
+            contentGroup: "chart",
+            contentId: chartName,
+        }),
+        [chartName]
+    );
+
     return (
         <Layout>
             <TitleContainer>
@@ -69,7 +77,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         noDataMessage={pageContent?.noDataMessage}
                         onDownloadImage={handleOpenScreenshot}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
-                        analyticsEventTitle="Indicator explorer"
+                        analyticsPageTitle="Indicator explorer"
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
@@ -81,7 +89,8 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     title={chartName}
                     backgroundColor={"#f1f9fc"}
                     isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
-                    analyticsEventTitle="Indicator explorer"
+                    analyticsPageTitle="Indicator explorer"
+                    analyticsContent={analyticsContent}
                 >
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}
@@ -91,7 +100,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         isScreenshot={true}
                         withoutBackground
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
-                        analyticsEventTitle="Indicator explorer"
+                        analyticsPageTitle="Indicator explorer"
                     />
                 </ScreenshotModal>
             </MainSection>
@@ -107,13 +116,12 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 48px 200px 48px 64px;
+    padding: 24px 200px 24px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 `;
 
 const Image = styled.img`
-    width: 160px;
-    height: 160px;
+    height: 56px;
 `;

@@ -34,10 +34,7 @@ describe("Given TreeSelector", () => {
         it("should show the options", async () => {
             renderComponent();
 
-            focusComponent();
-
-            await screen.findByRole("listbox");
-            screen.getByText(/select country or area/i);
+            await focusComponent();
 
             await waitFor(() => {
                 (countries[0]?.parents || []).forEach(parent => screen.getByText(parent.name));
@@ -47,7 +44,7 @@ describe("Given TreeSelector", () => {
         it("should check the selected option", async () => {
             renderComponent();
 
-            focusComponent();
+            await focusComponent();
 
             await expandGroup(getParentFromChild({ child: 0, parent: 0 }));
 
@@ -56,11 +53,10 @@ describe("Given TreeSelector", () => {
             await verifyCountryIsChecked(getChild(0));
         });
 
-        // TODO: Fix test that fails radomly
-        it.skip("should check the selected option for all parents", async () => {
+        it("should check the selected option for all parents", async () => {
             renderComponent();
 
-            focusComponent();
+            await focusComponent();
 
             await expandGroup(getParentFromChild({ child: 0, parent: 0 }));
 
@@ -78,7 +74,7 @@ describe("Given TreeSelector", () => {
         it("should filter country after search", async () => {
             renderComponent();
 
-            focusComponent();
+            await focusComponent();
 
             await expandGroup(getParentFromChild({ child: 0, parent: 0 }));
             await expandGroup(getParentFromChild({ child: 0, parent: 1 }));
@@ -92,7 +88,7 @@ describe("Given TreeSelector", () => {
         it("should add chip for every selected country", async () => {
             renderComponent();
 
-            focusComponent();
+            await focusComponent();
 
             await expandGroup(getParentFromChild({ child: 0, parent: 0 }));
 
@@ -105,11 +101,10 @@ describe("Given TreeSelector", () => {
             await verifyChip(getChild(1));
         });
 
-        // TODO: Fix test, sometimes fails randomly
-        it.skip("should expand parents with countries after search", async () => {
+        it("should expand parents with countries after search", async () => {
             renderComponent();
 
-            focusComponent();
+            await focusComponent();
 
             await search(getChild(1));
 
@@ -119,9 +114,7 @@ describe("Given TreeSelector", () => {
     describe("When has select all and clear all options", () => {
         beforeEach(async () => {
             renderComponent({ hasSelectAll: true, hasClearAll: true });
-            focusComponent();
-            await screen.findByRole("listbox");
-            screen.getByText(/select country or area/i);
+            await focusComponent();
         });
         it("Then should show a checkbox in all parent nodes", async () => {
             const allCountriesCheckbox = screen.getByRole("checkbox", {
@@ -165,7 +158,7 @@ describe("Given TreeSelector", () => {
     describe("When an option is disabled", () => {
         beforeEach(async () => {
             renderComponent({ disabledCountries: ["IZy3ESdFnp5"] });
-            focusComponent();
+            await focusComponent();
         });
         it("Then the option should be disabled", async () => {
             const disabledText = await screen.findByText(/eu27/i);
@@ -176,9 +169,7 @@ describe("Given TreeSelector", () => {
     describe("When has show parent if check", () => {
         beforeEach(async () => {
             renderComponent({ hasSelectAll: true, hasClearAll: true, showParentIfChecked: true });
-            focusComponent();
-            await screen.findByRole("listbox");
-            screen.getByText(/select country or area/i);
+            await focusComponent();
         });
         it("Should show parent as chip instead of children", async () => {
             selectAllCountries();
@@ -233,7 +224,9 @@ const CountrySelectorContainer: React.FC<CountrySelectorContainerProps> = ({
             hasClearAll={hasClearAll}
             disabledItems={disabledCountries}
             placeholder="Select country or area"
+            label="Countries and areas"
             showParentIfChecked={showParentIfChecked}
+            allSelectedLabel="All countries/areas"
         />
     );
 };

@@ -1,3 +1,5 @@
+import { Maybe } from "../../types/utils";
+
 type PageViewEvent = {
     name: "page_view";
     pageLocation: string;
@@ -20,6 +22,8 @@ type FileDownloadEvent = {
     name: "file_download";
     pageTitle: string;
     contentType: string;
+    contentGroup: string;
+    contentId: Maybe<string>;
 };
 
 type ResourceEvent = {
@@ -33,9 +37,58 @@ type ResourceEvent = {
     country?: string;
 };
 
+type ExternalLinkEvent = {
+    name: "external_link";
+    text: string;
+    href: string;
+};
+
+type IndicatorExplorerSummaryEvent = {
+    name: "indicator_explorer_summary";
+    indicator: string;
+    allCountriesSelected: boolean;
+    allYearsSelected: boolean;
+    yearsSelected: string[];
+    eu27average: boolean;
+    numberOfCountries: number;
+};
+
+type IndicatorExplorerEvent = {
+    name: "indicator_explorer";
+    indicator: string;
+    country: string;
+    year: string;
+};
+
+type PolicyExplorerSummaryEvent = {
+    name: "policy_explorer_summary";
+    numberOfCategories: number;
+    numberOfSubcategories: number;
+    allCountriesSelected: boolean;
+    numberOfCountries: number;
+    year: string;
+};
+
+type PolicyCategoryEvent = {
+    name: "policy_explorer_category";
+    category: string;
+    subcategory: string;
+    country: string;
+    year: string;
+};
+
 export type AnalyticsEvent =
     | PageViewEvent
     | FileDownloadEvent
     | CountryPageViewEvent
     | ResourceKindPageViewEvent
-    | ResourceEvent;
+    | ResourceEvent
+    | ExternalLinkEvent
+    | IndicatorExplorerSummaryEvent
+    | IndicatorExplorerEvent
+    | PolicyExplorerSummaryEvent
+    | PolicyCategoryEvent;
+
+export function getCurrentPageLocation(): string {
+    return window.location.hash.split("?")[0] ?? "";
+}

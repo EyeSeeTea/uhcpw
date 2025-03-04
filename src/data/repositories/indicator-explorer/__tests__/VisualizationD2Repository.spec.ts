@@ -2,7 +2,8 @@ import { VisualizationD2Repository } from "../VisualizationD2Repository";
 import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
-import visualization from "./data/visualization_hNU4Lj1xLYO.json";
+import visualization from "./data/visualization_kIpnMBaBvZ9.json";
+import visualization_result from "./data/getVisualization_kIpnMBaBvZ9_result.json";
 import infoNotes from "./data/infoNotes.json";
 import dataElements from "./data/dataElements.json";
 import breaksInSeriesEvents from "./data/breaksInSeriesEvents.json";
@@ -19,13 +20,10 @@ describe("Visualization repository", () => {
     afterEach(() => mockWebServer.resetHandlers());
     afterAll(() => mockWebServer.close());
 
-    //Test parse
-
-    // TODO: Fix test
-    it.skip("should return a expected visualization", async () => {
+    it("should return a expected visualization", async () => {
         givenAVisualization();
 
-        const response = await visualizationRepository.getById("hNU4Lj1xLYO").runAsync();
+        const response = await visualizationRepository.getById("kIpnMBaBvZ9").runAsync();
 
         const visualization = response.data;
 
@@ -35,11 +33,11 @@ describe("Visualization repository", () => {
     it("should send filter by role equal to team and expected program", async () => {
         givenAVisualization();
 
-        await visualizationRepository.getById("hNU4Lj1xLYO").runAsync();
+        await visualizationRepository.getById("kIpnMBaBvZ9").runAsync();
 
         const requests = mockWebServer.allRequests;
 
-        expect(requests?.some(r => (r.url.pathname = "/api/visualizations/hNU4Lj1xLYO"))).toBe(true);
+        expect(requests?.some(r => (r.url.pathname = "/api/visualizations/kIpnMBaBvZ9"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/events"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/dataElements"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/programs"))).toBe(true);
@@ -47,16 +45,12 @@ describe("Visualization repository", () => {
 });
 
 function verifyVisualization(visualization?: Visualization) {
-    if (!visualization) fail("Visualization is undefined");
+    if (!visualization) throw new Error("Visualization is undefined");
 
-    expect(visualization.id).toBe("hNU4Lj1xLYO");
-    expect(visualization.categoryName).toBe("Comparative");
-    expect(visualization.friendlyName).toBe(
-        "households with catastrophic health spending and out-of-pocket payments as a share of current spending on health in Europe and central Asia"
-    );
-    expect(visualization.notes).toBe(
-        "Data on catastrophic health spending and out-of-pocket payments are for the same year\n\nSource: Data on catastrophic health spending: WHO Regional Office for Europe; data on out-of-pocket payments: GHED"
-    );
+    expect(visualization.id).toBe(visualization_result.id);
+    expect(visualization.categoryName).toBe(visualization_result.categoryName);
+    expect(visualization.friendlyName).toBe(visualization_result.friendlyName);
+    expect(visualization.notes).toBe(visualization_result.notes);
 }
 
 export {};
@@ -101,7 +95,7 @@ function givenAVisualization() {
     mockWebServer.addRequestHandlers([
         {
             method: "get",
-            endpoint: `/api/models/programs`,
+            endpoint: `/api/programs`,
             httpStatusCode: 200,
             response: breaksInSeriesProgram,
         },

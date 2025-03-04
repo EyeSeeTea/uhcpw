@@ -215,10 +215,6 @@ function givenAPersons(): {
     return { officeTeam, experts };
 }
 
-async function selectLetterFilter(letter: string) {
-    await userEvent.click(await screen.findByRole("button", { name: letter }));
-}
-
 async function selectCountry(value: string) {
     const countrySelector = screen.getByLabelText("Select country or area");
 

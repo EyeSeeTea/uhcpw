@@ -4,6 +4,7 @@ export type HomePageContent = {
     analysis: AnalysisContent;
     methods: MethodsContent;
     newsletter: NewsletterContent;
+    mobileDialog: MobileDialogContent;
 };
 
 export type MainMapPanelContent = {
@@ -46,6 +47,10 @@ export type MethodsContent = {
     column2: ColumnContent;
     column3: ColumnContent;
     buttonLink: string;
+};
+
+export type MobileDialogContent = {
+    text: string;
 };
 
 export type RegionalReportLink = string;
