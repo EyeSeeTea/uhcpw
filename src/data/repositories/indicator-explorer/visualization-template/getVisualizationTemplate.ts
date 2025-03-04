@@ -4,7 +4,6 @@ import { apiToFuture } from "../../../../utils/futures";
 import { Id } from "../../../../domain/entities/Ref";
 
 const PROGRAM_ID = "mCGrTrZYFLW";
-const EVENT_ID = "VjWcznud4co";
 const SECTION_ID = "Mi2Ff6ghH6k";
 
 const VISUALIZATION_ID_DATA_ELEMENT_CODE_PATTERN = "UHCW_IndicatorTemplates_";
@@ -16,7 +15,6 @@ export function getVisualizationTemplate(api: D2Api, visualizationId: Id): Futur
                 fields: eventsFields,
                 skipPaging: true,
                 program: PROGRAM_ID,
-                event: EVENT_ID,
             })
         ),
         programMetadata: apiToFuture(
