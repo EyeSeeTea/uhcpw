@@ -22,32 +22,41 @@ export const Explorers: React.FC<ExplorersProps> = ({ content }) => {
             <Content container>
                 <IndicatorExplorer item md={6} xs={12}>
                     <ContentSectionGrid container>
-                        <Grid item>
-                            <SectionBlock title={content.indicator.title} text={content.indicator.text} />
-                            <ButtonContainer>
-                                <Link href={content.indicator.buttonLink || ""}>
-                                    {i18n.t(content.indicator.buttonText || "")}
-                                </Link>
-                            </ButtonContainer>
-                        </Grid>
-                        <Grid item>
-                            <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
-                        </Grid>
+                        <StyledGrid item>
+                            <FlexContainer gap={30} isColumn>
+                                <FlexContainer gap={20}>
+                                    <SectionBlock title={content.indicator.title} text={content.indicator.text} />
+
+                                    <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
+                                </FlexContainer>
+
+                                <ButtonContainer>
+                                    <Link href={content.indicator.buttonLink || ""}>
+                                        {i18n.t(content.indicator.buttonText || "")}
+                                    </Link>
+                                </ButtonContainer>
+                            </FlexContainer>
+                        </StyledGrid>
                     </ContentSectionGrid>
                 </IndicatorExplorer>
+
                 <PolicyExplorer item md={6} xs={12}>
                     <ContentSectionGrid container>
-                        <Grid item>
-                            <SectionBlock title={content.policy.title} text={content.policy.text} />
-                            <ButtonContainer>
-                                <Link href={content.policy.buttonLink || ""}>
-                                    {i18n.t(content.policy.buttonText || "")}
-                                </Link>
-                            </ButtonContainer>
-                        </Grid>
-                        <Grid item>
-                            <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
-                        </Grid>
+                        <StyledGrid item>
+                            <FlexContainer gap={30} isColumn>
+                                <FlexContainer gap={20}>
+                                    <SectionBlock title={content.policy.title} text={content.policy.text} />
+
+                                    <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
+                                </FlexContainer>
+
+                                <ButtonContainer>
+                                    <Link href={content.policy.buttonLink || ""}>
+                                        {i18n.t(content.policy.buttonText || "")}
+                                    </Link>
+                                </ButtonContainer>
+                            </FlexContainer>
+                        </StyledGrid>
                     </ContentSectionGrid>
                 </PolicyExplorer>
             </Content>
@@ -68,9 +77,7 @@ const PolicyExplorer = styled(Grid)`
     color: white;
 `;
 
-const ButtonContainer = styled.div`
-    margin-top: 30px;
-`;
+const ButtonContainer = styled.div``;
 
 const ContentSectionGrid = styled(Grid)`
     width: 100%;
@@ -101,4 +108,16 @@ const Link = styled.a`
     text-transform: none;
     text-decoration: none;
     font-size: 16px;
+`;
+
+const StyledGrid = styled(Grid)`
+    width: 100%;
+`;
+
+const FlexContainer = styled.div<{ isColumn?: boolean; gap: number }>`
+    display: flex;
+    flex-direction: ${props => (props.isColumn ? "column" : "row")};
+    justify-content: space-between;
+    width: 100%;
+    gap: ${props => props.gap}px;
 `;

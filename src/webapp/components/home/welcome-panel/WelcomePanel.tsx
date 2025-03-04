@@ -22,9 +22,9 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent 
 
     return (
         <Container>
-            <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
+            <StyledTitle variant="h2" gutterBottom>
                 {welcomePanelContent.title}
-            </Typography>
+            </StyledTitle>
             <ParagraphContainer>
                 <ReactMarkdown
                     components={{
@@ -61,14 +61,29 @@ const Container = styled.div`
     padding: 16px;
 `;
 
+const StyledTitle = styled(Typography)`
+    font-weight: 400;
+    width: 100%;
+    @media (max-width: 350px) {
+        font-size: 40px;
+    }
+`;
+
 const ParagraphContainer = styled.div`
     max-width: 46ch;
+    @media (max-width: 960px) {
+        max-width: 100%;
+    }
 `;
 
 const UmbrellaItemsContainer = styled.div`
     display: flex;
     justify-content: space-between;
     margin-block: 48px 35px;
+    @media (max-width: 350px) {
+        flex-direction: column;
+        gap: 5px;
+    }
 `;
 
 const UmbrellaItem = styled.div`
@@ -83,6 +98,12 @@ const Marker = styled.img`
     background-size: cover;
     width: 80px;
     margin-bottom: 16px;
+    @media (max-width: 400px) {
+        width: 50px;
+    }
+    @media (max-width: 350px) {
+        width: 80px;
+    }
 `;
 
 const VideoLink = styled.a`

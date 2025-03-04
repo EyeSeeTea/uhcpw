@@ -96,7 +96,6 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
 
     return (
         <Container ref={mainContainerRef}>
-            <MapContent ref={mapContainerRef} />
             <MapSidePanel>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} />
@@ -104,18 +103,20 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
                     <WelcomePanel welcomePanelContent={welcomePanelContent} />
                 )}
             </MapSidePanel>
-            <MapControls>
-                <Tooltip title={i18n.t("Zoom in")}>
-                    <MapFab size="small" onClick={zoomIn}>
-                        <ZoomInIcon fontSize="small" />
-                    </MapFab>
-                </Tooltip>
-                <Tooltip title={i18n.t("Zoom out")}>
-                    <MapFab size="small" onClick={zoomOut}>
-                        <ZoomOutIcon fontSize="small" />
-                    </MapFab>
-                </Tooltip>
-            </MapControls>
+            <MapContent ref={mapContainerRef}>
+                <MapControls>
+                    <Tooltip title={i18n.t("Zoom in")}>
+                        <MapFab size="small" onClick={zoomIn}>
+                            <ZoomInIcon fontSize="small" />
+                        </MapFab>
+                    </Tooltip>
+                    <Tooltip title={i18n.t("Zoom out")}>
+                        <MapFab size="small" onClick={zoomOut}>
+                            <ZoomOutIcon fontSize="small" />
+                        </MapFab>
+                    </Tooltip>
+                </MapControls>
+            </MapContent>
         </Container>
     );
 };
@@ -124,6 +125,11 @@ const Container = styled.div`
     height: 100%;
     width: 100%;
     position: relative;
+    @media (max-width: 960px) {
+        display: flex;
+        flex-direction: column;
+        position: unset;
+    }
 `;
 
 const MapContent = styled.div`
@@ -167,6 +173,7 @@ const MapContent = styled.div`
 
 const MapSidePanel = styled.div`
     position: absolute;
+    z-index: 1;
     top: 0;
     bottom: 0;
     max-width: 500px;
@@ -174,6 +181,12 @@ const MapSidePanel = styled.div`
     color: white;
     padding: 48px;
     opacity: 0.9;
+
+    @media (max-width: 960px) {
+        position: relative;
+        max-width: 100%;
+        height: 100%;
+    }
 `;
 
 const MapControls = styled.div`
@@ -183,6 +196,11 @@ const MapControls = styled.div`
     position: absolute;
     top: 60px;
     right: 10px;
+    z-index: 1;
+    @media (max-width: 960px) {
+        top: 0px;
+        right: 10px;
+    }
 `;
 
 const MapFab = styled(Fab)`

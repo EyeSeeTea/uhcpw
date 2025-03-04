@@ -32,14 +32,12 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     return (
         <Container>
             <Row>
-                <UmbrellaItem>
+                <div>
                     <Marker
                         src={country.status === "Strong" ? strongIcon : country.status === "Weak" ? weakIcon : gapsIcon}
                     />
-                </UmbrellaItem>
-                <Typography variant="h2" style={{ fontWeight: 400 }}>
-                    {country.name}
-                </Typography>
+                </div>
+                <StyledTitle variant="h2">{country.name}</StyledTitle>
             </Row>
             <Divider style={{ backgroundColor: "white", margin: "38px 0px" }} />
 
@@ -66,23 +64,26 @@ const Container = styled.div`
     }
 `;
 
+const StyledTitle = styled(Typography)`
+    font-weight: 400;
+    @media (max-width: 350px) {
+        font-size: 40px;
+    }
+`;
+
 const Row = styled.div`
     display: flex;
     flex-direction: row;
-`;
-
-const UmbrellaItem = styled.div`
-    display: flex;
-    flex-direction: row;
-    text-align: center;
-    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+    @media (max-width: 600px) {
+        flex-wrap: wrap;
+    }
 `;
 
 const Marker = styled.img`
     background-size: cover;
     width: 80px;
-    margin-right: 24px;
-    margin-bottom: 32px;
 `;
 
 const StyledButton = styled(Button)`

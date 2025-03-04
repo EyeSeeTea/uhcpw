@@ -54,8 +54,18 @@ export const HomePage: React.FC = React.memo(() => {
 });
 
 const MapSection = styled.section`
-    @media (max-width: 500px) {
+    @media (max-width: 960px) {
         height: 110vh;
+    }
+    @media (max-width: 600px) {
+        height: 140vh;
+    }
+    @media (max-width: 350px) {
+        flex-direction: column;
+        height: 170vh;
+    }
+    @media (orientation: landscape) {
+        height: 240vh;
     }
     height: 80vh;
     min-height: 620px;
