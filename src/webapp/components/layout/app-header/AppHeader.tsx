@@ -101,112 +101,142 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                     </MenuTopLink>
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
-                    <LogoContainer>
-                        <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={() => goToHome()} />;
-                    </LogoContainer>
-                    {!isHomePage ? (
-                        <LogoContainer>
-                            <img
-                                src={uhcwHomeLogo}
-                                width={150}
-                                alt="UHC watch logo to go home"
-                                onClick={() => goToHome()}
-                            />
-                            ;
-                        </LogoContainer>
-                    ) : null}
-                    <Box className={classes.rest} />
-                    <Hidden lgUp>
-                        <MobileMenu />
-                    </Hidden>
-                    <Hidden mdDown>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
-                            to={"/indicator-explorer"}
-                        >
-                            {i18n.t("Indicator explorer")}
-                        </Button>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
-                            to={"/policy-explorer"}
-                        >
-                            {i18n.t("Policy explorer")}
-                        </Button>
-                        <MenuButton
-                            id="countries"
-                            aria-controls="countries & areas"
-                            aria-haspopup="true"
-                            onClick={handleSetAnchorEl}
-                            endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                        >
-                            {i18n.t("Countries & areas")}
-                        </MenuButton>
-                        <Menu
-                            anchorEl={anchorEl}
-                            keepMounted
-                            open={anchorEl?.id === "countries"}
-                            onClose={handleClose}
-                            getContentAnchorEl={null}
-                            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                            transformOrigin={{ vertical: "top", horizontal: "center" }}
-                            PaperProps={{
-                                style: {
-                                    maxHeight: 556,
-                                    overflowY: "auto",
-                                },
-                            }}
-                        >
-                            {countryFilter.countryOptions.map(country => {
-                                return (
-                                    <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
-                                        {country.text}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Menu>
-                        <MenuTopLink
-                            id="regions"
-                            aria-controls="regions"
-                            target="_blank"
-                            href={regionalReport}
-                            onClick={regionalReportPageView}
-                        >
-                            {i18n.t("Regional report")}
-                        </MenuTopLink>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
-                            to={"/methods"}
-                        >
-                            {i18n.t("Methods")}
-                        </Button>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
-                            to={"/resources"}
-                        >
-                            {i18n.t("Resources")}
-                        </Button>
-                        <Button
-                            className={classes.menu}
-                            activeClassName={classes.menuActive}
-                            component={NavLink}
-                            to={"/about"}
-                        >
-                            {i18n.t("About us")}
-                        </Button>
-                    </Hidden>
+                    <FlexContainer isFullWidth>
+                        <FlexContainer isWrap>
+                            <LogoContainer>
+                                <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={() => goToHome()} />;
+                            </LogoContainer>
+
+                            {!isHomePage ? (
+                                <LogoContainer>
+                                    <img
+                                        src={uhcwHomeLogo}
+                                        width={150}
+                                        alt="UHC watch logo to go home"
+                                        onClick={() => goToHome()}
+                                    />
+                                    ;
+                                </LogoContainer>
+                            ) : null}
+                        </FlexContainer>
+
+                        {/* <Box className={classes.rest} /> */}
+
+                        <MenuContainer>
+                            <Hidden lgUp>
+                                <MobileMenu />
+                            </Hidden>
+
+                            <Hidden mdDown>
+                                <DesktopMenuContainer>
+                                    <Button
+                                        className={classes.menu}
+                                        activeClassName={classes.menuActive}
+                                        component={NavLink}
+                                        to={"/indicator-explorer"}
+                                    >
+                                        {i18n.t("Indicator explorer")}
+                                    </Button>
+                                    <Button
+                                        className={classes.menu}
+                                        activeClassName={classes.menuActive}
+                                        component={NavLink}
+                                        to={"/policy-explorer"}
+                                    >
+                                        {i18n.t("Policy explorer")}
+                                    </Button>
+                                    <MenuButton
+                                        id="countries"
+                                        aria-controls="countries & areas"
+                                        aria-haspopup="true"
+                                        onClick={handleSetAnchorEl}
+                                        endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                                    >
+                                        {i18n.t("Countries & areas")}
+                                    </MenuButton>
+                                    <Menu
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={anchorEl?.id === "countries"}
+                                        onClose={handleClose}
+                                        getContentAnchorEl={null}
+                                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                                        transformOrigin={{ vertical: "top", horizontal: "center" }}
+                                        PaperProps={{
+                                            style: {
+                                                maxHeight: 556,
+                                                overflowY: "auto",
+                                            },
+                                        }}
+                                    >
+                                        {countryFilter.countryOptions.map(country => {
+                                            return (
+                                                <MenuItem
+                                                    key={country.value}
+                                                    onClick={() => handleCountryClick(country)}
+                                                >
+                                                    {country.text}
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </Menu>
+                                    <MenuTopLink
+                                        id="regions"
+                                        aria-controls="regions"
+                                        target="_blank"
+                                        href={regionalReport}
+                                        onClick={regionalReportPageView}
+                                    >
+                                        {i18n.t("Regional report")}
+                                    </MenuTopLink>
+                                    <Button
+                                        className={classes.menu}
+                                        activeClassName={classes.menuActive}
+                                        component={NavLink}
+                                        to={"/methods"}
+                                    >
+                                        {i18n.t("Methods")}
+                                    </Button>
+                                    <Button
+                                        className={classes.menu}
+                                        activeClassName={classes.menuActive}
+                                        component={NavLink}
+                                        to={"/resources"}
+                                    >
+                                        {i18n.t("Resources")}
+                                    </Button>
+                                    <Button
+                                        className={classes.menu}
+                                        activeClassName={classes.menuActive}
+                                        component={NavLink}
+                                        to={"/about"}
+                                    >
+                                        {i18n.t("About us")}
+                                    </Button>
+                                </DesktopMenuContainer>
+                            </Hidden>
+                        </MenuContainer>
+                    </FlexContainer>
                 </Toolbar>
             </MuiAppBar>
         </div>
     );
 };
+
+const FlexContainer = styled.div<{ isFullWidth?: boolean; isWrap?: boolean }>`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-flow: ${props => (props.isWrap ? "wrap" : "row")};
+    width: ${props => (props.isFullWidth ? "100%" : "auto")};
+    justify-content: space-between;
+`;
+
+const MenuContainer = styled.div``;
+
+const DesktopMenuContainer = styled.div`
+    white-space: nowrap;
+`;
 
 const MenuTopLink = styled.a`
     margin: 0px 16px;

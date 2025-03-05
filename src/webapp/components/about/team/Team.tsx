@@ -17,10 +17,10 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
                 <Subtitle variant="h5">{i18n.t("Staff and consultants")}</Subtitle>
             </ItemsTitleContainer>
 
-            <Grid container spacing={10}>
+            <Grid container spacing={6}>
                 {team.map((item, index) => {
                     return (
-                        <Grid key={index} item xs={6} md>
+                        <Grid key={index} item xs={12} sm={6} md>
                             <ItemPerson person={item} isExpert={false} />
                         </Grid>
                     );
