@@ -162,10 +162,17 @@ const TextLink = styled.a`
 
 const TextContainer = styled.div`
     width: 70%;
+    @media (max-width: 600px) {
+        width: 100%;
+    }
 `;
 
 const MainContainer = styled.div`
     padding: 80px 64px;
+
+    @media (max-width: 600px) {
+        padding: 40px;
+    }
 `;
 
 const DownloadLink = styled.a`
