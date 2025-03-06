@@ -35,6 +35,7 @@ interface TreeSelectorProps {
     selectedIds?: string[];
     onSelectedIdsChange: (ids: string[]) => void;
     fullWidth?: boolean;
+    minWidth?: string;
     placeholder?: string;
     disabled?: boolean;
     label?: string;
@@ -59,6 +60,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         selectedIds = EMPTY_IDS_ARRAY,
         onSelectedIdsChange,
         fullWidth = false,
+        minWidth,
         placeholder,
         disabled = false,
         label,
@@ -368,6 +370,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     aria-haspopup="listbox"
                     aria-controls="tree-selector-menu"
                     fullWidth={fullWidth}
+                    minWidth={minWidth}
                     value={""}
                     disabled={disabled}
                     $isDisabled={disabled}
@@ -592,6 +595,7 @@ const Container = styled.div<{ $fullWidth: boolean }>`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+    margin-block-start: 16px;
 `;
 
 const PlaceholderAndButtonsContainer = styled(Container)<{ $fullWidth: boolean }>`

@@ -18,6 +18,7 @@ interface DropdownMultipleProps<T extends string = string> {
     onChange: (value?: T[]) => void;
     disabled?: boolean;
     hideLabel?: boolean;
+    minWidth?: string;
 }
 
 type OptionLabel = {
@@ -26,7 +27,7 @@ type OptionLabel = {
 };
 
 export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
-    ({ label, options, values, placeholder, fullWidth, onChange, disabled, hideLabel = false }) => {
+    ({ label, options, values, placeholder, fullWidth, onChange, disabled, hideLabel = false, minWidth }) => {
         const valuesOption = useMemo(() => {
             return options.filter(option => values?.includes(option.value)) || [];
         }, [options, values]);
@@ -57,6 +58,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                             placeholder={placeholder}
                             aria-label={label || placeholder || "Dropdown Multiple"}
                             InputLabelProps={{ shrink: true }}
+                            minWidth={minWidth}
                         />
                     )}
                     renderTags={(value: unknown[], getTagProps) =>

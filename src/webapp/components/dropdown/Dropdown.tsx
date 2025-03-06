@@ -16,6 +16,7 @@ interface DropdownProps<T extends string = string> {
     disabled?: boolean;
     width?: string;
     hideLabel?: boolean;
+    minWidth?: string;
 }
 
 interface ContainerProps {
@@ -38,6 +39,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
         disabled = false,
         width = "100%",
         hideLabel = false,
+        minWidth,
     }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
 
@@ -77,6 +79,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                             placeholder={placeholder}
                             InputLabelProps={{ shrink: true }}
                             aria-label={label || placeholder || "Dropdown"}
+                            minWidth={minWidth}
                         />
                     )}
                     onChange={(e, value) => handleChange(e, value as Option<string> | null)}

@@ -44,12 +44,14 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
 
     return (
         <Layout>
-            <TitleContainer>
-                <Title variant="h4">{title}</Title>
-            </TitleContainer>
-            <SearchContainer>
-                <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
-            </SearchContainer>
+            <TitleAndSearchContainer>
+                <TitleContainer>
+                    <Title variant="h4">{title}</Title>
+                </TitleContainer>
+                <SearchContainer>
+                    <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
+                </SearchContainer>
+            </TitleAndSearchContainer>
             <Content>
                 <SelectsContainer maxWidth="xl">
                     <ResourcesFilters
@@ -64,7 +66,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                                     const sizes = getSizes(item);
 
                                     return (
-                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
+                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} sm={sizes.sm} xs={sizes.xs}>
                                             <ResourceItem resource={item} analyticsPageTitle="Resources" />
                                         </Grid>
                                     );
@@ -80,16 +82,16 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     );
 });
 
-const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSize } => {
+const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; sm: GridSize; xs: GridSize } => {
     switch (resource.kind) {
         case "comparative-analysis":
-            return { lg: 2, md: 3, xs: 6 };
+            return { lg: 2, md: 3, sm: 6, xs: 12 };
         case "country-analysis":
-            return { lg: 2, md: 3, xs: 6 };
+            return { lg: 2, md: 3, sm: 6, xs: 12 };
         case "news":
-            return { lg: 4, md: 6, xs: 12 };
+            return { lg: 4, md: 6, sm: 6, xs: 12 };
         case "multimedia":
-            return { lg: 4, md: 6, xs: 12 };
+            return { lg: 4, md: 6, sm: 6, xs: 12 };
     }
 };
 
@@ -118,15 +120,22 @@ const SelectsContainer = styled(Container)`
 `;
 
 const SearchContainer = styled.div`
-    margin: -24px;
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    @media (max-width: 450px) {
-        padding: 0 25px;
-    }
+    max-width: 70%;
+    width: 442px;
 `;
 
 const StyledGridContainer = styled(Grid)`
     padding-block: 32px;
+`;
+
+const TitleAndSearchContainer = styled.div`
+    position: relative;
+    width: 100%;
 `;

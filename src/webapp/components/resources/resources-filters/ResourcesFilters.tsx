@@ -64,9 +64,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
         );
 
         return (
-            <Grid container spacing={1} direction="row" alignItems="flex-end" justifyContent="space-between">
-                <Grid item md={3} sm={6}>
-                    <Center>
+            <Grid container spacing={2} direction="row" alignItems="flex-end" justifyContent="center" wrap="wrap">
+                <Grid item md={3} sm={6} xs={12}>
+                    <FilterContainer>
                         <Dropdown
                             fullWidth
                             placeholder={i18n.t("Select category")}
@@ -76,10 +76,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             label={i18n.t("Select category")}
                             hideLabel
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={2} sm={6}>
-                    <Center>
+                <Grid item md={3} sm={6} xs={12}>
+                    <FilterContainer>
                         <Dropdown
                             fullWidth
                             placeholder={i18n.t("Select theme")}
@@ -90,10 +90,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             label={i18n.t("Select theme")}
                             hideLabel
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={3} sm={6}>
-                    <Center>
+                <Grid item md={3} sm={6} xs={12}>
+                    <FilterContainer marginTop="30px">
                         <TreeSelector
                             fullWidth
                             hasSelectAll
@@ -108,10 +108,10 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={2} sm={6}>
-                    <Center>
+                <Grid item md={2} sm={6} xs={12}>
+                    <FilterContainer>
                         <DropdownMultiple
                             placeholder={i18n.t("Select years")}
                             options={filters.year.options}
@@ -120,10 +120,12 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             disabled={disabledYearFilter}
                             label={i18n.t("Select years")}
                             hideLabel
+                            fullWidth
+                            minWidth="100%"
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={1} sm={3} xs={6}>
+                <Grid item md={1} sm={6} xs={12}>
                     <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetResources}>
                         <Typography>{i18n.t("Search")}</Typography>
                     </SearchButton>
@@ -133,11 +135,11 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
     }
 );
 
-const Center = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+const FilterContainer = styled.div<{ marginTop?: string }>`
+    width: 100%;
+    @media (max-width: 960px) {
+        margin-block-start: ${({ marginTop }) => marginTop || "16px"};
+    }
 `;
 
 const SearchButton = styled(Button)`

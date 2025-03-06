@@ -22,16 +22,18 @@ export const ResourcesPage: React.FC = React.memo(() => {
 
     return (
         <Layout>
-            <TitleContainer>
-                <Typography variant="h3">{i18n.t("Resources")}</Typography>
-            </TitleContainer>
-            <SearchContainer>
-                <SearchInput
-                    value={filters.search.term}
-                    onChange={filters.search.onTermChange}
-                    placeholder={i18n.t("Search all publications")}
-                />
-            </SearchContainer>
+            <TitleAndSearchContainer>
+                <TitleContainer>
+                    <Typography variant="h3">{i18n.t("Resources")}</Typography>
+                </TitleContainer>
+                <SearchContainer>
+                    <SearchInput
+                        value={filters.search.term}
+                        onChange={filters.search.onTermChange}
+                        placeholder={i18n.t("Search all publications")}
+                    />
+                </SearchContainer>
+            </TitleAndSearchContainer>
             <SelectsContainer maxWidth="xl">
                 <Grid container>
                     <ResourcesFilters
@@ -63,6 +65,11 @@ const TitleContainer = styled.div`
     padding: 24px 64px;
 `;
 
+const TitleAndSearchContainer = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
 const SelectsContainer = styled(Container)`
     padding-block-start: 64px;
     padding-block-end: 32px;
@@ -70,11 +77,13 @@ const SelectsContainer = styled(Container)`
 `;
 
 const SearchContainer = styled.div`
-    margin: -24px;
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    @media (max-width: 450px) {
-        padding: 0 25px;
-    }
+    max-width: 70%;
+    width: 442px;
 `;
