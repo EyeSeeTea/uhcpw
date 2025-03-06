@@ -63,6 +63,8 @@ const Item = styled(Card)`
         font-size: 14px;
         color: ${colors.accentPrimary};
     }
+    min-width: 180px;
+    overflow: unset;
 `;
 
 const Row = styled.div`

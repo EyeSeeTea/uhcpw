@@ -30,7 +30,7 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(({ title, 
                     <ChevronRightSharpIcon onClick={onSeeAll} />
                 </Fab>
             </Row>
-            <Grid container spacing={0}>
+            <Grid container spacing={1}>
                 {children}
             </Grid>
         </Container>

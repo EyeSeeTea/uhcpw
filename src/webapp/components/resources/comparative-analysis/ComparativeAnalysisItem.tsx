@@ -58,4 +58,5 @@ const Item = styled(Card)`
         color: ${colors.accentPrimary};
     }
     width: 180px;
+    overflow: unset;
 `;

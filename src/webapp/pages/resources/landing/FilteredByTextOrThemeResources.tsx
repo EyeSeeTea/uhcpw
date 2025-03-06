@@ -20,7 +20,7 @@ export const FilteredByTextOrThemeResources: React.FC<{
                     seeAllUrl={`/resources/country-analysis${themeSelected ? `?theme=${themeSelected}` : ""}`}
                 >
                     {resources.countryAnalysis.map(countryAnalysis => (
-                        <StyledGrid key={countryAnalysis.id} item lg={2} md={3} xs={6}>
+                        <StyledGrid key={countryAnalysis.id} item lg={2} md={3} sm={6} xs={12}>
                             <ResourceItem resource={countryAnalysis} analyticsPageTitle="Resources" />
                         </StyledGrid>
                     ))}
@@ -34,7 +34,7 @@ export const FilteredByTextOrThemeResources: React.FC<{
                     seeAllUrl={`/resources/comparative-analysis${themeSelected ? `?theme=${themeSelected}` : ""}`}
                 >
                     {resources.comparativeAnalysis.map(comparativeItem => (
-                        <StyledGrid key={comparativeItem.id} item lg={2} md={3} xs={6}>
+                        <StyledGrid key={comparativeItem.id} item lg={2} md={3} sm={6} xs={12}>
                             <ResourceItem resource={comparativeItem} analyticsPageTitle="Resources" />
                         </StyledGrid>
                     ))}
