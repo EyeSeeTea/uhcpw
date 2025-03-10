@@ -72,7 +72,10 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
 
     const data = allCountriesUnique.reduce(
         (acc: TabsWithStringOrNumbers["data"], countryName): TabsWithStringOrNumbers["data"] => {
-            const year = dataTab.data.find(row => row[parameterIndex] === PARAMETER_NAMES.x)?.[yearIndex];
+            const year = dataTab.data.find(
+                row => row[parameterIndex] === PARAMETER_NAMES.x && row[countryIndex] === countryName
+            )?.[yearIndex];
+
             if (!year) {
                 return acc;
             }
