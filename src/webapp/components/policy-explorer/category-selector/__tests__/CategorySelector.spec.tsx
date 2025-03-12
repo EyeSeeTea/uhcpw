@@ -3,7 +3,8 @@ import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { useCallback } from "react";
 import { customRender } from "../../../../../utils/tests-ui";
-import { CategoryOption, CategorySelector } from "../CategorySelector";
+import { CategorySelector } from "../CategorySelector";
+import { CategoryOption } from "../useCategorySelector";
 
 const categoryOptions: CategoryOption[] = [
     {

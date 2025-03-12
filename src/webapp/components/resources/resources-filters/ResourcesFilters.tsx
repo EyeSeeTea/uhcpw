@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -18,8 +18,11 @@ export interface ResourcesFiltersProps {
 
 export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
     ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
+        const theme = useTheme();
+        const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
         const history = useHistory();
         const location = useLocation();
+
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
                 const theme = filters.theme.selected;
@@ -107,6 +110,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             showParentIfChecked={true}
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
+                            fullScreen={isMobile}
                         />
                     </FilterContainer>
                 </Grid>

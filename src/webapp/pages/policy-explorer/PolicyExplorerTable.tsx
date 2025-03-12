@@ -7,7 +7,6 @@ import ReactMarkdown, { Components } from "react-markdown";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 
 import i18n from "../../../locales";
-import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import {
     PolicyExplorerCell,
     PolicyExplorerCellType,
@@ -18,6 +17,7 @@ import useWindowSize from "../../common/hooks/screen/useWindowSize";
 import _ from "lodash";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;

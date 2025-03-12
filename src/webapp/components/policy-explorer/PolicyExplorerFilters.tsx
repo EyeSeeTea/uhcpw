@@ -1,12 +1,12 @@
 import { Button, Grid, Typography } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useHistory, useLocation } from "react-router-dom";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
 import { TreeSelector } from "../tree-selector/TreeSelector";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 import { CategorySelector } from "./category-selector/CategorySelector";
+import { usePolicyExplorerFilters } from "./category-selector/usePolicyExplorerFilters";
 
 export interface ResourcesFiltersProps {
     filters: PolicyExplorerFiltersState;
@@ -14,59 +14,10 @@ export interface ResourcesFiltersProps {
 }
 
 export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetTable }) => {
-    const history = useHistory();
-    const location = useLocation();
-
-    const onCategoryChange = useCallback(
-        (value: Record<string, string[]> | undefined) => {
-            const queryParameters = new URLSearchParams(location.search);
-
-            if (value) {
-                queryParameters.set("category", JSON.stringify(value));
-            } else if (!value) {
-                queryParameters.delete("category");
-            }
-            filters.category.onSelectedChange(value);
-            history.push({ search: queryParameters.toString() });
-        },
-        [filters.category, history, location.search]
-    );
-
-    const onCountryChange = useCallback(
-        (value: string[] | undefined) => {
-            const queryParameters = new URLSearchParams(location.search);
-
-            if (value && value.length > 0) {
-                queryParameters.set("country", value?.join(","));
-            } else {
-                queryParameters.delete("country");
-            }
-
-            filters.country.onSelectedChange(value);
-            history.push({ search: queryParameters.toString() });
-        },
-        [filters.country, history, location.search]
-    );
-
-    const onYearsChange = useCallback(
-        (value: string[] | undefined) => {
-            const queryParameters = new URLSearchParams(location.search);
-
-            if (value && value.length > 0) {
-                queryParameters.set("years", value?.join(","));
-            } else {
-                queryParameters.delete("years");
-            }
-
-            filters.year.onSelectedChange(value);
-            history.push({ search: queryParameters.toString() });
-        },
-        [filters.year, history, location.search]
-    );
-
+    const { onCategoryChange, onCountryChange, onYearsChange, isMobile } = usePolicyExplorerFilters({ filters });
     return (
-        <Grid container alignItems="flex-end" justifyContent="center">
-            <Grid item md={4} sm={6}>
+        <Grid container spacing={isMobile ? 2 : 5} alignItems="flex-end" justifyContent="center" wrap="wrap">
+            <Grid item md={4} sm={6} xs={12}>
                 <Wrapper>
                     <CategorySelector
                         fullWidth
@@ -75,10 +26,11 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         categoryOptions={filters.category.options}
                         selectedCategoriesWithSubcategories={filters.category.selected}
                         onSelect={onCategoryChange}
+                        fullScreen={isMobile}
                     />
                 </Wrapper>
             </Grid>
-            <Grid item md={4} sm={6}>
+            <Grid item md={4} sm={6} xs={12}>
                 <Wrapper>
                     <TreeSelector
                         fullWidth
@@ -95,10 +47,11 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         showParentIfChecked={true}
                         showOnlyAllParentSelectedIfChecked={true}
                         allSelectedLabel={i18n.t("All countries/areas")}
+                        fullScreen={isMobile}
                     />
                 </Wrapper>
             </Grid>
-            <Grid item md={3} sm={6}>
+            <Grid item md={3} sm={6} xs={12}>
                 <Wrapper>
                     <DropdownMultiple
                         fullWidth
@@ -110,7 +63,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                     />
                 </Wrapper>
             </Grid>
-            <GridGetTableButton item md={1} sm={2}>
+            <GridGetTableButton item md={1} sm={6} xs={12}>
                 <GetTableButton
                     aria-label="Get table"
                     variant="contained"
@@ -122,6 +75,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         !filters.year.selected?.length
                     }
                     onClick={onGetTable}
+                    $isMobile={isMobile}
                 >
                     <Typography>{i18n.t("Get table")}</Typography>
                 </GetTableButton>
@@ -135,15 +89,16 @@ const Wrapper = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding-inline-end: 40px;
 `;
 
-const GetTableButton = styled(Button)`
+const GetTableButton = styled(Button)<{ $isMobile: boolean }>`
     border-radius: 20px;
     height: 50px;
     text-transform: none;
     white-space: nowrap;
     background: #185698;
+    width: ${({ $isMobile }) => ($isMobile ? "100%" : "auto")};
+    margin-block-start: ${({ $isMobile }) => ($isMobile ? "20px" : "0")};
 `;
 
 const GridGetTableButton = styled(Grid)`

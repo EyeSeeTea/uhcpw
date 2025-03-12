@@ -13,7 +13,6 @@ import { useAppContext } from "../../contexts/app-context";
 import i18n from "../../../locales";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { PolicyExplorerState } from "./PolicyExplorerState";
-import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import {
     PolicyExplorerCategory,
     PolicyExplorerSelectCategoryInfo,
@@ -27,6 +26,7 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 import { Maybe } from "../../../types/utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
+import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
