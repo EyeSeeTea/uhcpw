@@ -46,6 +46,7 @@ export const IndicatorTreeSelector = React.memo(
             handleClear,
             treeOptions,
             containerWidth,
+            onSearchAndClearIndicator,
         } = useIndicatorTreeSelector({ options, selectedValue, onChange });
 
         return (
@@ -58,8 +59,8 @@ export const IndicatorTreeSelector = React.memo(
                     role={"textbox"}
                     fullWidth={fullWidth}
                     placeholder={placeholder}
-                    onChange={onSearchIndicator}
-                    value={searchTerm ? searchTerm : selectedOption?.text || searchTerm}
+                    onChange={fullScreen ? undefined : onSearchAndClearIndicator}
+                    value={fullScreen ? selectedOption?.text ?? "" : searchTerm || selectedOption?.text || ""}
                     InputLabelProps={{
                         shrink: true,
                     }}

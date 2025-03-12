@@ -32,6 +32,7 @@ type IndicatorTreeSelectorState = {
     handleMenuClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
     setOpenedMenu: (value: boolean) => void;
     containerWidth: string;
+    onSearchAndClearIndicator: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export const NO_SUBCATEGORY = "noSubcategory";
@@ -130,15 +131,18 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
         [expanded, onChange]
     );
 
-    const onSearchIndicator = React.useCallback(
+    const onSearchIndicator = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(event.target.value);
+    }, []);
+
+    const onSearchAndClearIndicator = React.useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setSearchTerm(event.target.value);
             if (!event.target.value) {
-                onChange(undefined);
-                setSelectedOption(undefined);
+                handleClear();
             }
         },
-        [onChange]
+        [handleClear]
     );
 
     const handleMenuClick = React.useCallback((_event: React.MouseEvent<Element, MouseEvent>) => {
@@ -167,5 +171,6 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
         handleMenuClick,
         setOpenedMenu,
         containerWidth,
+        onSearchAndClearIndicator,
     };
 };
