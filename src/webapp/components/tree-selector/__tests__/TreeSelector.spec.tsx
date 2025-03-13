@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { screen, waitFor, prettyDOM } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { useCallback } from "react";
 import { customRender } from "../../../../utils/tests-ui";
@@ -106,11 +106,7 @@ describe("Given TreeSelector", () => {
 
             await focusComponent();
 
-            console.log("Before search:", prettyDOM(document.body));
-
             await search(getChild(1));
-
-            console.log("After search:", prettyDOM(document.body));
 
             await verifyTotalExpandedGroups(2);
         });
