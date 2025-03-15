@@ -12,11 +12,11 @@ const PARAMETER_NAMES: {
     y_extra_hight: string;
 } = {
     x: cellNameByVisualizationId?.kIpnMBaBvZ9?.x || "Out-of-pocket payments as a share of current spending on health",
-    y_low: "LOW - Households with catastrophic health spending",
-    y_medium: "MEDIUM - Households with catastrophic health spending",
-    y_medium_hight: "MEDIUM-HIGH - Households with catastrophic health spending",
-    y_hight: "HIGH - Households with catastrophic health spending",
-    y_extra_hight: "EXTRA-HIGH - Households with catastrophic health spending",
+    y_low: "< 2% of households with catastrophic health spending",
+    y_medium: "< 5% of households with catastrophic health spending",
+    y_medium_hight: "< 10% of households with catastrophic health spending",
+    y_hight: "< 15% of households with catastrophic health spending",
+    y_extra_hight: "> 15% of households with catastrophic health spending",
 };
 
 export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
