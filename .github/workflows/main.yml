@@ -11,8 +11,11 @@ jobs:
   master-workflow:
     uses: EyeSeeTea/github-workflows/.github/workflows/master.yml@feature/reusable-workflows
     permissions:
-      security-events: write  # Required for CodeQL
+      security-events: write
       contents: read
+      packages: read
+      pull-requests: write
+      id-token: write
     secrets: inherit
     with:
       workflows_to_run: codeql-scan
