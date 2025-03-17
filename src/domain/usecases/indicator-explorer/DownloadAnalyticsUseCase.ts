@@ -2,6 +2,7 @@ import { Future, FutureData } from "../../entities/Future";
 import { LatestAvailable, LatestCOVID19 } from "../../entities/Year";
 import { AnalyticsRepository } from "../../repositories/indicator-explorer/AnalyticsRepository";
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
+import { generateYears } from "../utils/generateYears";
 
 export class DownloadAnalyticsUseCase {
     constructor(
@@ -27,10 +28,12 @@ export class DownloadAnalyticsUseCase {
             visualizations => {
                 const sortedPeriods = periods.sort();
 
-                const noOverwritePeriods =
-                    sortedPeriods[0] === LatestCOVID19.id || sortedPeriods[0] === LatestAvailable.id;
-
-                const finalPeriods = noOverwritePeriods ? [] : periods;
+                const finalPeriods =
+                    sortedPeriods[0] === LatestCOVID19.id
+                        ? generateYears(2019).map(year => year.id)
+                        : sortedPeriods[0] === LatestAvailable.id
+                        ? generateYears().map(year => year.id)
+                        : periods;
 
                 return this.analyticsRepository.saveToFile({
                     visualizations: visualizations,

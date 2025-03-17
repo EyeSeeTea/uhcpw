@@ -7,6 +7,7 @@ import {
     categoriesNameWithLessThan31Chars,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { TYPE_OF_HEALTH_CARE_HEADER_NAME } from "../repositories/policy-explorer/builders/TableBuilderByTypeOfHealthcare";
+import { TabsWithStringOrNumbers } from "./exportToCSV";
 
 const DEFAULT_HEIGHT = 30;
 
@@ -203,4 +204,15 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
 export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number) {
     const width = getColumnWidth(sheet, tabName, columnDataIndex);
     sheet.column(columnDataIndex + 1).width(width);
+}
+
+export function parseDataValuesStringToNumber(data: string[][], valueIndex: number): TabsWithStringOrNumbers["data"] {
+    return data.map((row, rowNumber) => {
+        const value = row[valueIndex];
+        if (!value || rowNumber === 0 || rowNumber === 1) {
+            return row;
+        }
+
+        return [...row.slice(0, valueIndex), Number(value.replace(",", ".")), ...row.slice(valueIndex + 1)];
+    });
 }

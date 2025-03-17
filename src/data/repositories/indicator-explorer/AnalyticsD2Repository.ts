@@ -4,10 +4,10 @@ import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics
 import { Dimension, Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { Id, Ref } from "../../../domain/entities/Ref";
 import { AnalyticsRepository } from "../../../domain/repositories/indicator-explorer/AnalyticsRepository";
-import { D2Api, NonPaginatedObjects } from "../../../types/d2-api";
+import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { isValidUid } from "../../../utils/uid";
-import { exportToCSV } from "../../export/exportToCSV";
+import { exportToCSV, exportToCSVIncludingChart, Tab } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
@@ -23,9 +23,14 @@ import {
     getLastAvailableYearByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "./utils/lastAvailableYearHelpers";
+import { DataStoreClient } from "../../DataStoreClient";
+import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
+import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
+import { getVisualizationTemplate } from "./visualization-template/getVisualizationTemplate";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
+export const NOTES_TAB_NAME = "Notes";
 
 const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
     z6nPPMMbOw5: {
@@ -46,7 +51,7 @@ const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
 };
 
 export class AnalyticsD2Repository implements AnalyticsRepository {
-    constructor(private api: D2Api, private d2DataEngine: unknown) {}
+    constructor(private api: D2Api, private d2DataEngine: unknown, private dataStoreClient: DataStoreClient) {}
 
     public get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics> {
         const overwrittenVisualization = {
@@ -114,17 +119,15 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         filter: "id:in:[" + metadataIds.join(",") + "]",
                     })
                 ),
-                orgUnits: apiToFuture(
+                orgUnitsResponse: apiToFuture(
                     this.api.models.organisationUnits.get({
-                        fields: {
-                            id: true,
-                            shortName: true,
-                        },
+                        fields: organisationUnitsFields,
                         paging: false,
                         filter: { id: { in: orgUnitUids } },
                     })
                 ),
-            }).flatMap(({ analyticsResponses, metadata, orgUnits }) => {
+            }).flatMap(({ analyticsResponses, metadata, orgUnitsResponse }) => {
+                const orgUnits: D2OrgUnit[] = orgUnitsResponse.objects;
                 const mergedVisualization = this.mergeVisualizations(visualizations);
 
                 const isMultipleVisualizations = mergedVisualization.id.includes("_");
@@ -193,7 +196,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
                 const tabs = [
-                    { name: "Notes", data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions] },
+                    {
+                        name: NOTES_TAB_NAME,
+                        data: [[mergedVisualization.notes || ""], ...allBreakInSeriesDescriptions],
+                    },
                     {
                         name: DATA_TAB_NAME,
                         data: [[chartName || mergedVisualization.name], ...allRowsSortedToDownload],
@@ -201,16 +207,64 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ];
 
                 if (tabs.length > 0) {
-                    exportToCSV(
-                        tabs,
-                        mergedVisualization.downloadedFileName
-                            ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
-                            : chartName
-                    );
+                    return this.exportChart({
+                        mergedVisualization: mergedVisualization,
+                        tabs: tabs,
+                        chartName: chartName,
+                        orgUnits: orgUnits,
+                    });
                 }
                 return Future.success(undefined);
             });
         });
+    }
+
+    private exportChart(params: {
+        mergedVisualization: Visualization;
+        tabs: Tab[];
+        chartName: Maybe<string>;
+        orgUnits: D2OrgUnit[];
+    }): FutureData<void> {
+        const { mergedVisualization, tabs, chartName, orgUnits } = params;
+        const exportedDataChartBuilder = visualizationsExportedDataChartBuilder[mergedVisualization.id];
+
+        if (exportedDataChartBuilder) {
+            return getVisualizationTemplate(this.api, mergedVisualization.id)
+                .flatMap(templateArrayBuffer => {
+                    try {
+                        const tabsWithChart = exportedDataChartBuilder(
+                            tabs,
+                            chartName || mergedVisualization.name,
+                            orgUnits
+                        );
+
+                        exportToCSVIncludingChart({
+                            chartId: mergedVisualization.id,
+                            tabs: tabsWithChart,
+                            templateArrayBuffer: templateArrayBuffer,
+                            fileName: mergedVisualization.downloadedFileName
+                                ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
+                                : chartName || mergedVisualization.name,
+                        });
+                    } catch (error) {
+                        console.error("Error creating exported data for chart: ", error);
+
+                        exportToCSV(tabs, chartName || mergedVisualization.name);
+                    }
+                    return Future.success(undefined);
+                })
+                .flatMapError(error => {
+                    console.error("Error while downloading chart template: ", error);
+
+                    exportToCSV(tabs, chartName || mergedVisualization.name);
+                    return Future.success(undefined);
+                });
+        } else {
+            console.error("Exported data chart builder not found for visualization: ", mergedVisualization.id);
+
+            exportToCSV(tabs, chartName || mergedVisualization.name);
+            return Future.success(undefined);
+        }
     }
 
     private addYearToDataRows(dataRows: string[][], period: string): string[][] {
@@ -260,7 +314,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         visualization: Visualization;
         analyticsResponse: Analytics;
         metadata: Metadata;
-        orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>;
+        orgUnits: D2OrgUnit[];
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
@@ -308,7 +362,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
     private getOrgUnitsInChart(
         metadataOrganisationUnits: Maybe<{ id: string; name: string; shortName: string }[]>,
-        orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>,
+        orgUnits: D2OrgUnit[],
         metaDataDimensions: Analytics["metaData"]["dimensions"]
     ): { id: string; shortName: string }[] {
         if (metadataOrganisationUnits) {
@@ -316,7 +370,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         }
 
         const orgUnitIds: Maybe<Id[]> = metaDataDimensions.ou;
-        return orgUnits.objects.filter(orgUnit => orgUnitIds?.includes(orgUnit.id));
+        return orgUnits.filter(orgUnit => orgUnitIds?.includes(orgUnit.id));
     }
 
     private getBreakInSeriesDescription(
@@ -360,7 +414,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     private createDataRows(params: {
         visualization: Visualization;
         analyticsResponse: Analytics;
-        orgUnits: NonPaginatedObjects<{ id: string } & { shortName: string }>;
+        orgUnits: D2OrgUnit[];
         metadata: Metadata;
         seriesIdAndName: { id: string | undefined; name: string | undefined }[];
     }): string[][] {
@@ -385,7 +439,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         });
 
         const existsCountryColumn = columns.includes("Country");
-        const addCountryColumn = !existsCountryColumn && orgUnits.objects.length === 1;
+        const addCountryColumn = !existsCountryColumn && orgUnits.length === 1;
 
         const finalColumns = addCountryColumn ? ["Country", ...columns] : columns;
 
@@ -402,7 +456,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         const dataRowsWithCountryIfRequired = mappedRows.map(row => {
             if (addCountryColumn) {
-                const country = orgUnits.objects[0];
+                const country = orgUnits[0];
                 const countryName = country ? mapToWhoCountryName(country.id, country.shortName || "") : "";
                 return [countryName, ...row];
             }
@@ -493,6 +547,24 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         return dimensions.length > 0 ? dimensions : undefined;
     };
+
+    private getChartFileTemplateIdFromDataStore(visualizationId: string): FutureData<Id> {
+        return this.dataStoreClient
+            .getObject<ChartFileTemplateIdsByVisualization>("chart-file-templates")
+            .flatMap(chartFileTemplates => {
+                if (!chartFileTemplates) {
+                    return Future.error("Chart file templates not found in Datastore");
+                }
+
+                const chartFileTemplateId = chartFileTemplates[visualizationId];
+
+                if (!chartFileTemplateId) {
+                    return Future.error("Chart file template not found in Datastore");
+                }
+
+                return Future.success(chartFileTemplateId);
+            });
+    }
 }
 export type VisualizationProp = "filters" | "rows" | "columns";
 
@@ -502,3 +574,13 @@ interface ItemRef {
 }
 
 type Metadata = Record<string | "organisationUnits", { id: string; name: string; shortName: string }[]>;
+
+const organisationUnitsFields = {
+    id: true,
+    shortName: true,
+    code: true,
+} as const;
+
+export type D2OrgUnit = MetadataPick<{
+    organisationUnits: { fields: typeof organisationUnitsFields };
+}>["organisationUnits"][number];

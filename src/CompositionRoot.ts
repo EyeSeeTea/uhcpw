@@ -45,10 +45,12 @@ import { GetGeneralContentUseCase } from "./domain/usecases/GetGeneralContentUse
 import { GoogleAnalyticsRepository } from "./data/repositories/GoogleAnalyticsRepository";
 import { SendPageViewUseCase } from "./domain/usecases/SendPageViewUseCase";
 import { SendEventUseCase } from "./domain/usecases/SendEventUseCase";
+import { DataStoreClient } from "./data/DataStoreClient";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
+    const dataStoreClient = new DataStoreClient(api);
     return {
-        analytics: new AnalyticsD2Repository(api, d2DataEngine),
+        analytics: new AnalyticsD2Repository(api, d2DataEngine, dataStoreClient),
         instance: new InstanceDefaultRepository(instance),
         users: new UserD2Repository(api),
         country: new CountryD2Repository(api),
