@@ -33,6 +33,14 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
     }, []);
     const { pageContent } = useIndicatorExplorer();
 
+    const analyticsContent = React.useMemo(
+        () => ({
+            contentGroup: "chart",
+            contentId: currentGraphScreenshot?.visualizationName,
+        }),
+        [currentGraphScreenshot?.visualizationName]
+    );
+
     return (
         <Container>
             <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
@@ -49,7 +57,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     currentCountry={(graphOne as VisualizationProps).currentCountry || countryId}
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
                     noDataMessage={pageContent?.noDataMessage}
-                    analyticsEventTitle="Country page"
+                    analyticsPageTitle="Country page"
                 />
             </VisualizationContainer>
             {graphTwo && (
@@ -64,7 +72,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         currentCountry={(graphTwo as VisualizationProps).currentCountry || countryId}
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                         noDataMessage={pageContent?.noDataMessage}
-                        analyticsEventTitle="Country page"
+                        analyticsPageTitle="Country page"
                     />
                 </VisualizationContainer>
             )}
@@ -75,7 +83,8 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     onClose={handleCloseScreenshot}
                     title={currentGraphScreenshot.visualizationName || ""}
                     backgroundColor={"#f1f9fc"}
-                    analyticsEventTitle="Country page"
+                    analyticsPageTitle="Country page"
+                    analyticsContent={analyticsContent}
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}
@@ -86,7 +95,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         useHeaderForCountryPage
                         currentCountry={countryId}
                         isScreenshot={true}
-                        analyticsEventTitle="Country page"
+                        analyticsPageTitle="Country page"
                     />
                 </ScreenshotModal>
             )}

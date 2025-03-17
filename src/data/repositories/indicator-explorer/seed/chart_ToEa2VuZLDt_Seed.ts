@@ -8,7 +8,7 @@ export const chart_ToEa2VuZLDt_Seed: VisualizationExtra = {
     minCountryFilter: 1,
     hasEur27: true,
     allowBreaksInSeries: true,
-    isComparative: false,
+    isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     hideBosniaAndHerzegovinaRegions: true,
     yearsFilterUpTo2YearsAgo: true,

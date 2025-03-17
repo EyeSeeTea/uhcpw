@@ -5,13 +5,19 @@ import ReactMarkdown from "react-markdown";
 
 import i18n from "../../../../locales";
 import { OfficeInfo } from "../../../../domain/entities/about/OfficeInfo";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const Header: React.FC<{ officeInfo: OfficeInfo | undefined }> = React.memo(({ officeInfo }) => {
+    const { redirectWithPageView } = useAnalytics();
+
+    const videoPageView = redirectWithPageView({ title: "[Video] WHO Barcelona Office" });
+
     if (!officeInfo) return null;
+
     return (
         <HeaderGrid container spacing={5} alignItems="flex-start">
             <Grid item md={6} xs={12}>
-                <a href={officeInfo.officeVideo} target="_blank" rel="noreferrer">
+                <a href={officeInfo.officeVideo} target="_blank" rel="noreferrer" onClick={videoPageView}>
                     <img
                         style={{ paddingBlockStart: "16px" }}
                         width="100%"

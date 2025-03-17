@@ -3,7 +3,7 @@ import React, { RefObject, useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown, { Components } from "react-markdown";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 
 import i18n from "../../../locales";
@@ -17,6 +17,7 @@ import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 import useWindowSize from "../../common/hooks/screen/useWindowSize";
 import _ from "lodash";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -28,9 +29,9 @@ interface PolicyExplorerTableProps {
 }
 
 const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
-    country: 90,
-    year: 30,
-    typeOfHealthCare: 90,
+    country: 10,
+    year: 10,
+    typeOfHealthCare: 10,
     userChargesApply: 90,
     typeOfUserCharge: 160,
     reducedUserCharges: 90,
@@ -50,6 +51,7 @@ export const PolicyExplorerTable = React.memo(
         hasMoreThanOneCountry,
     }: PolicyExplorerTableProps) => {
         const { width } = useWindowSize();
+        const { redirectWithExternalLink } = useAnalytics();
 
         const handleClickEmptyUrl = useCallback(
             event => {
@@ -58,6 +60,14 @@ export const PolicyExplorerTable = React.memo(
             },
             [referencesRef]
         );
+
+        const cleanMarkdownEmptyLinks = (value: string) => {
+            const regex = /\[[^\]]+\](?!\([^)]+\))/gu;
+
+            return value.replace(regex, match => {
+                return match + `(${EMPTY_URL})`;
+            });
+        };
 
         const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
 
@@ -91,6 +101,25 @@ export const PolicyExplorerTable = React.memo(
                 }
             },
             [category.value, dataOrientation, hasMoreThanOneCountry, rows, width]
+        );
+
+        const markdownComponents: Components = React.useMemo(
+            () => ({
+                a: ({ href, children, ...props }) => {
+                    return href === EMPTY_URL ? (
+                        <a href={href} {...props} onClick={handleClickEmptyUrl}>
+                            {children}
+                        </a>
+                    ) : (
+                        <a href={href} {...props} onClick={redirectWithExternalLink}>
+                            {children}
+                        </a>
+                    );
+                },
+                li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
+                ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
+            }),
+            [handleClickEmptyUrl, redirectWithExternalLink]
         );
 
         // Function to create and synchronize the double scroll bar
@@ -227,28 +256,10 @@ export const PolicyExplorerTable = React.memo(
                                             type={cell.type}
                                             cellwidth={getCellWidth(i)}
                                         >
-                                            <ReactMarkdown
-                                                components={{
-                                                    a: ({ href, children, ...props }) => {
-                                                        return href === EMPTY_URL ? (
-                                                            <a href={href} {...props} onClick={handleClickEmptyUrl}>
-                                                                {children}
-                                                            </a>
-                                                        ) : (
-                                                            <a href={href} {...props}>
-                                                                {children}
-                                                            </a>
-                                                        );
-                                                    },
-                                                    li: ({ children, ...props }) => (
-                                                        <StyledLi {...props}>{children} </StyledLi>
-                                                    ),
-                                                    ul: ({ children, ...props }) => (
-                                                        <StyledUl {...props}>{children}</StyledUl>
-                                                    ),
-                                                }}
-                                            >
-                                                {cell.references ? `${cell.value}\n\n${cell.references}` : cell.value}
+                                            <ReactMarkdown components={markdownComponents}>
+                                                {cell.references
+                                                    ? `${cleanMarkdownEmptyLinks(cell.value)}\n\n${cell.references}`
+                                                    : cleanMarkdownEmptyLinks(cell.value)}
                                             </ReactMarkdown>
                                         </StyledTableCell>
                                     ))}

@@ -26,7 +26,7 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
 
-    const { sendPageView } = useAnalytics();
+    const { sendPageView, redirectWithExternalLink } = useAnalytics();
 
     const referencesRef = useRef<HTMLDivElement>(null);
 
@@ -225,7 +225,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                             </CreditsText>
                                             &nbsp;
                                             {info.sourceUrl ? (
-                                                <Link href={info.sourceUrl} target="_blank" rel="noreferrer">
+                                                <Link
+                                                    href={info.sourceUrl}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    onClick={redirectWithExternalLink}
+                                                >
                                                     {info.sourceText}
                                                 </Link>
                                             ) : (
@@ -291,15 +296,14 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 48px 200px 48px 64px;
+    padding: 24px 200px 24px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 `;
 
 const Image = styled.img`
-    width: 160px;
-    height: 160px;
+    height: 56px;
 `;
 
 const GeneralRow = styled.div`

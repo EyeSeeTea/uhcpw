@@ -6,7 +6,7 @@ export const chart_xKmSHeJ1GXq_Seed: VisualizationExtra = {
     showCountryTag: true,
     friendlyName: "Public spending on health as a share of government spending (line chart)",
     countryPageName: "Public spending on health as a share of government spending",
-    isComparative: false,
+    isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     allowBreaksInSeries: true,
     hasEur27: true,

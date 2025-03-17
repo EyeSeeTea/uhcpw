@@ -6,6 +6,7 @@ import styled from "styled-components";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import i18n from "../../../locales";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { Maybe } from "../../../types/utils";
 
 interface ScreenshotModalProps {
     open?: boolean;
@@ -16,7 +17,11 @@ interface ScreenshotModalProps {
     exclusionClasses?: string[];
     hideTitle?: boolean;
     isSquareChart?: boolean;
-    analyticsEventTitle: string;
+    analyticsPageTitle: string;
+    analyticsContent: {
+        contentGroup: string;
+        contentId: Maybe<string>;
+    };
 }
 
 function ScreenshotModal({
@@ -28,7 +33,8 @@ function ScreenshotModal({
     children,
     hideTitle = true,
     isSquareChart = false,
-    analyticsEventTitle,
+    analyticsPageTitle,
+    analyticsContent,
 }: ScreenshotModalProps) {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -37,9 +43,23 @@ function ScreenshotModal({
     const handleDownload = useCallback(() => {
         if (ref.current) {
             downloadHtmlElement(ref.current, title.replace(".", "_"), { backgroundColor, exclusionClasses });
-            sendEvent({ name: "file_download", pageTitle: analyticsEventTitle, contentType: "image" });
+            sendEvent({
+                name: "file_download",
+                pageTitle: analyticsPageTitle,
+                contentType: "image",
+                contentGroup: analyticsContent.contentGroup,
+                contentId: analyticsContent.contentId,
+            });
         }
-    }, [analyticsEventTitle, backgroundColor, exclusionClasses, sendEvent, title]);
+    }, [
+        analyticsContent.contentGroup,
+        analyticsContent.contentId,
+        analyticsPageTitle,
+        backgroundColor,
+        exclusionClasses,
+        sendEvent,
+        title,
+    ]);
 
     return (
         <StyledModal

@@ -78,6 +78,7 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
                 buttonText: dataValues.find(dv => dv.dataElement === "qdJWVPUS3gn")?.value || "",
                 buttonLink: dataValues.find(dv => dv.dataElement === "q2xV2rgnt31")?.value || "",
             },
+            mobileDialog: { text: dataValues.find(dv => dv.dataElement === "QoZHLL4UoGC")?.value || "" },
         };
     }
 }

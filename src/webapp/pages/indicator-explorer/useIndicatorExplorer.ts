@@ -7,7 +7,13 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import i18n from "@eyeseetea/d2-ui-components/locales";
 import { LatestAvailable, LatestCOVID19, Year } from "../../../domain/entities/Year";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { Country, EU27 } from "../../../domain/entities/Country";
+import {
+    BosniaAndHerzegovina,
+    Country,
+    EU27,
+    FederationOfBosniaAndHerzegovina,
+    RepublikaSrpska,
+} from "../../../domain/entities/Country";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import {
     sortedCategoryNames,
@@ -15,6 +21,8 @@ import {
     sortedSubcategoryNames,
 } from "../../../data/repositories/indicator-explorer/seed/utils";
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 
 export const allYearsItem = { id: "all", name: i18n.t("All years"), parents: [] };
 const allYearsFiltersUpToLastYear: TreeOption[] = generateYears().map(year => ({
@@ -35,6 +43,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         onSelectedChange: onSelectedCountryChange,
         options: countryOptions,
     } = useMultiCountryOptionsV2({ showEurRegion: true, showSubRegions: true });
+    const { sendEvent } = useAnalytics();
 
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
     const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
@@ -222,6 +231,51 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         );
     }, [compositionRoot.indicatorExplorer]);
 
+    const sendAnalyticsEvents = useCallback(() => {
+        const indicator = indicatorFilters.find(indicator => indicator.value === selectedIndicatorFilter)?.text;
+        if (!indicator || !selectedCountries || !selectedYearFilter) return;
+
+        const allCountriesSelected = selectedCountries?.length === countriesAndRegions.length;
+
+        const renamedLastAvailableYear = selectedYearFilter.map(year =>
+            year === LatestAvailable.id ? "Latest available year" : year
+        );
+
+        const allYearsSelected = renamedLastAvailableYear.some(year => year === allYearsItem.id);
+
+        sendEvent({
+            name: "indicator_explorer_summary",
+            indicator: indicator,
+            allCountriesSelected: allCountriesSelected,
+            allYearsSelected: allYearsSelected,
+            yearsSelected: renamedLastAvailableYear,
+            eu27average: selectedCountries.some(country => country === EU27),
+            numberOfCountries: selectedCountries.length,
+        });
+
+        const selectedCountriesNames = selectedCountries
+            .map(countryId => countriesAndRegions.find(country => country.id === countryId)?.name)
+            .filter((x): x is string => Boolean(x));
+
+        const bulkEvents = generateBulkAnalyticsEvents({
+            indicator: indicator,
+            allCountriesSelected,
+            countries: selectedCountriesNames,
+            years: renamedLastAvailableYear,
+            allYearsSelected,
+        });
+
+        /* GA4 has no way support for sending events in bulk, but maybe this "technology" info might suggest that should live only in "data" */
+        bulkEvents.forEach(event => sendEvent(event));
+    }, [
+        indicatorFilters,
+        selectedIndicatorFilter,
+        selectedCountries,
+        selectedYearFilter,
+        countriesAndRegions,
+        sendEvent,
+    ]);
+
     const onGet = useCallback(() => {
         const visualization = visualizations.find(visualization => visualization.id === selectedIndicatorFilter);
 
@@ -245,8 +299,9 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             });
         } else {
             setShowVisualization(true);
+            sendAnalyticsEvents();
         }
-    }, [selectedCountries, selectedIndicatorFilter, visualizations]);
+    }, [selectedCountries, selectedIndicatorFilter, visualizations, sendAnalyticsEvents]);
 
     const onCountriesChange = useCallback(
         (countries: string[] | undefined) => {
@@ -343,33 +398,83 @@ function getUpdatedCountriesSelectionFilter(
     selectedCountries: string[] | undefined,
     countriesAndRegions: Country[]
 ): string[] | undefined {
-    const isEu27Selected = !!selectedCountries?.find(selectedCountry => selectedCountry === EU27);
+    const isEu27Selected = selectedCountries?.some(selectedCountry => selectedCountry === EU27);
     const isMoreThanOneCountrySelected = selectedCountries?.length && selectedCountries.length > 1;
 
     const isOldComparativeAndNewNotComparative = oldVisualization?.isComparative && !newsVisualization?.isComparative;
     const isNewNotComparativeAndNotHaveEur27 = !newsVisualization?.isComparative && !newsVisualization?.hasEur27;
 
+    const areOldAndNewComparative = oldVisualization?.isComparative && newsVisualization?.isComparative;
+    const areOldAndNewNotComparative = !oldVisualization?.isComparative && !newsVisualization?.isComparative;
+
     const isNewSingleCountrySelection = newsVisualization?.maxCountryFilter === 1;
-    const isOldMultipleCountrySelection =
-        !oldVisualization?.maxCountryFilter ||
-        (oldVisualization?.maxCountryFilter || 0) > 1 ||
-        oldVisualization?.isComparative;
 
     if (
         isOldComparativeAndNewNotComparative ||
         (isNewNotComparativeAndNotHaveEur27 && isEu27Selected) ||
-        (isOldMultipleCountrySelection && isNewSingleCountrySelection && isMoreThanOneCountrySelected)
+        (isNewSingleCountrySelection && isMoreThanOneCountrySelected)
     ) {
         return [];
     }
 
-    if (newsVisualization?.isComparative && newsVisualization?.hasEur27) {
-        return [...countriesAndRegions.map(c => c.id), EU27];
+    if (areOldAndNewNotComparative) {
+        return handleBosniaAndHerzegovina(oldVisualization, newsVisualization, selectedCountries);
+    }
+
+    if (areOldAndNewComparative && selectedCountries?.length) {
+        const totalCountries =
+            countriesAndRegions.length +
+            (oldVisualization?.hasEur27 ? 1 : 0) +
+            (oldVisualization?.hideBosniaAndHerzegovinaRegions ? -2 : 0);
+        const areAllCountriesSelected = selectedCountries.length === totalCountries;
+
+        if (!areAllCountriesSelected) {
+            const newSelection = newsVisualization?.hasEur27
+                ? selectedCountries
+                : selectedCountries.filter(country => country !== EU27);
+            if (newSelection.length)
+                return handleBosniaAndHerzegovina(oldVisualization, newsVisualization, newSelection);
+        }
     }
 
     if (newsVisualization?.isComparative) {
-        return countriesAndRegions.map(c => c.id).filter(id => id !== EU27);
+        const countriesToSelect = handleBosniaAndHerzegovina(
+            oldVisualization,
+            newsVisualization,
+            countriesAndRegions.map(c => c.id)
+        );
+        return newsVisualization?.hasEur27 ? [...countriesToSelect, EU27] : countriesToSelect;
     }
+}
+
+function handleBosniaAndHerzegovina(
+    oldVisualization: Visualization | undefined,
+    newsVisualization: Visualization | undefined,
+    countriesToSelect: string[] | undefined
+): string[] {
+    countriesToSelect = countriesToSelect ?? [];
+    const oldHide = oldVisualization?.hideBosniaAndHerzegovinaRegions;
+    const newHide = newsVisualization?.hideBosniaAndHerzegovinaRegions;
+
+    const bihSubRegions = [FederationOfBosniaAndHerzegovina, RepublikaSrpska];
+    if (newHide) {
+        if (
+            countriesToSelect.some(country => bihSubRegions.includes(country)) &&
+            !countriesToSelect.includes(BosniaAndHerzegovina) &&
+            newsVisualization?.isComparative
+        ) {
+            countriesToSelect = [...countriesToSelect, BosniaAndHerzegovina];
+        }
+        return countriesToSelect.filter(country => !bihSubRegions.includes(country));
+    } else if (
+        oldHide &&
+        !newHide &&
+        countriesToSelect.includes(BosniaAndHerzegovina) &&
+        newsVisualization?.isComparative
+    ) {
+        return [...countriesToSelect, ...bihSubRegions];
+    }
+    return countriesToSelect;
 }
 
 function getDisabledCountriesFilter(
@@ -397,19 +502,19 @@ function getDisabledCountriesFilter(
 }
 
 function getSelectedYearsInFilter(newsVisualization: Visualization | undefined): string[] | undefined {
-    if (newsVisualization?.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
+    if (!newsVisualization) {
+        return;
+    } else if (newsVisualization.selectedYearsByDefault && !!newsVisualization.selectedYearsByDefault.length) {
         return newsVisualization.selectedYearsByDefault.map(year => year.id);
-    } else if (newsVisualization && !newsVisualization.isComparative) {
-        const allYears = newsVisualization?.yearsFilterUpTo2YearsAgo
-            ? allYearsFiltersUpTo2YearsAgo
-            : allYearsFiltersUpToLastYear;
-        const allAllowedYears = newsVisualization?.allowedYears
-            ? allYears.map(year => year.id).filter(id => newsVisualization?.allowedYears?.some(year => year.id === id))
-            : allYears.map(year => year.id);
-
-        return allAllowedYears;
-    } else if (newsVisualization?.isComparative) {
-        return newsVisualization?.allowedYears?.map(year => year.id);
+    } else if (!newsVisualization.isYearSingleSelection) {
+        if (newsVisualization.allowedYears?.length) {
+            return newsVisualization.allowedYears.map(year => year.id);
+        } else {
+            const allYears = newsVisualization?.yearsFilterUpTo2YearsAgo
+                ? allYearsFiltersUpTo2YearsAgo
+                : allYearsFiltersUpToLastYear;
+            return allYears.map(year => year.id);
+        }
     }
 }
 
@@ -441,4 +546,32 @@ function getYearOptionsInFilter(
     } else {
         return allYears;
     }
+}
+
+function generateBulkAnalyticsEvents(args: {
+    indicator: string;
+    allCountriesSelected: boolean;
+    countries: string[];
+    years: string[];
+    allYearsSelected: boolean;
+}): AnalyticsEvent[] {
+    const { indicator, allCountriesSelected, countries, years, allYearsSelected } = args;
+
+    return (allYearsSelected ? ["All years"] : years)
+        .flatMap((year): Array<[string, string]> => [[indicator, year]])
+        .flatMap(([indicator, year]): Array<[string, string, string]> => {
+            if (allCountriesSelected) {
+                return [[indicator, "All countries and areas", year]];
+            } else {
+                return countries.flatMap(country => [[indicator, country, year]]);
+            }
+        })
+        .map(
+            ([indicator, country, year]): AnalyticsEvent => ({
+                name: "indicator_explorer",
+                indicator: indicator,
+                country: country,
+                year: year,
+            })
+        );
 }

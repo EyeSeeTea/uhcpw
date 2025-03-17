@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { ResourceTheme } from "../../../domain/entities/resources/ResourceTheme";
 import { ResourceCategoryRepository } from "../../../domain/repositories/resources/ResourceCategoryRepository";
@@ -6,6 +8,18 @@ import { apiToFuture } from "../../../utils/futures";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 
 const resourceThemeOptionSet = "ie8po5iPlaw";
+
+const THEME_OPTION_FP = "XtkFOVtkBtT";
+const THEME_OPTION_VIH = "nyzMcROMpmY";
+
+const themeOptionsDisplayedName: Record<string, Record<string, any>> = {
+    [THEME_OPTION_FP]: {
+        showCode: true,
+    },
+    [THEME_OPTION_VIH]: {
+        showCode: true,
+    },
+};
 
 export class ResourceThemeD2Repository implements ResourceCategoryRepository {
     cache = new InmemoryCache();
@@ -34,9 +48,14 @@ export class ResourceThemeD2Repository implements ResourceCategoryRepository {
 
     private buildResourceCategories(optionSet: D2OptionSet): ResourceTheme[] {
         return optionSet.options.map(option => {
+            const name = option.displayName.replace("UHCW_", "");
+            const displayedName = themeOptionsDisplayedName[option.id]?.showCode
+                ? `${_.capitalize(option.code)} (${name})`
+                : name;
             return {
                 id: option.id,
-                name: option.displayName.replace("UHCW_", ""),
+                name,
+                displayedName,
                 code: option.code,
             };
         });

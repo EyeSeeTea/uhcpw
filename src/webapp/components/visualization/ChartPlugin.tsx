@@ -243,7 +243,15 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             <ChartPluginContainer $isSquareChart={isSquareChart}>
                 <Container $withoutBackground={withoutBackground} $isSquareChart={isSquareChart}>
                     <div ref={canvasRef} />
-                    {chartOptions && <HighchartsReact highcharts={Highcharts} options={chartOptions} />}
+                    {chartOptions && (
+                        <HighchartsReact
+                            highcharts={Highcharts}
+                            options={chartOptions}
+                            containerProps={{
+                                "aria-label": `chart-${visualizations[0]?.friendlyName}`,
+                            }}
+                        />
+                    )}
                 </Container>
             </ChartPluginContainer>
         );

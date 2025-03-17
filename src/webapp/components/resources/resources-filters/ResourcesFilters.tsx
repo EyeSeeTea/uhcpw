@@ -22,13 +22,14 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
         const location = useLocation();
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
+                const theme = filters.theme.selected;
                 if (value) {
-                    history.push(`/resources/${value}`);
+                    history.push(`/resources/${value}${theme ? `?theme=${theme}` : ""}`);
                 } else {
-                    history.push("/resources");
+                    history.push(`/resources${theme ? `?theme=${theme}` : ""}`);
                 }
             },
-            [history]
+            [filters.theme.selected, history]
         );
 
         const onCountryChange = useCallback(
@@ -57,8 +58,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                 }
 
                 history.replace({ search: queryParameters.toString() });
+                filters.theme.onSelectedChange(value);
             },
-            [history, location.search]
+            [filters.theme, history, location.search]
         );
 
         return (

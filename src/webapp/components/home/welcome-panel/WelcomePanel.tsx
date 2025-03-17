@@ -9,12 +9,17 @@ import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import ReactMarkdown from "react-markdown";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 interface WelcomePanelProps {
     welcomePanelContent: MainMapPanelContent;
 }
 
 export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent }) => {
+    const { redirectWithPageView } = useAnalytics();
+
+    const welcomeVideo = redirectWithPageView({ title: "[Video] " + welcomePanelContent.buttonText });
+
     return (
         <Container>
             <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
@@ -42,7 +47,7 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent 
                     <span>{i18n.t("Stronger financial protection")}</span>
                 </UmbrellaItem>
             </UmbrellaItemsContainer>
-            <VideoLink href={welcomePanelContent.buttonLink} target="_blank" rel="noreferrer">
+            <VideoLink href={welcomePanelContent.buttonLink} target="_blank" rel="noreferrer" onClick={welcomeVideo}>
                 <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
                 <Typography>{welcomePanelContent.buttonText}</Typography>
             </VideoLink>

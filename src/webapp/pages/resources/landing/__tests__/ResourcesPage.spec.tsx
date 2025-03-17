@@ -67,10 +67,10 @@ describe("ResourcesPage", () => {
 
         expect(screen.getByRole("textbox", { name: /select category/i })).not.toBeDisabled();
     });
-    it("should render disabled theme filter", async () => {
+    it("should render enabled theme filter", async () => {
         renderPage();
 
-        expect(screen.getByRole("textbox", { name: /select theme/i })).toBeDisabled();
+        expect(screen.getByRole("textbox", { name: /select theme/i })).not.toBeDisabled();
     });
     it("should render disabled country filter", async () => {
         renderPage();

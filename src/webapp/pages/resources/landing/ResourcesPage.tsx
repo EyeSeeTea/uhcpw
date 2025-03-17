@@ -8,12 +8,12 @@ import { ResourcesFilters } from "../../../components/resources/resources-filter
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 import SearchInput from "../../../components/search-input/SearchInput";
-import { FilteredByTextResources } from "./FilteredByTextResources";
+import { FilteredByTextOrThemeResources } from "./FilteredByTextOrThemeResources";
 import { LandingResources } from "./LandingResources";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 export const ResourcesPage: React.FC = React.memo(() => {
-    const { filters, landingResources, filteredByTextResources, onGetResources } = useResources();
+    const { filters, landingResources, filteredByTextOrThemeResources, onGetResources } = useResources();
     const { sendPageView } = useAnalytics();
 
     React.useEffect(() => {
@@ -23,7 +23,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
     return (
         <Layout>
             <TitleContainer>
-                <Typography variant="h4">{i18n.t("Resources")}</Typography>
+                <Typography variant="h3">{i18n.t("Resources")}</Typography>
             </TitleContainer>
             <SearchContainer>
                 <SearchInput
@@ -39,13 +39,17 @@ export const ResourcesPage: React.FC = React.memo(() => {
                         onGetResources={onGetResources}
                         disabledCountryFilter
                         disabledYearFilter
-                        disabledThemeFilter
                     />
 
-                    {!filters.search.term && !!landingResources && <LandingResources resources={landingResources} />}
+                    {!filters.search.term && !filters.theme.selected && !!landingResources && (
+                        <LandingResources resources={landingResources} />
+                    )}
 
-                    {!!filters.search.term && !!filteredByTextResources && (
-                        <FilteredByTextResources resources={filteredByTextResources} />
+                    {(!!filters.search.term || !!filters.theme.selected) && !!filteredByTextOrThemeResources && (
+                        <FilteredByTextOrThemeResources
+                            resources={filteredByTextOrThemeResources}
+                            themeSelected={filters.theme.selected}
+                        />
                     )}
                 </Grid>
             </SelectsContainer>
@@ -56,7 +60,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 32px 64px;
+    padding: 24px 64px;
 `;
 
 const SelectsContainer = styled(Container)`

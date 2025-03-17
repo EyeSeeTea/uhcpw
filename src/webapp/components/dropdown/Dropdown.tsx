@@ -76,6 +76,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                             label={label}
                             placeholder={placeholder}
                             InputLabelProps={{ shrink: true }}
+                            aria-label={label || placeholder || "Dropdown"}
                         />
                     )}
                     onChange={(e, value) => handleChange(e, value as Option<string> | null)}
