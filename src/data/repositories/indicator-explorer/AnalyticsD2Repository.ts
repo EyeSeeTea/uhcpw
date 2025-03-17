@@ -30,7 +30,6 @@ import { getVisualizationTemplate } from "./visualization-template/getVisualizat
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
-export const CHART_TAB_NAME = "New Data";
 export const NOTES_TAB_NAME = "Notes";
 
 const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {

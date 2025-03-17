@@ -1,4 +1,4 @@
-import { DATA_TAB_NAME, CHART_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
@@ -61,11 +61,13 @@ export const chart_GimM6ANOKhd_exportedDataBuilder: (tabs: Tab[], chartName: str
     const sortedData = sortDataByPoorest(data);
 
     const chartTab = {
-        name: CHART_TAB_NAME,
+        name: DATA_TAB_NAME,
         data: sortedData,
     };
 
-    return [...tabs, chartTab];
+    const tabsWithoutData = tabs.filter(tab => tab.name !== DATA_TAB_NAME);
+
+    return [...tabsWithoutData, chartTab];
 };
 
 function sortDataByPoorest(data: TabsWithStringOrNumbers["data"]): TabsWithStringOrNumbers["data"] {

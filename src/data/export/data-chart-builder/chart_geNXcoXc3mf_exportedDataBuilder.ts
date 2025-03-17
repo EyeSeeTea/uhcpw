@@ -1,4 +1,4 @@
-import { CHART_TAB_NAME, DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
@@ -62,9 +62,11 @@ export const chart_geNXcoXc3mf_exportedDataBuilder: (tabs: Tab[], chartName: str
     ).map(row => [country, ...row]);
 
     const chartTab = {
-        name: CHART_TAB_NAME,
+        name: DATA_TAB_NAME,
         data: [[chartName], ...headersBase, ...data],
     };
 
-    return [...tabs, chartTab];
+    const tabsWithoutData = tabs.filter(tab => tab.name !== DATA_TAB_NAME);
+
+    return [...tabsWithoutData, chartTab];
 };

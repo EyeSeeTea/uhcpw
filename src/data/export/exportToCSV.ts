@@ -6,11 +6,7 @@ import {
     REFERENCES_TAB_NAME,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { addDataValue, getCellStyles, setHeight, setWidth } from "./utils";
-import {
-    CHART_TAB_NAME,
-    DATA_TAB_NAME,
-    NOTES_TAB_NAME,
-} from "../repositories/indicator-explorer/AnalyticsD2Repository";
+import { DATA_TAB_NAME, NOTES_TAB_NAME } from "../repositories/indicator-explorer/AnalyticsD2Repository";
 import { columnLimitForDataChartById } from "./data-chart-builder/visualizationsExportedDataChartBuilder";
 
 const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
@@ -105,8 +101,8 @@ export const exportToCSVIncludingChart = async (params: {
 
     const workbook = await XlsxPopulate.fromDataAsync(templateArrayBuffer);
 
-    const chartSheet = workbook.sheet(CHART_TAB_NAME);
-    const chartTab = tabs.find(tab => tab.name === CHART_TAB_NAME);
+    const chartSheet = workbook.sheet(DATA_TAB_NAME);
+    const chartTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
     if (chartTab) {
         addDataToSheet(chartSheet, chartTab.data);
         const columnLimit =
@@ -122,12 +118,6 @@ export const exportToCSVIncludingChart = async (params: {
     const notesSheet = workbook.sheet(NOTES_TAB_NAME);
     if (notesTab) {
         addDataToSheet(notesSheet, notesTab?.data);
-    }
-
-    const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
-    const dataSheet = workbook.sheet(DATA_TAB_NAME);
-    if (dataTab) {
-        addDataToSheet(dataSheet, dataTab?.data);
     }
 
     const blob = await workbook.outputAsync();

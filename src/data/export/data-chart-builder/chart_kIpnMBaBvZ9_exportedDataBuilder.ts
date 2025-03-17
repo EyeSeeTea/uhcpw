@@ -1,5 +1,5 @@
 import { mapFromWhoToD2CountryName, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
-import { DATA_TAB_NAME, CHART_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { cellNameByVisualizationId } from "../../repositories/indicator-explorer/utils/getCustomCellName";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
@@ -108,11 +108,13 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
     );
 
     const chartTab = {
-        name: CHART_TAB_NAME,
+        name: DATA_TAB_NAME,
         data: [[chartName], ...headersBase, ...data],
     };
 
-    return [...tabs, chartTab];
+    const tabsWithoutData = tabs.filter(tab => tab.name !== DATA_TAB_NAME);
+
+    return [...tabsWithoutData, chartTab];
 };
 
 function getParametersData(valueXAxis: number, valueYAxis: number): (number | string | null)[] {
