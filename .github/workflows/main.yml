@@ -12,5 +12,4 @@ jobs:
     uses: EyeSeeTea/github-workflows/.github/workflows/master.yml@feature/reusable-workflows
     secrets: inherit
     with:
-      workflows_to_run: build-check
       bundlemonrc_branch_name: feature/reusable-workflows
