@@ -102,7 +102,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 countriesAndRegions
             );
 
-            const lastPeriodWithData = this.getLastPeriodWithData(
+            const lastPeriodWithDataByCountry = this.getLastPeriodWithDataByCountry(
                 dataValuesResponse.dataValues,
                 policyExplorerCategories
             );
@@ -120,16 +120,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 references: this.buildReferences(
                     dataValuesResponse.dataValues,
                     countriesAndRegions,
-                    lastPeriodWithData
+                    lastPeriodWithDataByCountry
                 ),
             };
         });
     }
 
-    private getLastPeriodWithData(
-        dataValues: DataValueSetsDataValue[],
+    private getLastPeriodWithDataByCountry(
+        allDataValues: DataValueSetsDataValue[],
         selectedPolicyExplorerCategories: Record<string, Id[]>
-    ): string {
+    ): Map<Id, string> {
         const changesInCoveragePolicyUntil2019DataElementIds = Object.values(
             CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
         ).reduce((acc, dataElementIds) => [...acc, ...dataElementIds], []);
@@ -142,17 +142,26 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             (acc, dataElementIds) => [...acc, ...dataElementIds],
             [...changesInCoveragePolicyFrom2020DataElementIds, ...changesInCoveragePolicyUntil2019DataElementIds]
         );
-        const dataValuesOrderByPeriod = [...dataValues].sort((a, b) => {
-            if (a.period > b.period) return -1;
-            if (a.period < b.period) return 1;
-            return 0;
-        });
 
-        const dataValueWithLastYear = dataValuesOrderByPeriod.find(dataValue => {
-            return allDataElementIdsSelected.includes(dataValue.dataElement);
-        });
+        const dataValuesByOrgUnit = _(allDataValues)
+            .groupBy(dataValue => dataValue.orgUnit)
+            .value();
 
-        return dataValueWithLastYear?.period ?? "";
+        const periodByOrgUnitMap = Object.entries(dataValuesByOrgUnit).reduce((map, [orgUnitId, dataValues]) => {
+            const dataValuesOrderedByPeriod = [...dataValues].sort((a, b) => {
+                if (a.period > b.period) return -1;
+                if (a.period < b.period) return 1;
+                return 0;
+            });
+
+            const dataValueWithLastYear = dataValuesOrderedByPeriod.find(dataValue =>
+                allDataElementIdsSelected.includes(dataValue.dataElement)
+            );
+
+            return map.set(orgUnitId, dataValueWithLastYear?.period || "");
+        }, new Map<Id, string>());
+
+        return periodByOrgUnitMap;
     }
 
     saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
@@ -514,7 +523,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private buildReferences(
         dataValues: DataValueSetsDataValue[],
         countriesAndRegions: Country[],
-        lastPeriodWithData: string
+        lastPeriodWithDataByCountry: Map<Id, string>
     ): PolicyExplorerReferences[] {
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
@@ -527,7 +536,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     dv =>
                         dv.orgUnit === orgUnitId &&
                         dv.dataElement.includes(generalDataElements.references || "") &&
-                        dv.period === lastPeriodWithData
+                        dv.period === (lastPeriodWithDataByCountry.get(orgUnitId) || "")
                 )?.value || EMPTY_DATA;
 
             const referencesArray = references.match(REFERENCES_REGEX) as string[];
