@@ -2,14 +2,11 @@ name: "Shared Master Workflow"
 
 on:
   push:
-    branches: ["master", "development"]
+    branches: ["main", "development"]
   pull_request:
-    branches: [ "master", "development" ]
+    branches: [ "main", "development" ]
   workflow_dispatch:
 
 jobs:
   master-workflow:
-    uses: EyeSeeTea/github-workflows/.github/workflows/master.yml@feature/reusable-workflows
-    with:
-      bundlemonrc_branch_name: feature/reusable-workflows
-      workflows_to_run: build-check
+    uses: EyeSeeTea/github-workflows/.github/workflows/master.yml@master
