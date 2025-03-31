@@ -79,7 +79,7 @@ function sortDataByPoorest(data: TabsWithStringOrNumbers["data"]): TabsWithStrin
     }
 
     const sortedIndices = poorestRow
-        .map((value, index) => ({ value: typeof value === "number" ? value : 0, index })) // Asegurar que es número
+        .map((value, index) => ({ value: typeof value === "number" ? value : 0, index }))
         .sort((a, b) => a.value - b.value)
         .map(item => item.index);
 
