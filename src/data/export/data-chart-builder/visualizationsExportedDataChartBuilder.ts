@@ -9,6 +9,7 @@ import { chart_WDUV9ZrJiNC_exportedDataBuilder } from "./chart_WDUV9ZrJiNC_expor
 import { chart_jFtGKQIQTGp_exportedDataBuilder } from "./chart_jFtGKQIQTGp_exportedDataBuilder";
 import { chart_dbc87Ljw8uN_exportedDataBuilder } from "./chart_dbc87Ljw8uN_exportedDataBuilder";
 import { chart_mcNfvQaVbfy_exportedDataBuilder } from "./chart_mcNfvQaVbfy_exportedDataBuilder";
+import { chart_q5ldoFcgkSn_or_ZxNdsDM8NSb_exportedDataBuilder } from "./chart_q5ldoFcgkSn_or_ZxNdsDM8NSb_exportedDataBuilder";
 
 export const visualizationsExportedDataChartBuilder: Record<
     string,
@@ -23,6 +24,8 @@ export const visualizationsExportedDataChartBuilder: Record<
     jFtGKQIQTGp: (tabs, chartName) => chart_jFtGKQIQTGp_exportedDataBuilder(tabs, chartName),
     dbc87Ljw8uN: (tabs, chartName) => chart_dbc87Ljw8uN_exportedDataBuilder(tabs, chartName),
     mcNfvQaVbfy: (tabs, chartName) => chart_mcNfvQaVbfy_exportedDataBuilder(tabs, chartName),
+    q5ldoFcgkSn: (tabs, chartName) => chart_q5ldoFcgkSn_or_ZxNdsDM8NSb_exportedDataBuilder(tabs, chartName),
+    ZxNdsDM8NSb: (tabs, chartName) => chart_q5ldoFcgkSn_or_ZxNdsDM8NSb_exportedDataBuilder(tabs, chartName),
 };
 
 export const columnLimitForDataChartById: Record<string, string> = {
@@ -34,4 +37,6 @@ export const columnLimitForDataChartById: Record<string, string> = {
     jFtGKQIQTGp: "CZ",
     dbc87Ljw8uN: "CZ",
     mcNfvQaVbfy: "CZ",
+    q5ldoFcgkSn: "CZ",
+    ZxNdsDM8NSb: "CZ",
 };
