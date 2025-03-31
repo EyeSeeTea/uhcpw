@@ -3,6 +3,7 @@ import { chart_GimM6ANOKhd_exportedDataBuilder } from "./chart_GimM6ANOKhd_expor
 import { chart_kIpnMBaBvZ9_exportedDataBuilder } from "./chart_kIpnMBaBvZ9_exportedDataBuilder";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { chart_WDUV9ZrJiNC_exportedDataBuilder } from "./chart_WDUV9ZrJiNC_exportedDataBuilder";
 
 export const visualizationsExportedDataChartBuilder: Record<
     string,
@@ -11,9 +12,11 @@ export const visualizationsExportedDataChartBuilder: Record<
     geNXcoXc3mf: (tabs, chartName) => chart_geNXcoXc3mf_exportedDataBuilder(tabs, chartName),
     kIpnMBaBvZ9: (tabs, chartName, orgUnits) => chart_kIpnMBaBvZ9_exportedDataBuilder(tabs, chartName, orgUnits),
     GimM6ANOKhd: (tabs, chartName) => chart_GimM6ANOKhd_exportedDataBuilder(tabs, chartName),
+    WDUV9ZrJiNC: (tabs, chartName) => chart_WDUV9ZrJiNC_exportedDataBuilder(tabs, chartName),
 };
 
 export const columnLimitForDataChartById: Record<string, string> = {
     geNXcoXc3mf: "CZ",
     GimM6ANOKhd: "CZ",
+    WDUV9ZrJiNC: "CZ",
 };
