@@ -50,11 +50,6 @@ export const AppFooter: React.FC = () => {
                                     {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                                 </Typography>
                             </Link>
-                            <Cookies href={generalContent?.cookies.policyUrl} target="_blank">
-                                <Typography variant="body1" gutterBottom>
-                                    {i18n.t("WHO privacy policy")}
-                                </Typography>
-                            </Cookies>
                         </Grid>
                         <Grid item lg={3} md={6} xs={12}>
                             <Typography variant="body1" gutterBottom>
@@ -89,7 +84,10 @@ export const AppFooter: React.FC = () => {
             </FooterTop>
 
             <FooterBottom>
-                <Typography variant="body2">{i18n.t(`© ${new Date().getFullYear()} WHO`)}</Typography>
+                <Cookies href={generalContent?.cookies.policyUrl} target="_blank">
+                    <Typography variant="body1">{i18n.t("WHO privacy policy")}</Typography>
+                </Cookies>
+                <Typography variant="body1">{i18n.t(`© ${new Date().getFullYear()} WHO`)}</Typography>
             </FooterBottom>
         </>
     );
@@ -120,6 +118,7 @@ const FooterBottom = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 4px;
 `;
 
 const StyledNavLink = styled(NavLink)`
@@ -134,7 +133,6 @@ const MailLink = styled.a`
 
 const Cookies = styled(Link)`
     color: white;
-    margin-block-start: 16px;
     display: flex;
 `;
 
