@@ -118,13 +118,13 @@ export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: numbe
             bold:
                 rowDataIndex === 1 ||
                 tabName === REFERENCES_TAB_NAME ||
-                tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID ||
+                tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr ||
                 tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY,
             fill: {
                 ...CELL_STYLES.headerCell.fill,
                 color:
                     rowDataIndex !== 1 &&
-                    (tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID ||
+                    (tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr ||
                         tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY ||
                         tabName === REFERENCES_TAB_NAME)
                         ? CELL_STYLES.dataCell.fill.color
@@ -175,17 +175,11 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
         return COLUMN_WIDTHS.yearColumn;
     }
 
-    if (
-        tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-        !headerColumnValue
-    ) {
+    if (tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr && !headerColumnValue) {
         return COLUMN_WIDTHS.monthColumn;
     }
 
-    if (
-        tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-        headerColumnValue === "Area of change"
-    ) {
+    if (tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr && headerColumnValue === "Area of change") {
         return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
     }
 
