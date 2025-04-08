@@ -67,7 +67,9 @@ export function getTabsWithChartData(
               .filter((year): year is string => year !== undefined)
         : [];
 
-    const allYearsUnique = isCountryChart ? [...new Set(allYears)].map(year => Number(year)) : [];
+    const allYearsUnique = isCountryChart
+        ? [...new Set(allYears)].map(year => Number(year)).sort((yearA, yearB) => yearA - yearB)
+        : [];
 
     const restHeaders = isCountryChart ? allYearsUnique : countriesAndYearsUnique;
 
