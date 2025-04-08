@@ -65,7 +65,9 @@ export function getTabsWithChartData(
               .filter((year): year is string => year !== undefined)
         : [];
 
-    const allYearsUnique = isCountryChart ? [...new Set(allYears)].map(year => Number(year)) : [];
+    const allYearsUnique = isCountryChart
+        ? [...new Set(allYears)].map(year => Number(year)).sort((yearA, yearB) => yearA - yearB)
+        : [];
 
     const restHeaders = isCountryChart ? allYearsUnique : countriesAndYearsUnique;
 
@@ -131,13 +133,13 @@ function sortDataByDataParam(
     }
 
     const sortedIndices = poorestRow
-        .map((value, index) => ({ value: typeof value === "number" ? value : 0, index })) // Asegurar que es número
+        .map((value, index) => ({ value: typeof value === "number" ? value : 0, index }))
         .sort((a, b) => a.value - b.value)
         .map(item => item.index);
 
     const sortedHeaders = [...sortedIndices.map(i => headers[i]).map(value => (!value ? null : value))];
 
-    const sortedRows = rows.map(row => [...sortedIndices.map(i => row[i]).map(value => (!value ? null : value))]);
+    const sortedRows = rows.map(row => [...sortedIndices.map(i => row[i]).map(value => (!value ? 0 : value))]);
 
     return [chartName, sortedHeaders, ...sortedRows];
 }
