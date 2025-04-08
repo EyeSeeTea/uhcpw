@@ -10,6 +10,7 @@ export function getTabsWithChartData(
         sortedDataParams: string[];
         dataParamToSortBy?: string;
         isCountryChart?: boolean;
+        isSortByDataSum?: boolean;
     }
 ): TabsWithStringOrNumbers[] {
     const {
@@ -19,6 +20,7 @@ export function getTabsWithChartData(
         sortedDataParams,
         dataParamToSortBy,
         isCountryChart = false,
+        isSortByDataSum = false,
     } = options;
 
     const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
@@ -109,7 +111,13 @@ export function getTabsWithChartData(
         isCountryChart && country ? dataByDataParam.map(row => [country, ...row]) : dataByDataParam;
 
     const data = [[chartName], ...finalHeaders, ...dataByDataParamWithCountry];
-    const sortedData = dataParamToSortBy ? sortDataByDataParam(dataParamToSortBy, data) : data;
+    const sortedData =
+        dataParamToSortBy || isSortByDataSum
+            ? sortData(data, {
+                  dataParamToSortBy: dataParamToSortBy,
+                  isSortByDataSum: isSortByDataSum,
+              })
+            : data;
 
     const chartTab = {
         name: DATA_TAB_NAME,
@@ -121,25 +129,77 @@ export function getTabsWithChartData(
     return [...tabsWithoutData, chartTab];
 }
 
+function sortData(
+    data: TabsWithStringOrNumbers["data"],
+    options: {
+        dataParamToSortBy?: string;
+        isSortByDataSum: boolean;
+    }
+): TabsWithStringOrNumbers["data"] {
+    const { dataParamToSortBy, isSortByDataSum } = options;
+    if (dataParamToSortBy) {
+        return sortDataByDataParam(dataParamToSortBy, data);
+    } else if (isSortByDataSum) {
+        return sortDataByDataSum(data);
+    } else {
+        return data;
+    }
+}
+
+function sortDataByDataSum(data: TabsWithStringOrNumbers["data"]): TabsWithStringOrNumbers["data"] {
+    const [chartName, headers, ...rows] = data;
+
+    if (!headers || !chartName) {
+        throw new Error(`Error sorting data by data sum: Missing headers or chart name`);
+    }
+
+    const indexedColumns = headers.map((_, colIndex) => ({
+        index: colIndex,
+        sum:
+            colIndex === 0
+                ? -Infinity
+                : rows.reduce((sum, row) => {
+                      const rowValue = row[colIndex];
+                      return sum + (typeof rowValue === "number" ? rowValue : 0);
+                  }, 0),
+        header: headers[colIndex],
+    }));
+
+    const sortedIndexes = indexedColumns.sort((a, b) => a.sum - b.sum).map(({ index }) => index);
+
+    const sortedData = sortByIndexes(headers, rows, sortedIndexes);
+
+    return [chartName, ...sortedData];
+}
+
 function sortDataByDataParam(
     dataParamToSortBy: string,
     data: TabsWithStringOrNumbers["data"]
 ): TabsWithStringOrNumbers["data"] {
     const [chartName, headers, ...rows] = data;
-    const poorestRow = rows.find(row => row[0] === dataParamToSortBy);
+    const rowToSortBy = rows.find(row => row[0] === dataParamToSortBy);
 
-    if (!poorestRow || !headers || !chartName) {
+    if (!rowToSortBy || !headers || !chartName) {
         throw new Error(`Missing ${dataParamToSortBy} row or headers`);
     }
 
-    const sortedIndices = poorestRow
+    const sortedIndexes = rowToSortBy
         .map((value, index) => ({ value: typeof value === "number" ? value : 0, index }))
         .sort((a, b) => a.value - b.value)
         .map(item => item.index);
 
-    const sortedHeaders = [...sortedIndices.map(i => headers[i]).map(value => (!value ? null : value))];
+    const sortedData = sortByIndexes(headers, rows, sortedIndexes);
 
-    const sortedRows = rows.map(row => [...sortedIndices.map(i => row[i]).map(value => (!value ? 0 : value))]);
+    return [chartName, ...sortedData];
+}
 
-    return [chartName, sortedHeaders, ...sortedRows];
+function sortByIndexes(
+    headers: (string | number | null)[],
+    rows: TabsWithStringOrNumbers["data"],
+    sortedIndexes: number[]
+): TabsWithStringOrNumbers["data"] {
+    const sortedHeaders = [...sortedIndexes.map(i => headers[i]).map(value => (!value ? null : value))];
+    const sortedRows = rows.map(row => [...sortedIndexes.map(i => row[i]).map(value => (!value ? 0 : value))]);
+
+    return [sortedHeaders, ...sortedRows];
 }
