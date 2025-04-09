@@ -17,13 +17,10 @@ import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-a
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
-import {
-    CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
-    CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
-} from "./builders/TableBuilderChangesInCoveragePolicy";
+import { CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES } from "./builders/TableBuilderChangesInCoveragePolicy";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 } from "./PolicyExplorerCategoryD2Repository";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
@@ -50,7 +47,7 @@ export const REFERENCES_HEADER_NAME = "References";
 const FILE_NAME = "PolicyExplorer";
 
 export const categoriesNameWithLessThan31Chars: Record<string, string> = {
-    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: "Changes in coverage policy",
+    Dg4b8bTfEIr: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
 };
@@ -66,7 +63,7 @@ const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     userChargesByHealthCare: "u800TAhsIBY",
     voluntaryHealthInsurance: "uImM4yTeeV3",
     mainGapsInFinancedCoverage: "e6cfI6vWYEF",
-    changesInCoveragePolicy: "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
+    changesInCoveragePolicy: "Dg4b8bTfEIr",
 };
 
 const REFERENCES_REGEX = /\[.*?\]: <\/> ".*?"/g;
@@ -130,17 +127,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         allDataValues: DataValueSetsDataValue[],
         selectedPolicyExplorerCategories: Record<string, Id[]>
     ): Map<Id, string> {
-        const changesInCoveragePolicyUntil2019DataElementIds = Object.values(
-            CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES
-        ).reduce((acc, dataElementIds) => [...acc, ...dataElementIds], []);
-
-        const changesInCoveragePolicyFrom2020DataElementIds = Object.values(
-            CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES
-        ).reduce((acc, dataElementIds) => [...acc, ...dataElementIds], []);
+        const changesInCoveragePolicyDataElementIds = Object.values(CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES).reduce(
+            (acc, dataElementIds) => [...acc, ...dataElementIds],
+            []
+        );
 
         const allDataElementIdsSelected: string[] = Object.values(selectedPolicyExplorerCategories).reduce(
             (acc, dataElementIds) => [...acc, ...dataElementIds],
-            [...changesInCoveragePolicyFrom2020DataElementIds, ...changesInCoveragePolicyUntil2019DataElementIds]
+            [...changesInCoveragePolicyDataElementIds]
         );
 
         const dataValuesByOrgUnit = _(allDataValues)
@@ -357,7 +351,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
         const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
-                CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID === categoryId ||
+                CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID === categoryId ||
                 CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === categoryId
         );
 
@@ -476,12 +470,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private fillSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
         return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID:
+                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
                     return {
                         ...acc,
                         [categoryId]: Object.values({
-                            ...CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
-                            ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
+                            ...CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
                         }).reduce((accSubcategories, subcategoryIds) => {
                             return [...accSubcategories, ...subcategoryIds];
                         }, [] as string[]),
