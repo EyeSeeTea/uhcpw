@@ -177,15 +177,17 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
         orgUnitName: string;
         period?: string;
         references: string;
+        sortByMonth?: boolean;
     }): PolicyExplorerCell[][] {
-        const { currentRowsInTable, dataValuesByGroup, orgUnitName, period, references } = params;
+        const { currentRowsInTable, dataValuesByGroup, orgUnitName, period, references, sortByMonth = false } = params;
 
         if (!period) return currentRowsInTable;
 
         const subcategoriesIdsByColumn = CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES;
 
-        const subcategoriesIdsByChangeInTheYear =
-            this.getSubcategoriesIdsByChangeInTheYearSortedByMonth(dataValuesByGroup);
+        const subcategoriesIdsByChangeInTheYear = sortByMonth
+            ? this.getSubcategoriesIdsByChangeInTheYearSortedByMonth(dataValuesByGroup)
+            : CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES_BY_CHANGE_IN_YEARS;
 
         const rows = Object.values(subcategoriesIdsByChangeInTheYear).reduce(
             (accRows: PolicyExplorerCell[][], subcategoriesIdsInAChangeOfTheYear, index) => {
