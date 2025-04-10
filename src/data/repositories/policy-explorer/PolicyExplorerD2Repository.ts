@@ -17,13 +17,10 @@ import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-a
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
-import {
-    CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
-    CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
-} from "./builders/TableBuilderChangesInCoveragePolicy";
+import { CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES } from "./builders/TableBuilderChangesInCoveragePolicy";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 } from "./PolicyExplorerCategoryD2Repository";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
@@ -50,7 +47,7 @@ export const REFERENCES_HEADER_NAME = "References";
 const FILE_NAME = "PolicyExplorer";
 
 export const categoriesNameWithLessThan31Chars: Record<string, string> = {
-    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: "Changes in coverage policy",
+    Dg4b8bTfEIr: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
 };
@@ -66,7 +63,7 @@ const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     userChargesByHealthCare: "u800TAhsIBY",
     voluntaryHealthInsurance: "uImM4yTeeV3",
     mainGapsInFinancedCoverage: "e6cfI6vWYEF",
-    changesInCoveragePolicy: "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID",
+    changesInCoveragePolicy: "Dg4b8bTfEIr",
 };
 
 const REFERENCES_REGEX = /\[.*?\]: <\/> ".*?"/g;
@@ -102,6 +99,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 countriesAndRegions
             );
 
+            const lastPeriodWithDataByCountry = this.getLastPeriodWithDataByCountry(
+                dataValuesResponse.dataValues,
+                policyExplorerCategories
+            );
+
             return {
                 tables: this.buildTables({
                     policyExplorerCategories,
@@ -112,9 +114,48 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     programCategories,
                 }),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndRegions),
-                references: this.buildReferences(dataValuesResponse.dataValues, countriesAndRegions),
+                references: this.buildReferences(
+                    dataValuesResponse.dataValues,
+                    countriesAndRegions,
+                    lastPeriodWithDataByCountry
+                ),
             };
         });
+    }
+
+    private getLastPeriodWithDataByCountry(
+        allDataValues: DataValueSetsDataValue[],
+        selectedPolicyExplorerCategories: Record<string, Id[]>
+    ): Map<Id, string> {
+        const changesInCoveragePolicyDataElementIds = Object.values(CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES).reduce(
+            (acc, dataElementIds) => [...acc, ...dataElementIds],
+            []
+        );
+
+        const allDataElementIdsSelected: string[] = Object.values(selectedPolicyExplorerCategories).reduce(
+            (acc, dataElementIds) => [...acc, ...dataElementIds],
+            [...changesInCoveragePolicyDataElementIds]
+        );
+
+        const dataValuesByOrgUnit = _(allDataValues)
+            .groupBy(dataValue => dataValue.orgUnit)
+            .value();
+
+        const periodByOrgUnitMap = Object.entries(dataValuesByOrgUnit).reduce((map, [orgUnitId, dataValues]) => {
+            const dataValuesOrderedByPeriod = [...dataValues].sort((a, b) => {
+                if (a.period > b.period) return -1;
+                if (a.period < b.period) return 1;
+                return 0;
+            });
+
+            const dataValueWithLastYear = dataValuesOrderedByPeriod.find(dataValue =>
+                allDataElementIdsSelected.includes(dataValue.dataElement)
+            );
+
+            return map.set(orgUnitId, dataValueWithLastYear?.period || "");
+        }, new Map<Id, string>());
+
+        return periodByOrgUnitMap;
     }
 
     saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
@@ -310,7 +351,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
         const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
-                CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID === categoryId ||
+                CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID === categoryId ||
                 CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === categoryId
         );
 
@@ -429,12 +470,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private fillSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
         return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID:
+                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
                     return {
                         ...acc,
                         [categoryId]: Object.values({
-                            ...CHANGES_IN_COVERAGE_POLICY_UP_TO_AND_INCLUDING_2019_SUBCATEGORIES,
-                            ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_SUBCATEGORIES,
+                            ...CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
                         }).reduce((accSubcategories, subcategoryIds) => {
                             return [...accSubcategories, ...subcategoryIds];
                         }, [] as string[]),
@@ -475,7 +515,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private buildReferences(
         dataValues: DataValueSetsDataValue[],
-        countriesAndRegions: Country[]
+        countriesAndRegions: Country[],
+        lastPeriodWithDataByCountry: Map<Id, string>
     ): PolicyExplorerReferences[] {
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
@@ -485,7 +526,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const country = this.getCountryName(orgUnitId, countriesAndRegions);
             const references =
                 dataValues.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.references || "")
+                    dv =>
+                        dv.orgUnit === orgUnitId &&
+                        dv.dataElement.includes(generalDataElements.references || "") &&
+                        dv.period === (lastPeriodWithDataByCountry.get(orgUnitId) || "")
                 )?.value || EMPTY_DATA;
 
             const referencesArray = references.match(REFERENCES_REGEX) as string[];

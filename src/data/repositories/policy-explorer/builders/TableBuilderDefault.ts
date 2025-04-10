@@ -2,7 +2,7 @@ import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
-import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../PolicyExplorerCategoryD2Repository";
+import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export class TableBuilderDefault implements TableBuilder {
@@ -120,7 +120,7 @@ export class TableBuilderDefault implements TableBuilder {
         dataSet?: D2DataSet;
         programCategories?: PolicyExplorerCategory[];
     }): Array<{ name: string } | { description?: string; formName: string }> {
-        if (policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID) {
+        if (policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID) {
             return this.getDataElementsSection(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet);
         } else {
             return this.getProgramDataElementsSection(
