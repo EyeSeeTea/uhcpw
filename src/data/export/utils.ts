@@ -7,6 +7,7 @@ import {
     categoriesNameWithLessThan31Chars,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { TYPE_OF_HEALTH_CARE_HEADER_NAME } from "../repositories/policy-explorer/builders/TableBuilderByTypeOfHealthcare";
+import { TabsWithStringOrNumbers } from "./exportToCSV";
 
 const DEFAULT_HEIGHT = 30;
 
@@ -117,13 +118,13 @@ export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: numbe
             bold:
                 rowDataIndex === 1 ||
                 tabName === REFERENCES_TAB_NAME ||
-                tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID ||
+                tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr ||
                 tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY,
             fill: {
                 ...CELL_STYLES.headerCell.fill,
                 color:
                     rowDataIndex !== 1 &&
-                    (tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID ||
+                    (tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr ||
                         tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY ||
                         tabName === REFERENCES_TAB_NAME)
                         ? CELL_STYLES.dataCell.fill.color
@@ -174,17 +175,11 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
         return COLUMN_WIDTHS.yearColumn;
     }
 
-    if (
-        tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-        !headerColumnValue
-    ) {
+    if (tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr && !headerColumnValue) {
         return COLUMN_WIDTHS.monthColumn;
     }
 
-    if (
-        tabName === categoriesNameWithLessThan31Chars.CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID &&
-        headerColumnValue === "Area of change"
-    ) {
+    if (tabName === categoriesNameWithLessThan31Chars.Dg4b8bTfEIr && headerColumnValue === "Area of change") {
         return COLUMN_WIDTHS.typeOfHealthCareColumnOrAreaOfChange;
     }
 
@@ -203,4 +198,15 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
 export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number) {
     const width = getColumnWidth(sheet, tabName, columnDataIndex);
     sheet.column(columnDataIndex + 1).width(width);
+}
+
+export function parseDataValuesStringToNumber(data: string[][], valueIndex: number): TabsWithStringOrNumbers["data"] {
+    return data.map((row, rowNumber) => {
+        const value = row[valueIndex];
+        if (!value || rowNumber === 0 || rowNumber === 1) {
+            return row;
+        }
+
+        return [...row.slice(0, valueIndex), Number(value.replace(",", ".")), ...row.slice(valueIndex + 1)];
+    });
 }

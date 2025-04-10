@@ -15,10 +15,7 @@ import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
 import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 
-export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = {
-    UP_TO_AND_INCLUDING_2019: "FtRwT2aBET4",
-    SINCE_2020: "Dg4b8bTfEIr",
-};
+export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
 
 export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     USER_CHARGES: "u800TAhsIBY",
@@ -105,8 +102,6 @@ const sectionsList = [
     // CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
 ];
-
-export const CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID = "CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID";
 
 const selectCategoryInfoDataElements: Record<string, Id> = {
     title: "yEaMMB7MXqI",
@@ -257,10 +252,10 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     }
 
     private getChangesInCoveragePolicyMergedCategory(infoNotes: InfoNotes): PolicyExplorerCategory {
-        const notes = infoNotes ? infoNotes[CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID.UP_TO_AND_INCLUDING_2019] || "" : "";
+        const notes = infoNotes ? infoNotes[CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID] || "" : "";
 
         const changesInCoveragePolicyMergedCategory: PolicyExplorerCategory = {
-            id: CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+            id: CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
             name: "Changes in coverage policy",
             subcategories: [],
             description: notes,

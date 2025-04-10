@@ -1,5 +1,3 @@
-import { SeriesColumnOptions } from "highcharts";
-import { sortSerieDataByValueInSerie } from "../customization/charts/utils/sortSerieDataByValueInSerie";
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
@@ -24,6 +22,6 @@ export const chart_dbc87Ljw8uN_Options: (chartSource: ChartSource) => Highcharts
     });
     return {
         ...chartOptions,
-        series: sortSerieDataByValueInSerie(chartOptions.series as SeriesColumnOptions[], "MDhStd9lvOc"),
+        series: chartOptions.series,
     };
 };
