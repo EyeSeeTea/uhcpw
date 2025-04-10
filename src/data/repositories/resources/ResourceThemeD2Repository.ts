@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { ResourceTheme } from "../../../domain/entities/resources/ResourceTheme";
 import { ResourceCategoryRepository } from "../../../domain/repositories/resources/ResourceCategoryRepository";
@@ -47,7 +49,9 @@ export class ResourceThemeD2Repository implements ResourceCategoryRepository {
     private buildResourceCategories(optionSet: D2OptionSet): ResourceTheme[] {
         return optionSet.options.map(option => {
             const name = option.displayName.replace("UHCW_", "");
-            const displayedName = themeOptionsDisplayedName[option.id]?.showCode ? `${option.code} (${name})` : name;
+            const displayedName = themeOptionsDisplayedName[option.id]?.showCode
+                ? `${_.capitalize(option.code)} (${name})`
+                : name;
             return {
                 id: option.id,
                 name,

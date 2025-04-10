@@ -1,4 +1,4 @@
-import { CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
+import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { Future, FutureData } from "../../entities/Future";
 import { Id } from "../../entities/Ref";
 import { latestAvailableYear, PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
@@ -33,10 +33,9 @@ export class GetPolicyExplorerUseCase {
         policyExplorerCategories: Record<string, string[]>
     ): FutureData<Record<string, string[]>> {
         const categoryIds = Object.keys(policyExplorerCategories);
-
         const yearsByCategory = categoryIds.reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID: {
+                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID: {
                     const year = years[0];
                     const finalYear =
                         year === undefined || years[0] === latestAvailableYear ? new Date().getFullYear() : +year;

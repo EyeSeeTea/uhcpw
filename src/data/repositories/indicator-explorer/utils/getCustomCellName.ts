@@ -12,7 +12,7 @@ type AxesIds = {
     y: Id;
 };
 
-const cellNameByVisualizationId: Record<Id, CellNames> = {
+export const cellNameByVisualizationId: Record<Id, CellNames> = {
     kIpnMBaBvZ9: {
         x: "Out-of-pocket payments as a share of current spending on health",
         y: "Households with catastrophic health spending",
