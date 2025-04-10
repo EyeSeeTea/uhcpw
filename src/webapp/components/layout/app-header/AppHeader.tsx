@@ -74,8 +74,6 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
     const { regionalReport, anchorEl, isHomePage, goToHome, handleCountryClick, handleClose, handleSetAnchorEl } =
         useAppHeader();
 
-    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
-    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
@@ -84,21 +82,6 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                 <Toolbar className={classes.toolbarTop}>
                     <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
                     <Box className={classes.rest} />
-                    <TagContainer>
-                        <Tag>
-                            <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
-                        </Tag>
-                    </TagContainer>
-                    <MenuTopLink
-                        target="_blank"
-                        href="https://cmyn.short.gy/abbreviations"
-                        onClick={abbreviationsPageView}
-                    >
-                        {i18n.t("Abbreviations")}
-                    </MenuTopLink>
-                    <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
-                        {i18n.t("Glossary")}
-                    </MenuTopLink>
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
                     <FlexContainer isFullWidth>
@@ -266,17 +249,4 @@ const MenuButton = styled(Button)`
 const LogoContainer = styled.div`
     margin: 10px 10px;
     cursor: pointer;
-`;
-
-const TagContainer = styled.div`
-    margin-right: 16px;
-`;
-
-const Tag = styled.div`
-    text-align: center;
-    min-width: 100px;
-    background-color: #4fad56;
-    color: white;
-    border-radius: 30px;
-    padding: 5px 10px;
 `;

@@ -94,6 +94,11 @@ export async function verifyNotFoundChip(name: string) {
 }
 
 export async function verifyTotalExpandedGroups(total: number) {
-    const groups = await screen.findAllByRole("treeitem", { expanded: true });
-    expect(groups).toHaveLength(total);
+    await waitFor(
+        async () => {
+            const groups = await screen.findAllByRole("treeitem", { expanded: true });
+            expect(groups).toHaveLength(total);
+        },
+        { timeout: 5000 }
+    );
 }

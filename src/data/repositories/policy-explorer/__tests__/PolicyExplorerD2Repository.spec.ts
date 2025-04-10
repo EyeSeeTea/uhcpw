@@ -47,33 +47,7 @@ const BELGIUM_COUNTRY = "DVnpk4xiXGJ";
 
 const TWO_CATEGORIES = {
     e6cfI6vWYEF: ["Oc0RJz88pBV", "Cqe4z39igTX", "CCIzcBhaqCZ"],
-    Dg4b8bTfEIr: [
-        "AFxIxVuvvsZ",
-        "JMYOe9wMIoE",
-        "FKBHFNqiFM4",
-        "fgsOChZT1Yp",
-        "qJ9dWNT1HU1",
-        "IjpUXUVF9bn",
-        "dfWsuiDvDlR",
-        "AZgRUJmVPNi",
-        "M90TwNwsXjY",
-        "rxDjH7GshzX",
-        "Soj201VJFWL",
-        "tdlh9Z0uktG",
-        "jq0sGqVVTNW",
-        "XZbHFY1652W",
-        "BYbKtpEB0Hn",
-        "JfqWVc1eCJl",
-        "PyBU3BkN3oQ",
-        "zvBP5xebI2D",
-        "b5kKyrRkcHG",
-        "L9klgnq75d8",
-        "xP4nCc5rpV4",
-        "mQYv2QxdflF",
-        "peIML3XRBaN",
-        "CUSj5kPkJ0W",
-        "mdnjNf5baYj",
-    ],
+    Dg4b8bTfEIr: [],
 };
 
 const TWO_CATEGORIES_YEARS = {
@@ -82,28 +56,7 @@ const TWO_CATEGORIES_YEARS = {
 };
 
 const EMPTY_CATEGORY = {
-    FtRwT2aBET4: [
-        "KDsEXYarBTu",
-        "ewpOQ5y97nj",
-        "hDGqtzIFTAg",
-        "Ed553tXFkcC",
-        "G90HxQdY44N",
-        "gOtySPsOkmn",
-        "ueyZG15lJNe",
-        "oR85dLJrBWB",
-        "GMqwcTkBm5u",
-        "GwYOC7auTo3",
-        "CnlZeapVRTA",
-        "Dg9FyroZ53d",
-        "Ak3h87SXFws",
-        "OAFiKkIj9AV",
-        "VqZfgxa6KhX",
-        "u50ywFZ6gum",
-        "pnUIywtp441",
-        "fVrKY8v7ZRy",
-        "xZjl72SoX34",
-        "RPDIUoT8kU7",
-    ],
+    FtRwT2aBET4: [],
 };
 
 const EMPTY_CATEGORY_YEARS = {
@@ -131,37 +84,11 @@ const EMPTY_CATEGORY_YEARS = {
     ],
 };
 
-const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY = {
-    Dg4b8bTfEIr: [
-        "AFxIxVuvvsZ",
-        "JMYOe9wMIoE",
-        "FKBHFNqiFM4",
-        "fgsOChZT1Yp",
-        "qJ9dWNT1HU1",
-        "IjpUXUVF9bn",
-        "dfWsuiDvDlR",
-        "AZgRUJmVPNi",
-        "M90TwNwsXjY",
-        "rxDjH7GshzX",
-        "Soj201VJFWL",
-        "tdlh9Z0uktG",
-        "jq0sGqVVTNW",
-        "XZbHFY1652W",
-        "BYbKtpEB0Hn",
-        "JfqWVc1eCJl",
-        "PyBU3BkN3oQ",
-        "zvBP5xebI2D",
-        "b5kKyrRkcHG",
-        "L9klgnq75d8",
-        "xP4nCc5rpV4",
-        "mQYv2QxdflF",
-        "peIML3XRBaN",
-        "CUSj5kPkJ0W",
-        "mdnjNf5baYj",
-    ],
+const CHANGES_IN_COVERAGE_POLICY_CATEGORY = {
+    Dg4b8bTfEIr: [],
 };
 
-const CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS = {
+const CHANGES_IN_COVERAGE_POLICY_CATEGORY_YEARS = {
     Dg4b8bTfEIr: ["2020", "2021", "2022", "2023"],
 };
 
@@ -407,11 +334,11 @@ describe("Given Policy Explorer repository", () => {
             await policyExplorerRepository
                 .get(
                     {
-                        ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY,
+                        ...CHANGES_IN_COVERAGE_POLICY_CATEGORY,
                     },
                     [SPAIN_COUNTRY],
                     {
-                        ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS,
+                        ...CHANGES_IN_COVERAGE_POLICY_CATEGORY_YEARS,
                     },
                     countriesAndRegions,
                     programEventValues
@@ -438,11 +365,11 @@ describe("Given Policy Explorer repository", () => {
             const response = await policyExplorerRepository
                 .get(
                     {
-                        ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY,
+                        ...CHANGES_IN_COVERAGE_POLICY_CATEGORY,
                     },
                     [SPAIN_COUNTRY],
                     {
-                        ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS,
+                        ...CHANGES_IN_COVERAGE_POLICY_CATEGORY_YEARS,
                     },
                     countriesAndRegions,
                     programEventValues
@@ -464,11 +391,11 @@ describe("Given Policy Explorer repository", () => {
             const response = await policyExplorerRepository
                 .get(
                     {
-                        ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY,
+                        ...CHANGES_IN_COVERAGE_POLICY_CATEGORY,
                     },
                     [SPAIN_COUNTRY],
                     {
-                        ...CHANGES_IN_COVERAGE_POLICY_SINCE_2020_CATEGORY_YEARS,
+                        ...CHANGES_IN_COVERAGE_POLICY_CATEGORY_YEARS,
                     },
                     countriesAndRegions,
                     programEventValues
