@@ -440,7 +440,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         )}
 
                         <br />
-                        <Container $fullWidth={fullWidth}>
+                        <PlaceholderAndButtonsContainer $fullWidth={fullWidth}>
                             <StyledTypography variant="body1">{placeholder}</StyledTypography>
                             {hasSelectAll || hasClearAll ? (
                                 <ButtonsContainer $isSmallScreen={isSmallScreen}>
@@ -467,7 +467,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                                     )}
                                 </ButtonsContainer>
                             ) : null}
-                        </Container>
+                        </PlaceholderAndButtonsContainer>
                         <TreeView
                             disableSelection
                             defaultCollapseIcon={<ArrowDropUpIcon aria-label="collapse-icon" />}
@@ -592,6 +592,9 @@ const Container = styled.div<{ $fullWidth: boolean }>`
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
+`;
+
+const PlaceholderAndButtonsContainer = styled(Container)<{ $fullWidth: boolean }>`
     margin-block-end: 6px;
 `;
 
@@ -642,4 +645,5 @@ const ButtonsContainer = styled.div<{ $isSmallScreen: boolean }>`
 
 const StyledTypography = styled(Typography)`
     white-space: nowrap;
+    margin-block-end: 4px;
 `;
