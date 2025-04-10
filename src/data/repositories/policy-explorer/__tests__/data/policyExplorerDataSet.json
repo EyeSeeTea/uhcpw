@@ -835,108 +835,7 @@
                 {
                     "id": "FtRwT2aBET4",
                     "displayName": "Changes in coverage policy up to and including 2019",
-                    "dataElements": [
-                        {
-                            "id": "KDsEXYarBTu",
-                            "formName": "Area of change in coverage policy pre2019 (1)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "ewpOQ5y97nj",
-                            "formName": "Area of change in coverage policy pre2019 (2)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "hDGqtzIFTAg",
-                            "formName": "Area of change in coverage policy pre2019 (3)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "Ed553tXFkcC",
-                            "formName": "Area of change in coverage policy pre2019 (4)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "G90HxQdY44N",
-                            "formName": "Area of change in coverage policy pre2019 (5)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "gOtySPsOkmn",
-                            "formName": "Health services targeted in change in coverage policy pre2019 (1)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "ueyZG15lJNe",
-                            "formName": "Health services targeted in change in coverage policy pre2019 (2)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "oR85dLJrBWB",
-                            "formName": "Health services targeted in change in coverage policy pre2019 (3)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "GMqwcTkBm5u",
-                            "formName": "Health services targeted in change in coverage policy pre2019 (4)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "GwYOC7auTo3",
-                            "formName": "Health services targeted in change in coverage policy pre2019 (5)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "CnlZeapVRTA",
-                            "formName": "People targeted in change in coverage policy pre2019 (1)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "Dg9FyroZ53d",
-                            "formName": "People targeted in change in coverage policy pre2019 (2)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "Ak3h87SXFws",
-                            "formName": "People targeted in change in coverage policy pre2019 (3)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "OAFiKkIj9AV",
-                            "formName": "People targeted in change in coverage policy pre2019 (4)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "VqZfgxa6KhX",
-                            "formName": "People targeted in change in coverage policy pre2019 (5)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "u50ywFZ6gum",
-                            "formName": "Policy of change in coverage policy pre2019 (1)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "pnUIywtp441",
-                            "formName": "Policy of change in coverage policy pre2019 (2)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "fVrKY8v7ZRy",
-                            "formName": "Policy of change in coverage policy pre2019 (3)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "xZjl72SoX34",
-                            "formName": "Policy of change in coverage policy pre2019 (4)",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "RPDIUoT8kU7",
-                            "formName": "Policy of change in coverage policy pre2019 (5)",
-                            "valueType": "TEXT"
-                        }
-                    ]
+                    "dataElements": []
                 },
                 {
                     "id": "lHk8jtKonPh",
@@ -1546,132 +1445,571 @@
                 },
                 {
                     "id": "Dg4b8bTfEIr",
-                    "displayName": "Changes in coverage policy since 2020",
+                    "displayName": "Changes in coverage policy",
                     "dataElements": [
                         {
-                            "id": "AFxIxVuvvsZ",
-                            "formName": "Area of change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "JMYOe9wMIoE",
-                            "formName": "Policy of change in coverage policy",
-                            "valueType": "LONG_TEXT"
-                        },
-                        {
-                            "id": "FKBHFNqiFM4",
-                            "formName": "Health services targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "fgsOChZT1Yp",
-                            "formName": "People targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "qJ9dWNT1HU1",
-                            "formName": "Was this a response to the COVID-19 pandemic?",
-                            "valueType": "LONG_TEXT"
-                        },
-                        {
-                            "id": "IjpUXUVF9bn",
-                            "formName": "Area of change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "dfWsuiDvDlR",
-                            "formName": "Policy of change in coverage policy",
-                            "valueType": "LONG_TEXT"
-                        },
-                        {
-                            "id": "AZgRUJmVPNi",
-                            "formName": "Health services targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "M90TwNwsXjY",
-                            "formName": "People targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "rxDjH7GshzX",
-                            "formName": "Was this a response to the COVID-19 pandemic?",
-                            "valueType": "LONG_TEXT"
-                        },
-                        {
-                            "id": "Soj201VJFWL",
-                            "formName": "Area of change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "tdlh9Z0uktG",
-                            "formName": "Policy of change in coverage policy",
-                            "valueType": "LONG_TEXT"
-                        },
-                        {
-                            "id": "jq0sGqVVTNW",
-                            "formName": "Health services targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "XZbHFY1652W",
-                            "formName": "People targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "BYbKtpEB0Hn",
-                            "formName": "Was this a response to the COVID-19 pandemic?",
-                            "valueType": "LONG_TEXT"
-                        },
-                        {
-                            "id": "JfqWVc1eCJl",
-                            "formName": "Area of change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "PyBU3BkN3oQ",
-                            "formName": "Policy of change in coverage policy",
-                            "valueType": "LONG_TEXT"
-                        },
-                        {
-                            "id": "zvBP5xebI2D",
-                            "formName": "Health services targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "b5kKyrRkcHG",
-                            "formName": "People targeted in change in coverage policy",
-                            "valueType": "TEXT"
-                        },
-                        {
-                            "id": "L9klgnq75d8",
-                            "formName": "Was this a response to the COVID-19 pandemic?",
-                            "valueType": "LONG_TEXT"
+                            "id": "SZj4LVtPJhZ",
+                            "formName": "Month of change in coverage policy (1)",
+                            "valueType": "TEXT",
+                            "description": "Month"
                         },
                         {
                             "id": "xP4nCc5rpV4",
                             "formName": "Area of change in coverage policy (1)",
-                            "valueType": "TEXT"
+                            "valueType": "TEXT",
+                            "description": "Area of change"
                         },
                         {
                             "id": "mQYv2QxdflF",
                             "formName": "Policy of change in coverage policy (1)",
-                            "valueType": "LONG_TEXT"
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy change"
                         },
                         {
                             "id": "peIML3XRBaN",
                             "formName": "Health services targeted in change in coverage policy (1)",
-                            "valueType": "TEXT"
+                            "valueType": "TEXT",
+                            "description": "Health services targeted"
                         },
                         {
                             "id": "CUSj5kPkJ0W",
                             "formName": "People targeted in change in coverage policy (1)",
+                            "valueType": "TEXT",
+                            "description": "People targeted"
+                        },
+                        {
+                            "id": "eAvddXS2gMt",
+                            "formName": "Month of change in coverage policy (2)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "AFxIxVuvvsZ",
+                            "formName": "Area of change in coverage policy (2)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "JMYOe9wMIoE",
+                            "formName": "Policy of change in coverage policy (2)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "FKBHFNqiFM4",
+                            "formName": "Health services targeted in change in coverage policy (2) ",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "fgsOChZT1Yp",
+                            "formName": "People targeted in change in coverage policy (2)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "YJ95rSdosLq",
+                            "formName": "Month of change in coverage policy (3)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "IjpUXUVF9bn",
+                            "formName": "Area of change in coverage policy (3)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "dfWsuiDvDlR",
+                            "formName": "Policy of change in coverage policy (3)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "AZgRUJmVPNi",
+                            "formName": "Health services targeted in change in coverage policy (3)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "M90TwNwsXjY",
+                            "formName": "People targeted in change in coverage policy (3)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "fBN2oqBByJi",
+                            "formName": "Month of change in coverage policy (4)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "Soj201VJFWL",
+                            "formName": "Area of change in coverage policy (4)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "tdlh9Z0uktG",
+                            "formName": "Policy of change in coverage policy (4)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "jq0sGqVVTNW",
+                            "formName": "Health services targeted in change in coverage policy (4)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "XZbHFY1652W",
+                            "formName": "People targeted in change in coverage policy (4)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "RMMwFbPBCSZ",
+                            "formName": "Month of change in coverage policy (5)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "JfqWVc1eCJl",
+                            "formName": "Area of change in coverage policy (5)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "PyBU3BkN3oQ",
+                            "formName": "Policy of change in coverage policy (5)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "zvBP5xebI2D",
+                            "formName": "Health services targeted in change in coverage policy (5)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "b5kKyrRkcHG",
+                            "formName": "People targeted in change in coverage policy (5)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "KaHyWIkTXed",
+                            "formName": "Month of change in coverage policy (6)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "CEjDnfFPHAn",
+                            "formName": "Area of change in coverage policy (6)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "kUBtnGm4EKp",
+                            "formName": "Policy of change in coverage policy (6)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "SfaynclXRLx",
+                            "formName": "Health services targeted in change in coverage policy (6)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "Azmt9ndZOE2",
+                            "formName": "People targeted in change in coverage policy (6)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "Wkhte2i9YUQ",
+                            "formName": "Month of change in coverage policy (7)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "PRq7KFCDGWc",
+                            "formName": "Area of change in coverage policy (7)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "TH73JJkBEXA",
+                            "formName": "Policy of change in coverage policy (7)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "QMd8Ch70DMO",
+                            "formName": "Health services targeted in change in coverage policy (7)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "S9zr8VMFxu7",
+                            "formName": "People targeted in change in coverage policy (7)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "N0vnvEUWgsq",
+                            "formName": "Month of change in coverage policy (8)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "oVgaMvPvL3R",
+                            "formName": "Area of change in coverage policy (8)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "gdZ63nAVakA",
+                            "formName": "Policy of change in coverage policy (8)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "zNkK3T9RC20",
+                            "formName": "Health services targeted in change in coverage policy (8)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "DzK5t6bz3En",
+                            "formName": "People targeted in change in coverage policy (8)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "slyKOdh6XTH",
+                            "formName": "Month of change in coverage policy (9)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "eohpuMxhpeT",
+                            "formName": "Area of change in coverage policy (9)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "O5Z0EpAy0HE",
+                            "formName": "Policy of change in coverage policy (9)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "qbUvq6u68Vp",
+                            "formName": "Health services targeted in change in coverage policy (9)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "GJ7LuLvC5NP",
+                            "formName": "People targeted in change in coverage policy (9)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "JP6tyBu3236",
+                            "formName": "Month of change in coverage policy (10)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "e4ieVLuEisR",
+                            "formName": "Area of change in coverage policy (10)",
+                            "valueType": "TEXT",
+                            "description": "Area of change in coverage policy"
+                        },
+                        {
+                            "id": "IVVTmrOelXA",
+                            "formName": "Policy of change in coverage policy (10)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy of change in coverage policy"
+                        },
+                        {
+                            "id": "SLw4hji7Eqz",
+                            "formName": "Health services targeted in change in coverage policy (10)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "l26WfNjfVSx",
+                            "formName": "People targeted in change in coverage policy (10)",
+                            "valueType": "TEXT",
+                            "description": "People targeted in change in coverage policy"
+                        },
+                        {
+                            "id": "U4N5xac8pmo",
+                            "formName": "Month of change in coverage policy (11)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "KDsEXYarBTu",
+                            "formName": "Area of change in coverage policy (11)",
+                            "valueType": "TEXT",
+                            "description": "Area of change"
+                        },
+                        {
+                            "id": "u50ywFZ6gum",
+                            "formName": "Policy of change in coverage policy (11)",
+                            "valueType": "LONG_TEXT",
+                            "description": "Policy change"
+                        },
+                        {
+                            "id": "gOtySPsOkmn",
+                            "formName": "Health services targeted in change in coverage policy (11)",
+                            "valueType": "TEXT",
+                            "description": "Health services targeted"
+                        },
+                        {
+                            "id": "CnlZeapVRTA",
+                            "formName": "People targeted in change in coverage policy (11)",
+                            "valueType": "TEXT",
+                            "description": "People targeted"
+                        },
+                        {
+                            "id": "D78Xa9pSvpm",
+                            "formName": "Month of change in coverage policy (12)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "ewpOQ5y97nj",
+                            "formName": "Area of change in coverage policy (12)",
                             "valueType": "TEXT"
                         },
                         {
-                            "id": "mdnjNf5baYj",
-                            "formName": "Was this a response to the COVID-19 pandemic? (1)",
+                            "id": "pnUIywtp441",
+                            "formName": "Policy of change in coverage policy (12)",
                             "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "ueyZG15lJNe",
+                            "formName": "Health services targeted in change in coverage policy (12)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Dg9FyroZ53d",
+                            "formName": "People targeted in change in coverage policy (12)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "WwaBsXSleHu",
+                            "formName": "Month of change in coverage policy (13)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "hDGqtzIFTAg",
+                            "formName": "Area of change in coverage policy (13)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "fVrKY8v7ZRy",
+                            "formName": "Policy of change in coverage policy (13)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "oR85dLJrBWB",
+                            "formName": "Health services targeted in change in coverage policy (13)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "Ak3h87SXFws",
+                            "formName": "People targeted in change in coverage policy (13)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "sZX7Hpaa9Sh",
+                            "formName": "Month of change in coverage policy (14)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "Ed553tXFkcC",
+                            "formName": "Area of change in coverage policy (14)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "xZjl72SoX34",
+                            "formName": "Policy of change in coverage policy (14)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "GMqwcTkBm5u",
+                            "formName": "Health services targeted in change in coverage policy (14)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "OAFiKkIj9AV",
+                            "formName": "People targeted in change in coverage policy (14)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "xe9vvN9AcBU",
+                            "formName": "Month of change in coverage policy (15)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "G90HxQdY44N",
+                            "formName": "Area of change in coverage policy (15)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "RPDIUoT8kU7",
+                            "formName": "Policy of change in coverage policy (15)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "GwYOC7auTo3",
+                            "formName": "Health services targeted in change in coverage policy (15)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "VqZfgxa6KhX",
+                            "formName": "People targeted in change in coverage policy (15)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "rLIXdgvrk0R",
+                            "formName": "Month of change in coverage policy (16)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "NYOzeiIIuer",
+                            "formName": "Area of change in coverage policy (16)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "D4F1hKgVhkm",
+                            "formName": "Policy of change in coverage policy (16)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "qOJSgPcqcL2",
+                            "formName": "Health services targeted in change in coverage policy (16)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "jRzKTIos828",
+                            "formName": "People targeted in change in coverage policy (16)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "cWBSBglr7so",
+                            "formName": "Month of change in coverage policy (17)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "sbJ5LiyNmKl",
+                            "formName": "Area of change in coverage policy (17)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "vWyHWGYlxGx",
+                            "formName": "Policy of change in coverage policy (17)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "WR7QyEwmqtq",
+                            "formName": "Health services targeted in change in coverage policy (17)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "vmfNUlnK3D3",
+                            "formName": "People targeted in change in coverage policy (17)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "t22ker43Vi7",
+                            "formName": "Month of change in coverage policy (18)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "WA27bUg63Dh",
+                            "formName": "Area of change in coverage policy (18)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "os0IgAMStfl",
+                            "formName": "Policy of change in coverage policy (18)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "x3jxJF9DqNy",
+                            "formName": "Health services targeted in change in coverage policy (18)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "B12VprnJrCs",
+                            "formName": "People targeted in change in coverage policy (18)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "WRaZ7YO8JV6",
+                            "formName": "Month of change in coverage policy (19)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "xGDYpRE0Vvl",
+                            "formName": "Area of change in coverage policy (19)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "OE3asNfDFlf",
+                            "formName": "Policy of change in coverage policy (19)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "YzGXBvmFVYm",
+                            "formName": "Health services targeted in change in coverage policy (19)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "uPUoqXkGxWx",
+                            "formName": "People targeted in change in coverage policy (19)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "BrmUF8mdt3c",
+                            "formName": "Month of change in coverage policy (20)",
+                            "valueType": "TEXT",
+                            "description": "Month"
+                        },
+                        {
+                            "id": "uF05inoJDh5",
+                            "formName": "Area of change in coverage policy (20)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "LzUtOANFszs",
+                            "formName": "Policy of change in coverage policy (20)",
+                            "valueType": "LONG_TEXT"
+                        },
+                        {
+                            "id": "iP2LBbjXJMD",
+                            "formName": "Health services targeted in change in coverage policy (20)",
+                            "valueType": "TEXT"
+                        },
+                        {
+                            "id": "NG7PK1qyFuN",
+                            "formName": "People targeted in change in coverage policy (20)",
+                            "valueType": "TEXT"
                         }
                     ]
                 }
