@@ -22,6 +22,8 @@ import { chart_rT39aStYqI3_exportedDataBuilder } from "./chart_rT39aStYqI3_expor
 import { chart_nhaxK33nlhb_exportedDataBuilder } from "./chart_nhaxK33nlhb_exportedDataBuilder";
 import { chart_OB4SCQfCzwz_exportedDataBuilder } from "./chart_OB4SCQfCzwz_exportedDataBuilder";
 import { chart_Uf4B2PFIO6f_VQyARVycY60_exportedDataBuilder } from "./chart_Uf4B2PFIO6f_VQyARVycY60_exportedDataBuilder";
+import { chat_fY7K8ATEDgQ_exportedDataBuilder } from "./chat_fY7K8ATEDgQ_exportedDataBuilder";
+import { chart_z6nPPMMbOw5_exportedDataBuilder } from "./chart_z6nPPMMbOw5_exportedDataBuilder";
 
 export const visualizationsExportedDataChartBuilder: Record<
     string,
@@ -50,4 +52,6 @@ export const visualizationsExportedDataChartBuilder: Record<
     rT39aStYqI3: (tabs, chartName) => chart_rT39aStYqI3_exportedDataBuilder(tabs, chartName),
     nhaxK33nlhb: (tabs, chartName) => chart_nhaxK33nlhb_exportedDataBuilder(tabs, chartName),
     OB4SCQfCzwz: (tabs, chartName) => chart_OB4SCQfCzwz_exportedDataBuilder(tabs, chartName),
+    fY7K8ATEDgQ: (tabs, chartName) => chat_fY7K8ATEDgQ_exportedDataBuilder(tabs, chartName),
+    z6nPPMMbOw5: (tabs, chartName) => chart_z6nPPMMbOw5_exportedDataBuilder(tabs, chartName),
 };
