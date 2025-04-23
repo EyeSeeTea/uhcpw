@@ -4,7 +4,7 @@ import { getTabsWithChartDataWithSeriesByCategory } from "./getTabsWithChartData
 const SORTED_PARAMETERS = ["Out-of-pocket payments", "Voluntary health insurance", "Public spending on health"];
 const HEADER_DATA_PARAM_NAME = "Financing scheme";
 const HEADER_DATA_CATEGORY_NAME = "Type of care";
-const HEADERS_BASE = ["Country", "Financing scheme / Year - Type of care"];
+const HEADERS_BASE = ["Country", "Parameter"];
 const SORTED_CATEGORIES = [
     "Inpatient care",
     "Outpatient care",
