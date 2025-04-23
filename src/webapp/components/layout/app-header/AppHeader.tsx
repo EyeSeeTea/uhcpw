@@ -44,7 +44,8 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(6),
         paddingRight: theme.spacing(8),
         "@media (max-width: 1279px)": {
-            paddingRight: theme.spacing(10),
+            paddingLeft: 40,
+            paddingRight: 40,
         },
     },
     rest: {
