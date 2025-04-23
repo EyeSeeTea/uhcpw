@@ -7,6 +7,7 @@ import { CountryFilterState } from "../../../common/state/state";
 import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { PersonState } from "../../../pages/about/AboutState";
 import { useAppContext } from "../../../contexts/app-context";
+import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 
 export interface ExpertsNetworkProps {
     members: PersonState[];
@@ -15,6 +16,8 @@ export interface ExpertsNetworkProps {
 
 export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ members, countryFilter }) => {
     const { generalContent } = useAppContext();
+    const { isXs } = useBreakpoint();
+
     return (
         <>
             <ItemsTitleContainer>
@@ -47,8 +50,8 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
             <Grid container spacing={6} style={{ marginBottom: 6 }}>
                 {members.map((item, index) => {
                     return (
-                        <Grid key={index} item xs={12} sm={6} md>
-                            <ItemPerson person={item} isExpert />
+                        <Grid key={index} item xs={6} sm={6} md>
+                            <ItemPerson person={item} isExpert isSmallImage={isXs} />
                         </Grid>
                     );
                 })}
