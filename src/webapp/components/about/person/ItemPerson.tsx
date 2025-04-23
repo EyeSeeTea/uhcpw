@@ -8,13 +8,14 @@ import { PersonState } from "../../../pages/about/AboutState";
 export interface ItemPersonProps {
     person: PersonState;
     isExpert: boolean;
+    isSmallImage?: boolean;
 }
 
-export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExpert }) => {
+export const ItemPerson: React.FC<ItemPersonProps> = React.memo(({ person, isExpert, isSmallImage = false }) => {
     return (
         <Center role="listitem">
             <Item>
-                <Image src={person.image} alt={`${person.firstName} ${person.lastName}`} />
+                <Image isSmallImage={isSmallImage} src={person.image} alt={`${person.firstName} ${person.lastName}`} />
                 <Row>
                     <InfoContainer>
                         <NameContainer isExpert={isExpert}>
@@ -89,9 +90,9 @@ const Item = styled.div`
     align-items: center;
 `;
 
-const Image = styled.img`
-    width: 200px;
-    height: 200px;
+const Image = styled.img<{ isSmallImage: boolean }>`
+    width: ${props => (props.isSmallImage ? "150px" : "200px")};
+    height: ${props => (props.isSmallImage ? "150px" : "200px")};
     border-radius: 50%;
     margin-bottom: 6px;
     object-fit: cover;
