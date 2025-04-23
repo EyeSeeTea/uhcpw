@@ -161,10 +161,7 @@ const TextLink = styled.a`
 `;
 
 const TextContainer = styled.div`
-    width: 70%;
-    @media (max-width: 600px) {
-        width: 100%;
-    }
+    width: 95%;
 `;
 
 const MainContainer = styled.div`
