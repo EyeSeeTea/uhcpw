@@ -44,7 +44,8 @@ const useStyles = makeStyles(theme => ({
         paddingLeft: theme.spacing(6),
         paddingRight: theme.spacing(8),
         "@media (max-width: 1279px)": {
-            paddingRight: theme.spacing(10),
+            paddingLeft: 40,
+            paddingRight: 40,
         },
     },
     rest: {
@@ -71,8 +72,16 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
-    const { regionalReport, anchorEl, isHomePage, goToHome, handleCountryClick, handleClose, handleSetAnchorEl } =
-        useAppHeader();
+    const {
+        regionalReport,
+        anchorEl,
+        isHomePage,
+        goToHome,
+        handleCountryClick,
+        handleClose,
+        handleSetAnchorEl,
+        logoWidth,
+    } = useAppHeader();
 
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
@@ -85,16 +94,16 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
                     <FlexContainer isFullWidth>
-                        <FlexContainer isWrap>
+                        <FlexContainer>
                             <LogoContainer>
-                                <img src={whoLogoBlue} width={150} alt="WHO logo" onClick={() => goToHome()} />;
+                                <img src={whoLogoBlue} width={logoWidth} alt="WHO logo" onClick={() => goToHome()} />;
                             </LogoContainer>
 
                             {!isHomePage ? (
                                 <LogoContainer>
                                     <img
                                         src={uhcwHomeLogo}
-                                        width={150}
+                                        width={logoWidth}
                                         alt="UHC watch logo to go home"
                                         onClick={() => goToHome()}
                                     />
