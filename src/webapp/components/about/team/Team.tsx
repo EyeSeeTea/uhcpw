@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
@@ -10,6 +10,8 @@ export interface TeamProps {
 }
 
 export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
+    const theme = useTheme();
+    const isXsScreen = useMediaQuery(theme.breakpoints.only("xs"));
     return (
         <>
             <ItemsTitleContainer>
@@ -20,8 +22,8 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
             <Grid container spacing={6}>
                 {team.map((item, index) => {
                     return (
-                        <Grid key={index} item xs={12} sm={6} md>
-                            <ItemPerson person={item} isExpert={false} />
+                        <Grid key={index} item xs={6} sm={6} md>
+                            <ItemPerson person={item} isExpert={false} isSmallImage={isXsScreen} />
                         </Grid>
                     );
                 })}

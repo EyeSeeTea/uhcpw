@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
@@ -15,6 +15,8 @@ export interface ExpertsNetworkProps {
 
 export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ members, countryFilter }) => {
     const { generalContent } = useAppContext();
+    const theme = useTheme();
+    const isXsScreen = useMediaQuery(theme.breakpoints.only("xs"));
     return (
         <>
             <ItemsTitleContainer>
@@ -47,8 +49,8 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
             <Grid container spacing={6} style={{ marginBottom: 6 }}>
                 {members.map((item, index) => {
                     return (
-                        <Grid key={index} item xs={12} sm={6} md>
-                            <ItemPerson person={item} isExpert />
+                        <Grid key={index} item xs={6} sm={6} md>
+                            <ItemPerson person={item} isExpert isSmallImage={isXsScreen} />
                         </Grid>
                     );
                 })}
