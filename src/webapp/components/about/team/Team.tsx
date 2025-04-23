@@ -1,17 +1,17 @@
-import { Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ItemPerson } from "../person/ItemPerson";
 import { PersonState } from "../../../pages/about/AboutState";
+import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 
 export interface TeamProps {
     team: PersonState[];
 }
 
 export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
-    const theme = useTheme();
-    const isXsScreen = useMediaQuery(theme.breakpoints.only("xs"));
+    const { isXs } = useBreakpoint();
     return (
         <>
             <ItemsTitleContainer>
@@ -23,7 +23,7 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
                 {team.map((item, index) => {
                     return (
                         <Grid key={index} item xs={6} sm={6} md>
-                            <ItemPerson person={item} isExpert={false} isSmallImage={isXsScreen} />
+                            <ItemPerson person={item} isExpert={false} isSmallImage={isXs} />
                         </Grid>
                     );
                 })}
