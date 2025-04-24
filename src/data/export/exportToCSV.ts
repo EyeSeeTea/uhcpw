@@ -7,10 +7,11 @@ import {
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { addDataValue, getCellStyles, setHeight, setWidth } from "./utils";
 import { DATA_TAB_NAME, NOTES_TAB_NAME } from "../repositories/indicator-explorer/AnalyticsD2Repository";
-import { columnLimitForDataChartById } from "./data-chart-builder/visualizationsExportedDataChartBuilder";
 
 const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
 const fileExtension = ".xlsx";
+
+const COLUMN_LIMIT = "CZ";
 
 export type Tab = {
     data: string[][];
@@ -22,12 +23,14 @@ export type TabsWithStringOrNumbers = {
     name: string;
 };
 
-export const exportToCSV = (tabs: Tab[], fileName: string) => {
+export const exportToCSV = (tabs: TabsWithStringOrNumbers[], fileName: string) => {
     const tabsWithNumbers = tabs.map(tab => {
         if (tab.name === DATA_TAB_NAME) {
             return {
                 ...tab,
-                data: tab.data.map(row => row.map(cell => parseDataValueFromStringToNumber(cell))),
+                data: tab.data.map(row =>
+                    row.map(cell => (typeof cell === "string" ? parseDataValueFromStringToNumber(cell) : cell))
+                ),
             };
         } else {
             return tab;
@@ -105,10 +108,7 @@ export const exportToCSVIncludingChart = async (params: {
     const chartTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
     if (chartTab) {
         addDataToSheet(chartSheet, chartTab.data);
-        const columnLimit =
-            columnLimitForDataChartById && columnLimitForDataChartById[chartId]
-                ? columnLimitForDataChartById[chartId]
-                : undefined;
+        const columnLimit = chartId !== "kIpnMBaBvZ9" ? COLUMN_LIMIT : undefined;
         if (columnLimit) {
             hideEmptyColumn(chartSheet, columnLimit);
         }

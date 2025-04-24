@@ -255,8 +255,12 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 })
                 .flatMapError(error => {
                     console.error("Error while downloading chart template: ", error);
-
-                    exportToCSV(tabs, chartName || mergedVisualization.name);
+                    const tabsWithChart = exportedDataChartBuilder(
+                        tabs,
+                        chartName || mergedVisualization.name,
+                        orgUnits
+                    );
+                    exportToCSV(tabsWithChart, chartName || mergedVisualization.name);
                     return Future.success(undefined);
                 });
         } else {
