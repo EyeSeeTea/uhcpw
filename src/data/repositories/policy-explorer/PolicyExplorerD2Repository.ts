@@ -50,6 +50,7 @@ export const categoriesNameWithLessThan31Chars: Record<string, string> = {
     Dg4b8bTfEIr: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
+    USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID: "Charges for publicly financed",
 };
 
 export const REFERENCES_TAB_NAME = "References";
@@ -134,7 +135,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
         const allDataElementIdsSelected: string[] = Object.values(selectedPolicyExplorerCategories).reduce(
             (acc, dataElementIds) => [...acc, ...dataElementIds],
-            [...changesInCoveragePolicyDataElementIds]
+            CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID ? [...changesInCoveragePolicyDataElementIds] : []
         );
 
         const dataValuesByOrgUnit = _(allDataValues)

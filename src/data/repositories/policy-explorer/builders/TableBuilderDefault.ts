@@ -2,7 +2,11 @@ import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
-import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
+import {
+    CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID,
+} from "../PolicyExplorerCategoryD2Repository";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export class TableBuilderDefault implements TableBuilder {
@@ -53,7 +57,9 @@ export class TableBuilderDefault implements TableBuilder {
         } = params;
 
         const dataElementsSection = this.getDataElementsSection(
-            policyExplorerCategoryId,
+            policyExplorerCategoryId === USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID
+                ? CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES
+                : policyExplorerCategoryId,
             policyExplorerSubcategoriesIds,
             dataSet
         );

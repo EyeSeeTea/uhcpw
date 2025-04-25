@@ -10,7 +10,7 @@ import _ from "lodash";
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
-import { usePolicyExplorer } from "./usePolicyExplorer";
+import { COMBINED_POLICY_TABLES_CATEGORY_ID, usePolicyExplorer } from "./usePolicyExplorer";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import policyExplorer from "../../assets/policy-explorer.svg";
@@ -72,9 +72,21 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
     }, [errorMessage, snackbar]);
 
     const categories = useMemo(() => {
-        return filters.category.options.filter(
-            category => filters.category.selected && Object.keys(filters.category.selected)?.includes(category.value)
-        );
+        return filters.category.options
+            .filter(
+                category =>
+                    filters.category.selected && Object.keys(filters.category.selected)?.includes(category.value)
+            )
+            .map(category => {
+                if (category.value === COMBINED_POLICY_TABLES_CATEGORY_ID && category.subcategories[0]) {
+                    return {
+                        ...category,
+                        ...category.subcategories[0],
+                    };
+                } else {
+                    return category;
+                }
+            });
     }, [filters.category]);
 
     const getCleanReferencesByCountry = useCallback(

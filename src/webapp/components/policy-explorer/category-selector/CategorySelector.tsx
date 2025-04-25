@@ -8,7 +8,10 @@ import styled from "styled-components";
 import { isEmpty } from "lodash";
 
 import i18n from "../../../../locales";
-import { CATEGORIES_WITHOUT_SUBCATEGORIES } from "../../../pages/policy-explorer/usePolicyExplorer";
+import {
+    CATEGORIES_WITHOUT_SUBCATEGORIES,
+    COMBINED_POLICY_TABLES_CATEGORY_ID,
+} from "../../../pages/policy-explorer/usePolicyExplorer";
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 import SearchInput from "../../search-input/SearchInput";
 import { Node } from "./Node";
@@ -25,6 +28,7 @@ export type CategoryOption = {
     text: string;
     subcategories: SubcategoryOption[];
     description: string;
+    disabledSelection?: boolean;
 };
 
 interface CategorySelectorProps {
@@ -74,10 +78,17 @@ export const CategorySelector = React.memo(
         );
 
         const handleDeleteCategoryFromSelection = useCallback(
-            (categoryId: string) => {
+            (categoryId: string, subcategoryId?: string) => {
                 if (selectedCategoriesWithSubcategories) {
-                    const { [categoryId]: _deleted, ...newSelection } = selectedCategoriesWithSubcategories;
-                    onSelect && onSelect(Object.keys(newSelection)?.length ? newSelection : undefined);
+                    const { [categoryId]: subcategories, ...maybeNewSelection } = selectedCategoriesWithSubcategories;
+                    if (categoryId === COMBINED_POLICY_TABLES_CATEGORY_ID && subcategoryId) {
+                        const restSubcategories = subcategories?.filter(id => id !== subcategoryId);
+                        const isCategoryDeleted = !restSubcategories?.length;
+                        const newSelection = isCategoryDeleted
+                            ? { ...maybeNewSelection }
+                            : { ...maybeNewSelection, [categoryId]: restSubcategories };
+                        onSelect && onSelect(Object.keys(newSelection)?.length ? newSelection : undefined);
+                    }
                 }
             },
             [onSelect, selectedCategoriesWithSubcategories]
@@ -111,7 +122,7 @@ export const CategorySelector = React.memo(
                     onSelect &&
                         onSelect({ ...selectedCategoriesWithSubcategories, [parentCategoryId]: newSubcategories });
                 } else {
-                    handleDeleteCategoryFromSelection(parentCategoryId);
+                    handleDeleteCategoryFromSelection(parentCategoryId, subcategoryId);
                 }
             },
             [handleDeleteCategoryFromSelection, onSelect, selectedCategoriesWithSubcategories]
@@ -229,14 +240,34 @@ export const CategorySelector = React.memo(
                         startAdornment: (
                             <SelectedContainer>
                                 {categoriesSelection?.length
-                                    ? categoriesSelection.map(selectedCategory => (
-                                          <SelectedChip
-                                              key={selectedCategory.value}
-                                              label={selectedCategory.text}
-                                              onDelete={() => handleDeleteCategoryFromSelection(selectedCategory.value)}
-                                              deleteIcon={<CloseIcon fontSize="small" />}
-                                          />
-                                      ))
+                                    ? categoriesSelection.map(selectedCategory => {
+                                          if (selectedCategory.value === COMBINED_POLICY_TABLES_CATEGORY_ID) {
+                                              return selectedCategory.subcategories.map(subcategory => (
+                                                  <SelectedChip
+                                                      key={subcategory.value}
+                                                      label={subcategory.text}
+                                                      onDelete={() =>
+                                                          handleDeleteCategoryFromSelection(
+                                                              selectedCategory.value,
+                                                              subcategory.value
+                                                          )
+                                                      }
+                                                      deleteIcon={<CloseIcon fontSize="small" />}
+                                                  />
+                                              ));
+                                          } else {
+                                              return (
+                                                  <SelectedChip
+                                                      key={selectedCategory.value}
+                                                      label={selectedCategory.text}
+                                                      onDelete={() =>
+                                                          handleDeleteCategoryFromSelection(selectedCategory.value)
+                                                      }
+                                                      deleteIcon={<CloseIcon fontSize="small" />}
+                                                  />
+                                              );
+                                          }
+                                      })
                                     : placeholder}
                             </SelectedContainer>
                         ),
@@ -313,6 +344,7 @@ export const CategorySelector = React.memo(
                                     onSelectedChange={(nodeId: string, selected: boolean) =>
                                         handleSelectedAllSubcategories(nodeId, selected, category.subcategories)
                                     }
+                                    disabledSelection={category.disabledSelection}
                                 >
                                     {category.subcategories.map(({ value, text }) => (
                                         <Leaf

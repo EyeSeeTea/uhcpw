@@ -103,6 +103,49 @@ const sectionsList = [
     ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
 ];
 
+// NOTICE: This is hardcoded because this is not a section in metadata for user charges for publicly financed health care by type of care
+export const USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID =
+    "USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID";
+
+const USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_SUBCATEGORIES: PolicyExplorerSubcategory[] = [
+    {
+        id: "q2Q3iwrGu0O",
+        name: "Primary Care",
+    },
+    {
+        id: "O4qsWEa3bS6",
+        name: "Specialist Visits",
+    },
+    {
+        id: "qcw1buhHOjf",
+        name: "Emergency Visits",
+    },
+    {
+        id: "Wie0b5v1MvN",
+        name: "Medical Products",
+    },
+    {
+        id: "uoyYFskbl1n",
+        name: "Diagnostics Tests",
+    },
+    {
+        id: "C0s9QXe5V1q",
+        name: "Dental Visits",
+    },
+    {
+        id: "WGeiJg8qs8l",
+        name: "Dental Care Treatment",
+    },
+    {
+        id: "GWwXTTIKpHv",
+        name: "Inpatient Care",
+    },
+    {
+        id: "G4K6dugnvys",
+        name: "Inpatient Medicines",
+    },
+];
+
 const selectCategoryInfoDataElements: Record<string, Id> = {
     title: "yEaMMB7MXqI",
     text: "SAzOXqrxWfI",
@@ -220,6 +263,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         const programSections = programMetadata?.programStages[0]?.programStageSections || [];
 
         const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
+        const combinedPolicyTablesCategory = this.getCombinedPolicyTablesCategories();
         return [
             ...dataSetSections
                 .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
@@ -248,6 +292,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                     };
                 }),
             changesInCoveragePolicyMergedCategory,
+            ...combinedPolicyTablesCategory,
         ];
     }
 
@@ -261,6 +306,16 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             description: notes,
         };
         return changesInCoveragePolicyMergedCategory;
+    }
+
+    private getCombinedPolicyTablesCategories(): PolicyExplorerCategory[] {
+        const combinedPolicyTablesCategory: PolicyExplorerCategory = {
+            id: USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID,
+            name: "User charges for publicly financed health care by type of care",
+            subcategories: USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_SUBCATEGORIES,
+            description: "",
+        };
+        return [combinedPolicyTablesCategory];
     }
 }
 
