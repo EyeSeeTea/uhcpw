@@ -29,10 +29,12 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(1.5),
         paddingLeft: theme.spacing(8),
         paddingRight: theme.spacing(7.5),
-        "@media (max-width: 500px)": {
-            flexWrap: "wrap",
-            justifyContent: "flex-end",
-            gap: 4,
+        "@media (max-width: 450px)": {
+            paddingLeft: "10px",
+            paddingRight: "10px",
+        },
+        "@media (max-width: 800px)": {
+            background: colors.accentPrimary,
         },
     },
     toolbarBottom: {
@@ -89,7 +91,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
         <div className={classes.root}>
             <MuiAppBar position="static">
                 <Toolbar className={classes.toolbarTop}>
-                    <Typography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</Typography>
+                    <StyledTypography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</StyledTypography>
                     <Box className={classes.rest} />
                 </Toolbar>
                 <Toolbar className={classes.toolbarBottom}>
@@ -225,6 +227,10 @@ const FlexContainer = styled.div<{ isFullWidth?: boolean; isWrap?: boolean }>`
 `;
 
 const MenuContainer = styled.div``;
+
+const StyledTypography = styled(Typography)`
+    white-space: nowrap;
+`;
 
 const DesktopMenuContainer = styled.div`
     white-space: nowrap;
