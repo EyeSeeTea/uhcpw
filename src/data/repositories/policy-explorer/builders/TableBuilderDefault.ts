@@ -1,7 +1,13 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
+import {
+    COUNTRY_HEADER_NAME,
+    D2DataSet,
+    D2OptionSet,
+    EMPTY_DATA,
+    PERIOD_HEADER_NAME,
+} from "../PolicyExplorerD2Repository";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
@@ -44,6 +50,7 @@ export class TableBuilderDefault implements TableBuilder {
         period?: string;
         references: string;
         dataSet?: D2DataSet;
+        userChargesApplyOptionsSet: D2OptionSet;
     }): PolicyExplorerCell[][] {
         const {
             policyExplorerCategoryId,
@@ -54,6 +61,7 @@ export class TableBuilderDefault implements TableBuilder {
             period,
             references,
             currentRowsInTable,
+            userChargesApplyOptionsSet,
         } = params;
 
         const dataElementsSection = this.getDataElementsSection(
@@ -74,9 +82,16 @@ export class TableBuilderDefault implements TableBuilder {
 
         const restCellsInRow = dataElementsSection.map(de => {
             const dataValue = dataValuesByGroup.find(dv => dv.dataElement === de.id);
+
+            const isUserChargesApplyOptionsSet = de.optionSetValue && de.optionSet.id === userChargesApplyOptionsSet.id;
+
+            const value = isUserChargesApplyOptionsSet
+                ? userChargesApplyOptionsSet.options.find(option => option.code === dataValue?.value)?.name
+                : dataValue?.value;
+
             return {
                 type: PolicyExplorerCellType.DATA,
-                value: dataValue?.value || EMPTY_DATA,
+                value: value || EMPTY_DATA,
                 references,
             };
         });

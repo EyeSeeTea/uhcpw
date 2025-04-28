@@ -1,6 +1,6 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { PolicyExplorerCell } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { D2DataSet } from "../PolicyExplorerD2Repository";
+import { D2DataSet, D2OptionSet } from "../PolicyExplorerD2Repository";
 import { TableBuilderByTypeOfHealthcare } from "./TableBuilderByTypeOfHealthcare";
 import { TableBuilderDefault } from "./TableBuilderDefault";
 import {
@@ -24,6 +24,7 @@ export interface TableBuilder {
         period?: string;
         references: string;
         dataSet?: D2DataSet;
+        userChargesApplyOptionsSet: D2OptionSet;
     }): PolicyExplorerCell[][];
 }
 

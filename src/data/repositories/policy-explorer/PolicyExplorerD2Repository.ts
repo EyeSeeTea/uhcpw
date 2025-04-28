@@ -67,6 +67,8 @@ const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     changesInCoveragePolicy: "Dg4b8bTfEIr",
 };
 
+const USER_CHARGES_APPLY_OPTION_SET_CODE = "USER_CHARGES_APPLY";
+
 const REFERENCES_REGEX = /\[.*?\]: <\/> ".*?"/g;
 const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 
@@ -94,7 +96,13 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     period: this.getPeriods(yearsByCategory),
                 })
             ),
-        }).map(({ dataSetResponse, dataValuesResponse }) => {
+            userChargesApplyOptionsSetResponse: apiToFuture(
+                this.api.models.optionSets.get({
+                    fields: optionSetsFields,
+                    filter: { code: { eq: USER_CHARGES_APPLY_OPTION_SET_CODE } },
+                })
+            ),
+        }).flatMap(({ dataSetResponse, dataValuesResponse, userChargesApplyOptionsSetResponse }) => {
             const dataValuesWithOrgUnitNames = this.populateDataValuesWithOrgUnitNames(
                 dataValuesResponse.dataValues,
                 countriesAndRegions
@@ -105,7 +113,13 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 policyExplorerCategories
             );
 
-            return {
+            if (!userChargesApplyOptionsSetResponse.objects[0]) {
+                return Future.error("User charges apply option set not found");
+            }
+
+            const userChargesApplyOptionsSet: D2OptionSet = userChargesApplyOptionsSetResponse.objects[0];
+
+            return Future.success({
                 tables: this.buildTables({
                     policyExplorerCategories,
                     dataValuesWithOrgUnitNames,
@@ -113,6 +127,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     yearsByCategory,
                     dataSet: dataSetResponse.objects[0],
                     programCategories,
+                    userChargesApplyOptionsSet: userChargesApplyOptionsSet,
                 }),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndRegions),
                 references: this.buildReferences(
@@ -120,7 +135,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     countriesAndRegions,
                     lastPeriodWithDataByCountry
                 ),
-            };
+            });
         });
     }
 
@@ -340,6 +355,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
         programCategories: PolicyExplorerCategory[];
+        userChargesApplyOptionsSet: D2OptionSet;
     }): Record<string, PolicyExplorerCell[][]> {
         const {
             policyExplorerCategories,
@@ -348,6 +364,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             yearsByCategory,
             dataSet,
             programCategories,
+            userChargesApplyOptionsSet,
         } = params;
 
         const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
@@ -426,6 +443,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             period,
                             references: areMarkdownReferences ? references : "",
                             dataSet,
+                            userChargesApplyOptionsSet: userChargesApplyOptionsSet,
                         });
                     },
                     []
@@ -564,7 +582,14 @@ const dataSetFields = {
     sections: {
         id: true,
         displayName: true,
-        dataElements: { id: true, formName: true, valueType: true, description: true },
+        dataElements: {
+            id: true,
+            formName: true,
+            valueType: true,
+            description: true,
+            optionSetValue: true,
+            optionSet: true,
+        },
     },
 } as const;
 
@@ -575,3 +600,12 @@ export type D2DataSet = MetadataPick<{
 type DataValueSetsDataValueWithOrgUnitNames = DataValueSetsDataValue & {
     orgUnitShortName: string;
 };
+
+export const optionSetsFields = {
+    id: true,
+    options: { id: true, name: true, code: true },
+} as const;
+
+export type D2OptionSet = MetadataPick<{
+    optionSets: { fields: typeof optionSetsFields };
+}>["optionSets"][number];

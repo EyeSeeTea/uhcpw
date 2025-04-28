@@ -88,6 +88,9 @@ export const CategorySelector = React.memo(
                             ? { ...maybeNewSelection }
                             : { ...maybeNewSelection, [categoryId]: restSubcategories };
                         onSelect && onSelect(Object.keys(newSelection)?.length ? newSelection : undefined);
+                    } else {
+                        const newSelection = maybeNewSelection;
+                        onSelect && onSelect(Object.keys(newSelection)?.length ? newSelection : undefined);
                     }
                 }
             },

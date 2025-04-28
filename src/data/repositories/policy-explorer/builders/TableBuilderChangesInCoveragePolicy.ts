@@ -1,6 +1,12 @@
 import { DataValueSetsDataValue } from "../../../../types/d2-api";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
+import {
+    COUNTRY_HEADER_NAME,
+    D2DataSet,
+    D2OptionSet,
+    EMPTY_DATA,
+    PERIOD_HEADER_NAME,
+} from "../PolicyExplorerD2Repository";
 import { TableBuilder } from "./TableBuilder";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
 
@@ -178,6 +184,7 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
         period?: string;
         references: string;
         sortByMonth?: boolean;
+        userChargesApplyOptionsSet: D2OptionSet;
     }): PolicyExplorerCell[][] {
         const { currentRowsInTable, dataValuesByGroup, orgUnitName, period, references, sortByMonth = false } = params;
 
