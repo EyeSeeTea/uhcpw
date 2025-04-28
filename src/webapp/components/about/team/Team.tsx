@@ -4,12 +4,14 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ItemPerson } from "../person/ItemPerson";
 import { PersonState } from "../../../pages/about/AboutState";
+import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 
 export interface TeamProps {
     team: PersonState[];
 }
 
 export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
+    const { isXs } = useBreakpoint();
     return (
         <>
             <ItemsTitleContainer>
@@ -17,11 +19,11 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
                 <Subtitle variant="h5">{i18n.t("Staff and consultants")}</Subtitle>
             </ItemsTitleContainer>
 
-            <Grid container spacing={10}>
+            <Grid container spacing={6}>
                 {team.map((item, index) => {
                     return (
-                        <Grid key={index} item xs={6} md>
-                            <ItemPerson person={item} isExpert={false} />
+                        <Grid key={index} item xs={6} sm={6} md>
+                            <ItemPerson person={item} isExpert={false} isSmallImage={isXs} />
                         </Grid>
                     );
                 })}

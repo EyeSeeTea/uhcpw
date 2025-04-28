@@ -100,7 +100,7 @@ const sectionsList = [
     DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
     CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
     // CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
-    ...Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID),
+    ...CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 ];
 
 // NOTICE: This is hardcoded because this is not a section in metadata for user charges for publicly financed health care by type of care
@@ -266,7 +266,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         const combinedPolicyTablesCategory = this.getCombinedPolicyTablesCategories();
         return [
             ...dataSetSections
-                .filter(({ id }) => !Object.values(CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID).includes(id))
+                .filter(({ id }) => CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID !== id)
                 .map((section): PolicyExplorerCategory => {
                     const notes = infoNotes[section.id] || "";
 
