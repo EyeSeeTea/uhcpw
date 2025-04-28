@@ -3,7 +3,7 @@ import { getTabsWithChartData } from "./getTabsWithChartData";
 
 const SORTED_PARAMETERS = ["Further impoverished", "Impoverished"];
 const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Country", "Parameter / Year"];
+const HEADERS_BASE = ["Country", "Parameter"];
 
 export const chart_jFtGKQIQTGp_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,
