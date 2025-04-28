@@ -1,4 +1,4 @@
-import { InputAdornment, Menu, Typography, Button } from "@material-ui/core";
+import { InputAdornment, Menu, Typography, Button, useMediaQuery } from "@material-ui/core";
 import React, { useCallback, useMemo, useState } from "react";
 import i18n from "../../../locales";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
@@ -17,6 +17,7 @@ import {
     BOSNIA_AND_HERZEGOVINA_LEVEL_4,
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
 } from "../../../data/repositories/countries/CountryD2Repository";
+import useWindowSize from "../../common/hooks/screen/useWindowSize";
 
 const EMPTY_IDS_ARRAY: string[] = [];
 const ALL_NODE_ID = "all";
@@ -75,6 +76,9 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         allSelectedLabel,
         selectedItemsToShowWhenAllSelected = EMPTY_IDS_ARRAY,
     }) => {
+        const isSmallScreen = useMediaQuery("(max-width:700px)");
+        const { width } = useWindowSize();
+
         const [expanded, setExpanded] = useState(false);
         const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
         const [searchTerm, setSearchTerm] = React.useState<string>("");
@@ -348,6 +352,10 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
             return selectedChips.length === 0 ? placeholder : "";
         }, [placeholder, selectedChips.length]);
 
+        const containerWidth = useMemo(() => {
+            return isSmallScreen ? `${width - 100}px` : "600px";
+        }, [isSmallScreen, width]);
+
         return (
             <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
@@ -407,7 +415,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                 />
                 <StyledMenu
                     id="tree-selector-menu"
-                    PaperProps={{ style: { width: "600px", padding: "16px" } }}
+                    PaperProps={{ style: { width: containerWidth, padding: "16px" } }}
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     getContentAnchorEl={null}
@@ -432,33 +440,34 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         )}
 
                         <br />
-                        <Container $fullWidth={fullWidth}>
-                            <Typography variant="body1" gutterBottom>
-                                {placeholder}
-                            </Typography>
-                            {hasSelectAll && (
-                                <StyledButton
-                                    variant="text"
-                                    onClick={handleSelectAll}
-                                    disabled={
-                                        areAllItemsSelected || (!!maxSelection && maxSelection < itemsToSelect.length)
-                                    }
-                                    right={100}
-                                >
-                                    {i18n.t("Select all")}
-                                </StyledButton>
-                            )}
-                            {hasClearAll && (
-                                <StyledButton
-                                    variant="text"
-                                    onClick={handleClear}
-                                    disabled={(selectedIds || []).length === 0}
-                                    right={30}
-                                >
-                                    {i18n.t("Clear")}
-                                </StyledButton>
-                            )}
-                        </Container>
+                        <PlaceholderAndButtonsContainer $fullWidth={fullWidth}>
+                            <StyledTypography variant="body1">{placeholder}</StyledTypography>
+                            {hasSelectAll || hasClearAll ? (
+                                <ButtonsContainer $isSmallScreen={isSmallScreen}>
+                                    {hasSelectAll && (
+                                        <StyledButton
+                                            variant="text"
+                                            onClick={handleSelectAll}
+                                            disabled={
+                                                areAllItemsSelected ||
+                                                (!!maxSelection && maxSelection < itemsToSelect.length)
+                                            }
+                                        >
+                                            {i18n.t("Select all")}
+                                        </StyledButton>
+                                    )}
+                                    {hasClearAll && (
+                                        <StyledButton
+                                            variant="text"
+                                            onClick={handleClear}
+                                            disabled={(selectedIds || []).length === 0}
+                                        >
+                                            {i18n.t("Clear")}
+                                        </StyledButton>
+                                    )}
+                                </ButtonsContainer>
+                            ) : null}
+                        </PlaceholderAndButtonsContainer>
                         <TreeView
                             disableSelection
                             defaultCollapseIcon={<ArrowDropUpIcon aria-label="collapse-icon" />}
@@ -550,7 +559,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     </div>
                 </StyledMenu>
                 {(selectedIds || []).length > 0 && hasClearAll && (
-                    <StyledButton
+                    <StyledButtonClear
                         variant="text"
                         onClick={handleClear}
                         disabled={disabled}
@@ -558,7 +567,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         right={-15}
                     >
                         {i18n.t("Clear")}
-                    </StyledButton>
+                    </StyledButtonClear>
                 )}
             </Container>
         );
@@ -579,16 +588,27 @@ function getSelectedCount(selectedIds: string[], children: TreeOption[]): number
 const Container = styled.div<{ $fullWidth: boolean }>`
     position: relative;
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 `;
 
-const StyledButton = styled(Button)<{ top?: number; right?: number }>`
+const PlaceholderAndButtonsContainer = styled(Container)<{ $fullWidth: boolean }>`
+    margin-block-end: 6px;
+`;
+
+const StyledButton = styled(Button)`
     color: orange;
     text-transform: none;
-    position: absolute;
-    top: ${props => props.top || 0}px;
-    right: ${props => props.right || 0}px;
     padding: 0px;
     font-weight: 400;
+`;
+
+const StyledButtonClear = styled(StyledButton)<{ top?: number; right?: number }>`
+    position: absolute;
+    top: ${props => props.top}px;
+    right: ${props => props.right}px;
 `;
 
 const SelectedContainer = styled.div`
@@ -616,4 +636,14 @@ const FirstLevelLeafWrapper = styled.div`
     .MuiTreeItem-label {
         padding: 8px;
     }
+`;
+
+const ButtonsContainer = styled.div<{ $isSmallScreen: boolean }>`
+    padding-inline-end: ${props => (props.$isSmallScreen ? "5px" : "30px")};
+    white-space: nowrap;
+`;
+
+const StyledTypography = styled(Typography)`
+    white-space: nowrap;
+    margin-block-end: 4px;
 `;

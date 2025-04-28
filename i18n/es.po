@@ -221,6 +221,12 @@ msgstr ""
 msgid "Read less"
 msgstr ""
 
+msgid "Abbreviations"
+msgstr ""
+
+msgid "Glossary"
+msgstr ""
+
 msgid "Error fetching Methods"
 msgstr ""
 
