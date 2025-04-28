@@ -16,6 +16,7 @@ import { MobileMenu } from "./MobileMenu";
 import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -29,11 +30,11 @@ const useStyles = makeStyles(theme => ({
         paddingBottom: theme.spacing(1.5),
         paddingLeft: theme.spacing(8),
         paddingRight: theme.spacing(7.5),
-        "@media (max-width: 450px)": {
+        "@media (max-width: 500px)": {
             paddingLeft: "10px",
             paddingRight: "10px",
         },
-        "@media (max-width: 800px)": {
+        "@media (max-width: 1279px)": {
             background: colors.accentPrimary,
         },
     },
@@ -84,16 +85,45 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
         handleSetAnchorEl,
         logoWidth,
     } = useAppHeader();
+    const { isMd, isSm, isXs } = useBreakpoint();
 
+    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
+    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
         <div className={classes.root}>
             <MuiAppBar position="static">
                 <Toolbar className={classes.toolbarTop}>
-                    <StyledTypography> {i18n.t("WHO Barcelona Office for Health Systems Financing")}</StyledTypography>
+                    <ToolbarTextContainer isFullWidth={isMd || isSm || isXs} isCentered={isMd || isSm || isXs}>
+                        <StyledTypography>
+                            {i18n.t("WHO Barcelona Office for Health Systems Financing")}
+                        </StyledTypography>
+                    </ToolbarTextContainer>
+
                     <Box className={classes.rest} />
+
+                    <Hidden mdDown>
+                        <TagContainer>
+                            <Tag>
+                                <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
+                            </Tag>
+                        </TagContainer>
+
+                        <MenuTopLink
+                            target="_blank"
+                            href="https://cmyn.short.gy/abbreviations"
+                            onClick={abbreviationsPageView}
+                        >
+                            {i18n.t("Abbreviations")}
+                        </MenuTopLink>
+
+                        <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
+                            {i18n.t("Glossary")}
+                        </MenuTopLink>
+                    </Hidden>
                 </Toolbar>
+
                 <Toolbar className={classes.toolbarBottom}>
                     <FlexContainer isFullWidth>
                         <FlexContainer>
@@ -229,7 +259,9 @@ const FlexContainer = styled.div<{ isFullWidth?: boolean; isWrap?: boolean }>`
 const MenuContainer = styled.div``;
 
 const StyledTypography = styled(Typography)`
-    white-space: nowrap;
+    @media (max-width: 400px) {
+        font-size: 14px;
+    }
 `;
 
 const DesktopMenuContainer = styled.div`
@@ -264,4 +296,26 @@ const MenuButton = styled(Button)`
 const LogoContainer = styled.div`
     margin: 10px 10px;
     cursor: pointer;
+`;
+
+const TagContainer = styled.div`
+    margin-right: 16px;
+`;
+
+const Tag = styled.div`
+    text-align: center;
+    min-width: 100px;
+    background-color: #4fad56;
+    color: white;
+    border-radius: 30px;
+    padding: 5px 10px;
+`;
+
+const ToolbarTextContainer = styled.div<{ isFullWidth?: boolean; isCentered?: boolean }>`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-self: ${props => (props.isCentered ? "center" : "flex-start")};
+    width: ${props => (props.isFullWidth ? "100%" : "auto")};
 `;
