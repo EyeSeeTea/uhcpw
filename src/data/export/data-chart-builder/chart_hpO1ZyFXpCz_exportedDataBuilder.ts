@@ -10,7 +10,7 @@ const SORTED_PARAMETERS = [
     "Diagnostic tests",
 ];
 const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Country", "Parameter / Year"];
+const HEADERS_BASE = ["Country", "Parameter"];
 
 export const chart_hpO1ZyFXpCz_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,
