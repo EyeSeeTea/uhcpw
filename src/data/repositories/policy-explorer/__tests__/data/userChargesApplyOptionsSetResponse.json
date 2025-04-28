@@ -1,0 +1,30 @@
+{
+    "pager": {
+        "page": 1,
+        "pageCount": 1,
+        "total": 1,
+        "pageSize": 50
+    },
+    "optionSets": [
+        {
+            "id": "hPkMF5P9UVk",
+            "options": [
+                {
+                    "code": "YES_3",
+                    "name": "Yes",
+                    "id": "UjRdB9iWUIZ"
+                },
+                {
+                    "code": "NO_3",
+                    "name": "No",
+                    "id": "qcSflOZBF8Q"
+                },
+                {
+                    "code": "NOT_COVERED",
+                    "name": "Varies",
+                    "id": "oZAb8NOQbgo"
+                }
+            ]
+        }
+    ]
+}

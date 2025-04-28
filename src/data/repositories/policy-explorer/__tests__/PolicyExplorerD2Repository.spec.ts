@@ -17,6 +17,7 @@ import policyExplorerResponseByTypeOfHealthcare from "./data/policyExplorerRespo
 import policyExplorerResponseMoreThanOneCountry from "./data/policyExplorerResponseMoreThanOneCountry.json";
 import policyExplorerResponseWithoutOneSubcategory from "./data/policyExplorerResponseWithoutOneSubcategory.json";
 import programEventValues from "./data/programEventValues.json";
+import userChargesApplyOptionsSetResponse from "./data/userChargesApplyOptionsSetResponse.json";
 
 import {
     PolicyExplorer,
@@ -111,6 +112,7 @@ describe("Given Policy Explorer repository", () => {
     describe("When get one category Gaps in coverage policy explorer category with country Spain", () => {
         it("Then should request with correct param orgUnit", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -136,6 +138,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should request with correct param period", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -161,6 +164,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have table in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -186,6 +190,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have corresponding table columns and rows in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesSimple();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -214,6 +219,7 @@ describe("Given Policy Explorer repository", () => {
     describe("When get two policy explorer categories with country Spain", () => {
         it("Then should request with correct param period", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMoreThanOneCategory();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -245,6 +251,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have two policy explorer categories table in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMoreThanOneCategory();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -271,6 +278,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have two policy explorer categories table columns and rows in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMoreThanOneCategory();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -300,6 +308,7 @@ describe("Given Policy Explorer repository", () => {
     describe("When get an empty policy explorer category with country Spain", () => {
         it("Then should have an empty table in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesEmpty();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -327,6 +336,7 @@ describe("Given Policy Explorer repository", () => {
     describe("When get Changes in coverage policy since 2020 policy explorer category with country Spain", () => {
         it("Then should request with correct param period", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMultiplePeriods();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -358,6 +368,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have more than one period inside table in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMultiplePeriods();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -384,6 +395,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should table have corresponding columns and rows in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMultiplePeriods();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -413,6 +425,7 @@ describe("Given Policy Explorer repository", () => {
     describe("When get User charges (co-payments) by type of health care policy explorer category with country Spain", () => {
         it("Then should table have corresponding columns and rows in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesByTypeOfHealthcare();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -440,6 +453,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have a column with the types of healthcare selected", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesByTypeOfHealthcare();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -473,6 +487,7 @@ describe("Given Policy Explorer repository", () => {
     describe("When get one category Gaps in coverage policy explorer category with country Spain and Belgium", () => {
         it("Then should request with correct param orgUnit", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -504,6 +519,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have more than one country inside table in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -530,6 +546,7 @@ describe("Given Policy Explorer repository", () => {
         });
         it("Then should have corresponding table columns and rows in response", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesMoreThanOneCountry();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -559,6 +576,7 @@ describe("Given Policy Explorer repository", () => {
     describe("When get one category Gaps in coverage policy explorer category without subcategory Population entitlement: Main gaps in publicly financed coverage with country Spain", () => {
         it("Then should not have the subcategory not included", async () => {
             givenAPolicyExplorerDataSet();
+            givenUserChargesApplyOptionsSet();
             givenDataValuesWithoutOneSubcategory();
             const countriesAndRegions = givenACountriesAndRegions();
             const programEventValues = givenAProgramEventValues();
@@ -674,6 +692,17 @@ function givenDataValuesByTypeOfHealthcare() {
             endpoint: `/api/dataValueSets`,
             httpStatusCode: 200,
             response: dataValuesByTypeOfHealthcare,
+        },
+    ]);
+}
+
+function givenUserChargesApplyOptionsSet() {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/optionSets`,
+            httpStatusCode: 200,
+            response: userChargesApplyOptionsSetResponse,
         },
     ]);
 }

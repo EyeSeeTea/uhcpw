@@ -89,6 +89,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     filter: { id: { eq: policyExplorerDataSet_ID } },
                 })
             ),
+            userChargesApplyOptionsSetResponse: apiToFuture(
+                this.api.models.optionSets.get({
+                    fields: optionSetsFields,
+                    filter: { code: { eq: USER_CHARGES_APPLY_OPTION_SET_CODE } },
+                })
+            ),
             dataValuesResponse: apiToFuture(
                 this.api.dataValues.getSet({
                     dataSet: [policyExplorerDataSet_ID],
@@ -96,13 +102,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     period: this.getPeriods(yearsByCategory),
                 })
             ),
-            userChargesApplyOptionsSetResponse: apiToFuture(
-                this.api.models.optionSets.get({
-                    fields: optionSetsFields,
-                    filter: { code: { eq: USER_CHARGES_APPLY_OPTION_SET_CODE } },
-                })
-            ),
-        }).flatMap(({ dataSetResponse, dataValuesResponse, userChargesApplyOptionsSetResponse }) => {
+        }).flatMap(({ dataSetResponse, userChargesApplyOptionsSetResponse, dataValuesResponse }) => {
             const dataValuesWithOrgUnitNames = this.populateDataValuesWithOrgUnitNames(
                 dataValuesResponse.dataValues,
                 countriesAndRegions
