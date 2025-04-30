@@ -18,6 +18,7 @@ export const chart_WDUV9ZrJiNC_exportedDataBuilder: (tabs: Tab[], chartName: str
         sortedDataParams: SORTED_PARAMETERS,
         dataParamToSortBy: DATA_PARAM_SORT_BY,
     });
+
     const data = tabsWithExportedData.find(tab => tab.name === DATA_TAB_NAME)?.data || [];
 
     const rowUsedToSort = data.find(row => row[0] === DATA_PARAM_SORT_BY);
@@ -26,7 +27,7 @@ export const chart_WDUV9ZrJiNC_exportedDataBuilder: (tabs: Tab[], chartName: str
         throw new Error(`Row with parameter ${DATA_PARAM_SORT_BY} not found`);
     }
 
-    const dataIndexes = rowUsedToSort.slice(1).map((_, i) => i);
+    const dataIndexes = rowUsedToSort.map((_, i) => i);
 
     const sortedIndicesByZeroValuesAtTheEnd = dataIndexes.sort((a, b) => {
         if (a === 0 || b === 0) return 0;
@@ -41,7 +42,7 @@ export const chart_WDUV9ZrJiNC_exportedDataBuilder: (tabs: Tab[], chartName: str
 
     const dataWithZeroValuesAtTheEnd = data.map(row => sortedIndicesByZeroValuesAtTheEnd.map(i => row[i] ?? null));
 
-    const sortedTabs = tabs.map((tab): TabsWithStringOrNumbers => {
+    return tabs.map((tab): TabsWithStringOrNumbers => {
         if (tab.name === DATA_TAB_NAME) {
             return {
                 ...tab,
@@ -50,6 +51,4 @@ export const chart_WDUV9ZrJiNC_exportedDataBuilder: (tabs: Tab[], chartName: str
         }
         return tab;
     });
-
-    return sortedTabs;
 };
