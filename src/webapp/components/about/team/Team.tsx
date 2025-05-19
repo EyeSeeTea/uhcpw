@@ -34,6 +34,9 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
 
 const ItemsTitleContainer = styled.div`
     padding: 64px 32px 16px 32px;
+    @media (max-width: 959px) {
+        padding: 32px 32px 16px 32px;
+    }
 `;
 
 const Title = styled(Typography)`
@@ -43,4 +46,7 @@ const Title = styled(Typography)`
 const Subtitle = styled(Typography)`
     color: rgba(36, 38, 38, 0.7);
     margin-top: 10px;
+    @media (max-width: 959px) {
+        max-width: 100%;
+    }
 `;
