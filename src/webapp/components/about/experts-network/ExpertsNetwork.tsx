@@ -62,6 +62,9 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
 
 const ItemsTitleContainer = styled.div`
     padding: 64px 32px 16px 32px;
+    @media (max-width: 959px) {
+        padding: 32px 32px 16px 32px;
+    }
 `;
 
 const Title = styled(Typography)`
@@ -72,6 +75,9 @@ const Subtitle = styled(Typography)`
     color: rgba(36, 38, 38, 0.7);
     max-width: 50%;
     margin-top: 10px;
+    @media (max-width: 959px) {
+        max-width: 100%;
+    }
 `;
 
 const Row = styled.div`

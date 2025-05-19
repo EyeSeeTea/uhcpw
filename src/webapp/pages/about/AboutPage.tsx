@@ -67,6 +67,9 @@ const TitleContainer = styled.div`
     background: ${colors.gradientPrimary2};
     color: white;
     padding: 32px 64px;
+    @media (max-width: 959px) {
+        padding: 32px;
+    }
 `;
 
 const GradientDividerOrange = styled.div`
