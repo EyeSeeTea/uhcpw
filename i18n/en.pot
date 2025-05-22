@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-02-27T12:22:28.082Z\n"
-"PO-Revision-Date: 2025-02-27T12:22:28.082Z\n"
+"POT-Creation-Date: 2025-04-11T14:01:00.625Z\n"
+"PO-Revision-Date: 2025-04-11T14:01:00.625Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -107,9 +107,6 @@ msgstr ""
 msgid "About us"
 msgstr ""
 
-msgid "WHO privacy policy"
-msgstr ""
-
 msgid "Contact our office"
 msgstr ""
 
@@ -123,6 +120,9 @@ msgid "08025 Barcelona, Spain"
 msgstr ""
 
 msgid "Tel: +34 673 290 861"
+msgstr ""
+
+msgid "WHO privacy policy"
 msgstr ""
 
 msgid "Mobile-friendly version coming soon"
@@ -218,6 +218,12 @@ msgid "Read more"
 msgstr ""
 
 msgid "Read less"
+msgstr ""
+
+msgid "Abbreviations"
+msgstr ""
+
+msgid "Glossary"
 msgstr ""
 
 msgid "Error fetching Methods"

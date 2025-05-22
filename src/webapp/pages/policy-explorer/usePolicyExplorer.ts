@@ -20,7 +20,7 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../../../data/repositories/countries/CountryD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
@@ -29,12 +29,12 @@ import { Maybe } from "../../../types/utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
-    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 
 export const CATEGORIES_WITHOUT_SUBCATEGORIES = [
-    CHANGES_IN_COVERAGE_POLICY_MERGED_CATEGORIES_ID,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 

@@ -7,6 +7,7 @@ import { CountryFilterState } from "../../../common/state/state";
 import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { PersonState } from "../../../pages/about/AboutState";
 import { useAppContext } from "../../../contexts/app-context";
+import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 
 export interface ExpertsNetworkProps {
     members: PersonState[];
@@ -15,6 +16,8 @@ export interface ExpertsNetworkProps {
 
 export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ members, countryFilter }) => {
     const { generalContent } = useAppContext();
+    const { isXs } = useBreakpoint();
+
     return (
         <>
             <ItemsTitleContainer>
@@ -44,11 +47,11 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
                 />
             </Row>
 
-            <Grid container spacing={8} style={{ marginBottom: 6 }}>
+            <Grid container spacing={6} style={{ marginBottom: 6 }}>
                 {members.map((item, index) => {
                     return (
-                        <Grid key={index} item xs={6} md>
-                            <ItemPerson person={item} isExpert />
+                        <Grid key={index} item xs={6} sm={6} md>
+                            <ItemPerson person={item} isExpert isSmallImage={isXs} />
                         </Grid>
                     );
                 })}
@@ -59,6 +62,9 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
 
 const ItemsTitleContainer = styled.div`
     padding: 64px 32px 16px 32px;
+    @media (max-width: 959px) {
+        padding: 32px 32px 16px 32px;
+    }
 `;
 
 const Title = styled(Typography)`
@@ -69,6 +75,9 @@ const Subtitle = styled(Typography)`
     color: rgba(36, 38, 38, 0.7);
     max-width: 50%;
     margin-top: 10px;
+    @media (max-width: 959px) {
+        max-width: 100%;
+    }
 `;
 
 const Row = styled.div`

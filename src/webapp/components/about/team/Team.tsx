@@ -4,12 +4,14 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ItemPerson } from "../person/ItemPerson";
 import { PersonState } from "../../../pages/about/AboutState";
+import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 
 export interface TeamProps {
     team: PersonState[];
 }
 
 export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
+    const { isXs } = useBreakpoint();
     return (
         <>
             <ItemsTitleContainer>
@@ -17,11 +19,11 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
                 <Subtitle variant="h5">{i18n.t("Staff and consultants")}</Subtitle>
             </ItemsTitleContainer>
 
-            <Grid container spacing={10}>
+            <Grid container spacing={6}>
                 {team.map((item, index) => {
                     return (
-                        <Grid key={index} item xs={6} md>
-                            <ItemPerson person={item} isExpert={false} />
+                        <Grid key={index} item xs={6} sm={6} md>
+                            <ItemPerson person={item} isExpert={false} isSmallImage={isXs} />
                         </Grid>
                     );
                 })}
@@ -32,6 +34,9 @@ export const Team: React.FC<TeamProps> = React.memo(({ team }) => {
 
 const ItemsTitleContainer = styled.div`
     padding: 64px 32px 16px 32px;
+    @media (max-width: 959px) {
+        padding: 32px 32px 16px 32px;
+    }
 `;
 
 const Title = styled(Typography)`
@@ -41,4 +46,7 @@ const Title = styled(Typography)`
 const Subtitle = styled(Typography)`
     color: rgba(36, 38, 38, 0.7);
     margin-top: 10px;
+    @media (max-width: 959px) {
+        max-width: 100%;
+    }
 `;

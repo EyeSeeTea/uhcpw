@@ -28,26 +28,30 @@ export const AboutPage: React.FC = React.memo(() => {
             <GradientDividerOrange />
 
             <HeaderSection>
-                <Container maxWidth="xl">
+                <StyledContainer maxWidth="xl">
                     <Header officeInfo={officeInfo} />
-                </Container>
+                </StyledContainer>
             </HeaderSection>
 
             <PeopleSection aria-label="Office team">
-                <Container maxWidth="xl">
+                <StyledContainer maxWidth="xl">
                     <Team team={team} />
-                </Container>
+                </StyledContainer>
             </PeopleSection>
             <GradientDividerOrange />
 
             <PeopleSection aria-label="Experts">
-                <Container maxWidth="xl">
+                <StyledContainer maxWidth="xl">
                     <ExpertsNetwork members={experts} countryFilter={countryFilter} />
-                </Container>
+                </StyledContainer>
             </PeopleSection>
         </Layout>
     );
 });
+
+const StyledContainer = styled(Container)`
+    overflow: hidden;
+`;
 
 const HeaderSection = styled.div`
     background: ${colors.gradientPrimary2};
@@ -63,6 +67,9 @@ const TitleContainer = styled.div`
     background: ${colors.gradientPrimary2};
     color: white;
     padding: 32px 64px;
+    @media (max-width: 959px) {
+        padding: 32px;
+    }
 `;
 
 const GradientDividerOrange = styled.div`
