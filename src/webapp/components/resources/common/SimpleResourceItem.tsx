@@ -103,7 +103,7 @@ const Text = styled(Typography)`
 const Image = styled.img<{ $maintainAspectRatio?: boolean; $fullWidth?: boolean }>`
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
     height: 300px;
-    object-fit: cover;
+    object-fit: ${props => (props.$maintainAspectRatio ? "contain" : "cover")};
 `;
 
 const Row = styled.div`

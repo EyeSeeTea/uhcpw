@@ -89,7 +89,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
-                        image={resource.imageOriginal}
+                        image={resource.imageCustom}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         redirectWithEvent={analyticsEvent}
@@ -103,7 +103,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.links[0]?.url || ""}
-                        image={resource.imageOriginal}
+                        image={resource.imageCustom}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         redirectWithEvent={analyticsEvent}
@@ -117,7 +117,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.url}
-                        image={resource.imageOriginal}
+                        image={resource.imageCustom}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         redirectWithEvent={analyticsEvent}
@@ -131,7 +131,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                     <SimpleResourceItem
                         title={resource.title}
                         url={resource.url}
-                        image={resource.imageOriginal}
+                        image={resource.imageCustom}
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         redirectWithEvent={analyticsEvent}

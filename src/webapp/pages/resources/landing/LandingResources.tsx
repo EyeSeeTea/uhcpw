@@ -76,7 +76,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                                         image={multimediaItem.imageOriginal}
                                         date={multimediaItem.date}
                                         redirectWithEvent={analyticsEvent}
-                                        maintainAspectRatio
+                                        maintainAspectRatio={false}
                                         fullWidth
                                     />
                                 </Grid>
@@ -105,7 +105,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                                         image={newsItem.imageOriginal}
                                         date={newsItem.date}
                                         redirectWithEvent={analyticsEvent}
-                                        maintainAspectRatio
+                                        maintainAspectRatio={false}
                                         fullWidth
                                     />
                                 </Grid>
