@@ -93,9 +93,45 @@ export function addDataValue(sheet: Sheet, value: string, cellRef: string) {
     sheet.cell(cellRef).value(value);
 }
 
+export function getColumnLetterByIndex(columnIndex: number): string {
+    // Convert it to a letter representation (A, B, C, ..., Z, AA, AB, ..., AZ, BA, ..., ZZ, AAA, ...)
+    const toLetters = (index: number): string =>
+        index < 26
+            ? String.fromCharCode(65 + index)
+            : toLetters(Math.floor(index / 26) - 1) + String.fromCharCode(65 + (index % 26));
+
+    return toLetters(columnIndex);
+}
+
+export function getColumnIndexByLetter(columnLetter: string): number {
+    return (
+        columnLetter
+            .toUpperCase()
+            .split("")
+            .reduce((acc, char) => acc * 26 + (char.charCodeAt(0) - 64), 0) - 1
+    );
+}
+
+export function generateColumnLettersUntilLimit(limitLetter: string): string[] {
+    const maxIndex = getColumnIndexByLetter(limitLetter);
+    return Array.from({ length: maxIndex + 1 }, (_, i) => getColumnLetterByIndex(i));
+}
+
+export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string) {
+    generateColumnLettersUntilLimit(columnLimit).forEach(columnLetter => {
+        const columnValues: TabsWithStringOrNumbers["data"] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
+        const columnIsEmpty = columnValues.every((value: (string | number | null)[]) =>
+            value.every(cell => cell === "" || cell === undefined || cell === null)
+        );
+        if (columnIsEmpty) {
+            sheet.column(columnLetter).hidden(true);
+        }
+    });
+}
+
 export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: number, columnDataIndex: number) {
     const rowNumber = rowDataIndex + 1;
-    const column = String.fromCharCode("A".charCodeAt(0) + columnDataIndex);
+    const column = getColumnLetterByIndex(columnDataIndex);
     const cellRef = `${column}${rowNumber}`;
 
     const isDownloadDateCell =
@@ -168,7 +204,7 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
         return COLUMN_WIDTHS.referencesColumn;
     }
 
-    const column = String.fromCharCode("A".charCodeAt(0) + columnDataIndex);
+    const column = getColumnLetterByIndex(columnDataIndex);
     const headerColumnValue = sheet.cell(`${column}2`).value();
 
     if (headerColumnValue === PERIOD_HEADER_NAME) {
