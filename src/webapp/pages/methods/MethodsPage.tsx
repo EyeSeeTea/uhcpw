@@ -10,6 +10,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import React from "react";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { VerticalGrid } from "../../components/VerticalGrid";
+import { Method } from "../../../domain/entities/Method";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
@@ -57,18 +59,44 @@ export const MethodsPage: React.FC = () => {
     const { methods, isExpanded, setExpanded } = useMethods();
     const { sendPageView, redirectWithPageView } = useAnalytics();
 
-    const handleClick = (index: number) => {
-        const updatedExpanded = [...isExpanded];
-        updatedExpanded[index] = !updatedExpanded[index];
-        setExpanded(updatedExpanded);
-    };
+    const handleClick = React.useCallback(
+        (index: number) => {
+            const updatedExpanded = [...isExpanded];
+            updatedExpanded[index] = !updatedExpanded[index];
+            setExpanded(updatedExpanded);
+        },
+        [isExpanded, setExpanded]
+    );
+
+    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
+    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
+
+    const methodItems = React.useMemo(
+        () => [
+            ...buildMethodItems({
+                methods,
+                isExpanded,
+                onClick: handleClick,
+            }),
+            <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons" key={"methods-buttom"}>
+                <DownloadLink
+                    target="_blank"
+                    href="https://cmyn.short.gy/abbreviations"
+                    onClick={abbreviationsPageView}
+                >
+                    {i18n.t("Abbreviations")}
+                </DownloadLink>
+                <DownloadLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
+                    {i18n.t("Glossary")}
+                </DownloadLink>
+            </ButtonsGridItem>,
+        ],
+        [methods, isExpanded, handleClick, glossaryPageView, abbreviationsPageView]
+    );
 
     React.useEffect(() => {
         sendPageView({ title: "Methods" });
     }, [sendPageView]);
-
-    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
-    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
 
     return (
         <Layout>
@@ -76,46 +104,42 @@ export const MethodsPage: React.FC = () => {
                 <Typography variant="h3">{i18n.t("Methods")}</Typography>
             </TitleContainer>
             <MainContainer>
-                <Grid container spacing={5} aria-label="methods-container">
-                    {methods.map((method, i) => (
-                        <Grid item xs={12} sm={6} key={method.sectionName} aria-label="method-item">
-                            <Typography variant="h5" style={{ marginBottom: "10px" }}>
-                                {method.sectionName}
-                            </Typography>
-                            {isExpanded[i] === false ? (
-                                <TextContainer>
-                                    <MethodsMarkdown>{method.shortText}</MethodsMarkdown>
-                                    <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => handleClick(i)}>
-                                        {i18n.t("Read more")}
-                                    </StyledReadMoreButton>
-                                </TextContainer>
-                            ) : (
-                                <TextContainer>
-                                    <MethodsMarkdown>{method.text}</MethodsMarkdown>
-                                    <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => handleClick(i)}>
-                                        {i18n.t("Read less")}
-                                    </StyledReadMoreButton>
-                                </TextContainer>
-                            )}
-                        </Grid>
-                    ))}
-                    <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
-                        <DownloadLink
-                            target="_blank"
-                            href="https://cmyn.short.gy/abbreviations"
-                            onClick={abbreviationsPageView}
-                        >
-                            {i18n.t("Abbreviations")}
-                        </DownloadLink>
-                        <DownloadLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
-                            {i18n.t("Glossary")}
-                        </DownloadLink>
-                    </ButtonsGridItem>
-                </Grid>
+                <VerticalGrid aria-label="methods-container" columns={2} items={methodItems} />
             </MainContainer>
         </Layout>
     );
 };
+
+type BuildMethodItemProps = {
+    methods: Method[];
+    isExpanded: boolean[];
+    onClick: (index: number) => void;
+};
+function buildMethodItems(props: BuildMethodItemProps) {
+    const { methods, isExpanded, onClick } = props;
+    return methods.map((method, i) => (
+        <Grid item key={method.sectionName} aria-label="method-item">
+            <Typography variant="h5" style={{ marginBottom: "10px" }}>
+                {method.sectionName}
+            </Typography>
+            {isExpanded[i] === false ? (
+                <TextContainer>
+                    <MethodsMarkdown>{method.shortText}</MethodsMarkdown>
+                    <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => onClick(i)}>
+                        {i18n.t("Read more")}
+                    </StyledReadMoreButton>
+                </TextContainer>
+            ) : (
+                <TextContainer>
+                    <MethodsMarkdown>{method.text}</MethodsMarkdown>
+                    <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => onClick(i)}>
+                        {i18n.t("Read less")}
+                    </StyledReadMoreButton>
+                </TextContainer>
+            )}
+        </Grid>
+    ));
+}
 
 const TitleContainer = styled.div`
     background: url(${bubblePattern}) no-repeat right top;
