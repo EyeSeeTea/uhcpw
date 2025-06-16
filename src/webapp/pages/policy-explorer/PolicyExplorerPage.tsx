@@ -136,7 +136,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                     </Center>
                 )}
 
-                {!isLoading && data && dataOrientationByTable ? (
+                {!isLoading && data && dataOrientationByTable && (
                     <Content>
                         <DownloadButton
                             aria-label="Download"
@@ -164,9 +164,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             />
                         ))}
                     </Content>
-                ) : (
-                    <EmptyContent info={selectCategoryInfo} />
                 )}
+
+                {!isLoading && (!data || !dataOrientationByTable) && <EmptyContent info={selectCategoryInfo} />}
 
                 {!isLoading && (
                     <div ref={referencesRef}>
