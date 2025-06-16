@@ -15,6 +15,7 @@ export type PolicyExplorerState = {
     onDownload: () => void;
     selectCategoryInfo: PolicyExplorerSelectCategoryInfo | undefined;
     errorMessage: string;
+    isLoading: boolean;
 };
 
 type ExtraCountryFilterState = CountryFilterState & {
