@@ -10,7 +10,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import React from "react";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
-import { VerticalGrid } from "../../components/VerticalGrid";
+import { ColumnGridContainer } from "../../components/ColumnGridContainer";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
@@ -77,9 +77,9 @@ export const MethodsPage: React.FC = () => {
                 <Typography variant="h3">{i18n.t("Methods")}</Typography>
             </TitleContainer>
             <MainContainer>
-                <VerticalGrid container spacing={5} aria-label="methods-container" columns={2}>
+                <ColumnGridContainer spacing={5} aria-label="methods-container" columns={2}>
                     {methods.map((method, i) => (
-                        <Grid item xs={12} sm={6} key={method.sectionName} aria-label="method-item">
+                        <Grid item xs={12} key={method.sectionName} aria-label="method-item">
                             <Typography variant="h5" style={{ marginBottom: "10px" }}>
                                 {method.sectionName}
                             </Typography>
@@ -112,7 +112,7 @@ export const MethodsPage: React.FC = () => {
                             {i18n.t("Glossary")}
                         </DownloadLink>
                     </ButtonsGridItem>
-                </VerticalGrid>
+                </ColumnGridContainer>
             </MainContainer>
         </Layout>
     );
