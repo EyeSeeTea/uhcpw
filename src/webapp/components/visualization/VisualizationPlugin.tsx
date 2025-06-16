@@ -1,5 +1,5 @@
 import { CircularProgress, Typography } from "@material-ui/core";
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
@@ -24,6 +24,7 @@ interface VisualizationPluginProps {
     isSquareChart?: boolean;
     visualizationName?: string;
     analyticsPageTitle: string;
+    onLoadingChange?: (loading: boolean) => void;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -41,6 +42,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         paddingEnd = true,
         isSquareChart = false,
         analyticsPageTitle,
+        onLoadingChange,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -53,6 +55,14 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     );
 
     const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (chartData.kind === "Loaded" || chartData.kind === "Error") {
+            onLoadingChange?.(false);
+        } else {
+            onLoadingChange?.(true);
+        }
+    }, [chartData, sendEvent, analyticsPageTitle, onLoadingChange]);
 
     const onDirectDownloadImage = useCallback(() => {
         if (chartData.kind === "Loaded" && ref.current) {
