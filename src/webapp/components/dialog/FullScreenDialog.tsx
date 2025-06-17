@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
+import { Rotate } from "../rotate/Rotate";
 
 type FullScreenDialogProps = {
     isOpen: boolean;
@@ -8,22 +9,47 @@ type FullScreenDialogProps = {
     onClose: () => void;
     title?: string;
     ref?: React.RefObject<HTMLDivElement>;
+    forceRotation?: boolean;
 };
 
-export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({ isOpen, onClose, children, ref, title }) => {
+export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
+    isOpen,
+    onClose,
+    children,
+    ref,
+    title,
+    forceRotation,
+}) => {
     return (
         <Dialog open={isOpen} onClose={onClose} fullScreen>
-            <DialogContainer ref={ref}>
-                <CloseIconButton onClick={onClose}>
-                    <StyledCloseIcon />
-                </CloseIconButton>
+            {forceRotation && (
+                <Rotate>
+                    <DialogContainer ref={ref}>
+                        <CloseIconButton onClick={onClose}>
+                            <StyledCloseIcon />
+                        </CloseIconButton>
 
-                <DialogContent>
-                    {title && <Title variant="h6">{title}</Title>}
+                        <DialogContent>
+                            {title && <Title variant="h6">{title}</Title>}
 
-                    {children}
-                </DialogContent>
-            </DialogContainer>
+                            {children}
+                        </DialogContent>
+                    </DialogContainer>
+                </Rotate>
+            )}
+            {!forceRotation && (
+                <DialogContainer ref={ref}>
+                    <CloseIconButton onClick={onClose}>
+                        <StyledCloseIcon />
+                    </CloseIconButton>
+
+                    <DialogContent>
+                        {title && <Title variant="h6">{title}</Title>}
+
+                        {children}
+                    </DialogContent>
+                </DialogContainer>
+            )}
         </Dialog>
     );
 };
