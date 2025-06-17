@@ -22,10 +22,6 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
-    const [openFullScreenDialog, setOpenFullScreenDialog] = React.useState<Boolean | undefined>();
-
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -40,32 +36,15 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     }, [globalMessage, snackbar]);
 
     useEffect(() => {
-        if (isMobile && showVisualization && filters.indicators.selected && openFullScreenDialog === undefined) {
-            setOpenFullScreenDialog(true);
-        }
-    }, [filters.indicators.selected, isMobile, openFullScreenDialog, showVisualization]);
-
-    useEffect(() => {
-        if (!showVisualization) {
-            setOpenFullScreenDialog(undefined);
-        }
-    }, [showVisualization]);
-
-    useEffect(() => {
         sendPageView({ title: "Indicator explorer" });
     }, [sendPageView]);
 
     const handleOpenScreenshot = React.useCallback(() => {
         setOpenScreenshot(true);
-        setOpenFullScreenDialog(false);
     }, []);
 
     const handleCloseScreenshot = React.useCallback(() => {
         setOpenScreenshot(false);
-    }, []);
-
-    const handleCloseFullScreen = React.useCallback(() => {
-        setOpenFullScreenDialog(false);
     }, []);
 
     const chartName = useMemo(
@@ -100,23 +79,10 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         onDownloadImage={handleOpenScreenshot}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                         analyticsPageTitle="Indicator explorer"
+                        fullScreenInMobile={true}
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
-                )}
-
-                {openFullScreenDialog && (
-                    <FullScreenDialog isOpen={true} onClose={handleCloseFullScreen} forceRotation={true}>
-                        <VisualizationPlugin
-                            visualizationId={filters.indicators.selected || ""}
-                            years={filters.year.selected || []}
-                            countries={filters.country.selected || []}
-                            noDataMessage={pageContent?.noDataMessage}
-                            onDownloadImage={handleOpenScreenshot}
-                            isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
-                            analyticsPageTitle="Indicator explorer"
-                        />
-                    </FullScreenDialog>
                 )}
 
                 <ScreenshotModal

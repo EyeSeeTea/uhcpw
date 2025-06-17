@@ -1,5 +1,5 @@
-import { CircularProgress, Typography } from "@material-ui/core";
-import React, { useCallback, useRef } from "react";
+import { CircularProgress, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import React, { useCallback, useEffect, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
@@ -7,6 +7,7 @@ import { ChartPlugin } from "./ChartPlugin";
 import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { FullScreenDialog } from "../dialog/FullScreenDialog";
 
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 
@@ -24,6 +25,7 @@ interface VisualizationPluginProps {
     isSquareChart?: boolean;
     visualizationName?: string;
     analyticsPageTitle: string;
+    fullScreenInMobile?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -41,6 +43,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         paddingEnd = true,
         isSquareChart = false,
         analyticsPageTitle,
+        fullScreenInMobile = false,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -51,8 +54,26 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         currentCountry,
         visualizationName
     );
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+    const [openFullScreenDialog, setOpenFullScreenDialog] = React.useState<boolean | undefined>();
 
     const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (fullScreenInMobile && isMobile && openFullScreenDialog === undefined) {
+            console.debug({ fullScreenInMobile, isMobile, openFullScreenDialog });
+            setOpenFullScreenDialog(true);
+        }
+    }, [fullScreenInMobile, isMobile, openFullScreenDialog]);
+
+    useEffect(() => {
+        setOpenFullScreenDialog(undefined);
+    }, [visualizationId]);
+
+    const handleCloseFullScreen = React.useCallback(() => {
+        setOpenFullScreenDialog(false);
+    }, []);
 
     const onDirectDownloadImage = useCallback(() => {
         if (chartData.kind === "Loaded" && ref.current) {
@@ -85,13 +106,23 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }
     }, [analyticsPageTitle, chartData, onDownloadExcel, sendEvent]);
 
+    const handleDownloadImage = React.useCallback(() => {
+        if (onDownloadImage) {
+            setOpenFullScreenDialog(false);
+            onDownloadImage();
+        } else {
+            onDirectDownloadImage();
+        }
+    }, [onDownloadImage, onDirectDownloadImage]);
+
     return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
-        <Container
-            className="VisualizationPlugin-container"
+        <VisualizationPluginContainer
             ref={ref}
-            $withoutBackground={withoutBackground}
-            $marginStart={!useHeaderForCountryPage && !isScreenshot}
-            $paddingEnd={paddingEnd}
+            withoutBackground={withoutBackground}
+            marginStart={!useHeaderForCountryPage && !isScreenshot}
+            paddingEnd={paddingEnd}
+            handleCloseFullScreen={handleCloseFullScreen}
+            fullscreen={openFullScreenDialog || false}
         >
             <VisualizationPluginHeader
                 visualizationDialogInfo={chartData.visualizationDialogInfo || ""}
@@ -100,7 +131,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 categoryTag={chartData?.categoryTag}
                 showInfo={showInfo}
                 onDownloadExcel={isScreenshot ? undefined : downloadExcel}
-                onDownloadImage={isScreenshot ? undefined : onDownloadImage || onDirectDownloadImage}
+                onDownloadImage={isScreenshot ? undefined : handleDownloadImage}
                 onShowInfo={isScreenshot ? undefined : onShowInfo}
                 onCloseInfo={isScreenshot ? undefined : onCloseInfo}
                 useHeaderForCountryPage={useHeaderForCountryPage}
@@ -121,7 +152,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 externalchartOptions={chartData.chartOptions}
                 isSquareChart={isSquareChart}
             />
-        </Container>
+        </VisualizationPluginContainer>
     ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
         <Center>
             <Typography variant="subtitle1">
@@ -138,6 +169,44 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         </Center>
     );
 });
+
+type VisualizationPluginContainerProps = {
+    children: React.ReactNode;
+    fullscreen?: boolean;
+    handleCloseFullScreen?: () => void;
+    withoutBackground: boolean;
+    marginStart: boolean;
+    paddingEnd: boolean;
+    ref?: React.RefObject<HTMLDivElement>;
+};
+
+export const VisualizationPluginContainer: React.FC<VisualizationPluginContainerProps> = React.memo(
+    ({ children, fullscreen, handleCloseFullScreen, withoutBackground, marginStart, paddingEnd, ref }) => {
+        return fullscreen && handleCloseFullScreen ? (
+            <FullScreenDialog isOpen={true} onClose={handleCloseFullScreen} forceRotation={true}>
+                <Container
+                    className="VisualizationPlugin-container"
+                    ref={ref}
+                    $withoutBackground={withoutBackground}
+                    $marginStart={marginStart}
+                    $paddingEnd={paddingEnd}
+                >
+                    {children}
+                </Container>
+            </FullScreenDialog>
+        ) : (
+            <Container
+                className="VisualizationPlugin-container"
+                ref={ref}
+                $withoutBackground={withoutBackground}
+                $marginStart={marginStart}
+                $paddingEnd={paddingEnd}
+            >
+                {children}
+            </Container>
+        );
+    }
+);
 
 const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean; $paddingEnd?: boolean }>`
     margin-block-start: ${props => (props.$marginStart ? "48px" : "0px")};
