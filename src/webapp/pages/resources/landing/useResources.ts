@@ -26,7 +26,7 @@ export function useResources(): ResourcesState {
     }, [history.location.search]);
 
     const { filters, items, onGetResources } = useResourcesByType({
-        favouriteSection: true,
+        isFavouriteSection: true,
         includeAdvancedSearch: true,
         themeFilter: themeFilter,
     });
@@ -34,7 +34,7 @@ export function useResources(): ResourcesState {
     const landingResources = useMemo(() => {
         return items && !filters.search.term && !filters.theme.selected
             ? {
-                  countryAnalysisByCountry: getAnalysisCountries(items, countries),
+                  countryAnalysisByCountry: getFavoriteAnalysisCountries(items, countries),
                   comparativeAnalysis: getComparativeAnalysis(items, true),
                   news: getNews(items, true),
                   multimedia: getMultimedia(items, true),
@@ -65,11 +65,11 @@ export function useResources(): ResourcesState {
     };
 }
 
-function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
+function getFavoriteAnalysisCountries(items: ResourceState[], countries: Country[]) {
     return _.unionBy(
         _.orderBy(
             items
-                .filter(item => item.kind === "country-analysis")
+                .filter(item => item.kind === "country-analysis" && !!item.favouriteSection)
                 .map(countryAnalysis => {
                     const countryId = (countryAnalysis as CountryAnalysis).countryId;
                     const country = countries.find(country => country.id === countryId);
@@ -87,7 +87,7 @@ function getNews(items: ResourceState[], isLanding: boolean): News[] {
         "favouriteSectionOrder"
     ) as News[];
 
-    return isLanding ? news.slice(0, 1) : news;
+    return isLanding ? news.filter(item => !!item.favouriteSection).slice(0, 1) : news;
 }
 
 function getMultimedia(items: ResourceState[], isLanding: boolean): MultimediaState[] {
@@ -96,7 +96,7 @@ function getMultimedia(items: ResourceState[], isLanding: boolean): MultimediaSt
         "favouriteSectionOrder"
     ) as MultimediaState[];
 
-    return isLanding ? multimedia.slice(0, 1) : multimedia;
+    return isLanding ? multimedia.filter(item => !!item.favouriteSection).slice(0, 1) : multimedia;
 }
 
 function getComparativeAnalysis(items: ResourceState[], isLanding: boolean): ComparativeAnalysisState[] {
@@ -105,5 +105,5 @@ function getComparativeAnalysis(items: ResourceState[], isLanding: boolean): Com
         "favouriteSectionOrder"
     ) as ComparativeAnalysisState[];
 
-    return isLanding ? comparativeAnalysis.slice(0, 6) : comparativeAnalysis;
+    return isLanding ? comparativeAnalysis.filter(item => !!item.favouriteSection).slice(0, 6) : comparativeAnalysis;
 }
