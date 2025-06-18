@@ -98,7 +98,7 @@ const GetTableButton = styled(Button)<{ $isMobile: boolean }>`
     white-space: nowrap;
     background: #185698;
     width: ${({ $isMobile }) => ($isMobile ? "100%" : "auto")};
-    margin-block-start: ${({ $isMobile }) => ($isMobile ? "20px" : "0")};
+    margin-block-start: ${({ $isMobile }) => ($isMobile ? "10px" : "0")};
 `;
 
 const GridGetTableButton = styled(Grid)`

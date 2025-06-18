@@ -294,6 +294,9 @@ const ReferenceText = styled(Typography)`
 const MainSection = styled.div`
     background: white;
     padding: 48px 64px;
+    @media (max-width: 600px) {
+        padding: 24px 64px;
+    }
 `;
 
 const TitleContainer = styled.div`
