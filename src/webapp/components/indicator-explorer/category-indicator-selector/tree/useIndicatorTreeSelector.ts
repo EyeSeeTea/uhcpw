@@ -88,11 +88,13 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
             setOpenedMenu(!openedMenu);
             setExpanded(!expanded);
 
-            if (event.target instanceof HTMLElement) {
+            if (!isSmallScreen && !openedMenu && inputRef.current) {
+                inputRef.current.focus();
+            } else if (isSmallScreen && event.target instanceof HTMLElement) {
                 event.target.blur();
             }
         },
-        [expanded, openedMenu]
+        [expanded, isSmallScreen, openedMenu]
     );
 
     const handleClear = useCallback(() => {
