@@ -1,4 +1,4 @@
-import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
@@ -13,7 +13,6 @@ import { VisualizationPlugin } from "../../components/visualization/Visualizatio
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
-import { FullScreenDialog } from "../../components/dialog/FullScreenDialog";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const snackbar = useSnackbar();
@@ -113,6 +112,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 const MainSection = styled.div`
     background: white;
     padding: 48px 64px;
+    @media (max-width: 600px) {
+        padding: 24px 64px;
+    }
 `;
 
 const TitleContainer = styled.div`
