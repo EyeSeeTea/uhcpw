@@ -87,8 +87,9 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
             event.preventDefault();
             setOpenedMenu(!openedMenu);
             setExpanded(!expanded);
-            if (!openedMenu && inputRef.current) {
-                inputRef.current.focus();
+
+            if (event.target instanceof HTMLElement) {
+                event.target.blur();
             }
         },
         [expanded, openedMenu]
