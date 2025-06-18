@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useEffect } from "react";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, useTheme, useMediaQuery } from "@material-ui/core";
 import moment from "moment";
 import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
@@ -29,6 +29,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
     const { sendPageView, redirectWithExternalLink } = useAnalytics();
 
     const referencesRef = useRef<HTMLDivElement>(null);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(props.searchParams);
@@ -157,9 +160,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             />
                         ))}
                     </Content>
-                ) : (
+                ) : !isMobile ? (
                     <EmptyContent info={selectCategoryInfo} />
-                )}
+                ) : null}
 
                 <div ref={referencesRef}>
                     {data?.generalInfo.map(info => {

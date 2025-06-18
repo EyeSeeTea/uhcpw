@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
@@ -21,6 +21,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -80,9 +83,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         analyticsPageTitle="Indicator explorer"
                         fullScreenInMobile={true}
                     />
-                ) : (
+                ) : !isMobile ? (
                     <EmptyContent info={pageContent?.selectCategory} />
-                )}
+                ) : null}
 
                 <ScreenshotModal
                     open={openScreenshot}
