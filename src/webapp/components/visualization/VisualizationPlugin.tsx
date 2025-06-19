@@ -26,6 +26,7 @@ interface VisualizationPluginProps {
     visualizationName?: string;
     analyticsPageTitle: string;
     fullScreenInMobile?: boolean;
+    onCloseFullScreen?: () => void;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -44,6 +45,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         isSquareChart = false,
         analyticsPageTitle,
         fullScreenInMobile = false,
+        onCloseFullScreen,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -73,7 +75,10 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 
     const handleCloseFullScreen = React.useCallback(() => {
         setOpenFullScreenDialog(false);
-    }, []);
+        if (onCloseFullScreen) {
+            onCloseFullScreen();
+        }
+    }, [onCloseFullScreen]);
 
     const onDirectDownloadImage = useCallback(() => {
         if (chartData.kind === "Loaded" && ref.current) {

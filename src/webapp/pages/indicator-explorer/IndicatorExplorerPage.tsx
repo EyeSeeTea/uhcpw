@@ -17,7 +17,8 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const snackbar = useSnackbar();
 
-    const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, pageContent, closeVisualization } =
+        useIndicatorExplorer();
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
@@ -82,6 +83,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                         analyticsPageTitle="Indicator explorer"
                         fullScreenInMobile={true}
+                        onCloseFullScreen={closeVisualization}
                     />
                 ) : !isMobile ? (
                     <EmptyContent info={pageContent?.selectCategory} />
