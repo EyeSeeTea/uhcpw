@@ -77,6 +77,9 @@ const emptyHomePageContent: HomePageContent = {
         },
         buttonLink: "",
     },
+    resources: {
+        buttonLink: "",
+    },
     newsletter: {
         buttonText: "",
         buttonLink: "",

@@ -12,7 +12,6 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
-import { Link } from "react-router-dom";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ResourcesCarousel } from "../../components/resources-carousel/ResourcesCarousel";
 
@@ -88,11 +87,11 @@ export const MobileHomePage: React.FC = React.memo(() => {
                         </Box>
                     </BoxLink>
 
-                    <StyledLink to="/resources">
+                    <BoxLink href={homePageContent.resources.buttonLink || ""}>
                         <Box color={colors.darkBlue}>
                             <StyledTitleTypography>{i18n.t("Resources")}</StyledTitleTypography>
                         </Box>
-                    </StyledLink>
+                    </BoxLink>
                 </Grid>
             </section>
 
@@ -213,9 +212,4 @@ const Image = styled.img`
     @media (max-width: 400px) {
         width: 30px;
     }
-`;
-
-const StyledLink = styled(Link)`
-    color: white;
-    text-decoration: none;
 `;

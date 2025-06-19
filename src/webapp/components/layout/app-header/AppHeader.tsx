@@ -20,7 +20,7 @@ export const useStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     toolbarTop: {
-        background: colors.gradientPrimary,
+        background: colors.gradientPrimaryMobile,
         minHeight: 20,
         alignItems: "center",
         paddingTop: theme.spacing(1.5),
@@ -30,9 +30,6 @@ export const useStyles = makeStyles(theme => ({
         "@media (max-width: 500px)": {
             paddingLeft: "10px",
             paddingRight: "10px",
-        },
-        "@media (max-width: 1279px)": {
-            background: colors.gradientPrimaryMobile,
         },
     },
     toolbarBottom: {
@@ -71,7 +68,7 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const { redirectWithPageView } = useAnalytics();
-    const { isHomePage, goToHome, whoLogoWidth, uhcwLogoWidth } = useAppHeader();
+    const { goToHome, whoLogoWidth, uhcwLogoWidth } = useAppHeader();
     const isSmallScreen = useIsSmallScreen();
 
     const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
@@ -117,32 +114,18 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                                 <img src={whoLogoBlue} width={whoLogoWidth} alt="WHO logo" onClick={() => goToHome()} />
                             </LogoContainer>
 
-                            {!isHomePage ? (
-                                <LogoContainer>
-                                    <img
-                                        src={uhcwHomeLogo}
-                                        width={whoLogoWidth}
-                                        alt="UHC watch logo to go home"
-                                        onClick={() => goToHome()}
-                                    />
-                                    ;
-                                </LogoContainer>
-                            ) : null}
+                            <LogoContainer>
+                                <img
+                                    src={uhcwHomeLogo}
+                                    width={uhcwLogoWidth}
+                                    alt="UHC watch logo to go home"
+                                    onClick={() => goToHome()}
+                                />
+                                ;
+                            </LogoContainer>
                         </FlexContainer>
 
                         <FlexContainer>
-                            {isHomePage && isSmallScreen ? (
-                                <LogoContainer>
-                                    <img
-                                        src={uhcwHomeLogo}
-                                        width={uhcwLogoWidth}
-                                        alt="UHC watch logo to go home"
-                                        onClick={() => goToHome()}
-                                    />
-                                    ;
-                                </LogoContainer>
-                            ) : null}
-
                             <MenuContainer>
                                 <Hidden lgUp>
                                     <MobileMenu />

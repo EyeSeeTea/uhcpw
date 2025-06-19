@@ -3,6 +3,7 @@ export type HomePageContent = {
     explorers: ExplorersContent;
     analysis: AnalysisContent;
     methods: MethodsContent;
+    resources: ResourcesContent;
     newsletter: NewsletterContent;
     mobileDialog: MobileDialogContent;
 };
@@ -47,6 +48,10 @@ export type MethodsContent = {
     column1: ColumnContent;
     column2: ColumnContent;
     column3: ColumnContent;
+    buttonLink: string;
+};
+
+export type ResourcesContent = {
     buttonLink: string;
 };
 
