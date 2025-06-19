@@ -48,7 +48,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         }, [fallbackImage]);
 
         return (
-            <Item elevation={0} role="listitem" disablePadding={disableMainPadding}>
+            <Item elevation={0} role="listitem" $disablePadding={disableMainPadding}>
                 <Column>
                     <a
                         href={url}
@@ -68,7 +68,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
 
                     <Box height={20} />
 
-                    <Content hasPadding={disableMainPadding}>
+                    <Content $hasPadding={disableMainPadding}>
                         <Row>
                             {tag && !hideTag && <Tag theme={tag} color={tagColor} onClick={onTagClick} />}
 
@@ -90,13 +90,13 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
     }
 );
 
-const Content = styled.div<{ hasPadding?: boolean }>`
-    padding: ${props => (props.hasPadding ? "0 16px 16px 16px" : "0px")};
+const Content = styled.div<{ $hasPadding?: boolean }>`
+    padding: ${props => (props.$hasPadding ? "0 16px 16px 16px" : "0px")};
 `;
 
-const Item = styled(Card)<{ disablePadding?: boolean }>`
+const Item = styled(Card)<{ $disablePadding?: boolean }>`
     border-radius: 10px;
-    padding-block: ${props => (props.disablePadding ? "0px" : "16px")};
+    padding-block: ${props => (props.$disablePadding ? "0px" : "16px")};
     flex-direction: column;
 `;
 

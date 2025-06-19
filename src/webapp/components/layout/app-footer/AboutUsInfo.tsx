@@ -33,7 +33,7 @@ export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
                 target="_blank"
                 onClick={redirectWithExternalLink}
             >
-                <StyledTypography variant="body2" gutterBottom fullWidth={fullWidth}>
+                <StyledTypography variant="body2" gutterBottom $fullWidth={fullWidth}>
                     {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                 </StyledTypography>
             </StyledLink>
@@ -57,8 +57,8 @@ const StyledLink = styled(Link)`
     text-decoration: none;
 `;
 
-const StyledTypography = styled(Typography)<{ fullWidth?: boolean }>`
+const StyledTypography = styled(Typography)<{ $fullWidth?: boolean }>`
     color: white;
     text-decoration: none;
-    max-width: ${props => (props.fullWidth ? "100%" : "60%")};
+    max-width: ${props => (props.$fullWidth ? "100%" : "60%")};
 `;
