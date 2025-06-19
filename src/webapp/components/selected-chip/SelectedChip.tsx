@@ -6,4 +6,5 @@ export const SelectedChip = styled(Chip)`
     background: #cfe9f7;
     border: none;
     margin: 1px;
+    max-width: 100%;
 `;
