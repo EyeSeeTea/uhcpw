@@ -209,9 +209,9 @@ export const VisualizationPluginContainer: React.FC<VisualizationPluginContainer
 );
 
 const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean; $paddingEnd?: boolean }>`
-    margin-block-start: ${props => (props.$marginStart ? "48px" : "0px")};
+    margin-block-start: ${props => (props.$marginStart ? "25px" : "0px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
-    padding-block-end: ${props => (props.$paddingEnd ? "32px" : "0px")};
+    padding-block-end: ${props => (props.$paddingEnd ? "16px" : "0px")};
     padding-inline: 16px 32px;
     width: 100%;
 `;
