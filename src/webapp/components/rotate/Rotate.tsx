@@ -23,7 +23,7 @@ const RotatedContent = styled.div<{ isPortrait: boolean }>`
     ${({ isPortrait }) =>
         isPortrait &&
         css`
-            transform: rotate(-90deg);
+            transform: rotate(90deg);
             transform-origin: center;
             width: 100vh;
             height: 100vw;
