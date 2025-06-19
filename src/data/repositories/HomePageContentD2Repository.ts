@@ -24,6 +24,7 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
                 description: dataValues.find(dv => dv.dataElement === "CPpA7kDtOfM")?.value || "",
                 buttonText: dataValues.find(dv => dv.dataElement === "fIsJ5Wn0T3J")?.value || "",
                 buttonLink: dataValues.find(dv => dv.dataElement === "XKV6Or4MYLu")?.value || "",
+                videoLink: dataValues.find(dv => dv.dataElement === "XRhm3MPFjLA")?.value || "",
             },
             explorers: {
                 title: dataValues.find(dv => dv.dataElement === "KpyjdWU235A")?.value || "",

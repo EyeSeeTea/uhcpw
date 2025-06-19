@@ -12,6 +12,7 @@ export type MainMapPanelContent = {
     description: string;
     buttonText: string;
     buttonLink: string;
+    videoLink: string;
 };
 
 type ColumnContent = {

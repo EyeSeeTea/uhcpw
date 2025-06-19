@@ -2,23 +2,20 @@ import React from "react";
 import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Button, Hidden, Menu, MenuItem, Typography } from "@material-ui/core";
+import { Box, Hidden, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
 import whoLogoBlue from "../../../assets/who-logo-blue.png";
 import uhcwHomeLogo from "../../../assets/uhcw-home-logo.png";
 import i18n from "../../../../locales";
-import { NavLink } from "react-router-dom";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
-import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
-import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
+import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { DesktopMenu } from "./DesktopMenu";
 
-const useStyles = makeStyles(theme => ({
+export const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
     },
@@ -35,7 +32,7 @@ const useStyles = makeStyles(theme => ({
             paddingRight: "10px",
         },
         "@media (max-width: 1279px)": {
-            background: colors.accentPrimary,
+            background: colors.gradientPrimaryMobile,
         },
     },
     toolbarBottom: {
@@ -74,28 +71,17 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const { redirectWithPageView } = useAnalytics();
-    const { countryFilter } = useCountryPage();
-    const {
-        regionalReport,
-        anchorEl,
-        isHomePage,
-        goToHome,
-        handleCountryClick,
-        handleClose,
-        handleSetAnchorEl,
-        logoWidth,
-    } = useAppHeader();
-    const { isMd, isSm, isXs } = useBreakpoint();
+    const { isHomePage, goToHome, whoLogoWidth, uhcwLogoWidth } = useAppHeader();
+    const isSmallScreen = useIsSmallScreen();
 
     const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
     const glossaryPageView = redirectWithPageView({ title: "Glossary" });
-    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
         <div className={classes.root}>
             <MuiAppBar position="static">
                 <Toolbar className={classes.toolbarTop}>
-                    <ToolbarTextContainer isFullWidth={isMd || isSm || isXs} isCentered={isMd || isSm || isXs}>
+                    <ToolbarTextContainer isFullWidth={isSmallScreen} isCentered={isSmallScreen}>
                         <StyledTypography>
                             {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                         </StyledTypography>
@@ -128,14 +114,14 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                     <FlexContainer isFullWidth>
                         <FlexContainer>
                             <LogoContainer>
-                                <img src={whoLogoBlue} width={logoWidth} alt="WHO logo" onClick={() => goToHome()} />;
+                                <img src={whoLogoBlue} width={whoLogoWidth} alt="WHO logo" onClick={() => goToHome()} />
                             </LogoContainer>
 
                             {!isHomePage ? (
                                 <LogoContainer>
                                     <img
                                         src={uhcwHomeLogo}
-                                        width={logoWidth}
+                                        width={whoLogoWidth}
                                         alt="UHC watch logo to go home"
                                         onClick={() => goToHome()}
                                     />
@@ -144,102 +130,29 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             ) : null}
                         </FlexContainer>
 
-                        {/* <Box className={classes.rest} /> */}
+                        <FlexContainer>
+                            {isHomePage && isSmallScreen ? (
+                                <LogoContainer>
+                                    <img
+                                        src={uhcwHomeLogo}
+                                        width={uhcwLogoWidth}
+                                        alt="UHC watch logo to go home"
+                                        onClick={() => goToHome()}
+                                    />
+                                    ;
+                                </LogoContainer>
+                            ) : null}
 
-                        <MenuContainer>
-                            <Hidden lgUp>
-                                <MobileMenu />
-                            </Hidden>
+                            <MenuContainer>
+                                <Hidden lgUp>
+                                    <MobileMenu />
+                                </Hidden>
 
-                            <Hidden mdDown>
-                                <DesktopMenuContainer>
-                                    <Button
-                                        className={classes.menu}
-                                        activeClassName={classes.menuActive}
-                                        component={NavLink}
-                                        to={"/indicator-explorer"}
-                                    >
-                                        {i18n.t("Indicator explorer")}
-                                    </Button>
-                                    <Button
-                                        className={classes.menu}
-                                        activeClassName={classes.menuActive}
-                                        component={NavLink}
-                                        to={"/policy-explorer"}
-                                    >
-                                        {i18n.t("Policy explorer")}
-                                    </Button>
-                                    <MenuButton
-                                        id="countries"
-                                        aria-controls="countries & areas"
-                                        aria-haspopup="true"
-                                        onClick={handleSetAnchorEl}
-                                        endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-                                    >
-                                        {i18n.t("Countries & areas")}
-                                    </MenuButton>
-                                    <Menu
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={anchorEl?.id === "countries"}
-                                        onClose={handleClose}
-                                        getContentAnchorEl={null}
-                                        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                                        transformOrigin={{ vertical: "top", horizontal: "center" }}
-                                        PaperProps={{
-                                            style: {
-                                                maxHeight: 556,
-                                                overflowY: "auto",
-                                            },
-                                        }}
-                                    >
-                                        {countryFilter.countryOptions.map(country => {
-                                            return (
-                                                <MenuItem
-                                                    key={country.value}
-                                                    onClick={() => handleCountryClick(country)}
-                                                >
-                                                    {country.text}
-                                                </MenuItem>
-                                            );
-                                        })}
-                                    </Menu>
-                                    <MenuTopLink
-                                        id="regions"
-                                        aria-controls="regions"
-                                        target="_blank"
-                                        href={regionalReport}
-                                        onClick={regionalReportPageView}
-                                    >
-                                        {i18n.t("Regional report")}
-                                    </MenuTopLink>
-                                    <Button
-                                        className={classes.menu}
-                                        activeClassName={classes.menuActive}
-                                        component={NavLink}
-                                        to={"/methods"}
-                                    >
-                                        {i18n.t("Methods")}
-                                    </Button>
-                                    <Button
-                                        className={classes.menu}
-                                        activeClassName={classes.menuActive}
-                                        component={NavLink}
-                                        to={"/resources"}
-                                    >
-                                        {i18n.t("Resources")}
-                                    </Button>
-                                    <Button
-                                        className={classes.menu}
-                                        activeClassName={classes.menuActive}
-                                        component={NavLink}
-                                        to={"/about"}
-                                    >
-                                        {i18n.t("About us")}
-                                    </Button>
-                                </DesktopMenuContainer>
-                            </Hidden>
-                        </MenuContainer>
+                                <Hidden mdDown>
+                                    <DesktopMenu />
+                                </Hidden>
+                            </MenuContainer>
+                        </FlexContainer>
                     </FlexContainer>
                 </Toolbar>
             </MuiAppBar>
@@ -264,10 +177,6 @@ const StyledTypography = styled(Typography)`
     }
 `;
 
-const DesktopMenuContainer = styled.div`
-    white-space: nowrap;
-`;
-
 const MenuTopLink = styled.a`
     margin: 0px 16px;
     text-transform: none;
@@ -288,14 +197,13 @@ const MenuTopLink = styled.a`
     border-radius: 4px;
 `;
 
-const MenuButton = styled(Button)`
-    margin: 16px 16px;
-    text-transform: none;
-`;
-
 const LogoContainer = styled.div`
     margin: 10px 10px;
     cursor: pointer;
+
+    @media (max-width: 402px) {
+        max-height: 50px;
+    }
 `;
 
 const TagContainer = styled.div`

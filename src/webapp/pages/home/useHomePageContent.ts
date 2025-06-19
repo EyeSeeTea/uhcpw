@@ -26,6 +26,7 @@ const emptyHomePageContent: HomePageContent = {
         description: "",
         buttonText: "",
         buttonLink: "",
+        videoLink: "",
     },
     explorers: {
         title: "",
