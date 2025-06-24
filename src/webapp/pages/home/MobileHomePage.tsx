@@ -98,13 +98,13 @@ export const MobileHomePage: React.FC = React.memo(() => {
             <section>
                 <SectionTitle>{i18n.t("Resources")}</SectionTitle>
 
-                <ResourcesCarousel resources={resources} />
+                <ResourcesCarousel resourceItems={resources} />
             </section>
 
             <section>
                 <SectionTitle>{i18n.t("News")}</SectionTitle>
 
-                <ResourcesCarousel resources={news} hideTag />
+                <ResourcesCarousel resourceItems={news} hideTag />
             </section>
         </React.Fragment>
     );

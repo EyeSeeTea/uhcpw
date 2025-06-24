@@ -22,6 +22,8 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import mapBackground from "../../assets/map-background.jpg";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
@@ -317,6 +319,10 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const Image = styled.img`

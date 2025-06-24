@@ -121,7 +121,6 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                                     alt="UHC watch logo to go home"
                                     onClick={() => goToHome()}
                                 />
-                                ;
                             </LogoContainer>
                         </FlexContainer>
 

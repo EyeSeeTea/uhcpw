@@ -4,6 +4,7 @@ import moment from "moment";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Tag } from "../tag/Tag";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface SimpleResourceItemProps {
     title: string;
@@ -115,6 +116,9 @@ const Image = styled.img<{ $maintainAspectRatio?: boolean; $fullWidth?: boolean 
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
     height: 300px;
     object-fit: cover;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        height: 400px;
+    }
 `;
 
 const Row = styled.div`

@@ -11,10 +11,14 @@ import SearchInput from "../../../components/search-input/SearchInput";
 import { FilteredByTextOrThemeResources } from "./FilteredByTextOrThemeResources";
 import { LandingResources } from "./LandingResources";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import mapBackground from "../../../assets/map-background.jpg";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { MobileLandingResources } from "./MobileLandingResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {
     const { filters, landingResources, filteredByTextOrThemeResources, onGetResources } = useResources();
     const { sendPageView } = useAnalytics();
+    const isSmallScreen = useIsSmallScreen();
 
     React.useEffect(() => {
         sendPageView({ title: "Resources" });
@@ -26,6 +30,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                 <TitleContainer>
                     <Typography variant="h3">{i18n.t("Resources")}</Typography>
                 </TitleContainer>
+
                 <SearchContainer>
                     <SearchInput
                         value={filters.search.term}
@@ -34,18 +39,26 @@ export const ResourcesPage: React.FC = React.memo(() => {
                     />
                 </SearchContainer>
             </TitleAndSearchContainer>
-            <SelectsContainer maxWidth="xl">
-                <Grid container>
-                    <ResourcesFilters
-                        filters={filters}
-                        onGetResources={onGetResources}
-                        disabledCountryFilter
-                        disabledYearFilter
-                    />
 
-                    {!filters.search.term && !filters.theme.selected && !!landingResources && (
-                        <LandingResources resources={landingResources} />
-                    )}
+            <ResourcesContainer maxWidth="xl">
+                <Grid container>
+                    <FiltersContainer>
+                        <ResourcesFilters
+                            filters={filters}
+                            onGetResources={onGetResources}
+                            disabledCountryFilter
+                            disabledYearFilter
+                        />
+                    </FiltersContainer>
+
+                    {!filters.search.term &&
+                        !filters.theme.selected &&
+                        !!landingResources &&
+                        (isSmallScreen ? (
+                            <MobileLandingResources resources={landingResources} />
+                        ) : (
+                            <LandingResources resources={landingResources} />
+                        ))}
 
                     {(!!filters.search.term || !!filters.theme.selected) && !!filteredByTextOrThemeResources && (
                         <FilteredByTextOrThemeResources
@@ -54,7 +67,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                         />
                     )}
                 </Grid>
-            </SelectsContainer>
+            </ResourcesContainer>
         </Layout>
     );
 });
@@ -62,7 +75,11 @@ export const ResourcesPage: React.FC = React.memo(() => {
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 24px 64px;
+    padding: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const TitleAndSearchContainer = styled.div`
@@ -70,10 +87,14 @@ const TitleAndSearchContainer = styled.div`
     width: 100%;
 `;
 
-const SelectsContainer = styled(Container)`
+const FiltersContainer = styled.div`
     padding-block-start: 64px;
     padding-block-end: 32px;
     padding-inline: 64px;
+`;
+
+const ResourcesContainer = styled(Container)`
+    padding: 0;
 `;
 
 const SearchContainer = styled.div`

@@ -13,6 +13,8 @@ import { VisualizationPlugin } from "../../components/visualization/Visualizatio
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import mapBackground from "../../assets/map-background.jpg";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const snackbar = useSnackbar();
@@ -126,6 +128,10 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const Image = styled.img`

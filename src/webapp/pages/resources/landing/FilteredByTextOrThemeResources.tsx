@@ -12,7 +12,7 @@ export const FilteredByTextOrThemeResources: React.FC<{
     resources: FilteredByTextOrThemeResourcesState;
     themeSelected?: string;
 }> = React.memo(({ resources, themeSelected }) => (
-    <>
+    <Container>
         <Grid item md={12} xs={12}>
             {resources.countryAnalysis.length > 0 && (
                 <ResourceGroup
@@ -69,8 +69,13 @@ export const FilteredByTextOrThemeResources: React.FC<{
                 </ResourceGroup>
             )}
         </Grid>
-    </>
+    </Container>
 ));
+
+const Container = styled(Grid)`
+    padding-block-end: 32px;
+    padding-inline: 64px;
+`;
 
 const StyledGrid = styled(Grid)`
     padding: 20px;

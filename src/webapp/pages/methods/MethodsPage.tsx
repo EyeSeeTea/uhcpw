@@ -11,6 +11,8 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import React from "react";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ColumnGridContainer } from "../../components/ColumnGridContainer";
+import mapBackground from "../../assets/map-background.jpg";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
@@ -126,6 +128,10 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const ButtonsGridItem = styled(Grid)`
