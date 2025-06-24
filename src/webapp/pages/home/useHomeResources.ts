@@ -10,34 +10,44 @@ const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
 > = {
     "comparative-analysis": 1,
     "country-analysis": 2,
-    news: 3,
-    multimedia: 4,
+    multimedia: 3,
+    news: 4,
 };
 
 export function useHomeResources() {
     const { items } = useResourcesByType({ favourite: true });
 
     const resources = useMemo(() => {
-        const uniqueResources = items?.reduce((acc: ResourceState[], resource: ResourceState): ResourceState[] => {
-            const sameResourcesSortedByPriorityToBeShown = items
-                .filter(({ id }) => resource.id === id)
-                .sort((resourceA, resourceB) => {
-                    return (
-                        RESOURCES_PRIORITY_TO_BE_SHOWN[resourceA.kind] - RESOURCES_PRIORITY_TO_BE_SHOWN[resourceB.kind]
-                    );
-                });
+        const uniqueResources = items
+            ?.filter(item => item.kind !== "news")
+            .reduce((acc: ResourceState[], resource: ResourceState): ResourceState[] => {
+                const sameResourcesSortedByPriorityToBeShown = items
+                    .filter(({ id, kind }) => resource.id === id && kind !== "news")
+                    .sort((resourceA, resourceB) => {
+                        return (
+                            RESOURCES_PRIORITY_TO_BE_SHOWN[resourceA.kind] -
+                            RESOURCES_PRIORITY_TO_BE_SHOWN[resourceB.kind]
+                        );
+                    });
 
-            const isAlready = acc.find(({ id }) => resource.id === id);
+                const isAlready = acc.find(({ id }) => resource.id === id);
 
-            return isAlready || !sameResourcesSortedByPriorityToBeShown[0]
-                ? acc
-                : [...acc, sameResourcesSortedByPriorityToBeShown[0]];
-        }, []);
+                return isAlready || !sameResourcesSortedByPriorityToBeShown[0]
+                    ? acc
+                    : [...acc, sameResourcesSortedByPriorityToBeShown[0]];
+            }, []);
 
         return uniqueResources?.length ? _.orderBy(uniqueResources, "favouriteOrder").slice(0, 6) : [];
     }, [items]);
 
+    const news = useMemo(() => {
+        const filteredNews = items?.filter(item => item.kind === "news");
+
+        return filteredNews?.length ? _.orderBy(filteredNews, "favouriteOrder").slice(0, 6) : [];
+    }, [items]);
+
     return {
         resources,
+        news,
     };
 }

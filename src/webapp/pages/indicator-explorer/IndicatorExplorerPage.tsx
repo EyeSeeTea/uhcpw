@@ -21,6 +21,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
+    const [chartPluginIsLoading, setChartPluginIsLoading] = React.useState(false);
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -46,6 +47,10 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         setOpenScreenshot(false);
     }, []);
 
+    const handlePlugingLoadingChange = React.useCallback((loading: boolean) => {
+        setChartPluginIsLoading(loading);
+    }, []);
+
     const chartName = useMemo(
         () => filters.indicators.options.find(o => o.value === filters.indicators.selected)?.text || "",
         [filters.indicators.options, filters.indicators.selected]
@@ -67,7 +72,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
+                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
 
                 {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
@@ -78,6 +83,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         onDownloadImage={handleOpenScreenshot}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                         analyticsPageTitle="Indicator explorer"
+                        onLoadingChange={handlePlugingLoadingChange}
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />

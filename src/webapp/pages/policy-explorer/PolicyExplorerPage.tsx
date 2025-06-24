@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useEffect } from "react";
-import { Typography, Button } from "@material-ui/core";
+import { Typography, Button, CircularProgress } from "@material-ui/core";
 import moment from "moment";
 import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
@@ -55,6 +55,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         dataOrientationByTable,
         selectCategoryInfo,
         errorMessage,
+        isLoading,
     } = usePolicyExplorer({
         countriesFilter: filterInParams.country,
         categories: filterInParams.category,
@@ -127,9 +128,15 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
             </TitleContainer>
 
             <MainSection>
-                <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} />
+                <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} disableGet={isLoading} />
 
-                {data && dataOrientationByTable ? (
+                {isLoading && (
+                    <Center>
+                        <CircularProgress />
+                    </Center>
+                )}
+
+                {!isLoading && data && dataOrientationByTable && (
                     <Content>
                         <DownloadButton
                             aria-label="Download"
@@ -157,111 +164,121 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             />
                         ))}
                     </Content>
-                ) : (
-                    <EmptyContent info={selectCategoryInfo} />
                 )}
 
-                <div ref={referencesRef}>
-                    {data?.generalInfo.map(info => {
-                        return (
-                            <div key={info.country}>
-                                <GeneralDataContainer>
-                                    <GeneralRow>
-                                        <CreditsText style={{ fontWeight: 500 }}>
-                                            <strong>{`${info.country} (${info.year})`}</strong>
-                                        </CreditsText>
-                                    </GeneralRow>
+                {!isLoading && (!data || !dataOrientationByTable) && <EmptyContent info={selectCategoryInfo} />}
 
-                                    {info.lastUpdate ? (
+                {!isLoading && (
+                    <div ref={referencesRef}>
+                        {data?.generalInfo.map(info => {
+                            return (
+                                <div key={info.country}>
+                                    <GeneralDataContainer>
+                                        <GeneralRow>
+                                            <CreditsText style={{ fontWeight: 500 }}>
+                                                <strong>{`${info.country} (${info.year})`}</strong>
+                                            </CreditsText>
+                                        </GeneralRow>
+
+                                        {info.lastUpdate ? (
+                                            <GeneralRow>
+                                                <CreditsText $noWrap>
+                                                    {i18n.t("Last updated: ", { nsSeparator: false })}
+                                                </CreditsText>
+                                                &nbsp;
+                                                <CreditsText>
+                                                    {moment(info.lastUpdate).format("D MMMM YYYY")}
+                                                </CreditsText>
+                                            </GeneralRow>
+                                        ) : null}
+
                                         <GeneralRow>
                                             <CreditsText $noWrap>
-                                                {i18n.t("Last updated: ", { nsSeparator: false })}
+                                                {i18n.t("Experts: ", { nsSeparator: false })}
                                             </CreditsText>
                                             &nbsp;
-                                            <CreditsText>{moment(info.lastUpdate).format("D MMMM YYYY")}</CreditsText>
+                                            <CreditsText>{info.countryExperts}</CreditsText>
                                         </GeneralRow>
-                                    ) : null}
 
-                                    <GeneralRow>
-                                        <CreditsText $noWrap>{i18n.t("Experts: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{info.countryExperts}</CreditsText>
-                                    </GeneralRow>
-
-                                    <GeneralRow>
-                                        <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
-                                        &nbsp;
-                                        <CreditsText>{info.editors}</CreditsText>
-                                    </GeneralRow>
-
-                                    {info.reviewers ? (
                                         <GeneralRow>
-                                            <CreditsText>{i18n.t("Reviewers: ", { nsSeparator: false })}</CreditsText>
+                                            <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
                                             &nbsp;
-                                            <CreditsText>{info.reviewers}</CreditsText>
+                                            <CreditsText>{info.editors}</CreditsText>
                                         </GeneralRow>
-                                    ) : null}
 
-                                    {info.notes ? (
-                                        <GeneralRow>
-                                            <ReactMarkdown
-                                                components={{
-                                                    p: ({ children }) => (
-                                                        <CreditsText variant="caption">{children}</CreditsText>
-                                                    ),
-                                                }}
-                                            >
-                                                {`${i18n.t("Notes: ", {
-                                                    nsSeparator: false,
-                                                })} ${info.notes}`}
-                                            </ReactMarkdown>
-                                        </GeneralRow>
-                                    ) : null}
+                                        {info.reviewers ? (
+                                            <GeneralRow>
+                                                <CreditsText>
+                                                    {i18n.t("Reviewers: ", { nsSeparator: false })}
+                                                </CreditsText>
+                                                &nbsp;
+                                                <CreditsText>{info.reviewers}</CreditsText>
+                                            </GeneralRow>
+                                        ) : null}
 
-                                    {info.sourceText ? (
-                                        <GeneralRow>
-                                            <CreditsText>
-                                                {i18n.t("Suggested citation: ", { nsSeparator: false })}
-                                            </CreditsText>
-                                            &nbsp;
-                                            {info.sourceUrl ? (
-                                                <Link
-                                                    href={info.sourceUrl}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    onClick={redirectWithExternalLink}
-                                                >
-                                                    {info.sourceText}
-                                                </Link>
-                                            ) : (
-                                                <CreditsText>{info.sourceText}</CreditsText>
-                                            )}
-                                        </GeneralRow>
-                                    ) : null}
-                                </GeneralDataContainer>
-                                <ReferencesContainer>
-                                    {info.country && getCleanReferencesByCountry(info.country)?.length ? (
-                                        <>
-                                            <ReferencesTitle>
-                                                {i18n.t("References", { nsSeparator: false })}
-                                            </ReferencesTitle>
-                                            {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                        {info.notes ? (
+                                            <GeneralRow>
                                                 <ReactMarkdown
-                                                    key={reference}
                                                     components={{
-                                                        p: ({ children }) => <ReferenceText>{children}</ReferenceText>,
+                                                        p: ({ children }) => (
+                                                            <CreditsText variant="caption">{children}</CreditsText>
+                                                        ),
                                                     }}
                                                 >
-                                                    {reference}
+                                                    {`${i18n.t("Notes: ", {
+                                                        nsSeparator: false,
+                                                    })} ${info.notes}`}
                                                 </ReactMarkdown>
-                                            ))}
-                                        </>
-                                    ) : null}
-                                </ReferencesContainer>
-                            </div>
-                        );
-                    })}
-                </div>
+                                            </GeneralRow>
+                                        ) : null}
+
+                                        {info.sourceText ? (
+                                            <GeneralRow>
+                                                <CreditsText>
+                                                    {i18n.t("Suggested citation: ", { nsSeparator: false })}
+                                                </CreditsText>
+                                                &nbsp;
+                                                {info.sourceUrl ? (
+                                                    <Link
+                                                        href={info.sourceUrl}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        onClick={redirectWithExternalLink}
+                                                    >
+                                                        {info.sourceText}
+                                                    </Link>
+                                                ) : (
+                                                    <CreditsText>{info.sourceText}</CreditsText>
+                                                )}
+                                            </GeneralRow>
+                                        ) : null}
+                                    </GeneralDataContainer>
+                                    <ReferencesContainer>
+                                        {info.country && getCleanReferencesByCountry(info.country)?.length ? (
+                                            <>
+                                                <ReferencesTitle>
+                                                    {i18n.t("References", { nsSeparator: false })}
+                                                </ReferencesTitle>
+                                                {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                                    <ReactMarkdown
+                                                        key={reference}
+                                                        components={{
+                                                            p: ({ children }) => (
+                                                                <ReferenceText>{children}</ReferenceText>
+                                                            ),
+                                                        }}
+                                                    >
+                                                        {reference}
+                                                    </ReactMarkdown>
+                                                ))}
+                                            </>
+                                        ) : null}
+                                    </ReferencesContainer>
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </MainSection>
         </Layout>
     );
@@ -349,4 +366,13 @@ const DownloadButton = styled(Button)`
     align-self: flex-end;
     margin-block-start: 20px;
     background: #185698;
+`;
+
+const Center = styled.div`
+    height: 200px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `;

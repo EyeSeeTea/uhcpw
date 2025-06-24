@@ -26,6 +26,7 @@ const emptyHomePageContent: HomePageContent = {
         description: "",
         buttonText: "",
         buttonLink: "",
+        videoLink: "",
     },
     explorers: {
         title: "",
@@ -74,6 +75,9 @@ const emptyHomePageContent: HomePageContent = {
             title: "",
             text: "",
         },
+        buttonLink: "",
+    },
+    resources: {
         buttonLink: "",
     },
     newsletter: {

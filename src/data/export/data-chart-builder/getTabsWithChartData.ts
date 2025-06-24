@@ -119,14 +119,15 @@ export function getTabsWithChartData(
               })
             : data;
 
-    const chartTab = {
-        name: DATA_TAB_NAME,
-        data: sortedData,
-    };
-
-    const tabsWithoutData = tabs.filter(tab => tab.name !== DATA_TAB_NAME);
-
-    return [...tabsWithoutData, chartTab];
+    return tabs.map((tab): TabsWithStringOrNumbers => {
+        if (tab.name === DATA_TAB_NAME) {
+            return {
+                name: DATA_TAB_NAME,
+                data: sortedData,
+            };
+        }
+        return tab;
+    });
 }
 
 function sortData(
