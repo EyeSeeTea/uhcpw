@@ -10,6 +10,8 @@ import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import mapBackground from "../../../assets/map-background.jpg";
 
 export const ResourcesByTypePage: React.FC = React.memo(() => {
     const history = useHistory();
@@ -104,6 +106,10 @@ const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
     padding: 32px 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const Title = styled(Typography)`
