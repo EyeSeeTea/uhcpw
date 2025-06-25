@@ -81,6 +81,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                         disabled={disabled}
                         top={label && !hideLabel ? "0" : "-20px"}
                         right={-15}
+                        className="DropdownMultiple-clear-button"
                     >
                         {i18n.t("Clear")}
                     </ClearButton>

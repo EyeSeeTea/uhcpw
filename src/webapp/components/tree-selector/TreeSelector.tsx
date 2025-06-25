@@ -359,7 +359,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         }, [isSmallScreen, width]);
 
         return (
-            <Container $fullWidth={fullWidth}>
+            <Container $fullWidth={fullWidth} className="TreeSelector-container">
                 <StyledDropdownTextField
                     id="tree-selector-input"
                     label={label}
@@ -568,6 +568,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                         disabled={disabled}
                         top={topClearAll}
                         right={-15}
+                        className="TreeSelector-clear-button"
                     >
                         {i18n.t("Clear")}
                     </StyledButtonClear>

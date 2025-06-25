@@ -86,7 +86,12 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     disabled={disabled}
                 />
                 {value && (
-                    <ClearButton variant="text" onClick={handleClear} top={label && !hideLabel ? "0" : "-20px"}>
+                    <ClearButton
+                        className="Dropdown-clear-button"
+                        variant="text"
+                        onClick={handleClear}
+                        top={label && !hideLabel ? "0" : "-20px"}
+                    >
                         {i18n.t("Clear")}
                     </ClearButton>
                 )}
