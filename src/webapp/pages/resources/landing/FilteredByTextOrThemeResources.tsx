@@ -7,6 +7,7 @@ import { ResourceGroup } from "../../../components/resources/resource-group/Reso
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 import { MultimediaState } from "../by-type/ResourcesByTypeState";
 import { FilteredByTextOrThemeResourcesState } from "./ResourcesState";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export const FilteredByTextOrThemeResources: React.FC<{
     resources: FilteredByTextOrThemeResourcesState;
@@ -75,6 +76,9 @@ export const FilteredByTextOrThemeResources: React.FC<{
 const Container = styled(Grid)`
     padding-block-end: 32px;
     padding-inline: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 32px;
+    }
 `;
 
 const StyledGrid = styled(Grid)`

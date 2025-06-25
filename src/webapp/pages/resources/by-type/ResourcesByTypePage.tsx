@@ -48,19 +48,22 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         <Layout>
             <TitleAndSearchContainer>
                 <TitleContainer>
-                    <Title variant="h4">{title}</Title>
+                    <Title variant="h3">{title}</Title>
                 </TitleContainer>
                 <SearchContainer>
                     <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
                 </SearchContainer>
             </TitleAndSearchContainer>
             <Content>
-                <SelectsContainer maxWidth="xl">
-                    <ResourcesFilters
-                        filters={filters}
-                        onGetResources={onGetResources}
-                        disabledCountryFilter={disabledCountryFilter}
-                    />
+                <ResourcesContainer maxWidth="xl">
+                    <FiltersContainer>
+                        <ResourcesFilters
+                            filters={filters}
+                            onGetResources={onGetResources}
+                            disabledCountryFilter={disabledCountryFilter}
+                        />
+                    </FiltersContainer>
+
                     {
                         <StyledGridContainer spacing={2} container direction="row">
                             {items &&
@@ -68,14 +71,21 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                                     const sizes = getSizes(item);
 
                                     return (
-                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} sm={sizes.sm} xs={sizes.xs}>
+                                        <StyledGridItem
+                                            key={index}
+                                            item
+                                            lg={sizes.lg}
+                                            md={sizes.md}
+                                            sm={sizes.sm}
+                                            xs={sizes.xs}
+                                        >
                                             <ResourceItem resource={item} analyticsPageTitle="Resources" />
-                                        </Grid>
+                                        </StyledGridItem>
                                     );
                                 })}
                         </StyledGridContainer>
                     }
-                </SelectsContainer>
+                </ResourcesContainer>
                 <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                     <CircularProgress color="primary" />
                 </Backdrop>
@@ -105,10 +115,12 @@ const Content = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 32px 64px;
+    padding: 64px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${props => props.color} url(${mapBackground});
         background-position: center;
+        padding-inline: 32px;
+        padding-block: 48px;
     }
 `;
 
@@ -119,10 +131,18 @@ const Title = styled(Typography)`
     }
 `;
 
-const SelectsContainer = styled(Container)`
+const FiltersContainer = styled.div`
     padding-block-start: 64px;
     padding-block-end: 32px;
     padding-inline: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block-start: 32px;
+        padding-inline: 32px;
+    }
+`;
+
+const ResourcesContainer = styled(Container)`
+    padding: 0;
 `;
 
 const SearchContainer = styled.div`
@@ -139,6 +159,13 @@ const SearchContainer = styled.div`
 
 const StyledGridContainer = styled(Grid)`
     padding-block: 32px;
+`;
+
+const StyledGridItem = styled(Grid)`
+    justify-items: "flex-start";
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        justify-items: "center";
+    }
 `;
 
 const TitleAndSearchContainer = styled.div`

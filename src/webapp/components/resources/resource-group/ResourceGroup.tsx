@@ -60,7 +60,7 @@ const Row = styled.div`
     flex-direction: row;
     align-items: center;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding-inline-start: 40px;
+        padding-inline-start: 0px;
         padding-block: 24px 16px;
     }
 `;

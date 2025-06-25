@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { ResourceLink } from "../../../../domain/entities/resources/Resource";
 import { Tag } from "../tag/Tag";
 import { useHistory } from "react-router-dom";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface CountryAnalysisProps {
     title: string;
@@ -44,9 +45,14 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => 
 
     return (
         <Column>
-            <a href={links[0]?.url} target="_blank" rel="noopener noreferrer" onClick={redirectWithDefaultLangForEvent}>
+            <StyledAnchor
+                href={links[0]?.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={redirectWithDefaultLangForEvent}
+            >
                 <Cover width={"100%"} src={image} alt={title} />
-            </a>
+            </StyledAnchor>
 
             <Box height={20} />
             {themeName ? (
@@ -99,6 +105,12 @@ const Row = styled.div`
     justify-content: flex-start;
 `;
 
+const StyledAnchor = styled.a`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        align-self: center;
+    }
+`;
+
 const StyledTypography = styled(Typography)`
     margin-right: 8px;
 `;
@@ -108,13 +120,17 @@ const Column = styled.div`
     display: flex;
     flex-direction: column;
     align-items: start;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 32px;
+    }
 `;
 
 const Cover = styled.img`
     border: 1px solid #c3bfbf;
     min-height: 14rem;
     max-height: 14rem;
-    @media (max-width: 960px) {
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         min-height: 19rem;
         max-height: 19rem;
     }

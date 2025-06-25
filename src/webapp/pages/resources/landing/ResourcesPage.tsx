@@ -79,6 +79,8 @@ const TitleContainer = styled.div`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${props => props.color} url(${mapBackground});
         background-position: center;
+        padding-inline: 32px;
+        padding-block: 48px;
     }
 `;
 
@@ -91,6 +93,10 @@ const FiltersContainer = styled.div`
     padding-block-start: 64px;
     padding-block-end: 32px;
     padding-inline: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block-start: 32px;
+        padding-inline: 32px;
+    }
 `;
 
 const ResourcesContainer = styled(Container)`
