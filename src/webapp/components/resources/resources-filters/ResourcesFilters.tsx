@@ -78,6 +78,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             onChange={onCategoryChange}
                             label={i18n.t("Select category")}
                             hideLabel
+                            fullScreen={isMobile}
                         />
                     </FilterContainer>
                 </Grid>
@@ -92,6 +93,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             disabled={disabledThemeFilter}
                             label={i18n.t("Select theme")}
                             hideLabel
+                            fullScreen={isMobile}
                         />
                     </FilterContainer>
                 </Grid>
@@ -126,6 +128,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             hideLabel
                             fullWidth
                             minWidth="100%"
+                            fullScreen={isMobile}
                         />
                     </FilterContainer>
                 </Grid>
