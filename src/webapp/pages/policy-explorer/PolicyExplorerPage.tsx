@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useEffect } from "react";
-import { Typography, Button, CircularProgress } from "@material-ui/core";
+import { Typography, Button, useTheme, useMediaQuery, CircularProgress } from "@material-ui/core";
 import moment from "moment";
 import styled from "styled-components";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
@@ -31,6 +31,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
     const { sendPageView, redirectWithExternalLink } = useAnalytics();
 
     const referencesRef = useRef<HTMLDivElement>(null);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(props.searchParams);
@@ -138,7 +141,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                     </Center>
                 )}
 
-                {!isLoading && data && dataOrientationByTable && (
+                {!isLoading && data && dataOrientationByTable ? (
                     <Content>
                         <DownloadButton
                             aria-label="Download"
@@ -166,7 +169,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             />
                         ))}
                     </Content>
-                )}
+                ) : !isMobile ? (
+                    <EmptyContent info={selectCategoryInfo} />
+                ) : null}
 
                 {!isLoading && (!data || !dataOrientationByTable) && <EmptyContent info={selectCategoryInfo} />}
 
@@ -310,6 +315,9 @@ const ReferenceText = styled(Typography)`
 const MainSection = styled.div`
     background: white;
     padding: 48px 64px;
+    @media (max-width: 600px) {
+        padding: 24px 64px;
+    }
 `;
 
 const TitleContainer = styled.div`

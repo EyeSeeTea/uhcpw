@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
@@ -19,11 +19,15 @@ import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSm
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const snackbar = useSnackbar();
 
-    const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, pageContent, closeVisualization } =
+        useIndicatorExplorer();
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
     const [chartPluginIsLoading, setChartPluginIsLoading] = React.useState(false);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -86,10 +90,12 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                         analyticsPageTitle="Indicator explorer"
                         onLoadingChange={handlePlugingLoadingChange}
+                        fullScreenInMobile={true}
+                        onCloseFullScreen={closeVisualization}
                     />
-                ) : (
+                ) : !isMobile ? (
                     <EmptyContent info={pageContent?.selectCategory} />
-                )}
+                ) : null}
 
                 <ScreenshotModal
                     open={openScreenshot}
@@ -119,6 +125,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 const MainSection = styled.div`
     background: white;
     padding: 48px 64px;
+    @media (max-width: 600px) {
+        padding: 24px 64px;
+    }
 `;
 
 const TitleContainer = styled.div`

@@ -3,9 +3,9 @@ import { Button, Paper } from "@material-ui/core";
 import { Autocomplete, AutocompleteRenderGroupParams } from "@material-ui/lab";
 import styled from "styled-components";
 
-import i18n from "../../../../locales";
-import { DropdownTextField } from "../../dropdown/DropdownTextField";
-import { IndicatorOption } from "../../../pages/indicator-explorer/IndicatorExplorerState";
+import i18n from "../../../../../locales";
+import { DropdownTextField } from "../../../dropdown/DropdownTextField";
+import { IndicatorOption } from "../../../../pages/indicator-explorer/IndicatorExplorerState";
 import { CategoryGroup } from "./CategoryGroup";
 
 interface IndicatorSelectorProps {
