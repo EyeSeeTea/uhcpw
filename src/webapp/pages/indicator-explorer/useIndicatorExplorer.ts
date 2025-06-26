@@ -42,6 +42,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         selected: selectedCountries,
         onSelectedChange: onSelectedCountryChange,
         options: countryOptions,
+        ...countryFilterOptions
     } = useMultiCountryOptionsV2({ showEurRegion: true, showSubRegions: true });
     const { sendEvent } = useAnalytics();
 
@@ -336,6 +337,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 showSubRegions: !hideBosniaAndHerzegovinaRegions,
                 selectedItemsToShowWhenAllSelected: [EU27],
                 isOnlyEu27Comparison: isOnlyEu27Comparison,
+                ...countryFilterOptions,
             },
             indicators: {
                 options: indicatorFilters,
