@@ -403,7 +403,7 @@ export class CountryD2Repository implements CountryRepository {
                   id: eurRegion.id,
                   name: "EU average",
                   longName: "EU average",
-                  code: "EU27",
+                  code: "EU",
                   description: eurRegion.description,
                   parents: eurRegion.organisationUnitGroups
                       .map(({ id, name }) => ({ id, name }))
