@@ -230,7 +230,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
                     ...parent,
                     isLeaf: false,
                 }));
-        }, [filteredItemsBySearch]);
+        }, [filteredItemsBySearch, parentSort]);
 
         const filteredItemsBySearchWithoutParent = useMemo(() => {
             return filteredItemsBySearch.filter(item => !item.parents.length).map(item => ({ ...item, isLeaf: true }));
