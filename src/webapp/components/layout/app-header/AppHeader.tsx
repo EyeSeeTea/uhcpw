@@ -17,6 +17,7 @@ import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
+import { useReferenceLinks } from "../../../common/hooks/analytics/useReferenceLinks";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -75,6 +76,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
+    const { abbreviationsLink, glossaryLink } = useReferenceLinks();
     const {
         regionalReport,
         anchorEl,
@@ -87,8 +89,6 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
     } = useAppHeader();
     const { isMd, isSm, isXs } = useBreakpoint();
 
-    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
-    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
@@ -110,17 +110,9 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             </Tag>
                         </TagContainer>
 
-                        <MenuTopLink
-                            target="_blank"
-                            href="https://cmyn.short.gy/abbreviations"
-                            onClick={abbreviationsPageView}
-                        >
-                            {i18n.t("Abbreviations")}
-                        </MenuTopLink>
+                        <MenuTopLink {...abbreviationsLink}>{i18n.t("Abbreviations")}</MenuTopLink>
 
-                        <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
-                            {i18n.t("Glossary")}
-                        </MenuTopLink>
+                        <MenuTopLink {...glossaryLink}>{i18n.t("Glossary")}</MenuTopLink>
                     </Hidden>
                 </Toolbar>
 
