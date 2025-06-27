@@ -14,6 +14,7 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ResourcesCarousel } from "../../components/resources-carousel/ResourcesCarousel";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const MobileHomePage: React.FC = React.memo(() => {
     const mapState = useMap();
@@ -122,6 +123,18 @@ const SectionTitle = styled(Typography)`
 const MapSection = styled.section`
     height: 80vh;
     min-height: 620px;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        height: 50vh;
+    }
+
+    @media (max-width: 550px) {
+        min-height: 600px;
+    }
+
+    @media (max-width: 500px) {
+        min-height: 550px;
+    }
 `;
 
 const Grid = styled.div`

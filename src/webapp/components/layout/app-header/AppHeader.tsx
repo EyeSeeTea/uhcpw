@@ -68,7 +68,7 @@ interface AppHeaderProps {
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
     const { abbreviationsLink, glossaryLink } = useReferenceLinks();
-    const { goToHome, whoLogoWidth, uhcwLogoWidth } = useAppHeader();
+    const { goToHome, whoLogoWidth, uhcwLogoWidth, isHomePage } = useAppHeader();
     const isSmallScreen = useIsSmallScreen();
 
     return (
@@ -103,15 +103,16 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                                 <img src={whoLogoBlue} width={whoLogoWidth} alt="WHO logo" onClick={() => goToHome()} />
                             </LogoContainer>
 
-                            <LogoContainer>
-                                <img
-                                    src={uhcwHomeLogo}
-                                    width={uhcwLogoWidth}
-                                    alt="UHC watch logo to go home"
-                                    onClick={() => goToHome()}
-                                />
-                                ;
-                            </LogoContainer>
+                            {isSmallScreen || !isHomePage ? (
+                                <LogoContainer>
+                                    <img
+                                        src={uhcwHomeLogo}
+                                        width={uhcwLogoWidth}
+                                        alt="UHC watch logo to go home"
+                                        onClick={() => goToHome()}
+                                    />
+                                </LogoContainer>
+                            ) : null}
                         </FlexContainer>
 
                         <FlexContainer>
