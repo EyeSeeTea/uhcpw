@@ -53,7 +53,6 @@ export const IndicatorTreeSelector = React.memo(
         return (
             <Container $fullWidth={fullWidth} ref={componentRef}>
                 <StyledTextField
-                    disabled={true}
                     inputRef={inputRef}
                     label={label}
                     aria-label={placeholder || "Indicator selector"}
