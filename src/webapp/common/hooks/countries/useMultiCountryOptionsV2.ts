@@ -6,6 +6,7 @@ import { CountriesRegion } from "../../../../domain/entities/Country";
 import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
+    SORTED_COUNTRY_GROUPINGS,
 } from "../../../../data/repositories/countries/CountryD2Repository";
 
 const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
@@ -81,7 +82,7 @@ export function useMultiCountryOptionsV2(params?: {
                           id: eurRegion.id,
                           name: eurRegion.name,
                           code: eurRegion.code,
-                          parents: [],
+                          parents: [averagesGroup],
                       },
                   ]
                 : countryOptionsFiltered;
@@ -92,5 +93,17 @@ export function useMultiCountryOptionsV2(params?: {
         setSelected(countries);
     }, []);
 
-    return { options, selected, onSelectedChange };
+    const parentSort = useCallback(
+        (a: string, b: string) => countryGroupings.indexOf(a) - countryGroupings.indexOf(b),
+        []
+    );
+
+    return { options, selected, onSelectedChange, parentSort };
 }
+
+const averagesGroup = {
+    id: "averages",
+    name: "Averages",
+};
+
+const countryGroupings = ["averges", "all", ...SORTED_COUNTRY_GROUPINGS];

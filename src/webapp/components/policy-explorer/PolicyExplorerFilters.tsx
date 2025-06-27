@@ -97,6 +97,7 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                             showParentIfChecked={true}
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
+                            parentSort={filters.country.parentSort}
                         />
                     </Wrapper>
                 </Grid>
