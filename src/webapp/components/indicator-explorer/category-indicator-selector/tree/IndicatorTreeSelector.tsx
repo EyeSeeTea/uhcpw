@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, useMediaQuery } from "@material-ui/core";
 import styled from "styled-components";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
@@ -47,11 +47,13 @@ export const IndicatorTreeSelector = React.memo(
             treeOptions,
             containerWidth,
             onSearchAndClearIndicator,
+            isSmallScreen,
         } = useIndicatorTreeSelector({ options, selectedValue, onChange });
 
         return (
             <Container $fullWidth={fullWidth} ref={componentRef}>
                 <StyledTextField
+                    disabled={true}
                     inputRef={inputRef}
                     label={label}
                     aria-label={placeholder || "Indicator selector"}
@@ -68,6 +70,7 @@ export const IndicatorTreeSelector = React.memo(
                         "aria-label": `input ${placeholder || "Indicator selector"}`,
                     }}
                     InputProps={{
+                        readOnly: isSmallScreen,
                         endAdornment: expanded ? (
                             <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
                         ) : (

@@ -98,13 +98,9 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
             if (disabled !== true) {
                 setAnchorEl(event.currentTarget);
                 setExpanded(!expanded);
-
-                if (isSmallScreen && event.target instanceof HTMLElement) {
-                    event.target.blur();
-                }
             }
         },
-        [disabled, expanded, isSmallScreen]
+        [disabled, expanded]
     );
 
     const handleClose = useCallback(() => {

@@ -44,6 +44,7 @@ type State = {
     searchTerm: string;
     isClearDisabled: boolean;
     containerWidth: string;
+    isSmallScreen: boolean;
 };
 
 export const useCategorySelector = ({
@@ -247,5 +248,6 @@ export const useCategorySelector = ({
         searchTerm,
         isClearDisabled,
         containerWidth,
+        isSmallScreen,
     };
 };

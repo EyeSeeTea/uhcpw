@@ -33,6 +33,7 @@ type IndicatorTreeSelectorState = {
     setOpenedMenu: (value: boolean) => void;
     containerWidth: string;
     onSearchAndClearIndicator: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    isSmallScreen: boolean;
 };
 
 export const NO_SUBCATEGORY = "noSubcategory";
@@ -88,13 +89,11 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
             setOpenedMenu(!openedMenu);
             setExpanded(!expanded);
 
-            if (!isSmallScreen && !openedMenu && inputRef.current) {
+            if (!openedMenu && inputRef.current) {
                 inputRef.current.focus();
-            } else if (isSmallScreen && event.target instanceof HTMLElement) {
-                event.target.blur();
             }
         },
-        [expanded, isSmallScreen, openedMenu]
+        [expanded, openedMenu]
     );
 
     const handleClear = useCallback(() => {
@@ -175,5 +174,6 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
         setOpenedMenu,
         containerWidth,
         onSearchAndClearIndicator,
+        isSmallScreen,
     };
 };

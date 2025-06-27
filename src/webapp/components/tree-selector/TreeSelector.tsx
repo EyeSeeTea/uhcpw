@@ -80,6 +80,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
         handleClear,
         anchorEl,
         containerWidth,
+        isSmallScreen,
     } = useTreeSelectorState;
 
     return (
@@ -102,6 +103,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
                     "aria-label": `input ${ariaLabel || placeholder || "Tree selector"}`,
                 }}
                 InputProps={{
+                    readOnly: isSmallScreen,
                     startAdornment: (
                         <SelectedContainer>
                             {selectedChips.map(item => {
