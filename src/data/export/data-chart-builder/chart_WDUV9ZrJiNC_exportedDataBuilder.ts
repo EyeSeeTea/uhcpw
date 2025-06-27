@@ -1,4 +1,4 @@
-import { DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { D2OrgUnit, DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartData } from "./getTabsWithChartData";
 
@@ -7,16 +7,19 @@ const HEADERS_BASE = ["Parameters / Country - Year"];
 const HEADER_DATA_PARAM_NAME = "Parameter";
 const DATA_PARAM_SORT_BY = "All households";
 
-export const chart_WDUV9ZrJiNC_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
-    tabs,
-    chartName
-) => {
+export const chart_WDUV9ZrJiNC_exportedDataBuilder: (
+    tabs: Tab[],
+    chartName: string,
+    orgUnits: D2OrgUnit[]
+) => TabsWithStringOrNumbers[] = (tabs, chartName, orgUnits) => {
     const tabsWithExportedData: TabsWithStringOrNumbers[] = getTabsWithChartData(tabs, {
         chartName,
         headerDataParamName: HEADER_DATA_PARAM_NAME,
         headersBase: HEADERS_BASE,
         sortedDataParams: SORTED_PARAMETERS,
         dataParamToSortBy: DATA_PARAM_SORT_BY,
+        hasCountryCodeRow: true,
+        orgUnits,
     });
 
     const data = tabsWithExportedData.find(tab => tab.name === DATA_TAB_NAME)?.data || [];

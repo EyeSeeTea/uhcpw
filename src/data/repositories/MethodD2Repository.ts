@@ -3,7 +3,8 @@ import { FutureData } from "../../domain/entities/Future";
 import { Method } from "../../domain/entities/Method";
 import { MethodRepository } from "../../domain/repositories/MethodRepository";
 import { D2Api } from "../../types/d2-api";
-import { apiToFuture } from "../../utils/futures";
+import { getMethodsProgramEvent } from "./common/getMethodsProgramEvent";
+import { Maybe } from "../../types/utils";
 
 export const methodDataElements: Record<string, string> = {
     sectionName1: "JhQ6PjEMl55",
@@ -27,52 +28,44 @@ export const methodDataElements: Record<string, string> = {
     text5: "cRkVhIWs4PB",
 };
 
-export const methodProgram = "ncAcyjKwLSS";
-
 export class MethodD2Repository implements MethodRepository {
     constructor(private api: D2Api) {}
 
     get(): FutureData<Method[]> {
-        return apiToFuture(
-            this.api.events.get({
-                fields: eventsFields,
-                skipPaging: true,
-                program: methodProgram,
-            })
-        ).map(response => this.buildMethods(response.events));
+        return getMethodsProgramEvent(this.api).map(event => this.buildMethods(event));
     }
 
-    private buildMethods(events: D2Event[]): Method[] {
-        if (events[0]) {
+    private buildMethods(event: Maybe<D2Event>): Method[] {
+        if (event) {
             const sectionName1 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.sectionName1)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.sectionName1)?.value || "";
             const shortText1 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.shortText1)?.value || "";
-            const text1 = events[0].dataValues.find(dv => dv.dataElement === methodDataElements.text1)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.shortText1)?.value || "";
+            const text1 = event.dataValues.find(dv => dv.dataElement === methodDataElements.text1)?.value || "";
 
             const sectionName2 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.sectionName2)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.sectionName2)?.value || "";
             const shortText2 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.shortText2)?.value || "";
-            const text2 = events[0].dataValues.find(dv => dv.dataElement === methodDataElements.text2)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.shortText2)?.value || "";
+            const text2 = event.dataValues.find(dv => dv.dataElement === methodDataElements.text2)?.value || "";
 
             const sectionName3 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.sectionName3)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.sectionName3)?.value || "";
             const shortText3 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.shortText3)?.value || "";
-            const text3 = events[0].dataValues.find(dv => dv.dataElement === methodDataElements.text3)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.shortText3)?.value || "";
+            const text3 = event.dataValues.find(dv => dv.dataElement === methodDataElements.text3)?.value || "";
 
             const sectionName4 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.sectionName4)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.sectionName4)?.value || "";
             const shortText4 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.shortText4)?.value || "";
-            const text4 = events[0].dataValues.find(dv => dv.dataElement === methodDataElements.text4)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.shortText4)?.value || "";
+            const text4 = event.dataValues.find(dv => dv.dataElement === methodDataElements.text4)?.value || "";
 
             const sectionName5 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.sectionName5)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.sectionName5)?.value || "";
             const shortText5 =
-                events[0].dataValues.find(dv => dv.dataElement === methodDataElements.shortText5)?.value || "";
-            const text5 = events[0].dataValues.find(dv => dv.dataElement === methodDataElements.text5)?.value || "";
+                event.dataValues.find(dv => dv.dataElement === methodDataElements.shortText5)?.value || "";
+            const text5 = event.dataValues.find(dv => dv.dataElement === methodDataElements.text5)?.value || "";
 
             return [
                 {
@@ -106,12 +99,6 @@ export class MethodD2Repository implements MethodRepository {
         }
     }
 }
-
-const eventsFields = {
-    event: true,
-    dataValues: { dataElement: true, value: true },
-    eventDate: true,
-} as const;
 
 export interface D2Event {
     event: string;

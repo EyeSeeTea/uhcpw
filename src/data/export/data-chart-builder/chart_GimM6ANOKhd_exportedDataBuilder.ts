@@ -1,3 +1,4 @@
+import { D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartData } from "./getTabsWithChartData";
 
@@ -6,15 +7,18 @@ const HEADER_DATA_PARAM_NAME = "Quintile";
 const HEADERS_BASE = ["Quintile / Country - Year"];
 const DATA_PARAM_SORT_BY = "Poorest";
 
-export const chart_GimM6ANOKhd_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
-    tabs,
-    chartName
-) => {
+export const chart_GimM6ANOKhd_exportedDataBuilder: (
+    tabs: Tab[],
+    chartName: string,
+    orgUnits: D2OrgUnit[]
+) => TabsWithStringOrNumbers[] = (tabs, chartName, orgUnits) => {
     return getTabsWithChartData(tabs, {
         chartName,
         headerDataParamName: HEADER_DATA_PARAM_NAME,
         headersBase: HEADERS_BASE,
         sortedDataParams: SORTED_QUINTILES,
         dataParamToSortBy: DATA_PARAM_SORT_BY,
+        hasCountryCodeRow: true,
+        orgUnits,
     });
 };
