@@ -173,8 +173,6 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                     <EmptyContent info={selectCategoryInfo} />
                 ) : null}
 
-                {!isLoading && (!data || !dataOrientationByTable) && <EmptyContent info={selectCategoryInfo} />}
-
                 {!isLoading && (
                     <div ref={referencesRef}>
                         {data?.generalInfo.map(info => {
