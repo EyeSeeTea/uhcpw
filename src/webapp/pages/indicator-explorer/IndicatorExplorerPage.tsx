@@ -89,9 +89,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         onDownloadImage={handleOpenScreenshot}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                         analyticsPageTitle="Indicator explorer"
+                        onLoadingChange={handlePlugingLoadingChange}
                         fullScreenInMobile={true}
                         onCloseFullScreen={closeVisualization}
-                        onLoadingChange={handlePlugingLoadingChange}
                     />
                 ) : !isMobile ? (
                     <EmptyContent info={pageContent?.selectCategory} />

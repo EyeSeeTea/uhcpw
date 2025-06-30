@@ -196,6 +196,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
                     disabled={disabled}
                     top={topClearAll}
                     right={-15}
+                    className="TreeSelector-clear-button"
                 >
                     {i18n.t("Clear")}
                 </StyledButtonClear>

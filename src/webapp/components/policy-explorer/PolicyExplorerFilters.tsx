@@ -15,7 +15,7 @@ export interface ResourcesFiltersProps {
 }
 
 export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(
-    ({ filters, onGetTable, disableGet }) => {
+    ({ filters, onGetTable, disableGet = false }) => {
         const { onCategoryChange, onCountryChange, onYearsChange, isMobile } = usePolicyExplorerFilters({ filters });
         return (
             <Grid container spacing={isMobile ? 2 : 5} alignItems="flex-end" justifyContent="center" wrap="wrap">

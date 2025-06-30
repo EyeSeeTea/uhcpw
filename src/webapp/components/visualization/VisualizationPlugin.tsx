@@ -65,6 +65,14 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        if (chartData.kind === "Loaded" || chartData.kind === "Error") {
+            onLoadingChange?.(false);
+        } else {
+            onLoadingChange?.(true);
+        }
+    }, [chartData, sendEvent, analyticsPageTitle, onLoadingChange]);
+
+    useEffect(() => {
         if (fullScreenInMobile && isMobile && openFullScreenDialog === undefined) {
             console.debug({ fullScreenInMobile, isMobile, openFullScreenDialog });
             setOpenFullScreenDialog(true);
@@ -81,14 +89,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             onCloseFullScreen();
         }
     }, [onCloseFullScreen]);
-
-    useEffect(() => {
-        if (chartData.kind === "Loaded" || chartData.kind === "Error") {
-            onLoadingChange?.(false);
-        } else {
-            onLoadingChange?.(true);
-        }
-    }, [chartData, sendEvent, analyticsPageTitle, onLoadingChange]);
 
     const onDirectDownloadImage = useCallback(() => {
         if (chartData.kind === "Loaded" && ref.current) {
