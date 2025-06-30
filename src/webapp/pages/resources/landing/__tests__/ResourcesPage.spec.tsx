@@ -39,7 +39,8 @@ describe("ResourcesPage", () => {
 
         search();
 
-        expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        // country analysis flags depends on countries not on resources, that is why we expect 1 item
+        expect(screen.queryAllByRole("listitem")).toHaveLength(1);
     });
     it("should render any items if get resources fail", async () => {
         givenAnErrorToGetResources();
@@ -48,7 +49,8 @@ describe("ResourcesPage", () => {
 
         search();
 
-        expect(screen.queryAllByRole("listitem")).toHaveLength(0);
+        // country analysis flags depends on countries not on resources, that is why we expect 1 item
+        expect(screen.queryAllByRole("listitem")).toHaveLength(1);
     });
     it("should render expected items content", async () => {
         givenAResources(7);
