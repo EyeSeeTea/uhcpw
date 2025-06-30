@@ -44,6 +44,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
                     showParentIfChecked={true}
                     showOnlyAllParentSelectedIfChecked={true}
                     allSelectedLabel={i18n.t("All countries/areas")}
+                    parentSort={countryFilter.parentSort}
                 />
             </Row>
 

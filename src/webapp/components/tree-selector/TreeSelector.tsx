@@ -52,6 +52,7 @@ interface TreeSelectorProps {
     showSubChildren?: boolean;
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
+    parentSort?: (a: string, b: string) => number;
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
@@ -77,6 +78,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         defaultExpanded = EMPTY_IDS_ARRAY,
         allSelectedLabel,
         selectedItemsToShowWhenAllSelected = EMPTY_IDS_ARRAY,
+        parentSort = (_a: string, _b: string) => 0,
     }) => {
         const isSmallScreen = useMediaQuery("(max-width:700px)");
         const { width } = useWindowSize();
@@ -224,11 +226,13 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(
         );
 
         const parents = useMemo(() => {
-            return _.uniqBy(filteredItemsBySearch.map(item => item.parents).flat(), "id").map(parent => ({
-                ...parent,
-                isLeaf: false,
-            }));
-        }, [filteredItemsBySearch]);
+            return _.uniqBy(filteredItemsBySearch.map(item => item.parents).flat(), item => item.id)
+                .sort((a, b) => parentSort(a.id, b.id))
+                .map(parent => ({
+                    ...parent,
+                    isLeaf: false,
+                }));
+        }, [filteredItemsBySearch, parentSort]);
 
         const filteredItemsBySearchWithoutParent = useMemo(() => {
             return filteredItemsBySearch.filter(item => !item.parents.length).map(item => ({ ...item, isLeaf: true }));

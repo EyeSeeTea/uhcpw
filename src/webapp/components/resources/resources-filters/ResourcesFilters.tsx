@@ -112,6 +112,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             showParentIfChecked={true}
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
+                            parentSort={filters.country.parentSort}
                         />
                     </FilterContainer>
                 </Grid>
