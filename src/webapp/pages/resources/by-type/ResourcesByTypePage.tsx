@@ -159,6 +159,7 @@ const SearchContainer = styled.div`
 
 const StyledGridContainer = styled(Grid)`
     padding-block: 32px;
+    padding-inline: 64px;
 `;
 
 const StyledGridItem = styled(Grid)`
