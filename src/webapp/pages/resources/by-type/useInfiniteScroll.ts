@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 interface UseInfiniteScrollProps {
     onLoadMore: () => void;
@@ -15,26 +15,16 @@ export function useInfiniteScroll({
 }: UseInfiniteScrollProps) {
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadingRef = useRef<HTMLDivElement>(null);
-    const [isMounted, setIsMounted] = useState(false);
 
     const handleObserver = useCallback(
         (entries: IntersectionObserverEntry[]) => {
             const target = entries[0];
-            if (target?.isIntersecting && hasMore && !loadingMore && isMounted) {
-                setTimeout(() => {
-                    if (hasMore && !loadingMore) {
-                        onLoadMore();
-                    }
-                }, 50);
+            if (target?.isIntersecting && hasMore && !loadingMore) {
+                onLoadMore();
             }
         },
-        [hasMore, loadingMore, onLoadMore, isMounted]
+        [hasMore, loadingMore, onLoadMore]
     );
-
-    useEffect(() => {
-        const timer = setTimeout(() => setIsMounted(true), 200);
-        return () => clearTimeout(timer);
-    }, [hasMore, loadingMore]);
 
     useEffect(() => {
         const element = loadingRef.current;
