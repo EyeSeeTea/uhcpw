@@ -441,8 +441,8 @@ function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
 
     expect(countryAnalysis.countryId).toBe("KwgjnBBpe5b");
 
-    expect(countryAnalysis.favouriteSection).toBe(true);
-    expect(countryAnalysis.favouriteSectionOrder).toBe(3);
+    expect(countryAnalysis.favouriteSection).toBe(false);
+    expect(countryAnalysis.favouriteSectionOrder).toBe(0);
     verifyFavouriteHome(countryAnalysis, 4);
 }
 

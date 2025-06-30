@@ -39,6 +39,7 @@ export function givenACountries(): Country[] {
             coordinates: [2982, 12] as [number, number],
             parents: [{ id: "EUR", name: "Europe" }],
             flag: "http://es.png",
+            showCountryFlag: true,
             summary: "**Financial hardship (2018)**",
             sliderInfo: {
                 gapsSection: {
@@ -70,6 +71,7 @@ export function givenACountries(): Country[] {
             longName: "Bosnia and Herzegovina",
             code: "BIH",
             currencyCode: "BAM",
+            showCountryFlag: false,
             coordinates: [18.000095, 44.001364],
             status: "Gaps",
             parents: [
@@ -155,6 +157,7 @@ export function givenACountries(): Country[] {
                     longName: "BIH (the Federation of Bosnia and Herzegovina)",
                     code: "BIH-F",
                     currencyCode: "BAM",
+                    showCountryFlag: false,
                     coordinates: [18.6315, 45.0505],
                     status: "Gaps",
                     parents: [],
@@ -222,6 +225,7 @@ export function givenACountries(): Country[] {
                     longName: "BIH (the Republika Srpska)",
                     code: "BIH-R",
                     currencyCode: "BAM",
+                    showCountryFlag: false,
                     coordinates: [18.341, 42.993],
                     status: "Gaps",
                     parents: [],
@@ -297,6 +301,7 @@ export function givenACountriesAndRegions(): Country[] {
             longName: "Kingdom of Spain",
             code: "ESP",
             status: "Weak",
+            showCountryFlag: true,
             coordinates: [2982, 12] as [number, number],
             parents: [{ id: "EUR", name: "Europe" }],
             flag: "http://es.png",
@@ -331,6 +336,7 @@ export function givenACountriesAndRegions(): Country[] {
             longName: "Bosnia and Herzegovina",
             code: "BIH",
             currencyCode: "BAM",
+            showCountryFlag: false,
             coordinates: [18.000095, 44.001364],
             status: "Gaps",
             parents: [
@@ -552,6 +558,7 @@ export function givenACountriesAndRegions(): Country[] {
             longName: "BIH (the Republika Srpska)",
             code: "BIH-R",
             currencyCode: "BAM",
+            showCountryFlag: false,
             coordinates: [18.341, 42.993],
             status: "Gaps",
             parents: [],
@@ -619,6 +626,7 @@ export function givenACountriesAndRegions(): Country[] {
             longName: "BIH (the Federation of Bosnia and Herzegovina)",
             code: "BIH-F",
             currencyCode: "BAM",
+            showCountryFlag: false,
             coordinates: [18.6315, 45.0505],
             status: "Gaps",
             parents: [],

@@ -53,8 +53,8 @@ export function createCountryAnalysisResources(count: number): CountryAnalysis[]
             countryId: "DVnpk4xiXGJ",
             favouriteHome: true,
             favouriteHomeOrder: index,
-            favouriteSection: true,
-            favouriteSectionOrder: index,
+            favouriteSection: false,
+            favouriteSectionOrder: 0,
         };
     });
 
