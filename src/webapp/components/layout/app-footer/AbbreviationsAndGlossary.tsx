@@ -1,24 +1,18 @@
 import React from "react";
 import { Link } from "@material-ui/core";
 import styled from "styled-components";
+
 import i18n from "../../../../locales";
-import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { useReferenceLinks } from "../../../common/hooks/analytics/useReferenceLinks";
 
 export const AbbreviationsAndGlossary: React.FC = () => {
-    const { redirectWithPageView } = useAnalytics();
-
-    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
-    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
+    const { abbreviationsLink, glossaryLink } = useReferenceLinks();
 
     return (
         <Container>
-            <StyledLink target="_blank" href="https://cmyn.short.gy/abbreviations" onClick={abbreviationsPageView}>
-                {i18n.t("Abbreviations")}
-            </StyledLink>
+            <StyledLink {...abbreviationsLink}>{i18n.t("Abbreviations")}</StyledLink>
 
-            <StyledLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
-                {i18n.t("Glossary")}
-            </StyledLink>
+            <StyledLink {...glossaryLink}>{i18n.t("Glossary")}</StyledLink>
         </Container>
     );
 };

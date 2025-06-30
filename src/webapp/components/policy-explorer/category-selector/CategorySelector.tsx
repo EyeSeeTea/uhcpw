@@ -50,6 +50,7 @@ export const CategorySelector = React.memo(
             handleClose,
             handleClear,
             containerWidth,
+            isSmallScreen,
         } = categorySelectorState;
         return (
             <Container $fullWidth={fullWidth}>
@@ -61,6 +62,7 @@ export const CategorySelector = React.memo(
                     disabled
                     fullWidth={fullWidth}
                     InputProps={{
+                        readOnly: isSmallScreen,
                         startAdornment: (
                             <SelectedContainer>
                                 {categoriesSelection?.length

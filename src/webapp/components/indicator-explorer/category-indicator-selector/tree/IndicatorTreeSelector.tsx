@@ -47,6 +47,7 @@ export const IndicatorTreeSelector = React.memo(
             treeOptions,
             containerWidth,
             onSearchAndClearIndicator,
+            isSmallScreen,
         } = useIndicatorTreeSelector({ options, selectedValue, onChange });
 
         return (
@@ -68,6 +69,7 @@ export const IndicatorTreeSelector = React.memo(
                         "aria-label": `input ${placeholder || "Indicator selector"}`,
                     }}
                     InputProps={{
+                        readOnly: isSmallScreen,
                         endAdornment: expanded ? (
                             <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
                         ) : (

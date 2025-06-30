@@ -1,4 +1,4 @@
-import { Button, ListItemText, List, ListItem } from "@material-ui/core";
+import { Button, ListItemText, List, ListItem, useMediaQuery } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
 import { useCallback, useMemo } from "react";
 import styled from "styled-components";
@@ -42,6 +42,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
         fullScreen,
     }) => {
         const [showFullScreen, setShowFullScreen] = React.useState(false);
+        const isSmallScreen = useMediaQuery("(max-width:600px)");
 
         const valuesOption = useMemo(() => {
             return options.filter(option => values?.includes(option.value)) || [];
@@ -92,6 +93,10 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                             aria-label={label || placeholder || "Dropdown Multiple"}
                             InputLabelProps={{ shrink: true }}
                             minWidth={minWidth}
+                            InputProps={{
+                                ...params.InputProps,
+                                readOnly: isSmallScreen,
+                            }}
                         />
                     )}
                     renderTags={(value: unknown[], getTagProps) =>

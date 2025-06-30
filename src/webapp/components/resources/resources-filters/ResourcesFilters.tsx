@@ -117,6 +117,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
                             fullScreen={isMobile}
+                            parentSort={filters.country.parentSort}
                         />
                     </FilterContainer>
                 </Grid>

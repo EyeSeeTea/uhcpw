@@ -47,15 +47,15 @@ export const countryInfoDataElements: Record<string, string> = {
 
 const euroOrgUnit = "svSQSBLTVz6";
 
-const validOrgUnitGroups = [
-    "e7I4gDX3g5k",
-    "FMCN2ZG9AEj",
-    "KJm1Af6dksd",
+export const SORTED_COUNTRY_GROUPINGS = [
     "dqMsarWCWk6",
+    "FMCN2ZG9AEj",
+    "A1BdaIwDheX",
+    "e7I4gDX3g5k",
+    "KJm1Af6dksd",
     "yuNkB9H6l3A",
     "r3pNdEobfnS",
     "tuJjq1LSoCL",
-    "A1BdaIwDheX",
 ];
 
 const GREENLAND = "IZy3ESdFnp5";
@@ -221,7 +221,7 @@ export class CountryD2Repository implements CountryRepository {
             status,
             parents: orgUnit.organisationUnitGroups
                 .map(({ id, name }) => ({ id, name }))
-                .filter(oug => validOrgUnitGroups.includes(oug.id)),
+                .filter(oug => SORTED_COUNTRY_GROUPINGS.includes(oug.id)),
             flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
             summary,
             sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
@@ -401,13 +401,13 @@ export class CountryD2Repository implements CountryRepository {
         return eurRegion
             ? {
                   id: eurRegion.id,
-                  name: "EU27 average",
-                  longName: "EU27 average",
-                  code: "EU27",
+                  name: "EU average",
+                  longName: "EU average",
+                  code: "EU",
                   description: eurRegion.description,
                   parents: eurRegion.organisationUnitGroups
                       .map(({ id, name }) => ({ id, name }))
-                      .filter(oug => validOrgUnitGroups.includes(oug.id)),
+                      .filter(oug => SORTED_COUNTRY_GROUPINGS.includes(oug.id)),
               }
             : undefined;
     }

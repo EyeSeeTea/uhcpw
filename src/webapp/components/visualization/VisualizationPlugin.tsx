@@ -25,9 +25,9 @@ interface VisualizationPluginProps {
     isSquareChart?: boolean;
     visualizationName?: string;
     analyticsPageTitle: string;
-    onLoadingChange?: (loading: boolean) => void;
     fullScreenInMobile?: boolean;
     onCloseFullScreen?: () => void;
+    onLoadingChange?: (loading: boolean) => void;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -45,9 +45,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         paddingEnd = true,
         isSquareChart = false,
         analyticsPageTitle,
-        onLoadingChange,
         fullScreenInMobile = false,
         onCloseFullScreen,
+        onLoadingChange,
     } = props;
 
     const { sendEvent } = useAnalytics();

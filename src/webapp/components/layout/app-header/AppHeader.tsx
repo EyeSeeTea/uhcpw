@@ -11,9 +11,9 @@ import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
 import { useAppHeader } from "./useAppHeader";
-import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { DesktopMenu } from "./DesktopMenu";
+import { useReferenceLinks } from "../../../common/hooks/analytics/useReferenceLinks";
 
 export const useStyles = makeStyles(theme => ({
     root: {
@@ -67,12 +67,9 @@ interface AppHeaderProps {
 
 export const AppHeader: React.FC<AppHeaderProps> = () => {
     const classes = useStyles();
-    const { redirectWithPageView } = useAnalytics();
-    const { goToHome, whoLogoWidth, uhcwLogoWidth } = useAppHeader();
+    const { abbreviationsLink, glossaryLink } = useReferenceLinks();
+    const { goToHome, whoLogoWidth, uhcwLogoWidth, isHomePage } = useAppHeader();
     const isSmallScreen = useIsSmallScreen();
-
-    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
-    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
 
     return (
         <div className={classes.root}>
@@ -93,17 +90,9 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                             </Tag>
                         </TagContainer>
 
-                        <MenuTopLink
-                            target="_blank"
-                            href="https://cmyn.short.gy/abbreviations"
-                            onClick={abbreviationsPageView}
-                        >
-                            {i18n.t("Abbreviations")}
-                        </MenuTopLink>
+                        <MenuTopLink {...abbreviationsLink}>{i18n.t("Abbreviations")}</MenuTopLink>
 
-                        <MenuTopLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
-                            {i18n.t("Glossary")}
-                        </MenuTopLink>
+                        <MenuTopLink {...glossaryLink}>{i18n.t("Glossary")}</MenuTopLink>
                     </Hidden>
                 </Toolbar>
 
@@ -114,14 +103,16 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                                 <img src={whoLogoBlue} width={whoLogoWidth} alt="WHO logo" onClick={() => goToHome()} />
                             </LogoContainer>
 
-                            <LogoContainer>
-                                <img
-                                    src={uhcwHomeLogo}
-                                    width={uhcwLogoWidth}
-                                    alt="UHC watch logo to go home"
-                                    onClick={() => goToHome()}
-                                />
-                            </LogoContainer>
+                            {isSmallScreen || !isHomePage ? (
+                                <LogoContainer>
+                                    <img
+                                        src={uhcwHomeLogo}
+                                        width={uhcwLogoWidth}
+                                        alt="UHC watch logo to go home"
+                                        onClick={() => goToHome()}
+                                    />
+                                </LogoContainer>
+                            ) : null}
                         </FlexContainer>
 
                         <FlexContainer>

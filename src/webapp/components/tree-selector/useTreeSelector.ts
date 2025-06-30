@@ -25,6 +25,7 @@ type useTreeSelectorParams = {
     showSubChildren?: boolean;
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
+    parentSort?: (a: string, b: string) => number;
 };
 
 type useTreeSelectorState = {
@@ -83,6 +84,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         showSubChildren,
         defaultExpanded = EMPTY_IDS_ARRAY,
         selectedItemsToShowWhenAllSelected = EMPTY_IDS_ARRAY,
+        parentSort = (_a: string, _b: string) => 0,
     } = params;
 
     const isSmallScreen = useMediaQuery("(max-width:700px)");
@@ -98,13 +100,9 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
             if (disabled !== true) {
                 setAnchorEl(event.currentTarget);
                 setExpanded(!expanded);
-
-                if (isSmallScreen && event.target instanceof HTMLElement) {
-                    event.target.blur();
-                }
             }
         },
-        [disabled, expanded, isSmallScreen]
+        [disabled, expanded]
     );
 
     const handleClose = useCallback(() => {
@@ -233,11 +231,13 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     );
 
     const parents = useMemo(() => {
-        return _.uniqBy(filteredItemsBySearch.map(item => item.parents).flat(), "id").map(parent => ({
-            ...parent,
-            isLeaf: false,
-        }));
-    }, [filteredItemsBySearch]);
+        return _.uniqBy(filteredItemsBySearch.map(item => item.parents).flat(), item => item.id)
+            .sort((a, b) => parentSort(a.id, b.id))
+            .map(parent => ({
+                ...parent,
+                isLeaf: false,
+            }));
+    }, [filteredItemsBySearch, parentSort]);
 
     const filteredItemsBySearchWithoutParent = useMemo(() => {
         return filteredItemsBySearch.filter(item => !item.parents.length).map(item => ({ ...item, isLeaf: true }));

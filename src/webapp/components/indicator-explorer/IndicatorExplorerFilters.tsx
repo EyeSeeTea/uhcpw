@@ -50,6 +50,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                             showOnlyAllParentSelectedIfChecked={!filters.country.isOnlyEu27Comparison}
                             selectedItemsToShowWhenAllSelected={filters.country.selectedItemsToShowWhenAllSelected}
                             allSelectedLabel={i18n.t("All countries/areas")}
+                            parentSort={filters.country.parentSort}
                             fullScreen={isMobile}
                         />
                     </Center>

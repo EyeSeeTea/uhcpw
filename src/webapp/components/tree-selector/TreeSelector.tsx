@@ -46,6 +46,7 @@ interface TreeSelectorProps {
     showSubChildren?: boolean;
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
+    parentSort?: (a: string, b: string) => number;
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
@@ -80,6 +81,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
         handleClear,
         anchorEl,
         containerWidth,
+        isSmallScreen,
     } = useTreeSelectorState;
 
     return (
@@ -102,6 +104,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
                     "aria-label": `input ${ariaLabel || placeholder || "Tree selector"}`,
                 }}
                 InputProps={{
+                    readOnly: isSmallScreen,
                     startAdornment: (
                         <SelectedContainer>
                             {selectedChips.map(item => {
