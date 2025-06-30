@@ -4,24 +4,25 @@ import { useOrientation } from "./useOrientation";
 
 type Props = {
     children: React.ReactNode;
+    enableRotation?: boolean;
 };
 
-export const Rotate: React.FC<Props> = ({ children }) => {
+export const Rotate: React.FC<Props> = ({ children, enableRotation }) => {
     const orientation = useOrientation();
-    const isPortrait = useMemo(() => {
-        return orientation === "portrait";
-    }, [orientation]);
+    const rotate = useMemo(() => {
+        return enableRotation === true && orientation === "portrait";
+    }, [enableRotation, orientation]);
 
-    return <RotatedContent isPortrait={isPortrait}>{children}</RotatedContent>;
+    return <RotatedContent rotate={rotate}>{children}</RotatedContent>;
 };
 
-const RotatedContent = styled.div<{ isPortrait: boolean }>`
+const RotatedContent = styled.div<{ rotate: boolean }>`
     width: 100%;
     height: 100%;
     transition: transform 0.3s ease;
 
-    ${({ isPortrait }) =>
-        isPortrait &&
+    ${({ rotate }) =>
+        rotate &&
         css`
             transform: rotate(90deg);
             transform-origin: center;

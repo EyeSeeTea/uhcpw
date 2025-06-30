@@ -22,22 +22,7 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
 }) => {
     return (
         <Dialog open={isOpen} onClose={onClose} fullScreen>
-            {forceRotation && (
-                <Rotate>
-                    <DialogContainer ref={ref}>
-                        <CloseIconButton onClick={onClose}>
-                            <StyledCloseIcon />
-                        </CloseIconButton>
-
-                        <DialogContent>
-                            {title && <Title variant="h6">{title}</Title>}
-
-                            {children}
-                        </DialogContent>
-                    </DialogContainer>
-                </Rotate>
-            )}
-            {!forceRotation && (
+            <Rotate enableRotation={forceRotation}>
                 <DialogContainer ref={ref}>
                     <CloseIconButton onClick={onClose}>
                         <StyledCloseIcon />
@@ -49,7 +34,7 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
                         {children}
                     </DialogContent>
                 </DialogContainer>
-            )}
+            </Rotate>
         </Dialog>
     );
 };

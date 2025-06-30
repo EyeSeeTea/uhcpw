@@ -112,6 +112,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                     analyticsPageTitle="Indicator explorer"
                     analyticsContent={analyticsContent}
+                    forceRotation={isMobile}
                 >
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}
