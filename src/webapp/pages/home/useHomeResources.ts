@@ -3,6 +3,7 @@ import { useMemo } from "react";
 
 import { useResourcesByType } from "../resources/by-type/useResourcesByType";
 import { ResourceState } from "../resources/by-type/ResourcesByTypeState";
+import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 
 const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
     "country-analysis" | "comparative-analysis" | "news" | "multimedia",
@@ -10,16 +11,17 @@ const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
 > = {
     "comparative-analysis": 1,
     "country-analysis": 2,
-    news: 3,
-    multimedia: 4,
+    multimedia: 3,
+    news: 4,
 };
 
 export function useHomeResources() {
     const { items } = useResourcesByType({ isFavouriteHome: true });
+    const isSmallScreen = useIsSmallScreen();
 
     const resources = useMemo(() => {
         const uniqueResources = items
-            ?.filter(item => !!item.favouriteHome)
+            ?.filter(item => !!item.favouriteHome && (isSmallScreen ? item.kind !== "news" : true))
             .reduce((acc: ResourceState[], resource: ResourceState): ResourceState[] => {
                 const sameResourcesSortedByPriorityToBeShown = items
                     .filter(({ id }) => resource.id === id)
@@ -38,9 +40,16 @@ export function useHomeResources() {
             }, []);
 
         return uniqueResources?.length ? _.orderBy(uniqueResources, "favouriteHomeOrder").slice(0, 6) : [];
+    }, [items, isSmallScreen]);
+
+    const news = useMemo(() => {
+        const filteredNews = items?.filter(item => item.kind === "news" && !!item.favouriteHome);
+
+        return filteredNews?.length ? _.orderBy(filteredNews, "favouriteHomeOrder").slice(0, 6) : [];
     }, [items]);
 
     return {
         resources,
+        news,
     };
 }

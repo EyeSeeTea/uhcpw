@@ -1,16 +1,18 @@
 import { Button, Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
+import ReactMarkdown from "react-markdown";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import React from "react";
+
 import { colors } from "../app/themes/dhis2.theme";
 import { Layout } from "../../components/layout/Layout";
 import bubblePattern from "../../assets/bubble-pattern-white.png";
 import i18n from "../../../locales";
 import { useMethods } from "./useMethods";
-import ReactMarkdown from "react-markdown";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
-import React from "react";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ColumnGridContainer } from "../../components/ColumnGridContainer";
+import { useReferenceLinks } from "../../common/hooks/analytics/useReferenceLinks";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
@@ -56,7 +58,9 @@ const MarkdownLink: React.FC<{
 
 export const MethodsPage: React.FC = () => {
     const { methods, isExpanded, setExpanded } = useMethods();
-    const { sendPageView, redirectWithPageView } = useAnalytics();
+    const { sendPageView } = useAnalytics();
+
+    const { abbreviationsLink, glossaryLink } = useReferenceLinks();
 
     const handleClick = (index: number) => {
         const updatedExpanded = [...isExpanded];
@@ -67,9 +71,6 @@ export const MethodsPage: React.FC = () => {
     React.useEffect(() => {
         sendPageView({ title: "Methods" });
     }, [sendPageView]);
-
-    const abbreviationsPageView = redirectWithPageView({ title: "Abbreviations" });
-    const glossaryPageView = redirectWithPageView({ title: "Glossary" });
 
     return (
         <Layout>
@@ -101,16 +102,8 @@ export const MethodsPage: React.FC = () => {
                         </Grid>
                     ))}
                     <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
-                        <DownloadLink
-                            target="_blank"
-                            href="https://cmyn.short.gy/abbreviations"
-                            onClick={abbreviationsPageView}
-                        >
-                            {i18n.t("Abbreviations")}
-                        </DownloadLink>
-                        <DownloadLink target="_blank" href="https://cmyn.short.gy/glossary" onClick={glossaryPageView}>
-                            {i18n.t("Glossary")}
-                        </DownloadLink>
+                        <DownloadLink {...abbreviationsLink}>{i18n.t("Abbreviations")}</DownloadLink>
+                        <DownloadLink {...glossaryLink}>{i18n.t("Glossary")}</DownloadLink>
                     </ButtonsGridItem>
                 </ColumnGridContainer>
             </MainContainer>

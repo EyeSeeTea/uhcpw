@@ -421,6 +421,7 @@ export function givenACountriesAndRegions(): Country[] {
                     name: "BIH (the Federation of Bosnia and Herzegovina)",
                     longName: "BIH (the Federation of Bosnia and Herzegovina)",
                     code: "BIH-F",
+                    showCountryFlag: false,
                     currencyCode: "BAM",
                     coordinates: [18.6315, 45.0505],
                     status: "Gaps",
@@ -488,6 +489,7 @@ export function givenACountriesAndRegions(): Country[] {
                     name: "BIH (the Republika Srpska)",
                     longName: "BIH (the Republika Srpska)",
                     code: "BIH-R",
+                    showCountryFlag: false,
                     currencyCode: "BAM",
                     coordinates: [18.341, 42.993],
                     status: "Gaps",
@@ -728,6 +730,8 @@ export function givenAGeneralContent(): GeneralContent {
         cookies: {
             policyUrl: "https://www.who.int/about/policies/privacy",
         },
+        abbreviations: { file: undefined },
+        glossary: { file: undefined },
     };
 }
 
