@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from "react";
-import { Box, Button, IconButton, Modal, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Box, Button, IconButton, Modal, Typography } from "@material-ui/core";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import _ from "lodash";
 import styled from "styled-components";

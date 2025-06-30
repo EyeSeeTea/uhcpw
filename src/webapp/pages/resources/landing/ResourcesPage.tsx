@@ -41,7 +41,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
             </TitleAndSearchContainer>
 
             <ResourcesContainer maxWidth="xl">
-                <Grid container>
+                <StyledGrid container>
                     <FiltersContainer>
                         <ResourcesFilters
                             filters={filters}
@@ -66,7 +66,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                             themeSelected={filters.theme.selected}
                         />
                     )}
-                </Grid>
+                </StyledGrid>
             </ResourcesContainer>
         </Layout>
     );
@@ -90,9 +90,9 @@ const TitleAndSearchContainer = styled.div`
 `;
 
 const FiltersContainer = styled.div`
+    width: 100%;
     padding-block-start: 64px;
     padding-block-end: 32px;
-    padding-inline: 64px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-block-start: 32px;
         padding-inline: 32px;
@@ -113,4 +113,13 @@ const SearchContainer = styled.div`
     justify-content: center;
     max-width: 70%;
     width: 442px;
+`;
+
+const StyledGrid = styled(Grid)`
+    padding-block-end: 32px;
+    padding-inline: 64px;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 0;
+    }
 `;
