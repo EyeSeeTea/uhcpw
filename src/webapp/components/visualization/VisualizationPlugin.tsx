@@ -61,7 +61,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationName
     );
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const [openFullScreenDialog, setOpenFullScreenDialog] = React.useState<boolean | undefined>();
 
     const ref = useRef<HTMLDivElement>(null);
