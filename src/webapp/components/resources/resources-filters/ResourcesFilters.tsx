@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -22,6 +22,8 @@ export interface ResourcesFiltersProps {
 
 export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
     ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
+        const theme = useTheme();
+        const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
         const history = useHistory();
         const location = useLocation();
 
@@ -80,6 +82,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             onChange={onCategoryChange}
                             label={i18n.t("Select category")}
                             hideLabel
+                            fullScreen={isMobile}
                         />
                     </FilterContainer>
                 </Grid>
@@ -94,6 +97,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             disabled={disabledThemeFilter}
                             label={i18n.t("Select theme")}
                             hideLabel
+                            fullScreen={isMobile}
                         />
                     </FilterContainer>
                 </Grid>
@@ -112,6 +116,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             showParentIfChecked={true}
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
+                            fullScreen={isMobile}
                             parentSort={filters.country.parentSort}
                         />
                     </FilterContainer>
@@ -128,6 +133,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             hideLabel
                             fullWidth
                             minWidth="100%"
+                            fullScreen={isMobile}
                         />
                     </FilterContainer>
                 </Grid>

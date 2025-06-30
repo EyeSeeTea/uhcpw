@@ -326,6 +326,10 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         [countryOptions, isOnlyEu27Comparison, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
     );
 
+    const closeVisualization = useCallback(() => {
+        setShowVisualization(false);
+    }, []);
+
     return {
         filters: {
             country: {
@@ -354,6 +358,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         },
         onGet,
         showVisualization,
+        closeVisualization,
         globalMessage,
         pageContent,
     };

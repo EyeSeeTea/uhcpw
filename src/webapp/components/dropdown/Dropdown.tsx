@@ -1,11 +1,12 @@
-import { Button } from "@material-ui/core";
+import { Button, ListItemText, List, ListItem } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { DropdownTextField } from "./DropdownTextField";
 import { Option } from "./Option";
+import { FullScreenDialog } from "../dialog/FullScreenDialog";
 interface DropdownProps<T extends string = string> {
     label?: string;
     options: Option<T>[];
@@ -17,6 +18,7 @@ interface DropdownProps<T extends string = string> {
     width?: string;
     hideLabel?: boolean;
     minWidth?: string;
+    fullScreen?: boolean;
 }
 
 interface ContainerProps {
@@ -40,12 +42,24 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
         width = "100%",
         hideLabel = false,
         minWidth,
+        fullScreen = false,
     }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
+        const [showFullScreen, setShowFullScreen] = React.useState(false);
 
         useEffect(() => {
             setValueOption(options.find(option => option.value === value) || null);
         }, [options, value]);
+
+        const handleClick = useCallback(() => {
+            if (fullScreen) {
+                setShowFullScreen(true);
+            }
+        }, [fullScreen]);
+
+        const closeFullScreen = useCallback(() => {
+            setShowFullScreen(false);
+        }, []);
 
         const handleChange = (e: React.ChangeEvent<{}>, value: Option<string> | null): void => {
             if (!Array.isArray(value)) {
@@ -55,11 +69,17 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     onChange(value?.value || undefined);
                 }
             }
+            closeFullScreen();
         };
 
         const handleClear = (): void => {
             onChange(undefined);
             setValueOption(null);
+        };
+
+        const handleListItemClick = (option: Option): void => {
+            onChange(option?.value || undefined);
+            closeFullScreen();
         };
 
         return (
@@ -84,7 +104,9 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     )}
                     onChange={(e, value) => handleChange(e, value as Option<string> | null)}
                     disabled={disabled}
+                    onOpen={handleClick}
                 />
+
                 {value && (
                     <ClearButton
                         className="Dropdown-clear-button"
@@ -94,6 +116,27 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                     >
                         {i18n.t("Clear")}
                     </ClearButton>
+                )}
+
+                {showFullScreen && (
+                    <FullScreenDialog isOpen={true} onClose={closeFullScreen} title={label}>
+                        <List>
+                            {options.map(option => {
+                                const isSelected = valueOption?.value === option.value;
+
+                                return (
+                                    <ListItem
+                                        button
+                                        key={option.value}
+                                        selected={isSelected}
+                                        onClick={() => handleListItemClick(option)}
+                                    >
+                                        <ListItemText primary={option.text} />
+                                    </ListItem>
+                                );
+                            })}
+                        </List>
+                    </FullScreenDialog>
                 )}
             </Container>
         );
