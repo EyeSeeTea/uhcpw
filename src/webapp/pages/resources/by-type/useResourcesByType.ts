@@ -12,9 +12,9 @@ export function useResourcesByType(params: {
     category?: string;
     countriesFilter?: string[];
     count?: number;
-    favourite?: boolean;
+    isFavouriteHome?: boolean;
     themeFilter?: string;
-    favouriteSection?: boolean;
+    isFavouriteSection?: boolean;
     includeAdvancedSearch?: boolean;
 }): ResourcesByTypeState {
     const { compositionRoot, countries, themes } = useAppContext();
@@ -49,8 +49,8 @@ export function useResourcesByType(params: {
                 countries: filters.country.selected,
                 years: filters.year.selected,
                 count: params.count,
-                favourite: params.favourite,
-                favouriteSection: filters.search.term ? undefined : params.favouriteSection,
+                isFavouriteHome: params.isFavouriteHome,
+                isFavouriteSection: filters.search.term ? undefined : params.isFavouriteSection,
             }),
             advancedResponse: includeAdvancedSearch
                 ? executeAdvancedSearch(compositionRoot, countries, themes, filters.search.term)
@@ -86,8 +86,8 @@ export function useResourcesByType(params: {
         filters.year.selected,
         params.category,
         params.count,
-        params.favourite,
-        params.favouriteSection,
+        params.isFavouriteHome,
+        params.isFavouriteSection,
         includeAdvancedSearch,
         countries,
         themes,
@@ -133,7 +133,7 @@ function executeAdvancedSearch(
     });
 }
 
-function buildResourcesBySection(
+export function buildResourcesBySection(
     resources: Resource[],
     countries: Country[],
     themes: ResourceTheme[]

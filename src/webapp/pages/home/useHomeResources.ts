@@ -1,9 +1,10 @@
 import _ from "lodash";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { useResourcesByType } from "../resources/by-type/useResourcesByType";
 import { ResourceState } from "../resources/by-type/ResourcesByTypeState";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { useAppContext } from "../../contexts/app-context";
+import { buildResourcesBySection } from "../resources/by-type/useResourcesByType";
 
 const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
     "country-analysis" | "comparative-analysis" | "news" | "multimedia",
@@ -16,15 +17,38 @@ const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
 };
 
 export function useHomeResources() {
-    const { items } = useResourcesByType({ favourite: true });
+    const { compositionRoot, countries, themes } = useAppContext();
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
+
     const isSmallScreen = useIsSmallScreen();
+
+    useEffect(() => {
+        setLoading(true);
+
+        compositionRoot.resources.get
+            .execute({
+                isFavouriteHome: true,
+            })
+            .run(
+                normalResponse => {
+                    setLoading(false);
+                    setItems(buildResourcesBySection(normalResponse, countries, themes));
+                },
+                () => {
+                    setLoading(false);
+                    setItems([]);
+                }
+            );
+    }, [compositionRoot.resources.get, countries, themes]);
 
     const resources = useMemo(() => {
         const uniqueResources = items
-            ?.filter(item => (isSmallScreen ? item.kind !== "news" : true))
+            ?.filter(item => !!item.favouriteHome && (isSmallScreen ? item.kind !== "news" : true))
             .reduce((acc: ResourceState[], resource: ResourceState): ResourceState[] => {
                 const sameResourcesSortedByPriorityToBeShown = items
-                    .filter(({ id, kind }) => resource.id === id && kind !== "news")
+                    .filter(({ id }) => resource.id === id)
                     .sort((resourceA, resourceB) => {
                         return (
                             RESOURCES_PRIORITY_TO_BE_SHOWN[resourceA.kind] -
@@ -39,17 +63,18 @@ export function useHomeResources() {
                     : [...acc, sameResourcesSortedByPriorityToBeShown[0]];
             }, []);
 
-        return uniqueResources?.length ? _.orderBy(uniqueResources, "favouriteOrder").slice(0, 6) : [];
+        return uniqueResources?.length ? _.orderBy(uniqueResources, "favouriteHomeOrder").slice(0, 6) : [];
     }, [items, isSmallScreen]);
 
     const news = useMemo(() => {
-        const filteredNews = items?.filter(item => item.kind === "news");
+        const filteredNews = items?.filter(item => item.kind === "news" && !!item.favouriteSection);
 
-        return filteredNews?.length ? _.orderBy(filteredNews, "favouriteOrder").slice(0, 6) : [];
+        return filteredNews?.length ? _.orderBy(filteredNews, "favouriteSectionOrder").slice(0, 6) : [];
     }, [items]);
 
     return {
         resources,
         news,
+        loading,
     };
 }

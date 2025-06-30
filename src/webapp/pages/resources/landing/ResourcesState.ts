@@ -21,6 +21,7 @@ export type ResourcesState = {
     landingResources?: LandingResourcesState;
     filteredByTextOrThemeResources?: FilteredByTextOrThemeResourcesState;
     onGetResources: () => void;
+    loading: boolean;
 };
 
 export type CountryAnalysisCountry = {

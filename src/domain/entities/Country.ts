@@ -10,6 +10,7 @@ export type Country = {
     parents: { id: string; name: string }[];
     children?: Country[];
     flag: string;
+    showCountryFlag: boolean;
     summary: string;
     sliderInfo: {
         gapsSection: CountrySectionInfo;
