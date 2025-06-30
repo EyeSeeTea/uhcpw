@@ -129,11 +129,18 @@ export class ResourceD2Repository implements ResourceRepository {
     public get(filters: ResourceFilters): FutureData<Resource[]> {
         return this.getFavoritesResources().flatMap(favorites => {
             const favoriteHomeResourcesIds = favorites.homePage.map(favorite => favorite.resourceId);
+            const favoriteNewsIds = favorites.news.map(favorite => favorite.resourceId);
             const favoriteResourcesIds = [
                 ...favorites.comparativeAnalysis.map(favorite => favorite.resourceId),
                 ...favorites.multimedia.map(favorite => favorite.resourceId),
-                ...favorites.news.map(favorite => favorite.resourceId),
+                ...favoriteNewsIds,
             ];
+
+            const favoriteIdsFilter = filters.isFavouriteHome
+                ? [...favoriteHomeResourcesIds, ...favoriteNewsIds].join(";")
+                : filters.isFavouriteSection
+                ? favoriteResourcesIds.join(";")
+                : undefined;
 
             //2:38 has a bug filtering events by data element value using eq operator. Like works!
             const filter = _([
@@ -158,11 +165,7 @@ export class ResourceD2Repository implements ResourceRepository {
                     pageSize: filters.count,
                     filter,
                     order: "eventDate:desc",
-                    event: filters.isFavouriteHome
-                        ? favoriteHomeResourcesIds.join(";")
-                        : filters.isFavouriteSection
-                        ? favoriteResourcesIds.join(";")
-                        : undefined,
+                    event: favoriteIdsFilter,
                 })
             ).flatMap(response => {
                 const events =

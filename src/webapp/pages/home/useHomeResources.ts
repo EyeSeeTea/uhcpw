@@ -1,9 +1,10 @@
 import _ from "lodash";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { useResourcesByType } from "../resources/by-type/useResourcesByType";
 import { ResourceState } from "../resources/by-type/ResourcesByTypeState";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { useAppContext } from "../../contexts/app-context";
+import { buildResourcesBySection } from "../resources/by-type/useResourcesByType";
 
 const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
     "country-analysis" | "comparative-analysis" | "news" | "multimedia",
@@ -16,8 +17,31 @@ const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
 };
 
 export function useHomeResources() {
-    const { items } = useResourcesByType({ isFavouriteHome: true });
+    const { compositionRoot, countries, themes } = useAppContext();
+
+    const [loading, setLoading] = useState<boolean>(false);
+    const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
+
     const isSmallScreen = useIsSmallScreen();
+
+    useEffect(() => {
+        setLoading(true);
+
+        compositionRoot.resources.get
+            .execute({
+                isFavouriteHome: true,
+            })
+            .run(
+                normalResponse => {
+                    setLoading(false);
+                    setItems(buildResourcesBySection(normalResponse, countries, themes));
+                },
+                () => {
+                    setLoading(false);
+                    setItems([]);
+                }
+            );
+    }, [compositionRoot.resources.get, countries, themes]);
 
     const resources = useMemo(() => {
         const uniqueResources = items
@@ -43,13 +67,14 @@ export function useHomeResources() {
     }, [items, isSmallScreen]);
 
     const news = useMemo(() => {
-        const filteredNews = items?.filter(item => item.kind === "news" && !!item.favouriteHome);
+        const filteredNews = items?.filter(item => item.kind === "news" && !!item.favouriteSection);
 
-        return filteredNews?.length ? _.orderBy(filteredNews, "favouriteHomeOrder").slice(0, 6) : [];
+        return filteredNews?.length ? _.orderBy(filteredNews, "favouriteSectionOrder").slice(0, 6) : [];
     }, [items]);
 
     return {
         resources,
         news,
+        loading,
     };
 }
