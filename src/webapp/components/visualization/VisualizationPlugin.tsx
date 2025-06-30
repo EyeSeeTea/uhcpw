@@ -28,6 +28,7 @@ interface VisualizationPluginProps {
     fullScreenInMobile?: boolean;
     onCloseFullScreen?: () => void;
     onLoadingChange?: (loading: boolean) => void;
+    forcePluginFullScreen?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -48,6 +49,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         fullScreenInMobile = false,
         onCloseFullScreen,
         onLoadingChange,
+        forcePluginFullScreen = false,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -63,6 +65,12 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     const [openFullScreenDialog, setOpenFullScreenDialog] = React.useState<boolean | undefined>();
 
     const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (forcePluginFullScreen && isMobile) {
+            setOpenFullScreenDialog(true);
+        }
+    }, [forcePluginFullScreen, isMobile]);
 
     useEffect(() => {
         if (chartData.kind === "Loaded" || chartData.kind === "Error") {

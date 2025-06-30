@@ -25,9 +25,10 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
     const [chartPluginIsLoading, setChartPluginIsLoading] = React.useState(false);
+    const [forcePluginFullScreen, setForcePluginFullScreen] = React.useState(false);
 
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -47,11 +48,16 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 
     const handleOpenScreenshot = React.useCallback(() => {
         setOpenScreenshot(true);
+        setForcePluginFullScreen(false);
     }, []);
 
     const handleCloseScreenshot = React.useCallback(() => {
         setOpenScreenshot(false);
-    }, []);
+
+        if (isMobile) {
+            setForcePluginFullScreen(true);
+        }
+    }, [isMobile]);
 
     const handlePlugingLoadingChange = React.useCallback((loading: boolean) => {
         setChartPluginIsLoading(loading);
@@ -92,6 +98,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         onLoadingChange={handlePlugingLoadingChange}
                         fullScreenInMobile={true}
                         onCloseFullScreen={closeVisualization}
+                        forcePluginFullScreen={forcePluginFullScreen}
                     />
                 ) : !isMobile ? (
                     <EmptyContent info={pageContent?.selectCategory} />

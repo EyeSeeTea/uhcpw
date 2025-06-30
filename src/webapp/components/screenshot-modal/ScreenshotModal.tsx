@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from "react";
-import { Box, Button, Modal, Typography } from "@material-ui/core";
+import { Box, Button, IconButton, Modal, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import _ from "lodash";
 import styled from "styled-components";
@@ -7,6 +7,7 @@ import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import i18n from "../../../locales";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { Maybe } from "../../../types/utils";
+import CloseIcon from "@material-ui/icons/Close";
 
 interface ScreenshotModalProps {
     open?: boolean;
@@ -39,6 +40,8 @@ function ScreenshotModal({
     const ref = useRef<HTMLDivElement>(null);
 
     const { sendEvent } = useAnalytics();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const handleDownload = useCallback(() => {
         if (ref.current) {
@@ -79,6 +82,11 @@ function ScreenshotModal({
                     >
                         <Typography>{i18n.t("Download")}</Typography>
                     </StyledScreenshotButton>
+                    {isMobile && (
+                        <CloseIconButton onClick={onClose}>
+                            <StyledCloseIcon />
+                        </CloseIconButton>
+                    )}
                 </Header>
                 <Content ref={ref}>
                     <ScreenshotContainer className="screenshot-container">{children}</ScreenshotContainer>
@@ -153,4 +161,18 @@ const Header = styled.div`
     padding: 10px 20px;
     background-color: white;
     margin: 3px 3px 0 3px;
+`;
+
+const CloseIconButton = styled(IconButton)`
+    position: absolute;
+    right: 10px;
+    top: 10px;
+`;
+
+const StyledCloseIcon = styled(CloseIcon)`
+    color: white;
+    background-color: #035fa7;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 12px;
 `;

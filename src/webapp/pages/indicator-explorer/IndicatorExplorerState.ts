@@ -7,6 +7,7 @@ export type IndicatorExplorerState = {
     onGet: () => void;
     showVisualization: boolean;
     closeVisualization: () => void;
+    openVisualization: () => void;
     globalMessage?: GlobalMessage;
     pageContent: IndicatorExplorerContent | undefined;
 };
