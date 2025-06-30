@@ -11,7 +11,11 @@ import { useResourcesByType } from "./useResourcesByType";
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
-export const ResourcesByTypePage: React.FC = React.memo(() => {
+type ResourcesByTypePageProps = {
+    paging?: boolean;
+};
+
+export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.memo(({ paging = true }) => {
     const history = useHistory();
     const { sendEvent } = useAnalytics();
     const { category } = useParams<{ category: string }>();
@@ -32,7 +36,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         category,
         countriesFilter: filterInParams.country,
         themeFilter: filterInParams.theme,
-        paging: true,
+        paging,
     });
 
     const disabledCountryFilter = useMemo(() => {

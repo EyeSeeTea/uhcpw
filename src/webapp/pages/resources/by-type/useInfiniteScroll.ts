@@ -30,6 +30,10 @@ export function useInfiniteScroll({
         const element = loadingRef.current;
         if (!element) return;
 
+        if (!hasMore) {
+            return;
+        }
+
         if (observerRef.current) {
             observerRef.current.disconnect();
         }
@@ -45,7 +49,7 @@ export function useInfiniteScroll({
                 observerRef.current.disconnect();
             }
         };
-    }, [handleObserver, threshold]);
+    }, [handleObserver, threshold, hasMore]);
 
     return { loadingRef };
 } 

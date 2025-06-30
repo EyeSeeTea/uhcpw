@@ -245,7 +245,7 @@ describe("ResourcesByTypePage for ", () => {
 
 function renderPage(category: string) {
     customRenderWithRouterMatch(
-        <ResourcesByTypePage />,
+        <ResourcesByTypePage paging={false} />,
         { path: "/resources/:category", route: `/resources/${category}` },
         {
             resource: resourceRepository,
