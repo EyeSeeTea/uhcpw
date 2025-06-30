@@ -99,6 +99,7 @@ export const Dropdown: React.FC<DropdownProps> = React.memo(
                             placeholder={placeholder}
                             InputLabelProps={{ shrink: true }}
                             InputProps={{
+                                ...params.InputProps,
                                 readOnly: fullScreen,
                             }}
                             aria-label={label || placeholder || "Dropdown"}
