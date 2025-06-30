@@ -1,5 +1,6 @@
 import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
 import { ResourcesFiltersState } from "../common/ResourcesFiltersState";
+import { RefObject } from "react";
 
 export type ResourcesByTypeState = {
     loading: boolean;
@@ -7,6 +8,9 @@ export type ResourcesByTypeState = {
     filters: ResourcesFiltersState;
     items?: ResourceState[];
     onGetResources: () => void;
+    hasMore: boolean;
+    loadingMore: boolean;
+    loadingRef: RefObject<HTMLDivElement>;
 };
 
 export type ResourceState = News | MultimediaState | CountryAnalysisState | ComparativeAnalysisState;

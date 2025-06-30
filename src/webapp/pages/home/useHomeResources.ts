@@ -15,7 +15,7 @@ const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<
 };
 
 export function useHomeResources() {
-    const { items } = useResourcesByType({ favourite: true });
+    const { items } = useResourcesByType({ favourite: true, paging: false });
 
     const resources = useMemo(() => {
         const uniqueResources = items?.reduce((acc: ResourceState[], resource: ResourceState): ResourceState[] => {

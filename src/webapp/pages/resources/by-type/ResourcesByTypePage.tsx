@@ -28,10 +28,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         };
     }, [history.location.search]);
 
-    const { loading, title, filters, items, onGetResources } = useResourcesByType({
+    const { loading, title, filters, items, onGetResources, hasMore, loadingMore, loadingRef } = useResourcesByType({
         category,
         countriesFilter: filterInParams.country,
         themeFilter: filterInParams.theme,
+        paging: true,
     });
 
     const disabledCountryFilter = useMemo(() => {
@@ -69,6 +70,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                                         </Grid>
                                     );
                                 })}
+                            {hasMore && (
+                                <Grid item xs={12} ref={loadingRef}>
+                                    <LoadingContainer>{loadingMore && <CircularProgress size={24} />}</LoadingContainer>
+                                </Grid>
+                            )}
                         </StyledGridContainer>
                     }
                 </SelectsContainer>
@@ -129,4 +135,12 @@ const SearchContainer = styled.div`
 
 const StyledGridContainer = styled(Grid)`
     padding-block: 32px;
+`;
+
+const LoadingContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 60px;
 `;

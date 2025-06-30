@@ -29,6 +29,7 @@ export function useResources(): ResourcesState {
         favouriteSection: true,
         includeAdvancedSearch: true,
         themeFilter: themeFilter,
+        paging: false,
     });
 
     const landingResources = useMemo(() => {
