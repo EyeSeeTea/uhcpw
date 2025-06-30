@@ -97,14 +97,14 @@ describe("Resource repository", () => {
         it("skipPaging equal to false if count is passed", async () => {
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", pageSize: 6 }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("false");
         });
         it("pageSize equal to count", async () => {
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", pageSize: 6 }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("pageSize")).toContain("6");
         });
