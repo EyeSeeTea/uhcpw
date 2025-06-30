@@ -55,12 +55,11 @@ const Container = styled.div`
 
 const Row = styled.div`
     padding-top: 8px;
-    padding-left: 0;
+    padding-inline-start: 32px;
     display: flex;
     flex-direction: row;
     align-items: center;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding-inline-start: 0px;
         padding-block: 24px 16px;
     }
 `;
