@@ -8,8 +8,8 @@ export interface ResourceFilters {
     countries?: string[];
     years?: string[];
     count?: number;
-    favourite?: boolean;
-    favouriteSection?: boolean;
+    isFavouriteHome?: boolean;
+    isFavouriteSection?: boolean;
 }
 
 export interface ResourceRepository {
