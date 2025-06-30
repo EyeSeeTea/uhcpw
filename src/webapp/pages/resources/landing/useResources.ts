@@ -27,7 +27,6 @@ export function useResources(): ResourcesState {
 
     const { filters, items, onGetResources } = useResourcesByType({
         favouriteSection: true,
-        includeAdvancedSearch: true,
         themeFilter: themeFilter,
         paging: false,
     });

@@ -7,12 +7,7 @@ interface UseInfiniteScrollProps {
     threshold?: number;
 }
 
-export function useInfiniteScroll({
-    onLoadMore,
-    hasMore,
-    loadingMore,
-    threshold = 100,
-}: UseInfiniteScrollProps) {
+export function useInfiniteScroll({ onLoadMore, hasMore, loadingMore, threshold = 100 }: UseInfiniteScrollProps) {
     const observerRef = useRef<IntersectionObserver | null>(null);
     const loadingRef = useRef<HTMLDivElement>(null);
 
@@ -52,4 +47,4 @@ export function useInfiniteScroll({
     }, [handleObserver, threshold, hasMore]);
 
     return { loadingRef };
-} 
+}
