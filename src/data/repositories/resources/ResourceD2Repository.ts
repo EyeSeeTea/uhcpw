@@ -106,12 +106,6 @@ const favoriteDataElements = {
     favoriteComparative4: "MHTn0hoo934",
     favoriteComparative5: "CCMscdrNeCk",
     favoriteComparative6: "vqa4bFR3uX9",
-    favoriteCountry1: "RQlQUkwlKZd",
-    favoriteCountry2: "AeTHqFRnPN5",
-    favoriteCountry3: "VZQyU3Jt5kt",
-    favoriteCountry4: "Rxnw6kkuwPh",
-    favoriteCountry5: "kFJvByheCQS",
-    favoriteCountry6: "vFN0k0ovEUP",
     favoriteMultimedia1: "ivQliVkSBhs",
     favoriteMultimedia2: "sJes3CZZzMd",
     favoriteMultimedia3: "lm2K6GYIYV0",
@@ -137,7 +131,6 @@ export class ResourceD2Repository implements ResourceRepository {
             const favoriteHomeResourcesIds = favorites.homePage.map(favorite => favorite.resourceId);
             const favoriteResourcesIds = [
                 ...favorites.comparativeAnalysis.map(favorite => favorite.resourceId),
-                ...favorites.countryAnalysis.map(favorite => favorite.resourceId),
                 ...favorites.multimedia.map(favorite => favorite.resourceId),
                 ...favorites.news.map(favorite => favorite.resourceId),
             ];
@@ -195,7 +188,6 @@ export class ResourceD2Repository implements ResourceRepository {
                 const emptyFavorites: FavoriteResources = {
                     homePage: [],
                     comparativeAnalysis: [],
-                    countryAnalysis: [],
                     multimedia: [],
                     news: [],
                 };
@@ -426,15 +418,6 @@ export class ResourceD2Repository implements ResourceRepository {
                 return {
                     favouriteSection: !!multimediaFavorite,
                     favouriteSectionOrder: multimediaFavorite?.order ?? 0,
-                };
-            }
-            case "country-analysis": {
-                const countryAnalysisFavorite = favorites.countryAnalysis.find(
-                    favorite => favorite.resourceId === event.event
-                );
-                return {
-                    favouriteSection: !!countryAnalysisFavorite,
-                    favouriteSectionOrder: countryAnalysisFavorite?.order ?? 0,
                 };
             }
             default:
@@ -675,18 +658,6 @@ export class ResourceD2Repository implements ResourceRepository {
             event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative5)?.value || "";
         const favoriteComparative6 =
             event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative6)?.value || "";
-        const favoriteCountry1 =
-            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteCountry1)?.value || "";
-        const favoriteCountry2 =
-            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteCountry2)?.value || "";
-        const favoriteCountry3 =
-            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteCountry3)?.value || "";
-        const favoriteCountry4 =
-            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteCountry4)?.value || "";
-        const favoriteCountry5 =
-            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteCountry5)?.value || "";
-        const favoriteCountry6 =
-            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteCountry6)?.value || "";
         const favoriteMultimedia1 =
             event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteMultimedia1)?.value || "";
         const favoriteMultimedia2 =
@@ -784,44 +755,6 @@ export class ResourceD2Repository implements ResourceRepository {
                 favoriteComparative6
                     ? {
                           resourceId: favoriteComparative6,
-                          order: 6,
-                      }
-                    : undefined,
-            ].filter((item): item is FavoriteResource => Boolean(item)),
-            countryAnalysis: [
-                favoriteCountry1
-                    ? {
-                          resourceId: favoriteCountry1,
-                          order: 1,
-                      }
-                    : undefined,
-                favoriteCountry2
-                    ? {
-                          resourceId: favoriteCountry2,
-                          order: 2,
-                      }
-                    : undefined,
-                favoriteCountry3
-                    ? {
-                          resourceId: favoriteCountry3,
-                          order: 3,
-                      }
-                    : undefined,
-                favoriteCountry4
-                    ? {
-                          resourceId: favoriteCountry4,
-                          order: 4,
-                      }
-                    : undefined,
-                favoriteCountry5
-                    ? {
-                          resourceId: favoriteCountry5,
-                          order: 5,
-                      }
-                    : undefined,
-                favoriteCountry6
-                    ? {
-                          resourceId: favoriteCountry6,
                           order: 6,
                       }
                     : undefined,
@@ -931,7 +864,6 @@ type FavoriteResource = {
 export type FavoriteResources = {
     homePage: FavoriteResource[];
     comparativeAnalysis: FavoriteResource[];
-    countryAnalysis: FavoriteResource[];
     multimedia: FavoriteResource[];
     news: FavoriteResource[];
 };

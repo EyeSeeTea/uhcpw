@@ -133,7 +133,7 @@ function executeAdvancedSearch(
     });
 }
 
-function buildResourcesBySection(
+export function buildResourcesBySection(
     resources: Resource[],
     countries: Country[],
     themes: ResourceTheme[]
