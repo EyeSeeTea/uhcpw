@@ -7,12 +7,13 @@ import { ResourceGroup } from "../../../components/resources/resource-group/Reso
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 import { MultimediaState } from "../by-type/ResourcesByTypeState";
 import { FilteredByTextOrThemeResourcesState } from "./ResourcesState";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export const FilteredByTextOrThemeResources: React.FC<{
     resources: FilteredByTextOrThemeResourcesState;
     themeSelected?: string;
 }> = React.memo(({ resources, themeSelected }) => (
-    <>
+    <Container>
         <Grid item md={12} xs={12}>
             {resources.countryAnalysis.length > 0 && (
                 <ResourceGroup
@@ -69,8 +70,16 @@ export const FilteredByTextOrThemeResources: React.FC<{
                 </ResourceGroup>
             )}
         </Grid>
-    </>
+    </Container>
 ));
+
+const Container = styled(Grid)`
+    padding-block-end: 32px;
+    padding-inline: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 32px;
+    }
+`;
 
 const StyledGrid = styled(Grid)`
     padding: 20px;

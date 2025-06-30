@@ -15,7 +15,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
     const { redirectWithEvent } = useAnalytics();
 
     return (
-        <>
+        <Container>
             <Grid item md={6} xs={12}>
                 {resources.countryAnalysisByCountry.length > 0 && (
                     <ResourceGroup title={i18n.t("Country analysis")} seeAllUrl={"/resources/country-analysis"}>
@@ -113,7 +113,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                     </ResourceGroup>
                 )}
             </Grid>
-        </>
+        </Container>
     );
 });
 
@@ -122,4 +122,9 @@ const Flag = styled.img`
     margin-block-start: 16px;
     cursor: pointer;
     width: 90%;
+`;
+
+const Container = styled(Grid)`
+    padding-block-end: 32px;
+    padding-inline: 64px;
 `;

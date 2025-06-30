@@ -31,4 +31,8 @@ const StyledButton = styled(Button)`
         border-color: #ff5c01;
     }
     text-transform: unset;
+
+    @media (max-width: 600px) {
+        inset-inline-end: 10%;
+    }
 `;

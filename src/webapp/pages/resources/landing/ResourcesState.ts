@@ -23,8 +23,9 @@ export type ResourcesState = {
     onGetResources: () => void;
 };
 
-interface CountryAnalysisCountry {
+export type CountryAnalysisCountry = {
+    kind: "flag";
     flag: string;
     countryId: string;
     countryName: string;
-}
+};

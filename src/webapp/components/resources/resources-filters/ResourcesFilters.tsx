@@ -7,6 +7,10 @@ import { ResourcesFiltersState } from "../../../pages/resources/common/Resources
 import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { Dropdown } from "../../dropdown/Dropdown";
 import { DropdownMultiple } from "../../dropdown/DropdownMultiple";
+import {
+    BREAKPOINT_WIDTH_SMALL_SCREEN,
+    BREAKPOINT_WIDTH_MOBILE_SCREEN,
+} from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface ResourcesFiltersProps {
     filters: ResourcesFiltersState;
@@ -67,7 +71,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
         );
 
         return (
-            <Grid container spacing={2} direction="row" alignItems="flex-end" justifyContent="center" wrap="wrap">
+            <StyledGrid container spacing={2} direction="row" alignItems="flex-end" justifyContent="center" wrap="wrap">
                 <Grid item md={3} sm={6} xs={12}>
                     <FilterContainer>
                         <Dropdown
@@ -96,7 +100,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                     </FilterContainer>
                 </Grid>
                 <Grid item md={3} sm={6} xs={12}>
-                    <FilterContainer marginTop="30px">
+                    <FilterContainer marginTop="16px">
                         <TreeSelector
                             fullWidth
                             hasSelectAll
@@ -111,6 +115,7 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
                             fullScreen={isMobile}
+                            parentSort={filters.country.parentSort}
                         />
                     </FilterContainer>
                 </Grid>
@@ -134,15 +139,37 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                         <Typography>{i18n.t("Search")}</Typography>
                     </SearchButton>
                 </Grid>
-            </Grid>
+            </StyledGrid>
         );
     }
 );
 
+const StyledGrid = styled(Grid)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block-start: 10px;
+    }
+`;
+
 const FilterContainer = styled.div<{ marginTop?: string }>`
     width: 100%;
-    @media (max-width: 960px) {
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-block-start: ${({ marginTop }) => marginTop || "16px"};
+    }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_MOBILE_SCREEN}px) {
+        margin-block-start: ${({ marginTop }) => marginTop || "12px"};
+        .TreeSelector-container {
+            margin-block-start: 25px;
+        }
+
+        .TreeSelector-clear-button {
+            top: -30px;
+        }
+
+        .Dropdown-clear-button,
+        .DropdownMultiple-clear-button {
+            top: -18px;
+        }
     }
 `;
 
@@ -152,4 +179,8 @@ const SearchButton = styled(Button)`
     text-transform: none;
     padding: 16px 24px;
     width: 100%;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-block-start: 16px;
+    }
 `;

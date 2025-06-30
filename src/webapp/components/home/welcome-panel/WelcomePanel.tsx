@@ -10,21 +10,27 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import ReactMarkdown from "react-markdown";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
-interface WelcomePanelProps {
+type WelcomePanelProps = {
     welcomePanelContent: MainMapPanelContent;
-}
+    isMobile?: boolean;
+};
 
-export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent }) => {
+export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent, isMobile = false }) => {
     const { redirectWithPageView } = useAnalytics();
 
-    const welcomeVideo = redirectWithPageView({ title: "[Video] " + welcomePanelContent.buttonText });
+    const welcomeVideo = redirectWithPageView({
+        title: "[Video] " + isMobile ? welcomePanelContent.videoLink : welcomePanelContent.buttonText,
+    });
 
     return (
         <Container>
-            <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
-                {welcomePanelContent.title}
-            </Typography>
+            {!isMobile && (
+                <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
+                    {welcomePanelContent.title}
+                </Typography>
+            )}
             <ParagraphContainer>
                 <ReactMarkdown
                     components={{
@@ -34,23 +40,42 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent 
                     {welcomePanelContent.description}
                 </ReactMarkdown>
             </ParagraphContainer>
-            <UmbrellaItemsContainer>
-                <UmbrellaItem>
-                    <Marker src={weakIcon} />
-                    {i18n.t("Weaker financial protection")}
-                </UmbrellaItem>
-                <UmbrellaItem>
-                    <Marker src={gapsIcon} />
-                </UmbrellaItem>
-                <UmbrellaItem>
-                    <Marker src={strongIcon} />
-                    <span>{i18n.t("Stronger financial protection")}</span>
-                </UmbrellaItem>
-            </UmbrellaItemsContainer>
-            <VideoLink href={welcomePanelContent.buttonLink} target="_blank" rel="noreferrer" onClick={welcomeVideo}>
-                <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
-                <Typography>{welcomePanelContent.buttonText}</Typography>
-            </VideoLink>
+            {!isMobile && (
+                <UmbrellaItemsContainer>
+                    <UmbrellaItem>
+                        <Marker src={weakIcon} />
+                        {i18n.t("Weaker financial protection")}
+                    </UmbrellaItem>
+                    <UmbrellaItem>
+                        <Marker src={gapsIcon} />
+                    </UmbrellaItem>
+                    <UmbrellaItem>
+                        <Marker src={strongIcon} />
+                        <span>{i18n.t("Stronger financial protection")}</span>
+                    </UmbrellaItem>
+                </UmbrellaItemsContainer>
+            )}
+            {isMobile ? (
+                <VideoWrapper>
+                    <iframe
+                        src={welcomePanelContent.videoLink}
+                        title={i18n.t("UHC watch YouTube video player")}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                    />
+                </VideoWrapper>
+            ) : (
+                <VideoLink
+                    href={welcomePanelContent.buttonLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={welcomeVideo}
+                >
+                    <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
+                    <Typography>{welcomePanelContent.buttonText}</Typography>
+                </VideoLink>
+            )}
         </Container>
     );
 };
@@ -63,6 +88,9 @@ const Container = styled.div`
 
 const ParagraphContainer = styled.div`
     max-width: 46ch;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        max-width: 100%;
+    }
 `;
 
 const UmbrellaItemsContainer = styled.div`
@@ -97,5 +125,23 @@ const VideoLink = styled.a`
     border-radius: 40px;
     &:hover {
         background-color: ${colors.greyLight};
+    }
+`;
+
+const VideoWrapper = styled.div`
+    position: relative;
+    width: 100%;
+    max-width: 70ch;
+    margin: 40px auto;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
     }
 `;

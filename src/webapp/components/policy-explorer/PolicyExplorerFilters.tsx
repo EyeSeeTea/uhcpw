@@ -11,79 +11,84 @@ import { usePolicyExplorerFilters } from "./category-selector/usePolicyExplorerF
 export interface ResourcesFiltersProps {
     filters: PolicyExplorerFiltersState;
     onGetTable: () => void;
+    disableGet?: boolean;
 }
 
-export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(({ filters, onGetTable }) => {
-    const { onCategoryChange, onCountryChange, onYearsChange, isMobile } = usePolicyExplorerFilters({ filters });
-    return (
-        <Grid container spacing={isMobile ? 2 : 5} alignItems="flex-end" justifyContent="center" wrap="wrap">
-            <Grid item md={4} sm={6} xs={12}>
-                <Wrapper>
-                    <CategorySelector
-                        fullWidth
-                        label={i18n.t("Categories")}
-                        placeholder={i18n.t("Select category")}
-                        categoryOptions={filters.category.options}
-                        selectedCategoriesWithSubcategories={filters.category.selected}
-                        onSelect={onCategoryChange}
-                        fullScreen={isMobile}
-                    />
-                </Wrapper>
+export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(
+    ({ filters, onGetTable, disableGet }) => {
+        const { onCategoryChange, onCountryChange, onYearsChange, isMobile } = usePolicyExplorerFilters({ filters });
+        return (
+            <Grid container spacing={isMobile ? 2 : 5} alignItems="flex-end" justifyContent="center" wrap="wrap">
+                <Grid item md={4} sm={6} xs={12}>
+                    <Wrapper>
+                        <CategorySelector
+                            fullWidth
+                            label={i18n.t("Categories")}
+                            placeholder={i18n.t("Select category")}
+                            categoryOptions={filters.category.options}
+                            selectedCategoriesWithSubcategories={filters.category.selected}
+                            onSelect={onCategoryChange}
+                            fullScreen={isMobile}
+                        />
+                    </Wrapper>
+                </Grid>
+                <Grid item md={4} sm={6} xs={12}>
+                    <Wrapper>
+                        <TreeSelector
+                            fullWidth
+                            hasClearAll
+                            hasSelectAll
+                            label={i18n.t("Countries and areas")}
+                            items={filters.country.options}
+                            selectedIds={filters.country.selected}
+                            onSelectedIdsChange={onCountryChange}
+                            placeholder={i18n.t("Select country or area")}
+                            disabledItems={filters.country.disabledCountries}
+                            showSubChildren={filters.country.showSubRegions}
+                            defaultExpanded={filters.country.defaultExpandedCountries}
+                            showParentIfChecked={true}
+                            showOnlyAllParentSelectedIfChecked={true}
+                            allSelectedLabel={i18n.t("All countries/areas")}
+                            parentSort={filters.country.parentSort}
+                            fullScreen={isMobile}
+                        />
+                    </Wrapper>
+                </Grid>
+                <Grid item md={3} sm={6} xs={12}>
+                    <Wrapper>
+                        <DropdownMultiple
+                            fullWidth
+                            label={i18n.t("Years")}
+                            placeholder={i18n.t("Select year")}
+                            options={filters.year.options}
+                            values={filters.year.selected}
+                            onChange={onYearsChange}
+                            fullScreen={isMobile}
+                        />
+                    </Wrapper>
+                </Grid>
+                <GridGetTableButton item md={1} sm={6} xs={12}>
+                    <GetTableButton
+                        aria-label="Get table"
+                        variant="contained"
+                        color="primary"
+                        disabled={
+                            disableGet ||
+                            !filters.category.selected ||
+                            !Object.keys(filters.category.selected)?.length ||
+                            !filters.country.selected?.length ||
+                            !filters.year.selected?.length
+                        }
+                        onClick={onGetTable}
+                        $isMobile={isMobile}
+                    >
+                        <Typography>{i18n.t("Get table")}</Typography>
+                    </GetTableButton>
+                </GridGetTableButton>
             </Grid>
-            <Grid item md={4} sm={6} xs={12}>
-                <Wrapper>
-                    <TreeSelector
-                        fullWidth
-                        hasClearAll
-                        hasSelectAll
-                        label={i18n.t("Countries and areas")}
-                        items={filters.country.options}
-                        selectedIds={filters.country.selected}
-                        onSelectedIdsChange={onCountryChange}
-                        placeholder={i18n.t("Select country or area")}
-                        disabledItems={filters.country.disabledCountries}
-                        showSubChildren={filters.country.showSubRegions}
-                        defaultExpanded={filters.country.defaultExpandedCountries}
-                        showParentIfChecked={true}
-                        showOnlyAllParentSelectedIfChecked={true}
-                        allSelectedLabel={i18n.t("All countries/areas")}
-                        fullScreen={isMobile}
-                    />
-                </Wrapper>
-            </Grid>
-            <Grid item md={3} sm={6} xs={12}>
-                <Wrapper>
-                    <DropdownMultiple
-                        fullWidth
-                        label={i18n.t("Years")}
-                        placeholder={i18n.t("Select year")}
-                        options={filters.year.options}
-                        values={filters.year.selected}
-                        onChange={onYearsChange}
-                        fullScreen={isMobile}
-                    />
-                </Wrapper>
-            </Grid>
-            <GridGetTableButton item md={1} sm={6} xs={12}>
-                <GetTableButton
-                    aria-label="Get table"
-                    variant="contained"
-                    color="primary"
-                    disabled={
-                        !filters.category.selected ||
-                        !Object.keys(filters.category.selected)?.length ||
-                        !filters.country.selected?.length ||
-                        !filters.year.selected?.length
-                    }
-                    onClick={onGetTable}
-                    $isMobile={isMobile}
-                >
-                    <Typography>{i18n.t("Get table")}</Typography>
-                </GetTableButton>
-            </GridGetTableButton>
-        </Grid>
-    );
-});
+        );
+    }
+);
 
 const Wrapper = styled.div`
     display: flex;

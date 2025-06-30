@@ -10,12 +10,14 @@ import {
     ResourceState,
 } from "../by-type/ResourcesByTypeState";
 import { useResourcesByType } from "../by-type/useResourcesByType";
-import { ResourcesState } from "./ResourcesState";
+import { CountryAnalysisCountry, ResourcesState } from "./ResourcesState";
 import { useHistory } from "react-router-dom";
+import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export function useResources(): ResourcesState {
     const { countries } = useAppContext();
     const history = useHistory();
+    const isSmallScreen = useIsSmallScreen();
 
     const themeFilter = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -36,11 +38,11 @@ export function useResources(): ResourcesState {
             ? {
                   countryAnalysisByCountry: getAnalysisCountries(items, countries),
                   comparativeAnalysis: getComparativeAnalysis(items, true),
-                  news: getNews(items, true),
-                  multimedia: getMultimedia(items, true),
+                  news: getNews(items, true, isSmallScreen),
+                  multimedia: getMultimedia(items, true, isSmallScreen),
               }
             : undefined;
-    }, [countries, filters.search.term, filters.theme.selected, items]);
+    }, [countries, filters.search.term, filters.theme.selected, isSmallScreen, items]);
 
     const filteredByTextOrThemeResources = useMemo(() => {
         return items && (!!filters.search.term || !!filters.theme.selected)
@@ -65,7 +67,7 @@ export function useResources(): ResourcesState {
     };
 }
 
-function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
+function getAnalysisCountries(items: ResourceState[], countries: Country[]): CountryAnalysisCountry[] {
     return _.unionBy(
         _.orderBy(
             items
@@ -73,7 +75,7 @@ function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
                 .map(countryAnalysis => {
                     const countryId = (countryAnalysis as CountryAnalysis).countryId;
                     const country = countries.find(country => country.id === countryId);
-                    return { countryId, countryName: country?.name || "", flag: country?.flag || "" };
+                    return { kind: "flag", countryId, countryName: country?.name || "", flag: country?.flag || "" };
                 }),
             "countryName"
         ),
@@ -81,22 +83,26 @@ function getAnalysisCountries(items: ResourceState[], countries: Country[]) {
     );
 }
 
-function getNews(items: ResourceState[], isLanding: boolean): News[] {
+function getNews(items: ResourceState[], isLanding: boolean, isSmallScreen?: boolean): News[] {
     const news = _.orderBy(
         items.filter(item => item.kind === "news"),
         "favouriteSectionOrder"
     ) as News[];
 
-    return isLanding ? news.slice(0, 1) : news;
+    const totalFavorites = isSmallScreen ? 6 : 1;
+
+    return isLanding ? news.slice(0, totalFavorites) : news;
 }
 
-function getMultimedia(items: ResourceState[], isLanding: boolean): MultimediaState[] {
+function getMultimedia(items: ResourceState[], isLanding: boolean, isSmallScreen?: boolean): MultimediaState[] {
     const multimedia = _.orderBy(
         items.filter(item => item.kind === "multimedia"),
         "favouriteSectionOrder"
     ) as MultimediaState[];
 
-    return isLanding ? multimedia.slice(0, 1) : multimedia;
+    const totalFavorites = isSmallScreen ? 6 : 1;
+
+    return isLanding ? multimedia.slice(0, totalFavorites) : multimedia;
 }
 
 function getComparativeAnalysis(items: ResourceState[], isLanding: boolean): ComparativeAnalysisState[] {

@@ -46,6 +46,7 @@ interface TreeSelectorProps {
     showSubChildren?: boolean;
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
+    parentSort?: (a: string, b: string) => number;
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {

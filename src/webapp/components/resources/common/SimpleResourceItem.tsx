@@ -4,6 +4,7 @@ import moment from "moment";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Tag } from "../tag/Tag";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface SimpleResourceItemProps {
     title: string;
@@ -18,6 +19,8 @@ export interface SimpleResourceItemProps {
     maintainAspectRatio?: boolean;
     fullWidth?: boolean;
     redirectWithEvent: (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
+    disableMainPadding?: boolean;
+    hideTag?: boolean;
 }
 
 export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
@@ -34,6 +37,8 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         redirectWithEvent,
         maintainAspectRatio = false,
         fullWidth = true,
+        disableMainPadding = false,
+        hideTag = false,
     }) => {
         const [imgSrc, setImgSrc] = useState(image);
 
@@ -44,7 +49,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         }, [fallbackImage]);
 
         return (
-            <Item elevation={0} role="listitem">
+            <Item elevation={0} role="listitem" $disablePadding={disableMainPadding}>
                 <Column>
                     <a
                         href={url}
@@ -63,29 +68,36 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
                     </a>
 
                     <Box height={20} />
-                    <Row>
-                        {tag && <Tag theme={tag} color={tagColor} onClick={onTagClick} />}
 
-                        <Text gutterBottom>{moment(date).format(dateFormat || "YYYY")}</Text>
-                    </Row>
-                    <a
-                        href={url}
-                        style={{ textDecoration: "none", color: "black" }}
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={redirectWithEvent}
-                    >
-                        <Text>{title}</Text>
-                    </a>
+                    <Content $hasPadding={disableMainPadding}>
+                        <Row>
+                            {tag && !hideTag && <Tag theme={tag} color={tagColor} onClick={onTagClick} />}
+
+                            <Text gutterBottom>{moment(date).format(dateFormat || "YYYY")}</Text>
+                        </Row>
+                        <a
+                            href={url}
+                            style={{ textDecoration: "none", color: "black" }}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={redirectWithEvent}
+                        >
+                            <Text>{title}</Text>
+                        </a>
+                    </Content>
                 </Column>
             </Item>
         );
     }
 );
 
-const Item = styled(Card)`
+const Content = styled.div<{ $hasPadding?: boolean }>`
+    padding: ${props => (props.$hasPadding ? "0 16px 16px 16px" : "0px")};
+`;
+
+const Item = styled(Card)<{ $disablePadding?: boolean }>`
     border-radius: 10px;
-    padding-block: 16px;
+    padding-block: ${props => (props.$disablePadding ? "0px" : "16px")};
     flex-direction: column;
 `;
 
@@ -104,6 +116,9 @@ const Image = styled.img<{ $maintainAspectRatio?: boolean; $fullWidth?: boolean 
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
     height: 300px;
     object-fit: cover;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        height: 400px;
+    }
 `;
 
 const Row = styled.div`

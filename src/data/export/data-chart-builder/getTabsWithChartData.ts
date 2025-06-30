@@ -1,4 +1,5 @@
-import { DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { mapFromWhoToD2CountryName, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
+import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 export function getTabsWithChartData(
@@ -11,6 +12,8 @@ export function getTabsWithChartData(
         dataParamToSortBy?: string;
         isCountryChart?: boolean;
         isSortByDataSum?: boolean;
+        hasCountryCodeRow?: boolean;
+        orgUnits?: D2OrgUnit[];
     }
 ): TabsWithStringOrNumbers[] {
     const {
@@ -19,8 +22,10 @@ export function getTabsWithChartData(
         headersBase,
         sortedDataParams,
         dataParamToSortBy,
+        orgUnits,
         isCountryChart = false,
         isSortByDataSum = false,
+        hasCountryCodeRow = false,
     } = options;
 
     const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
@@ -75,58 +80,126 @@ export function getTabsWithChartData(
 
     const finalHeaders = [[...headersBase, ...restHeaders]];
 
-    const dataByDataParam: TabsWithStringOrNumbers["data"] = sortedDataParams.reduce(
-        (acc: TabsWithStringOrNumbers["data"], param): TabsWithStringOrNumbers["data"] => {
-            if (isCountryChart) {
-                const paramData = allYearsUnique.map(year => {
-                    const row = dataTab.data.find(
-                        row => row[dataParamIndex] === param && row[yearIndex] === year.toString()
-                    );
-                    const value = row ? row[valueIndex] : undefined;
-                    if (!row || !value) {
-                        return 0;
-                    }
-                    return Number(value?.replace(",", "."));
-                });
-                return [...acc, [param, ...paramData]];
-            } else {
-                const paramData = countriesAndYearsUnique.map(countryAndYear => {
-                    const [country, year] = countryAndYear.split("-");
-                    const row = dataTab.data.find(
-                        row => row[dataParamIndex] === param && row[yearIndex] === year && row[countryIndex] === country
-                    );
-                    const value = row ? row[valueIndex] : undefined;
-                    if (!row || !value) {
-                        return 0;
-                    }
-                    return Number(value?.replace(",", "."));
-                });
-                return [...acc, [param, ...paramData]];
-            }
-        },
-        []
-    );
+    const dataByDataParam: TabsWithStringOrNumbers["data"] = getDataSortedByDataParam({
+        dataTab: dataTab,
+        sortedDataParams: sortedDataParams,
+        isCountryChart: isCountryChart,
+        allYearsUnique: allYearsUnique,
+        countriesAndYearsUnique: countriesAndYearsUnique,
+        dataParamIndex: dataParamIndex,
+        yearIndex: yearIndex,
+        countryIndex: countryIndex,
+        valueIndex: valueIndex,
+    });
 
     const dataByDataParamWithCountry =
         isCountryChart && country ? dataByDataParam.map(row => [country, ...row]) : dataByDataParam;
 
-    const data = [[chartName], ...finalHeaders, ...dataByDataParamWithCountry];
+    const data =
+        hasCountryCodeRow && orgUnits
+            ? getDataWithCountryCodesRow({
+                  headersBase: headersBase,
+                  countriesAndYearsUnique: countriesAndYearsUnique,
+                  orgUnits: orgUnits,
+                  finalHeaders: finalHeaders,
+                  dataByDataParamWithCountry: dataByDataParamWithCountry,
+              })
+            : [...finalHeaders, ...dataByDataParamWithCountry];
+
     const sortedData =
         dataParamToSortBy || isSortByDataSum
             ? sortData(data, {
                   dataParamToSortBy: dataParamToSortBy,
                   isSortByDataSum: isSortByDataSum,
+                  hasCountryCodeRow: hasCountryCodeRow,
               })
             : data;
 
-    const chartTab = {
-        name: DATA_TAB_NAME,
-        data: sortedData,
-    };
+    return tabs.map((tab): TabsWithStringOrNumbers => {
+        if (tab.name === DATA_TAB_NAME) {
+            return {
+                name: DATA_TAB_NAME,
+                data: [[chartName], ...sortedData],
+            };
+        }
+        return tab;
+    });
+}
 
-    const tabsWithoutData = tabs.filter(tab => tab.name !== DATA_TAB_NAME);
+function getDataSortedByDataParam(params: {
+    dataTab: Tab;
+    sortedDataParams: string[];
+    isCountryChart: boolean;
+    allYearsUnique: number[];
+    countriesAndYearsUnique: string[];
+    dataParamIndex: number;
+    yearIndex: number;
+    countryIndex: number;
+    valueIndex: number;
+}): TabsWithStringOrNumbers["data"] {
+    const {
+        dataTab,
+        sortedDataParams,
+        isCountryChart,
+        allYearsUnique,
+        countriesAndYearsUnique,
+        dataParamIndex,
+        yearIndex,
+        countryIndex,
+        valueIndex,
+    } = params;
+    return sortedDataParams.reduce((acc: TabsWithStringOrNumbers["data"], param): TabsWithStringOrNumbers["data"] => {
+        if (isCountryChart) {
+            const paramData = allYearsUnique.map(year => {
+                const row = dataTab.data.find(
+                    row => row[dataParamIndex] === param && row[yearIndex] === year.toString()
+                );
+                const value = row ? row[valueIndex] : undefined;
+                if (!row || !value) {
+                    return 0;
+                }
+                return Number(value?.replace(",", "."));
+            });
+            return [...acc, [param, ...paramData]];
+        } else {
+            const paramData = countriesAndYearsUnique.map(countryAndYear => {
+                const [country, year] = countryAndYear.split("-");
+                const row = dataTab.data.find(
+                    row => row[dataParamIndex] === param && row[yearIndex] === year && row[countryIndex] === country
+                );
+                const value = row ? row[valueIndex] : undefined;
+                if (!row || !value) {
+                    return 0;
+                }
+                return Number(value?.replace(",", "."));
+            });
+            return [...acc, [param, ...paramData]];
+        }
+    }, []);
+}
 
-    return [...tabsWithoutData, chartTab];
+function getDataWithCountryCodesRow(params: {
+    headersBase: string[];
+    countriesAndYearsUnique: string[];
+    orgUnits: D2OrgUnit[];
+    finalHeaders: (string | number)[][];
+    dataByDataParamWithCountry: (string | number | null)[][];
+}) {
+    const { headersBase, countriesAndYearsUnique, orgUnits, finalHeaders, dataByDataParamWithCountry } = params;
+    return [
+        ...finalHeaders,
+        [...headersBase, ...getCountryCodesRow(countriesAndYearsUnique, orgUnits)],
+        ...dataByDataParamWithCountry,
+    ];
+}
+
+function getCountryCodesRow(countriesAndYearsHeaders: string[], orgUnits: D2OrgUnit[]): string[] {
+    return countriesAndYearsHeaders.map(countryAndYear => {
+        const [country, year] = countryAndYear.split("-");
+        const orgUnitCode =
+            orgUnits.find(orgUnit => orgUnit.shortName === mapFromWhoToD2CountryName(country || ""))?.code || "";
+        return `${mapToWhoCountryCode(orgUnitCode)}-${year}`;
+    });
 }
 
 function sortData(
@@ -134,31 +207,55 @@ function sortData(
     options: {
         dataParamToSortBy?: string;
         isSortByDataSum: boolean;
+        hasCountryCodeRow: boolean;
     }
 ): TabsWithStringOrNumbers["data"] {
-    const { dataParamToSortBy, isSortByDataSum } = options;
+    const { dataParamToSortBy, isSortByDataSum, hasCountryCodeRow } = options;
+    const { headers, countryCodesRow: maybeCountryCodesRow, dataRows } = extractHeadersAndRows(data, hasCountryCodeRow);
+
     if (dataParamToSortBy) {
-        return sortDataByDataParam(dataParamToSortBy, data);
+        return sortDataByDataParam(dataParamToSortBy, dataRows, headers, maybeCountryCodesRow);
     } else if (isSortByDataSum) {
-        return sortDataByDataSum(data);
+        return sortDataByDataSum(dataRows, headers, maybeCountryCodesRow);
     } else {
         return data;
     }
 }
 
-function sortDataByDataSum(data: TabsWithStringOrNumbers["data"]): TabsWithStringOrNumbers["data"] {
-    const [chartName, headers, ...rows] = data;
-
-    if (!headers || !chartName) {
-        throw new Error(`Error sorting data by data sum: Missing headers or chart name`);
+function extractHeadersAndRows(
+    data: TabsWithStringOrNumbers["data"],
+    hasCountryCodeRow: boolean
+): {
+    headers: (string | number | null)[];
+    countryCodesRow?: (string | number | null)[];
+    dataRows: TabsWithStringOrNumbers["data"];
+} {
+    if (hasCountryCodeRow) {
+        const [headers, countryCodesRow, ...dataRows] = data;
+        if (!countryCodesRow || !headers) {
+            throw new Error("Missing country codes row or headers in the data");
+        }
+        return { headers, countryCodesRow, dataRows };
+    } else {
+        const [headers, ...dataRows] = data;
+        if (!headers) {
+            throw new Error("Missing headers in the data");
+        }
+        return { headers, dataRows };
     }
+}
 
+function sortDataByDataSum(
+    dataRows: TabsWithStringOrNumbers["data"],
+    headers: (string | number | null)[],
+    countryCodesRow?: (string | number | null)[]
+): TabsWithStringOrNumbers["data"] {
     const indexedColumns = headers.map((_, colIndex) => ({
         index: colIndex,
         sum:
             colIndex === 0
                 ? -Infinity
-                : rows.reduce((sum, row) => {
+                : dataRows.reduce((sum, row) => {
                       const rowValue = row[colIndex];
                       return sum + (typeof rowValue === "number" ? rowValue : 0);
                   }, 0),
@@ -167,20 +264,26 @@ function sortDataByDataSum(data: TabsWithStringOrNumbers["data"]): TabsWithStrin
 
     const sortedIndexes = indexedColumns.sort((a, b) => a.sum - b.sum).map(({ index }) => index);
 
-    const sortedData = sortByIndexes(headers, rows, sortedIndexes);
+    const sortedData = sortByIndexes({
+        headers: headers,
+        countryCodesRow: countryCodesRow,
+        dataRows: dataRows,
+        sortedIndexes: sortedIndexes,
+    });
 
-    return [chartName, ...sortedData];
+    return [...sortedData];
 }
 
 function sortDataByDataParam(
     dataParamToSortBy: string,
-    data: TabsWithStringOrNumbers["data"]
+    dataRows: TabsWithStringOrNumbers["data"],
+    headers: (string | number | null)[],
+    countryCodesRow?: (string | number | null)[]
 ): TabsWithStringOrNumbers["data"] {
-    const [chartName, headers, ...rows] = data;
-    const rowToSortBy = rows.find(row => row[0] === dataParamToSortBy);
+    const rowToSortBy = dataRows.find(row => row[0] === dataParamToSortBy);
 
-    if (!rowToSortBy || !headers || !chartName) {
-        throw new Error(`Missing ${dataParamToSortBy} row or headers`);
+    if (!rowToSortBy) {
+        throw new Error(`Missing ${dataParamToSortBy} row`);
     }
 
     const sortedIndexes = rowToSortBy
@@ -188,18 +291,31 @@ function sortDataByDataParam(
         .sort((a, b) => a.value - b.value)
         .map(item => item.index);
 
-    const sortedData = sortByIndexes(headers, rows, sortedIndexes);
+    const sortedData = sortByIndexes({
+        headers: headers,
+        countryCodesRow: countryCodesRow,
+        dataRows: dataRows,
+        sortedIndexes: sortedIndexes,
+    });
 
-    return [chartName, ...sortedData];
+    return [...sortedData];
 }
 
-function sortByIndexes(
-    headers: (string | number | null)[],
-    rows: TabsWithStringOrNumbers["data"],
-    sortedIndexes: number[]
-): TabsWithStringOrNumbers["data"] {
-    const sortedHeaders = [...sortedIndexes.map(i => headers[i]).map(value => (!value ? null : value))];
-    const sortedRows = rows.map(row => [...sortedIndexes.map(i => row[i]).map(value => (!value ? 0 : value))]);
+function sortByIndexes(params: {
+    headers: (string | number | null)[];
+    countryCodesRow?: (string | number | null)[];
+    dataRows: TabsWithStringOrNumbers["data"];
+    sortedIndexes: number[];
+}): TabsWithStringOrNumbers["data"] {
+    const { headers, dataRows, sortedIndexes, countryCodesRow } = params;
 
-    return [sortedHeaders, ...sortedRows];
+    const sortedHeaders = sortedIndexes.map(i => headers[i] ?? null);
+
+    const sortedCountryCodesRow = countryCodesRow ? sortedIndexes.map(i => countryCodesRow[i] ?? null) : undefined;
+
+    const sortedRows = dataRows.map(row => sortedIndexes.map(i => row[i] ?? 0));
+
+    return sortedCountryCodesRow
+        ? [sortedHeaders, sortedCountryCodesRow, ...sortedRows]
+        : [sortedHeaders, ...sortedRows];
 }

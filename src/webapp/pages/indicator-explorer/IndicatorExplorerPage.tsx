@@ -13,6 +13,8 @@ import { VisualizationPlugin } from "../../components/visualization/Visualizatio
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import mapBackground from "../../assets/map-background.jpg";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const snackbar = useSnackbar();
@@ -22,6 +24,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
+    const [chartPluginIsLoading, setChartPluginIsLoading] = React.useState(false);
 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
@@ -50,6 +53,10 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
         setOpenScreenshot(false);
     }, []);
 
+    const handlePlugingLoadingChange = React.useCallback((loading: boolean) => {
+        setChartPluginIsLoading(loading);
+    }, []);
+
     const chartName = useMemo(
         () => filters.indicators.options.find(o => o.value === filters.indicators.selected)?.text || "",
         [filters.indicators.options, filters.indicators.selected]
@@ -71,7 +78,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
+                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
 
                 {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
@@ -84,6 +91,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         analyticsPageTitle="Indicator explorer"
                         fullScreenInMobile={true}
                         onCloseFullScreen={closeVisualization}
+                        onLoadingChange={handlePlugingLoadingChange}
                     />
                 ) : !isMobile ? (
                     <EmptyContent info={pageContent?.selectCategory} />
@@ -129,6 +137,10 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const Image = styled.img`

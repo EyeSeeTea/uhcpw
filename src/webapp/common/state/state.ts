@@ -6,6 +6,7 @@ export type CountryFilterState = {
     options: TreeOption[];
     selected: string[] | undefined;
     onSelectedChange: (value: string[] | undefined) => void;
+    parentSort: (a: string, b: string) => number;
 };
 
 export type PolicyExplorerCategoriesFilterState = {
