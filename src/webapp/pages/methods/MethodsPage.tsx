@@ -12,6 +12,8 @@ import i18n from "../../../locales";
 import { useMethods } from "./useMethods";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ColumnGridContainer } from "../../components/ColumnGridContainer";
+import mapBackground from "../../assets/map-background.jpg";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { useReferenceLinks } from "../../common/hooks/analytics/useReferenceLinks";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
@@ -119,6 +121,10 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const ButtonsGridItem = styled(Grid)`

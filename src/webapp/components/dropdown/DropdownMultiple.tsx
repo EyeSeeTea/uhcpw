@@ -1,6 +1,6 @@
-import { Button } from "@material-ui/core";
+import { Button, ListItemText, List, ListItem, useMediaQuery } from "@material-ui/core";
 import { Autocomplete } from "@material-ui/lab";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { DropdownTextField } from "./DropdownTextField";
 import { Option } from "./Option";
@@ -8,6 +8,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import i18n from "../../../locales";
 import { SelectedChip } from "../selected-chip/SelectedChip";
+import { FullScreenDialog } from "../dialog/FullScreenDialog";
 
 interface DropdownMultipleProps<T extends string = string> {
     label?: string;
@@ -18,6 +19,8 @@ interface DropdownMultipleProps<T extends string = string> {
     onChange: (value?: T[]) => void;
     disabled?: boolean;
     hideLabel?: boolean;
+    minWidth?: string;
+    fullScreen?: boolean;
 }
 
 type OptionLabel = {
@@ -26,7 +29,21 @@ type OptionLabel = {
 };
 
 export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
-    ({ label, options, values, placeholder, fullWidth, onChange, disabled, hideLabel = false }) => {
+    ({
+        label,
+        options,
+        values,
+        placeholder,
+        fullWidth,
+        onChange,
+        disabled,
+        hideLabel = false,
+        minWidth,
+        fullScreen,
+    }) => {
+        const [showFullScreen, setShowFullScreen] = React.useState(false);
+        const isSmallScreen = useMediaQuery("(max-width:600px)");
+
         const valuesOption = useMemo(() => {
             return options.filter(option => values?.includes(option.value)) || [];
         }, [options, values]);
@@ -37,6 +54,24 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
 
         const handleClear = (): void => {
             onChange([]);
+        };
+
+        const handleClick = useCallback(() => {
+            if (fullScreen) {
+                setShowFullScreen(true);
+            }
+        }, [fullScreen]);
+
+        const closeFullScreen = useCallback(() => {
+            setShowFullScreen(false);
+        }, []);
+
+        const handleListItemClick = (option: Option): void => {
+            const newValues = values?.includes(option.value)
+                ? values.filter(value => value !== option.value)
+                : [...(values || []), option.value];
+            onChange(newValues);
+            closeFullScreen();
         };
 
         return (
@@ -57,6 +92,11 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                             placeholder={placeholder}
                             aria-label={label || placeholder || "Dropdown Multiple"}
                             InputLabelProps={{ shrink: true }}
+                            minWidth={minWidth}
+                            InputProps={{
+                                ...params.InputProps,
+                                readOnly: isSmallScreen,
+                            }}
                         />
                     )}
                     renderTags={(value: unknown[], getTagProps) =>
@@ -71,6 +111,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                         ))
                     }
                     onChange={(e, value) => handleChange(e, value as Option<string>[] | null)}
+                    onOpen={handleClick}
                 />
                 {(values || []).length > 0 && (
                     <ClearButton
@@ -79,9 +120,31 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                         disabled={disabled}
                         top={label && !hideLabel ? "0" : "-20px"}
                         right={-15}
+                        className="DropdownMultiple-clear-button"
                     >
                         {i18n.t("Clear")}
                     </ClearButton>
+                )}
+
+                {showFullScreen && (
+                    <FullScreenDialog isOpen={true} onClose={closeFullScreen} title={label}>
+                        <List>
+                            {options.map(option => {
+                                const isSelected = valuesOption?.includes(option) || false;
+
+                                return (
+                                    <ListItem
+                                        button
+                                        key={option.value}
+                                        selected={isSelected}
+                                        onClick={() => handleListItemClick(option)}
+                                    >
+                                        <ListItemText primary={option.text} />
+                                    </ListItem>
+                                );
+                            })}
+                        </List>
+                    </FullScreenDialog>
                 )}
             </Container>
         );

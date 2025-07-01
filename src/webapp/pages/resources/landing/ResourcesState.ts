@@ -24,8 +24,9 @@ export type ResourcesState = {
     loading: boolean;
 };
 
-interface CountryAnalysisCountry {
+export type CountryAnalysisCountry = {
+    kind: "flag";
     flag: string;
     countryId: string;
     countryName: string;
-}
+};

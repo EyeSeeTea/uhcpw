@@ -6,6 +6,7 @@ export type IndicatorExplorerState = {
     filters: IndicatorExplorerFiltersState;
     onGet: () => void;
     showVisualization: boolean;
+    closeVisualization: () => void;
     globalMessage?: GlobalMessage;
     pageContent: IndicatorExplorerContent | undefined;
 };

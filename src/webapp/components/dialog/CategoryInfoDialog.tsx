@@ -1,9 +1,10 @@
 import { Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import i18n from "../../../locales";
-import { CategoryOption } from "../policy-explorer/category-selector/CategorySelector";
 import CloseIcon from "@material-ui/icons/Close";
 import ReactMarkdown from "react-markdown";
+
+import i18n from "../../../locales";
+import { CategoryOption } from "../policy-explorer/category-selector/useCategorySelector";
 
 type DialogType = {
     isOpen: boolean;

@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useCallback } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
@@ -7,6 +7,10 @@ import { ResourcesFiltersState } from "../../../pages/resources/common/Resources
 import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { Dropdown } from "../../dropdown/Dropdown";
 import { DropdownMultiple } from "../../dropdown/DropdownMultiple";
+import {
+    BREAKPOINT_WIDTH_SMALL_SCREEN,
+    BREAKPOINT_WIDTH_MOBILE_SCREEN,
+} from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface ResourcesFiltersProps {
     filters: ResourcesFiltersState;
@@ -18,8 +22,11 @@ export interface ResourcesFiltersProps {
 
 export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
     ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
+        const theme = useTheme();
+        const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
         const history = useHistory();
         const location = useLocation();
+
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
                 const theme = filters.theme.selected;
@@ -64,9 +71,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
         );
 
         return (
-            <Grid container spacing={1} direction="row" alignItems="flex-end" justifyContent="space-between">
-                <Grid item md={3} sm={6}>
-                    <Center>
+            <StyledGrid container spacing={2} direction="row" alignItems="flex-end" justifyContent="center" wrap="wrap">
+                <Grid item md={3} sm={6} xs={12}>
+                    <FilterContainer>
                         <Dropdown
                             fullWidth
                             placeholder={i18n.t("Select category")}
@@ -75,11 +82,12 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             onChange={onCategoryChange}
                             label={i18n.t("Select category")}
                             hideLabel
+                            fullScreen={isMobile}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={2} sm={6}>
-                    <Center>
+                <Grid item md={3} sm={6} xs={12}>
+                    <FilterContainer>
                         <Dropdown
                             fullWidth
                             placeholder={i18n.t("Select theme")}
@@ -89,11 +97,12 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             disabled={disabledThemeFilter}
                             label={i18n.t("Select theme")}
                             hideLabel
+                            fullScreen={isMobile}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={3} sm={6}>
-                    <Center>
+                <Grid item md={3} sm={6} xs={12}>
+                    <FilterContainer marginTop="16px">
                         <TreeSelector
                             fullWidth
                             hasSelectAll
@@ -107,12 +116,13 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             showParentIfChecked={true}
                             showOnlyAllParentSelectedIfChecked={true}
                             allSelectedLabel={i18n.t("All countries/areas")}
+                            fullScreen={isMobile}
                             parentSort={filters.country.parentSort}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={2} sm={6}>
-                    <Center>
+                <Grid item md={2} sm={6} xs={12}>
+                    <FilterContainer>
                         <DropdownMultiple
                             placeholder={i18n.t("Select years")}
                             options={filters.year.options}
@@ -121,24 +131,49 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                             disabled={disabledYearFilter}
                             label={i18n.t("Select years")}
                             hideLabel
+                            fullWidth
+                            minWidth="100%"
+                            fullScreen={isMobile}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={1} sm={3} xs={6}>
+                <Grid item md={1} sm={6} xs={12}>
                     <SearchButton aria-label="Search" variant="contained" color="primary" onClick={onGetResources}>
                         <Typography>{i18n.t("Search")}</Typography>
                     </SearchButton>
                 </Grid>
-            </Grid>
+            </StyledGrid>
         );
     }
 );
 
-const Center = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+const StyledGrid = styled(Grid)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block-start: 10px;
+    }
+`;
+
+const FilterContainer = styled.div<{ marginTop?: string }>`
+    width: 100%;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-block-start: ${({ marginTop }) => marginTop || "16px"};
+    }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_MOBILE_SCREEN}px) {
+        margin-block-start: ${({ marginTop }) => marginTop || "12px"};
+        .TreeSelector-container {
+            margin-block-start: 25px;
+        }
+
+        .TreeSelector-clear-button {
+            top: -30px;
+        }
+
+        .Dropdown-clear-button,
+        .DropdownMultiple-clear-button {
+            top: -18px;
+        }
+    }
 `;
 
 const SearchButton = styled(Button)`
@@ -147,4 +182,8 @@ const SearchButton = styled(Button)`
     text-transform: none;
     padding: 16px 24px;
     width: 100%;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-block-start: 16px;
+    }
 `;
