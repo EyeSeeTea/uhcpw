@@ -55,15 +55,19 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => 
             </StyledAnchor>
 
             <Box height={20} />
-            {themeName ? (
-                <Tag
-                    theme={themeName}
-                    color={themeColor[themeCode?.toLowerCase()] || themeColor.default}
-                    onClick={handleTagClick}
-                />
-            ) : (
-                <EmptyTag />
-            )}
+
+            <TagContainer>
+                {themeName ? (
+                    <Tag
+                        theme={themeName}
+                        color={themeColor[themeCode?.toLowerCase()] || themeColor.default}
+                        onClick={handleTagClick}
+                    />
+                ) : (
+                    <EmptyTag />
+                )}
+            </TagContainer>
+
             {!minimalVersion && (
                 <>
                     <Row>
@@ -87,7 +91,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => 
                         })}
                     </Row>
                     <Box height={6} />
-                    <Typography variant="body1">{title}</Typography>
+                    <StyledText variant="body1">{title}</StyledText>
                 </>
             )}
         </Column>
@@ -103,11 +107,26 @@ const Row = styled.div`
     align-items: center;
     flex-wrap: wrap;
     justify-content: flex-start;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+    }
 `;
 
 const StyledAnchor = styled.a`
+    min-height: 14rem;
+    max-height: 14rem;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        align-self: center;
+        place-self: center;
+        min-height: 19rem;
+        max-height: 19rem;
+    }
+`;
+
+const TagContainer = styled.div`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
     }
 `;
 
@@ -122,7 +141,7 @@ const Column = styled.div`
     align-items: start;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-inline: 32px;
+        width: 100%;
     }
 `;
 
@@ -133,9 +152,17 @@ const Cover = styled.img`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         min-height: 19rem;
         max-height: 19rem;
+        border: none;
     }
 `;
 
 const EmptyTag = styled.div`
     height: 28px;
+`;
+
+const StyledText = styled(Typography)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+        margin-block-end: 16px;
+    }
 `;

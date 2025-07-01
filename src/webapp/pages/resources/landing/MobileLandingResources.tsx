@@ -14,7 +14,7 @@ export const MobileLandingResources: React.FC<{ resources: LandingResourcesState
                     <ResourceGroup
                         title={i18n.t("Country analysis")}
                         seeAllUrl={"/resources/country-analysis"}
-                        isMobile
+                        isMobileLanding
                     >
                         <ResourcesCarousel resourceItems={resources.countryAnalysisByCountry} />
                     </ResourceGroup>
@@ -26,7 +26,7 @@ export const MobileLandingResources: React.FC<{ resources: LandingResourcesState
                     <ResourceGroup
                         title={i18n.t("Comparative analysis")}
                         seeAllUrl={"/resources/comparative-analysis"}
-                        isMobile
+                        isMobileLanding
                     >
                         <ResourcesCarousel resourceItems={resources.comparativeAnalysis} />
                     </ResourceGroup>
@@ -35,7 +35,7 @@ export const MobileLandingResources: React.FC<{ resources: LandingResourcesState
 
             <CarouselContainer>
                 {resources.multimedia.length > 0 && (
-                    <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"} isMobile>
+                    <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"} isMobileLanding>
                         <ResourcesCarousel resourceItems={resources.multimedia} />
                     </ResourceGroup>
                 )}
@@ -43,7 +43,7 @@ export const MobileLandingResources: React.FC<{ resources: LandingResourcesState
 
             <CarouselContainer>
                 {resources.news.length > 0 && (
-                    <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"} isMobile>
+                    <ResourceGroup title={i18n.t("News")} seeAllUrl={"/resources/news"} isMobileLanding>
                         <ResourcesCarousel resourceItems={resources.news} />
                     </ResourceGroup>
                 )}

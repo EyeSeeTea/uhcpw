@@ -4,15 +4,16 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 export interface ResourceGroupProps {
     title: string;
     seeAllUrl: string;
-    isMobile?: boolean;
+    isMobileLanding?: boolean;
 }
 
 export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(
-    ({ title, seeAllUrl, children, isMobile = false }) => {
+    ({ title, seeAllUrl, children, isMobileLanding = false }) => {
         const history = useHistory();
 
         const onSeeAll = useCallback(() => {
@@ -33,12 +34,12 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(
                         <ChevronRightSharpIcon onClick={onSeeAll} />
                     </Fab>
                 </Row>
-                {isMobile ? (
+                {isMobileLanding ? (
                     children
                 ) : (
-                    <Grid container spacing={1}>
+                    <StyledGrid container spacing={2}>
                         {children}
-                    </Grid>
+                    </StyledGrid>
                 )}
             </Container>
         );
@@ -68,5 +69,12 @@ const Title = styled(Typography)`
     text-transform: lowercase;
     :first-letter {
         text-transform: uppercase;
+    }
+`;
+
+const StyledGrid = styled(Grid)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 24px;
+        background: ${colors.carouselBackground};
     }
 `;

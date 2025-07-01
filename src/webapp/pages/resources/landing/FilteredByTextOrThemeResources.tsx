@@ -12,6 +12,7 @@ import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useI
 export const FilteredByTextOrThemeResources: React.FC<{
     resources: FilteredByTextOrThemeResourcesState;
     themeSelected?: string;
+    isSmallScreen?: boolean;
 }> = React.memo(({ resources, themeSelected }) => (
     <Container>
         <Grid item md={12} xs={12}>
@@ -77,7 +78,7 @@ const Container = styled(Grid)`
     padding-block-end: 32px;
     padding-inline: 64px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding-inline: 32px;
+        padding-inline: 0;
     }
 `;
 

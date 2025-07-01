@@ -62,6 +62,12 @@ const Item = styled(Card)`
     overflow: unset;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        min-width: 100%;
+        width: 90%;
+        max-width: 400px;
+        padding-inline: 16px;
+        justify-self: center;
+        place-items: center;
+        height: 100%;
+        padding: 0;
     }
 `;

@@ -50,10 +50,12 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                 <TitleContainer>
                     <Title variant="h3">{title}</Title>
                 </TitleContainer>
+
                 <SearchContainer>
                     <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
                 </SearchContainer>
             </TitleAndSearchContainer>
+
             <Content>
                 <ResourcesContainer maxWidth="xl">
                     <FiltersContainer>
@@ -69,7 +71,6 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                             {items &&
                                 items.map((item, index) => {
                                     const sizes = getSizes(item);
-
                                     return (
                                         <StyledGridItem
                                             key={index}
@@ -86,6 +87,7 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                         </StyledGridContainer>
                     }
                 </ResourcesContainer>
+
                 <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                     <CircularProgress color="primary" />
                 </Backdrop>
@@ -160,6 +162,11 @@ const SearchContainer = styled.div`
 const StyledGridContainer = styled(Grid)`
     padding-block: 32px;
     padding-inline: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 32px;
+        background: ${colors.carouselBackground};
+        width: calc(100% + 8px);
+    }
 `;
 
 const StyledGridItem = styled(Grid)`

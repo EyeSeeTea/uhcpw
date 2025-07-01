@@ -64,6 +64,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                         <FilteredByTextOrThemeResources
                             resources={filteredByTextOrThemeResources}
                             themeSelected={filters.theme.selected}
+                            isSmallScreen={isSmallScreen}
                         />
                     )}
                 </StyledGrid>

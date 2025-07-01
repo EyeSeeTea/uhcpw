@@ -66,21 +66,29 @@ const Item = styled(Card)`
     }
     min-width: 180px;
     overflow: unset;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        min-width: 100%;
+        min-width: 200px;
+        width: 100%;
+        padding-inline: 16px;
+        justify-self: center;
+        place-items: center;
+        height: calc(100% - 32px);
     }
 `;
 
 const Row = styled.div`
     padding-top: 8px;
-
+    height: 56px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-inline: 32px;
+        margin-inline: 0;
+        justify-self: flex-start;
+        flex-wrap: nowrap;
     }
 `;
 
