@@ -76,7 +76,6 @@ export const FilteredByTextOrThemeResources: React.FC<{
 
 const Container = styled(Grid)`
     padding-block-end: 32px;
-    padding-inline: 64px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-inline: 0;
     }
