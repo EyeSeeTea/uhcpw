@@ -10,10 +10,11 @@ export interface ResourceGroupProps {
     title: string;
     seeAllUrl: string;
     isMobileLanding?: boolean;
+    centerItems?: boolean;
 }
 
 export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(
-    ({ title, seeAllUrl, children, isMobileLanding = false }) => {
+    ({ title, seeAllUrl, children, isMobileLanding = false, centerItems = false }) => {
         const history = useHistory();
 
         const onSeeAll = useCallback(() => {
@@ -37,7 +38,7 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(
                 {isMobileLanding ? (
                     children
                 ) : (
-                    <StyledGrid container spacing={2}>
+                    <StyledGrid container spacing={2} $centerItems={centerItems}>
                         {children}
                     </StyledGrid>
                 )}
@@ -73,9 +74,10 @@ const Title = styled(Typography)`
     }
 `;
 
-const StyledGrid = styled(Grid)`
+const StyledGrid = styled(Grid)<{ $centerItems?: boolean }>`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 24px;
         background: ${colors.carouselBackground};
+        text-align: ${props => (props.$centerItems ? "center" : "left")};
     }
 `;
