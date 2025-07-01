@@ -107,6 +107,9 @@ const Row = styled.div`
     align-items: center;
     flex-wrap: wrap;
     justify-content: flex-start;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+    }
 `;
 
 const StyledAnchor = styled.a`
@@ -120,7 +123,11 @@ const StyledAnchor = styled.a`
     }
 `;
 
-const TagContainer = styled.div``;
+const TagContainer = styled.div`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+    }
+`;
 
 const StyledTypography = styled(Typography)`
     margin-right: 8px;
@@ -155,6 +162,7 @@ const EmptyTag = styled.div`
 
 const StyledText = styled(Typography)`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-block-end: 8px;
+        margin-block-end: 16px;
+        margin-inline: 16px;
     }
 `;

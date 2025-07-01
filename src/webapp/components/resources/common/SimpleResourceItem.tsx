@@ -82,7 +82,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
                             rel="noreferrer"
                             onClick={redirectWithEvent}
                         >
-                            <Text>{title}</Text>
+                            <StyledText>{title}</StyledText>
                         </a>
                     </Content>
                 </Column>
@@ -99,6 +99,11 @@ const Item = styled(Card)<{ $disablePadding?: boolean }>`
     border-radius: 10px;
     padding-block: ${props => (props.$disablePadding ? "0px" : "16px")};
     flex-direction: column;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block: 0;
+        height: 100%;
+        width: 100%;
+    }
 `;
 
 const Column = styled.div`
@@ -110,6 +115,14 @@ const Column = styled.div`
 
 const Text = styled(Typography)`
     font-weight: normal;
+`;
+
+const StyledText = styled(Typography)`
+    font-weight: normal;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+        margin-block-end: 16px;
+    }
 `;
 
 const Image = styled.img<{ $maintainAspectRatio?: boolean; $fullWidth?: boolean }>`
@@ -125,4 +138,7 @@ const Row = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+    }
 `;

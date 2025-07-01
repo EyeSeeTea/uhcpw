@@ -70,10 +70,10 @@ const Item = styled(Card)`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         width: 85%;
         max-width: 400px;
-        padding: 24px;
+        padding: 0;
         justify-self: center;
         place-items: center;
-        height: calc(100% - 48px);
+        height: 100%;
     }
 `;
 
@@ -87,7 +87,7 @@ const Row = styled.div`
     justify-content: flex-start;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-top: 0;
-        margin-inline: 0;
+        margin-inline: 16px;
         justify-self: flex-start;
         flex-wrap: nowrap;
     }

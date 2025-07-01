@@ -85,6 +85,12 @@ export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitl
 
 const SimpleResourceItemContainer = styled.div`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-inline: 32px;
+        height: 100%;
+        width: 100%;
+        max-width: 500px;
+        padding: 0;
+        justify-self: center;
+        place-items: center;
+        height: 100%;
     }
 `;
