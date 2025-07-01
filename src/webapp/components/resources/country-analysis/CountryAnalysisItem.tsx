@@ -68,12 +68,12 @@ const Item = styled(Card)`
     overflow: unset;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        min-width: 200px;
-        width: 100%;
-        padding-inline: 16px;
+        width: 85%;
+        max-width: 400px;
+        padding: 24px;
         justify-self: center;
         place-items: center;
-        height: calc(100% - 32px);
+        height: calc(100% - 48px);
     }
 `;
 
@@ -86,6 +86,7 @@ const Row = styled.div`
     flex-wrap: nowrap;
     justify-content: flex-start;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-top: 0;
         margin-inline: 0;
         justify-self: flex-start;
         flex-wrap: nowrap;

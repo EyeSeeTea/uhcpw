@@ -64,7 +64,7 @@ const Item = styled(Card)`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         width: 90%;
         max-width: 400px;
-        padding-inline: 16px;
+        padding: 16px;
         justify-self: center;
         place-items: center;
         height: 100%;
