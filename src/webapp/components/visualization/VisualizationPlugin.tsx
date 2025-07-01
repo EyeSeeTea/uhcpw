@@ -53,6 +53,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         currentCountry,
         visualizationName
     );
+    console.log("chartData", chartData);
 
     const ref = useRef<HTMLDivElement>(null);
 
