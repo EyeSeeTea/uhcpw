@@ -4,8 +4,8 @@ export interface BasicResource {
     imageOriginal: string;
     imageCustom?: string;
     date: Date;
-    favourite: boolean;
-    favouriteOrder: number;
+    favouriteHome: boolean;
+    favouriteHomeOrder: number;
 }
 
 export interface AnalysisResource extends BasicResource {

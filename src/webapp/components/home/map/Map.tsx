@@ -17,6 +17,7 @@ import gapsPin from "../../../assets/map/pin-gaps.svg";
 import { MapState } from "./MapState";
 import i18n from "../../../../locales";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -26,12 +27,13 @@ mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3a
 // eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
 mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
-export interface MapProps {
+export type MapProps = {
     mapState: MapState;
     welcomePanelContent: MainMapPanelContent;
-}
+    isMobile?: boolean;
+};
 
-export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
+export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobile = false }) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
@@ -54,7 +56,7 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
     }, [mapState.initialData, mapState.markers]);
 
     useEffect(() => {
-        if (mapRef.current) {
+        if (mapRef.current && !isMobile) {
             mapRef.current.on("load", () => {
                 mapState.markers.features.forEach(feature => {
                     const el = document.createElement("div");
@@ -82,7 +84,7 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
                 mapState.onSelectedCountryChange(undefined);
             });
         }
-    }, [mapState]);
+    }, [mapState, isMobile]);
 
     const zoomIn = useCallback(() => {
         const newZoom = mapRef.current.getZoom() * 1.25;
@@ -101,21 +103,23 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent }) => {
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} />
                 ) : (
-                    <WelcomePanel welcomePanelContent={welcomePanelContent} />
+                    <WelcomePanel welcomePanelContent={welcomePanelContent} isMobile={isMobile} />
                 )}
             </MapSidePanel>
-            <MapControls>
-                <Tooltip title={i18n.t("Zoom in")}>
-                    <MapFab size="small" onClick={zoomIn}>
-                        <ZoomInIcon fontSize="small" />
-                    </MapFab>
-                </Tooltip>
-                <Tooltip title={i18n.t("Zoom out")}>
-                    <MapFab size="small" onClick={zoomOut}>
-                        <ZoomOutIcon fontSize="small" />
-                    </MapFab>
-                </Tooltip>
-            </MapControls>
+            {!isMobile && (
+                <MapControls>
+                    <Tooltip title={i18n.t("Zoom in")}>
+                        <MapFab size="small" onClick={zoomIn}>
+                            <ZoomInIcon fontSize="small" />
+                        </MapFab>
+                    </Tooltip>
+                    <Tooltip title={i18n.t("Zoom out")}>
+                        <MapFab size="small" onClick={zoomOut}>
+                            <ZoomOutIcon fontSize="small" />
+                        </MapFab>
+                    </Tooltip>
+                </MapControls>
+            )}
         </Container>
     );
 };
@@ -174,6 +178,12 @@ const MapSidePanel = styled.div`
     color: white;
     padding: 48px;
     opacity: 0.9;
+    z-index: 1;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        max-width: 100%;
+        width: calc(100% - 48px);
+        padding: 24px;
+    }
 `;
 
 const MapControls = styled.div`

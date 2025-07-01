@@ -1,0 +1,100 @@
+{
+    "homePage": [
+        {
+            "resourceId": "ESI1B0zxHfk",
+            "order": 1
+        },
+        {
+            "resourceId": "ckY8Z4ZmTDe",
+            "order": 2
+        },
+        {
+            "resourceId": "cT3QVtYc3u8",
+            "order": 3
+        },
+        {
+            "resourceId": "qgw0lMQo87H",
+            "order": 4
+        },
+        {
+            "resourceId": "jX7AtbrutIZ",
+            "order": 5
+        },
+        {
+            "resourceId": "gGIXHvLl5Wl",
+            "order": 6
+        }
+    ],
+    "comparativeAnalysis": [
+        {
+            "resourceId": "rCveu4PJ5Fx",
+            "order": 1
+        },
+        {
+            "resourceId": "EQCYfQqCRpI",
+            "order": 2
+        },
+        {
+            "resourceId": "ESI1B0zxHfk",
+            "order": 3
+        },
+        {
+            "resourceId": "eZhD2JgYvQB",
+            "order": 4
+        },
+        {
+            "resourceId": "gGIXHvLl5Wl",
+            "order": 5
+        }
+    ],
+    "countryAnalysis": [
+        {
+            "resourceId": "TkKXRdXAb3N",
+            "order": 1
+        },
+        {
+            "resourceId": "XKKI1hhyFxk",
+            "order": 2
+        },
+        {
+            "resourceId": "qgw0lMQo87H",
+            "order": 3
+        },
+        {
+            "resourceId": "ESI1B0zxHfk",
+            "order": 4
+        },
+        {
+            "resourceId": "gGIXHvLl5Wl",
+            "order": 5
+        },
+        {
+            "resourceId": "MzGBfXThHlQ",
+            "order": 6
+        }
+    ],
+    "multimedia": [
+        {
+            "resourceId": "vPHo1a53UUc",
+            "order": 1
+        },
+        {
+            "resourceId": "gGIXHvLl5Wl",
+            "order": 2
+        }
+    ],
+    "news": [
+        {
+            "resourceId": "ckY8Z4ZmTDe",
+            "order": 1
+        },
+        {
+            "resourceId": "v2uL21WIFCj",
+            "order": 2
+        },
+        {
+            "resourceId": "L7kIrsNDGuc",
+            "order": 3
+        }
+    ]
+}

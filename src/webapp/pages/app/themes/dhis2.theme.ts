@@ -8,6 +8,8 @@ export const colors = {
     accentPrimaryLight: "#63A4FF",
     accentPrimaryLightest: "#EAF4FF",
 
+    gradientPrimaryMobile: "linear-gradient(90deg, #185698 0%, #0AA0F4 100%)",
+
     accentSecondary: "#fb8c00",
     accentSecondaryLight: "#f57c00",
     accentSecondaryDark: "#ff9800",
@@ -26,6 +28,13 @@ export const colors = {
     positive: "#3D9305",
     info: "#EAF4FF",
     chartContent: "#212934",
+
+    orange: "#FF9355",
+    blue: "#0089D6",
+    darkBlue: "#0360A6",
+    green: "#4FAD56",
+    carouselBackground: "#E5E5EA",
+    carouselDotBackground: "#B6B6B6",
 };
 
 export const palette = {

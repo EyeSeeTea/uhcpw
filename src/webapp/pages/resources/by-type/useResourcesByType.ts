@@ -12,10 +12,11 @@ const page_size = 5;
 export function useResourcesByType(params: {
     category?: string;
     countriesFilter?: string[];
-    favourite?: boolean;
     themeFilter?: string;
-    favouriteSection?: boolean;
     paging?: boolean;
+    isFavouriteHome?: boolean;
+    isFavouriteSection?: boolean;
+    includeAdvancedSearch?: boolean;
 }): ResourcesByTypeState {
     const { compositionRoot, countries, themes } = useAppContext();
     const { category, countriesFilter, themeFilter, paging } = params;
@@ -67,8 +68,8 @@ export function useResourcesByType(params: {
                     years: filters.year.selected,
                     pageSize: paging ? page_size : undefined,
                     page: paging ? page : undefined,
-                    favourite: params.favourite,
-                    favouriteSection: filters.search.term ? undefined : params.favouriteSection,
+                    isFavouriteHome: params.isFavouriteHome,
+                    isFavouriteSection: filters.search.term ? undefined : params.isFavouriteSection,
                 })
                 .run(
                     response => {
@@ -119,8 +120,8 @@ export function useResourcesByType(params: {
             filters.country.selected,
             filters.year.selected,
             params.category,
-            params.favourite,
-            params.favouriteSection,
+            params.isFavouriteHome,
+            params.isFavouriteSection,
             paging,
             countries,
             themes,
@@ -163,7 +164,7 @@ export function useResourcesByType(params: {
     };
 }
 
-function buildResourcesBySection(
+export function buildResourcesBySection(
     resources: Resource[],
     countries: Country[],
     themes: ResourceTheme[]

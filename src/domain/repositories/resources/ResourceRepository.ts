@@ -9,8 +9,8 @@ export interface ResourceFilters {
     years?: string[];
     pageSize?: number;
     page?: number;
-    favourite?: boolean;
-    favouriteSection?: boolean;
+    isFavouriteHome?: boolean;
+    isFavouriteSection?: boolean;
 }
 
 export interface ResourceRepository {
