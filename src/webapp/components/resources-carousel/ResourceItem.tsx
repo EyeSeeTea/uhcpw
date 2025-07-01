@@ -2,8 +2,8 @@ import { useCallback, useMemo } from "react";
 import i18n from "../../../locales";
 import { SimpleResourceItem } from "../resources/common/SimpleResourceItem";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
-import { ResourceState } from "../../pages/resources/by-type/ResourcesByTypeState";
 import React from "react";
+import { ResourceState } from "../../pages/resources/by-type/ResourcesByTypeState";
 
 type ResourceItemProps = {
     resource: ResourceState;

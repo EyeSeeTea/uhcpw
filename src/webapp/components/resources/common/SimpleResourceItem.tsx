@@ -4,6 +4,7 @@ import moment from "moment";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 import { Tag } from "../tag/Tag";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface SimpleResourceItemProps {
     title: string;
@@ -81,7 +82,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
                             rel="noreferrer"
                             onClick={redirectWithEvent}
                         >
-                            <Text>{title}</Text>
+                            <StyledText>{title}</StyledText>
                         </a>
                     </Content>
                 </Column>
@@ -98,6 +99,11 @@ const Item = styled(Card)<{ $disablePadding?: boolean }>`
     border-radius: 10px;
     padding-block: ${props => (props.$disablePadding ? "0px" : "16px")};
     flex-direction: column;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block: 0;
+        height: 100%;
+        width: 100%;
+    }
 `;
 
 const Column = styled.div`
@@ -111,14 +117,28 @@ const Text = styled(Typography)`
     font-weight: normal;
 `;
 
+const StyledText = styled(Typography)`
+    font-weight: normal;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+        margin-block-end: 16px;
+    }
+`;
+
 const Image = styled.img<{ $maintainAspectRatio?: boolean; $fullWidth?: boolean }>`
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
     height: 300px;
     object-fit: cover;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        height: 400px;
+    }
 `;
 
 const Row = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline: 16px;
+    }
 `;

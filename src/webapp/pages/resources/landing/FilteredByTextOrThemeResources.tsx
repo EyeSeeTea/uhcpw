@@ -7,12 +7,14 @@ import { ResourceGroup } from "../../../components/resources/resource-group/Reso
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 import { MultimediaState } from "../by-type/ResourcesByTypeState";
 import { FilteredByTextOrThemeResourcesState } from "./ResourcesState";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export const FilteredByTextOrThemeResources: React.FC<{
     resources: FilteredByTextOrThemeResourcesState;
     themeSelected?: string;
+    isSmallScreen?: boolean;
 }> = React.memo(({ resources, themeSelected }) => (
-    <>
+    <Container>
         <Grid item md={12} xs={12}>
             {resources.countryAnalysis.length > 0 && (
                 <ResourceGroup
@@ -20,7 +22,7 @@ export const FilteredByTextOrThemeResources: React.FC<{
                     seeAllUrl={`/resources/country-analysis${themeSelected ? `?theme=${themeSelected}` : ""}`}
                 >
                     {resources.countryAnalysis.map(countryAnalysis => (
-                        <StyledGrid key={countryAnalysis.id} item lg={2} md={3} xs={6}>
+                        <StyledGrid key={countryAnalysis.id} item lg={2} md={3} sm={6} xs={12}>
                             <ResourceItem resource={countryAnalysis} analyticsPageTitle="Resources" />
                         </StyledGrid>
                     ))}
@@ -34,7 +36,7 @@ export const FilteredByTextOrThemeResources: React.FC<{
                     seeAllUrl={`/resources/comparative-analysis${themeSelected ? `?theme=${themeSelected}` : ""}`}
                 >
                     {resources.comparativeAnalysis.map(comparativeItem => (
-                        <StyledGrid key={comparativeItem.id} item lg={2} md={3} xs={6}>
+                        <StyledGrid key={comparativeItem.id} item lg={2} md={3} sm={6} xs={12}>
                             <ResourceItem resource={comparativeItem} analyticsPageTitle="Resources" />
                         </StyledGrid>
                     ))}
@@ -69,8 +71,15 @@ export const FilteredByTextOrThemeResources: React.FC<{
                 </ResourceGroup>
             )}
         </Grid>
-    </>
+    </Container>
 ));
+
+const Container = styled(Grid)`
+    padding-block-end: 32px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 0;
+    }
+`;
 
 const StyledGrid = styled(Grid)`
     padding: 20px;

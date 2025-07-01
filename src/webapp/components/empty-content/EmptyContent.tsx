@@ -45,6 +45,9 @@ const Container = styled.div`
     align-items: center;
     margin-top: 50px;
     margin-bottom: 50px;
+    @media (max-width: 600px) {
+        margin-top: 25px;
+    }
 `;
 
 const Content = styled.div`

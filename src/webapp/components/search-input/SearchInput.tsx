@@ -12,8 +12,9 @@ const useStyles = makeStyles(() => ({
         alignItems: "center",
         padding: "10px",
         display: "flex",
-        flexBasis: 420,
         border: "1px solid #d6d3d3",
+        maxWidth: "100%",
+        flexGrow: 1,
     },
     icon: {
         marginRight: "10px",
@@ -24,6 +25,8 @@ const useStyles = makeStyles(() => ({
         fontSize: "16px",
         lineHeight: "16px",
         letterSpacing: "-0.05px",
+        width: "100%",
+        minWidth: 0,
     },
 }));
 

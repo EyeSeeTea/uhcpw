@@ -9,9 +9,10 @@ import {
     MultimediaState,
     ResourceState,
 } from "../by-type/ResourcesByTypeState";
-import { buildResourcesBySection } from "../by-type/useResourcesByType";
-import { ResourcesState } from "./ResourcesState";
+import { CountryAnalysisCountry, ResourcesState } from "./ResourcesState";
 import { useHistory } from "react-router-dom";
+import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { buildResourcesBySection } from "../by-type/useResourcesByType";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { Future, FutureData } from "../../../../domain/entities/Future";
 import { ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
@@ -20,6 +21,7 @@ import { CompositionRoot } from "../../../../CompositionRoot";
 export function useResources(): ResourcesState {
     const { compositionRoot, countries, themes } = useAppContext();
     const history = useHistory();
+    const isSmallScreen = useIsSmallScreen();
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
@@ -86,11 +88,11 @@ export function useResources(): ResourcesState {
             ? {
                   countryAnalysisByCountry: getFavoriteAnalysisCountries(countries),
                   comparativeAnalysis: getComparativeAnalysis(items, true),
-                  news: getNews(items, true),
-                  multimedia: getMultimedia(items, true),
+                  news: getNews(items, true, isSmallScreen),
+                  multimedia: getMultimedia(items, true, isSmallScreen),
               }
             : undefined;
-    }, [countries, filters.search.term, filters.theme.selected, items]);
+    }, [countries, filters.search.term, filters.theme.selected, isSmallScreen, items]);
 
     const filteredByTextOrThemeResources = useMemo(() => {
         return items && (!!filters.search.term || !!filters.theme.selected)
@@ -116,13 +118,18 @@ export function useResources(): ResourcesState {
     };
 }
 
-function getFavoriteAnalysisCountries(countries: Country[]) {
+function getFavoriteAnalysisCountries(countries: Country[]): CountryAnalysisCountry[] {
     return _.unionBy(
         _.orderBy(
             countries
                 .filter(country => country.showCountryFlag)
                 .map(country => {
-                    return { countryId: country.id, countryName: country.name || "", flag: country.flag || "" };
+                    return {
+                        countryId: country.id,
+                        countryName: country.name || "",
+                        flag: country.flag || "",
+                        kind: "flag",
+                    };
                 }),
             "countryName"
         ),
@@ -130,22 +137,26 @@ function getFavoriteAnalysisCountries(countries: Country[]) {
     );
 }
 
-function getNews(items: ResourceState[], isLanding: boolean): News[] {
+function getNews(items: ResourceState[], isLanding: boolean, isSmallScreen?: boolean): News[] {
     const news = _.orderBy(
         items.filter(item => item.kind === "news"),
         "favouriteSectionOrder"
     ) as News[];
 
-    return isLanding ? news.filter(item => !!item.favouriteSection).slice(0, 1) : news;
+    const totalFavorites = isSmallScreen ? 6 : 1;
+
+    return isLanding ? news.slice(0, totalFavorites) : news;
 }
 
-function getMultimedia(items: ResourceState[], isLanding: boolean): MultimediaState[] {
+function getMultimedia(items: ResourceState[], isLanding: boolean, isSmallScreen?: boolean): MultimediaState[] {
     const multimedia = _.orderBy(
         items.filter(item => item.kind === "multimedia"),
         "favouriteSectionOrder"
     ) as MultimediaState[];
 
-    return isLanding ? multimedia.filter(item => !!item.favouriteSection).slice(0, 1) : multimedia;
+    const totalFavorites = isSmallScreen ? 6 : 1;
+
+    return isLanding ? multimedia.slice(0, totalFavorites) : multimedia;
 }
 
 function getComparativeAnalysis(items: ResourceState[], isLanding: boolean): ComparativeAnalysisState[] {
