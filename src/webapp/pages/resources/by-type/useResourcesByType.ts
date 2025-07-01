@@ -1,34 +1,43 @@
-import { useCallback, useEffect, useState } from "react";
-import { CompositionRoot } from "../../../../CompositionRoot";
-import { Future, FutureData } from "../../../../domain/entities/Future";
+import { useCallback, useEffect, useState, useRef } from "react";
 import { getThemeName, ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { Country } from "../../../../domain/entities/Country";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
 import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
+import { useInfiniteScroll } from "./useInfiniteScroll";
+
+const page_size = 5;
 
 export function useResourcesByType(params: {
     category?: string;
     countriesFilter?: string[];
-    count?: number;
-    isFavouriteHome?: boolean;
     themeFilter?: string;
+    paging?: boolean;
+    isFavouriteHome?: boolean;
     isFavouriteSection?: boolean;
     includeAdvancedSearch?: boolean;
 }): ResourcesByTypeState {
     const { compositionRoot, countries, themes } = useAppContext();
-    const { category, countriesFilter, themeFilter, includeAdvancedSearch } = params;
+    const { category, countriesFilter, themeFilter, paging } = params;
     const filters = useResourcesFilters({ category, countries: countriesFilter, theme: themeFilter });
 
     const [loading, setLoading] = useState<boolean>(false);
+    const [loadingMore, setLoadingMore] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [hasMore, setHasMore] = useState<boolean>(true);
+    const isLoadingRef = useRef<boolean>(false);
 
     const [title, setTitle] = useState<string>("");
 
     useEffect(() => {
         if (filters.category.selected) {
             setItems([]);
+            setCurrentPage(1);
+            setHasMore(false);
+            setLoadingMore(false);
+            isLoadingRef.current = false;
         }
     }, [filters.category.selected]);
 
@@ -38,60 +47,108 @@ export function useResourcesByType(params: {
         setTitle(title === "Country or area analysis" ? "Country analysis" : title);
     }, [filters.category.options, filters.category.selected]);
 
-    const onGetResources = useCallback(() => {
-        setLoading(true);
-
-        const cancel = Future.joinObj({
-            normalResponse: compositionRoot.resources.get.execute({
-                searchTerm: filters.search.term,
-                category: params.category,
-                theme: filters.theme.selected,
-                countries: filters.country.selected,
-                years: filters.year.selected,
-                count: params.count,
-                isFavouriteHome: params.isFavouriteHome,
-                isFavouriteSection: filters.search.term ? undefined : params.isFavouriteSection,
-            }),
-            advancedResponse: includeAdvancedSearch
-                ? executeAdvancedSearch(compositionRoot, countries, themes, filters.search.term)
-                : Future.success([]),
-        }).run(
-            ({ normalResponse, advancedResponse }) => {
-                setLoading(false);
-
-                const mergedResponses = [
-                    ...normalResponse.filter(({ id, kind }) => {
-                        const isNormalAlreadyIncludedInAdvanced = advancedResponse.some(
-                            advanced => advanced.id === id && advanced.kind === kind
-                        );
-                        return !isNormalAlreadyIncludedInAdvanced;
-                    }),
-                    ...advancedResponse,
-                ];
-
-                setItems(buildResourcesBySection(mergedResponses, countries, themes));
-            },
-            () => {
-                setLoading(false);
-                setItems([]);
+    const loadResources = useCallback(
+        (page: number, isLoadMore = false) => {
+            if (isLoadingRef.current) {
+                return;
             }
-        );
 
-        return cancel;
-    }, [
-        compositionRoot,
-        filters.search.term,
-        filters.theme.selected,
-        filters.country.selected,
-        filters.year.selected,
-        params.category,
-        params.count,
-        params.isFavouriteHome,
-        params.isFavouriteSection,
-        includeAdvancedSearch,
-        countries,
-        themes,
-    ]);
+            isLoadingRef.current = true;
+
+            if (!isLoadMore) {
+                setLoading(true);
+            }
+
+            const cancel = compositionRoot.resources.get
+                .execute({
+                    searchTerm: filters.search.term,
+                    category: params.category,
+                    theme: filters.theme.selected,
+                    countries: filters.country.selected,
+                    years: filters.year.selected,
+                    pageSize: paging ? page_size : undefined,
+                    page: paging ? page : undefined,
+                    isFavouriteHome: params.isFavouriteHome,
+                    isFavouriteSection: filters.search.term ? undefined : params.isFavouriteSection,
+                })
+                .run(
+                    response => {
+                        isLoadingRef.current = false;
+
+                        const newItems = buildResourcesBySection(response, countries, themes);
+
+                        if (isLoadMore) {
+                            setLoadingMore(false);
+                        } else {
+                            setLoading(false);
+                        }
+
+                        if (isLoadMore) {
+                            setItems(prevItems => (prevItems ? [...prevItems, ...newItems] : newItems));
+                        } else {
+                            setItems(newItems);
+                        }
+
+                        // Determinar si hay más datos - hay más si recibimos al menos 1 elemento
+                        const newHasMore = Boolean(paging && newItems.length > 0);
+                        setHasMore(newHasMore);
+
+                        // Si es la primera carga y hay datos, verificar si hay más páginas
+                        if (!isLoadMore && paging && newItems.length === page_size) {
+                            setHasMore(true);
+                        }
+                    },
+                    () => {
+                        if (isLoadMore) {
+                            setLoadingMore(false);
+                        } else {
+                            setLoading(false);
+                        }
+                        isLoadingRef.current = false;
+                        if (!isLoadMore) {
+                            setItems([]);
+                        }
+                    }
+                );
+
+            return cancel;
+        },
+        [
+            compositionRoot,
+            filters.search.term,
+            filters.theme.selected,
+            filters.country.selected,
+            filters.year.selected,
+            params.category,
+            params.isFavouriteHome,
+            params.isFavouriteSection,
+            paging,
+            countries,
+            themes,
+        ]
+    );
+
+    const onGetResources = useCallback(() => {
+        setCurrentPage(1);
+        loadResources(1, false);
+    }, [loadResources]);
+
+    const onLoadMore = useCallback(() => {
+        if (!hasMore || loadingMore || isLoadingRef.current) {
+            return;
+        }
+        setLoadingMore(true);
+        const nextPage = currentPage + 1;
+        setCurrentPage(nextPage);
+        loadResources(nextPage, true);
+    }, [loadResources, hasMore, loadingMore, currentPage]);
+
+    // Usar useInfiniteScroll internamente solo si hay paginación
+    const { loadingRef } = useInfiniteScroll({
+        onLoadMore,
+        hasMore: paging ? hasMore : false,
+        loadingMore,
+    });
 
     useEffect(() => onGetResources(), [onGetResources]);
 
@@ -101,36 +158,10 @@ export function useResourcesByType(params: {
         filters,
         items,
         onGetResources,
+        hasMore,
+        loadingMore,
+        loadingRef,
     };
-}
-
-function executeAdvancedSearch(
-    compositionRoot: CompositionRoot,
-    countries: Country[],
-    themes: ResourceTheme[],
-    searchTerm: string
-): FutureData<Resource[]> {
-    if (!searchTerm) {
-        return Future.success([]);
-    }
-
-    const countryByTerm = countries.find(country => country.name.toLowerCase() === searchTerm.toLowerCase());
-    const themeByTerm = themes.find(theme => theme.name.toLowerCase() === searchTerm.toLowerCase());
-
-    return Future.joinObj({
-        byCountryResponse: countryByTerm
-            ? compositionRoot.resources.get.execute({
-                  countries: [countryByTerm.id],
-              })
-            : Future.success([]),
-        byThemeResponse: themeByTerm
-            ? compositionRoot.resources.get.execute({
-                  theme: themeByTerm.name,
-              })
-            : Future.success([]),
-    }).map(({ byCountryResponse, byThemeResponse }) => {
-        return [...byCountryResponse, ...byThemeResponse];
-    });
 }
 
 export function buildResourcesBySection(

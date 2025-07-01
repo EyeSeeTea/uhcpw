@@ -110,7 +110,7 @@ describe("Resource repository", () => {
             givenFavoritesResources();
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", pageSize: 6 }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("false");
         });
@@ -118,7 +118,7 @@ describe("Resource repository", () => {
             givenFavoritesResources();
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", pageSize: 6 }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("pageSize")).toContain("6");
         });

@@ -7,7 +7,8 @@ export interface ResourceFilters {
     theme?: string;
     countries?: string[];
     years?: string[];
-    count?: number;
+    pageSize?: number;
+    page?: number;
     isFavouriteHome?: boolean;
     isFavouriteSection?: boolean;
 }

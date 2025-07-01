@@ -13,7 +13,11 @@ import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 import mapBackground from "../../../assets/map-background.jpg";
 
-export const ResourcesByTypePage: React.FC = React.memo(() => {
+type ResourcesByTypePageProps = {
+    paging?: boolean;
+};
+
+export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.memo(({ paging = true }) => {
     const history = useHistory();
     const { sendEvent } = useAnalytics();
     const { category } = useParams<{ category: string }>();
@@ -30,10 +34,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         };
     }, [history.location.search]);
 
-    const { loading, title, filters, items, onGetResources } = useResourcesByType({
+    const { loading, title, filters, items, onGetResources, hasMore, loadingMore, loadingRef } = useResourcesByType({
         category,
         countriesFilter: filterInParams.country,
         themeFilter: filterInParams.theme,
+        paging,
     });
 
     const disabledCountryFilter = useMemo(() => {
@@ -84,6 +89,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
                                         </StyledGridItem>
                                     );
                                 })}
+                            {hasMore && (
+                                <Grid item xs={12} ref={loadingRef}>
+                                    <LoadingContainer>{loadingMore && <CircularProgress size={24} />}</LoadingContainer>
+                                </Grid>
+                            )}
                         </StyledGridContainer>
                     }
                 </ResourcesContainer>
@@ -179,4 +189,12 @@ const StyledGridItem = styled(Grid)`
 const TitleAndSearchContainer = styled.div`
     position: relative;
     width: 100%;
+`;
+
+const LoadingContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 60px;
 `;
