@@ -1,7 +1,8 @@
-import { Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
 import { Rotate } from "../rotate/Rotate";
+import i18n from "@eyeseetea/d2-ui-components/locales";
 
 type FullScreenDialogProps = {
     isOpen: boolean;
@@ -26,11 +27,7 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
         <Dialog open={isOpen} onClose={onClose} fullScreen>
             <Rotate enableRotation={forceRotation}>
                 <DialogContainer ref={ref} hasPadding={hasPadding}>
-                    {onClose && (
-                        <CloseIconButton onClick={onClose}>
-                            <StyledCloseIcon />
-                        </CloseIconButton>
-                    )}
+                    {onClose && <CloseButton onClick={onClose}>{i18n.t("Accept")}</CloseButton>}
 
                     <DialogContent style={{ padding: hasPadding ? "8px 24px;" : "0" }}>
                         {title && <Title variant="h6">{title}</Title>}
@@ -54,16 +51,16 @@ const Title = styled(Typography)`
     margin-block-end: 16px;
 `;
 
-const CloseIconButton = styled(IconButton)`
-    position: absolute;
-    right: 10px;
-    top: 10px;
-`;
-
-const StyledCloseIcon = styled(CloseIcon)`
+const CloseButton = styled(Button)`
+    border-radius: 20px;
+    height: 50px;
+    width: 80px;
+    text-transform: none;
+    white-space: nowrap;
+    background: #185698;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
     color: white;
-    background-color: #035fa7;
-    border-radius: 50%;
-    padding: 4px;
-    font-size: 12px;
 `;
