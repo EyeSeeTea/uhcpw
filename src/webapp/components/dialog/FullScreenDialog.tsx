@@ -27,7 +27,7 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
         <Dialog open={isOpen} onClose={onClose} fullScreen>
             <Rotate enableRotation={forceRotation}>
                 <DialogContainer ref={ref} hasPadding={hasPadding}>
-                    {onClose && <CloseButton onClick={onClose}>{i18n.t("Accept")}</CloseButton>}
+                    {onClose && <CloseButton onClick={onClose}>{i18n.t("Save")}</CloseButton>}
 
                     <DialogContent style={{ padding: hasPadding ? "8px 24px;" : "0" }}>
                         {title && <Title variant="h6">{title}</Title>}
