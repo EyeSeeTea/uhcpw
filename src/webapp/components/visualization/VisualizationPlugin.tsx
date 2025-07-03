@@ -144,7 +144,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             withoutBackground={withoutBackground}
             marginStart={!useHeaderForCountryPage && !isScreenshot}
             paddingEnd={paddingEnd}
-            handleCloseFullScreen={handleCloseFullScreen}
             fullscreen={openFullScreenDialog || false}
         >
             <VisualizationPluginHeader
@@ -157,12 +156,13 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 onDownloadImage={isScreenshot ? undefined : handleDownloadImage}
                 onShowInfo={isScreenshot ? undefined : onShowInfo}
                 onCloseInfo={isScreenshot ? undefined : onCloseInfo}
-                useHeaderForCountryPage={useHeaderForCountryPage}
+                useHeaderForCountryPage={useHeaderForCountryPage || (openFullScreenDialog && isMobile)}
                 currentCountry={currentCountry}
                 countries={chartData.countries}
                 showCountryTag={chartData.visualizations[0]?.showCountryTag}
                 isScreenshot={isScreenshot}
                 reducePaddingBottom={visualizationId === CHART_SCATTER_VISUALIZATION_ID}
+                onClose={openFullScreenDialog && isMobile ? onCloseFullScreen : undefined}
             />
             <ChartPlugin
                 key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
@@ -196,7 +196,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 type VisualizationPluginContainerProps = {
     children: React.ReactNode;
     fullscreen?: boolean;
-    handleCloseFullScreen?: () => void;
     withoutBackground: boolean;
     marginStart: boolean;
     paddingEnd: boolean;
@@ -204,14 +203,14 @@ type VisualizationPluginContainerProps = {
 };
 
 export const VisualizationPluginContainer: React.FC<VisualizationPluginContainerProps> = React.memo(
-    ({ children, fullscreen, handleCloseFullScreen, withoutBackground, marginStart, paddingEnd, ref }) => {
-        return fullscreen && handleCloseFullScreen ? (
-            <FullScreenDialog isOpen={true} onClose={handleCloseFullScreen} forceRotation={true}>
+    ({ children, fullscreen, withoutBackground, marginStart, paddingEnd, ref }) => {
+        return fullscreen ? (
+            <FullScreenDialog isOpen={true} forceRotation={true} hasPadding={false}>
                 <Container
                     className="VisualizationPlugin-container"
                     ref={ref}
                     $withoutBackground={withoutBackground}
-                    $marginStart={marginStart}
+                    $marginStart={false}
                     $paddingEnd={paddingEnd}
                 >
                     {children}

@@ -6,10 +6,11 @@ import { Rotate } from "../rotate/Rotate";
 type FullScreenDialogProps = {
     isOpen: boolean;
     children: React.ReactNode;
-    onClose: () => void;
+    onClose?: () => void;
     title?: string;
     ref?: React.RefObject<HTMLDivElement>;
     forceRotation?: boolean;
+    hasPadding?: boolean;
 };
 
 export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
@@ -19,16 +20,19 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
     ref,
     title,
     forceRotation,
+    hasPadding = true,
 }) => {
     return (
         <Dialog open={isOpen} onClose={onClose} fullScreen>
             <Rotate enableRotation={forceRotation}>
-                <DialogContainer ref={ref}>
-                    <CloseIconButton onClick={onClose}>
-                        <StyledCloseIcon />
-                    </CloseIconButton>
+                <DialogContainer ref={ref} hasPadding={hasPadding}>
+                    {onClose && (
+                        <CloseIconButton onClick={onClose}>
+                            <StyledCloseIcon />
+                        </CloseIconButton>
+                    )}
 
-                    <DialogContent>
+                    <DialogContent style={{ padding: hasPadding ? "8px 24px;" : "0" }}>
                         {title && <Title variant="h6">{title}</Title>}
 
                         {children}
@@ -39,8 +43,10 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
     );
 };
 
-const DialogContainer = styled.div`
-    padding: 25px;
+//add prop to indicate padding yes or not
+const DialogContainer = styled.div<{ hasPadding?: boolean }>`
+    padding: ${({ hasPadding }) => (hasPadding ? "25px" : "0")};
+    width: 100%;
 `;
 
 const Title = styled(Typography)`

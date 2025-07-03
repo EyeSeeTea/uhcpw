@@ -4,6 +4,7 @@ import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
+import CloseIcon from "@material-ui/icons/Close";
 
 import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
@@ -24,6 +25,7 @@ interface VisualizationPluginHeaderProps {
     onDownloadImage?: () => void;
     onShowInfo?: () => void;
     onCloseInfo?: () => void;
+    onClose?: () => void;
     useHeaderForCountryPage?: boolean;
     showCountryTag?: boolean;
     countries: Country[];
@@ -49,6 +51,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         showCountryTag = false,
         isScreenshot = false,
         reducePaddingBottom = false,
+        onClose,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountry) {
@@ -104,6 +107,11 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     {onDownloadImage && (
                                         <StyledIconButton onClick={onDownloadImage} $color="white" padding="6px">
                                             <CustomImageIcon color="primary" className="download-button" />
+                                        </StyledIconButton>
+                                    )}
+                                    {onClose && (
+                                        <StyledIconButton onClick={onClose} $color="white" padding="6px">
+                                            <CustomCloseIcon color="primary" className="close-button" />
                                         </StyledIconButton>
                                     )}
                                 </RowWithGap>
@@ -225,6 +233,14 @@ const CustomInfoIconCountry = styled(InfoIcon)`
 `;
 
 const CustomImageIcon = styled(ImageRoundedIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
+`;
+
+const CustomCloseIcon = styled(CloseIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
