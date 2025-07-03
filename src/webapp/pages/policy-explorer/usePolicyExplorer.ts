@@ -27,7 +27,11 @@ import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 import { Maybe } from "../../../types/utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
-
+import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { generateMobilePdf } from "./utils/generateMobilePdf";
+import html2canvas from "html2canvas";
+import { marked } from "marked";
+import jsPDF from "jspdf";
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
@@ -49,6 +53,7 @@ export function usePolicyExplorer({
 }): PolicyExplorerState {
     const { compositionRoot, countriesAndRegions } = useAppContext();
     const { sendEvent } = useAnalytics();
+    const isSmallScreen = useIsSmallScreen();
 
     const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter, showSubRegions: true });
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -249,27 +254,29 @@ export function usePolicyExplorer({
         [dataByTable, dataOrientationByTable, initialDataByTable]
     );
 
-    const onDownload = useCallback(() => {
-        if (!initialDataByTable || !selectedCategoriesWithSubcategoriesFilter) return;
-        const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
-        const data = getInitialDataByTable(initialDataByTable, categoriesIds);
-        if (!data) return;
+    const onDownload = async () => {
+        const container = document.getElementById("hidden-table");
+        console.log("container", container);
 
-        sendEvent({
-            name: "file_download",
-            pageTitle: "Policy Explorer",
-            contentType: "csv",
-            contentGroup: "policy",
-            contentId: undefined,
+        if (!container) return;
+
+        const canvas = await html2canvas(container, { scale: 1 });
+        console.log("canvas", canvas);
+
+        const imgData = canvas.toDataURL("image/png");
+        console.log("imgData", imgData);
+
+        const pdf = new jsPDF({
+            orientation: "portrait",
+            unit: "mm",
+            format: "a4",
         });
-        compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
-    }, [
-        initialDataByTable,
-        selectedCategoriesWithSubcategoriesFilter,
-        sendEvent,
-        compositionRoot.policyExplorer.download,
-        policyExplorerCategories,
-    ]);
+
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        pdf.addImage(canvas.toDataURL(), 0, 0, pdfWidth, pdfHeight);
+        pdf.save("policy-explorer.pdf");
+    };
 
     return {
         filters: {
