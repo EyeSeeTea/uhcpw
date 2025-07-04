@@ -11,6 +11,7 @@ import { ChartCustomization } from "./customization/types";
 import { filterEmptyYearsInSeries, getCategories, getSeriesChart } from "./utils";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -40,6 +41,8 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
     }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
+        const theme = useTheme();
+        const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
         const renderWithAnaliticsAndCustomizations = useCallback(() => {
             const analyticsResponse: AnalyticsResponse[] = analytics.map(item => ({
@@ -241,7 +244,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
         return (
             <ChartPluginContainer $isSquareChart={isSquareChart}>
-                <Container $withoutBackground={withoutBackground} $isSquareChart={isSquareChart}>
+                <Container $withoutBackground={withoutBackground} $isSquareChart={isSquareChart} isMobile={isMobile}>
                     <div ref={canvasRef} />
                     {chartOptions && (
                         <HighchartsReact
@@ -249,6 +252,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                             options={chartOptions}
                             containerProps={{
                                 "aria-label": `chart-${visualizations[0]?.friendlyName}`,
+                                style: { height: "100%" },
                             }}
                         />
                     )}
@@ -281,9 +285,9 @@ const customCss = css`
     }
 `;
 
-const Container = styled.div<{ $withoutBackground: boolean; $isSquareChart?: boolean }>`
+const Container = styled.div<{ $withoutBackground: boolean; $isSquareChart?: boolean; isMobile?: boolean }>`
     width: ${props => (props.$isSquareChart ? "90%" : "100%")};
-
+    height: ${props => (props.isMobile ? "80vh" : undefined)};
     .highcharts-container * {
         font-family: "Roboto";
     }

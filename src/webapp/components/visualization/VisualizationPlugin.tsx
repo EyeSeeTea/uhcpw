@@ -161,8 +161,10 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 countries={chartData.countries}
                 showCountryTag={chartData.visualizations[0]?.showCountryTag}
                 isScreenshot={isScreenshot}
-                reducePaddingBottom={visualizationId === CHART_SCATTER_VISUALIZATION_ID}
-                onClose={openFullScreenDialog && isMobile ? onCloseFullScreen : undefined}
+                reducePaddingBottom={
+                    visualizationId === CHART_SCATTER_VISUALIZATION_ID || (openFullScreenDialog && isMobile)
+                }
+                onClose={openFullScreenDialog && isMobile ? handleCloseFullScreen : undefined}
             />
             <ChartPlugin
                 key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
@@ -212,6 +214,7 @@ export const VisualizationPluginContainer: React.FC<VisualizationPluginContainer
                     $withoutBackground={withoutBackground}
                     $marginStart={false}
                     $paddingEnd={paddingEnd}
+                    $paddingInline={false}
                 >
                     {children}
                 </Container>
@@ -223,6 +226,7 @@ export const VisualizationPluginContainer: React.FC<VisualizationPluginContainer
                 $withoutBackground={withoutBackground}
                 $marginStart={marginStart}
                 $paddingEnd={paddingEnd}
+                $paddingInline={true}
             >
                 {children}
             </Container>
@@ -230,12 +234,16 @@ export const VisualizationPluginContainer: React.FC<VisualizationPluginContainer
     }
 );
 
-const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean; $paddingEnd?: boolean }>`
+const Container = styled.div<{
+    $withoutBackground: boolean;
+    $marginStart?: boolean;
+    $paddingEnd?: boolean;
+    $paddingInline?: boolean;
+}>`
     margin-block-start: ${props => (props.$marginStart ? "25px" : "0px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding-block-end: ${props => (props.$paddingEnd ? "16px" : "0px")};
-    padding-inline: 16px 32px;
-    width: 100%;
+    padding-inline: ${props => (props.$paddingInline ? "16px 32px" : "0")};
 `;
 
 const Center = styled.div`
