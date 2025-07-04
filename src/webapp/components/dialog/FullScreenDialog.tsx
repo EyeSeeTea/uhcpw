@@ -1,6 +1,5 @@
-import { Button, Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogContent, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import CloseIcon from "@material-ui/icons/Close";
 import { Rotate } from "../rotate/Rotate";
 import i18n from "@eyeseetea/d2-ui-components/locales";
 
@@ -42,8 +41,8 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
 
 //add prop to indicate padding yes or not
 const DialogContainer = styled.div<{ hasPadding?: boolean }>`
-    padding: ${({ hasPadding }) => (hasPadding ? "25px" : "0")};
-    width: 100%;
+    padding-top: ${({ hasPadding }) => (hasPadding ? "25px" : "0")};
+    width: 100vw;
 `;
 
 const Title = styled(Typography)`
