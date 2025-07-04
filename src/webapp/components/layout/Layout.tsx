@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, childre
 
             <Main>{children}</Main>
 
-            <footer>
+            <footer id="footer">
                 <AppFooter />
             </footer>
         </>

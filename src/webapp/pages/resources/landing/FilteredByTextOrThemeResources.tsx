@@ -8,13 +8,15 @@ import { ResourceItem } from "../../../components/resources/common/ResourceItem"
 import { MultimediaState } from "../by-type/ResourcesByTypeState";
 import { FilteredByTextOrThemeResourcesState } from "./ResourcesState";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { ScrollToTopButton } from "../../../components/scroll-to-top-button/ScrollToTopButton";
 
 export const FilteredByTextOrThemeResources: React.FC<{
     resources: FilteredByTextOrThemeResourcesState;
     themeSelected?: string;
     isSmallScreen?: boolean;
-}> = React.memo(({ resources, themeSelected }) => (
+}> = React.memo(({ resources, themeSelected, isSmallScreen }) => (
     <Container>
+        {isSmallScreen && <ScrollToTopButton />}
         <Grid item md={12} xs={12}>
             {resources.countryAnalysis.length > 0 && (
                 <ResourceGroup
@@ -78,6 +80,8 @@ const Container = styled(Grid)`
     padding-block-end: 32px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-inline: 0;
+        position: relative;
+        padding-block-end: 0;
     }
 `;
 
