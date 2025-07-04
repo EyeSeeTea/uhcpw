@@ -10,8 +10,9 @@ import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
-import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import mapBackground from "../../../assets/map-background.jpg";
+import { ScrollToTopButton } from "../../../components/scroll-to-top-button/ScrollToTopButton";
 
 type ResourcesByTypePageProps = {
     paging?: boolean;
@@ -21,6 +22,7 @@ export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.mem
     const history = useHistory();
     const { sendEvent } = useAnalytics();
     const { category } = useParams<{ category: string }>();
+    const isSmallScreen = useIsSmallScreen();
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -62,6 +64,7 @@ export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.mem
             </TitleAndSearchContainer>
 
             <Content>
+                {isSmallScreen && <ScrollToTopButton />}
                 <ResourcesContainer maxWidth="xl">
                     <FiltersContainer>
                         <ResourcesFilters
@@ -122,6 +125,9 @@ const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; sm: GridSiz
 const Content = styled.div`
     background: white;
     min-height: 100vh;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        position: relative;
+    }
 `;
 
 const TitleContainer = styled.div`
@@ -167,6 +173,7 @@ const SearchContainer = styled.div`
     justify-content: center;
     max-width: 70%;
     width: 442px;
+    z-index: 1;
 `;
 
 const StyledGridContainer = styled(Grid)`

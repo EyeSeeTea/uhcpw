@@ -114,6 +114,7 @@ const SearchContainer = styled.div`
     justify-content: center;
     max-width: 70%;
     width: 442px;
+    z-index: 1;
 `;
 
 const StyledGrid = styled(Grid)`
@@ -122,5 +123,6 @@ const StyledGrid = styled(Grid)`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-inline: 0;
+        padding-block-end: 0;
     }
 `;
