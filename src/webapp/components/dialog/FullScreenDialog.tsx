@@ -42,7 +42,6 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
 //add prop to indicate padding yes or not
 const DialogContainer = styled.div<{ hasPadding?: boolean }>`
     padding-top: ${({ hasPadding }) => (hasPadding ? "25px" : "0")};
-    width: 100vw;
 `;
 
 const Title = styled(Typography)`
