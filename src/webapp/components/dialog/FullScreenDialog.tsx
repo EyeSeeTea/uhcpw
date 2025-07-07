@@ -2,6 +2,8 @@ import { Button, Dialog, DialogContent, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { Rotate } from "../rotate/Rotate";
 import i18n from "@eyeseetea/d2-ui-components/locales";
+import { useRealViewportHeight } from "./useRealViewPortHeight";
+import { useViewportKey } from "./useViewportKey";
 
 type FullScreenDialogProps = {
     isOpen: boolean;
@@ -22,8 +24,24 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
     forceRotation,
     hasPadding = true,
 }) => {
+    useRealViewportHeight();
+    const viewportKey = useViewportKey();
+
     return (
-        <Dialog open={isOpen} onClose={onClose} fullScreen>
+        <Dialog
+            key={viewportKey}
+            open={isOpen}
+            onClose={onClose}
+            fullScreen
+            PaperProps={{
+                style: {
+                    height: "var(--vh)",
+                    width: "100vw",
+                    margin: 0,
+                    padding: 0,
+                },
+            }}
+        >
             <DialogContainer ref={ref} hasPadding={hasPadding}>
                 <Rotate enableRotation={forceRotation}>
                     {onClose && <CloseButton onClick={onClose}>{i18n.t("Save")}</CloseButton>}
@@ -38,7 +56,7 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
                     >
                         {title && <Title variant="h6">{title}</Title>}
 
-                        <div style={{ flex: 1, overflow: "hidden" }}>{children}</div>
+                        <div style={{ flex: 1 }}>{children}</div>
                     </DialogContent>
                 </Rotate>
             </DialogContainer>
@@ -48,8 +66,10 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
 
 const DialogContainer = styled.div<{ hasPadding?: boolean }>`
     padding-top: ${({ hasPadding }) => (hasPadding ? "25px" : "0")};
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Title = styled(Typography)`
