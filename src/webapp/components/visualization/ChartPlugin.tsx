@@ -22,6 +22,7 @@ export interface ChartPluginProps {
     countries: Country[];
     withoutBackground?: boolean;
     isSquareChart?: boolean;
+    isMobile?: boolean;
 }
 
 /**
@@ -38,11 +39,10 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         externalchartOptions,
         withoutBackground = false,
         isSquareChart = false,
+        isMobile = false,
     }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
-        const theme = useTheme();
-        const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
         const renderWithAnaliticsAndCustomizations = useCallback(() => {
             const analyticsResponse: AnalyticsResponse[] = analytics.map(item => ({

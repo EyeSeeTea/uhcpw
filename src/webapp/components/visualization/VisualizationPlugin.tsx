@@ -176,6 +176,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 withoutBackground={withoutBackground}
                 externalchartOptions={chartData.chartOptions}
                 isSquareChart={isSquareChart}
+                isMobile={isMobile}
             />
         </VisualizationPluginContainer>
     ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
