@@ -140,7 +140,7 @@ msgstr ""
 msgid "Abbreviations & Glossary"
 msgstr ""
 
-msgid "WHO Privacy Prolicy & Disclaimer"
+msgid "WHO Privacy Policy & Disclaimer"
 msgstr ""
 
 msgid "Mobile-friendly version coming soon"

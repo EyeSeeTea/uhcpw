@@ -27,7 +27,7 @@ export const MobileAppFooter: React.FC = () => {
             },
             {
                 id: "privacy-policy-disclaimer",
-                title: i18n.t("WHO Privacy Prolicy & Disclaimer"),
+                title: i18n.t("WHO Privacy Policy & Disclaimer"),
                 content: <PrivacyPolicyAndDisclaimer />,
             },
             {
