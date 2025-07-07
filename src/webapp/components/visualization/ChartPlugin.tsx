@@ -225,10 +225,16 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         }, [analytics, countries, customizedOptions, legendSets, visualizations]);
 
         const renderFromExternalOptions = useCallback(() => {
-            setChartOptions(externalchartOptions);
+            setChartOptions({
+                ...externalchartOptions,
+                chart: {
+                    ...externalchartOptions?.chart,
+                    height: isMobile ? undefined : externalchartOptions?.chart?.height,
+                },
+            });
 
             canvasRef.current?.remove();
-        }, [externalchartOptions]);
+        }, [externalchartOptions, isMobile]);
 
         const renderVisualization = useCallback(() => {
             if (externalchartOptions) {
