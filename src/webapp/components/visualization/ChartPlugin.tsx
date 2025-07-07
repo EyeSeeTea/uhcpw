@@ -243,8 +243,8 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         }, [renderVisualization]);
 
         return (
-            <ChartPluginContainer $isSquareChart={isSquareChart}>
-                <Container $withoutBackground={withoutBackground} $isSquareChart={isSquareChart} isMobile={isMobile}>
+            <ChartPluginContainer $isSquareChart={isSquareChart} isMobile={isMobile}>
+                <Container $withoutBackground={withoutBackground} $isSquareChart={isSquareChart}>
                     <div ref={canvasRef} />
                     {chartOptions && (
                         <HighchartsReact
@@ -264,9 +264,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
 const ChartPluginContainer = styled.div<{
     $isSquareChart: boolean;
+    isMobile?: boolean;
 }>`
     display: ${props => (props.$isSquareChart ? "flex" : "block")};
     justify-content: ${props => (props.$isSquareChart ? "center" : "flex-start")};
+    flex: ${props => (props.isMobile ? "1" : undefined)};
 `;
 
 const customCss = css`
@@ -285,9 +287,9 @@ const customCss = css`
     }
 `;
 
-const Container = styled.div<{ $withoutBackground: boolean; $isSquareChart?: boolean; isMobile?: boolean }>`
+const Container = styled.div<{ $withoutBackground: boolean; $isSquareChart?: boolean }>`
     width: ${props => (props.$isSquareChart ? "90%" : "100%")};
-    height: ${props => (props.isMobile ? "80vh" : undefined)};
+    height: 100%;
     .highcharts-container * {
         font-family: "Roboto";
     }

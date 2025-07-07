@@ -213,7 +213,7 @@ export const VisualizationPluginContainer: React.FC<VisualizationPluginContainer
                     ref={ref}
                     $withoutBackground={withoutBackground}
                     $marginStart={false}
-                    $paddingEnd={paddingEnd}
+                    $paddingEnd={false}
                     $paddingInline={false}
                 >
                     {children}
@@ -244,6 +244,9 @@ const Container = styled.div<{
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding-block-end: ${props => (props.$paddingEnd ? "16px" : "0px")};
     padding-inline: ${props => (props.$paddingInline ? "16px 32px" : "0")};
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 `;
 
 const Center = styled.div`

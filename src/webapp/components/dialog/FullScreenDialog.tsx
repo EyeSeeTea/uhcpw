@@ -24,24 +24,32 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
 }) => {
     return (
         <Dialog open={isOpen} onClose={onClose} fullScreen>
-            <Rotate enableRotation={forceRotation}>
-                <DialogContainer ref={ref} hasPadding={hasPadding}>
+            <DialogContainer ref={ref} hasPadding={hasPadding}>
+                <Rotate enableRotation={forceRotation}>
                     {onClose && <CloseButton onClick={onClose}>{i18n.t("Save")}</CloseButton>}
 
-                    <DialogContent style={{ padding: hasPadding ? "8px 24px;" : "0" }}>
+                    <DialogContent
+                        style={{
+                            padding: hasPadding ? "8px 24px" : "0",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                    >
                         {title && <Title variant="h6">{title}</Title>}
 
-                        {children}
+                        <div style={{ flex: 1, overflow: "hidden" }}>{children}</div>
                     </DialogContent>
-                </DialogContainer>
-            </Rotate>
+                </Rotate>
+            </DialogContainer>
         </Dialog>
     );
 };
 
-//add prop to indicate padding yes or not
 const DialogContainer = styled.div<{ hasPadding?: boolean }>`
     padding-top: ${({ hasPadding }) => (hasPadding ? "25px" : "0")};
+    height: 100vh;
+    width: 100vw;
 `;
 
 const Title = styled(Typography)`
