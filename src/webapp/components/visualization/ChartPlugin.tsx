@@ -11,7 +11,6 @@ import { ChartCustomization } from "./customization/types";
 import { filterEmptyYearsInSeries, getCategories, getSeriesChart } from "./utils";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
-import { useMediaQuery, useTheme } from "@material-ui/core";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
