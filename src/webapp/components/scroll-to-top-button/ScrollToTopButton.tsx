@@ -75,7 +75,7 @@ const StyledButton = styled.button<{ $absoluteTop?: number; $isFixed?: boolean }
     color: ${colors.accentPrimary};
     font-weight: bold;
     padding: 0;
-    text-transform: uppercase;
+    text-transform: none;
     svg {
         font-size: 45px;
         color: white;
