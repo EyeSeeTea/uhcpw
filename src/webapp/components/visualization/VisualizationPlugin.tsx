@@ -144,7 +144,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             withoutBackground={withoutBackground}
             marginStart={!useHeaderForCountryPage && !isScreenshot}
             paddingEnd={paddingEnd}
-            handleCloseFullScreen={handleCloseFullScreen}
             fullscreen={openFullScreenDialog || false}
         >
             <VisualizationPluginHeader
@@ -157,12 +156,15 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 onDownloadImage={isScreenshot ? undefined : handleDownloadImage}
                 onShowInfo={isScreenshot ? undefined : onShowInfo}
                 onCloseInfo={isScreenshot ? undefined : onCloseInfo}
-                useHeaderForCountryPage={useHeaderForCountryPage}
+                useHeaderForCountryPage={useHeaderForCountryPage || (openFullScreenDialog && isMobile)}
                 currentCountry={currentCountry}
                 countries={chartData.countries}
                 showCountryTag={chartData.visualizations[0]?.showCountryTag}
                 isScreenshot={isScreenshot}
-                reducePaddingBottom={visualizationId === CHART_SCATTER_VISUALIZATION_ID}
+                reducePaddingBottom={
+                    visualizationId === CHART_SCATTER_VISUALIZATION_ID || (openFullScreenDialog && isMobile)
+                }
+                onClose={openFullScreenDialog && isMobile ? handleCloseFullScreen : undefined}
             />
             <ChartPlugin
                 key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
@@ -174,6 +176,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 withoutBackground={withoutBackground}
                 externalchartOptions={chartData.chartOptions}
                 isSquareChart={isSquareChart}
+                isMobile={isMobile}
             />
         </VisualizationPluginContainer>
     ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
@@ -196,7 +199,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
 type VisualizationPluginContainerProps = {
     children: React.ReactNode;
     fullscreen?: boolean;
-    handleCloseFullScreen?: () => void;
     withoutBackground: boolean;
     marginStart: boolean;
     paddingEnd: boolean;
@@ -204,15 +206,16 @@ type VisualizationPluginContainerProps = {
 };
 
 export const VisualizationPluginContainer: React.FC<VisualizationPluginContainerProps> = React.memo(
-    ({ children, fullscreen, handleCloseFullScreen, withoutBackground, marginStart, paddingEnd, ref }) => {
-        return fullscreen && handleCloseFullScreen ? (
-            <FullScreenDialog isOpen={true} onClose={handleCloseFullScreen} forceRotation={true}>
+    ({ children, fullscreen, withoutBackground, marginStart, paddingEnd, ref }) => {
+        return fullscreen ? (
+            <FullScreenDialog isOpen={true} forceRotation={true} hasPadding={false}>
                 <Container
                     className="VisualizationPlugin-container"
                     ref={ref}
                     $withoutBackground={withoutBackground}
-                    $marginStart={marginStart}
-                    $paddingEnd={paddingEnd}
+                    $marginStart={false}
+                    $paddingEnd={false}
+                    $paddingInline={false}
                 >
                     {children}
                 </Container>
@@ -224,6 +227,7 @@ export const VisualizationPluginContainer: React.FC<VisualizationPluginContainer
                 $withoutBackground={withoutBackground}
                 $marginStart={marginStart}
                 $paddingEnd={paddingEnd}
+                $paddingInline={true}
             >
                 {children}
             </Container>
@@ -231,12 +235,19 @@ export const VisualizationPluginContainer: React.FC<VisualizationPluginContainer
     }
 );
 
-const Container = styled.div<{ $withoutBackground: boolean; $marginStart?: boolean; $paddingEnd?: boolean }>`
+const Container = styled.div<{
+    $withoutBackground: boolean;
+    $marginStart?: boolean;
+    $paddingEnd?: boolean;
+    $paddingInline?: boolean;
+}>`
     margin-block-start: ${props => (props.$marginStart ? "25px" : "0px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding-block-end: ${props => (props.$paddingEnd ? "16px" : "0px")};
-    padding-inline: 16px 32px;
-    width: 100%;
+    padding-inline: ${props => (props.$paddingInline ? "16px 32px" : "0")};
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 `;
 
 const Center = styled.div`

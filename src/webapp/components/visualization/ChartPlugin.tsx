@@ -21,6 +21,7 @@ export interface ChartPluginProps {
     countries: Country[];
     withoutBackground?: boolean;
     isSquareChart?: boolean;
+    isMobile?: boolean;
 }
 
 /**
@@ -37,6 +38,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         externalchartOptions,
         withoutBackground = false,
         isSquareChart = false,
+        isMobile = false,
     }) => {
         const canvasRef = useRef<HTMLDivElement>(null);
         const [chartOptions, setChartOptions] = useState<Highcharts.Options>();
@@ -222,10 +224,16 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         }, [analytics, countries, customizedOptions, legendSets, visualizations]);
 
         const renderFromExternalOptions = useCallback(() => {
-            setChartOptions(externalchartOptions);
+            setChartOptions({
+                ...externalchartOptions,
+                chart: {
+                    ...externalchartOptions?.chart,
+                    height: isMobile ? undefined : externalchartOptions?.chart?.height,
+                },
+            });
 
             canvasRef.current?.remove();
-        }, [externalchartOptions]);
+        }, [externalchartOptions, isMobile]);
 
         const renderVisualization = useCallback(() => {
             if (externalchartOptions) {
@@ -240,7 +248,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         }, [renderVisualization]);
 
         return (
-            <ChartPluginContainer $isSquareChart={isSquareChart}>
+            <ChartPluginContainer $isSquareChart={isSquareChart} isMobile={isMobile}>
                 <Container $withoutBackground={withoutBackground} $isSquareChart={isSquareChart}>
                     <div ref={canvasRef} />
                     {chartOptions && (
@@ -249,6 +257,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                             options={chartOptions}
                             containerProps={{
                                 "aria-label": `chart-${visualizations[0]?.friendlyName}`,
+                                style: { height: "100%" },
                             }}
                         />
                     )}
@@ -260,9 +269,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
 const ChartPluginContainer = styled.div<{
     $isSquareChart: boolean;
+    isMobile?: boolean;
 }>`
     display: ${props => (props.$isSquareChart ? "flex" : "block")};
     justify-content: ${props => (props.$isSquareChart ? "center" : "flex-start")};
+    flex: ${props => (props.isMobile ? "1" : undefined)};
 `;
 
 const customCss = css`
@@ -283,7 +294,7 @@ const customCss = css`
 
 const Container = styled.div<{ $withoutBackground: boolean; $isSquareChart?: boolean }>`
     width: ${props => (props.$isSquareChart ? "90%" : "100%")};
-
+    height: 100%;
     .highcharts-container * {
         font-family: "Roboto";
     }

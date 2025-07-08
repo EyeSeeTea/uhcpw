@@ -1,15 +1,18 @@
-import { Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
+import { Button, Dialog, DialogContent, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import CloseIcon from "@material-ui/icons/Close";
 import { Rotate } from "../rotate/Rotate";
+import i18n from "@eyeseetea/d2-ui-components/locales";
+import { useRealViewportHeight } from "./useRealViewPortHeight";
+import { useViewportKey } from "./useViewportKey";
 
 type FullScreenDialogProps = {
     isOpen: boolean;
     children: React.ReactNode;
-    onClose: () => void;
+    onClose?: () => void;
     title?: string;
     ref?: React.RefObject<HTMLDivElement>;
     forceRotation?: boolean;
+    hasPadding?: boolean;
 };
 
 export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
@@ -19,28 +22,54 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
     ref,
     title,
     forceRotation,
+    hasPadding = true,
 }) => {
-    return (
-        <Dialog open={isOpen} onClose={onClose} fullScreen>
-            <Rotate enableRotation={forceRotation}>
-                <DialogContainer ref={ref}>
-                    <CloseIconButton onClick={onClose}>
-                        <StyledCloseIcon />
-                    </CloseIconButton>
+    useRealViewportHeight();
+    const viewportKey = useViewportKey();
 
-                    <DialogContent>
+    return (
+        <Dialog
+            key={viewportKey}
+            open={isOpen}
+            onClose={onClose}
+            fullScreen
+            PaperProps={{
+                style: {
+                    height: "var(--vh)",
+                    width: "100vw",
+                    margin: 0,
+                    padding: 0,
+                },
+            }}
+        >
+            <DialogContainer ref={ref} hasPadding={hasPadding}>
+                <Rotate enableRotation={forceRotation}>
+                    {onClose && <CloseButton onClick={onClose}>{i18n.t("Save")}</CloseButton>}
+
+                    <DialogContent
+                        style={{
+                            padding: hasPadding ? "8px 24px" : "0",
+                            height: "100%",
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                    >
                         {title && <Title variant="h6">{title}</Title>}
 
-                        {children}
+                        <div style={{ flex: 1 }}>{children}</div>
                     </DialogContent>
-                </DialogContainer>
-            </Rotate>
+                </Rotate>
+            </DialogContainer>
         </Dialog>
     );
 };
 
-const DialogContainer = styled.div`
-    padding: 25px;
+const DialogContainer = styled.div<{ hasPadding?: boolean }>`
+    padding-top: ${({ hasPadding }) => (hasPadding ? "25px" : "0")};
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 `;
 
 const Title = styled(Typography)`
@@ -48,16 +77,16 @@ const Title = styled(Typography)`
     margin-block-end: 16px;
 `;
 
-const CloseIconButton = styled(IconButton)`
-    position: absolute;
-    right: 10px;
-    top: 10px;
-`;
-
-const StyledCloseIcon = styled(CloseIcon)`
+const CloseButton = styled(Button)`
+    border-radius: 20px;
+    height: 50px;
+    width: 80px;
+    text-transform: none;
+    white-space: nowrap;
+    background: #185698;
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 1000;
     color: white;
-    background-color: #035fa7;
-    border-radius: 50%;
-    padding: 4px;
-    font-size: 12px;
 `;
