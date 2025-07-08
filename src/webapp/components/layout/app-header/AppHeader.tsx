@@ -84,12 +84,6 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                     <Box className={classes.rest} />
 
                     <Hidden mdDown>
-                        <TagContainer>
-                            <Tag>
-                                <Typography variant="body2">{i18n.t("Mobile-friendly version coming soon")}</Typography>
-                            </Tag>
-                        </TagContainer>
-
                         <MenuTopLink {...abbreviationsLink}>{i18n.t("Abbreviations")}</MenuTopLink>
 
                         <MenuTopLink {...glossaryLink}>{i18n.t("Glossary")}</MenuTopLink>
