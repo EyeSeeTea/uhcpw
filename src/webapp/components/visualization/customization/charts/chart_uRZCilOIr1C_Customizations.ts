@@ -10,7 +10,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
     legend: baseLegend,
     series: [
         {
-            id: "EheQZwstMjp",
+            id: "GeiKSyJLeKt",
             name: "Poorest",
             color: "#4f6a3e",
             dataLabels: {
@@ -22,7 +22,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
             },
         },
         {
-            id: "kdWJFtrGEFf",
+            id: "GuypYXqveWn",
             name: "2nd",
             color: "#578338",
             dataLabels: {
@@ -34,7 +34,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
             },
         },
         {
-            id: "VlNBzORnvGY",
+            id: "ii0MC8x9D7i",
             name: "3rd",
             color: "#85bc60",
             dataLabels: {
@@ -46,7 +46,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
             },
         },
         {
-            id: "psqjehrDbVQ",
+            id: "O0MXmTdpf4m",
             name: "4th",
             color: "#add393",
             dataLabels: {
@@ -58,7 +58,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
             },
         },
         {
-            id: "couVaadwbqJ",
+            id: "yiucIy5NIAw",
             name: "Richest",
             color: "#d3e6c5",
             dataLabels: {
@@ -70,7 +70,7 @@ export const chart_uRZCilOIr1C_Customizations: ChartCustomization = {
             },
         },
         {
-            id: "ojHibIxNuQ6",
+            id: "aAO8qCc0EVI",
             name: "Total",
             color: "#ca312d",
             dataLabels: {
