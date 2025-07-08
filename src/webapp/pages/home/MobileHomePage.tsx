@@ -214,6 +214,10 @@ const StyledTitleTypography = styled(StyledTypography)`
     @media (max-width: 575px) {
         font-size: 16px;
     }
+
+    @media (max-width: 360px) {
+        font-size: 14px;
+    }
 `;
 
 const Image = styled.img`
