@@ -100,9 +100,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         onCloseFullScreen={closeVisualization}
                         forcePluginFullScreen={forcePluginFullScreen}
                     />
-                ) : !isMobile ? (
+                ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
-                ) : null}
+                )}
 
                 <ScreenshotModal
                     open={openScreenshot}
