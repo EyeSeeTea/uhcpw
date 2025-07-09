@@ -52,7 +52,9 @@ export function useAppHeader() {
 
     const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
-    const logoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
+    const whoLogoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
+
+    const uhcwLogoWidth = useMemo(() => (isXs ? 130 : 180), [isXs]);
 
     useEffect(() => {
         compositionRoot.home.getRegionalReportLink.execute().run(
@@ -68,7 +70,8 @@ export function useAppHeader() {
         regionalReport,
         anchorEl,
         isHomePage,
-        logoWidth,
+        whoLogoWidth,
+        uhcwLogoWidth,
         goToHome,
         handleCountryClick,
         handleMenuItemClick,

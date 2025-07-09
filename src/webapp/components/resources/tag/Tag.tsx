@@ -24,8 +24,8 @@ const Container = styled(Button)<{ background?: string }>`
     color: #174587;
     padding: 4px 16px;
     display: inline-block;
-    margin-right: 16px;
-    margin-bottom: 8px;
+    margin-inline-end: 16px;
+    margin-block-end: 8px;
     text-transform: none;
     &:hover {
         background-color: ${props => props.background || "#185698"};

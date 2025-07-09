@@ -13,7 +13,6 @@ import { useAppContext } from "../../contexts/app-context";
 import i18n from "../../../locales";
 import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { PolicyExplorerState } from "./PolicyExplorerState";
-import { CategoryOption } from "../../components/policy-explorer/category-selector/CategorySelector";
 import {
     PolicyExplorerCategory,
     PolicyExplorerSelectCategoryInfo,
@@ -27,6 +26,7 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 import { Maybe } from "../../../types/utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
+import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
@@ -67,6 +67,7 @@ export function usePolicyExplorer({
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataOrientationByTable, setDataOrientationByTable] = useState<DataOrientationByTable | undefined>();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
@@ -160,6 +161,8 @@ export function usePolicyExplorer({
             Object.keys(selectedCategoriesWithSubcategoriesFilter)?.length &&
             countryFilter.selected?.length
         ) {
+            setLoading(true);
+
             compositionRoot.policyExplorer.get
                 .execute(
                     selectedCategoriesWithSubcategoriesFilter,
@@ -177,11 +180,15 @@ export function usePolicyExplorer({
                         setDataOrientationByTable(getInitialDataOrientationByTable(categoriesIds));
 
                         sendAnalyticsEvents();
+
+                        setLoading(false);
                     },
                     () => {
                         setInitialDataByTable(undefined);
                         setDataByTable(undefined);
                         setDataOrientationByTable(undefined);
+
+                        setLoading(false);
                     }
                 );
         } else {
@@ -290,6 +297,7 @@ export function usePolicyExplorer({
         onDownload,
         selectCategoryInfo,
         errorMessage,
+        isLoading: loading,
     };
 }
 

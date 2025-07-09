@@ -10,11 +10,19 @@ import { colors } from "../../app/themes/dhis2.theme";
 import { useResourcesByType } from "./useResourcesByType";
 import { ResourceItem } from "../../../components/resources/common/ResourceItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import mapBackground from "../../../assets/map-background.jpg";
+import { ScrollToTopButton } from "../../../components/scroll-to-top-button/ScrollToTopButton";
 
-export const ResourcesByTypePage: React.FC = React.memo(() => {
+type ResourcesByTypePageProps = {
+    paging?: boolean;
+};
+
+export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.memo(({ paging = true }) => {
     const history = useHistory();
     const { sendEvent } = useAnalytics();
     const { category } = useParams<{ category: string }>();
+    const isSmallScreen = useIsSmallScreen();
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -28,10 +36,11 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
         };
     }, [history.location.search]);
 
-    const { loading, title, filters, items, onGetResources } = useResourcesByType({
+    const { loading, title, filters, items, onGetResources, hasMore, loadingMore, loadingRef } = useResourcesByType({
         category,
         countriesFilter: filterInParams.country,
         themeFilter: filterInParams.theme,
+        paging,
     });
 
     const disabledCountryFilter = useMemo(() => {
@@ -44,34 +53,54 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
 
     return (
         <Layout>
-            <TitleContainer>
-                <Title variant="h4">{title}</Title>
-            </TitleContainer>
-            <SearchContainer>
-                <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
-            </SearchContainer>
+            <TitleAndSearchContainer>
+                <TitleContainer>
+                    <Title variant="h3">{title}</Title>
+                </TitleContainer>
+
+                <SearchContainer>
+                    <SearchInput value={filters.search.term} onChange={filters.search.onTermChange} />
+                </SearchContainer>
+            </TitleAndSearchContainer>
+
             <Content>
-                <SelectsContainer maxWidth="xl">
-                    <ResourcesFilters
-                        filters={filters}
-                        onGetResources={onGetResources}
-                        disabledCountryFilter={disabledCountryFilter}
-                    />
+                {isSmallScreen && <ScrollToTopButton />}
+                <ResourcesContainer maxWidth="xl">
+                    <FiltersContainer>
+                        <ResourcesFilters
+                            filters={filters}
+                            onGetResources={onGetResources}
+                            disabledCountryFilter={disabledCountryFilter}
+                        />
+                    </FiltersContainer>
+
                     {
                         <StyledGridContainer spacing={2} container direction="row">
                             {items &&
                                 items.map((item, index) => {
                                     const sizes = getSizes(item);
-
                                     return (
-                                        <Grid key={index} item lg={sizes.lg} md={sizes.md} xs={sizes.xs}>
+                                        <StyledGridItem
+                                            key={index}
+                                            item
+                                            lg={sizes.lg}
+                                            md={sizes.md}
+                                            sm={sizes.sm}
+                                            xs={sizes.xs}
+                                        >
                                             <ResourceItem resource={item} analyticsPageTitle="Resources" />
-                                        </Grid>
+                                        </StyledGridItem>
                                     );
                                 })}
+                            {hasMore && (
+                                <Grid item xs={12} ref={loadingRef}>
+                                    <LoadingContainer>{loadingMore && <CircularProgress size={24} />}</LoadingContainer>
+                                </Grid>
+                            )}
                         </StyledGridContainer>
                     }
-                </SelectsContainer>
+                </ResourcesContainer>
+
                 <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                     <CircularProgress color="primary" />
                 </Backdrop>
@@ -80,28 +109,37 @@ export const ResourcesByTypePage: React.FC = React.memo(() => {
     );
 });
 
-const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; xs: GridSize } => {
+const getSizes = (resource: Resource): { lg: GridSize; md: GridSize; sm: GridSize; xs: GridSize } => {
     switch (resource.kind) {
         case "comparative-analysis":
-            return { lg: 2, md: 3, xs: 6 };
+            return { lg: 2, md: 3, sm: 6, xs: 12 };
         case "country-analysis":
-            return { lg: 2, md: 3, xs: 6 };
+            return { lg: 2, md: 3, sm: 6, xs: 12 };
         case "news":
-            return { lg: 4, md: 6, xs: 12 };
+            return { lg: 4, md: 6, sm: 6, xs: 12 };
         case "multimedia":
-            return { lg: 4, md: 6, xs: 12 };
+            return { lg: 4, md: 6, sm: 6, xs: 12 };
     }
 };
 
 const Content = styled.div`
     background: white;
     min-height: 100vh;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        position: relative;
+    }
 `;
 
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 32px 64px;
+    padding: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+        padding-inline: 32px;
+        padding-block: 48px;
+    }
 `;
 
 const Title = styled(Typography)`
@@ -111,22 +149,59 @@ const Title = styled(Typography)`
     }
 `;
 
-const SelectsContainer = styled(Container)`
+const FiltersContainer = styled.div`
     padding-block-start: 64px;
     padding-block-end: 32px;
     padding-inline: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block-start: 32px;
+        padding-inline: 32px;
+    }
+`;
+
+const ResourcesContainer = styled(Container)`
+    padding: 0;
 `;
 
 const SearchContainer = styled.div`
-    margin: -24px;
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
     display: flex;
     flex-direction: row;
     justify-content: center;
-    @media (max-width: 450px) {
-        padding: 0 25px;
-    }
+    max-width: 70%;
+    width: 442px;
+    z-index: 1;
 `;
 
 const StyledGridContainer = styled(Grid)`
     padding-block: 32px;
+    padding-inline: 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 32px;
+        background: ${colors.carouselBackground};
+        width: calc(100% + 8px);
+    }
+`;
+
+const StyledGridItem = styled(Grid)`
+    justify-items: "flex-start";
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        justify-items: "center";
+    }
+`;
+
+const TitleAndSearchContainer = styled.div`
+    position: relative;
+    width: 100%;
+`;
+
+const LoadingContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 60px;
 `;

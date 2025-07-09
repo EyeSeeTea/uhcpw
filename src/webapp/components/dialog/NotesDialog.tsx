@@ -11,7 +11,15 @@ type DialogType = {
 
 export const NotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo }) => {
     return (
-        <Dialog open={isOpen} onClose={onClose}>
+        <Dialog
+            open={isOpen}
+            onClose={onClose}
+            PaperProps={{
+                style: {
+                    overflowY: "unset",
+                },
+            }}
+        >
             <DialogContainer>
                 <DialogContent>
                     <ReactMarkdown
@@ -42,6 +50,7 @@ export const NotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo 
 
 const DialogContainer = styled.div`
     padding: 25px;
+    overflow-y: auto;
     div.MuiDialogContent-root {
         padding-inline: 16px;
         padding-block-start: 16px;

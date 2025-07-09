@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from "react";
-import { Box, Button, Modal, Typography } from "@material-ui/core";
+import { Box, Button, IconButton, Modal, Typography } from "@material-ui/core";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
 import _ from "lodash";
 import styled from "styled-components";
@@ -7,6 +7,8 @@ import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import i18n from "../../../locales";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { Maybe } from "../../../types/utils";
+import CloseIcon from "@material-ui/icons/Close";
+import { Rotate } from "../rotate/Rotate";
 
 interface ScreenshotModalProps {
     open?: boolean;
@@ -22,6 +24,7 @@ interface ScreenshotModalProps {
         contentGroup: string;
         contentId: Maybe<string>;
     };
+    forceRotation?: boolean;
 }
 
 function ScreenshotModal({
@@ -35,6 +38,7 @@ function ScreenshotModal({
     isSquareChart = false,
     analyticsPageTitle,
     analyticsContent,
+    forceRotation = false,
 }: ScreenshotModalProps) {
     const ref = useRef<HTMLDivElement>(null);
 
@@ -68,35 +72,46 @@ function ScreenshotModal({
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
-            <StyledBox backgroundColor={backgroundColor} $isSquareChart={isSquareChart}>
-                <Header>
-                    {!hideTitle && <Title>{_.capitalize(title)}</Title>}
-                    <StyledScreenshotButton
-                        variant="contained"
-                        endIcon={<ImageRoundedIcon />}
-                        color="primary"
-                        onClick={handleDownload}
-                    >
-                        <Typography>{i18n.t("Download")}</Typography>
-                    </StyledScreenshotButton>
-                </Header>
-                <Content ref={ref}>
-                    <ScreenshotContainer className="screenshot-container">{children}</ScreenshotContainer>
-                </Content>
-            </StyledBox>
+            <Rotate enableRotation={forceRotation}>
+                <StyledBox
+                    backgroundColor={backgroundColor}
+                    $isSquareChart={isSquareChart}
+                    forceRotation={forceRotation}
+                >
+                    <Header>
+                        {!hideTitle && <Title>{_.capitalize(title)}</Title>}
+                        <StyledScreenshotButton
+                            variant="contained"
+                            endIcon={<ImageRoundedIcon />}
+                            color="primary"
+                            onClick={handleDownload}
+                        >
+                            <Typography>{i18n.t("Download")}</Typography>
+                        </StyledScreenshotButton>
+                        {
+                            <CloseIconButton onClick={onClose}>
+                                <StyledCloseIcon />
+                            </CloseIconButton>
+                        }
+                    </Header>
+                    <Content ref={ref}>
+                        <ScreenshotContainer className="screenshot-container">{children}</ScreenshotContainer>
+                    </Content>
+                </StyledBox>
+            </Rotate>
         </StyledModal>
     );
 }
 
 export default ScreenshotModal;
 
-const StyledBox = styled(Box)<{ backgroundColor: string; $isSquareChart?: boolean }>`
-    position: absolute;
+const StyledBox = styled(Box)<{ backgroundColor: string; $isSquareChart?: boolean; forceRotation: boolean }>`
+    position: ${props => (!props?.forceRotation ? "absolute" : undefined)};
     left: 5%;
     top: ${props => (props?.$isSquareChart ? "1%" : "5%")};
-    width: 90vw;
+    width: ${props => (!props?.forceRotation ? "90vw" : "100%")};
     background-color: ${props => props?.backgroundColor ?? "#FFFFFF"};
-    border-radius: 10px;
+    border-radius: ${props => (!props?.forceRotation ? "10px" : "0px")};
 `;
 
 const StyledModal = styled(Modal)`
@@ -153,4 +168,18 @@ const Header = styled.div`
     padding: 10px 20px;
     background-color: white;
     margin: 3px 3px 0 3px;
+`;
+
+const CloseIconButton = styled(IconButton)`
+    position: absolute;
+    right: 10px;
+    top: 10px;
+`;
+
+const StyledCloseIcon = styled(CloseIcon)`
+    color: white;
+    background-color: #035fa7;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 12px;
 `;

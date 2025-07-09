@@ -7,9 +7,10 @@ export interface ResourceFilters {
     theme?: string;
     countries?: string[];
     years?: string[];
-    count?: number;
-    favourite?: boolean;
-    favouriteSection?: boolean;
+    pageSize?: number;
+    page?: number;
+    isFavouriteHome?: boolean;
+    isFavouriteSection?: boolean;
 }
 
 export interface ResourceRepository {

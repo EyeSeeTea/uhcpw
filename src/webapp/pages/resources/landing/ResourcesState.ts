@@ -21,10 +21,12 @@ export type ResourcesState = {
     landingResources?: LandingResourcesState;
     filteredByTextOrThemeResources?: FilteredByTextOrThemeResourcesState;
     onGetResources: () => void;
+    loading: boolean;
 };
 
-interface CountryAnalysisCountry {
+export type CountryAnalysisCountry = {
+    kind: "flag";
     flag: string;
     countryId: string;
     countryName: string;
-}
+};

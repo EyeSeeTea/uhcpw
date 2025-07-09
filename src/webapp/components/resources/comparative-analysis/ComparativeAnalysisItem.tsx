@@ -6,6 +6,7 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { ComparativeAnalysisState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { AnalysisItem } from "../common/AnalysisItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface CountryAnalysisProps {
     comparativeAnalysis: ComparativeAnalysisState;
@@ -58,4 +59,15 @@ const Item = styled(Card)`
         color: ${colors.accentPrimary};
     }
     width: 180px;
+    overflow: unset;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        width: 90%;
+        max-width: 400px;
+        padding: 16px;
+        justify-self: center;
+        place-items: center;
+        height: 100%;
+        padding: 0;
+    }
 `;

@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
@@ -13,14 +13,22 @@ import { VisualizationPlugin } from "../../components/visualization/Visualizatio
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import mapBackground from "../../assets/map-background.jpg";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const snackbar = useSnackbar();
 
-    const { filters, onGet, showVisualization, globalMessage, pageContent } = useIndicatorExplorer();
+    const { filters, onGet, showVisualization, globalMessage, pageContent, closeVisualization } =
+        useIndicatorExplorer();
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
+    const [chartPluginIsLoading, setChartPluginIsLoading] = React.useState(false);
+    const [forcePluginFullScreen, setForcePluginFullScreen] = React.useState(false);
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     useEffect(() => {
         if (!globalMessage) return;
@@ -40,10 +48,19 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 
     const handleOpenScreenshot = React.useCallback(() => {
         setOpenScreenshot(true);
+        setForcePluginFullScreen(false);
     }, []);
 
     const handleCloseScreenshot = React.useCallback(() => {
         setOpenScreenshot(false);
+
+        if (isMobile) {
+            setForcePluginFullScreen(true);
+        }
+    }, [isMobile]);
+
+    const handlePlugingLoadingChange = React.useCallback((loading: boolean) => {
+        setChartPluginIsLoading(loading);
     }, []);
 
     const chartName = useMemo(
@@ -67,7 +84,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             </TitleContainer>
 
             <MainSection>
-                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} />
+                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
 
                 {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
@@ -78,6 +95,10 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                         onDownloadImage={handleOpenScreenshot}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                         analyticsPageTitle="Indicator explorer"
+                        onLoadingChange={handlePlugingLoadingChange}
+                        fullScreenInMobile={true}
+                        onCloseFullScreen={closeVisualization}
+                        forcePluginFullScreen={forcePluginFullScreen}
                     />
                 ) : (
                     <EmptyContent info={pageContent?.selectCategory} />
@@ -91,6 +112,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                     analyticsPageTitle="Indicator explorer"
                     analyticsContent={analyticsContent}
+                    forceRotation={isMobile}
                 >
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}
@@ -111,6 +133,9 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 const MainSection = styled.div`
     background: white;
     padding: 48px 64px;
+    @media (max-width: 600px) {
+        padding: 34px 64px;
+    }
 `;
 
 const TitleContainer = styled.div`
@@ -120,6 +145,10 @@ const TitleContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${props => props.color} url(${mapBackground});
+        background-position: center;
+    }
 `;
 
 const Image = styled.img`

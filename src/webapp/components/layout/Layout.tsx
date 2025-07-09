@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, childre
 
             <Main>{children}</Main>
 
-            <footer>
+            <footer id="footer">
                 <AppFooter />
             </footer>
         </>
@@ -25,5 +25,8 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, childre
 
 const Main = styled.main`
     min-height: 100vh;
+    @media (max-width: 600px) {
+        min-height: 0vh;
+    }
     background: white;
 `;

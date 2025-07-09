@@ -21,11 +21,10 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                     <ResourceGroup title={i18n.t("Country analysis")} seeAllUrl={"/resources/country-analysis"}>
                         {resources.countryAnalysisByCountry.map(country => {
                             return (
-                                <Grid item xs={2} key={country.countryId}>
+                                <Grid item lg={2} md={3} sm={3} xs={6} key={country.countryId}>
                                     <Tooltip title={country.countryName} placement="top" arrow>
                                         <Flag
                                             role="listitem"
-                                            width={"90%"}
                                             src={country.flag}
                                             onClick={() =>
                                                 history.push(`/resources/country-analysis?country=${country.countryId}`)
@@ -120,7 +119,7 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
 
 const Flag = styled.img`
     border: 1px solid #c5c3c3;
-    margin-block: 16px;
-    margin-inline-end: 16px;
+    margin-block-start: 16px;
     cursor: pointer;
+    width: 90%;
 `;

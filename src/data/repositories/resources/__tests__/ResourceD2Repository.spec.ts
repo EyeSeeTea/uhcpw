@@ -8,11 +8,18 @@ import {
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
-import { ResourceD2Repository, resourceDataElements, resourcesProgram } from "../ResourceD2Repository";
+import {
+    FavoriteResources,
+    ResourceD2Repository,
+    resourceDataElements,
+    resourcesProgram,
+} from "../ResourceD2Repository";
 import comparativeAnalysis from "./data/ComparativeAnalysis.json";
 import news from "./data/News.json";
 import multimedia from "./data/Multimedia.json";
 import countryAnalysis from "./data/CountryAnalysis.json";
+import favoritesResponse from "./data/favoritesResponse.json";
+import favoritesResources from "./data/favoritesResources.json";
 
 const mockWebServer = new MockWebServer();
 const api = getD2APiFromInstance(new Instance({ url: "/" }));
@@ -25,6 +32,7 @@ describe("Resource repository", () => {
 
     describe("should send expected parameter", () => {
         it("program", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
@@ -33,6 +41,7 @@ describe("Resource repository", () => {
         });
 
         it("theme in filter", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             await resourceRepository
@@ -44,6 +53,7 @@ describe("Resource repository", () => {
             );
         });
         it("searchTerm in filter", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             await resourceRepository.get({ category: "comparative-analysis", searchTerm: "can" }).runAsync();
@@ -51,6 +61,7 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("filter")).toContain(`${resourceDataElements.title}:like:can`);
         });
         it("start date and end date in filter", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             await resourceRepository.get({ category: "comparative-analysis", years: ["2020", "2022"] }).runAsync();
@@ -59,27 +70,27 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("endDate")).toBe("2022-12-31");
         });
 
-        it("favourite true in filter", async () => {
+        it("if isFavouriteHome true then has eventIds in event filter", async () => {
+            const favoriteResources = givenFavoritesResources();
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", favourite: true }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", isFavouriteHome: true }).runAsync();
+            const favoriteHomeResourcesIds = favoriteResources.homePage.map(favorite => favorite.resourceId);
 
-            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.favourite}:eq:true`
-            );
+            expect(mockWebServer.lastRequest?.params.get("event")).toContain(favoriteHomeResourcesIds.join(";"));
         });
 
-        it("favourite false in filter", async () => {
+        it("if isFavouriteHome false then event filter is undefined", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", favourite: false }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", isFavouriteHome: false }).runAsync();
 
-            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.favourite}:eq:false`
-            );
+            expect(mockWebServer.lastRequest?.params.get("event")).toBeNull();
         });
 
         it("order in filter", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
@@ -88,6 +99,7 @@ describe("Resource repository", () => {
         });
 
         it("skipPaging equal to true if count is not passed", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
@@ -95,16 +107,18 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("true");
         });
         it("skipPaging equal to false if count is passed", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", pageSize: 6 }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("skipPaging")).toContain("false");
         });
         it("pageSize equal to count", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis", count: 6 }).runAsync();
+            await resourceRepository.get({ category: "comparative-analysis", pageSize: 6 }).runAsync();
 
             expect(mockWebServer.lastRequest?.params.get("pageSize")).toContain("6");
         });
@@ -112,6 +126,7 @@ describe("Resource repository", () => {
 
     describe("Comparative analysis", () => {
         it("should return comparative analysis properly", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             const response = await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
@@ -121,6 +136,7 @@ describe("Resource repository", () => {
             verifyComparativeAnalysis(comparativeAnalysisItems[0]);
         });
         it("should send expected filter for comparative-analysis", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
@@ -132,6 +148,7 @@ describe("Resource repository", () => {
     });
     describe("News", () => {
         it("should return news properly", async () => {
+            givenFavoritesResources();
             givenANews();
 
             const response = await resourceRepository.get({ category: "news" }).runAsync();
@@ -141,6 +158,7 @@ describe("Resource repository", () => {
             verifyNews(news[0]);
         });
         it("should send expected filter for news", async () => {
+            givenFavoritesResources();
             givenANews();
 
             await resourceRepository.get({ category: "news" }).runAsync();
@@ -152,6 +170,7 @@ describe("Resource repository", () => {
     });
     describe("Multimedia", () => {
         it("should return multimedia properly", async () => {
+            givenFavoritesResources();
             givenAMultimedia();
 
             const response = await resourceRepository.get({ category: "multimedia" }).runAsync();
@@ -161,6 +180,7 @@ describe("Resource repository", () => {
             verifyMultimedia(multimedia[0]);
         });
         it("should send expected filter for multimedia", async () => {
+            givenFavoritesResources();
             givenAMultimedia();
 
             await resourceRepository.get({ category: "multimedia" }).runAsync();
@@ -172,6 +192,7 @@ describe("Resource repository", () => {
     });
     describe("Country Analysis", () => {
         it("should return country analysis properly", async () => {
+            givenFavoritesResources();
             givenACountryAnalysis();
 
             const response = await resourceRepository.get({ category: "country-analysis" }).runAsync();
@@ -181,6 +202,7 @@ describe("Resource repository", () => {
             verifyCountryAnalysis(countryAnalysis[0]);
         });
         it("should send expected filter for multimedia", async () => {
+            givenFavoritesResources();
             givenACountryAnalysis();
 
             await resourceRepository.get({ category: "country-analysis" }).runAsync();
@@ -191,12 +213,13 @@ describe("Resource repository", () => {
         });
     });
 
-    describe("favouriteSection", () => {
-        it("when favouriteSection true in filter then should return all favouriteSection resources", async () => {
+    describe("isFavouriteSection", () => {
+        it("when isFavouriteSection is true in filter then should return all favouriteSection resources", async () => {
+            givenFavoritesResources();
             givenAComparativeAnalysis();
 
             const response = await resourceRepository
-                .get({ category: "comparative-analysis", favouriteSection: true })
+                .get({ category: "comparative-analysis", isFavouriteSection: true })
                 .runAsync();
 
             const comparativeAnalysisItems = (response.data || []) as ComparativeAnalysis[];
@@ -210,9 +233,21 @@ function givenAComparativeAnalysis() {
     mockWebServer.addRequestHandlers([
         {
             method: "get",
-            endpoint: `/api/events`,
+            endpoint: "/api/events",
             httpStatusCode: 200,
-            response: comparativeAnalysis,
+            response: req => {
+                const program = req.url.searchParams.get("program");
+
+                if (program === "QD9npLUMvCG") {
+                    return favoritesResponse;
+                }
+
+                if (program === "wWo0lhm5GsY") {
+                    return comparativeAnalysis;
+                }
+
+                return [];
+            },
         },
     ]);
 }
@@ -221,9 +256,21 @@ function givenANews() {
     mockWebServer.addRequestHandlers([
         {
             method: "get",
-            endpoint: `/api/events`,
+            endpoint: "/api/events",
             httpStatusCode: 200,
-            response: news,
+            response: req => {
+                const program = req.url.searchParams.get("program");
+
+                if (program === "QD9npLUMvCG") {
+                    return favoritesResponse;
+                }
+
+                if (program === "wWo0lhm5GsY") {
+                    return news;
+                }
+
+                return [];
+            },
         },
     ]);
 }
@@ -232,9 +279,21 @@ function givenAMultimedia() {
     mockWebServer.addRequestHandlers([
         {
             method: "get",
-            endpoint: `/api/events`,
+            endpoint: "/api/events",
             httpStatusCode: 200,
-            response: multimedia,
+            response: req => {
+                const program = req.url.searchParams.get("program");
+
+                if (program === "QD9npLUMvCG") {
+                    return favoritesResponse;
+                }
+
+                if (program === "wWo0lhm5GsY") {
+                    return multimedia;
+                }
+
+                return [];
+            },
         },
     ]);
 }
@@ -243,11 +302,36 @@ function givenACountryAnalysis() {
     mockWebServer.addRequestHandlers([
         {
             method: "get",
-            endpoint: `/api/events`,
+            endpoint: "/api/events",
             httpStatusCode: 200,
-            response: countryAnalysis,
+            response: req => {
+                const program = req.url.searchParams.get("program");
+
+                if (program === "QD9npLUMvCG") {
+                    return favoritesResponse;
+                }
+
+                if (program === "wWo0lhm5GsY") {
+                    return countryAnalysis;
+                }
+
+                return [];
+            },
         },
     ]);
+}
+
+function givenFavoritesResources(): FavoriteResources {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/events?program=QD9npLUMvCG`,
+            httpStatusCode: 200,
+            response: favoritesResources,
+        },
+    ]);
+
+    return favoritesResources;
 }
 
 function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
@@ -281,8 +365,8 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
     });
 
     expect(comparativeAnalysis.favouriteSection).toBe(true);
-    expect(comparativeAnalysis.favouriteSectionOrder).toBe(1);
-    verifyFavourite(comparativeAnalysis);
+    expect(comparativeAnalysis.favouriteSectionOrder).toBe(3);
+    verifyFavouriteHome(comparativeAnalysis, 1);
 }
 
 function verifyNews(newsItem?: News) {
@@ -300,7 +384,7 @@ function verifyNews(newsItem?: News) {
 
     expect(newsItem.favouriteSection).toBe(true);
     expect(newsItem.favouriteSectionOrder).toBe(1);
-    verifyFavourite(newsItem);
+    verifyFavouriteHome(newsItem, 2);
 }
 
 function verifyMultimedia(multimediaItem?: Multimedia) {
@@ -321,7 +405,7 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
 
     expect(multimediaItem.favouriteSection).toBe(true);
     expect(multimediaItem.favouriteSectionOrder).toBe(1);
-    verifyFavourite(multimediaItem);
+    verifyFavouriteHome(multimediaItem, 6);
 }
 
 function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
@@ -357,16 +441,16 @@ function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
 
     expect(countryAnalysis.countryId).toBe("KwgjnBBpe5b");
 
-    expect(countryAnalysis.favouriteSection).toBe(true);
-    expect(countryAnalysis.favouriteSectionOrder).toBe(1);
-    verifyFavourite(countryAnalysis);
+    expect(countryAnalysis.favouriteSection).toBe(false);
+    expect(countryAnalysis.favouriteSectionOrder).toBe(0);
+    verifyFavouriteHome(countryAnalysis, 4);
 }
 
-function verifyFavourite(item?: BasicResource) {
+function verifyFavouriteHome(item?: BasicResource, expectedOrder = 0) {
     if (!item) fail("Resource is undefined");
 
-    expect(item.favourite).toBe(true);
-    expect(item.favouriteOrder).toBe(1);
+    expect(item.favouriteHome).toBe(true);
+    expect(item.favouriteHomeOrder).toBe(expectedOrder);
 }
 
 function verifyFavouriteSectionResources(resources: ComparativeAnalysis[]) {

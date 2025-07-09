@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-04-11T14:01:00.625Z\n"
-"PO-Revision-Date: 2025-04-11T14:01:00.625Z\n"
+"POT-Creation-Date: 2025-07-08T13:27:58.585Z\n"
+"PO-Revision-Date: 2025-07-08T13:27:58.585Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -56,6 +56,9 @@ msgstr ""
 msgid "No information available for this category"
 msgstr ""
 
+msgid "Save"
+msgstr ""
+
 msgid "Clear"
 msgstr ""
 
@@ -83,6 +86,9 @@ msgstr ""
 msgid "Stronger financial protection"
 msgstr ""
 
+msgid "UHC watch YouTube video player"
+msgstr ""
+
 msgid "Indicators"
 msgstr ""
 
@@ -101,7 +107,10 @@ msgstr ""
 msgid "Get chart"
 msgstr ""
 
-msgid "Co-funded by the European Union"
+msgid "Abbreviations"
+msgstr ""
+
+msgid "Glossary"
 msgstr ""
 
 msgid "About us"
@@ -122,16 +131,19 @@ msgstr ""
 msgid "Tel: +34 673 290 861"
 msgstr ""
 
+msgid "Co-funded by the European Union"
+msgstr ""
+
 msgid "WHO privacy policy"
 msgstr ""
 
-msgid "Mobile-friendly version coming soon"
+msgid "About Us"
 msgstr ""
 
-msgid "Abbreviations"
+msgid "Abbreviations & Glossary"
 msgstr ""
 
-msgid "Glossary"
+msgid "WHO Privacy Policy & Disclaimer"
 msgstr ""
 
 msgid "Indicator explorer"
@@ -179,12 +191,31 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
+msgid "Back to top"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
 msgstr[1] ""
 
 msgid "There may be no data"
+msgstr ""
+
+msgid ""
+"Over 50 indicators of financial hardship, unmet need for health care and "
+"spending on health"
+msgstr ""
+
+msgid "Policy Explorer"
+msgstr ""
+
+msgid ""
+"Information on population coverage, service coverage, user charges and "
+"voluntary health insurance"
+msgstr ""
+
+msgid "Countries & Areas"
 msgstr ""
 
 msgid "All years"
@@ -218,12 +249,6 @@ msgid "Read more"
 msgstr ""
 
 msgid "Read less"
-msgstr ""
-
-msgid "Abbreviations"
-msgstr ""
-
-msgid "Glossary"
 msgstr ""
 
 msgid "Error fetching Methods"

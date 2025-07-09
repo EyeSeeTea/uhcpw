@@ -1,4 +1,4 @@
-import { DefaultBodyType, MockedRequest, rest } from "msw";
+import { DefaultBodyType, MockedRequest, rest, RestContext } from "msw";
 import { SetupServer, setupServer } from "msw/node";
 
 export type Method = "get" | "post" | "put";
@@ -7,7 +7,7 @@ export interface MockHandler<T extends DefaultBodyType> {
     method: Method;
     endpoint: string;
     httpStatusCode: number;
-    response: T;
+    response: T | ((req: MockedRequest<DefaultBodyType>) => T);
 }
 
 export interface Request {
@@ -64,32 +64,19 @@ export class MockWebServer {
     }
 
     createMwsHandler<T extends DefaultBodyType>(handler: MockHandler<T>) {
+        const resolver = (req: MockedRequest<DefaultBodyType>, res: any, ctx: RestContext) => {
+            const body = typeof handler.response === "function" ? handler.response(req) : handler.response;
+
+            return res(ctx.status(handler.httpStatusCode), typeof body === "string" ? ctx.text(body) : ctx.json(body));
+        };
+
         switch (handler.method) {
             case "get":
-                return rest.get(handler.endpoint, (req, res, ctx) => {
-                    return res(
-                        ctx.status(handler.httpStatusCode),
-                        typeof handler.response === "string" ? ctx.text(handler.response) : ctx.json(handler.response)
-                    );
-                });
+                return rest.get(handler.endpoint, resolver);
             case "post":
-                return rest.post(handler.endpoint, (req, res, ctx) => {
-                    //this.verifyRequest(handler,req);
-
-                    return res(
-                        ctx.status(handler.httpStatusCode),
-                        typeof handler.response === "string" ? ctx.text(handler.response) : ctx.json(handler.response)
-                    );
-                });
+                return rest.post(handler.endpoint, resolver);
             case "put":
-                return rest.put(handler.endpoint, (req, res, ctx) => {
-                    //this.verifyRequest(handler,req);
-
-                    return res(
-                        ctx.status(handler.httpStatusCode),
-                        typeof handler.response === "string" ? ctx.text(handler.response) : ctx.json(handler.response)
-                    );
-                });
+                return rest.put(handler.endpoint, resolver);
         }
     }
 

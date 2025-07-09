@@ -42,6 +42,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         selected: selectedCountries,
         onSelectedChange: onSelectedCountryChange,
         options: countryOptions,
+        ...countryFilterOptions
     } = useMultiCountryOptionsV2({ showEurRegion: true, showSubRegions: true });
     const { sendEvent } = useAnalytics();
 
@@ -325,6 +326,10 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         [countryOptions, isOnlyEu27Comparison, onSelectedCountryChange, selectedIndicatorFilter, visualizations]
     );
 
+    const closeVisualization = useCallback(() => {
+        setShowVisualization(false);
+    }, []);
+
     return {
         filters: {
             country: {
@@ -336,6 +341,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 showSubRegions: !hideBosniaAndHerzegovinaRegions,
                 selectedItemsToShowWhenAllSelected: [EU27],
                 isOnlyEu27Comparison: isOnlyEu27Comparison,
+                ...countryFilterOptions,
             },
             indicators: {
                 options: indicatorFilters,
@@ -352,6 +358,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         },
         onGet,
         showVisualization,
+        closeVisualization,
         globalMessage,
         pageContent,
     };

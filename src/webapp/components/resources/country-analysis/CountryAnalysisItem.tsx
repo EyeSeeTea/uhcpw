@@ -6,6 +6,7 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { CountryAnalysisState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { AnalysisItem } from "../common/AnalysisItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export interface CountryAnalysisItemProps {
     countryAnalysis: CountryAnalysisState;
@@ -63,16 +64,33 @@ const Item = styled(Card)`
         font-size: 14px;
         color: ${colors.accentPrimary};
     }
+    min-width: 180px;
+    overflow: unset;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        width: 85%;
+        max-width: 400px;
+        padding: 0;
+        justify-self: center;
+        place-items: center;
+        height: 100%;
+    }
 `;
 
 const Row = styled.div`
     padding-top: 8px;
-
+    height: 56px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-top: 0;
+        margin-inline: 16px;
+        justify-self: flex-start;
+        flex-wrap: nowrap;
+    }
 `;
 
 const Flag = styled.img`

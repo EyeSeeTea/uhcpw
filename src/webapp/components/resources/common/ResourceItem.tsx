@@ -5,6 +5,8 @@ import { ComparativeAnalysisItem } from "../comparative-analysis/ComparativeAnal
 import { CountryAnalysisItem } from "../country-analysis/CountryAnalysisItem";
 import { SimpleResourceItem } from "./SimpleResourceItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import styled from "styled-components";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitle: string }> = React.memo(props => {
     const { resource, analyticsPageTitle } = props;
@@ -49,30 +51,46 @@ export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitl
             return <CountryAnalysisItem countryAnalysis={resource} analyticsPageTitle={analyticsPageTitle} />;
         case "news":
             return (
-                <SimpleResourceItem
-                    title={resource.title}
-                    url={resource.url}
-                    image={resource.imageOriginal}
-                    fallbackImage={resource.imageOriginal}
-                    date={resource.date}
-                    redirectWithEvent={analyticsEvent}
-                    dateFormat={"DD MMMM YYYY"}
-                />
+                <SimpleResourceItemContainer>
+                    <SimpleResourceItem
+                        title={resource.title}
+                        url={resource.url}
+                        image={resource.imageOriginal}
+                        fallbackImage={resource.imageOriginal}
+                        date={resource.date}
+                        redirectWithEvent={analyticsEvent}
+                        dateFormat={"DD MMMM YYYY"}
+                    />
+                </SimpleResourceItemContainer>
             );
         case "multimedia": {
             const theme = themes.find(theme => theme.code === resource.theme)?.name;
             return (
-                <SimpleResourceItem
-                    title={resource.title}
-                    url={resource.url}
-                    image={resource.imageOriginal}
-                    fallbackImage={resource.imageOriginal}
-                    date={resource.date}
-                    tag={theme}
-                    tagColor={themeColor[resource.theme]}
-                    redirectWithEvent={analyticsEvent}
-                />
+                <SimpleResourceItemContainer>
+                    <SimpleResourceItem
+                        title={resource.title}
+                        url={resource.url}
+                        image={resource.imageOriginal}
+                        fallbackImage={resource.imageOriginal}
+                        date={resource.date}
+                        tag={theme}
+                        tagColor={themeColor[resource.theme]}
+                        redirectWithEvent={analyticsEvent}
+                    />
+                </SimpleResourceItemContainer>
             );
         }
     }
 });
+
+const SimpleResourceItemContainer = styled.div`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        height: 100%;
+        width: 100%;
+        max-width: 500px;
+        padding: 0;
+        justify-self: center;
+        place-items: center;
+        height: 100%;
+    }
+`;

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { FutureData } from "../../../domain/entities/Future";
+import { Future, FutureData } from "../../../domain/entities/Future";
 import {
     AnalysisResource,
     ComparativeAnalysis,
@@ -12,6 +12,7 @@ import {
 import { ResourceFilters, ResourceRepository } from "../../../domain/repositories/resources/ResourceRepository";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+import { Id } from "../../../domain/entities/Ref";
 
 export const resourceDataElements: Record<string, string> = {
     comparativeAnalysisCategory: "BBKWdyuSwkT",
@@ -90,57 +91,115 @@ export const resourceDataElements: Record<string, string> = {
     relatedCountry58: "CrBYPANirHP",
     relatedCountry59: "fol5rrUU53I",
     relatedCountry60: "rk5OFNGLSdK",
-    favourite: "aP3GIoQRvDt",
-    favouriteOrder: "G9DVX5SjoA2",
-    favouriteCountryAnalysis: "XxXz056LMCO",
-    favouriteCountryAnalysisOrder: "EqiRrE4nz7c",
-    favouriteComparativeAnalysis: "fJdnhBV0nYB",
-    favouriteComparativeAnalysisOrder: "lDHvdREWAUp",
-    favouriteMultimedia: "KPwK8b3rkOz",
-    favouriteMultimediaOrder: "mFLscuj8vES",
-    favouriteNews: "CCFn3rUBXLS",
-    favouriteNewsOrder: "KFrs71ATfx6",
 };
 
+const favoriteDataElements = {
+    favoriteHomePage1: "fWy88oSclyV",
+    favoriteHomePage2: "mLY36VMva42",
+    favoriteHomePage3: "Uv1XywZ3dkv",
+    favoriteHomePage4: "SQPHJNhoGFD",
+    favoriteHomePage5: "Xs6uZ7V5O1q",
+    favoriteHomePage6: "XF8EBdyzz3j",
+    favoriteComparative1: "BMJyZvepm9L",
+    favoriteComparative2: "N0xd0lfL9M3",
+    favoriteComparative3: "OxwBHbiMJ7k",
+    favoriteComparative4: "MHTn0hoo934",
+    favoriteComparative5: "CCMscdrNeCk",
+    favoriteComparative6: "vqa4bFR3uX9",
+    favoriteMultimedia1: "ivQliVkSBhs",
+    favoriteMultimedia2: "sJes3CZZzMd",
+    favoriteMultimedia3: "lm2K6GYIYV0",
+    favoriteMultimedia4: "vs2eB5LSqIn",
+    favoriteMultimedia5: "wOVe8NOjlSZ",
+    favoriteMultimedia6: "wSjsjpsw2Kl",
+    favoriteNews1: "AXI6jAXa7Vb",
+    favoriteNews2: "yBPwYKa1ifk",
+    favoriteNews3: "DMzP8pTBo80",
+    favoriteNews4: "JZJcxBuRlRg",
+    favoriteNews5: "xOyhRba6NOf",
+    favoriteNews6: "HNHMXOeNowd",
+} as const;
+
 export const resourcesProgram = "wWo0lhm5GsY";
+export const favoritesProgram = "QD9npLUMvCG";
 
 export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
-        //2:38 has a bug filtering events by data element value using eq operator. Like works!
-        const filter = _([
-            filters.category ? this.getCategoriesFilter(filters.category) : undefined,
-            filters.theme ? `${resourceDataElements.theme}:like:${filters.theme.replace("-", " ")}` : undefined,
-            filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
-            filters.favourite !== undefined ? `${resourceDataElements.favourite}:eq:${filters.favourite}` : undefined,
-        ])
-            .compact()
-            .join(",");
+        return this.getFavoritesResources().flatMap(favorites => {
+            const favoriteHomeResourcesIds = favorites.homePage.map(favorite => favorite.resourceId);
+            const favoriteNewsIds = favorites.news.map(favorite => favorite.resourceId);
+            const favoriteResourcesIds = [
+                ...favorites.comparativeAnalysis.map(favorite => favorite.resourceId),
+                ...favorites.multimedia.map(favorite => favorite.resourceId),
+                ...favoriteNewsIds,
+            ];
 
-        const years = filters.years?.sort();
-        const startYear = years ? years[0] : undefined;
-        const endYear = years ? years[years.length - 1] : undefined;
+            const favoriteIdsFilter = filters.isFavouriteHome
+                ? [...favoriteHomeResourcesIds, ...favoriteNewsIds].join(";")
+                : filters.isFavouriteSection
+                ? favoriteResourcesIds.join(";")
+                : undefined;
 
+            //2:38 has a bug filtering events by data element value using eq operator. Like works!
+            const filter = _([
+                filters.category ? this.getCategoriesFilter(filters.category) : undefined,
+                filters.theme ? `${resourceDataElements.theme}:like:${filters.theme.replace("-", " ")}` : undefined,
+                filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
+            ])
+                .compact()
+                .join(",");
+
+            const years = filters.years?.sort();
+            const startYear = years ? years[0] : undefined;
+            const endYear = years ? years[years.length - 1] : undefined;
+
+            return apiToFuture(
+                this.api.events.get({
+                    fields: eventsFields,
+                    program: resourcesProgram,
+                    startDate: startYear ? `${startYear}-01-01` : undefined,
+                    endDate: endYear ? `${endYear}-12-31` : undefined,
+                    skipPaging: filters.pageSize ? false : true,
+                    pageSize: filters.pageSize,
+                    page: filters.page ? filters.page : 1,
+                    filter,
+                    order: "eventDate:desc",
+                    event: favoriteIdsFilter,
+                })
+            ).flatMap(response => {
+                const events =
+                    filters.countries && filters.countries.length > 0
+                        ? this.filterCountries(response.events, filters)
+                        : response.events;
+
+                return Future.success(this.buildResources(events, filters, favorites));
+            });
+        });
+    }
+
+    private getFavoritesResources(): FutureData<FavoriteResources> {
         return apiToFuture(
             this.api.events.get({
                 fields: eventsFields,
-                program: resourcesProgram,
-                startDate: startYear ? `${startYear}-01-01` : undefined,
-                endDate: endYear ? `${endYear}-12-31` : undefined,
-                skipPaging: filters.count ? false : true,
-                pageSize: filters.count,
-                filter,
+                program: favoritesProgram,
                 order: "eventDate:desc",
             })
         ).map(response => {
-            const events =
-                filters.countries && filters.countries.length > 0
-                    ? this.filterCountries(response.events, filters)
-                    : response.events;
+            const event = response.events[0];
 
-            const resources = this.buildResources(events, filters);
-            return this.filterByFavouriteSection(resources, filters.favouriteSection);
+            if (!event) {
+                const emptyFavorites: FavoriteResources = {
+                    homePage: [],
+                    comparativeAnalysis: [],
+                    multimedia: [],
+                    news: [],
+                };
+                return emptyFavorites;
+            } else {
+                return this.buildFavoritesResources(event);
+            }
         });
     }
 
@@ -159,7 +218,7 @@ export class ResourceD2Repository implements ResourceRepository {
         }
     }
 
-    private buildResources(events: D2Event[], filters: ResourceFilters): Resource[] {
+    private buildResources(events: D2Event[], filters: ResourceFilters, favorites: FavoriteResources): Resource[] {
         return _.compact(
             _(
                 events.flatMap(event => {
@@ -186,20 +245,20 @@ export class ResourceD2Repository implements ResourceRepository {
                     return [
                         isComparativeAnalysisCategory &&
                         (!filters.category || filters.category === "comparative-analysis")
-                            ? this.buildComparativeAnalysis(event)
+                            ? this.buildComparativeAnalysis(event, favorites)
                             : undefined,
                         isNewsCategory && (!filters.category || filters.category === "news")
-                            ? this.buildNews(event)
+                            ? this.buildNews(event, favorites)
                             : undefined,
                         isMultimediaCategory && (!filters.category || filters.category === "multimedia")
-                            ? this.buildMultimedia(event)
+                            ? this.buildMultimedia(event, favorites)
                             : undefined,
                         isCountryAnalysisCategory &&
                         (!filters.category || filters.category === "country-analysis") &&
                         (!filters.countries ||
                             (mainCountryForCountryAnalysis &&
                                 filters.countries?.includes(mainCountryForCountryAnalysis)))
-                            ? this.buildCountryAnalysis(event)
+                            ? this.buildCountryAnalysis(event, favorites)
                             : undefined,
                     ];
                 })
@@ -207,9 +266,9 @@ export class ResourceD2Repository implements ResourceRepository {
         );
     }
 
-    private buildNews(event: D2Event): News {
-        const media = this.buildMedia(event);
-        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "news");
+    private buildNews(event: D2Event, favorites: FavoriteResources): News {
+        const media = this.buildMedia(event, favorites);
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "news", favorites);
 
         return {
             kind: "news",
@@ -218,12 +277,12 @@ export class ResourceD2Repository implements ResourceRepository {
         };
     }
 
-    private buildMultimedia(event: D2Event): Multimedia {
-        const media = this.buildMedia(event);
+    private buildMultimedia(event: D2Event, favorites: FavoriteResources): Multimedia {
+        const media = this.buildMedia(event, favorites);
 
         const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
 
-        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "multimedia");
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "multimedia", favorites);
 
         return {
             kind: "multimedia",
@@ -233,11 +292,11 @@ export class ResourceD2Repository implements ResourceRepository {
         };
     }
 
-    private buildMedia(event: D2Event): MediaResource {
+    private buildMedia(event: D2Event, favorites: FavoriteResources): MediaResource {
         const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
         const url = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
 
-        const favouriteData = this.buildFavourite(event);
+        const favouriteData = this.buildFavouriteHome(event, favorites);
 
         return {
             id: event.event,
@@ -250,12 +309,12 @@ export class ResourceD2Repository implements ResourceRepository {
         };
     }
 
-    private buildComparativeAnalysis(event: D2Event): ComparativeAnalysis {
-        const analysis = this.buildAnalysis(event);
+    private buildComparativeAnalysis(event: D2Event, favorites: FavoriteResources): ComparativeAnalysis {
+        const analysis = this.buildAnalysis(event, favorites);
 
         const relatedCountries = this.getRelatedCountries(event);
 
-        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "comparative-analysis");
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "comparative-analysis", favorites);
 
         return {
             kind: "comparative-analysis",
@@ -265,13 +324,13 @@ export class ResourceD2Repository implements ResourceRepository {
         };
     }
 
-    private buildCountryAnalysis(event: D2Event): CountryAnalysis {
-        const analysis = this.buildAnalysis(event);
+    private buildCountryAnalysis(event: D2Event, favorites: FavoriteResources): CountryAnalysis {
+        const analysis = this.buildAnalysis(event, favorites);
 
         const countryId =
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry1)?.value || "";
 
-        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "country-analysis");
+        const favouriteSectionData = this.buildFavouriteSectionByKind(event, "country-analysis", favorites);
 
         return {
             kind: "country-analysis",
@@ -281,7 +340,7 @@ export class ResourceD2Repository implements ResourceRepository {
         };
     }
 
-    private buildAnalysis(event: D2Event): AnalysisResource {
+    private buildAnalysis(event: D2Event, favorites: FavoriteResources): AnalysisResource {
         const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
         const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
         const link = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
@@ -298,7 +357,7 @@ export class ResourceD2Repository implements ResourceRepository {
         const link4Language =
             event.dataValues.find(dv => dv.dataElement === resourceDataElements.link4Language)?.value || "";
 
-        const favouriteData = this.buildFavourite(event);
+        const favouriteData = this.buildFavouriteHome(event, favorites);
 
         return {
             imageOriginal: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageOriginal}&eventUid=${event.event}`,
@@ -319,69 +378,53 @@ export class ResourceD2Repository implements ResourceRepository {
         };
     }
 
-    private buildFavourite(event: D2Event) {
-        const favourite =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favourite)?.value === "true" || false;
-        const favouriteOrder =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteOrder)?.value || 0;
+    private buildFavouriteHome(
+        event: D2Event,
+        favorites: FavoriteResources
+    ): {
+        favouriteHome: boolean;
+        favouriteHomeOrder: number;
+    } {
+        const favorite = favorites.homePage.find(favorite => favorite.resourceId === event.event);
 
         return {
-            favourite,
-            favouriteOrder: +favouriteOrder,
+            favouriteHome: !!favorite,
+            favouriteHomeOrder: favorite?.order ?? 0,
         };
     }
 
     private buildFavouriteSectionByKind(
         event: D2Event,
-        kind: "country-analysis" | "comparative-analysis" | "news" | "multimedia"
+        kind: "country-analysis" | "comparative-analysis" | "news" | "multimedia",
+        favorites: FavoriteResources
     ): {
         favouriteSection: boolean;
         favouriteSectionOrder: number;
     } {
         switch (kind) {
-            case "comparative-analysis":
+            case "comparative-analysis": {
+                const comparativeAnalysisFavorite = favorites.comparativeAnalysis.find(
+                    favorite => favorite.resourceId === event.event
+                );
                 return {
-                    favouriteSection:
-                        event.dataValues.find(
-                            dv => dv.dataElement === resourceDataElements.favouriteComparativeAnalysis
-                        )?.value === "true" || false,
-                    favouriteSectionOrder: +(
-                        event.dataValues.find(
-                            dv => dv.dataElement === resourceDataElements.favouriteComparativeAnalysisOrder
-                        )?.value || 0
-                    ),
+                    favouriteSection: !!comparativeAnalysisFavorite,
+                    favouriteSectionOrder: comparativeAnalysisFavorite?.order ?? 0,
                 };
-            case "news":
+            }
+            case "news": {
+                const newsFavorite = favorites.news.find(favorite => favorite.resourceId === event.event);
                 return {
-                    favouriteSection:
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteNews)?.value ===
-                            "true" || false,
-                    favouriteSectionOrder: +(
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteNewsOrder)
-                            ?.value || 0
-                    ),
+                    favouriteSection: !!newsFavorite,
+                    favouriteSectionOrder: newsFavorite?.order ?? 0,
                 };
-            case "multimedia":
+            }
+            case "multimedia": {
+                const multimediaFavorite = favorites.multimedia.find(favorite => favorite.resourceId === event.event);
                 return {
-                    favouriteSection:
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteMultimedia)
-                            ?.value === "true" || false,
-                    favouriteSectionOrder: +(
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteMultimediaOrder)
-                            ?.value || 0
-                    ),
+                    favouriteSection: !!multimediaFavorite,
+                    favouriteSectionOrder: multimediaFavorite?.order ?? 0,
                 };
-            case "country-analysis":
-                return {
-                    favouriteSection:
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.favouriteCountryAnalysis)
-                            ?.value === "true" || false,
-                    favouriteSectionOrder: +(
-                        event.dataValues.find(
-                            dv => dv.dataElement === resourceDataElements.favouriteCountryAnalysisOrder
-                        )?.value || 0
-                    ),
-                };
+            }
             default:
                 return {
                     favouriteSection: false,
@@ -401,12 +444,6 @@ export class ResourceD2Repository implements ResourceRepository {
 
             return foundCountry || foundRelatedCountry;
         });
-    }
-
-    private filterByFavouriteSection(resources: Resource[], favouriteSectionFilter?: boolean): Resource[] {
-        return favouriteSectionFilter !== undefined
-            ? resources.filter(resource => resource.favouriteSection)
-            : resources;
     }
 
     private createLink(link?: string, language?: string) {
@@ -600,6 +637,211 @@ export class ResourceD2Repository implements ResourceRepository {
             .compact()
             .value();
     }
+
+    private buildFavoritesResources(event: D2Event): FavoriteResources {
+        const favoriteHomePage1 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteHomePage1)?.value || "";
+        const favoriteHomePage2 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteHomePage2)?.value || "";
+        const favoriteHomePage3 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteHomePage3)?.value || "";
+        const favoriteHomePage4 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteHomePage4)?.value || "";
+        const favoriteHomePage5 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteHomePage5)?.value || "";
+        const favoriteHomePage6 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteHomePage6)?.value || "";
+        const favoriteComparative1 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative1)?.value || "";
+        const favoriteComparative2 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative2)?.value || "";
+        const favoriteComparative3 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative3)?.value || "";
+        const favoriteComparative4 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative4)?.value || "";
+        const favoriteComparative5 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative5)?.value || "";
+        const favoriteComparative6 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteComparative6)?.value || "";
+        const favoriteMultimedia1 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteMultimedia1)?.value || "";
+        const favoriteMultimedia2 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteMultimedia2)?.value || "";
+        const favoriteMultimedia3 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteMultimedia3)?.value || "";
+        const favoriteMultimedia4 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteMultimedia4)?.value || "";
+        const favoriteMultimedia5 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteMultimedia5)?.value || "";
+        const favoriteMultimedia6 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteMultimedia6)?.value || "";
+        const favoriteNews1 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteNews1)?.value || "";
+        const favoriteNews2 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteNews2)?.value || "";
+        const favoriteNews3 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteNews3)?.value || "";
+        const favoriteNews4 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteNews4)?.value || "";
+        const favoriteNews5 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteNews5)?.value || "";
+        const favoriteNews6 =
+            event.dataValues.find(dv => dv.dataElement === favoriteDataElements.favoriteNews6)?.value || "";
+        return {
+            homePage: [
+                favoriteHomePage1
+                    ? {
+                          resourceId: favoriteHomePage1,
+                          order: 1,
+                      }
+                    : undefined,
+                favoriteHomePage2
+                    ? {
+                          resourceId: favoriteHomePage2,
+                          order: 2,
+                      }
+                    : undefined,
+                favoriteHomePage3
+                    ? {
+                          resourceId: favoriteHomePage3,
+                          order: 3,
+                      }
+                    : undefined,
+                favoriteHomePage4
+                    ? {
+                          resourceId: favoriteHomePage4,
+                          order: 4,
+                      }
+                    : undefined,
+                favoriteHomePage5
+                    ? {
+                          resourceId: favoriteHomePage5,
+                          order: 5,
+                      }
+                    : undefined,
+                favoriteHomePage6
+                    ? {
+                          resourceId: favoriteHomePage6,
+                          order: 6,
+                      }
+                    : undefined,
+            ].filter((item): item is FavoriteResource => Boolean(item)),
+            comparativeAnalysis: [
+                favoriteComparative1
+                    ? {
+                          resourceId: favoriteComparative1,
+                          order: 1,
+                      }
+                    : undefined,
+                favoriteComparative2
+                    ? {
+                          resourceId: favoriteComparative2,
+                          order: 2,
+                      }
+                    : undefined,
+                favoriteComparative3
+                    ? {
+                          resourceId: favoriteComparative3,
+                          order: 3,
+                      }
+                    : undefined,
+                favoriteComparative4
+                    ? {
+                          resourceId: favoriteComparative4,
+                          order: 4,
+                      }
+                    : undefined,
+                favoriteComparative5
+                    ? {
+                          resourceId: favoriteComparative5,
+                          order: 5,
+                      }
+                    : undefined,
+                favoriteComparative6
+                    ? {
+                          resourceId: favoriteComparative6,
+                          order: 6,
+                      }
+                    : undefined,
+            ].filter((item): item is FavoriteResource => Boolean(item)),
+            multimedia: [
+                favoriteMultimedia1
+                    ? {
+                          resourceId: favoriteMultimedia1,
+                          order: 1,
+                      }
+                    : undefined,
+                favoriteMultimedia2
+                    ? {
+                          resourceId: favoriteMultimedia2,
+                          order: 2,
+                      }
+                    : undefined,
+                favoriteMultimedia3
+                    ? {
+                          resourceId: favoriteMultimedia3,
+                          order: 3,
+                      }
+                    : undefined,
+                favoriteMultimedia4
+                    ? {
+                          resourceId: favoriteMultimedia4,
+                          order: 4,
+                      }
+                    : undefined,
+                favoriteMultimedia5
+                    ? {
+                          resourceId: favoriteMultimedia5,
+                          order: 5,
+                      }
+                    : undefined,
+                favoriteMultimedia6
+                    ? {
+                          resourceId: favoriteMultimedia6,
+                          order: 6,
+                      }
+                    : undefined,
+            ].filter((item): item is FavoriteResource => Boolean(item)),
+            news: [
+                favoriteNews1
+                    ? {
+                          resourceId: favoriteNews1,
+                          order: 1,
+                      }
+                    : undefined,
+                favoriteNews2
+                    ? {
+                          resourceId: favoriteNews2,
+                          order: 2,
+                      }
+                    : undefined,
+                favoriteNews3
+                    ? {
+                          resourceId: favoriteNews3,
+                          order: 3,
+                      }
+                    : undefined,
+                favoriteNews4
+                    ? {
+                          resourceId: favoriteNews4,
+                          order: 4,
+                      }
+                    : undefined,
+                favoriteNews5
+                    ? {
+                          resourceId: favoriteNews5,
+                          order: 5,
+                      }
+                    : undefined,
+                favoriteNews6
+                    ? {
+                          resourceId: favoriteNews6,
+                          order: 6,
+                      }
+                    : undefined,
+            ].filter((item): item is FavoriteResource => Boolean(item)),
+        };
+    }
 }
 
 const eventsFields = {
@@ -618,3 +860,15 @@ export interface DataValue {
     dataElement: string;
     value: string;
 }
+
+type FavoriteResource = {
+    resourceId: Id;
+    order: number;
+};
+
+export type FavoriteResources = {
+    homePage: FavoriteResource[];
+    comparativeAnalysis: FavoriteResource[];
+    multimedia: FavoriteResource[];
+    news: FavoriteResource[];
+};

@@ -1,7 +1,7 @@
 import { TextField } from "@material-ui/core";
 import styled from "styled-components";
 
-export const DropdownTextField = styled(TextField)<{ $isDisabled?: boolean }>(props => ({
+export const DropdownTextField = styled(TextField)<{ $isDisabled?: boolean; minWidth?: string }>(props => ({
     "& label, & label.Mui-focused": {
         color: "grey",
     },
@@ -10,11 +10,16 @@ export const DropdownTextField = styled(TextField)<{ $isDisabled?: boolean }>(pr
         position: "initial",
         marginTop: "3px",
     },
+    "@media (max-width: 350px)": {
+        "div.MuiInputBase-root.MuiInput-underline": {
+            minWidth: "100%",
+        },
+    },
     "div.MuiInput-underline": {
         background: "#f2f9fd",
         border: "1px solid #cfe9f7",
         borderRadius: "8px",
-        minWidth: "200px",
+        minWidth: props.minWidth || "200px",
         padding: "8px 16px",
     },
     "div.MuiInput-underline:before": {
