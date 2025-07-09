@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
 import ReactMarkdown from "react-markdown";
 import { Rotate } from "../rotate/Rotate";
+import { useOrientation } from "../rotate/useOrientation";
 
 type DialogType = {
     isOpen: boolean;
@@ -12,6 +13,8 @@ type DialogType = {
 };
 
 export const FullScreenNotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo }) => {
+    const orientation = useOrientation();
+
     return (
         <Dialog
             open={isOpen}
@@ -39,7 +42,7 @@ export const FullScreenNotesDialog: React.FC<DialogType> = ({ isOpen, onClose, d
                     </DialogContent>
                 </Rotate>
 
-                <CloseIconButton onClick={onClose}>
+                <CloseIconButton onClick={onClose} $orientation={orientation}>
                     <CloseIcon
                         style={{
                             color: "white",
@@ -64,9 +67,9 @@ const DialogContainer = styled.div`
     }
 `;
 
-const CloseIconButton = styled(IconButton)`
+const CloseIconButton = styled(IconButton)<{ $orientation: "portrait" | "landscape" }>`
     position: absolute;
     right: 5px;
-    top: unset;
-    bottom: 10px;
+    top: ${props => (props.$orientation === "portrait" ? "unset" : "5px")};
+    bottom: ${props => (props.$orientation === "portrait" ? "10px" : "unset")};
 `;
