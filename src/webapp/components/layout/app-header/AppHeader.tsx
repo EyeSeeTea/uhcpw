@@ -20,13 +20,16 @@ export const useStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     toolbarTop: {
-        background: colors.gradientPrimaryMobile,
+        background: colors.gradientPrimary,
         minHeight: 20,
         alignItems: "center",
         paddingTop: theme.spacing(1.5),
         paddingBottom: theme.spacing(1.5),
         paddingLeft: theme.spacing(8),
         paddingRight: theme.spacing(7.5),
+        "@media (max-width: 960px)": {
+            background: colors.gradientPrimaryMobile,
+        },
         "@media (max-width: 500px)": {
             paddingLeft: "10px",
             paddingRight: "10px",
@@ -171,19 +174,6 @@ const LogoContainer = styled.div`
     @media (max-width: 402px) {
         max-height: 50px;
     }
-`;
-
-const TagContainer = styled.div`
-    margin-right: 16px;
-`;
-
-const Tag = styled.div`
-    text-align: center;
-    min-width: 100px;
-    background-color: #4fad56;
-    color: white;
-    border-radius: 30px;
-    padding: 5px 10px;
 `;
 
 const ToolbarTextContainer = styled.div<{ isFullWidth?: boolean; isCentered?: boolean }>`
