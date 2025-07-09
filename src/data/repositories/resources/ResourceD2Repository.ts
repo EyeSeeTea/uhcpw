@@ -165,7 +165,7 @@ export class ResourceD2Repository implements ResourceRepository {
                     pageSize: filters.pageSize,
                     page: filters.page ? filters.page : 1,
                     filter,
-                    order: "eventDate:desc",
+                    order: "eventDate:desc,event:asc",
                     event: favoriteIdsFilter,
                 })
             ).flatMap(response => {
