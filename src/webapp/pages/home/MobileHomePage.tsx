@@ -78,7 +78,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
                         onClick={regionalReportPageView}
                     >
                         <Box color={colors.green}>
-                            <StyledTitleTypography>{i18n.t("Regional page")}</StyledTitleTypography>
+                            <StyledTitleTypography>{i18n.t("Regional report")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 
@@ -155,6 +155,7 @@ const BoxLink = styled.a`
     color: inherit;
     display: block;
     cursor: pointer;
+    height: 100%;
 `;
 
 const Box = styled.div<{ color: string }>`
@@ -162,7 +163,7 @@ const Box = styled.div<{ color: string }>`
     background-repeat: no-repeat;
     background-position: right top;
     background-size: auto 100%;
-    padding: 20px;
+    padding: 14px;
     min-height: 30px;
     border-radius: 21px;
     display: flex;
@@ -212,6 +213,10 @@ const StyledTitleTypography = styled(StyledTypography)`
 
     @media (max-width: 575px) {
         font-size: 16px;
+    }
+
+    @media (max-width: 360px) {
+        font-size: 14px;
     }
 `;
 

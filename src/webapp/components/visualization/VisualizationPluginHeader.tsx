@@ -14,6 +14,7 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
+import { FullScreenNotesDialog } from "../dialog/FullScreenNotesDialog";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: string;
@@ -32,6 +33,7 @@ interface VisualizationPluginHeaderProps {
     currentCountry?: string;
     isScreenshot?: boolean;
     reducePaddingBottom?: boolean;
+    isFullScreen?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -51,6 +53,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         showCountryTag = false,
         isScreenshot = false,
         reducePaddingBottom = false,
+        isFullScreen = false,
         onClose,
     }) => {
         const currentCountryName = useMemo(() => {
@@ -170,9 +173,16 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                         </>
                     )}
                 </Row>
-                {showInfo && (
-                    <NotesDialog isOpen={showInfo} onClose={onCloseInfo} dialogInfo={visualizationDialogInfo} />
-                )}
+                {showInfo &&
+                    (isFullScreen ? (
+                        <FullScreenNotesDialog
+                            isOpen={showInfo}
+                            onClose={onCloseInfo}
+                            dialogInfo={visualizationDialogInfo}
+                        />
+                    ) : (
+                        <NotesDialog isOpen={showInfo} onClose={onCloseInfo} dialogInfo={visualizationDialogInfo} />
+                    ))}
             </DataHeader>
         );
     }

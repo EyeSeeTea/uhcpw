@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-07-04T07:20:23.379Z\n"
-"PO-Revision-Date: 2025-07-04T07:20:23.379Z\n"
+"POT-Creation-Date: 2025-07-08T13:27:58.585Z\n"
+"PO-Revision-Date: 2025-07-08T13:27:58.585Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -146,9 +146,6 @@ msgstr ""
 msgid "WHO Privacy Policy & Disclaimer"
 msgstr ""
 
-msgid "Mobile-friendly version coming soon"
-msgstr ""
-
 msgid "Indicator explorer"
 msgstr ""
 
@@ -219,9 +216,6 @@ msgid ""
 msgstr ""
 
 msgid "Countries & Areas"
-msgstr ""
-
-msgid "Regional page"
 msgstr ""
 
 msgid "All years"

@@ -19,7 +19,7 @@ export const typeOfCareSeries2 = [
 
 export const typeOfCareSeries3 = [
     {
-        id: "oI7cGBs8JUO",
+        id: "OuiKmOeXUWQ",
         name: "Medical products",
         color: "#ed7d31",
         dataLabels: { enabled: false },
@@ -29,7 +29,7 @@ export const typeOfCareSeries3 = [
         },
     },
     {
-        id: "ab6r7EmhpWf",
+        id: "qgE5NJ9Nyaq",
         name: "Medicines",
         color: "#c00000",
         dataLabels: { enabled: false },
@@ -39,7 +39,7 @@ export const typeOfCareSeries3 = [
         },
     },
     {
-        id: "Q8zOPO1dV9v",
+        id: "a2u2ccahVJL",
         name: "Dental care",
         color: "#0070c0",
         dataLabels: { enabled: false },
@@ -49,7 +49,7 @@ export const typeOfCareSeries3 = [
         },
     },
     {
-        id: "GGmVt5lp3zd",
+        id: "ykAPKvVQusS",
         name: "Outpatient care",
         color: "#ffc000",
         dataLabels: { enabled: false },
@@ -59,7 +59,7 @@ export const typeOfCareSeries3 = [
         },
     },
     {
-        id: "XHd006jqubI",
+        id: "qy4W8ZY2g5M",
         name: "Diagnostic tests",
         color: "#7030a0",
         dataLabels: { enabled: false },
@@ -69,7 +69,7 @@ export const typeOfCareSeries3 = [
         },
     },
     {
-        id: "Xi6TEgy0pEo",
+        id: "OEK4dKvUsOe",
         name: "Inpatient care",
         color: "#00b050",
         dataLabels: { enabled: false },
