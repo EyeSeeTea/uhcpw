@@ -58,6 +58,7 @@ export function useResourcesByType(params: {
             if (!isLoadMore) {
                 setLoading(true);
             }
+            const hasCountriesFilter = filters.country.selected && filters.country.selected.length > 0;
 
             const cancel = compositionRoot.resources.get
                 .execute({
@@ -66,8 +67,8 @@ export function useResourcesByType(params: {
                     theme: filters.theme.selected,
                     countries: filters.country.selected,
                     years: filters.year.selected,
-                    pageSize: paging ? page_size : undefined,
-                    page: paging ? page : undefined,
+                    pageSize: paging && !hasCountriesFilter ? page_size : undefined,
+                    page: paging && !hasCountriesFilter ? page : undefined,
                     isFavouriteHome: params.isFavouriteHome,
                     isFavouriteSection: filters.search.term ? undefined : params.isFavouriteSection,
                 })
@@ -89,12 +90,10 @@ export function useResourcesByType(params: {
                             setItems(newItems);
                         }
 
-                        // Determinar si hay más datos - hay más si recibimos al menos 1 elemento
-                        const newHasMore = Boolean(paging && newItems.length > 0);
+                        const newHasMore = Boolean(paging && !hasCountriesFilter && newItems.length > 0);
                         setHasMore(newHasMore);
 
-                        // Si es la primera carga y hay datos, verificar si hay más páginas
-                        if (!isLoadMore && paging && newItems.length === page_size) {
+                        if (!isLoadMore && paging && !hasCountriesFilter && newItems.length === page_size) {
                             setHasMore(true);
                         }
                     },
@@ -143,10 +142,9 @@ export function useResourcesByType(params: {
         loadResources(nextPage, true);
     }, [loadResources, hasMore, loadingMore, currentPage]);
 
-    // Usar useInfiniteScroll internamente solo si hay paginación
     const { loadingRef } = useInfiniteScroll({
         onLoadMore,
-        hasMore: paging ? hasMore : false,
+        hasMore: paging && !(filters.country.selected && filters.country.selected.length > 0) ? hasMore : false,
         loadingMore,
     });
 
