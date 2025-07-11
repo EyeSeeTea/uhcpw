@@ -18,6 +18,7 @@ import _ from "lodash";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -373,6 +374,9 @@ const StyledUl = styled.ul`
 
 const InfoButton = styled(Button)`
     align-self: baseline;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        display: none;
+    }
 `;
 
 const SwitchRowColumnButton = styled(Button)`
@@ -382,4 +386,8 @@ const SwitchRowColumnButton = styled(Button)`
     width: 170px;
     text-transform: initial;
     background: #185698;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        display: none;
+    }
 `;

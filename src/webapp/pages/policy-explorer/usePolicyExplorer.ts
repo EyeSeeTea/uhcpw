@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
     PolicyExplorer,
     PolicyExplorerCellType,
@@ -28,10 +28,8 @@ import { Maybe } from "../../../types/utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
-import { generateMobilePdf } from "./utils/generateMobilePdf";
-import html2canvas from "html2canvas";
-import { marked } from "marked";
-import jsPDF from "jspdf";
+import html2pdf from "html2pdf.js";
+
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
@@ -54,6 +52,7 @@ export function usePolicyExplorer({
     const { compositionRoot, countriesAndRegions } = useAppContext();
     const { sendEvent } = useAnalytics();
     const isSmallScreen = useIsSmallScreen();
+    const exportRef = useRef<HTMLDivElement>(null);
 
     const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter, showSubRegions: true });
     const [errorMessage, setErrorMessage] = useState<string>("");
@@ -73,6 +72,7 @@ export function usePolicyExplorer({
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataOrientationByTable, setDataOrientationByTable] = useState<DataOrientationByTable | undefined>();
     const [loading, setLoading] = useState(false);
+    const [exportToPDF, setExportToPDF] = useState(false);
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
@@ -160,6 +160,41 @@ export function usePolicyExplorer({
         sendEvent,
     ]);
 
+    useEffect(() => {
+        if (
+            !exportToPDF ||
+            !isSmallScreen ||
+            !initialDataByTable ||
+            !selectedCategoriesWithSubcategoriesFilter ||
+            loading ||
+            !exportRef.current
+        )
+            return;
+
+        const exportedContent = exportRef.current?.firstElementChild;
+
+        if (!exportedContent) {
+            setExportToPDF(false);
+            return;
+        }
+
+        const opt = {
+            margin: 0.3,
+            filename: i18n.t("Policy_Explorer") + ".pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "in", format: "letter", orientation: "landscape" },
+        };
+
+        html2pdf()
+            .set(opt)
+            .from(exportedContent)
+            .save()
+            .finally(() => {
+                setExportToPDF(false);
+            });
+    }, [exportRef, exportToPDF, initialDataByTable, isSmallScreen, loading, selectedCategoriesWithSubcategoriesFilter]);
+
     const onGetTable = useCallback(() => {
         if (
             selectedCategoriesWithSubcategoriesFilter &&
@@ -187,6 +222,7 @@ export function usePolicyExplorer({
                         sendAnalyticsEvents();
 
                         setLoading(false);
+                        setExportToPDF(isSmallScreen);
                     },
                     () => {
                         setInitialDataByTable(undefined);
@@ -209,6 +245,7 @@ export function usePolicyExplorer({
         countriesAndRegions,
         policyExplorerCategories,
         sendAnalyticsEvents,
+        isSmallScreen,
     ]);
 
     const onChangeCategoryFilter = useCallback((value: Record<string, string[]> | undefined) => {
@@ -254,29 +291,27 @@ export function usePolicyExplorer({
         [dataByTable, dataOrientationByTable, initialDataByTable]
     );
 
-    const onDownload = async () => {
-        const container = document.getElementById("hidden-table");
-        console.log("container", container);
+    const onDownload = useCallback(() => {
+        if (!initialDataByTable || !selectedCategoriesWithSubcategoriesFilter) return;
+        const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
+        const data = getInitialDataByTable(initialDataByTable, categoriesIds);
+        if (!data) return;
 
-        if (!container) return;
-
-        const canvas = await html2canvas(container, { scale: 1 });
-        console.log("canvas", canvas);
-
-        const imgData = canvas.toDataURL("image/png");
-        console.log("imgData", imgData);
-
-        const pdf = new jsPDF({
-            orientation: "portrait",
-            unit: "mm",
-            format: "a4",
+        sendEvent({
+            name: "file_download",
+            pageTitle: "Policy Explorer",
+            contentType: "csv",
+            contentGroup: "policy",
+            contentId: undefined,
         });
-
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-        pdf.addImage(canvas.toDataURL(), 0, 0, pdfWidth, pdfHeight);
-        pdf.save("policy-explorer.pdf");
-    };
+        compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
+    }, [
+        initialDataByTable,
+        selectedCategoriesWithSubcategoriesFilter,
+        sendEvent,
+        compositionRoot.policyExplorer.download,
+        policyExplorerCategories,
+    ]);
 
     return {
         filters: {
@@ -305,6 +340,8 @@ export function usePolicyExplorer({
         selectCategoryInfo,
         errorMessage,
         isLoading: loading,
+        exportRef: exportRef,
+        exportToPDF: exportToPDF,
     };
 }
 

@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import { PolicyExplorer, DataOrientationByTable } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
@@ -16,6 +17,8 @@ export type PolicyExplorerState = {
     selectCategoryInfo: PolicyExplorerSelectCategoryInfo | undefined;
     errorMessage: string;
     isLoading: boolean;
+    exportRef: RefObject<HTMLDivElement>;
+    exportToPDF: boolean;
 };
 
 type ExtraCountryFilterState = CountryFilterState & {

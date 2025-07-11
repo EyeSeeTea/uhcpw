@@ -23,13 +23,11 @@ import {
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import mapBackground from "../../assets/map-background.jpg";
-import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
     const { sendPageView, redirectWithExternalLink } = useAnalytics();
-    const isSmallScreen = useIsSmallScreen();
-
     const referencesRef = useRef<HTMLDivElement>(null);
 
     const theme = useTheme();
@@ -61,6 +59,8 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         selectCategoryInfo,
         errorMessage,
         isLoading,
+        exportRef,
+        exportToPDF,
     } = usePolicyExplorer({
         countriesFilter: filterInParams.country,
         categories: filterInParams.category,
@@ -135,158 +135,167 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
             <MainSection>
                 <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} disableGet={isLoading} />
 
-                {isLoading && (
+                {(isLoading || exportToPDF) && (
                     <Center>
                         <CircularProgress />
                     </Center>
                 )}
 
-                {!isLoading && data && dataOrientationByTable ? (
-                    <DownloadButton
-                        aria-label="Download"
-                        variant="contained"
-                        endIcon={<DownloadIcon />}
-                        color="primary"
-                        onClick={onDownload}
-                        className="download-button"
-                    >
-                        <Typography>{i18n.t("Download")}</Typography>
-                    </DownloadButton>
-                ) : null}
-                <div id="hidden-table">
-                    {!isLoading && data && dataOrientationByTable ? (
+                <Container ref={exportRef}>
+                    <ExportedContent>
                         <Content>
-                            {categories.map(category => (
-                                <PolicyExplorerTable
-                                    key={category.value}
-                                    category={category}
-                                    rows={data.tables[category.value]}
-                                    onSwitchRowColumn={onSwitchRowColumn}
-                                    dataOrientation={dataOrientationByTable[category.value]}
-                                    referencesRef={referencesRef}
-                                    hasMoreThanOneCountry={checkIfMoreThanOneCountry(
-                                        dataOrientationByTable[category.value],
-                                        data.tables[category.value]
-                                    )}
-                                />
-                            ))}
+                            {!isLoading && data && dataOrientationByTable ? (
+                                <DownloadButton
+                                    aria-label="Download"
+                                    variant="contained"
+                                    endIcon={<DownloadIcon />}
+                                    color="primary"
+                                    onClick={onDownload}
+                                    className="download-button"
+                                >
+                                    <Typography>{i18n.t("Download")}</Typography>
+                                </DownloadButton>
+                            ) : null}
+
+                            {!isLoading && data && dataOrientationByTable ? (
+                                <Content>
+                                    {categories.map(category => (
+                                        <PolicyExplorerTable
+                                            key={category.value}
+                                            category={category}
+                                            rows={data.tables[category.value]}
+                                            onSwitchRowColumn={onSwitchRowColumn}
+                                            dataOrientation={dataOrientationByTable[category.value]}
+                                            referencesRef={referencesRef}
+                                            hasMoreThanOneCountry={checkIfMoreThanOneCountry(
+                                                dataOrientationByTable[category.value],
+                                                data.tables[category.value]
+                                            )}
+                                        />
+                                    ))}
+                                </Content>
+                            ) : !isMobile ? (
+                                <EmptyContent info={selectCategoryInfo} />
+                            ) : null}
                         </Content>
-                    ) : !isMobile ? (
-                        <EmptyContent info={selectCategoryInfo} />
-                    ) : null}
 
-                    {!isLoading && (
-                        <div ref={referencesRef}>
-                            {data?.generalInfo.map(info => {
-                                return (
-                                    <div key={info.country}>
-                                        <GeneralDataContainer>
-                                            <GeneralRow>
-                                                <CreditsText style={{ fontWeight: 500 }}>
-                                                    <strong>{`${info.country} (${info.year})`}</strong>
-                                                </CreditsText>
-                                            </GeneralRow>
+                        {!isLoading && (
+                            <div ref={referencesRef}>
+                                {data?.generalInfo.map(info => {
+                                    return (
+                                        <div key={info.country}>
+                                            <GeneralDataContainer>
+                                                <GeneralRow>
+                                                    <CreditsText style={{ fontWeight: 500 }}>
+                                                        <strong>{`${info.country} (${info.year})`}</strong>
+                                                    </CreditsText>
+                                                </GeneralRow>
 
-                                            {info.lastUpdate ? (
+                                                {info.lastUpdate ? (
+                                                    <GeneralRow>
+                                                        <CreditsText $noWrap>
+                                                            {i18n.t("Last updated: ", { nsSeparator: false })}
+                                                        </CreditsText>
+                                                        &nbsp;
+                                                        <CreditsText>
+                                                            {moment(info.lastUpdate).format("D MMMM YYYY")}
+                                                        </CreditsText>
+                                                    </GeneralRow>
+                                                ) : null}
+
                                                 <GeneralRow>
                                                     <CreditsText $noWrap>
-                                                        {i18n.t("Last updated: ", { nsSeparator: false })}
+                                                        {i18n.t("Experts: ", { nsSeparator: false })}
                                                     </CreditsText>
                                                     &nbsp;
-                                                    <CreditsText>
-                                                        {moment(info.lastUpdate).format("D MMMM YYYY")}
-                                                    </CreditsText>
+                                                    <CreditsText>{info.countryExperts}</CreditsText>
                                                 </GeneralRow>
-                                            ) : null}
 
-                                            <GeneralRow>
-                                                <CreditsText $noWrap>
-                                                    {i18n.t("Experts: ", { nsSeparator: false })}
-                                                </CreditsText>
-                                                &nbsp;
-                                                <CreditsText>{info.countryExperts}</CreditsText>
-                                            </GeneralRow>
-
-                                            <GeneralRow>
-                                                <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
-                                                &nbsp;
-                                                <CreditsText>{info.editors}</CreditsText>
-                                            </GeneralRow>
-
-                                            {info.reviewers ? (
                                                 <GeneralRow>
                                                     <CreditsText>
-                                                        {i18n.t("Reviewers: ", { nsSeparator: false })}
+                                                        {i18n.t("Editors: ", { nsSeparator: false })}
                                                     </CreditsText>
                                                     &nbsp;
-                                                    <CreditsText>{info.reviewers}</CreditsText>
+                                                    <CreditsText>{info.editors}</CreditsText>
                                                 </GeneralRow>
-                                            ) : null}
 
-                                            {info.notes ? (
-                                                <GeneralRow>
-                                                    <ReactMarkdown
-                                                        components={{
-                                                            p: ({ children }) => (
-                                                                <CreditsText variant="caption">{children}</CreditsText>
-                                                            ),
-                                                        }}
-                                                    >
-                                                        {`${i18n.t("Notes: ", {
-                                                            nsSeparator: false,
-                                                        })} ${info.notes}`}
-                                                    </ReactMarkdown>
-                                                </GeneralRow>
-                                            ) : null}
+                                                {info.reviewers ? (
+                                                    <GeneralRow>
+                                                        <CreditsText>
+                                                            {i18n.t("Reviewers: ", { nsSeparator: false })}
+                                                        </CreditsText>
+                                                        &nbsp;
+                                                        <CreditsText>{info.reviewers}</CreditsText>
+                                                    </GeneralRow>
+                                                ) : null}
 
-                                            {info.sourceText ? (
-                                                <GeneralRow>
-                                                    <CreditsText>
-                                                        {i18n.t("Suggested citation: ", { nsSeparator: false })}
-                                                    </CreditsText>
-                                                    &nbsp;
-                                                    {info.sourceUrl ? (
-                                                        <Link
-                                                            href={info.sourceUrl}
-                                                            target="_blank"
-                                                            rel="noreferrer"
-                                                            onClick={redirectWithExternalLink}
-                                                        >
-                                                            {info.sourceText}
-                                                        </Link>
-                                                    ) : (
-                                                        <CreditsText>{info.sourceText}</CreditsText>
-                                                    )}
-                                                </GeneralRow>
-                                            ) : null}
-                                        </GeneralDataContainer>
-                                        <ReferencesContainer>
-                                            {info.country && getCleanReferencesByCountry(info.country)?.length ? (
-                                                <>
-                                                    <ReferencesTitle>
-                                                        {i18n.t("References", { nsSeparator: false })}
-                                                    </ReferencesTitle>
-                                                    {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                                {info.notes ? (
+                                                    <GeneralRow>
                                                         <ReactMarkdown
-                                                            key={reference}
                                                             components={{
                                                                 p: ({ children }) => (
-                                                                    <ReferenceText>{children}</ReferenceText>
+                                                                    <CreditsText variant="caption">
+                                                                        {children}
+                                                                    </CreditsText>
                                                                 ),
                                                             }}
                                                         >
-                                                            {reference}
+                                                            {`${i18n.t("Notes: ", {
+                                                                nsSeparator: false,
+                                                            })} ${info.notes}`}
                                                         </ReactMarkdown>
-                                                    ))}
-                                                </>
-                                            ) : null}
-                                        </ReferencesContainer>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    )}
-                </div>
+                                                    </GeneralRow>
+                                                ) : null}
+
+                                                {info.sourceText ? (
+                                                    <GeneralRow>
+                                                        <CreditsText>
+                                                            {i18n.t("Suggested citation: ", { nsSeparator: false })}
+                                                        </CreditsText>
+                                                        &nbsp;
+                                                        {info.sourceUrl ? (
+                                                            <Link
+                                                                href={info.sourceUrl}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                                onClick={redirectWithExternalLink}
+                                                            >
+                                                                {info.sourceText}
+                                                            </Link>
+                                                        ) : (
+                                                            <CreditsText>{info.sourceText}</CreditsText>
+                                                        )}
+                                                    </GeneralRow>
+                                                ) : null}
+                                            </GeneralDataContainer>
+                                            <ReferencesContainer>
+                                                {info.country && getCleanReferencesByCountry(info.country)?.length ? (
+                                                    <>
+                                                        <ReferencesTitle>
+                                                            {i18n.t("References", { nsSeparator: false })}
+                                                        </ReferencesTitle>
+                                                        {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                                            <ReactMarkdown
+                                                                key={reference}
+                                                                components={{
+                                                                    p: ({ children }) => (
+                                                                        <ReferenceText>{children}</ReferenceText>
+                                                                    ),
+                                                                }}
+                                                            >
+                                                                {reference}
+                                                            </ReactMarkdown>
+                                                        ))}
+                                                    </>
+                                                ) : null}
+                                            </ReferencesContainer>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </ExportedContent>
+                </Container>
             </MainSection>
         </Layout>
     );
@@ -381,6 +390,9 @@ const DownloadButton = styled(Button)`
     align-self: flex-end;
     margin-block-start: 20px;
     background: #185698;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        display: none;
+    }
 `;
 
 const Center = styled.div`
@@ -391,3 +403,11 @@ const Center = styled.div`
     justify-content: center;
     align-items: center;
 `;
+
+const Container = styled.div`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        display: none;
+    }
+`;
+
+const ExportedContent = styled.div``;
