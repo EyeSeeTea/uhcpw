@@ -12,6 +12,8 @@ import {
     REPUBLICA_SERPSKA,
     BOSNIA_AND_HERZEGOVINA_LEVEL_4,
 } from "../../../data/repositories/countries/CountryD2Repository";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { colors } from "../../pages/app/themes/dhis2.theme";
 
 export const CountryResources: React.FC<{ countryId: string }> = ({ countryId }) => {
     const history = useHistory();
@@ -57,15 +59,15 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             />
                         </Fab>
                     </Row>
-                    <Grid container spacing={5}>
+                    <StyledGridContainer container spacing={5}>
                         {countryAnalysisResource.map((resource, i) => {
                             return (
-                                <Grid key={`country-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
+                                <StyledGridItem key={`country-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
                                     <ResourceItem resource={resource} analyticsPageTitle="Country page" />
-                                </Grid>
+                                </StyledGridItem>
                             );
                         })}
-                    </Grid>
+                    </StyledGridContainer>
                     <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
@@ -89,15 +91,15 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             />
                         </Fab>
                     </Row>
-                    <Grid container spacing={5}>
+                    <StyledGridContainer container spacing={5}>
                         {comparativeAnalysisResources.map((resource, i) => {
                             return (
-                                <Grid key={`comparative-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
+                                <StyledGridItem key={`comparative-analysis-${i}`} item xs={6} md={4} lg={3} xl={2}>
                                     <ResourceItem resource={resource} analyticsPageTitle="Country page" />
-                                </Grid>
+                                </StyledGridItem>
                             );
                         })}
-                    </Grid>
+                    </StyledGridContainer>
                     <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
@@ -108,8 +110,11 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
 };
 
 const Container = styled.div`
-    padding: 40px 0px 40px 60px;
+    padding: 40px 0px;
     max-width: 80%;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        max-width: 100%;
+    }
 `;
 
 const ResourcesSection = styled.div`
@@ -122,4 +127,22 @@ const Row = styled.div`
     align-items: center;
     margin-block-end: 25px;
     gap: 2px;
+    padding-inline-start: 60px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        max-width: 100%;
+    }
+`;
+
+const StyledGridContainer = styled(Grid)`
+    padding-inline-start: 60px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        background: ${colors.carouselBackground};
+        padding-inline-start: 40px;
+    }
+`;
+
+const StyledGridItem = styled(Grid)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 20px;
+    }
 `;

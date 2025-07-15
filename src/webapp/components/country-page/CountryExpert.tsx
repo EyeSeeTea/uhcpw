@@ -3,6 +3,10 @@ import styled from "styled-components";
 import i18n from "../../../locales";
 import bubblePattern from "../../assets/bubble-pattern.svg";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
+import {
+    BREAKPOINT_WIDTH_MOBILE_SCREEN,
+    BREAKPOINT_WIDTH_SMALL_SCREEN,
+} from "../../common/hooks/screen/useIsSmallScreen";
 
 export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) => {
     const { experts } = useCountryExpert(countryId);
@@ -43,6 +47,9 @@ const Container = styled.div`
 
 const GridContainer = styled(Grid)`
     margin: 30px 0px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        width: 100%;
+    }
 `;
 
 const StyledTypography = styled(Typography)`
@@ -54,7 +61,7 @@ const Row = styled.div`
     align-items: center;
     gap: 40px;
     margin: 30px 10px 30px 0px;
-    @media (max-width: 600px) {
+    @media (max-width: ${BREAKPOINT_WIDTH_MOBILE_SCREEN}px) {
         flex-direction: column;
     }
 `;

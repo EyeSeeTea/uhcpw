@@ -15,6 +15,7 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
+import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 
 type HeroProps = {
     countryId: string;
@@ -32,6 +33,8 @@ const ANALYTICS_CONTENT = {
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndRegions } = useAppContext();
     const country = useCountryInfo(countryId);
+    const isSmallScreen = useIsSmallScreen();
+
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
     const handleOpenScreenshot = React.useCallback(() => {
@@ -79,6 +82,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         onDownloadImage={handleOpenScreenshot}
                         paddingEnd={false}
                         analyticsPageTitle="Country page"
+                        showDialogInFullScreen={isSmallScreen}
                     />
                 </VisualizationContainer>
 

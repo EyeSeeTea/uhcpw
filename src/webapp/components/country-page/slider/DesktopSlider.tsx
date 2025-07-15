@@ -113,11 +113,11 @@ function a11yProps(index: number) {
     };
 }
 
-export const Slider: React.FC<{ countryId: string; resetTab?: boolean; handleResetTab: (value: boolean) => void }> = ({
-    countryId,
-    handleResetTab,
-    resetTab = false,
-}) => {
+export const DesktopSlider: React.FC<{
+    countryId: string;
+    resetTab?: boolean;
+    handleResetTab: (value: boolean) => void;
+}> = ({ countryId, handleResetTab, resetTab = false }) => {
     const classes = useStyles();
     const {
         tabValue,

@@ -10,6 +10,7 @@ import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
 import { Option } from "../../components/dropdown/Option";
 import { getBackgroundColorByCountryStatus } from "../../pages/country/utils";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -67,7 +68,7 @@ export const Header: FC<HeaderType> = ({
 
     return (
         <Container aria-label="country-page-header" status={country?.status} className={classes.container}>
-            <ButtonsContainer>
+            <DropdownContainer>
                 <CountryDropdown
                     fullWidth
                     placeholder={i18n.t("Select country or area")}
@@ -76,7 +77,7 @@ export const Header: FC<HeaderType> = ({
                     onChange={onCountryChange}
                 />
                 {country && <UmbrellaIcon status={country?.status} />}
-            </ButtonsContainer>
+            </DropdownContainer>
             <ButtonsContainer>
                 <Button>
                     <ButtonText>{i18n.t("Dashboard")}</ButtonText>
@@ -103,15 +104,32 @@ const Container = styled.div<{ status: CountryStatus | undefined }>`
     height: 80px;
     align-items: center;
     background: ${props => getBackgroundColorByCountryStatus(props.status)};
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 32px;
+        flex-wrap: nowrap;
+    }
+`;
+
+const DropdownContainer = styled.div`
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        gap: 0px;
+    }
 `;
 
 const ButtonsContainer = styled.div`
     display: flex;
     gap: 20px;
     align-items: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        gap: 14px;
+    }
 `;
 
 const ButtonText = styled(Typography)`
     text-transform: none;
     font-weight: 400;
+    white-space: nowrap;
 `;

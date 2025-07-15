@@ -29,6 +29,7 @@ interface VisualizationPluginProps {
     onCloseFullScreen?: () => void;
     onLoadingChange?: (loading: boolean) => void;
     forcePluginFullScreen?: boolean;
+    showDialogInFullScreen?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -50,6 +51,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         onCloseFullScreen,
         onLoadingChange,
         forcePluginFullScreen = false,
+        showDialogInFullScreen = false,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -165,7 +167,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     visualizationId === CHART_SCATTER_VISUALIZATION_ID || (openFullScreenDialog && isMobile)
                 }
                 onClose={openFullScreenDialog && isMobile ? handleCloseFullScreen : undefined}
-                isFullScreen={openFullScreenDialog || false}
+                showDialogInFullScreen={openFullScreenDialog || showDialogInFullScreen}
             />
             <ChartPlugin
                 key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed

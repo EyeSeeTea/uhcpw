@@ -5,6 +5,7 @@ import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
 import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -22,6 +23,8 @@ type SlideGraphType = {
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo }) => {
+    const isSmallScreen = useIsSmallScreen();
+
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
 
     const handleOpenScreenshot = React.useCallback((graph: VisualizationProps) => {
@@ -43,9 +46,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
 
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
+            <StyledTypography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
                 {i18n.t(title)}
-            </Typography>
+            </StyledTypography>
             <VisualizationContainer>
                 <VisualizationPlugin
                     visualizationId={(graphOne as VisualizationProps).visualizationId}
@@ -58,6 +61,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
                     noDataMessage={pageContent?.noDataMessage}
                     analyticsPageTitle="Country page"
+                    showDialogInFullScreen={isSmallScreen}
                 />
             </VisualizationContainer>
             {graphTwo && (
@@ -73,6 +77,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                         noDataMessage={pageContent?.noDataMessage}
                         analyticsPageTitle="Country page"
+                        showDialogInFullScreen={isSmallScreen}
                     />
                 </VisualizationContainer>
             )}
@@ -121,9 +126,17 @@ const Container = styled.div`
             ${visuallyHidden};
         }
     }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 0;
+    }
 `;
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
     padding-inline-end: 50px;
+`;
+
+const StyledTypography = styled(Typography)`
+    color: black;
 `;

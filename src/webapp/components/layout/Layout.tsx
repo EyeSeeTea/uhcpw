@@ -2,14 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { AppFooter } from "./app-footer/AppFooter";
 import { AppHeader } from "./app-header/AppHeader";
+import { Rotate } from "../rotate/Rotate";
 
 interface LayoutProps {
     headerAction?: React.ReactNode;
+    enableRotation?: boolean;
 }
 
-export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, children }) => {
+export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, children, enableRotation = false }) => {
     return (
-        <>
+        <Rotate enableRotation={enableRotation}>
             <header>
                 <AppHeader action={headerAction} />
             </header>
@@ -19,7 +21,7 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, childre
             <footer id="footer">
                 <AppFooter />
             </footer>
-        </>
+        </Rotate>
     );
 });
 
