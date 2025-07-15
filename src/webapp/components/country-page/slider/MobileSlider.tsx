@@ -3,24 +3,27 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useCountrySlider } from "../../../pages/country/useCountrySlider";
 import styled from "styled-components";
 import { MobileSliderContent } from "./MobileSliderContent";
+import { ChangeEvent } from "react";
+import React from "react";
 
 export const MobileSlider: React.FC<{
     countryId: string;
     resetTab?: boolean;
     handleResetTab: (value: boolean) => void;
 }> = ({ countryId }) => {
-    const { sliderGraphsConfig, sliderInfoConfig, expandedSliderConfig, handleAccordionChange } =
-        useCountrySlider(countryId);
+    const { configs, expandedSliderConfig, handleAccordionChange } = useCountrySlider(countryId);
 
     if (!countryId) return <CircularProgress />;
 
     return (
         <AccordionContainer>
-            {[...sliderGraphsConfig, ...sliderInfoConfig].map(config => (
+            {configs.map(config => (
                 <StyledAccordion
                     key={`${config.tab}-key`}
                     expanded={config.tab === expandedSliderConfig?.tab}
-                    onChange={(_event, isExpanded: boolean) => handleAccordionChange(config.tab, isExpanded)}
+                    onChange={(event: ChangeEvent<{}>, isExpanded: boolean) => {
+                        handleAccordionChange(event, config.tab, isExpanded);
+                    }}
                 >
                     <StyledAccordionSummary aria-controls={`${config.tab}-content`} id={`${config.tab}-header`}>
                         <Typography>{config.tabTitle}</Typography>

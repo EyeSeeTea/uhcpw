@@ -49,7 +49,8 @@ type CountrySlider = {
     sliderGraphsConfig: SliderGraphsConfigs;
     sliderInfoConfig: SliderInfoConfigs;
     expandedSliderConfig?: SliderGraphConfig | SliderInfoConfig;
-    handleAccordionChange: (tabId: number, isExpanded: boolean) => void;
+    configs: (SliderInfoConfig | SliderGraphConfig)[];
+    handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     handleTabChange: (_event: React.ChangeEvent<{}>, newValue: number) => void;
     onWheel: (event: React.WheelEvent<HTMLButtonElement>) => void;
     disableScroll: () => void;
@@ -363,8 +364,10 @@ export function useCountrySlider(countryId: string): CountrySlider {
         ]
     );
 
+    const configs = useMemo(() => [...sliderGraphsConfig, ...sliderInfoConfig], [sliderGraphsConfig, sliderInfoConfig]);
+
     const handleAccordionChange = useCallback(
-        (tabId: number, isExpanded: boolean) => {
+        (_event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => {
             setExpandedSliderConfig(undefined);
             const sliderConfigSelected = isExpanded
                 ? [...sliderGraphsConfig, ...sliderInfoConfig].find(config => config.tab === tabId)
@@ -378,6 +381,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
         tabValue,
         sliderGraphsConfig,
         sliderInfoConfig,
+        configs,
         expandedSliderConfig,
         handleAccordionChange,
         handleTabChange,

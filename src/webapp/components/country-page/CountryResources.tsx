@@ -137,7 +137,8 @@ const StyledGridContainer = styled(Grid)`
     padding-inline-start: 60px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${colors.carouselBackground};
-        padding-inline-start: 40px;
+        padding-inline-start: 20px;
+        width: calc(100% + 20px);
     }
 `;
 
