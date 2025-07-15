@@ -94,6 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     isSquareChart={true}
                     analyticsPageTitle="Country page"
                     analyticsContent={ANALYTICS_CONTENT}
+                    forceRotation={isSmallScreen}
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}

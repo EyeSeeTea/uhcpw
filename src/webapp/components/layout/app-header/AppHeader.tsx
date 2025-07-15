@@ -66,9 +66,11 @@ export const useStyles = makeStyles(theme => ({
 
 interface AppHeaderProps {
     action?: React.ReactNode;
+    isScreenRotated?: boolean;
 }
 
-export const AppHeader: React.FC<AppHeaderProps> = () => {
+export const AppHeader: React.FC<AppHeaderProps> = props => {
+    const { isScreenRotated = false } = props;
     const classes = useStyles();
     const { abbreviationsLink, glossaryLink } = useReferenceLinks();
     const { goToHome, whoLogoWidth, uhcwLogoWidth, isHomePage } = useAppHeader();
@@ -115,7 +117,7 @@ export const AppHeader: React.FC<AppHeaderProps> = () => {
                         <FlexContainer>
                             <MenuContainer>
                                 <Hidden lgUp>
-                                    <MobileMenu />
+                                    <MobileMenu isScreenRotated={isScreenRotated} />
                                 </Hidden>
 
                                 <Hidden mdDown>

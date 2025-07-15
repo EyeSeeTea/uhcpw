@@ -1,34 +1,39 @@
 import React from "react";
-import { IconButton, Menu, MenuItem, Divider, withStyles } from "@material-ui/core";
+import { IconButton, Menu, withStyles } from "@material-ui/core";
 import { Menu as MenuIcon, CloseOutlined as CloseOutlinedIcon } from "@material-ui/icons";
 import styled from "styled-components";
-import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import i18n from "../../../../locales";
-import { MobileMenuSubItem } from "./MobileMenuSubItem";
-import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
-import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { MenuItems } from "./MenuItems";
+import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 
-export const MobileMenu: React.FC = () => {
-    const { redirectWithPageView } = useAnalytics();
-    const { countryFilter } = useCountryPage();
+type MobileMenuProps = {
+    isScreenRotated?: boolean;
+};
+
+export const MobileMenu: React.FC<MobileMenuProps> = props => {
+    const { isScreenRotated = false } = props;
     const {
         regionalReport,
         anchorEl,
         isHomePage,
+        isCountryPage,
+        menuRef,
+        open,
+        onToggleForSmallScreens,
         goToHome,
         handleCountryClick,
         handleMenuItemClick,
         handleClose,
         handleSetAnchorEl,
-    } = useAppHeader();
-    const open = Boolean(anchorEl);
-
-    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
+    } = useAppHeader(isScreenRotated);
+    const isSmallScreen = useIsSmallScreen();
 
     const StyledMenu = withStyles({
+        root: {
+            backgroundColor: "red",
+        },
         paper: {
             border: "1px solid #d3d4d5",
             backgroundColor: colors.accentPrimary,
@@ -38,87 +43,70 @@ export const MobileMenu: React.FC = () => {
     })(Menu);
 
     return (
-        <div>
+        <Wrapper>
             <IconButton
                 id="basic-button"
                 aria-controls={open ? "basic-menu" : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
-                onClick={handleSetAnchorEl}
+                onClick={isSmallScreen && isScreenRotated ? onToggleForSmallScreens : handleSetAnchorEl}
             >
                 {open ? <CloseOutlinedIcon /> : <MenuIcon />}
             </IconButton>
-            <StyledMenu
-                anchorEl={anchorEl}
-                keepMounted
-                open={open}
-                onClose={() => handleClose()}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                }}
-                transformOrigin={{
-                    vertical: -40,
-                    horizontal: "center",
-                }}
-            >
-                {!isHomePage ? (
-                    <>
-                        <HomeMenuItem onClick={() => goToHome(true)}>
-                            <HomeOutlinedIcon style={{ color: "#F0F0FF" }} />
-                        </HomeMenuItem>
-                        <StyledDivider />
-                    </>
-                ) : null}
 
-                <MenuItem onClick={() => handleMenuItemClick("/indicator-explorer")}>
-                    {i18n.t("Indicator explorer")}
-                </MenuItem>
-                <StyledDivider />
-                <MenuItem onClick={() => handleMenuItemClick("/policy-explorer")}>{i18n.t("Policy explorer")}</MenuItem>
-                <StyledDivider />
-                <MenuItem>
-                    <MobileMenuSubItem item="Countries & areas">
-                        <div>
-                            {countryFilter.countryOptions.map(country => {
-                                return (
-                                    <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
-                                        {country.text}
-                                    </MenuItem>
-                                );
-                            })}
-                        </div>
-                    </MobileMenuSubItem>
-                </MenuItem>
-                <StyledDivider />
-                <MenuItem>
-                    <MenuLink target="_blank" href={regionalReport} rel="noreferrer" onClick={regionalReportPageView}>
-                        {i18n.t("Regional report")}
-                    </MenuLink>
-                </MenuItem>
-                <StyledDivider />
-                <MenuItem onClick={() => handleMenuItemClick("/methods")}>{i18n.t("Methods")}</MenuItem>
-                <StyledDivider />
-                <MenuItem onClick={() => handleMenuItemClick("/resources")}>{i18n.t("Resources")}</MenuItem>
-                <StyledDivider />
-                <MenuItem onClick={() => handleMenuItemClick("/about")}>{i18n.t("About us")}</MenuItem>
-            </StyledMenu>
-        </div>
+            {isSmallScreen && isScreenRotated ? (
+                open ? (
+                    <MenuContainer ref={menuRef}>
+                        <MenuItems
+                            regionalReport={regionalReport}
+                            isHomePage={isHomePage}
+                            isCountryPage={isCountryPage}
+                            goToHome={goToHome}
+                            handleCountryClick={handleCountryClick}
+                            handleMenuItemClick={handleMenuItemClick}
+                        />
+                    </MenuContainer>
+                ) : null
+            ) : (
+                <StyledMenu
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={open}
+                    onClose={() => handleClose()}
+                    anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                    }}
+                    transformOrigin={{
+                        vertical: -40,
+                        horizontal: "center",
+                    }}
+                >
+                    <MenuItems
+                        regionalReport={regionalReport}
+                        isHomePage={isHomePage}
+                        isCountryPage={isCountryPage}
+                        goToHome={goToHome}
+                        handleCountryClick={handleCountryClick}
+                        handleMenuItemClick={handleMenuItemClick}
+                    />
+                </StyledMenu>
+            )}
+        </Wrapper>
     );
 };
 
-const StyledDivider = styled(Divider)`
-    margin: 7px auto;
-    width: 80%;
-    background-color: #b5b5b5;
-`;
-
-const MenuLink = styled.a`
-    text-transform: none;
-    text-decoration: none;
+const MenuContainer = styled.div`
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: ${colors.accentPrimary};
     color: white;
+    border: 1px solid #d3d4d5;
+    padding: 10px;
+    z-index: 10;
 `;
 
-const HomeMenuItem = styled(MenuItem)`
-    justify-content: center;
+const Wrapper = styled.div`
+    position: relative;
 `;

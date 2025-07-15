@@ -1,6 +1,7 @@
 import { Autocomplete } from "@material-ui/lab";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { Popper } from "@material-ui/core";
 
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 import { Option } from "../../dropdown/Option";
@@ -12,10 +13,11 @@ interface CountryDropdownProps {
     fullWidth?: boolean;
     onChange: (value: string) => void;
     width?: string;
+    forceRotation?: boolean;
 }
 
 export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
-    ({ label, countryOptions, value, placeholder, fullWidth, width = "100%", onChange }) => {
+    ({ label, countryOptions, value, placeholder, fullWidth, width = "100%", onChange, forceRotation = false }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
 
         useEffect(() => {
@@ -33,6 +35,7 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
         return (
             <Container width={width} aria-label="country-dropdown">
                 <StyledAutocomplete
+                    PopperComponent={props => (forceRotation ? <StyledPopper {...props} /> : <Popper {...props} />)}
                     fullWidth={fullWidth}
                     multiple={false}
                     id="country-autocomplete"
@@ -45,6 +48,10 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
                             label={label}
                             placeholder={placeholder}
                             InputLabelProps={{ shrink: true }}
+                            InputProps={{
+                                ...params.InputProps,
+                                readOnly: forceRotation,
+                            }}
                         />
                     )}
                     onChange={handleChange}
@@ -66,4 +73,8 @@ const StyledAutocomplete = styled(Autocomplete)`
     .MuiAutocomplete-popupIndicator {
         margin-right: 5px;
     }
+`;
+
+const StyledPopper = styled.div`
+    position: absolute;
 `;

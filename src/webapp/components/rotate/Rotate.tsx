@@ -11,6 +11,7 @@ type Props = {
 
 export const Rotate: React.FC<Props> = ({ children, enableRotation, width, height }) => {
     const orientation = useOrientation();
+
     const rotate = useMemo(() => {
         return enableRotation === true && orientation === "portrait";
     }, [enableRotation, orientation]);

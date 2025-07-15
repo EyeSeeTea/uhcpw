@@ -90,6 +90,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     backgroundColor={"#f1f9fc"}
                     analyticsPageTitle="Country page"
                     analyticsContent={analyticsContent}
+                    forceRotation={isSmallScreen}
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}

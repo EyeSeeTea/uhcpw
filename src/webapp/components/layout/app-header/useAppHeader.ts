@@ -1,15 +1,20 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Option } from "../../dropdown/Option";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAppContext } from "../../../contexts/app-context";
 import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
+import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 
-export function useAppHeader() {
+export function useAppHeader(isScreenRotated?: boolean) {
     const history = useHistory();
     const { pathname } = useLocation();
     const { compositionRoot } = useAppContext();
     const { isXs } = useBreakpoint();
+    const isSmallScreen = useIsSmallScreen();
 
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    const [openForSmallScreens, setOpeForSmallScreens] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [regionalReport, setRegionalReport] = useState<string>("");
 
@@ -24,33 +29,46 @@ export function useAppHeader() {
         [setAnchorEl]
     );
 
+    const onToggleForSmallScreens = useCallback(() => {
+        setOpeForSmallScreens(prev => !prev);
+    }, []);
+
+    const onCloseMenu = useCallback(() => {
+        setOpeForSmallScreens(false);
+    }, []);
+
     const goToHome = useCallback(
         (closeMenu?: boolean) => {
             history.push("/");
             if (closeMenu) {
                 handleClose();
+                onCloseMenu();
             }
         },
-        [handleClose, history]
+        [handleClose, history, onCloseMenu]
     );
 
     const handleMenuItemClick = useCallback(
         (link: string) => {
             history.push(link);
             handleClose();
+            onCloseMenu();
         },
-        [history, handleClose]
+        [history, handleClose, onCloseMenu]
     );
 
     const handleCountryClick = useCallback(
         (country: Option<string>) => {
             history.push(`/country-page?country=${country.value}`);
             handleClose();
+            onCloseMenu();
         },
-        [handleClose, history]
+        [handleClose, history, onCloseMenu]
     );
 
     const isHomePage = useMemo(() => pathname === "/", [pathname]);
+
+    const isCountryPage = useMemo(() => pathname === "/country-page", [pathname]);
 
     const whoLogoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
 
@@ -66,12 +84,39 @@ export function useAppHeader() {
         );
     }, [compositionRoot.home.getRegionalReportLink]);
 
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+                onCloseMenu();
+            }
+        };
+
+        if (openForSmallScreens) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [onCloseMenu, openForSmallScreens]);
+
+    const open = useMemo(
+        () => (isSmallScreen && isScreenRotated ? openForSmallScreens : Boolean(anchorEl)),
+        [anchorEl, isScreenRotated, isSmallScreen, openForSmallScreens]
+    );
+
     return {
         regionalReport,
         anchorEl,
         isHomePage,
+        isCountryPage,
         whoLogoWidth,
         uhcwLogoWidth,
+        menuRef,
+        open,
+        onToggleForSmallScreens,
         goToHome,
         handleCountryClick,
         handleMenuItemClick,

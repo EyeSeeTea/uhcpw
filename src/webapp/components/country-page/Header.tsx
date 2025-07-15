@@ -10,7 +10,7 @@ import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
 import { Option } from "../../components/dropdown/Option";
 import { getBackgroundColorByCountryStatus } from "../../pages/country/utils";
-import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -56,6 +56,8 @@ export const Header: FC<HeaderType> = ({
 }) => {
     const country = useCountryInfo(countryId);
     const classes = useStyles();
+    const isSmallScreen = useIsSmallScreen();
+
     const handleClick = useCallback(
         (ref: MutableRefObject<any>, where: "detail" | "resources" | "expert") => {
             ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -75,6 +77,7 @@ export const Header: FC<HeaderType> = ({
                     countryOptions={countryOptions}
                     value={countryId}
                     onChange={onCountryChange}
+                    forceRotation={isSmallScreen}
                 />
                 {country && <UmbrellaIcon status={country?.status} />}
             </DropdownContainer>

@@ -13,7 +13,7 @@ export const Layout: React.FC<LayoutProps> = React.memo(({ headerAction, childre
     return (
         <Rotate enableRotation={enableRotation}>
             <header>
-                <AppHeader action={headerAction} />
+                <AppHeader action={headerAction} isScreenRotated={enableRotation} />
             </header>
 
             <Main>{children}</Main>
