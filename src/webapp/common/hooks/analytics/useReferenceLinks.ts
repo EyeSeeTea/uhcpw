@@ -1,8 +1,20 @@
-import { useAppContext } from "../../../contexts/app-context";
-import { useAnalytics } from "./useAnalytics";
 import React from "react";
 
-export function useReferenceLinks() {
+import { useAppContext } from "../../../contexts/app-context";
+import { useAnalytics } from "./useAnalytics";
+
+type ReferenceLink = {
+    href: string;
+    target: string;
+    onClick: () => void;
+};
+
+type State = {
+    abbreviationsLink: ReferenceLink;
+    glossaryLink: ReferenceLink;
+};
+
+export function useReferenceLinks(): State {
     const { generalContent } = useAppContext();
     const { sendPageView, redirectWithPageView } = useAnalytics();
 
@@ -10,7 +22,7 @@ export function useReferenceLinks() {
         if (generalContent && generalContent?.abbreviations.file) {
             return {
                 href: URL.createObjectURL(generalContent.abbreviations.file.content),
-                download: generalContent.abbreviations.file.name,
+                target: "_blank",
                 onClick: () => sendPageView({ title: "Abbreviations" }),
             };
         }
@@ -25,7 +37,7 @@ export function useReferenceLinks() {
         if (generalContent && generalContent?.glossary.file) {
             return {
                 href: URL.createObjectURL(generalContent.glossary.file.content),
-                download: generalContent.glossary.file.name,
+                target: "_blank",
                 onClick: () => sendPageView({ title: "Glossary" }),
             };
         }
