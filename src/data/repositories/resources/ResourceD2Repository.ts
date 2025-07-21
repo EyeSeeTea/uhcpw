@@ -142,6 +142,8 @@ export class ResourceD2Repository implements ResourceRepository {
                 ? favoriteResourcesIds.join(";")
                 : undefined;
 
+            const hasCountriesFilter = filters.countries && filters.countries.length > 0;
+
             //2:38 has a bug filtering events by data element value using eq operator. Like works!
             const filter = _([
                 filters.category ? this.getCategoriesFilter(filters.category) : undefined,
@@ -161,18 +163,15 @@ export class ResourceD2Repository implements ResourceRepository {
                     program: resourcesProgram,
                     startDate: startYear ? `${startYear}-01-01` : undefined,
                     endDate: endYear ? `${endYear}-12-31` : undefined,
-                    skipPaging: filters.pageSize ? false : true,
-                    pageSize: filters.pageSize,
-                    page: filters.page ? filters.page : 1,
+                    skipPaging: filters.pageSize && !hasCountriesFilter ? false : true,
+                    pageSize: hasCountriesFilter ? undefined : filters.pageSize,
+                    page: filters.page && !hasCountriesFilter ? filters.page : 1,
                     filter,
-                    order: "eventDate:desc",
+                    order: "eventDate:desc,event:asc",
                     event: favoriteIdsFilter,
                 })
             ).flatMap(response => {
-                const events =
-                    filters.countries && filters.countries.length > 0
-                        ? this.filterCountries(response.events, filters)
-                        : response.events;
+                const events = hasCountriesFilter ? this.filterCountries(response.events, filters) : response.events;
 
                 return Future.success(this.buildResources(events, filters, favorites));
             });
