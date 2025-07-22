@@ -78,6 +78,7 @@ export const Header: FC<HeaderType> = ({
                     value={countryId}
                     onChange={onCountryChange}
                     forceRotation={isSmallScreen}
+                    fullScreen={isSmallScreen}
                 />
                 {country && <UmbrellaIcon status={country?.status} />}
             </DropdownContainer>
@@ -108,7 +109,7 @@ const Container = styled.div<{ status: CountryStatus | undefined }>`
     align-items: center;
     background: ${props => getBackgroundColorByCountryStatus(props.status)};
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding-inline: 32px;
+        padding-inline: 16px;
         flex-wrap: nowrap;
     }
 `;
@@ -119,6 +120,9 @@ const DropdownContainer = styled.div`
     align-items: center;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         gap: 0px;
+        img {
+            width: 90px;
+        }
     }
 `;
 
@@ -127,7 +131,7 @@ const ButtonsContainer = styled.div`
     gap: 20px;
     align-items: center;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        gap: 14px;
+        gap: 10px;
     }
 `;
 

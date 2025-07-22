@@ -19,6 +19,7 @@ export const MobileSliderContent: React.FC<MobileSliderProps> = props => {
                     graphOne={expandedSliderConfig.graphOne}
                     graphTwo={expandedSliderConfig.graphTwo}
                     countryId={countryId}
+                    isMobile
                 />
             );
         case "info":

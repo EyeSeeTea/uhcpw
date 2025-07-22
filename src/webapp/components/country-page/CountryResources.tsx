@@ -76,7 +76,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
 
             {comparativeAnalysisResources?.length ? (
                 <ResourcesSection aria-label="comparative-resources">
-                    <Row>
+                    <RowWithMargin>
                         <Typography variant="h6">{i18n.t("Comparative analysis")}</Typography>
                         <Fab
                             aria-label="Go to comparative analysis resources"
@@ -90,7 +90,7 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                                 }
                             />
                         </Fab>
-                    </Row>
+                    </RowWithMargin>
                     <StyledGridContainer container spacing={5}>
                         {comparativeAnalysisResources.map((resource, i) => {
                             return (
@@ -114,11 +114,16 @@ const Container = styled.div`
     max-width: 80%;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
+        padding: 30px 0px;
     }
 `;
 
 const ResourcesSection = styled.div`
     margin-block-start: 50px;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-block-start: 0;
+    }
 `;
 
 const Row = styled.div`
@@ -145,5 +150,11 @@ const StyledGridContainer = styled(Grid)`
 const StyledGridItem = styled(Grid)`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 20px;
+    }
+`;
+
+const RowWithMargin = styled(Row)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-block-start: 30px;
     }
 `;

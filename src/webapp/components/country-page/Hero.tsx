@@ -15,7 +15,7 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
-import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 
 type HeroProps = {
     countryId: string;
@@ -136,9 +136,21 @@ const InfoGrid = styled(Grid)`
 const GraphGrid = styled(Grid)`
     padding: 20px 50px 30px 50px;
     background-color: white;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 20px 30px 30px 30px;
+    }
 `;
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
     padding-inline-end: 50px;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 0;
+
+        > div {
+            padding: 0;
+        }
+    }
 `;

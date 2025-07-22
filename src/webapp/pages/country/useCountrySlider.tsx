@@ -368,7 +368,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
 
     const handleAccordionChange = useCallback(
         (_event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => {
-            setExpandedSliderConfig(undefined);
             const sliderConfigSelected = isExpanded
                 ? [...sliderGraphsConfig, ...sliderInfoConfig].find(config => config.tab === tabId)
                 : undefined;

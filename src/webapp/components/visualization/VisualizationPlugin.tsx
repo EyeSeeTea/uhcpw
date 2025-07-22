@@ -211,7 +211,7 @@ type VisualizationPluginContainerProps = {
 export const VisualizationPluginContainer: React.FC<VisualizationPluginContainerProps> = React.memo(
     ({ children, fullscreen, withoutBackground, marginStart, paddingEnd, ref }) => {
         return fullscreen ? (
-            <FullScreenDialog isOpen={true} forceRotation={true} hasPadding={false}>
+            <FullScreenDialog isOpen={true} forceRotation={true} hasPadding={false} recalculateHeight>
                 <Container
                     className="VisualizationPlugin-container"
                     ref={ref}
