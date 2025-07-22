@@ -42,7 +42,7 @@ const Container = styled.div`
     background-size: contain;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding: 30px 0px 30px 30px;
+        padding: 30px 0px 0px 30px;
     }
 `;
 
@@ -51,6 +51,7 @@ const GridContainer = styled(Grid)`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         width: 100%;
+        margin: 0;
     }
 `;
 
@@ -108,5 +109,6 @@ const TitleRow = styled.div`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-inline-start: 30px;
+        margin-block-end: 0;
     }
 `;

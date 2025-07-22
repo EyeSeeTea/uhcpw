@@ -117,7 +117,7 @@ const Container = styled.div`
     padding: 20px 50px 30px 50px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding: 0;
+        padding: 30px;
     }
 `;
 

@@ -90,7 +90,7 @@ const Container = styled.div`
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding: 0;
+        padding: 0px 0px 0px 30px;
         margin: 0;
     }
 `;
@@ -104,7 +104,8 @@ const UmbrellaContainer = styled(Grid)`
     justify-content: center;
     padding-inline-end: 40px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding: 0;
+        padding-block-start: 30px;
+        padding-inline: 20px 30px;
     }
 `;
 
@@ -117,7 +118,7 @@ const Column = styled.div`
     width: 100%;
     padding-block: 46px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding: 0;
+        padding-block: 30px;
         color: black;
     }
 `;
