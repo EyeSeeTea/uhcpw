@@ -98,5 +98,5 @@ const StyledAccordionDetails = styled(AccordionDetails)`
     border-radius: 0;
     border: none;
     background: white;
-    padding: 20px 25px 20px 64px;
+    padding: 30px;
 `;
