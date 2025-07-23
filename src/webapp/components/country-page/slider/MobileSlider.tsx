@@ -3,7 +3,7 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useCountrySlider } from "../../../pages/country/useCountrySlider";
 import styled from "styled-components";
 import { MobileSliderContent } from "./MobileSliderContent";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect } from "react";
 import React from "react";
 
 export const MobileSlider: React.FC<{
@@ -12,6 +12,20 @@ export const MobileSlider: React.FC<{
     handleResetTab: (value: boolean) => void;
 }> = ({ countryId }) => {
     const { configs, expandedSliderConfig, handleAccordionChange } = useCountrySlider(countryId);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            if (!expandedSliderConfig) return;
+
+            const accordion = document.getElementById(`${expandedSliderConfig.tab}-header`);
+
+            accordion?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 380);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [expandedSliderConfig]);
 
     if (!countryId) return <CircularProgress />;
 
@@ -29,11 +43,7 @@ export const MobileSlider: React.FC<{
                         <Typography>{config.tabTitle}</Typography>
                     </StyledAccordionSummary>
                     <StyledAccordionDetails>
-                        {config.tab === expandedSliderConfig?.tab ? (
-                            <MobileSliderContent countryId={countryId} expandedSliderConfig={expandedSliderConfig} />
-                        ) : (
-                            <CircularProgress />
-                        )}
+                        <MobileSliderContent countryId={countryId} config={config} />
                     </StyledAccordionDetails>
                 </StyledAccordion>
             ))}

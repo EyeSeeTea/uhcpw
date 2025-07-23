@@ -5,30 +5,26 @@ import { Id } from "../../../../domain/entities/Ref";
 
 type MobileSliderProps = {
     countryId: Id;
-    expandedSliderConfig: SliderGraphConfig | SliderInfoConfig;
+    config: SliderGraphConfig | SliderInfoConfig;
 };
 
 export const MobileSliderContent: React.FC<MobileSliderProps> = props => {
-    const { expandedSliderConfig, countryId } = props;
+    const { config, countryId } = props;
 
-    switch (expandedSliderConfig.kind) {
+    switch (config.kind) {
         case "graph":
             return (
                 <SlideGraph
-                    title={expandedSliderConfig.tabTitle}
-                    graphOne={expandedSliderConfig.graphOne}
-                    graphTwo={expandedSliderConfig.graphTwo}
+                    title={config.tabTitle}
+                    graphOne={config.graphOne}
+                    graphTwo={config.graphTwo}
                     countryId={countryId}
                     isMobile
                 />
             );
         case "info":
-            return expandedSliderConfig?.sliderContent ? (
-                <SlideInfo
-                    sliderInfo={expandedSliderConfig?.sliderContent}
-                    titleColor={expandedSliderConfig.titleColor}
-                    icon={expandedSliderConfig.icon}
-                />
+            return config?.sliderContent ? (
+                <SlideInfo sliderInfo={config?.sliderContent} titleColor={config.titleColor} icon={config.icon} />
             ) : null;
     }
 };
