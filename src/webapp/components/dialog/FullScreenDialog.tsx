@@ -13,6 +13,13 @@ type FullScreenDialogProps = {
     ref?: React.RefObject<HTMLDivElement>;
     forceRotation?: boolean;
     hasPadding?: boolean;
+    recalculateHeight?: boolean;
+};
+
+const baseStyles = {
+    width: "100vw",
+    margin: 0,
+    padding: 0,
 };
 
 export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
@@ -23,23 +30,27 @@ export const FullScreenDialog: React.FC<FullScreenDialogProps> = ({
     title,
     forceRotation,
     hasPadding = true,
+    recalculateHeight = false,
 }) => {
     useRealViewportHeight();
     const viewportKey = useViewportKey();
 
     return (
         <Dialog
-            key={viewportKey}
+            key={recalculateHeight ? viewportKey : undefined}
             open={isOpen}
             onClose={onClose}
             fullScreen
             PaperProps={{
-                style: {
-                    height: "var(--vh)",
-                    width: "100vw",
-                    margin: 0,
-                    padding: 0,
-                },
+                style: recalculateHeight
+                    ? {
+                          height: "var(--vh)",
+                          ...baseStyles,
+                      }
+                    : {
+                          minHeight: "100%",
+                          ...baseStyles,
+                      },
             }}
         >
             <DialogContainer ref={ref} hasPadding={hasPadding}>

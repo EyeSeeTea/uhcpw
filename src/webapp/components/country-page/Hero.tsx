@@ -15,6 +15,7 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 
 type HeroProps = {
     countryId: string;
@@ -32,6 +33,8 @@ const ANALYTICS_CONTENT = {
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndRegions } = useAppContext();
     const country = useCountryInfo(countryId);
+    const isSmallScreen = useIsSmallScreen();
+
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
     const handleOpenScreenshot = React.useCallback(() => {
@@ -79,6 +82,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         onDownloadImage={handleOpenScreenshot}
                         paddingEnd={false}
                         analyticsPageTitle="Country page"
+                        showDialogInFullScreen={isSmallScreen}
                     />
                 </VisualizationContainer>
 
@@ -90,6 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     isSquareChart={true}
                     analyticsPageTitle="Country page"
                     analyticsContent={ANALYTICS_CONTENT}
+                    forceRotation={isSmallScreen}
                 >
                     <VisualizationPlugin
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
@@ -131,9 +136,21 @@ const InfoGrid = styled(Grid)`
 const GraphGrid = styled(Grid)`
     padding: 20px 50px 30px 50px;
     background-color: white;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 20px 30px 30px 30px;
+    }
 `;
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
     padding-inline-end: 50px;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 0;
+
+        > div {
+            padding: 0;
+        }
+    }
 `;

@@ -22,25 +22,35 @@ type SliderGraph = {
     currentCountry?: string;
 };
 
-type SliderGraphsConfig = {
+type SliderConfig = {
     tab: number;
     tabTitle: string;
+};
+
+export type SliderGraphConfig = SliderConfig & {
+    kind: "graph";
     graphOne: SliderGraph;
     graphTwo: SliderGraph;
-}[];
+};
 
-type SliderInfoConfig = {
-    tab: number;
-    tabTitle: string;
+type SliderGraphsConfigs = SliderGraphConfig[];
+
+export type SliderInfoConfig = SliderConfig & {
+    kind: "info";
     sliderContent?: CountrySectionInfo;
     titleColor: string;
     icon: string;
-}[];
+};
+
+type SliderInfoConfigs = SliderInfoConfig[];
 
 type CountrySlider = {
     tabValue: number;
-    sliderGraphsConfig: SliderGraphsConfig;
-    sliderInfoConfig: SliderInfoConfig;
+    sliderGraphsConfig: SliderGraphsConfigs;
+    sliderInfoConfig: SliderInfoConfigs;
+    expandedSliderConfig?: SliderGraphConfig | SliderInfoConfig;
+    configs: (SliderInfoConfig | SliderGraphConfig)[];
+    handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     handleTabChange: (_event: React.ChangeEvent<{}>, newValue: number) => void;
     onWheel: (event: React.WheelEvent<HTMLButtonElement>) => void;
     disableScroll: () => void;
@@ -54,6 +64,9 @@ export function useCountrySlider(countryId: string): CountrySlider {
 
     const [tabValue, setTabValue] = useState(0);
     const [sliderInfo, setSliderInfo] = useState<SliderInfo | undefined>(undefined);
+    const [expandedSliderConfig, setExpandedSliderConfig] = useState<SliderGraphConfig | SliderInfoConfig | undefined>(
+        undefined
+    );
 
     const countrySelected = useMemo(() => {
         if (countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA) {
@@ -115,10 +128,11 @@ export function useCountrySlider(countryId: string): CountrySlider {
         [tabValue]
     );
 
-    const sliderGraphsConfig: SliderGraphsConfig = useMemo(
+    const sliderGraphsConfig: SliderGraphsConfigs = useMemo(
         () => [
             {
                 tab: 0,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderOne || "",
                 graphOne: {
                     visualizationId: "jFtGKQIQTGp",
@@ -139,6 +153,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 1,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderTwo || "",
                 graphOne: {
                     visualizationId: "Y31jQX5PVdI",
@@ -159,6 +174,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 2,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderThree || "",
                 graphOne: {
                     visualizationId: "geNXcoXc3mf",
@@ -179,6 +195,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 3,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderFour || "",
                 graphOne: {
                     visualizationId: "hpO1ZyFXpCz",
@@ -199,6 +216,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 4,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderFive || "",
                 graphOne: {
                     visualizationId: "VB7bdJ8ZXya",
@@ -219,6 +237,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 5,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderSix || "",
                 graphOne: {
                     visualizationId: "xJhFIBuwGVC",
@@ -239,6 +258,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 6,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderSeven || "",
                 graphOne: {
                     visualizationId: "rT39aStYqI3",
@@ -259,6 +279,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 7,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderEight || "",
                 graphOne: {
                     visualizationId: "OB4SCQfCzwz",
@@ -279,6 +300,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 8,
+                kind: "graph",
                 tabTitle: sliderInfo?.sliderNine || "",
                 graphOne: {
                     visualizationId: "B4CnzUqVR3n",
@@ -315,10 +337,11 @@ export function useCountrySlider(countryId: string): CountrySlider {
         ]
     );
 
-    const sliderInfoConfig: SliderInfoConfig = useMemo(
+    const sliderInfoConfig: SliderInfoConfigs = useMemo(
         () => [
             {
                 tab: 9,
+                kind: "info",
                 tabTitle: sliderInfo?.sliderTen || "",
                 sliderContent: country?.sliderInfo?.gapsSection,
                 titleColor: "#b20101",
@@ -326,6 +349,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
             },
             {
                 tab: 10,
+                kind: "info",
                 tabTitle: sliderInfo?.sliderEleven || "",
                 sliderContent: country?.sliderInfo?.finProtecSection,
                 titleColor: "#4fad56",
@@ -340,10 +364,25 @@ export function useCountrySlider(countryId: string): CountrySlider {
         ]
     );
 
+    const configs = useMemo(() => [...sliderGraphsConfig, ...sliderInfoConfig], [sliderGraphsConfig, sliderInfoConfig]);
+
+    const handleAccordionChange = useCallback(
+        (_event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => {
+            const sliderConfigSelected = isExpanded
+                ? [...sliderGraphsConfig, ...sliderInfoConfig].find(config => config.tab === tabId)
+                : undefined;
+            setExpandedSliderConfig(sliderConfigSelected);
+        },
+        [sliderGraphsConfig, sliderInfoConfig]
+    );
+
     return {
         tabValue,
         sliderGraphsConfig,
         sliderInfoConfig,
+        configs,
+        expandedSliderConfig,
+        handleAccordionChange,
         handleTabChange,
         onResetTab,
         onWheel,

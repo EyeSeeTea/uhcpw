@@ -7,6 +7,7 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 import Rain from "../../../assets/country-page/rain.png";
 import { CountrySectionInfo } from "../../../../domain/entities/Country";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: string; icon: string }> = ({
     sliderInfo,
@@ -47,7 +48,7 @@ export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: s
                 {i18n.t(sliderInfo.sectionName)}
             </Typography>
             <Grid container>
-                <Grid item xs={12} md={8}>
+                <Grid item xs={9} md={8}>
                     <Column>
                         {sliderInfo.content.map(({ title, text }) => (
                             <>
@@ -61,7 +62,7 @@ export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: s
                         <ReactMarkdown components={markdownComponents}>{sliderInfo.sourceText}</ReactMarkdown>
                     </Column>
                 </Grid>
-                <UmbrellaContainer item xs={12} md={4}>
+                <UmbrellaContainer item xs={3} md={4}>
                     <Image src={icon} />
                 </UmbrellaContainer>
             </Grid>
@@ -87,18 +88,25 @@ const Container = styled.div`
             ${visuallyHidden};
         }
     }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 0px 0px 0px 30px;
+        margin: 0;
+        width: 100%;
+    }
 `;
 
 const UmbrellaContainer = styled(Grid)`
-    display: none;
+    display: flex;
+    height: 100vh;
+    background: url(${Rain}) top;
+    align-items: start;
+    padding-block-start: 40px;
+    justify-content: center;
     padding-inline-end: 40px;
-    @media (min-width: 1024px) {
-        display: flex;
-        height: 100vh;
-        background: url(${Rain}) top;
-        align-items: start;
-        padding-block-start: 40px;
-        justify-content: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block-start: 30px;
+        padding-inline: 20px 30px;
     }
 `;
 
@@ -110,6 +118,10 @@ const Column = styled.div`
     max-width: 658px;
     width: 100%;
     padding-block: 46px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-block: 30px;
+        color: black;
+    }
 `;
 
 const Title = styled(Typography)<{ $titleColor: string }>`
@@ -121,6 +133,7 @@ const Paragraph = styled(Typography)`
     :not(last-of-type) {
         margin-block-end: 10px;
     }
+    color: black;
 `;
 
 const Image = styled.img`

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-07-08T13:27:58.585Z\n"
-"PO-Revision-Date: 2025-07-08T13:27:58.585Z\n"
+"POT-Creation-Date: 2025-07-22T08:27:47.481Z\n"
+"PO-Revision-Date: 2025-07-22T08:27:47.481Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -53,6 +53,9 @@ msgstr ""
 msgid "In detail"
 msgstr ""
 
+msgid "Select category and indicator"
+msgstr ""
+
 msgid "No information available for this category"
 msgstr ""
 
@@ -90,9 +93,6 @@ msgid "UHC watch YouTube video player"
 msgstr ""
 
 msgid "Indicators"
-msgstr ""
-
-msgid "Select category and indicator"
 msgstr ""
 
 msgid "Countries and areas"

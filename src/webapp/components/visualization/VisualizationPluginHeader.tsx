@@ -33,7 +33,7 @@ interface VisualizationPluginHeaderProps {
     currentCountry?: string;
     isScreenshot?: boolean;
     reducePaddingBottom?: boolean;
-    isFullScreen?: boolean;
+    showDialogInFullScreen?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -53,7 +53,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         showCountryTag = false,
         isScreenshot = false,
         reducePaddingBottom = false,
-        isFullScreen = false,
+        showDialogInFullScreen = false,
         onClose,
     }) => {
         const currentCountryName = useMemo(() => {
@@ -174,7 +174,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     )}
                 </Row>
                 {showInfo &&
-                    (isFullScreen ? (
+                    (showDialogInFullScreen ? (
                         <FullScreenNotesDialog
                             isOpen={showInfo}
                             onClose={onCloseInfo}
