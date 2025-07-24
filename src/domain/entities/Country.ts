@@ -6,7 +6,7 @@ export type Country = {
     longName: string;
     code: string;
     status: CountryStatus;
-    coordinates: [number, number];
+    coordinates?: [number, number];
     parents: { id: string; name: string }[];
     children?: Country[];
     flag: string;
