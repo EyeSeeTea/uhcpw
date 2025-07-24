@@ -425,7 +425,6 @@ const organisationUnitsFields = {
     shortName: true,
     code: true,
     description: { id: true, name: true },
-    geometry: true,
     organisationUnitGroups: { id: true, name: true },
 } as const;
 
