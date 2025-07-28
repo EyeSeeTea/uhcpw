@@ -3,7 +3,7 @@ import { Indicator } from "../../../domain/entities/indicator-explorer/Indicator
 import { VisualizationsSeeds } from "./seed/VisualizationsSeeds";
 import { Future, FutureData } from "../../../domain/entities/Future";
 
-export class IndicatorD2Repository implements IndicatorRepository {
+export class IndicatorSeedsRepository implements IndicatorRepository {
     public getAll(): FutureData<Indicator[]> {
         const indicators: Indicator[] = Object.entries(VisualizationsSeeds).map(([id, extra]) => ({
             id,
