@@ -46,6 +46,8 @@ import { GoogleAnalyticsRepository } from "./data/repositories/GoogleAnalyticsRe
 import { SendPageViewUseCase } from "./domain/usecases/SendPageViewUseCase";
 import { SendEventUseCase } from "./domain/usecases/SendEventUseCase";
 import { DataStoreClient } from "./data/DataStoreClient";
+import { GetIndicatorsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorsUseCase";
+import { IndicatorSeedsRepository } from "./data/repositories/indicator-explorer/IndicatorSeedsRepository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -69,6 +71,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         homePage: new HomePageContentD2Repository(api),
         generalContent: new GeneralContentD2Repository(api),
         googleAnalytics: new GoogleAnalyticsRepository(),
+        indicator: new IndicatorSeedsRepository(),
     };
 }
 
@@ -100,6 +103,7 @@ export function getCompositionRoot(
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
         indicatorExplorer: {
+            getIndicators: new GetIndicatorsUseCase(repositories.indicator),
             getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
             getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
