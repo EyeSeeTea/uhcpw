@@ -748,7 +748,7 @@ export function getTestContext(repositoriesToOverwrite?: Repositories): AppConte
         countries: givenACountries(),
         themes: givenAThemes(),
         generalContent: givenAGeneralContent(),
-        countriesAndRegions: givenACountriesAndRegions(),
+        countriesAndSubregions: givenACountriesAndRegions(),
     };
 
     return context;

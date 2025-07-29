@@ -14,7 +14,7 @@ export class GetPolicyExplorerUseCase {
         policyExplorerCategories: Record<string, string[]>,
         selectedCountriesIds: Id[],
         years: string[],
-        countriesAndRegions: Country[],
+        countriesAndSubregions: Country[],
         programCategories: PolicyExplorerCategory[]
     ): FutureData<PolicyExplorer> {
         return this.getYearsByCategory(years, policyExplorerCategories).flatMap(yearsByCategory => {
@@ -22,7 +22,7 @@ export class GetPolicyExplorerUseCase {
                 policyExplorerCategories,
                 selectedCountriesIds,
                 yearsByCategory,
-                countriesAndRegions,
+                countriesAndSubregions,
                 programCategories
             );
         });

@@ -76,7 +76,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         policyExplorerCategories: Record<string, string[]>,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
-        countriesAndRegions: Country[],
+        countriesAndSubregions: Country[],
         programCategories: PolicyExplorerCategory[]
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
@@ -96,7 +96,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         }).map(({ dataSetResponse, dataValuesResponse }) => {
             const dataValuesWithOrgUnitNames = this.populateDataValuesWithOrgUnitNames(
                 dataValuesResponse.dataValues,
-                countriesAndRegions
+                countriesAndSubregions
             );
 
             const lastPeriodWithDataByCountry = this.getLastPeriodWithDataByCountry(
@@ -108,15 +108,15 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 tables: this.buildTables({
                     policyExplorerCategories,
                     dataValuesWithOrgUnitNames,
-                    countriesAndRegions: countriesAndRegions,
+                    countriesAndSubregions: countriesAndSubregions,
                     yearsByCategory,
                     dataSet: dataSetResponse.objects[0],
                     programCategories,
                 }),
-                generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndRegions),
+                generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndSubregions),
                 references: this.buildReferences(
                     dataValuesResponse.dataValues,
-                    countriesAndRegions,
+                    countriesAndSubregions,
                     lastPeriodWithDataByCountry
                 ),
             };
@@ -274,14 +274,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private buildGeneralInfo(
         dataValues: DataValueSetsDataValue[],
-        countriesAndRegions: Country[]
+        countriesAndSubregions: Country[]
     ): PolicyExplorerGeneralInfo[] {
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
 
         return Object.entries(dataValuesByOrgUnit).map(([orgUnitId, dataValuesOfCountry]) => {
-            const countryName = this.getCountryName(orgUnitId, countriesAndRegions);
+            const countryName = this.getCountryName(orgUnitId, countriesAndSubregions);
 
             const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
             const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
@@ -335,7 +335,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private buildTables(params: {
         policyExplorerCategories: Record<string, string[]>;
         dataValuesWithOrgUnitNames: DataValueSetsDataValueWithOrgUnitNames[];
-        countriesAndRegions: Country[];
+        countriesAndSubregions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
         programCategories: PolicyExplorerCategory[];
@@ -343,7 +343,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const {
             policyExplorerCategories,
             dataValuesWithOrgUnitNames,
-            countriesAndRegions,
+            countriesAndSubregions,
             yearsByCategory,
             dataSet,
             programCategories,
@@ -402,9 +402,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             return accRows;
                         }
 
-                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, countriesAndRegions, orgUnit)
+                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, countriesAndSubregions, orgUnit)
                             ? EMPTY_DATA
-                            : this.getCountryName(orgUnit, countriesAndRegions);
+                            : this.getCountryName(orgUnit, countriesAndSubregions);
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =
@@ -443,10 +443,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private isCountryAlreadyInRows(
         accRows: PolicyExplorerCell[][],
-        countriesAndRegions: Country[],
+        countriesAndSubregions: Country[],
         orgUnit: Id
     ): boolean {
-        const orgUnitName = this.getCountryName(orgUnit, countriesAndRegions);
+        const orgUnitName = this.getCountryName(orgUnit, countriesAndSubregions);
         return (
             !!orgUnitName && !!accRows?.find((row: PolicyExplorerCell[]) => !!row[0] && row[0]?.value === orgUnitName)
         );
@@ -515,7 +515,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private buildReferences(
         dataValues: DataValueSetsDataValue[],
-        countriesAndRegions: Country[],
+        countriesAndSubregions: Country[],
         lastPeriodWithDataByCountry: Map<Id, string>
     ): PolicyExplorerReferences[] {
         const dataValuesByOrgUnit = _(dataValues)
@@ -523,7 +523,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .value();
 
         return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
-            const country = this.getCountryName(orgUnitId, countriesAndRegions);
+            const country = this.getCountryName(orgUnitId, countriesAndSubregions);
             const references =
                 dataValues.find(
                     dv =>
@@ -543,16 +543,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private populateDataValuesWithOrgUnitNames(
         dataValues: DataValueSetsDataValue[],
-        countriesAndRegions: Country[]
+        countriesAndSubregions: Country[]
     ): DataValueSetsDataValueWithOrgUnitNames[] {
         return dataValues.map(dataValue => ({
             ...dataValue,
-            orgUnitShortName: this.getCountryName(dataValue.orgUnit, countriesAndRegions),
+            orgUnitShortName: this.getCountryName(dataValue.orgUnit, countriesAndSubregions),
         }));
     }
 
-    private getCountryName(orgUnitId: Id, countriesAndRegions: Country[]): string {
-        const orgUnitName = countriesAndRegions.find(country => country.id === orgUnitId)?.name || EMPTY_DATA;
+    private getCountryName(orgUnitId: Id, countriesAndSubregions: Country[]): string {
+        const orgUnitName = countriesAndSubregions.find(country => country.id === orgUnitId)?.name || EMPTY_DATA;
         return orgUnitId === REPUBLICA_SERPSKA || orgUnitId === FEDERACIJA_BOSNE_I_HERCEGOVINE
             ? `Bosnia and Herzegovina (${orgUnitName.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || ""
             : orgUnitName || "";

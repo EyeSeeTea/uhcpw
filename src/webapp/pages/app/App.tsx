@@ -35,9 +35,9 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
             const themes = (await compositionRoot.resources.getThemes.execute().runAsync()).data || [];
             const generalContent = (await compositionRoot.general.getContent.execute().runAsync()).data;
 
-            const countriesRegions = countries.flatMap(country => (country.children ? country.children : []));
+            const countriesSubregions = countries.flatMap(country => (country.children ? country.children : []));
 
-            const countriesAndRegions = [...countries, ...countriesRegions].sort((countryA, countryB) => {
+            const countriesAndSubregions = [...countries, ...countriesSubregions].sort((countryA, countryB) => {
                 if (countryA.id === KOSOVO) return 1;
                 if (countryB.id === KOSOVO) return -1;
                 return countryA.name.toLowerCase() < countryB.name.toLowerCase() ? -1 : 1;
@@ -50,7 +50,7 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
                 countries,
                 themes,
                 generalContent,
-                countriesAndRegions,
+                countriesAndSubregions,
             });
             setLoading(false);
         }

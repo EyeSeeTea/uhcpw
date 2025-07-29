@@ -37,7 +37,7 @@ const allYearsFiltersUpTo2YearsAgo: TreeOption[] = generateYears(new Date().getF
 }));
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
-    const { compositionRoot, countriesAndRegions } = useAppContext();
+    const { compositionRoot, countriesAndSubregions } = useAppContext();
     const {
         selected: selectedCountries,
         onSelectedChange: onSelectedCountryChange,
@@ -109,7 +109,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 oldIndicator,
                 newIndicator,
                 selectedCountries,
-                countriesAndRegions
+                countriesAndSubregions
             );
 
             if (maybeUpdatedCountrySelection) {
@@ -147,7 +147,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setDisabledYears([]);
         },
         [
-            countriesAndRegions,
+            countriesAndSubregions,
             countryOptions,
             onSelectedCountryChange,
             selectedCountries,
@@ -233,7 +233,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         const indicator = indicatorFilters.find(indicator => indicator.value === selectedIndicatorFilter)?.text;
         if (!indicator || !selectedCountries || !selectedYearFilter) return;
 
-        const allCountriesSelected = selectedCountries?.length === countriesAndRegions.length;
+        const allCountriesSelected = selectedCountries?.length === countriesAndSubregions.length;
 
         const renamedLastAvailableYear = selectedYearFilter.map(year =>
             year === LatestAvailable.id ? "Latest available year" : year
@@ -252,7 +252,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         });
 
         const selectedCountriesNames = selectedCountries
-            .map(countryId => countriesAndRegions.find(country => country.id === countryId)?.name)
+            .map(countryId => countriesAndSubregions.find(country => country.id === countryId)?.name)
             .filter((x): x is string => Boolean(x));
 
         const bulkEvents = generateBulkAnalyticsEvents({
@@ -270,7 +270,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         selectedIndicatorFilter,
         selectedCountries,
         selectedYearFilter,
-        countriesAndRegions,
+        countriesAndSubregions,
         sendEvent,
     ]);
 
@@ -403,7 +403,7 @@ function getUpdatedCountriesSelectionFilter(
     oldIndicator: Indicator | undefined,
     newIndicator: Indicator | undefined,
     selectedCountries: string[] | undefined,
-    countriesAndRegions: Country[]
+    countriesAndSubregions: Country[]
 ): string[] | undefined {
     const isEu27Selected = selectedCountries?.some(selectedCountry => selectedCountry === EU27);
     const isMoreThanOneCountrySelected = selectedCountries?.length && selectedCountries.length > 1;
@@ -430,7 +430,7 @@ function getUpdatedCountriesSelectionFilter(
 
     if (areOldAndNewComparative && selectedCountries?.length) {
         const totalCountries =
-            countriesAndRegions.length +
+            countriesAndSubregions.length +
             (oldIndicator?.hasEur27 ? 1 : 0) +
             (oldIndicator?.hideBosniaAndHerzegovinaRegions ? -2 : 0);
         const areAllCountriesSelected = selectedCountries.length === totalCountries;
@@ -447,7 +447,7 @@ function getUpdatedCountriesSelectionFilter(
         const countriesToSelect = handleBosniaAndHerzegovina(
             oldIndicator,
             newIndicator,
-            countriesAndRegions.map(c => c.id)
+            countriesAndSubregions.map(c => c.id)
         );
         return newIndicator?.hasEur27 ? [...countriesToSelect, EU27] : countriesToSelect;
     }

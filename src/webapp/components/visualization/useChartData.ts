@@ -32,7 +32,7 @@ export function useChartData(
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
     const [showInfo, setShowInfo] = useState<boolean>(false);
-    const { countriesAndRegions } = useAppContext();
+    const { countriesAndSubregions } = useAppContext();
 
     const getVisualizationDialogInfo = useCallback(
         (visualization: Visualization, analytics: Analytics, countries: Country[]) => {
@@ -86,7 +86,7 @@ export function useChartData(
                     const chartSource = {
                         analyticsResponse: isMultipleVisualizations ? analytics : analytics[0],
                         visualization: isMultipleVisualizations ? visualizations : visualizations[0],
-                        countries: countriesAndRegions,
+                        countries: countriesAndSubregions,
                         currentCountry,
                         currentYear: years.length === 1 ? years[0] : undefined,
                         isLatestCOVID19: years.includes(LatestCOVID19.id),
@@ -97,7 +97,7 @@ export function useChartData(
                     const visualizationDialogInfo =
                         visualization &&
                         analytics[0] &&
-                        getVisualizationDialogInfo(visualization, analytics[0], countriesAndRegions);
+                        getVisualizationDialogInfo(visualization, analytics[0], countriesAndSubregions);
 
                     const chartName =
                         visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
@@ -114,7 +114,7 @@ export function useChartData(
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
-                        countries: countriesAndRegions.filter(country => countries.includes(country.id)),
+                        countries: countriesAndSubregions.filter(country => countries.includes(country.id)),
                         chartOptions: visualizationChartOptions
                             ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
                             : undefined,
@@ -141,7 +141,7 @@ export function useChartData(
         visualizationId,
         countries,
         years,
-        countriesAndRegions,
+        countriesAndSubregions,
         currentCountry,
         getVisualizationDialogInfo,
         visualizationName,

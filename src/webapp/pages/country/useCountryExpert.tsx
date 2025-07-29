@@ -14,7 +14,7 @@ type CountryExpert = {
 };
 
 export function useCountryExpert(country: string): CountryExpert {
-    const { compositionRoot, countriesAndRegions } = useAppContext();
+    const { compositionRoot, countriesAndSubregions } = useAppContext();
     const [experts, setExperts] = useState<PersonState[]>([]);
 
     const countryId = useMemo(() => {
@@ -29,12 +29,12 @@ export function useCountryExpert(country: string): CountryExpert {
                 setExperts(
                     persons
                         .filter(person => person.countryId === countryId)
-                        .map(person => mapPersonToExpertState(person, countriesAndRegions))
+                        .map(person => mapPersonToExpertState(person, countriesAndSubregions))
                 );
             },
             () => setExperts([])
         );
-    }, [compositionRoot.about.getPersons, countriesAndRegions, countryId]);
+    }, [compositionRoot.about.getPersons, countriesAndSubregions, countryId]);
 
     function mapPersonToExpertState(person: Person, countries: Country[]): PersonState {
         const country = countries.find(country => country.id === person.countryId);
