@@ -48,6 +48,8 @@ import { SendEventUseCase } from "./domain/usecases/SendEventUseCase";
 import { DataStoreClient } from "./data/DataStoreClient";
 import { GetIndicatorsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorsUseCase";
 import { IndicatorSeedsRepository } from "./data/repositories/indicator-explorer/IndicatorSeedsRepository";
+import { RegionD2Repository } from "./data/repositories/regions/RegionD2Repository";
+import { GetRegionsUseCase } from "./domain/usecases/GetRegionsUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -72,6 +74,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         generalContent: new GeneralContentD2Repository(api),
         googleAnalytics: new GoogleAnalyticsRepository(),
         indicator: new IndicatorSeedsRepository(),
+        region: new RegionD2Repository(api),
     };
 }
 
@@ -95,6 +98,7 @@ export function getCompositionRoot(
         countries: {
             get: new GetCountriesUseCase(repositories.country),
             getEurCountriesRegion: new GetEurCountriesRegionUseCase(repositories.country),
+            getRegions: new GetRegionsUseCase(repositories.region),
         },
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),

@@ -1,3 +1,4 @@
+import { FinancialProtectionStatus } from "./FinancialProtectionStatus";
 import { Id } from "./Ref";
 
 export type Country = {
@@ -5,7 +6,7 @@ export type Country = {
     name: string;
     longName: string;
     code: string;
-    status: CountryStatus;
+    status: FinancialProtectionStatus;
     coordinates?: [number, number];
     parents: { id: string; name: string }[];
     children?: Country[];
@@ -28,8 +29,6 @@ export type CountrySectionInfo = {
         text: string;
     }[];
 };
-
-export type CountryStatus = "Strong" | "Gaps" | "Weak";
 
 export type CountriesRegion = {
     id: string;

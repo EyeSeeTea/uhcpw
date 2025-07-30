@@ -8,6 +8,7 @@ import { ResourcesPage } from "./resources/landing/ResourcesPage";
 import { CountryPage } from "./country/CountryPage";
 import { MethodsPage } from "./methods/MethodsPage";
 import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPage";
+import { RegionalPage } from "./regional-page/RegionalPage";
 
 const ScrollToTop = (): JSX.Element | null => {
     const { pathname } = useLocation();
@@ -35,6 +36,7 @@ export const Router: React.FC = React.memo(() => {
                     render={() => <ResourcesByTypePage />}
                 />
                 <Route path="/country-page" render={() => <CountryPage />} />
+                <Route path="/regional-page" render={() => <RegionalPage />} />
                 <Route path="/resources" render={() => <ResourcesPage />} />
                 <Route path="/methods" render={() => <MethodsPage />} />
 

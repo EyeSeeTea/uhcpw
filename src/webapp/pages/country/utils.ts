@@ -1,6 +1,6 @@
-import { CountryStatus } from "../../../domain/entities/Country";
+import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 
-export const getBackgroundColorByCountryStatus = (status?: CountryStatus) => {
+export const getBackgroundColorByFinancialProtectionStatus = (status?: FinancialProtectionStatus) => {
     switch (status) {
         case "Weak":
             return "linear-gradient(90deg, #c42929 1.8%, #ffe1d0 60.94%)";

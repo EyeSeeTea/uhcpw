@@ -8,8 +8,6 @@ import React from "react";
 
 export const MobileSlider: React.FC<{
     countryId: string;
-    resetTab?: boolean;
-    handleResetTab: (value: boolean) => void;
 }> = ({ countryId }) => {
     const { configs, expandedSliderConfig, handleAccordionChange } = useCountrySlider(countryId);
 

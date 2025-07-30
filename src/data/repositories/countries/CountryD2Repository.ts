@@ -1,5 +1,5 @@
 import polylabel from "polylabel";
-import { Country, CountryStatus, CountriesRegion } from "../../../domain/entities/Country";
+import { Country, CountriesRegion } from "../../../domain/entities/Country";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { CountryRepository } from "../../../domain/repositories/CountryRepository";
 import { Id } from "../../../domain/entities/Ref";
@@ -9,6 +9,7 @@ import { coordinatesFromString } from "./coordinatesFromString";
 import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData";
 import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
+import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -207,7 +208,8 @@ export class CountryD2Repository implements CountryRepository {
         const rawStatus =
             aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value || "";
 
-        const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
+        const status: FinancialProtectionStatus =
+            rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
 
         const customGeometry = aditionalCountryInfo?.dataValues.find(
             dv => dv.dataElement === countryInfoDataElements.geometry

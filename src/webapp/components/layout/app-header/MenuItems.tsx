@@ -9,21 +9,35 @@ import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { Option } from "../../dropdown/Option";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { Id } from "../../../../domain/entities/Ref";
+import { useRegionalPageFilter } from "../../../pages/regional-page/useRegionalPageFilter";
 
 type MenuItemsProps = {
     regionalReport: string;
     isHomePage: boolean;
     isCountryPage: boolean;
     goToHome: (closeMenu?: boolean) => void;
-    handleCountryClick: (country: Option<string>) => void;
+    handleCountryClick: (country: Option<Id>) => void;
     handleMenuItemClick: (link: string) => void;
+    handleRegionalClick: (region: Option<Id>) => void;
+    isRegionalPage?: boolean;
 };
 export const MenuItems: React.FC<MenuItemsProps> = props => {
-    const { regionalReport, isHomePage, isCountryPage, goToHome, handleCountryClick, handleMenuItemClick } = props;
+    const {
+        regionalReport,
+        isHomePage,
+        isCountryPage,
+        goToHome,
+        handleCountryClick,
+        handleMenuItemClick,
+        handleRegionalClick,
+        isRegionalPage = false,
+    } = props;
 
     const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
     const isSmallScreen = useIsSmallScreen();
+    const { regionOptions } = useRegionalPageFilter();
 
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
@@ -57,6 +71,25 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
                                     return (
                                         <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
                                             {country.text}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </div>
+                        </MobileMenuSubItem>
+                    </MenuItem>
+                    <StyledDivider />
+                </>
+            ) : null}
+
+            {!isRegionalPage || (isRegionalPage && !isSmallScreen) ? (
+                <>
+                    <MenuItem>
+                        <MobileMenuSubItem item="Regions">
+                            <div>
+                                {regionOptions.map(region => {
+                                    return (
+                                        <MenuItem key={region.value} onClick={() => handleRegionalClick(region)}>
+                                            {region.text}
                                         </MenuItem>
                                     );
                                 })}

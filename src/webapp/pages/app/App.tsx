@@ -13,6 +13,7 @@ import "./App.css";
 import muiThemeLegacy from "./themes/dhis2-legacy.theme";
 import { muiTheme } from "./themes/dhis2.theme";
 import { KOSOVO } from "../../../data/repositories/countries/CountryD2Repository";
+import { Region } from "../../../domain/entities/Region";
 
 export interface AppProps {
     api: D2Api;
@@ -43,6 +44,8 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
                 return countryA.name.toLowerCase() < countryB.name.toLowerCase() ? -1 : 1;
             });
 
+            const regions: Region[] = (await compositionRoot.countries.getRegions.execute().runAsync()).data || [];
+
             setAppContext({
                 api,
                 currentUser,
@@ -51,6 +54,7 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
                 themes,
                 generalContent,
                 countriesAndSubregions,
+                regions: regions,
             });
             setLoading(false);
         }

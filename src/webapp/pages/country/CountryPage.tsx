@@ -80,14 +80,10 @@ export const CountryPage: React.FC = () => {
                 handleResetTab={handleResetTab}
             />
             <Hero countryId={countryFilter.selectedCountry} />
-            <Divider countryStatus={country?.status} />
+            <Divider financialProtectionStatus={country?.status} />
             <section ref={sliderRef}>
                 {isSmallScreen ? (
-                    <MobileSlider
-                        countryId={countryFilter.selectedCountry}
-                        handleResetTab={handleResetTab}
-                        resetTab={resetTab}
-                    />
+                    <MobileSlider countryId={countryFilter.selectedCountry} />
                 ) : (
                     <DesktopSlider
                         countryId={countryFilter.selectedCountry}
@@ -96,11 +92,11 @@ export const CountryPage: React.FC = () => {
                     />
                 )}
             </section>
-            <Divider countryStatus={country?.status} />
+            <Divider financialProtectionStatus={country?.status} />
             <section ref={resourcesRef}>
                 <CountryResources countryId={countryFilter.selectedCountry} />
             </section>
-            <Divider countryStatus={country?.status} />
+            <Divider financialProtectionStatus={country?.status} />
             <section ref={expertRef}>
                 <CountryExpert countryId={countryFilter.selectedCountry} />
             </section>
