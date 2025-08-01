@@ -1,13 +1,16 @@
 import { FutureData } from "../../entities/Future";
 import { Analytics } from "../../entities/indicator-explorer/Analytics";
 import { Visualization } from "../../entities/indicator-explorer/Visualization";
+import { Id } from "../../entities/Ref";
+import { Region } from "../../entities/Region";
 
 export interface AnalyticsRepository {
-    get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics>;
+    get(visualization: Visualization, periods: string[], countryIds: Id[], regions: Region[]): FutureData<Analytics>;
     saveToFile(params: {
         visualizations: Visualization[];
         periods: string[];
-        orgUnitUids: string[];
+        countryIds: Id[];
+        selectedRegions: Region[];
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;

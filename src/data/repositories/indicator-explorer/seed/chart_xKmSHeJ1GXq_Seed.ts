@@ -9,7 +9,8 @@ export const chart_xKmSHeJ1GXq_Seed: VisualizationExtra = {
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     allowBreaksInSeries: true,
-    hasEur27: true,
+    hasEURegion: true,
+    isOrgUnitRegions: true,
     hideBosniaAndHerzegovinaRegions: true,
     yearsFilterUpTo2YearsAgo: true,
 };
