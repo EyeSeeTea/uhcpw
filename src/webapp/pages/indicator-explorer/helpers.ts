@@ -46,13 +46,15 @@ export function getDisabledRegionIds(
     const regionOptions = countryAndRegionsOptions.filter(
         (option: TreeOption) => option.parents.length === 1 && option.parents[0]?.id === AVERAGES_REGIONS_PARENT.id
     );
-    const { hasEURegion, hasEECARegion, hasWesternBalkansRegion, hasEUCandidatesRegion } = selectedIndicator;
+    const { hasEURegion, hasEECARegion, hasWesternBalkansRegion, hasEUCandidatesRegion, hasEuropeanRegion } =
+        selectedIndicator;
 
     const activeRegionIds: Id[] = _.compact([
         hasEURegion ? ORG_UNIT_GROUP_IDS.EUROPEAN_UNION : null,
         hasEECARegion ? ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA : null,
         hasWesternBalkansRegion ? ORG_UNIT_GROUP_IDS.WESTERN_BALKANS : null,
         hasEUCandidatesRegion ? ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES : null,
+        hasEuropeanRegion ? ORG_UNIT_GROUP_IDS.EUROPEAN_REGION : null,
     ]);
 
     return regionOptions.reduce((currentDisabledIds: Id[], option: TreeOption): Id[] => {

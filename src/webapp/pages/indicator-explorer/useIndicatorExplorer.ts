@@ -130,7 +130,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         [selectedCountriesAndRegions?.length]
     );
 
-    const onChangeCategoryFilter = useCallback(
+    const onChangeIndicatorFilter = useCallback(
         (value: string | undefined) => {
             const oldIndicator = indicators.find(indicator => indicator.id === selectedIndicatorFilter);
             const newIndicator = indicators.find(indicator => indicator.id === value);
@@ -398,7 +398,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             indicators: {
                 options: indicatorFilters,
                 selected: selectedIndicatorFilter,
-                onSelectedChange: onChangeCategoryFilter,
+                onSelectedChange: onChangeIndicatorFilter,
             },
             year: {
                 options: yearFilters,

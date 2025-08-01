@@ -8,7 +8,6 @@ import {
     SORTED_COUNTRY_GROUPINGS,
 } from "../../../../data/repositories/countries/CountryD2Repository";
 import { ALL_NODE_ID } from "../../../components/tree-selector/useTreeSelector";
-import { ORG_UNIT_GROUP_IDS } from "../../../../domain/entities/Region";
 
 const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 
@@ -45,8 +44,7 @@ export function useMultiCountryOptionsV2(params?: {
                 parents: [AVERAGES_REGIONS_PARENT],
             }));
 
-        // TODO: remove this when logic is implemented for all regions, not only EU
-        return options.filter(options => options.id === ORG_UNIT_GROUP_IDS.EUROPEAN_UNION);
+        return options;
     }, [regions]);
 
     useEffect(() => {
@@ -56,7 +54,12 @@ export function useMultiCountryOptionsV2(params?: {
             code: country.code,
             parents: [
                 { id: ALL_NODE_ID, name: i18n.t("All countries and areas") },
-                ...country.parents.filter(parent => !parent.name.includes("income")),
+                ...country.parents
+                    .filter(parent => !parent.name.includes("income"))
+                    .map(g => ({
+                        id: `parent-${g.id}`,
+                        name: g.name,
+                    })),
             ],
             children: showSubRegions
                 ? country.children?.map(child => ({
@@ -96,4 +99,4 @@ export const AVERAGES_REGIONS_PARENT = {
     name: "Averages",
 };
 
-const countryGroupings = [AVERAGES_REGIONS_PARENT.id, ALL_NODE_ID, ...SORTED_COUNTRY_GROUPINGS];
+const countryGroupings = [AVERAGES_REGIONS_PARENT.id, ALL_NODE_ID, ...SORTED_COUNTRY_GROUPINGS.map(g => `parent-${g}`)];

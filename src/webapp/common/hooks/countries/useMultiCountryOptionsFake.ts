@@ -3,6 +3,7 @@ import i18n from "../../../../locales";
 import { useAppContext } from "../../../contexts/app-context";
 import { ALL_NODE_ID } from "../../../components/tree-selector/useTreeSelector";
 
+// NOTICE: This hook is not used
 export function useMultiCountryOptionsFake(
     selectedCountries?: string[],
     countryFilterIds?: string[],

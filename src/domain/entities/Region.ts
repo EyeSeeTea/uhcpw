@@ -34,6 +34,7 @@ export const ORG_UNIT_GROUP_IDS = {
     EUROPEAN_UNION: "dqMsarWCWk6",
     EASTERN_EUROPE_AND_CENTRAL_ASIA: "FMCN2ZG9AEj",
     EU_CANDIDATE_COUNTRIES: "e7I4gDX3g5k",
+    EUROPEAN_REGION: "aN3rzQZhM4i",
 } as const;
 
 export type OrgUnitGroupRegionKey = keyof typeof ORG_UNIT_GROUP_IDS;
@@ -42,7 +43,8 @@ export function isOrgUnitGroupRegionKey(key: string): key is OrgUnitGroupRegionK
     return key in ORG_UNIT_GROUP_IDS;
 }
 
-// WORKAROUND: EU27 data is added in Greenland because we cannot use EUR
+// WORKAROUND: EUROPEAN UNION data is added in Greenland because we cannot use EUR org unit
+// TODO: Change this when region org units are implemented
 const EUROPEAN_UNION_ORG_UNIT_ID: Id = "IZy3ESdFnp5";
 
 export const ORG_UNIT_IDS = {
@@ -60,6 +62,7 @@ export const REGION_CODES = {
     EUROPEAN_UNION: "EU",
     EASTERN_EUROPE_AND_CENTRAL_ASIA: "EECA",
     EU_CANDIDATE_COUNTRIES: "EU CANDIDATE COUNTRIES",
+    EUROPEAN_REGION: "EUROPEAN REGION",
 } as const;
 
 export type RegionCodeKey = keyof typeof REGION_CODES;
@@ -72,6 +75,7 @@ export const REGION_NAMES = {
     EUROPEAN_UNION: "EU",
     EASTERN_EUROPE_AND_CENTRAL_ASIA: "Eastern Europe and central Asia",
     EU_CANDIDATE_COUNTRIES: "EU candidate countries",
+    EUROPEAN_REGION: "European region",
 } as const;
 
 export type RegionNameKey = keyof typeof REGION_NAMES;

@@ -259,7 +259,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
                     .filter(({ id }) => !disabledItems?.includes(id));
 
                 const finalSubChildrenAllowed = showSubChildren
-                    ? filteredItemsBySearch
+                    ? finalChildrenAllowed
                           .flatMap(item => (item.children ? item.children : []))
                           .filter(({ id }) => !disabledItems?.includes(id))
                     : [];

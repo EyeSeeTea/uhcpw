@@ -15,6 +15,7 @@ export interface VisualizationExtra {
     isComparative?: boolean;
     isOnlyEu27Comparison?: boolean;
     hasEURegion?: boolean;
+    hasEuropeanRegion?: boolean;
     hasEECARegion?: boolean;
     hasWesternBalkansRegion?: boolean;
     hasEUCandidatesRegion?: boolean;
