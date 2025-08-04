@@ -17,8 +17,8 @@ export const ResourcesListBySection: React.FC<{
 }> = React.memo(({ resourcesBySection, themeSelected, isSmallScreen, hasSearchTerm }) => (
     <Container>
         {isSmallScreen && <ScrollToTopButton />}
-        {resourcesBySection.map((section, index) => (
-            <Grid item md={12} xs={12} key={`section-${index}`}>
+        {resourcesBySection.map(section => (
+            <Grid item md={12} xs={12} key={`section-${section.resources.join("-")}`}>
                 {section.resources.length > 0 && (
                     <ResourceGroup
                         title={section.title}

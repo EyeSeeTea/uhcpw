@@ -111,8 +111,8 @@ export function useResources(): ResourcesState {
     };
 }
 
-function buildResourcesSections(items: ResourceState[], hasSearchTerm: boolean): ResourcesListBySectionState[] {
-    return _(items)
+function buildResourcesSections(resources: ResourceState[], hasSearchTerm: boolean): ResourcesListBySectionState[] {
+    return _(resources)
         .groupBy(item => getResourceSection(item.kind, hasSearchTerm))
         .map((items, key) => {
             const kind = key as ResourceSectionKind;
