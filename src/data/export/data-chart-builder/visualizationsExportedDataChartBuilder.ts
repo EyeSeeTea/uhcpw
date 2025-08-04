@@ -2,7 +2,7 @@ import { chart_geNXcoXc3mf_exportedDataBuilder } from "./chart_geNXcoXc3mf_expor
 import { chart_GimM6ANOKhd_exportedDataBuilder } from "./chart_GimM6ANOKhd_exportedDataBuilder";
 import { chart_kIpnMBaBvZ9_exportedDataBuilder } from "./chart_kIpnMBaBvZ9_exportedDataBuilder";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
-import { D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { D2OrgUnit, D2OrgUnitGroup } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { chart_hpO1ZyFXpCz_exportedDataBuilder } from "./chart_hpO1ZyFXpCz_exportedDataBuilder";
 import { chart_VB7bdJ8ZXya_exportedDataBuilder } from "./chart_VB7bdJ8ZXya_exportedDataBuilder";
 import { chart_WDUV9ZrJiNC_exportedDataBuilder } from "./chart_WDUV9ZrJiNC_exportedDataBuilder";
@@ -27,7 +27,12 @@ import { chart_z6nPPMMbOw5_exportedDataBuilder } from "./chart_z6nPPMMbOw5_expor
 
 export const visualizationsExportedDataChartBuilder: Record<
     string,
-    (tabs: Tab[], chartName: string, orgUnits: D2OrgUnit[]) => TabsWithStringOrNumbers[]
+    (
+        tabs: Tab[],
+        chartName: string,
+        orgUnits: D2OrgUnit[],
+        orgUnitGroups: D2OrgUnitGroup[]
+    ) => TabsWithStringOrNumbers[]
 > = {
     geNXcoXc3mf: (tabs, chartName) => chart_geNXcoXc3mf_exportedDataBuilder(tabs, chartName),
     kIpnMBaBvZ9: (tabs, chartName, orgUnits) => chart_kIpnMBaBvZ9_exportedDataBuilder(tabs, chartName, orgUnits),

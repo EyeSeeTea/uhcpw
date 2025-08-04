@@ -12,6 +12,8 @@ import { chartOptions, chartOptionsMultiple, ChartSource, ChartSourceMultiple } 
 import { Country } from "../../../domain/entities/Country";
 import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { Id } from "../../../domain/entities/Ref";
+import { Region } from "../../../domain/entities/Region";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -24,15 +26,17 @@ interface ChartDataState {
 export function useChartData(
     visualizationId: string,
     years: string[],
-    countries: string[],
+    countryIds: Id[],
+    regionIds: Id[],
     currentCountry?: string,
+    currentRegion?: string,
     visualizationName?: string
 ): ChartDataState {
     const { compositionRoot } = useAppContext();
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
     const [showInfo, setShowInfo] = useState<boolean>(false);
-    const { countriesAndSubregions } = useAppContext();
+    const { countriesAndSubregions, regions } = useAppContext();
 
     const getVisualizationDialogInfo = useCallback(
         (visualization: Visualization, analytics: Analytics, countries: Country[]) => {
@@ -76,8 +80,9 @@ export function useChartData(
         if (visualizationId) {
             const isMultipleVisualizations = visualizationId.includes("_");
             const visualizationIds = isMultipleVisualizations ? visualizationId.split("_") : [visualizationId];
+            const selectedRegions = regions.filter(region => regionIds.includes(region.id));
 
-            getChartData(compositionRoot, visualizationIds, years, countries).run(
+            getChartData(compositionRoot, visualizationIds, years, countryIds, selectedRegions).run(
                 ({ visualizations, analytics, legendSets }) => {
                     const visualizationChartOptions = isMultipleVisualizations
                         ? chartOptionsMultiple[visualizationId]
@@ -87,7 +92,9 @@ export function useChartData(
                         analyticsResponse: isMultipleVisualizations ? analytics : analytics[0],
                         visualization: isMultipleVisualizations ? visualizations : visualizations[0],
                         countries: countriesAndSubregions,
-                        currentCountry,
+                        regions: regions,
+                        currentCountry: currentCountry,
+                        currentRegion: currentRegion,
                         currentYear: years.length === 1 ? years[0] : undefined,
                         isLatestCOVID19: years.includes(LatestCOVID19.id),
                     };
@@ -114,7 +121,8 @@ export function useChartData(
                         analytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
-                        countries: countriesAndSubregions.filter(country => countries.includes(country.id)),
+                        countries: countriesAndSubregions.filter(country => countryIds.includes(country.id)),
+                        regions: regions.filter(region => regionIds.includes(region.id)),
                         chartOptions: visualizationChartOptions
                             ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
                             : undefined,
@@ -139,24 +147,29 @@ export function useChartData(
     }, [
         compositionRoot,
         visualizationId,
-        countries,
+        countryIds,
+        regions,
+        regionIds,
         years,
         countriesAndSubregions,
         currentCountry,
         getVisualizationDialogInfo,
         visualizationName,
+        currentRegion,
     ]);
 
     const onDownloadExcel = useCallback(
         (chartDataLoaded: ChartDataLoaded) => {
             const seriesData = chartDataLoaded?.chartOptions?.series ?? chartDataLoaded?.customization?.series;
             const seriesIdAndName = (seriesData || []).map(({ id, name }) => ({ id, name }));
+            const selectedRegions = regions.filter(region => regionIds.includes(region.id));
 
             compositionRoot.indicatorExplorer.downloadAnalytics
                 .execute({
                     visualizationIds: visualizationId.split("_"),
                     periods: years || [],
-                    orgUnits: countries || [],
+                    countryIds: countryIds || [],
+                    selectedRegions: selectedRegions,
                     seriesIdAndName: seriesIdAndName,
                     isScatter: chartDataLoaded?.isScatter,
                     xAxis: chartDataLoaded?.xAxis,
@@ -164,7 +177,7 @@ export function useChartData(
                 })
                 .runAsync();
         },
-        [compositionRoot.indicatorExplorer.downloadAnalytics, visualizationId, years, countries]
+        [compositionRoot.indicatorExplorer.downloadAnalytics, countryIds, regionIds, regions, visualizationId, years]
     );
 
     const onShowInfo = useCallback(() => {
@@ -188,7 +201,8 @@ function getChartData(
     compositionRoot: CompositionRoot,
     visualizationIds: string[],
     years: string[],
-    countries: string[]
+    countryIds: Id[],
+    selectedRegions: Region[]
 ): FutureData<{
     visualizations: Visualization[];
     analytics: Analytics[];
@@ -201,7 +215,8 @@ function getChartData(
             analytics: compositionRoot.indicatorExplorer.getAnalytics.execute(
                 visualizationId,
                 years || [],
-                countries || []
+                countryIds || [],
+                selectedRegions || []
             ),
         }).flatMap(({ visualization, analytics }) => {
             const legendSetIds = getLegendSetIds(visualization, analytics);

@@ -4,8 +4,8 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
-import { EU27 } from "../../../../../domain/entities/Country";
 import { EU27Color } from "../../customization/palettes/countryPalette";
+import { ORG_UNIT_IDS } from "../../../../../domain/entities/Region";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -71,7 +71,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 );
                 const value = row[2] ? +row[2] : 0;
 
-                const colorUE27 = EU27 === orgUnitId && highlightEU27 ? { color: EU27Color } : undefined;
+                const colorUE27 =
+                    ORG_UNIT_IDS.EUROPEAN_UNION === orgUnitId && highlightEU27 ? { color: EU27Color } : undefined;
 
                 const color =
                     currentCountryCode === orgUnit && currentSerieColor ? { color: currentSerieColor } : colorUE27;

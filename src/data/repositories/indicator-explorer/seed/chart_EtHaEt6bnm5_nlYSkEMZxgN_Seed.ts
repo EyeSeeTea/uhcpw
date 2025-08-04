@@ -16,7 +16,8 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Seed: VisualizationExtra = {
     allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
-    hasEur27: true,
+    hasEURegion: true,
+    isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>
         sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),

@@ -293,7 +293,7 @@ export function givenACountries(): Country[] {
     ];
 }
 
-export function givenACountriesAndRegions(): Country[] {
+export function givenACountriesAndSubregions(): Country[] {
     return [
         {
             id: "DVnpk4xiXGJ",
@@ -753,7 +753,7 @@ export function getTestContext(repositoriesToOverwrite?: Repositories): AppConte
         countries: givenACountries(),
         themes: givenAThemes(),
         generalContent: givenAGeneralContent(),
-        countriesAndSubregions: givenACountriesAndRegions(),
+        countriesAndSubregions: givenACountriesAndSubregions(),
         regions: getRegions(),
     };
 

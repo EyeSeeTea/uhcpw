@@ -27,6 +27,7 @@ import { DataStoreClient } from "../../DataStoreClient";
 import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
 import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
 import { getVisualizationTemplate } from "./visualization-template/getVisualizationTemplate";
+import { Region } from "../../../domain/entities/Region";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -53,12 +54,17 @@ const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown, private dataStoreClient: DataStoreClient) {}
 
-    public get(visualization: Visualization, periods: string[], orgUnits: string[]): FutureData<Analytics> {
+    public get(
+        visualization: Visualization,
+        periods: string[],
+        countryIds: Id[],
+        regions: Region[]
+    ): FutureData<Analytics> {
         const overwrittenVisualization = {
             ...visualization,
-            columns: this.getDimensions(visualization, "columns", orgUnits, periods),
-            rows: this.getDimensions(visualization, "rows", orgUnits, periods),
-            filters: this.getDimensions(visualization, "filters", orgUnits, periods),
+            columns: this.getDimensions(visualization, "columns", countryIds, regions, periods),
+            rows: this.getDimensions(visualization, "rows", countryIds, regions, periods),
+            filters: this.getDimensions(visualization, "filters", countryIds, regions, periods),
         } as unknown as D2Visualization;
         //const overwrittenVisualization = visualization as unknown as D2Visualization;
 
@@ -81,7 +87,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     saveToFile(params: {
         visualizations: Visualization[];
         periods: string[];
-        orgUnitUids: string[];
+        countryIds: Id[];
+        selectedRegions: Region[];
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
@@ -95,7 +102,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const {
             visualizations,
             periods,
-            orgUnitUids,
+            countryIds,
+            selectedRegions,
             seriesIdAndName,
             isLatestAvailableYear,
             isUpTo2019,
@@ -104,12 +112,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             yAxis,
         } = params;
         return Future.parallel(
-            visualizations.map(visualization => this.get(visualization, periods, orgUnitUids))
+            visualizations.map(visualization => this.get(visualization, periods, countryIds, selectedRegions))
         ).flatMap(analyticsResponses => {
             const analyticsResponseRows = analyticsResponses.reduce((acc: string[][], analyticsResponse) => {
                 return [...acc, ...analyticsResponse.rows];
             }, []);
             const metadataIds = this.extractMetadataIds(analyticsResponseRows);
+            const orgUnitGroupRegionIds: Id[] = selectedRegions.map(r => r.id);
+            const orgUnitRegionIds: Id[] = selectedRegions.map(r => r.linkedOrgUnitId).filter((id): id is Id => !!id);
 
             return Future.joinObj({
                 analyticsResponses: Future.success(analyticsResponses),
@@ -123,11 +133,19 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     this.api.models.organisationUnits.get({
                         fields: organisationUnitsFields,
                         paging: false,
-                        filter: { id: { in: orgUnitUids } },
+                        filter: { id: { in: [...countryIds, ...orgUnitRegionIds] } },
                     })
                 ),
-            }).flatMap(({ analyticsResponses, metadata, orgUnitsResponse }) => {
+                orgUnitGroupsResponse: apiToFuture(
+                    this.api.models.organisationUnitGroups.get({
+                        fields: organisationUnitGroupsFields,
+                        paging: false,
+                        filter: { id: { in: orgUnitGroupRegionIds } },
+                    })
+                ),
+            }).flatMap(({ analyticsResponses, metadata, orgUnitsResponse, orgUnitGroupsResponse }) => {
                 const orgUnits: D2OrgUnit[] = orgUnitsResponse.objects;
+                const orgUnitGroups: D2OrgUnitGroup[] = orgUnitGroupsResponse.objects;
                 const mergedVisualization = this.mergeVisualizations(visualizations);
 
                 const isMultipleVisualizations = mergedVisualization.id.includes("_");
@@ -164,6 +182,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         analyticsResponse,
                         metadata,
                         orgUnits,
+                        orgUnitGroups: orgUnitGroups,
                         seriesIdAndName,
                         latestAvailableYearByCountryId,
                     });
@@ -212,6 +231,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         tabs: tabs,
                         chartName: chartName,
                         orgUnits: orgUnits,
+                        orgUnitGroups: orgUnitGroups,
                     });
                 }
                 return Future.success(undefined);
@@ -224,8 +244,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         tabs: Tab[];
         chartName: Maybe<string>;
         orgUnits: D2OrgUnit[];
+        orgUnitGroups: D2OrgUnitGroup[];
     }): FutureData<void> {
-        const { mergedVisualization, tabs, chartName, orgUnits } = params;
+        const { mergedVisualization, tabs, chartName, orgUnits, orgUnitGroups } = params;
         const exportedDataChartBuilder = visualizationsExportedDataChartBuilder[mergedVisualization.id];
 
         if (exportedDataChartBuilder) {
@@ -235,7 +256,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         const tabsWithChart = exportedDataChartBuilder(
                             tabs,
                             chartName || mergedVisualization.name,
-                            orgUnits
+                            orgUnits,
+                            orgUnitGroups
                         );
 
                         exportToCSVIncludingChart({
@@ -258,7 +280,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     const tabsWithChart = exportedDataChartBuilder(
                         tabs,
                         chartName || mergedVisualization.name,
-                        orgUnits
+                        orgUnits,
+                        orgUnitGroups
                     );
                     exportToCSV(tabsWithChart, chartName || mergedVisualization.name);
                     return Future.success(undefined);
@@ -319,6 +342,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         analyticsResponse: Analytics;
         metadata: Metadata;
         orgUnits: D2OrgUnit[];
+        orgUnitGroups: D2OrgUnitGroup[];
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
@@ -330,6 +354,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             analyticsResponse,
             metadata,
             orgUnits,
+            orgUnitGroups,
             seriesIdAndName,
             latestAvailableYearByCountryId,
         } = params;
@@ -345,15 +370,16 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             visualization,
             analyticsResponse: filteredAnalyticsResponse,
             orgUnits,
+            orgUnitGroups: orgUnitGroups,
             metadata,
             seriesIdAndName,
         });
 
-        const orgUnitsInChart = this.getOrgUnitsInChart(
-            metadata.organisationUnits,
-            orgUnits,
-            filteredAnalyticsResponse.metaData.dimensions
-        );
+        const orgUnitsInChart = this.getOrgUnitsInChart({
+            metadataOrganisationUnits: metadata.organisationUnits,
+            orgUnits: orgUnits,
+            metaDataDimensions: filteredAnalyticsResponse.metaData.dimensions,
+        });
 
         const breakInSeriesDescriptions = this.getBreakInSeriesDescription(
             filteredAnalyticsResponse,
@@ -364,11 +390,12 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         return { breakInSeriesDescriptions, dataRows };
     }
 
-    private getOrgUnitsInChart(
-        metadataOrganisationUnits: Maybe<{ id: string; name: string; shortName: string }[]>,
-        orgUnits: D2OrgUnit[],
-        metaDataDimensions: Analytics["metaData"]["dimensions"]
-    ): { id: string; shortName: string }[] {
+    private getOrgUnitsInChart(params: {
+        metadataOrganisationUnits: Maybe<{ id: string; name: string; shortName: string }[]>;
+        orgUnits: D2OrgUnit[];
+        metaDataDimensions: Analytics["metaData"]["dimensions"];
+    }): { id: string; shortName: string }[] {
+        const { metadataOrganisationUnits, orgUnits, metaDataDimensions } = params;
         if (metadataOrganisationUnits) {
             return metadataOrganisationUnits;
         }
@@ -419,10 +446,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         visualization: Visualization;
         analyticsResponse: Analytics;
         orgUnits: D2OrgUnit[];
+        orgUnitGroups: D2OrgUnitGroup[];
         metadata: Metadata;
         seriesIdAndName: { id: string | undefined; name: string | undefined }[];
     }): string[][] {
-        const { visualization, analyticsResponse, orgUnits, metadata, seriesIdAndName } = params;
+        const { visualization, analyticsResponse, orgUnits, orgUnitGroups, metadata, seriesIdAndName } = params;
 
         const columns = analyticsResponse.headers.map(header => {
             const headerNamesInVisualization = HEADER_NAMES_BY_VISUALIZATION[visualization.id];
@@ -443,9 +471,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         });
 
         const existsCountryColumn = columns.includes("Country");
-        const addCountryColumn = !existsCountryColumn && orgUnits.length === 1;
+        const addCountryOrAreaColumn = !existsCountryColumn && (orgUnits.length === 1 || orgUnitGroups.length === 1);
 
-        const finalColumns = addCountryColumn ? ["Country", ...columns] : columns;
+        const finalColumns = addCountryOrAreaColumn ? ["Country", ...columns] : columns;
 
         const mappedRows = _(
             this.mapAnalyticsResponseRows({
@@ -459,9 +487,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             .value();
 
         const dataRowsWithCountryIfRequired = mappedRows.map(row => {
-            if (addCountryColumn) {
-                const country = orgUnits[0];
-                const countryName = country ? mapToWhoCountryName(country.id, country.shortName || "") : "";
+            if (addCountryOrAreaColumn) {
+                const countryOrArea = orgUnits.length === 1 ? orgUnits[0] : orgUnitGroups[0];
+                const countryName = countryOrArea
+                    ? mapToWhoCountryName(countryOrArea.id, countryOrArea.shortName || "")
+                    : "Country or area not found";
                 return [countryName, ...row];
             }
             return row;
@@ -529,17 +559,25 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     private getDimensions = (
         visualization: Visualization,
         prop: VisualizationProp,
-        countryIds?: string[],
+        countryIds: Id[],
+        selectedRegions: Region[],
         periods?: string[]
     ): ItemRef[] | undefined => {
         const dimensionsOuInVisualization = visualization[prop].filter(vd => vd.id === "ou");
         const dimensionsPeInVisualization = visualization[prop].filter(vd => vd.id === "pe");
         const dimensionsDxInVisualization = visualization[prop].filter(vd => vd.id === "dx");
         const others = visualization[prop].filter(vd => vd.id !== "dx" && vd.id !== "pe" && vd.id !== "ou");
+        const orgUnitItems = [
+            ...countryIds?.map(countryId => ({ id: countryId })),
+            ...selectedRegions.map(region => ({ id: region.id })),
+        ];
+        const orgUnitGroupRegionItems = selectedRegions.map(region => ({ id: `OU_GROUP-${region.id}` }));
 
         const dimensionsOu =
-            dimensionsOuInVisualization && dimensionsOuInVisualization.length > 0 && countryIds && countryIds.length > 0
-                ? [{ dimension: "ou" as const, items: countryIds?.map(countryId => ({ id: countryId })) }]
+            dimensionsOuInVisualization &&
+            dimensionsOuInVisualization.length > 0 &&
+            (countryIds?.length > 0 || selectedRegions?.length > 0)
+                ? [{ dimension: "ou" as const, items: [...orgUnitItems, ...orgUnitGroupRegionItems] }]
                 : dimensionsOuInVisualization;
 
         const dimensionsPe =
@@ -588,3 +626,15 @@ const organisationUnitsFields = {
 export type D2OrgUnit = MetadataPick<{
     organisationUnits: { fields: typeof organisationUnitsFields };
 }>["organisationUnits"][number];
+
+const organisationUnitGroupsFields = {
+    id: true,
+    shortName: true,
+    organisationUnits: {
+        id: true,
+    },
+} as const;
+
+export type D2OrgUnitGroup = MetadataPick<{
+    organisationUnitGroups: { fields: typeof organisationUnitGroupsFields };
+}>["organisationUnitGroups"][number];

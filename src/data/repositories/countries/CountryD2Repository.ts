@@ -1,5 +1,5 @@
 import polylabel from "polylabel";
-import { Country, CountriesRegion } from "../../../domain/entities/Country";
+import { Country } from "../../../domain/entities/Country";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { CountryRepository } from "../../../domain/repositories/CountryRepository";
 import { Id } from "../../../domain/entities/Ref";
@@ -10,6 +10,7 @@ import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData"
 import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -50,19 +51,19 @@ export const countryInfoDataElements: Record<string, string> = {
 const euroOrgUnit = "svSQSBLTVz6";
 
 export const SORTED_COUNTRY_GROUPINGS = [
-    "dqMsarWCWk6",
-    "FMCN2ZG9AEj",
-    "A1BdaIwDheX",
-    "e7I4gDX3g5k",
+    ORG_UNIT_GROUP_IDS.EUROPEAN_UNION,
+    ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA,
+    ORG_UNIT_GROUP_IDS.WESTERN_BALKANS,
+    ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES,
+    ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
     "KJm1Af6dksd",
     "yuNkB9H6l3A",
     "r3pNdEobfnS",
     "tuJjq1LSoCL",
 ];
 
-const GREENLAND = "IZy3ESdFnp5";
 export const KOSOVO = "NEPywTBN52g";
-const COUNTRIES_NOT_SHOWN = [GREENLAND];
+const COUNTRIES_NOT_SHOWN = [ORG_UNIT_IDS.EUROPEAN_UNION, KOSOVO];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
@@ -130,20 +131,6 @@ export class CountryD2Repository implements CountryRepository {
                 aditionalCountriesInfo.events,
                 countriesIdsInCountryPage
             );
-        });
-    }
-
-    // WORKAROUND: EU27 data is added in Greenland because we cannot use EUR
-    public getEurCountriesRegion(): FutureData<CountriesRegion | undefined> {
-        return apiToFuture(
-            this.api.models.organisationUnits.get({
-                fields: organisationUnitsFields,
-                paging: false,
-                level: 3,
-                filter: { id: { eq: GREENLAND } },
-            })
-        ).map(eurRegion => {
-            return this.buildEurCountriesRegion(eurRegion?.objects[0]);
         });
     }
 
@@ -403,21 +390,6 @@ export class CountryD2Repository implements CountryRepository {
         }
 
         return [];
-    }
-
-    private buildEurCountriesRegion(eurRegion?: D2OrgUnit): CountriesRegion | undefined {
-        return eurRegion
-            ? {
-                  id: eurRegion.id,
-                  name: "EU average",
-                  longName: "EU average",
-                  code: "EU",
-                  description: eurRegion.description,
-                  parents: eurRegion.organisationUnitGroups
-                      .map(({ id, name }) => ({ id, name }))
-                      .filter(oug => SORTED_COUNTRY_GROUPINGS.includes(oug.id)),
-              }
-            : undefined;
     }
 }
 

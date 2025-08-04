@@ -14,7 +14,8 @@ export const chart_mUjcWO90CRr_Seed: VisualizationExtra = {
     friendlyName:
         "Public spending on health as a share of GDP and out-of-pocket payments as a share of current spending on health",
     isComparative: true,
-    hasEur27: true,
+    hasEURegion: true,
+    isOrgUnitRegions: true,
     isYearSingleSelection: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>
