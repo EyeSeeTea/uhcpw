@@ -164,7 +164,7 @@ export const TreeSelectorList: React.FC<TreeSelectorListProps> = React.memo(prop
                                 }
                                 selected={isAllItemParentSelected(option.id)}
                                 disabled={isItemParentDisabled(finalChildren)}
-                                hasSelectAll={hasSelectAll}
+                                hasSelectAll={hasSelectAll && !searchTerm}
                             >
                                 {finalChildren.map((child, lindex) => {
                                     const selected = selectedIds.includes(child.id);
