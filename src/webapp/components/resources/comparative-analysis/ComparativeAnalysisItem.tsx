@@ -12,10 +12,11 @@ export interface CountryAnalysisProps {
     comparativeAnalysis: ComparativeAnalysisState;
     minimalVersion?: boolean;
     analyticsPageTitle: string;
+    normalize?: boolean;
 }
 
 export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => {
-    const { comparativeAnalysis, minimalVersion, analyticsPageTitle } = props;
+    const { comparativeAnalysis, minimalVersion, analyticsPageTitle, normalize } = props;
     const { redirectWithEvent } = useAnalytics();
 
     const analyticsEvent = useCallback(
@@ -34,6 +35,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
 
     return (
         <Item elevation={0} role="listitem">
+            {normalize && <Row />}
             <AnalysisItem
                 title={comparativeAnalysis.title}
                 themeCode={comparativeAnalysis.theme}
@@ -69,5 +71,21 @@ const Item = styled(Card)`
         place-items: center;
         height: 100%;
         padding: 0;
+    }
+`;
+
+const Row = styled.div`
+    padding: 8px 0;
+    height: 56px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-top: 0;
+        margin-inline: 16px;
+        justify-self: flex-start;
+        flex-wrap: nowrap;
     }
 `;
