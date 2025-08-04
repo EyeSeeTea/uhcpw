@@ -21,7 +21,11 @@ export const chart_z6nPPMMbOw5_Seed: VisualizationExtra = {
     subcategoryName: sortedSubcategoryNames.countryLevel,
     maxCountryFilter: 1,
     hasEURegion: true,
-    isOrgUnitRegions: true,
+    hasEECARegion: true,
+    hasEuropeanRegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
+    isOrgUnitGroupRegions: true,
     sortDataRows: (headerRow: string[], dataRows: string[][]) => {
         const yearIndex = headerRow.findIndex(header => header === "Year");
         const sortedByYear = _(dataRows)
