@@ -1,33 +1,12 @@
 import { Id } from "./Ref";
 
-export type RegionType = "orgUnitGroup" | "orgUnit";
-
-type BaseRegion = {
+export type Region = {
     id: Id;
     name: string;
     code: string;
     countries?: Id[];
-};
-
-export type OrgUnitGroupRegion = BaseRegion & {
-    type: "orgUnitGroup";
     linkedOrgUnitId?: Id;
 };
-
-export type OrgUnitRegion = BaseRegion & {
-    type: "orgUnit";
-    linkedOrgUnitGroupId: Id;
-};
-
-export type Region = OrgUnitRegion | OrgUnitGroupRegion;
-
-export function isOrgUnitGroupRegion(region: Region): region is OrgUnitGroupRegion {
-    return region.type === "orgUnitGroup";
-}
-
-export function isOrgUnitRegion(region: Region): region is OrgUnitRegion {
-    return region.type === "orgUnit";
-}
 
 export const ORG_UNIT_GROUP_IDS = {
     WESTERN_BALKANS: "A1BdaIwDheX",
@@ -36,12 +15,6 @@ export const ORG_UNIT_GROUP_IDS = {
     EU_CANDIDATE_COUNTRIES: "e7I4gDX3g5k",
     EUROPEAN_REGION: "aN3rzQZhM4i",
 } as const;
-
-export type OrgUnitGroupRegionKey = keyof typeof ORG_UNIT_GROUP_IDS;
-
-export function isOrgUnitGroupRegionKey(key: string): key is OrgUnitGroupRegionKey {
-    return key in ORG_UNIT_GROUP_IDS;
-}
 
 // WORKAROUND: EUROPEAN UNION data is added in Greenland because we cannot use EUR org unit
 // TODO: Change this when region org units are implemented

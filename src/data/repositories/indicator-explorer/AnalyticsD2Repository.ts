@@ -118,10 +118,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 return [...acc, ...analyticsResponse.rows];
             }, []);
             const metadataIds = this.extractMetadataIds(analyticsResponseRows);
-            const orgUnitRegionIds = selectedRegions.filter(region => region.type === "orgUnit").map(r => r.id);
-            const orgUnitGroupRegionIds = selectedRegions
-                .filter(region => region.type === "orgUnitGroup")
-                .map(r => r.id);
+            const orgUnitGroupRegionIds: Id[] = selectedRegions.map(r => r.id);
+            const orgUnitRegionIds: Id[] = selectedRegions.map(r => r.linkedOrgUnitId).filter((id): id is Id => !!id);
 
             return Future.joinObj({
                 analyticsResponses: Future.success(analyticsResponses),
@@ -569,14 +567,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const dimensionsPeInVisualization = visualization[prop].filter(vd => vd.id === "pe");
         const dimensionsDxInVisualization = visualization[prop].filter(vd => vd.id === "dx");
         const others = visualization[prop].filter(vd => vd.id !== "dx" && vd.id !== "pe" && vd.id !== "ou");
-        const orgUnitRegions = selectedRegions.filter(region => region.type === "orgUnit");
         const orgUnitItems = [
             ...countryIds?.map(countryId => ({ id: countryId })),
-            ...orgUnitRegions.map(region => ({ id: region.id })),
+            ...selectedRegions.map(region => ({ id: region.id })),
         ];
-        const orgUnitGroupRegionItems = selectedRegions
-            .filter(region => region.type === "orgUnitGroup")
-            .map(region => ({ id: `OU_GROUP-${region.id}` }));
+        const orgUnitGroupRegionItems = selectedRegions.map(region => ({ id: `OU_GROUP-${region.id}` }));
 
         const dimensionsOu =
             dimensionsOuInVisualization &&

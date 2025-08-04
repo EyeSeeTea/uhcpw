@@ -35,14 +35,12 @@ export function useMultiCountryOptionsV2(params?: {
     }, [selectedCountries]);
 
     const regionOptions: TreeOption[] = useMemo(() => {
-        const options = regions
-            .filter(region => region.type === "orgUnitGroup")
-            .map(region => ({
-                id: region.id,
-                name: `${region.name} average`,
-                code: region.code,
-                parents: [AVERAGES_REGIONS_PARENT],
-            }));
+        const options = regions.map(region => ({
+            id: region.id,
+            name: `${region.name} average`,
+            code: region.code,
+            parents: [AVERAGES_REGIONS_PARENT],
+        }));
 
         return options;
     }, [regions]);

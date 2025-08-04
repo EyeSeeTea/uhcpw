@@ -11,7 +11,7 @@ import { IndicatorExplorerContent } from "../../../domain/entities/indicator-exp
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { Indicator } from "../../../domain/entities/indicator-explorer/Indicator";
-import { isOrgUnitGroupRegion, ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
 import i18n from "../../../locales";
 import { Id } from "../../../domain/entities/Ref";
 import {
@@ -84,7 +84,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         if (selectedIndicator?.isOrgUnitRegions) {
             // If the indicator uses org unit regions, we need to return the org unit ids instead of group ids
             const selectedRegions = regions
-                .filter(isOrgUnitGroupRegion)
                 .filter(region => selectedRegionOrgUnitGroup.includes(region.id))
                 .reduce<Id[]>((acc, region) => {
                     return region.linkedOrgUnitId ? [...acc, region.linkedOrgUnitId] : acc;
