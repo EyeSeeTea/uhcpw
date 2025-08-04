@@ -104,7 +104,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 newsIndicator?.maxCountryFilter >= 1
             ) {
                 setGlobalMessage({
-                    text: i18n.t(`You can only select {{count}} countries at a time with this indicator`, {
+                    text: i18n.t(`You can only select {{count}} countries or areas at a time with this indicator`, {
                         count: newsIndicator.maxCountryFilter,
                     }),
                     type: "info",
@@ -121,7 +121,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
 
             if (isOldMultipleCountrySelection && isNewSingleCountrySelection && isMoreThanOneCountrySelected) {
                 setGlobalMessage({
-                    text: i18n.t(`You can only select one country at a time with this indicator`),
+                    text: i18n.t(`You can only select one country or area at a time with this indicator`),
                     type: "info",
                 });
             }
