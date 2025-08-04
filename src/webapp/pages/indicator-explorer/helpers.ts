@@ -109,23 +109,32 @@ export function getUpdatedCountriesSelectionFilter(
     selectedCountriesAndRegions: string[] | undefined,
     countriesAndSubregions: Country[]
 ): string[] | undefined {
-    const isEu27Selected = selectedCountriesAndRegions?.some(
-        selectedCountry => selectedCountry === ORG_UNIT_GROUP_IDS.EUROPEAN_UNION
-    );
+    const isRegionSelected = (regionId: Id): boolean =>
+        !!selectedCountriesAndRegions?.some(selectedCountry => selectedCountry === regionId);
+
     const isMoreThanOneCountrySelected = selectedCountriesAndRegions?.length && selectedCountriesAndRegions.length > 1;
 
     const isOldComparativeAndNewNotComparative = oldIndicator?.isComparative && !newIndicator?.isComparative;
-    const isNewNotComparativeAndNotHaveEur27 = !newIndicator?.isComparative && !newIndicator?.hasEURegion;
 
     const areOldAndNewComparative = oldIndicator?.isComparative && newIndicator?.isComparative;
     const areOldAndNewNotComparative = !oldIndicator?.isComparative && !newIndicator?.isComparative;
 
     const isNewSingleCountrySelection = newIndicator?.maxCountryFilter === 1;
 
+    const isInvalidRegionSelected = () => {
+        return (
+            (isRegionSelected(ORG_UNIT_GROUP_IDS.EUROPEAN_UNION) && !newIndicator?.hasEURegion) ||
+            (isRegionSelected(ORG_UNIT_GROUP_IDS.EUROPEAN_REGION) && !newIndicator?.hasEuropeanRegion) ||
+            (isRegionSelected(ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA) && !newIndicator?.hasEECARegion) ||
+            (isRegionSelected(ORG_UNIT_GROUP_IDS.WESTERN_BALKANS) && !newIndicator?.hasWesternBalkansRegion) ||
+            (isRegionSelected(ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES) && !newIndicator?.hasEUCandidatesRegion)
+        );
+    };
+
     if (
         isOldComparativeAndNewNotComparative ||
-        (isNewNotComparativeAndNotHaveEur27 && isEu27Selected) ||
-        (isNewSingleCountrySelection && isMoreThanOneCountrySelected)
+        (isNewSingleCountrySelection && isMoreThanOneCountrySelected) ||
+        isInvalidRegionSelected()
     ) {
         return [];
     }
