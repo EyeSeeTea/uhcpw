@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-08-01T10:34:49.128Z\n"
-"PO-Revision-Date: 2025-08-01T10:34:49.128Z\n"
+"POT-Creation-Date: 2025-08-04T11:31:49.620Z\n"
+"PO-Revision-Date: 2025-08-04T11:31:49.620Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -53,9 +53,6 @@ msgstr ""
 msgid "In detail"
 msgstr ""
 
-msgid "Select category and indicator"
-msgstr ""
-
 msgid "No information available for this category"
 msgstr ""
 
@@ -93,6 +90,9 @@ msgid "UHC watch YouTube video player"
 msgstr ""
 
 msgid "Indicators"
+msgstr ""
+
+msgid "Select category and indicator"
 msgstr ""
 
 msgid "Countries and areas"
@@ -153,6 +153,9 @@ msgid "Policy explorer"
 msgstr ""
 
 msgid "Countries & areas"
+msgstr ""
+
+msgid "Regions"
 msgstr ""
 
 msgid "Regional report"
@@ -282,6 +285,21 @@ msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
+msgstr ""
+
+msgid "Select region"
+msgstr ""
+
+msgid "Region Map"
+msgstr ""
+
+msgid "Numbers"
+msgstr ""
+
+msgid "Coverage Policy"
+msgstr ""
+
+msgid "Policy Checklist"
 msgstr ""
 
 msgid "Country analysis"
