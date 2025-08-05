@@ -10,7 +10,7 @@ const SORTED_PARAMETERS = [
     "Inpatient care",
 ];
 const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Country", "Parameter"];
+const HEADERS_BASE = ["Country / Area", "Parameter"];
 
 export const chart_sjgCABd3zK7_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,

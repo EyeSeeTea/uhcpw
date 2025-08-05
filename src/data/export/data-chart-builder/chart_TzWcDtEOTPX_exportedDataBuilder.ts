@@ -8,7 +8,7 @@ const SORTED_PARAMETERS = [
     "Not at risk of impoverishment",
 ];
 const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Country", "Parameter"];
+const HEADERS_BASE = ["Country / Area", "Parameter"];
 
 export const chart_TzWcDtEOTPX_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,

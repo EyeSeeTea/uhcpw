@@ -11,7 +11,7 @@ const SORTED_PARAMETERS = [
 ];
 const HEADER_DATA_PARAM_NAME = "Parameter";
 const HEADER_DATA_QUINTILE_NAME = "Quintile";
-const HEADERS_BASE = ["Country", "Parameter / Year - Quintile"];
+const HEADERS_BASE = ["Country / Area", "Parameter / Year - Quintile"];
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
 
 export const chat_fY7K8ATEDgQ_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (

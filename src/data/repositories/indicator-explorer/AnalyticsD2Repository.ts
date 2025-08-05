@@ -45,7 +45,7 @@ const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
         yooLFrJORoj: "Parameter",
     },
     default: {
-        ou: "Country",
+        ou: "Country / Area",
         pe: "Year",
         dx: "Parameter",
     },
@@ -470,10 +470,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             return defaultName ?? header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase();
         });
 
-        const existsCountryColumn = columns.includes("Country");
+        const existsCountryColumn = columns.includes("Country / Area");
         const addCountryOrAreaColumn = !existsCountryColumn && (orgUnits.length === 1 || orgUnitGroups.length === 1);
 
-        const finalColumns = addCountryOrAreaColumn ? ["Country", ...columns] : columns;
+        const finalColumns = addCountryOrAreaColumn ? ["Country / Area", ...columns] : columns;
 
         const mappedRows = _(
             this.mapAnalyticsResponseRows({

@@ -3,7 +3,7 @@ import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 
-const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
 const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 
 export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
