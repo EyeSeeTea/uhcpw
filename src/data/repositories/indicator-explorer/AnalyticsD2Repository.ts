@@ -19,6 +19,7 @@ import {
 import { Maybe } from "../../../types/utils";
 import {
     filterRowsByYearInCountry,
+    filterRowsByYearIndicatorAndCountry,
     getCommonLastAvailableYearInBothAxis,
     getLastAvailableYearByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
@@ -27,6 +28,7 @@ import { DataStoreClient } from "../../DataStoreClient";
 import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
 import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
 import { getVisualizationTemplate } from "./visualization-template/getVisualizationTemplate";
+import { getYearByIndicatorAndCountry } from "../../../webapp/components/visualization/manual/chart_kIpnMBaBvZ9_Options";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -158,6 +160,16 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                             : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [], isUpTo2019)
                         : undefined;
 
+                const yearByIndicatorAndCountry =
+                    mergedVisualization.id === "kIpnMBaBvZ9" && xAxis && yAxis
+                        ? getYearByIndicatorAndCountry(
+                              firstChartAnalyticsResponse?.rows || [],
+                              xAxis,
+                              yAxis,
+                              isUpTo2019
+                          )
+                        : undefined;
+
                 const dataRowsAndBreakInSeriesDescriptions = analyticsResponses.map(analyticsResponse => {
                     return this.getDataRowsAndBreakInSeriesDescriptions({
                         visualization: mergedVisualization,
@@ -166,6 +178,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         orgUnits,
                         seriesIdAndName,
                         latestAvailableYearByCountryId,
+                        yearByIndicatorAndCountry,
                     });
                 });
 
@@ -324,6 +337,15 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             name: string | undefined;
         }[];
         latestAvailableYearByCountryId?: Record<string, string>;
+        yearByIndicatorAndCountry:
+            | Record<
+                  string,
+                  {
+                      xYears: string;
+                      yYears: string;
+                  }
+              >
+            | undefined;
     }): { breakInSeriesDescriptions: string[][]; dataRows: string[][] } {
         const {
             visualization,
@@ -332,14 +354,15 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             orgUnits,
             seriesIdAndName,
             latestAvailableYearByCountryId,
+            yearByIndicatorAndCountry,
         } = params;
 
-        const filteredAnalyticsResponse = latestAvailableYearByCountryId
-            ? {
-                  ...analyticsResponse,
-                  rows: filterRowsByYearInCountry(analyticsResponse.rows, latestAvailableYearByCountryId),
-              }
-            : analyticsResponse;
+        const filteredAnalyticsResponse = this.filterAnalyticsResponse(
+            analyticsResponse,
+            visualization,
+            latestAvailableYearByCountryId,
+            yearByIndicatorAndCountry
+        );
 
         const dataRows = this.createDataRows({
             visualization,
@@ -362,6 +385,42 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         );
 
         return { breakInSeriesDescriptions, dataRows };
+    }
+
+    private filterAnalyticsResponse(
+        analyticsResponse: Analytics,
+        visualization: Visualization,
+        latestAvailableYearByCountryId?: Record<string, string>,
+        yearByIndicatorAndCountry?: Record<
+            string,
+            {
+                xYears: string;
+                yYears: string;
+            }
+        >
+    ): Analytics {
+        const { xAxis, yAxis, hasCustomFilterXAxisAndYAxisByLastAvailableYear } = visualization;
+
+        if (latestAvailableYearByCountryId && !hasCustomFilterXAxisAndYAxisByLastAvailableYear) {
+            return {
+                ...analyticsResponse,
+                rows: filterRowsByYearInCountry(analyticsResponse.rows, latestAvailableYearByCountryId),
+            };
+        } else if (yearByIndicatorAndCountry && xAxis && yAxis && hasCustomFilterXAxisAndYAxisByLastAvailableYear) {
+            const rows = filterRowsByYearIndicatorAndCountry(
+                analyticsResponse.rows,
+                xAxis,
+                yAxis,
+                yearByIndicatorAndCountry
+            );
+
+            return {
+                ...analyticsResponse,
+                rows: rows,
+            };
+        } else {
+            return analyticsResponse;
+        }
     }
 
     private getOrgUnitsInChart(
