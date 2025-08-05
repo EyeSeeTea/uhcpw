@@ -157,21 +157,21 @@ function getSectionDetails(kind: ResourceSectionKind) {
             };
         case "comparative-analysis":
             return {
-                title: "Comparative analysis",
+                title: i18n.t("Comparative analysis"),
                 seeAllUrl: "/resources/comparative-analysis",
                 order: 2,
             };
-        case "news":
-            return {
-                title: "News",
-                seeAllUrl: "/resources/news",
-                order: 3,
-            };
         case "multimedia":
             return {
-                title: "Multimedia",
+                title: i18n.t("Multimedia"),
                 seeAllUrl: "/resources/multimedia",
                 order: 3,
+            };
+        case "news":
+            return {
+                title: i18n.t("News"),
+                seeAllUrl: "/resources/news",
+                order: 4,
             };
         default:
             return { title: "", seeAllUrl: "", order: 10 };
