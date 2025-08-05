@@ -5,6 +5,7 @@ import i18n from "../../../locales";
 import UmbrellaWeak from "../../assets/country-page/umbrella-weak.svg";
 import UmbrellaGap from "../../assets/country-page/umbrella-normal.png";
 import UmbrellaStrong from "../../assets/country-page/umbrella-strong.png";
+import InsufficientData from "../../assets/country-page/insufficient-data.svg";
 import { FC, MutableRefObject, useCallback } from "react";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
@@ -42,6 +43,8 @@ const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
             return <img src={UmbrellaGap} width={100} alt={"umbrella gap"} />;
         case "Strong":
             return <img src={UmbrellaStrong} width={100} alt={"umbrella strong"} />;
+        case "InsufficientData":
+            return <img src={InsufficientData} width={100} alt={"insufficient data"} />;
     }
 };
 

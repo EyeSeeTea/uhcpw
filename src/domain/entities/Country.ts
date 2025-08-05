@@ -29,7 +29,7 @@ export type CountrySectionInfo = {
     }[];
 };
 
-export type CountryStatus = "Strong" | "Gaps" | "Weak";
+export type CountryStatus = "Strong" | "Gaps" | "Weak" | "InsufficientData";
 
 export type CountriesRegion = {
     id: string;

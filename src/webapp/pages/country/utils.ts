@@ -8,5 +8,7 @@ export const getBackgroundColorByCountryStatus = (status?: CountryStatus) => {
             return "linear-gradient(90deg, #FF8D4E 1.8%, #FFD3A5 100%)";
         case "Strong":
             return "linear-gradient(90deg, #4FAD56 70.8%, #9CD77B 100%)";
+        case "InsufficientData":
+            return "linear-gradient(90deg, #808080 0%, #f0f0f0 100%)";
     }
 };
