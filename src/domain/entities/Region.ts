@@ -56,3 +56,11 @@ export type RegionNameKey = keyof typeof REGION_NAMES;
 export function isRegionNameKey(key: string): key is RegionNameKey {
     return key in REGION_NAMES;
 }
+
+export const SORTED_REGIONS: Id[] = [
+    ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
+    ORG_UNIT_GROUP_IDS.EUROPEAN_UNION,
+    ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA,
+    ORG_UNIT_GROUP_IDS.WESTERN_BALKANS,
+    ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES,
+];

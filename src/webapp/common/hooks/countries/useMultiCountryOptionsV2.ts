@@ -8,6 +8,7 @@ import {
     SORTED_COUNTRY_GROUPINGS,
 } from "../../../../data/repositories/countries/CountryD2Repository";
 import { ALL_NODE_ID } from "../../../components/tree-selector/useTreeSelector";
+import { SORTED_REGIONS } from "../../../../domain/entities/Region";
 
 const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 
@@ -35,14 +36,18 @@ export function useMultiCountryOptionsV2(params?: {
     }, [selectedCountries]);
 
     const regionOptions: TreeOption[] = useMemo(() => {
-        const options = regions.map(region => ({
-            id: region.id,
-            name: `${region.name} average`,
-            code: region.code,
-            parents: [AVERAGES_REGIONS_PARENT],
-        }));
-
-        return options;
+        return regions
+            .map(region => ({
+                id: region.id,
+                name: `${region.name} average`,
+                code: region.code,
+                parents: [AVERAGES_REGIONS_PARENT],
+            }))
+            .sort((a, b) => {
+                const indexA = SORTED_REGIONS.indexOf(a.id);
+                const indexB = SORTED_REGIONS.indexOf(b.id);
+                return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
+            });
     }, [regions]);
 
     useEffect(() => {
