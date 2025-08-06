@@ -8,41 +8,44 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
+import { Id } from "../../../domain/entities/Ref";
 
 type CountryExpert = {
     experts: PersonState[];
 };
 
-export function useCountryExpert(country: string): CountryExpert {
+export function useCountryExpert(countryIds: Id[]): CountryExpert {
     const { compositionRoot, countriesAndSubregions } = useAppContext();
     const [experts, setExperts] = useState<PersonState[]>([]);
 
-    const countryId = useMemo(() => {
-        return country === FEDERACIJA_BOSNE_I_HERCEGOVINE || country === REPUBLICA_SERPSKA
-            ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
-            : country;
-    }, [country]);
+    const mappedCountryIds = useMemo(() => {
+        return countryIds.map(id => {
+            return id === FEDERACIJA_BOSNE_I_HERCEGOVINE || id === REPUBLICA_SERPSKA
+                ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
+                : id;
+        });
+    }, [countryIds]);
 
     useEffect(() => {
         compositionRoot.about.getPersons.execute(false).run(
             persons => {
-                setExperts(
-                    persons
-                        .filter(person => person.countryId === countryId)
-                        .map(person => mapPersonToExpertState(person, countriesAndSubregions))
-                );
+                const mappedExperts = persons
+                    .filter(person => person.countryId && mappedCountryIds.includes(person.countryId))
+                    .map(person => mapPersonToExpertState(person, countriesAndSubregions))
+                    .sort((a, b) => a.countryName.localeCompare(b.countryName));
+
+                setExperts(mappedExperts);
             },
             () => setExperts([])
         );
-    }, [compositionRoot.about.getPersons, countriesAndSubregions, countryId]);
-
-    function mapPersonToExpertState(person: Person, countries: Country[]): PersonState {
-        const country = countries.find(country => country.id === person.countryId);
-
-        return { ...person, countryName: country?.name || "" };
-    }
+    }, [compositionRoot.about.getPersons, countriesAndSubregions, mappedCountryIds]);
 
     return {
         experts,
     };
+}
+
+function mapPersonToExpertState(person: Person, countries: Country[]): PersonState {
+    const country = countries.find(country => country.id === person.countryId);
+    return { ...person, countryName: country?.name || "" };
 }

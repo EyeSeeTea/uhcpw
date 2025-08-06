@@ -6,6 +6,11 @@ import { Header } from "./Header";
 import { Map } from "../../components/home/map/Map";
 import { useRegionalPageMap } from "./useRegionalPageMap";
 import { Divider } from "../../components/home/common/Divider";
+import { NumbersSection } from "./NumbersSection";
+import { CoveragePolicySection } from "./CoveragePolicySection";
+import { PolicyChecklistSection } from "./PolicyChecklistSection";
+import { CountryResources } from "../../components/country-page/CountryResources";
+import { CountryExpert } from "../../components/country-page/CountryExpert";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -17,14 +22,14 @@ export const RegionalPage: React.FC = () => {
         regionMap,
         financialProtectionStatus,
     } = useRegionalPage();
-    const { onRegionChange, regionOptions, selectedRegion } = regionFilter;
+    const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;
-    const mapState = useRegionalPageMap({ selectedRegionId: selectedRegion, markers: markers });
+    const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
 
     return (
         <Layout>
             <Header
-                selectedRegion={selectedRegion}
+                selectedRegion={selectedRegionId}
                 onRegionChange={onRegionChange}
                 regionOptions={regionOptions}
                 handleHeaderItemClick={handleHeaderItemClick}
@@ -39,23 +44,33 @@ export const RegionalPage: React.FC = () => {
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
-            <section ref={refs.numbers}></section>
+            <section ref={refs.numbers}>
+                <NumbersSection />
+            </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
-            <section ref={refs.coveragePolicy}></section>
+            <section ref={refs.coveragePolicy}>
+                <CoveragePolicySection />
+            </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
-            <section ref={refs.policyChecklist}></section>
+            <section ref={refs.policyChecklist}>
+                <PolicyChecklistSection />
+            </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
-            <section ref={refs.resources}></section>
+            <section ref={refs.resources}>
+                <CountryResources countryIds={selectedRegion?.countries || []} />
+            </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
-            <section ref={refs.experts}></section>
+            <section ref={refs.experts}>
+                <CountryExpert countryIds={selectedRegion?.countries || []} />
+            </section>
         </Layout>
     );
 };

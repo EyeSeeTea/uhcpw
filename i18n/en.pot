@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-08-04T12:12:20.286Z\n"
-"PO-Revision-Date: 2025-08-04T12:12:20.286Z\n"
+"POT-Creation-Date: 2025-08-06T11:20:55.656Z\n"
+"PO-Revision-Date: 2025-08-06T11:20:55.656Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -68,6 +68,15 @@ msgstr ""
 msgid "policy explorer"
 msgstr ""
 
+msgid "Weaker financial protection"
+msgstr ""
+
+msgid "Stronger financial protection"
+msgstr ""
+
+msgid "UHC watch YouTube video player"
+msgstr ""
+
 msgid "Zoom in"
 msgstr ""
 
@@ -78,15 +87,6 @@ msgid "News"
 msgstr ""
 
 msgid "Multimedia"
-msgstr ""
-
-msgid "Weaker financial protection"
-msgstr ""
-
-msgid "Stronger financial protection"
-msgstr ""
-
-msgid "UHC watch YouTube video player"
 msgstr ""
 
 msgid "Indicators"

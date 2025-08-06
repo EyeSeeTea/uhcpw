@@ -94,11 +94,11 @@ export const CountryPage: React.FC = () => {
             </section>
             <Divider financialProtectionStatus={country?.status} />
             <section ref={resourcesRef}>
-                <CountryResources countryId={countryFilter.selectedCountry} />
+                <CountryResources countryIds={[countryFilter.selectedCountry]} />
             </section>
             <Divider financialProtectionStatus={country?.status} />
             <section ref={expertRef}>
-                <CountryExpert countryId={countryFilter.selectedCountry} />
+                <CountryExpert countryIds={[countryFilter.selectedCountry]} />
             </section>
         </Layout>
     );

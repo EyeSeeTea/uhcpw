@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import { useRegionalPageInfo } from "./useRegionalPageInfo";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
+import { Region } from "../../../domain/entities/region/Region";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "coveragePolicy" | "policyChecklist" | "resources" | "experts";
 
@@ -23,7 +24,8 @@ export type RegionalMenuItemConfig = {
 
 export type RegionalFilter = {
     regionOptions: Option<Id>[];
-    selectedRegion: Id | undefined;
+    selectedRegionId: Id | undefined;
+    selectedRegion: Region | undefined;
     onRegionChange: (value: Id) => void;
 };
 
@@ -46,13 +48,14 @@ export function useRegionalPage(): RegionalPageState {
     const isSmallScreen = useIsSmallScreen();
     const history = useHistory();
     const { regions, countries } = useAppContext();
-    const { regionOptions, selectedRegion, onRegionChange } = useRegionalPageFilter();
-    const { mainMapPanelContent, financialProtectionStatus } = useRegionalPageInfo(selectedRegion);
+    const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
+    const { mainMapPanelContent, financialProtectionStatus } = useRegionalPageInfo(selectedRegionId);
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
         type: "FeatureCollection",
         features: [],
     });
+    const [selectedRegion, setSelectedRegion] = useState<Region | undefined>(undefined);
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
@@ -75,10 +78,10 @@ export function useRegionalPage(): RegionalPageState {
 
     const menuItemsConfig: RegionalMenuItemConfig[] = useMemo(() => {
         return [
-            { id: "regionMap", label: i18n.t("Region Map"), ref: refs.regionMap },
+            { id: "regionMap", label: i18n.t("Region at a glance"), ref: refs.regionMap },
             { id: "numbers", label: i18n.t("Numbers"), ref: refs.numbers },
-            { id: "coveragePolicy", label: i18n.t("Coverage Policy"), ref: refs.coveragePolicy },
-            { id: "policyChecklist", label: i18n.t("Policy Checklist"), ref: refs.policyChecklist },
+            { id: "coveragePolicy", label: i18n.t("Coverage policy"), ref: refs.coveragePolicy },
+            { id: "policyChecklist", label: i18n.t("Policy checklist"), ref: refs.policyChecklist },
             { id: "resources", label: i18n.t("Resources"), ref: refs.resources },
             { id: "experts", label: i18n.t("Experts"), ref: refs.experts },
         ];
@@ -100,24 +103,25 @@ export function useRegionalPage(): RegionalPageState {
             searchParams.set("region", newRegion);
             history.push({ search: searchParams.toString() });
 
-            const selectedRegion = regions.find(region => region.id === newRegion);
-            const countryIdsInRegion = selectedRegion?.countries || [];
+            const region = regions.find(region => region.id === newRegion);
+            const countryIdsInRegion = region?.countries || [];
 
             const countriesWithSummary = countries.filter(
                 country => countryIdsInRegion.includes(country.id) && country.summary
             );
 
             setMarkers(countriesToGeoJson(countriesWithSummary));
+            setSelectedRegion(region);
             onRegionChange(newRegion);
         },
         [countries, history, onRegionChange, regions]
     );
 
     useEffect(() => {
-        if (filterInParams.region && filterInParams.region !== selectedRegion) {
+        if (filterInParams.region && filterInParams.region !== selectedRegionId) {
             handleRegionChange(filterInParams.region);
         }
-    }, [filterInParams.region, handleRegionChange, onRegionChange, selectedRegion]);
+    }, [filterInParams.region, handleRegionChange, onRegionChange, selectedRegionId]);
 
     const handleHeaderItemClick = useCallback(
         (item: RegionalMenuItem) => {
@@ -128,7 +132,12 @@ export function useRegionalPage(): RegionalPageState {
     );
 
     return {
-        regionFilter: { regionOptions, selectedRegion, onRegionChange: handleRegionChange },
+        regionFilter: {
+            regionOptions: regionOptions,
+            selectedRegionId: selectedRegionId,
+            onRegionChange: handleRegionChange,
+            selectedRegion: selectedRegion,
+        },
         isSmallScreen: isSmallScreen,
         menuItemsConfig: menuItemsConfig,
         refs: refs,

@@ -4,9 +4,10 @@ import i18n from "../../../locales";
 import bubblePattern from "../../assets/bubble-pattern.svg";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { Id } from "../../../domain/entities/Ref";
 
-export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) => {
-    const { experts } = useCountryExpert(countryId);
+export const CountryExpert: React.FC<{ countryIds: Id[] }> = ({ countryIds }) => {
+    const { experts } = useCountryExpert(countryIds);
 
     return (
         <Container aria-label="experts">
