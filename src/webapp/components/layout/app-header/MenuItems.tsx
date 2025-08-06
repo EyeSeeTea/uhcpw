@@ -10,7 +10,7 @@ import { Option } from "../../dropdown/Option";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
-import { useRegionalPageFilter } from "../../../pages/regional-page/useRegionalPageFilter";
+import { useRegionFilterOptions } from "../../../pages/regional-page/useRegionFilterOptions";
 
 type MenuItemsProps = {
     regionalReport: string;
@@ -37,7 +37,7 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
     const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
     const isSmallScreen = useIsSmallScreen();
-    const { regionOptions } = useRegionalPageFilter();
+    const regionOptions = useRegionFilterOptions();
 
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 

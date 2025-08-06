@@ -20,7 +20,7 @@ import { chart_iMI82inOBiD_Options } from "./chart_iMI82inOBiD_Options";
 import { chart_q5ldoFcgkSn_Options } from "./chart_q5ldoFcgkSn_Options";
 import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
 import { Id } from "../../../../domain/entities/Ref";
-import { Region } from "../../../../domain/entities/Region";
+import { Region } from "../../../../domain/entities/region/Region";
 
 export interface ChartSource {
     analyticsResponse: Analytics;

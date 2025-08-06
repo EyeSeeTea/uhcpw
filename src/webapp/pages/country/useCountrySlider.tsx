@@ -13,7 +13,7 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
-import { ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 
 type SliderGraph = {
     visualizationId: string;

@@ -5,7 +5,7 @@ import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 import { EU27Color } from "../../customization/palettes/countryPalette";
-import { ORG_UNIT_IDS } from "../../../../../domain/entities/Region";
+import { ORG_UNIT_IDS } from "../../../../../domain/entities/region/Region";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;

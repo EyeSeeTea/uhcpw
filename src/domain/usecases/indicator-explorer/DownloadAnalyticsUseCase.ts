@@ -1,6 +1,6 @@
 import { Future, FutureData } from "../../entities/Future";
 import { Id } from "../../entities/Ref";
-import { Region } from "../../entities/Region";
+import { Region } from "../../entities/region/Region";
 import { LatestAvailable, LatestCOVID19 } from "../../entities/Year";
 import { AnalyticsRepository } from "../../repositories/indicator-explorer/AnalyticsRepository";
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";

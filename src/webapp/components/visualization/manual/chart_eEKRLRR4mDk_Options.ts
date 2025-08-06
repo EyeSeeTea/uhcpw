@@ -3,7 +3,7 @@ import { ChartSource } from "./chartOptions";
 import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
 import { EU27Color } from "../customization/palettes/countryPalette";
-import { ORG_UNIT_IDS } from "../../../../domain/entities/Region";
+import { ORG_UNIT_IDS } from "../../../../domain/entities/region/Region";
 
 const REST_ID = "REST_ID";
 

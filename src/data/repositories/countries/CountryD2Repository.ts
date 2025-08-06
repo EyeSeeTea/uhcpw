@@ -10,7 +10,7 @@ import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData"
 import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
-import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 

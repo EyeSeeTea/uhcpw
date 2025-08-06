@@ -11,7 +11,7 @@ import { IndicatorExplorerContent } from "../../../domain/entities/indicator-exp
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { Indicator } from "../../../domain/entities/indicator-explorer/Indicator";
-import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 import i18n from "../../../locales";
 import { Id } from "../../../domain/entities/Ref";
 import {

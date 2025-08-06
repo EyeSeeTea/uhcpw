@@ -13,7 +13,7 @@ import { Country } from "../../../domain/entities/Country";
 import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Id } from "../../../domain/entities/Ref";
-import { Region } from "../../../domain/entities/Region";
+import { Region } from "../../../domain/entities/region/Region";
 
 interface ChartDataState {
     chartData: ChartData;

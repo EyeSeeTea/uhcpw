@@ -35,7 +35,7 @@ export const Header: React.FC<HeaderType> = props => {
     } = props;
 
     return (
-        <Container aria-label="regional-page-header" status={undefined}>
+        <Container aria-label="regional-page-header" status={regionStatus}>
             <DropdownContainer>
                 <MenuDropdown
                     id="region"

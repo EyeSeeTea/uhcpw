@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
+import { Fab, Tooltip } from "@material-ui/core";
+
 import { style } from "./style";
-import { WelcomePanel } from "../welcome-panel/WelcomePanel";
+import { HomePagePanel } from "../home-page-panel/HomePagePanel";
 import { CountryPanel } from "../country-panel/CountryPanel";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { Fab, Tooltip } from "@material-ui/core";
 import { Add as ZoomInIcon, Remove as ZoomOutIcon } from "@material-ui/icons";
 import weakHoverPin from "../../../assets/map/pin-weak-hover.svg";
 import weakPin from "../../../assets/map/pin-weak.svg";
@@ -18,6 +19,8 @@ import { MapState } from "./MapState";
 import i18n from "../../../../locales";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { RegionMainMapPanelContent } from "../../../../domain/entities/region/RegionInfo";
+import { RegionMapPanel } from "../../region-map-panel/RegionMapPanel";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -29,11 +32,17 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 
 export type MapProps = {
     mapState: MapState;
-    welcomePanelContent: MainMapPanelContent;
+    homePagePanelContent?: MainMapPanelContent;
+    regionMainMapPanelContent?: RegionMainMapPanelContent;
     isMobile?: boolean;
 };
 
-export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobile = false }) => {
+export const Map: React.FC<MapProps> = ({
+    mapState,
+    homePagePanelContent,
+    regionMainMapPanelContent,
+    isMobile = false,
+}) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
@@ -71,9 +80,6 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobil
                     const marker = new mapboxgl.Marker(el)
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
                         .addTo(mapRef.current);
-                    // const marker = new mapboxgl.Marker({ color: feature.properties.color })
-                    //     .setLngLat(feature.geometry.coordinates as LngLatLike)
-                    //     .addTo(mapRef.current);
 
                     marker.getElement().addEventListener("mouseenter", () => {
                         mapState.onSelectedCountryChange(feature.properties);
@@ -102,8 +108,10 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobil
             <MapSidePanel>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} />
+                ) : regionMainMapPanelContent ? (
+                    <RegionMapPanel mainPanelContent={regionMainMapPanelContent} />
                 ) : (
-                    <WelcomePanel welcomePanelContent={welcomePanelContent} isMobile={isMobile} />
+                    <HomePagePanel mainPanelContent={homePagePanelContent} isMobile={isMobile} />
                 )}
             </MapSidePanel>
             {!isMobile && (

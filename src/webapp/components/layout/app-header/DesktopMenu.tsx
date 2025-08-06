@@ -10,7 +10,7 @@ import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { useStyles } from "./AppHeader";
-import { useRegionalPageFilter } from "../../../pages/regional-page/useRegionalPageFilter";
+import { useRegionFilterOptions } from "../../../pages/regional-page/useRegionFilterOptions";
 
 export const DesktopMenu: React.FC = () => {
     const classes = useStyles();
@@ -18,7 +18,7 @@ export const DesktopMenu: React.FC = () => {
     const { countryFilter } = useCountryPage();
     const { regionalReport, anchorEl, handleCountryClick, handleClose, handleSetAnchorEl, handleRegionalClick } =
         useAppHeader();
-    const { regionOptions } = useRegionalPageFilter();
+    const regionOptions = useRegionFilterOptions();
 
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 

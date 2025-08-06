@@ -1,9 +1,8 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useCallback, useState } from "react";
 
-import { useAppContext } from "../../contexts/app-context";
 import { Option } from "../../components/dropdown/Option";
 import { Id } from "../../../domain/entities/Ref";
+import { useRegionFilterOptions } from "./useRegionFilterOptions";
 
 export type RegionalPageFilterState = {
     regionOptions: Option<Id>[];
@@ -12,40 +11,16 @@ export type RegionalPageFilterState = {
 };
 
 export function useRegionalPageFilter(): RegionalPageFilterState {
-    const history = useHistory();
-    const { regions } = useAppContext();
+    const regionOptions = useRegionFilterOptions();
 
     const [selectedRegion, setSelectedRegion] = useState<Id | undefined>(undefined);
 
-    const regionOptions: Option<Id>[] = useMemo(() => {
-        return regions.map(region => ({ value: region.id, text: region.name }));
-    }, [regions]);
-
-    const filterInParams = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
-
-        const region = searchParams.get("region");
-
-        return {
-            region: region ? region : undefined,
-        };
-    }, [history.location.search]);
-
     const onRegionChange = useCallback(
         (value: Id) => {
-            const searchParams = new URLSearchParams(history.location.search);
-            searchParams.set("region", value);
             setSelectedRegion(value);
-            history.push({ search: searchParams.toString() });
         },
-        [history]
+        [setSelectedRegion]
     );
-
-    useEffect(() => {
-        if (filterInParams.region && filterInParams.region !== selectedRegion) {
-            onRegionChange(filterInParams.region);
-        }
-    }, [filterInParams.region, onRegionChange, selectedRegion]);
 
     return { regionOptions, selectedRegion, onRegionChange };
 }

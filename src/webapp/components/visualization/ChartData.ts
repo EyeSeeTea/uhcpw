@@ -2,7 +2,7 @@ import { Country } from "../../../domain/entities/Country";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { Region } from "../../../domain/entities/Region";
+import { Region } from "../../../domain/entities/region/Region";
 import { ChartCustomization } from "./customization/types";
 
 export type ChartDataLoaded = {
