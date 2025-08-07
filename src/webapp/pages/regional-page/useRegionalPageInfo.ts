@@ -1,17 +1,31 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Id } from "../../../domain/entities/Ref";
 import { useAppContext } from "../../contexts/app-context";
-import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
+import { RegionInfo, RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
+import { Future } from "../../../domain/entities/Future";
+import { ChecklistPolicyMakers } from "../../../domain/entities/region/ChecklistPolicyMakers";
 
-export type RegionalPageInfoState = {
+export type ChecklistPolicyMakersState = ChecklistPolicyMakers & {
+    progressInfo?: string;
+};
+
+type RegionalPageInfo = {
     financialProtectionStatus: FinancialProtectionStatus;
     mainMapPanelContent: RegionMainMapPanelContent;
+    checklistPolicyMakers: ChecklistPolicyMakersState;
+};
+
+export type RegionalPageInfoState = {
+    info: RegionalPageInfo;
+    isLoading: boolean;
+    onDownloadPolicyChecklist: (checklist: string[], selections: boolean[]) => void;
 };
 
 export function useRegionalPageInfo(selectedRegionId?: Id): RegionalPageInfoState {
     const { compositionRoot, regions } = useAppContext();
-    const [info, setInfo] = useState<RegionalPageInfoState>(emptyRegionalPageInfoState);
+    const [info, setInfo] = useState<RegionalPageInfo>(emptyRegionalPageInfoState);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const regionOrgUnitId = regions.find(region => region.id === selectedRegionId)?.linkedOrgUnitId;
@@ -21,22 +35,64 @@ export function useRegionalPageInfo(selectedRegionId?: Id): RegionalPageInfoStat
             return;
         }
 
-        compositionRoot.regions.getInfo.execute(regionOrgUnitId).run(
-            content => setInfo(content),
+        setIsLoading(true);
+
+        Future.joinObj({
+            regionalInfo: compositionRoot.regions.getInfo.execute(regionOrgUnitId),
+            checklistPolicyMakers: compositionRoot.regions.getChecklistPolicyMakers.execute(),
+        }).run(
+            ({ regionalInfo, checklistPolicyMakers }) => {
+                setIsLoading(false);
+                setInfo(buildRegionalPageInfo(regionalInfo, checklistPolicyMakers));
+            },
             error => {
                 setInfo(emptyRegionalPageInfoState);
                 console.error(error);
+                setIsLoading(false);
             }
         );
-    }, [compositionRoot.regions.getInfo, regions, selectedRegionId]);
+    }, [compositionRoot.regions.getChecklistPolicyMakers, compositionRoot.regions.getInfo, regions, selectedRegionId]);
 
-    return info;
+    const onDownloadPolicyChecklist = useCallback(
+        (checklist: string[], selections: boolean[]) => {
+            const data: string[][] = checklist.map((item, index) => [item, selections[index] ? "✓" : ""]);
+            return compositionRoot.regions.downloadChecklistPolicyMakers.execute(data).runAsync();
+        },
+        [compositionRoot.regions.downloadChecklistPolicyMakers]
+    );
+
+    return {
+        info: info,
+        isLoading: isLoading,
+        onDownloadPolicyChecklist: onDownloadPolicyChecklist,
+    };
 }
 
-const emptyRegionalPageInfoState: RegionalPageInfoState = {
+function buildRegionalPageInfo(
+    regionalInfo: RegionInfo,
+    checklistPolicyMakers: ChecklistPolicyMakers
+): RegionalPageInfo {
+    return {
+        financialProtectionStatus: regionalInfo.financialProtectionStatus,
+        mainMapPanelContent: regionalInfo.mainMapPanelContent,
+        checklistPolicyMakers: {
+            ...checklistPolicyMakers,
+            progressInfo: progressTextBoxInfo,
+        },
+    };
+}
+
+const progressTextBoxInfo =
+    "1. Act on the evidence and re-design coverage policy.\n\n 2. Start by improving financial protection for the people who need it most.\n\n 3. Follow good practice: a checklist for policy-makers.";
+
+const emptyRegionalPageInfoState: RegionalPageInfo = {
     financialProtectionStatus: "Gaps",
     mainMapPanelContent: {
         title: "",
         description: "",
+    },
+    checklistPolicyMakers: {
+        checklist: [],
+        progressInfo: progressTextBoxInfo,
     },
 };

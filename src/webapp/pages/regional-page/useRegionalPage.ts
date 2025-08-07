@@ -9,7 +9,7 @@ import { Country } from "../../../domain/entities/Country";
 import { useAppContext } from "../../contexts/app-context";
 import { countriesToGeoJson } from "../../components/home/map/useMap";
 import { useHistory } from "react-router-dom";
-import { useRegionalPageInfo } from "./useRegionalPageInfo";
+import { ChecklistPolicyMakersState, useRegionalPageInfo } from "./useRegionalPageInfo";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Region } from "../../../domain/entities/region/Region";
@@ -42,6 +42,11 @@ export type RegionalPageState = {
     handleHeaderItemClick: (item: RegionalMenuItem) => void;
     regionMap: RegionMapState;
     financialProtectionStatus: FinancialProtectionStatus;
+    policyChecklist: {
+        policyChecklist: ChecklistPolicyMakersState;
+        isLoading: boolean;
+        onDownload: (checklist: string[], selections: boolean[]) => void;
+    };
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -49,7 +54,11 @@ export function useRegionalPage(): RegionalPageState {
     const history = useHistory();
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
-    const { mainMapPanelContent, financialProtectionStatus } = useRegionalPageInfo(selectedRegionId);
+    const {
+        info: { mainMapPanelContent, financialProtectionStatus, checklistPolicyMakers },
+        isLoading,
+        onDownloadPolicyChecklist,
+    } = useRegionalPageInfo(selectedRegionId);
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
         type: "FeatureCollection",
@@ -147,5 +156,10 @@ export function useRegionalPage(): RegionalPageState {
             mainPanelContent: mainMapPanelContent,
         },
         financialProtectionStatus: financialProtectionStatus,
+        policyChecklist: {
+            policyChecklist: checklistPolicyMakers,
+            isLoading: isLoading,
+            onDownload: onDownloadPolicyChecklist,
+        },
     };
 }

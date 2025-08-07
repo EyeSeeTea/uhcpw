@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-08-06T11:20:55.656Z\n"
-"PO-Revision-Date: 2025-08-06T11:20:55.656Z\n"
+"POT-Creation-Date: 2025-08-06T13:24:45.028Z\n"
+"PO-Revision-Date: 2025-08-06T13:24:45.028Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -294,16 +294,16 @@ msgstr ""
 msgid "Select region"
 msgstr ""
 
-msgid "Region Map"
+msgid "Region at a glance"
 msgstr ""
 
 msgid "Numbers"
 msgstr ""
 
-msgid "Coverage Policy"
+msgid "Coverage policy"
 msgstr ""
 
-msgid "Policy Checklist"
+msgid "Policy checklist"
 msgstr ""
 
 msgid "Country analysis"

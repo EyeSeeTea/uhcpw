@@ -21,6 +21,7 @@ export const RegionalPage: React.FC = () => {
         refs,
         regionMap,
         financialProtectionStatus,
+        policyChecklist,
     } = useRegionalPage();
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;
@@ -57,7 +58,11 @@ export const RegionalPage: React.FC = () => {
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
             <section ref={refs.policyChecklist}>
-                <PolicyChecklistSection />
+                <PolicyChecklistSection
+                    checklist={policyChecklist.policyChecklist.checklist}
+                    progressInfo={policyChecklist.policyChecklist.progressInfo}
+                    onDownload={policyChecklist.onDownload}
+                />
             </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />

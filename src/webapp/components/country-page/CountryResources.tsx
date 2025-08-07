@@ -138,7 +138,6 @@ const Row = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-block-end: 25px;
     gap: 2px;
     padding-inline-start: 60px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
