@@ -14,6 +14,10 @@ import {
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
 import { ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
+import { SlideGraph } from "../../components/country-page/slider/SlideGraph";
+import { VerticalTabConfig } from "../../components/vertical-tabs-panel/VerticalTabsPanel";
+import { SlideInfo } from "../../components/country-page/slider/SlideInfo";
+import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel";
 
 type SliderGraph = {
     visualizationId: string;
@@ -34,8 +38,6 @@ export type SliderGraphConfig = SliderConfig & {
     graphTwo: SliderGraph;
 };
 
-type SliderGraphsConfigs = SliderGraphConfig[];
-
 export type SliderInfoConfig = SliderConfig & {
     kind: "info";
     sliderContent?: CountrySectionInfo;
@@ -43,19 +45,12 @@ export type SliderInfoConfig = SliderConfig & {
     icon: string;
 };
 
-type SliderInfoConfigs = SliderInfoConfig[];
-
 type CountrySlider = {
+    sliderConfigs: (VerticalTabConfig | AccordionConfig)[];
     tabValue: number;
-    sliderGraphsConfig: SliderGraphsConfigs;
-    sliderInfoConfig: SliderInfoConfigs;
-    expandedSliderConfig?: SliderGraphConfig | SliderInfoConfig;
-    configs: (SliderInfoConfig | SliderGraphConfig)[];
+    expandedSliderConfig?: VerticalTabConfig | AccordionConfig;
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     handleTabChange: (_event: React.ChangeEvent<{}>, newValue: number) => void;
-    onWheel: (event: React.WheelEvent<HTMLButtonElement>) => void;
-    disableScroll: () => void;
-    enableScroll: () => void;
     onResetTab: () => void;
 };
 
@@ -65,7 +60,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
 
     const [tabValue, setTabValue] = useState(0);
     const [sliderInfo, setSliderInfo] = useState<SliderInfo | undefined>(undefined);
-    const [expandedSliderConfig, setExpandedSliderConfig] = useState<SliderGraphConfig | SliderInfoConfig | undefined>(
+    const [expandedSliderConfig, setExpandedSliderConfig] = useState<VerticalTabConfig | AccordionConfig | undefined>(
         undefined
     );
 
@@ -102,270 +97,287 @@ export function useCountrySlider(countryId: string): CountrySlider {
         }
     }, [tabValue]);
 
-    const preventDefault = useCallback((event: Event) => {
-        if (event.preventDefault) {
-            event.preventDefault();
-        }
-        event.returnValue = true;
-    }, []);
-
-    const enableScroll = useCallback(() => {
-        const options: AddEventListenerOptions = { passive: false };
-        document.removeEventListener("wheel", preventDefault, options);
-    }, [preventDefault]);
-
-    const disableScroll = useCallback(() => {
-        document.addEventListener("wheel", preventDefault, { passive: false });
-    }, [preventDefault]);
-
-    const onWheel = useCallback(
-        (event: React.WheelEvent<HTMLButtonElement>) => {
-            if (event.deltaY > 10 && tabValue < 10) {
-                setTimeout(() => setTabValue(tabValue + 1), 800);
-            } else if (event.deltaY < -10 && tabValue > 0) {
-                setTimeout(() => setTabValue(tabValue - 1), 800);
-            }
-        },
-        [tabValue]
+    const sliderGraphsConfig: (VerticalTabConfig | AccordionConfig)[] = useMemo(
+        () =>
+            sliderInfo
+                ? [
+                      {
+                          tab: 0,
+                          tabTitle: sliderInfo?.sliderOne || "",
+                          Component: SlideGraph,
+                          props: {
+                              kind: "graph",
+                              countryId: countryId,
+                              title: sliderInfo?.sliderOne || "",
+                              graphOne: {
+                                  visualizationId: "jFtGKQIQTGp",
+                                  visualizationName:
+                                      VisualizationsSeeds["jFtGKQIQTGp"]?.countryPageName ||
+                                      VisualizationsSeeds["jFtGKQIQTGp"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId],
+                              },
+                              graphTwo: {
+                                  visualizationId: "dbc87Ljw8uN",
+                                  visualizationName:
+                                      VisualizationsSeeds["dbc87Ljw8uN"]?.countryPageName ||
+                                      VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: countriesAndSubregions.map(({ id }) => id),
+                              },
+                          },
+                      },
+                      {
+                          tab: 1,
+                          tabTitle: sliderInfo?.sliderTwo || "",
+                          Component: SlideGraph,
+                          props: {
+                              countryId: countryId,
+                              kind: "graph",
+                              title: sliderInfo?.sliderTwo || "",
+                              graphOne: {
+                                  visualizationId: "Y31jQX5PVdI",
+                                  visualizationName:
+                                      VisualizationsSeeds["Y31jQX5PVdI"]?.countryPageName ||
+                                      VisualizationsSeeds["Y31jQX5PVdI"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId],
+                              },
+                              graphTwo: {
+                                  visualizationId: "NOukqSxCI63",
+                                  visualizationName:
+                                      VisualizationsSeeds["NOukqSxCI63"]?.countryPageName ||
+                                      VisualizationsSeeds["NOukqSxCI63"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: countriesAndSubregions.map(({ id }) => id),
+                              },
+                          },
+                      },
+                      {
+                          tab: 2,
+                          tabTitle: sliderInfo?.sliderThree || "",
+                          Component: SlideGraph,
+                          props: {
+                              countryId: countryId,
+                              kind: "graph",
+                              title: sliderInfo?.sliderThree || "",
+                              graphOne: {
+                                  visualizationId: "geNXcoXc3mf",
+                                  visualizationName:
+                                      VisualizationsSeeds["geNXcoXc3mf"]?.countryPageName ||
+                                      VisualizationsSeeds["geNXcoXc3mf"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId],
+                              },
+                              graphTwo: {
+                                  visualizationId: "GimM6ANOKhd",
+                                  visualizationName:
+                                      VisualizationsSeeds["GimM6ANOKhd"]?.countryPageName ||
+                                      VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: countriesAndSubregions.map(({ id }) => id),
+                              },
+                          },
+                      },
+                      {
+                          tab: 3,
+                          tabTitle: sliderInfo?.sliderFour || "",
+                          Component: SlideGraph,
+                          props: {
+                              countryId: countryId,
+                              kind: "graph",
+                              title: sliderInfo?.sliderFour || "",
+                              graphOne: {
+                                  visualizationId: "hpO1ZyFXpCz",
+                                  visualizationName:
+                                      VisualizationsSeeds["hpO1ZyFXpCz"]?.countryPageName ||
+                                      VisualizationsSeeds["hpO1ZyFXpCz"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId],
+                              },
+                              graphTwo: {
+                                  visualizationId: "q5ldoFcgkSn",
+                                  visualizationName:
+                                      VisualizationsSeeds["q5ldoFcgkSn"]?.countryPageName ||
+                                      VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: [countryId],
+                              },
+                          },
+                      },
+                      {
+                          tab: 4,
+                          tabTitle: sliderInfo?.sliderFive || "",
+                          Component: SlideGraph,
+                          props: {
+                              countryId: countryId,
+                              kind: "graph",
+                              title: sliderInfo?.sliderFive || "",
+                              graphOne: {
+                                  visualizationId: "VB7bdJ8ZXya",
+                                  visualizationName:
+                                      VisualizationsSeeds["VB7bdJ8ZXya"]?.countryPageName ||
+                                      VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: countriesAndSubregions.map(({ id }) => id),
+                              },
+                              graphTwo: {
+                                  visualizationId: "mcNfvQaVbfy",
+                                  visualizationName:
+                                      VisualizationsSeeds["mcNfvQaVbfy"]?.countryPageName ||
+                                      VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: countriesAndSubregions.map(({ id }) => id),
+                              },
+                          },
+                      },
+                      {
+                          tab: 5,
+                          Component: SlideGraph,
+                          tabTitle: sliderInfo?.sliderSix || "",
+                          props: {
+                              countryId: countryId,
+                              kind: "graph",
+                              title: sliderInfo?.sliderSix || "",
+                              graphOne: {
+                                  visualizationId: "xJhFIBuwGVC",
+                                  visualizationName:
+                                      VisualizationsSeeds["xJhFIBuwGVC"]?.countryPageName ||
+                                      VisualizationsSeeds["xJhFIBuwGVC"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
+                              },
+                              graphTwo: {
+                                  visualizationId: "zkEtsohZTTf",
+                                  visualizationName:
+                                      VisualizationsSeeds["zkEtsohZTTf"]?.countryPageName ||
+                                      VisualizationsSeeds["zkEtsohZTTf"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
+                              },
+                          },
+                      },
+                      {
+                          tab: 6,
+                          Component: SlideGraph,
+                          tabTitle: sliderInfo?.sliderSeven || "",
+                          props: {
+                              countryId: countryId,
+                              kind: "graph",
+                              title: sliderInfo?.sliderSeven || "",
+                              graphOne: {
+                                  visualizationId: "rT39aStYqI3",
+                                  visualizationName:
+                                      VisualizationsSeeds["rT39aStYqI3"]?.countryPageName ||
+                                      VisualizationsSeeds["rT39aStYqI3"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId],
+                              },
+                              graphTwo: {
+                                  visualizationId: "nhaxK33nlhb",
+                                  visualizationName:
+                                      VisualizationsSeeds["nhaxK33nlhb"]?.countryPageName ||
+                                      VisualizationsSeeds["nhaxK33nlhb"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countryId],
+                              },
+                          },
+                      },
+                      {
+                          tab: 7,
+                          Component: SlideGraph,
+                          tabTitle: sliderInfo?.sliderEight || "",
+                          props: {
+                              countryId: countrySelected,
+                              kind: "graph",
+                              title: sliderInfo?.sliderEight || "",
+                              graphOne: {
+                                  visualizationId: "OB4SCQfCzwz",
+                                  visualizationName:
+                                      VisualizationsSeeds["OB4SCQfCzwz"]?.countryPageName ||
+                                      VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countrySelected],
+                              },
+                              graphTwo: {
+                                  visualizationId: "d3kq9OCv8tH",
+                                  visualizationName:
+                                      VisualizationsSeeds["d3kq9OCv8tH"]?.countryPageName ||
+                                      VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
+                                  years: generateYears().map(year => year.id),
+                                  countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
+                              },
+                          },
+                      },
+                      {
+                          tab: 8,
+                          Component: SlideGraph,
+                          tabTitle: sliderInfo?.sliderNine || "",
+                          props: {
+                              countryId: countrySelected,
+                              kind: "graph",
+                              title: sliderInfo?.sliderNine || "",
+                              graphOne: {
+                                  visualizationId: "B4CnzUqVR3n",
+                                  visualizationName:
+                                      VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
+                                      VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: countriesAndSubregions.map(({ id }) => id),
+                                  currentCountry: countrySelected,
+                              },
+                              graphTwo: {
+                                  visualizationId: "BYAT5Woc9EJ",
+                                  visualizationName:
+                                      VisualizationsSeeds["BYAT5Woc9EJ"]?.countryPageName ||
+                                      VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
+                                  years: [LatestAvailable.id],
+                                  countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
+                              },
+                          },
+                      },
+                  ]
+                : [],
+        [countriesAndSubregions, countryId, countrySelected, sliderInfo]
     );
 
-    const sliderGraphsConfig: SliderGraphsConfigs = useMemo(
-        () => [
-            {
-                tab: 0,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderOne || "",
-                graphOne: {
-                    visualizationId: "jFtGKQIQTGp",
-                    visualizationName:
-                        VisualizationsSeeds["jFtGKQIQTGp"]?.countryPageName ||
-                        VisualizationsSeeds["jFtGKQIQTGp"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId],
-                },
-                graphTwo: {
-                    visualizationId: "dbc87Ljw8uN",
-                    visualizationName:
-                        VisualizationsSeeds["dbc87Ljw8uN"]?.countryPageName ||
-                        VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: countriesAndSubregions.map(({ id }) => id),
-                },
-            },
-            {
-                tab: 1,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderTwo || "",
-                graphOne: {
-                    visualizationId: "Y31jQX5PVdI",
-                    visualizationName:
-                        VisualizationsSeeds["Y31jQX5PVdI"]?.countryPageName ||
-                        VisualizationsSeeds["Y31jQX5PVdI"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId],
-                },
-                graphTwo: {
-                    visualizationId: "NOukqSxCI63",
-                    visualizationName:
-                        VisualizationsSeeds["NOukqSxCI63"]?.countryPageName ||
-                        VisualizationsSeeds["NOukqSxCI63"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: countriesAndSubregions.map(({ id }) => id),
-                },
-            },
-            {
-                tab: 2,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderThree || "",
-                graphOne: {
-                    visualizationId: "geNXcoXc3mf",
-                    visualizationName:
-                        VisualizationsSeeds["geNXcoXc3mf"]?.countryPageName ||
-                        VisualizationsSeeds["geNXcoXc3mf"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId],
-                },
-                graphTwo: {
-                    visualizationId: "GimM6ANOKhd",
-                    visualizationName:
-                        VisualizationsSeeds["GimM6ANOKhd"]?.countryPageName ||
-                        VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: countriesAndSubregions.map(({ id }) => id),
-                },
-            },
-            {
-                tab: 3,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderFour || "",
-                graphOne: {
-                    visualizationId: "hpO1ZyFXpCz",
-                    visualizationName:
-                        VisualizationsSeeds["hpO1ZyFXpCz"]?.countryPageName ||
-                        VisualizationsSeeds["hpO1ZyFXpCz"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId],
-                },
-                graphTwo: {
-                    visualizationId: "q5ldoFcgkSn",
-                    visualizationName:
-                        VisualizationsSeeds["q5ldoFcgkSn"]?.countryPageName ||
-                        VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: [countryId],
-                },
-            },
-            {
-                tab: 4,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderFive || "",
-                graphOne: {
-                    visualizationId: "VB7bdJ8ZXya",
-                    visualizationName:
-                        VisualizationsSeeds["VB7bdJ8ZXya"]?.countryPageName ||
-                        VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: countriesAndSubregions.map(({ id }) => id),
-                },
-                graphTwo: {
-                    visualizationId: "mcNfvQaVbfy",
-                    visualizationName:
-                        VisualizationsSeeds["mcNfvQaVbfy"]?.countryPageName ||
-                        VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: countriesAndSubregions.map(({ id }) => id),
-                },
-            },
-            {
-                tab: 5,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderSix || "",
-                graphOne: {
-                    visualizationId: "xJhFIBuwGVC",
-                    visualizationName:
-                        VisualizationsSeeds["xJhFIBuwGVC"]?.countryPageName ||
-                        VisualizationsSeeds["xJhFIBuwGVC"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
-                },
-                graphTwo: {
-                    visualizationId: "zkEtsohZTTf",
-                    visualizationName:
-                        VisualizationsSeeds["zkEtsohZTTf"]?.countryPageName ||
-                        VisualizationsSeeds["zkEtsohZTTf"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
-                },
-            },
-            {
-                tab: 6,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderSeven || "",
-                graphOne: {
-                    visualizationId: "rT39aStYqI3",
-                    visualizationName:
-                        VisualizationsSeeds["rT39aStYqI3"]?.countryPageName ||
-                        VisualizationsSeeds["rT39aStYqI3"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId],
-                },
-                graphTwo: {
-                    visualizationId: "nhaxK33nlhb",
-                    visualizationName:
-                        VisualizationsSeeds["nhaxK33nlhb"]?.countryPageName ||
-                        VisualizationsSeeds["nhaxK33nlhb"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countryId],
-                },
-            },
-            {
-                tab: 7,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderEight || "",
-                graphOne: {
-                    visualizationId: "OB4SCQfCzwz",
-                    visualizationName:
-                        VisualizationsSeeds["OB4SCQfCzwz"]?.countryPageName ||
-                        VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countrySelected],
-                },
-                graphTwo: {
-                    visualizationId: "d3kq9OCv8tH",
-                    visualizationName:
-                        VisualizationsSeeds["d3kq9OCv8tH"]?.countryPageName ||
-                        VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
-                    years: generateYears().map(year => year.id),
-                    countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
-                },
-            },
-            {
-                tab: 8,
-                kind: "graph",
-                tabTitle: sliderInfo?.sliderNine || "",
-                graphOne: {
-                    visualizationId: "B4CnzUqVR3n",
-                    visualizationName:
-                        VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
-                        VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: countriesAndSubregions.map(({ id }) => id),
-                    currentCountry: countrySelected,
-                },
-                graphTwo: {
-                    visualizationId: "BYAT5Woc9EJ",
-                    visualizationName:
-                        VisualizationsSeeds["BYAT5Woc9EJ"]?.countryPageName ||
-                        VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
-                    years: [LatestAvailable.id],
-                    countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
-                },
-            },
-        ],
-        [
-            countriesAndSubregions,
-            countryId,
-            countrySelected,
-            sliderInfo?.sliderEight,
-            sliderInfo?.sliderFive,
-            sliderInfo?.sliderFour,
-            sliderInfo?.sliderNine,
-            sliderInfo?.sliderOne,
-            sliderInfo?.sliderSeven,
-            sliderInfo?.sliderSix,
-            sliderInfo?.sliderThree,
-            sliderInfo?.sliderTwo,
-        ]
+    const sliderInfoConfig: (VerticalTabConfig | AccordionConfig)[] = useMemo(
+        () =>
+            sliderInfo
+                ? [
+                      {
+                          tab: 9,
+                          tabTitle: sliderInfo?.sliderTen || "",
+                          Component: SlideInfo,
+                          props: {
+                              countryId: countryId,
+                              kind: "info",
+                              sliderInfo: country?.sliderInfo?.gapsSection,
+                              titleColor: "#b20101",
+                              icon: UmbrellaRed,
+                          },
+                      },
+                      {
+                          tab: 10,
+                          tabTitle: sliderInfo?.sliderEleven || "",
+                          Component: SlideInfo,
+                          props: {
+                              countryId: countryId,
+                              kind: "info",
+                              sliderInfo: country?.sliderInfo?.finProtecSection,
+                              titleColor: "#4fad56",
+                              icon: UmbrellaGreen,
+                          },
+                      },
+                  ]
+                : [],
+        [country, countryId, sliderInfo]
     );
 
-    const sliderInfoConfig: SliderInfoConfigs = useMemo(
-        () => [
-            {
-                tab: 9,
-                kind: "info",
-                tabTitle: sliderInfo?.sliderTen || "",
-                sliderContent: country?.sliderInfo?.gapsSection,
-                titleColor: "#b20101",
-                icon: UmbrellaRed,
-            },
-            {
-                tab: 10,
-                kind: "info",
-                tabTitle: sliderInfo?.sliderEleven || "",
-                sliderContent: country?.sliderInfo?.finProtecSection,
-                titleColor: "#4fad56",
-                icon: UmbrellaGreen,
-            },
-        ],
-        [
-            country?.sliderInfo?.finProtecSection,
-            country?.sliderInfo?.gapsSection,
-            sliderInfo?.sliderEleven,
-            sliderInfo?.sliderTen,
-        ]
+    const sliderConfigs: (VerticalTabConfig | AccordionConfig)[] = useMemo(
+        () => [...sliderGraphsConfig, ...sliderInfoConfig],
+        [sliderGraphsConfig, sliderInfoConfig]
     );
-
-    const configs = useMemo(() => [...sliderGraphsConfig, ...sliderInfoConfig], [sliderGraphsConfig, sliderInfoConfig]);
 
     const handleAccordionChange = useCallback(
         (_event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => {
@@ -378,16 +390,11 @@ export function useCountrySlider(countryId: string): CountrySlider {
     );
 
     return {
+        sliderConfigs: sliderConfigs,
         tabValue,
-        sliderGraphsConfig,
-        sliderInfoConfig,
-        configs,
         expandedSliderConfig,
         handleAccordionChange,
         handleTabChange,
         onResetTab,
-        onWheel,
-        disableScroll,
-        enableScroll,
     };
 }
