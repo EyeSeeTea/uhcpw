@@ -10,8 +10,7 @@ import { useCountryPage } from "./useCountryPage";
 import { useCountryInfo } from "./useCountryInfo";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
-import { MobileSlider } from "../../components/country-page/slider/MobileSlider";
-import { DesktopSlider } from "../../components/country-page/slider/DesktopSlider";
+import { CountrySlider } from "../../components/country-page/slider/CountrySlider";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
@@ -82,15 +81,12 @@ export const CountryPage: React.FC = () => {
             <Hero countryId={countryFilter.selectedCountry} />
             <Divider financialProtectionStatus={country?.status} />
             <section ref={sliderRef}>
-                {isSmallScreen ? (
-                    <MobileSlider countryId={countryFilter.selectedCountry} />
-                ) : (
-                    <DesktopSlider
-                        countryId={countryFilter.selectedCountry}
-                        handleResetTab={handleResetTab}
-                        resetTab={resetTab}
-                    />
-                )}
+                <CountrySlider
+                    countryId={countryFilter.selectedCountry}
+                    handleResetTab={handleResetTab}
+                    resetTab={resetTab}
+                    isSmallScreen={isSmallScreen}
+                />
             </section>
             <Divider financialProtectionStatus={country?.status} />
             <section ref={resourcesRef}>

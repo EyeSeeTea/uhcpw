@@ -51,7 +51,7 @@ type CountrySlider = {
     expandedSliderConfig?: VerticalTabConfig | AccordionConfig;
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     handleTabChange: (_event: React.ChangeEvent<{}>, newValue: number) => void;
-    onResetTab: () => void;
+    onResetSlider: () => void;
 };
 
 export function useCountrySlider(countryId: string): CountrySlider {
@@ -91,11 +91,14 @@ export function useCountrySlider(countryId: string): CountrySlider {
         setTabValue(newValue);
     }, []);
 
-    const onResetTab = useCallback(() => {
+    const onResetSlider = useCallback(() => {
         if (tabValue !== 0) {
             setTabValue(0);
         }
-    }, [tabValue]);
+        if (expandedSliderConfig !== undefined) {
+            setExpandedSliderConfig(undefined);
+        }
+    }, [expandedSliderConfig, tabValue]);
 
     const sliderGraphsConfig: (VerticalTabConfig | AccordionConfig)[] = useMemo(
         () =>
@@ -395,6 +398,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
         expandedSliderConfig,
         handleAccordionChange,
         handleTabChange,
-        onResetTab,
+        onResetSlider,
     };
 }
