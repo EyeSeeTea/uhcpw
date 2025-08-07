@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-08-06T13:24:45.028Z\n"
-"PO-Revision-Date: 2025-08-06T13:24:45.028Z\n"
+"POT-Creation-Date: 2025-08-07T09:52:09.021Z\n"
+"PO-Revision-Date: 2025-08-07T09:52:09.021Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -292,6 +292,20 @@ msgid "Latest avalaible year"
 msgstr ""
 
 msgid "Select region"
+msgstr ""
+
+msgid ""
+"Drawing on evidence and examples of good practice from across Europe, the "
+"checklist highlights the"
+msgstr ""
+
+msgid "policy choices that have improved financial protection"
+msgstr ""
+
+msgid "in countries with a low incidence of financial hardship and unmet need."
+msgstr ""
+
+msgid "Progress is possible"
 msgstr ""
 
 msgid "Region at a glance"
