@@ -19,6 +19,7 @@ export type Country = {
     };
     isInCountryPage: boolean;
     currencyCode: string;
+    countryExperience: CountryExperience;
 };
 
 export type CountrySectionInfo = {
@@ -36,3 +37,8 @@ export type CountryStatus = "Strong" | "Gaps" | "Weak";
 export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";
 export const FederationOfBosniaAndHerzegovina: Id = "j44olg405lZ";
 export const RepublikaSrpska: Id = "FvoXRc5cEEk";
+
+export type CountryExperience = {
+    title: string;
+    content: string;
+};

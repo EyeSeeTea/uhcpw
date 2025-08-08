@@ -46,6 +46,9 @@ export const countryInfoDataElements: Record<string, string> = {
     finProtecTitle5: "D4kbP5uMvYC",
     finProtecText5: "qF3rhM9dieb",
     finProtecSourceText: "AzNWXx1JPip",
+
+    countryExperienceTitle: "s5ekPnIAAsN",
+    countryExperienceContent: "iro8EAg97OE",
 };
 
 const euroOrgUnit = "svSQSBLTVz6";
@@ -206,6 +209,16 @@ export class CountryD2Repository implements CountryRepository {
             dv => dv.dataElement === countryInfoDataElements.showCountryFlag
         )?.value;
 
+        const countryExperienceTitle =
+            aditionalCountryInfo?.dataValues.find(
+                dv => dv.dataElement === countryInfoDataElements.countryExperienceTitle
+            )?.value || "";
+
+        const countryExperienceContent =
+            aditionalCountryInfo?.dataValues.find(
+                dv => dv.dataElement === countryInfoDataElements.countryExperienceContent
+            )?.value || "";
+
         return {
             id: countryId,
             name: mapToWhoCountryName(orgUnit.id, orgUnit.shortName),
@@ -222,6 +235,10 @@ export class CountryD2Repository implements CountryRepository {
             sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
             isInCountryPage: isInCountryPage,
             currencyCode: getCurrencyCodeFromCountryId(countryId),
+            countryExperience: {
+                title: countryExperienceTitle,
+                content: countryExperienceContent,
+            },
         };
     }
 

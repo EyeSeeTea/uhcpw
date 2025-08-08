@@ -13,6 +13,7 @@ import { ChecklistPolicyMakersState, useRegionalPageInfo } from "./useRegionalPa
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Region } from "../../../domain/entities/region/Region";
+import { CoveragePolicyState, useCoveragePolicy } from "./useCoveragePolicy";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "coveragePolicy" | "policyChecklist" | "resources" | "experts";
 
@@ -47,6 +48,7 @@ export type RegionalPageState = {
         isLoading: boolean;
         onDownload: (checklist: string[], selections: boolean[]) => void;
     };
+    coveragePolicy: CoveragePolicyState;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -59,6 +61,7 @@ export function useRegionalPage(): RegionalPageState {
         isLoading,
         onDownloadPolicyChecklist,
     } = useRegionalPageInfo(selectedRegionId);
+    const coveragePolicy = useCoveragePolicy(selectedRegionId);
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
         type: "FeatureCollection",
@@ -106,6 +109,10 @@ export function useRegionalPage(): RegionalPageState {
         };
     }, [history.location.search]);
 
+    const onResetTabs = useCallback(() => {
+        coveragePolicy.onResetTabs();
+    }, [coveragePolicy]);
+
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
             const searchParams = new URLSearchParams(history.location.search);
@@ -122,8 +129,9 @@ export function useRegionalPage(): RegionalPageState {
             setMarkers(countriesToGeoJson(countriesWithSummary));
             setSelectedRegion(region);
             onRegionChange(newRegion);
+            onResetTabs();
         },
-        [countries, history, onRegionChange, regions]
+        [countries, history, onRegionChange, regions, onResetTabs]
     );
 
     useEffect(() => {
@@ -141,21 +149,22 @@ export function useRegionalPage(): RegionalPageState {
     );
 
     return {
+        financialProtectionStatus: financialProtectionStatus,
+        isSmallScreen: isSmallScreen,
+        menuItemsConfig: menuItemsConfig,
+        refs: refs,
         regionFilter: {
             regionOptions: regionOptions,
             selectedRegionId: selectedRegionId,
             onRegionChange: handleRegionChange,
             selectedRegion: selectedRegion,
         },
-        isSmallScreen: isSmallScreen,
-        menuItemsConfig: menuItemsConfig,
-        refs: refs,
         handleHeaderItemClick: handleHeaderItemClick,
         regionMap: {
             markers: markers,
             mainPanelContent: mainMapPanelContent,
         },
-        financialProtectionStatus: financialProtectionStatus,
+        coveragePolicy: coveragePolicy,
         policyChecklist: {
             policyChecklist: checklistPolicyMakers,
             isLoading: isLoading,

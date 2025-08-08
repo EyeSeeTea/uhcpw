@@ -35,6 +35,7 @@ export type MapProps = {
     homePagePanelContent?: MainMapPanelContent;
     regionMainMapPanelContent?: RegionMainMapPanelContent;
     isMobile?: boolean;
+    panelMaxWidth?: number;
 };
 
 export const Map: React.FC<MapProps> = ({
@@ -42,6 +43,7 @@ export const Map: React.FC<MapProps> = ({
     homePagePanelContent,
     regionMainMapPanelContent,
     isMobile = false,
+    panelMaxWidth,
 }) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
@@ -105,7 +107,7 @@ export const Map: React.FC<MapProps> = ({
     return (
         <Container ref={mainContainerRef}>
             <MapContent ref={mapContainerRef} />
-            <MapSidePanel>
+            <MapSidePanel maxWidth={panelMaxWidth}>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} />
                 ) : regionMainMapPanelContent ? (
@@ -177,11 +179,11 @@ const MapContent = styled.div`
     }
 `;
 
-const MapSidePanel = styled.div`
+const MapSidePanel = styled.div<{ maxWidth?: number }>`
     position: absolute;
     top: 0;
     bottom: 0;
-    max-width: 500px;
+    max-width: ${props => props.maxWidth || 500}px;
     background: ${colors.accentPrimary};
     color: white;
     padding: 48px;

@@ -192,5 +192,4 @@ const DownloadButton = styled(Button)`
     text-transform: initial;
     align-self: flex-end;
     background: #185698;
-    margin-block-end: 16px;
 `;

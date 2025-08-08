@@ -22,6 +22,7 @@ export const RegionalPage: React.FC = () => {
         regionMap,
         financialProtectionStatus,
         policyChecklist,
+        coveragePolicy,
     } = useRegionalPage();
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;
@@ -40,7 +41,7 @@ export const RegionalPage: React.FC = () => {
             />
 
             <MapSection ref={refs.regionMap}>
-                <Map mapState={mapState} regionMainMapPanelContent={mainPanelContent} />
+                <Map mapState={mapState} regionMainMapPanelContent={mainPanelContent} panelMaxWidth={400} />
             </MapSection>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
@@ -52,7 +53,14 @@ export const RegionalPage: React.FC = () => {
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
             <section ref={refs.coveragePolicy}>
-                <CoveragePolicySection />
+                <CoveragePolicySection
+                    configs={coveragePolicy.configs}
+                    tabValue={coveragePolicy.tabValue}
+                    expandedConfig={coveragePolicy.expandedConfig}
+                    handleAccordionChange={coveragePolicy.handleAccordionChange}
+                    handleTabChange={coveragePolicy.handleTabChange}
+                    isSmallScreen={isSmallScreen}
+                />
             </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
