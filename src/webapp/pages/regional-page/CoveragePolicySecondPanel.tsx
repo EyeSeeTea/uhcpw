@@ -59,7 +59,7 @@ export const CoveragePolicySecondPanel: React.FC<CoveragePolicySecondPanelProps>
 };
 
 const Container = styled.div`
-    padding: 50px;
+    padding: 20px 50px 30px 50px;
 `;
 
 const StyledTypography = styled(Typography)`

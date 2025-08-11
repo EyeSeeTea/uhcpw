@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Table, TableBody, TableCell, TableRow, IconButton, Typography, Button } from "@material-ui/core";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    IconButton,
+    Typography,
+    Button,
+    CircularProgress,
+} from "@material-ui/core";
 import { CheckCircleOutline, CheckCircle, CloudDownload } from "@material-ui/icons";
 import ReactMarkdown, { Components } from "react-markdown";
 
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import i18n from "../../../locales";
 import { ChecklistPolicyMakersState } from "./useRegionalPageInfo";
+import { Maybe } from "../../../types/utils";
 
 type PolicyChecklistSectionProps = {
-    checklist: ChecklistPolicyMakersState["checklist"];
-    progressInfo?: string;
+    checklist: Maybe<ChecklistPolicyMakersState["checklist"]>;
+    progressInfo: Maybe<string>;
     onDownload: (checklist: string[], selections: boolean[]) => void;
 };
 
 export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = React.memo(props => {
     const { checklist, progressInfo, onDownload } = props;
-    const [selection, setSelection] = useState<boolean[]>(Array(checklist.length).fill(false));
+    const [selection, setSelection] = useState<boolean[]>(Array(checklist?.length).fill(false));
 
     const handleClick = React.useCallback(
         (index: number) => {
@@ -51,56 +61,62 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
             </StyledTypography>
 
             <Content>
-                <TableContainer>
-                    <DownloadButton
-                        aria-label="Download"
-                        variant="contained"
-                        endIcon={<CloudDownload />}
-                        color="primary"
-                        onClick={() => onDownload(checklist, selection)}
-                        className="download-button"
-                    >
-                        <Typography>{i18n.t("Download")}</Typography>
-                    </DownloadButton>
-
-                    <StyledTable>
-                        <TableBody>
-                            {checklist.map((item, index) => (
-                                <TableRow key={index}>
-                                    <StyledTableCell>
-                                        <ReactMarkdown components={markdownComponents}>{item}</ReactMarkdown>
-                                    </StyledTableCell>
-
-                                    <StyledTableCell align="right">
-                                        <IconButton onClick={() => handleClick(index)}>
-                                            {selection[index] ? (
-                                                <CheckCircle color="primary" />
-                                            ) : (
-                                                <CheckCircleOutline />
-                                            )}
-                                        </IconButton>
-                                    </StyledTableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </StyledTable>
-                </TableContainer>
-
-                <TextBoxContainer>
-                    {progressInfo && (
-                        <TextBox>
-                            <Typography
-                                style={{
-                                    fontWeight: "bold",
-                                }}
+                {checklist && progressInfo ? (
+                    <>
+                        <TableContainer>
+                            <DownloadButton
+                                aria-label="Download"
+                                variant="contained"
+                                endIcon={<CloudDownload />}
+                                color="primary"
+                                onClick={() => onDownload(checklist, selection)}
+                                className="download-button"
                             >
-                                {i18n.t("Progress is possible")}
-                            </Typography>
+                                <Typography>{i18n.t("Download")}</Typography>
+                            </DownloadButton>
 
-                            <ReactMarkdown components={markdownComponents}>{progressInfo}</ReactMarkdown>
-                        </TextBox>
-                    )}
-                </TextBoxContainer>
+                            <StyledTable>
+                                <TableBody>
+                                    {checklist.map((item, index) => (
+                                        <TableRow key={index}>
+                                            <StyledTableCell>
+                                                <ReactMarkdown components={markdownComponents}>{item}</ReactMarkdown>
+                                            </StyledTableCell>
+
+                                            <StyledTableCell align="right">
+                                                <IconButton onClick={() => handleClick(index)}>
+                                                    {selection[index] ? (
+                                                        <CheckCircle color="primary" />
+                                                    ) : (
+                                                        <CheckCircleOutline />
+                                                    )}
+                                                </IconButton>
+                                            </StyledTableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </StyledTable>
+                        </TableContainer>
+
+                        <TextBoxContainer>
+                            {progressInfo && (
+                                <TextBox>
+                                    <Typography
+                                        style={{
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {i18n.t("Progress is possible")}
+                                    </Typography>
+
+                                    <ReactMarkdown components={markdownComponents}>{progressInfo}</ReactMarkdown>
+                                </TextBox>
+                            )}
+                        </TextBoxContainer>
+                    </>
+                ) : (
+                    <CircularProgress />
+                )}
             </Content>
         </Container>
     );

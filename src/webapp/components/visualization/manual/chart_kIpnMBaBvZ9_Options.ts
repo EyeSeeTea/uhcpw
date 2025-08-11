@@ -21,7 +21,7 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
 
     const currentCountryCode =
         chartSourceWithFilteredRowsByLAY.countries.find(
-            country => country.id === chartSourceWithFilteredRowsByLAY.currentCountry
+            country => country.id === chartSourceWithFilteredRowsByLAY.currentCountryOrRegion
         )?.code || "";
 
     const seriesSource: SerieSource[] = [

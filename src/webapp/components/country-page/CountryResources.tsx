@@ -16,7 +16,12 @@ import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSm
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { Id } from "../../../domain/entities/Ref";
 
-export const CountryResources: React.FC<{ countryIds: Id[] }> = ({ countryIds }) => {
+export type CountryResourcesProps = {
+    countryIds: Id[];
+    isRegionalPage?: boolean;
+};
+
+export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, isRegionalPage = false }) => {
     const history = useHistory();
     const { loading, countryAnalysisResource, comparativeAnalysisResources } = useCountryResources(countryIds);
 

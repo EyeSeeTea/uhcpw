@@ -54,7 +54,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
         .value();
 
     const currentCountryCode =
-        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];

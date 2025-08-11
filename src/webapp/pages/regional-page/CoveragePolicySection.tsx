@@ -27,6 +27,7 @@ export const CoveragePolicySection: React.FC<CoveragePolicySectionProps> = React
                     configs={configs}
                     expandedConfig={expandedConfig}
                     handleAccordionChange={handleAccordionChange}
+                    isSecondaryColor
                 />
             ) : (
                 <VerticalTabsPanel
@@ -34,6 +35,7 @@ export const CoveragePolicySection: React.FC<CoveragePolicySectionProps> = React
                     tabValue={tabValue}
                     onChangeTabValue={handleTabChange}
                     ariaLabel="coverage-policy-slider"
+                    isSecondaryColor
                 />
             )}
         </Container>

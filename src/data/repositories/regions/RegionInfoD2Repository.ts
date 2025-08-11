@@ -14,6 +14,15 @@ const REGION_INFO_DATA_ELEMENT_IDS = {
         description: "sOtI7SGMhsT",
     },
     financialProtectionStatus: "btOzN3badgN",
+    numbersPanelTitles: {
+        panelOne: "DumylnVyci4",
+        panelTwo: "r5eemGxoRS6",
+        panelThree: "OBInDvcfyQZ",
+        panelFour: "vel3QNcSAlE",
+        panelFive: "MCTHdjhXfwc",
+        panelSix: "Vt8NxwcFltu",
+        panelSeven: "vfTkIQpg9hq",
+    },
 } as const;
 
 export class RegionInfoD2Repository implements RegionInfoRepository {
@@ -55,6 +64,15 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                 description: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.description),
             },
             financialProtectionStatus: financialProtectionStatus,
+            numbersPanelTitles: {
+                panelOne: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelOne),
+                panelTwo: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelTwo),
+                panelThree: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThree),
+                panelFour: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFour),
+                panelFive: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFive),
+                panelSix: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSix),
+                panelSeven: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSeven),
+            },
         };
     }
 }

@@ -59,7 +59,7 @@ export const comparativeColumnChartOptions: (params: {
         .value();
 
     const currentCountryCode =
-        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
     const maxLengthInDx = Math.max(...keys.map(key => (groupByDx[key] || []).length));
     const groupByDxWithMaxLength =

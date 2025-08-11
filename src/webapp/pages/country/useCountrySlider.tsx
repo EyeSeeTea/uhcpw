@@ -18,13 +18,14 @@ import { SlideGraph } from "../../components/country-page/slider/SlideGraph";
 import { VerticalTabConfig } from "../../components/vertical-tabs-panel/VerticalTabsPanel";
 import { SlideInfo } from "../../components/country-page/slider/SlideInfo";
 import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel";
+import { Id } from "../../../domain/entities/Ref";
 
 type SliderGraph = {
     visualizationId: string;
     visualizationName?: string;
     years: string[];
     countries: string[];
-    currentCountry?: string;
+    currentCountryOrRegion?: Id;
 };
 
 type SliderConfig = {
@@ -327,7 +328,7 @@ export function useCountrySlider(countryId: string): CountrySlider {
                                       VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                                   years: [LatestAvailable.id],
                                   countries: countriesAndSubregions.map(({ id }) => id),
-                                  currentCountry: countrySelected,
+                                  currentCountryOrRegion: countrySelected,
                               },
                               graphTwo: {
                                   visualizationId: "BYAT5Woc9EJ",

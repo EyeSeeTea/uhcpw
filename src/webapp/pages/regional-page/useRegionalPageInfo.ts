@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Id } from "../../../domain/entities/Ref";
 import { useAppContext } from "../../contexts/app-context";
-import { RegionInfo, RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
+import {
+    RegionInfo,
+    RegionMainMapPanelContent,
+    RegionNumbersPanelTitles,
+} from "../../../domain/entities/region/RegionInfo";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Future } from "../../../domain/entities/Future";
 import { ChecklistPolicyMakers } from "../../../domain/entities/region/ChecklistPolicyMakers";
@@ -13,25 +17,26 @@ export type ChecklistPolicyMakersState = ChecklistPolicyMakers & {
 type RegionalPageInfo = {
     financialProtectionStatus: FinancialProtectionStatus;
     mainMapPanelContent: RegionMainMapPanelContent;
+    numbersPanelTitles: RegionNumbersPanelTitles;
     checklistPolicyMakers: ChecklistPolicyMakersState;
 };
 
 export type RegionalPageInfoState = {
-    info: RegionalPageInfo;
+    info: RegionalPageInfo | undefined;
     isLoading: boolean;
     onDownloadPolicyChecklist: (checklist: string[], selections: boolean[]) => void;
 };
 
 export function useRegionalPageInfo(selectedRegionId?: Id): RegionalPageInfoState {
     const { compositionRoot, regions } = useAppContext();
-    const [info, setInfo] = useState<RegionalPageInfo>(emptyRegionalPageInfoState);
+    const [info, setInfo] = useState<RegionalPageInfo | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const regionOrgUnitId = regions.find(region => region.id === selectedRegionId)?.linkedOrgUnitId;
         if (!regionOrgUnitId) {
             console.error("Region not found for the selected ID:", selectedRegionId);
-            setInfo(emptyRegionalPageInfoState);
+            setInfo(undefined);
             return;
         }
 
@@ -46,7 +51,7 @@ export function useRegionalPageInfo(selectedRegionId?: Id): RegionalPageInfoStat
                 setInfo(buildRegionalPageInfo(regionalInfo, checklistPolicyMakers));
             },
             error => {
-                setInfo(emptyRegionalPageInfoState);
+                setInfo(undefined);
                 console.error(error);
                 setIsLoading(false);
             }
@@ -75,6 +80,7 @@ function buildRegionalPageInfo(
     return {
         financialProtectionStatus: regionalInfo.financialProtectionStatus,
         mainMapPanelContent: regionalInfo.mainMapPanelContent,
+        numbersPanelTitles: regionalInfo.numbersPanelTitles,
         checklistPolicyMakers: {
             ...checklistPolicyMakers,
             progressInfo: progressTextBoxInfo,
@@ -84,15 +90,3 @@ function buildRegionalPageInfo(
 
 const progressTextBoxInfo =
     "1. Act on the evidence and re-design coverage policy.\n\n 2. Start by improving financial protection for the people who need it most.\n\n 3. Follow good practice: a checklist for policy-makers.";
-
-const emptyRegionalPageInfoState: RegionalPageInfo = {
-    financialProtectionStatus: "Gaps",
-    mainMapPanelContent: {
-        title: "",
-        description: "",
-    },
-    checklistPolicyMakers: {
-        checklist: [],
-        progressInfo: progressTextBoxInfo,
-    },
-};

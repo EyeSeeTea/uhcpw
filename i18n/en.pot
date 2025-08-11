@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-08-07T09:52:09.021Z\n"
-"PO-Revision-Date: 2025-08-07T09:52:09.021Z\n"
+"POT-Creation-Date: 2025-08-08T11:37:29.281Z\n"
+"PO-Revision-Date: 2025-08-08T11:37:29.281Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -289,6 +289,12 @@ msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
+msgstr ""
+
+msgid "Country experiences"
+msgstr ""
+
+msgid "See {{countryName}} country page"
 msgstr ""
 
 msgid "Select region"

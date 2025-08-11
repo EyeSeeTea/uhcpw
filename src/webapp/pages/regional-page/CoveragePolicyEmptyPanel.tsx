@@ -12,5 +12,5 @@ export const CoveragePolicyEmptyPanel: React.FC<CoveragePolicyEmptyPanelProps> =
 };
 
 const Container = styled.div`
-    padding: 50px;
+    padding: 20px 50px 30px 50px;
 `;

@@ -14,6 +14,7 @@ import { RegionMainMapPanelContent } from "../../../domain/entities/region/Regio
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Region } from "../../../domain/entities/region/Region";
 import { CoveragePolicyState, useCoveragePolicy } from "./useCoveragePolicy";
+import { RegionNumbersState, useRegionNumbers } from "./useRegionNumbers";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "coveragePolicy" | "policyChecklist" | "resources" | "experts";
 
@@ -32,7 +33,7 @@ export type RegionalFilter = {
 
 export type RegionMapState = {
     markers: GeoJSON.FeatureCollection<GeoJSON.Point, Country>;
-    mainPanelContent: RegionMainMapPanelContent;
+    mainPanelContent: RegionMainMapPanelContent | undefined;
 };
 
 export type RegionalPageState = {
@@ -42,13 +43,14 @@ export type RegionalPageState = {
     menuItemsConfig: RegionalMenuItemConfig[];
     handleHeaderItemClick: (item: RegionalMenuItem) => void;
     regionMap: RegionMapState;
-    financialProtectionStatus: FinancialProtectionStatus;
+    financialProtectionStatus: FinancialProtectionStatus | undefined;
     policyChecklist: {
-        policyChecklist: ChecklistPolicyMakersState;
+        policyChecklist: ChecklistPolicyMakersState | undefined;
         isLoading: boolean;
         onDownload: (checklist: string[], selections: boolean[]) => void;
     };
     coveragePolicy: CoveragePolicyState;
+    regionNumbers: RegionNumbersState;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -56,12 +58,9 @@ export function useRegionalPage(): RegionalPageState {
     const history = useHistory();
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
-    const {
-        info: { mainMapPanelContent, financialProtectionStatus, checklistPolicyMakers },
-        isLoading,
-        onDownloadPolicyChecklist,
-    } = useRegionalPageInfo(selectedRegionId);
+    const { info, isLoading, onDownloadPolicyChecklist } = useRegionalPageInfo(selectedRegionId);
     const coveragePolicy = useCoveragePolicy(selectedRegionId);
+    const regionNumbers = useRegionNumbers(selectedRegionId, info?.numbersPanelTitles);
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
         type: "FeatureCollection",
@@ -149,7 +148,7 @@ export function useRegionalPage(): RegionalPageState {
     );
 
     return {
-        financialProtectionStatus: financialProtectionStatus,
+        financialProtectionStatus: info?.financialProtectionStatus,
         isSmallScreen: isSmallScreen,
         menuItemsConfig: menuItemsConfig,
         refs: refs,
@@ -162,13 +161,14 @@ export function useRegionalPage(): RegionalPageState {
         handleHeaderItemClick: handleHeaderItemClick,
         regionMap: {
             markers: markers,
-            mainPanelContent: mainMapPanelContent,
+            mainPanelContent: info?.mainMapPanelContent,
         },
         coveragePolicy: coveragePolicy,
         policyChecklist: {
-            policyChecklist: checklistPolicyMakers,
+            policyChecklist: info?.checklistPolicyMakers,
             isLoading: isLoading,
             onDownload: onDownloadPolicyChecklist,
         },
+        regionNumbers: regionNumbers,
     };
 }

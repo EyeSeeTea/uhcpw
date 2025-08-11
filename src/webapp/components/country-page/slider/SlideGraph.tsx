@@ -6,13 +6,14 @@ import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { Id } from "../../../../domain/entities/Ref";
 
 type VisualizationProps = {
     visualizationId: string;
     visualizationName?: string;
     years: string[];
     countries: string[];
-    currentCountry?: string;
+    currentCountryOrRegion?: Id;
 };
 
 type SlideGraphType = {
@@ -60,7 +61,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     countries={(graphOne as VisualizationProps).countries}
                     withoutBackground
                     useHeaderForCountryPage
-                    currentCountry={(graphOne as VisualizationProps).currentCountry || countryId}
+                    currentCountryOrRegion={(graphOne as VisualizationProps).currentCountryOrRegion || countryId}
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
                     noDataMessage={pageContent?.noDataMessage}
                     analyticsPageTitle="Country page"
@@ -76,7 +77,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         countries={(graphTwo as VisualizationProps).countries}
                         withoutBackground
                         useHeaderForCountryPage
-                        currentCountry={(graphTwo as VisualizationProps).currentCountry || countryId}
+                        currentCountryOrRegion={(graphTwo as VisualizationProps).currentCountryOrRegion || countryId}
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                         noDataMessage={pageContent?.noDataMessage}
                         analyticsPageTitle="Country page"
@@ -102,7 +103,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         countries={currentGraphScreenshot.countries}
                         withoutBackground
                         useHeaderForCountryPage
-                        currentCountry={countryId}
+                        currentCountryOrRegion={countryId}
                         isScreenshot={true}
                         analyticsPageTitle="Country page"
                     />

@@ -47,7 +47,7 @@ export const CoveragePolicyFirstPanel: React.FC<CoveragePolicyFirstPanelProps> =
 };
 
 const Container = styled.div`
-    padding: 50px;
+    padding: 20px 50px 30px 50px;
 `;
 
 const StyledImage = styled.img`

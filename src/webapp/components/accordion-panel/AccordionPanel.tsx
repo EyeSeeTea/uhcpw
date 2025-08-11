@@ -15,16 +15,18 @@ type AccordionPanelProps = {
     configs: AccordionConfig[];
     expandedConfig?: AccordionConfig;
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
+    isSecondaryColor?: boolean;
 };
 
 export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
-    const { configs, expandedConfig, handleAccordionChange } = props;
+    const { configs, expandedConfig, handleAccordionChange, isSecondaryColor = false } = props;
 
     return (
         <AccordionContainer>
             {configs.map(config => (
                 <StyledAccordion
                     key={`${config.tab}-${config.tabTitle}-key`}
+                    isSecondaryColor={isSecondaryColor}
                     expanded={config.tab === expandedConfig?.tab}
                     onChange={(event: React.ChangeEvent<{}>, isExpanded: boolean) => {
                         handleAccordionChange(event, config.tab, isExpanded);
@@ -51,9 +53,9 @@ const AccordionContainer = styled.div`
     color: white;
 `;
 
-const StyledAccordion = styled(Accordion)`
-    background-color: ${colors.accentPrimary};
-    color: white;
+const StyledAccordion = styled(Accordion)<{ isSecondaryColor?: boolean }>`
+    background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+    color: ${props => (props.isSecondaryColor ? colors.black : colors.white)};
     border: none;
     border-radius: 0;
     margin: 4px 0;
@@ -64,6 +66,10 @@ const StyledAccordion = styled(Accordion)`
         &:last-child,
         &:first-child {
             margin: 4px 0;
+        }
+        background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueDark : colors.accentPrimaryDark)};
+        p {
+            font-weight: ${props => (props.isSecondaryColor ? "bold" : "normal")};
         }
     }
 

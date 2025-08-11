@@ -7,37 +7,6 @@ import i18n from "../../../locales";
 import { TabPanel } from "./TabPanel";
 
 const useStyles = makeStyles(theme => ({
-    gridItem: {
-        backgroundColor: colors.accentPrimary,
-        borderInlineEnd: "none",
-        marginBlockEnd: "4px",
-        [theme.breakpoints.down("sm")]: {
-            backgroundColor: colors.white,
-            borderInlineEnd: `6px solid ${colors.accentPrimary}`,
-            width: "30px",
-            flexBasis: "unset",
-        },
-    },
-    tabs: {
-        maxWidth: "30px",
-        minWidth: "30px",
-        "& .MuiTabs-flexContainer": {
-            height: "100%",
-        },
-        backgroundColor: colors.white,
-        borderBlockEnd: `4px solid ${colors.white}`,
-        [theme.breakpoints.up("md")]: {
-            backgroundColor: colors.accentPrimary,
-            width: "100%",
-            maxWidth: "unset",
-            paddingInlineStart: "0px",
-            "& .MuiTabs-indicator": {
-                display: "none",
-            },
-            borderBlockEnd: "none",
-            paddingBlockEnd: "70px",
-        },
-    },
     tab: {
         opacity: 1,
         borderInlineEnd: `150px solid ${colors.accentPrimary}`,
@@ -103,10 +72,11 @@ type TabsPanelProps = {
     tabValue: number;
     onChangeTabValue: (event: React.ChangeEvent<{}>, newValue: number) => void;
     ariaLabel: string;
+    isSecondaryColor?: boolean;
 };
 
 export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
-    const { tabsConfig, onChangeTabValue, tabValue, ariaLabel } = props;
+    const { tabsConfig, onChangeTabValue, tabValue, ariaLabel, isSecondaryColor = false } = props;
     const classes = useStyles();
 
     const onWheel = useCallback(
@@ -138,29 +108,30 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
 
     return (
         <Grid container aria-label={ariaLabel}>
-            <Grid item xs={1} md={5} lg={4} className={classes.gridItem}>
-                <Tabs
+            <StyledGridItem item xs={1} md={5} lg={4} isSecondaryColor={isSecondaryColor}>
+                <StyledTabs
                     orientation="vertical"
                     value={tabValue}
                     onChange={onChangeTabValue}
-                    className={classes.tabs}
+                    isSecondaryColor={isSecondaryColor}
                     classes={{ indicator: classes.indicator }}
                     onWheel={onWheel}
                     onMouseEnter={disableScroll}
                     onMouseLeave={enableScroll}
                 >
                     {tabsConfig.map(config => (
-                        <Tab
+                        <StyledTab
                             key={`TabConfig_${config.tabTitle}`}
-                            className={classes.tab}
+                            isSecondaryColor={isSecondaryColor}
                             {...a11yProps(config.tab, config.tabTitle)}
                             label={i18n.t(config.tabTitle, {
                                 nsSeparator: false,
                             })}
                         />
                     ))}
-                </Tabs>
-            </Grid>
+                </StyledTabs>
+            </StyledGridItem>
+
             <RightPanelGrid item xs={11} md={7} lg={8}>
                 {tabsConfig.map(config => (
                     <TabPanel
@@ -180,5 +151,81 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
 const RightPanelGrid = styled(Grid)`
     .MuiBox-root {
         padding: 0;
+    }
+`;
+
+const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean }>`
+    background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+    border-inline-end: none;
+    margin-block-end: 4px;
+
+    @media (max-width: 960px) {
+        background-color: ${colors.white};
+        border-inline-end: 6px solid
+            ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+        width: 30px;
+        flex-basis: unset;
+    }
+`;
+
+const StyledTabs = styled(Tabs)<{ isSecondaryColor?: boolean }>`
+    max-width: 30px;
+    min-width: 30px;
+    & .MuiTabs-flexContainer {
+        height: 100%;
+    }
+    background-color: ${colors.white};
+    border-block-end: 4px solid ${colors.white};
+
+    @media (min-width: 960px) {
+        background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+        width: 100%;
+        max-width: unset;
+        padding-inline-start: 0px;
+        & .MuiTabs-indicator {
+            display: none;
+        }
+        border-block-end: none;
+        padding-block-end: 70px;
+    }
+`;
+
+const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
+    opacity: 1;
+    border-inline-end: 150px solid
+        ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+    border-block-start: 4px solid ${colors.white};
+    max-width: 30px;
+    min-width: 30px;
+    text-transform: none;
+    color: ${props => (props.isSecondaryColor ? colors.black : colors.white)};
+    & span {
+        display: none;
+    }
+    &:first-child {
+        border-block-start: 4px solid ${colors.white};
+    }
+
+    @media (min-width: 960px) {
+        width: 100%;
+        max-width: unset;
+        border-right: unset;
+        transition: background-color 0.3s ease-in-out;
+        background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+        min-height: 60px;
+        padding: 15px 25px;
+        padding-inline-start: 64px;
+        & span {
+            display: inline;
+            text-align: start;
+        }
+        &[aria-selected="true"] {
+            background-color: ${props =>
+                props.isSecondaryColor ? colors.regionalPageBlueDark : colors.accentPrimaryDark};
+            font-weight: ${props => (props.isSecondaryColor ? "bold" : "normal")};
+        }
+        &:last-child {
+            border-block-end: 4px solid ${colors.white};
+        }
     }
 `;

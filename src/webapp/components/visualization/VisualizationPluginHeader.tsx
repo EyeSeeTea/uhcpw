@@ -15,6 +15,7 @@ import {
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
 import { FullScreenNotesDialog } from "../dialog/FullScreenNotesDialog";
+import { Id } from "../../../domain/entities/Ref";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: string;
@@ -30,7 +31,7 @@ interface VisualizationPluginHeaderProps {
     useHeaderForCountryPage?: boolean;
     showCountryTag?: boolean;
     countries: Country[];
-    currentCountry?: string;
+    currentCountryOrRegion?: Id;
     isScreenshot?: boolean;
     reducePaddingBottom?: boolean;
     showDialogInFullScreen?: boolean;
@@ -48,7 +49,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         onDownloadExcel,
         onDownloadImage,
         countries,
-        currentCountry,
+        currentCountryOrRegion,
         useHeaderForCountryPage = false,
         showCountryTag = false,
         isScreenshot = false,
@@ -57,16 +58,17 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         onClose,
     }) => {
         const currentCountryName = useMemo(() => {
-            if (currentCountry) {
+            if (currentCountryOrRegion) {
                 const countryId =
-                    (currentCountry === FEDERACIJA_BOSNE_I_HERCEGOVINE || currentCountry === REPUBLICA_SERPSKA) &&
+                    (currentCountryOrRegion === FEDERACIJA_BOSNE_I_HERCEGOVINE ||
+                        currentCountryOrRegion === REPUBLICA_SERPSKA) &&
                     visualizationId === "OB4SCQfCzwz"
                         ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
-                        : currentCountry;
+                        : currentCountryOrRegion;
 
                 return countries.find(({ id }) => id === countryId)?.name;
             }
-        }, [countries, currentCountry, visualizationId]);
+        }, [countries, currentCountryOrRegion, visualizationId]);
 
         return (
             <DataHeader

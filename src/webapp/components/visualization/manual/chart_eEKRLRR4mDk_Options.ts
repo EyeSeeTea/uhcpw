@@ -13,7 +13,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         .value();
 
     const currentCountryCode =
-        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
     const currentYear = chartSource.currentYear;
 

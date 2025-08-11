@@ -23,6 +23,7 @@ export const RegionalPage: React.FC = () => {
         financialProtectionStatus,
         policyChecklist,
         coveragePolicy,
+        regionNumbers,
     } = useRegionalPage();
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;
@@ -41,13 +42,20 @@ export const RegionalPage: React.FC = () => {
             />
 
             <MapSection ref={refs.regionMap}>
-                <Map mapState={mapState} regionMainMapPanelContent={mainPanelContent} panelMaxWidth={400} />
+                <Map mapState={mapState} regionMainMapPanelContent={mainPanelContent} />
             </MapSection>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
             <section ref={refs.numbers}>
-                <NumbersSection />
+                <NumbersSection
+                    configs={regionNumbers.configs}
+                    tabValue={regionNumbers.tabValue}
+                    expandedConfig={regionNumbers.expandedConfig}
+                    handleAccordionChange={regionNumbers.handleAccordionChange}
+                    handleTabChange={regionNumbers.handleTabChange}
+                    isSmallScreen={isSmallScreen}
+                />
             </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
@@ -67,8 +75,8 @@ export const RegionalPage: React.FC = () => {
 
             <section ref={refs.policyChecklist}>
                 <PolicyChecklistSection
-                    checklist={policyChecklist.policyChecklist.checklist}
-                    progressInfo={policyChecklist.policyChecklist.progressInfo}
+                    checklist={policyChecklist?.policyChecklist?.checklist}
+                    progressInfo={policyChecklist?.policyChecklist?.progressInfo}
                     onDownload={policyChecklist.onDownload}
                 />
             </section>
@@ -76,13 +84,13 @@ export const RegionalPage: React.FC = () => {
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
             <section ref={refs.resources}>
-                <CountryResources countryIds={selectedRegion?.countries || []} />
+                <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
             </section>
 
             <Divider financialProtectionStatus={financialProtectionStatus} />
 
             <section ref={refs.experts}>
-                <CountryExpert countryIds={selectedRegion?.countries || []} />
+                <CountryExpert countryIds={selectedRegion?.countries || []} isRegionalPage />
             </section>
         </Layout>
     );

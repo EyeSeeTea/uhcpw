@@ -28,7 +28,7 @@ export function useChartData(
     years: string[],
     countryIds: Id[],
     regionIds: Id[],
-    currentCountry?: string,
+    currentCountryOrRegion?: Id,
     currentRegion?: string,
     visualizationName?: string
 ): ChartDataState {
@@ -93,7 +93,7 @@ export function useChartData(
                         visualization: isMultipleVisualizations ? visualizations : visualizations[0],
                         countries: countriesAndSubregions,
                         regions: regions,
-                        currentCountry: currentCountry,
+                        currentCountryOrRegion: currentCountryOrRegion,
                         currentRegion: currentRegion,
                         currentYear: years.length === 1 ? years[0] : undefined,
                         isLatestCOVID19: years.includes(LatestCOVID19.id),
@@ -152,7 +152,7 @@ export function useChartData(
         regionIds,
         years,
         countriesAndSubregions,
-        currentCountry,
+        currentCountryOrRegion,
         getVisualizationDialogInfo,
         visualizationName,
         currentRegion,

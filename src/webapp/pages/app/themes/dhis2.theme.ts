@@ -35,6 +35,9 @@ export const colors = {
     green: "#4FAD56",
     carouselBackground: "#E5E5EA",
     carouselDotBackground: "#B6B6B6",
+
+    regionalPageBlueDark: "#96dcf8",
+    regionalPageBlueLight: "#caeefb",
 };
 
 export const palette = {
