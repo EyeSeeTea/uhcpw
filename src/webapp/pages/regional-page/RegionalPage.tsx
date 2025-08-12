@@ -30,7 +30,7 @@ export const RegionalPage: React.FC = () => {
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
 
     return (
-        <Layout>
+        <Layout enableRotation={isSmallScreen}>
             <Header
                 selectedRegion={selectedRegionId}
                 onRegionChange={onRegionChange}

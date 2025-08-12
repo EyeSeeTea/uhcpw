@@ -88,7 +88,15 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
                             <div>
                                 {regionOptions.map(region => {
                                     return (
-                                        <MenuItem key={region.value} onClick={() => handleRegionalClick(region)}>
+                                        <MenuItem
+                                            key={region.value}
+                                            onClick={() => handleRegionalClick(region)}
+                                            onMouseDown={e => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                handleRegionalClick(region);
+                                            }}
+                                        >
                                             {region.text}
                                         </MenuItem>
                                     );

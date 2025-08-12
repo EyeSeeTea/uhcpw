@@ -46,6 +46,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
         <Container aria-label="country-page-resources">
             <Row>
                 <Typography variant="h5">{i18n.t("Resources")}</Typography>
+
                 <Fab
                     aria-label="Go to resources"
                     color="primary"
@@ -55,9 +56,10 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                     <ChevronRightSharpIcon onClick={() => onArrowClick("/resources")} />
                 </Fab>
             </Row>
+
             {countryAnalysisResource?.length ? (
                 <ResourcesSection aria-label="country-resources">
-                    <Row>
+                    <FirstRowWithMargin>
                         <Typography variant="h6">{i18n.t("Country or area analysis")}</Typography>
                         <Fab
                             aria-label="Go to country or area analysis resources"
@@ -71,7 +73,8 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                                 }
                             />
                         </Fab>
-                    </Row>
+                    </FirstRowWithMargin>
+
                     <StyledGridContainer container spacing={5}>
                         {countryAnalysisResource.map((resource, i) => {
                             return (
@@ -81,6 +84,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                             );
                         })}
                     </StyledGridContainer>
+
                     <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
@@ -89,7 +93,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
 
             {comparativeAnalysisResources?.length ? (
                 <ResourcesSection aria-label="comparative-resources">
-                    <RowWithMargin>
+                    <SecondRowWithMargin>
                         <Typography variant="h6">{i18n.t("Comparative analysis")}</Typography>
                         <Fab
                             aria-label="Go to comparative analysis resources"
@@ -103,7 +107,8 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                                 }
                             />
                         </Fab>
-                    </RowWithMargin>
+                    </SecondRowWithMargin>
+
                     <StyledGridContainer container spacing={5}>
                         {comparativeAnalysisResources.map((resource, i) => {
                             return (
@@ -113,6 +118,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                             );
                         })}
                     </StyledGridContainer>
+
                     <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
@@ -165,8 +171,15 @@ const StyledGridItem = styled(Grid)`
     }
 `;
 
-const RowWithMargin = styled(Row)`
+const SecondRowWithMargin = styled(Row)`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-block-start: 30px;
+        margin-block: 30px;
+    }
+`;
+
+const FirstRowWithMargin = styled(Row)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-block-end: 30px;
+        margin-block-start: 10px;
     }
 `;

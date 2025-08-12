@@ -78,8 +78,11 @@ const Container = styled.div<{ status: FinancialProtectionStatus | undefined }>`
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding-inline: 16px;
-        flex-wrap: nowrap;
+        padding-inline: 32px;
+        flex-wrap: wrap;
+        height: auto;
+        padding-block-end: 8px;
+        justify-content: flex-start;
     }
 `;
 
