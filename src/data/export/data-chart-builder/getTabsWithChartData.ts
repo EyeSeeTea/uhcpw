@@ -34,7 +34,7 @@ export function getTabsWithChartData(
     }
 
     const headers = dataTab.data[1];
-    const countryIndex = headers?.indexOf("Country");
+    const countryIndex = headers?.indexOf("Country / Area");
     const dataParamIndex = headers?.indexOf(headerDataParamName);
     const yearIndex = headers?.indexOf("Year");
     const valueIndex = headers?.indexOf("Value");

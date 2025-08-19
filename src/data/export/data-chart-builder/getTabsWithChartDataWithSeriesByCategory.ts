@@ -27,7 +27,7 @@ export function getTabsWithChartDataWithSeriesByCategory(
     }
 
     const headers = dataTab.data[1];
-    const countryIndex = headers?.indexOf("Country");
+    const countryIndex = headers?.indexOf("Country / Area");
     const dataParamIndex = headers?.indexOf(headerDataParamName);
     const categoryIndex = headers?.indexOf(headerDataCategoryName);
     const yearIndex = headers?.indexOf("Year");

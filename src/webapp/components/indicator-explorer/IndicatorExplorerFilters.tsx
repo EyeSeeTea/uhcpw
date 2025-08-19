@@ -36,21 +36,23 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                     <Center>
                         <TreeSelector
                             fullWidth
-                            hasSelectAll={!filters.country.isOnlyEu27Comparison}
+                            hasSelectAll={!filters.countryAndRegions.isOnlyEu27Comparison}
                             hasClearAll
                             label={i18n.t("Countries and areas")}
-                            items={filters.country.options}
-                            selectedIds={filters.country.selected}
-                            onSelectedIdsChange={filters.country.onSelectedChange}
-                            disabledItems={filters.country.disabledCountries}
-                            maxSelection={filters.country.maxCountrySelection}
-                            showSubChildren={filters.country.showSubRegions}
+                            items={filters.countryAndRegions.options}
+                            selectedIds={filters.countryAndRegions.selected}
+                            onSelectedIdsChange={filters.countryAndRegions.onSelectedChange}
+                            disabledItems={filters.countryAndRegions.disabledCountriesAndRegions}
+                            maxSelection={filters.countryAndRegions.maxCountrySelection}
+                            showSubChildren={filters.countryAndRegions.showSubRegions}
                             placeholder={i18n.t("Select country or area")}
-                            showParentIfChecked={!filters.country.isOnlyEu27Comparison}
-                            showOnlyAllParentSelectedIfChecked={!filters.country.isOnlyEu27Comparison}
-                            selectedItemsToShowWhenAllSelected={filters.country.selectedItemsToShowWhenAllSelected}
+                            showParentIfChecked={!filters.countryAndRegions.isOnlyEu27Comparison}
+                            showOnlyAllParentSelectedIfChecked={!filters.countryAndRegions.isOnlyEu27Comparison}
+                            selectedItemsToShowWhenAllSelected={
+                                filters.countryAndRegions.selectedItemsToShowWhenAllSelected
+                            }
                             allSelectedLabel={i18n.t("All countries/areas")}
-                            parentSort={filters.country.parentSort}
+                            parentSort={filters.countryAndRegions.parentSort}
                             fullScreen={isMobile}
                         />
                     </Center>
@@ -81,7 +83,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         disabled={
                             disableGet ||
                             !filters.indicators.selected ||
-                            !filters.country.selected?.length ||
+                            !filters.countryAndRegions.selected?.length ||
                             !filters.year.selected?.length
                         }
                         onClick={onGetChart}

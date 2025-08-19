@@ -4,6 +4,8 @@ import { AnalyticsRepository } from "../../repositories/indicator-explorer/Analy
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
 import { LatestAvailable, LatestCOVID19 } from "../../entities/Year";
 import { generateYears } from "../utils/generateYears";
+import { Region } from "../../entities/Region";
+import { Id } from "../../entities/Ref";
 
 export class GetAnalyticsUseCase {
     constructor(
@@ -11,7 +13,12 @@ export class GetAnalyticsUseCase {
         private analyticsRepository: AnalyticsRepository
     ) {}
 
-    public execute(visualizationId: string, periods: string[], countries: string[]): FutureData<Analytics> {
+    public execute(
+        visualizationId: string,
+        periods: string[],
+        countries: Id[],
+        regions: Region[]
+    ): FutureData<Analytics> {
         return this.visualizationRepository.getById(visualizationId).flatMap(visualization => {
             const sortedPeriods = periods.sort();
 
@@ -22,7 +29,7 @@ export class GetAnalyticsUseCase {
                     ? generateYears().map(year => year.id)
                     : periods;
 
-            return this.analyticsRepository.get(visualization, finalPeriods.sort(), countries);
+            return this.analyticsRepository.get(visualization, finalPeriods.sort(), countries, regions);
         });
     }
 }

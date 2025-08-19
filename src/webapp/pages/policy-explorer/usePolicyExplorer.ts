@@ -47,7 +47,7 @@ export function usePolicyExplorer({
     countriesFilter?: string[];
     yearsFilter?: string[];
 }): PolicyExplorerState {
-    const { compositionRoot, countriesAndRegions } = useAppContext();
+    const { compositionRoot, countriesAndSubregions } = useAppContext();
     const { sendEvent } = useAnalytics();
 
     const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countriesFilter, showSubRegions: true });
@@ -119,7 +119,7 @@ export function usePolicyExplorer({
 
         const allCountriesSelected =
             countryFilter.selected?.length ===
-            countriesAndRegions.filter(({ id }) => id !== BOSNIA_AND_HERZEGOVINA_LEVEL_4).length;
+            countriesAndSubregions.filter(({ id }) => id !== BOSNIA_AND_HERZEGOVINA_LEVEL_4).length;
 
         const year = selectedYearFilter.sort().reverse()[0] ?? "(not set)";
 
@@ -133,7 +133,7 @@ export function usePolicyExplorer({
         });
 
         const selectedCountriesNames = countryFilter.selected
-            .map(countryId => countriesAndRegions.find(country => country.id === countryId)?.name)
+            .map(countryId => countriesAndSubregions.find(country => country.id === countryId)?.name)
             .filter((x): x is string => Boolean(x));
 
         const bulkEvents = generateBulkAnalyticsEvents({
@@ -147,7 +147,7 @@ export function usePolicyExplorer({
         /* GA4 has no way support for sending events in bulk, but maybe this "technology" info might suggest that should live only in "data" */
         bulkEvents.forEach(event => sendEvent(event));
     }, [
-        countriesAndRegions,
+        countriesAndSubregions,
         countryFilter.selected,
         policyExplorerCategories,
         selectedCategoriesWithSubcategoriesFilter,
@@ -168,7 +168,7 @@ export function usePolicyExplorer({
                     selectedCategoriesWithSubcategoriesFilter,
                     countryFilter.selected,
                     selectedYearFilter ? selectedYearFilter : [],
-                    countriesAndRegions,
+                    countriesAndSubregions,
                     policyExplorerCategories
                 )
                 .run(
@@ -201,7 +201,7 @@ export function usePolicyExplorer({
         countryFilter.selected,
         compositionRoot.policyExplorer.get,
         selectedYearFilter,
-        countriesAndRegions,
+        countriesAndSubregions,
         policyExplorerCategories,
         sendAnalyticsEvents,
     ]);

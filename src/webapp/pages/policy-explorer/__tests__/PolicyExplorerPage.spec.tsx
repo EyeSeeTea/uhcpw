@@ -411,9 +411,8 @@ async function selectCategoryFilter(categoryriesNames: string[]) {
 }
 
 async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
-    const countrySelector = scope.getByLabelText(/expand/i);
-
-    await userEvent.click(countrySelector);
+    const countrySelectorTextBox = await scope.findByLabelText(/expand-tree-Select country or area/i);
+    await userEvent.click(countrySelectorTextBox);
 
     userEvent.click(await screen.findByRole("checkbox", { name: value }));
     await userEvent.keyboard("{Escape}");
@@ -422,7 +421,7 @@ async function selectCountry(scope: BoundFunctions<typeof queries>, value: strin
         name: "Select country or area",
     });
 
-    within(textbox).getByText(/countries/i);
+    within(textbox).getByText(/Countries and areas/i);
 }
 
 async function switchToColumns() {

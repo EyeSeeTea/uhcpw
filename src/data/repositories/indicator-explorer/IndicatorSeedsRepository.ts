@@ -5,10 +5,12 @@ import { Future, FutureData } from "../../../domain/entities/Future";
 
 export class IndicatorSeedsRepository implements IndicatorRepository {
     public getAll(): FutureData<Indicator[]> {
-        const indicators: Indicator[] = Object.entries(VisualizationsSeeds).map(([id, extra]) => ({
-            id,
-            ...extra,
-        }));
+        const indicators: Indicator[] = Object.entries(VisualizationsSeeds)
+            .map(([id, extra]) => ({
+                id,
+                ...extra,
+            }))
+            .filter(indicator => !indicator.hide);
         return Future.success(indicators);
     }
 }
