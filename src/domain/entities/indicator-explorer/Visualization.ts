@@ -36,6 +36,7 @@ export interface VisualizationExtra {
     xAxis?: string;
     yAxis?: string;
     yearsFilterUpTo2YearsAgo?: boolean;
+    hasCustomFilterXAxisAndYAxisByLastAvailableYear?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
