@@ -31,7 +31,7 @@ const ANALYTICS_CONTENT = {
 };
 
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
-    const { countriesAndRegions } = useAppContext();
+    const { countriesAndSubregions } = useAppContext();
     const country = useCountryInfo(countryId);
     const isSmallScreen = useIsSmallScreen();
 
@@ -75,7 +75,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
                         visualizationName={CHART_1_SCATTER_VISUALIZATION_NAME}
                         years={[LatestAvailable.id]}
-                        countries={countriesAndRegions.map(({ id }) => id)}
+                        countries={countriesAndSubregions.map(({ id }) => id)}
                         currentCountry={countryIdSelected}
                         withoutBackground
                         useHeaderForCountryPage
@@ -100,7 +100,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         visualizationId={CHART_1_SCATTER_VISUALIZATION_ID}
                         visualizationName={CHART_1_SCATTER_VISUALIZATION_NAME}
                         years={[LatestAvailable.id]}
-                        countries={countriesAndRegions.map(({ id }) => id)}
+                        countries={countriesAndSubregions.map(({ id }) => id)}
                         currentCountry={countryIdSelected}
                         withoutBackground
                         useHeaderForCountryPage

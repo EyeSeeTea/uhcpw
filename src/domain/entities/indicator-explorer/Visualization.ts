@@ -13,7 +13,14 @@ export interface VisualizationExtra {
     maxCountryFilter?: number;
     minCountryFilter?: number;
     isComparative?: boolean;
-    hasEur27?: boolean;
+    isOnlyEu27Comparison?: boolean;
+    hasEURegion?: boolean;
+    hasEuropeanRegion?: boolean;
+    hasEECARegion?: boolean;
+    hasWesternBalkansRegion?: boolean;
+    hasEUCandidatesRegion?: boolean;
+    isOrgUnitRegions?: boolean;
+    isOrgUnitGroupRegions?: boolean;
     showCountryTag?: boolean;
     breakInSeries?: VisualizationBreakInSeries;
     allowBreaksInSeries?: boolean;
@@ -21,7 +28,6 @@ export interface VisualizationExtra {
     allowedYears?: Year[];
     sortColumns?: (headerRow: string[]) => string[];
     sortDataRows?: (headerRow: string[], dataRows: string[][]) => string[][];
-    isOnlyEu27Comparison?: boolean;
     isYearSingleSelection?: boolean;
     hideBosniaAndHerzegovinaRegions?: boolean;
     hide?: boolean;

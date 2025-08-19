@@ -99,7 +99,7 @@ function givenAnAnalytics(): Analytics {
 
     const item: Analytics = jFtGKQIQTGp_Analytics as unknown as Analytics;
 
-    when(mockedRepository.get(anything(), anything(), anything())).thenReturn(Future.success(item));
+    when(mockedRepository.get(anything(), anything(), anything(), anything())).thenReturn(Future.success(item));
 
     analyticsRepository = instance(mockedRepository);
 

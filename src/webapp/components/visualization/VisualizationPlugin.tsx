@@ -8,13 +8,17 @@ import { useChartData } from "./useChartData";
 import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { FullScreenDialog } from "../dialog/FullScreenDialog";
+import { Id } from "../../../domain/entities/Ref";
 
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
+
+const EMPTY_REGIONS: Id[] = [];
 
 interface VisualizationPluginProps {
     visualizationId: string;
     years: string[];
-    countries: string[];
+    countries: Id[];
+    regions?: Id[];
     currentCountry?: string;
     withoutBackground?: boolean;
     useHeaderForCountryPage?: boolean;
@@ -39,6 +43,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         years,
         currentCountry,
         countries,
+        regions = EMPTY_REGIONS,
         withoutBackground = false,
         useHeaderForCountryPage = false,
         noDataMessage = "",
@@ -59,6 +64,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationId,
         years,
         countries,
+        regions,
         currentCountry,
         visualizationName
     );

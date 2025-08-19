@@ -35,7 +35,7 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
     const headers = dataTab.data[1];
 
     const parameterIndex = headers?.indexOf("Parameter");
-    const countryIndex = headers?.indexOf("Country");
+    const countryIndex = headers?.indexOf("Country / Area");
     const yearIndex = headers?.indexOf("Year");
     const valueIndex = headers?.indexOf("Value");
 

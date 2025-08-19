@@ -11,5 +11,6 @@ export const chart_rT39aStYqI3_Seed: VisualizationExtra = {
     subcategoryName: sortedSubcategoryNames.countryLevel,
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
-    hasEur27: true,
+    hasEURegion: true,
+    isOrgUnitRegions: true,
 };

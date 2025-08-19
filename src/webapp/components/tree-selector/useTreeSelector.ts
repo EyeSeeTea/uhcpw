@@ -93,7 +93,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [searchTerm, setSearchTerm] = React.useState<string>("");
-    const [expandedParents, setExpandedParents] = React.useState<string[]>(["all", ...defaultExpanded]);
+    const [expandedParents, setExpandedParents] = React.useState<string[]>([ALL_NODE_ID, ...defaultExpanded]);
 
     const handleClick = useCallback(
         (event: React.MouseEvent<HTMLInputElement>) => {
@@ -259,7 +259,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
                     .filter(({ id }) => !disabledItems?.includes(id));
 
                 const finalSubChildrenAllowed = showSubChildren
-                    ? filteredItemsBySearch
+                    ? finalChildrenAllowed
                           .flatMap(item => (item.children ? item.children : []))
                           .filter(({ id }) => !disabledItems?.includes(id))
                     : [];

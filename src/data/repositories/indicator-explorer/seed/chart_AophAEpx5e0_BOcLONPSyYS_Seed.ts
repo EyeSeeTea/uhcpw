@@ -3,7 +3,7 @@ import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 
-const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
 const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 
 export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
@@ -16,7 +16,8 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
     allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
-    hasEur27: true,
+    hasEURegion: true,
+    isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>
         sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),
