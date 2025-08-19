@@ -1,5 +1,5 @@
-import { News } from "../../../../domain/entities/resources/Resource";
-import { ComparativeAnalysisState, CountryAnalysisState, MultimediaState } from "../by-type/ResourcesByTypeState";
+import { News, Resource } from "../../../../domain/entities/resources/Resource";
+import { ComparativeAnalysisState, ResourceState, MultimediaState } from "../by-type/ResourcesByTypeState";
 import { ResourcesFiltersState } from "../common/ResourcesFiltersState";
 
 export type LandingResourcesState = {
@@ -9,17 +9,18 @@ export type LandingResourcesState = {
     multimedia: MultimediaState[];
 };
 
-export type FilteredByTextOrThemeResourcesState = {
-    countryAnalysis: CountryAnalysisState[];
-    comparativeAnalysis: ComparativeAnalysisState[];
-    news: News[];
-    multimedia: MultimediaState[];
+export type ResourceSectionKind = Resource["kind"] | "country-comparative-analysis";
+export type ResourcesListBySectionState = {
+    title: string;
+    seeAllUrl: string;
+    kind: ResourceSectionKind;
+    resources: ResourceState[];
 };
 
 export type ResourcesState = {
     filters: ResourcesFiltersState;
     landingResources?: LandingResourcesState;
-    filteredByTextOrThemeResources?: FilteredByTextOrThemeResourcesState;
+    resourcesBySection?: ResourcesListBySectionState[];
     onGetResources: () => void;
     loading: boolean;
 };
