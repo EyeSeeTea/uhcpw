@@ -13,11 +13,14 @@ import strongHoverPin from "../../../assets/map/pin-strong-hover.svg";
 import strongPin from "../../../assets/map/pin-strong.svg";
 import gapsHoverPin from "../../../assets/map/pin-gaps-hover.svg";
 import gapsPin from "../../../assets/map/pin-gaps.svg";
+import insufficientPin from "../../../assets/map/pin-insufficient.svg";
+import insufficientHoverPin from "../../../assets/map/pin-insufficient-hover.svg";
 
 import { MapState } from "./MapState";
 import i18n from "../../../../locales";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { CountryStatus } from "../../../../domain/entities/Country";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -60,13 +63,7 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobil
             mapRef.current.on("load", () => {
                 mapState.markers.features.forEach(feature => {
                     const el = document.createElement("div");
-                    el.className = `marker ${
-                        feature.properties.status === "Strong"
-                            ? "marker-strong"
-                            : feature.properties.status === "Weak"
-                            ? "marker-weak"
-                            : "marker-gaps"
-                    }`;
+                    el.className = `marker ${markerStatusMap[feature.properties.status]}`;
 
                     const marker = new mapboxgl.Marker(el)
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
@@ -124,6 +121,13 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobil
     );
 };
 
+const markerStatusMap: Record<CountryStatus, string> = {
+    Weak: "marker-weak",
+    Strong: "marker-strong",
+    Gaps: "marker-gaps",
+    InsufficientData: "marker-insufficientdata",
+};
+
 const Container = styled.div`
     height: 100%;
     width: 100%;
@@ -152,6 +156,12 @@ const MapContent = styled.div`
     }
     .marker-gaps:hover {
         background-image: url(${() => gapsHoverPin});
+    }
+    .marker-insufficientdata {
+        background-image: url(${() => insufficientPin});
+    }
+    .marker-insufficientdata:hover {
+        background-image: url(${() => insufficientHoverPin});
     }
     .marker {
         background-size: cover;

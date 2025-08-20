@@ -194,7 +194,7 @@ export class CountryD2Repository implements CountryRepository {
         const rawStatus =
             aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value || "";
 
-        const status: CountryStatus = rawStatus === "Green" ? "Strong" : rawStatus === "Red" ? "Weak" : "Gaps";
+        const status = countryStatusMap[rawStatus] ?? "Gaps";
 
         const customGeometry = aditionalCountryInfo?.dataValues.find(
             dv => dv.dataElement === countryInfoDataElements.geometry
@@ -390,6 +390,13 @@ export class CountryD2Repository implements CountryRepository {
         return [];
     }
 }
+
+const countryStatusMap: Record<string, CountryStatus> = {
+    Green: "Strong",
+    Red: "Weak",
+    Orange: "Gaps",
+    Gray: "InsufficientData",
+};
 
 const organisationUnitsFields = {
     id: true,

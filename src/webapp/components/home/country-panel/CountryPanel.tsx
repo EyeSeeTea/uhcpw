@@ -1,11 +1,12 @@
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import { Country } from "../../../../domain/entities/Country";
+import { Country, CountryStatus } from "../../../../domain/entities/Country";
 import ReactMarkdown from "react-markdown";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-normal.svg";
+import insufficientDataIcon from "../../../assets/map/icon-insufficient.svg";
 import { Divider } from "material-ui";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
@@ -28,14 +29,19 @@ export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
     );
 };
 
+const iconStatusMap: Record<CountryStatus, string> = {
+    Strong: strongIcon,
+    Gaps: gapsIcon,
+    Weak: weakIcon,
+    InsufficientData: insufficientDataIcon,
+};
+
 export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     return (
         <Container>
             <Row>
                 <UmbrellaItem>
-                    <Marker
-                        src={country.status === "Strong" ? strongIcon : country.status === "Weak" ? weakIcon : gapsIcon}
-                    />
+                    <Marker src={iconStatusMap[country.status]} />
                 </UmbrellaItem>
                 <Typography variant="h2" style={{ fontWeight: 400 }}>
                     {country.name}
