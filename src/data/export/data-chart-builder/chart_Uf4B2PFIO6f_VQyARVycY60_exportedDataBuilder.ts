@@ -7,7 +7,7 @@ const SORTED_PARAMETERS = [
     "Average household capacity to pay",
 ];
 const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Country", "Parameter"];
+const HEADERS_BASE = ["Country / Area", "Parameter"];
 
 export const chart_Uf4B2PFIO6f_VQyARVycY60_exportedDataBuilder: (
     tabs: Tab[],

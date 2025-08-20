@@ -13,6 +13,7 @@ import "./App.css";
 import muiThemeLegacy from "./themes/dhis2-legacy.theme";
 import { muiTheme } from "./themes/dhis2.theme";
 import { KOSOVO } from "../../../data/repositories/countries/CountryD2Repository";
+import { Region } from "../../../domain/entities/Region";
 
 export interface AppProps {
     api: D2Api;
@@ -35,9 +36,10 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
             const themes = (await compositionRoot.resources.getThemes.execute().runAsync()).data || [];
             const generalContent = (await compositionRoot.general.getContent.execute().runAsync()).data;
 
-            const countriesRegions = countries.flatMap(country => (country.children ? country.children : []));
+            const countriesSubregions = countries.flatMap(country => (country.children ? country.children : []));
+            const regions: Region[] = (await compositionRoot.countries.getRegions.execute().runAsync()).data || [];
 
-            const countriesAndRegions = [...countries, ...countriesRegions].sort((countryA, countryB) => {
+            const countriesAndSubregions = [...countries, ...countriesSubregions].sort((countryA, countryB) => {
                 if (countryA.id === KOSOVO) return 1;
                 if (countryB.id === KOSOVO) return -1;
                 return countryA.name.toLowerCase() < countryB.name.toLowerCase() ? -1 : 1;
@@ -50,7 +52,8 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
                 countries,
                 themes,
                 generalContent,
-                countriesAndRegions,
+                countriesAndSubregions,
+                regions: regions,
             });
             setLoading(false);
         }

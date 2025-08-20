@@ -2,51 +2,53 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import i18n from "../../../../locales";
 import { TreeOption } from "../../../components/tree-selector/TreeSelector";
 import { useAppContext } from "../../../contexts/app-context";
-import { CountriesRegion } from "../../../../domain/entities/Country";
 import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
     SORTED_COUNTRY_GROUPINGS,
 } from "../../../../data/repositories/countries/CountryD2Repository";
+import { ALL_NODE_ID } from "../../../components/tree-selector/useTreeSelector";
+import { SORTED_REGIONS } from "../../../../domain/entities/Region";
 
 const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 
 export function useMultiCountryOptionsV2(params?: {
     selectedCountries?: string[];
     countryOptionsToSelect?: string[];
-    showEurRegion?: boolean;
+    showRegions?: boolean;
     showSubRegions?: boolean;
 }) {
-    const { countries, compositionRoot } = useAppContext();
+    const { countries, regions } = useAppContext();
     const [options, setOptions] = useState<TreeOption[]>([]);
     const [selected, setSelected] = useState<string[] | undefined>([]);
-    const [eurRegion, setEurRegion] = useState<CountriesRegion | undefined>(undefined);
 
-    const { selectedCountries, countryOptionsToSelect, showEurRegion, showSubRegions } = useMemo(() => {
+    const { selectedCountries, countryOptionsToSelect, showRegions, showSubRegions } = useMemo(() => {
         return {
             selectedCountries: params?.selectedCountries,
             countryOptionsToSelect: params?.countryOptionsToSelect,
-            showEurRegion: params?.showEurRegion,
+            showRegions: params?.showRegions,
             showSubRegions: params?.showSubRegions,
         };
-    }, [params?.countryOptionsToSelect, params?.selectedCountries, params?.showEurRegion, params?.showSubRegions]);
+    }, [params?.countryOptionsToSelect, params?.selectedCountries, params?.showRegions, params?.showSubRegions]);
 
     useEffect(() => {
         setSelected(selectedCountries);
     }, [selectedCountries]);
 
-    useEffect(() => {
-        if (showEurRegion && !eurRegion) {
-            compositionRoot.countries.getEurCountriesRegion.execute().run(
-                eurRegionData => {
-                    setEurRegion(eurRegionData);
-                },
-                () => {
-                    setEurRegion(undefined);
-                }
-            );
-        }
-    }, [compositionRoot.countries, showEurRegion, eurRegion]);
+    const regionOptions: TreeOption[] = useMemo(() => {
+        return regions
+            .map(region => ({
+                id: region.id,
+                name: `${region.name} average`,
+                code: region.code,
+                parents: [AVERAGES_REGIONS_PARENT],
+            }))
+            .sort((a, b) => {
+                const indexA = SORTED_REGIONS.indexOf(a.id);
+                const indexB = SORTED_REGIONS.indexOf(b.id);
+                return (indexA === -1 ? Infinity : indexA) - (indexB === -1 ? Infinity : indexB);
+            });
+    }, [regions]);
 
     useEffect(() => {
         const countryOptions: TreeOption[] = countries.map(country => ({
@@ -54,8 +56,13 @@ export function useMultiCountryOptionsV2(params?: {
             name: country.name,
             code: country.code,
             parents: [
-                { id: "all", name: i18n.t("All countries and areas") },
-                ...country.parents.filter(parent => !parent.name.includes("income")),
+                { id: ALL_NODE_ID, name: i18n.t("All countries and areas") },
+                ...country.parents
+                    .filter(parent => !parent.name.includes("income"))
+                    .map(g => ({
+                        id: `parent-${g.id}`,
+                        name: g.name,
+                    })),
             ],
             children: showSubRegions
                 ? country.children?.map(child => ({
@@ -74,20 +81,9 @@ export function useMultiCountryOptionsV2(params?: {
             ? countryOptions.filter(({ id }) => countryOptionsToSelect?.includes(id))
             : countryOptions;
 
-        const optionsToSet =
-            showEurRegion && eurRegion
-                ? [
-                      ...countryOptionsFiltered,
-                      {
-                          id: eurRegion.id,
-                          name: eurRegion.name,
-                          code: eurRegion.code,
-                          parents: [averagesGroup],
-                      },
-                  ]
-                : countryOptionsFiltered;
+        const optionsToSet = showRegions ? [...countryOptionsFiltered, ...regionOptions] : countryOptionsFiltered;
         setOptions(optionsToSet);
-    }, [countries, countryOptionsToSelect, eurRegion, showEurRegion, showSubRegions]);
+    }, [countries, countryOptionsToSelect, showRegions, showSubRegions, regionOptions]);
 
     const onSelectedChange = useCallback((countries: string[] | undefined) => {
         setSelected(countries);
@@ -101,9 +97,9 @@ export function useMultiCountryOptionsV2(params?: {
     return { options, selected, onSelectedChange, parentSort };
 }
 
-const averagesGroup = {
+export const AVERAGES_REGIONS_PARENT = {
     id: "averages",
     name: "Averages",
 };
 
-const countryGroupings = ["averges", "all", ...SORTED_COUNTRY_GROUPINGS];
+const countryGroupings = [AVERAGES_REGIONS_PARENT.id, ALL_NODE_ID, ...SORTED_COUNTRY_GROUPINGS.map(g => `parent-${g}`)];

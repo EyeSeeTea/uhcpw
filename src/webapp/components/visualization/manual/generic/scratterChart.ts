@@ -1,10 +1,10 @@
 import _ from "lodash";
 import { Visualization } from "../../../../../domain/entities/indicator-explorer/Visualization";
 import { baseChartOptions } from "./baseChartOptions";
-import { EU27 } from "../../../../../domain/entities/Country";
-import { getEU27Label, EU27_LABEL } from "../../customization/charts/utils/getEU27Label";
+import { getEU27Label } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
 import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
+import { ORG_UNIT_IDS, REGION_CODES } from "../../../../../domain/entities/Region";
 
 export type ScratterSerie = {
     id: string;
@@ -175,7 +175,7 @@ export const pos = {
 export const getScatterSeries = (seriesSource: SerieSource[], countriesWithData: SerieData[], REST_ID: string) => {
     return seriesSource.map(serie => {
         // Handle the EU27 series separately
-        if (serie.id === EU27) {
+        if (serie.id === ORG_UNIT_IDS.EUROPEAN_UNION) {
             return {
                 ...serie,
                 data: countriesWithData.filter(country => country.country === getEU27Label(serie.id)),
@@ -185,7 +185,9 @@ export const getScatterSeries = (seriesSource: SerieSource[], countriesWithData:
         return {
             ...serie,
             data: countriesWithData.filter(
-                country => (serie.id === REST_ID || country.country === serie.id) && country.country !== EU27_LABEL
+                country =>
+                    (serie.id === REST_ID || country.country === serie.id) &&
+                    country.country !== REGION_CODES.EUROPEAN_UNION
             ),
         };
     });

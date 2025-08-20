@@ -2,7 +2,7 @@ import { VisualizationExtra } from "../../../../domain/entities/indicator-explor
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
-const COLUMNS_ORDER = ["Country", "Year", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
 const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 
 export const chart_MfLZYD6QCPy_Seed: VisualizationExtra = {
@@ -13,7 +13,8 @@ export const chart_MfLZYD6QCPy_Seed: VisualizationExtra = {
     subcategoryName: sortedSubcategoryNames.comparative,
     selectedYearsByDefault: [{ id: "2019" }],
     allowedYears: [{ id: "2014" }, { id: "2019" }],
-    hasEur27: true,
+    hasEURegion: true,
+    isOrgUnitRegions: true,
     isOnlyEu27Comparison: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>

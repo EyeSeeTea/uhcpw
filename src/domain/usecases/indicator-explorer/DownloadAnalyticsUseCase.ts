@@ -1,4 +1,6 @@
 import { Future, FutureData } from "../../entities/Future";
+import { Id } from "../../entities/Ref";
+import { Region } from "../../entities/Region";
 import { LatestAvailable, LatestCOVID19 } from "../../entities/Year";
 import { AnalyticsRepository } from "../../repositories/indicator-explorer/AnalyticsRepository";
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
@@ -13,7 +15,8 @@ export class DownloadAnalyticsUseCase {
     public execute(params: {
         visualizationIds: string[];
         periods: string[];
-        orgUnits: string[];
+        countryIds: Id[];
+        selectedRegions: Region[];
         seriesIdAndName: {
             id: string | undefined;
             name: string | undefined;
@@ -22,7 +25,8 @@ export class DownloadAnalyticsUseCase {
         xAxis?: string;
         yAxis?: string;
     }): FutureData<void> {
-        const { visualizationIds, periods, orgUnits, seriesIdAndName, isScatter, xAxis, yAxis } = params;
+        const { visualizationIds, periods, countryIds, seriesIdAndName, isScatter, xAxis, yAxis, selectedRegions } =
+            params;
 
         return Future.parallel(visualizationIds.map(id => this.visualizationRepository.getById(id))).flatMap(
             visualizations => {
@@ -38,7 +42,8 @@ export class DownloadAnalyticsUseCase {
                 return this.analyticsRepository.saveToFile({
                     visualizations: visualizations,
                     periods: finalPeriods,
-                    orgUnitUids: orgUnits,
+                    countryIds: countryIds,
+                    selectedRegions: selectedRegions,
                     seriesIdAndName: seriesIdAndName,
                     isLatestAvailableYear: sortedPeriods[0] === LatestAvailable.id,
                     isUpTo2019: sortedPeriods[0] === LatestCOVID19.id,

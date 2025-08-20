@@ -16,6 +16,7 @@ import muiThemeLegacy from "../webapp/pages/app/themes/dhis2-legacy.theme";
 import { Country } from "../domain/entities/Country";
 import { ResourceTheme } from "../domain/entities/resources/ResourceTheme";
 import { GeneralContent } from "../domain/entities/GeneralContent";
+import { Region } from "../domain/entities/Region";
 
 export function givenAnUser(): User {
     return {
@@ -292,7 +293,7 @@ export function givenACountries(): Country[] {
     ];
 }
 
-export function givenACountriesAndRegions(): Country[] {
+export function givenACountriesAndSubregions(): Country[] {
     return [
         {
             id: "DVnpk4xiXGJ",
@@ -735,6 +736,10 @@ export function givenAGeneralContent(): GeneralContent {
     };
 }
 
+export function getRegions(): Region[] {
+    return [];
+}
+
 export function getTestContext(repositoriesToOverwrite?: Repositories): AppContextState {
     // Mock api was working with axios but not with fetch
 
@@ -748,7 +753,8 @@ export function getTestContext(repositoriesToOverwrite?: Repositories): AppConte
         countries: givenACountries(),
         themes: givenAThemes(),
         generalContent: givenAGeneralContent(),
-        countriesAndRegions: givenACountriesAndRegions(),
+        countriesAndSubregions: givenACountriesAndSubregions(),
+        regions: getRegions(),
     };
 
     return context;

@@ -19,12 +19,16 @@ import { chart_AophAEpx5e0_BOcLONPSyYS_Options } from "./chart_AophAEpx5e0_BOcLO
 import { chart_iMI82inOBiD_Options } from "./chart_iMI82inOBiD_Options";
 import { chart_q5ldoFcgkSn_Options } from "./chart_q5ldoFcgkSn_Options";
 import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
+import { Id } from "../../../../domain/entities/Ref";
+import { Region } from "../../../../domain/entities/Region";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
     countries: Country[];
-    currentCountry?: string;
+    regions: Region[];
+    currentCountry?: Id;
+    currentRegion?: Id;
     currentYear?: string;
     isLatestCOVID19?: boolean;
 }
@@ -33,7 +37,9 @@ export interface ChartSourceMultiple {
     analyticsResponse: Analytics[];
     visualization: Visualization[];
     countries: Country[];
-    currentCountry?: string;
+    regions: Region[];
+    currentCountry?: Id;
+    currentRegion?: Id;
     currentYear?: string;
     isLatestCOVID19?: boolean;
 }

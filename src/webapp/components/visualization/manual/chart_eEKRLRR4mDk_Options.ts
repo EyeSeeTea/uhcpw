@@ -2,8 +2,8 @@ import _ from "lodash";
 import { ChartSource } from "./chartOptions";
 import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
-import { EU27 } from "../../../../domain/entities/Country";
 import { EU27Color } from "../customization/palettes/countryPalette";
+import { ORG_UNIT_IDS } from "../../../../domain/entities/Region";
 
 const REST_ID = "REST_ID";
 
@@ -20,7 +20,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
     const seriesSource: SerieSource[] = [
         {
             name: "",
-            id: EU27,
+            id: ORG_UNIT_IDS.EUROPEAN_UNION,
             color: EU27Color,
         },
         {
