@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { MobileSliderContent } from "./MobileSliderContent";
 import { ChangeEvent, useEffect } from "react";
 import React from "react";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
 export const MobileSlider: React.FC<{
     countryId: string;
@@ -89,6 +90,9 @@ const StyledAccordion = styled(Accordion)`
 const StyledAccordionSummary = styled(AccordionSummary)`
     min-height: 48px;
     padding: 0 25px 0 64px;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline-start: 16px;
+    }
     .MuiTypography-root {
         font-weight: 500;
         font-size: 16px;
