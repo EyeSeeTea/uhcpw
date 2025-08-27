@@ -135,6 +135,7 @@ const Row = styled.div`
     padding-inline-start: 60px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
+        padding-inline-start: 16px;
     }
 `;
 

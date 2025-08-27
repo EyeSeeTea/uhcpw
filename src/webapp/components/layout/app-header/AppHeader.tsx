@@ -11,7 +11,7 @@ import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MobileMenu } from "./MobileMenu";
 import { useAppHeader } from "./useAppHeader";
-import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { DesktopMenu } from "./DesktopMenu";
 import { useReferenceLinks } from "../../../common/hooks/analytics/useReferenceLinks";
 
@@ -47,6 +47,9 @@ export const useStyles = makeStyles(theme => ({
             paddingLeft: 40,
             paddingRight: 40,
         },
+        "@media (max-width: 960px)": {
+            paddingLeft: 0,
+        },
     },
     rest: {
         flexGrow: 1,
@@ -73,7 +76,7 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
     const { isScreenRotated = false } = props;
     const classes = useStyles();
     const { abbreviationsLink, glossaryLink } = useReferenceLinks();
-    const { goToHome, whoLogoWidth, uhcwLogoWidth, isHomePage } = useAppHeader();
+    const { goToHome, whoLogoWidth, uhcwLogoWidth, isHomePage, isCountryPage } = useAppHeader();
     const isSmallScreen = useIsSmallScreen();
 
     return (
@@ -97,7 +100,7 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
 
                 <Toolbar className={classes.toolbarBottom}>
                     <FlexContainer isFullWidth>
-                        <FlexContainer>
+                        <FlexLogoContainer isCountryPage={isCountryPage}>
                             <LogoContainer>
                                 <img src={whoLogoBlue} width={whoLogoWidth} alt="WHO logo" onClick={() => goToHome()} />
                             </LogoContainer>
@@ -112,7 +115,7 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
                                     />
                                 </LogoContainer>
                             ) : null}
-                        </FlexContainer>
+                        </FlexLogoContainer>
 
                         <FlexContainer>
                             <MenuContainer>
@@ -139,6 +142,12 @@ const FlexContainer = styled.div<{ isFullWidth?: boolean; isWrap?: boolean }>`
     flex-flow: ${props => (props.isWrap ? "wrap" : "row")};
     width: ${props => (props.isFullWidth ? "100%" : "auto")};
     justify-content: space-between;
+`;
+
+const FlexLogoContainer = styled(FlexContainer)<{ isCountryPage?: boolean }>`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: ${props => (props.isCountryPage ? "5px" : "40px")};
+    }
 `;
 
 const MenuContainer = styled.div``;
