@@ -19,6 +19,13 @@ import { ResourceTheme } from "../../../../domain/entities/resources/ResourceThe
 import { CompositionRoot } from "../../../../CompositionRoot";
 import i18n from "../../../../locales";
 
+const RESOURCES_PRIORITY: Record<"country-analysis" | "comparative-analysis" | "news" | "multimedia", number> = {
+    "country-analysis": 1,
+    "comparative-analysis": 2,
+    multimedia: 3,
+    news: 4,
+};
+
 export function useResources(): ResourcesState {
     const { compositionRoot, countries, themes } = useAppContext();
     const history = useHistory();
@@ -36,6 +43,11 @@ export function useResources(): ResourcesState {
     }, [history.location.search]);
 
     const filters = useResourcesFilters({ theme: themeFilter });
+
+    useEffect(() => {
+        // Reset items when these filters change to avoid showing stale data
+        setItems([]);
+    }, [filters.search.term, filters.theme.selected]);
 
     const onGetResources = useCallback(() => {
         setLoading(true);
@@ -124,6 +136,7 @@ function buildResourcesSections(resources: ResourceState[], hasSearchTerm: boole
                 order: sectionDetails.order,
                 resources: _(items)
                     .orderBy(item => item.date, "desc")
+                    .orderBy(item => RESOURCES_PRIORITY[item.kind], ["asc"])
                     .value(),
             };
         })
