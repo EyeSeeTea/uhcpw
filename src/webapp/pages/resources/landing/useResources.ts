@@ -44,6 +44,11 @@ export function useResources(): ResourcesState {
 
     const filters = useResourcesFilters({ theme: themeFilter });
 
+    useEffect(() => {
+        // Reset items when these filters change to avoid showing stale data
+        setItems([]);
+    }, [filters.search.term, filters.theme.selected]);
+
     const onGetResources = useCallback(() => {
         setLoading(true);
 
