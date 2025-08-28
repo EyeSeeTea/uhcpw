@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import i18n from "../../../../locales";
 import { useAppContext } from "../../../contexts/app-context";
+import { ALL_NODE_ID } from "../../../components/tree-selector/useTreeSelector";
 
+// NOTICE: This hook is not used
 export function useMultiCountryOptionsFake(
     selectedCountries?: string[],
     countryFilterIds?: string[],
@@ -25,7 +27,7 @@ export function useMultiCountryOptionsFake(
             name: country.name,
             code: country.code,
             parents: [
-                { id: "all", name: i18n.t("All countries and areas") },
+                { id: ALL_NODE_ID, name: i18n.t("All countries and areas") },
                 ...country.parents.filter(parent =>
                     groupedByIncome ? parent.name.includes("income") : !parent.name.includes("income")
                 ),

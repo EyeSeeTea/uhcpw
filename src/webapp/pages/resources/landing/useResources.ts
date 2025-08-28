@@ -3,13 +3,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Country } from "../../../../domain/entities/Country";
 import { News, Resource } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
+import { ComparativeAnalysisState, MultimediaState, ResourceState } from "../by-type/ResourcesByTypeState";
 import {
-    ComparativeAnalysisState,
-    CountryAnalysisState,
-    MultimediaState,
-    ResourceState,
-} from "../by-type/ResourcesByTypeState";
-import { CountryAnalysisCountry, ResourcesState } from "./ResourcesState";
+    CountryAnalysisCountry,
+    ResourceSectionKind,
+    ResourcesListBySectionState,
+    ResourcesState,
+} from "./ResourcesState";
 import { useHistory } from "react-router-dom";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { buildResourcesBySection } from "../by-type/useResourcesByType";
@@ -17,6 +17,14 @@ import { useResourcesFilters } from "../common/useResourcesFilters";
 import { Future, FutureData } from "../../../../domain/entities/Future";
 import { ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { CompositionRoot } from "../../../../CompositionRoot";
+import i18n from "../../../../locales";
+
+const RESOURCES_PRIORITY: Record<"country-analysis" | "comparative-analysis" | "news" | "multimedia", number> = {
+    "country-analysis": 1,
+    "comparative-analysis": 2,
+    multimedia: 3,
+    news: 4,
+};
 
 export function useResources(): ResourcesState {
     const { compositionRoot, countries, themes } = useAppContext();
@@ -35,6 +43,11 @@ export function useResources(): ResourcesState {
     }, [history.location.search]);
 
     const filters = useResourcesFilters({ theme: themeFilter });
+
+    useEffect(() => {
+        // Reset items when these filters change to avoid showing stale data
+        setItems([]);
+    }, [filters.search.term, filters.theme.selected]);
 
     const onGetResources = useCallback(() => {
         setLoading(true);
@@ -94,18 +107,10 @@ export function useResources(): ResourcesState {
             : undefined;
     }, [countries, filters.search.term, filters.theme.selected, isSmallScreen, items]);
 
-    const filteredByTextOrThemeResources = useMemo(() => {
-        return items && (!!filters.search.term || !!filters.theme.selected)
-            ? {
-                  countryAnalysis: _.orderBy(
-                      items.filter(item => item.kind === "country-analysis"),
-                      "date",
-                      "desc"
-                  ) as CountryAnalysisState[],
-                  comparativeAnalysis: _.orderBy(getComparativeAnalysis(items, false), "date", "desc"),
-                  news: _.orderBy(getNews(items, false), "date", "desc"),
-                  multimedia: _.orderBy(getMultimedia(items, false), "date", "desc"),
-              }
+    const resourcesBySection = useMemo(() => {
+        const hasSearchTerm = !!filters.search.term;
+        return items && (hasSearchTerm || !!filters.theme.selected)
+            ? buildResourcesSections(items, hasSearchTerm)
             : undefined;
     }, [filters.search.term, filters.theme.selected, items]);
 
@@ -113,9 +118,77 @@ export function useResources(): ResourcesState {
         loading,
         filters,
         landingResources,
-        filteredByTextOrThemeResources,
+        resourcesBySection,
         onGetResources,
     };
+}
+
+function buildResourcesSections(resources: ResourceState[], hasSearchTerm: boolean): ResourcesListBySectionState[] {
+    return _(resources)
+        .groupBy(item => getResourceSection(item.kind, hasSearchTerm))
+        .map((items, key) => {
+            const kind = key as ResourceSectionKind;
+            const sectionDetails = getSectionDetails(kind);
+            return {
+                kind: kind,
+                title: sectionDetails.title,
+                seeAllUrl: sectionDetails.seeAllUrl,
+                order: sectionDetails.order,
+                resources: _(items)
+                    .orderBy(item => item.date, "desc")
+                    .orderBy(item => RESOURCES_PRIORITY[item.kind], ["asc"])
+                    .value(),
+            };
+        })
+        .orderBy(section => section.order)
+        .value();
+}
+
+function getResourceSection(kind: Resource["kind"], hasSearchTerm: boolean): ResourceSectionKind {
+    switch (kind) {
+        case "country-analysis":
+        case "comparative-analysis":
+            return hasSearchTerm ? "country-comparative-analysis" : kind;
+        default:
+            return kind;
+    }
+}
+
+function getSectionDetails(kind: ResourceSectionKind) {
+    switch (kind) {
+        case "country-comparative-analysis":
+            return {
+                title: "",
+                seeAllUrl: "",
+                order: 0,
+            };
+        case "country-analysis":
+            return {
+                title: i18n.t("Country or area analysis"),
+                seeAllUrl: "/resources/country-analysis",
+                order: 1,
+            };
+        case "comparative-analysis":
+            return {
+                title: i18n.t("Comparative analysis"),
+                seeAllUrl: "/resources/comparative-analysis",
+                order: 2,
+            };
+        case "multimedia":
+            return {
+                title: i18n.t("Multimedia"),
+                seeAllUrl: "/resources/multimedia",
+                order: 3,
+            };
+        case "news":
+            return {
+                title: i18n.t("News"),
+                seeAllUrl: "/resources/news",
+                order: 4,
+            };
+        default:
+            return { title: "", seeAllUrl: "", order: 10 };
+    }
 }
 
 function getFavoriteAnalysisCountries(countries: Country[]): CountryAnalysisCountry[] {

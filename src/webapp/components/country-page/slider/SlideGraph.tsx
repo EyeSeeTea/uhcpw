@@ -1,10 +1,11 @@
 import { Typography } from "@material-ui/core";
 import i18n from "../../../../locales";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
 import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -19,9 +20,12 @@ type SlideGraphType = {
     countryId: string;
     graphOne: VisualizationProps;
     graphTwo?: VisualizationProps;
+    isMobile?: boolean;
 };
 
-export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo }) => {
+export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo, isMobile = false }) => {
+    const isSmallScreen = useIsSmallScreen();
+
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
 
     const handleOpenScreenshot = React.useCallback((graph: VisualizationProps) => {
@@ -43,9 +47,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
 
     return (
         <Container>
-            <Typography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
-                {i18n.t(title)}
-            </Typography>
+            {!isMobile && (
+                <StyledTypography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
+                    {i18n.t(title)}
+                </StyledTypography>
+            )}
             <VisualizationContainer>
                 <VisualizationPlugin
                     visualizationId={(graphOne as VisualizationProps).visualizationId}
@@ -58,10 +64,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     onDownloadImage={() => handleOpenScreenshot(graphOne)}
                     noDataMessage={pageContent?.noDataMessage}
                     analyticsPageTitle="Country page"
+                    showDialogInFullScreen={isSmallScreen}
                 />
             </VisualizationContainer>
             {graphTwo && (
-                <VisualizationContainer>
+                <VisualizationContainer $hasMargin={true}>
                     <VisualizationPlugin
                         visualizationId={(graphTwo as VisualizationProps).visualizationId}
                         visualizationName={(graphTwo as VisualizationProps).visualizationName}
@@ -73,6 +80,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         onDownloadImage={() => handleOpenScreenshot(graphTwo)}
                         noDataMessage={pageContent?.noDataMessage}
                         analyticsPageTitle="Country page"
+                        showDialogInFullScreen={isSmallScreen}
                     />
                 </VisualizationContainer>
             )}
@@ -85,6 +93,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     backgroundColor={"#f1f9fc"}
                     analyticsPageTitle="Country page"
                     analyticsContent={analyticsContent}
+                    forceRotation={isSmallScreen}
                 >
                     <VisualizationPlugin
                         visualizationId={currentGraphScreenshot.visualizationId}
@@ -103,27 +112,30 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
     );
 };
 
-const visuallyHidden = css`
-    position: absolute;
-    width: 0.0625rem;
-    height: 0.0625rem;
-    overflow: hidden;
-    white-space: nowrap;
-    clip: rect(0 0 0 0);
-    clip-path: inset(100%);
-`;
-
 const Container = styled.div`
     max-width: 100%;
     padding: 20px 50px 30px 50px;
-    @media (min-width: 960px) {
-        > h3 {
-            ${visuallyHidden};
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 30px;
+        padding-inline-start: 0px;
+    }
+`;
+
+const VisualizationContainer = styled.div<{ $hasMargin?: boolean }>`
+    max-width: 100%;
+    padding-inline-end: 50px;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 0;
+        margin-block-start: ${props => (props.$hasMargin ? "20px" : "0")};
+
+        > div {
+            padding: 0;
         }
     }
 `;
 
-const VisualizationContainer = styled.div`
-    max-width: 100%;
-    padding-inline-end: 50px;
+const StyledTypography = styled(Typography)`
+    color: black;
 `;

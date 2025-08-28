@@ -93,7 +93,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [searchTerm, setSearchTerm] = React.useState<string>("");
-    const [expandedParents, setExpandedParents] = React.useState<string[]>(["all", ...defaultExpanded]);
+    const [expandedParents, setExpandedParents] = React.useState<string[]>([ALL_NODE_ID, ...defaultExpanded]);
 
     const handleClick = useCallback(
         (event: React.MouseEvent<HTMLInputElement>) => {
@@ -254,12 +254,12 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     const isAllItemParentSelected = useCallback(
         (itemParentId: string) => {
             if (hasSelectAll) {
-                const finalChildrenAllowed = filteredItemsBySearch
+                const finalChildrenAllowed = items
                     .filter(item => item.parents.some(p => p.id === itemParentId))
                     .filter(({ id }) => !disabledItems?.includes(id));
 
                 const finalSubChildrenAllowed = showSubChildren
-                    ? filteredItemsBySearch
+                    ? finalChildrenAllowed
                           .flatMap(item => (item.children ? item.children : []))
                           .filter(({ id }) => !disabledItems?.includes(id))
                     : [];
@@ -271,7 +271,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
                 return !!allowedSelection.length && allowedSelection.every(item => selectedIds.includes(item.id));
             }
         },
-        [hasSelectAll, filteredItemsBySearch, showSubChildren, disabledItems, selectedIds]
+        [hasSelectAll, items, showSubChildren, disabledItems, selectedIds]
     );
 
     const isItemParentDisabled = useCallback(
@@ -286,16 +286,14 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     );
 
     const areAllItemsSelected = useMemo(() => {
-        const selection = filteredItemsBySearch.filter(
-            ({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id)
-        );
+        const selection = items.filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id));
         const selectedSubChildren = showSubChildren
-            ? filteredItemsBySearch
+            ? items
                   .flatMap(item => (item.children ? item.children : []))
                   .filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id))
             : [];
         return [...selection, ...selectedSubChildren]?.length === 0;
-    }, [disabledItems, filteredItemsBySearch, selectedIds, showSubChildren]);
+    }, [disabledItems, items, selectedIds, showSubChildren]);
 
     const itemsToSelect = useMemo(() => {
         const selectableItems = filteredItemsBySearch

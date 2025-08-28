@@ -6,7 +6,7 @@ export type Country = {
     longName: string;
     code: string;
     status: CountryStatus;
-    coordinates: [number, number];
+    coordinates?: [number, number];
     parents: { id: string; name: string }[];
     children?: Country[];
     flag: string;
@@ -29,20 +29,7 @@ export type CountrySectionInfo = {
     }[];
 };
 
-export type CountryStatus = "Strong" | "Gaps" | "Weak";
-
-export type CountriesRegion = {
-    id: string;
-    name: string;
-    longName: string;
-    code: string;
-    description: string;
-    parents: { id: string; name: string }[];
-};
-
-// WORKAROUND: EU27 data is added in Greenland because we cannot use EUR
-// no included in countries list. manually added
-export const EU27: Id = "IZy3ESdFnp5";
+export type CountryStatus = "Strong" | "Gaps" | "Weak" | "InsufficientData";
 
 // included in countries list
 export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";

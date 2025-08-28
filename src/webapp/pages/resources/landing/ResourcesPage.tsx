@@ -8,7 +8,7 @@ import { ResourcesFilters } from "../../../components/resources/resources-filter
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
 import SearchInput from "../../../components/search-input/SearchInput";
-import { FilteredByTextOrThemeResources } from "./FilteredByTextOrThemeResources";
+import { ResourcesListBySection } from "./ResourcesListBySection";
 import { LandingResources } from "./LandingResources";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import mapBackground from "../../../assets/map-background.jpg";
@@ -16,7 +16,7 @@ import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common
 import { MobileLandingResources } from "./MobileLandingResources";
 
 export const ResourcesPage: React.FC = React.memo(() => {
-    const { filters, landingResources, filteredByTextOrThemeResources, onGetResources } = useResources();
+    const { filters, landingResources, resourcesBySection, onGetResources } = useResources();
     const { sendPageView } = useAnalytics();
     const isSmallScreen = useIsSmallScreen();
 
@@ -60,11 +60,12 @@ export const ResourcesPage: React.FC = React.memo(() => {
                             <LandingResources resources={landingResources} />
                         ))}
 
-                    {(!!filters.search.term || !!filters.theme.selected) && !!filteredByTextOrThemeResources && (
-                        <FilteredByTextOrThemeResources
-                            resources={filteredByTextOrThemeResources}
+                    {(!!filters.search.term || !!filters.theme.selected) && !!resourcesBySection && (
+                        <ResourcesListBySection
+                            resourcesBySection={resourcesBySection}
                             themeSelected={filters.theme.selected}
                             isSmallScreen={isSmallScreen}
+                            hasSearchTerm={!!filters.search.term}
                         />
                     )}
                 </StyledGrid>

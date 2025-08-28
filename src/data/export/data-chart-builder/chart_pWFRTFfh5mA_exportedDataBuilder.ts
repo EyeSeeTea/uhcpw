@@ -3,7 +3,7 @@ import { getTabsWithChartData } from "./getTabsWithChartData";
 
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "Total", "Richest", "4th"];
 const HEADER_DATA_PARAM_NAME = "Quintile";
-const HEADERS_BASE = ["Country", "Quintile"];
+const HEADERS_BASE = ["Country / Area", "Quintile"];
 
 export const chart_pWFRTFfh5mA_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,

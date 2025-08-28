@@ -5,11 +5,13 @@ import i18n from "../../../locales";
 import UmbrellaWeak from "../../assets/country-page/umbrella-weak.svg";
 import UmbrellaGap from "../../assets/country-page/umbrella-normal.png";
 import UmbrellaStrong from "../../assets/country-page/umbrella-strong.png";
+import InsufficientData from "../../assets/country-page/insufficient-data.svg";
 import { FC, MutableRefObject, useCallback } from "react";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountryStatus } from "../../../domain/entities/Country";
 import { Option } from "../../components/dropdown/Option";
 import { getBackgroundColorByCountryStatus } from "../../pages/country/utils";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -41,6 +43,8 @@ const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
             return <img src={UmbrellaGap} width={100} alt={"umbrella gap"} />;
         case "Strong":
             return <img src={UmbrellaStrong} width={100} alt={"umbrella strong"} />;
+        case "InsufficientData":
+            return <img src={InsufficientData} width={100} alt={"insufficient data"} />;
     }
 };
 
@@ -55,6 +59,8 @@ export const Header: FC<HeaderType> = ({
 }) => {
     const country = useCountryInfo(countryId);
     const classes = useStyles();
+    const isSmallScreen = useIsSmallScreen();
+
     const handleClick = useCallback(
         (ref: MutableRefObject<any>, where: "detail" | "resources" | "expert") => {
             ref.current?.scrollIntoView({ behavior: "smooth" });
@@ -67,16 +73,18 @@ export const Header: FC<HeaderType> = ({
 
     return (
         <Container aria-label="country-page-header" status={country?.status} className={classes.container}>
-            <ButtonsContainer>
+            <DropdownContainer>
                 <CountryDropdown
                     fullWidth
                     placeholder={i18n.t("Select country or area")}
                     countryOptions={countryOptions}
                     value={countryId}
                     onChange={onCountryChange}
+                    forceRotation={isSmallScreen}
+                    fullScreen={isSmallScreen}
                 />
                 {country && <UmbrellaIcon status={country?.status} />}
-            </ButtonsContainer>
+            </DropdownContainer>
             <ButtonsContainer>
                 <Button>
                     <ButtonText>{i18n.t("Dashboard")}</ButtonText>
@@ -103,15 +111,35 @@ const Container = styled.div<{ status: CountryStatus | undefined }>`
     height: 80px;
     align-items: center;
     background: ${props => getBackgroundColorByCountryStatus(props.status)};
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline: 16px;
+        flex-wrap: nowrap;
+    }
+`;
+
+const DropdownContainer = styled.div`
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        gap: 0px;
+        img {
+            width: 90px;
+        }
+    }
 `;
 
 const ButtonsContainer = styled.div`
     display: flex;
     gap: 20px;
     align-items: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        gap: 10px;
+    }
 `;
 
 const ButtonText = styled(Typography)`
     text-transform: none;
     font-weight: 400;
+    white-space: nowrap;
 `;

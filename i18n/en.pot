@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-07-08T13:27:58.585Z\n"
-"PO-Revision-Date: 2025-07-08T13:27:58.585Z\n"
+"POT-Creation-Date: 2025-08-04T12:12:20.286Z\n"
+"PO-Revision-Date: 2025-08-04T12:12:20.286Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -53,6 +53,9 @@ msgstr ""
 msgid "In detail"
 msgstr ""
 
+msgid "Select category and indicator"
+msgstr ""
+
 msgid "No information available for this category"
 msgstr ""
 
@@ -90,9 +93,6 @@ msgid "UHC watch YouTube video player"
 msgstr ""
 
 msgid "Indicators"
-msgstr ""
-
-msgid "Select category and indicator"
 msgstr ""
 
 msgid "Countries and areas"
@@ -221,12 +221,22 @@ msgstr ""
 msgid "All years"
 msgstr ""
 
-msgid "You can only select {{count}} countries at a time with this indicator"
-msgid_plural "You can only select {{count}} countries at a time with this indicator"
+msgid "2019 or latest available year before COVID-19"
+msgstr ""
+
+msgid "Latest available year"
+msgstr ""
+
+msgid ""
+"You can only select {{count}} countries or areas at a time with this "
+"indicator"
+msgid_plural ""
+"You can only select {{count}} countries or areas at a time with this "
+"indicator"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "You can only select one country at a time with this indicator"
+msgid "You can only select one country or area at a time with this indicator"
 msgstr ""
 
 msgid "This indicator needs at least {{count}} countries"
@@ -238,12 +248,6 @@ msgid "This indicator needs to select only {{count}} country"
 msgid_plural "This indicator needs to select only {{count}} country"
 msgstr[0] ""
 msgstr[1] ""
-
-msgid "2019 or latest available year before COVID-19"
-msgstr ""
-
-msgid "Latest available year"
-msgstr ""
 
 msgid "Read more"
 msgstr ""

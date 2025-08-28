@@ -38,7 +38,6 @@ import { GetIndicatorExplorerPageContentUseCase } from "./domain/usecases/indica
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
 import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
-import { GetEurCountriesRegionUseCase } from "./domain/usecases/GetEurCountriesRegionUseCase";
 import { GetRegionalReportLinkUseCase } from "./domain/usecases/GetRegionalReportLinkUseCase";
 import { GeneralContentD2Repository } from "./data/repositories/GeneralContentD2Repository";
 import { GetGeneralContentUseCase } from "./domain/usecases/GetGeneralContentUseCase";
@@ -46,6 +45,10 @@ import { GoogleAnalyticsRepository } from "./data/repositories/GoogleAnalyticsRe
 import { SendPageViewUseCase } from "./domain/usecases/SendPageViewUseCase";
 import { SendEventUseCase } from "./domain/usecases/SendEventUseCase";
 import { DataStoreClient } from "./data/DataStoreClient";
+import { GetIndicatorsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorsUseCase";
+import { IndicatorSeedsRepository } from "./data/repositories/indicator-explorer/IndicatorSeedsRepository";
+import { GetRegionsUseCase } from "./domain/usecases/GetRegionsUseCase";
+import { RegionD2Repository } from "./data/repositories/regions/RegionD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -69,6 +72,8 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         homePage: new HomePageContentD2Repository(api),
         generalContent: new GeneralContentD2Repository(api),
         googleAnalytics: new GoogleAnalyticsRepository(),
+        indicator: new IndicatorSeedsRepository(),
+        region: new RegionD2Repository(api),
     };
 }
 
@@ -91,7 +96,7 @@ export function getCompositionRoot(
         },
         countries: {
             get: new GetCountriesUseCase(repositories.country),
-            getEurCountriesRegion: new GetEurCountriesRegionUseCase(repositories.country),
+            getRegions: new GetRegionsUseCase(repositories.region),
         },
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
@@ -100,6 +105,7 @@ export function getCompositionRoot(
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
         indicatorExplorer: {
+            getIndicators: new GetIndicatorsUseCase(repositories.indicator),
             getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
             getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),

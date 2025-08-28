@@ -3,18 +3,21 @@ import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { Divider } from "../../components/home/common/Divider";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { Hero } from "../../components/country-page/Hero";
-import { Slider } from "../../components/country-page/slider/Slider";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
 import { useCountryPage } from "./useCountryPage";
 import { useCountryInfo } from "./useCountryInfo";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { MobileSlider } from "../../components/country-page/slider/MobileSlider";
+import { DesktopSlider } from "../../components/country-page/slider/DesktopSlider";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
     const { countryFilter, resetTab, handleResetTab } = useCountryPage();
     const { sendEvent } = useAnalytics();
+    const isSmallScreen = useIsSmallScreen();
 
     const country = useCountryInfo(countryFilter.selectedCountry);
 
@@ -66,7 +69,7 @@ export const CountryPage: React.FC = () => {
     const expertRef = useRef(null);
 
     return (
-        <Layout>
+        <Layout enableRotation={isSmallScreen}>
             <Header
                 countryId={countryFilter.selectedCountry}
                 onCountryChange={handleCountryChange}
@@ -79,7 +82,19 @@ export const CountryPage: React.FC = () => {
             <Hero countryId={countryFilter.selectedCountry} />
             <Divider countryStatus={country?.status} />
             <section ref={sliderRef}>
-                <Slider countryId={countryFilter.selectedCountry} resetTab={resetTab} handleResetTab={handleResetTab} />
+                {isSmallScreen ? (
+                    <MobileSlider
+                        countryId={countryFilter.selectedCountry}
+                        handleResetTab={handleResetTab}
+                        resetTab={resetTab}
+                    />
+                ) : (
+                    <DesktopSlider
+                        countryId={countryFilter.selectedCountry}
+                        handleResetTab={handleResetTab}
+                        resetTab={resetTab}
+                    />
+                )}
             </section>
             <Divider countryStatus={country?.status} />
             <section ref={resourcesRef}>

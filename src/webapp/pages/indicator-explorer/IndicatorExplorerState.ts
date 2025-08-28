@@ -1,4 +1,5 @@
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
+import { Id } from "../../../domain/entities/Ref";
 import { CountryFilterState } from "../../common/state/state";
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 
@@ -33,15 +34,17 @@ export type YeasrFilterState = {
 };
 
 type ExtraCountryFilterState = CountryFilterState & {
-    disabledCountries: string[];
+    disabledCountriesAndRegions: Id[];
     maxCountrySelection: number | undefined;
     showSubRegions: boolean;
     selectedItemsToShowWhenAllSelected: string[];
     isOnlyEu27Comparison: boolean;
+    selectedCountriesAndSubregions: Id[];
+    selectedRegions: Id[];
 };
 
 export type IndicatorExplorerFiltersState = {
-    country: ExtraCountryFilterState;
+    countryAndRegions: ExtraCountryFilterState;
     indicators: IndicatorFilterState;
     year: YeasrFilterState;
 };

@@ -26,14 +26,16 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(
                 <Row>
                     <Title variant="h5">{title}</Title>
                     <Box width={2} />
-                    <Fab
-                        aria-label={`go to ${title}`}
-                        color="primary"
-                        size="small"
-                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
-                    >
-                        <ChevronRightSharpIcon onClick={onSeeAll} />
-                    </Fab>
+                    {seeAllUrl && (
+                        <Fab
+                            aria-label={`go to ${title}`}
+                            color="primary"
+                            size="small"
+                            style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                        >
+                            <ChevronRightSharpIcon onClick={onSeeAll} />
+                        </Fab>
+                    )}
                 </Row>
                 {isMobileLanding ? (
                     children

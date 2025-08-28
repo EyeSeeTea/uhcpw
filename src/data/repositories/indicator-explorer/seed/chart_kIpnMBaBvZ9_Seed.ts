@@ -18,4 +18,5 @@ export const chart_kIpnMBaBvZ9_Seed: VisualizationExtra = {
     isScatter: true,
     xAxis: kIpnMBaBvZ9_xAxisOutOfPocket,
     yAxis: kIpnMBaBvZ9_yAxisHouseholds,
+    hasCustomFilterXAxisAndYAxisByLastAvailableYear: true,
 };

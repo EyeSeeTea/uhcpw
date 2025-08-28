@@ -2,6 +2,7 @@ import { Country } from "../../../domain/entities/Country";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
+import { Region } from "../../../domain/entities/Region";
 import { ChartCustomization } from "./customization/types";
 
 export type ChartDataLoaded = {
@@ -14,6 +15,7 @@ export type ChartDataLoaded = {
     customization?: ChartCustomization;
     chartOptions?: Highcharts.Options;
     countries: Country[];
+    regions: Region[];
     visualizationDialogInfo?: string;
     isScatter?: boolean;
     xAxis?: string;

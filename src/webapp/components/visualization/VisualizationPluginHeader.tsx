@@ -15,6 +15,7 @@ import {
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
 import { FullScreenNotesDialog } from "../dialog/FullScreenNotesDialog";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: string;
@@ -33,7 +34,7 @@ interface VisualizationPluginHeaderProps {
     currentCountry?: string;
     isScreenshot?: boolean;
     reducePaddingBottom?: boolean;
-    isFullScreen?: boolean;
+    showDialogInFullScreen?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -53,7 +54,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         showCountryTag = false,
         isScreenshot = false,
         reducePaddingBottom = false,
-        isFullScreen = false,
+        showDialogInFullScreen = false,
         onClose,
     }) => {
         const currentCountryName = useMemo(() => {
@@ -78,14 +79,9 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryPage ? (
                         <>
                             <Row>
-                                <Title
-                                    isScreenshot={isScreenshot}
-                                    variant="h6"
-                                    color="textPrimary"
-                                    style={{ marginLeft: 20, width: "100%" }}
-                                >
+                                <StyledTitle isScreenshot={isScreenshot} variant="h6" color="textPrimary">
                                     {chartFriendlyName}
-                                </Title>
+                                </StyledTitle>
                             </Row>
 
                             <RowWithGap $gap={6}>
@@ -174,7 +170,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     )}
                 </Row>
                 {showInfo &&
-                    (isFullScreen ? (
+                    (showDialogInFullScreen ? (
                         <FullScreenNotesDialog
                             isOpen={showInfo}
                             onClose={onCloseInfo}
@@ -280,4 +276,15 @@ const Tag = styled.div`
 const Title = styled(Typography)<{ isScreenshot: boolean }>`
     font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
     white-space: "normal";
+`;
+
+const StyledTitle = styled(Typography)<{ isScreenshot: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
+    white-space: "normal";
+    margin-left: 20px;
+    width: 100%;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-left: 15px;
+    }
 `;

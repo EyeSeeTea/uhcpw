@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
 
+// NOTICE: This hook is not used
 export function useMultiCountryOptions() {
     const { countries } = useAppContext();
     const [countryOptions, setCountriesOptions] = useState<Option<string>[]>([]);

@@ -1,9 +1,12 @@
 import { Autocomplete } from "@material-ui/lab";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+import { Popper, List, ListItem, ListItemText } from "@material-ui/core";
 
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 import { Option } from "../../dropdown/Option";
+import { FullScreenDialog } from "../../dialog/FullScreenDialog";
+import i18n from "../../../../locales";
 interface CountryDropdownProps {
     label?: string;
     countryOptions: Option<string>[];
@@ -12,11 +15,24 @@ interface CountryDropdownProps {
     fullWidth?: boolean;
     onChange: (value: string) => void;
     width?: string;
+    forceRotation?: boolean;
+    fullScreen?: boolean;
 }
 
 export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
-    ({ label, countryOptions, value, placeholder, fullWidth, width = "100%", onChange }) => {
+    ({
+        label,
+        countryOptions,
+        value,
+        placeholder,
+        fullWidth,
+        width = "100%",
+        onChange,
+        forceRotation = false,
+        fullScreen = false,
+    }) => {
         const [valueOption, setValueOption] = useState<Option<string> | null>(null);
+        const [open, setOpen] = useState(false);
 
         useEffect(() => {
             setValueOption(countryOptions.find(option => option.value === value) || null);
@@ -33,6 +49,7 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
         return (
             <Container width={width} aria-label="country-dropdown">
                 <StyledAutocomplete
+                    PopperComponent={props => (forceRotation ? <StyledPopper {...props} /> : <Popper {...props} />)}
                     fullWidth={fullWidth}
                     multiple={false}
                     id="country-autocomplete"
@@ -45,10 +62,42 @@ export const CountryDropdown: React.FC<CountryDropdownProps> = React.memo(
                             label={label}
                             placeholder={placeholder}
                             InputLabelProps={{ shrink: true }}
+                            InputProps={{
+                                ...params.InputProps,
+                                readOnly: forceRotation,
+                            }}
                         />
                     )}
                     onChange={handleChange}
+                    open={fullScreen ? false : open}
+                    onOpen={() => setOpen(true)}
+                    onClose={() => setOpen(false)}
                 />
+                {fullScreen && open ? (
+                    <FullScreenDialog
+                        isOpen={open}
+                        onClose={() => setOpen(false)}
+                        title={i18n.t("Select category and indicator")}
+                        forceRotation={forceRotation}
+                    >
+                        <FullScreenContainer>
+                            <List>
+                                {countryOptions.map(option => (
+                                    <ListItem
+                                        button
+                                        key={option.value}
+                                        onClick={() => {
+                                            onChange(option.value);
+                                            setOpen(false);
+                                        }}
+                                    >
+                                        <ListItemText primary={option.text} />
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </FullScreenContainer>
+                    </FullScreenDialog>
+                ) : null}
             </Container>
         );
     }
@@ -66,4 +115,14 @@ const StyledAutocomplete = styled(Autocomplete)`
     .MuiAutocomplete-popupIndicator {
         margin-right: 5px;
     }
+`;
+
+const StyledPopper = styled.div`
+    position: absolute;
+`;
+
+const FullScreenContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 `;

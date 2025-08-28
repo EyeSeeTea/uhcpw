@@ -16,7 +16,7 @@ export function sortDataRowsByParameterOrder(
 ): string[][] {
     const yearIndex = headerRow.findIndex(header => header === "Year");
 
-    const countryIndex = headerRow.findIndex(header => header === "Country");
+    const countryIndex = headerRow.findIndex(header => header === "Country / Area");
     const parameterIndex = headerRow.findIndex(header => header === "Parameter");
 
     const sortedDataRows = _.orderBy(

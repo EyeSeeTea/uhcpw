@@ -90,7 +90,8 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected}
                         years={filters.year.selected || []}
-                        countries={filters.country.selected || []}
+                        countries={filters.countryAndRegions.selectedCountriesAndSubregions || []}
+                        regions={filters.countryAndRegions.selectedRegions || []}
                         noDataMessage={pageContent?.noDataMessage}
                         onDownloadImage={handleOpenScreenshot}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
@@ -117,7 +118,8 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected || ""}
                         years={filters.year.selected || []}
-                        countries={filters.country.selected || []}
+                        countries={filters.countryAndRegions.selectedCountriesAndSubregions || []}
+                        regions={filters.countryAndRegions.selectedRegions || []}
                         noDataMessage={pageContent?.noDataMessage}
                         isScreenshot={true}
                         withoutBackground
