@@ -61,7 +61,7 @@ export const SORTED_COUNTRY_GROUPINGS = [
 ];
 
 export const KOSOVO = "NEPywTBN52g";
-const COUNTRIES_NOT_SHOWN = [ORG_UNIT_IDS.EUROPEAN_UNION, KOSOVO];
+const COUNTRIES_NOT_SHOWN = [ORG_UNIT_IDS.EUROPEAN_UNION];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
