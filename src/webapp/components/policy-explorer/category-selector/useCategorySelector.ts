@@ -2,7 +2,10 @@ import { isEmpty } from "lodash";
 import React from "react";
 import { useCallback, useMemo, useState } from "react";
 
-import { CATEGORIES_WITHOUT_SUBCATEGORIES } from "../../../pages/policy-explorer/usePolicyExplorer";
+import {
+    CATEGORIES_WITHOUT_SUBCATEGORIES,
+    COMBINED_POLICY_TABLES_CATEGORY_ID,
+} from "../../../pages/policy-explorer/usePolicyExplorer";
 import { useMediaQuery } from "@material-ui/core";
 import useWindowSize from "../../../common/hooks/screen/useWindowSize";
 
@@ -16,6 +19,7 @@ export type CategoryOption = {
     text: string;
     subcategories: SubcategoryOption[];
     description: string;
+    disabledSelection?: boolean;
 };
 
 type useCategorySelectorParmas = {
@@ -29,7 +33,7 @@ type State = {
     handleClick: (event: React.MouseEvent<HTMLInputElement>) => void;
     handleClose: () => void;
     handleSearchChange: (term: string) => void;
-    handleDeleteCategoryFromSelection: (categoryId: string) => void;
+    handleDeleteCategoryFromSelection: (categoryId: string, subcategoryId?: string) => void;
     handleSelectedAllSubcategories: (categoryId: string, selected: boolean, subcategories: SubcategoryOption[]) => void;
     handleSubcategoriesChange: (parentCategoryId: string, subcategoryId: string, selected: boolean) => void;
     isAllCategorySelected: (categoryId: string) => boolean;
@@ -83,10 +87,20 @@ export const useCategorySelector = ({
     );
 
     const handleDeleteCategoryFromSelection = useCallback(
-        (categoryId: string) => {
+        (categoryId: string, subcategoryId?: string) => {
             if (selectedCategoriesWithSubcategories) {
-                const { [categoryId]: _deleted, ...newSelection } = selectedCategoriesWithSubcategories;
-                onSelect && onSelect(Object.keys(newSelection)?.length ? newSelection : undefined);
+                const { [categoryId]: subcategories, ...maybeNewSelection } = selectedCategoriesWithSubcategories;
+                if (categoryId === COMBINED_POLICY_TABLES_CATEGORY_ID && subcategoryId) {
+                    const restSubcategories = subcategories?.filter(id => id !== subcategoryId);
+                    const isCategoryDeleted = !restSubcategories?.length;
+                    const newSelection = isCategoryDeleted
+                        ? { ...maybeNewSelection }
+                        : { ...maybeNewSelection, [categoryId]: restSubcategories };
+                    onSelect && onSelect(Object.keys(newSelection)?.length ? newSelection : undefined);
+                } else {
+                    const newSelection = maybeNewSelection;
+                    onSelect && onSelect(Object.keys(newSelection)?.length ? newSelection : undefined);
+                }
             }
         },
         [onSelect, selectedCategoriesWithSubcategories]
@@ -118,7 +132,7 @@ export const useCategorySelector = ({
             if (newSubcategories.length) {
                 onSelect && onSelect({ ...selectedCategoriesWithSubcategories, [parentCategoryId]: newSubcategories });
             } else {
-                handleDeleteCategoryFromSelection(parentCategoryId);
+                handleDeleteCategoryFromSelection(parentCategoryId, subcategoryId);
             }
         },
         [handleDeleteCategoryFromSelection, onSelect, selectedCategoriesWithSubcategories]

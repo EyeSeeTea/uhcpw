@@ -19,6 +19,7 @@ const COLUMN_WIDTHS = {
     userChargesApplyColumn: 25,
     referencesColumn: 250,
     default: 60,
+    userChargesForPubliclyFinancedHealthCare: 20,
 };
 
 const USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS = {
@@ -224,6 +225,13 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
         (headerColumnValue === "User charges apply" || headerColumnValue === TYPE_OF_HEALTH_CARE_HEADER_NAME)
     ) {
         return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.typeOfHealthCareColumnOrUserChargesApplyColumn;
+    }
+
+    if (
+        tabName ===
+        categoriesNameWithLessThan31Chars.USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID
+    ) {
+        return COLUMN_WIDTHS.userChargesForPubliclyFinancedHealthCare;
     }
 
     return tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY

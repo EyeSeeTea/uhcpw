@@ -20,6 +20,7 @@ import {
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../../../data/repositories/countries/CountryD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
@@ -31,12 +32,15 @@ import { CategoryOption } from "../../components/policy-explorer/category-select
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+    USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID,
 ];
 
 export const CATEGORIES_WITHOUT_SUBCATEGORIES = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
+
+export const COMBINED_POLICY_TABLES_CATEGORY_ID = "COMBINED_POLICY_TABLES_CATEGORY_ID";
 
 export function usePolicyExplorer({
     categories,
@@ -61,6 +65,8 @@ export function usePolicyExplorer({
     const [selectedCategoriesWithSubcategoriesFilter, setSelectedCategoriesWithSubcategoriesFilter] = useState<
         Record<string, string[]> | undefined
     >();
+    const [selectedCategoriesWithFlattenedCombinedCategory, setSelectedCategoriesWithFlattenedCombinedCategory] =
+        useState<Record<string, string[]> | undefined>();
 
     const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([latestAvailableYear]);
 
@@ -71,7 +77,10 @@ export function usePolicyExplorer({
 
     useEffect(() => {
         setSelectedCategoriesWithSubcategoriesFilter(categories);
-    }, [categories]);
+        setSelectedCategoriesWithFlattenedCombinedCategory(
+            flattenCombinedCategory(categories ?? {}, policyExplorerCategories)
+        );
+    }, [categories, policyExplorerCategories]);
 
     useEffect(() => {
         if (yearsFilter) {
@@ -157,15 +166,15 @@ export function usePolicyExplorer({
 
     const onGetTable = useCallback(() => {
         if (
-            selectedCategoriesWithSubcategoriesFilter &&
-            Object.keys(selectedCategoriesWithSubcategoriesFilter)?.length &&
+            selectedCategoriesWithFlattenedCombinedCategory &&
+            Object.keys(selectedCategoriesWithFlattenedCombinedCategory)?.length &&
             countryFilter.selected?.length
         ) {
             setLoading(true);
 
             compositionRoot.policyExplorer.get
                 .execute(
-                    selectedCategoriesWithSubcategoriesFilter,
+                    selectedCategoriesWithFlattenedCombinedCategory,
                     countryFilter.selected,
                     selectedYearFilter ? selectedYearFilter : [],
                     countriesAndSubregions,
@@ -174,8 +183,7 @@ export function usePolicyExplorer({
                 .run(
                     policyExplorer => {
                         setInitialDataByTable(policyExplorer);
-
-                        const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
+                        const categoriesIds = Object.keys(selectedCategoriesWithFlattenedCombinedCategory);
                         setDataByTable(getInitialDataByTable(policyExplorer, categoriesIds));
                         setDataOrientationByTable(getInitialDataOrientationByTable(categoriesIds));
 
@@ -197,7 +205,7 @@ export function usePolicyExplorer({
             setDataOrientationByTable(undefined);
         }
     }, [
-        selectedCategoriesWithSubcategoriesFilter,
+        selectedCategoriesWithFlattenedCombinedCategory,
         countryFilter.selected,
         compositionRoot.policyExplorer.get,
         selectedYearFilter,
@@ -206,14 +214,21 @@ export function usePolicyExplorer({
         sendAnalyticsEvents,
     ]);
 
-    const onChangeCategoryFilter = useCallback((value: Record<string, string[]> | undefined) => {
-        setSelectedCategoriesWithSubcategoriesFilter(value);
-        if (!value) {
-            setInitialDataByTable(undefined);
-            setDataByTable(undefined);
-            setDataOrientationByTable(undefined);
-        }
-    }, []);
+    const onChangeCategoryFilter = useCallback(
+        (value: Record<string, string[]> | undefined) => {
+            setSelectedCategoriesWithSubcategoriesFilter(value);
+            setSelectedCategoriesWithFlattenedCombinedCategory(
+                flattenCombinedCategory(value ?? {}, policyExplorerCategories)
+            );
+
+            if (!value) {
+                setInitialDataByTable(undefined);
+                setDataByTable(undefined);
+                setDataOrientationByTable(undefined);
+            }
+        },
+        [policyExplorerCategories]
+    );
 
     const onChangeYearFilter = useCallback(
         (value: string[] | undefined) => {
@@ -250,8 +265,8 @@ export function usePolicyExplorer({
     );
 
     const onDownload = useCallback(() => {
-        if (!initialDataByTable || !selectedCategoriesWithSubcategoriesFilter) return;
-        const categoriesIds = Object.keys(selectedCategoriesWithSubcategoriesFilter);
+        if (!initialDataByTable || !selectedCategoriesWithFlattenedCombinedCategory) return;
+        const categoriesIds = Object.keys(selectedCategoriesWithFlattenedCombinedCategory);
         const data = getInitialDataByTable(initialDataByTable, categoriesIds);
         if (!data) return;
 
@@ -265,7 +280,7 @@ export function usePolicyExplorer({
         compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
     }, [
         initialDataByTable,
-        selectedCategoriesWithSubcategoriesFilter,
+        selectedCategoriesWithFlattenedCombinedCategory,
         sendEvent,
         compositionRoot.policyExplorer.download,
         policyExplorerCategories,
@@ -448,10 +463,46 @@ function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Data
 }
 
 function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): CategoryOption[] {
-    return categories.map(category => ({
-        value: category.id,
-        text: category.name,
-        subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
-        description: category.description,
-    }));
+    return categories.map(category => {
+        return category.id === USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID
+            ? {
+                  value: COMBINED_POLICY_TABLES_CATEGORY_ID,
+                  text: i18n.t("Combined policy tables"),
+                  subcategories: [
+                      {
+                          value: USER_CHARGES_FOR_PUBLICLY_FINANCED_HEALTH_CARE_BY_TYPE_OF_CARE_CATEGORY_ID,
+                          text: category.name,
+                      },
+                  ],
+                  description: category.description,
+                  disabledSelection: true,
+              }
+            : {
+                  value: category.id,
+                  text: category.name,
+                  subcategories: category.subcategories?.map(subcategory => ({
+                      value: subcategory.id,
+                      text: subcategory.name,
+                  })),
+                  description: category.description,
+                  disabledSelection: false,
+              };
+    });
+}
+
+function flattenCombinedCategory(
+    selectedCategoriesWithSubcategoriesFilter: Record<string, string[]>,
+    policyExplorerCategories: PolicyExplorerCategory[] = []
+): Record<string, string[]> {
+    return Object.entries(selectedCategoriesWithSubcategoriesFilter).reduce((acc, [category, subcategories]) => {
+        if (category === COMBINED_POLICY_TABLES_CATEGORY_ID) {
+            const categories: Record<string, string[]> = subcategories.reduce((acc, subcategory) => {
+                const policyExplorerCategory = policyExplorerCategories.find(c => c.id === subcategory);
+                return { ...acc, [subcategory]: policyExplorerCategory?.subcategories.map(s => s.id) };
+            }, {});
+            return { ...acc, ...categories };
+        } else {
+            return { ...acc, [category]: subcategories };
+        }
+    }, {});
 }

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-04-11T14:01:00.625Z\n"
+"POT-Creation-Date: 2025-04-25T07:13:03.349Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -258,6 +258,9 @@ msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
+msgstr ""
+
+msgid "Combined policy tables"
 msgstr ""
 
 msgid "Country analysis"

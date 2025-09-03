@@ -326,6 +326,9 @@ msgstr ""
 msgid "Policy checklist"
 msgstr ""
 
+msgid "Combined policy tables"
+msgstr ""
+
 msgid "Country analysis"
 msgstr ""
 

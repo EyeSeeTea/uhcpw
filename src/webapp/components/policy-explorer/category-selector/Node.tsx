@@ -10,24 +10,33 @@ interface NodeProps {
     selected?: boolean;
     disabled?: boolean;
     onSelectedChange?: (nodeId: string, selected: boolean) => void;
+    disabledSelection?: boolean;
 }
 
-export const Node: React.FC<NodeProps> = ({ nodeId, name, selected, onSelectedChange, children, disabled = false }) => {
+export const Node: React.FC<NodeProps> = ({
+    nodeId,
+    name,
+    selected,
+    onSelectedChange,
+    children,
+    disabled = false,
+    disabledSelection = false,
+}) => {
     const handleCheckboxClick = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            onSelectedChange && onSelectedChange(nodeId, event.target.checked);
+            !disabledSelection && onSelectedChange && onSelectedChange(nodeId, event.target.checked);
         },
-        [nodeId, onSelectedChange]
+        [disabledSelection, nodeId, onSelectedChange]
     );
 
     const handleLabelClick = useCallback(
         (event: React.MouseEvent<Element, MouseEvent>) => {
-            if (!disabled) {
+            if (!disabled && !disabledSelection) {
                 event.preventDefault();
                 onSelectedChange && onSelectedChange(nodeId, !selected);
             }
         },
-        [nodeId, onSelectedChange, selected, disabled]
+        [disabled, disabledSelection, onSelectedChange, nodeId, selected]
     );
 
     return (
@@ -36,7 +45,7 @@ export const Node: React.FC<NodeProps> = ({ nodeId, name, selected, onSelectedCh
             onLabelClick={handleLabelClick}
             label={
                 <Row>
-                    {!disabled && (
+                    {!disabled && !disabledSelection ? (
                         <Checkbox
                             color="primary"
                             style={{ padding: "2px" }}
@@ -46,7 +55,7 @@ export const Node: React.FC<NodeProps> = ({ nodeId, name, selected, onSelectedCh
                             inputProps={{ "aria-label": `Select all ${name}` }}
                             disabled={disabled}
                         />
-                    )}
+                    ) : null}
                     <StyledTypography $disabled={disabled}>{name}</StyledTypography>
                 </Row>
             }

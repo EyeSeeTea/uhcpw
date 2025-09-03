@@ -1,7 +1,7 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { COUNTRY_HEADER_NAME, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
+import { COUNTRY_HEADER_NAME, D2OptionSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
 
@@ -258,6 +258,7 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
         orgUnitName: string;
         period?: string;
         references: string;
+        userChargesApplyOptionsSet: D2OptionSet;
     }) {
         const {
             policyExplorerCategoryId,

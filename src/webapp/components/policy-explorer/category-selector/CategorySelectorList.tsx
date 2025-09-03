@@ -10,6 +10,7 @@ import SearchInput from "../../search-input/SearchInput";
 import { Node } from "./Node";
 import { Leaf } from "./Leaf";
 import { CategoryOption, SubcategoryOption } from "./useCategorySelector";
+import { isEmpty } from "lodash";
 
 interface CategorySelectorListProps {
     searchTerm: string;
@@ -25,6 +26,7 @@ interface CategorySelectorListProps {
     isAllCategorySelected: (categoryId: string) => boolean;
     isSubcategorySelected: (categoryId: string, subcategoryId: string) => boolean;
     fullScreen: boolean;
+    selectedCategoriesWithSubcategories?: Record<string, string[]>;
 }
 
 export const CategorySelectorList = React.memo(
@@ -36,12 +38,11 @@ export const CategorySelectorList = React.memo(
         disableSelectAll,
         handleClear,
         filteredCategories,
-        isClearDisabled,
         handleSelectedAllSubcategories,
         handleSubcategoriesChange,
         isAllCategorySelected,
         isSubcategorySelected,
-        fullScreen,
+        selectedCategoriesWithSubcategories,
     }: CategorySelectorListProps) => {
         return (
             <div role="listbox">
@@ -63,7 +64,12 @@ export const CategorySelectorList = React.memo(
                     <StyledButton variant="text" onClick={handleSelectAll} disabled={disableSelectAll} right={100}>
                         {i18n.t("Select all")}
                     </StyledButton>
-                    <StyledButton variant="text" onClick={handleClear} disabled={isClearDisabled} right={30}>
+                    <StyledButton
+                        variant="text"
+                        onClick={handleClear}
+                        disabled={isEmpty(selectedCategoriesWithSubcategories)}
+                        right={30}
+                    >
                         {i18n.t("Clear")}
                     </StyledButton>
                 </Container>
@@ -72,7 +78,7 @@ export const CategorySelectorList = React.memo(
                     aria-label="Categories tree"
                     defaultCollapseIcon={<ArrowDropUpIcon />}
                     defaultExpandIcon={<ArrowDropDownIcon />}
-                    style={fullScreen ? {} : { maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
+                    style={{ maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
                 >
                     {filteredCategories.map(category => (
                         <Node
@@ -83,6 +89,7 @@ export const CategorySelectorList = React.memo(
                             onSelectedChange={(nodeId: string, selected: boolean) =>
                                 handleSelectedAllSubcategories(nodeId, selected, category.subcategories)
                             }
+                            disabledSelection={category.disabledSelection}
                         >
                             {category.subcategories.map(({ value, text }) => (
                                 <Leaf

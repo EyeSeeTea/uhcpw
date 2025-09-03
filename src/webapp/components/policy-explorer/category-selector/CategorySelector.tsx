@@ -7,6 +7,7 @@ import styled from "styled-components";
 import { isEmpty } from "lodash";
 
 import i18n from "../../../../locales";
+import { COMBINED_POLICY_TABLES_CATEGORY_ID } from "../../../pages/policy-explorer/usePolicyExplorer";
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
 import { SelectedChip } from "../../selected-chip/SelectedChip";
 import { CategoryOption, useCategorySelector } from "./useCategorySelector";
@@ -66,14 +67,34 @@ export const CategorySelector = React.memo(
                         startAdornment: (
                             <SelectedContainer>
                                 {categoriesSelection?.length
-                                    ? categoriesSelection.map(selectedCategory => (
-                                          <SelectedChip
-                                              key={selectedCategory.value}
-                                              label={selectedCategory.text}
-                                              onDelete={() => handleDeleteCategoryFromSelection(selectedCategory.value)}
-                                              deleteIcon={<CloseIcon fontSize="small" />}
-                                          />
-                                      ))
+                                    ? categoriesSelection.map(selectedCategory => {
+                                          if (selectedCategory.value === COMBINED_POLICY_TABLES_CATEGORY_ID) {
+                                              return selectedCategory.subcategories.map(subcategory => (
+                                                  <SelectedChip
+                                                      key={subcategory.value}
+                                                      label={subcategory.text}
+                                                      onDelete={() =>
+                                                          handleDeleteCategoryFromSelection(
+                                                              selectedCategory.value,
+                                                              subcategory.value
+                                                          )
+                                                      }
+                                                      deleteIcon={<CloseIcon fontSize="small" />}
+                                                  />
+                                              ));
+                                          } else {
+                                              return (
+                                                  <SelectedChip
+                                                      key={selectedCategory.value}
+                                                      label={selectedCategory.text}
+                                                      onDelete={() =>
+                                                          handleDeleteCategoryFromSelection(selectedCategory.value)
+                                                      }
+                                                      deleteIcon={<CloseIcon fontSize="small" />}
+                                                  />
+                                              );
+                                          }
+                                      })
                                     : placeholder}
                             </SelectedContainer>
                         ),
@@ -96,6 +117,7 @@ export const CategorySelector = React.memo(
                         <CategorySelectorList
                             fullScreen={fullScreen}
                             placeholder={placeholder}
+                            selectedCategoriesWithSubcategories={selectedCategoriesWithSubcategories}
                             {...categorySelectorState}
                         />
                     </FullScreenDialog>
@@ -113,6 +135,7 @@ export const CategorySelector = React.memo(
                         <CategorySelectorList
                             fullScreen={fullScreen}
                             placeholder={placeholder}
+                            selectedCategoriesWithSubcategories={selectedCategoriesWithSubcategories}
                             {...categorySelectorState}
                         />
                     </StyledMenu>
