@@ -11,8 +11,8 @@ import {
     REGION_NAMES,
     RegionCodeKey,
     RegionNameKey,
-} from "../../../domain/entities/Region";
-import { RegionRepository } from "../../../domain/repositories/RegionRepository";
+} from "../../../domain/entities/region/Region";
+import { RegionRepository } from "../../../domain/repositories/region/RegionRepository";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 

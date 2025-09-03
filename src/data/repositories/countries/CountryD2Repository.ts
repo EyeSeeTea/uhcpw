@@ -1,5 +1,5 @@
 import polylabel from "polylabel";
-import { Country, CountryStatus } from "../../../domain/entities/Country";
+import { Country } from "../../../domain/entities/Country";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { CountryRepository } from "../../../domain/repositories/CountryRepository";
 import { Id } from "../../../domain/entities/Ref";
@@ -9,7 +9,8 @@ import { coordinatesFromString } from "./coordinatesFromString";
 import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData";
 import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
-import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -45,6 +46,9 @@ export const countryInfoDataElements: Record<string, string> = {
     finProtecTitle5: "D4kbP5uMvYC",
     finProtecText5: "qF3rhM9dieb",
     finProtecSourceText: "AzNWXx1JPip",
+
+    countryExperienceTitle: "s5ekPnIAAsN",
+    countryExperienceContent: "iro8EAg97OE",
 };
 
 const euroOrgUnit = "svSQSBLTVz6";
@@ -203,6 +207,16 @@ export class CountryD2Repository implements CountryRepository {
             dv => dv.dataElement === countryInfoDataElements.showCountryFlag
         )?.value;
 
+        const countryExperienceTitle =
+            aditionalCountryInfo?.dataValues.find(
+                dv => dv.dataElement === countryInfoDataElements.countryExperienceTitle
+            )?.value || "";
+
+        const countryExperienceContent =
+            aditionalCountryInfo?.dataValues.find(
+                dv => dv.dataElement === countryInfoDataElements.countryExperienceContent
+            )?.value || "";
+
         return {
             id: countryId,
             name: mapToWhoCountryName(orgUnit.id, orgUnit.shortName),
@@ -219,6 +233,10 @@ export class CountryD2Repository implements CountryRepository {
             sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
             isInCountryPage: isInCountryPage,
             currencyCode: getCurrencyCodeFromCountryId(countryId),
+            countryExperience: {
+                title: countryExperienceTitle,
+                content: countryExperienceContent,
+            },
         };
     }
 
@@ -390,7 +408,7 @@ export class CountryD2Repository implements CountryRepository {
     }
 }
 
-const countryStatusMap: Record<string, CountryStatus> = {
+const countryStatusMap: Record<string, FinancialProtectionStatus> = {
     Green: "Strong",
     Red: "Weak",
     Orange: "Gaps",

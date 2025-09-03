@@ -1,3 +1,4 @@
+import { FinancialProtectionStatus } from "./FinancialProtectionStatus";
 import { Id } from "./Ref";
 
 export type Country = {
@@ -5,7 +6,7 @@ export type Country = {
     name: string;
     longName: string;
     code: string;
-    status: CountryStatus;
+    status: FinancialProtectionStatus;
     coordinates?: [number, number];
     parents: { id: string; name: string }[];
     children?: Country[];
@@ -18,6 +19,7 @@ export type Country = {
     };
     isInCountryPage: boolean;
     currencyCode: string;
+    countryExperience: CountryExperience;
 };
 
 export type CountrySectionInfo = {
@@ -29,9 +31,12 @@ export type CountrySectionInfo = {
     }[];
 };
 
-export type CountryStatus = "Strong" | "Gaps" | "Weak" | "InsufficientData";
-
 // included in countries list
 export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";
 export const FederationOfBosniaAndHerzegovina: Id = "j44olg405lZ";
 export const RepublikaSrpska: Id = "FvoXRc5cEEk";
+
+export type CountryExperience = {
+    title: string;
+    content: string;
+};

@@ -4,18 +4,24 @@ import i18n from "../../../locales";
 import bubblePattern from "../../assets/bubble-pattern.svg";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { Id } from "../../../domain/entities/Ref";
 
-export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) => {
-    const { experts } = useCountryExpert(countryId);
+export type CountryExpertProps = {
+    countryIds: Id[];
+    isRegionalPage?: boolean;
+};
+
+export const CountryExpert: React.FC<CountryExpertProps> = ({ countryIds, isRegionalPage = false }) => {
+    const { experts } = useCountryExpert(countryIds);
 
     return (
-        <Container aria-label="experts">
+        <Container aria-label="experts" isRegionalPage={isRegionalPage}>
             <TitleRow>
                 <Typography variant="h5">{i18n.t("Experts")}</Typography>
             </TitleRow>
             <GridContainer container spacing={5}>
                 {experts.map((expert, i) => (
-                    <Grid key={i} xs={6} md={6} role="listitem">
+                    <Grid item key={`${expert.firstName}_${expert.lastName}_${i}`} xs={6} md={6} role="listitem">
                         <Row>
                             <Image src={expert.image} alt={`${expert.firstName} ${expert.lastName}`} />
                             <ExpertDetailsContainer>
@@ -36,9 +42,9 @@ export const CountryExpert: React.FC<{ countryId: string }> = ({ countryId }) =>
     );
 };
 
-const Container = styled.div`
-    padding: 40px 0px 40px 60px;
-    background: white url(${bubblePattern}) no-repeat right top;
+const Container = styled.div<{ isRegionalPage?: boolean }>`
+    padding: 40px 60px;
+    background: ${props => (props.isRegionalPage ? "white" : `white url(${bubblePattern}) no-repeat right top`)};
     background-size: contain;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
@@ -104,7 +110,6 @@ const TitleRow = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-block-end: 25px;
     gap: 2px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {

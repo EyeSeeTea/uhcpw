@@ -4,6 +4,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useAppContext } from "../../../contexts/app-context";
 import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { Id } from "../../../../domain/entities/Ref";
 
 export function useAppHeader(isScreenRotated?: boolean) {
     const history = useHistory();
@@ -58,8 +59,17 @@ export function useAppHeader(isScreenRotated?: boolean) {
     );
 
     const handleCountryClick = useCallback(
-        (country: Option<string>) => {
+        (country: Option<Id>) => {
             history.push(`/country-page?country=${country.value}`);
+            handleClose();
+            onCloseMenu();
+        },
+        [handleClose, history, onCloseMenu]
+    );
+
+    const handleRegionalClick = useCallback(
+        (region: Option<Id>) => {
+            history.push(`/regional-page?region=${region.value}`);
             handleClose();
             onCloseMenu();
         },
@@ -69,6 +79,8 @@ export function useAppHeader(isScreenRotated?: boolean) {
     const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
     const isCountryPage = useMemo(() => pathname === "/country-page", [pathname]);
+
+    const isRegionalPage = useMemo(() => pathname === "/regional-page", [pathname]);
 
     const whoLogoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
 
@@ -116,11 +128,13 @@ export function useAppHeader(isScreenRotated?: boolean) {
         uhcwLogoWidth,
         menuRef,
         open,
+        isRegionalPage,
         onToggleForSmallScreens,
         goToHome,
         handleCountryClick,
         handleMenuItemClick,
         handleClose,
         handleSetAnchorEl,
+        handleRegionalClick,
     };
 }

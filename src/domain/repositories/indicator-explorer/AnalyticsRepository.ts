@@ -2,7 +2,7 @@ import { FutureData } from "../../entities/Future";
 import { Analytics } from "../../entities/indicator-explorer/Analytics";
 import { Visualization } from "../../entities/indicator-explorer/Visualization";
 import { Id } from "../../entities/Ref";
-import { Region } from "../../entities/Region";
+import { Region } from "../../entities/region/Region";
 
 export interface AnalyticsRepository {
     get(visualization: Visualization, periods: string[], countryIds: Id[], regions: Region[]): FutureData<Analytics>;

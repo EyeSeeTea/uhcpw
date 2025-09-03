@@ -1,6 +1,6 @@
-import { FutureData } from "../entities/Future";
-import { Region } from "../entities/Region";
-import { RegionRepository } from "../repositories/RegionRepository";
+import { FutureData } from "../../entities/Future";
+import { Region } from "../../entities/region/Region";
+import { RegionRepository } from "../../repositories/region/RegionRepository";
 
 export class GetRegionsUseCase {
     constructor(private regionRepository: RegionRepository) {}

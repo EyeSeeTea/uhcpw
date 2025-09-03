@@ -47,8 +47,13 @@ import { SendEventUseCase } from "./domain/usecases/SendEventUseCase";
 import { DataStoreClient } from "./data/DataStoreClient";
 import { GetIndicatorsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorsUseCase";
 import { IndicatorSeedsRepository } from "./data/repositories/indicator-explorer/IndicatorSeedsRepository";
-import { GetRegionsUseCase } from "./domain/usecases/GetRegionsUseCase";
 import { RegionD2Repository } from "./data/repositories/regions/RegionD2Repository";
+import { GetRegionsUseCase } from "./domain/usecases/region/GetRegionsUseCase";
+import { GetRegionInfoUseCase } from "./domain/usecases/region/GetRegionInfoUseCase";
+import { RegionInfoD2Repository } from "./data/repositories/regions/RegionInfoD2Repository";
+import { GetChecklistPolicyMakersUseCase } from "./domain/usecases/region/GetChecklistPolicyMakersUseCase";
+import { ChecklistPolicyMakersD2Repository } from "./data/repositories/regions/ChecklistPolicyMakersD2Repository";
+import { DownloadChecklistPolicyMakersUseCase } from "./domain/usecases/region/DownloadChecklistPolicyMakersUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -74,6 +79,8 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         googleAnalytics: new GoogleAnalyticsRepository(),
         indicator: new IndicatorSeedsRepository(),
         region: new RegionD2Repository(api),
+        regionInfo: new RegionInfoD2Repository(api),
+        checklistPolicyMakers: new ChecklistPolicyMakersD2Repository(api),
     };
 }
 
@@ -96,7 +103,12 @@ export function getCompositionRoot(
         },
         countries: {
             get: new GetCountriesUseCase(repositories.country),
-            getRegions: new GetRegionsUseCase(repositories.region),
+        },
+        regions: {
+            get: new GetRegionsUseCase(repositories.region),
+            getInfo: new GetRegionInfoUseCase(repositories.regionInfo),
+            getChecklistPolicyMakers: new GetChecklistPolicyMakersUseCase(repositories.checklistPolicyMakers),
+            downloadChecklistPolicyMakers: new DownloadChecklistPolicyMakersUseCase(repositories.checklistPolicyMakers),
         },
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),

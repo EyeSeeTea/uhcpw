@@ -19,7 +19,7 @@ interface VisualizationPluginProps {
     years: string[];
     countries: Id[];
     regions?: Id[];
-    currentCountry?: string;
+    currentCountryOrRegion?: Id;
     withoutBackground?: boolean;
     useHeaderForCountryPage?: boolean;
     noDataMessage?: string;
@@ -41,7 +41,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationId,
         visualizationName,
         years,
-        currentCountry,
+        currentCountryOrRegion,
         countries,
         regions = EMPTY_REGIONS,
         withoutBackground = false,
@@ -65,7 +65,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         years,
         countries,
         regions,
-        currentCountry,
+        currentCountryOrRegion,
         visualizationName
     );
     const theme = useTheme();
@@ -165,7 +165,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 onShowInfo={isScreenshot ? undefined : onShowInfo}
                 onCloseInfo={isScreenshot ? undefined : onCloseInfo}
                 useHeaderForCountryPage={useHeaderForCountryPage || (openFullScreenDialog && isMobile)}
-                currentCountry={currentCountry}
+                currentCountryOrRegion={currentCountryOrRegion}
                 countries={chartData.countries}
                 showCountryTag={chartData.visualizations[0]?.showCountryTag}
                 isScreenshot={isScreenshot}

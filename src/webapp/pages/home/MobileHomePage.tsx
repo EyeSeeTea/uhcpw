@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Typography } from "@material-ui/core";
 
 import { Map } from "../../components/home/map/Map";
-import { useMap } from "../../components/home/map/useMap";
+import { useHomePageMap } from "./useHomePageMap";
 import { useHomeResources } from "./useHomeResources";
 import { NewsletterButton } from "../../components/home/buttons/NewsletterButton";
 import { useHomePageContent } from "./useHomePageContent";
@@ -17,7 +17,7 @@ import { ResourcesCarousel } from "../../components/resources-carousel/Resources
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const MobileHomePage: React.FC = React.memo(() => {
-    const mapState = useMap();
+    const mapState = useHomePageMap();
     const { resources, news } = useHomeResources();
     const homePageContent = useHomePageContent();
     const { redirectWithPageView } = useAnalytics();
@@ -28,7 +28,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
             <NewsletterButton content={homePageContent.newsletter} />
 
             <MapSection>
-                <Map mapState={mapState} welcomePanelContent={homePageContent.mainMapPanel} isMobile />
+                <Map mapState={mapState} homePagePanelContent={homePageContent.mainMapPanel} isMobile />
             </MapSection>
 
             <section>

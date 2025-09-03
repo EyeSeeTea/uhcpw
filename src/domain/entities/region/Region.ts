@@ -1,4 +1,4 @@
-import { Id } from "./Ref";
+import { Id } from "../Ref";
 
 export type Region = {
     id: Id;

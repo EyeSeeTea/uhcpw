@@ -5,7 +5,7 @@ import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 import { EU27Color } from "../../customization/palettes/countryPalette";
-import { ORG_UNIT_IDS } from "../../../../../domain/entities/Region";
+import { ORG_UNIT_IDS } from "../../../../../domain/entities/region/Region";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -54,7 +54,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
         .value();
 
     const currentCountryCode =
-        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];

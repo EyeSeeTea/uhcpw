@@ -1,17 +1,15 @@
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import styled from "styled-components";
-import { CountryDropdown } from "./dropdown/CountryDropdown";
-import i18n from "../../../locales";
-import UmbrellaWeak from "../../assets/country-page/umbrella-weak.svg";
-import UmbrellaGap from "../../assets/country-page/umbrella-normal.png";
-import UmbrellaStrong from "../../assets/country-page/umbrella-strong.png";
-import InsufficientData from "../../assets/country-page/insufficient-data.svg";
 import { FC, MutableRefObject, useCallback } from "react";
+
+import { MenuDropdown } from "../menu-dropdown/MenuDropdown";
+import i18n from "../../../locales";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
-import { CountryStatus } from "../../../domain/entities/Country";
 import { Option } from "../../components/dropdown/Option";
-import { getBackgroundColorByCountryStatus } from "../../pages/country/utils";
+import { getBackgroundColorByFinancialProtectionStatus } from "../../pages/country/utils";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { UmbrellaIcon } from "../umbrella-icon/UmbrellaIcon";
+import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -33,19 +31,6 @@ type HeaderType = {
     resourcesRef: MutableRefObject<null>;
     expertRef: MutableRefObject<null>;
     handleResetTab: (value: boolean) => void;
-};
-
-const UmbrellaIcon = ({ status }: { status: CountryStatus }) => {
-    switch (status) {
-        case "Weak":
-            return <img src={UmbrellaWeak} width={100} alt={"umbrella weak"} />;
-        case "Gaps":
-            return <img src={UmbrellaGap} width={100} alt={"umbrella gap"} />;
-        case "Strong":
-            return <img src={UmbrellaStrong} width={100} alt={"umbrella strong"} />;
-        case "InsufficientData":
-            return <img src={InsufficientData} width={100} alt={"insufficient data"} />;
-    }
 };
 
 export const Header: FC<HeaderType> = ({
@@ -74,10 +59,11 @@ export const Header: FC<HeaderType> = ({
     return (
         <Container aria-label="country-page-header" status={country?.status} className={classes.container}>
             <DropdownContainer>
-                <CountryDropdown
+                <MenuDropdown
                     fullWidth
+                    id="country"
                     placeholder={i18n.t("Select country or area")}
-                    countryOptions={countryOptions}
+                    options={countryOptions}
                     value={countryId}
                     onChange={onCountryChange}
                     forceRotation={isSmallScreen}
@@ -105,12 +91,12 @@ export const Header: FC<HeaderType> = ({
     );
 };
 
-const Container = styled.div<{ status: CountryStatus | undefined }>`
+const Container = styled.div<{ status: FinancialProtectionStatus | undefined }>`
     display: flex;
     justify-content: space-between;
     height: 80px;
     align-items: center;
-    background: ${props => getBackgroundColorByCountryStatus(props.status)};
+    background: ${props => getBackgroundColorByFinancialProtectionStatus(props.status)};
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-inline: 16px;
         flex-wrap: nowrap;

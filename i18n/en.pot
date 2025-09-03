@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-08-04T12:12:20.286Z\n"
-"PO-Revision-Date: 2025-08-04T12:12:20.286Z\n"
+"POT-Creation-Date: 2025-08-08T11:37:29.281Z\n"
+"PO-Revision-Date: 2025-08-08T11:37:29.281Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -53,9 +53,6 @@ msgstr ""
 msgid "In detail"
 msgstr ""
 
-msgid "Select category and indicator"
-msgstr ""
-
 msgid "No information available for this category"
 msgstr ""
 
@@ -71,6 +68,15 @@ msgstr ""
 msgid "policy explorer"
 msgstr ""
 
+msgid "Weaker financial protection"
+msgstr ""
+
+msgid "Stronger financial protection"
+msgstr ""
+
+msgid "UHC watch YouTube video player"
+msgstr ""
+
 msgid "Zoom in"
 msgstr ""
 
@@ -83,16 +89,10 @@ msgstr ""
 msgid "Multimedia"
 msgstr ""
 
-msgid "Weaker financial protection"
-msgstr ""
-
-msgid "Stronger financial protection"
-msgstr ""
-
-msgid "UHC watch YouTube video player"
-msgstr ""
-
 msgid "Indicators"
+msgstr ""
+
+msgid "Select category and indicator"
 msgstr ""
 
 msgid "Countries and areas"
@@ -153,6 +153,9 @@ msgid "Policy explorer"
 msgstr ""
 
 msgid "Countries & areas"
+msgstr ""
+
+msgid "Regions"
 msgstr ""
 
 msgid "Regional report"
@@ -286,6 +289,41 @@ msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
+msgstr ""
+
+msgid "Country experiences"
+msgstr ""
+
+msgid "See {{countryName}} country page"
+msgstr ""
+
+msgid "Select region"
+msgstr ""
+
+msgid ""
+"Drawing on evidence and examples of good practice from across Europe, the "
+"checklist highlights the"
+msgstr ""
+
+msgid "policy choices that have improved financial protection"
+msgstr ""
+
+msgid "in countries with a low incidence of financial hardship and unmet need."
+msgstr ""
+
+msgid "Progress is possible"
+msgstr ""
+
+msgid "Region at a glance"
+msgstr ""
+
+msgid "Numbers"
+msgstr ""
+
+msgid "Coverage policy"
+msgstr ""
+
+msgid "Policy checklist"
 msgstr ""
 
 msgid "Country analysis"

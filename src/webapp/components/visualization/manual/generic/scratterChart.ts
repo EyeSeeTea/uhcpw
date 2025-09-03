@@ -4,7 +4,7 @@ import { baseChartOptions } from "./baseChartOptions";
 import { getEU27Label } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
 import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
-import { ORG_UNIT_IDS, REGION_CODES } from "../../../../../domain/entities/Region";
+import { ORG_UNIT_IDS, REGION_CODES } from "../../../../../domain/entities/region/Region";
 
 export type ScratterSerie = {
     id: string;

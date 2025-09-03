@@ -17,7 +17,7 @@ import {
 } from "../../../data/repositories/indicator-explorer/seed/utils";
 import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 import { Indicator } from "../../../domain/entities/indicator-explorer/Indicator";
-import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/Region";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { Id } from "../../../domain/entities/Ref";
 import { AVERAGES_REGIONS_PARENT } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { IndicatorOption } from "./IndicatorExplorerState";

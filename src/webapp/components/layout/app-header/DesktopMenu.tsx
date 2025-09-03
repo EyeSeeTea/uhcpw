@@ -10,12 +10,15 @@ import { useCountryPage } from "../../../pages/country/useCountryPage";
 import { useAppHeader } from "./useAppHeader";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { useStyles } from "./AppHeader";
+import { useRegionFilterOptions } from "../../../pages/regional-page/useRegionFilterOptions";
 
 export const DesktopMenu: React.FC = () => {
     const classes = useStyles();
     const { redirectWithPageView } = useAnalytics();
     const { countryFilter } = useCountryPage();
-    const { regionalReport, anchorEl, handleCountryClick, handleClose, handleSetAnchorEl } = useAppHeader();
+    const { regionalReport, anchorEl, handleCountryClick, handleClose, handleSetAnchorEl, handleRegionalClick } =
+        useAppHeader();
+    const regionOptions = useRegionFilterOptions();
 
     const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
@@ -29,6 +32,7 @@ export const DesktopMenu: React.FC = () => {
             >
                 {i18n.t("Indicator explorer")}
             </Button>
+
             <Button
                 className={classes.menu}
                 activeClassName={classes.menuActive}
@@ -37,6 +41,7 @@ export const DesktopMenu: React.FC = () => {
             >
                 {i18n.t("Policy explorer")}
             </Button>
+
             <MenuButton
                 id="countries"
                 aria-controls="countries & areas"
@@ -69,21 +74,58 @@ export const DesktopMenu: React.FC = () => {
                     );
                 })}
             </Menu>
-            <MenuTopLink
+
+            <MenuButton
                 id="regions"
-                aria-controls="regions"
+                aria-controls="Regions"
+                aria-haspopup="true"
+                onClick={handleSetAnchorEl}
+                endIcon={anchorEl?.id === "regions" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            >
+                {i18n.t("Regions")}
+            </MenuButton>
+            <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={anchorEl?.id === "regions"}
+                onClose={handleClose}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
+                PaperProps={{
+                    style: {
+                        maxHeight: 556,
+                        overflowY: "auto",
+                    },
+                }}
+            >
+                {regionOptions.map(region => {
+                    return (
+                        <MenuItem key={region.value} onClick={() => handleRegionalClick(region)}>
+                            {region.text}
+                        </MenuItem>
+                    );
+                })}
+            </Menu>
+
+            <MenuTopLink
+                id="regional-report"
+                aria-controls="regional-report"
                 target="_blank"
                 href={regionalReport}
                 onClick={regionalReportPageView}
             >
                 {i18n.t("Regional report")}
             </MenuTopLink>
+
             <Button className={classes.menu} activeClassName={classes.menuActive} component={NavLink} to={"/methods"}>
                 {i18n.t("Methods")}
             </Button>
+
             <Button className={classes.menu} activeClassName={classes.menuActive} component={NavLink} to={"/resources"}>
                 {i18n.t("Resources")}
             </Button>
+
             <Button className={classes.menu} activeClassName={classes.menuActive} component={NavLink} to={"/about"}>
                 {i18n.t("About us")}
             </Button>
