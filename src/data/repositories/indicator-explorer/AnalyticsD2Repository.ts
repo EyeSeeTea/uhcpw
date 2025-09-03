@@ -62,11 +62,20 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         countryIds: Id[],
         regions: Region[]
     ): FutureData<Analytics> {
+        // If the visualization uses org unit regions, we need to return the org unit ids instead of group ids
+        const orgUnitIds = visualization.isOrgUnitRegions
+            ? regions.reduce<Id[]>((acc, region) => {
+                  return region.linkedOrgUnitId ? [...acc, region.linkedOrgUnitId] : acc;
+              }, countryIds)
+            : countryIds;
+
+        const orgUnitGroupIds = visualization.isOrgUnitGroupRegions ? regions.map(region => region.id) : [];
+
         const overwrittenVisualization = {
             ...visualization,
-            columns: this.getDimensions(visualization, "columns", countryIds, regions, periods),
-            rows: this.getDimensions(visualization, "rows", countryIds, regions, periods),
-            filters: this.getDimensions(visualization, "filters", countryIds, regions, periods),
+            columns: this.getDimensions(visualization, "columns", orgUnitIds, orgUnitGroupIds, periods),
+            rows: this.getDimensions(visualization, "rows", orgUnitIds, orgUnitGroupIds, periods),
+            filters: this.getDimensions(visualization, "filters", orgUnitIds, orgUnitGroupIds, periods),
         } as unknown as D2Visualization;
         //const overwrittenVisualization = visualization as unknown as D2Visualization;
 
@@ -113,6 +122,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             xAxis,
             yAxis,
         } = params;
+
         return Future.parallel(
             visualizations.map(visualization => this.get(visualization, periods, countryIds, selectedRegions))
         ).flatMap(analyticsResponses => {
@@ -618,8 +628,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
     private getDimensions = (
         visualization: Visualization,
         prop: VisualizationProp,
-        countryIds: Id[],
-        selectedRegions: Region[],
+        orgUnitIds: Id[],
+        orgUnitGroupIds: Id[],
         periods?: string[]
     ): ItemRef[] | undefined => {
         const dimensionsOuInVisualization = visualization[prop].filter(vd => vd.id === "ou");
@@ -627,15 +637,16 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const dimensionsDxInVisualization = visualization[prop].filter(vd => vd.id === "dx");
         const others = visualization[prop].filter(vd => vd.id !== "dx" && vd.id !== "pe" && vd.id !== "ou");
         const orgUnitItems = [
-            ...countryIds?.map(countryId => ({ id: countryId })),
-            ...selectedRegions.map(region => ({ id: region.id })),
+            ...orgUnitIds?.map(orgUnitId => ({ id: orgUnitId })),
+            ...orgUnitGroupIds.map(orgUnitGroupId => ({ id: orgUnitGroupId })),
         ];
-        const orgUnitGroupRegionItems = selectedRegions.map(region => ({ id: `OU_GROUP-${region.id}` }));
+
+        const orgUnitGroupRegionItems = orgUnitGroupIds.map(id => ({ id: `OU_GROUP-${id}` }));
 
         const dimensionsOu =
             dimensionsOuInVisualization &&
             dimensionsOuInVisualization.length > 0 &&
-            (countryIds?.length > 0 || selectedRegions?.length > 0)
+            (orgUnitItems?.length > 0 || orgUnitGroupRegionItems?.length > 0)
                 ? [{ dimension: "ou" as const, items: [...orgUnitItems, ...orgUnitGroupRegionItems] }]
                 : dimensionsOuInVisualization;
 
