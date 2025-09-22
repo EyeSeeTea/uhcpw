@@ -188,9 +188,13 @@ const StyledDropdownTextField = styled(DropdownTextField)`
             overflow: hidden;
         }
     }
-    .MuiInputBase-input {
+    .MuiAutocomplete-inputRoot.MuiInputBase-root.MuiInput-root {
+        padding-right: 16px;
+    }
+    .MuiAutocomplete-input.MuiInputBase-input.MuiInput-input {
         caret-color: transparent;
         flex: 1;
         min-width: 0;
+        padding: 0;
     }
 `;
