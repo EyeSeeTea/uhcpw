@@ -4,7 +4,7 @@ import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 export const chart_OB4SCQfCzwz_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     showCountryTag: true,
-    friendlyName: "current spending on health per person by financing scheme",
+    friendlyName: "spending on health per person",
     isComparative: false,
     subcategoryName: sortedSubcategoryNames.countryLevel,
     maxCountryFilter: 1,
