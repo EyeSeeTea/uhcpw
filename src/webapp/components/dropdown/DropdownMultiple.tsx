@@ -188,4 +188,9 @@ const StyledDropdownTextField = styled(DropdownTextField)`
             overflow: hidden;
         }
     }
+    .MuiInputBase-input {
+        caret-color: transparent;
+        flex: 1;
+        min-width: 0;
+    }
 `;

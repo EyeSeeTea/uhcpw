@@ -159,4 +159,8 @@ const StyledDropdownTextField = styled(DropdownTextField)`
         border-radius: 20px;
         color: black;
     }
+    .MuiInputBase-input {
+        caret-color: transparent;
+        flex: 1;
+    }
 `;
