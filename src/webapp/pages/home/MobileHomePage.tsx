@@ -52,7 +52,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
                     <BoxLink href={homePageContent.explorers.policy.buttonLink || ""}>
                         <BigBox color={colors.blue}>
                             <FlexWrapper>
-                                <StyledTitleTypography>{i18n.t("Policy Explorer")}</StyledTitleTypography>
+                                <StyledTitleTypography>{i18n.t("Policy explorer")}</StyledTitleTypography>
 
                                 <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
                             </FlexWrapper>
@@ -67,7 +67,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
 
                     <BoxLink href={homePageContent.analysis.countries.buttonLink || ""}>
                         <Box color={colors.darkBlue}>
-                            <StyledTitleTypography>{i18n.t("Countries & Areas")}</StyledTitleTypography>
+                            <StyledTitleTypography>{i18n.t("Countries & areas")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 

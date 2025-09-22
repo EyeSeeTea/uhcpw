@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-09-22T08:31:30.933Z\n"
-"PO-Revision-Date: 2025-09-22T08:31:30.933Z\n"
+"POT-Creation-Date: 2025-09-22T08:33:17.923Z\n"
+"PO-Revision-Date: 2025-09-22T08:33:17.923Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -207,15 +207,9 @@ msgid ""
 "spending on health"
 msgstr ""
 
-msgid "Policy Explorer"
-msgstr ""
-
 msgid ""
 "Information on population coverage, service coverage, user charges and "
 "voluntary health insurance"
-msgstr ""
-
-msgid "Countries & Areas"
 msgstr ""
 
 msgid "All years"
