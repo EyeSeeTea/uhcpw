@@ -17,17 +17,17 @@ export const MobileAppFooter: React.FC = () => {
         () => [
             {
                 id: "about-us",
-                title: i18n.t("About Us"),
+                title: i18n.t("About us"),
                 content: <AboutUsInfo fullWidth />,
             },
             {
                 id: "abbreviations-glossary",
-                title: i18n.t("Abbreviations & Glossary"),
+                title: i18n.t("Abbreviations & glossary"),
                 content: <AbbreviationsAndGlossary />,
             },
             {
                 id: "privacy-policy-disclaimer",
-                title: i18n.t("WHO Privacy Policy & Disclaimer"),
+                title: i18n.t("WHO privacy policy & disclaimer"),
                 content: <PrivacyPolicyAndDisclaimer />,
             },
             {
