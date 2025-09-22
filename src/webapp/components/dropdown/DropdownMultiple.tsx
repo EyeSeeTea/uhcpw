@@ -195,6 +195,6 @@ const StyledDropdownTextField = styled(DropdownTextField)`
         caret-color: transparent;
         flex: 1;
         min-width: 0;
-        padding: 0;
+        padding: 6px 0;
     }
 `;
