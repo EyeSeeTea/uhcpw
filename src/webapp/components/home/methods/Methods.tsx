@@ -15,7 +15,7 @@ export const Methods: React.FC<MethodsProps> = ({ content }) => {
             <SectionHeader
                 header={content.title}
                 subheader={content.subtitle}
-                isBackgroundOnRight={false}
+                isBackgroundOnLeft
                 url={content.buttonLink}
             />
             <Content container>
