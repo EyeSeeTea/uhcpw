@@ -53,6 +53,7 @@ const gapsDataElements = {
     gapsText2: "Cqe4z39igTX",
     gapsText3: "CCIzcBhaqCZ",
 } as const;
+const gapElementIds = Object.values(gapsDataElements) as string[];
 
 const gapsDataYears = {
     firstYearInFilter: 2000,
@@ -450,19 +451,22 @@ export class CountryD2Repository implements CountryRepository {
             _(gapText)
                 .groupBy(dv => dv.orgUnit)
                 .entries()
-                .map(([orgUnit, countryData]) => {
+                .mapValues(([_key, countryData]) => {
+                    const latestPeriod = _(countryData).maxBy(dv => dv.period)?.period;
+                    if (!latestPeriod) return {};
+
                     const latestByDataElement = _(countryData)
+                        .filter(dv => dv.period === latestPeriod && gapElementIds.includes(dv.dataElement))
                         .groupBy(dv => dv.dataElement)
                         .mapValues(values => _(values).maxBy(dv => dv.period))
                         .value();
 
-                    const gapsText = Object.entries(gapsDataElements).reduce((acc, [key, dataElementId]) => {
-                        const dataValue = latestByDataElement[dataElementId];
-                        return dataValue?.value ? { ...acc, [key]: dataValue.value } : acc;
-                    }, {} as GapsText);
-
-                    return [orgUnit, gapsText] as const;
+                    return _.mapValues(
+                        gapsDataElements,
+                        dataElementId => latestByDataElement[dataElementId]?.value ?? ""
+                    );
                 })
+                .entries()
                 .value()
         );
     }
