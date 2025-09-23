@@ -6,7 +6,7 @@ import {
     PolicyExplorerSubcategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
-import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../../../domain/utils";
+import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { getMainPagesContent } from "../common/getMainPagesContent";
