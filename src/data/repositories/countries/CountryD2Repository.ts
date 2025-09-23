@@ -450,8 +450,7 @@ export class CountryD2Repository implements CountryRepository {
         return new Map(
             _(gapText)
                 .groupBy(dv => dv.orgUnit)
-                .entries()
-                .mapValues(([_key, countryData]) => {
+                .mapValues(countryData => {
                     const latestPeriod = _(countryData).maxBy(dv => dv.period)?.period;
                     if (!latestPeriod) return {};
 
