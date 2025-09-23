@@ -4,8 +4,8 @@ export type GeneralContent = {
     footer: FooterContent;
     aboutUs: AboutUsContent;
     cookies: CookiesDisclaimerContent;
-    abbreviations: FileContent;
-    glossary: FileContent;
+    abbreviations: FileUrl;
+    glossary: FileUrl;
 };
 
 export type FooterContent = {
@@ -21,12 +21,6 @@ export type CookiesDisclaimerContent = {
     policyUrl: string;
 };
 
-type FileContent = {
-    file: Maybe<File>;
-};
-
-export type File = {
-    name: string;
-    contentType: string;
-    content: Blob;
+export type FileUrl = {
+    url: Maybe<string>;
 };

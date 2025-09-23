@@ -19,9 +19,9 @@ export function useReferenceLinks(): State {
     const { sendPageView, redirectWithPageView } = useAnalytics();
 
     const abbreviationsLink = React.useMemo(() => {
-        if (generalContent && generalContent?.abbreviations.file) {
+        if (generalContent && generalContent?.abbreviations.url) {
             return {
-                href: URL.createObjectURL(generalContent.abbreviations.file.content),
+                href: generalContent.abbreviations.url,
                 target: "_blank",
                 onClick: () => sendPageView({ title: "Abbreviations" }),
             };
@@ -34,9 +34,9 @@ export function useReferenceLinks(): State {
     }, [generalContent, redirectWithPageView, sendPageView]);
 
     const glossaryLink = React.useMemo(() => {
-        if (generalContent && generalContent?.glossary.file) {
+        if (generalContent && generalContent?.glossary.url) {
             return {
-                href: URL.createObjectURL(generalContent.glossary.file.content),
+                href: generalContent.glossary.url,
                 target: "_blank",
                 onClick: () => sendPageView({ title: "Glossary" }),
             };
