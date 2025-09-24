@@ -43,7 +43,7 @@ export const MobileAppFooter: React.FC = () => {
         <>
             <FooterTop>
                 <FlexContainer>
-                    <WhoLogo src={whoLogoWhite} alt="WHO logo" />
+                    <WhoLogo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
                     <EuropeContainer>
                         <EuropeFlag src={europeFlag} alt="WHO logo" />
                         <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>

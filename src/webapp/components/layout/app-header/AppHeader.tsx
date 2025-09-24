@@ -102,7 +102,14 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
                     <FlexContainer isFullWidth>
                         <FlexLogoContainer isCountryPage={isCountryPage}>
                             <LogoContainer>
-                                <img src={whoLogoBlue} width={whoLogoWidth} alt="WHO logo" onClick={() => goToHome()} />
+                                <img
+                                    src={whoLogoBlue}
+                                    width={whoLogoWidth}
+                                    alt="WHO logo"
+                                    onClick={() => goToHome()}
+                                    loading="eager"
+                                    decoding="async"
+                                />
                             </LogoContainer>
 
                             {isSmallScreen || !isHomePage ? (
@@ -112,6 +119,8 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
                                         width={uhcwLogoWidth}
                                         alt="UHC watch logo to go home"
                                         onClick={() => goToHome()}
+                                        loading="eager"
+                                        decoding="async"
                                     />
                                 </LogoContainer>
                             ) : null}
