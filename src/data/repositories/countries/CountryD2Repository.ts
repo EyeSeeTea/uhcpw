@@ -3,13 +3,17 @@ import { Country, CountryStatus } from "../../../domain/entities/Country";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { CountryRepository } from "../../../domain/repositories/CountryRepository";
 import { Id } from "../../../domain/entities/Ref";
-import { D2Api, D2Geometry, MetadataPick } from "../../../types/d2-api";
+import { D2Api, D2Geometry, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { coordinatesFromString } from "./coordinatesFromString";
 import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData";
 import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
 import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { policyExplorerDataSet_ID } from "../utils";
+import { generate } from "../../../domain/usecases/utils/generateYears";
+import _ from "lodash";
+import i18n from "@eyeseetea/d2-ui-components/locales";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -22,11 +26,8 @@ export const countryInfoDataElements: Record<string, string> = {
 
     gapsSectionName: "jF3Lza5SL0X",
     gapsTitle1: "ZhoU0tnc28i",
-    gapsText1: "QQ4PUBNw9Pm",
     gapsTitle2: "EOo6KrBC8wW",
-    gapsText2: "tVgCJBa0kN2",
     gapsTitle3: "VV2G8k5lKuP",
-    gapsText3: "WnzKABQ71eP",
     gapsTitle4: "k8yVKLAvZOj",
     gapsText4: "bk0MT2IwI4A",
     gapsTitle5: "Oamhir4XiOb",
@@ -45,6 +46,18 @@ export const countryInfoDataElements: Record<string, string> = {
     finProtecTitle5: "D4kbP5uMvYC",
     finProtecText5: "qF3rhM9dieb",
     finProtecSourceText: "AzNWXx1JPip",
+};
+
+const gapsDataElements = {
+    gapsText1: "Oc0RJz88pBV",
+    gapsText2: "Cqe4z39igTX",
+    gapsText3: "CCIzcBhaqCZ",
+} as const;
+const gapElementIds = Object.values(gapsDataElements) as string[];
+
+const gapsDataYears = {
+    firstYearInFilter: 2000,
+    lastYearInFilter: () => new Date().getFullYear(),
 };
 
 const euroOrgUnit = "svSQSBLTVz6";
@@ -97,7 +110,7 @@ export class CountryD2Repository implements CountryRepository {
                     order: "shortName:asc",
                 })
             ),
-            aditionalCountriesInfo: apiToFuture(
+            additionalCountriesInfo: apiToFuture(
                 this.api.events.get({
                     fields: eventsFields,
                     program: countryInfoProgram,
@@ -117,26 +130,56 @@ export class CountryD2Repository implements CountryRepository {
                     program: countriesInCountryPageProgram,
                 })
             ),
-        }).map(({ countries, bosniaAndHerzegovinaRegions, aditionalCountriesInfo, programMetadata, sectionsEvent }) => {
-            const countriesIdsInCountryPage = this.getCountriesIdsInCountryPage(
-                programMetadata.objects[0],
-                sectionsEvent.events[0]
-            );
+        })
+            .flatMap(({ countries, bosniaAndHerzegovinaRegions, ...rest }) => {
+                const countryIds = countries.objects.map(c => c.id);
+                const bosniaAndHerzegovinaIds = bosniaAndHerzegovinaRegions.objects.map(r => r.id);
+                return apiToFuture(
+                    this.api.dataValues.getSet({
+                        dataSet: [policyExplorerDataSet_ID],
+                        orgUnit: countryIds.concat(bosniaAndHerzegovinaIds),
+                        period: this.periodsForGap(),
+                    })
+                ).map(gapText => ({
+                    countries,
+                    bosniaAndHerzegovinaRegions,
+                    ...rest,
+                    gapText,
+                }));
+            })
+            .map(
+                ({
+                    countries,
+                    bosniaAndHerzegovinaRegions,
+                    additionalCountriesInfo,
+                    programMetadata,
+                    sectionsEvent,
+                    gapText,
+                }) => {
+                    const gapTextsByCountry = this.buildGapsTextByCountry(gapText.dataValues);
 
-            return this.buildCountries(
-                countries.objects,
-                bosniaAndHerzegovinaRegions.objects,
-                aditionalCountriesInfo.events,
-                countriesIdsInCountryPage
+                    const countriesIdsInCountryPage = this.getCountriesIdsInCountryPage(
+                        programMetadata.objects[0],
+                        sectionsEvent.events[0]
+                    );
+
+                    return this.buildCountries(
+                        countries.objects,
+                        bosniaAndHerzegovinaRegions.objects,
+                        additionalCountriesInfo.events,
+                        countriesIdsInCountryPage,
+                        gapTextsByCountry
+                    );
+                }
             );
-        });
     }
 
     private buildCountries(
         orgUnits: D2OrgUnit[],
         bosniaAndHerzegovinaRegions: D2OrgUnit[],
-        aditionalCountriesInfo: D2Event[],
-        countriesIdsInCountryPage: Id[]
+        additionalCountriesInfo: D2Event[],
+        countriesIdsInCountryPage: Id[],
+        gapTextByCountry: GapsTextMap
     ): Country[] {
         return orgUnits
             .filter(({ id }) => !COUNTRIES_NOT_SHOWN.includes(id))
@@ -144,20 +187,27 @@ export class CountryD2Repository implements CountryRepository {
                 const countryId =
                     BOSNIA_AND_HERZEGOVINA_LEVEL_3 === orgUnit.id ? BOSNIA_AND_HERZEGOVINA_LEVEL_4 : orgUnit.id;
 
-                const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
+                const additionalCountryInfo: D2Event | undefined = additionalCountriesInfo.find(
                     event => event.orgUnit === countryId
                 );
 
                 const isInCountryPage = countriesIdsInCountryPage.includes(countryId);
-                const country = this.buildCountry(countryId, orgUnit, isInCountryPage, aditionalCountryInfo);
+                const country = this.buildCountry({
+                    countryId,
+                    orgUnit,
+                    isInCountryPage,
+                    additionalCountryInfo: additionalCountryInfo,
+                    gapTextByCountry,
+                });
 
                 return countryId === BOSNIA_AND_HERZEGOVINA_LEVEL_4
                     ? {
                           ...country,
                           children: this.getBosniaAndHerzegovinaChildren(
                               bosniaAndHerzegovinaRegions,
-                              aditionalCountriesInfo,
-                              countriesIdsInCountryPage
+                              additionalCountriesInfo,
+                              countriesIdsInCountryPage,
+                              gapTextByCountry
                           ),
                       }
                     : country;
@@ -167,39 +217,49 @@ export class CountryD2Repository implements CountryRepository {
 
     private getBosniaAndHerzegovinaChildren(
         bosniaAndHerzegovinaRegions: D2OrgUnit[],
-        aditionalCountriesInfo: D2Event[],
-        countriesIdsInCountryPage: Id[]
+        additionalCountriesInfo: D2Event[],
+        countriesIdsInCountryPage: Id[],
+        gapTextByCountry: GapsTextMap
     ): Country[] {
         return bosniaAndHerzegovinaRegions.map(orgUnit => {
-            const aditionalCountryInfo: D2Event | undefined = aditionalCountriesInfo.find(
+            const additionalCountryInfo: D2Event | undefined = additionalCountriesInfo.find(
                 event => event.orgUnit === orgUnit.id
             );
 
             const isInCountryPage = countriesIdsInCountryPage.includes(orgUnit.id);
-            return this.buildCountry(orgUnit.id, orgUnit, isInCountryPage, aditionalCountryInfo);
+            return this.buildCountry({
+                countryId: orgUnit.id,
+                orgUnit,
+                isInCountryPage,
+                additionalCountryInfo,
+                gapTextByCountry,
+            });
         });
     }
 
-    private buildCountry(
-        countryId: Id,
-        orgUnit: D2OrgUnit,
-        isInCountryPage: boolean,
-        aditionalCountryInfo: Maybe<D2Event>
-    ): Country {
+    private buildCountry(props: {
+        countryId: Id;
+        orgUnit: D2OrgUnit;
+        isInCountryPage: boolean;
+        additionalCountryInfo: Maybe<D2Event>;
+        gapTextByCountry: GapsTextMap;
+    }): Country {
+        const { countryId, orgUnit, isInCountryPage, additionalCountryInfo, gapTextByCountry } = props;
         const summary =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)?.value ||
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)?.value ||
             "";
 
         const rawStatus =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value || "";
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value ||
+            "";
 
         const status = countryStatusMap[rawStatus] ?? "Gaps";
 
-        const customGeometry = aditionalCountryInfo?.dataValues.find(
+        const customGeometry = additionalCountryInfo?.dataValues.find(
             dv => dv.dataElement === countryInfoDataElements.geometry
         )?.value as unknown as D2Geometry;
 
-        const showCountryFlag = aditionalCountryInfo?.dataValues.find(
+        const showCountryFlag = additionalCountryInfo?.dataValues.find(
             dv => dv.dataElement === countryInfoDataElements.showCountryFlag
         )?.value;
 
@@ -213,10 +273,10 @@ export class CountryD2Repository implements CountryRepository {
             parents: orgUnit.organisationUnitGroups
                 .map(({ id, name }) => ({ id, name }))
                 .filter(oug => SORTED_COUNTRY_GROUPINGS.includes(oug.id)),
-            flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${aditionalCountryInfo?.event}`,
+            flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${additionalCountryInfo?.event}`,
             showCountryFlag: showCountryFlag === "true",
             summary,
-            sliderInfo: this.buildSliderInfo(aditionalCountryInfo),
+            sliderInfo: this.buildSliderInfo(additionalCountryInfo, gapTextByCountry.get(countryId)),
             isInCountryPage: isInCountryPage,
             currencyCode: getCurrencyCodeFromCountryId(countryId),
         };
@@ -238,81 +298,78 @@ export class CountryD2Repository implements CountryRepository {
         }
     }
 
-    private buildSliderInfo(aditionalCountryInfo: D2Event | undefined) {
+    private buildSliderInfo(additionalCountryInfo: Maybe<D2Event>, gapText: Maybe<GapsText>) {
+        const defaultGapText = i18n.t("Country Information coming soon");
+
         const gapsSectionName =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSectionName)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSectionName)
                 ?.value || "";
         const gapsTitle1 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle1)?.value ||
-            "";
-        const gapsText1 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText1)?.value ||
-            "";
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle1)
+                ?.value || "";
+        const gapsText1 = gapText?.gapsText1 || defaultGapText;
         const gapsTitle2 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle2)?.value ||
-            "";
-        const gapsText2 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText2)?.value ||
-            "";
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle2)
+                ?.value || "";
+        const gapsText2 = gapText?.gapsText2 || defaultGapText;
         const gapsTitle3 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle3)?.value ||
-            "";
-        const gapsText3 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText3)?.value ||
-            "";
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle3)
+                ?.value || "";
+        const gapsText3 = gapText?.gapsText3 || defaultGapText;
         const gapsTitle4 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle4)?.value ||
-            "";
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle4)
+                ?.value || "";
         const gapsText4 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText4)?.value ||
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText4)?.value ||
             "";
         const gapsTitle5 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle5)?.value ||
-            "";
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle5)
+                ?.value || "";
         const gapsText5 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText5)?.value ||
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText5)?.value ||
             "";
 
         const gapsSourceText =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSourceText)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSourceText)
                 ?.value || "";
 
         const finProtecSectionName =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecSectionName)
-                ?.value || "";
+            additionalCountryInfo?.dataValues.find(
+                dv => dv.dataElement === countryInfoDataElements.finProtecSectionName
+            )?.value || "";
         const finProtecTitle1 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle1)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle1)
                 ?.value || "";
         const finProtecText1 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText1)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText1)
                 ?.value || "";
         const finProtecTitle2 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle2)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle2)
                 ?.value || "";
         const finProtecText2 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText2)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText2)
                 ?.value || "";
         const finProtecTitle3 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle3)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle3)
                 ?.value || "";
         const finProtecText3 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText3)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText3)
                 ?.value || "";
         const finProtecTitle4 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle4)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle4)
                 ?.value || "";
         const finProtecText4 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText4)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText4)
                 ?.value || "";
         const finProtecTitle5 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle5)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle5)
                 ?.value || "";
         const finProtecText5 =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText5)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText5)
                 ?.value || "";
 
         const finProtecSourceText =
-            aditionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecSourceText)
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecSourceText)
                 ?.value || "";
 
         return {
@@ -388,6 +445,34 @@ export class CountryD2Repository implements CountryRepository {
 
         return [];
     }
+
+    private buildGapsTextByCountry(gapText: DataValueSetsDataValue[]): GapsTextMap {
+        return new Map(
+            _(gapText)
+                .groupBy(dv => dv.orgUnit)
+                .mapValues(countryData => {
+                    const latestPeriod = _(countryData).maxBy(dv => dv.period)?.period;
+                    if (!latestPeriod) return {};
+
+                    const latestByDataElement = _(countryData)
+                        .filter(dv => dv.period === latestPeriod && gapElementIds.includes(dv.dataElement))
+                        .groupBy(dv => dv.dataElement)
+                        .mapValues(values => _(values).maxBy(dv => dv.period))
+                        .value();
+
+                    return _.mapValues(
+                        gapsDataElements,
+                        dataElementId => latestByDataElement[dataElementId]?.value ?? ""
+                    );
+                })
+                .entries()
+                .value()
+        );
+    }
+
+    private periodsForGap() {
+        return generate(gapsDataYears.lastYearInFilter(), gapsDataYears.firstYearInFilter - 1).map(year => year.id);
+    }
 }
 
 const countryStatusMap: Record<string, CountryStatus> = {
@@ -447,3 +532,7 @@ const programFields = {
 type D2Program = MetadataPick<{
     programs: { fields: typeof programFields };
 }>["programs"][number];
+
+type GapsText = Partial<Record<keyof typeof gapsDataElements, string>>;
+
+type GapsTextMap = Map<string, GapsText>;

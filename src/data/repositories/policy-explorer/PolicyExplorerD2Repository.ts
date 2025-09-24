@@ -12,7 +12,7 @@ import {
     firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
-import { policyExplorerDataSet_ID } from "../../../domain/utils";
+import { policyExplorerDataSet_ID } from "../utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
@@ -21,6 +21,7 @@ import { CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES } from "./builders/TableBuilde
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
@@ -28,6 +29,7 @@ import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { generate } from "../../../domain/usecases/utils/generateYears";
+import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -349,6 +351,20 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             programCategories,
         } = params;
 
+        const deSubstitutor = dataSet
+            ? new DataElementSubstitutor(dataSet.sections, PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS)
+            : undefined;
+        const substitutedDataSet =
+            deSubstitutor && dataSet
+                ? {
+                      ...dataSet,
+                      sections: dataSet.sections.map(section => ({
+                          ...section,
+                          dataElements: deSubstitutor.substituteSource(section.dataElements),
+                      })),
+                  }
+                : dataSet;
+
         const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
                 CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID === categoryId ||
@@ -424,7 +440,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             orgUnitName: orgUnitNameInCell,
                             period,
                             references: areMarkdownReferences ? references : "",
-                            dataSet,
+                            dataSet: substitutedDataSet,
                         });
                     },
                     []
@@ -563,7 +579,7 @@ const dataSetFields = {
     sections: {
         id: true,
         displayName: true,
-        dataElements: { id: true, formName: true, valueType: true, description: true },
+        dataElements: { id: true, code: true, formName: true, valueType: true, description: true },
     },
 } as const;
 
