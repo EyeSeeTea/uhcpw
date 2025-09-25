@@ -12,7 +12,7 @@ import {
     firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
-import { policyExplorerDataSet_ID } from "../utils";
+import { policyExplorerDataSet_ID, sortByCountry } from "../utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
@@ -206,16 +206,18 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             notes: "Notes*",
             source: "Suggested citation",
         };
-        const generalInfoForDownload: PolicyExplorerGeneralInfoToDownload[] = generalInfo.map(info => ({
-            country: info.country,
-            year: info.year,
-            lastUpdate: info.lastUpdate ? moment(info.lastUpdate).format("D MMMM YYYY") : "",
-            countryExperts: info.countryExperts,
-            editors: info.editors,
-            reviewers: info.reviewers,
-            notes: info.notes,
-            source: `${info.sourceText} ${info.sourceUrl}`,
-        }));
+        const generalInfoForDownload: PolicyExplorerGeneralInfoToDownload[] = generalInfo
+            .map(info => ({
+                country: info.country,
+                year: info.year,
+                lastUpdate: info.lastUpdate ? moment(info.lastUpdate).format("D MMMM YYYY") : "",
+                countryExperts: info.countryExperts,
+                editors: info.editors,
+                reviewers: info.reviewers,
+                notes: info.notes,
+                source: `${info.sourceText} ${info.sourceUrl}`,
+            }))
+            .sort((genA, genB) => sortByCountry(genA.country, genB.country));
 
         const generalInfoTab = generalInfoForDownload.reduce(
             (generalInfoRowsAcc, countryGeneralInfo) => {
@@ -240,15 +242,17 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private getReferencesTab(references: PolicyExplorerReferences[]): Tab {
         const referencesTitle = REFERENCES_TAB_NAME;
 
-        const referencesTab = references.reduce(
-            (referencesTabAcc, countryReferences) => {
-                const cleanReferences = countryReferences.references?.map(
-                    reference => reference.split("]:")[1]?.replace(/"/g, "") || reference
-                );
-                return [...referencesTabAcc, [countryReferences.country, cleanReferences.join("\n")]];
-            },
-            [[referencesTitle], ["Country", ""]]
-        );
+        const referencesTab = references
+            .sort((refA, refB) => sortByCountry(refA.country, refB.country))
+            .reduce(
+                (referencesTabAcc, countryReferences) => {
+                    const cleanReferences = countryReferences.references?.map(
+                        reference => reference.split("]:")[1]?.replace(/"/g, "") || reference
+                    );
+                    return [...referencesTabAcc, [countryReferences.country, cleanReferences.join("\n")]];
+                },
+                [[referencesTitle], ["Country", ""]]
+            );
 
         return {
             data: referencesTab,
@@ -401,7 +405,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     ? this.filterByLatestAvailableYear(dataValuesOrderByYear)
                     : dataValuesOrderByYear;
 
-                const dataValuesByCountryAndYear = _(finalDataValues)
+                const sortedDataValues = finalDataValues.sort((dvA, dvB) =>
+                    sortByCountry(dvA.orgUnitShortName, dvB.orgUnitShortName)
+                );
+
+                const dataValuesByCountryAndYear = _(sortedDataValues)
                     .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
                     .value();
 
