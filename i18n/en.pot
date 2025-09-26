@@ -8,7 +8,11 @@ msgstr ""
 "POT-Creation-Date: 2025-09-23T08:39:50.772Z\n"
 "PO-Revision-Date: 2025-09-23T08:39:50.772Z\n"
 
+
 msgid "Error fetching methods"
+msgstr ""
+
+msgid "Country Information coming soon"
 msgstr ""
 
 msgid "All countries and areas"
