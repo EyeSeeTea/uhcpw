@@ -18,7 +18,7 @@ export const DesktopAppFooter: React.FC = () => {
                 <Container maxWidth="xl">
                     <Grid container spacing={6}>
                         <FirstGrid item lg={3} md={6} xs={12}>
-                            <img src={whoLogoWhite} width={150} alt="WHO logo" />
+                            <img src={whoLogoWhite} width={150} alt="WHO logo" loading="eager" decoding="async" />
                             <Disclaimer variant="body2">
                                 {i18n.t(
                                     generalContent?.footer.disclaimer ||

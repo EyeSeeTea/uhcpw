@@ -27,7 +27,7 @@ import {
 } from "./helpers";
 
 export function useIndicatorExplorer(): IndicatorExplorerState {
-    const { compositionRoot, countriesAndSubregions, regions } = useAppContext();
+    const { compositionRoot, countriesAndSubregions } = useAppContext();
     const {
         selected: selectedCountriesAndRegions,
         onSelectedChange: onSelectedCountryAndRegionsChange,
@@ -68,8 +68,6 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     }, [countryAndRegionsOptions, selectedCountriesAndRegions]);
 
     const selectedRegions: Id[] = useMemo(() => {
-        const selectedIndicator = indicators.find(indicator => indicator.id === selectedIndicatorFilter);
-
         const regionOptions = countryAndRegionsOptions
             .filter(
                 (option: TreeOption) =>
@@ -77,22 +75,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             )
             .map(option => option.id);
 
-        const selectedRegionOrgUnitGroup = (selectedCountriesAndRegions || []).filter(selected =>
+        const selectedRegionsIds = (selectedCountriesAndRegions || []).filter(selected =>
             regionOptions.includes(selected)
         );
 
-        if (selectedIndicator?.isOrgUnitRegions) {
-            // If the indicator uses org unit regions, we need to return the org unit ids instead of group ids
-            const selectedRegions = regions
-                .filter(region => selectedRegionOrgUnitGroup.includes(region.id))
-                .reduce<Id[]>((acc, region) => {
-                    return region.linkedOrgUnitId ? [...acc, region.linkedOrgUnitId] : acc;
-                }, []);
-            return selectedRegions;
-        } else {
-            return selectedRegionOrgUnitGroup;
-        }
-    }, [countryAndRegionsOptions, indicators, regions, selectedCountriesAndRegions, selectedIndicatorFilter]);
+        return selectedRegionsIds;
+    }, [countryAndRegionsOptions, selectedCountriesAndRegions]);
 
     const showNonComparativeMessageIfRequired = useCallback(
         (oldIndicator: Indicator | undefined, newsIndicator: Indicator | undefined) => {
