@@ -15,17 +15,36 @@ export const Methods: React.FC<MethodsProps> = ({ content }) => {
             <SectionHeader
                 header={content.title}
                 subheader={content.subtitle}
-                isBackgroundOnRight={false}
+                isBackgroundOnLeft
                 url={content.buttonLink}
             />
+
             <Content container>
                 <Focus item md={4} xs={12}>
                     <SectionBlock title={content.column1.title} text={content.column1.text} />
                 </Focus>
+
                 <Analysis item md={4} xs={12}>
+                    <BubbleImg
+                        src={bubblePatternWhite}
+                        alt="Bubble pattern"
+                        aria-hidden="true"
+                        decoding="async"
+                        loading="eager"
+                    />
+
                     <SectionBlock title={content.column2.title} text={content.column2.text} />
                 </Analysis>
+
                 <Story item md={4} xs={12}>
+                    <BubbleImg
+                        src={bubblePatternWhite}
+                        alt="Bubble pattern"
+                        aria-hidden="true"
+                        decoding="async"
+                        loading="eager"
+                    />
+
                     <SectionBlock title={content.column3.title} text={content.column3.text} />
                 </Story>
             </Content>
@@ -43,13 +62,26 @@ const Focus = styled(Grid)`
 `;
 
 const Analysis = styled(Grid)`
-    background: #fe8c4f url(${bubblePatternWhite}) no-repeat -400px -170px;
+    background: #fe8c4f;
     color: white;
     padding: 65px 55px;
+    position: relative;
+    overflow: hidden;
 `;
 
 const Story = styled(Grid)`
-    background: #0360a6 url(${bubblePatternWhite}) no-repeat -400px -170px;
+    background: #0360a6;
     color: white;
     padding: 65px 55px;
+    position: relative;
+    overflow: hidden;
+`;
+
+const BubbleImg = styled.img`
+    position: absolute;
+    top: -170px;
+    left: -400px;
+    height: auto;
+    pointer-events: none;
+    opacity: 0.9;
 `;

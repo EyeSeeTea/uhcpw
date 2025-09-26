@@ -35,6 +35,15 @@ export const MobileHomePage: React.FC = React.memo(() => {
                 <Grid>
                     <BoxLink href={homePageContent.explorers.indicator.buttonLink || ""}>
                         <BigBox color={colors.orange}>
+                            <BubbleImg
+                                src={bubblePatternWhite}
+                                alt="Bubble pattern"
+                                aria-hidden="true"
+                                decoding="async"
+                                loading="eager"
+                                isBig
+                            />
+
                             <FlexWrapper>
                                 <StyledTitleTypography>{i18n.t("Indicator explorer")}</StyledTitleTypography>
 
@@ -51,6 +60,15 @@ export const MobileHomePage: React.FC = React.memo(() => {
 
                     <BoxLink href={homePageContent.explorers.policy.buttonLink || ""}>
                         <BigBox color={colors.blue}>
+                            <BubbleImg
+                                src={bubblePatternWhite}
+                                alt="Bubble pattern"
+                                aria-hidden="true"
+                                decoding="async"
+                                loading="eager"
+                                isBig
+                            />
+
                             <FlexWrapper>
                                 <StyledTitleTypography>{i18n.t("Policy explorer")}</StyledTitleTypography>
 
@@ -67,6 +85,14 @@ export const MobileHomePage: React.FC = React.memo(() => {
 
                     <BoxLink href={homePageContent.analysis.countries.buttonLink || ""}>
                         <Box color={colors.darkBlue}>
+                            <BubbleImg
+                                src={bubblePatternWhite}
+                                alt="Bubble pattern"
+                                aria-hidden="true"
+                                decoding="async"
+                                loading="eager"
+                            />
+
                             <StyledTitleTypography>{i18n.t("Countries & areas")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
@@ -78,18 +104,42 @@ export const MobileHomePage: React.FC = React.memo(() => {
                         onClick={regionalReportPageView}
                     >
                         <Box color={colors.green}>
+                            <BubbleImg
+                                src={bubblePatternWhite}
+                                alt="Bubble pattern"
+                                aria-hidden="true"
+                                decoding="async"
+                                loading="eager"
+                            />
+
                             <StyledTitleTypography>{i18n.t("Regional report")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 
                     <BoxLink href={homePageContent.methods.buttonLink || ""}>
                         <Box color={colors.green}>
+                            <BubbleImg
+                                src={bubblePatternWhite}
+                                alt="Bubble pattern"
+                                aria-hidden="true"
+                                decoding="async"
+                                loading="eager"
+                            />
+
                             <StyledTitleTypography>{i18n.t("Methods")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 
                     <BoxLink href={homePageContent.resources.buttonLink || ""}>
                         <Box color={colors.darkBlue}>
+                            <BubbleImg
+                                src={bubblePatternWhite}
+                                alt="Bubble pattern"
+                                aria-hidden="true"
+                                decoding="async"
+                                loading="eager"
+                            />
+
                             <StyledTitleTypography>{i18n.t("Resources")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
@@ -159,10 +209,8 @@ const BoxLink = styled.a`
 `;
 
 const Box = styled.div<{ color: string }>`
-    background: ${props => props.color} url(${bubblePatternWhite});
-    background-repeat: no-repeat;
-    background-position: right top;
-    background-size: auto 100%;
+    position: relative;
+    background-color: ${props => props.color};
     padding: 14px;
     min-height: 30px;
     border-radius: 21px;
@@ -175,6 +223,16 @@ const Box = styled.div<{ color: string }>`
     @media (max-width: 400px) {
         background-position: calc(100% + 70px) top;
     }
+`;
+
+const BubbleImg = styled.img<{ isBig?: boolean }>`
+    position: absolute;
+    top: 0;
+    right: ${props => (props.isBig ? "-150px" : "0")};
+    width: auto;
+    height: 100%;
+    opacity: 0.9;
+    pointer-events: none;
 `;
 
 const BigBox = styled(Box)`

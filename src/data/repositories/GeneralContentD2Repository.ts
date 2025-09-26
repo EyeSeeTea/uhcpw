@@ -4,8 +4,6 @@ import { GeneralContentRepository } from "../../domain/repositories/GeneralConte
 import { D2Api } from "../../types/d2-api";
 import { DataValue, getMainPagesContent } from "./common/getMainPagesContent";
 import { getMethodsProgramEvent } from "./common/getMethodsProgramEvent";
-import { File } from "../../domain/entities/GeneralContent";
-import { apiToFuture } from "../../utils/futures";
 import { Maybe } from "../../types/utils";
 
 const mainPageDataElements = {
@@ -36,69 +34,36 @@ export class GeneralContentD2Repository implements GeneralContentRepository {
     }): FutureData<GeneralContent> {
         const { mainPageContent, methodsEvent } = results;
 
-        return Future.joinObj({
-            abbreviationsFile: this.getFileDataFromField(methodsEvent, methodProgramDataElements.abbreviationsFile),
-            glossaryFile: this.getFileDataFromField(methodsEvent, methodProgramDataElements.glossaryFile),
-        }).map(
-            ({ abbreviationsFile, glossaryFile }: { abbreviationsFile: Maybe<File>; glossaryFile: Maybe<File> }) => ({
-                footer: {
-                    disclaimer:
-                        mainPageContent.find(dv => dv.dataElement === mainPageDataElements.footerDisclaimer)?.value ||
-                        "",
-                },
-                aboutUs: {
-                    title:
-                        mainPageContent.find(dv => dv.dataElement === mainPageDataElements.aboutUsTitle)?.value || "",
-                    subtitle:
-                        mainPageContent.find(dv => dv.dataElement === mainPageDataElements.aboutUsSubtitle)?.value ||
-                        "",
-                },
-                cookies: {
-                    policyUrl:
-                        mainPageContent.find(dv => dv.dataElement === mainPageDataElements.cookiesPolicyUrl)?.value ||
-                        "",
-                },
-                abbreviations: {
-                    file: abbreviationsFile,
-                },
-                glossary: {
-                    file: glossaryFile,
-                },
-            })
-        );
+        return Future.success({
+            footer: {
+                disclaimer:
+                    mainPageContent.find(dv => dv.dataElement === mainPageDataElements.footerDisclaimer)?.value || "",
+            },
+            aboutUs: {
+                title: mainPageContent.find(dv => dv.dataElement === mainPageDataElements.aboutUsTitle)?.value || "",
+                subtitle:
+                    mainPageContent.find(dv => dv.dataElement === mainPageDataElements.aboutUsSubtitle)?.value || "",
+            },
+            cookies: {
+                policyUrl:
+                    mainPageContent.find(dv => dv.dataElement === mainPageDataElements.cookiesPolicyUrl)?.value || "",
+            },
+            abbreviations: {
+                url: this.getFileUrl(methodsEvent, methodProgramDataElements.abbreviationsFile),
+            },
+            glossary: {
+                url: this.getFileUrl(methodsEvent, methodProgramDataElements.glossaryFile),
+            },
+        });
     }
 
-    getFileDataFromField(event: Maybe<D2Event>, fieldId: string): FutureData<Maybe<File>> {
-        if (!event) return Future.success(undefined);
+    getFileUrl(event: Maybe<D2Event>, fieldId: string): Maybe<string> {
+        if (!event) return undefined;
+        const url = `${this.api.baseUrl}/api/events/files?dataElementUid=${fieldId}&eventUid=${event.event}`;
 
-        const fileId = event?.dataValues.find(dv => dv.dataElement === fieldId)?.value;
-        if (!fileId) return Future.success(undefined);
-
-        return Future.joinObj({
-            fileResource: apiToFuture(this.api.get<D2FileResource>(`/fileResources/${fileId}`)),
-            blob: apiToFuture(
-                this.api.request<Blob>({
-                    method: "get",
-                    url: `/events/files`,
-                    params: {
-                        eventUid: event.event,
-                        dataElementUid: fieldId,
-                    },
-                    responseDataType: "raw",
-                })
-            ),
-        }).map(({ blob, fileResource }) => ({
-            content: blob,
-            name: fileResource.name,
-            contentType: fileResource.contentType,
-        }));
+        return url;
     }
 }
-
-type D2FileResource = {
-    name: string;
-    contentType: string;
-};
 
 export interface D2Event {
     event: string;

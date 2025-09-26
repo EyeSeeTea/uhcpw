@@ -19,32 +19,46 @@ export const Explorers: React.FC<ExplorersProps> = ({ content }) => {
     return (
         <>
             <SectionHeader header={content.title} subheader={content.subtitle} isBackgroundOnRight />
+
             <Content container>
                 <IndicatorExplorer item md={6} xs={12}>
+                    <BubbleImg
+                        src={bubblePatternWhite}
+                        alt="Bubble pattern"
+                        aria-hidden="true"
+                        decoding="async"
+                        loading="eager"
+                    />
+
                     <ContentSectionGrid container>
                         <Grid item>
                             <SectionBlock title={content.indicator.title} text={content.indicator.text} />
+
                             <ButtonContainer>
                                 <Link href={content.indicator.buttonLink || ""}>
                                     {i18n.t(content.indicator.buttonText || "")}
                                 </Link>
                             </ButtonContainer>
                         </Grid>
+
                         <Grid item>
                             <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
                         </Grid>
                     </ContentSectionGrid>
                 </IndicatorExplorer>
+
                 <PolicyExplorer item md={6} xs={12}>
                     <ContentSectionGrid container>
                         <Grid item>
                             <SectionBlock title={content.policy.title} text={content.policy.text} />
+
                             <ButtonContainer>
                                 <Link href={content.policy.buttonLink || ""}>
                                     {i18n.t(content.policy.buttonText || "")}
                                 </Link>
                             </ButtonContainer>
                         </Grid>
+
                         <Grid item>
                             <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
                         </Grid>
@@ -59,13 +73,24 @@ export const Explorers: React.FC<ExplorersProps> = ({ content }) => {
 const Content = styled(Grid)``;
 
 const IndicatorExplorer = styled(Grid)`
-    background: #fe8c4f url(${bubblePatternWhite}) -400px -130px no-repeat;
+    background: #fe8c4f;
     color: white;
+    position: relative;
+    overflow: hidden;
 `;
 
 const PolicyExplorer = styled(Grid)`
     background: #0089d6;
     color: white;
+`;
+
+const BubbleImg = styled.img`
+    position: absolute;
+    top: -130px;
+    left: -400px;
+    height: auto;
+    pointer-events: none;
+    opacity: 0.9;
 `;
 
 const ButtonContainer = styled.div`
