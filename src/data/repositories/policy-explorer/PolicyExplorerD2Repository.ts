@@ -286,56 +286,60 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
 
-        return Object.entries(dataValuesByOrgUnit).map(([orgUnitId, dataValuesOfCountry]) => {
-            const countryName = this.getCountryName(orgUnitId, countriesAndRegions);
+        return Object.entries(dataValuesByOrgUnit)
+            .map(([orgUnitId, dataValuesOfCountry]) => {
+                const countryName = this.getCountryName(orgUnitId, countriesAndRegions);
 
-            const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
-            const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
+                const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
+                const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
 
-            const sourceUrl =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
-                )?.value || "";
-            const countryExperts =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.countryExperts || "")
-                )?.value || "";
-            const editors =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.editors || "")
-                )?.value || "";
-            const lastUpdate =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.lastUpdate || "")
-                )?.value || "";
-            const reviewers =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
-                )?.value || "";
-            const sourceText =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
-                )?.value || "";
+                const sourceUrl =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
+                    )?.value || "";
+                const countryExperts =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv =>
+                            dv.orgUnit === orgUnitId &&
+                            dv.dataElement.includes(generalDataElements.countryExperts || "")
+                    )?.value || "";
+                const editors =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.editors || "")
+                    )?.value || "";
+                const lastUpdate =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.lastUpdate || "")
+                    )?.value || "";
+                const reviewers =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
+                    )?.value || "";
+                const sourceText =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
+                    )?.value || "";
 
-            const notes =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.notes || "")
-                )?.value || "";
+                const notes =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.notes || "")
+                    )?.value || "";
 
-            const year = sortedYears.length && sortedYears[0] ? sortedYears[0] : "";
+                const year = sortedYears.length && sortedYears[0] ? sortedYears[0] : "";
 
-            return {
-                country: countryName,
-                sourceText,
-                sourceUrl,
-                countryExperts,
-                editors,
-                lastUpdate: new Date(lastUpdate),
-                reviewers,
-                notes,
-                year,
-            };
-        });
+                return {
+                    country: countryName,
+                    sourceText,
+                    sourceUrl,
+                    countryExperts,
+                    editors,
+                    lastUpdate: new Date(lastUpdate),
+                    reviewers,
+                    notes,
+                    year,
+                };
+            })
+            .sort((genA, genB) => sortByCountry(genA.country, genB.country));
     }
 
     private buildTables(params: {
