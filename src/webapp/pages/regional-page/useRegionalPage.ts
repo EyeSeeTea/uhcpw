@@ -13,10 +13,9 @@ import { ChecklistPolicyMakersState, useRegionalPageInfo } from "./useRegionalPa
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Region } from "../../../domain/entities/region/Region";
-import { CoveragePolicyState, useCoveragePolicy } from "./useCoveragePolicy";
 import { RegionNumbersState, useRegionNumbers } from "./useRegionNumbers";
 
-export type RegionalMenuItem = "regionMap" | "numbers" | "coveragePolicy" | "policyChecklist" | "resources" | "experts";
+export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
 
 export type RegionalMenuItemConfig = {
     id: RegionalMenuItem;
@@ -49,7 +48,6 @@ export type RegionalPageState = {
         isLoading: boolean;
         onDownload: (checklist: string[], selections: boolean[]) => void;
     };
-    coveragePolicy: CoveragePolicyState;
     regionNumbers: RegionNumbersState;
 };
 
@@ -59,7 +57,6 @@ export function useRegionalPage(): RegionalPageState {
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
     const { info, isLoading, onDownloadPolicyChecklist } = useRegionalPageInfo(selectedRegionId);
-    const coveragePolicy = useCoveragePolicy(selectedRegionId);
     const regionNumbers = useRegionNumbers(selectedRegionId, info?.numbersPanelTitles);
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
@@ -70,7 +67,6 @@ export function useRegionalPage(): RegionalPageState {
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
-    const coveragePolicyRef = useRef<HTMLElement | null>(null);
     const policyChecklistRef = useRef<HTMLElement | null>(null);
     const resourcesRef = useRef<HTMLElement | null>(null);
     const expertsRef = useRef<HTMLElement | null>(null);
@@ -79,7 +75,6 @@ export function useRegionalPage(): RegionalPageState {
         () => ({
             regionMap: regionMapRef,
             numbers: numbersRef,
-            coveragePolicy: coveragePolicyRef,
             policyChecklist: policyChecklistRef,
             resources: resourcesRef,
             experts: expertsRef,
@@ -91,12 +86,11 @@ export function useRegionalPage(): RegionalPageState {
         return [
             { id: "regionMap", label: i18n.t("Region at a glance"), ref: refs.regionMap },
             { id: "numbers", label: i18n.t("Numbers"), ref: refs.numbers },
-            { id: "coveragePolicy", label: i18n.t("Coverage policy"), ref: refs.coveragePolicy },
             { id: "policyChecklist", label: i18n.t("Policy checklist"), ref: refs.policyChecklist },
             { id: "resources", label: i18n.t("Resources"), ref: refs.resources },
             { id: "experts", label: i18n.t("Experts"), ref: refs.experts },
         ];
-    }, [refs.coveragePolicy, refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources]);
+    }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources]);
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -107,10 +101,6 @@ export function useRegionalPage(): RegionalPageState {
             region: region ? region : undefined,
         };
     }, [history.location.search]);
-
-    const onResetTabs = useCallback(() => {
-        coveragePolicy.onResetTabs();
-    }, [coveragePolicy]);
 
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
@@ -128,9 +118,8 @@ export function useRegionalPage(): RegionalPageState {
             setMarkers(countriesToGeoJson(countriesWithSummary));
             setSelectedRegion(region);
             onRegionChange(newRegion);
-            onResetTabs();
         },
-        [countries, history, onRegionChange, regions, onResetTabs]
+        [countries, history, onRegionChange, regions]
     );
 
     useEffect(() => {
@@ -163,7 +152,6 @@ export function useRegionalPage(): RegionalPageState {
             markers: markers,
             mainPanelContent: info?.mainMapPanelContent,
         },
-        coveragePolicy: coveragePolicy,
         policyChecklist: {
             policyChecklist: info?.checklistPolicyMakers,
             isLoading: isLoading,

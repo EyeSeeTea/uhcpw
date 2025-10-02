@@ -7,7 +7,6 @@ import { Map } from "../../components/home/map/Map";
 import { useRegionalPageMap } from "./useRegionalPageMap";
 import { Divider } from "../../components/home/common/Divider";
 import { NumbersSection } from "./NumbersSection";
-import { CoveragePolicySection } from "./CoveragePolicySection";
 import { PolicyChecklistSection } from "./PolicyChecklistSection";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
@@ -22,7 +21,6 @@ export const RegionalPage: React.FC = () => {
         regionMap,
         financialProtectionStatus,
         policyChecklist,
-        coveragePolicy,
         regionNumbers,
     } = useRegionalPage();
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
@@ -54,19 +52,6 @@ export const RegionalPage: React.FC = () => {
                     expandedConfig={regionNumbers.expandedConfig}
                     handleAccordionChange={regionNumbers.handleAccordionChange}
                     handleTabChange={regionNumbers.handleTabChange}
-                    isSmallScreen={isSmallScreen}
-                />
-            </section>
-
-            <Divider financialProtectionStatus={financialProtectionStatus} />
-
-            <section ref={refs.coveragePolicy}>
-                <CoveragePolicySection
-                    configs={coveragePolicy.configs}
-                    tabValue={coveragePolicy.tabValue}
-                    expandedConfig={coveragePolicy.expandedConfig}
-                    handleAccordionChange={coveragePolicy.handleAccordionChange}
-                    handleTabChange={coveragePolicy.handleTabChange}
                     isSmallScreen={isSmallScreen}
                 />
             </section>
