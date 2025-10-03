@@ -5,9 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-09-23T08:39:50.772Z\n"
-"PO-Revision-Date: 2025-09-23T08:39:50.772Z\n"
-
+"POT-Creation-Date: 2025-10-03T09:36:36.062Z\n"
+"PO-Revision-Date: 2025-10-03T09:36:36.062Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -286,6 +285,9 @@ msgstr ""
 msgid "Latest avalaible year"
 msgstr ""
 
+msgid "Combined policy tables"
+msgstr ""
+
 msgid "Country experiences"
 msgstr ""
 
@@ -319,9 +321,6 @@ msgid "Coverage policy"
 msgstr ""
 
 msgid "Policy checklist"
-msgstr ""
-
-msgid "Combined policy tables"
 msgstr ""
 
 msgid "Country analysis"
