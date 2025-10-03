@@ -1,9 +1,9 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import styled from "styled-components";
-import weakIcon from "../../../assets/map/icon-weak.svg";
+import veryWeakIcon from "../../../assets/map/icon-very-weak.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
-import gapsIcon from "../../../assets/map/icon-normal.svg";
+import gapsIcon from "../../../assets/map/icon-gaps.svg";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
@@ -43,7 +43,7 @@ export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent,
             {!isMobile && (
                 <UmbrellaItemsContainer>
                     <UmbrellaItem>
-                        <Marker src={weakIcon} />
+                        <Marker src={veryWeakIcon} />
                         {i18n.t("Weaker financial protection")}
                     </UmbrellaItem>
                     <UmbrellaItem>

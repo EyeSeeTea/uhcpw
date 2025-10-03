@@ -477,8 +477,10 @@ export class CountryD2Repository implements CountryRepository {
 
 const countryStatusMap: Record<string, CountryStatus> = {
     Green: "Strong",
-    Red: "Weak",
+    Yellow: "Emerging",
     Orange: "Gaps",
+    Red: "Weak",
+    Dark_Red: "VeryWeak",
     Gray: "InsufficientData",
 };
 
