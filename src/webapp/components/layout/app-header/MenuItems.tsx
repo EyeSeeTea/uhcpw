@@ -65,7 +65,7 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
             {!isCountryPage || (isCountryPage && !isSmallScreen) ? (
                 <>
                     <MenuItem>
-                        <MobileMenuSubItem item="Countries & areas">
+                        <MobileMenuSubItem item={i18n.t("Countries & areas")}>
                             <div>
                                 {countryFilter.countryOptions.map(country => {
                                     return (

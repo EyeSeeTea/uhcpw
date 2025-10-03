@@ -7,7 +7,7 @@ import React from "react";
 
 import { colors } from "../app/themes/dhis2.theme";
 import { Layout } from "../../components/layout/Layout";
-import bubblePattern from "../../assets/bubble-pattern-white.png";
+import bubblePatternWhite from "../../assets/bubble-pattern-white.png";
 import i18n from "../../../locales";
 import { useMethods } from "./useMethods";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
@@ -77,8 +77,16 @@ export const MethodsPage: React.FC = () => {
     return (
         <Layout>
             <TitleContainer aria-label="methods-page-header">
+                <BubbleImg
+                    src={bubblePatternWhite}
+                    alt="Bubble pattern"
+                    aria-hidden="true"
+                    decoding="async"
+                    loading="eager"
+                />
                 <Typography variant="h3">{i18n.t("Methods")}</Typography>
             </TitleContainer>
+
             <MainContainer>
                 <ColumnGridContainer spacing={5} aria-label="methods-container" columns={2}>
                     {methods.map((method, i) => (
@@ -86,9 +94,11 @@ export const MethodsPage: React.FC = () => {
                             <Typography variant="h5" style={{ marginBottom: "10px" }}>
                                 {method.sectionName}
                             </Typography>
+
                             {isExpanded[i] === false ? (
                                 <TextContainer>
                                     <MethodsMarkdown>{method.shortText}</MethodsMarkdown>
+
                                     <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => handleClick(i)}>
                                         {i18n.t("Read more")}
                                     </StyledReadMoreButton>
@@ -96,6 +106,7 @@ export const MethodsPage: React.FC = () => {
                             ) : (
                                 <TextContainer>
                                     <MethodsMarkdown>{method.text}</MethodsMarkdown>
+
                                     <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => handleClick(i)}>
                                         {i18n.t("Read less")}
                                     </StyledReadMoreButton>
@@ -103,8 +114,10 @@ export const MethodsPage: React.FC = () => {
                             )}
                         </Grid>
                     ))}
+
                     <ButtonsGridItem item xs={12} sm={6} aria-label="methods-buttons">
                         <DownloadLink {...abbreviationsLink}>{i18n.t("Abbreviations")}</DownloadLink>
+
                         <DownloadLink {...glossaryLink}>{i18n.t("Glossary")}</DownloadLink>
                     </ButtonsGridItem>
                 </ColumnGridContainer>
@@ -114,17 +127,29 @@ export const MethodsPage: React.FC = () => {
 };
 
 const TitleContainer = styled.div`
-    background: url(${bubblePattern}) no-repeat right top;
     background-color: ${colors.accentPrimary};
     color: white;
     padding: 24px 200px 24px 64px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${props => props.color} url(${mapBackground});
         background-position: center;
     }
+`;
+
+const BubbleImg = styled.img`
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: auto;
+    height: auto;
+    pointer-events: none;
+    opacity: 0.9;
 `;
 
 const ButtonsGridItem = styled(Grid)`

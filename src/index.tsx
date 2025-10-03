@@ -8,6 +8,8 @@ import { Instance } from "./data/entities/Instance";
 import { getD2APiFromInstance } from "./utils/d2-api";
 import { App } from "./webapp/pages/app/App";
 import { D2Api } from "./types/d2-api";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { colors } from "./webapp/pages/app/themes/dhis2.theme";
 
 declare global {
     interface Window {
@@ -37,7 +39,26 @@ const configI18n = ({ keyUiLocale }: { keyUiLocale: string }) => {
     document.documentElement.setAttribute("dir", isLangRTL(keyUiLocale) ? "rtl" : "ltr");
 };
 
+const Loading: React.FC = () => {
+    return (
+        <div
+            style={{
+                height: "200px",
+                display: "flex",
+                position: "relative",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            <CircularProgress style={{ color: colors.accentPrimary }} />
+        </div>
+    );
+};
+
 async function main() {
+    ReactDOM.render(<Loading />, document.getElementById("root"));
+
     const baseUrl = await getBaseUrl();
 
     try {

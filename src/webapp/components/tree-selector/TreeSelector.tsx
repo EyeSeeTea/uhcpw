@@ -245,5 +245,6 @@ const StyledDropdownTextField = styled(DropdownTextField)`
     }
     .MuiInputBase-input {
         caret-color: transparent;
+        flex: 1;
     }
 `;

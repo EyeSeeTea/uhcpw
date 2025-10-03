@@ -771,8 +771,8 @@ export function givenAGeneralContent(): GeneralContent {
         cookies: {
             policyUrl: "https://www.who.int/about/policies/privacy",
         },
-        abbreviations: { file: undefined },
-        glossary: { file: undefined },
+        abbreviations: { url: undefined },
+        glossary: { url: undefined },
     };
 }
 

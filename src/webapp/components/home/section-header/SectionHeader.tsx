@@ -1,13 +1,14 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import bubblePattern from "../../../assets/bubble-pattern.svg";
+import { ReactComponent as Bubble } from "../../../assets/bubble-pattern.svg";
 import { ChevronRightIcon } from "../../icons/ChevronRightIcon";
 
 export interface SectionHeaderProps {
     header: string;
     subheader?: string;
     isBackgroundOnRight?: boolean;
+    isBackgroundOnLeft?: boolean;
     hasArrowIcon?: boolean;
     tag?: string;
     url?: string;
@@ -17,12 +18,15 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     header,
     subheader,
     isBackgroundOnRight,
+    isBackgroundOnLeft,
     hasArrowIcon,
     tag,
     url,
 }) => {
     return (
-        <Header isBackgroundOnRight={isBackgroundOnRight} hasSubheader={!!subheader}>
+        <Header hasSubheader={!!subheader}>
+            {(isBackgroundOnRight || isBackgroundOnLeft) && <StyledBubble isBackgroundOnRight={isBackgroundOnRight} />}
+
             <Row>
                 {url ? (
                     <Title variant="h3">
@@ -31,6 +35,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
                 ) : (
                     <Title variant="h3">{header}</Title>
                 )}
+
                 {tag && (
                     <TagContainer>
                         <Tag>
@@ -38,24 +43,33 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
                         </Tag>
                     </TagContainer>
                 )}
+
                 {hasArrowIcon && <ChevronRightIcon />}
             </Row>
+
             {subheader && <SubTitle variant="h5">{subheader}</SubTitle>}
         </Header>
     );
 };
 
-const Header = styled.div<{ isBackgroundOnRight?: boolean; hasSubheader?: boolean }>`
+const Header = styled.div<{ hasSubheader?: boolean }>`
     height: ${props => (props.hasSubheader ? "150px" : "80px")};
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    background-image: ${props => props.isBackgroundOnRight !== undefined && `url(${bubblePattern})`};
-    background-repeat: no-repeat;
-    background-position: ${props => (props.isBackgroundOnRight ? "right" : "-200px")};
+    position: relative;
     padding: ${props => (props.hasSubheader ? "40px" : "55px")} 0px 0px;
+`;
+
+const StyledBubble = styled(Bubble)<{ isBackgroundOnRight?: boolean }>`
+    position: absolute;
+    right: ${props => (props.isBackgroundOnRight ? "-50px" : "unset")};
+    left: ${props => (props.isBackgroundOnRight ? "unset" : "-200px")};
+    top: 0;
+    height: 190px;
+    pointer-events: none;
+    opacity: 0.9;
 `;
 
 const Title = styled(Typography)`

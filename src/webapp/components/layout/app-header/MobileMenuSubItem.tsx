@@ -65,6 +65,6 @@ export const MobileMenuSubItem = ({ item, children }: SubItemType) => {
 
 const StyledButton = styled(Button)`
     color: white;
-    text-transform: capitalize;
+    text-transform: unset;
     padding: 0px;
 `;

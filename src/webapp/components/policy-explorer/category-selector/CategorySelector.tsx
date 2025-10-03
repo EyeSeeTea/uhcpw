@@ -53,6 +53,11 @@ export const CategorySelector = React.memo(
             containerWidth,
             isSmallScreen,
         } = categorySelectorState;
+
+        const hasSelected = categoriesSelection?.length > 0;
+
+        const finalPlaceholder = hasSelected ? "" : placeholder;
+
         return (
             <Container $fullWidth={fullWidth}>
                 <StyledDropdownTextField
@@ -60,8 +65,9 @@ export const CategorySelector = React.memo(
                     onClick={handleClick}
                     aria-label="Categories"
                     role={"textbox"}
-                    disabled
+                    disabled={disabled}
                     fullWidth={fullWidth}
+                    placeholder={finalPlaceholder}
                     InputProps={{
                         readOnly: isSmallScreen,
                         startAdornment: (
@@ -95,7 +101,7 @@ export const CategorySelector = React.memo(
                                               );
                                           }
                                       })
-                                    : placeholder}
+                                    : ""}
                             </SelectedContainer>
                         ),
                         endAdornment: (
@@ -166,9 +172,7 @@ const StyledButton = styled(Button)<{ right?: number }>`
     font-weight: 400;
 `;
 
-const SelectedContainer = styled.div`
-    width: 100%;
-`;
+const SelectedContainer = styled.div``;
 
 const StyledMenu = styled(Menu)`
     .MuiInputBase-root {
@@ -179,5 +183,10 @@ const StyledMenu = styled(Menu)`
 const StyledDropdownTextField = styled(DropdownTextField)`
     div.MuiInputBase-root {
         border-radius: 20px;
+        color: black;
+    }
+    .MuiInputBase-input {
+        caret-color: transparent;
+        flex: 1;
     }
 `;

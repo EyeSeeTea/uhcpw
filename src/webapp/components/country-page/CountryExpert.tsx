@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import i18n from "../../../locales";
-import bubblePattern from "../../assets/bubble-pattern.svg";
+import { ReactComponent as Bubble } from "../../assets/bubble-pattern.svg";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../domain/entities/Ref";
@@ -15,23 +15,30 @@ export const CountryExpert: React.FC<CountryExpertProps> = ({ countryIds, isRegi
     const { experts } = useCountryExpert(countryIds);
 
     return (
-        <Container aria-label="experts" isRegionalPage={isRegionalPage}>
+        <Container aria-label="experts">
+            {isRegionalPage ? null : <StyledBubble aria-hidden="true" focusable="false" />}
+
             <TitleRow>
                 <Typography variant="h5">{i18n.t("Experts")}</Typography>
             </TitleRow>
+
             <GridContainer container spacing={5}>
                 {experts.map((expert, i) => (
                     <Grid item key={`${expert.firstName}_${expert.lastName}_${i}`} xs={6} md={6} role="listitem">
                         <Row>
                             <Image src={expert.image} alt={`${expert.firstName} ${expert.lastName}`} />
+
                             <ExpertDetailsContainer>
                                 <LatoTypography variant="body1" style={{ fontWeight: "bold" }}>
                                     {i18n.t(`${expert.firstName} ${expert.lastName}`)}
                                 </LatoTypography>
+
                                 <StyledTypography variant="body1">{i18n.t(expert.position)}</StyledTypography>
+
                                 {expert.institution && (
                                     <StyledTypography variant="body1">{i18n.t(expert.institution)}</StyledTypography>
                                 )}
+
                                 <StyledTypography variant="body1">{i18n.t(expert.countryName)}</StyledTypography>
                             </ExpertDetailsContainer>
                         </Row>
@@ -42,13 +49,27 @@ export const CountryExpert: React.FC<CountryExpertProps> = ({ countryIds, isRegi
     );
 };
 
-const Container = styled.div<{ isRegionalPage?: boolean }>`
-    padding: 40px 60px;
-    background: ${props => (props.isRegionalPage ? "white" : `white url(${bubblePattern}) no-repeat right top`)};
-    background-size: contain;
+const Container = styled.div`
+    position: relative;
+    padding: 40px 0px 40px 60px;
+    background: white;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px 0px 0px 16px;
+    }
+`;
+
+const StyledBubble = styled(Bubble)`
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: auto;
+    width: 100%;
+    pointer-events: none;
+    opacity: 0.9;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        width: 260px;
     }
 `;
 
@@ -76,6 +97,8 @@ const Row = styled.div`
     align-items: center;
     gap: 40px;
     margin: 30px 10px 30px 0px;
+    position: relative;
+    z-index: 1;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         flex-direction: column;

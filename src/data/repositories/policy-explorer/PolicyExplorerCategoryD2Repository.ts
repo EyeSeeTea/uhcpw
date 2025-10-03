@@ -6,7 +6,7 @@ import {
     PolicyExplorerSubcategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
-import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../../../domain/utils";
+import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { getMainPagesContent } from "../common/getMainPagesContent";
@@ -14,6 +14,7 @@ import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
 import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
+import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
 
@@ -69,6 +70,15 @@ const PROGRAM_CODE_TO_DATA_ELEMENT_CODE = {
     UHCW_PE_MainGaps_A_PopCov_Name: "population_entitlement_main_gaps",
     UHCW_PE_MainGaps_B_ServCov_Name: "service_coverage_main_gaps",
     UHCW_PE_MainGaps_C_UserCharges_Name: "user_charges_gaps",
+};
+
+export const PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS = {
+    [PROGRAM_CODE_TO_DATA_ELEMENT_CODE.UHCW_PE_PopCov_H_MainGaps_Name]:
+        PROGRAM_CODE_TO_DATA_ELEMENT_CODE.UHCW_PE_MainGaps_A_PopCov_Name,
+    [PROGRAM_CODE_TO_DATA_ELEMENT_CODE.UHCW_PE_ServCov_O_MainGaps_Name]:
+        PROGRAM_CODE_TO_DATA_ELEMENT_CODE.UHCW_PE_MainGaps_B_ServCov_Name,
+    [PROGRAM_CODE_TO_DATA_ELEMENT_CODE.UHCW_PE_UserCharges_G_MainGaps_Name]:
+        PROGRAM_CODE_TO_DATA_ELEMENT_CODE.UHCW_PE_MainGaps_C_UserCharges_Name,
 };
 
 const DATASET_POPULATION_COVERAGE_CATEGORY = "uG2PbDfOc0w";
@@ -264,6 +274,9 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
 
         const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
         const combinedPolicyTablesCategory = this.getCombinedPolicyTablesCategories();
+
+        const deSubstitutor = new DataElementSubstitutor(dataSetSections, PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS);
+
         return [
             ...dataSetSections
                 .filter(({ id }) => CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID !== id)
@@ -281,13 +294,15 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                             id: CATEGORY_DATASET_TO_PROGRAM[section.id as keyof typeof CATEGORY_DATASET_TO_PROGRAM],
                         }) || sectionFallback;
 
+                    const subDataElements = deSubstitutor.substituteSource(section.dataElements);
+
                     return {
                         id: section.id,
                         name: displayName.replace("Policy Explorer - ", ""),
                         subcategories:
                             CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
                                 ? TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type }))
-                                : this.sortSubcategories(dataElements, sectionsEvent, section.dataElements),
+                                : this.sortSubcategories(dataElements, sectionsEvent, subDataElements),
                         description: notes,
                     };
                 }),

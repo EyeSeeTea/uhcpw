@@ -49,7 +49,7 @@ export const chart_OB4SCQfCzwz_Customizations: ChartCustomization = {
     ...yAxisformatNumberLabel,
     sortLegendByLastDataPoint: true,
     currencyOfCountryYAxis: (countryCurrencyCode: string) => {
-        return { title: { text: `Constant LAY ${countryCurrencyCode} per person` } };
+        return { title: { text: `Constant ${countryCurrencyCode} per person` } };
     },
     getMaxYAxisAndYTickInterval: (series: SeriesColumnOptions[] | undefined) => {
         return getMaxYAxisAndYTickIntervalForLineAndColumns(series);
