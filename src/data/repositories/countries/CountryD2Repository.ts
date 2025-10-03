@@ -224,6 +224,7 @@ export class CountryD2Repository implements CountryRepository {
             name: mapToWhoCountryName(orgUnit.id, orgUnit.shortName),
             longName: mapToWhoCountryName(orgUnit.id, orgUnit.name),
             code: mapToWhoCountryCode(orgUnit.code),
+            iso3Code: orgUnit.code,
             coordinates: customGeometry ? this.buildPoint(customGeometry) : undefined,
             status,
             parents: orgUnit.organisationUnitGroups

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Option } from "../../dropdown/Option";
 import { useHistory, useLocation } from "react-router-dom";
-import { useAppContext } from "../../../contexts/app-context";
 import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
@@ -9,7 +8,6 @@ import { Id } from "../../../../domain/entities/Ref";
 export function useAppHeader(isScreenRotated?: boolean) {
     const history = useHistory();
     const { pathname } = useLocation();
-    const { compositionRoot } = useAppContext();
     const { isXs } = useBreakpoint();
     const isSmallScreen = useIsSmallScreen();
 
@@ -17,7 +15,6 @@ export function useAppHeader(isScreenRotated?: boolean) {
 
     const [openForSmallScreens, setOpeForSmallScreens] = useState(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [regionalReport, setRegionalReport] = useState<string>("");
 
     const handleClose = useCallback(() => {
         setAnchorEl(null);
@@ -87,16 +84,6 @@ export function useAppHeader(isScreenRotated?: boolean) {
     const uhcwLogoWidth = useMemo(() => (isXs ? 130 : 180), [isXs]);
 
     useEffect(() => {
-        compositionRoot.home.getRegionalReportLink.execute().run(
-            regionalReportLink => setRegionalReport(regionalReportLink),
-            error => {
-                setRegionalReport("");
-                console.error(error);
-            }
-        );
-    }, [compositionRoot.home.getRegionalReportLink]);
-
-    useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
                 onCloseMenu();
@@ -120,7 +107,6 @@ export function useAppHeader(isScreenRotated?: boolean) {
     );
 
     return {
-        regionalReport,
         anchorEl,
         isHomePage,
         isCountryPage,

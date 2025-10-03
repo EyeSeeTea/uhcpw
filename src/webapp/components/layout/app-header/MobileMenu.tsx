@@ -15,7 +15,6 @@ type MobileMenuProps = {
 export const MobileMenu: React.FC<MobileMenuProps> = props => {
     const { isScreenRotated = false } = props;
     const {
-        regionalReport,
         anchorEl,
         isHomePage,
         isCountryPage,
@@ -60,7 +59,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = props => {
                 open ? (
                     <MenuContainer ref={menuRef}>
                         <MenuItems
-                            regionalReport={regionalReport}
                             isHomePage={isHomePage}
                             isCountryPage={isCountryPage}
                             goToHome={goToHome}
@@ -87,7 +85,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = props => {
                     }}
                 >
                     <MenuItems
-                        regionalReport={regionalReport}
                         isHomePage={isHomePage}
                         isCountryPage={isCountryPage}
                         goToHome={goToHome}

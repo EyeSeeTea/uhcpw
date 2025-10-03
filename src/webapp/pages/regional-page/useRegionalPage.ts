@@ -11,7 +11,6 @@ import { countriesToGeoJson } from "../../components/home/map/useMap";
 import { useHistory } from "react-router-dom";
 import { ChecklistPolicyMakersState, useRegionalPageInfo } from "./useRegionalPageInfo";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
-import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Region } from "../../../domain/entities/region/Region";
 import { RegionNumbersState, useRegionNumbers } from "./useRegionNumbers";
 
@@ -42,13 +41,13 @@ export type RegionalPageState = {
     menuItemsConfig: RegionalMenuItemConfig[];
     handleHeaderItemClick: (item: RegionalMenuItem) => void;
     regionMap: RegionMapState;
-    financialProtectionStatus: FinancialProtectionStatus | undefined;
     policyChecklist: {
         policyChecklist: ChecklistPolicyMakersState | undefined;
         isLoading: boolean;
         onDownload: (checklist: string[], selections: boolean[]) => void;
     };
     regionNumbers: RegionNumbersState;
+    highlightedISO3Countries: string[];
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -64,6 +63,7 @@ export function useRegionalPage(): RegionalPageState {
         features: [],
     });
     const [selectedRegion, setSelectedRegion] = useState<Region | undefined>(undefined);
+    const [highlightedISO3Countries, setHighlightedISO3Countries] = useState<string[]>([]);
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
@@ -84,7 +84,7 @@ export function useRegionalPage(): RegionalPageState {
 
     const menuItemsConfig: RegionalMenuItemConfig[] = useMemo(() => {
         return [
-            { id: "regionMap", label: i18n.t("Region at a glance"), ref: refs.regionMap },
+            { id: "regionMap", label: i18n.t("The region at a glance"), ref: refs.regionMap },
             { id: "numbers", label: i18n.t("Numbers"), ref: refs.numbers },
             { id: "policyChecklist", label: i18n.t("Policy checklist"), ref: refs.policyChecklist },
             { id: "resources", label: i18n.t("Resources"), ref: refs.resources },
@@ -115,7 +115,12 @@ export function useRegionalPage(): RegionalPageState {
                 country => countryIdsInRegion.includes(country.id) && country.summary
             );
 
+            const iso3CountriesInRegion = countries
+                .filter(country => countryIdsInRegion.includes(country.id) && country.iso3Code)
+                .map(country => country.iso3Code);
+
             setMarkers(countriesToGeoJson(countriesWithSummary));
+            setHighlightedISO3Countries(iso3CountriesInRegion);
             setSelectedRegion(region);
             onRegionChange(newRegion);
         },
@@ -137,7 +142,6 @@ export function useRegionalPage(): RegionalPageState {
     );
 
     return {
-        financialProtectionStatus: info?.financialProtectionStatus,
         isSmallScreen: isSmallScreen,
         menuItemsConfig: menuItemsConfig,
         refs: refs,
@@ -158,5 +162,6 @@ export function useRegionalPage(): RegionalPageState {
             onDownload: onDownloadPolicyChecklist,
         },
         regionNumbers: regionNumbers,
+        highlightedISO3Countries: highlightedISO3Countries,
     };
 }

@@ -1,4 +1,3 @@
-import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
 import { RegionInfo } from "../../../domain/entities/region/RegionInfo";
@@ -13,7 +12,6 @@ const REGION_INFO_DATA_ELEMENT_IDS = {
         title: "SfkPMilMktT",
         description: "sOtI7SGMhsT",
     },
-    financialProtectionStatus: "btOzN3badgN",
     numbersPanelTitles: {
         panelOne: "DumylnVyci4",
         panelTwo: "r5eemGxoRS6",
@@ -49,21 +47,11 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
         const getDataValue = (dataElementId: Id): string =>
             event.dataValues.find(dv => dv.dataElement === dataElementId)?.value || "";
 
-        const rawfinancialProtectionStatus = getDataValue(REGION_INFO_DATA_ELEMENT_IDS.financialProtectionStatus);
-
-        const financialProtectionStatus: FinancialProtectionStatus =
-            rawfinancialProtectionStatus === "Green"
-                ? "Strong"
-                : rawfinancialProtectionStatus === "Red"
-                ? "Weak"
-                : "Gaps";
-
         return {
             mainMapPanelContent: {
                 title: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.title),
                 description: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.description),
             },
-            financialProtectionStatus: financialProtectionStatus,
             numbersPanelTitles: {
                 panelOne: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelOne),
                 panelTwo: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelTwo),

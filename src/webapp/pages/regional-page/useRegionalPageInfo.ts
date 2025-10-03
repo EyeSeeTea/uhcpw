@@ -6,7 +6,6 @@ import {
     RegionMainMapPanelContent,
     RegionNumbersPanelTitles,
 } from "../../../domain/entities/region/RegionInfo";
-import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Future } from "../../../domain/entities/Future";
 import { ChecklistPolicyMakers } from "../../../domain/entities/region/ChecklistPolicyMakers";
 
@@ -15,7 +14,6 @@ export type ChecklistPolicyMakersState = ChecklistPolicyMakers & {
 };
 
 type RegionalPageInfo = {
-    financialProtectionStatus: FinancialProtectionStatus;
     mainMapPanelContent: RegionMainMapPanelContent;
     numbersPanelTitles: RegionNumbersPanelTitles;
     checklistPolicyMakers: ChecklistPolicyMakersState;
@@ -78,7 +76,6 @@ function buildRegionalPageInfo(
     checklistPolicyMakers: ChecklistPolicyMakers
 ): RegionalPageInfo {
     return {
-        financialProtectionStatus: regionalInfo.financialProtectionStatus,
         mainMapPanelContent: regionalInfo.mainMapPanelContent,
         numbersPanelTitles: regionalInfo.numbersPanelTitles,
         checklistPolicyMakers: {

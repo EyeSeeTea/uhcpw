@@ -10,6 +10,11 @@ export const colors = {
 
     gradientPrimaryMobile: "linear-gradient(90deg, #185698 0%, #0AA0F4 100%)",
 
+    gradientOrange: "linear-gradient(90deg, #FF9355 0%, #FFBC88 100%)",
+    gradientBlue: "linear-gradient(90deg, #008AD7 0%, #C4E4F6 100%)",
+    gradientBlueLight: "linear-gradient(90deg, #008AD7 0%, #E5F3FB 100%)",
+    gradientBlueLight2: "linear-gradient(90deg, #80C4EB 0%, #F2F9FD 100%)",
+
     accentSecondary: "#fb8c00",
     accentSecondaryLight: "#f57c00",
     accentSecondaryDark: "#ff9800",
@@ -29,15 +34,37 @@ export const colors = {
     info: "#EAF4FF",
     chartContent: "#212934",
 
-    orange: "#FF9355",
-    blue: "#0089D6",
-    darkBlue: "#0360A6",
-    green: "#4FAD56",
     carouselBackground: "#E5E5EA",
     carouselDotBackground: "#B6B6B6",
 
     regionalPageBlueDark: "#96dcf8",
     regionalPageBlueLight: "#caeefb",
+
+    darkBlue: "#0360A7",
+    blue: "#008AD7",
+    blue50: "#80C4EB",
+    blue20: "#CCE8F7",
+    blue10: "#E5F3FB",
+    blue5: "#F2F9FD",
+
+    red: "#C42929",
+    orange: "#FF8D4E",
+    green: "#4FAD56",
+
+    navyBlue: "#002060",
+    purple: "#67389A",
+    yellow: "#FFC844",
+    darkRed: "#920C09",
+    peach: "#FFDFBE",
+
+    darkGrey: "#B3B3B3",
+    lightGrey: "#F8F8F8",
+
+    black100: "#242626",
+    black70: "#666767",
+    black50: "#929293",
+    black30: "#BDBEBE",
+    black10: "#E9E9E9",
 };
 
 export const palette = {

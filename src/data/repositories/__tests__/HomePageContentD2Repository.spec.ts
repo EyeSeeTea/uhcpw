@@ -104,8 +104,6 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
     expect(homePageContent.analysis.regional.text).toBe(
         "Compare financial protection indicators, identify gaps in coverage, explore good practice"
     );
-    expect(homePageContent.analysis.regional.buttonText).toBe("Regional report");
-    expect(homePageContent.analysis.regional.buttonLink).toBe("https://cmyn.short.gy/regionalreport");
 
     expect(homePageContent.methods.title).toBe("Methods");
     expect(homePageContent.methods.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/#/methods");

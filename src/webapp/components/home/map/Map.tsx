@@ -36,6 +36,9 @@ export type MapProps = {
     regionMainMapPanelContent?: RegionMainMapPanelContent;
     isMobile?: boolean;
     panelMaxWidth?: number;
+    className?: string;
+    highlightedISO3Countries?: string[];
+    isRegionalPage?: boolean;
 };
 
 export const Map: React.FC<MapProps> = ({
@@ -44,6 +47,9 @@ export const Map: React.FC<MapProps> = ({
     regionMainMapPanelContent,
     isMobile = false,
     panelMaxWidth,
+    className,
+    highlightedISO3Countries,
+    isRegionalPage = false,
 }) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
@@ -87,12 +93,27 @@ export const Map: React.FC<MapProps> = ({
                         mapState.onSelectedCountryChange(feature.properties);
                     });
                 });
+
+                if (highlightedISO3Countries && highlightedISO3Countries.length > 0) {
+                    mapRef.current.addLayer({
+                        id: "Countries-selected",
+                        type: "fill",
+                        source: "esriCountries",
+                        "source-layer": "Countries",
+                        paint: {
+                            "fill-color": "#80C4EB",
+                            "fill-opacity": 0.5,
+                        },
+                        filter: ["in", "ISO_3_CODE", ...highlightedISO3Countries],
+                    });
+                }
             });
+
             mainContainerRef.current.addEventListener("mouseleave", () => {
                 mapState.onSelectedCountryChange(undefined);
             });
         }
-    }, [mapState, isMobile]);
+    }, [mapState, isMobile, highlightedISO3Countries]);
 
     const zoomIn = useCallback(() => {
         const newZoom = mapRef.current.getZoom() * 1.25;
@@ -105,11 +126,11 @@ export const Map: React.FC<MapProps> = ({
     }, []);
 
     return (
-        <Container ref={mainContainerRef}>
+        <Container ref={mainContainerRef} className={className}>
             <MapContent ref={mapContainerRef} />
             <MapSidePanel maxWidth={panelMaxWidth}>
                 {mapState.selectedCountry ? (
-                    <CountryPanel country={mapState.selectedCountry} />
+                    <CountryPanel country={mapState.selectedCountry} isRegionalPage={isRegionalPage} />
                 ) : regionMainMapPanelContent ? (
                     <RegionMapPanel mainPanelContent={regionMainMapPanelContent} />
                 ) : (

@@ -12,7 +12,6 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
-import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ResourcesCarousel } from "../../components/resources-carousel/ResourcesCarousel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
@@ -20,8 +19,6 @@ export const MobileHomePage: React.FC = React.memo(() => {
     const mapState = useHomePageMap();
     const { resources, news } = useHomeResources();
     const homePageContent = useHomePageContent();
-    const { redirectWithPageView } = useAnalytics();
-    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
         <React.Fragment>
@@ -68,17 +65,6 @@ export const MobileHomePage: React.FC = React.memo(() => {
                     <BoxLink href={homePageContent.analysis.countries.buttonLink || ""}>
                         <Box color={colors.darkBlue}>
                             <StyledTitleTypography>{i18n.t("Countries & Areas")}</StyledTitleTypography>
-                        </Box>
-                    </BoxLink>
-
-                    <BoxLink
-                        target="_blank"
-                        href={homePageContent.analysis.regional.buttonLink || ""}
-                        rel="noreferrer"
-                        onClick={regionalReportPageView}
-                    >
-                        <Box color={colors.green}>
-                            <StyledTitleTypography>{i18n.t("Regional report")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 

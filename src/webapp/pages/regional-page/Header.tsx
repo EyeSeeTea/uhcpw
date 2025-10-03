@@ -4,18 +4,14 @@ import styled from "styled-components";
 
 import i18n from "../../../locales";
 import { Option } from "../../components/dropdown/Option";
-import { getBackgroundColorByFinancialProtectionStatus } from "../country/utils";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../domain/entities/Ref";
-import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { MenuDropdown } from "../../components/menu-dropdown/MenuDropdown";
-import { UmbrellaIcon } from "../../components/umbrella-icon/UmbrellaIcon";
 import { RegionalMenuItem, RegionalMenuItemConfig } from "./useRegionalPage";
 import { colors } from "../app/themes/dhis2.theme";
 
 type HeaderType = {
     selectedRegion: Id | undefined;
-    regionStatus?: FinancialProtectionStatus;
     onRegionChange: (value: Id) => void;
     regionOptions: Option<Id>[];
     handleHeaderItemClick: (item: RegionalMenuItem) => void;
@@ -26,7 +22,6 @@ type HeaderType = {
 export const Header: React.FC<HeaderType> = props => {
     const {
         selectedRegion,
-        regionStatus,
         onRegionChange,
         regionOptions,
         handleHeaderItemClick,
@@ -35,7 +30,7 @@ export const Header: React.FC<HeaderType> = props => {
     } = props;
 
     return (
-        <Container aria-label="regional-page-header" status={regionStatus}>
+        <Container aria-label="regional-page-header">
             <DropdownContainer>
                 <MenuDropdown
                     id="region"
@@ -47,7 +42,6 @@ export const Header: React.FC<HeaderType> = props => {
                     forceRotation={isSmallScreen}
                     fullScreen={isSmallScreen}
                 />
-                {regionStatus && <UmbrellaIcon status={regionStatus} />}
             </DropdownContainer>
 
             <ButtonsContainer>
@@ -61,13 +55,12 @@ export const Header: React.FC<HeaderType> = props => {
     );
 };
 
-const Container = styled.div<{ status: FinancialProtectionStatus | undefined }>`
+const Container = styled.div`
     display: flex;
     justify-content: space-between;
     height: 80px;
     align-items: center;
-    background: ${props =>
-        props.status ? getBackgroundColorByFinancialProtectionStatus(props.status) : colors.accentPrimary};
+    background: ${colors.navyBlue};
     padding-inline-start: 64px;
     padding-inline-end: 80px;
 
@@ -96,6 +89,10 @@ const DropdownContainer = styled.div`
             width: 90px;
         }
     }
+
+    div.MuiInputBase-root {
+        border-radius: 8px;
+    }
 `;
 
 const ButtonsContainer = styled.div`
@@ -109,6 +106,7 @@ const ButtonsContainer = styled.div`
 
 const ButtonText = styled(Typography)`
     text-transform: none;
-    font-weight: 400;
+    font-weight: 600;
     white-space: nowrap;
+    color: ${colors.white};
 `;

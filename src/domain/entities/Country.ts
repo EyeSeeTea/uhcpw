@@ -6,6 +6,7 @@ export type Country = {
     name: string;
     longName: string;
     code: string;
+    iso3Code: string;
     status: FinancialProtectionStatus;
     coordinates?: [number, number];
     parents: { id: string; name: string }[];

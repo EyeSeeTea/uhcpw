@@ -38,7 +38,6 @@ import { GetIndicatorExplorerPageContentUseCase } from "./domain/usecases/indica
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
 import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
-import { GetRegionalReportLinkUseCase } from "./domain/usecases/GetRegionalReportLinkUseCase";
 import { GeneralContentD2Repository } from "./data/repositories/GeneralContentD2Repository";
 import { GetGeneralContentUseCase } from "./domain/usecases/GetGeneralContentUseCase";
 import { GoogleAnalyticsRepository } from "./data/repositories/GoogleAnalyticsRepository";
@@ -139,7 +138,6 @@ export function getCompositionRoot(
         },
         home: {
             getPageContent: new GetHomePageContentUseCase(repositories.homePage),
-            getRegionalReportLink: new GetRegionalReportLinkUseCase(repositories.homePage),
         },
         countryPage: {
             getSliderInfo: new GetSliderInfoUseCase(repositories.countryPageInfo),

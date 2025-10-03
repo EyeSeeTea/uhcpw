@@ -6,6 +6,7 @@ export type Region = {
     code: string;
     countries?: Id[];
     linkedOrgUnitId?: Id;
+    isInRegionalPage: boolean;
 };
 
 export const ORG_UNIT_GROUP_IDS = {
@@ -45,10 +46,10 @@ export function isRegionCodeKey(key: string): key is RegionCodeKey {
 }
 export const REGION_NAMES = {
     WESTERN_BALKANS: "Western Balkans",
-    EUROPEAN_UNION: "EU",
-    EASTERN_EUROPE_AND_CENTRAL_ASIA: "Eastern Europe and central Asia",
+    EUROPEAN_UNION: "European Union",
+    EASTERN_EUROPE_AND_CENTRAL_ASIA: "Eastern Europe & central Asia",
     EU_CANDIDATE_COUNTRIES: "EU candidate countries",
-    EUROPEAN_REGION: "European region",
+    EUROPEAN_REGION: "European Region",
 } as const;
 
 export type RegionNameKey = keyof typeof REGION_NAMES;

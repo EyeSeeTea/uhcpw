@@ -5,11 +5,12 @@ import { useRegionalPage } from "./useRegionalPage";
 import { Header } from "./Header";
 import { Map } from "../../components/home/map/Map";
 import { useRegionalPageMap } from "./useRegionalPageMap";
-import { Divider } from "../../components/home/common/Divider";
 import { NumbersSection } from "./NumbersSection";
 import { PolicyChecklistSection } from "./PolicyChecklistSection";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
+import { colors } from "../app/themes/dhis2.theme";
+import i18n from "../../../locales";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -19,9 +20,9 @@ export const RegionalPage: React.FC = () => {
         menuItemsConfig,
         refs,
         regionMap,
-        financialProtectionStatus,
         policyChecklist,
         regionNumbers,
+        highlightedISO3Countries,
     } = useRegionalPage();
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;
@@ -35,17 +36,34 @@ export const RegionalPage: React.FC = () => {
                 regionOptions={regionOptions}
                 handleHeaderItemClick={handleHeaderItemClick}
                 menuItemsConfig={menuItemsConfig}
-                regionStatus={financialProtectionStatus}
                 isSmallScreen={isSmallScreen}
             />
 
             <MapSection ref={refs.regionMap}>
-                <Map mapState={mapState} regionMainMapPanelContent={mainPanelContent} />
+                <SectionTitleDivider>
+                    <SectionTitle>
+                        {i18n.t(`{{region}} at a glance`, {
+                            region: selectedRegion?.name,
+                        })}
+                    </SectionTitle>
+                </SectionTitleDivider>
+
+                <Map
+                    mapState={mapState}
+                    regionMainMapPanelContent={mainPanelContent}
+                    highlightedISO3Countries={highlightedISO3Countries}
+                    className="region-map"
+                    isRegionalPage
+                />
             </MapSection>
 
-            <Divider financialProtectionStatus={financialProtectionStatus} />
-
             <section ref={refs.numbers}>
+                <SectionTitleDivider>
+                    <SectionTitle>
+                        {i18n.t("Numbers: financial hardship, unmet need and spending on health")}
+                    </SectionTitle>
+                </SectionTitleDivider>
+
                 <NumbersSection
                     configs={regionNumbers.configs}
                     tabValue={regionNumbers.tabValue}
@@ -56,9 +74,11 @@ export const RegionalPage: React.FC = () => {
                 />
             </section>
 
-            <Divider financialProtectionStatus={financialProtectionStatus} />
-
             <section ref={refs.policyChecklist}>
+                <SectionTitleDivider>
+                    <SectionTitle>{i18n.t("Progress is possible: a checklist for policy-makers")}</SectionTitle>
+                </SectionTitleDivider>
+
                 <PolicyChecklistSection
                     checklist={policyChecklist?.policyChecklist?.checklist}
                     progressInfo={policyChecklist?.policyChecklist?.progressInfo}
@@ -66,15 +86,19 @@ export const RegionalPage: React.FC = () => {
                 />
             </section>
 
-            <Divider financialProtectionStatus={financialProtectionStatus} />
-
             <section ref={refs.resources}>
+                <SectionTitleDivider isLighter>
+                    <SectionTitle>{i18n.t("Resources")}</SectionTitle>
+                </SectionTitleDivider>
+
                 <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
             </section>
 
-            <Divider financialProtectionStatus={financialProtectionStatus} />
-
             <section ref={refs.experts}>
+                <SectionTitleDivider isLighter>
+                    <SectionTitle>{i18n.t("Expert network")}</SectionTitle>
+                </SectionTitleDivider>
+
                 <CountryExpert countryIds={selectedRegion?.countries || []} isRegionalPage />
             </section>
         </Layout>
@@ -84,4 +108,21 @@ export const RegionalPage: React.FC = () => {
 const MapSection = styled.section`
     height: 80vh;
     min-height: 620px;
+
+    .region-map {
+        height: calc(100% - 65px);
+    }
+`;
+
+const SectionTitle = styled.h2`
+    color: ${colors.white};
+    margin: 0;
+    margin-left: 64px;
+`;
+
+const SectionTitleDivider = styled.div<{ isLighter?: boolean }>`
+    background: ${props => (props.isLighter ? colors.gradientBlueLight2 : colors.gradientBlueLight)};
+    height: 60px;
+    margin-block: 5px;
+    align-content: center;
 `;

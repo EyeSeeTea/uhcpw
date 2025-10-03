@@ -49,6 +49,9 @@ export class RegionD2Repository implements RegionRepository {
                 code: regionCodeById.get(id) || "Unknown Region Code",
                 countries: orgUnitGroup.organisationUnits.map(ou => ou.id),
                 linkedOrgUnitId: linkedOrgUnitId,
+
+                // TODO: get this value from DHIS2 to show or not show the region in the regional page
+                isInRegionalPage: true,
             };
         }, []);
     }
