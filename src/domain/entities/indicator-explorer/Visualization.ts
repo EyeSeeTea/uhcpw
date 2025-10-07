@@ -8,6 +8,7 @@ export interface VisualizationExtra {
     friendlyName: string;
     countryPageName?: string;
     downloadedFileName?: string;
+    regionalPageName?: string;
     categoryTag?: string;
     notes?: string;
     maxCountryFilter?: number;

@@ -9,6 +9,7 @@ import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { FullScreenDialog } from "../dialog/FullScreenDialog";
 import { Id } from "../../../domain/entities/Ref";
+import { useHistory } from "react-router-dom";
 
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 
@@ -21,7 +22,7 @@ interface VisualizationPluginProps {
     regions?: Id[];
     currentCountryOrRegion?: Id;
     withoutBackground?: boolean;
-    useHeaderForCountryPage?: boolean;
+    useHeaderForCountryOrRegionalPage?: boolean;
     noDataMessage?: string;
     onDownloadImage?: () => void;
     isScreenshot?: boolean;
@@ -34,6 +35,7 @@ interface VisualizationPluginProps {
     onLoadingChange?: (loading: boolean) => void;
     forcePluginFullScreen?: boolean;
     showDialogInFullScreen?: boolean;
+    isRegionalPage?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -45,7 +47,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         countries,
         regions = EMPTY_REGIONS,
         withoutBackground = false,
-        useHeaderForCountryPage = false,
+        useHeaderForCountryOrRegionalPage = false,
         noDataMessage = "",
         onDownloadImage,
         isScreenshot = false,
@@ -57,17 +59,19 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         onLoadingChange,
         forcePluginFullScreen = false,
         showDialogInFullScreen = false,
+        isRegionalPage = false,
     } = props;
 
+    const history = useHistory();
     const { sendEvent } = useAnalytics();
-    const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
+    const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData({
         visualizationId,
         years,
-        countries,
-        regions,
+        countryIds: countries,
+        regionIds: regions,
         currentCountryOrRegion,
-        visualizationName
-    );
+        visualizationName,
+    });
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const [openFullScreenDialog, setOpenFullScreenDialog] = React.useState<boolean | undefined>();
@@ -116,11 +120,11 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 contentId: chartData.friendlyName,
             });
             downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
-                backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
+                backgroundColor: useHeaderForCountryOrRegionalPage ? "white" : "#f1f9fc",
                 exclusionClasses: ["download-button", "info-button", "category"],
             });
         }
-    }, [chartData, sendEvent, analyticsPageTitle, useHeaderForCountryPage]);
+    }, [chartData, sendEvent, analyticsPageTitle, useHeaderForCountryOrRegionalPage]);
 
     const downloadExcel = React.useCallback(() => {
         if (chartData.kind === "Loaded") {
@@ -146,11 +150,15 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }
     }, [onDownloadImage, onDirectDownloadImage]);
 
+    const goToIndicatorExplorer = useCallback(() => {
+        history.push(`/indicator-explorer?indicator=${visualizationId}&countriesAndAreas=${countries}&years=${years}`);
+    }, [countries, history, visualizationId, years]);
+
     return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
         <VisualizationPluginContainer
             ref={ref}
             withoutBackground={withoutBackground}
-            marginStart={!useHeaderForCountryPage && !isScreenshot}
+            marginStart={!useHeaderForCountryOrRegionalPage && !isScreenshot}
             paddingEnd={paddingEnd}
             fullscreen={openFullScreenDialog || false}
         >
@@ -164,7 +172,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 onDownloadImage={isScreenshot ? undefined : handleDownloadImage}
                 onShowInfo={isScreenshot ? undefined : onShowInfo}
                 onCloseInfo={isScreenshot ? undefined : onCloseInfo}
-                useHeaderForCountryPage={useHeaderForCountryPage || (openFullScreenDialog && isMobile)}
+                useHeaderForCountryOrRegionalPage={
+                    useHeaderForCountryOrRegionalPage || (openFullScreenDialog && isMobile)
+                }
                 currentCountryOrRegion={currentCountryOrRegion}
                 countries={chartData.countries}
                 showCountryTag={chartData.visualizations[0]?.showCountryTag}
@@ -174,6 +184,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 }
                 onClose={openFullScreenDialog && isMobile ? handleCloseFullScreen : undefined}
                 showDialogInFullScreen={openFullScreenDialog || showDialogInFullScreen}
+                isRegionalPage={isRegionalPage}
+                goToIndicatorExplorer={goToIndicatorExplorer}
             />
             <ChartPlugin
                 key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
@@ -260,7 +272,7 @@ const Container = styled.div<{
 `;
 
 const Center = styled.div`
-    height: 200px;
+    height: 520px;
     display: flex;
     position: relative;
     flex-direction: column;

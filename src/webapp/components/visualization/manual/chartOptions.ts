@@ -28,7 +28,6 @@ export interface ChartSource {
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
-    currentRegion?: Id;
     currentYear?: string;
     isLatestCOVID19?: boolean;
 }
@@ -39,7 +38,6 @@ export interface ChartSourceMultiple {
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
-    currentRegion?: Id;
     currentYear?: string;
     isLatestCOVID19?: boolean;
 }

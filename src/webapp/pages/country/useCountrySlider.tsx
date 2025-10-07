@@ -113,22 +113,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               kind: "graph",
                               countryId: countryId,
                               title: sliderInfo?.sliderOne || "",
-                              graphOne: {
-                                  visualizationId: "jFtGKQIQTGp",
-                                  visualizationName:
-                                      VisualizationsSeeds["jFtGKQIQTGp"]?.countryPageName ||
-                                      VisualizationsSeeds["jFtGKQIQTGp"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId],
-                              },
-                              graphTwo: {
-                                  visualizationId: "dbc87Ljw8uN",
-                                  visualizationName:
-                                      VisualizationsSeeds["dbc87Ljw8uN"]?.countryPageName ||
-                                      VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: countriesAndSubregions.map(({ id }) => id),
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "jFtGKQIQTGp",
+                                      visualizationName:
+                                          VisualizationsSeeds["jFtGKQIQTGp"]?.countryPageName ||
+                                          VisualizationsSeeds["jFtGKQIQTGp"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId],
+                                  },
+                                  {
+                                      visualizationId: "dbc87Ljw8uN",
+                                      visualizationName:
+                                          VisualizationsSeeds["dbc87Ljw8uN"]?.countryPageName ||
+                                          VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: countriesAndSubregions.map(({ id }) => id),
+                                  },
+                              ],
                           },
                       },
                       {
@@ -139,22 +141,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countryId,
                               kind: "graph",
                               title: sliderInfo?.sliderTwo || "",
-                              graphOne: {
-                                  visualizationId: "Y31jQX5PVdI",
-                                  visualizationName:
-                                      VisualizationsSeeds["Y31jQX5PVdI"]?.countryPageName ||
-                                      VisualizationsSeeds["Y31jQX5PVdI"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId],
-                              },
-                              graphTwo: {
-                                  visualizationId: "NOukqSxCI63",
-                                  visualizationName:
-                                      VisualizationsSeeds["NOukqSxCI63"]?.countryPageName ||
-                                      VisualizationsSeeds["NOukqSxCI63"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: countriesAndSubregions.map(({ id }) => id),
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "Y31jQX5PVdI",
+                                      visualizationName:
+                                          VisualizationsSeeds["Y31jQX5PVdI"]?.countryPageName ||
+                                          VisualizationsSeeds["Y31jQX5PVdI"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId],
+                                  },
+                                  {
+                                      visualizationId: "NOukqSxCI63",
+                                      visualizationName:
+                                          VisualizationsSeeds["NOukqSxCI63"]?.countryPageName ||
+                                          VisualizationsSeeds["NOukqSxCI63"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: countriesAndSubregions.map(({ id }) => id),
+                                  },
+                              ],
                           },
                       },
                       {
@@ -165,22 +169,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countryId,
                               kind: "graph",
                               title: sliderInfo?.sliderThree || "",
-                              graphOne: {
-                                  visualizationId: "geNXcoXc3mf",
-                                  visualizationName:
-                                      VisualizationsSeeds["geNXcoXc3mf"]?.countryPageName ||
-                                      VisualizationsSeeds["geNXcoXc3mf"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId],
-                              },
-                              graphTwo: {
-                                  visualizationId: "GimM6ANOKhd",
-                                  visualizationName:
-                                      VisualizationsSeeds["GimM6ANOKhd"]?.countryPageName ||
-                                      VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: countriesAndSubregions.map(({ id }) => id),
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "geNXcoXc3mf",
+                                      visualizationName:
+                                          VisualizationsSeeds["geNXcoXc3mf"]?.countryPageName ||
+                                          VisualizationsSeeds["geNXcoXc3mf"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId],
+                                  },
+                                  {
+                                      visualizationId: "GimM6ANOKhd",
+                                      visualizationName:
+                                          VisualizationsSeeds["GimM6ANOKhd"]?.countryPageName ||
+                                          VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: countriesAndSubregions.map(({ id }) => id),
+                                  },
+                              ],
                           },
                       },
                       {
@@ -191,22 +197,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countryId,
                               kind: "graph",
                               title: sliderInfo?.sliderFour || "",
-                              graphOne: {
-                                  visualizationId: "hpO1ZyFXpCz",
-                                  visualizationName:
-                                      VisualizationsSeeds["hpO1ZyFXpCz"]?.countryPageName ||
-                                      VisualizationsSeeds["hpO1ZyFXpCz"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId],
-                              },
-                              graphTwo: {
-                                  visualizationId: "q5ldoFcgkSn",
-                                  visualizationName:
-                                      VisualizationsSeeds["q5ldoFcgkSn"]?.countryPageName ||
-                                      VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [countryId],
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "hpO1ZyFXpCz",
+                                      visualizationName:
+                                          VisualizationsSeeds["hpO1ZyFXpCz"]?.countryPageName ||
+                                          VisualizationsSeeds["hpO1ZyFXpCz"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId],
+                                  },
+                                  {
+                                      visualizationId: "q5ldoFcgkSn",
+                                      visualizationName:
+                                          VisualizationsSeeds["q5ldoFcgkSn"]?.countryPageName ||
+                                          VisualizationsSeeds["q5ldoFcgkSn"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [countryId],
+                                  },
+                              ],
                           },
                       },
                       {
@@ -217,22 +225,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countryId,
                               kind: "graph",
                               title: sliderInfo?.sliderFive || "",
-                              graphOne: {
-                                  visualizationId: "VB7bdJ8ZXya",
-                                  visualizationName:
-                                      VisualizationsSeeds["VB7bdJ8ZXya"]?.countryPageName ||
-                                      VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: countriesAndSubregions.map(({ id }) => id),
-                              },
-                              graphTwo: {
-                                  visualizationId: "mcNfvQaVbfy",
-                                  visualizationName:
-                                      VisualizationsSeeds["mcNfvQaVbfy"]?.countryPageName ||
-                                      VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: countriesAndSubregions.map(({ id }) => id),
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "VB7bdJ8ZXya",
+                                      visualizationName:
+                                          VisualizationsSeeds["VB7bdJ8ZXya"]?.countryPageName ||
+                                          VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: countriesAndSubregions.map(({ id }) => id),
+                                  },
+                                  {
+                                      visualizationId: "mcNfvQaVbfy",
+                                      visualizationName:
+                                          VisualizationsSeeds["mcNfvQaVbfy"]?.countryPageName ||
+                                          VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: countriesAndSubregions.map(({ id }) => id),
+                                  },
+                              ],
                           },
                       },
                       {
@@ -243,22 +253,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countryId,
                               kind: "graph",
                               title: sliderInfo?.sliderSix || "",
-                              graphOne: {
-                                  visualizationId: "xJhFIBuwGVC",
-                                  visualizationName:
-                                      VisualizationsSeeds["xJhFIBuwGVC"]?.countryPageName ||
-                                      VisualizationsSeeds["xJhFIBuwGVC"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
-                              },
-                              graphTwo: {
-                                  visualizationId: "zkEtsohZTTf",
-                                  visualizationName:
-                                      VisualizationsSeeds["zkEtsohZTTf"]?.countryPageName ||
-                                      VisualizationsSeeds["zkEtsohZTTf"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "xJhFIBuwGVC",
+                                      visualizationName:
+                                          VisualizationsSeeds["xJhFIBuwGVC"]?.countryPageName ||
+                                          VisualizationsSeeds["xJhFIBuwGVC"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
+                                  },
+                                  {
+                                      visualizationId: "zkEtsohZTTf",
+                                      visualizationName:
+                                          VisualizationsSeeds["zkEtsohZTTf"]?.countryPageName ||
+                                          VisualizationsSeeds["zkEtsohZTTf"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId, ORG_UNIT_IDS.EUROPEAN_UNION],
+                                  },
+                              ],
                           },
                       },
                       {
@@ -269,22 +281,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countryId,
                               kind: "graph",
                               title: sliderInfo?.sliderSeven || "",
-                              graphOne: {
-                                  visualizationId: "rT39aStYqI3",
-                                  visualizationName:
-                                      VisualizationsSeeds["rT39aStYqI3"]?.countryPageName ||
-                                      VisualizationsSeeds["rT39aStYqI3"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId],
-                              },
-                              graphTwo: {
-                                  visualizationId: "nhaxK33nlhb",
-                                  visualizationName:
-                                      VisualizationsSeeds["nhaxK33nlhb"]?.countryPageName ||
-                                      VisualizationsSeeds["nhaxK33nlhb"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countryId],
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "rT39aStYqI3",
+                                      visualizationName:
+                                          VisualizationsSeeds["rT39aStYqI3"]?.countryPageName ||
+                                          VisualizationsSeeds["rT39aStYqI3"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId],
+                                  },
+                                  {
+                                      visualizationId: "nhaxK33nlhb",
+                                      visualizationName:
+                                          VisualizationsSeeds["nhaxK33nlhb"]?.countryPageName ||
+                                          VisualizationsSeeds["nhaxK33nlhb"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countryId],
+                                  },
+                              ],
                           },
                       },
                       {
@@ -295,22 +309,24 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countrySelected,
                               kind: "graph",
                               title: sliderInfo?.sliderEight || "",
-                              graphOne: {
-                                  visualizationId: "OB4SCQfCzwz",
-                                  visualizationName:
-                                      VisualizationsSeeds["OB4SCQfCzwz"]?.countryPageName ||
-                                      VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countrySelected],
-                              },
-                              graphTwo: {
-                                  visualizationId: "d3kq9OCv8tH",
-                                  visualizationName:
-                                      VisualizationsSeeds["d3kq9OCv8tH"]?.countryPageName ||
-                                      VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "OB4SCQfCzwz",
+                                      visualizationName:
+                                          VisualizationsSeeds["OB4SCQfCzwz"]?.countryPageName ||
+                                          VisualizationsSeeds["OB4SCQfCzwz"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countrySelected],
+                                  },
+                                  {
+                                      visualizationId: "d3kq9OCv8tH",
+                                      visualizationName:
+                                          VisualizationsSeeds["d3kq9OCv8tH"]?.countryPageName ||
+                                          VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
+                                  },
+                              ],
                           },
                       },
                       {
@@ -321,23 +337,25 @@ export function useCountrySlider(countryId: string): CountrySlider {
                               countryId: countrySelected,
                               kind: "graph",
                               title: sliderInfo?.sliderNine || "",
-                              graphOne: {
-                                  visualizationId: "B4CnzUqVR3n",
-                                  visualizationName:
-                                      VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
-                                      VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: countriesAndSubregions.map(({ id }) => id),
-                                  currentCountryOrRegion: countrySelected,
-                              },
-                              graphTwo: {
-                                  visualizationId: "BYAT5Woc9EJ",
-                                  visualizationName:
-                                      VisualizationsSeeds["BYAT5Woc9EJ"]?.countryPageName ||
-                                      VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
-                              },
+                              graphs: [
+                                  {
+                                      visualizationId: "B4CnzUqVR3n",
+                                      visualizationName:
+                                          VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
+                                          VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: countriesAndSubregions.map(({ id }) => id),
+                                      currentCountryOrRegion: countrySelected,
+                                  },
+                                  {
+                                      visualizationId: "BYAT5Woc9EJ",
+                                      visualizationName:
+                                          VisualizationsSeeds["BYAT5Woc9EJ"]?.countryPageName ||
+                                          VisualizationsSeeds["BYAT5Woc9EJ"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [countrySelected, ORG_UNIT_IDS.EUROPEAN_UNION],
+                                  },
+                              ],
                           },
                       },
                   ]

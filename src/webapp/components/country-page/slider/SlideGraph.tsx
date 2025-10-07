@@ -11,20 +11,20 @@ import { Id } from "../../../../domain/entities/Ref";
 type VisualizationProps = {
     visualizationId: string;
     visualizationName?: string;
+    text?: string;
     years: string[];
     countries: string[];
     currentCountryOrRegion?: Id;
 };
 
 type SlideGraphType = {
-    title: string;
+    title?: string;
     countryId: string;
-    graphOne: VisualizationProps;
-    graphTwo?: VisualizationProps;
-    isMobile?: boolean;
+    graphs: VisualizationProps[];
+    isRegionalPage?: boolean;
 };
 
-export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo, isMobile = false }) => {
+export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs, isRegionalPage = false }) => {
     const isSmallScreen = useIsSmallScreen();
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
@@ -48,43 +48,30 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
 
     return (
         <Container>
-            {!isMobile && (
-                <StyledTypography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
-                    {i18n.t(title)}
-                </StyledTypography>
-            )}
-            <VisualizationContainer>
-                <VisualizationPlugin
-                    visualizationId={(graphOne as VisualizationProps).visualizationId}
-                    visualizationName={(graphOne as VisualizationProps).visualizationName}
-                    years={(graphOne as VisualizationProps).years}
-                    countries={(graphOne as VisualizationProps).countries}
-                    withoutBackground
-                    useHeaderForCountryPage
-                    currentCountryOrRegion={(graphOne as VisualizationProps).currentCountryOrRegion || countryId}
-                    onDownloadImage={() => handleOpenScreenshot(graphOne)}
-                    noDataMessage={pageContent?.noDataMessage}
-                    analyticsPageTitle="Country page"
-                    showDialogInFullScreen={isSmallScreen}
-                />
-            </VisualizationContainer>
-            {graphTwo && (
-                <VisualizationContainer $hasMargin={true}>
-                    <VisualizationPlugin
-                        visualizationId={(graphTwo as VisualizationProps).visualizationId}
-                        visualizationName={(graphTwo as VisualizationProps).visualizationName}
-                        years={(graphTwo as VisualizationProps).years}
-                        countries={(graphTwo as VisualizationProps).countries}
-                        withoutBackground
-                        useHeaderForCountryPage
-                        currentCountryOrRegion={(graphTwo as VisualizationProps).currentCountryOrRegion || countryId}
-                        onDownloadImage={() => handleOpenScreenshot(graphTwo)}
-                        noDataMessage={pageContent?.noDataMessage}
-                        analyticsPageTitle="Country page"
-                        showDialogInFullScreen={isSmallScreen}
-                    />
-                </VisualizationContainer>
-            )}
+            {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
+
+            {graphs.length > 0
+                ? graphs.map((graph, graphIndex) => (
+                      <VisualizationContainer key={graph.visualizationId} $hasMargin={graphIndex !== 0}>
+                          {graph.text && <StyledText variant="body1">{graph.text}</StyledText>}
+
+                          <VisualizationPlugin
+                              visualizationId={graph.visualizationId}
+                              visualizationName={graph.visualizationName}
+                              years={graph.years}
+                              countries={graph.countries}
+                              withoutBackground
+                              useHeaderForCountryOrRegionalPage
+                              currentCountryOrRegion={graph.currentCountryOrRegion || countryId}
+                              onDownloadImage={() => handleOpenScreenshot(graph)}
+                              noDataMessage={pageContent?.noDataMessage}
+                              analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
+                              showDialogInFullScreen={isSmallScreen}
+                              isRegionalPage={isRegionalPage}
+                          />
+                      </VisualizationContainer>
+                  ))
+                : null}
 
             {currentGraphScreenshot && (
                 <ScreenshotModal
@@ -92,7 +79,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     onClose={handleCloseScreenshot}
                     title={currentGraphScreenshot.visualizationName || ""}
                     backgroundColor={"#f1f9fc"}
-                    analyticsPageTitle="Country page"
+                    analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
                     analyticsContent={analyticsContent}
                     forceRotation={isSmallScreen}
                 >
@@ -102,10 +89,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         years={currentGraphScreenshot.years}
                         countries={currentGraphScreenshot.countries}
                         withoutBackground
-                        useHeaderForCountryPage
+                        useHeaderForCountryOrRegionalPage
                         currentCountryOrRegion={countryId}
                         isScreenshot={true}
-                        analyticsPageTitle="Country page"
+                        analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
                     />
                 </ScreenshotModal>
             )}
@@ -138,4 +125,17 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean }>`
 
 const StyledTypography = styled(Typography)`
     color: black;
+`;
+
+const StyledText = styled(StyledTypography)<{ $marginTop?: boolean }>`
+    margin-inline-start: 36px;
+    margin-block-start: ${props => (props.$marginTop ? "45px" : "6px")};
+    margin-block-end: 6px;
+    font-size: 1rem;
+`;
+
+const StyledGraphTitle = styled(StyledTypography)`
+    margin-bottom: 50px;
+    font-weight: 500;
+    font-size: 2rem;
 `;

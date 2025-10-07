@@ -74,7 +74,7 @@ const Container = styled.div`
         padding-inline: 32px;
         flex-wrap: wrap;
         height: auto;
-        padding-block-end: 8px;
+        padding-block: 8px;
         justify-content: flex-start;
     }
 `;

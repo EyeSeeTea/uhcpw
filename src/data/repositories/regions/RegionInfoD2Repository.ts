@@ -12,14 +12,32 @@ const REGION_INFO_DATA_ELEMENT_IDS = {
         title: "SfkPMilMktT",
         description: "sOtI7SGMhsT",
     },
+    // TODO: add real data element IDs here for titles
     numbersPanelTitles: {
-        panelOne: "DumylnVyci4",
-        panelTwo: "r5eemGxoRS6",
+        panelOneTitle: "DumylnVyci4",
+        panelOneGraphOneText: "DumylnVyci4",
+
+        panelTwoTitle: "r5eemGxoRS6",
+        panelTwoGraphOneText: "r5eemGxoRS6",
+
         panelThree: "OBInDvcfyQZ",
+        panelThreeGraphOneText: "OBInDvcfyQZ",
+        panelThreeGraphTwoText: "OBInDvcfyQZ",
+
         panelFour: "vel3QNcSAlE",
+        panelFourGraphOneText: "vel3QNcSAlE",
+        panelFourGraphTwoText: "vel3QNcSAlE",
+
         panelFive: "MCTHdjhXfwc",
+        panelFiveGraphOneText: "MCTHdjhXfwc",
+        panelFiveGraphTwoText: "MCTHdjhXfwc",
+        panelFiveGraphThreeText: "MCTHdjhXfwc",
+
         panelSix: "Vt8NxwcFltu",
-        panelSeven: "vfTkIQpg9hq",
+        panelSixGraphOneText: "Vt8NxwcFltu",
+        panelSixGraphTwoText: "Vt8NxwcFltu",
+        panelSixGraphThreeText: "Vt8NxwcFltu",
+        panelSixGraphFourText: "Vt8NxwcFltu",
     },
 } as const;
 
@@ -52,14 +70,57 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                 title: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.title),
                 description: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.description),
             },
-            numbersPanelTitles: {
-                panelOne: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelOne),
-                panelTwo: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelTwo),
-                panelThree: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThree),
-                panelFour: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFour),
-                panelFive: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFive),
-                panelSix: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSix),
-                panelSeven: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSeven),
+            numbersPanelContent: {
+                panelOneTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelOneTitle),
+                panelOneGraphOneText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelOneGraphOneText
+                ),
+
+                panelTwoTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelTwoTitle),
+                panelTwoGraphOneText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelTwoGraphOneText
+                ),
+
+                panelThreeTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThree),
+                panelThreeGraphOneText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThreeGraphOneText
+                ),
+                panelThreeGraphTwoText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThreeGraphTwoText
+                ),
+
+                panelFourTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFour),
+                panelFourGraphOneText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFourGraphOneText
+                ),
+                panelFourGraphTwoText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFourGraphTwoText
+                ),
+
+                panelFiveTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFive),
+                panelFiveGraphOneText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFiveGraphOneText
+                ),
+                panelFiveGraphTwoText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFiveGraphTwoText
+                ),
+                panelFiveGraphThreeText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFiveGraphThreeText
+                ),
+
+                panelSixTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSix),
+                panelSixGraphOneText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphOneText
+                ),
+                panelSixGraphTwoText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphTwoText
+                ),
+                panelSixGraphThreeText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphThreeText
+                ),
+                panelSixGraphFourText: getDataValue(
+                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphFourText
+                ),
             },
         };
     }

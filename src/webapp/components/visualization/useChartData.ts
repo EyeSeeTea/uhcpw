@@ -23,15 +23,15 @@ interface ChartDataState {
     onCloseInfo: () => void;
 }
 
-export function useChartData(
-    visualizationId: string,
-    years: string[],
-    countryIds: Id[],
-    regionIds: Id[],
-    currentCountryOrRegion?: Id,
-    currentRegion?: string,
-    visualizationName?: string
-): ChartDataState {
+export function useChartData(params: {
+    visualizationId: string;
+    years: string[];
+    countryIds: Id[];
+    regionIds: Id[];
+    currentCountryOrRegion?: Id;
+    visualizationName?: string;
+}): ChartDataState {
+    const { visualizationId, years, countryIds, regionIds, currentCountryOrRegion, visualizationName } = params;
     const { compositionRoot } = useAppContext();
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
@@ -94,7 +94,6 @@ export function useChartData(
                         countries: countriesAndSubregions,
                         regions: regions,
                         currentCountryOrRegion: currentCountryOrRegion,
-                        currentRegion: currentRegion,
                         currentYear: years.length === 1 ? years[0] : undefined,
                         isLatestCOVID19: years.includes(LatestCOVID19.id),
                     };
@@ -108,6 +107,7 @@ export function useChartData(
 
                     const chartName =
                         visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
+
                     setChartData({
                         kind: "Loaded",
                         friendlyName: chartName
@@ -155,7 +155,6 @@ export function useChartData(
         currentCountryOrRegion,
         getVisualizationDialogInfo,
         visualizationName,
-        currentRegion,
     ]);
 
     const onDownloadExcel = useCallback(

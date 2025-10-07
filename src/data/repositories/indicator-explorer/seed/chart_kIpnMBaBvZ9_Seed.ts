@@ -11,6 +11,8 @@ export const chart_kIpnMBaBvZ9_Seed: VisualizationExtra = {
         "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health",
     downloadedFileName:
         "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health",
+    regionalPageName:
+        "Households with catastrophic health spending and out-of-pocket payments as a share of current spending on health, latest available year",
     isComparative: true,
     allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],

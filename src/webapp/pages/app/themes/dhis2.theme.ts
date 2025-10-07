@@ -37,9 +37,6 @@ export const colors = {
     carouselBackground: "#E5E5EA",
     carouselDotBackground: "#B6B6B6",
 
-    regionalPageBlueDark: "#96dcf8",
-    regionalPageBlueLight: "#caeefb",
-
     darkBlue: "#0360A7",
     blue: "#008AD7",
     blue50: "#80C4EB",

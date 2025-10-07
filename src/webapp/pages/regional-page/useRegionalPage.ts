@@ -56,7 +56,7 @@ export function useRegionalPage(): RegionalPageState {
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
     const { info, isLoading, onDownloadPolicyChecklist } = useRegionalPageInfo(selectedRegionId);
-    const regionNumbers = useRegionNumbers(selectedRegionId, info?.numbersPanelTitles);
+    const regionNumbers = useRegionNumbers(selectedRegionId, info?.numbersPanelContent);
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
         type: "FeatureCollection",

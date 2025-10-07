@@ -13,6 +13,8 @@ export const chart_mUjcWO90CRr_Seed: VisualizationExtra = {
     showCountryTag: true,
     friendlyName:
         "Public spending on health as a share of GDP and out-of-pocket payments as a share of current spending on health",
+    regionalPageName:
+        "Public or compulsory spending on health as a share of GDP and out of pocket payments as a share of current spending on health, latest available year",
     isComparative: true,
     hasEURegion: true,
     isOrgUnitRegions: true,

@@ -53,12 +53,11 @@ export const RegionalPage: React.FC = () => {
                     regionMainMapPanelContent={mainPanelContent}
                     highlightedISO3Countries={highlightedISO3Countries}
                     className="region-map"
-                    isRegionalPage
                 />
             </MapSection>
 
             <section ref={refs.numbers}>
-                <SectionTitleDivider>
+                <SectionTitleDivider onlyTopMargin>
                     <SectionTitle>
                         {i18n.t("Numbers: financial hardship, unmet need and spending on health")}
                     </SectionTitle>
@@ -75,7 +74,7 @@ export const RegionalPage: React.FC = () => {
             </section>
 
             <section ref={refs.policyChecklist}>
-                <SectionTitleDivider>
+                <SectionTitleDivider onlyBottomMargin>
                     <SectionTitle>{i18n.t("Progress is possible: a checklist for policy-makers")}</SectionTitle>
                 </SectionTitleDivider>
 
@@ -120,9 +119,9 @@ const SectionTitle = styled.h2`
     margin-left: 64px;
 `;
 
-const SectionTitleDivider = styled.div<{ isLighter?: boolean }>`
+const SectionTitleDivider = styled.div<{ isLighter?: boolean; onlyTopMargin?: boolean; onlyBottomMargin?: boolean }>`
     background: ${props => (props.isLighter ? colors.gradientBlueLight2 : colors.gradientBlueLight)};
     height: 60px;
-    margin-block: 5px;
+    margin: ${props => (props.onlyTopMargin ? "5px 0 0 0" : props.onlyBottomMargin ? "0 0 5px 0" : "5px 0")};
     align-content: center;
 `;

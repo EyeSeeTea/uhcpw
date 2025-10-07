@@ -4,7 +4,7 @@ import { useAppContext } from "../../contexts/app-context";
 import {
     RegionInfo,
     RegionMainMapPanelContent,
-    RegionNumbersPanelTitles,
+    RegionNumbersPanelContent,
 } from "../../../domain/entities/region/RegionInfo";
 import { Future } from "../../../domain/entities/Future";
 import { ChecklistPolicyMakers } from "../../../domain/entities/region/ChecklistPolicyMakers";
@@ -15,7 +15,7 @@ export type ChecklistPolicyMakersState = ChecklistPolicyMakers & {
 
 type RegionalPageInfo = {
     mainMapPanelContent: RegionMainMapPanelContent;
-    numbersPanelTitles: RegionNumbersPanelTitles;
+    numbersPanelContent: RegionNumbersPanelContent;
     checklistPolicyMakers: ChecklistPolicyMakersState;
 };
 
@@ -77,7 +77,7 @@ function buildRegionalPageInfo(
 ): RegionalPageInfo {
     return {
         mainMapPanelContent: regionalInfo.mainMapPanelContent,
-        numbersPanelTitles: regionalInfo.numbersPanelTitles,
+        numbersPanelContent: regionalInfo.numbersPanelContent,
         checklistPolicyMakers: {
             ...checklistPolicyMakers,
             progressInfo: progressTextBoxInfo,

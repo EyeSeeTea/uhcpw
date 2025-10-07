@@ -8,7 +8,7 @@ import { VisualizationsSeeds } from "../../../data/repositories/indicator-explor
 import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
-import { RegionNumbersPanelTitles } from "../../../domain/entities/region/RegionInfo";
+import { RegionNumbersPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { Maybe } from "../../../types/utils";
 
 export type RegionNumbersState = {
@@ -22,7 +22,7 @@ export type RegionNumbersState = {
 
 export function useRegionNumbers(
     selectedRegionId: Maybe<Id>,
-    numbersPanelTitles: Maybe<RegionNumbersPanelTitles>
+    numbersPanelContent: Maybe<RegionNumbersPanelContent>
 ): RegionNumbersState {
     const { regions } = useAppContext();
     const [tabValue, setTabValue] = useState(0);
@@ -48,189 +48,220 @@ export function useRegionNumbers(
 
     const configs: (VerticalTabConfig | AccordionConfig)[] = useMemo(
         () =>
-            selectedRegionId && numbersPanelTitles && selectedRegion
+            selectedRegionId && numbersPanelContent && selectedRegion
                 ? [
                       {
                           tab: 0,
-                          tabTitle: numbersPanelTitles.panelOne,
+                          tabTitle: numbersPanelContent.panelOneTitle,
                           Component: SlideGraph,
                           props: {
+                              title: numbersPanelContent.panelOneTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
-                              title: "People who face catastrophic health spending may struggle to afford other basic needs like food, housing and heating. Levels of catastrophic health spending are closely related to levels of out-of-pocket payments as a share of current spending on health. Financial hardship is higher in health systems that rely more heavily on out-of-pocket payments – but policy also matters.",
-                              graphOne: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "kIpnMBaBvZ9",
-                                  visualizationName:
-                                      VisualizationsSeeds["kIpnMBaBvZ9"]?.countryPageName ||
-                                      VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
+                              isRegionalPage: true,
+                              graphs: [
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "kIpnMBaBvZ9",
+                                      visualizationName:
+                                          VisualizationsSeeds["kIpnMBaBvZ9"]?.regionalPageName ||
+                                          VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelOneGraphOneText,
+                                  },
+                              ],
                           },
                       },
                       {
                           tab: 1,
-                          tabTitle: numbersPanelTitles.panelTwo,
+                          tabTitle: numbersPanelContent.panelTwoTitle,
                           Component: SlideGraph,
                           props: {
+                              title: numbersPanelContent.panelTwoTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
-                              title: "Out-of-pocket payments push people into poverty – or further into poverty – in every country in the region.",
-                              graphOne: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "dbc87Ljw8uN",
-                                  visualizationName:
-                                      VisualizationsSeeds["dbc87Ljw8uN"]?.countryPageName ||
-                                      VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
+                              isRegionalPage: true,
+                              graphs: [
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "dbc87Ljw8uN",
+                                      visualizationName:
+                                          VisualizationsSeeds["dbc87Ljw8uN"]?.regionalPageName ||
+                                          VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelTwoGraphOneText,
+                                  },
+                              ],
                           },
                       },
                       {
                           tab: 2,
-                          tabTitle: numbersPanelTitles.panelThree,
+                          tabTitle: numbersPanelContent.panelThreeTitle,
                           Component: SlideGraph,
                           props: {
+                              title: numbersPanelContent.panelThreeTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
-                              title: "Out-of-pocket payments affect households with low incomes the most.",
-                              graphOne: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "GimM6ANOKhd",
-                                  visualizationName:
-                                      VisualizationsSeeds["GimM6ANOKhd"]?.countryPageName ||
-                                      VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
-                              graphTwo: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "WDUV9ZrJiNC",
-                                  visualizationName:
-                                      VisualizationsSeeds["WDUV9ZrJiNC"]?.countryPageName ||
-                                      VisualizationsSeeds["WDUV9ZrJiNC"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
+                              isRegionalPage: true,
+                              graphs: [
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "GimM6ANOKhd",
+                                      visualizationName:
+                                          VisualizationsSeeds["GimM6ANOKhd"]?.regionalPageName ||
+                                          VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelThreeGraphOneText,
+                                  },
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "WDUV9ZrJiNC",
+                                      visualizationName:
+                                          VisualizationsSeeds["WDUV9ZrJiNC"]?.regionalPageName ||
+                                          VisualizationsSeeds["WDUV9ZrJiNC"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelThreeGraphTwoText,
+                                  },
+                              ],
                           },
                       },
                       {
                           tab: 3,
-                          tabTitle: numbersPanelTitles.panelFour,
+                          tabTitle: numbersPanelContent.panelFourTitle,
                           Component: SlideGraph,
                           props: {
+                              title: numbersPanelContent.panelFourTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
-                              title: "Across countries, financial hardship is mainly driven by out-of-pocket payments for outpatient medicines, dental care and medical products. Within countries, drivers differ across quintiles. Outpatient medicines consistently account for a larger share of catastrophic health spending in the poorest quintile than in the other quintiles, while dental care usually accounts for a smaller share.",
-                              graphOne: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "VB7bdJ8ZXya",
-                                  visualizationName:
-                                      VisualizationsSeeds["VB7bdJ8ZXya"]?.countryPageName ||
-                                      VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
-                              graphTwo: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "mcNfvQaVbfy",
-                                  visualizationName:
-                                      VisualizationsSeeds["mcNfvQaVbfy"]?.countryPageName ||
-                                      VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
+                              isRegionalPage: true,
+                              graphs: [
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "VB7bdJ8ZXya",
+                                      visualizationName:
+                                          VisualizationsSeeds["VB7bdJ8ZXya"]?.regionalPageName ||
+                                          VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelFourGraphOneText,
+                                  },
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "mcNfvQaVbfy",
+                                      visualizationName:
+                                          VisualizationsSeeds["mcNfvQaVbfy"]?.regionalPageName ||
+                                          VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelFourGraphTwoText,
+                                  },
+                              ],
                           },
                       },
                       {
                           tab: 4,
-                          tabTitle: numbersPanelTitles.panelFive,
+                          tabTitle: numbersPanelContent.panelFiveTitle,
                           Component: SlideGraph,
                           props: {
+                              title: numbersPanelContent.panelFiveTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
-                              title: "EU-SILC data on unmet need for health care and dental care due to cost, distance and waiting time indicate that dental care is a greater driver of unmet need than health care",
-                              graphOne: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "xJhFIBuwGVC",
-                                  visualizationName:
-                                      VisualizationsSeeds["xJhFIBuwGVC"]?.countryPageName ||
-                                      VisualizationsSeeds["xJhFIBuwGVC"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
-                              graphTwo: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "zkEtsohZTTf",
-                                  visualizationName:
-                                      VisualizationsSeeds["zkEtsohZTTf"]?.countryPageName ||
-                                      VisualizationsSeeds["zkEtsohZTTf"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
+                              isRegionalPage: true,
+                              graphs: [
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "EtHaEt6bnm5_nlYSkEMZxgN",
+                                      visualizationName:
+                                          VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.regionalPageName ||
+                                          VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelSixGraphOneText,
+                                  },
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "AophAEpx5e0_BOcLONPSyYS",
+                                      visualizationName:
+                                          VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.regionalPageName ||
+                                          VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelSixGraphTwoText,
+                                  },
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "MfLZYD6QCPy",
+                                      visualizationName:
+                                          VisualizationsSeeds["MfLZYD6QCPy"]?.regionalPageName ||
+                                          VisualizationsSeeds["MfLZYD6QCPy"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelSixGraphThreeText,
+                                  },
+                              ],
                           },
                       },
                       {
                           tab: 5,
-                          tabTitle: numbersPanelTitles.panelSix,
+                          tabTitle: numbersPanelContent.panelSixTitle,
                           Component: SlideGraph,
                           props: {
+                              title: numbersPanelContent.panelSixTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
-                              title: "For health care and dental care, levels of unmet need are consistently higher among people in the poorest quintile",
-                              graphOne: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "EtHaEt6bnm5_nlYSkEMZxgN",
-                                  visualizationName:
-                                      VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.countryPageName ||
-                                      VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
-                              graphTwo: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "AophAEpx5e0_BOcLONPSyYS",
-                                  visualizationName:
-                                      VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.countryPageName ||
-                                      VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
-                          },
-                      },
-                      {
-                          tab: 6,
-                          tabTitle: numbersPanelTitles.panelSeven,
-                          Component: SlideGraph,
-                          props: {
-                              selectedRegionId: selectedRegionId,
-                              kind: "graph",
-                              title: "Out-of-pocket payments have decreased over time. Financial protection is stronger in countries with a higher priority to health in the government budget.",
-                              graphOne: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                                  visualizationId: "d3kq9OCv8tH",
-                                  visualizationName:
-                                      VisualizationsSeeds["d3kq9OCv8tH"]?.countryPageName ||
-                                      VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
-                                  years: generateYears().map(year => year.id),
-                              },
-                              graphTwo: {
-                                  currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                  visualizationId: "B4CnzUqVR3n",
-                                  visualizationName:
-                                      VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
-                                      VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                              },
+                              isRegionalPage: true,
+                              graphs: [
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "d3kq9OCv8tH",
+                                      visualizationName:
+                                          VisualizationsSeeds["d3kq9OCv8tH"]?.regionalPageName ||
+                                          VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
+                                      years: generateYears().map(year => year.id),
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelFiveGraphOneText,
+                                  },
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "z6nPPMMbOw5",
+                                      visualizationName:
+                                          VisualizationsSeeds["z6nPPMMbOw5"]?.regionalPageName ||
+                                          VisualizationsSeeds["z6nPPMMbOw5"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelFiveGraphTwoText,
+                                  },
+                                  {
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      visualizationId: "mUjcWO90CRr",
+                                      visualizationName:
+                                          VisualizationsSeeds["mUjcWO90CRr"]?.regionalPageName ||
+                                          VisualizationsSeeds["mUjcWO90CRr"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelFiveGraphThreeText,
+                                  },
+                                  {
+                                      // TODO: Use iMI82inOBiD or B4CnzUqVR3n because in IE we don't have B4CnzUqVR3n but iMI82inOBiD does not have LAY?
+                                      visualizationId: "B4CnzUqVR3n",
+                                      visualizationName:
+                                          VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
+                                          VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      text: numbersPanelContent.panelSixGraphFourText,
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                  },
+                              ],
                           },
                       },
                   ]
                 : [],
-        [selectedRegionId, numbersPanelTitles, selectedRegion]
+        [selectedRegionId, numbersPanelContent, selectedRegion]
     );
 
     const handleAccordionChange = useCallback(

@@ -78,7 +78,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         countries={countriesAndSubregions.map(({ id }) => id)}
                         currentCountryOrRegion={countryIdSelected}
                         withoutBackground
-                        useHeaderForCountryPage
+                        useHeaderForCountryOrRegionalPage
                         onDownloadImage={handleOpenScreenshot}
                         paddingEnd={false}
                         analyticsPageTitle="Country page"
@@ -103,7 +103,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         countries={countriesAndSubregions.map(({ id }) => id)}
                         currentCountryOrRegion={countryIdSelected}
                         withoutBackground
-                        useHeaderForCountryPage
+                        useHeaderForCountryOrRegionalPage
                         isScreenshot={true}
                         isSquareChart={true}
                         analyticsPageTitle="Country page"

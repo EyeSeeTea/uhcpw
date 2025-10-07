@@ -17,6 +17,7 @@ export const chart_z6nPPMMbOw5_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     showCountryTag: true,
     friendlyName: "Breakdown of current spending on health by financing scheme and type of care",
+    regionalPageName: "Breakdown of current spending on health, latest available year",
     isComparative: false,
     subcategoryName: sortedSubcategoryNames.countryLevel,
     maxCountryFilter: 1,

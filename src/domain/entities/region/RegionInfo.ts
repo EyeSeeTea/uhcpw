@@ -3,17 +3,34 @@ export type RegionMainMapPanelContent = {
     description: string;
 };
 
-export type RegionNumbersPanelTitles = {
-    panelOne: string;
-    panelTwo: string;
-    panelThree: string;
-    panelFour: string;
-    panelFive: string;
-    panelSix: string;
-    panelSeven: string;
+export type RegionNumbersPanelContent = {
+    panelOneTitle: string;
+    panelOneGraphOneText: string;
+
+    panelTwoTitle: string;
+    panelTwoGraphOneText: string;
+
+    panelThreeTitle: string;
+    panelThreeGraphOneText: string;
+    panelThreeGraphTwoText: string;
+
+    panelFourTitle: string;
+    panelFourGraphOneText: string;
+    panelFourGraphTwoText: string;
+
+    panelFiveTitle: string;
+    panelFiveGraphOneText: string;
+    panelFiveGraphTwoText: string;
+    panelFiveGraphThreeText: string;
+
+    panelSixTitle: string;
+    panelSixGraphOneText: string;
+    panelSixGraphTwoText: string;
+    panelSixGraphThreeText: string;
+    panelSixGraphFourText: string;
 };
 
 export type RegionInfo = {
     mainMapPanelContent: RegionMainMapPanelContent;
-    numbersPanelTitles: RegionNumbersPanelTitles;
+    numbersPanelContent: RegionNumbersPanelContent;
 };

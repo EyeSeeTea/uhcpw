@@ -38,7 +38,6 @@ export type MapProps = {
     panelMaxWidth?: number;
     className?: string;
     highlightedISO3Countries?: string[];
-    isRegionalPage?: boolean;
 };
 
 export const Map: React.FC<MapProps> = ({
@@ -49,7 +48,6 @@ export const Map: React.FC<MapProps> = ({
     panelMaxWidth,
     className,
     highlightedISO3Countries,
-    isRegionalPage = false,
 }) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
@@ -130,7 +128,7 @@ export const Map: React.FC<MapProps> = ({
             <MapContent ref={mapContainerRef} />
             <MapSidePanel maxWidth={panelMaxWidth}>
                 {mapState.selectedCountry ? (
-                    <CountryPanel country={mapState.selectedCountry} isRegionalPage={isRegionalPage} />
+                    <CountryPanel country={mapState.selectedCountry} />
                 ) : regionMainMapPanelContent ? (
                     <RegionMapPanel mainPanelContent={regionMainMapPanelContent} />
                 ) : (

@@ -155,14 +155,13 @@ const RightPanelGrid = styled(Grid)`
 `;
 
 const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean }>`
-    background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+    background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
     border-inline-end: none;
     margin-block-end: 4px;
 
     @media (max-width: 960px) {
         background-color: ${colors.white};
-        border-inline-end: 6px solid
-            ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+        border-inline-end: 6px solid ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         width: 30px;
         flex-basis: unset;
     }
@@ -178,7 +177,7 @@ const StyledTabs = styled(Tabs)<{ isSecondaryColor?: boolean }>`
     border-block-end: 4px solid ${colors.white};
 
     @media (min-width: 960px) {
-        background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+        background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         width: 100%;
         max-width: unset;
         padding-inline-start: 0px;
@@ -192,8 +191,7 @@ const StyledTabs = styled(Tabs)<{ isSecondaryColor?: boolean }>`
 
 const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
     opacity: 1;
-    border-inline-end: 150px solid
-        ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+    border-inline-end: 150px solid ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
     border-block-start: 4px solid ${colors.white};
     max-width: 30px;
     min-width: 30px;
@@ -211,7 +209,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
         max-width: unset;
         border-right: unset;
         transition: background-color 0.3s ease-in-out;
-        background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+        background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         min-height: 60px;
         padding: 15px 25px;
         padding-inline-start: 64px;
@@ -220,8 +218,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
             text-align: start;
         }
         &[aria-selected="true"] {
-            background-color: ${props =>
-                props.isSecondaryColor ? colors.regionalPageBlueDark : colors.accentPrimaryDark};
+            background-color: ${props => (props.isSecondaryColor ? colors.blue50 : colors.accentPrimaryDark)};
             font-weight: ${props => (props.isSecondaryColor ? "bold" : "normal")};
         }
         &:last-child {

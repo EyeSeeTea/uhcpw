@@ -54,7 +54,7 @@ const AccordionContainer = styled.div`
 `;
 
 const StyledAccordion = styled(Accordion)<{ isSecondaryColor?: boolean }>`
-    background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueLight : colors.accentPrimary)};
+    background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
     color: ${props => (props.isSecondaryColor ? colors.black : colors.white)};
     border: none;
     border-radius: 0;
@@ -67,7 +67,7 @@ const StyledAccordion = styled(Accordion)<{ isSecondaryColor?: boolean }>`
         &:first-child {
             margin: 4px 0;
         }
-        background-color: ${props => (props.isSecondaryColor ? colors.regionalPageBlueDark : colors.accentPrimaryDark)};
+        background-color: ${props => (props.isSecondaryColor ? colors.blue50 : colors.accentPrimaryDark)};
         p {
             font-weight: ${props => (props.isSecondaryColor ? "bold" : "normal")};
         }

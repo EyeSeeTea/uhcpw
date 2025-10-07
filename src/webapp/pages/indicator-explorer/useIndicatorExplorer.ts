@@ -26,22 +26,30 @@ import {
     getYearOptionsInFilter,
 } from "./helpers";
 
-export function useIndicatorExplorer(): IndicatorExplorerState {
+export function useIndicatorExplorer(
+    initialIndicator?: string,
+    initialYears?: string[],
+    initialCountriesAndAreas?: string[]
+): IndicatorExplorerState {
     const { compositionRoot, countriesAndSubregions, regions } = useAppContext();
     const {
         selected: selectedCountriesAndRegions,
         onSelectedChange: onSelectedCountryAndRegionsChange,
         options: countryAndRegionsOptions,
         ...countryFilterOptions
-    } = useMultiCountryOptionsV2({ showRegions: true, showSubRegions: true });
+    } = useMultiCountryOptionsV2({
+        showRegions: true,
+        showSubRegions: true,
+        selectedCountries: initialCountriesAndAreas,
+    });
     const { sendEvent } = useAnalytics();
 
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
-    const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
+    const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>(initialIndicator);
     const [pageContent, setPageContent] = useState<IndicatorExplorerContent | undefined>(undefined);
 
     const [yearFilters, setYearsFilters] = useState<TreeOption[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>(initialYears);
 
     const [indicators, setIndicators] = useState<Indicator[]>([]);
 
@@ -141,7 +149,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 countriesAndSubregions
             );
 
-            if (maybeUpdatedCountrySelection) {
+            if (maybeUpdatedCountrySelection && !initialCountriesAndAreas?.length) {
                 onSelectedCountryAndRegionsChange(maybeUpdatedCountrySelection);
             }
 
@@ -154,13 +162,14 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setDisabledCountriesAndRegions(disabledCountries);
 
             const selectedYearsInFilter = getSelectedYearsInFilter(newIndicator);
-            setSelectedYearFilter(selectedYearsInFilter);
+            !initialYears?.length && setSelectedYearFilter(selectedYearsInFilter);
 
             // Reset countries filter depending on maxCountryFilter
             if (
                 selectedCountriesAndRegions &&
                 newIndicator?.maxCountryFilter &&
-                selectedCountriesAndRegions?.length > newIndicator?.maxCountryFilter
+                selectedCountriesAndRegions?.length > newIndicator?.maxCountryFilter &&
+                !initialCountriesAndAreas?.length
             ) {
                 onSelectedCountryAndRegionsChange([]);
             }
@@ -170,19 +179,22 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setMaxCountrySelection(newIndicator?.maxCountryFilter);
             setIsOnlyEu27Comparison(!!newIndicator?.isOnlyEu27Comparison);
             setSelectedIndicatorFilter(value);
-            setShowVisualization(false);
+            !initialIndicator && setShowVisualization(false);
             setIsYearSingleSelection(!!newIndicator?.isYearSingleSelection);
             setHideBosniaAndHerzegovinaRegions(!!newIndicator?.hideBosniaAndHerzegovinaRegions);
             setDisabledYears([]);
         },
         [
-            countriesAndSubregions,
-            countryAndRegionsOptions,
-            onSelectedCountryAndRegionsChange,
-            selectedCountriesAndRegions,
-            selectedIndicatorFilter,
-            showNonComparativeMessageIfRequired,
             indicators,
+            selectedCountriesAndRegions,
+            countriesAndSubregions,
+            initialCountriesAndAreas?.length,
+            countryAndRegionsOptions,
+            initialYears?.length,
+            showNonComparativeMessageIfRequired,
+            initialIndicator,
+            selectedIndicatorFilter,
+            onSelectedCountryAndRegionsChange,
         ]
     );
 
@@ -190,7 +202,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
         (value: string[] | undefined) => {
             setSelectedYearFilter(value);
 
-            setShowVisualization(false);
+            !initialYears?.length && setShowVisualization(false);
 
             if (isYearSingleSelection) {
                 const disabled =
@@ -198,12 +210,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 setDisabledYears(disabled);
             }
         },
-        [isYearSingleSelection, yearFilters]
+        [initialYears?.length, isYearSingleSelection, yearFilters]
     );
 
     useEffect(() => {
-        setShowVisualization(false);
-    }, [selectedCountriesAndRegions]);
+        !initialYears?.length && !initialCountriesAndAreas?.length && !initialIndicator && setShowVisualization(false);
+    }, [initialCountriesAndAreas?.length, initialIndicator, initialYears?.length, selectedCountriesAndRegions]);
 
     useEffect(() => {
         if (!selectedIndicatorFilter) {
@@ -332,6 +344,12 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             sendAnalyticsEvents();
         }
     }, [selectedCountriesAndRegions, selectedIndicatorFilter, indicators, sendAnalyticsEvents]);
+
+    useEffect(() => {
+        if (initialCountriesAndAreas?.length && initialIndicator && initialYears?.length) {
+            onGet();
+        }
+    }, [initialCountriesAndAreas?.length, initialIndicator, initialYears?.length, onGet]);
 
     const onCountriesAndRegionsChange = useCallback(
         (newSelectedCountriesAndRegions: Id[] | undefined) => {

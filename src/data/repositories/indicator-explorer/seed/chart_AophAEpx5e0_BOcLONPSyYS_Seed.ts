@@ -11,6 +11,8 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
     friendlyName:
         "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, total, richest quintile)",
     countryPageName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
+    regionalPageName:
+        "Unmet need for dental care due to cost, distance and waiting time on average and in the poorest and richest income quintiles, latest available year",
     subcategoryName: sortedSubcategoryNames.comparative,
     isComparative: true,
     allowedYears: [LatestAvailable, LatestCOVID19],

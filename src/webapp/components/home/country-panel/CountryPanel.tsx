@@ -1,7 +1,6 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 
 import { Country } from "../../../../domain/entities/Country";
 import ReactMarkdown from "react-markdown";
@@ -11,7 +10,6 @@ import gapsIcon from "../../../assets/map/icon-normal.svg";
 import { Divider } from "material-ui";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
-import i18n from "../../../../locales";
 
 export interface CountryPanelProps {
     country: Country;
@@ -33,13 +31,7 @@ export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
     );
 };
 
-export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalPage = false }) => {
-    const history = useHistory();
-
-    const onCountryLinkClick = useCallback(() => {
-        history.push(`/country-page?country=${country.id}`);
-    }, [country.id, history]);
-
+export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     return (
         <Container>
             <Row>
@@ -61,17 +53,6 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalP
             >
                 {country.summary}
             </ReactMarkdown>
-
-            {isRegionalPage && country.isInCountryPage ? (
-                <>
-                    <StyledButton onClick={onCountryLinkClick}>
-                        {" "}
-                        {i18n.t(`See {{country}} country page`, {
-                            country: country.name,
-                        })}
-                    </StyledButton>
-                </>
-            ) : null}
         </Container>
     );
 };

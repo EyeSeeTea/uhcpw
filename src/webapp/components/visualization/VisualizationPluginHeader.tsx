@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Button, IconButton, Typography } from "@material-ui/core";
+import { Button, IconButton, Typography, Fab } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import CloseIcon from "@material-ui/icons/Close";
+import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
 
 import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
@@ -28,13 +29,15 @@ interface VisualizationPluginHeaderProps {
     onShowInfo?: () => void;
     onCloseInfo?: () => void;
     onClose?: () => void;
-    useHeaderForCountryPage?: boolean;
+    useHeaderForCountryOrRegionalPage?: boolean;
     showCountryTag?: boolean;
     countries: Country[];
     currentCountryOrRegion?: Id;
     isScreenshot?: boolean;
     reducePaddingBottom?: boolean;
     showDialogInFullScreen?: boolean;
+    isRegionalPage?: boolean;
+    goToIndicatorExplorer: () => void;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -50,12 +53,14 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         onDownloadImage,
         countries,
         currentCountryOrRegion,
-        useHeaderForCountryPage = false,
+        useHeaderForCountryOrRegionalPage = false,
         showCountryTag = false,
         isScreenshot = false,
         reducePaddingBottom = false,
         showDialogInFullScreen = false,
+        isRegionalPage = false,
         onClose,
+        goToIndicatorExplorer,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountryOrRegion) {
@@ -73,28 +78,40 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         return (
             <DataHeader
                 className="visualization-plugin-header"
-                $isCountryPage={useHeaderForCountryPage}
+                $isCountryPage={useHeaderForCountryOrRegionalPage}
                 $reducePaddingBottom={reducePaddingBottom}
             >
                 <Row>
-                    {useHeaderForCountryPage ? (
-                        <>
-                            <Row>
+                    {useHeaderForCountryOrRegionalPage ? (
+                        <Row $isRegionalPage={isRegionalPage}>
+                            <TitleRow>
                                 <Title
                                     isScreenshot={isScreenshot}
                                     variant="h6"
                                     color="textPrimary"
-                                    style={{ marginLeft: 20, width: "100%" }}
+                                    style={{ marginLeft: 20, marginRight: isRegionalPage ? 5 : 0 }}
+                                    $isRegionalPage={isRegionalPage}
                                 >
                                     {chartFriendlyName}
                                 </Title>
-                            </Row>
+
+                                {isRegionalPage && (
+                                    <Fab
+                                        aria-label="Go to indicator explorer"
+                                        color="primary"
+                                        size="small"
+                                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                                    >
+                                        <ChevronRightSharpIcon onClick={goToIndicatorExplorer} />
+                                    </Fab>
+                                )}
+                            </TitleRow>
 
                             <RowWithGap $gap={6}>
-                                {showCountryTag && currentCountryName ? (
+                                {!isRegionalPage && showCountryTag && currentCountryName ? (
                                     <Tag className="category">{currentCountryName}</Tag>
                                 ) : (
-                                    categoryTag && <Tag className="category">{categoryTag}</Tag>
+                                    !isRegionalPage && categoryTag && <Tag className="category">{categoryTag}</Tag>
                                 )}
                                 <RowWithGap $gap={0}>
                                     {onShowInfo && (
@@ -121,7 +138,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     )}
                                 </RowWithGap>
                             </RowWithGap>
-                        </>
+                        </Row>
                     ) : (
                         <>
                             <Row>
@@ -196,13 +213,15 @@ const DataHeader = styled.div<{ $isCountryPage?: boolean; $reducePaddingBottom?:
     width: 100%;
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ $isRegionalPage?: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: flex-start;
-    gap: 1rem;
+    gap: ${props => (props.$isRegionalPage ? "24px" : "16px")};
+    align-items: ${props => (props.$isRegionalPage ? "center" : "flex-start")};
+    width: 100%;
 `;
 
 const Column = styled.div`
@@ -279,7 +298,15 @@ const Tag = styled.div`
     font-weight: regular;
 `;
 
-const Title = styled(Typography)<{ isScreenshot: boolean }>`
-    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
+const Title = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
+    font-weight: ${props => (props.$isRegionalPage ? "600" : "500")};
+    width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
+`;
+
+const TitleRow = styled(Row)`
+    gap: 0px;
+    align-items: center;
+    justify-content: flex-start;
 `;
