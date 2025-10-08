@@ -79,9 +79,14 @@ export const RegionalPage: React.FC = () => {
                 </SectionTitleDivider>
 
                 <PolicyChecklistSection
-                    checklist={policyChecklist?.policyChecklist?.checklist}
-                    progressInfo={policyChecklist?.policyChecklist?.progressInfo}
-                    onDownload={policyChecklist.onDownload}
+                    textSectionLeft={policyChecklist.content.textSectionLeft}
+                    textSectionRight={policyChecklist.content.textSectionRight}
+                    checklist={policyChecklist?.checklist}
+                    filteredCountryExperiences={policyChecklist?.filteredCountryExperiences}
+                    selectedChecklistItem={policyChecklist.selectedChecklistItem}
+                    onSelectChecklistItem={policyChecklist.onSelectChecklistItem}
+                    isLoading={policyChecklist.isLoading}
+                    isSmallScreen={isSmallScreen}
                 />
             </section>
 

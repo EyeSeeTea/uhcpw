@@ -52,7 +52,8 @@ import { GetRegionInfoUseCase } from "./domain/usecases/region/GetRegionInfoUseC
 import { RegionInfoD2Repository } from "./data/repositories/regions/RegionInfoD2Repository";
 import { GetChecklistPolicyMakersUseCase } from "./domain/usecases/region/GetChecklistPolicyMakersUseCase";
 import { ChecklistPolicyMakersD2Repository } from "./data/repositories/regions/ChecklistPolicyMakersD2Repository";
-import { DownloadChecklistPolicyMakersUseCase } from "./domain/usecases/region/DownloadChecklistPolicyMakersUseCase";
+import { GetCountryExperiencesUseCase } from "./domain/usecases/region/GetCountryExperiencesUseCase";
+import { CountryExperienceD2Repository } from "./data/repositories/regions/CountryExperienceD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -80,6 +81,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         region: new RegionD2Repository(api),
         regionInfo: new RegionInfoD2Repository(api),
         checklistPolicyMakers: new ChecklistPolicyMakersD2Repository(api),
+        countryExperience: new CountryExperienceD2Repository(api),
     };
 }
 
@@ -107,7 +109,7 @@ export function getCompositionRoot(
             get: new GetRegionsUseCase(repositories.region),
             getInfo: new GetRegionInfoUseCase(repositories.regionInfo),
             getChecklistPolicyMakers: new GetChecklistPolicyMakersUseCase(repositories.checklistPolicyMakers),
-            downloadChecklistPolicyMakers: new DownloadChecklistPolicyMakersUseCase(repositories.checklistPolicyMakers),
+            getCountryExperiences: new GetCountryExperiencesUseCase(repositories.countryExperience),
         },
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),

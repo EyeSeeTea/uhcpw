@@ -1,4 +1,4 @@
-import { FutureData } from "../../../domain/entities/Future";
+import { FutureData, Future } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
 import {
     isOrgUnitRegionKey,
@@ -16,6 +16,8 @@ import { RegionRepository } from "../../../domain/repositories/region/RegionRepo
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
+const REGION_INFO_PROGRAM_ID = "XAoS3zq3bZg";
+
 export class RegionD2Repository implements RegionRepository {
     constructor(private api: D2Api) {}
 
@@ -27,16 +29,25 @@ export class RegionD2Repository implements RegionRepository {
                 paging: false,
                 filter: { id: { in: orgUnitGroupIds } },
             })
-        ).map(orgUnitGroups => {
+        ).flatMap(orgUnitGroups => {
             if (!orgUnitGroups?.objects) {
-                return [];
+                return Future.success([]);
             }
-
-            return this.buildRegions(orgUnitGroups.objects);
+            const regionOrgUnitsIds = Object.values(ORG_UNIT_IDS);
+            return apiToFuture(
+                this.api.events.get({
+                    fields: eventsFields,
+                    skipPaging: true,
+                    program: REGION_INFO_PROGRAM_ID,
+                    orgUnit: regionOrgUnitsIds.join(","),
+                })
+            ).flatMap(response => {
+                return Future.success(this.buildRegions(orgUnitGroups.objects, response.events));
+            });
         });
     }
 
-    private buildRegions(orgUnitGroups: D2OrgUnitGroup[]): Region[] {
+    private buildRegions(orgUnitGroups: D2OrgUnitGroup[], events: D2Event[]): Region[] {
         const regionNameById = getRegionNameById(ORG_UNIT_GROUP_IDS);
         const regionCodeById = getRegionCodeById(ORG_UNIT_GROUP_IDS);
         return orgUnitGroups.map((orgUnitGroup: D2OrgUnitGroup): Region => {
@@ -49,9 +60,7 @@ export class RegionD2Repository implements RegionRepository {
                 code: regionCodeById.get(id) || "Unknown Region Code",
                 countries: orgUnitGroup.organisationUnits.map(ou => ou.id),
                 linkedOrgUnitId: linkedOrgUnitId,
-
-                // TODO: get this value from DHIS2 to show or not show the region in the regional page
-                isInRegionalPage: true,
+                isInRegionalPage: !!events.find(event => event.orgUnit === linkedOrgUnitId),
             };
         }, []);
     }
@@ -88,3 +97,22 @@ const organisationUnitGroupsFields = {
 type D2OrgUnitGroup = MetadataPick<{
     organisationUnitGroups: { fields: typeof organisationUnitGroupsFields };
 }>["organisationUnitGroups"][number];
+
+const eventsFields = {
+    event: true,
+    orgUnit: true,
+    dataValues: { dataElement: true, value: true },
+    eventDate: true,
+} as const;
+
+export type D2Event = {
+    event: string;
+    orgUnit: string;
+    dataValues: DataValue[];
+    eventDate: string;
+};
+
+export type DataValue = {
+    dataElement: string;
+    value: string;
+};

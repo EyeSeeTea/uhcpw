@@ -12,32 +12,42 @@ const REGION_INFO_DATA_ELEMENT_IDS = {
         title: "SfkPMilMktT",
         description: "sOtI7SGMhsT",
     },
-    // TODO: add real data element IDs here for titles
-    numbersPanelTitles: {
+} as const;
+
+const REGION_CONTENT_PROGRAM_ID = "ai5rB7mcqHH";
+const REGION_CONTENT_OU_ID = "H8RixfF8ugH";
+
+const REGION_CONTENT_DATA_ELEMENT_IDS = {
+    numbersPanel: {
         panelOneTitle: "DumylnVyci4",
-        panelOneGraphOneText: "DumylnVyci4",
+        panelOneGraphOneText: "JCZm0rnQ54f",
 
         panelTwoTitle: "r5eemGxoRS6",
-        panelTwoGraphOneText: "r5eemGxoRS6",
+        panelTwoGraphOneText: "WvrLV5w1ukz",
 
         panelThree: "OBInDvcfyQZ",
-        panelThreeGraphOneText: "OBInDvcfyQZ",
-        panelThreeGraphTwoText: "OBInDvcfyQZ",
+        panelThreeGraphOneText: "nkhaDCLS2oe",
+        panelThreeGraphTwoText: "zvW54GZzxcJ",
 
         panelFour: "vel3QNcSAlE",
-        panelFourGraphOneText: "vel3QNcSAlE",
-        panelFourGraphTwoText: "vel3QNcSAlE",
+        panelFourGraphOneText: "YxXbNUMaJGt",
+        panelFourGraphTwoText: "VFZzHUlrL9F",
 
         panelFive: "MCTHdjhXfwc",
-        panelFiveGraphOneText: "MCTHdjhXfwc",
-        panelFiveGraphTwoText: "MCTHdjhXfwc",
-        panelFiveGraphThreeText: "MCTHdjhXfwc",
+        panelFiveGraphOneText: "Y2ZKVlVGlSQ",
+        panelFiveGraphTwoText: "vznlgYGtLgG",
+        panelFiveGraphThreeText: "KRVzyf3td9q",
 
         panelSix: "Vt8NxwcFltu",
-        panelSixGraphOneText: "Vt8NxwcFltu",
-        panelSixGraphTwoText: "Vt8NxwcFltu",
-        panelSixGraphThreeText: "Vt8NxwcFltu",
-        panelSixGraphFourText: "Vt8NxwcFltu",
+        panelSixGraphOneText: "WaMKgJ1NU9e",
+        panelSixGraphTwoText: "cDYD3dcJjZu",
+        panelSixGraphThreeText: "s8Ivd41Vvh3",
+        panelSixGraphFourText: "ZCUrjpW0fbb",
+    },
+
+    policyChecklist: {
+        textSectionLeft: "oXGUkxIIvHM",
+        textSectionRight: "lLNV31zJEIZ",
     },
 } as const;
 
@@ -45,81 +55,121 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
     constructor(private api: D2Api) {}
 
     public get(regionOrgUnitId: Id): FutureData<RegionInfo> {
-        return apiToFuture(
-            this.api.events.get({
-                fields: eventsFields,
-                skipPaging: true,
-                program: REGION_INFO_PROGRAM_ID,
-                orgUnit: regionOrgUnitId,
-            })
-        ).flatMap(response => {
-            if (!response.events[0]) {
-                return Future.error("An error has ocurred fetching region info");
+        return Future.joinObj({
+            regionalInfo: apiToFuture(
+                this.api.events.get({
+                    fields: eventsFields,
+                    skipPaging: true,
+                    program: REGION_INFO_PROGRAM_ID,
+                    orgUnit: regionOrgUnitId,
+                })
+            ),
+            regionalContent: apiToFuture(
+                this.api.events.get({
+                    fields: eventsFields,
+                    skipPaging: true,
+                    program: REGION_CONTENT_PROGRAM_ID,
+                    orgUnit: REGION_CONTENT_OU_ID,
+                })
+            ),
+        }).flatMap(response => {
+            if (!response.regionalInfo.events[0] || !response.regionalContent.events[0]) {
+                return Future.error("An error has ocurred fetching region info and content");
             }
-            const info = this.buildRegionInfo(response.events[0]);
+            const info = this.buildRegionInfo(response.regionalInfo.events[0], response.regionalContent.events[0]);
             return Future.success(info);
         });
     }
 
-    private buildRegionInfo(event: D2Event): RegionInfo {
-        const getDataValue = (dataElementId: Id): string =>
+    private buildRegionInfo(regionalInfo: D2Event, regionalContent: D2Event): RegionInfo {
+        const getDataValue = (dataElementId: Id, event: D2Event): string =>
             event.dataValues.find(dv => dv.dataElement === dataElementId)?.value || "";
 
         return {
             mainMapPanelContent: {
-                title: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.title),
-                description: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.description),
+                title: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.title, regionalInfo),
+                description: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.mainMapPanel.description, regionalInfo),
             },
             numbersPanelContent: {
-                panelOneTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelOneTitle),
+                panelOneTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelOneTitle,
+                    regionalContent
+                ),
                 panelOneGraphOneText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelOneGraphOneText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelOneGraphOneText,
+                    regionalContent
                 ),
 
-                panelTwoTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelTwoTitle),
+                panelTwoTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelTwoTitle,
+                    regionalContent
+                ),
                 panelTwoGraphOneText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelTwoGraphOneText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelTwoGraphOneText,
+                    regionalContent
                 ),
 
-                panelThreeTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThree),
+                panelThreeTitle: getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThree, regionalContent),
                 panelThreeGraphOneText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThreeGraphOneText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThreeGraphOneText,
+                    regionalContent
                 ),
                 panelThreeGraphTwoText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelThreeGraphTwoText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThreeGraphTwoText,
+                    regionalContent
                 ),
 
-                panelFourTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFour),
+                panelFourTitle: getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFour, regionalContent),
                 panelFourGraphOneText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFourGraphOneText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFourGraphOneText,
+                    regionalContent
                 ),
                 panelFourGraphTwoText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFourGraphTwoText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFourGraphTwoText,
+                    regionalContent
                 ),
 
-                panelFiveTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFive),
+                panelFiveTitle: getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFive, regionalContent),
                 panelFiveGraphOneText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFiveGraphOneText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphOneText,
+                    regionalContent
                 ),
                 panelFiveGraphTwoText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFiveGraphTwoText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphTwoText,
+                    regionalContent
                 ),
                 panelFiveGraphThreeText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelFiveGraphThreeText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphThreeText,
+                    regionalContent
                 ),
 
-                panelSixTitle: getDataValue(REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSix),
+                panelSixTitle: getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSix, regionalContent),
                 panelSixGraphOneText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphOneText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphOneText,
+                    regionalContent
                 ),
                 panelSixGraphTwoText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphTwoText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphTwoText,
+                    regionalContent
                 ),
                 panelSixGraphThreeText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphThreeText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphThreeText,
+                    regionalContent
                 ),
                 panelSixGraphFourText: getDataValue(
-                    REGION_INFO_DATA_ELEMENT_IDS.numbersPanelTitles.panelSixGraphFourText
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphFourText,
+                    regionalContent
+                ),
+            },
+
+            policyChecklistContent: {
+                textSectionLeft: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.policyChecklist.textSectionLeft,
+                    regionalContent
+                ),
+                textSectionRight: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.policyChecklist.textSectionRight,
+                    regionalContent
                 ),
             },
         };

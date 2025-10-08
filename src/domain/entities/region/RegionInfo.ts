@@ -30,7 +30,13 @@ export type RegionNumbersPanelContent = {
     panelSixGraphFourText: string;
 };
 
+export type PolicyChecklistContent = {
+    textSectionLeft: string;
+    textSectionRight: string;
+};
+
 export type RegionInfo = {
     mainMapPanelContent: RegionMainMapPanelContent;
     numbersPanelContent: RegionNumbersPanelContent;
+    policyChecklistContent: PolicyChecklistContent;
 };

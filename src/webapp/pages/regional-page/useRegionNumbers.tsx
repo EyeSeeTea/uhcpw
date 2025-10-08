@@ -180,7 +180,7 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                                      text: numbersPanelContent.panelSixGraphOneText,
+                                      text: numbersPanelContent.panelFiveGraphOneText,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -190,7 +190,7 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                                      text: numbersPanelContent.panelSixGraphTwoText,
+                                      text: numbersPanelContent.panelFiveGraphTwoText,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -200,7 +200,7 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["MfLZYD6QCPy"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                                      text: numbersPanelContent.panelSixGraphThreeText,
+                                      text: numbersPanelContent.panelFiveGraphThreeText,
                                   },
                               ],
                           },
@@ -223,7 +223,7 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
                                       years: generateYears().map(year => year.id),
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                                      text: numbersPanelContent.panelFiveGraphOneText,
+                                      text: numbersPanelContent.panelSixGraphOneText,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -233,7 +233,7 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["z6nPPMMbOw5"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                                      text: numbersPanelContent.panelFiveGraphTwoText,
+                                      text: numbersPanelContent.panelSixGraphTwoText,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -243,7 +243,7 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["mUjcWO90CRr"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
-                                      text: numbersPanelContent.panelFiveGraphThreeText,
+                                      text: numbersPanelContent.panelSixGraphThreeText,
                                   },
                                   {
                                       // TODO: Use iMI82inOBiD or B4CnzUqVR3n because in IE we don't have B4CnzUqVR3n but iMI82inOBiD does not have LAY?

@@ -3,5 +3,4 @@ import { ChecklistPolicyMakers } from "../../entities/region/ChecklistPolicyMake
 
 export interface ChecklistPolicyMakersRepository {
     get(): FutureData<ChecklistPolicyMakers>;
-    saveToFile(data: string[][]): FutureData<void>;
 }

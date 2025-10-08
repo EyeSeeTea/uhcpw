@@ -1,41 +1,42 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    IconButton,
-    Typography,
-    Button,
-    CircularProgress,
-} from "@material-ui/core";
-import { CheckCircleOutline, CheckCircle, CloudDownload } from "@material-ui/icons";
+import { Table, TableBody, TableCell, TableRow, IconButton, Typography, CircularProgress } from "@material-ui/core";
+import { CheckCircleOutline, CheckCircle } from "@material-ui/icons";
 import ReactMarkdown, { Components } from "react-markdown";
 
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import i18n from "../../../locales";
-import { ChecklistPolicyMakersState } from "./useRegionalPageInfo";
 import { Maybe } from "../../../types/utils";
+import { ChecklistPolicyMakersData } from "../../../domain/entities/region/ChecklistPolicyMakers";
+import { Id } from "../../../domain/entities/Ref";
+import { colors } from "../app/themes/dhis2.theme";
+import { CountryExperienceData } from "./useRegionalPolicyChecklist";
+import { CountryExperienceBox } from "./CountryExperienceBox";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 type PolicyChecklistSectionProps = {
-    checklist: Maybe<ChecklistPolicyMakersState["checklist"]>;
-    progressInfo: Maybe<string>;
-    onDownload: (checklist: string[], selections: boolean[]) => void;
+    textSectionLeft: string;
+    textSectionRight: string;
+    checklist: Maybe<ChecklistPolicyMakersData[]>;
+    filteredCountryExperiences: Maybe<CountryExperienceData[]>;
+    selectedChecklistItem: Id | undefined;
+    onSelectChecklistItem: (id: Id | undefined) => void;
+    isLoading: boolean;
+    isSmallScreen: boolean;
 };
 
 export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = React.memo(props => {
-    const { checklist, progressInfo, onDownload } = props;
-    const [selection, setSelection] = useState<boolean[]>(Array(checklist?.length).fill(false));
-
-    const handleClick = React.useCallback(
-        (index: number) => {
-            const updated = [...selection];
-            updated[index] = !updated[index];
-            setSelection(updated);
-        },
-        [selection]
-    );
+    const {
+        textSectionLeft,
+        textSectionRight,
+        checklist,
+        filteredCountryExperiences,
+        selectedChecklistItem,
+        onSelectChecklistItem,
+        isLoading,
+        isSmallScreen,
+    } = props;
+    const { redirectWithExternalLink } = useAnalytics();
 
     const markdownComponents: Components = React.useMemo(
         () => ({
@@ -46,46 +47,46 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
+            a: ({ ...props }) => (
+                <TextLink href={props.href} target="_blank" rel="noreferrer" onClick={redirectWithExternalLink}>
+                    {props.children}
+                </TextLink>
+            ),
         }),
-        []
+        [redirectWithExternalLink]
     );
 
     return (
         <Container>
-            <StyledTypography variant="h5">
-                {i18n.t(
-                    "Drawing on evidence and examples of good practice from across Europe, the checklist highlights the"
-                )}{" "}
-                <strong>{i18n.t("policy choices that have improved financial protection")}</strong>{" "}
-                {i18n.t("in countries with a low incidence of financial hardship and unmet need.")}
-            </StyledTypography>
+            {isLoading || !checklist ? (
+                <CircularProgress />
+            ) : (
+                <>
+                    <ContentWrapper>
+                        <div>
+                            <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
+                        </div>
 
-            <Content>
-                {checklist && progressInfo ? (
-                    <>
+                        <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
+                    </ContentWrapper>
+
+                    <Title variant="body1">{i18n.t("Click an item to see examples of country experience")}</Title>
+
+                    <ContentWrapper>
                         <TableContainer>
-                            <DownloadButton
-                                aria-label="Download"
-                                variant="contained"
-                                endIcon={<CloudDownload />}
-                                color="primary"
-                                onClick={() => onDownload(checklist, selection)}
-                                className="download-button"
-                            >
-                                <Typography>{i18n.t("Download")}</Typography>
-                            </DownloadButton>
-
                             <StyledTable>
                                 <TableBody>
-                                    {checklist.map((item, index) => (
-                                        <TableRow key={index}>
+                                    {checklist.map(item => (
+                                        <TableRow key={item.id}>
                                             <StyledTableCell>
-                                                <ReactMarkdown components={markdownComponents}>{item}</ReactMarkdown>
+                                                <ReactMarkdown components={markdownComponents}>
+                                                    {item.text}
+                                                </ReactMarkdown>
                                             </StyledTableCell>
 
                                             <StyledTableCell align="right">
-                                                <IconButton onClick={() => handleClick(index)}>
-                                                    {selection[index] ? (
+                                                <IconButton onClick={() => onSelectChecklistItem(item.id)}>
+                                                    {selectedChecklistItem === item.id ? (
                                                         <CheckCircle color="primary" />
                                                     ) : (
                                                         <CheckCircleOutline />
@@ -98,26 +99,24 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                             </StyledTable>
                         </TableContainer>
 
-                        <TextBoxContainer>
-                            {progressInfo && (
-                                <TextBox>
-                                    <Typography
-                                        style={{
-                                            fontWeight: "bold",
-                                        }}
-                                    >
-                                        {i18n.t("Progress is possible")}
-                                    </Typography>
-
-                                    <ReactMarkdown components={markdownComponents}>{progressInfo}</ReactMarkdown>
-                                </TextBox>
-                            )}
-                        </TextBoxContainer>
-                    </>
-                ) : (
-                    <CircularProgress />
-                )}
-            </Content>
+                        <CountryExperiencesContainer>
+                            {filteredCountryExperiences && filteredCountryExperiences.length > 0
+                                ? filteredCountryExperiences.map(countryExperience => (
+                                      <CountryExperienceBox
+                                          key={countryExperience.countryId}
+                                          countryId={countryExperience.countryId}
+                                          countryName={countryExperience.countryName}
+                                          title={countryExperience.title}
+                                          content={countryExperience.content}
+                                          reference={countryExperience.reference}
+                                          showDialogInFullScreen={isSmallScreen}
+                                      />
+                                  ))
+                                : null}
+                        </CountryExperiencesContainer>
+                    </ContentWrapper>
+                </>
+            )}
         </Container>
     );
 });
@@ -131,37 +130,58 @@ const Container = styled.div`
     }
 `;
 
-const StyledTypography = styled(Typography)``;
+const Title = styled(Typography)`
+    font-family: Lato;
+    font-weight: 600;
+    color: ${colors.blue};
+    margin-block-start: 25px;
+    margin-block-end: 20px;
+    font-size: 18px;
+`;
 
-const Content = styled.div`
-    display: flex;
-    gap: 60px;
-    align-items: flex-start;
-    margin-block-start: 16px;
+const ContentWrapper = styled.div`
+    display: grid;
+    grid-template-columns: minmax(0, 45%) minmax(0, 55%);
+    gap: 16px;
+    width: 100%;
+    align-items: stretch;
+    > * {
+        min-height: 0;
+    }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        flex-direction: column;
+        grid-template-columns: 1fr;
     }
 `;
 
 const TableContainer = styled.div`
-    flex: 1 1 70%;
     display: flex;
     gap: 16px;
     flex-direction: column;
+    min-height: 0;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         width: 100%;
     }
 `;
 
-const TextBoxContainer = styled.div`
-    flex: 1 1 30%;
-    background-color: white;
+const CountryExperiencesContainer = styled.div`
+    background-color: ${colors.blue10};
+    width: 100%;
+    height: 100%;
     align-self: center;
+    margin-inline-end: 20px;
+    min-height: 0;
+    overflow-y: auto;
+    max-height: 100%;
+    contain: size;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        width: 100%;
+        overflow: visible;
+        max-height: none;
+        height: auto;
+        contain: initial;
+        margin-inline-end: 0;
     }
 `;
 
@@ -177,15 +197,10 @@ const StyledTable = styled(Table)`
 `;
 
 const StyledTableCell = styled(TableCell)`
-    color: #0460a7;
+    color: ${colors.blue};
     font-weight: 500;
-    background-color: #f4f8fc;
+    background-color: ${colors.blue10};
     color: black;
-`;
-
-const TextBox = styled.div`
-    padding: 20px;
-    border: 1px solid #96dcf8;
 `;
 
 const Text = styled(Typography)`
@@ -194,18 +209,19 @@ const Text = styled(Typography)`
 
 const StyledLi = styled.li`
     line-height: 1.43;
+    font-size: 16px;
 `;
 
 const StyledUl = styled.ul`
     padding-inline-start: 14px;
+    font-size: 16px;
 `;
 
-const DownloadButton = styled(Button)`
-    border-radius: 20px;
-    padding: 0px 32px;
-    height: 42px;
-    width: 170px;
-    text-transform: initial;
-    align-self: flex-end;
-    background: #185698;
+const TextLink = styled.a`
+    color: ${colors.accentPrimary};
+    text-transform: none;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 `;

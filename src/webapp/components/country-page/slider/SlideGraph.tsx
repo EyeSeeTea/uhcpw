@@ -1,4 +1,6 @@
 import { Typography } from "@material-ui/core";
+import ReactMarkdown, { Components } from "react-markdown";
+
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
@@ -29,6 +31,19 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
 
+    const markdownComponents: Components = React.useMemo(
+        () => ({
+            p: ({ children }) => (
+                <Text variant="body1" gutterBottom>
+                    {children}
+                </Text>
+            ),
+            li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
+            ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
+        }),
+        []
+    );
+
     const handleOpenScreenshot = React.useCallback((graph: VisualizationProps) => {
         setCurrentGraphScreenshot(graph);
     }, []);
@@ -53,7 +68,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
             {graphs.length > 0
                 ? graphs.map((graph, graphIndex) => (
                       <VisualizationContainer key={graph.visualizationId} $hasMargin={graphIndex !== 0}>
-                          {graph.text && <StyledText variant="body1">{graph.text}</StyledText>}
+                          {graph.text && <ReactMarkdown components={markdownComponents}>{graph.text}</ReactMarkdown>}
 
                           <VisualizationPlugin
                               visualizationId={graph.visualizationId}
@@ -127,15 +142,23 @@ const StyledTypography = styled(Typography)`
     color: black;
 `;
 
-const StyledText = styled(StyledTypography)<{ $marginTop?: boolean }>`
-    margin-inline-start: 36px;
-    margin-block-start: ${props => (props.$marginTop ? "45px" : "6px")};
-    margin-block-end: 6px;
-    font-size: 1rem;
-`;
-
 const StyledGraphTitle = styled(StyledTypography)`
     margin-bottom: 50px;
     font-weight: 500;
     font-size: 2rem;
+`;
+
+const Text = styled(Typography)`
+    font-family: Lato;
+    margin-inline-start: 36px;
+    margin-block: 6px;
+    font-size: 1rem;
+`;
+
+const StyledLi = styled.li`
+    line-height: 1.43;
+`;
+
+const StyledUl = styled.ul`
+    padding-inline-start: 14px;
 `;

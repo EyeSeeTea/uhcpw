@@ -9,10 +9,13 @@ import { Country } from "../../../domain/entities/Country";
 import { useAppContext } from "../../contexts/app-context";
 import { countriesToGeoJson } from "../../components/home/map/useMap";
 import { useHistory } from "react-router-dom";
-import { ChecklistPolicyMakersState, useRegionalPageInfo } from "./useRegionalPageInfo";
+import { useRegionalPageContent } from "./useRegionalPageContent";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { Region } from "../../../domain/entities/region/Region";
 import { RegionNumbersState, useRegionNumbers } from "./useRegionNumbers";
+import { Maybe } from "../../../types/utils";
+import { CountryExperienceData, useRegionalPolicyChecklist } from "./useRegionalPolicyChecklist";
+import { ChecklistPolicyMakersData } from "../../../domain/entities/region/ChecklistPolicyMakers";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
 
@@ -42,9 +45,15 @@ export type RegionalPageState = {
     handleHeaderItemClick: (item: RegionalMenuItem) => void;
     regionMap: RegionMapState;
     policyChecklist: {
-        policyChecklist: ChecklistPolicyMakersState | undefined;
+        content: {
+            textSectionLeft: string;
+            textSectionRight: string;
+        };
+        checklist: Maybe<ChecklistPolicyMakersData[]>;
+        filteredCountryExperiences: Maybe<CountryExperienceData[]>;
+        selectedChecklistItem: Id | undefined;
+        onSelectChecklistItem: (id: Id | undefined) => void;
         isLoading: boolean;
-        onDownload: (checklist: string[], selections: boolean[]) => void;
     };
     regionNumbers: RegionNumbersState;
     highlightedISO3Countries: string[];
@@ -55,8 +64,9 @@ export function useRegionalPage(): RegionalPageState {
     const history = useHistory();
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
-    const { info, isLoading, onDownloadPolicyChecklist } = useRegionalPageInfo(selectedRegionId);
-    const regionNumbers = useRegionNumbers(selectedRegionId, info?.numbersPanelContent);
+    const { content, isLoading } = useRegionalPageContent(selectedRegionId);
+    const regionNumbers = useRegionNumbers(selectedRegionId, content?.numbersPanelContent);
+    const policyChecklist = useRegionalPolicyChecklist();
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
         type: "FeatureCollection",
@@ -154,12 +164,18 @@ export function useRegionalPage(): RegionalPageState {
         handleHeaderItemClick: handleHeaderItemClick,
         regionMap: {
             markers: markers,
-            mainPanelContent: info?.mainMapPanelContent,
+            mainPanelContent: content?.mainMapPanelContent,
         },
         policyChecklist: {
-            policyChecklist: info?.checklistPolicyMakers,
-            isLoading: isLoading,
-            onDownload: onDownloadPolicyChecklist,
+            content: {
+                textSectionLeft: content?.policyChecklistContent.textSectionLeft || "",
+                textSectionRight: content?.policyChecklistContent.textSectionRight || "",
+            },
+            checklist: policyChecklist.checklist,
+            filteredCountryExperiences: policyChecklist.filteredCountryExperiences,
+            selectedChecklistItem: policyChecklist.selectedChecklistItem,
+            onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
+            isLoading: isLoading || policyChecklist.isLoading,
         },
         regionNumbers: regionNumbers,
         highlightedISO3Countries: highlightedISO3Countries,

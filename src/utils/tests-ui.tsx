@@ -66,10 +66,6 @@ export function givenACountries(): Country[] {
                 },
             },
             isInCountryPage: true,
-            countryExperience: {
-                title: "",
-                content: "",
-            },
         },
         {
             id: "rqaiYTAnMC6",
@@ -226,10 +222,6 @@ export function givenACountries(): Country[] {
                         },
                     },
                     isInCountryPage: true,
-                    countryExperience: {
-                        title: "",
-                        content: "",
-                    },
                 },
                 {
                     id: "FvoXRc5cEEk",
@@ -299,16 +291,8 @@ export function givenACountries(): Country[] {
                         },
                     },
                     isInCountryPage: true,
-                    countryExperience: {
-                        title: "",
-                        content: "",
-                    },
                 },
             ],
-            countryExperience: {
-                title: "",
-                content: "",
-            },
         },
     ];
 }
@@ -351,10 +335,6 @@ export function givenACountriesAndSubregions(): Country[] {
                 },
             },
             isInCountryPage: true,
-            countryExperience: {
-                title: "",
-                content: "",
-            },
         },
         {
             id: "rqaiYTAnMC6",
@@ -511,10 +491,6 @@ export function givenACountriesAndSubregions(): Country[] {
                         },
                     },
                     isInCountryPage: true,
-                    countryExperience: {
-                        title: "",
-                        content: "",
-                    },
                 },
                 {
                     id: "FvoXRc5cEEk",
@@ -584,16 +560,8 @@ export function givenACountriesAndSubregions(): Country[] {
                         },
                     },
                     isInCountryPage: true,
-                    countryExperience: {
-                        title: "",
-                        content: "",
-                    },
                 },
             ],
-            countryExperience: {
-                title: "",
-                content: "",
-            },
         },
         {
             id: "FvoXRc5cEEk",
@@ -663,10 +631,6 @@ export function givenACountriesAndSubregions(): Country[] {
                 },
             },
             isInCountryPage: true,
-            countryExperience: {
-                title: "",
-                content: "",
-            },
         },
         {
             id: "j44olg405lZ",
@@ -736,10 +700,6 @@ export function givenACountriesAndSubregions(): Country[] {
                 },
             },
             isInCountryPage: true,
-            countryExperience: {
-                title: "",
-                content: "",
-            },
         },
     ];
 }
