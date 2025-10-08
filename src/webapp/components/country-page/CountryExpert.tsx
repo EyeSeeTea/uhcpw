@@ -16,23 +16,41 @@ export const CountryExpert: React.FC<CountryExpertProps> = ({ countryIds, isRegi
 
     return (
         <Container aria-label="experts" isRegionalPage={isRegionalPage}>
-            <TitleRow>
-                <Typography variant="h5">{i18n.t("Experts")}</Typography>
-            </TitleRow>
+            {isRegionalPage ? null : (
+                <TitleRow>
+                    <Typography variant="h5">{i18n.t("Experts")}</Typography>
+                </TitleRow>
+            )}
+
             <GridContainer container spacing={5}>
                 {experts.map((expert, i) => (
-                    <Grid item key={`${expert.firstName}_${expert.lastName}_${i}`} xs={6} md={6} role="listitem">
-                        <Row>
+                    <Grid
+                        item
+                        key={`${expert.firstName}_${expert.lastName}_${i}`}
+                        md={isRegionalPage ? 3 : 6}
+                        role="listitem"
+                    >
+                        <Row isRegionalPage={isRegionalPage}>
                             <Image src={expert.image} alt={`${expert.firstName} ${expert.lastName}`} />
-                            <ExpertDetailsContainer>
+
+                            <ExpertDetailsContainer isRegionalPage={isRegionalPage}>
                                 <LatoTypography variant="body1" style={{ fontWeight: "bold" }}>
                                     {i18n.t(`${expert.firstName} ${expert.lastName}`)}
                                 </LatoTypography>
-                                <StyledTypography variant="body1">{i18n.t(expert.position)}</StyledTypography>
+
+                                <StyledTypography variant="body1" isRegionalPage={isRegionalPage}>
+                                    {i18n.t(expert.position)}
+                                </StyledTypography>
+
                                 {expert.institution && (
-                                    <StyledTypography variant="body1">{i18n.t(expert.institution)}</StyledTypography>
+                                    <StyledTypography variant="body1" isRegionalPage={isRegionalPage}>
+                                        {i18n.t(expert.institution)}
+                                    </StyledTypography>
                                 )}
-                                <StyledTypography variant="body1">{i18n.t(expert.countryName)}</StyledTypography>
+
+                                <StyledTypography variant="body1" isRegionalPage={isRegionalPage}>
+                                    {i18n.t(expert.countryName)}
+                                </StyledTypography>
                             </ExpertDetailsContainer>
                         </Row>
                     </Grid>
@@ -61,7 +79,9 @@ const GridContainer = styled(Grid)`
     }
 `;
 
-const StyledTypography = styled(Typography)`
+const StyledTypography = styled(Typography)<{ isRegionalPage?: boolean }>`
+    text-align: ${props => (props.isRegionalPage ? "center" : "left")};
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         text-align: center;
     }
@@ -71,21 +91,23 @@ const LatoTypography = styled(StyledTypography)`
     font-family: Lato;
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ isRegionalPage?: boolean }>`
     display: flex;
     align-items: center;
     gap: 40px;
     margin: 30px 10px 30px 0px;
+    flex-direction: ${props => (props.isRegionalPage ? "column" : "row")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         flex-direction: column;
     }
 `;
 
-const ExpertDetailsContainer = styled.div`
+const ExpertDetailsContainer = styled.div<{ isRegionalPage?: boolean }>`
     display: flex;
     flex-direction: column;
     gap: 20px;
+    align-items: ${props => (props.isRegionalPage ? "center" : "left")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         align-items: center;

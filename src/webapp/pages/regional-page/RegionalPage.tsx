@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { Fab } from "@material-ui/core";
+import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
@@ -23,6 +25,8 @@ export const RegionalPage: React.FC = () => {
         policyChecklist,
         regionNumbers,
         highlightedISO3Countries,
+        isEUorEuropeanRegion,
+        goTo,
     } = useRegionalPage();
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;
@@ -93,17 +97,37 @@ export const RegionalPage: React.FC = () => {
             <section ref={refs.resources}>
                 <SectionTitleDivider isLighter>
                     <SectionTitle>{i18n.t("Resources")}</SectionTitle>
+
+                    <Fab
+                        aria-label="Go to resources page"
+                        color="primary"
+                        size="small"
+                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                    >
+                        <ChevronRightSharpIcon onClick={() => goTo("/resources")} />
+                    </Fab>
                 </SectionTitleDivider>
 
-                <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
+                {!isEUorEuropeanRegion && (
+                    <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
+                )}
             </section>
 
             <section ref={refs.experts}>
                 <SectionTitleDivider isLighter>
                     <SectionTitle>{i18n.t("Expert network")}</SectionTitle>
+
+                    <Fab
+                        aria-label="Go to about us page"
+                        color="primary"
+                        size="small"
+                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                    >
+                        <ChevronRightSharpIcon onClick={() => goTo("/about")} />
+                    </Fab>
                 </SectionTitleDivider>
 
-                <CountryExpert countryIds={selectedRegion?.countries || []} isRegionalPage />
+                {!isEUorEuropeanRegion && <CountryExpert countryIds={selectedRegion?.countries || []} isRegionalPage />}
             </section>
         </Layout>
     );
@@ -125,6 +149,8 @@ const SectionTitle = styled.h2`
 `;
 
 const SectionTitleDivider = styled.div<{ isLighter?: boolean; onlyTopMargin?: boolean; onlyBottomMargin?: boolean }>`
+    display: flex;
+    align-items: center;
     background: ${props => (props.isLighter ? colors.gradientBlueLight2 : colors.gradientBlueLight)};
     height: 60px;
     margin: ${props => (props.onlyTopMargin ? "5px 0 0 0" : props.onlyBottomMargin ? "0 0 5px 0" : "5px 0")};

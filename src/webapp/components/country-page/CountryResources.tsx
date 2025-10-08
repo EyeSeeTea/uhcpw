@@ -43,19 +43,21 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
     );
 
     return (
-        <Container aria-label="country-page-resources">
-            <Row>
-                <Typography variant="h5">{i18n.t("Resources")}</Typography>
+        <Container aria-label="country-page-resources" isRegionalPage={isRegionalPage}>
+            {isRegionalPage ? null : (
+                <Row>
+                    <Typography variant="h5">{i18n.t("Resources")}</Typography>
 
-                <Fab
-                    aria-label="Go to resources"
-                    color="primary"
-                    size="small"
-                    style={{ boxShadow: "none", transform: "scale(0.7)" }}
-                >
-                    <ChevronRightSharpIcon onClick={() => onArrowClick("/resources")} />
-                </Fab>
-            </Row>
+                    <Fab
+                        aria-label="Go to resources"
+                        color="primary"
+                        size="small"
+                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                    >
+                        <ChevronRightSharpIcon onClick={() => onArrowClick("/resources")} />
+                    </Fab>
+                </Row>
+            )}
 
             {countryAnalysisResource?.length ? (
                 <ResourcesSection aria-label="country-resources">
@@ -128,9 +130,10 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
     );
 };
 
-const Container = styled.div`
-    padding: 40px 0px;
+const Container = styled.div<{ isRegionalPage?: boolean }>`
+    padding: ${props => (props.isRegionalPage ? "0 0 40px 0" : "40px 0px")};
     max-width: 80%;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
         padding: 30px 0px;

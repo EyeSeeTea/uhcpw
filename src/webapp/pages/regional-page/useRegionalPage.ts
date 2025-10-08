@@ -11,7 +11,7 @@ import { countriesToGeoJson } from "../../components/home/map/useMap";
 import { useHistory } from "react-router-dom";
 import { useRegionalPageContent } from "./useRegionalPageContent";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
-import { Region } from "../../../domain/entities/region/Region";
+import { ORG_UNIT_GROUP_IDS, Region } from "../../../domain/entities/region/Region";
 import { RegionNumbersState, useRegionNumbers } from "./useRegionNumbers";
 import { Maybe } from "../../../types/utils";
 import { CountryExperienceData, useRegionalPolicyChecklist } from "./useRegionalPolicyChecklist";
@@ -57,6 +57,8 @@ export type RegionalPageState = {
     };
     regionNumbers: RegionNumbersState;
     highlightedISO3Countries: string[];
+    isEUorEuropeanRegion: boolean;
+    goTo: (link: string) => void;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -90,6 +92,13 @@ export function useRegionalPage(): RegionalPageState {
             experts: expertsRef,
         }),
         []
+    );
+
+    const isEUorEuropeanRegion = useMemo(
+        () =>
+            selectedRegionId === ORG_UNIT_GROUP_IDS.EUROPEAN_UNION ||
+            selectedRegionId === ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
+        [selectedRegionId]
     );
 
     const menuItemsConfig: RegionalMenuItemConfig[] = useMemo(() => {
@@ -151,6 +160,13 @@ export function useRegionalPage(): RegionalPageState {
         [refs]
     );
 
+    const goTo = useCallback(
+        (link: string) => {
+            history.push(link);
+        },
+        [history]
+    );
+
     return {
         isSmallScreen: isSmallScreen,
         menuItemsConfig: menuItemsConfig,
@@ -179,5 +195,7 @@ export function useRegionalPage(): RegionalPageState {
         },
         regionNumbers: regionNumbers,
         highlightedISO3Countries: highlightedISO3Countries,
+        isEUorEuropeanRegion: isEUorEuropeanRegion,
+        goTo: goTo,
     };
 }
