@@ -16,6 +16,7 @@ import { RegionNumbersState, useRegionNumbers } from "./useRegionNumbers";
 import { Maybe } from "../../../types/utils";
 import { CountryExperienceData, useRegionalPolicyChecklist } from "./useRegionalPolicyChecklist";
 import { ChecklistPolicyMakersData } from "../../../domain/entities/region/ChecklistPolicyMakers";
+import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
 
@@ -52,13 +53,20 @@ export type RegionalPageState = {
         checklist: Maybe<ChecklistPolicyMakersData[]>;
         filteredCountryExperiences: Maybe<CountryExperienceData[]>;
         selectedChecklistItem: Id | undefined;
-        onSelectChecklistItem: (id: Id | undefined) => void;
+        onSelectChecklistItem: (id: Id) => void;
         isLoading: boolean;
     };
     regionNumbers: RegionNumbersState;
     highlightedISO3Countries: string[];
     isEUorEuropeanRegion: boolean;
     goTo: (link: string) => void;
+    handleAccordionChange: (
+        event: React.ChangeEvent<{}>,
+        tabId: number,
+        isExpanded: boolean,
+        sectionsAccordionConfig: AccordionConfig[]
+    ) => void;
+    expandedSectionsAccordion: AccordionConfig | undefined;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -76,6 +84,7 @@ export function useRegionalPage(): RegionalPageState {
     });
     const [selectedRegion, setSelectedRegion] = useState<Region | undefined>(undefined);
     const [highlightedISO3Countries, setHighlightedISO3Countries] = useState<string[]>([]);
+    const [expandedSectionsAccordion, setExpandedSectionsAccordion] = useState<AccordionConfig | undefined>(undefined);
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
@@ -167,6 +176,21 @@ export function useRegionalPage(): RegionalPageState {
         [history]
     );
 
+    const handleAccordionChange = useCallback(
+        (
+            _event: React.ChangeEvent<{}>,
+            tabId: number,
+            isExpanded: boolean,
+            sectionsAccordionConfig: AccordionConfig[]
+        ) => {
+            const sliderConfigSelected = isExpanded
+                ? sectionsAccordionConfig.find(config => config.tab === tabId)
+                : undefined;
+            setExpandedSectionsAccordion(sliderConfigSelected);
+        },
+        []
+    );
+
     return {
         isSmallScreen: isSmallScreen,
         menuItemsConfig: menuItemsConfig,
@@ -197,5 +221,7 @@ export function useRegionalPage(): RegionalPageState {
         highlightedISO3Countries: highlightedISO3Countries,
         isEUorEuropeanRegion: isEUorEuropeanRegion,
         goTo: goTo,
+        handleAccordionChange: handleAccordionChange,
+        expandedSectionsAccordion: expandedSectionsAccordion,
     };
 }
