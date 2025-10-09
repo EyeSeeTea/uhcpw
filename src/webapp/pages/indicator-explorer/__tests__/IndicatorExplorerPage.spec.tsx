@@ -120,11 +120,11 @@ async function selectFiltersAndGetChart(
     const mainElement = screen.getByRole("main");
     const main = within(mainElement);
 
-    await selectIndicatorsFilter(main, visualizationText);
     await selectCountry(main, countryText);
     if (yearOptions) {
         await selectYearsFilter(main, yearOptions);
     }
+    await selectIndicatorsFilter(main, visualizationText);
 
     const getChartButton = main.getByRole("button", {
         name: /get chart/i,
@@ -154,7 +154,11 @@ async function selectIndicatorsFilter(scope: BoundFunctions<typeof queries>, val
     const targetItem = within(treeitem).getByText(value);
     await userEvent.click(targetItem);
 
-    await waitFor(() => expect(inputElement).toHaveValue(value));
+    const inputAfter = await scope.findByRole("textbox", {
+        name: /input Select category and indicator/i,
+    });
+
+    await waitFor(() => expect(inputAfter).toHaveDisplayValue(value));
 }
 
 async function selectCountry(scope: BoundFunctions<typeof queries>, value: string) {
