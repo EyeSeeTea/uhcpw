@@ -39,7 +39,7 @@ export const chart_MfLZYD6QCPy_Options: (chartSource: ChartSource) => Highcharts
         categories,
         seriesNames,
         seriesColors,
-        yAxisTitle: "People needing care (%)",
+        yAxisTitle: chartSource.visualization.axes[0]?.title.text || "",
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: orderedCountry,
     });
