@@ -10,9 +10,14 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 export type CountryExpertProps = {
     countryIds: Id[];
     isRegionalPage?: boolean;
+    isSmallScreen?: boolean;
 };
 
-export const CountryExpert: React.FC<CountryExpertProps> = ({ countryIds, isRegionalPage = false }) => {
+export const CountryExpert: React.FC<CountryExpertProps> = ({
+    countryIds,
+    isRegionalPage = false,
+    isSmallScreen = false,
+}) => {
     const { experts } = useCountryExpert(countryIds);
 
     return (
@@ -28,7 +33,9 @@ export const CountryExpert: React.FC<CountryExpertProps> = ({ countryIds, isRegi
                     <Grid
                         item
                         key={`${expert.firstName}_${expert.lastName}_${i}`}
-                        md={isRegionalPage ? 3 : 6}
+                        xs={12}
+                        sm={6}
+                        md={isRegionalPage && !isSmallScreen ? 3 : 6}
                         role="listitem"
                     >
                         <Row isRegionalPage={isRegionalPage}>

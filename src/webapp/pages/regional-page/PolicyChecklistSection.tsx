@@ -125,7 +125,6 @@ const Container = styled.div`
     padding: 40px 20px 40px 60px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-inline-start: 30px;
         margin-block-end: 0;
     }
 `;
