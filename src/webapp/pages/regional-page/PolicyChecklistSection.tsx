@@ -20,7 +20,7 @@ type PolicyChecklistSectionProps = {
     checklist: Maybe<ChecklistPolicyMakersData[]>;
     filteredCountryExperiences: Maybe<CountryExperienceData[]>;
     selectedChecklistItem: Id | undefined;
-    onSelectChecklistItem: (id: Id | undefined) => void;
+    onSelectChecklistItem: (id: Id) => void;
     isLoading: boolean;
     isSmallScreen: boolean;
 };
@@ -132,11 +132,14 @@ const Container = styled.div`
 
 const Title = styled(Typography)`
     font-family: Lato;
-    font-weight: 600;
     color: ${colors.blue};
     margin-block-start: 25px;
     margin-block-end: 20px;
     font-size: 18px;
+
+    &&& {
+        font-weight: bold;
+    }
 `;
 
 const ContentWrapper = styled.div`

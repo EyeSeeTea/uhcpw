@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-08-08T11:37:29.281Z\n"
-"PO-Revision-Date: 2025-08-08T11:37:29.281Z\n"
+"POT-Creation-Date: 2025-10-09T06:11:42.102Z\n"
+"PO-Revision-Date: 2025-10-09T06:11:42.102Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -158,9 +158,6 @@ msgstr ""
 msgid "Regions"
 msgstr ""
 
-msgid "Regional report"
-msgstr ""
-
 msgid "Methods"
 msgstr ""
 
@@ -291,7 +288,10 @@ msgstr ""
 msgid "Latest avalaible year"
 msgstr ""
 
-msgid "Country experiences"
+msgid "Click here to read less"
+msgstr ""
+
+msgid "Click here to read more"
 msgstr ""
 
 msgid "See {{countryName}} country page"
@@ -300,30 +300,22 @@ msgstr ""
 msgid "Select region"
 msgstr ""
 
-msgid ""
-"Drawing on evidence and examples of good practice from across Europe, the "
-"checklist highlights the"
+msgid "Click an item to see examples of country experience"
 msgstr ""
 
-msgid "policy choices that have improved financial protection"
-msgstr ""
-
-msgid "in countries with a low incidence of financial hardship and unmet need."
-msgstr ""
-
-msgid "Progress is possible"
-msgstr ""
-
-msgid "Region at a glance"
+msgid "The region at a glance"
 msgstr ""
 
 msgid "Numbers"
 msgstr ""
 
-msgid "Coverage policy"
+msgid "Policy checklist"
 msgstr ""
 
-msgid "Policy checklist"
+msgid "{{region}} at a glance"
+msgstr ""
+
+msgid "Expert network"
 msgstr ""
 
 msgid "Country analysis"

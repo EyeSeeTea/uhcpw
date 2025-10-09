@@ -15,7 +15,7 @@ export type RegionalPolicyChecklistState = {
     checklist: Maybe<ChecklistPolicyMakersData[]>;
     filteredCountryExperiences: Maybe<CountryExperienceData[]>;
     selectedChecklistItem: Id | undefined;
-    onSelectChecklistItem: (id: Id | undefined) => void;
+    onSelectChecklistItem: (id: Id) => void;
     isLoading: boolean;
 };
 
@@ -52,18 +52,20 @@ export function useRegionalPolicyChecklist(): RegionalPolicyChecklistState {
     }, [compositionRoot.regions.getChecklistPolicyMakers, compositionRoot.regions.getCountryExperiences, countries]);
 
     const onSelectChecklistItem = useCallback(
-        (id: Id | undefined) => {
-            setSelectedChecklistItem(id);
-            if (id && countryExperiences) {
+        (id: Id) => {
+            const newSelection = id === selectedChecklistItem ? undefined : id;
+            setSelectedChecklistItem(newSelection);
+
+            if (newSelection && countryExperiences) {
                 const countryExperiencesRelated = countryExperiences.filter(ce =>
-                    ce.relatedPolicyChecklistIds.includes(id)
+                    ce.relatedPolicyChecklistIds.includes(newSelection)
                 );
                 setFilteredCountryExperiences(countryExperiencesRelated);
             } else {
                 setFilteredCountryExperiences(undefined);
             }
         },
-        [countryExperiences]
+        [countryExperiences, selectedChecklistItem]
     );
 
     return {
