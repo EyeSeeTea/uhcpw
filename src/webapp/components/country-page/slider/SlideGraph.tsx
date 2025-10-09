@@ -9,6 +9,7 @@ import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -153,6 +154,7 @@ const Text = styled(Typography)`
     margin-inline-start: 36px;
     margin-block: 6px;
     font-size: 1rem;
+    color: ${colors.black};
 `;
 
 const StyledLi = styled.li`

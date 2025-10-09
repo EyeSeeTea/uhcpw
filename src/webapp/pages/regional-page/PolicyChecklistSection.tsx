@@ -205,16 +205,19 @@ const StyledTableCell = styled(TableCell)`
 
 const Text = styled(Typography)`
     font-family: Lato;
+    color: ${colors.black};
 `;
 
 const StyledLi = styled.li`
     line-height: 1.43;
     font-size: 16px;
+    color: ${colors.black};
 `;
 
 const StyledUl = styled.ul`
     padding-inline-start: 14px;
     font-size: 16px;
+    color: ${colors.black};
 `;
 
 const TextLink = styled.a`

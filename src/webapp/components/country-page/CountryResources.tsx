@@ -62,7 +62,8 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
             {countryAnalysisResource?.length ? (
                 <ResourcesSection aria-label="country-resources">
                     <FirstRowWithMargin>
-                        <Typography variant="h6">{i18n.t("Country or area analysis")}</Typography>
+                        <StyledTypography variant="h6">{i18n.t("Country or area analysis")}</StyledTypography>
+
                         <Fab
                             aria-label="Go to country or area analysis resources"
                             color="primary"
@@ -96,7 +97,8 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
             {comparativeAnalysisResources?.length ? (
                 <ResourcesSection aria-label="comparative-resources">
                     <SecondRowWithMargin>
-                        <Typography variant="h6">{i18n.t("Comparative analysis")}</Typography>
+                        <StyledTypography variant="h6">{i18n.t("Comparative analysis")}</StyledTypography>
+
                         <Fab
                             aria-label="Go to comparative analysis resources"
                             color="primary"
@@ -185,4 +187,8 @@ const FirstRowWithMargin = styled(Row)`
         margin-block-end: 30px;
         margin-block-start: 10px;
     }
+`;
+
+const StyledTypography = styled(Typography)`
+    color: ${colors.black};
 `;

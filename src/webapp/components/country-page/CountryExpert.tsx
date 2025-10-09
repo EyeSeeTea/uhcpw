@@ -5,6 +5,7 @@ import bubblePattern from "../../assets/bubble-pattern.svg";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../domain/entities/Ref";
+import { colors } from "../../pages/app/themes/dhis2.theme";
 
 export type CountryExpertProps = {
     countryIds: Id[];
@@ -72,6 +73,7 @@ const Container = styled.div<{ isRegionalPage?: boolean }>`
 
 const GridContainer = styled(Grid)`
     margin: 30px 0px;
+    color: ${colors.black};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         width: 100%;

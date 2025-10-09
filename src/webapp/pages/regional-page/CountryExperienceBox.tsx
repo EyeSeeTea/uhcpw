@@ -34,9 +34,9 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
     const markdownComponents: Components = React.useMemo(
         () => ({
             p: ({ children }) => (
-                <Typography variant="body1" gutterBottom>
+                <StyledText variant="body1" gutterBottom>
                     {children}
-                </Typography>
+                </StyledText>
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
@@ -107,6 +107,7 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
 const Content = styled.div`
     padding: 16px;
+    color: ${colors.black};
 `;
 
 const CountryExperienceContent = styled.div`
@@ -122,17 +123,26 @@ const CountryExperienceContent = styled.div`
 
 const StyledTitle = styled(Typography)`
     margin-inline-end: 24px;
+    color: ${colors.black};
+
     &.MuiTypography-h6 {
         font-weight: bold;
     }
 `;
 
+const StyledText = styled(Typography)`
+    font-family: Lato;
+    color: ${colors.black};
+`;
+
 const StyledLi = styled.li`
     line-height: 1.43;
+    color: ${colors.black};
 `;
 
 const StyledUl = styled.ul`
     padding-inline-start: 14px;
+    color: ${colors.black};
 `;
 
 const TextLink = styled.a`
