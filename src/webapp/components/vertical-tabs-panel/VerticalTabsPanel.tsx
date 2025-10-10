@@ -63,7 +63,7 @@ function a11yProps(index: number, tabTitle: string) {
 export type VerticalTabConfig = {
     tab: number;
     tabTitle: string;
-    Component: React.ComponentType<any>;
+    Component: React.ComponentType<any> | null;
     props?: Record<string, any>;
 };
 

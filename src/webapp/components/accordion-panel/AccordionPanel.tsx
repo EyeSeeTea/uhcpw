@@ -7,13 +7,15 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 
 export type AccordionConfig = {
     tab: number;
-    tabTitle: string | React.ReactNode;
+    tabTitle: string;
+    onTitleClick?: (tab: number) => void;
     Component: React.ComponentType<any> | null;
     disabled?: boolean;
     props?: Record<string, any>;
     isGradientColor?: boolean;
     isSecondaryGradientColor?: boolean;
     hasExpandIcon?: boolean;
+    ref?: React.RefObject<HTMLElement> | null;
 };
 
 type AccordionPanelProps = {
@@ -40,6 +42,7 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
             {configs.map(config => {
                 return (
                     <StyledAccordion
+                        ref={config.ref}
                         key={`${config.tab}-${config.tabTitle}-key`}
                         $isSecondaryColor={isSecondaryColor}
                         $isGradientColor={config.isGradientColor}
@@ -47,6 +50,9 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
                         expanded={config.tab === expandedConfig?.tab}
                         onChange={(event: React.ChangeEvent<{}>, isExpanded: boolean) => {
                             !config.disabled && handleAccordionChange(event, config.tab, isExpanded);
+                        }}
+                        onClick={() => {
+                            config.onTitleClick && config.onTitleClick(config.tab);
                         }}
                     >
                         <StyledAccordionSummary

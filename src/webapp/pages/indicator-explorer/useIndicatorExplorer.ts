@@ -25,6 +25,7 @@ import {
     getUpdatedCountriesSelectionFilter,
     getYearOptionsInFilter,
 } from "./helpers";
+import { useUpdateSearchParam } from "../../common/hooks/useUpdateSearchParam";
 
 export function useIndicatorExplorer(
     initialIndicator?: string,
@@ -43,6 +44,7 @@ export function useIndicatorExplorer(
         selectedCountries: initialCountriesAndAreas,
     });
     const { sendEvent } = useAnalytics();
+    const { updateSearchParam, updateSearchParams } = useUpdateSearchParam();
 
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
     const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>(initialIndicator);
@@ -63,6 +65,7 @@ export function useIndicatorExplorer(
     const [isYearSingleSelection, setIsYearSingleSelection] = useState(false);
     const [disabledYears, setDisabledYears] = useState<string[]>([]);
     const [hideBosniaAndHerzegovinaRegions, setHideBosniaAndHerzegovinaRegions] = useState(false);
+    const [hasSyncedFilters, setHasSyncedFilters] = useState(false);
 
     const selectedCountriesAndSubregions: Id[] = useMemo(() => {
         const countryAndSubregionIds = countryAndRegionsOptions
@@ -149,7 +152,7 @@ export function useIndicatorExplorer(
                 countriesAndSubregions
             );
 
-            if (maybeUpdatedCountrySelection && !initialCountriesAndAreas?.length) {
+            if (maybeUpdatedCountrySelection) {
                 onSelectedCountryAndRegionsChange(maybeUpdatedCountrySelection);
             }
 
@@ -162,15 +165,13 @@ export function useIndicatorExplorer(
             setDisabledCountriesAndRegions(disabledCountries);
 
             const selectedYearsInFilter = getSelectedYearsInFilter(newIndicator);
-            !initialYears?.length && setSelectedYearFilter(selectedYearsInFilter);
+            setSelectedYearFilter(selectedYearsInFilter);
 
-            // Reset countries filter depending on maxCountryFilter
-            if (
+            const countriesToBeReset =
                 selectedCountriesAndRegions &&
                 newIndicator?.maxCountryFilter &&
-                selectedCountriesAndRegions?.length > newIndicator?.maxCountryFilter &&
-                !initialCountriesAndAreas?.length
-            ) {
+                selectedCountriesAndRegions?.length > newIndicator?.maxCountryFilter;
+            if (countriesToBeReset) {
                 onSelectedCountryAndRegionsChange([]);
             }
 
@@ -179,20 +180,27 @@ export function useIndicatorExplorer(
             setMaxCountrySelection(newIndicator?.maxCountryFilter);
             setIsOnlyEu27Comparison(!!newIndicator?.isOnlyEu27Comparison);
             setSelectedIndicatorFilter(value);
-            !initialIndicator && setShowVisualization(false);
+            setShowVisualization(false);
             setIsYearSingleSelection(!!newIndicator?.isYearSingleSelection);
             setHideBosniaAndHerzegovinaRegions(!!newIndicator?.hideBosniaAndHerzegovinaRegions);
             setDisabledYears([]);
+            updateSearchParams({
+                years: selectedYearsInFilter,
+                indicator: value,
+                countriesAndAreas: countriesToBeReset
+                    ? []
+                    : maybeUpdatedCountrySelection
+                    ? maybeUpdatedCountrySelection
+                    : selectedCountriesAndRegions,
+            });
         },
         [
+            updateSearchParams,
             indicators,
             selectedCountriesAndRegions,
             countriesAndSubregions,
-            initialCountriesAndAreas?.length,
             countryAndRegionsOptions,
-            initialYears?.length,
             showNonComparativeMessageIfRequired,
-            initialIndicator,
             selectedIndicatorFilter,
             onSelectedCountryAndRegionsChange,
         ]
@@ -201,8 +209,9 @@ export function useIndicatorExplorer(
     const onChangeYearFilter = useCallback(
         (value: string[] | undefined) => {
             setSelectedYearFilter(value);
+            updateSearchParam("years", value);
 
-            !initialYears?.length && setShowVisualization(false);
+            setShowVisualization(false);
 
             if (isYearSingleSelection) {
                 const disabled =
@@ -210,12 +219,8 @@ export function useIndicatorExplorer(
                 setDisabledYears(disabled);
             }
         },
-        [initialYears?.length, isYearSingleSelection, yearFilters]
+        [updateSearchParam, isYearSingleSelection, yearFilters]
     );
-
-    useEffect(() => {
-        !initialYears?.length && !initialCountriesAndAreas?.length && !initialIndicator && setShowVisualization(false);
-    }, [initialCountriesAndAreas?.length, initialIndicator, initialYears?.length, selectedCountriesAndRegions]);
 
     useEffect(() => {
         if (!selectedIndicatorFilter) {
@@ -345,12 +350,6 @@ export function useIndicatorExplorer(
         }
     }, [selectedCountriesAndRegions, selectedIndicatorFilter, indicators, sendAnalyticsEvents]);
 
-    useEffect(() => {
-        if (initialCountriesAndAreas?.length && initialIndicator && initialYears?.length) {
-            onGet();
-        }
-    }, [initialCountriesAndAreas?.length, initialIndicator, initialYears?.length, onGet]);
-
     const onCountriesAndRegionsChange = useCallback(
         (newSelectedCountriesAndRegions: Id[] | undefined) => {
             const selectedIndicator = indicators.find(visualization => visualization.id === selectedIndicatorFilter);
@@ -383,8 +382,11 @@ export function useIndicatorExplorer(
             }
 
             onSelectedCountryAndRegionsChange(newSelectedCountriesAndRegions);
+            updateSearchParam("countriesAndAreas", newSelectedCountriesAndRegions);
+            setShowVisualization(false);
         },
         [
+            updateSearchParam,
             countryAndRegionsOptions,
             isOnlyEu27Comparison,
             onSelectedCountryAndRegionsChange,
@@ -396,6 +398,44 @@ export function useIndicatorExplorer(
     const closeVisualization = useCallback(() => {
         setShowVisualization(false);
     }, []);
+
+    useEffect(() => {
+        if (hasSyncedFilters) return;
+
+        const hasParams = initialIndicator || initialCountriesAndAreas?.length || initialYears?.length;
+
+        if (!hasParams) return;
+
+        if (
+            indicatorFilters.length === 0 ||
+            yearFilters.length === 0 ||
+            countryAndRegionsOptions.length === 0 ||
+            !onCountriesAndRegionsChange ||
+            !onChangeYearFilter ||
+            !onChangeIndicatorFilter
+        ) {
+            return;
+        }
+
+        onChangeIndicatorFilter(initialIndicator || "");
+        onCountriesAndRegionsChange(initialCountriesAndAreas || []);
+        onChangeYearFilter(initialYears || []);
+        onGet();
+
+        setHasSyncedFilters(true);
+    }, [
+        countryAndRegionsOptions.length,
+        hasSyncedFilters,
+        indicatorFilters.length,
+        initialCountriesAndAreas,
+        initialIndicator,
+        initialYears,
+        onChangeIndicatorFilter,
+        onChangeYearFilter,
+        onCountriesAndRegionsChange,
+        onGet,
+        yearFilters.length,
+    ]);
 
     return {
         filters: {

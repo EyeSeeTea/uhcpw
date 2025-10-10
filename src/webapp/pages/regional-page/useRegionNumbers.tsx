@@ -226,6 +226,7 @@ export function useRegionNumbers(
                                       text: numbersPanelContent.panelSixGraphOneText,
                                   },
                                   {
+                                      // TODO: this chart does not have LAY, decide if keep and change it or remove it
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "z6nPPMMbOw5",
                                       visualizationName:

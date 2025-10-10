@@ -17,6 +17,10 @@ import { Maybe } from "../../../types/utils";
 import { CountryExperienceData, useRegionalPolicyChecklist } from "./useRegionalPolicyChecklist";
 import { ChecklistPolicyMakersData } from "../../../domain/entities/region/ChecklistPolicyMakers";
 import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel";
+import { NumbersSection } from "./NumbersSection";
+import { PolicyChecklistSection } from "./PolicyChecklistSection";
+import { CountryResources } from "../../components/country-page/CountryResources";
+import { CountryExpert } from "../../components/country-page/CountryExpert";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
 
@@ -60,13 +64,9 @@ export type RegionalPageState = {
     highlightedISO3Countries: string[];
     isEUorEuropeanRegion: boolean;
     goTo: (link: string) => void;
-    handleAccordionChange: (
-        event: React.ChangeEvent<{}>,
-        tabId: number,
-        isExpanded: boolean,
-        sectionsAccordionConfig: AccordionConfig[]
-    ) => void;
+    handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     expandedSectionsAccordion: AccordionConfig | undefined;
+    sectionsAccordionConfig: AccordionConfig[];
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -176,19 +176,105 @@ export function useRegionalPage(): RegionalPageState {
         [history]
     );
 
+    const sectionsAccordionConfig: AccordionConfig[] = useMemo(
+        () => [
+            {
+                tab: 0,
+                tabTitle: i18n.t("Numbers: financial hardship, unmet need and spending on health"),
+                isGradientColor: true,
+                hasExpandIcon: true,
+                Component: NumbersSection,
+                ref: refs.numbers,
+                props: {
+                    configs: regionNumbers.configs,
+                    tabValue: regionNumbers.tabValue,
+                    expandedConfig: regionNumbers.expandedConfig,
+                    handleAccordionChange: regionNumbers.handleAccordionChange,
+                    handleTabChange: regionNumbers.handleTabChange,
+                    isSmallScreen: isSmallScreen,
+                },
+            },
+            {
+                tab: 1,
+                tabTitle: i18n.t("Progress is possible: a checklist for policy-makers"),
+                isGradientColor: true,
+                hasExpandIcon: true,
+                Component: PolicyChecklistSection,
+                ref: refs.policyChecklist,
+                props: {
+                    textSectionLeft: content?.policyChecklistContent.textSectionLeft || "",
+                    textSectionRight: content?.policyChecklistContent.textSectionRight || "",
+                    checklist: policyChecklist?.checklist,
+                    filteredCountryExperiences: policyChecklist?.filteredCountryExperiences,
+                    selectedChecklistItem: policyChecklist.selectedChecklistItem,
+                    onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
+                    isLoading: policyChecklist.isLoading,
+                    isSmallScreen: isSmallScreen,
+                },
+            },
+            {
+                tab: 2,
+                tabTitle: i18n.t("Resources"),
+                onTitleClick: isEUorEuropeanRegion
+                    ? () => {
+                          goTo("/resources");
+                      }
+                    : undefined,
+                isSecondaryGradientColor: true,
+                hasExpandIcon: !isEUorEuropeanRegion,
+                Component: isEUorEuropeanRegion ? null : CountryResources,
+                disabled: isEUorEuropeanRegion,
+                ref: refs.resources,
+                props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
+            },
+            {
+                tab: 3,
+                tabTitle: i18n.t("Expert network"),
+                onTitleClick: isEUorEuropeanRegion
+                    ? () => {
+                          goTo("/about");
+                      }
+                    : undefined,
+                isSecondaryGradientColor: true,
+                hasExpandIcon: !isEUorEuropeanRegion,
+                Component: isEUorEuropeanRegion ? null : CountryExpert,
+                disabled: isEUorEuropeanRegion,
+                ref: refs.experts,
+                props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
+            },
+        ],
+        [
+            content?.policyChecklistContent.textSectionLeft,
+            content?.policyChecklistContent.textSectionRight,
+            goTo,
+            isEUorEuropeanRegion,
+            isSmallScreen,
+            policyChecklist?.checklist,
+            policyChecklist?.filteredCountryExperiences,
+            policyChecklist.isLoading,
+            policyChecklist.onSelectChecklistItem,
+            policyChecklist.selectedChecklistItem,
+            refs.experts,
+            refs.numbers,
+            refs.policyChecklist,
+            refs.resources,
+            regionNumbers.configs,
+            regionNumbers.expandedConfig,
+            regionNumbers.handleAccordionChange,
+            regionNumbers.handleTabChange,
+            regionNumbers.tabValue,
+            selectedRegion?.countries,
+        ]
+    );
+
     const handleAccordionChange = useCallback(
-        (
-            _event: React.ChangeEvent<{}>,
-            tabId: number,
-            isExpanded: boolean,
-            sectionsAccordionConfig: AccordionConfig[]
-        ) => {
+        (_event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => {
             const sliderConfigSelected = isExpanded
                 ? sectionsAccordionConfig.find(config => config.tab === tabId)
                 : undefined;
             setExpandedSectionsAccordion(sliderConfigSelected);
         },
-        []
+        [sectionsAccordionConfig]
     );
 
     return {
@@ -223,5 +309,6 @@ export function useRegionalPage(): RegionalPageState {
         goTo: goTo,
         handleAccordionChange: handleAccordionChange,
         expandedSectionsAccordion: expandedSectionsAccordion,
+        sectionsAccordionConfig: sectionsAccordionConfig,
     };
 }
