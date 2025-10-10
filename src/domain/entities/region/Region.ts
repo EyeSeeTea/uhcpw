@@ -17,15 +17,16 @@ export const ORG_UNIT_GROUP_IDS = {
     EUROPEAN_REGION: "aN3rzQZhM4i",
 } as const;
 
-// WORKAROUND: EUROPEAN UNION data is added in Greenland because we cannot use EUR org unit
-// TODO: Change this when region org units are implemented
-const EUROPEAN_UNION_ORG_UNIT_ID: Id = "IZy3ESdFnp5";
-
 export const ORG_UNIT_IDS = {
-    EUROPEAN_UNION: EUROPEAN_UNION_ORG_UNIT_ID,
+    WESTERN_BALKANS: "DtTrtbWfWJ7",
+    EUROPEAN_UNION: "gIv1Z59fqHc",
+    EASTERN_EUROPE_AND_CENTRAL_ASIA: "JioUmNZGlmE",
+    EU_CANDIDATE_COUNTRIES: "aXlsYT9qEhB",
+    // TODO: Add the correct org unit for the European Region when available
+    EUROPEAN_REGION: "",
 } as const;
 
-export type OrgUnitRegionKey = keyof typeof ORG_UNIT_IDS;
+type OrgUnitRegionKey = keyof typeof ORG_UNIT_IDS;
 
 export function isOrgUnitRegionKey(key: string): key is OrgUnitRegionKey {
     return key in ORG_UNIT_IDS;
@@ -43,19 +44,6 @@ export type RegionCodeKey = keyof typeof REGION_CODES;
 
 export function isRegionCodeKey(key: string): key is RegionCodeKey {
     return key in REGION_CODES;
-}
-export const REGION_NAMES = {
-    WESTERN_BALKANS: "Western Balkans",
-    EUROPEAN_UNION: "European Union",
-    EASTERN_EUROPE_AND_CENTRAL_ASIA: "Eastern Europe & central Asia",
-    EU_CANDIDATE_COUNTRIES: "EU candidate countries",
-    EUROPEAN_REGION: "European Region",
-} as const;
-
-export type RegionNameKey = keyof typeof REGION_NAMES;
-
-export function isRegionNameKey(key: string): key is RegionNameKey {
-    return key in REGION_NAMES;
 }
 
 export const SORTED_REGIONS: Id[] = [

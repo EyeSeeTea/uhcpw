@@ -370,12 +370,13 @@ export function useIndicatorExplorer(
                     )
                 );
             } else if (onlyEURegionCanBeSelected) {
+                const euIds: readonly string[] = [ORG_UNIT_GROUP_IDS.EUROPEAN_UNION, ORG_UNIT_IDS.EUROPEAN_UNION];
                 setDisabledCountriesAndRegions(
                     getCountriesAndRegionsToBeDisabled(
                         countryAndRegionsOptions,
                         newSelectedCountriesAndRegions,
                         disabledRegionIds
-                    ).filter(id => [ORG_UNIT_GROUP_IDS.EUROPEAN_UNION, ORG_UNIT_IDS.EUROPEAN_UNION].includes(id))
+                    ).filter(id => euIds.includes(id))
                 );
             } else {
                 setDisabledCountriesAndRegions(disabledRegionIds);
