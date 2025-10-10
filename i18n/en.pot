@@ -11,6 +11,9 @@ msgstr ""
 msgid "Error fetching methods"
 msgstr ""
 
+msgid "Country Information coming soon"
+msgstr ""
+
 msgid "All countries and areas"
 msgstr ""
 
@@ -137,13 +140,10 @@ msgstr ""
 msgid "WHO privacy policy"
 msgstr ""
 
-msgid "About Us"
+msgid "Abbreviations & glossary"
 msgstr ""
 
-msgid "Abbreviations & Glossary"
-msgstr ""
-
-msgid "WHO Privacy Policy & Disclaimer"
+msgid "WHO privacy policy & disclaimer"
 msgstr ""
 
 msgid "Indicator explorer"
@@ -207,15 +207,9 @@ msgid ""
 "spending on health"
 msgstr ""
 
-msgid "Policy Explorer"
-msgstr ""
-
 msgid ""
 "Information on population coverage, service coverage, user charges and "
 "voluntary health insurance"
-msgstr ""
-
-msgid "Countries & Areas"
 msgstr ""
 
 msgid "All years"

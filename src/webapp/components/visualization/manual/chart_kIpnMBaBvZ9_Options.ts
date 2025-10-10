@@ -7,12 +7,20 @@ import {
     kIpnMBaBvZ9_xAxisOutOfPocket,
     kIpnMBaBvZ9_yAxisHouseholds,
 } from "../../../../data/repositories/indicator-explorer/seed/chart_kIpnMBaBvZ9_Seed";
+import {
+    filterRowsByYearIndicatorAndCountry,
+    getGroupedYearsByCountry,
+} from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 
 export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const { hasCustomFilterXAxisAndYAxisByLastAvailableYear } = chartSource.visualization;
     const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear(chartSource, {
         isScatter: true,
         xAxis: kIpnMBaBvZ9_xAxisOutOfPocket,
         yAxis: kIpnMBaBvZ9_yAxisHouseholds,
+        customFilterXAxisAndYAxisByLastAvailableYear: hasCustomFilterXAxisAndYAxisByLastAvailableYear
+            ? customFilterXAxisAndYAxisByLastAvailableYear
+            : undefined,
     });
 
     const rowsByCountry = _(chartSourceWithFilteredRowsByLAY.analyticsResponse.rows)
@@ -61,10 +69,12 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
 
             const x = xSource[3] ? +xSource[3] : 0;
             const y = ySource[3] ? +ySource[3] : 0;
-
+            const isCommonYear = xSource[2] === ySource[2];
             return {
                 country: country?.code || "",
-                year: `${xSource[2]}`,
+                yearX: isCommonYear ? "" : `${xSource[2]}`,
+                yearY: isCommonYear ? "" : `${ySource[2]}`,
+                commonYear: isCommonYear ? xSource[2] || "" : "",
                 x,
                 y,
             };
@@ -141,7 +151,7 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         xAxisTitle: "Out-of-pocket payments as a share of current spending on health (%)",
         yAxisTitle: "Households with catastrophic health spending (%)",
         pointFormat:
-            "{point.country} {point.year} <br/> Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> Households with catastrophic health spending (%): {point.y}%",
+            "{point.country} {point.commonYear} <br/> {point.yearX} Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> {point.yearY} Households with catastrophic health spending (%): {point.y}%",
         countriesWithData,
         countryPositions: countryPositionsAdjustment,
     });
@@ -161,12 +171,14 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
     };
 };
 
-interface SerieData {
+type SerieData = {
     country: string;
-    year: string;
+    yearX: string;
+    yearY: string;
+    commonYear: string;
     x: number;
     y: number;
-}
+};
 
 type SerieSource = {
     id: SerieType;
@@ -189,4 +201,71 @@ function filterByValue(serieId: SerieType, data: SerieData) {
         case "extra-hight":
             return data.x > 0 && data.y >= 15;
     }
+}
+
+function customFilterXAxisAndYAxisByLastAvailableYear(
+    rows: Array<string[]>,
+    xAxis: string,
+    yAxis: string,
+    isUpTo2019?: boolean
+): Array<string[]> {
+    const yearByIndicatorAndCountry = getYearByIndicatorAndCountry(rows, xAxis, yAxis, isUpTo2019);
+
+    return filterRowsByYearIndicatorAndCountry(rows, xAxis, yAxis, yearByIndicatorAndCountry);
+}
+
+// Custom: Get Year By Indicator And Country
+export function getYearByIndicatorAndCountry(
+    rows: Array<string[]>,
+    xAxis: string,
+    yAxis: string,
+    isUpTo2019?: boolean
+): Record<
+    string,
+    {
+        xYears: string;
+        yYears: string;
+    }
+> {
+    const groupedYearsByCountry = getGroupedYearsByCountry(rows, xAxis, yAxis);
+
+    return Object.keys(groupedYearsByCountry).reduce(
+        (acc, countryId): Record<string, { xYears: string; yYears: string }> => {
+            const filteredXYears = [...(groupedYearsByCountry[countryId]?.xYears || [])].filter(year => {
+                return isUpTo2019 ? Number(year) <= 2019 : true;
+            });
+            const filteredYYears = [...(groupedYearsByCountry[countryId]?.yYears || [])].filter(year => {
+                return isUpTo2019 ? Number(year) <= 2019 : true;
+            });
+
+            // If kIpnMBaBvZ9_yAxisHouseholds has 2023 or 2024, we take this year from yAxis and the latest year from xAxis
+            const sortedYYears = [...filteredYYears].sort((a, b) => parseInt(b) - parseInt(a));
+            const hasY2023Or2024AsLAY = sortedYYears[0] === "2023" || sortedYYears[0] === "2024";
+
+            if (hasY2023Or2024AsLAY) {
+                const sortedXYears = [...filteredXYears].sort((a, b) => parseInt(b) - parseInt(a));
+                return {
+                    ...acc,
+                    [countryId]: {
+                        xYears: sortedXYears[0] || "",
+                        yYears: sortedYYears[0] || "",
+                    },
+                };
+            } else {
+                const commonYears = filteredXYears
+                    .filter(year => filteredYYears.includes(year))
+                    .sort((a, b) => parseInt(b) - parseInt(a));
+
+                const commonYear = commonYears.length > 0 ? commonYears[0] : "";
+                return {
+                    ...acc,
+                    [countryId]: {
+                        xYears: commonYear,
+                        yYears: commonYear,
+                    },
+                };
+            }
+        },
+        {}
+    );
 }

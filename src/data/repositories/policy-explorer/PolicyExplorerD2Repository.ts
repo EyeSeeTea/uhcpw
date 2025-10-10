@@ -12,7 +12,7 @@ import {
     firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
-import { policyExplorerDataSet_ID } from "../../../domain/utils";
+import { policyExplorerDataSet_ID, sortByCountry } from "../utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
@@ -21,6 +21,7 @@ import { CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES } from "./builders/TableBuilde
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
 import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
@@ -28,6 +29,7 @@ import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { generate } from "../../../domain/usecases/utils/generateYears";
+import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -204,16 +206,18 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             notes: "Notes*",
             source: "Suggested citation",
         };
-        const generalInfoForDownload: PolicyExplorerGeneralInfoToDownload[] = generalInfo.map(info => ({
-            country: info.country,
-            year: info.year,
-            lastUpdate: info.lastUpdate ? moment(info.lastUpdate).format("D MMMM YYYY") : "",
-            countryExperts: info.countryExperts,
-            editors: info.editors,
-            reviewers: info.reviewers,
-            notes: info.notes,
-            source: `${info.sourceText} ${info.sourceUrl}`,
-        }));
+        const generalInfoForDownload: PolicyExplorerGeneralInfoToDownload[] = generalInfo
+            .map(info => ({
+                country: info.country,
+                year: info.year,
+                lastUpdate: info.lastUpdate ? moment(info.lastUpdate).format("D MMMM YYYY") : "",
+                countryExperts: info.countryExperts,
+                editors: info.editors,
+                reviewers: info.reviewers,
+                notes: info.notes,
+                source: `${info.sourceText} ${info.sourceUrl}`,
+            }))
+            .sort((genA, genB) => sortByCountry(genA.country, genB.country));
 
         const generalInfoTab = generalInfoForDownload.reduce(
             (generalInfoRowsAcc, countryGeneralInfo) => {
@@ -238,15 +242,17 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private getReferencesTab(references: PolicyExplorerReferences[]): Tab {
         const referencesTitle = REFERENCES_TAB_NAME;
 
-        const referencesTab = references.reduce(
-            (referencesTabAcc, countryReferences) => {
-                const cleanReferences = countryReferences.references?.map(
-                    reference => reference.split("]:")[1]?.replace(/"/g, "") || reference
-                );
-                return [...referencesTabAcc, [countryReferences.country, cleanReferences.join("\n")]];
-            },
-            [[referencesTitle], ["Country", ""]]
-        );
+        const referencesTab = references
+            .sort((refA, refB) => sortByCountry(refA.country, refB.country))
+            .reduce(
+                (referencesTabAcc, countryReferences) => {
+                    const cleanReferences = countryReferences.references?.map(
+                        reference => reference.split("]:")[1]?.replace(/"/g, "") || reference
+                    );
+                    return [...referencesTabAcc, [countryReferences.country, cleanReferences.join("\n")]];
+                },
+                [[referencesTitle], ["Country", ""]]
+            );
 
         return {
             data: referencesTab,
@@ -280,56 +286,60 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .groupBy(dataValue => dataValue.orgUnit)
             .value();
 
-        return Object.entries(dataValuesByOrgUnit).map(([orgUnitId, dataValuesOfCountry]) => {
-            const countryName = this.getCountryName(orgUnitId, countriesAndSubregions);
+        return Object.entries(dataValuesByOrgUnit)
+            .map(([orgUnitId, dataValuesOfCountry]) => {
+                const countryName = this.getCountryName(orgUnitId, countriesAndSubregions);
 
-            const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
-            const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
+                const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
+                const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
 
-            const sourceUrl =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
-                )?.value || "";
-            const countryExperts =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.countryExperts || "")
-                )?.value || "";
-            const editors =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.editors || "")
-                )?.value || "";
-            const lastUpdate =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.lastUpdate || "")
-                )?.value || "";
-            const reviewers =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
-                )?.value || "";
-            const sourceText =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
-                )?.value || "";
+                const sourceUrl =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceUrl || "")
+                    )?.value || "";
+                const countryExperts =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv =>
+                            dv.orgUnit === orgUnitId &&
+                            dv.dataElement.includes(generalDataElements.countryExperts || "")
+                    )?.value || "";
+                const editors =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.editors || "")
+                    )?.value || "";
+                const lastUpdate =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.lastUpdate || "")
+                    )?.value || "";
+                const reviewers =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.reviewers || "")
+                    )?.value || "";
+                const sourceText =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.sourceText || "")
+                    )?.value || "";
 
-            const notes =
-                dataValuesOfCountryOrderByYear.find(
-                    dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.notes || "")
-                )?.value || "";
+                const notes =
+                    dataValuesOfCountryOrderByYear.find(
+                        dv => dv.orgUnit === orgUnitId && dv.dataElement.includes(generalDataElements.notes || "")
+                    )?.value || "";
 
-            const year = sortedYears.length && sortedYears[0] ? sortedYears[0] : "";
+                const year = sortedYears.length && sortedYears[0] ? sortedYears[0] : "";
 
-            return {
-                country: countryName,
-                sourceText,
-                sourceUrl,
-                countryExperts,
-                editors,
-                lastUpdate: new Date(lastUpdate),
-                reviewers,
-                notes,
-                year,
-            };
-        });
+                return {
+                    country: countryName,
+                    sourceText,
+                    sourceUrl,
+                    countryExperts,
+                    editors,
+                    lastUpdate: new Date(lastUpdate),
+                    reviewers,
+                    notes,
+                    year,
+                };
+            })
+            .sort((genA, genB) => sortByCountry(genA.country, genB.country));
     }
 
     private buildTables(params: {
@@ -348,6 +358,20 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             dataSet,
             programCategories,
         } = params;
+
+        const deSubstitutor = dataSet
+            ? new DataElementSubstitutor(dataSet.sections, PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS)
+            : undefined;
+        const substitutedDataSet =
+            deSubstitutor && dataSet
+                ? {
+                      ...dataSet,
+                      sections: dataSet.sections.map(section => ({
+                          ...section,
+                          dataElements: deSubstitutor.substituteSource(section.dataElements),
+                      })),
+                  }
+                : dataSet;
 
         const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
@@ -385,7 +409,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     ? this.filterByLatestAvailableYear(dataValuesOrderByYear)
                     : dataValuesOrderByYear;
 
-                const dataValuesByCountryAndYear = _(finalDataValues)
+                const sortedDataValues = finalDataValues.sort((dvA, dvB) =>
+                    sortByCountry(dvA.orgUnitShortName, dvB.orgUnitShortName)
+                );
+
+                const dataValuesByCountryAndYear = _(sortedDataValues)
                     .groupBy(dataValue => `${dataValue.orgUnit}-${dataValue.period}`)
                     .value();
 
@@ -424,7 +452,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             orgUnitName: orgUnitNameInCell,
                             period,
                             references: areMarkdownReferences ? references : "",
-                            dataSet,
+                            dataSet: substitutedDataSet,
                         });
                     },
                     []
@@ -563,7 +591,7 @@ const dataSetFields = {
     sections: {
         id: true,
         displayName: true,
-        dataElements: { id: true, formName: true, valueType: true, description: true },
+        dataElements: { id: true, code: true, formName: true, valueType: true, description: true },
     },
 } as const;
 

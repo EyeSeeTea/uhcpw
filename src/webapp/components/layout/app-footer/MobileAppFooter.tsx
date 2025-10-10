@@ -17,17 +17,17 @@ export const MobileAppFooter: React.FC = () => {
         () => [
             {
                 id: "about-us",
-                title: i18n.t("About Us"),
+                title: i18n.t("About us"),
                 content: <AboutUsInfo fullWidth />,
             },
             {
                 id: "abbreviations-glossary",
-                title: i18n.t("Abbreviations & Glossary"),
+                title: i18n.t("Abbreviations & glossary"),
                 content: <AbbreviationsAndGlossary />,
             },
             {
                 id: "privacy-policy-disclaimer",
-                title: i18n.t("WHO Privacy Policy & Disclaimer"),
+                title: i18n.t("WHO privacy policy & disclaimer"),
                 content: <PrivacyPolicyAndDisclaimer />,
             },
             {
@@ -43,7 +43,7 @@ export const MobileAppFooter: React.FC = () => {
         <>
             <FooterTop>
                 <FlexContainer>
-                    <WhoLogo src={whoLogoWhite} alt="WHO logo" />
+                    <WhoLogo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
                     <EuropeContainer>
                         <EuropeFlag src={europeFlag} alt="WHO logo" />
                         <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>

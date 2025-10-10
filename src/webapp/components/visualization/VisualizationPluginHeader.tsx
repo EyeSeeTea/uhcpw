@@ -17,6 +17,7 @@ import {
 } from "../../../data/repositories/countries/CountryD2Repository";
 import { FullScreenNotesDialog } from "../dialog/FullScreenNotesDialog";
 import { Id } from "../../../domain/entities/Ref";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 interface VisualizationPluginHeaderProps {
     visualizationDialogInfo: string;
@@ -85,7 +86,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryOrRegionalPage ? (
                         <Row $isRegionalPage={isRegionalPage}>
                             <TitleRow>
-                                <Title
+                                <StyledTitle
                                     isScreenshot={isScreenshot}
                                     variant="h6"
                                     color="textPrimary"
@@ -93,7 +94,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     $isRegionalPage={isRegionalPage}
                                 >
                                     {chartFriendlyName}
-                                </Title>
+                                </StyledTitle>
 
                                 {isRegionalPage && (
                                     <Fab
@@ -309,4 +310,15 @@ const TitleRow = styled(Row)`
     gap: 0px;
     align-items: center;
     justify-content: flex-start;
+`;
+
+const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
+    white-space: "normal";
+    font-weight: ${props => (props.$isRegionalPage ? "600" : "500")};
+    width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-left: 15px;
+    }
 `;

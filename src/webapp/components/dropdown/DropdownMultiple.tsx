@@ -74,6 +74,8 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
             closeFullScreen();
         };
 
+        const finalPlaceholder = valuesOption.length > 0 ? "" : placeholder;
+
         return (
             <Container>
                 <StyledAutocomplete
@@ -89,7 +91,7 @@ export const DropdownMultiple: React.FC<DropdownMultipleProps> = React.memo(
                             className={`${hideLabel ? "hide-label" : ""}`}
                             variant="standard"
                             label={label}
-                            placeholder={placeholder}
+                            placeholder={finalPlaceholder}
                             aria-label={label || placeholder || "Dropdown Multiple"}
                             InputLabelProps={{ shrink: true }}
                             minWidth={minWidth}
@@ -185,5 +187,14 @@ const StyledDropdownTextField = styled(DropdownTextField)`
             height: 1px;
             overflow: hidden;
         }
+    }
+    .MuiAutocomplete-inputRoot.MuiInputBase-root.MuiInput-root {
+        padding-right: 16px;
+    }
+    .MuiAutocomplete-input.MuiInputBase-input.MuiInput-input {
+        caret-color: transparent;
+        flex: 1;
+        min-width: 0;
+        padding: 6px 0;
     }
 `;

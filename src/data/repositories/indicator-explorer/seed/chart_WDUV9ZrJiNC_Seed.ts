@@ -7,7 +7,7 @@ const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
 
 export const chart_WDUV9ZrJiNC_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.financialHardship,
-    friendlyName: "Households with catastrophic health spending on total and in the poorest quintile",
+    friendlyName: "Households with catastrophic health spending in total and in the poorest quintile",
     regionalPageName:
         "Households with catastrophic health spending in total and in the poorest consumption quintile, latest available year",
     isComparative: true,

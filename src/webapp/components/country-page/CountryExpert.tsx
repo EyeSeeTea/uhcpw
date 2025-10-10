@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import i18n from "../../../locales";
-import bubblePattern from "../../assets/bubble-pattern.svg";
+import { ReactComponent as Bubble } from "../../assets/bubble-pattern.svg";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../domain/entities/Ref";
@@ -24,6 +24,7 @@ export const CountryExpert: React.FC<CountryExpertProps> = ({
         <Container aria-label="experts" isRegionalPage={isRegionalPage}>
             {isRegionalPage ? null : (
                 <TitleRow>
+                    <StyledBubble aria-hidden="true" focusable="false" />
                     <Typography variant="h5">{i18n.t("Experts")}</Typography>
                 </TitleRow>
             )}
@@ -69,12 +70,26 @@ export const CountryExpert: React.FC<CountryExpertProps> = ({
 };
 
 const Container = styled.div<{ isRegionalPage?: boolean }>`
+    position: relative;
     padding: 40px 60px;
-    background: ${props => (props.isRegionalPage ? "white" : `white url(${bubblePattern}) no-repeat right top`)};
-    background-size: contain;
+    background: white;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px 20px;
+    }
+`;
+
+const StyledBubble = styled(Bubble)`
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: auto;
+    width: 100%;
+    pointer-events: none;
+    opacity: 0.9;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        width: 260px;
     }
 `;
 
@@ -106,6 +121,8 @@ const Row = styled.div<{ isRegionalPage?: boolean }>`
     gap: 40px;
     margin: 30px 10px 30px 0px;
     flex-direction: ${props => (props.isRegionalPage ? "column" : "row")};
+    position: relative;
+    z-index: 1;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         flex-direction: column;
@@ -144,7 +161,7 @@ const TitleRow = styled.div`
     gap: 2px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-inline-start: 30px;
+        margin-inline-start: 0px;
         margin-block-end: 0;
     }
 `;

@@ -31,8 +31,6 @@ export type CountrySectionInfo = {
     }[];
 };
 
-export type CountryStatus = "Strong" | "Gaps" | "Weak";
-
 // included in countries list
 export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";
 export const FederationOfBosniaAndHerzegovina: Id = "j44olg405lZ";

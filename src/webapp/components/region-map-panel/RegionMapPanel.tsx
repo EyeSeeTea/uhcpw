@@ -3,9 +3,9 @@ import { Typography } from "@material-ui/core";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 
-import weakIcon from "../../assets/map/icon-weak.svg";
+import veryWeakIcon from "../../assets/map/icon-very-weak.svg";
 import strongIcon from "../../assets/map/icon-strong.svg";
-import gapsIcon from "../../assets/map/icon-normal.svg";
+import gapsIcon from "../../assets/map/icon-gaps.svg";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import i18n from "../../../locales";
@@ -39,7 +39,7 @@ export const RegionMapPanel: React.FC<RegionMapPanelProps> = props => {
 
             <UmbrellaItemsContainer>
                 <UmbrellaItem>
-                    <Marker src={weakIcon} />
+                    <Marker src={veryWeakIcon} />
                     {i18n.t("Weaker financial protection")}
                 </UmbrellaItem>
 

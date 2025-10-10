@@ -5,6 +5,7 @@ import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 const PARAMETER_NAMES: {
     x: string;
+    y: string;
     y_low: string;
     y_medium: string;
     y_medium_hight: string;
@@ -12,6 +13,7 @@ const PARAMETER_NAMES: {
     y_extra_hight: string;
 } = {
     x: cellNameByVisualizationId?.kIpnMBaBvZ9?.x || "Out-of-pocket payments as a share of current spending on health",
+    y: cellNameByVisualizationId?.kIpnMBaBvZ9?.y || "Households with catastrophic health spending",
     y_low: "< 2% of households with catastrophic health spending",
     y_medium: "< 5% of households with catastrophic health spending",
     y_medium_hight: "< 10% of households with catastrophic health spending",
@@ -59,7 +61,8 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
     const headersBase = [
         [
             "Country / Parameter",
-            "Year",
+            `Year ${PARAMETER_NAMES.x}`,
+            `Year ${PARAMETER_NAMES.y}`,
             "Label",
             PARAMETER_NAMES.x,
             PARAMETER_NAMES.y_low,
@@ -72,11 +75,15 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
 
     const data = allCountriesUnique.reduce(
         (acc: TabsWithStringOrNumbers["data"], countryName): TabsWithStringOrNumbers["data"] => {
-            const year = dataTab.data.find(
+            const yearX = dataTab.data.find(
                 row => row[parameterIndex] === PARAMETER_NAMES.x && row[countryIndex] === countryName
             )?.[yearIndex];
 
-            if (!year) {
+            const yearY = dataTab.data.find(
+                row => row[parameterIndex] === PARAMETER_NAMES.y && row[countryIndex] === countryName
+            )?.[yearIndex];
+
+            if (!yearX || !yearY) {
                 return acc;
             }
 
@@ -102,7 +109,7 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
                 throw new Error("Country code not found");
             }
 
-            return [...acc, [countryName, year, whoCountryCode, ...parametersData]];
+            return [...acc, [countryName, yearX, yearY, whoCountryCode, ...parametersData]];
         },
         []
     );

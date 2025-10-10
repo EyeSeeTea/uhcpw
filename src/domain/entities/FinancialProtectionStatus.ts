@@ -1,1 +1,1 @@
-export type FinancialProtectionStatus = "Strong" | "Gaps" | "Weak";
+export type FinancialProtectionStatus = "Strong" | "Emerging" | "Gaps" | "Weak" | "VeryWeak" | "InsufficientData";

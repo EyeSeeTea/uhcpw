@@ -8,12 +8,18 @@ import { HomePagePanel } from "../home-page-panel/HomePagePanel";
 import { CountryPanel } from "../country-panel/CountryPanel";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { Add as ZoomInIcon, Remove as ZoomOutIcon } from "@material-ui/icons";
+import insufficientPin from "../../../assets/map/pin-insufficient.svg";
+import insufficientHoverPin from "../../../assets/map/pin-insufficient-hover.svg";
+import veryWeakHoverPin from "../../../assets/map/pin-very-weak-hover.svg";
+import veryWeakPin from "../../../assets/map/pin-very-weak.svg";
 import weakHoverPin from "../../../assets/map/pin-weak-hover.svg";
 import weakPin from "../../../assets/map/pin-weak.svg";
-import strongHoverPin from "../../../assets/map/pin-strong-hover.svg";
-import strongPin from "../../../assets/map/pin-strong.svg";
 import gapsHoverPin from "../../../assets/map/pin-gaps-hover.svg";
 import gapsPin from "../../../assets/map/pin-gaps.svg";
+import emergingHoverPin from "../../../assets/map/pin-emerging-hover.svg";
+import emergingPin from "../../../assets/map/pin-emerging.svg";
+import strongHoverPin from "../../../assets/map/pin-strong-hover.svg";
+import strongPin from "../../../assets/map/pin-strong.svg";
 
 import { MapState } from "./MapState";
 import i18n from "../../../../locales";
@@ -21,6 +27,7 @@ import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 import { RegionMainMapPanelContent } from "../../../../domain/entities/region/RegionInfo";
 import { RegionMapPanel } from "../../region-map-panel/RegionMapPanel";
+import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -75,13 +82,7 @@ export const Map: React.FC<MapProps> = ({
             mapRef.current.on("load", () => {
                 mapState.markers.features.forEach(feature => {
                     const el = document.createElement("div");
-                    el.className = `marker ${
-                        feature.properties.status === "Strong"
-                            ? "marker-strong"
-                            : feature.properties.status === "Weak"
-                            ? "marker-weak"
-                            : "marker-gaps"
-                    }`;
+                    el.className = `marker ${markerStatusMap[feature.properties.status]}`;
 
                     const marker = new mapboxgl.Marker(el)
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
@@ -153,6 +154,15 @@ export const Map: React.FC<MapProps> = ({
     );
 };
 
+const markerStatusMap: Record<FinancialProtectionStatus, string> = {
+    InsufficientData: "marker-insufficientdata",
+    VeryWeak: "marker-very-weak",
+    Weak: "marker-weak",
+    Gaps: "marker-gaps",
+    Emerging: "marker-emerging",
+    Strong: "marker-strong",
+};
+
 const Container = styled.div`
     height: 100%;
     width: 100%;
@@ -164,23 +174,41 @@ const MapContent = styled.div`
     height: 100%;
     width: 100%;
     position: relative;
+    .marker-insufficientdata {
+        background-image: url(${() => insufficientPin});
+        &:hover {
+            background-image: url(${() => insufficientHoverPin});
+        }
+    }
+    .marker-very-weak {
+        background-image: url(${() => veryWeakPin});
+        &:hover {
+            background-image: url(${() => veryWeakHoverPin});
+        }
+    }
     .marker-weak {
         background-image: url(${() => weakPin});
-    }
-    .marker-weak:hover {
-        background-image: url(${() => weakHoverPin});
-    }
-    .marker-strong {
-        background-image: url(${() => strongPin});
-    }
-    .marker-strong:hover {
-        background-image: url(${() => strongHoverPin});
+        &:hover {
+            background-image: url(${() => weakHoverPin});
+        }
     }
     .marker-gaps {
         background-image: url(${() => gapsPin});
+        &:hover {
+            background-image: url(${() => gapsHoverPin});
+        }
     }
-    .marker-gaps:hover {
-        background-image: url(${() => gapsHoverPin});
+    .marker-emerging {
+        background-image: url(${() => emergingPin});
+        &:hover {
+            background-image: url(${() => emergingHoverPin});
+        }
+    }
+    .marker-strong {
+        background-image: url(${() => strongPin});
+        &:hover {
+            background-image: url(${() => strongHoverPin});
+        }
     }
     .marker {
         background-size: cover;

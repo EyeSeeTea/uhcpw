@@ -1,9 +1,11 @@
 import { useDataEngine } from "@dhis2/app-runtime";
 import { SnackbarProvider } from "@eyeseetea/d2-ui-components";
 import { MuiThemeProvider } from "@material-ui/core/styles";
+import { CircularProgress } from "@material-ui/core";
 //@ts-ignore
 import OldMuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import React, { useEffect, useState } from "react";
+import styled from "styled-components";
 import { getCompositionRoot } from "../../../CompositionRoot";
 import { Instance } from "../../../data/entities/Instance";
 import { D2Api } from "../../../types/d2-api";
@@ -11,7 +13,7 @@ import { AppContext, AppContextState } from "../../contexts/app-context";
 import { Router } from "../Router";
 import "./App.css";
 import muiThemeLegacy from "./themes/dhis2-legacy.theme";
-import { muiTheme } from "./themes/dhis2.theme";
+import { colors, muiTheme } from "./themes/dhis2.theme";
 import { KOSOVO } from "../../../data/repositories/countries/CountryD2Repository";
 import { Region } from "../../../domain/entities/region/Region";
 
@@ -28,6 +30,7 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
 
     useEffect(() => {
         async function setup() {
+            setLoading(true);
             const compositionRoot = getCompositionRoot(api, dataEngine, instance);
             const currentUser = (await compositionRoot.users.getCurrent.execute().runAsync()).data;
             if (!currentUser) throw new Error("User not logged in");
@@ -60,7 +63,13 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
         setup();
     }, [d2, api, instance, dataEngine]);
 
-    if (loading) return null;
+    if (loading) {
+        return (
+            <Center>
+                <CircularProgress />
+            </Center>
+        );
+    }
 
     return (
         <MuiThemeProvider theme={muiTheme}>
@@ -78,3 +87,16 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
 });
 
 type D2 = object;
+
+const Center = styled.div`
+    height: 200px;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .MuiCircularProgress-colorPrimary {
+        color: ${colors.accentPrimary};
+    }
+`;

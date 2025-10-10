@@ -29,27 +29,40 @@ export const getLastAvailableYearByCountry = (rows: Array<string[]>, isUpTo2019?
     }, {});
 };
 
+export function filterRowsByYearIndicatorAndCountry(
+    rows: Array<string[]>,
+    xAxis: string,
+    yAxis: string,
+    yearByIndicatorAndCountry: Record<
+        string,
+        {
+            xYears: string;
+            yYears: string;
+        }
+    >
+): Array<string[]> {
+    return rows.filter(row => {
+        const indicatorId = row[0]?.toString() || "";
+        const countryId = row[1]?.toString() || "";
+        const year = row[2] || "";
+
+        if (indicatorId === xAxis) {
+            return !!year && yearByIndicatorAndCountry[countryId]?.xYears === year;
+        } else if (indicatorId === yAxis) {
+            return !!year && yearByIndicatorAndCountry[countryId]?.yYears === year;
+        }
+
+        return false;
+    });
+}
+
 export function getCommonLastAvailableYearInBothAxis(
     rows: Array<string[]>,
     xAxis: string,
     yAxis: string,
     isUpTo2019?: boolean
 ): Record<string, string> {
-    const groupedByCountry = rows.reduce((acc, row) => {
-        const dataId = row[0]?.toString() || "";
-        const countryId = row[1]?.toString() || "";
-        const year = row[2] || "";
-
-        const countryData = acc[countryId] || { xYears: new Set<string>(), yYears: new Set<string>() };
-
-        if (dataId === xAxis) {
-            countryData.xYears.add(year);
-        } else if (dataId === yAxis) {
-            countryData.yYears.add(year);
-        }
-
-        return { ...acc, [countryId]: countryData };
-    }, {} as Record<string, { xYears: Set<string>; yYears: Set<string> }>);
+    const groupedByCountry = getGroupedYearsByCountry(rows, xAxis, yAxis);
 
     return Object.keys(groupedByCountry).reduce((acc, countryId) => {
         const filteredXYears = [...(groupedByCountry[countryId]?.xYears || [])].filter(year => {
@@ -68,6 +81,34 @@ export function getCommonLastAvailableYearInBothAxis(
             [countryId]: commonYears.length > 0 && commonYears[0] ? commonYears[0] : "",
         };
     }, {} as Record<string, string>);
+}
+
+export function getGroupedYearsByCountry(
+    rows: Array<string[]>,
+    xAxis: string,
+    yAxis: string
+): Record<
+    string,
+    {
+        xYears: Set<string>;
+        yYears: Set<string>;
+    }
+> {
+    return rows.reduce((acc, row) => {
+        const dataId = row[0]?.toString() || "";
+        const countryId = row[1]?.toString() || "";
+        const year = row[2] || "";
+
+        const countryData = acc[countryId] || { xYears: new Set<string>(), yYears: new Set<string>() };
+
+        if (dataId === xAxis) {
+            countryData.xYears.add(year);
+        } else if (dataId === yAxis) {
+            countryData.yYears.add(year);
+        }
+
+        return { ...acc, [countryId]: countryData };
+    }, {} as Record<string, { xYears: Set<string>; yYears: Set<string> }>);
 }
 
 export const filterRowsByYearInCountry = (

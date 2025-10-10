@@ -4,12 +4,16 @@ import styled from "styled-components";
 
 import { Country } from "../../../../domain/entities/Country";
 import ReactMarkdown from "react-markdown";
+import insufficientDataIcon from "../../../assets/map/icon-insufficient.svg";
 import weakIcon from "../../../assets/map/icon-weak.svg";
+import veryWeakIcon from "../../../assets/map/icon-very-weak.svg";
+import gapsIcon from "../../../assets/map/icon-gaps.svg";
+import emergingIcon from "../../../assets/map/icon-emerging.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
-import gapsIcon from "../../../assets/map/icon-normal.svg";
 import { Divider } from "material-ui";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
 
 export interface CountryPanelProps {
     country: Country;
@@ -31,14 +35,21 @@ export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
     );
 };
 
+const iconStatusMap: Record<FinancialProtectionStatus, string> = {
+    Strong: strongIcon,
+    Emerging: emergingIcon,
+    Gaps: gapsIcon,
+    Weak: weakIcon,
+    VeryWeak: veryWeakIcon,
+    InsufficientData: insufficientDataIcon,
+};
+
 export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     return (
         <Container>
             <Row>
                 <UmbrellaItem>
-                    <Marker
-                        src={country.status === "Strong" ? strongIcon : country.status === "Weak" ? weakIcon : gapsIcon}
-                    />
+                    <Marker src={iconStatusMap[country.status]} />
                 </UmbrellaItem>
                 <Typography variant="h2" style={{ fontWeight: 400 }}>
                     {country.name}

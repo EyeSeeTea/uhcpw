@@ -124,6 +124,9 @@ const InfoGrid = styled(Grid)`
     @media (min-width: 743px) {
         padding-inline-end: 100px;
     }
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline-start: 20px;
+    }
     ul {
         list-style-position: outside;
         padding-left: 13px;
@@ -138,7 +141,7 @@ const GraphGrid = styled(Grid)`
     background-color: white;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding: 20px 30px 30px 30px;
+        padding: 20px 30px 30px 0px;
     }
 `;
 

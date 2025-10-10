@@ -20,15 +20,34 @@ export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
             <SectionHeader header={content.title} subheader={content.subtitle} />
             <Content container>
                 <CountryContext item md={6} xs={12}>
+                    <BubbleImg
+                        src={bubblePatternWhite}
+                        alt="Bubble pattern"
+                        aria-hidden="true"
+                        decoding="async"
+                        loading="eager"
+                    />
+
                     <SectionBlock title={content.countries.title} text={content.countries.text} />
+
                     <ButtonContainer>
                         <Link href={content.countries.buttonLink || ""}>
                             {i18n.t(content.countries.buttonText || "")}
                         </Link>
                     </ButtonContainer>
                 </CountryContext>
+
                 <Region item md={6} xs={12}>
+                    <BubbleImg
+                        src={bubblePatternWhite}
+                        alt="Bubble pattern"
+                        aria-hidden="true"
+                        decoding="async"
+                        loading="eager"
+                    />
+
                     <SectionBlock title={content.regional.title} text={content.regional.text} />
+
                     <ButtonContainer>
                         <Link
                             href={content.regional.buttonLink || ""}
@@ -50,15 +69,29 @@ export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
 const Content = styled(Grid)``;
 
 const CountryContext = styled(Grid)`
-    background: #0360a6 url(${bubblePatternWhite}) no-repeat top right;
+    background: #0360a6;
     color: white;
     padding: 65px 55px;
+    position: relative;
+    overflow: hidden;
 `;
 
 const Region = styled(Grid)`
-    background: #4fac56 url(${bubblePatternWhite}) no-repeat top right;
+    background: #4fac56;
     color: white;
     padding: 65px 55px;
+    position: relative;
+    overflow: hidden;
+`;
+
+const BubbleImg = styled.img`
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: auto;
+    pointer-events: none;
+    opacity: 0.9;
 `;
 
 const ButtonContainer = styled.div`

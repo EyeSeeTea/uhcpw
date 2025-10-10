@@ -254,7 +254,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     const isAllItemParentSelected = useCallback(
         (itemParentId: string) => {
             if (hasSelectAll) {
-                const finalChildrenAllowed = filteredItemsBySearch
+                const finalChildrenAllowed = items
                     .filter(item => item.parents.some(p => p.id === itemParentId))
                     .filter(({ id }) => !disabledItems?.includes(id));
 
@@ -271,7 +271,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
                 return !!allowedSelection.length && allowedSelection.every(item => selectedIds.includes(item.id));
             }
         },
-        [hasSelectAll, filteredItemsBySearch, showSubChildren, disabledItems, selectedIds]
+        [hasSelectAll, items, showSubChildren, disabledItems, selectedIds]
     );
 
     const isItemParentDisabled = useCallback(
@@ -286,16 +286,14 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     );
 
     const areAllItemsSelected = useMemo(() => {
-        const selection = filteredItemsBySearch.filter(
-            ({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id)
-        );
+        const selection = items.filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id));
         const selectedSubChildren = showSubChildren
-            ? filteredItemsBySearch
+            ? items
                   .flatMap(item => (item.children ? item.children : []))
                   .filter(({ id }) => !selectedIds?.includes(id) && !disabledItems?.includes(id))
             : [];
         return [...selection, ...selectedSubChildren]?.length === 0;
-    }, [disabledItems, filteredItemsBySearch, selectedIds, showSubChildren]);
+    }, [disabledItems, items, selectedIds, showSubChildren]);
 
     const itemsToSelect = useMemo(() => {
         const selectableItems = filteredItemsBySearch

@@ -2,8 +2,8 @@ import { Button, Typography, makeStyles } from "@material-ui/core";
 import styled from "styled-components";
 import { FC, MutableRefObject, useCallback } from "react";
 
-import { MenuDropdown } from "../menu-dropdown/MenuDropdown";
 import i18n from "../../../locales";
+import { MenuDropdown } from "../menu-dropdown/MenuDropdown";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { Option } from "../../components/dropdown/Option";
 import { getBackgroundColorByFinancialProtectionStatus } from "../../pages/country/utils";

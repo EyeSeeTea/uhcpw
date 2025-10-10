@@ -122,6 +122,7 @@ const Container = styled.div`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
+        padding-inline-start: 0px;
     }
 `;
 
