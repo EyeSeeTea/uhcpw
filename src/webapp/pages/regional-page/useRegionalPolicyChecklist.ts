@@ -9,13 +9,14 @@ import { Country } from "../../../domain/entities/Country";
 
 export type CountryExperienceData = CountryExperience & {
     countryName: string;
+    disableGoToCountryPage: boolean;
 };
 
 export type RegionalPolicyChecklistState = {
     checklist: Maybe<ChecklistPolicyMakersData[]>;
     filteredCountryExperiences: Maybe<CountryExperienceData[]>;
     selectedChecklistItem: Id | undefined;
-    onSelectChecklistItem: (id: Id) => void;
+    onSelectChecklistItem: (id: Id | undefined) => void;
     isLoading: boolean;
 };
 
@@ -52,7 +53,7 @@ export function useRegionalPolicyChecklist(): RegionalPolicyChecklistState {
     }, [compositionRoot.regions.getChecklistPolicyMakers, compositionRoot.regions.getCountryExperiences, countries]);
 
     const onSelectChecklistItem = useCallback(
-        (id: Id) => {
+        (id: Id | undefined) => {
             const newSelection = id === selectedChecklistItem ? undefined : id;
             setSelectedChecklistItem(newSelection);
 
@@ -79,8 +80,10 @@ export function useRegionalPolicyChecklist(): RegionalPolicyChecklistState {
 
 function buildCountryExperienceData(countryExperience: CountryExperience, countries: Country[]): CountryExperienceData {
     const country = countries.find(c => c.id === countryExperience.countryId);
+
     return {
         ...countryExperience,
+        disableGoToCountryPage: !country?.isInCountryPage,
         countryName: country ? country.name : "Unknown country",
     };
 }

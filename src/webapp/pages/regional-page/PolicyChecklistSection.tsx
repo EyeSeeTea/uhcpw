@@ -110,6 +110,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                           content={countryExperience.content}
                                           reference={countryExperience.reference}
                                           showDialogInFullScreen={isSmallScreen}
+                                          disableGoToCountryPage={countryExperience.disableGoToCountryPage}
                                       />
                                   ))
                                 : null}

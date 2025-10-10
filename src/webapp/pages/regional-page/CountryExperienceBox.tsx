@@ -21,10 +21,19 @@ type CountryExperienceBoxProps = {
     content: string;
     reference: string;
     showDialogInFullScreen?: boolean;
+    disableGoToCountryPage?: boolean;
 };
 
 export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props => {
-    const { countryId, countryName, title, content, reference, showDialogInFullScreen = false } = props;
+    const {
+        countryId,
+        countryName,
+        title,
+        content,
+        reference,
+        showDialogInFullScreen = false,
+        disableGoToCountryPage = false,
+    } = props;
     const history = useHistory();
     const { redirectWithExternalLink } = useAnalytics();
 
@@ -79,13 +88,15 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
                 </StyledReadMoreButton>
             )}
 
-            <StyledLink
-                variant="text"
-                onClick={() => onCountryLinkClick(countryId)}
-                aria-label={`Go to ${countryName} country page`}
-            >
-                {i18n.t("See {{countryName}} country page", { countryName: countryName })}
-            </StyledLink>
+            {!disableGoToCountryPage && (
+                <StyledLink
+                    variant="text"
+                    onClick={() => onCountryLinkClick(countryId)}
+                    aria-label={`Go to ${countryName} country page`}
+                >
+                    {i18n.t("See {{countryName}} country page", { countryName: countryName })}
+                </StyledLink>
+            )}
 
             {showReferences &&
                 (showDialogInFullScreen ? (

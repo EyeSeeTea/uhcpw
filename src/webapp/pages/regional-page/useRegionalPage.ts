@@ -13,9 +13,7 @@ import { useRegionalPageContent } from "./useRegionalPageContent";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { ORG_UNIT_GROUP_IDS, Region } from "../../../domain/entities/region/Region";
 import { RegionNumbersState, useRegionNumbers } from "./useRegionNumbers";
-import { Maybe } from "../../../types/utils";
-import { CountryExperienceData, useRegionalPolicyChecklist } from "./useRegionalPolicyChecklist";
-import { ChecklistPolicyMakersData } from "../../../domain/entities/region/ChecklistPolicyMakers";
+import { RegionalPolicyChecklistState, useRegionalPolicyChecklist } from "./useRegionalPolicyChecklist";
 import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel";
 import { NumbersSection } from "./NumbersSection";
 import { PolicyChecklistSection } from "./PolicyChecklistSection";
@@ -49,16 +47,11 @@ export type RegionalPageState = {
     menuItemsConfig: RegionalMenuItemConfig[];
     handleHeaderItemClick: (item: RegionalMenuItem) => void;
     regionMap: RegionMapState;
-    policyChecklist: {
+    policyChecklist: RegionalPolicyChecklistState & {
         content: {
             textSectionLeft: string;
             textSectionRight: string;
         };
-        checklist: Maybe<ChecklistPolicyMakersData[]>;
-        filteredCountryExperiences: Maybe<CountryExperienceData[]>;
-        selectedChecklistItem: Id | undefined;
-        onSelectChecklistItem: (id: Id) => void;
-        isLoading: boolean;
     };
     regionNumbers: RegionNumbersState;
     highlightedISO3Countries: string[];
@@ -130,6 +123,12 @@ export function useRegionalPage(): RegionalPageState {
         };
     }, [history.location.search]);
 
+    const resetSelectedValues = useCallback(() => {
+        policyChecklist.onSelectChecklistItem(undefined);
+        setExpandedSectionsAccordion(undefined);
+        regionNumbers.onResetTabs();
+    }, [policyChecklist, regionNumbers]);
+
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
             const searchParams = new URLSearchParams(history.location.search);
@@ -151,15 +150,16 @@ export function useRegionalPage(): RegionalPageState {
             setHighlightedISO3Countries(iso3CountriesInRegion);
             setSelectedRegion(region);
             onRegionChange(newRegion);
+            resetSelectedValues();
         },
-        [countries, history, onRegionChange, regions]
+        [countries, history, onRegionChange, regions, resetSelectedValues]
     );
 
     useEffect(() => {
         if (filterInParams.region && filterInParams.region !== selectedRegionId) {
             handleRegionChange(filterInParams.region);
         }
-    }, [filterInParams.region, handleRegionChange, onRegionChange, selectedRegionId]);
+    }, [filterInParams.region, handleRegionChange, selectedRegionId]);
 
     const handleHeaderItemClick = useCallback(
         (item: RegionalMenuItem) => {
