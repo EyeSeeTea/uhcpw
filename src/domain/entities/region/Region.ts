@@ -22,14 +22,27 @@ export const ORG_UNIT_IDS = {
     EUROPEAN_UNION: "gIv1Z59fqHc",
     EASTERN_EUROPE_AND_CENTRAL_ASIA: "JioUmNZGlmE",
     EU_CANDIDATE_COUNTRIES: "aXlsYT9qEhB",
-    // TODO: Add the correct org unit for the European Region when available
-    EUROPEAN_REGION: "",
+    EUROPEAN_REGION: "amiXPb8Q3AK",
 } as const;
 
 type OrgUnitRegionKey = keyof typeof ORG_UNIT_IDS;
 
 export function isOrgUnitRegionKey(key: string): key is OrgUnitRegionKey {
     return key in ORG_UNIT_IDS;
+}
+
+export const REGION_NAMES = {
+    WESTERN_BALKANS: "Western Balkans",
+    EUROPEAN_UNION: "European Union",
+    EASTERN_EUROPE_AND_CENTRAL_ASIA: "Eastern Europe & Central Asia",
+    EU_CANDIDATE_COUNTRIES: "EU candidate countries",
+    EUROPEAN_REGION: "European Region",
+} as const;
+
+export type RegionNameKey = keyof typeof REGION_NAMES;
+
+export function isRegionNameKey(key: string): key is RegionNameKey {
+    return key in REGION_NAMES;
 }
 
 export const REGION_CODES = {

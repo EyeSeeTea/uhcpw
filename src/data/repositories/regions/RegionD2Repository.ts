@@ -3,11 +3,14 @@ import { Id } from "../../../domain/entities/Ref";
 import {
     isOrgUnitRegionKey,
     isRegionCodeKey,
+    isRegionNameKey,
     ORG_UNIT_GROUP_IDS,
     ORG_UNIT_IDS,
     Region,
     REGION_CODES,
+    REGION_NAMES,
     RegionCodeKey,
+    RegionNameKey,
 } from "../../../domain/entities/region/Region";
 import { RegionRepository } from "../../../domain/repositories/region/RegionRepository";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
@@ -61,6 +64,8 @@ export class RegionD2Repository implements RegionRepository {
 
     private buildRegions(orgUnitGroups: D2OrgUnitGroup[], events: D2Event[], europeanRegions: D2OrgUnit[]): Region[] {
         const regionCodeById = getRegionCodeById(ORG_UNIT_GROUP_IDS);
+        const regionNameById = getRegionNameById(ORG_UNIT_GROUP_IDS);
+
         return orgUnitGroups.map((orgUnitGroup: D2OrgUnitGroup): Region => {
             const id = orgUnitGroup.id;
             const key = getKeyById(id, ORG_UNIT_GROUP_IDS);
@@ -71,7 +76,7 @@ export class RegionD2Repository implements RegionRepository {
 
             return {
                 id: id,
-                name: orgUnit?.name || orgUnitGroup.shortName,
+                name: regionNameById.get(id) || orgUnit?.name || orgUnitGroup.shortName,
                 code: regionCodeById.get(id) || "Unknown Region Code",
                 countries: orgUnitGroup.organisationUnits.map(ou => ou.id),
                 linkedOrgUnitId: orgUnit?.id,
@@ -93,6 +98,16 @@ function getRegionCodeById(idsRecord: Partial<Record<RegionCodeKey, Id>>): Map<I
         )
     );
 }
+
+function getRegionNameById(idsRecord: Partial<Record<RegionNameKey, Id>>): Map<Id, string> {
+    return new Map(
+        Object.entries(idsRecord).reduce<[Id, string][]>(
+            (acc, [key, id]) => (id && isRegionNameKey(key) ? [...acc, [id, REGION_NAMES[key]]] : acc),
+            []
+        )
+    );
+}
+
 const organisationUnitGroupsFields = {
     id: true,
     shortName: true,
