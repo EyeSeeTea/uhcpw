@@ -302,7 +302,6 @@ const Tag = styled.div`
 const Title = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
     font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
-    font-weight: ${props => (props.$isRegionalPage ? "600" : "500")};
     width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
 `;
 
@@ -315,7 +314,6 @@ const TitleRow = styled(Row)`
 const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
     font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
-    font-weight: ${props => (props.$isRegionalPage ? "600" : "500")};
     width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
