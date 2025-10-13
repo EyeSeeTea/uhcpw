@@ -83,6 +83,8 @@ const DropdownContainer = styled.div`
     display: flex;
     gap: 20px;
     align-items: center;
+    width: 300px;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         gap: 0px;
         img {

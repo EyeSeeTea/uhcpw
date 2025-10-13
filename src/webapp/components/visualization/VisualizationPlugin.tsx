@@ -202,13 +202,13 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         </VisualizationPluginContainer>
     ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
         <Center>
-            <Typography variant="subtitle1">
+            <StyledTypography variant="subtitle1">
                 {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
-            </Typography>
+            </StyledTypography>
         </Center>
     ) : chartData.kind === "Error" ? (
         <Center>
-            <Typography variant="subtitle1">{chartData.message}</Typography>
+            <StyledTypography variant="subtitle1">{chartData.message}</StyledTypography>
         </Center>
     ) : (
         <Center>
@@ -278,4 +278,8 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const StyledTypography = styled(Typography)`
+    color: black;
 `;

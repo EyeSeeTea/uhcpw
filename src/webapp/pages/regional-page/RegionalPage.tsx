@@ -51,6 +51,7 @@ export const RegionalPage: React.FC = () => {
                     <SectionTitle>
                         {i18n.t(`{{region}} at a glance`, {
                             region: selectedRegion?.name,
+                            interpolation: { escapeValue: false },
                         })}
                     </SectionTitle>
                 </SectionTitleDivider>
