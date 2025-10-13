@@ -391,7 +391,7 @@ export function useIndicatorExplorer(
     useEffect(() => {
         if (hasSyncedFilters) return;
 
-        const hasParams = initialIndicator || initialCountriesAndAreas?.length || initialYears?.length;
+        const hasParams = initialIndicator && initialCountriesAndAreas?.length && initialYears?.length;
 
         if (!hasParams) return;
 
