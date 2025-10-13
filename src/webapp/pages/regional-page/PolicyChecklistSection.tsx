@@ -104,7 +104,6 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                 ? filteredCountryExperiences.map(countryExperience => (
                                       <CountryExperienceBox
                                           key={countryExperience.countryId}
-                                          countryId={countryExperience.countryId}
                                           countryName={countryExperience.countryName}
                                           title={countryExperience.title}
                                           content={countryExperience.content}

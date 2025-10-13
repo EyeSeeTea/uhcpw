@@ -9,13 +9,12 @@ import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
 import i18n from "../../../locales";
 import { colors } from "../app/themes/dhis2.theme";
-import { Id } from "../../../domain/entities/Ref";
 import { FullScreenNotesDialog } from "../../components/dialog/FullScreenNotesDialog";
 import { NotesDialog } from "../../components/dialog/NotesDialog";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
 
 type CountryExperienceBoxProps = {
-    countryId: Id;
     countryName: string;
     title: string;
     content: string;
@@ -26,7 +25,6 @@ type CountryExperienceBoxProps = {
 
 export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props => {
     const {
-        countryId,
         countryName,
         title,
         content,
@@ -58,12 +56,10 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
         [redirectWithExternalLink]
     );
 
-    const onCountryLinkClick = useCallback(
-        (countryId: Id) => {
-            history.push(`/country-page?country=${countryId}`);
-        },
-        [history]
-    );
+    const onCountryLinkClick = useCallback(() => {
+        const countryNameInFilter = formatCountryOrRegionParamName(countryName);
+        history.push(`/country-page?country=${countryNameInFilter}`);
+    }, [countryName, history]);
 
     return (
         <CountryExperienceContent>
@@ -91,7 +87,7 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
             {!disableGoToCountryPage && (
                 <StyledLink
                     variant="text"
-                    onClick={() => onCountryLinkClick(countryId)}
+                    onClick={onCountryLinkClick}
                     aria-label={`Go to ${countryName} country page`}
                 >
                     {i18n.t("See {{countryName}} country page", { countryName: countryName })}
