@@ -49,9 +49,9 @@ export const countryInfoDataElements: Record<string, string> = {
 };
 
 const gapsDataElements = {
-    gapsText1: "Oc0RJz88pBV",
-    gapsText2: "Cqe4z39igTX",
-    gapsText3: "CCIzcBhaqCZ",
+    gapsText1: "eSyCsKNBnD2",
+    gapsText2: "iAgF9SHMfcB",
+    gapsText3: "e8wFwCV7zsz",
 } as const;
 const gapElementIds = Object.values(gapsDataElements) as string[];
 
