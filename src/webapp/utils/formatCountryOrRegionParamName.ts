@@ -4,7 +4,7 @@ export function formatCountryOrRegionParamName(name: string): string {
     const trimmed = name.trim();
 
     if (/^Eastern\s+Europe\s*&\s*Central\s+Asia$/i.test(trimmed)) {
-        return "EasternEurope&CentralAsia";
+        return "EasternEuropeAndCentralAsia";
     }
 
     const bihSubregionsMatch = trimmed.match(/^BIH\s*\(the\s+([^)]+)\)$/i);
@@ -16,18 +16,14 @@ export function formatCountryOrRegionParamName(name: string): string {
         return `BIH-${subregion}`;
     }
 
-    const formatted = trimmed.replace(/\s+/g, "").replace(/[^a-zA-Z0-9]/g, "");
-    return formatted;
+    return trimmed.replace(/\s+/g, "").replace(/[^a-zA-Z0-9&]/g, "");
 }
 
 export function parseCountryOrRegionParamToName(param: string): string {
     if (!param) return "";
 
-    if (param.includes("&")) {
-        return param
-            .split("&")
-            .map(part => prettifyToken(part))
-            .join(" & ");
+    if (/^EasternEuropeAndCentralAsia$/i.test(param)) {
+        return "Eastern Europe & Central Asia";
     }
 
     const bihSubregionsMatch = param.match(/^BIH-([A-Za-z0-9]+)$/);
