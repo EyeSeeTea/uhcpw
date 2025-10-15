@@ -4,6 +4,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
+import { formatCountryOrRegionParamName } from "../../../utils/formatCountryOrRegionParamName";
 
 export function useAppHeader(isScreenRotated?: boolean) {
     const history = useHistory();
@@ -57,7 +58,9 @@ export function useAppHeader(isScreenRotated?: boolean) {
 
     const handleCountryClick = useCallback(
         (country: Option<Id>) => {
-            history.push(`/country-page?country=${country.value}`);
+            const countryName = country.text;
+            const countryNameInFilter = formatCountryOrRegionParamName(countryName);
+            history.push(`/country-page?country=${countryNameInFilter}`);
             handleClose();
             onCloseMenu();
         },
@@ -66,7 +69,9 @@ export function useAppHeader(isScreenRotated?: boolean) {
 
     const handleRegionalClick = useCallback(
         (region: Option<Id>) => {
-            history.push(`/regional-page?region=${region.value}`);
+            const regionName = region.text;
+            const regionNameInFilter = formatCountryOrRegionParamName(regionName);
+            history.push(`/regional-page?region=${regionNameInFilter}`);
             handleClose();
             onCloseMenu();
         },
