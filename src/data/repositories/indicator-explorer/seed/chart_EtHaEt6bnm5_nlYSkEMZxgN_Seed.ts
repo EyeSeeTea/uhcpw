@@ -9,7 +9,7 @@ const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
     friendlyName:
-        "Unmet need for health care due to cost, distance and waiting time (poorest quintile, total, richest quintile)",
+        "Unmet need for health care due to cost, distance and waiting time (poorest quintile, average, richest quintile)",
     countryPageName: "unmet need for health care due to cost, distance and waiting time by income quintile",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,

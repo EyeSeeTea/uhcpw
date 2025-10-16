@@ -9,7 +9,7 @@ const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
 export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
     friendlyName:
-        "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, total, richest quintile)",
+        "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, average, richest quintile)",
     countryPageName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
     subcategoryName: sortedSubcategoryNames.comparative,
     isComparative: true,
