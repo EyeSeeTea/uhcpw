@@ -62,7 +62,7 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 (option: TreeOption) =>
                     option.parents.length !== 0 && !option.parents.map(p => p.id).includes(AVERAGES_REGIONS_PARENT.id)
             )
-            .map(option => option.id);
+            .flatMap(option => [option.id, ...(option?.children || []).map(child => child.id)]);
 
         return (selectedCountriesAndRegions || [])?.filter(selected => countryAndSubregionIds.includes(selected));
     }, [countryAndRegionsOptions, selectedCountriesAndRegions]);

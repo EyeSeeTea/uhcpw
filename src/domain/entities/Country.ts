@@ -29,7 +29,7 @@ export type CountrySectionInfo = {
     }[];
 };
 
-export type CountryStatus = "Strong" | "Gaps" | "Weak" | "InsufficientData";
+export type CountryStatus = "Strong" | "Emerging" | "Gaps" | "Weak" | "VeryWeak" | "InsufficientData";
 
 // included in countries list
 export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";
