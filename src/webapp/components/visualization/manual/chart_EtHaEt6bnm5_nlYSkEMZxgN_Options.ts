@@ -44,11 +44,11 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         chartSource.isLatestCOVID19
     );
 
-    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest(
+    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest({
         latestAvailableYearByCountryId,
         allRowsFilteredByLAY,
-        seriesIds
-    );
+        seriesIds,
+    });
 
     const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(countryId => {
         const countryCodeFoundInFirst = mapToWhoCountryCode(
