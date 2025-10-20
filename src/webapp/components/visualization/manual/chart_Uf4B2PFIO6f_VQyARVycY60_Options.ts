@@ -7,14 +7,14 @@ import { getMaxAxisAndTickInterval, sumSeriesData } from "../utils/getMaxAxisAnd
 import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./utils/getMaxYAxisAndYTickInterval";
 
 const seriesNames: Record<string, string> = {
-    Oseqbg7Odmn: "Average household capacity to pay",
-    m6YZvOmzqhf: "Cost of meeting basic needs",
+    GmjzjDrflLO: "Average household capacity to pay",
+    Qcsm1V9aywx: "Cost of meeting basic needs",
     OeK0H8uJwLU: "Share of households living below the basic needs line (%)",
 };
 
 const seriesColors: Record<string, string> = {
-    Oseqbg7Odmn: "#8fa2d4",
-    m6YZvOmzqhf: "#2f5597",
+    GmjzjDrflLO: "#8fa2d4",
+    Qcsm1V9aywx: "#2f5597",
     OeK0H8uJwLU: "#c00001",
 };
 
