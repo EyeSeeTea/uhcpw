@@ -45,11 +45,11 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
     );
 
     // By ordering latestAvailableYearByCountryId it order data and labels
-    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest(
+    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest({
         latestAvailableYearByCountryId,
         allRowsFilteredByLAY,
-        seriesIds
-    );
+        seriesIds,
+    });
 
     const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(countryId => {
         const countryCodeFoundInFirst = mapToWhoCountryCode(
