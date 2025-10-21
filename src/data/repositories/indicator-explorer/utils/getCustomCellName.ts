@@ -34,7 +34,7 @@ const cellNameByVisualizationAndCellId: Record<Id, CellNamesByCellId> = {
     MfLZYD6QCPy: {
         f3t7eoXUzn8: "Poorest",
         dVcHTdCFpNv: "Richest",
-        GyiW7dS7BIl: "Total",
+        GyiW7dS7BIl: "Average",
     },
 };
 
