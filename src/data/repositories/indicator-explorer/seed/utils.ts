@@ -69,6 +69,7 @@ export const sortedCharts: string[] = [
     "d3kq9OCv8tH",
     "ToEa2VuZLDt",
     "ZZAcIv6O9LY",
+    "CdqVV1Ib0XS",
     "xKmSHeJ1GXq",
     "B4CnzUqVR3n",
     "iMI82inOBiD",
