@@ -19,6 +19,10 @@ import { NumbersSection } from "./NumbersSection";
 import { PolicyChecklistSection } from "./PolicyChecklistSection";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
+import {
+    formatCountryOrRegionParamName,
+    parseCountryOrRegionParamToName,
+} from "../../utils/formatCountryOrRegionParamName";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
 
@@ -116,12 +120,15 @@ export function useRegionalPage(): RegionalPageState {
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
 
-        const region = searchParams.get("region");
+        const regionNameInFilter = searchParams.get("region");
+        const regionName = regionNameInFilter ? parseCountryOrRegionParamToName(regionNameInFilter) : undefined;
+
+        const regionIdInFilter = regionName ? regionOptions.find(option => option.text === regionName)?.value : null;
 
         return {
-            region: region ? region : undefined,
+            region: regionIdInFilter ? regionIdInFilter : undefined,
         };
-    }, [history.location.search]);
+    }, [history.location.search, regionOptions]);
 
     const resetSelectedValues = useCallback(() => {
         policyChecklist.onSelectChecklistItem(undefined);
@@ -132,7 +139,12 @@ export function useRegionalPage(): RegionalPageState {
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
             const searchParams = new URLSearchParams(history.location.search);
-            searchParams.set("region", newRegion);
+            const newRegionName = regionOptions.find(option => option.value === newRegion)?.text;
+            const regionNameInFilter = newRegionName ? formatCountryOrRegionParamName(newRegionName) : undefined;
+
+            if (regionNameInFilter) {
+                searchParams.set("region", regionNameInFilter);
+            }
             history.push({ search: searchParams.toString() });
 
             const region = regions.find(region => region.id === newRegion);
@@ -152,7 +164,7 @@ export function useRegionalPage(): RegionalPageState {
             onRegionChange(newRegion);
             resetSelectedValues();
         },
-        [countries, history, onRegionChange, regions, resetSelectedValues]
+        [countries, history, onRegionChange, regionOptions, regions, resetSelectedValues]
     );
 
     useEffect(() => {
