@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import styled from "styled-components";
-import veryWeakIcon from "../../../assets/map/icon-very-weak.svg";
+import veryWeakIconLegend from "../../../assets/map/icon-very-weak-legend.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-gaps.svg";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
@@ -47,7 +47,7 @@ export const HomePagePanel: React.FC<MainPanelProps> = ({ mainPanelContent, isMo
             {!isMobile && (
                 <UmbrellaItemsContainer>
                     <UmbrellaItem>
-                        <Marker src={veryWeakIcon} />
+                        <Marker src={veryWeakIconLegend} />
                         {i18n.t("Weaker financial protection")}
                     </UmbrellaItem>
 

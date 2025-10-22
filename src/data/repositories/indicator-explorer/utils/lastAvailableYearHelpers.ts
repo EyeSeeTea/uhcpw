@@ -161,18 +161,19 @@ export function getAllRowsLatestAvailableYearFromTwoCharts(
     return [...filteredFirstChartRows, ...filteredSecondChartRows];
 }
 
-export function orderLatestAvailableYearByAverageAndPoorest(
-    latestAvailableYearByCountryId: Record<string, string>,
-    allRowsFilteredByLAY: string[][],
-    seriesIds: Record<string, string>
-) {
+export function orderLatestAvailableYearByAverageAndPoorest(props: {
+    latestAvailableYearByCountryId?: Record<string, string>;
+    allRowsFilteredByLAY: string[][];
+    seriesIds: Record<string, string>;
+}) {
+    const { latestAvailableYearByCountryId, allRowsFilteredByLAY, seriesIds } = props;
     return _(allRowsFilteredByLAY)
         .filter(
             ([serieId, countryId]) =>
                 !!serieId &&
                 [seriesIds.average, seriesIds.poorest].includes(serieId) &&
                 !!countryId &&
-                !!latestAvailableYearByCountryId[countryId]
+                (!latestAvailableYearByCountryId || !!latestAvailableYearByCountryId[countryId])
         )
         .map(([serieId, countryId, year, value]) => ({
             serieId,

@@ -30,6 +30,7 @@ import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-
 import { getVisualizationTemplate } from "./visualization-template/getVisualizationTemplate";
 import { Region } from "../../../domain/entities/region/Region";
 import { getYearByIndicatorAndCountry } from "../../../webapp/components/visualization/manual/chart_kIpnMBaBvZ9_Options";
+import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -126,7 +127,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         return Future.parallel(
             visualizations.map(visualization => this.get(visualization, periods, countryIds, selectedRegions))
         ).flatMap(analyticsResponses => {
-            const analyticsResponseRows = analyticsResponses.reduce((acc: string[][], analyticsResponse) => {
+            const visualization = visualizations[0];
+            const needsToFilterZeroValues = visualization?.needsToFilterZeroValues;
+
+            const filteredAnalytics = needsToFilterZeroValues
+                ? filterZeroValuesAnalytics(analyticsResponses)
+                : analyticsResponses;
+
+            const analyticsResponseRows = filteredAnalytics.reduce((acc: string[][], analyticsResponse) => {
                 return [...acc, ...analyticsResponse.rows];
             }, []);
             const metadataIds = this.extractMetadataIds(analyticsResponseRows);
@@ -134,7 +142,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             const orgUnitRegionIds: Id[] = selectedRegions.map(r => r.linkedOrgUnitId).filter((id): id is Id => !!id);
 
             return Future.joinObj({
-                analyticsResponses: Future.success(analyticsResponses),
+                analyticsResponses: Future.success(filteredAnalytics),
                 metadata: apiToFuture(
                     this.api.get<Metadata>("/metadata", {
                         fields: "id,shortName,name",

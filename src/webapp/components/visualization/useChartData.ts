@@ -14,6 +14,7 @@ import { getBreakInSeriesCountryDescription } from "../../../domain/entities/ind
 import { LatestCOVID19 } from "../../../domain/entities/Year";
 import { Id } from "../../../domain/entities/Ref";
 import { Region } from "../../../domain/entities/region/Region";
+import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -84,13 +85,20 @@ export function useChartData(params: {
 
             getChartData(compositionRoot, visualizationIds, years, countryIds, selectedRegions).run(
                 ({ visualizations, analytics, legendSets }) => {
+                    const visualization = visualizations[0];
+                    const needsToFilterZeroValues = visualization?.needsToFilterZeroValues;
+
+                    const filteredAnalytics = needsToFilterZeroValues
+                        ? filterZeroValuesAnalytics(analytics)
+                        : analytics;
+
                     const visualizationChartOptions = isMultipleVisualizations
                         ? chartOptionsMultiple[visualizationId]
                         : chartOptions[visualizationId];
 
                     const chartSource = {
-                        analyticsResponse: isMultipleVisualizations ? analytics : analytics[0],
-                        visualization: isMultipleVisualizations ? visualizations : visualizations[0],
+                        analyticsResponse: isMultipleVisualizations ? filteredAnalytics : filteredAnalytics[0],
+                        visualization: isMultipleVisualizations ? visualizations : visualization,
                         countries: countriesAndSubregions,
                         regions: regions,
                         currentCountryOrRegion: currentCountryOrRegion,
@@ -98,12 +106,10 @@ export function useChartData(params: {
                         isLatestCOVID19: years.includes(LatestCOVID19.id),
                     };
 
-                    const visualization = visualizations[0];
-
                     const visualizationDialogInfo =
                         visualization &&
-                        analytics[0] &&
-                        getVisualizationDialogInfo(visualization, analytics[0], countriesAndSubregions);
+                        filteredAnalytics[0] &&
+                        getVisualizationDialogInfo(visualization, filteredAnalytics[0], countriesAndSubregions);
 
                     const chartName =
                         visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
@@ -118,7 +124,7 @@ export function useChartData(params: {
                         categoryTag: visualization?.categoryTag || "",
                         visualizations,
                         visualizationDialogInfo,
-                        analytics,
+                        analytics: filteredAnalytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
                         countries: countriesAndSubregions.filter(country => countryIds.includes(country.id)),
