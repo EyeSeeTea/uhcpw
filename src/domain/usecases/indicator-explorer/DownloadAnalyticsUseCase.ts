@@ -31,12 +31,17 @@ export class DownloadAnalyticsUseCase {
         return Future.parallel(visualizationIds.map(id => this.visualizationRepository.getById(id))).flatMap(
             visualizations => {
                 const sortedPeriods = periods.sort();
+                const visualization = visualizations[0];
 
                 const finalPeriods =
                     sortedPeriods[0] === LatestCOVID19.id
                         ? generateYears(2019).map(year => year.id)
                         : sortedPeriods[0] === LatestAvailable.id
-                        ? generateYears().map(year => year.id)
+                        ? visualization?.getOnlyLast20Years
+                            ? generateYears()
+                                  .slice(0, 20)
+                                  .map(year => year.id)
+                            : generateYears().map(year => year.id)
                         : periods;
 
                 return this.analyticsRepository.saveToFile({

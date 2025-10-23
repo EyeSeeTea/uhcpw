@@ -9,6 +9,7 @@ import { Id } from "../../../domain/entities/Ref";
 import { MenuDropdown } from "../../components/menu-dropdown/MenuDropdown";
 import { RegionalMenuItem, RegionalMenuItemConfig } from "./useRegionalPage";
 import { colors } from "../app/themes/dhis2.theme";
+import { getColorOfRegion } from "./getColorOfRegion";
 
 type HeaderType = {
     selectedRegion: Id | undefined;
@@ -30,7 +31,7 @@ export const Header: React.FC<HeaderType> = props => {
     } = props;
 
     return (
-        <Container aria-label="regional-page-header">
+        <Container aria-label="regional-page-header" backgroundColor={getColorOfRegion(selectedRegion || "")}>
             <DropdownContainer>
                 <MenuDropdown
                     id="region"
@@ -55,12 +56,12 @@ export const Header: React.FC<HeaderType> = props => {
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ backgroundColor?: string }>`
     display: flex;
     justify-content: space-between;
     height: 80px;
     align-items: center;
-    background: ${colors.navyBlue};
+    background: ${props => props.backgroundColor || colors.navyBlue};
     padding-inline-start: 64px;
     padding-inline-end: 80px;
 

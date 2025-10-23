@@ -35,7 +35,7 @@ export const comparativeColumnChartOptions: (params: {
             const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
             const year = row[2] || "";
 
-            return `${orgUnit} ${year} `;
+            return `${orgUnit} ${year}`;
         })
         .orderBy(items => {
             if (orderByValueInSerie) {
@@ -61,18 +61,24 @@ export const comparativeColumnChartOptions: (params: {
     const currentCountryCode =
         chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
-    const maxLengthInDx = Math.max(...keys.map(key => (groupByDx[key] || []).length));
-    const groupByDxWithMaxLength =
-        Object.values(groupByDx).find(groupOfDx => (groupOfDx || []).length === maxLengthInDx) || [];
+    const groupByCountryIdAndYear = _(chartSource.analyticsResponse.rows)
+        .groupBy(row => {
+            const orgUnitId = row[1]?.toString() || "";
+            const year = row[2] || "";
+
+            return `${orgUnitId}_${year}`;
+        })
+        .value();
+    const countriesAndYearInXaxis = Object.keys(groupByCountryIdAndYear);
 
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
         const filledDataSourceWithEmptyData =
-            dataSource.length < maxLengthInDx && !!orderByValueInSerie
-                ? groupByDxWithMaxLength.reduce((acc: Array<string[]>, row) => {
-                      const countryId = row[1]?.toString() || "";
-                      const year = row[2] || "";
+            dataSource.length < countriesAndYearInXaxis.length && !!orderByValueInSerie
+                ? countriesAndYearInXaxis.reduce((acc: Array<string[]>, countryAndYear) => {
+                      const [countryId = "", year = ""] = countryAndYear.split("_");
+
                       const currentDataSourceFound = dataSource.find(row => row[1] === countryId && row[2] === year);
                       return currentDataSourceFound
                           ? [...acc, currentDataSourceFound]

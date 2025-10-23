@@ -226,15 +226,15 @@ export function useRegionNumbers(
                                       text: numbersPanelContent.panelSixGraphOneText,
                                   },
                                   {
-                                      // TODO: this chart does not have LAY, decide if keep and change it or remove it
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      visualizationId: "z6nPPMMbOw5",
+                                      visualizationId: "CdqVV1Ib0XS",
                                       visualizationName:
-                                          VisualizationsSeeds["z6nPPMMbOw5"]?.regionalPageName ||
-                                          VisualizationsSeeds["z6nPPMMbOw5"]?.friendlyName,
+                                          VisualizationsSeeds["CdqVV1Ib0XS"]?.regionalPageName ||
+                                          VisualizationsSeeds["CdqVV1Ib0XS"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
                                       text: numbersPanelContent.panelSixGraphTwoText,
+                                      filterByLatestAvailableYearInRegion: true,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -247,15 +247,16 @@ export function useRegionNumbers(
                                       text: numbersPanelContent.panelSixGraphThreeText,
                                   },
                                   {
-                                      // TODO: Use iMI82inOBiD or B4CnzUqVR3n because in IE we don't have B4CnzUqVR3n but iMI82inOBiD does not have LAY?
                                       visualizationId: "B4CnzUqVR3n",
                                       visualizationName:
-                                          VisualizationsSeeds["B4CnzUqVR3n"]?.countryPageName ||
+                                          VisualizationsSeeds["B4CnzUqVR3n"]?.regionalPageName ||
                                           VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
                                       text: numbersPanelContent.panelSixGraphFourText,
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      filterByLatestAvailableYearInRegion: true,
+                                      visualizationIdInIndicatorExplorer: "iMI82inOBiD",
                                   },
                               ],
                           },

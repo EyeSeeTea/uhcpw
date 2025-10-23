@@ -4,6 +4,7 @@ import { VisualizationExtra } from "../../../../domain/entities/indicator-explor
 export const chart_CdqVV1Ib0XS_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     friendlyName: "Breakdown of current spending on health",
+    regionalPageName: "Breakdown of current spending on health, latest available year",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     hideBosniaAndHerzegovinaRegions: true,
@@ -12,6 +13,6 @@ export const chart_CdqVV1Ib0XS_Seed: VisualizationExtra = {
     hasEuropeanRegion: true,
     hasEECARegion: true,
     hasWesternBalkansRegion: true,
-    yearsFilterUpTo2YearsAgo: true,
     isYearSingleSelection: true,
+    getOnlyLast20Years: true,
 };

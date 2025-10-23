@@ -1,5 +1,6 @@
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
+import { getChartSourceFilteredByYear } from "./utils/getChartSourceFilteredByYear";
 
 const seriesNames: Record<string, string> = {
     yOmEYW4OgYj: "Public spending on health",
@@ -14,10 +15,14 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_CdqVV1Ib0XS_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    const stackedValuesUpTo100 = chartSource.visualization.percentStackedValues;
+    const chartSourceWithFilteredRows = chartSource.yearToFilterBy
+        ? getChartSourceFilteredByYear(chartSource)
+        : chartSource;
+
+    const stackedValuesUpTo100 = chartSourceWithFilteredRows.visualization.percentStackedValues;
 
     const chart = comparativeStackedColumnChartOptions({
-        chartSource: chartSource,
+        chartSource: chartSourceWithFilteredRows,
         seriesNames,
         seriesColors,
         orderByValueInSerie: "S8OMD0f9IZp",

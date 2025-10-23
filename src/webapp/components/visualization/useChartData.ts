@@ -11,7 +11,7 @@ import { visualizationCustomizations } from "./customization/visualizationCustom
 import { chartOptions, chartOptionsMultiple, ChartSource, ChartSourceMultiple } from "./manual/chartOptions";
 import { Country } from "../../../domain/entities/Country";
 import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
-import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { LatestAvailable, LatestCOVID19 } from "../../../domain/entities/Year";
 import { Id } from "../../../domain/entities/Ref";
 import { Region } from "../../../domain/entities/region/Region";
 import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
@@ -31,8 +31,17 @@ export function useChartData(params: {
     regionIds: Id[];
     currentCountryOrRegion?: Id;
     visualizationName?: string;
+    filterByLatestAvailableYearInRegion?: boolean;
 }): ChartDataState {
-    const { visualizationId, years, countryIds, regionIds, currentCountryOrRegion, visualizationName } = params;
+    const {
+        visualizationId,
+        years,
+        countryIds,
+        regionIds,
+        currentCountryOrRegion,
+        visualizationName,
+        filterByLatestAvailableYearInRegion,
+    } = params;
     const { compositionRoot } = useAppContext();
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
@@ -96,6 +105,17 @@ export function useChartData(params: {
                         ? chartOptionsMultiple[visualizationId]
                         : chartOptions[visualizationId];
 
+                    const isLatestYearAvailable = years.includes(LatestAvailable.id);
+
+                    const lastAvailableYearInRegion =
+                        filterByLatestAvailableYearInRegion && currentCountryOrRegion
+                            ? getLastAvailableYearInRegion(
+                                  filteredAnalytics,
+                                  isMultipleVisualizations,
+                                  currentCountryOrRegion
+                              )
+                            : undefined;
+
                     const chartSource = {
                         analyticsResponse: isMultipleVisualizations ? filteredAnalytics : filteredAnalytics[0],
                         visualization: isMultipleVisualizations ? visualizations : visualization,
@@ -104,7 +124,9 @@ export function useChartData(params: {
                         currentCountryOrRegion: currentCountryOrRegion,
                         currentYear: years.length === 1 ? years[0] : undefined,
                         isLatestCOVID19: years.includes(LatestCOVID19.id),
-                    };
+                        isLatestYearAvailable: isLatestYearAvailable,
+                        yearToFilterBy: lastAvailableYearInRegion,
+                    } as ChartSourceMultiple & ChartSource;
 
                     const visualizationDialogInfo =
                         visualization &&
@@ -129,12 +151,11 @@ export function useChartData(params: {
                         customization: visualizationCustomizations[visualizationId],
                         countries: countriesAndSubregions.filter(country => countryIds.includes(country.id)),
                         regions: regions.filter(region => regionIds.includes(region.id)),
-                        chartOptions: visualizationChartOptions
-                            ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
-                            : undefined,
+                        chartOptions: visualizationChartOptions ? visualizationChartOptions(chartSource) : undefined,
                         isScatter: visualization?.isScatter,
                         xAxis: visualization?.xAxis,
                         yAxis: visualization?.yAxis,
+                        lastAvailableYearInRegion: lastAvailableYearInRegion,
                     });
                 },
                 error => {
@@ -161,6 +182,7 @@ export function useChartData(params: {
         currentCountryOrRegion,
         getVisualizationDialogInfo,
         visualizationName,
+        filterByLatestAvailableYearInRegion,
     ]);
 
     const onDownloadExcel = useCallback(
@@ -168,11 +190,15 @@ export function useChartData(params: {
             const seriesData = chartDataLoaded?.chartOptions?.series ?? chartDataLoaded?.customization?.series;
             const seriesIdAndName = (seriesData || []).map(({ id, name }) => ({ id, name }));
             const selectedRegions = regions.filter(region => regionIds.includes(region.id));
+            const periods =
+                filterByLatestAvailableYearInRegion && chartDataLoaded?.lastAvailableYearInRegion
+                    ? [chartDataLoaded?.lastAvailableYearInRegion]
+                    : years;
 
             compositionRoot.indicatorExplorer.downloadAnalytics
                 .execute({
                     visualizationIds: visualizationId.split("_"),
-                    periods: years || [],
+                    periods: periods,
                     countryIds: countryIds || [],
                     selectedRegions: selectedRegions,
                     seriesIdAndName: seriesIdAndName,
@@ -182,7 +208,15 @@ export function useChartData(params: {
                 })
                 .runAsync();
         },
-        [compositionRoot.indicatorExplorer.downloadAnalytics, countryIds, regionIds, regions, visualizationId, years]
+        [
+            compositionRoot.indicatorExplorer.downloadAnalytics,
+            countryIds,
+            filterByLatestAvailableYearInRegion,
+            regionIds,
+            regions,
+            visualizationId,
+            years,
+        ]
     );
 
     const onShowInfo = useCallback(() => {
@@ -279,4 +313,21 @@ function getLegendSetIds(visualization: Visualization, analytics: Analytics) {
     }
 
     return legendSetIds;
+}
+
+function getLastAvailableYearInRegion(
+    analyticsResponse: Analytics[],
+    isMultipleVisualizations: boolean,
+    regionId: Id
+): string {
+    const rows = isMultipleVisualizations
+        ? analyticsResponse.flatMap(analytics => analytics.rows)
+        : analyticsResponse[0]?.rows || [];
+
+    return rows.reduce((lastAvailableYear, row): string => {
+        const region = row[1]?.toString() || "";
+        const year = row[2] || "";
+
+        return regionId === region && year > lastAvailableYear ? year : lastAvailableYear;
+    }, "NA");
 }

@@ -1,5 +1,5 @@
 import { CircularProgress, Typography, useMediaQuery, useTheme } from "@material-ui/core";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
@@ -36,6 +36,8 @@ interface VisualizationPluginProps {
     forcePluginFullScreen?: boolean;
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
+    filterByLatestAvailableYearInRegion?: boolean;
+    visualizationIdInIndicatorExplorer?: Id;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -60,6 +62,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         forcePluginFullScreen = false,
         showDialogInFullScreen = false,
         isRegionalPage = false,
+        filterByLatestAvailableYearInRegion = false,
+        visualizationIdInIndicatorExplorer,
     } = props;
 
     const history = useHistory();
@@ -71,6 +75,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         regionIds: regions,
         currentCountryOrRegion,
         visualizationName,
+        filterByLatestAvailableYearInRegion,
     });
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -150,11 +155,25 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }
     }, [onDownloadImage, onDirectDownloadImage]);
 
-    const goToIndicatorExplorer = useCallback(() => {
-        history.push(`/indicator-explorer?indicator=${visualizationId}&countriesAndAreas=${countries}&years=${years}`);
-    }, [countries, history, visualizationId, years]);
+    const yearsFilteredInChart = useMemo(() => {
+        if (filterByLatestAvailableYearInRegion && chartData.kind === "Loaded") {
+            return chartData?.lastAvailableYearInRegion ? [chartData?.lastAvailableYearInRegion] : [];
+        }
+        return years;
+    }, [chartData, filterByLatestAvailableYearInRegion, years]);
 
-    return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
+    const goToIndicatorExplorer = useCallback(() => {
+        if (chartData.kind === "Loaded" && yearsFilteredInChart.length > 0 && countries.length > 0) {
+            const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
+            history.push(
+                `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${countries}&years=${yearsFilteredInChart}`
+            );
+        }
+    }, [chartData, countries, history, visualizationId, yearsFilteredInChart, visualizationIdInIndicatorExplorer]);
+
+    return chartData.kind === "Loaded" &&
+        chartData.analytics.some(analytics => analytics.rows.length > 0) &&
+        yearsFilteredInChart.length > 0 ? (
         <VisualizationPluginContainer
             ref={ref}
             withoutBackground={withoutBackground}
@@ -200,7 +219,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 isMobile={isMobile}
             />
         </VisualizationPluginContainer>
-    ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
+    ) : chartData.kind === "Loaded" &&
+      (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0) ? (
         <Center>
             <StyledTypography variant="subtitle1">
                 {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
