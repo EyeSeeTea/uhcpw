@@ -13,7 +13,7 @@ export const linearHealthQuintileSeries = [
     },
     {
         id: "CQq6HWprR0p.Xr12mI7VPn3",
-        name: "Total",
+        name: "Average",
         color: "#ffc000",
         dataLabels: {
             enabled: false,

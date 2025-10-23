@@ -12,7 +12,7 @@ export const linearDentalQuintileSeries = [
         },
     },
     {
-        name: "Total",
+        name: "Average",
         id: "Wm2v9VGGSuK",
         color: "#ffc000",
         dataLabels: {

@@ -3,11 +3,11 @@ import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../u
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
 const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
+const PARAMETER_ORDER = ["Poorest", "Average", "Richest"];
 
 export const chart_MfLZYD6QCPy_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
-    friendlyName: "Unmet need for prescribed medicines due to cost (poorest quintile, total, richest quintile)",
+    friendlyName: "Unmet need for prescribed medicines due to cost (poorest quintile, average, richest quintile)",
     countryPageName: "unmet need for prescribed medicines due to cost by income quintile",
     isComparative: true,
     isYearSingleSelection: true,

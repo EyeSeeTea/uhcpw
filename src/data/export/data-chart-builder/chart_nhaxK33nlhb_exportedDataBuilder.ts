@@ -1,7 +1,7 @@
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartData } from "./getTabsWithChartData";
 
-const SORTED_PARAMETERS = ["Richest quintile", "Total", "Poorest quintile"];
+const SORTED_PARAMETERS = ["Richest quintile", "Average", "Poorest quintile"];
 const HEADER_DATA_PARAM_NAME = "Parameter";
 const HEADERS_BASE = ["Country / Area", "Parameter"];
 
