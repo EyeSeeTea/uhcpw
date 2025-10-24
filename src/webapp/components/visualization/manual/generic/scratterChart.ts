@@ -5,7 +5,6 @@ import { getEU27Label } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
 import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 import { ORG_UNIT_IDS, REGION_CODES } from "../../../../../domain/entities/region/Region";
-import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
 
 export type ScratterSerie = {
     id: string;
@@ -151,11 +150,7 @@ export const createScratterChart: ({
 
                         return (currentCountryCode && countryCodePoint === currentCountryCode) ||
                             (currentRegionCode && regionCodePoint === currentRegionCode)
-                            ? `<strong style="color:${
-                                  countryCodePoint === currentCountryCode
-                                      ? "black"
-                                      : getColorOfRegionByRegionCode(regionCodePoint)
-                              };">${countryCodePoint || regionCodePoint}</strong>`
+                            ? `<strong style="color:black;">${countryCodePoint || regionCodePoint}</strong>`
                             : countryCodePoint || regionCodePoint;
                     },
                     x: -2,

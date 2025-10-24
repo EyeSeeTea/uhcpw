@@ -4,8 +4,6 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
-import { EU27Color } from "../../customization/palettes/countryPalette";
-import { ORG_UNIT_IDS } from "../../../../../domain/entities/region/Region";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -15,7 +13,6 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
-    highlightEU27?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -24,7 +21,6 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
-    highlightEU27,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -56,6 +52,12 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     const currentCountryCode =
         chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
+    const currentRegion = chartSource.regions.find(
+        region =>
+            region.id === chartSource.currentCountryOrRegion ||
+            region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+    );
+
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
@@ -66,19 +68,22 @@ export const comparativeSingleYearColumnChartOptions: (params: {
             color: seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
+                const region = chartSource.regions.find(
+                    region => region.id === orgUnitId || region.linkedOrgUnitId === orgUnitId
                 );
+                const code = region
+                    ? region.code
+                    : mapToWhoCountryCode(chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "");
+
                 const value = row[2] ? +row[2] : 0;
 
-                const colorUE27 =
-                    ORG_UNIT_IDS.EUROPEAN_UNION === orgUnitId && highlightEU27 ? { color: EU27Color } : undefined;
-
                 const color =
-                    currentCountryCode === orgUnit && currentSerieColor ? { color: currentSerieColor } : colorUE27;
+                    (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
+                        ? { color: currentSerieColor }
+                        : undefined;
 
                 return {
-                    name: `${orgUnit} ${currentYear ?? ""}`,
+                    name: `${code} ${currentYear ?? ""}`,
                     y: value,
                     ...color,
                 };

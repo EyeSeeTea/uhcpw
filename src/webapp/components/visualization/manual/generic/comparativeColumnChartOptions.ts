@@ -61,6 +61,12 @@ export const comparativeColumnChartOptions: (params: {
     const currentCountryCode =
         chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
+    const currentRegion = chartSource.regions.find(
+        region =>
+            region.id === chartSource.currentCountryOrRegion ||
+            region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+    );
+
     const groupByCountryIdAndYear = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
@@ -93,19 +99,25 @@ export const comparativeColumnChartOptions: (params: {
             color: seriesColors[dxId],
             data: filledDataSourceWithEmptyData.map(row => {
                 const orgUnitIdOrCategoryId = row[1]?.toString() || "";
-                const orgUnitCodeOrCategory = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
+                const region = chartSource.regions.find(
+                    region => region.id === orgUnitIdOrCategoryId || region.linkedOrgUnitId === orgUnitIdOrCategoryId
                 );
+                const code = region
+                    ? region.code
+                    : mapToWhoCountryCode(
+                          chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
+                      );
+
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
                 const color =
-                    currentCountryCode === orgUnitCodeOrCategory && currentSerieColor
+                    (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
                         : undefined;
 
                 return {
-                    name: hideYear ? orgUnitCodeOrCategory : `${orgUnitCodeOrCategory} ${year} `,
+                    name: hideYear ? code : `${code} ${year}`,
                     y: value,
                     categoryId: row[1] || "",
                     ...color,

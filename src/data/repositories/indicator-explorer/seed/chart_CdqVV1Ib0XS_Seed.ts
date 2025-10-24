@@ -14,5 +14,4 @@ export const chart_CdqVV1Ib0XS_Seed: VisualizationExtra = {
     hasEECARegion: true,
     hasWesternBalkansRegion: true,
     isYearSingleSelection: true,
-    getOnlyLast20Years: true,
 };
