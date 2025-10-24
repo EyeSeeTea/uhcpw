@@ -23,13 +23,20 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
             : undefined,
     });
 
-    const rowsByCountry = _(chartSourceWithFilteredRowsByLAY.analyticsResponse.rows)
+    const rowsByCountryOrRegion = _(chartSourceWithFilteredRowsByLAY.analyticsResponse.rows)
         .groupBy(row => row[1])
         .value();
 
     const currentCountryCode =
         chartSourceWithFilteredRowsByLAY.countries.find(
             country => country.id === chartSourceWithFilteredRowsByLAY.currentCountryOrRegion
+        )?.code || "";
+
+    const currentRegionCode =
+        chartSourceWithFilteredRowsByLAY.regions.find(
+            region =>
+                region.id === chartSourceWithFilteredRowsByLAY.currentCountryOrRegion ||
+                region.linkedOrgUnitId === chartSourceWithFilteredRowsByLAY.currentCountryOrRegion
         )?.code || "";
 
     const seriesSource: SerieSource[] = [
@@ -60,18 +67,26 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         },
     ];
 
-    const countriesWithData: SerieData[] = _(rowsByCountry)
+    const seriesWithCountryAndRegionData: SerieData[] = _(rowsByCountryOrRegion)
         .keys()
-        .map(countryId => {
-            const xSource = rowsByCountry[countryId]?.find(row => row[0] === kIpnMBaBvZ9_xAxisOutOfPocket) || [];
-            const ySource = rowsByCountry[countryId]?.find(row => row[0] === kIpnMBaBvZ9_yAxisHouseholds) || [];
-            const country = chartSourceWithFilteredRowsByLAY.countries.find(country => country.id === countryId);
+        .map(countryOrRegionId => {
+            const xSource =
+                rowsByCountryOrRegion[countryOrRegionId]?.find(row => row[0] === kIpnMBaBvZ9_xAxisOutOfPocket) || [];
+            const ySource =
+                rowsByCountryOrRegion[countryOrRegionId]?.find(row => row[0] === kIpnMBaBvZ9_yAxisHouseholds) || [];
+            const country = chartSourceWithFilteredRowsByLAY.countries.find(
+                country => country.id === countryOrRegionId
+            );
+            const region = chartSourceWithFilteredRowsByLAY.regions.find(
+                region => region.id === countryOrRegionId || region.linkedOrgUnitId === countryOrRegionId
+            );
 
             const x = xSource[3] ? +xSource[3] : 0;
             const y = ySource[3] ? +ySource[3] : 0;
             const isCommonYear = xSource[2] === ySource[2];
             return {
-                country: country?.code || "",
+                countryCode: country?.code || "",
+                regionCode: region?.code || "",
                 yearX: isCommonYear ? "" : `${xSource[2]}`,
                 yearY: isCommonYear ? "" : `${ySource[2]}`,
                 commonYear: isCommonYear ? xSource[2] || "" : "",
@@ -82,7 +97,9 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         .value();
 
     const series = seriesSource.map(serie => {
-        const serieData = countriesWithData.filter(country => filterByValue(serie.id, country));
+        const serieData = seriesWithCountryAndRegionData.filter(serieWithCountryAndRegionData =>
+            filterByValue(serie.id, serieWithCountryAndRegionData)
+        );
 
         return {
             ...serie,
@@ -148,11 +165,12 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         series,
         visualization: chartSourceWithFilteredRowsByLAY.visualization,
         currentCountryCode,
+        currentRegionCode: currentRegionCode,
         xAxisTitle: "Out-of-pocket payments as a share of current spending on health (%)",
         yAxisTitle: "Households with catastrophic health spending (%)",
         pointFormat:
             "{point.country} {point.commonYear} <br/> {point.yearX} Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> {point.yearY} Households with catastrophic health spending (%): {point.y}%",
-        countriesWithData,
+        seriesWithCountryAndRegionData: seriesWithCountryAndRegionData,
         countryPositions: countryPositionsAdjustment,
     });
 
@@ -172,7 +190,8 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
 };
 
 type SerieData = {
-    country: string;
+    countryCode: string;
+    regionCode: string;
     yearX: string;
     yearY: string;
     commonYear: string;
@@ -256,7 +275,7 @@ export function getYearByIndicatorAndCountry(
                     .filter(year => filteredYYears.includes(year))
                     .sort((a, b) => parseInt(b) - parseInt(a));
 
-                const commonYear = commonYears.length > 0 ? commonYears[0] : "";
+                const commonYear = commonYears.length > 0 ? commonYears[0] || "" : "";
                 return {
                     ...acc,
                     [countryId]: {

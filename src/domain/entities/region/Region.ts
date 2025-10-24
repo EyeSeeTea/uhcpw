@@ -46,11 +46,11 @@ export function isRegionNameKey(key: string): key is RegionNameKey {
 }
 
 export const REGION_CODES = {
-    WESTERN_BALKANS: "WESTERN BALKANS",
+    WESTERN_BALKANS: "WBc",
     EUROPEAN_UNION: "EU",
     EASTERN_EUROPE_AND_CENTRAL_ASIA: "EECA",
-    EU_CANDIDATE_COUNTRIES: "EU CANDIDATE COUNTRIES",
-    EUROPEAN_REGION: "EUROPEAN REGION",
+    EU_CANDIDATE_COUNTRIES: "EUCC",
+    EUROPEAN_REGION: "ER",
 } as const;
 
 export type RegionCodeKey = keyof typeof REGION_CODES;

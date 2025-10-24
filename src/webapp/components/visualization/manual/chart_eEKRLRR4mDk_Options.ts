@@ -2,8 +2,8 @@ import _ from "lodash";
 import { ChartSource } from "./chartOptions";
 import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
-import { EU27Color } from "../customization/palettes/countryPalette";
-import { ORG_UNIT_IDS } from "../../../../domain/entities/region/Region";
+import { ORG_UNIT_IDS, REGION_CODES } from "../../../../domain/entities/region/Region";
+import { getColorOfRegionByRegionCode } from "../../../pages/regional-page/getColorOfRegion";
 
 const REST_ID = "REST_ID";
 
@@ -15,13 +15,35 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
     const currentCountryCode =
         chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
+    const currentRegionCode =
+        chartSource.regions.find(
+            region =>
+                region.id === chartSource.currentCountryOrRegion ||
+                region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+        )?.code || "";
+
     const currentYear = chartSource.currentYear;
 
     const seriesSource: SerieSource[] = [
         {
             name: "",
             id: ORG_UNIT_IDS.EUROPEAN_UNION,
-            color: EU27Color,
+            color: getColorOfRegionByRegionCode(REGION_CODES.EUROPEAN_UNION),
+        },
+        {
+            name: "",
+            id: ORG_UNIT_IDS.WESTERN_BALKANS,
+            color: getColorOfRegionByRegionCode(REGION_CODES.WESTERN_BALKANS),
+        },
+        {
+            name: "",
+            id: ORG_UNIT_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA,
+            color: getColorOfRegionByRegionCode(REGION_CODES.EASTERN_EUROPE_AND_CENTRAL_ASIA),
+        },
+        {
+            name: "",
+            id: ORG_UNIT_IDS.EUROPEAN_REGION,
+            color: getColorOfRegionByRegionCode(REGION_CODES.EUROPEAN_REGION),
         },
         {
             name: "",
@@ -35,19 +57,24 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         },
     ];
 
-    const countriesWithData: SerieData[] = _(rowsByCountry)
+    const seriesWithCountryAndRegionData: SerieData[] = _(rowsByCountry)
         .keys()
-        .map(countryId => {
-            const xSource = rowsByCountry[countryId]?.find(row => row[0] === "Gquev7KGHWq") || [];
-            const ySource = rowsByCountry[countryId]?.find(row => row[0] === "qO6diSOTqhL") || [];
-            const country = chartSource.countries.find(country => country.id === countryId);
-            const eur27Code = getEU27Label(countryId);
+        .map(countryOrRegionId => {
+            const xSource = rowsByCountry[countryOrRegionId]?.find(row => row[0] === "Gquev7KGHWq") || [];
+            const ySource = rowsByCountry[countryOrRegionId]?.find(row => row[0] === "qO6diSOTqhL") || [];
+            const country = chartSource.countries.find(country => country.id === countryOrRegionId);
+            const region = chartSource.regions.find(
+                region => region.id === countryOrRegionId || region.linkedOrgUnitId === countryOrRegionId
+            );
+
+            const eur27Code = getEU27Label(countryOrRegionId);
 
             const x = xSource[2] ? +xSource[2] : 0;
             const y = ySource[2] ? +ySource[2] : 0;
 
             return {
-                country: country?.code || eur27Code || "",
+                countryCode: country?.code || "",
+                regionCode: eur27Code ? eur27Code : region?.code || "",
                 year: currentYear || "",
                 x,
                 y,
@@ -55,7 +82,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         })
         .value();
 
-    const series = getScatterSeries(seriesSource, countriesWithData, REST_ID);
+    const series = getScatterSeries(seriesSource, seriesWithCountryAndRegionData, REST_ID);
 
     const countryPositionsAdjustment = {
         EST: pos.right,
@@ -86,12 +113,13 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
     const scratterChart = createScratterChart({
         series,
         visualization: chartSource.visualization,
-        currentCountryCode,
+        currentCountryCode: currentCountryCode,
+        currentRegionCode: currentRegionCode,
         xAxisTitle: "GDP per person in current purchasing power parities",
         yAxisTitle: "Public spending on health as a share of GDP (%)",
         pointFormat:
             "{point.country} {point.year} <br/> GDP per person in current purchasing power parities: {point.x} <br/> Public spending on health as a share of GDP (%): {point.y}%",
-        countriesWithData,
+        seriesWithCountryAndRegionData: seriesWithCountryAndRegionData,
         countryPositions: countryPositionsAdjustment,
         displayTendencyLine: false,
         xTickInterval: 10000,
