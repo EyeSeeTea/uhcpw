@@ -26,11 +26,7 @@ export class GetAnalyticsUseCase {
                 sortedPeriods[0] === LatestCOVID19.id
                     ? generateYears(2019).map(year => year.id)
                     : sortedPeriods[0] === LatestAvailable.id
-                    ? visualization.getOnlyLast20Years
-                        ? generateYears()
-                              .slice(0, 20)
-                              .map(year => year.id)
-                        : generateYears().map(year => year.id)
+                    ? generateYears().map(year => year.id)
                     : sortedPeriods;
 
             return this.analyticsRepository.get(visualization, finalPeriods.sort(), countries, regions);
