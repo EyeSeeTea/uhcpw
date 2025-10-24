@@ -5,7 +5,7 @@ export const chart_nhaxK33nlhb_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
     showCountryTag: true,
     friendlyName:
-        "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, total, richest quintile)",
+        "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, average, richest quintile)",
     countryPageName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
     isComparative: false,
     subcategoryName: sortedSubcategoryNames.countryLevel,
