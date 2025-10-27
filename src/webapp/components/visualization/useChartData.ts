@@ -32,6 +32,7 @@ export function useChartData(params: {
     currentCountryOrRegion?: Id;
     visualizationName?: string;
     filterByLatestAvailableYearInRegion?: boolean;
+    isRegionalPage?: boolean;
 }): ChartDataState {
     const {
         visualizationId,
@@ -41,6 +42,7 @@ export function useChartData(params: {
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        isRegionalPage,
     } = params;
     const { compositionRoot } = useAppContext();
 
@@ -126,6 +128,7 @@ export function useChartData(params: {
                         isLatestCOVID19: years.includes(LatestCOVID19.id),
                         isLatestYearAvailable: isLatestYearAvailable,
                         yearToFilterBy: lastAvailableYearInRegion,
+                        isRegionalPage: isRegionalPage,
                     } as ChartSourceMultiple & ChartSource;
 
                     const visualizationDialogInfo =
@@ -183,6 +186,7 @@ export function useChartData(params: {
         getVisualizationDialogInfo,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        isRegionalPage,
     ]);
 
     const onDownloadExcel = useCallback(
@@ -329,5 +333,5 @@ function getLastAvailableYearInRegion(
         const year = row[2] || "";
 
         return regionId === region && year > lastAvailableYear ? year : lastAvailableYear;
-    }, "NA");
+    }, "0");
 }

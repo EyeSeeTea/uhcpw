@@ -164,7 +164,7 @@ export const comparativeColumnChartOptions: (params: {
                 formatter: function () {
                     const countryLabel = (this.value as string).split(" ")[0];
 
-                    return countryLabel === currentCountryCode
+                    return countryLabel === currentCountryCode || countryLabel === currentRegion?.code
                         ? `<strong style="color:#49abe2;">${this.value}</strong>`
                         : this.value;
                 },

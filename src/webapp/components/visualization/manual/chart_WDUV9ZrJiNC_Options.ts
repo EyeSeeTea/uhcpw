@@ -47,6 +47,15 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
         .sortBy(key => _(seriesNames).keys().indexOf(key))
         .value();
 
+    const currentCountryCode =
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
+
+    const currentRegion = chartSource.regions.find(
+        region =>
+            region.id === chartSource.currentCountryOrRegion ||
+            region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+    );
+
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
@@ -56,15 +65,22 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
             name: seriesNames[dxId],
             color: seriesColors[dxId],
             data: dataSource.map(row => {
-                const orgUnitIdOrCategoryId = row[1]?.toString() || "";
-                const orgUnitCodeOrCategory = mapToWhoCountryCode(
-                    chartSourceWithFilteredRowsByLAY.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
+                const orgUnitIdOrRegionId = row[1]?.toString() || "";
+                const region = chartSource.regions.find(
+                    region => region.id === orgUnitIdOrRegionId || region.linkedOrgUnitId === orgUnitIdOrRegionId
                 );
+                const code = region
+                    ? region.code
+                    : mapToWhoCountryCode(
+                          chartSourceWithFilteredRowsByLAY.analyticsResponse.metaData.items[orgUnitIdOrRegionId]
+                              ?.code || ""
+                      );
+
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
                 return {
-                    name: `${orgUnitCodeOrCategory} ${year} `,
+                    name: `${code} ${year} `,
                     y: value,
                 };
             }),
@@ -83,6 +99,13 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
             type: "category",
             labels: {
                 rotation: -90,
+                formatter: function () {
+                    const countryLabel = (this.value as string).split(" ")[0];
+
+                    return countryLabel === currentCountryCode || countryLabel === currentRegion?.code
+                        ? `<strong style="color:#49abe2;">${this.value}</strong>`
+                        : this.value;
+                },
             },
         },
         yAxis: {

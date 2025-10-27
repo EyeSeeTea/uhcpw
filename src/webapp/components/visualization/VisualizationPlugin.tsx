@@ -76,6 +76,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        isRegionalPage,
     });
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -166,10 +167,21 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         if (chartData.kind === "Loaded" && yearsFilteredInChart.length > 0 && countries.length > 0) {
             const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
             history.push(
-                `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${countries}&years=${yearsFilteredInChart}`
+                `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
+                    ...countries,
+                    ...regions,
+                ]}&years=${yearsFilteredInChart}`
             );
         }
-    }, [chartData, countries, history, visualizationId, yearsFilteredInChart, visualizationIdInIndicatorExplorer]);
+    }, [
+        chartData,
+        countries,
+        regions,
+        history,
+        visualizationId,
+        yearsFilteredInChart,
+        visualizationIdInIndicatorExplorer,
+    ]);
 
     return chartData.kind === "Loaded" &&
         chartData.analytics.some(analytics => analytics.rows.length > 0) &&
@@ -213,6 +225,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 legendSets={chartData.legendSets}
                 customizedOptions={chartData.customization}
                 countries={chartData.countries}
+                regions={chartData.regions}
                 withoutBackground={withoutBackground}
                 externalchartOptions={chartData.chartOptions}
                 isSquareChart={isSquareChart}

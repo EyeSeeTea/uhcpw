@@ -17,6 +17,10 @@ export const chart_MfLZYD6QCPy_Seed: VisualizationExtra = {
     selectedYearsByDefault: [{ id: "2019" }],
     allowedYears: [{ id: "2014" }, { id: "2019" }],
     hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>

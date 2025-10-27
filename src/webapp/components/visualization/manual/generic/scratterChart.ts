@@ -4,7 +4,7 @@ import { baseChartOptions } from "./baseChartOptions";
 import { getEU27Label } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
 import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
-import { ORG_UNIT_IDS, REGION_CODES } from "../../../../../domain/entities/region/Region";
+import { getRegionCodeByOrgUnitId } from "../../../../../domain/entities/region/Region";
 
 export type ScratterSerie = {
     id: string;
@@ -187,29 +187,23 @@ export const getScatterSeries = (
 ) => {
     return seriesSource.map(serie => {
         // Handle the region series separately
-        if (
-            serie.id === ORG_UNIT_IDS.EUROPEAN_UNION ||
-            serie.id === ORG_UNIT_IDS.WESTERN_BALKANS ||
-            serie.id === ORG_UNIT_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA ||
-            serie.id === ORG_UNIT_IDS.EUROPEAN_REGION
-        ) {
+        const regionCode = getRegionCodeByOrgUnitId(serie.id);
+        if (regionCode) {
+            const targetRegionCode = getEU27Label(serie.id) || regionCode;
+
             return {
                 ...serie,
-                data: seriesWithCountryAndRegionData.filter(
-                    serieWithCountryAndRegionData =>
-                        serieWithCountryAndRegionData.regionCode === getEU27Label(serie.id) ||
-                        serieWithCountryAndRegionData.regionCode === REGION_CODES.EUROPEAN_UNION ||
-                        serieWithCountryAndRegionData.regionCode === REGION_CODES.EUROPEAN_UNION ||
-                        serieWithCountryAndRegionData.regionCode === REGION_CODES.WESTERN_BALKANS ||
-                        serieWithCountryAndRegionData.regionCode === REGION_CODES.EASTERN_EUROPE_AND_CENTRAL_ASIA ||
-                        serieWithCountryAndRegionData.regionCode === REGION_CODES.EUROPEAN_REGION
-                ),
+                data: seriesWithCountryAndRegionData.filter(d => d.regionCode === targetRegionCode),
             };
         } else {
             return {
                 ...serie,
                 data: seriesWithCountryAndRegionData.filter(
-                    country => serie.id === REST_ID || country.countryCode === serie.id
+                    serieWithCountryAndRegionData =>
+                        !serieWithCountryAndRegionData.regionCode &&
+                        (serie.id === REST_ID ||
+                            (!!serieWithCountryAndRegionData.countryCode &&
+                                serieWithCountryAndRegionData.countryCode === serie.id))
                 ),
             };
         }

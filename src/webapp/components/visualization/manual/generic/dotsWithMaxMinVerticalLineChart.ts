@@ -27,6 +27,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     pointFormat: string;
     latestAvailableYearByCountryId?: Record<string, string>;
     metadataItems?: Record<string, AnalyticsMetadataItem>;
+    currentCountryOrRegionCode?: string;
 }) => Highcharts.Options = ({
     rows,
     seriesIds,
@@ -37,6 +38,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     pointFormat,
     latestAvailableYearByCountryId,
     metadataItems,
+    currentCountryOrRegionCode,
 }) => {
     const series = Object.values(seriesIds).map(serieId => {
         const serieChartRows = rows.filter(row => row[0] === serieId);
@@ -124,6 +126,13 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
             categories: categories,
             labels: {
                 rotation: -90,
+                formatter: function () {
+                    const countryLabel = (this.value as string).split(" ")[0];
+
+                    return countryLabel === currentCountryOrRegionCode
+                        ? `<strong style="color:#49abe2;">${this.value}</strong>`
+                        : this.value;
+                },
             },
         },
         yAxis: {

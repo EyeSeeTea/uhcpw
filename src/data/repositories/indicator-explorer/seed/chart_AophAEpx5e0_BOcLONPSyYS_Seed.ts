@@ -19,6 +19,10 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
     hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>

@@ -74,6 +74,7 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
                 rowsByCountryOrRegion[countryOrRegionId]?.find(row => row[0] === kIpnMBaBvZ9_xAxisOutOfPocket) || [];
             const ySource =
                 rowsByCountryOrRegion[countryOrRegionId]?.find(row => row[0] === kIpnMBaBvZ9_yAxisHouseholds) || [];
+
             const country = chartSourceWithFilteredRowsByLAY.countries.find(
                 country => country.id === countryOrRegionId
             );

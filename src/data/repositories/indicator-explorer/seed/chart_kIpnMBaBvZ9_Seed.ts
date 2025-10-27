@@ -21,4 +21,10 @@ export const chart_kIpnMBaBvZ9_Seed: VisualizationExtra = {
     xAxis: kIpnMBaBvZ9_xAxisOutOfPocket,
     yAxis: kIpnMBaBvZ9_yAxisHouseholds,
     hasCustomFilterXAxisAndYAxisByLastAvailableYear: true,
+    hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
+    isOrgUnitRegions: true,
 };

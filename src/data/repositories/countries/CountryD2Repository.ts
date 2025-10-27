@@ -80,7 +80,7 @@ const COUNTRIES_NOT_SHOWN: Id[] = [ORG_UNIT_IDS.EUROPEAN_UNION];
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
 
-const BOSNIA_AND_HERZEGOVINA_LEVEL_3 = "n8iofJiiX4T";
+export const BOSNIA_AND_HERZEGOVINA_LEVEL_3 = "n8iofJiiX4T";
 export const BOSNIA_AND_HERZEGOVINA_LEVEL_4 = "rqaiYTAnMC6"; // Brcko District
 export const FEDERACIJA_BOSNE_I_HERCEGOVINE = "j44olg405lZ";
 export const REPUBLICA_SERPSKA = "FvoXRc5cEEk";

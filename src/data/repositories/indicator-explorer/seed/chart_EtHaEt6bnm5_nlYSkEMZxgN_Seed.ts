@@ -19,6 +19,10 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Seed: VisualizationExtra = {
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
     hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>

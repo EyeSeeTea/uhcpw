@@ -13,5 +13,6 @@ export const chart_CdqVV1Ib0XS_Seed: VisualizationExtra = {
     hasEuropeanRegion: true,
     hasEECARegion: true,
     hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
     isYearSingleSelection: true,
 };

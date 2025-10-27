@@ -67,7 +67,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["kIpnMBaBvZ9"]?.regionalPageName ||
                                           VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelOneGraphOneText,
                                   },
                               ],
@@ -90,7 +91,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["dbc87Ljw8uN"]?.regionalPageName ||
                                           VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelTwoGraphOneText,
                                   },
                               ],
@@ -113,7 +115,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["GimM6ANOKhd"]?.regionalPageName ||
                                           VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelThreeGraphOneText,
                                   },
                                   {
@@ -123,7 +126,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["WDUV9ZrJiNC"]?.regionalPageName ||
                                           VisualizationsSeeds["WDUV9ZrJiNC"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelThreeGraphTwoText,
                                   },
                               ],
@@ -146,7 +150,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["VB7bdJ8ZXya"]?.regionalPageName ||
                                           VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFourGraphOneText,
                                   },
                                   {
@@ -156,7 +161,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["mcNfvQaVbfy"]?.regionalPageName ||
                                           VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFourGraphTwoText,
                                   },
                               ],
@@ -179,7 +185,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.regionalPageName ||
                                           VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphOneText,
                                   },
                                   {
@@ -189,7 +196,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.regionalPageName ||
                                           VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphTwoText,
                                   },
                                   {
@@ -199,7 +207,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["MfLZYD6QCPy"]?.regionalPageName ||
                                           VisualizationsSeeds["MfLZYD6QCPy"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphThreeText,
                                   },
                               ],
@@ -222,7 +231,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["d3kq9OCv8tH"]?.regionalPageName ||
                                           VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
                                       years: generateYears().map(year => year.id),
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphOneText,
                                   },
                                   {
@@ -232,7 +242,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["CdqVV1Ib0XS"]?.regionalPageName ||
                                           VisualizationsSeeds["CdqVV1Ib0XS"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphTwoText,
                                       filterByLatestAvailableYearInRegion: true,
                                   },
@@ -243,7 +254,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["mUjcWO90CRr"]?.regionalPageName ||
                                           VisualizationsSeeds["mUjcWO90CRr"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphThreeText,
                                   },
                                   {
@@ -252,7 +264,8 @@ export function useRegionNumbers(
                                           VisualizationsSeeds["B4CnzUqVR3n"]?.regionalPageName ||
                                           VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || []), selectedRegion.linkedOrgUnitId],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphFourText,
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       filterByLatestAvailableYearInRegion: true,

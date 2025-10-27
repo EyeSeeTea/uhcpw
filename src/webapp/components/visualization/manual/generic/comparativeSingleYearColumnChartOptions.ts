@@ -4,6 +4,7 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
+import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -80,6 +81,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 const color =
                     (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
+                        : region?.code
+                        ? { color: getColorOfRegionByRegionCode(region?.code) }
                         : undefined;
 
                 return {
@@ -108,7 +111,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 formatter: function () {
                     const countryLabel = (this.value as string).split(" ")[0];
 
-                    return countryLabel === currentCountryCode
+                    return countryLabel === currentCountryCode || countryLabel === currentRegion?.code
                         ? `<strong style="color:#49abe2;">${this.value}</strong>`
                         : this.value;
                 },

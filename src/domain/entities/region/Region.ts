@@ -25,6 +25,12 @@ export const ORG_UNIT_IDS = {
     EUROPEAN_REGION: "amiXPb8Q3AK",
 } as const;
 
+type OrgUnitId = typeof ORG_UNIT_IDS[keyof typeof ORG_UNIT_IDS];
+
+export function isOrgUnitId(id: Id): id is OrgUnitId {
+    return (Object.values(ORG_UNIT_IDS) as readonly Id[]).includes(id);
+}
+
 type OrgUnitRegionKey = keyof typeof ORG_UNIT_IDS;
 
 export function isOrgUnitRegionKey(key: string): key is OrgUnitRegionKey {
@@ -38,6 +44,8 @@ export const REGION_NAMES = {
     EU_CANDIDATE_COUNTRIES: "EU candidate countries",
     EUROPEAN_REGION: "European Region",
 } as const;
+
+type RegionCode = typeof REGION_CODES[keyof typeof REGION_CODES];
 
 export type RegionNameKey = keyof typeof REGION_NAMES;
 
@@ -66,3 +74,15 @@ export const SORTED_REGIONS: Id[] = [
     ORG_UNIT_GROUP_IDS.WESTERN_BALKANS,
     ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES,
 ];
+
+const REGION_ORG_UNIT_CODE_MAP: Record<OrgUnitId, RegionCode> = {
+    [ORG_UNIT_IDS.EUROPEAN_UNION]: REGION_CODES.EUROPEAN_UNION,
+    [ORG_UNIT_IDS.WESTERN_BALKANS]: REGION_CODES.WESTERN_BALKANS,
+    [ORG_UNIT_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA]: REGION_CODES.EASTERN_EUROPE_AND_CENTRAL_ASIA,
+    [ORG_UNIT_IDS.EUROPEAN_REGION]: REGION_CODES.EUROPEAN_REGION,
+    [ORG_UNIT_IDS.EU_CANDIDATE_COUNTRIES]: REGION_CODES.EU_CANDIDATE_COUNTRIES,
+};
+
+export function getRegionCodeByOrgUnitId(id: Id): RegionCode | undefined {
+    return isOrgUnitId(id) ? REGION_ORG_UNIT_CODE_MAP[id] : undefined;
+}

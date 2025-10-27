@@ -16,7 +16,8 @@ type VisualizationProps = {
     visualizationName?: string;
     text?: string;
     years: string[];
-    countries: string[];
+    countries: Id[];
+    regions: Id[];
     currentCountryOrRegion?: Id;
     filterByLatestAvailableYearInRegion?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
@@ -78,6 +79,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
                               visualizationName={graph.visualizationName}
                               years={graph.years}
                               countries={graph.countries}
+                              regions={graph.regions}
                               withoutBackground
                               useHeaderForCountryOrRegionalPage
                               currentCountryOrRegion={graph.currentCountryOrRegion || countryId}
@@ -108,9 +110,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
                         visualizationName={currentGraphScreenshot.visualizationName}
                         years={currentGraphScreenshot.years}
                         countries={currentGraphScreenshot.countries}
+                        regions={currentGraphScreenshot.regions}
                         withoutBackground
                         useHeaderForCountryOrRegionalPage
-                        currentCountryOrRegion={countryId}
+                        currentCountryOrRegion={currentGraphScreenshot.currentCountryOrRegion || countryId}
                         isScreenshot={true}
                         analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
                         filterByLatestAvailableYearInRegion={currentGraphScreenshot.filterByLatestAvailableYearInRegion}

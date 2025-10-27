@@ -34,6 +34,7 @@ export interface ChartSource {
     isLatestCOVID19?: boolean;
     isLatestYearAvailable?: boolean;
     yearToFilterBy?: string;
+    isRegionalPage?: boolean;
 }
 
 export interface ChartSourceMultiple {
@@ -46,6 +47,7 @@ export interface ChartSourceMultiple {
     isLatestCOVID19?: boolean;
     isLatestYearAvailable?: boolean;
     yearToFilterBy?: string;
+    isRegionalPage?: boolean;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {

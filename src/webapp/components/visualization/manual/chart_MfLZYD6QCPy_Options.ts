@@ -24,13 +24,31 @@ const seriesColors: Record<typeof seriesIds[keyof typeof seriesIds], string> = {
 };
 
 export const chart_MfLZYD6QCPy_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
+    const currentCountryCode =
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
+
+    const currentRegion = chartSource.regions.find(
+        region =>
+            region.id === chartSource.currentCountryOrRegion ||
+            region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+    );
+
     const orderedCountry = orderLatestAvailableYearByAverageAndPoorest({
         allRowsFilteredByLAY: chartSource.analyticsResponse.rows,
         seriesIds,
     });
 
-    const categories = Object.keys(orderedCountry).map(countryId => {
-        return mapToWhoCountryCode(chartSource.analyticsResponse.metaData.items[countryId]?.code || countryId);
+    const categories = Object.keys(orderedCountry).map(orgUnitIdOrRegionId => {
+        const region = chartSource.regions.find(
+            region => region.id === orgUnitIdOrRegionId || region.linkedOrgUnitId === orgUnitIdOrRegionId
+        );
+        const code = region
+            ? region.code
+            : mapToWhoCountryCode(
+                  chartSource.analyticsResponse.metaData.items[orgUnitIdOrRegionId]?.code || orgUnitIdOrRegionId
+              );
+
+        return chartSource.isRegionalPage ? `${code} ${orderedCountry[orgUnitIdOrRegionId]}` : code;
     });
 
     return createDotsWithMaxMinVerticalLineChart({
@@ -42,5 +60,6 @@ export const chart_MfLZYD6QCPy_Options: (chartSource: ChartSource) => Highcharts
         yAxisTitle: chartSource.visualization.axes[0]?.title.text || "",
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: orderedCountry,
+        currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
     });
 };

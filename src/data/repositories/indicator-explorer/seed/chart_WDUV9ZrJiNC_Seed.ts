@@ -16,4 +16,10 @@ export const chart_WDUV9ZrJiNC_Seed: VisualizationExtra = {
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
+    hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
+    isOrgUnitRegions: true,
 };

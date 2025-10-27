@@ -15,6 +15,7 @@ import {
 import { RegionRepository } from "../../../domain/repositories/region/RegionRepository";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
+import { BOSNIA_AND_HERZEGOVINA_LEVEL_3, BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../countries/CountryD2Repository";
 
 const REGION_INFO_PROGRAM_ID = "XAoS3zq3bZg";
 const EUROPEAN_REGIONS_ORG_UNIT_ID = "CPXbH8dBIz8";
@@ -78,7 +79,11 @@ export class RegionD2Repository implements RegionRepository {
                 id: id,
                 name: regionNameById.get(id) || orgUnit?.name || orgUnitGroup.shortName,
                 code: regionCodeById.get(id) || "Unknown Region Code",
-                countries: orgUnitGroup.organisationUnits.map(ou => ou.id),
+                countries: orgUnitGroup.organisationUnits.map(orgUnit => {
+                    const countryId =
+                        BOSNIA_AND_HERZEGOVINA_LEVEL_3 === orgUnit.id ? BOSNIA_AND_HERZEGOVINA_LEVEL_4 : orgUnit.id;
+                    return countryId;
+                }),
                 linkedOrgUnitId: orgUnit?.id,
                 isInRegionalPage: !!events.find(event => event.orgUnit === orgUnit?.id),
             };
