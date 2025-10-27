@@ -10,7 +10,7 @@ import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData"
 import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
-import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { policyExplorerDataSet_ID } from "../utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import _ from "lodash";
@@ -75,7 +75,8 @@ export const SORTED_COUNTRY_GROUPINGS = [
 ];
 
 export const KOSOVO = "NEPywTBN52g";
-const COUNTRIES_NOT_SHOWN: Id[] = [ORG_UNIT_IDS.EUROPEAN_UNION];
+const GREENLAND = "IZy3ESdFnp5";
+const COUNTRIES_NOT_SHOWN: Id[] = [GREENLAND];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
