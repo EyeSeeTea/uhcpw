@@ -170,7 +170,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
                     ...countries,
                     ...regions,
-                ]}&years=${yearsFilteredInChart}`
+                ]}&years=${yearsFilteredInChart}&showChartByDefault=true`
             );
         }
     }, [
