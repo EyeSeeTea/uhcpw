@@ -28,14 +28,16 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             indicator: searchParams.get("indicator") || undefined,
             years: searchParams.get("years")?.split(",") || undefined,
             countriesAndAreas: searchParams.get("countriesAndAreas")?.split(",") || undefined,
+            showChartByDefault: searchParams.get("showChartByDefault") === "true" || false,
         };
     }, [history.location.search]);
 
-    const { filters, onGet, showVisualization, globalMessage, pageContent, closeVisualization } = useIndicatorExplorer(
-        filterInParams.indicator,
-        filterInParams.years,
-        filterInParams.countriesAndAreas
-    );
+    const { filters, onGet, showVisualization, globalMessage, pageContent, closeVisualization } = useIndicatorExplorer({
+        initialIndicator: filterInParams.indicator,
+        initialYears: filterInParams.years,
+        initialCountriesAndAreas: filterInParams.countriesAndAreas,
+        initialShowChartByDefault: filterInParams.showChartByDefault,
+    });
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);

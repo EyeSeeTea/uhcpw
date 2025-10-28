@@ -27,11 +27,13 @@ import {
 } from "./helpers";
 import { useUpdateSearchParam } from "../../common/hooks/useUpdateSearchParam";
 
-export function useIndicatorExplorer(
-    initialIndicator?: string,
-    initialYears?: string[],
-    initialCountriesAndAreas?: string[]
-): IndicatorExplorerState {
+export function useIndicatorExplorer(params?: {
+    initialIndicator?: string;
+    initialYears?: string[];
+    initialCountriesAndAreas?: string[];
+    initialShowChartByDefault?: boolean;
+}): IndicatorExplorerState {
+    const { initialIndicator, initialYears, initialCountriesAndAreas, initialShowChartByDefault } = params || {};
     const { compositionRoot, countriesAndSubregions } = useAppContext();
     const {
         selected: selectedCountriesAndRegions,
@@ -66,6 +68,7 @@ export function useIndicatorExplorer(
     const [disabledYears, setDisabledYears] = useState<string[]>([]);
     const [hideBosniaAndHerzegovinaRegions, setHideBosniaAndHerzegovinaRegions] = useState(false);
     const [hasSyncedFilters, setHasSyncedFilters] = useState(false);
+    const [showChartByDefault, setShowChartByDefault] = useState(initialShowChartByDefault || false);
 
     const selectedCountriesAndSubregions: Id[] = useMemo(() => {
         const countryAndSubregionIds = countryAndRegionsOptions
@@ -409,7 +412,11 @@ export function useIndicatorExplorer(
         onChangeIndicatorFilter(initialIndicator || "");
         onCountriesAndRegionsChange(initialCountriesAndAreas || []);
         onChangeYearFilter(initialYears || []);
-        onGet();
+
+        if (showChartByDefault) {
+            setShowChartByDefault(false);
+            onGet();
+        }
 
         setHasSyncedFilters(true);
     }, [
@@ -423,6 +430,7 @@ export function useIndicatorExplorer(
         onChangeYearFilter,
         onCountriesAndRegionsChange,
         onGet,
+        showChartByDefault,
         yearFilters.length,
     ]);
 
