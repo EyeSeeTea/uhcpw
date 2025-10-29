@@ -9,8 +9,12 @@ export const chart_xKmSHeJ1GXq_Seed: VisualizationExtra = {
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     allowBreaksInSeries: true,
-    hasEURegion: true,
     isOrgUnitRegions: true,
+    hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
     hideBosniaAndHerzegovinaRegions: true,
     yearsFilterUpTo2YearsAgo: true,
 };

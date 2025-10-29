@@ -12,5 +12,9 @@ export const chart_nhaxK33nlhb_Seed: VisualizationExtra = {
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
     hasEURegion: true,
-    isOrgUnitRegions: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
+    isOrgUnitGroupRegions: true,
 };
