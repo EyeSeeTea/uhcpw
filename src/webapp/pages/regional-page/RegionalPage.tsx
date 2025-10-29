@@ -12,6 +12,7 @@ import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { colors } from "../app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel";
+import { GapsInCoverageSection } from "./GapsInCoverageSection";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -23,6 +24,7 @@ export const RegionalPage: React.FC = () => {
         regionMap,
         policyChecklist,
         regionNumbers,
+        gapsInCoverage,
         highlightedISO3Countries,
         isEUorEuropeanRegion,
         goTo,
@@ -79,6 +81,21 @@ export const RegionalPage: React.FC = () => {
                             expandedConfig={regionNumbers.expandedConfig}
                             handleAccordionChange={regionNumbers.handleAccordionChange}
                             handleTabChange={regionNumbers.handleTabChange}
+                            isSmallScreen={isSmallScreen}
+                        />
+                    </section>
+
+                    <section ref={refs.gapsInCoverage}>
+                        <SectionTitleDivider onlyTopMargin>
+                            <SectionTitle>{i18n.t("The story behind the numbers: gaps in coverage")}</SectionTitle>
+                        </SectionTitleDivider>
+
+                        <GapsInCoverageSection
+                            configs={gapsInCoverage.configs}
+                            tabValue={gapsInCoverage.tabValue}
+                            expandedConfig={gapsInCoverage.expandedConfig}
+                            handleAccordionChange={gapsInCoverage.handleAccordionChange}
+                            handleTabChange={gapsInCoverage.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
                     </section>
