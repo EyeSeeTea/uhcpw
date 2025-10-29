@@ -59,3 +59,10 @@ export const countryPalette = [
 ];
 
 export const EU27Color = "#185698";
+
+export const regionColors = {
+    WESTERN_BALKANS: "#83668E",
+    EUROPEAN_UNION: EU27Color,
+    EASTERN_EUROPE_AND_CENTRAL_ASIA: "#E587B3",
+    EUROPEAN_REGION: "#0089D6",
+} as const;

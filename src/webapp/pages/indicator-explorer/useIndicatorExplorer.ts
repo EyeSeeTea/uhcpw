@@ -11,7 +11,7 @@ import { IndicatorExplorerContent } from "../../../domain/entities/indicator-exp
 import { TreeOption } from "../../components/tree-selector/TreeSelector";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { Indicator } from "../../../domain/entities/indicator-explorer/Indicator";
-import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 import i18n from "../../../locales";
 import { Id } from "../../../domain/entities/Ref";
 import {
@@ -25,23 +25,35 @@ import {
     getUpdatedCountriesSelectionFilter,
     getYearOptionsInFilter,
 } from "./helpers";
+import { useUpdateSearchParam } from "../../common/hooks/useUpdateSearchParam";
 
-export function useIndicatorExplorer(): IndicatorExplorerState {
+export function useIndicatorExplorer(params?: {
+    initialIndicator?: string;
+    initialYears?: string[];
+    initialCountriesAndAreas?: string[];
+    initialShowChartByDefault?: boolean;
+}): IndicatorExplorerState {
+    const { initialIndicator, initialYears, initialCountriesAndAreas, initialShowChartByDefault } = params || {};
     const { compositionRoot, countriesAndSubregions } = useAppContext();
     const {
         selected: selectedCountriesAndRegions,
         onSelectedChange: onSelectedCountryAndRegionsChange,
         options: countryAndRegionsOptions,
         ...countryFilterOptions
-    } = useMultiCountryOptionsV2({ showRegions: true, showSubRegions: true });
+    } = useMultiCountryOptionsV2({
+        showRegions: true,
+        showSubRegions: true,
+        selectedCountries: initialCountriesAndAreas,
+    });
     const { sendEvent } = useAnalytics();
+    const { updateSearchParam, updateSearchParams } = useUpdateSearchParam();
 
     const [indicatorFilters, setIndicatorFilters] = useState<IndicatorOption[]>([]);
-    const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>();
+    const [selectedIndicatorFilter, setSelectedIndicatorFilter] = useState<string | undefined>(initialIndicator);
     const [pageContent, setPageContent] = useState<IndicatorExplorerContent | undefined>(undefined);
 
     const [yearFilters, setYearsFilters] = useState<TreeOption[]>([]);
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>();
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>(initialYears);
 
     const [indicators, setIndicators] = useState<Indicator[]>([]);
 
@@ -55,6 +67,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const [isYearSingleSelection, setIsYearSingleSelection] = useState(false);
     const [disabledYears, setDisabledYears] = useState<string[]>([]);
     const [hideBosniaAndHerzegovinaRegions, setHideBosniaAndHerzegovinaRegions] = useState(false);
+    const [hasSyncedFilters, setHasSyncedFilters] = useState(false);
+    const [showChartByDefault, setShowChartByDefault] = useState(initialShowChartByDefault || false);
 
     const selectedCountriesAndSubregions: Id[] = useMemo(() => {
         const countryAndSubregionIds = countryAndRegionsOptions
@@ -144,12 +158,11 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             const selectedYearsInFilter = getSelectedYearsInFilter(newIndicator);
             setSelectedYearFilter(selectedYearsInFilter);
 
-            // Reset countries filter depending on maxCountryFilter
-            if (
+            const countriesToBeReset =
                 selectedCountriesAndRegions &&
                 newIndicator?.maxCountryFilter &&
-                selectedCountriesAndRegions?.length > newIndicator?.maxCountryFilter
-            ) {
+                selectedCountriesAndRegions?.length > newIndicator?.maxCountryFilter;
+            if (countriesToBeReset) {
                 onSelectedCountryAndRegionsChange([]);
             }
 
@@ -162,21 +175,32 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
             setIsYearSingleSelection(!!newIndicator?.isYearSingleSelection);
             setHideBosniaAndHerzegovinaRegions(!!newIndicator?.hideBosniaAndHerzegovinaRegions);
             setDisabledYears([]);
+            updateSearchParams({
+                years: selectedYearsInFilter,
+                indicator: value,
+                countriesAndAreas: countriesToBeReset
+                    ? []
+                    : maybeUpdatedCountrySelection
+                    ? maybeUpdatedCountrySelection
+                    : selectedCountriesAndRegions,
+            });
         },
         [
+            updateSearchParams,
+            indicators,
+            selectedCountriesAndRegions,
             countriesAndSubregions,
             countryAndRegionsOptions,
-            onSelectedCountryAndRegionsChange,
-            selectedCountriesAndRegions,
-            selectedIndicatorFilter,
             showNonComparativeMessageIfRequired,
-            indicators,
+            selectedIndicatorFilter,
+            onSelectedCountryAndRegionsChange,
         ]
     );
 
     const onChangeYearFilter = useCallback(
         (value: string[] | undefined) => {
             setSelectedYearFilter(value);
+            updateSearchParam("years", value);
 
             setShowVisualization(false);
 
@@ -186,12 +210,8 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                 setDisabledYears(disabled);
             }
         },
-        [isYearSingleSelection, yearFilters]
+        [updateSearchParam, isYearSingleSelection, yearFilters]
     );
-
-    useEffect(() => {
-        setShowVisualization(false);
-    }, [selectedCountriesAndRegions]);
 
     useEffect(() => {
         if (!selectedIndicatorFilter) {
@@ -341,20 +361,24 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
                     )
                 );
             } else if (onlyEURegionCanBeSelected) {
+                const euIds: readonly string[] = [ORG_UNIT_GROUP_IDS.EUROPEAN_UNION, ORG_UNIT_IDS.EUROPEAN_UNION];
                 setDisabledCountriesAndRegions(
                     getCountriesAndRegionsToBeDisabled(
                         countryAndRegionsOptions,
                         newSelectedCountriesAndRegions,
                         disabledRegionIds
-                    ).filter(id => [ORG_UNIT_GROUP_IDS.EUROPEAN_UNION, ORG_UNIT_IDS.EUROPEAN_UNION].includes(id))
+                    ).filter(id => euIds.includes(id))
                 );
             } else {
                 setDisabledCountriesAndRegions(disabledRegionIds);
             }
 
             onSelectedCountryAndRegionsChange(newSelectedCountriesAndRegions);
+            updateSearchParam("countriesAndAreas", newSelectedCountriesAndRegions);
+            setShowVisualization(false);
         },
         [
+            updateSearchParam,
             countryAndRegionsOptions,
             isOnlyEu27Comparison,
             onSelectedCountryAndRegionsChange,
@@ -366,6 +390,49 @@ export function useIndicatorExplorer(): IndicatorExplorerState {
     const closeVisualization = useCallback(() => {
         setShowVisualization(false);
     }, []);
+
+    useEffect(() => {
+        if (hasSyncedFilters) return;
+
+        const hasParams = initialIndicator && initialCountriesAndAreas?.length && initialYears?.length;
+
+        if (!hasParams) return;
+
+        if (
+            indicatorFilters.length === 0 ||
+            yearFilters.length === 0 ||
+            countryAndRegionsOptions.length === 0 ||
+            !onCountriesAndRegionsChange ||
+            !onChangeYearFilter ||
+            !onChangeIndicatorFilter
+        ) {
+            return;
+        }
+
+        onChangeIndicatorFilter(initialIndicator || "");
+        onCountriesAndRegionsChange(initialCountriesAndAreas || []);
+        onChangeYearFilter(initialYears || []);
+
+        if (showChartByDefault) {
+            setShowChartByDefault(false);
+            onGet();
+        }
+
+        setHasSyncedFilters(true);
+    }, [
+        countryAndRegionsOptions.length,
+        hasSyncedFilters,
+        indicatorFilters.length,
+        initialCountriesAndAreas,
+        initialIndicator,
+        initialYears,
+        onChangeIndicatorFilter,
+        onChangeYearFilter,
+        onCountriesAndRegionsChange,
+        onGet,
+        showChartByDefault,
+        yearFilters.length,
+    ]);
 
     return {
         filters: {

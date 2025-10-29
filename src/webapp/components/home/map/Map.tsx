@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
+import { Fab, Tooltip } from "@material-ui/core";
+
 import { style } from "./style";
-import { WelcomePanel } from "../welcome-panel/WelcomePanel";
+import { HomePagePanel } from "../home-page-panel/HomePagePanel";
 import { CountryPanel } from "../country-panel/CountryPanel";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { Fab, Tooltip } from "@material-ui/core";
 import { Add as ZoomInIcon, Remove as ZoomOutIcon } from "@material-ui/icons";
 import insufficientPin from "../../../assets/map/pin-insufficient.svg";
 import insufficientHoverPin from "../../../assets/map/pin-insufficient-hover.svg";
@@ -24,7 +25,9 @@ import { MapState } from "./MapState";
 import i18n from "../../../../locales";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
-import { CountryStatus } from "../../../../domain/entities/Country";
+import { RegionMainMapPanelContent } from "../../../../domain/entities/region/RegionInfo";
+import { RegionMapPanel } from "../../region-map-panel/RegionMapPanel";
+import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
 
 mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
@@ -36,11 +39,23 @@ mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worke
 
 export type MapProps = {
     mapState: MapState;
-    welcomePanelContent: MainMapPanelContent;
+    homePagePanelContent?: MainMapPanelContent;
+    regionMainMapPanelContent?: RegionMainMapPanelContent;
     isMobile?: boolean;
+    panelMaxWidth?: number;
+    className?: string;
+    highlightedISO3Countries?: string[];
 };
 
-export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobile = false }) => {
+export const Map: React.FC<MapProps> = ({
+    mapState,
+    homePagePanelContent,
+    regionMainMapPanelContent,
+    isMobile = false,
+    panelMaxWidth,
+    className,
+    highlightedISO3Countries,
+}) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
@@ -72,20 +87,32 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobil
                     const marker = new mapboxgl.Marker(el)
                         .setLngLat(feature.geometry.coordinates as LngLatLike)
                         .addTo(mapRef.current);
-                    // const marker = new mapboxgl.Marker({ color: feature.properties.color })
-                    //     .setLngLat(feature.geometry.coordinates as LngLatLike)
-                    //     .addTo(mapRef.current);
 
                     marker.getElement().addEventListener("mouseenter", () => {
                         mapState.onSelectedCountryChange(feature.properties);
                     });
                 });
+
+                if (highlightedISO3Countries && highlightedISO3Countries.length > 0) {
+                    mapRef.current.addLayer({
+                        id: "Countries-selected",
+                        type: "fill",
+                        source: "esriCountries",
+                        "source-layer": "Countries",
+                        paint: {
+                            "fill-color": "#80C4EB",
+                            "fill-opacity": 0.5,
+                        },
+                        filter: ["in", "ISO_3_CODE", ...highlightedISO3Countries],
+                    });
+                }
             });
+
             mainContainerRef.current.addEventListener("mouseleave", () => {
                 mapState.onSelectedCountryChange(undefined);
             });
         }
-    }, [mapState, isMobile]);
+    }, [mapState, isMobile, highlightedISO3Countries]);
 
     const zoomIn = useCallback(() => {
         const newZoom = mapRef.current.getZoom() * 1.25;
@@ -98,13 +125,15 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobil
     }, []);
 
     return (
-        <Container ref={mainContainerRef}>
+        <Container ref={mainContainerRef} className={className}>
             <MapContent ref={mapContainerRef} />
-            <MapSidePanel>
+            <MapSidePanel maxWidth={panelMaxWidth}>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} />
+                ) : regionMainMapPanelContent ? (
+                    <RegionMapPanel mainPanelContent={regionMainMapPanelContent} />
                 ) : (
-                    <WelcomePanel welcomePanelContent={welcomePanelContent} isMobile={isMobile} />
+                    <HomePagePanel mainPanelContent={homePagePanelContent} isMobile={isMobile} />
                 )}
             </MapSidePanel>
             {!isMobile && (
@@ -125,7 +154,7 @@ export const Map: React.FC<MapProps> = ({ mapState, welcomePanelContent, isMobil
     );
 };
 
-const markerStatusMap: Record<CountryStatus, string> = {
+const markerStatusMap: Record<FinancialProtectionStatus, string> = {
     InsufficientData: "marker-insufficientdata",
     VeryWeak: "marker-very-weak",
     Weak: "marker-weak",
@@ -197,11 +226,11 @@ const MapContent = styled.div`
     }
 `;
 
-const MapSidePanel = styled.div`
+const MapSidePanel = styled.div<{ maxWidth?: number }>`
     position: absolute;
     top: 0;
     bottom: 0;
-    max-width: 500px;
+    max-width: ${props => props.maxWidth || 500}px;
     background: ${colors.accentPrimary};
     color: white;
     padding: 48px;

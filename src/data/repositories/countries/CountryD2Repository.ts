@@ -1,5 +1,5 @@
 import polylabel from "polylabel";
-import { Country, CountryStatus } from "../../../domain/entities/Country";
+import { Country } from "../../../domain/entities/Country";
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { CountryRepository } from "../../../domain/repositories/CountryRepository";
 import { Id } from "../../../domain/entities/Ref";
@@ -9,11 +9,12 @@ import { coordinatesFromString } from "./coordinatesFromString";
 import { mapToWhoCountryCode, mapToWhoCountryName } from "./mapToWhoCountryData";
 import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
-import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Region";
+import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { policyExplorerDataSet_ID } from "../utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import _ from "lodash";
-import i18n from "@eyeseetea/d2-ui-components/locales";
+import i18n from "../../../locales";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -74,12 +75,13 @@ export const SORTED_COUNTRY_GROUPINGS = [
 ];
 
 export const KOSOVO = "NEPywTBN52g";
-const COUNTRIES_NOT_SHOWN = [ORG_UNIT_IDS.EUROPEAN_UNION];
+const GREENLAND = "IZy3ESdFnp5";
+const COUNTRIES_NOT_SHOWN: Id[] = [GREENLAND];
 
 const countriesInCountryPageProgram = "ai5rB7mcqHH";
 const COUNTRY_TOP_MENU_SECTION_ID = "Uk2hcFxYZcI";
 
-const BOSNIA_AND_HERZEGOVINA_LEVEL_3 = "n8iofJiiX4T";
+export const BOSNIA_AND_HERZEGOVINA_LEVEL_3 = "n8iofJiiX4T";
 export const BOSNIA_AND_HERZEGOVINA_LEVEL_4 = "rqaiYTAnMC6"; // Brcko District
 export const FEDERACIJA_BOSNE_I_HERCEGOVINE = "j44olg405lZ";
 export const REPUBLICA_SERPSKA = "FvoXRc5cEEk";
@@ -253,7 +255,7 @@ export class CountryD2Repository implements CountryRepository {
             additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value ||
             "";
 
-        const status = countryStatusMap[rawStatus] ?? "Gaps";
+        const status: FinancialProtectionStatus = countryStatusMap[rawStatus] ?? "Gaps";
 
         const customGeometry = additionalCountryInfo?.dataValues.find(
             dv => dv.dataElement === countryInfoDataElements.geometry
@@ -268,6 +270,7 @@ export class CountryD2Repository implements CountryRepository {
             name: mapToWhoCountryName(orgUnit.id, orgUnit.shortName),
             longName: mapToWhoCountryName(orgUnit.id, orgUnit.name),
             code: mapToWhoCountryCode(orgUnit.code),
+            iso3Code: orgUnit.code,
             coordinates: customGeometry ? this.buildPoint(customGeometry) : undefined,
             status,
             parents: orgUnit.organisationUnitGroups
@@ -475,7 +478,7 @@ export class CountryD2Repository implements CountryRepository {
     }
 }
 
-const countryStatusMap: Record<string, CountryStatus> = {
+const countryStatusMap: Record<string, FinancialProtectionStatus> = {
     Green: "Strong",
     Yellow: "Emerging",
     Orange: "Gaps",

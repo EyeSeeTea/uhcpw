@@ -35,7 +35,7 @@ export const comparativeColumnChartOptions: (params: {
             const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
             const year = row[2] || "";
 
-            return `${orgUnit} ${year} `;
+            return `${orgUnit} ${year}`;
         })
         .orderBy(items => {
             if (orderByValueInSerie) {
@@ -59,20 +59,32 @@ export const comparativeColumnChartOptions: (params: {
         .value();
 
     const currentCountryCode =
-        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
-    const maxLengthInDx = Math.max(...keys.map(key => (groupByDx[key] || []).length));
-    const groupByDxWithMaxLength =
-        Object.values(groupByDx).find(groupOfDx => (groupOfDx || []).length === maxLengthInDx) || [];
+    const currentRegion = chartSource.regions.find(
+        region =>
+            region.id === chartSource.currentCountryOrRegion ||
+            region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+    );
+
+    const groupByCountryIdAndYear = _(chartSource.analyticsResponse.rows)
+        .groupBy(row => {
+            const orgUnitId = row[1]?.toString() || "";
+            const year = row[2] || "";
+
+            return `${orgUnitId}_${year}`;
+        })
+        .value();
+    const countriesAndYearInXaxis = Object.keys(groupByCountryIdAndYear);
 
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
         const filledDataSourceWithEmptyData =
-            dataSource.length < maxLengthInDx && !!orderByValueInSerie
-                ? groupByDxWithMaxLength.reduce((acc: Array<string[]>, row) => {
-                      const countryId = row[1]?.toString() || "";
-                      const year = row[2] || "";
+            dataSource.length < countriesAndYearInXaxis.length && !!orderByValueInSerie
+                ? countriesAndYearInXaxis.reduce((acc: Array<string[]>, countryAndYear) => {
+                      const [countryId = "", year = ""] = countryAndYear.split("_");
+
                       const currentDataSourceFound = dataSource.find(row => row[1] === countryId && row[2] === year);
                       return currentDataSourceFound
                           ? [...acc, currentDataSourceFound]
@@ -87,19 +99,25 @@ export const comparativeColumnChartOptions: (params: {
             color: seriesColors[dxId],
             data: filledDataSourceWithEmptyData.map(row => {
                 const orgUnitIdOrCategoryId = row[1]?.toString() || "";
-                const orgUnitCodeOrCategory = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
+                const region = chartSource.regions.find(
+                    region => region.id === orgUnitIdOrCategoryId || region.linkedOrgUnitId === orgUnitIdOrCategoryId
                 );
+                const code = region
+                    ? region.code
+                    : mapToWhoCountryCode(
+                          chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
+                      );
+
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
                 const color =
-                    currentCountryCode === orgUnitCodeOrCategory && currentSerieColor
+                    (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
                         : undefined;
 
                 return {
-                    name: hideYear ? orgUnitCodeOrCategory : `${orgUnitCodeOrCategory} ${year} `,
+                    name: hideYear ? code : `${code} ${year}`,
                     y: value,
                     categoryId: row[1] || "",
                     ...color,
@@ -146,7 +164,7 @@ export const comparativeColumnChartOptions: (params: {
                 formatter: function () {
                     const countryLabel = (this.value as string).split(" ")[0];
 
-                    return countryLabel === currentCountryCode
+                    return countryLabel === currentCountryCode || countryLabel === currentRegion?.code
                         ? `<strong style="color:#49abe2;">${this.value}</strong>`
                         : this.value;
                 },

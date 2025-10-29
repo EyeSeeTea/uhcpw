@@ -1,10 +1,11 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Button, IconButton, Typography } from "@material-ui/core";
+import { Button, IconButton, Typography, Fab } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import CloseIcon from "@material-ui/icons/Close";
+import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
 
 import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
@@ -15,6 +16,7 @@ import {
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
 import { FullScreenNotesDialog } from "../dialog/FullScreenNotesDialog";
+import { Id } from "../../../domain/entities/Ref";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 interface VisualizationPluginHeaderProps {
@@ -28,13 +30,15 @@ interface VisualizationPluginHeaderProps {
     onShowInfo?: () => void;
     onCloseInfo?: () => void;
     onClose?: () => void;
-    useHeaderForCountryPage?: boolean;
+    useHeaderForCountryOrRegionalPage?: boolean;
     showCountryTag?: boolean;
     countries: Country[];
-    currentCountry?: string;
+    currentCountryOrRegion?: Id;
     isScreenshot?: boolean;
     reducePaddingBottom?: boolean;
     showDialogInFullScreen?: boolean;
+    isRegionalPage?: boolean;
+    goToIndicatorExplorer: () => void;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -49,46 +53,66 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         onDownloadExcel,
         onDownloadImage,
         countries,
-        currentCountry,
-        useHeaderForCountryPage = false,
+        currentCountryOrRegion,
+        useHeaderForCountryOrRegionalPage = false,
         showCountryTag = false,
         isScreenshot = false,
         reducePaddingBottom = false,
         showDialogInFullScreen = false,
+        isRegionalPage = false,
         onClose,
+        goToIndicatorExplorer,
     }) => {
         const currentCountryName = useMemo(() => {
-            if (currentCountry) {
+            if (currentCountryOrRegion) {
                 const countryId =
-                    (currentCountry === FEDERACIJA_BOSNE_I_HERCEGOVINE || currentCountry === REPUBLICA_SERPSKA) &&
+                    (currentCountryOrRegion === FEDERACIJA_BOSNE_I_HERCEGOVINE ||
+                        currentCountryOrRegion === REPUBLICA_SERPSKA) &&
                     visualizationId === "OB4SCQfCzwz"
                         ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
-                        : currentCountry;
+                        : currentCountryOrRegion;
 
                 return countries.find(({ id }) => id === countryId)?.name;
             }
-        }, [countries, currentCountry, visualizationId]);
+        }, [countries, currentCountryOrRegion, visualizationId]);
 
         return (
             <DataHeader
                 className="visualization-plugin-header"
-                $isCountryPage={useHeaderForCountryPage}
+                $isCountryPage={useHeaderForCountryOrRegionalPage}
                 $reducePaddingBottom={reducePaddingBottom}
             >
                 <Row>
-                    {useHeaderForCountryPage ? (
-                        <>
-                            <Row>
-                                <StyledTitle isScreenshot={isScreenshot} variant="h6" color="textPrimary">
+                    {useHeaderForCountryOrRegionalPage ? (
+                        <Row $isRegionalPage={isRegionalPage}>
+                            <TitleRow>
+                                <StyledTitle
+                                    isScreenshot={isScreenshot}
+                                    variant="h6"
+                                    color="textPrimary"
+                                    style={{ marginLeft: 20, marginRight: isRegionalPage ? 5 : 0 }}
+                                    $isRegionalPage={isRegionalPage}
+                                >
                                     {chartFriendlyName}
                                 </StyledTitle>
-                            </Row>
+
+                                {isRegionalPage && (
+                                    <Fab
+                                        aria-label="Go to indicator explorer"
+                                        color="primary"
+                                        size="small"
+                                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                                    >
+                                        <ChevronRightSharpIcon onClick={goToIndicatorExplorer} />
+                                    </Fab>
+                                )}
+                            </TitleRow>
 
                             <RowWithGap $gap={6}>
-                                {showCountryTag && currentCountryName ? (
+                                {!isRegionalPage && showCountryTag && currentCountryName ? (
                                     <Tag className="category">{currentCountryName}</Tag>
                                 ) : (
-                                    categoryTag && <Tag className="category">{categoryTag}</Tag>
+                                    !isRegionalPage && categoryTag && <Tag className="category">{categoryTag}</Tag>
                                 )}
                                 <RowWithGap $gap={0}>
                                     {onShowInfo && (
@@ -115,7 +139,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     )}
                                 </RowWithGap>
                             </RowWithGap>
-                        </>
+                        </Row>
                     ) : (
                         <>
                             <Row>
@@ -190,13 +214,15 @@ const DataHeader = styled.div<{ $isCountryPage?: boolean; $reducePaddingBottom?:
     width: 100%;
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ $isRegionalPage?: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: flex-start;
-    gap: 1rem;
+    gap: ${props => (props.$isRegionalPage ? "24px" : "16px")};
+    align-items: ${props => (props.$isRegionalPage ? "center" : "flex-start")};
+    width: 100%;
 `;
 
 const Column = styled.div`
@@ -273,16 +299,22 @@ const Tag = styled.div`
     font-weight: regular;
 `;
 
-const Title = styled(Typography)<{ isScreenshot: boolean }>`
-    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
+const Title = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
+    width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
 `;
 
-const StyledTitle = styled(Typography)<{ isScreenshot: boolean }>`
-    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
+const TitleRow = styled(Row)`
+    gap: 0px;
+    align-items: center;
+    justify-content: flex-start;
+`;
+
+const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
-    margin-left: 20px;
-    width: 100%;
+    width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-left: 15px;

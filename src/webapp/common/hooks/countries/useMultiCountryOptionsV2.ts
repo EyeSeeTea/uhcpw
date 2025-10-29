@@ -8,7 +8,7 @@ import {
     SORTED_COUNTRY_GROUPINGS,
 } from "../../../../data/repositories/countries/CountryD2Repository";
 import { ALL_NODE_ID } from "../../../components/tree-selector/useTreeSelector";
-import { SORTED_REGIONS } from "../../../../domain/entities/Region";
+import { SORTED_REGIONS } from "../../../../domain/entities/region/Region";
 
 const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 

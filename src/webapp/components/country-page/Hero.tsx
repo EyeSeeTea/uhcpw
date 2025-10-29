@@ -76,9 +76,9 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         visualizationName={CHART_1_SCATTER_VISUALIZATION_NAME}
                         years={[LatestAvailable.id]}
                         countries={countriesAndSubregions.map(({ id }) => id)}
-                        currentCountry={countryIdSelected}
+                        currentCountryOrRegion={countryIdSelected}
                         withoutBackground
-                        useHeaderForCountryPage
+                        useHeaderForCountryOrRegionalPage
                         onDownloadImage={handleOpenScreenshot}
                         paddingEnd={false}
                         analyticsPageTitle="Country page"
@@ -101,9 +101,9 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                         visualizationName={CHART_1_SCATTER_VISUALIZATION_NAME}
                         years={[LatestAvailable.id]}
                         countries={countriesAndSubregions.map(({ id }) => id)}
-                        currentCountry={countryIdSelected}
+                        currentCountryOrRegion={countryIdSelected}
                         withoutBackground
-                        useHeaderForCountryPage
+                        useHeaderForCountryOrRegionalPage
                         isScreenshot={true}
                         isSquareChart={true}
                         analyticsPageTitle="Country page"

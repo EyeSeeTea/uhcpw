@@ -8,7 +8,7 @@ import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../../util
 export const linearByCountryChart: ChartCustomization = {
     title: { text: "" },
     legend: { ...baseLegend },
-    countrySerie: createCountrySerie,
+    countryOrRegionSerie: createCountrySerie,
     xAxis: {
         title: { text: "" },
     },

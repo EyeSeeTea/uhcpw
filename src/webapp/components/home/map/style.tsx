@@ -3,6 +3,9 @@ import { colors } from "../../../pages/app/themes/dhis2.theme";
 const mapTilesBaseUrl =
     "https://tiles.arcgis.com/tiles/5T5nSi527N4F7luB/arcgis/rest/services/WHO_Polygon_Basemap_with_labels_VTP/VectorTileServer";
 
+const mapCountryTilesBaseUrl =
+    "https://tiles.arcgis.com/tiles/5T5nSi527N4F7luB/arcgis/rest/services/Countries/VectorTileServer";
+
 export const style: mapboxgl.Style = {
     version: 8,
     sprite: `${mapTilesBaseUrl}/resources/sprites/sprite`,
@@ -15,6 +18,13 @@ export const style: mapboxgl.Style = {
             maxzoom: 22,
             tiles: [`${mapTilesBaseUrl}/tile/{z}/{y}/{x}?blankTile=false`],
         },
+        esriCountries: {
+            type: "vector",
+            bounds: [-180, -55.9154, 180, 83.6334],
+            minzoom: 0,
+            maxzoom: 22,
+            tiles: [`${mapCountryTilesBaseUrl}/tile/{z}/{y}/{x}?blankTile=false`],
+        },
     },
     layers: [
         {
@@ -26,12 +36,21 @@ export const style: mapboxgl.Style = {
             paint: { "fill-color": colors.accentPrimary },
         },
         {
+            id: "Countries-fill",
+            type: "fill",
+            source: "esriCountries",
+            "source-layer": "Countries",
+            paint: {
+                "fill-color": "#FFFFFF",
+            },
+        },
+        {
             id: "Land (ADM0)/1",
             type: "fill",
             source: "esri",
             "source-layer": "Land (ADM0)",
             layout: {},
-            paint: { "fill-color": "#FFFFFF" },
+            paint: { "fill-color": "transparent" },
         },
         {
             id: "Boundaries/GLOBAL_ADM_L_Merge_20201201/2",

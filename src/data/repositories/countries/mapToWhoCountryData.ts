@@ -1,4 +1,5 @@
 import { Id } from "../../../domain/entities/Ref";
+import { ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 
 export function mapToWhoCountryCode(countryCode: string): string {
     return whoCountrycodes[countryCode] || countryCode;
@@ -73,7 +74,7 @@ export const whoCountryNames: Record<Id, string> = {
     NEPywTBN52g: "Kosovo*",
     j44olg405lZ: "BIH (the Federation of Bosnia and Herzegovina)",
     FvoXRc5cEEk: "BIH (the Republika Srpska)",
-    IZy3ESdFnp5: "EU",
+    [ORG_UNIT_IDS.EUROPEAN_UNION]: "EU",
     rqaiYTAnMC6: "Bosnia and Herzegovina",
 };
 

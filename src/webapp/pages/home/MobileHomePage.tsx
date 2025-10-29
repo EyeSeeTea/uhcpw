@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Typography } from "@material-ui/core";
 
 import { Map } from "../../components/home/map/Map";
-import { useMap } from "../../components/home/map/useMap";
+import { useHomePageMap } from "./useHomePageMap";
 import { useHomeResources } from "./useHomeResources";
 import { NewsletterButton } from "../../components/home/buttons/NewsletterButton";
 import { useHomePageContent } from "./useHomePageContent";
@@ -12,23 +12,20 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
-import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ResourcesCarousel } from "../../components/resources-carousel/ResourcesCarousel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const MobileHomePage: React.FC = React.memo(() => {
-    const mapState = useMap();
+    const mapState = useHomePageMap();
     const { resources, news } = useHomeResources();
     const homePageContent = useHomePageContent();
-    const { redirectWithPageView } = useAnalytics();
-    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
 
     return (
         <React.Fragment>
             <NewsletterButton content={homePageContent.newsletter} />
 
             <MapSection>
-                <Map mapState={mapState} welcomePanelContent={homePageContent.mainMapPanel} isMobile />
+                <Map mapState={mapState} homePagePanelContent={homePageContent.mainMapPanel} isMobile />
             </MapSection>
 
             <section>
@@ -94,25 +91,6 @@ export const MobileHomePage: React.FC = React.memo(() => {
                             />
 
                             <StyledTitleTypography>{i18n.t("Countries & areas")}</StyledTitleTypography>
-                        </Box>
-                    </BoxLink>
-
-                    <BoxLink
-                        target="_blank"
-                        href={homePageContent.analysis.regional.buttonLink || ""}
-                        rel="noreferrer"
-                        onClick={regionalReportPageView}
-                    >
-                        <Box color={colors.green}>
-                            <BubbleImg
-                                src={bubblePatternWhite}
-                                alt="Bubble pattern"
-                                aria-hidden="true"
-                                decoding="async"
-                                loading="eager"
-                            />
-
-                            <StyledTitleTypography>{i18n.t("Regional report")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 

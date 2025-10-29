@@ -38,7 +38,6 @@ import { GetIndicatorExplorerPageContentUseCase } from "./domain/usecases/indica
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
 import { HomePageContentD2Repository } from "./data/repositories/HomePageContentD2Repository";
-import { GetRegionalReportLinkUseCase } from "./domain/usecases/GetRegionalReportLinkUseCase";
 import { GeneralContentD2Repository } from "./data/repositories/GeneralContentD2Repository";
 import { GetGeneralContentUseCase } from "./domain/usecases/GetGeneralContentUseCase";
 import { GoogleAnalyticsRepository } from "./data/repositories/GoogleAnalyticsRepository";
@@ -47,8 +46,14 @@ import { SendEventUseCase } from "./domain/usecases/SendEventUseCase";
 import { DataStoreClient } from "./data/DataStoreClient";
 import { GetIndicatorsUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorsUseCase";
 import { IndicatorSeedsRepository } from "./data/repositories/indicator-explorer/IndicatorSeedsRepository";
-import { GetRegionsUseCase } from "./domain/usecases/GetRegionsUseCase";
 import { RegionD2Repository } from "./data/repositories/regions/RegionD2Repository";
+import { GetRegionsUseCase } from "./domain/usecases/region/GetRegionsUseCase";
+import { GetRegionInfoUseCase } from "./domain/usecases/region/GetRegionInfoUseCase";
+import { RegionInfoD2Repository } from "./data/repositories/regions/RegionInfoD2Repository";
+import { GetChecklistPolicyMakersUseCase } from "./domain/usecases/region/GetChecklistPolicyMakersUseCase";
+import { ChecklistPolicyMakersD2Repository } from "./data/repositories/regions/ChecklistPolicyMakersD2Repository";
+import { GetCountryExperiencesUseCase } from "./domain/usecases/region/GetCountryExperiencesUseCase";
+import { CountryExperienceD2Repository } from "./data/repositories/regions/CountryExperienceD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -74,6 +79,9 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         googleAnalytics: new GoogleAnalyticsRepository(),
         indicator: new IndicatorSeedsRepository(),
         region: new RegionD2Repository(api),
+        regionInfo: new RegionInfoD2Repository(api),
+        checklistPolicyMakers: new ChecklistPolicyMakersD2Repository(api),
+        countryExperience: new CountryExperienceD2Repository(api),
     };
 }
 
@@ -96,7 +104,12 @@ export function getCompositionRoot(
         },
         countries: {
             get: new GetCountriesUseCase(repositories.country),
-            getRegions: new GetRegionsUseCase(repositories.region),
+        },
+        regions: {
+            get: new GetRegionsUseCase(repositories.region),
+            getInfo: new GetRegionInfoUseCase(repositories.regionInfo),
+            getChecklistPolicyMakers: new GetChecklistPolicyMakersUseCase(repositories.checklistPolicyMakers),
+            getCountryExperiences: new GetCountryExperiencesUseCase(repositories.countryExperience),
         },
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
@@ -127,7 +140,6 @@ export function getCompositionRoot(
         },
         home: {
             getPageContent: new GetHomePageContentUseCase(repositories.homePage),
-            getRegionalReportLink: new GetRegionalReportLinkUseCase(repositories.homePage),
         },
         countryPage: {
             getSliderInfo: new GetSliderInfoUseCase(repositories.countryPageInfo),

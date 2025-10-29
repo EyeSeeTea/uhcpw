@@ -17,7 +17,7 @@ const seriesIds: Record<SeriesKey, string> = {
 
 const seriesNames: Record<typeof seriesIds[keyof typeof seriesIds], string> = {
     [seriesIds.poorest]: "Poorest",
-    [seriesIds.average]: "Total",
+    [seriesIds.average]: "Average",
     [seriesIds.richest]: "Richest",
 };
 
@@ -30,8 +30,16 @@ const seriesColors: Record<typeof seriesIds[keyof typeof seriesIds], string> = {
 export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
     chartSource: ChartSourceMultiple
 ) => Highcharts.Options = chartSource => {
-    const [firstChartAnalyticsResponse, secondChartAnalyticsResponse] = chartSource.analyticsResponse;
+    const currentCountryCode =
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
+    const currentRegion = chartSource.regions.find(
+        region =>
+            region.id === chartSource.currentCountryOrRegion ||
+            region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+    );
+
+    const [firstChartAnalyticsResponse, secondChartAnalyticsResponse] = chartSource.analyticsResponse;
     const latestAvailableYearByCountryId = getLatestAvailableYearByCountryIdFromTwoCharts(
         firstChartAnalyticsResponse?.rows || [],
         secondChartAnalyticsResponse?.rows || [],
@@ -50,16 +58,19 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         seriesIds,
     });
 
-    const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(countryId => {
-        const countryCodeFoundInFirst = mapToWhoCountryCode(
-            firstChartAnalyticsResponse?.metaData.items[countryId]?.code || ""
+    const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(orgUnitIdOrRegionId => {
+        const region = chartSource.regions.find(
+            region => region.id === orgUnitIdOrRegionId || region.linkedOrgUnitId === orgUnitIdOrRegionId
         );
-        const countryCodeFoundInSecond = mapToWhoCountryCode(
-            secondChartAnalyticsResponse?.metaData.items[countryId]?.code || ""
-        );
-        return `${countryCodeFoundInFirst || countryCodeFoundInSecond} ${
-            latestAvailableYearByCountryIdOrdered[countryId]
-        }`;
+        const codeFoundInFirst = region
+            ? region.code
+            : mapToWhoCountryCode(firstChartAnalyticsResponse?.metaData.items[orgUnitIdOrRegionId]?.code || "");
+
+        const codeFoundInSecond = region
+            ? region.code
+            : mapToWhoCountryCode(secondChartAnalyticsResponse?.metaData.items[orgUnitIdOrRegionId]?.code || "");
+
+        return `${codeFoundInFirst || codeFoundInSecond} ${latestAvailableYearByCountryIdOrdered[orgUnitIdOrRegionId]}`;
     });
 
     return createDotsWithMaxMinVerticalLineChart({
@@ -71,5 +82,6 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         yAxisTitle: "People 16 years and over (%)",
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: latestAvailableYearByCountryIdOrdered,
+        currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
     });
 };

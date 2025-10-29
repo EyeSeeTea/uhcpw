@@ -4,19 +4,25 @@ import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../u
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 
 const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["Poorest", "Total", "Richest"];
+const PARAMETER_ORDER = ["Poorest", "Average", "Richest"];
 
 export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
     friendlyName:
-        "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, total, richest quintile)",
+        "Unmet need for dental care due to cost, distance and waiting time (poorest quintile, average, richest quintile)",
     countryPageName: "unmet need for dental care due to cost, distance and waiting time by income quintile",
+    regionalPageName:
+        "Unmet need for dental care due to cost, distance and waiting time on average and in the poorest and richest income quintiles, latest available year",
     subcategoryName: sortedSubcategoryNames.comparative,
     isComparative: true,
     allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
     hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>

@@ -21,7 +21,7 @@ import { chart_q5ldoFcgkSn_Options } from "./chart_q5ldoFcgkSn_Options";
 import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
 import { chart_MfLZYD6QCPy_Options } from "./chart_MfLZYD6QCPy_Options";
 import { Id } from "../../../../domain/entities/Ref";
-import { Region } from "../../../../domain/entities/Region";
+import { Region } from "../../../../domain/entities/region/Region";
 import { chart_CdqVV1Ib0XS_Options } from "./chart_CdqVV1Ib0XS_Options";
 
 export interface ChartSource {
@@ -29,10 +29,12 @@ export interface ChartSource {
     visualization: Visualization;
     countries: Country[];
     regions: Region[];
-    currentCountry?: Id;
-    currentRegion?: Id;
+    currentCountryOrRegion?: Id;
     currentYear?: string;
     isLatestCOVID19?: boolean;
+    isLatestYearAvailable?: boolean;
+    yearToFilterBy?: string;
+    isRegionalPage?: boolean;
 }
 
 export interface ChartSourceMultiple {
@@ -40,10 +42,12 @@ export interface ChartSourceMultiple {
     visualization: Visualization[];
     countries: Country[];
     regions: Region[];
-    currentCountry?: Id;
-    currentRegion?: Id;
+    currentCountryOrRegion?: Id;
     currentYear?: string;
     isLatestCOVID19?: boolean;
+    isLatestYearAvailable?: boolean;
+    yearToFilterBy?: string;
+    isRegionalPage?: boolean;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
