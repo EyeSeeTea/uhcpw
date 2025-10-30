@@ -15,12 +15,29 @@ import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import mapBackground from "../../assets/map-background.jpg";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { useHistory } from "react-router-dom";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
     const snackbar = useSnackbar();
+    const history = useHistory();
 
-    const { filters, onGet, showVisualization, globalMessage, pageContent, closeVisualization } =
-        useIndicatorExplorer();
+    const filterInParams = useMemo(() => {
+        const searchParams = new URLSearchParams(history.location.search);
+
+        return {
+            indicator: searchParams.get("indicator") || undefined,
+            years: searchParams.get("years")?.split(",") || undefined,
+            countriesAndAreas: searchParams.get("countriesAndAreas")?.split(",") || undefined,
+            showChartByDefault: searchParams.get("showChartByDefault") === "true" || false,
+        };
+    }, [history.location.search]);
+
+    const { filters, onGet, showVisualization, globalMessage, pageContent, closeVisualization } = useIndicatorExplorer({
+        initialIndicator: filterInParams.indicator,
+        initialYears: filterInParams.years,
+        initialCountriesAndAreas: filterInParams.countriesAndAreas,
+        initialShowChartByDefault: filterInParams.showChartByDefault,
+    });
     const { sendPageView } = useAnalytics();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
@@ -83,7 +100,11 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                 <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
             </TitleContainer>
 
-            <MainSection>
+            <MainSection
+                key={`${filters.indicators.selected}-${filters.countryAndRegions.selected?.join(
+                    ","
+                )}-${filters.year.selected?.join(",")}`}
+            >
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
 
                 {showVisualization && filters.indicators.selected ? (

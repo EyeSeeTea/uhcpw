@@ -1,5 +1,5 @@
 import { FutureData } from "../../domain/entities/Future";
-import { HomePageContent, RegionalReportLink } from "../../domain/entities/HomePageContent";
+import { HomePageContent } from "../../domain/entities/HomePageContent";
 import { HomePageContentRepository } from "../../domain/repositories/HomePageContentRepository";
 import { D2Api } from "../../types/d2-api";
 import { DataValue, getMainPagesContent } from "./common/getMainPagesContent";
@@ -9,12 +9,6 @@ export class HomePageContentD2Repository implements HomePageContentRepository {
 
     get(): FutureData<HomePageContent> {
         return getMainPagesContent(this.api).map(dataValues => this.buildHomePageContent(dataValues));
-    }
-
-    getRegionalReportLink(): FutureData<RegionalReportLink> {
-        return getMainPagesContent(this.api).map(
-            dataValues => dataValues.find(dv => dv.dataElement === "GsiYRlaUFWH")?.value || ""
-        );
     }
 
     buildHomePageContent(dataValues: DataValue[]): HomePageContent {

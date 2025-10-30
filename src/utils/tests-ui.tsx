@@ -16,7 +16,7 @@ import muiThemeLegacy from "../webapp/pages/app/themes/dhis2-legacy.theme";
 import { Country } from "../domain/entities/Country";
 import { ResourceTheme } from "../domain/entities/resources/ResourceTheme";
 import { GeneralContent } from "../domain/entities/GeneralContent";
-import { Region } from "../domain/entities/Region";
+import { Region } from "../domain/entities/region/Region";
 
 export function givenAnUser(): User {
     return {
@@ -36,6 +36,7 @@ export function givenACountries(): Country[] {
             currencyCode: "€",
             longName: "Kingdom of Spain",
             code: "ESP",
+            iso3Code: "ESP",
             status: "Weak",
             coordinates: [2982, 12] as [number, number],
             parents: [{ id: "EUR", name: "Europe" }],
@@ -71,6 +72,7 @@ export function givenACountries(): Country[] {
             name: "Bosnia and Herzegovina",
             longName: "Bosnia and Herzegovina",
             code: "BIH",
+            iso3Code: "BIH",
             currencyCode: "BAM",
             showCountryFlag: false,
             coordinates: [18.000095, 44.001364],
@@ -157,6 +159,7 @@ export function givenACountries(): Country[] {
                     name: "BIH (the Federation of Bosnia and Herzegovina)",
                     longName: "BIH (the Federation of Bosnia and Herzegovina)",
                     code: "BIH-F",
+                    iso3Code: "BIH",
                     currencyCode: "BAM",
                     showCountryFlag: false,
                     coordinates: [18.6315, 45.0505],
@@ -225,6 +228,7 @@ export function givenACountries(): Country[] {
                     name: "BIH (the Republika Srpska)",
                     longName: "BIH (the Republika Srpska)",
                     code: "BIH-R",
+                    iso3Code: "BIH",
                     currencyCode: "BAM",
                     showCountryFlag: false,
                     coordinates: [18.341, 42.993],
@@ -301,6 +305,7 @@ export function givenACountriesAndSubregions(): Country[] {
             currencyCode: "€",
             longName: "Kingdom of Spain",
             code: "ESP",
+            iso3Code: "ESP",
             status: "Weak",
             showCountryFlag: true,
             coordinates: [2982, 12] as [number, number],
@@ -336,6 +341,7 @@ export function givenACountriesAndSubregions(): Country[] {
             name: "Bosnia and Herzegovina",
             longName: "Bosnia and Herzegovina",
             code: "BIH",
+            iso3Code: "BIH",
             currencyCode: "BAM",
             showCountryFlag: false,
             coordinates: [18.000095, 44.001364],
@@ -422,6 +428,7 @@ export function givenACountriesAndSubregions(): Country[] {
                     name: "BIH (the Federation of Bosnia and Herzegovina)",
                     longName: "BIH (the Federation of Bosnia and Herzegovina)",
                     code: "BIH-F",
+                    iso3Code: "BIH",
                     showCountryFlag: false,
                     currencyCode: "BAM",
                     coordinates: [18.6315, 45.0505],
@@ -490,6 +497,7 @@ export function givenACountriesAndSubregions(): Country[] {
                     name: "BIH (the Republika Srpska)",
                     longName: "BIH (the Republika Srpska)",
                     code: "BIH-R",
+                    iso3Code: "BIH",
                     showCountryFlag: false,
                     currencyCode: "BAM",
                     coordinates: [18.341, 42.993],
@@ -560,6 +568,7 @@ export function givenACountriesAndSubregions(): Country[] {
             name: "BIH (the Republika Srpska)",
             longName: "BIH (the Republika Srpska)",
             code: "BIH-R",
+            iso3Code: "BIH",
             currencyCode: "BAM",
             showCountryFlag: false,
             coordinates: [18.341, 42.993],
@@ -628,6 +637,7 @@ export function givenACountriesAndSubregions(): Country[] {
             name: "BIH (the Federation of Bosnia and Herzegovina)",
             longName: "BIH (the Federation of Bosnia and Herzegovina)",
             code: "BIH-F",
+            iso3Code: "BIH",
             currencyCode: "BAM",
             showCountryFlag: false,
             coordinates: [18.6315, 45.0505],

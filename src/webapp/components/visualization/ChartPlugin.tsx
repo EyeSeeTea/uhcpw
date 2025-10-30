@@ -11,6 +11,7 @@ import { ChartCustomization } from "./customization/types";
 import { filterEmptyYearsInSeries, getCategories, getSeriesChart } from "./utils";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
+import { Region } from "../../../domain/entities/region/Region";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -19,6 +20,7 @@ export interface ChartPluginProps {
     customizedOptions?: ChartCustomization;
     externalchartOptions?: Highcharts.Options;
     countries: Country[];
+    regions: Region[];
     withoutBackground?: boolean;
     isSquareChart?: boolean;
     isMobile?: boolean;
@@ -35,6 +37,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         legendSets,
         customizedOptions,
         countries,
+        regions,
         externalchartOptions,
         withoutBackground = false,
         isSquareChart = false,
@@ -153,8 +156,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         : originalChartOptions.yAxis,
 
                 series: orderedByValueInSerie?.map(serie => {
-                    const countrySerieCustomization = customizedOptions?.countrySerie
-                        ? customizedOptions?.countrySerie(countries, { id: serie.id || "", name: serie.name || "" })
+                    const countrySerieCustomization = customizedOptions?.countryOrRegionSerie
+                        ? customizedOptions?.countryOrRegionSerie(countries, regions, {
+                              id: serie.id || "",
+                              name: serie.name || "",
+                          })
                         : undefined;
 
                     const serieCustomization = customizedOptions?.series?.find(
@@ -182,7 +188,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
             // NOTICE: This filter is because there is a bug when calling createVisualization in a line country chart with at least two countries and the first one is empty.
             const newOptionsFilteredEmptyYears =
-                customizedOptions?.countrySerie ||
+                customizedOptions?.countryOrRegionSerie ||
                 (visualization?.hideEmptyRowItems === "ALL" && customizedOptions?.fixHideEmptyCategories)
                     ? filterEmptyYearsInSeries(newOptions as Highcharts.Options)
                     : newOptions;
@@ -193,7 +199,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                           newOptionsFilteredEmptyYears as Highcharts.Options,
                           visualization.breakInSeries,
                           countries,
-                          !!customizedOptions?.countrySerie
+                          !!customizedOptions?.countryOrRegionSerie
                       )
                     : newOptionsFilteredEmptyYears;
 
@@ -221,7 +227,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             });
             analyticsConfig.visualization.destroy();
             canvasRef.current?.remove();
-        }, [analytics, countries, customizedOptions, legendSets, visualizations]);
+        }, [analytics, countries, customizedOptions, legendSets, regions, visualizations]);
 
         const renderFromExternalOptions = useCallback(() => {
             setChartOptions({

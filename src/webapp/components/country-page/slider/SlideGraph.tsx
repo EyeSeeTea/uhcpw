@@ -1,4 +1,6 @@
 import { Typography } from "@material-ui/core";
+import ReactMarkdown, { Components } from "react-markdown";
+
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
@@ -6,27 +8,45 @@ import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
+import { Id } from "../../../../domain/entities/Ref";
+import { colors } from "../../../pages/app/themes/dhis2.theme";
 
 type VisualizationProps = {
     visualizationId: string;
     visualizationName?: string;
+    text?: string;
     years: string[];
-    countries: string[];
-    currentCountry?: string;
+    countries: Id[];
+    regions: Id[];
+    currentCountryOrRegion?: Id;
+    filterByLatestAvailableYearInRegion?: boolean;
+    visualizationIdInIndicatorExplorer?: Id;
 };
 
 type SlideGraphType = {
-    title: string;
+    title?: string;
     countryId: string;
-    graphOne: VisualizationProps;
-    graphTwo?: VisualizationProps;
-    isMobile?: boolean;
+    graphs: VisualizationProps[];
+    isRegionalPage?: boolean;
 };
 
-export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOne, graphTwo, isMobile = false }) => {
+export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs, isRegionalPage = false }) => {
     const isSmallScreen = useIsSmallScreen();
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
+
+    const markdownComponents: Components = React.useMemo(
+        () => ({
+            p: ({ children }) => (
+                <Text variant="body1" gutterBottom>
+                    {children}
+                </Text>
+            ),
+            li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
+            ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
+        }),
+        []
+    );
 
     const handleOpenScreenshot = React.useCallback((graph: VisualizationProps) => {
         setCurrentGraphScreenshot(graph);
@@ -47,43 +67,33 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
 
     return (
         <Container>
-            {!isMobile && (
-                <StyledTypography variant="h3" style={{ marginBottom: "50px", fontWeight: 500, fontSize: "2rem" }}>
-                    {i18n.t(title)}
-                </StyledTypography>
-            )}
-            <VisualizationContainer>
-                <VisualizationPlugin
-                    visualizationId={(graphOne as VisualizationProps).visualizationId}
-                    visualizationName={(graphOne as VisualizationProps).visualizationName}
-                    years={(graphOne as VisualizationProps).years}
-                    countries={(graphOne as VisualizationProps).countries}
-                    withoutBackground
-                    useHeaderForCountryPage
-                    currentCountry={(graphOne as VisualizationProps).currentCountry || countryId}
-                    onDownloadImage={() => handleOpenScreenshot(graphOne)}
-                    noDataMessage={pageContent?.noDataMessage}
-                    analyticsPageTitle="Country page"
-                    showDialogInFullScreen={isSmallScreen}
-                />
-            </VisualizationContainer>
-            {graphTwo && (
-                <VisualizationContainer $hasMargin={true}>
-                    <VisualizationPlugin
-                        visualizationId={(graphTwo as VisualizationProps).visualizationId}
-                        visualizationName={(graphTwo as VisualizationProps).visualizationName}
-                        years={(graphTwo as VisualizationProps).years}
-                        countries={(graphTwo as VisualizationProps).countries}
-                        withoutBackground
-                        useHeaderForCountryPage
-                        currentCountry={(graphTwo as VisualizationProps).currentCountry || countryId}
-                        onDownloadImage={() => handleOpenScreenshot(graphTwo)}
-                        noDataMessage={pageContent?.noDataMessage}
-                        analyticsPageTitle="Country page"
-                        showDialogInFullScreen={isSmallScreen}
-                    />
-                </VisualizationContainer>
-            )}
+            {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
+
+            {graphs.length > 0
+                ? graphs.map((graph, graphIndex) => (
+                      <VisualizationContainer key={graph.visualizationId} $hasMargin={graphIndex !== 0}>
+                          {graph.text && <ReactMarkdown components={markdownComponents}>{graph.text}</ReactMarkdown>}
+
+                          <VisualizationPlugin
+                              visualizationId={graph.visualizationId}
+                              visualizationName={graph.visualizationName}
+                              years={graph.years}
+                              countries={graph.countries}
+                              regions={graph.regions}
+                              withoutBackground
+                              useHeaderForCountryOrRegionalPage
+                              currentCountryOrRegion={graph.currentCountryOrRegion || countryId}
+                              onDownloadImage={() => handleOpenScreenshot(graph)}
+                              noDataMessage={pageContent?.noDataMessage}
+                              analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
+                              showDialogInFullScreen={isSmallScreen}
+                              isRegionalPage={isRegionalPage}
+                              filterByLatestAvailableYearInRegion={graph.filterByLatestAvailableYearInRegion}
+                              visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
+                          />
+                      </VisualizationContainer>
+                  ))
+                : null}
 
             {currentGraphScreenshot && (
                 <ScreenshotModal
@@ -91,7 +101,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                     onClose={handleCloseScreenshot}
                     title={currentGraphScreenshot.visualizationName || ""}
                     backgroundColor={"#f1f9fc"}
-                    analyticsPageTitle="Country page"
+                    analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
                     analyticsContent={analyticsContent}
                     forceRotation={isSmallScreen}
                 >
@@ -100,11 +110,14 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphOn
                         visualizationName={currentGraphScreenshot.visualizationName}
                         years={currentGraphScreenshot.years}
                         countries={currentGraphScreenshot.countries}
+                        regions={currentGraphScreenshot.regions}
                         withoutBackground
-                        useHeaderForCountryPage
-                        currentCountry={countryId}
+                        useHeaderForCountryOrRegionalPage
+                        currentCountryOrRegion={currentGraphScreenshot.currentCountryOrRegion || countryId}
                         isScreenshot={true}
-                        analyticsPageTitle="Country page"
+                        analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
+                        filterByLatestAvailableYearInRegion={currentGraphScreenshot.filterByLatestAvailableYearInRegion}
+                        visualizationIdInIndicatorExplorer={currentGraphScreenshot.visualizationIdInIndicatorExplorer}
                     />
                 </ScreenshotModal>
             )}
@@ -138,4 +151,26 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean }>`
 
 const StyledTypography = styled(Typography)`
     color: black;
+`;
+
+const StyledGraphTitle = styled(StyledTypography)`
+    margin-bottom: 50px;
+    font-weight: 500;
+    font-size: 2rem;
+`;
+
+const Text = styled(Typography)`
+    font-family: Lato;
+    margin-inline-start: 36px;
+    margin-block: 6px;
+    font-size: 1rem;
+    color: ${colors.black};
+`;
+
+const StyledLi = styled.li`
+    line-height: 1.43;
+`;
+
+const StyledUl = styled.ul`
+    padding-inline-start: 14px;
 `;

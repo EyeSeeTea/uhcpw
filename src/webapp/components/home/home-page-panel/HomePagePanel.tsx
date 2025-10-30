@@ -12,70 +12,72 @@ import ReactMarkdown from "react-markdown";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
-type WelcomePanelProps = {
-    welcomePanelContent: MainMapPanelContent;
+type MainPanelProps = {
+    mainPanelContent?: MainMapPanelContent;
     isMobile?: boolean;
 };
 
-export const WelcomePanel: React.FC<WelcomePanelProps> = ({ welcomePanelContent, isMobile = false }) => {
+export const HomePagePanel: React.FC<MainPanelProps> = ({ mainPanelContent, isMobile = false }) => {
     const { redirectWithPageView } = useAnalytics();
 
     const welcomeVideo = redirectWithPageView({
-        title: "[Video] " + isMobile ? welcomePanelContent.videoLink : welcomePanelContent.buttonText,
+        title: "[Video] " + isMobile ? mainPanelContent?.videoLink : mainPanelContent?.buttonText,
     });
 
     return (
         <Container>
             {!isMobile && (
                 <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
-                    {welcomePanelContent.title}
+                    {mainPanelContent?.title}
                 </Typography>
             )}
-            <ParagraphContainer>
-                <ReactMarkdown
-                    components={{
-                        p: ({ children }) => <Typography paragraph>{children}</Typography>,
-                    }}
-                >
-                    {welcomePanelContent.description}
-                </ReactMarkdown>
-            </ParagraphContainer>
+
+            {mainPanelContent?.description && (
+                <ParagraphContainer>
+                    <ReactMarkdown
+                        components={{
+                            p: ({ children }) => <Typography paragraph>{children}</Typography>,
+                        }}
+                    >
+                        {mainPanelContent?.description}
+                    </ReactMarkdown>
+                </ParagraphContainer>
+            )}
+
             {!isMobile && (
                 <UmbrellaItemsContainer>
                     <UmbrellaItem>
                         <Marker src={veryWeakIconLegend} />
                         {i18n.t("Weaker financial protection")}
                     </UmbrellaItem>
+
                     <UmbrellaItem>
                         <Marker src={gapsIcon} />
                     </UmbrellaItem>
+
                     <UmbrellaItem>
                         <Marker src={strongIcon} />
                         <span>{i18n.t("Stronger financial protection")}</span>
                     </UmbrellaItem>
                 </UmbrellaItemsContainer>
             )}
-            {isMobile ? (
+
+            {isMobile && mainPanelContent?.videoLink ? (
                 <VideoWrapper>
                     <iframe
-                        src={welcomePanelContent.videoLink}
+                        src={mainPanelContent?.videoLink}
                         title={i18n.t("UHC watch YouTube video player")}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
                         referrerPolicy="strict-origin-when-cross-origin"
                         allowFullScreen
                     />
                 </VideoWrapper>
-            ) : (
-                <VideoLink
-                    href={welcomePanelContent.buttonLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={welcomeVideo}
-                >
+            ) : mainPanelContent?.buttonLink && mainPanelContent?.buttonText ? (
+                <VideoLink href={mainPanelContent?.buttonLink} target="_blank" rel="noreferrer" onClick={welcomeVideo}>
                     <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
-                    <Typography>{welcomePanelContent.buttonText}</Typography>
+                    <Typography>{mainPanelContent?.buttonText}</Typography>
                 </VideoLink>
-            )}
+            ) : null}
         </Container>
     );
 };

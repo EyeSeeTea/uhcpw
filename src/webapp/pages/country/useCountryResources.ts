@@ -9,6 +9,7 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
+import { Id } from "../../../domain/entities/Ref";
 
 const RESOURCES_PRIORITY_TO_BE_SHOWN: Record<"country-analysis" | "comparative-analysis", number> = {
     "country-analysis": 1,
@@ -21,7 +22,7 @@ type CountryResourcesType = {
     comparativeAnalysisResources?: ResourceState[];
 };
 
-export function useCountryResources(country: string): CountryResourcesType {
+export function useCountryResources(countryIds: Id[]): CountryResourcesType {
     const { compositionRoot, countries, themes } = useAppContext();
 
     const [loading, setLoading] = useState<boolean>(false);
@@ -30,23 +31,25 @@ export function useCountryResources(country: string): CountryResourcesType {
         undefined
     );
 
-    const countryId = useMemo(() => {
-        return country === FEDERACIJA_BOSNE_I_HERCEGOVINE || country === REPUBLICA_SERPSKA
-            ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
-            : country;
-    }, [country]);
+    const mappedCountryIds = useMemo(() => {
+        return countryIds.map(id => {
+            return id === FEDERACIJA_BOSNE_I_HERCEGOVINE || id === REPUBLICA_SERPSKA
+                ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
+                : id;
+        });
+    }, [countryIds]);
 
     useEffect(() => {
         setLoading(true);
 
         compositionRoot.resources.get
             .execute({
-                countries: [countryId],
+                countries: mappedCountryIds,
             })
             .run(
                 resources => {
                     setLoading(false);
-                    const resourceItems = buildResourcesBySection(resources, countries, themes, countryId);
+                    const resourceItems = buildResourcesBySection(resources, countries, themes, mappedCountryIds);
                     setCountryAnalysisResources(resourceItems.filter(({ kind }) => kind === "country-analysis"));
                     setComparativeAnalysisResources(
                         resourceItems.filter(({ kind }) => kind === "comparative-analysis")
@@ -58,7 +61,7 @@ export function useCountryResources(country: string): CountryResourcesType {
                     setCountryAnalysisResources([]);
                 }
             );
-    }, [compositionRoot.resources.get, countries, countryId, themes]);
+    }, [compositionRoot.resources.get, countries, mappedCountryIds, themes]);
 
     return {
         loading,
@@ -71,7 +74,7 @@ function buildResourcesBySection(
     resources: Resource[],
     countries: Country[],
     themes: ResourceTheme[],
-    countryOfPage: string
+    selectedCountries: Id[]
 ): ResourceState[] {
     const countryAndComparativeResources = resources.filter(
         ({ kind }) => kind === "country-analysis" || kind === "comparative-analysis"
@@ -86,7 +89,8 @@ function buildResourcesBySection(
                 .filter(
                     resource =>
                         currentResource.id === resource.id &&
-                        ((currentResource.kind === "country-analysis" && currentResource.countryId === countryOfPage) ||
+                        ((currentResource.kind === "country-analysis" &&
+                            selectedCountries.includes(currentResource.countryId)) ||
                             currentResource.kind === "comparative-analysis")
                 )
                 .sort((resourceA, resourceB) => {
@@ -107,12 +111,12 @@ function buildResourcesBySection(
 
     return uniqueResources.map(item => {
         if (item.kind === "country-analysis") {
-            const countryOfPageData = countries.find(({ id }) => id === countryOfPage);
+            const country = countries.find(({ id }) => id === item.countryId);
 
             return {
                 ...item,
-                countryName: countryOfPageData?.name || "",
-                countryFlag: countryOfPageData?.flag || "",
+                countryName: country?.name || "",
+                countryFlag: country?.flag || "",
                 themeName: getThemeName(themes, item.theme),
             };
         }

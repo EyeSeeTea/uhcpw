@@ -1,7 +1,8 @@
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import { Country, CountryStatus } from "../../../../domain/entities/Country";
+
+import { Country } from "../../../../domain/entities/Country";
 import ReactMarkdown from "react-markdown";
 import insufficientDataIcon from "../../../assets/map/icon-insufficient.svg";
 import weakIcon from "../../../assets/map/icon-weak.svg";
@@ -12,8 +13,11 @@ import strongIcon from "../../../assets/map/icon-strong.svg";
 import { Divider } from "material-ui";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
+
 export interface CountryPanelProps {
     country: Country;
+    isRegionalPage?: boolean;
 }
 
 type ButtonItemType = {
@@ -31,7 +35,7 @@ export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
     );
 };
 
-const iconStatusMap: Record<CountryStatus, string> = {
+const iconStatusMap: Record<FinancialProtectionStatus, string> = {
     Strong: strongIcon,
     Emerging: emergingIcon,
     Gaps: gapsIcon,
@@ -97,6 +101,7 @@ const Marker = styled.img`
 
 const StyledButton = styled(Button)`
     background-color: white;
+    opacity: 1;
     padding: 5px 30px;
     color: ${colors.accentPrimary};
     text-transform: initial;

@@ -1,6 +1,7 @@
 import { SeriesColumnOptions } from "highcharts";
 import { CSSProperties } from "react";
 import { Country } from "../../../../domain/entities/Country";
+import { Region } from "../../../../domain/entities/region/Region";
 
 export type VisualizationCustomization = Record<string, ChartCustomization>;
 
@@ -8,7 +9,11 @@ export type ChartCustomization = {
     legend: LegendCustomization;
     series?: SerieCustomization[];
     allSeries?: AllSeriesCustomization;
-    countrySerie?: (countries: Country[], serie: { id: string; name: string }) => SerieCustomization;
+    countryOrRegionSerie?: (
+        countries: Country[],
+        regions: Region[],
+        serie: { id: string; name: string }
+    ) => SerieCustomization;
     title?: TitleCustomization;
     subtitle?: TitleCustomization;
     xAxis?: AxisCustomization | AxisCustomization[];

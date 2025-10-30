@@ -1,11 +1,12 @@
 import { FutureData } from "../../entities/Future";
+import { Id } from "../../entities/Ref";
 import { Resource } from "../../entities/resources/Resource";
 
 export interface ResourceFilters {
     category?: string;
     searchTerm?: string;
     theme?: string;
-    countries?: string[];
+    countries?: Id[];
     years?: string[];
     pageSize?: number;
     page?: number;

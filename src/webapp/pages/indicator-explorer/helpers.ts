@@ -17,7 +17,7 @@ import {
 } from "../../../data/repositories/indicator-explorer/seed/utils";
 import { AnalyticsEvent } from "../../../domain/entities/AnalyticsEvent";
 import { Indicator } from "../../../domain/entities/indicator-explorer/Indicator";
-import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/Region";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { Id } from "../../../domain/entities/Ref";
 import { AVERAGES_REGIONS_PARENT } from "../../common/hooks/countries/useMultiCountryOptionsV2";
 import { IndicatorOption } from "./IndicatorExplorerState";
@@ -103,6 +103,21 @@ export function buildIndicatorOptionsAndSortByCategories(indicators: Indicator[]
         });
 }
 
+type RegionFlag =
+    | "hasEURegion"
+    | "hasEuropeanRegion"
+    | "hasEECARegion"
+    | "hasWesternBalkansRegion"
+    | "hasEUCandidatesRegion";
+
+const REGION_FLAG_ORG_UNIT_GROUP_PAIRS: ReadonlyArray<[RegionFlag, Id]> = [
+    ["hasEURegion", ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
+    ["hasEuropeanRegion", ORG_UNIT_GROUP_IDS.EUROPEAN_REGION],
+    ["hasEECARegion", ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA],
+    ["hasWesternBalkansRegion", ORG_UNIT_GROUP_IDS.WESTERN_BALKANS],
+    ["hasEUCandidatesRegion", ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES],
+];
+
 export function getUpdatedCountriesSelectionFilter(
     oldIndicator: Indicator | undefined,
     newIndicator: Indicator | undefined,
@@ -146,14 +161,20 @@ export function getUpdatedCountriesSelectionFilter(
     if (areOldAndNewComparative && selectedCountriesAndRegions?.length) {
         const totalCountries =
             countriesAndSubregions.length +
-            (oldIndicator?.hasEURegion ? 1 : 0) +
+            REGION_FLAG_ORG_UNIT_GROUP_PAIRS.filter(([flag]) => oldIndicator?.[flag]).length +
             (oldIndicator?.hideBosniaAndHerzegovinaRegions ? -2 : 0);
+
         const areAllCountriesSelected = selectedCountriesAndRegions.length === totalCountries;
 
         if (!areAllCountriesSelected) {
-            const newSelection = newIndicator?.hasEURegion
-                ? selectedCountriesAndRegions
-                : selectedCountriesAndRegions.filter(country => country !== ORG_UNIT_GROUP_IDS.EUROPEAN_UNION);
+            const newSelection = REGION_FLAG_ORG_UNIT_GROUP_PAIRS.reduce<Id[]>(
+                (acc, [regionFlag, regionId]) =>
+                    newIndicator?.[regionFlag]
+                        ? acc
+                        : acc.filter(selectedCountryOrRegion => selectedCountryOrRegion !== regionId),
+                selectedCountriesAndRegions
+            );
+
             if (newSelection.length) return handleBosniaAndHerzegovina(oldIndicator, newIndicator, newSelection);
         }
     }
@@ -164,9 +185,12 @@ export function getUpdatedCountriesSelectionFilter(
             newIndicator,
             countriesAndSubregions.map(c => c.id)
         );
-        return newIndicator?.hasEURegion
-            ? [...countriesToSelect, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION]
-            : countriesToSelect;
+        const updatedCountriesToSelect = REGION_FLAG_ORG_UNIT_GROUP_PAIRS.reduce<Id[]>(
+            (acc, [regionFlag, regionId]) => (newIndicator?.[regionFlag] ? [...acc, regionId] : acc),
+            countriesToSelect
+        );
+
+        return updatedCountriesToSelect;
     }
 }
 
