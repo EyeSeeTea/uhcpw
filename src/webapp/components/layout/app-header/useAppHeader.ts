@@ -60,7 +60,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
         (country: Option<Id>) => {
             const countryName = country.text;
             const countryNameInFilter = formatCountryOrRegionParamName(countryName);
-            history.push(`/country-page?country=${countryNameInFilter}`);
+            history.push(`/country/${countryNameInFilter}`);
             handleClose();
             onCloseMenu();
         },
@@ -71,7 +71,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
         (region: Option<Id>) => {
             const regionName = region.text;
             const regionNameInFilter = formatCountryOrRegionParamName(regionName);
-            history.push(`/regional-page?region=${regionNameInFilter}`);
+            history.push(`/region/${regionNameInFilter}`);
             handleClose();
             onCloseMenu();
         },
@@ -80,9 +80,9 @@ export function useAppHeader(isScreenRotated?: boolean) {
 
     const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
-    const isCountryPage = useMemo(() => pathname === "/country-page", [pathname]);
+    const isCountryPage = useMemo(() => pathname.startsWith("/country"), [pathname]);
 
-    const isRegionalPage = useMemo(() => pathname === "/regional-page", [pathname]);
+    const isRegionalPage = useMemo(() => pathname.startsWith("/region"), [pathname]);
 
     const whoLogoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
 

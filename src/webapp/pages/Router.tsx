@@ -37,8 +37,8 @@ export const Router: React.FC = React.memo(() => {
                     path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)"
                     render={() => <ResourcesByTypePage />}
                 />
-                <Route path="/country-page" render={() => <CountryPage />} />
-                <Route path="/regional-page" render={() => <RegionalPage />} />
+                <Route path="/country/:country" render={() => <CountryPage />} />
+                <Route path="/region/:region" render={() => <RegionalPage />} />
                 <Route path="/resources" render={() => <ResourcesPage />} />
                 <Route path="/methods" render={() => <MethodsPage />} />
 

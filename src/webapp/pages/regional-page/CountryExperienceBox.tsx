@@ -58,7 +58,7 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
     const onCountryLinkClick = useCallback(() => {
         const countryNameInFilter = formatCountryOrRegionParamName(countryName);
-        history.push(`/country-page?country=${countryNameInFilter}`);
+        history.push(`/country/${countryNameInFilter}`);
     }, [countryName, history]);
 
     return (

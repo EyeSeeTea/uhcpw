@@ -8,7 +8,7 @@ import i18n from "../../../locales";
 import { Country } from "../../../domain/entities/Country";
 import { useAppContext } from "../../contexts/app-context";
 import { countriesToGeoJson } from "../../components/home/map/useMap";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useRegionalPageContent } from "./useRegionalPageContent";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { ORG_UNIT_GROUP_IDS, Region } from "../../../domain/entities/region/Region";
@@ -69,6 +69,7 @@ export type RegionalPageState = {
 export function useRegionalPage(): RegionalPageState {
     const isSmallScreen = useIsSmallScreen();
     const history = useHistory();
+    const { region: regionParam } = useParams<{ region?: string }>();
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
     const { content, isLoading } = useRegionalPageContent(selectedRegionId);
@@ -118,17 +119,14 @@ export function useRegionalPage(): RegionalPageState {
     }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources]);
 
     const filterInParams = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
-
-        const regionNameInFilter = searchParams.get("region");
-        const regionName = regionNameInFilter ? parseCountryOrRegionParamToName(regionNameInFilter) : undefined;
+        const regionName = regionParam ? parseCountryOrRegionParamToName(regionParam) : undefined;
 
         const regionIdInFilter = regionName ? regionOptions.find(option => option.text === regionName)?.value : null;
 
         return {
             region: regionIdInFilter ? regionIdInFilter : undefined,
         };
-    }, [history.location.search, regionOptions]);
+    }, [regionOptions, regionParam]);
 
     const resetSelectedValues = useCallback(() => {
         policyChecklist.onSelectChecklistItem(undefined);
@@ -138,14 +136,12 @@ export function useRegionalPage(): RegionalPageState {
 
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
-            const searchParams = new URLSearchParams(history.location.search);
             const newRegionName = regionOptions.find(option => option.value === newRegion)?.text;
             const regionNameInFilter = newRegionName ? formatCountryOrRegionParamName(newRegionName) : undefined;
 
             if (regionNameInFilter) {
-                searchParams.set("region", regionNameInFilter);
+                history.push(`/region/${regionNameInFilter}`);
             }
-            history.push({ search: searchParams.toString() });
 
             const region = regions.find(region => region.id === newRegion);
             const countryIdsInRegion = region?.countries || [];
