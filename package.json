@@ -123,7 +123,8 @@
         "cy:e2e:open": "NODE_ENV=test CYPRESS_E2E=true cypress open",
         "cy:e2e:run": "NODE_ENV=test CYPRESS_E2E=true cypress run --browser chrome",
         "prepare": "husky install",
-        "script-example": "npx ts-node src/scripts/example.ts"
+        "script-example": "npx ts-node src/scripts/example.ts",
+        "generate-sitemap": "npx ts-node src/scripts/generateSitemap.ts"
     },
     "manifest.webapp": {
         "name": "UHC watch",

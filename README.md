@@ -89,4 +89,10 @@ The file `src/contexts/app-context.ts` holds some general context so typical inf
 
 ### Scripts
 
-Check the example script, entry `"script-example"`in `package.json`->scripts and `src/scripts/example.ts`.
+#### generate-sitemap
+
+Generates a sitemap and outputs by default to the `public` directory. The routes config is defined in `src/scripts/generateSitemap.ts`.
+
+```
+yarn run generate-sitemap --base-url "https://apps.who.int/dhis2/uhcwatch/"
+```
