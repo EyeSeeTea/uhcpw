@@ -9,6 +9,7 @@ import { CountryPage } from "./country/CountryPage";
 import { MethodsPage } from "./methods/MethodsPage";
 import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPage";
 import { RegionalPage } from "./regional-page/RegionalPage";
+import { SeoMetaTags } from "../components/seo/SeoMetaTags";
 
 const ScrollToTop = (): JSX.Element | null => {
     const { pathname } = useLocation();
@@ -23,6 +24,7 @@ const ScrollToTop = (): JSX.Element | null => {
 export const Router: React.FC = React.memo(() => {
     return (
         <HashRouter>
+            <SeoMetaTags />
             <ScrollToTop />
             <Switch>
                 <Route path="/about" render={() => <AboutPage />} />
