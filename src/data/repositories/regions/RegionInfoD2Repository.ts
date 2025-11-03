@@ -1,5 +1,6 @@
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
+import { ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 import { RegionInfo } from "../../../domain/entities/region/RegionInfo";
 import { RegionInfoRepository } from "../../../domain/repositories/region/RegionInfoRepository";
 import { D2Api } from "../../../types/d2-api";
@@ -49,47 +50,68 @@ const REGION_CONTENT_DATA_ELEMENT_IDS = {
         panelOneTitle: "e59fFgkjhER",
         panelOneMainText: "jgwGv2n4EEV",
         panelOneChartOne: "Txk6wSYhp8a",
-        panelOneChartOneText: "rrZDKiSnDLV",
+        panelOneChartOneTextAbove: "eBfqS7p4uFZ",
+        panelOneChartOneTextBelow: "vKd8rPi2Cxj",
+        panelOneChartOneInfoText: "rrZDKiSnDLV",
         panelOneProgressText: "B55J0e89NwS",
 
         panelTwoTitle: "USiuNuuWhsE",
         panelTwoMainText: "RkiDXRJWd16",
         panelTwoChartOne: "bRqNhaWOQhJ",
-        panelTwoChartOneText: "J6yMdOrUCwe",
+        panelTwoChartOneInfoText: "J6yMdOrUCwe",
+        panelTwoChartOneTextAbove: "MFfCVletM43",
+        panelTwoChartOneTextBelow: "uokvwINjDst",
         panelTwoProgressText: "cGZMm9LsO0A",
 
         panelThreeTitle: "kK1KJ3gplux",
         panelThreeMainText: "VpB8DwK3GLJ",
-        panelThreeChartOne: "AiQgw1HTjfR",
-        panelThreeChartOneText: "p15rbYNnCer",
+        panelThreeChartOneEU: "AiQgw1HTjfR",
+        panelThreeChartOneER: "wzsBDjTLG7t",
+        panelThreeChartOneWB: "pAqMDdCiPB6",
+        panelThreeChartOneEECA: "RYh6HzIxJdI",
+        panelThreeChartOneInfoText: "p15rbYNnCer",
+        panelThreeChartOneTextBelow: "GbR7FpRyeXI",
+        panelThreeChartOneTextAbove: "Mckk9OrIAGP",
         panelThreeProgressText: "AZqM9ptgmJH",
 
         panelFourTitle: "Dhy6vrFAc6j",
         panelFourMainText: "QlQM7KAKfZL",
         panelFourChartOne: "hT7zRrbSDuC",
-        panelFourChartOneText: "nSluLzIddRh",
+        panelFourChartOneInfoText: "nSluLzIddRh",
+        panelFourChartOneTextAbove: "ZUwP372TYKu",
+        panelFourChartOneTextBelow: "hrekRC3ZaxC",
         panelFourProgressText: "KNz0kaepR0x",
 
         panelFiveTitle: "xRmzOo2Dqfq",
         panelFiveMainText: "X0t0vBxl9fH",
         panelFiveChartOne: "A7tDGH1PS2k",
-        panelFiveChartOneText: "b4g0Utr2DkD",
+        panelFiveChartOneInfoText: "b4g0Utr2DkD",
+        panelFiveChartOneTextAbove: "y8cgUDrmjSv",
+        panelFiveChartOneTextBelow: "lGXxATwmcQ8",
         panelFiveChartTwo: "rbenCnH0Lyv",
-        panelFiveChartTwoText: "pgCFN1rGP5b",
+        panelFiveChartTwoTextAbove: "jFTkQH2k34M",
+        panelFiveChartTwoTextBelow: "JdC3MgLh7gJ",
+        panelFiveChartTwoInfoText: "pgCFN1rGP5b",
         panelFiveChartThree: "ieuaAh9kyBr",
-        panelFiveChartThreeText: "WDQeN8NYbiB",
+        panelFiveChartThreeTextAbove: "EHViFM6sqnR",
+        panelFiveChartThreeTextBelow: "QbyB6d6MzUz",
+        panelFiveChartThreeInfoText: "WDQeN8NYbiB",
         panelFiveProgressText: "DGcHpFfH9mj",
 
         panelSixTitle: "iS7XZlaQotB",
         panelSixMainText: "vZXXyyImuqF",
         panelSixChartOne: "qHQ41g7EPHB",
-        panelSixChartOneText: "bpv0gDZAA1w",
+        panelSixChartOneTextAbove: "CgdnY1qHXk2",
+        panelSixChartOneTextBelow: "a0zCwMXV7VG",
+        panelSixChartOneInfoText: "bpv0gDZAA1w",
         panelSixProgressText: "T3C9twBZ1H4",
 
         panelSevenTitle: "JyhAK2RHKvc",
         panelSevenMainText: "kJx7fxSvuXV",
         panelSevenChartOne: "CbTDJDbbGgP",
-        panelSevenChartOneText: "R6yJSLJ1euk",
+        panelSevenChartOneTextAbove: "o20T7eYHg97",
+        panelSevenChartOneTextBelow: "dbdRXagIcVP",
+        panelSevenChartOneInfoText: "R6yJSLJ1euk",
         panelSevenProgressText: "JlApFbAchYK",
     },
 
@@ -124,14 +146,27 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
             if (!response.regionalInfo.events[0] || !response.regionalContent.events[0]) {
                 return Future.error("An error has ocurred fetching region info and content");
             }
-            const info = this.buildRegionInfo(response.regionalInfo.events[0], response.regionalContent.events[0]);
+            const info = this.buildRegionInfo(
+                response.regionalInfo.events[0],
+                response.regionalContent.events[0],
+                regionOrgUnitId
+            );
             return Future.success(info);
         });
     }
 
-    private buildRegionInfo(regionalInfo: D2Event, regionalContent: D2Event): RegionInfo {
+    private buildRegionInfo(regionalInfo: D2Event, regionalContent: D2Event, regionOrgUnitId: Id): RegionInfo {
         const getDataValue = (dataElementId: Id, event: D2Event): string =>
             event.dataValues.find(dv => dv.dataElement === dataElementId)?.value || "";
+
+        const panelThreeChartOneDEId =
+            regionOrgUnitId === ORG_UNIT_IDS.EUROPEAN_UNION
+                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneEU
+                : regionOrgUnitId === ORG_UNIT_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA
+                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneEECA
+                : regionOrgUnitId === ORG_UNIT_IDS.WESTERN_BALKANS
+                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneWB
+                : REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneER;
 
         return {
             mainMapPanelContent: {
@@ -219,8 +254,16 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     regionalContent
                 ),
                 panelOneChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelOneChartOne}&eventUid=${regionalContent?.event}`,
-                panelOneChartOneText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelOneChartOneText,
+                panelOneChartOneTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelOneChartOneTextAbove,
+                    regionalContent
+                ),
+                panelOneChartOneTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelOneChartOneTextBelow,
+                    regionalContent
+                ),
+                panelOneChartOneInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelOneChartOneInfoText,
                     regionalContent
                 ),
                 panelOneProgressText: getDataValue(
@@ -237,8 +280,16 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     regionalContent
                 ),
                 panelTwoChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelTwoChartOne}&eventUid=${regionalContent?.event}`,
-                panelTwoChartOneText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelTwoChartOneText,
+                panelTwoChartOneTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelTwoChartOneTextAbove,
+                    regionalContent
+                ),
+                panelTwoChartOneTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelTwoChartOneTextBelow,
+                    regionalContent
+                ),
+                panelTwoChartOneInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelTwoChartOneInfoText,
                     regionalContent
                 ),
                 panelTwoProgressText: getDataValue(
@@ -254,9 +305,17 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeMainText,
                     regionalContent
                 ),
-                panelThreeChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOne}&eventUid=${regionalContent?.event}`,
-                panelThreeChartOneText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneText,
+                panelThreeChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${panelThreeChartOneDEId}&eventUid=${regionalContent?.event}`,
+                panelThreeChartOneTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneTextBelow,
+                    regionalContent
+                ),
+                panelThreeChartOneTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneTextAbove,
+                    regionalContent
+                ),
+                panelThreeChartOneInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneInfoText,
                     regionalContent
                 ),
                 panelThreeProgressText: getDataValue(
@@ -273,14 +332,23 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     regionalContent
                 ),
                 panelFourChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFourChartOne}&eventUid=${regionalContent?.event}`,
-                panelFourChartOneText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFourChartOneText,
+                panelFourChartOneTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFourChartOneTextAbove,
+                    regionalContent
+                ),
+                panelFourChartOneTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFourChartOneTextBelow,
+                    regionalContent
+                ),
+                panelFourChartOneInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFourChartOneInfoText,
                     regionalContent
                 ),
                 panelFourProgressText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFourProgressText,
                     regionalContent
                 ),
+
                 panelFiveTitle: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveTitle,
                     regionalContent
@@ -290,18 +358,42 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     regionalContent
                 ),
                 panelFiveChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartOne}&eventUid=${regionalContent?.event}`,
-                panelFiveChartOneText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartOneText,
+                panelFiveChartOneTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartOneTextAbove,
+                    regionalContent
+                ),
+                panelFiveChartOneTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartOneTextBelow,
+                    regionalContent
+                ),
+                panelFiveChartOneInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartOneInfoText,
                     regionalContent
                 ),
                 panelFiveChartTwo: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwo}&eventUid=${regionalContent?.event}`,
-                panelFiveChartTwoText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoText,
+                panelFiveChartTwoTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoTextAbove,
+                    regionalContent
+                ),
+                panelFiveChartTwoTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoTextBelow,
+                    regionalContent
+                ),
+                panelFiveChartTwoInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoInfoText,
                     regionalContent
                 ),
                 panelFiveChartThree: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartThree}&eventUid=${regionalContent?.event}`,
-                panelFiveChartThreeText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartThreeText,
+                panelFiveChartThreeTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartThreeTextAbove,
+                    regionalContent
+                ),
+                panelFiveChartThreeTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartThreeTextBelow,
+                    regionalContent
+                ),
+                panelFiveChartThreeInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartThreeInfoText,
                     regionalContent
                 ),
                 panelFiveProgressText: getDataValue(
@@ -318,8 +410,16 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     regionalContent
                 ),
                 panelSixChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOne}&eventUid=${regionalContent?.event}`,
-                panelSixChartOneText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOneText,
+                panelSixChartOneTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOneTextAbove,
+                    regionalContent
+                ),
+                panelSixChartOneTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOneTextBelow,
+                    regionalContent
+                ),
+                panelSixChartOneInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOneInfoText,
                     regionalContent
                 ),
                 panelSixProgressText: getDataValue(
@@ -336,8 +436,16 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     regionalContent
                 ),
                 panelSevenChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOne}&eventUid=${regionalContent?.event}`,
-                panelSevenChartOneText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOneText,
+                panelSevenChartOneTextAbove: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOneTextAbove,
+                    regionalContent
+                ),
+                panelSevenChartOneTextBelow: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOneTextBelow,
+                    regionalContent
+                ),
+                panelSevenChartOneInfoText: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOneInfoText,
                     regionalContent
                 ),
                 panelSevenProgressText: getDataValue(

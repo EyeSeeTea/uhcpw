@@ -39,47 +39,65 @@ export type GapsInCoverageContent = {
     panelOneTitle: string;
     panelOneMainText: string;
     panelOneChartOne: string;
-    panelOneChartOneText: string;
+    panelOneChartOneTextAbove: string;
+    panelOneChartOneTextBelow: string;
+    panelOneChartOneInfoText: string;
     panelOneProgressText: string;
 
     panelTwoTitle: string;
     panelTwoMainText: string;
     panelTwoChartOne: string;
-    panelTwoChartOneText: string;
+    panelTwoChartOneTextAbove: string;
+    panelTwoChartOneTextBelow: string;
+    panelTwoChartOneInfoText: string;
     panelTwoProgressText: string;
 
     panelThreeTitle: string;
     panelThreeMainText: string;
     panelThreeChartOne: string;
-    panelThreeChartOneText: string;
+    panelThreeChartOneTextAbove: string;
+    panelThreeChartOneTextBelow: string;
+    panelThreeChartOneInfoText: string;
     panelThreeProgressText: string;
 
     panelFourTitle: string;
     panelFourMainText: string;
     panelFourChartOne: string;
-    panelFourChartOneText: string;
+    panelFourChartOneTextAbove: string;
+    panelFourChartOneTextBelow: string;
+    panelFourChartOneInfoText: string;
     panelFourProgressText: string;
 
     panelFiveTitle: string;
     panelFiveMainText: string;
     panelFiveChartOne: string;
-    panelFiveChartOneText: string;
+    panelFiveChartOneTextAbove: string;
+    panelFiveChartOneTextBelow: string;
+    panelFiveChartOneInfoText: string;
     panelFiveChartTwo: string;
-    panelFiveChartTwoText: string;
+    panelFiveChartTwoTextAbove: string;
+    panelFiveChartTwoTextBelow: string;
+    panelFiveChartTwoInfoText: string;
     panelFiveChartThree: string;
-    panelFiveChartThreeText: string;
+    panelFiveChartThreeTextAbove: string;
+    panelFiveChartThreeTextBelow: string;
+    panelFiveChartThreeInfoText: string;
     panelFiveProgressText: string;
 
     panelSixTitle: string;
     panelSixMainText: string;
     panelSixChartOne: string;
-    panelSixChartOneText: string;
+    panelSixChartOneTextAbove: string;
+    panelSixChartOneTextBelow: string;
+    panelSixChartOneInfoText: string;
     panelSixProgressText: string;
 
     panelSevenTitle: string;
     panelSevenMainText: string;
     panelSevenChartOne: string;
-    panelSevenChartOneText: string;
+    panelSevenChartOneTextAbove: string;
+    panelSevenChartOneTextBelow: string;
+    panelSevenChartOneInfoText: string;
     panelSevenProgressText: string;
 };
 
