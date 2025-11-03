@@ -19,10 +19,7 @@ import { NumbersSection } from "./NumbersSection";
 import { PolicyChecklistSection } from "./PolicyChecklistSection";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
-import {
-    formatCountryOrRegionParamName,
-    parseCountryOrRegionParamToName,
-} from "../../utils/formatCountryOrRegionParamName";
+import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
 
@@ -121,9 +118,9 @@ export function useRegionalPage(): RegionalPageState {
     }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources]);
 
     const filterInParams = useMemo(() => {
-        const regionName = countryOrRegion ? parseCountryOrRegionParamToName(countryOrRegion) : undefined;
-
-        const regionIdInFilter = regionName ? regionOptions.find(option => option.text === regionName)?.value : null;
+        const regionIdInFilter = countryOrRegion
+            ? regionOptions.find(option => formatCountryOrRegionParamName(option.text) === countryOrRegion)?.value
+            : null;
 
         return {
             region: regionIdInFilter ? regionIdInFilter : undefined,

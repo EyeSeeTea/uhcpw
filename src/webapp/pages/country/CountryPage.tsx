@@ -11,10 +11,7 @@ import { useCountryInfo } from "./useCountryInfo";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { CountrySlider } from "../../components/country-page/slider/CountrySlider";
-import {
-    formatCountryOrRegionParamName,
-    parseCountryOrRegionParamToName,
-} from "../../utils/formatCountryOrRegionParamName";
+import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
@@ -28,10 +25,10 @@ export const CountryPage: React.FC = () => {
     const country = useCountryInfo(countryFilter.selectedCountry);
 
     const filterInParams = useMemo(() => {
-        const countryName = countryOrRegion ? parseCountryOrRegionParamToName(countryOrRegion) : undefined;
-
-        const countryIdInFilter = countryName
-            ? countryFilter.countryOptions.find(option => option.text === countryName)?.value
+        const countryIdInFilter = countryOrRegion
+            ? countryFilter.countryOptions.find(
+                  option => formatCountryOrRegionParamName(option.text) === countryOrRegion
+              )?.value
             : null;
 
         return {
