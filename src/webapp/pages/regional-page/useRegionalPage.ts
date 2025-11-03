@@ -69,7 +69,9 @@ export type RegionalPageState = {
 export function useRegionalPage(): RegionalPageState {
     const isSmallScreen = useIsSmallScreen();
     const history = useHistory();
-    const { region: regionParam } = useParams<{ region?: string }>();
+    const { countryOrRegion } = useParams<{
+        countryOrRegion?: string;
+    }>();
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
     const { content, isLoading } = useRegionalPageContent(selectedRegionId);
@@ -119,14 +121,14 @@ export function useRegionalPage(): RegionalPageState {
     }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources]);
 
     const filterInParams = useMemo(() => {
-        const regionName = regionParam ? parseCountryOrRegionParamToName(regionParam) : undefined;
+        const regionName = countryOrRegion ? parseCountryOrRegionParamToName(countryOrRegion) : undefined;
 
         const regionIdInFilter = regionName ? regionOptions.find(option => option.text === regionName)?.value : null;
 
         return {
             region: regionIdInFilter ? regionIdInFilter : undefined,
         };
-    }, [regionOptions, regionParam]);
+    }, [regionOptions, countryOrRegion]);
 
     const resetSelectedValues = useCallback(() => {
         policyChecklist.onSelectChecklistItem(undefined);
@@ -140,7 +142,7 @@ export function useRegionalPage(): RegionalPageState {
             const regionNameInFilter = newRegionName ? formatCountryOrRegionParamName(newRegionName) : undefined;
 
             if (regionNameInFilter) {
-                history.push(`/region/${regionNameInFilter}`);
+                history.push(`/${regionNameInFilter}`);
             }
 
             const region = regions.find(region => region.id === newRegion);

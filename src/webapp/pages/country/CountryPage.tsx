@@ -18,7 +18,9 @@ import {
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
-    const { country: countryParam } = useParams<{ country?: string }>();
+    const { countryOrRegion } = useParams<{
+        countryOrRegion?: string;
+    }>();
     const { countryFilter, resetTab, handleResetTab } = useCountryPage();
     const { sendEvent } = useAnalytics();
     const isSmallScreen = useIsSmallScreen();
@@ -26,7 +28,7 @@ export const CountryPage: React.FC = () => {
     const country = useCountryInfo(countryFilter.selectedCountry);
 
     const filterInParams = useMemo(() => {
-        const countryName = countryParam ? parseCountryOrRegionParamToName(countryParam) : undefined;
+        const countryName = countryOrRegion ? parseCountryOrRegionParamToName(countryOrRegion) : undefined;
 
         const countryIdInFilter = countryName
             ? countryFilter.countryOptions.find(option => option.text === countryName)?.value
@@ -35,7 +37,7 @@ export const CountryPage: React.FC = () => {
         return {
             country: countryIdInFilter ? countryIdInFilter : undefined,
         };
-    }, [countryFilter.countryOptions, countryParam]);
+    }, [countryFilter.countryOptions, countryOrRegion]);
 
     useEffect(() => {
         if (filterInParams.country && filterInParams.country !== countryFilter?.selectedCountry) {
@@ -60,7 +62,7 @@ export const CountryPage: React.FC = () => {
             const countryNameInFilter = countryName ? formatCountryOrRegionParamName(countryName) : undefined;
 
             if (value && countryNameInFilter) {
-                history.push(`/country/${countryNameInFilter}`);
+                history.push(`/${countryNameInFilter}`);
             }
 
             countryFilter.onCountryChange(value);

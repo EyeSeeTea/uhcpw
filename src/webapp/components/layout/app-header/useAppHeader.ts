@@ -60,7 +60,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
         (country: Option<Id>) => {
             const countryName = country.text;
             const countryNameInFilter = formatCountryOrRegionParamName(countryName);
-            history.push(`/country/${countryNameInFilter}`);
+            history.push(`/${countryNameInFilter}`);
             handleClose();
             onCloseMenu();
         },
@@ -71,7 +71,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
         (region: Option<Id>) => {
             const regionName = region.text;
             const regionNameInFilter = formatCountryOrRegionParamName(regionName);
-            history.push(`/region/${regionNameInFilter}`);
+            history.push(`/${regionNameInFilter}`);
             handleClose();
             onCloseMenu();
         },

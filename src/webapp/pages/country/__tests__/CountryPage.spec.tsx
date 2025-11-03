@@ -99,7 +99,7 @@ describe("Country Page", () => {
 function renderPage() {
     customRenderWithRouterMatch(
         <CountryPage />,
-        { path: "/country/:country", route: `/country/Spain` },
+        { path: "/:countryOrRegion", route: `/Spain` },
         {
             person: personRepository,
             resource: resourceRepository,

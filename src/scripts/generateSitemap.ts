@@ -83,14 +83,8 @@ async function getStaticRoutes(): Promise<SitemapUrl[]> {
 }
 
 async function getDynamicRoutes(baseUrl: string, auth: string): Promise<SitemapUrl[]> {
-    const baseCountryRoute: SitemapUrl = {
-        loc: `/#/country/`,
-        lastmod: currentDate,
-        changefreq: "monthly" as const,
-        priority: 0.7,
-    };
-    const baseRegionRoute: SitemapUrl = {
-        loc: `/#/region/`,
+    const baseRoute: SitemapUrl = {
+        loc: `/#/`,
         lastmod: currentDate,
         changefreq: "monthly" as const,
         priority: 0.7,
@@ -115,32 +109,16 @@ async function getDynamicRoutes(baseUrl: string, auth: string): Promise<SitemapU
         const countriesResult = await getCountriesUseCase.execute().runAsync();
         const regionsResult = await getRegionsUseCase.execute().runAsync();
 
-        const dynamicRoutes: SitemapUrl[] = []; // Add country routes
-        if (countriesResult.data) {
-            const countryRoutes = countriesResult.data
-                .filter(country => country.isInCountryPage)
-                .map(country => {
-                    const countryParam = formatCountryOrRegionParamName(country.name);
-                    return {
-                        ...baseCountryRoute,
-                        loc: baseCountryRoute.loc + countryParam,
-                    };
-                });
-            dynamicRoutes.push(...countryRoutes);
-        }
-
-        if (regionsResult.data) {
-            const regionRoutes = regionsResult.data
-                .filter(region => region.isInRegionalPage)
-                .map(region => {
-                    const regionParam = formatCountryOrRegionParamName(region.name);
-                    return {
-                        ...baseRegionRoute,
-                        loc: baseRegionRoute.loc + regionParam,
-                    };
-                });
-            dynamicRoutes.push(...regionRoutes);
-        }
+        const dynamicRoutes: SitemapUrl[] = [
+            ...(countriesResult.data ?? []).filter(country => country.isInCountryPage),
+            ...(regionsResult.data ?? []).filter(region => region.isInRegionalPage),
+        ].map(country => {
+            const countryOrRegionParam = formatCountryOrRegionParamName(country.name);
+            return {
+                ...baseRoute,
+                loc: baseRoute.loc + countryOrRegionParam,
+            };
+        });
 
         return dynamicRoutes;
     } catch (error) {
