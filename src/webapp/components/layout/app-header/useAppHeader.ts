@@ -5,12 +5,14 @@ import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
 import { formatCountryOrRegionParamName } from "../../../utils/formatCountryOrRegionParamName";
+import { usePageType } from "../../../pages/country-or-regional/usePageType";
 
 export function useAppHeader(isScreenRotated?: boolean) {
     const history = useHistory();
     const { pathname } = useLocation();
     const { isXs } = useBreakpoint();
     const isSmallScreen = useIsSmallScreen();
+    const pageType = usePageType();
 
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -80,9 +82,9 @@ export function useAppHeader(isScreenRotated?: boolean) {
 
     const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
-    const isCountryPage = useMemo(() => pathname.startsWith("/country"), [pathname]);
+    const isCountryPage = useMemo(() => pageType === "country", [pageType]);
 
-    const isRegionalPage = useMemo(() => pathname.startsWith("/region"), [pathname]);
+    const isRegionalPage = useMemo(() => pageType === "region", [pageType]);
 
     const whoLogoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
 
