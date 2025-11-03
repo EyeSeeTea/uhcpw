@@ -64,6 +64,8 @@ export type RegionalPageState = {
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     expandedSectionsAccordion: AccordionConfig | undefined;
     sectionsAccordionConfig: AccordionConfig[];
+    setPendingScrollTab: (tab: number | null) => void;
+    pendingScrollTab: number | null;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -82,6 +84,7 @@ export function useRegionalPage(): RegionalPageState {
     const [selectedRegion, setSelectedRegion] = useState<Region | undefined>(undefined);
     const [highlightedISO3Countries, setHighlightedISO3Countries] = useState<string[]>([]);
     const [expandedSectionsAccordion, setExpandedSectionsAccordion] = useState<AccordionConfig | undefined>(undefined);
+    const [pendingScrollTab, setPendingScrollTab] = useState<number | null>(null);
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
@@ -172,14 +175,6 @@ export function useRegionalPage(): RegionalPageState {
             handleRegionChange(filterInParams.region);
         }
     }, [filterInParams.region, handleRegionChange, selectedRegionId]);
-
-    const handleHeaderItemClick = useCallback(
-        (item: RegionalMenuItem) => {
-            const targetRef = refs[item];
-            targetRef.current?.scrollIntoView({ behavior: "smooth" });
-        },
-        [refs]
-    );
 
     const goTo = useCallback(
         (link: string) => {
@@ -279,6 +274,21 @@ export function useRegionalPage(): RegionalPageState {
         ]
     );
 
+    const handleHeaderItemClick = useCallback(
+        (item: RegionalMenuItem) => {
+            const sectionToExpand = getSectionAccordionConfigByHeaderItemId(item, sectionsAccordionConfig);
+            if (isEUorEuropeanRegion && (item === "resources" || item === "experts")) {
+                const targetRef = refs[item];
+                targetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+                setExpandedSectionsAccordion(sectionToExpand);
+            }
+
+            setPendingScrollTab(sectionToExpand ? sectionToExpand.tab : null);
+        },
+        [isEUorEuropeanRegion, refs, sectionsAccordionConfig]
+    );
+
     const handleAccordionChange = useCallback(
         (_event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => {
             const sliderConfigSelected = isExpanded
@@ -322,5 +332,25 @@ export function useRegionalPage(): RegionalPageState {
         handleAccordionChange: handleAccordionChange,
         expandedSectionsAccordion: expandedSectionsAccordion,
         sectionsAccordionConfig: sectionsAccordionConfig,
+        setPendingScrollTab: setPendingScrollTab,
+        pendingScrollTab: pendingScrollTab,
     };
+}
+
+function getSectionAccordionConfigByHeaderItemId(
+    item: RegionalMenuItem,
+    sectionsAccordionConfig: AccordionConfig[]
+): AccordionConfig | undefined {
+    switch (item) {
+        case "numbers":
+            return sectionsAccordionConfig[0];
+        case "policyChecklist":
+            return sectionsAccordionConfig[1];
+        case "resources":
+            return sectionsAccordionConfig[2];
+        case "experts":
+            return sectionsAccordionConfig[3];
+        default:
+            return undefined;
+    }
 }

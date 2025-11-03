@@ -29,6 +29,8 @@ export const RegionalPage: React.FC = () => {
         expandedSectionsAccordion,
         handleAccordionChange,
         sectionsAccordionConfig,
+        setPendingScrollTab,
+        pendingScrollTab,
     } = useRegionalPage();
 
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
@@ -36,7 +38,7 @@ export const RegionalPage: React.FC = () => {
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
 
     return (
-        <Layout enableRotation={isSmallScreen} disableMinHeight>
+        <Layout enableRotation={isSmallScreen} disableMinHeight isOverflowVisible>
             <Header
                 selectedRegion={selectedRegionId}
                 onRegionChange={onRegionChange}
@@ -49,7 +51,7 @@ export const RegionalPage: React.FC = () => {
             <MapSection ref={refs.regionMap}>
                 <SectionTitleDivider>
                     <SectionTitle>
-                        {i18n.t(`{{region}} at a glance`, {
+                        {i18n.t(`The {{region}} at a glance`, {
                             region: selectedRegion?.name,
                             interpolation: { escapeValue: false },
                         })}
@@ -133,6 +135,9 @@ export const RegionalPage: React.FC = () => {
                     configs={sectionsAccordionConfig}
                     expandedConfig={expandedSectionsAccordion}
                     handleAccordionChange={handleAccordionChange}
+                    scrollMarginTop="80px"
+                    setPendingScrollTab={setPendingScrollTab}
+                    pendingScrollTab={pendingScrollTab}
                     isBold
                     bigFont
                 />

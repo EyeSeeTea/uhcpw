@@ -77,7 +77,7 @@ export const DesktopMenu: React.FC = () => {
                 onClick={handleSetAnchorEl}
                 endIcon={anchorEl?.id === "regions" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
             >
-                {i18n.t("Regions")}
+                {i18n.t("Regional overview")}
             </MenuButton>
             <Menu
                 anchorEl={anchorEl}
