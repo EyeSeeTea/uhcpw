@@ -175,8 +175,6 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
         countryPositions: countryPositionsAdjustment,
     });
 
-    const maxValue = chartSource.isRegionalPage ? {} : { max: 90 };
-
     return {
         ...scatterChart,
         chart: {
@@ -187,7 +185,6 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
             ...scatterChart.xAxis,
             min: 0,
             tickInterval: 15,
-            ...maxValue,
         },
     };
 };
