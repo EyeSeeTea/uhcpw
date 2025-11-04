@@ -269,8 +269,8 @@ export function useRegionalPage(): RegionalPageState {
                     isLoading: policyChecklist.isLoading,
                     isSmallScreen: isSmallScreen,
                 },
-                ...resourcesAndExpertsSections,
             },
+            ...resourcesAndExpertsSections,
         ];
     }, [
         content?.policyChecklistContent.textSectionLeft,
