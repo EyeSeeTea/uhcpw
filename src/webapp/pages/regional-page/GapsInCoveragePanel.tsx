@@ -171,6 +171,7 @@ const StyledUl = styled.ul`
     padding-inline-start: 14px;
     color: ${colors.black};
     margin-inline-start: 14px;
+    margin-block-start: 0;
 `;
 
 const StyledTitle = styled(Typography)`

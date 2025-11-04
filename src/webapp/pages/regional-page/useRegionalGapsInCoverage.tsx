@@ -59,14 +59,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelOneMainText,
                               progressText: gapsInCoverageContent.panelOneProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: [
-                                  {
-                                      visual: gapsInCoverageContent.panelOneChartOne,
-                                      textAbove: gapsInCoverageContent.panelOneChartOneTextAbove,
-                                      textBelow: gapsInCoverageContent.panelOneChartOneTextBelow,
-                                      textInfo: gapsInCoverageContent.panelOneChartOneInfoText,
-                                  },
-                              ],
+                              visuals: gapsInCoverageContent.hasPanelOneChartOne
+                                  ? [
+                                        {
+                                            visual: gapsInCoverageContent.panelOneChartOne,
+                                            title:
+                                                gapsInCoverageContent.panelOneChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelOneChartOneTitle
+                                                    : undefined,
+                                            textAbove: gapsInCoverageContent.panelOneChartOneTextAbove,
+                                            textBelow: gapsInCoverageContent.panelOneChartOneTextBelow,
+                                            textInfo: gapsInCoverageContent.panelOneChartOneInfoText,
+                                        },
+                                    ]
+                                  : [],
                           },
                       },
                       {
@@ -79,6 +85,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelTwoMainText,
                               progressText: gapsInCoverageContent.panelTwoProgressText,
                               showDialogInFullScreen: isSmallScreen,
+                              visuals: gapsInCoverageContent.hasPanelTwoChartOne
+                                  ? [
+                                        {
+                                            visual: gapsInCoverageContent.panelTwoChartOne,
+                                            title:
+                                                gapsInCoverageContent.panelTwoChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelTwoChartOneTitle
+                                                    : undefined,
+                                            textBelow: gapsInCoverageContent.panelTwoChartOneTextBelow,
+                                            textAbove: gapsInCoverageContent.panelTwoChartOneTextAbove,
+                                            textInfo: gapsInCoverageContent.panelTwoChartOneInfoText,
+                                        },
+                                    ]
+                                  : [],
                           },
                       },
                       {
@@ -91,15 +111,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelThreeMainText,
                               progressText: gapsInCoverageContent.panelThreeProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: [
-                                  {
-                                      visual: gapsInCoverageContent.panelThreeChartOne,
-                                      title: "Population coverage, the main basis for entitlement to publicly financed health care and catastrophic health spending, latest available year",
-                                      textBelow: gapsInCoverageContent.panelThreeChartOneTextBelow,
-                                      textAbove: gapsInCoverageContent.panelThreeChartOneTextAbove,
-                                      textInfo: gapsInCoverageContent.panelThreeChartOneInfoText,
-                                  },
-                              ],
+                              visuals: gapsInCoverageContent.hasPanelThreeChartOne
+                                  ? [
+                                        {
+                                            visual: gapsInCoverageContent.panelThreeChartOne,
+                                            title:
+                                                gapsInCoverageContent.panelThreeChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelThreeChartOneTitle
+                                                    : undefined,
+                                            textBelow: gapsInCoverageContent.panelThreeChartOneTextBelow,
+                                            textAbove: gapsInCoverageContent.panelThreeChartOneTextAbove,
+                                            textInfo: gapsInCoverageContent.panelThreeChartOneInfoText,
+                                        },
+                                    ]
+                                  : [],
                           },
                       },
                       {
@@ -112,15 +137,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelFourMainText,
                               progressText: gapsInCoverageContent.panelFourProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: [
-                                  {
-                                      visual: gapsInCoverageContent.panelFourChartOne,
-                                      title: "Entitlements for undocumented migrants, 2025",
-                                      textBelow: gapsInCoverageContent.panelFourChartOneTextBelow,
-                                      textAbove: gapsInCoverageContent.panelFourChartOneTextAbove,
-                                      textInfo: gapsInCoverageContent.panelFourChartOneInfoText,
-                                  },
-                              ],
+                              visuals: gapsInCoverageContent.hasPanelFourChartOne
+                                  ? [
+                                        {
+                                            visual: gapsInCoverageContent.panelFourChartOne,
+                                            title:
+                                                gapsInCoverageContent.panelFourChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelFourChartOneTitle
+                                                    : undefined,
+                                            textBelow: gapsInCoverageContent.panelFourChartOneTextBelow,
+                                            textAbove: gapsInCoverageContent.panelFourChartOneTextAbove,
+                                            textInfo: gapsInCoverageContent.panelFourChartOneInfoText,
+                                        },
+                                    ]
+                                  : [],
                           },
                       },
                       {
@@ -134,28 +164,44 @@ export function useRegionalGapsInCoverage(
                               progressText: gapsInCoverageContent.panelFiveProgressText,
                               showDialogInFullScreen: isSmallScreen,
                               visuals: [
-                                  {
-                                      visual: gapsInCoverageContent.panelFiveChartOne,
-                                      title: "User charges (co-payments) for covered health care by type of care, latest available year",
-                                      textAbove: gapsInCoverageContent.panelFiveChartOneTextAbove,
-                                      textBelow: gapsInCoverageContent.panelFiveChartOneTextBelow,
-                                      textInfo: gapsInCoverageContent.panelFiveChartOneInfoText,
-                                  },
-                                  {
-                                      visual: gapsInCoverageContent.panelFiveChartTwo,
-                                      title: "The design of user charges for outpatient prescribed medicines and catastrophic health spending, latest available year",
-                                      textAbove: gapsInCoverageContent.panelFiveChartTwoTextAbove,
-                                      textBelow: gapsInCoverageContent.panelFiveChartTwoTextBelow,
-                                      textInfo: gapsInCoverageContent.panelFiveChartTwoInfoText,
-                                  },
-                                  {
-                                      visual: gapsInCoverageContent.panelFiveChartThree,
-                                      title: "Use of income-based caps to protect people from all co-payments, 2025",
-                                      textAbove: gapsInCoverageContent.panelFiveChartThreeTextAbove,
-                                      textBelow: gapsInCoverageContent.panelFiveChartThreeTextBelow,
-                                      textInfo: gapsInCoverageContent.panelFiveChartThreeInfoText,
-                                  },
-                              ],
+                                  gapsInCoverageContent.hasPanelFiveChartOne
+                                      ? {
+                                            visual: gapsInCoverageContent.panelFiveChartOne,
+                                            title:
+                                                gapsInCoverageContent.panelFiveChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelFiveChartOneTitle
+                                                    : undefined,
+                                            textAbove: gapsInCoverageContent.panelFiveChartOneTextAbove,
+                                            textBelow: gapsInCoverageContent.panelFiveChartOneTextBelow,
+                                            textInfo: gapsInCoverageContent.panelFiveChartOneInfoText,
+                                        }
+                                      : undefined,
+
+                                  gapsInCoverageContent.hasPanelFiveChartTwo
+                                      ? {
+                                            visual: gapsInCoverageContent.panelFiveChartTwo,
+                                            title:
+                                                gapsInCoverageContent.panelFiveChartTwoTitle !== ""
+                                                    ? gapsInCoverageContent.panelFiveChartTwoTitle
+                                                    : undefined,
+                                            textAbove: gapsInCoverageContent.panelFiveChartTwoTextAbove,
+                                            textBelow: gapsInCoverageContent.panelFiveChartTwoTextBelow,
+                                            textInfo: gapsInCoverageContent.panelFiveChartTwoInfoText,
+                                        }
+                                      : undefined,
+                                  gapsInCoverageContent.hasPanelFiveChartThree
+                                      ? {
+                                            visual: gapsInCoverageContent.panelFiveChartThree,
+                                            title:
+                                                gapsInCoverageContent.panelFiveChartThreeTitle !== ""
+                                                    ? gapsInCoverageContent.panelFiveChartThreeTitle
+                                                    : undefined,
+                                            textAbove: gapsInCoverageContent.panelFiveChartThreeTextAbove,
+                                            textBelow: gapsInCoverageContent.panelFiveChartThreeTextBelow,
+                                            textInfo: gapsInCoverageContent.panelFiveChartThreeInfoText,
+                                        }
+                                      : undefined,
+                              ].filter(visual => visual !== undefined),
                           },
                       },
                       {
@@ -168,15 +214,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelSixMainText,
                               progressText: gapsInCoverageContent.panelSixProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: [
-                                  {
-                                      visual: gapsInCoverageContent.panelSixChartOne,
-                                      title: "Breakdown of catastrophic health spending by type of care on average and in the poorest quintile, latest available year",
-                                      textAbove: gapsInCoverageContent.panelSixChartOneTextAbove,
-                                      textBelow: gapsInCoverageContent.panelSixChartOneTextBelow,
-                                      textInfo: gapsInCoverageContent.panelSixChartOneInfoText,
-                                  },
-                              ],
+                              visuals: gapsInCoverageContent.hasPanelSixChartOne
+                                  ? [
+                                        {
+                                            visual: gapsInCoverageContent.panelSixChartOne,
+                                            title:
+                                                gapsInCoverageContent.panelSixChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelSixChartOneTitle
+                                                    : undefined,
+                                            textAbove: gapsInCoverageContent.panelSixChartOneTextAbove,
+                                            textBelow: gapsInCoverageContent.panelSixChartOneTextBelow,
+                                            textInfo: gapsInCoverageContent.panelSixChartOneInfoText,
+                                        },
+                                    ]
+                                  : [],
                           },
                       },
                       {
@@ -189,14 +240,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelSevenMainText,
                               progressText: gapsInCoverageContent.panelSevenProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: [
-                                  {
-                                      visual: gapsInCoverageContent.panelSevenChartOne,
-                                      textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
-                                      textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
-                                      textInfo: gapsInCoverageContent.panelSevenChartOneInfoText,
-                                  },
-                              ],
+                              visuals: gapsInCoverageContent.hasPanelSevenChartOne
+                                  ? [
+                                        {
+                                            title:
+                                                gapsInCoverageContent.panelSevenChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelSevenChartOneTitle
+                                                    : undefined,
+                                            visual: gapsInCoverageContent.panelSevenChartOne,
+                                            textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
+                                            textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
+                                            textInfo: gapsInCoverageContent.panelSevenChartOneInfoText,
+                                        },
+                                    ]
+                                  : [],
                           },
                       },
                   ]

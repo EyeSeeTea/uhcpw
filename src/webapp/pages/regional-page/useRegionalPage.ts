@@ -141,7 +141,8 @@ export function useRegionalPage(): RegionalPageState {
         policyChecklist.onSelectChecklistItem(undefined);
         setExpandedSectionsAccordion(undefined);
         regionNumbers.onResetTabs();
-    }, [policyChecklist, regionNumbers]);
+        gapsInCoverage.onResetTabs();
+    }, [policyChecklist, regionNumbers, gapsInCoverage]);
 
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
