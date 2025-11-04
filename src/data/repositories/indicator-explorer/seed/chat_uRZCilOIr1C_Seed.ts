@@ -11,4 +11,5 @@ export const chat_uRZCilOIr1C_Seed: VisualizationExtra = {
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
     needsToFilterZeroValues: true,
+    needsRounding: true,
 };

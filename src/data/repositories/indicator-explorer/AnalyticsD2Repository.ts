@@ -31,6 +31,7 @@ import { getVisualizationTemplate } from "./visualization-template/getVisualizat
 import { Region } from "../../../domain/entities/region/Region";
 import { getYearByIndicatorAndCountry } from "../../../webapp/components/visualization/manual/chart_kIpnMBaBvZ9_Options";
 import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
+import { ceilAnalyticsRows } from "./utils/ceilAnalyticsRows";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -88,7 +89,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     return Future.error<string, Analytics>("No data found");
                 }
 
-                return Future.success(analyticsResponse);
+                const analytics = visualization.needsRounding
+                    ? {
+                          ...analyticsResponse,
+                          rows: ceilAnalyticsRows(analyticsResponse),
+                      }
+                    : analyticsResponse;
+
+                return Future.success(analytics);
             })
             .flatMapError(_error => {
                 //console.log(error);
