@@ -150,7 +150,7 @@ export function useRegionalPage(): RegionalPageState {
     }, [history.location.search, regionOptions]);
 
     const resetSelectedValues = useCallback(() => {
-        policyChecklist.onSelectChecklistItem(undefined);
+        policyChecklist.onCleanSelection();
         setExpandedSectionsAccordion(undefined);
         regionNumbers.onResetTabs();
     }, [policyChecklist, regionNumbers]);
@@ -264,7 +264,7 @@ export function useRegionalPage(): RegionalPageState {
                     textSectionRight: content?.policyChecklistContent.textSectionRight || "",
                     checklist: policyChecklist?.checklist,
                     filteredCountryExperiences: policyChecklist?.filteredCountryExperiences,
-                    selectedChecklistItem: policyChecklist.selectedChecklistItem,
+                    selectedChecklistItems: policyChecklist.selectedChecklistItems,
                     onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
                     isLoading: policyChecklist.isLoading,
                     isSmallScreen: isSmallScreen,
@@ -282,7 +282,7 @@ export function useRegionalPage(): RegionalPageState {
         policyChecklist?.filteredCountryExperiences,
         policyChecklist.isLoading,
         policyChecklist.onSelectChecklistItem,
-        policyChecklist.selectedChecklistItem,
+        policyChecklist.selectedChecklistItems,
         refs.experts,
         refs.numbers,
         refs.policyChecklist,
@@ -343,8 +343,9 @@ export function useRegionalPage(): RegionalPageState {
             },
             checklist: policyChecklist.checklist,
             filteredCountryExperiences: policyChecklist.filteredCountryExperiences,
-            selectedChecklistItem: policyChecklist.selectedChecklistItem,
+            selectedChecklistItems: policyChecklist.selectedChecklistItems,
             onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
+            onCleanSelection: policyChecklist.onCleanSelection,
             isLoading: isLoading || policyChecklist.isLoading,
         },
         regionNumbers: regionNumbers,

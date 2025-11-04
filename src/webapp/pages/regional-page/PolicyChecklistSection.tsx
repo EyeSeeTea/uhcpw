@@ -7,19 +7,18 @@ import ReactMarkdown, { Components } from "react-markdown";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import i18n from "../../../locales";
 import { Maybe } from "../../../types/utils";
-import { ChecklistPolicyMakersData } from "../../../domain/entities/region/ChecklistPolicyMakers";
 import { Id } from "../../../domain/entities/Ref";
 import { colors } from "../app/themes/dhis2.theme";
-import { CountryExperienceData } from "./useRegionalPolicyChecklist";
+import { ChecklistPolicyMakersWithCountries, CountryExperienceData } from "./useRegionalPolicyChecklist";
 import { CountryExperienceBox } from "./CountryExperienceBox";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 type PolicyChecklistSectionProps = {
     textSectionLeft: string;
     textSectionRight: string;
-    checklist: Maybe<ChecklistPolicyMakersData[]>;
+    checklist: Maybe<ChecklistPolicyMakersWithCountries[]>;
     filteredCountryExperiences: Maybe<CountryExperienceData[]>;
-    selectedChecklistItem: Id | undefined;
+    selectedChecklistItems: Id[] | undefined;
     onSelectChecklistItem: (id: Id) => void;
     isLoading: boolean;
     isSmallScreen: boolean;
@@ -31,7 +30,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
         textSectionRight,
         checklist,
         filteredCountryExperiences,
-        selectedChecklistItem,
+        selectedChecklistItems,
         onSelectChecklistItem,
         isLoading,
         isSmallScreen,
@@ -77,7 +76,13 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                             <StyledTable>
                                 <TableBody>
                                     {checklist.map(item => (
-                                        <StyledTableRow key={item.id} onClick={() => onSelectChecklistItem(item.id)}>
+                                        <StyledTableRow
+                                            key={item.id}
+                                            onClick={() =>
+                                                item.countryExperiencesIds.length !== 0 &&
+                                                onSelectChecklistItem(item.id)
+                                            }
+                                        >
                                             <StyledTableCell>
                                                 <ReactMarkdown components={markdownComponents}>
                                                     {item.text}
@@ -85,16 +90,18 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                             </StyledTableCell>
 
                                             <StyledTableCell align="right">
-                                                <StyledIconButton
-                                                    onClick={() => onSelectChecklistItem(item.id)}
-                                                    $isSelected={selectedChecklistItem === item.id}
-                                                >
-                                                    {selectedChecklistItem === item.id ? (
-                                                        <CheckCircle color="primary" />
-                                                    ) : (
-                                                        <CheckCircleOutline />
-                                                    )}
-                                                </StyledIconButton>
+                                                {item.countryExperiencesIds.length === 0 ? null : (
+                                                    <StyledIconButton
+                                                        onClick={() => onSelectChecklistItem(item.id)}
+                                                        $isSelected={selectedChecklistItems?.includes(item.id)}
+                                                    >
+                                                        {selectedChecklistItems?.includes(item.id) ? (
+                                                            <CheckCircle />
+                                                        ) : (
+                                                            <CheckCircleOutline />
+                                                        )}
+                                                    </StyledIconButton>
+                                                )}
                                             </StyledTableCell>
                                         </StyledTableRow>
                                     ))}

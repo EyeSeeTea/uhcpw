@@ -97,7 +97,7 @@ export const RegionalPage: React.FC = () => {
                             textSectionRight={policyChecklist.content.textSectionRight}
                             checklist={policyChecklist?.checklist}
                             filteredCountryExperiences={policyChecklist?.filteredCountryExperiences}
-                            selectedChecklistItem={policyChecklist.selectedChecklistItem}
+                            selectedChecklistItems={policyChecklist.selectedChecklistItems}
                             onSelectChecklistItem={policyChecklist.onSelectChecklistItem}
                             isLoading={policyChecklist.isLoading}
                             isSmallScreen={isSmallScreen}
