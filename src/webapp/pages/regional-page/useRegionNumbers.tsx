@@ -58,6 +58,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -81,6 +82,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -104,6 +106,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -138,6 +141,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -172,6 +176,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -217,6 +222,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,

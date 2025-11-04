@@ -65,6 +65,7 @@ export const RegionalPage: React.FC = () => {
                     regionMainMapPanelContent={mainPanelContent}
                     highlightedISO3Countries={highlightedISO3Countries}
                     className="region-map"
+                    isRegionPage
                 />
             </MapSection>
 

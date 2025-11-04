@@ -323,15 +323,17 @@ function getLastAvailableYearInRegion(
     analyticsResponse: Analytics[],
     isMultipleVisualizations: boolean,
     regionId: Id
-): string {
+): string | undefined {
     const rows = isMultipleVisualizations
         ? analyticsResponse.flatMap(analytics => analytics.rows)
         : analyticsResponse[0]?.rows || [];
 
-    return rows.reduce((lastAvailableYear, row): string => {
+    const lastAvailableYearInRegion = rows.reduce((lastAvailableYear, row): string => {
         const region = row[1]?.toString() || "";
         const year = row[2] || "";
 
         return regionId === region && year > lastAvailableYear ? year : lastAvailableYear;
     }, "0");
+
+    return lastAvailableYearInRegion !== "0" ? lastAvailableYearInRegion : undefined;
 }
