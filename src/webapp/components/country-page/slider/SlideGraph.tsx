@@ -66,7 +66,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
     );
 
     return (
-        <Container>
+        <Container $isRegionalPage={isRegionalPage}>
             {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
 
             {graphs.length > 0
@@ -125,9 +125,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $isRegionalPage?: boolean }>`
     max-width: 100%;
     padding: 20px 50px 30px 50px;
+    padding-inline: ${props => (props.$isRegionalPage ? "30px" : "50px")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;

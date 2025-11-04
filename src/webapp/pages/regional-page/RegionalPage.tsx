@@ -12,6 +12,7 @@ import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { colors } from "../app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel";
+import React from "react";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -25,6 +26,7 @@ export const RegionalPage: React.FC = () => {
         regionNumbers,
         highlightedISO3Countries,
         isEUorEuropeanRegion,
+        isEuropeanRegion,
         goTo,
         expandedSectionsAccordion,
         handleAccordionChange,
@@ -102,33 +104,37 @@ export const RegionalPage: React.FC = () => {
                         />
                     </section>
 
-                    <section ref={refs.resources}>
-                        <SectionTitleDivider isLighter>
-                            <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/resources")}>
-                                {i18n.t("Resources")}
-                            </SectionTitle>
-                        </SectionTitleDivider>
+                    {!isEuropeanRegion ? (
+                        <React.Fragment>
+                            <section ref={refs.resources}>
+                                <SectionTitleDivider isLighter>
+                                    <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/resources")}>
+                                        {i18n.t("Resources")}
+                                    </SectionTitle>
+                                </SectionTitleDivider>
 
-                        {!isEUorEuropeanRegion && (
-                            <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
-                        )}
-                    </section>
+                                {!isEUorEuropeanRegion && (
+                                    <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
+                                )}
+                            </section>
 
-                    <section ref={refs.experts}>
-                        <SectionTitleDivider isLighter>
-                            <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
-                                {i18n.t("Expert network")}
-                            </SectionTitle>
-                        </SectionTitleDivider>
+                            <section ref={refs.experts}>
+                                <SectionTitleDivider isLighter>
+                                    <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
+                                        {i18n.t("Expert network")}
+                                    </SectionTitle>
+                                </SectionTitleDivider>
 
-                        {!isEUorEuropeanRegion && (
-                            <CountryExpert
-                                countryIds={selectedRegion?.countries || []}
-                                isRegionalPage
-                                isSmallScreen={isSmallScreen}
-                            />
-                        )}
-                    </section>
+                                {!isEUorEuropeanRegion && (
+                                    <CountryExpert
+                                        countryIds={selectedRegion?.countries || []}
+                                        isRegionalPage
+                                        isSmallScreen={isSmallScreen}
+                                    />
+                                )}
+                            </section>
+                        </React.Fragment>
+                    ) : null}
                 </>
             ) : (
                 <AccordionPanel

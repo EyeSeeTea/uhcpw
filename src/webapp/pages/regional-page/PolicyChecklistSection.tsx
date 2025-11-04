@@ -77,7 +77,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                             <StyledTable>
                                 <TableBody>
                                     {checklist.map(item => (
-                                        <TableRow key={item.id}>
+                                        <StyledTableRow key={item.id} onClick={() => onSelectChecklistItem(item.id)}>
                                             <StyledTableCell>
                                                 <ReactMarkdown components={markdownComponents}>
                                                     {item.text}
@@ -85,15 +85,18 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                             </StyledTableCell>
 
                                             <StyledTableCell align="right">
-                                                <IconButton onClick={() => onSelectChecklistItem(item.id)}>
+                                                <StyledIconButton
+                                                    onClick={() => onSelectChecklistItem(item.id)}
+                                                    $isSelected={selectedChecklistItem === item.id}
+                                                >
                                                     {selectedChecklistItem === item.id ? (
                                                         <CheckCircle color="primary" />
                                                     ) : (
                                                         <CheckCircleOutline />
                                                     )}
-                                                </IconButton>
+                                                </StyledIconButton>
                                             </StyledTableCell>
-                                        </TableRow>
+                                        </StyledTableRow>
                                     ))}
                                 </TableBody>
                             </StyledTable>
@@ -129,6 +132,18 @@ const Container = styled.div`
     }
 `;
 
+const StyledTableRow = styled(TableRow)`
+    cursor: pointer;
+`;
+
+const StyledIconButton = styled(IconButton)<{ $isSelected?: boolean }>`
+    padding: 0;
+    svg {
+        font-size: 28px;
+        color: ${props => (props.$isSelected ? colors.green : colors.accentPrimary)};
+    }
+`;
+
 const Title = styled(Typography)`
     font-family: Lato;
     color: ${colors.blue};
@@ -143,8 +158,8 @@ const Title = styled(Typography)`
 
 const ContentWrapper = styled.div`
     display: grid;
-    grid-template-columns: minmax(0, 45%) minmax(0, 55%);
-    gap: 16px;
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    gap: 50px;
     width: 100%;
     align-items: stretch;
     > * {
@@ -168,7 +183,7 @@ const TableContainer = styled.div`
 `;
 
 const CountryExperiencesContainer = styled.div`
-    background-color: ${colors.blue10};
+    background-color: ${colors.white};
     width: 100%;
     height: 100%;
     align-self: center;
@@ -203,6 +218,7 @@ const StyledTableCell = styled(TableCell)`
     font-weight: 500;
     background-color: ${colors.blue10};
     color: black;
+    align-content: "start";
 `;
 
 const Text = styled(Typography)`

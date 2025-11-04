@@ -6,6 +6,7 @@ import { getMaxYAxisAndYTickInterval } from "./utils/getMaxYAxisAndYTickInterval
 import { baseChartOptions } from "./generic/baseChartOptions";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../utils/getMaxAxisAndTickInterval";
+import { ORG_UNIT_GROUP_IDS } from "../../../../domain/entities/region/Region";
 
 const orderByValueInSerie = "WmOGqGcov4f";
 
@@ -89,6 +90,11 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
 
     const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(series);
 
+    const noRotateLabels =
+        chartSource.isRegionalPage &&
+        (currentRegion?.id === ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA ||
+            currentRegion?.id === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS);
+
     return {
         ...baseChartOptions,
         chart: {
@@ -98,7 +104,7 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
             title: "",
             type: "category",
             labels: {
-                rotation: -90,
+                rotation: noRotateLabels ? 0 : -90,
                 formatter: function () {
                     const countryLabel = (this.value as string).split(" ")[0];
 

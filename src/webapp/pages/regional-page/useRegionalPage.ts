@@ -60,6 +60,7 @@ export type RegionalPageState = {
     regionNumbers: RegionNumbersState;
     highlightedISO3Countries: string[];
     isEUorEuropeanRegion: boolean;
+    isEuropeanRegion: boolean;
     goTo: (link: string) => void;
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     expandedSectionsAccordion: AccordionConfig | undefined;
@@ -110,15 +111,30 @@ export function useRegionalPage(): RegionalPageState {
         [selectedRegionId]
     );
 
+    const isEuropeanRegion = useMemo(() => selectedRegionId === ORG_UNIT_GROUP_IDS.EUROPEAN_REGION, [selectedRegionId]);
+
     const menuItemsConfig: RegionalMenuItemConfig[] = useMemo(() => {
+        const resourcesAndExpertsSections: RegionalMenuItemConfig[] = isEuropeanRegion
+            ? []
+            : [
+                  {
+                      id: "resources",
+                      label: i18n.t("Resources"),
+                      ref: refs.resources,
+                  },
+                  {
+                      id: "experts",
+                      label: i18n.t("Experts"),
+                      ref: refs.experts,
+                  },
+              ];
         return [
             { id: "regionMap", label: i18n.t("The region at a glance"), ref: refs.regionMap },
             { id: "numbers", label: i18n.t("Numbers"), ref: refs.numbers },
             { id: "policyChecklist", label: i18n.t("Policy checklist"), ref: refs.policyChecklist },
-            { id: "resources", label: i18n.t("Resources"), ref: refs.resources },
-            { id: "experts", label: i18n.t("Experts"), ref: refs.experts },
+            ...resourcesAndExpertsSections,
         ];
-    }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources]);
+    }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources, isEuropeanRegion]);
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -183,8 +199,43 @@ export function useRegionalPage(): RegionalPageState {
         [history]
     );
 
-    const sectionsAccordionConfig: AccordionConfig[] = useMemo(
-        () => [
+    const sectionsAccordionConfig: AccordionConfig[] = useMemo(() => {
+        const resourcesAndExpertsSections = isEuropeanRegion
+            ? []
+            : [
+                  {
+                      tab: 2,
+                      tabTitle: i18n.t("Resources"),
+                      onTitleClick: isEUorEuropeanRegion
+                          ? () => {
+                                goTo("/resources");
+                            }
+                          : undefined,
+                      isSecondaryGradientColor: true,
+                      hasExpandIcon: !isEUorEuropeanRegion,
+                      Component: isEUorEuropeanRegion ? null : CountryResources,
+                      disabled: isEUorEuropeanRegion,
+                      ref: refs.resources,
+                      props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
+                  },
+                  {
+                      tab: 3,
+                      tabTitle: i18n.t("Expert network"),
+                      onTitleClick: isEUorEuropeanRegion
+                          ? () => {
+                                goTo("/about");
+                            }
+                          : undefined,
+                      isSecondaryGradientColor: true,
+                      hasExpandIcon: !isEUorEuropeanRegion,
+                      Component: isEUorEuropeanRegion ? null : CountryExpert,
+                      disabled: isEUorEuropeanRegion,
+                      ref: refs.experts,
+                      props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
+                  },
+              ];
+
+        return [
             {
                 tab: 0,
                 tabTitle: i18n.t("Numbers: financial hardship, unmet need and spending on health"),
@@ -218,61 +269,32 @@ export function useRegionalPage(): RegionalPageState {
                     isLoading: policyChecklist.isLoading,
                     isSmallScreen: isSmallScreen,
                 },
+                ...resourcesAndExpertsSections,
             },
-            {
-                tab: 2,
-                tabTitle: i18n.t("Resources"),
-                onTitleClick: isEUorEuropeanRegion
-                    ? () => {
-                          goTo("/resources");
-                      }
-                    : undefined,
-                isSecondaryGradientColor: true,
-                hasExpandIcon: !isEUorEuropeanRegion,
-                Component: isEUorEuropeanRegion ? null : CountryResources,
-                disabled: isEUorEuropeanRegion,
-                ref: refs.resources,
-                props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
-            },
-            {
-                tab: 3,
-                tabTitle: i18n.t("Expert network"),
-                onTitleClick: isEUorEuropeanRegion
-                    ? () => {
-                          goTo("/about");
-                      }
-                    : undefined,
-                isSecondaryGradientColor: true,
-                hasExpandIcon: !isEUorEuropeanRegion,
-                Component: isEUorEuropeanRegion ? null : CountryExpert,
-                disabled: isEUorEuropeanRegion,
-                ref: refs.experts,
-                props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
-            },
-        ],
-        [
-            content?.policyChecklistContent.textSectionLeft,
-            content?.policyChecklistContent.textSectionRight,
-            goTo,
-            isEUorEuropeanRegion,
-            isSmallScreen,
-            policyChecklist?.checklist,
-            policyChecklist?.filteredCountryExperiences,
-            policyChecklist.isLoading,
-            policyChecklist.onSelectChecklistItem,
-            policyChecklist.selectedChecklistItem,
-            refs.experts,
-            refs.numbers,
-            refs.policyChecklist,
-            refs.resources,
-            regionNumbers.configs,
-            regionNumbers.expandedConfig,
-            regionNumbers.handleAccordionChange,
-            regionNumbers.handleTabChange,
-            regionNumbers.tabValue,
-            selectedRegion?.countries,
-        ]
-    );
+        ];
+    }, [
+        content?.policyChecklistContent.textSectionLeft,
+        content?.policyChecklistContent.textSectionRight,
+        goTo,
+        isEUorEuropeanRegion,
+        isSmallScreen,
+        policyChecklist?.checklist,
+        policyChecklist?.filteredCountryExperiences,
+        policyChecklist.isLoading,
+        policyChecklist.onSelectChecklistItem,
+        policyChecklist.selectedChecklistItem,
+        refs.experts,
+        refs.numbers,
+        refs.policyChecklist,
+        refs.resources,
+        regionNumbers.configs,
+        regionNumbers.expandedConfig,
+        regionNumbers.handleAccordionChange,
+        regionNumbers.handleTabChange,
+        regionNumbers.tabValue,
+        selectedRegion?.countries,
+        isEuropeanRegion,
+    ]);
 
     const handleHeaderItemClick = useCallback(
         (item: RegionalMenuItem) => {
@@ -328,6 +350,7 @@ export function useRegionalPage(): RegionalPageState {
         regionNumbers: regionNumbers,
         highlightedISO3Countries: highlightedISO3Countries,
         isEUorEuropeanRegion: isEUorEuropeanRegion,
+        isEuropeanRegion: isEuropeanRegion,
         goTo: goTo,
         handleAccordionChange: handleAccordionChange,
         expandedSectionsAccordion: expandedSectionsAccordion,

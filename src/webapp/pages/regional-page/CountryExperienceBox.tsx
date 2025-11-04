@@ -63,23 +63,22 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
     return (
         <CountryExperienceContent>
-            <StyledIconButton onClick={() => setShowReferences(true)} $color="#185698" padding="4px">
-                <CustomInfoIconCountry color="primary" className="info-button" />
-            </StyledIconButton>
-
             <StyledTitle variant="h6" gutterBottom>
                 {title}
             </StyledTitle>
 
             {expanded ? (
                 <Content>
+                    <StyledIconButton onClick={() => setShowReferences(true)} $color="#185698" padding="4px">
+                        <CustomInfoIconCountry color="primary" className="info-button" />
+                    </StyledIconButton>
                     <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
                     <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => setExpanded(false)}>
                         {i18n.t("Click here to read less")}
                     </StyledReadMoreButton>
                 </Content>
             ) : (
-                <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => setExpanded(true)} marginLeft="8px">
+                <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => setExpanded(true)}>
                     {i18n.t("Click here to read more")}
                 </StyledReadMoreButton>
             )}
@@ -113,15 +112,14 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 };
 
 const Content = styled.div`
-    padding: 16px;
+    padding: 16px 16px 16px 0;
     color: ${colors.black};
 `;
 
 const CountryExperienceContent = styled.div`
     padding: 20px;
-    margin: 20px;
-    background-color: ${colors.blue5};
-    border: 1px solid ${colors.darkBlue};
+    margin-bottom: 24px;
+    background-color: ${colors.blue10};
     position: relative;
     display: flex;
     flex-direction: column;
@@ -133,6 +131,7 @@ const StyledTitle = styled(Typography)`
     color: ${colors.black};
 
     &.MuiTypography-h6 {
+        font-size: 16px;
         font-weight: bold;
     }
 `;
@@ -140,16 +139,19 @@ const StyledTitle = styled(Typography)`
 const StyledText = styled(Typography)`
     font-family: Lato;
     color: ${colors.black};
+    font-size: 16px;
 `;
 
 const StyledLi = styled.li`
     line-height: 1.43;
     color: ${colors.black};
+    font-size: 16px;
 `;
 
 const StyledUl = styled.ul`
     padding-inline-start: 14px;
     color: ${colors.black};
+    font-size: 16px;
 `;
 
 const TextLink = styled.a`
@@ -162,9 +164,8 @@ const TextLink = styled.a`
 `;
 
 const StyledLink = styled(Button)`
-    font-size: 14px;
-    font-weight: bold;
-
+    font-size: 16px;
+    padding-left: 0;
     span {
         color: black;
         text-decoration: none;
@@ -188,7 +189,7 @@ const CustomInfoIconCountry = styled(InfoIcon)`
 const StyledReadMoreButton = styled(Button)<{ marginLeft?: string }>`
     text-transform: none;
     color: ${colors.black};
-    font-weight: bold;
+    font-size: 16px;
     padding: 0;
     margin: 0;
     margin-left: ${props => props.marginLeft || "0"};
