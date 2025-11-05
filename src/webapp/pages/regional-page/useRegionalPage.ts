@@ -23,8 +23,10 @@ import {
     formatCountryOrRegionParamName,
     parseCountryOrRegionParamToName,
 } from "../../utils/formatCountryOrRegionParamName";
+import { GapsInCoverageSection } from "./GapsInCoverageSection";
+import { RegionalGapsInCoverageState, useRegionalGapsInCoverage } from "./useRegionalGapsInCoverage";
 
-export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
+export type RegionalMenuItem = "regionMap" | "numbers" | "gapsInCoverage" | "policyChecklist" | "resources" | "experts";
 
 export type RegionalMenuItemConfig = {
     id: RegionalMenuItem;
@@ -58,6 +60,7 @@ export type RegionalPageState = {
         };
     };
     regionNumbers: RegionNumbersState;
+    gapsInCoverage: RegionalGapsInCoverageState;
     highlightedISO3Countries: string[];
     isEUorEuropeanRegion: boolean;
     isEuropeanRegion: boolean;
@@ -76,6 +79,7 @@ export function useRegionalPage(): RegionalPageState {
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
     const { content, isLoading } = useRegionalPageContent(selectedRegionId);
     const regionNumbers = useRegionNumbers(selectedRegionId, content?.numbersPanelContent);
+    const gapsInCoverage = useRegionalGapsInCoverage(selectedRegionId, content?.gapsInCoverageContent);
     const policyChecklist = useRegionalPolicyChecklist();
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
@@ -89,6 +93,7 @@ export function useRegionalPage(): RegionalPageState {
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
+    const gapsInCoverageRef = useRef<HTMLElement | null>(null);
     const policyChecklistRef = useRef<HTMLElement | null>(null);
     const resourcesRef = useRef<HTMLElement | null>(null);
     const expertsRef = useRef<HTMLElement | null>(null);
@@ -97,6 +102,7 @@ export function useRegionalPage(): RegionalPageState {
         () => ({
             regionMap: regionMapRef,
             numbers: numbersRef,
+            gapsInCoverage: gapsInCoverageRef,
             policyChecklist: policyChecklistRef,
             resources: resourcesRef,
             experts: expertsRef,
@@ -131,10 +137,19 @@ export function useRegionalPage(): RegionalPageState {
         return [
             { id: "regionMap", label: i18n.t("The region at a glance"), ref: refs.regionMap },
             { id: "numbers", label: i18n.t("Numbers"), ref: refs.numbers },
+            { id: "gapsInCoverage", label: i18n.t("Gaps in coverage"), ref: refs.gapsInCoverage },
             { id: "policyChecklist", label: i18n.t("Policy checklist"), ref: refs.policyChecklist },
             ...resourcesAndExpertsSections,
         ];
-    }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources, isEuropeanRegion]);
+    }, [
+        refs.experts,
+        refs.gapsInCoverage,
+        refs.numbers,
+        refs.policyChecklist,
+        refs.regionMap,
+        refs.resources,
+        isEuropeanRegion,
+    ]);
 
     const filterInParams = useMemo(() => {
         const searchParams = new URLSearchParams(history.location.search);
@@ -153,7 +168,8 @@ export function useRegionalPage(): RegionalPageState {
         policyChecklist.onCleanSelection();
         setExpandedSectionsAccordion(undefined);
         regionNumbers.onResetTabs();
-    }, [policyChecklist, regionNumbers]);
+        gapsInCoverage.onResetTabs();
+    }, [policyChecklist, regionNumbers, gapsInCoverage]);
 
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
@@ -204,7 +220,7 @@ export function useRegionalPage(): RegionalPageState {
             ? []
             : [
                   {
-                      tab: 2,
+                      tab: 3,
                       tabTitle: i18n.t("Resources"),
                       onTitleClick: isEUorEuropeanRegion
                           ? () => {
@@ -219,7 +235,7 @@ export function useRegionalPage(): RegionalPageState {
                       props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
                   },
                   {
-                      tab: 3,
+                      tab: 4,
                       tabTitle: i18n.t("Expert network"),
                       onTitleClick: isEUorEuropeanRegion
                           ? () => {
@@ -254,6 +270,22 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 1,
+                tabTitle: i18n.t("The story behind the numbers: gaps in coverage"),
+                isGradientColor: true,
+                hasExpandIcon: true,
+                Component: GapsInCoverageSection,
+                ref: refs.gapsInCoverage,
+                props: {
+                    configs: gapsInCoverage.configs,
+                    tabValue: gapsInCoverage.tabValue,
+                    expandedConfig: gapsInCoverage.expandedConfig,
+                    handleAccordionChange: gapsInCoverage.handleAccordionChange,
+                    handleTabChange: gapsInCoverage.handleTabChange,
+                    isSmallScreen: isSmallScreen,
+                },
+            },
+            {
+                tab: 2,
                 tabTitle: i18n.t("Progress is possible: a checklist for policy-makers"),
                 isGradientColor: true,
                 hasExpandIcon: true,
@@ -273,31 +305,44 @@ export function useRegionalPage(): RegionalPageState {
             ...resourcesAndExpertsSections,
         ];
     }, [
-        content?.policyChecklistContent.textSectionLeft,
-        content?.policyChecklistContent.textSectionRight,
-        goTo,
+        isEuropeanRegion,
         isEUorEuropeanRegion,
-        isSmallScreen,
-        policyChecklist?.checklist,
-        policyChecklist?.filteredCountryExperiences,
-        policyChecklist.isLoading,
-        policyChecklist.onSelectChecklistItem,
-        policyChecklist.selectedChecklistItems,
+        refs.resources,
         refs.experts,
         refs.numbers,
+        refs.gapsInCoverage,
         refs.policyChecklist,
-        refs.resources,
+        selectedRegion?.countries,
         regionNumbers.configs,
+        regionNumbers.tabValue,
         regionNumbers.expandedConfig,
         regionNumbers.handleAccordionChange,
         regionNumbers.handleTabChange,
-        regionNumbers.tabValue,
-        selectedRegion?.countries,
-        isEuropeanRegion,
+        isSmallScreen,
+        gapsInCoverage.configs,
+        gapsInCoverage.tabValue,
+        gapsInCoverage.expandedConfig,
+        gapsInCoverage.handleAccordionChange,
+        gapsInCoverage.handleTabChange,
+        content?.policyChecklistContent.textSectionLeft,
+        content?.policyChecklistContent.textSectionRight,
+        policyChecklist?.checklist,
+        policyChecklist?.filteredCountryExperiences,
+        policyChecklist.selectedChecklistItems,
+        policyChecklist.onSelectChecklistItem,
+        policyChecklist.isLoading,
+        goTo,
     ]);
 
     const handleHeaderItemClick = useCallback(
         (item: RegionalMenuItem) => {
+            if (item === "regionMap") {
+                const targetRef = refs.regionMap;
+                targetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                setExpandedSectionsAccordion(undefined);
+                return;
+            }
+
             const sectionToExpand = getSectionAccordionConfigByHeaderItemId(item, sectionsAccordionConfig);
             if (isEUorEuropeanRegion && (item === "resources" || item === "experts")) {
                 const targetRef = refs[item];
@@ -349,6 +394,7 @@ export function useRegionalPage(): RegionalPageState {
             isLoading: isLoading || policyChecklist.isLoading,
         },
         regionNumbers: regionNumbers,
+        gapsInCoverage: gapsInCoverage,
         highlightedISO3Countries: highlightedISO3Countries,
         isEUorEuropeanRegion: isEUorEuropeanRegion,
         isEuropeanRegion: isEuropeanRegion,
@@ -368,12 +414,14 @@ function getSectionAccordionConfigByHeaderItemId(
     switch (item) {
         case "numbers":
             return sectionsAccordionConfig[0];
-        case "policyChecklist":
+        case "gapsInCoverage":
             return sectionsAccordionConfig[1];
-        case "resources":
+        case "policyChecklist":
             return sectionsAccordionConfig[2];
-        case "experts":
+        case "resources":
             return sectionsAccordionConfig[3];
+        case "experts":
+            return sectionsAccordionConfig[4];
         default:
             return undefined;
     }

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
@@ -12,7 +13,7 @@ import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { colors } from "../app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel";
-import React from "react";
+import { GapsInCoverageSection } from "./GapsInCoverageSection";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -24,6 +25,7 @@ export const RegionalPage: React.FC = () => {
         regionMap,
         policyChecklist,
         regionNumbers,
+        gapsInCoverage,
         highlightedISO3Countries,
         isEUorEuropeanRegion,
         isEuropeanRegion,
@@ -84,6 +86,21 @@ export const RegionalPage: React.FC = () => {
                             expandedConfig={regionNumbers.expandedConfig}
                             handleAccordionChange={regionNumbers.handleAccordionChange}
                             handleTabChange={regionNumbers.handleTabChange}
+                            isSmallScreen={isSmallScreen}
+                        />
+                    </section>
+
+                    <section ref={refs.gapsInCoverage}>
+                        <SectionTitleDivider onlyTopMargin>
+                            <SectionTitle>{i18n.t("The story behind the numbers: gaps in coverage")}</SectionTitle>
+                        </SectionTitleDivider>
+
+                        <GapsInCoverageSection
+                            configs={gapsInCoverage.configs}
+                            tabValue={gapsInCoverage.tabValue}
+                            expandedConfig={gapsInCoverage.expandedConfig}
+                            handleAccordionChange={gapsInCoverage.handleAccordionChange}
+                            handleTabChange={gapsInCoverage.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
                     </section>
@@ -156,6 +173,7 @@ export const RegionalPage: React.FC = () => {
 const MapSection = styled.section`
     height: 80vh;
     min-height: 620px;
+    scroll-margin-top: 80px;
 
     .region-map {
         height: calc(100% - 65px);

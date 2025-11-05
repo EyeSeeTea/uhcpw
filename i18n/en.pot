@@ -309,6 +309,9 @@ msgstr ""
 msgid "Numbers"
 msgstr ""
 
+msgid "Gaps in coverage"
+msgstr ""
+
 msgid "Policy checklist"
 msgstr ""
 
