@@ -5,21 +5,21 @@ import { Id } from "../../../domain/entities/Ref";
 import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 
 const initialData: InitialCoordinates = {
-    center: [13.675063, 51.751569],
+    center: [10.0, 55.0],
     maxZoom: 8,
     minZoom: 2.5,
-    zoom: 2.5,
+    zoom: 2.6,
 };
 
 const CENTER_BY_REGION: Record<Id, [number, number]> = {
-    [ORG_UNIT_GROUP_IDS.WESTERN_BALKANS]: [20.0, 43.5],
-    [ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA]: [60.0, 58.0],
+    [ORG_UNIT_GROUP_IDS.WESTERN_BALKANS]: [15.0, 42.5],
+    [ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA]: [35.0, 50.0],
     [ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES]: [22.0, 43.5],
 };
 
 const ZOOM_BY_REGION: Record<Id, number> = {
-    [ORG_UNIT_GROUP_IDS.WESTERN_BALKANS]: 3,
-    [ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA]: 2.5,
+    [ORG_UNIT_GROUP_IDS.WESTERN_BALKANS]: 5.5,
+    [ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA]: 3,
     [ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES]: 3,
 };
 

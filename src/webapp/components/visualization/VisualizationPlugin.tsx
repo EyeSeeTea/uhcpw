@@ -38,6 +38,7 @@ interface VisualizationPluginProps {
     isRegionalPage?: boolean;
     filterByLatestAvailableYearInRegion?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
+    setChartWithNoData?: (visualizationId: string) => void;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -64,6 +65,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         isRegionalPage = false,
         filterByLatestAvailableYearInRegion = false,
         visualizationIdInIndicatorExplorer,
+        setChartWithNoData,
     } = props;
 
     const history = useHistory();
@@ -183,9 +185,21 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationIdInIndicatorExplorer,
     ]);
 
-    return chartData.kind === "Loaded" &&
-        chartData.analytics.some(analytics => analytics.rows.length > 0) &&
-        yearsFilteredInChart.length > 0 ? (
+    const chartHasData = useMemo(() => {
+        return (
+            chartData.kind === "Loaded" &&
+            chartData.analytics.some(analytics => analytics.rows.length > 0) &&
+            yearsFilteredInChart.length > 0
+        );
+    }, [chartData, yearsFilteredInChart]);
+
+    useEffect(() => {
+        if (chartData.kind === "Loaded" && setChartWithNoData && !chartHasData) {
+            setChartWithNoData(visualizationId);
+        }
+    }, [chartData.kind, chartHasData, setChartWithNoData, visualizationId]);
+
+    return chartData.kind === "Loaded" && chartHasData ? (
         <VisualizationPluginContainer
             ref={ref}
             withoutBackground={withoutBackground}

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
@@ -27,10 +28,13 @@ export const RegionalPage: React.FC = () => {
         gapsInCoverage,
         highlightedISO3Countries,
         isEUorEuropeanRegion,
+        isEuropeanRegion,
         goTo,
         expandedSectionsAccordion,
         handleAccordionChange,
         sectionsAccordionConfig,
+        setPendingScrollTab,
+        pendingScrollTab,
     } = useRegionalPage();
 
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
@@ -38,7 +42,7 @@ export const RegionalPage: React.FC = () => {
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
 
     return (
-        <Layout enableRotation={isSmallScreen} disableMinHeight>
+        <Layout enableRotation={isSmallScreen} disableMinHeight isOverflowVisible>
             <Header
                 selectedRegion={selectedRegionId}
                 onRegionChange={onRegionChange}
@@ -51,7 +55,7 @@ export const RegionalPage: React.FC = () => {
             <MapSection ref={refs.regionMap}>
                 <SectionTitleDivider>
                     <SectionTitle>
-                        {i18n.t(`{{region}} at a glance`, {
+                        {i18n.t(`The {{region}} at a glance`, {
                             region: selectedRegion?.name,
                             interpolation: { escapeValue: false },
                         })}
@@ -63,6 +67,7 @@ export const RegionalPage: React.FC = () => {
                     regionMainMapPanelContent={mainPanelContent}
                     highlightedISO3Countries={highlightedISO3Countries}
                     className="region-map"
+                    isRegionPage
                 />
             </MapSection>
 
@@ -110,46 +115,53 @@ export const RegionalPage: React.FC = () => {
                             textSectionRight={policyChecklist.content.textSectionRight}
                             checklist={policyChecklist?.checklist}
                             filteredCountryExperiences={policyChecklist?.filteredCountryExperiences}
-                            selectedChecklistItem={policyChecklist.selectedChecklistItem}
+                            selectedChecklistItems={policyChecklist.selectedChecklistItems}
                             onSelectChecklistItem={policyChecklist.onSelectChecklistItem}
                             isLoading={policyChecklist.isLoading}
                             isSmallScreen={isSmallScreen}
                         />
                     </section>
 
-                    <section ref={refs.resources}>
-                        <SectionTitleDivider isLighter>
-                            <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/resources")}>
-                                {i18n.t("Resources")}
-                            </SectionTitle>
-                        </SectionTitleDivider>
+                    {!isEuropeanRegion ? (
+                        <React.Fragment>
+                            <section ref={refs.resources}>
+                                <SectionTitleDivider isLighter>
+                                    <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/resources")}>
+                                        {i18n.t("Resources")}
+                                    </SectionTitle>
+                                </SectionTitleDivider>
 
-                        {!isEUorEuropeanRegion && (
-                            <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
-                        )}
-                    </section>
+                                {!isEUorEuropeanRegion && (
+                                    <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
+                                )}
+                            </section>
 
-                    <section ref={refs.experts}>
-                        <SectionTitleDivider isLighter>
-                            <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
-                                {i18n.t("Expert network")}
-                            </SectionTitle>
-                        </SectionTitleDivider>
+                            <section ref={refs.experts}>
+                                <SectionTitleDivider isLighter>
+                                    <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
+                                        {i18n.t("Expert network")}
+                                    </SectionTitle>
+                                </SectionTitleDivider>
 
-                        {!isEUorEuropeanRegion && (
-                            <CountryExpert
-                                countryIds={selectedRegion?.countries || []}
-                                isRegionalPage
-                                isSmallScreen={isSmallScreen}
-                            />
-                        )}
-                    </section>
+                                {!isEUorEuropeanRegion && (
+                                    <CountryExpert
+                                        countryIds={selectedRegion?.countries || []}
+                                        isRegionalPage
+                                        isSmallScreen={isSmallScreen}
+                                    />
+                                )}
+                            </section>
+                        </React.Fragment>
+                    ) : null}
                 </>
             ) : (
                 <AccordionPanel
                     configs={sectionsAccordionConfig}
                     expandedConfig={expandedSectionsAccordion}
                     handleAccordionChange={handleAccordionChange}
+                    scrollMarginTop="80px"
+                    setPendingScrollTab={setPendingScrollTab}
+                    pendingScrollTab={pendingScrollTab}
                     isBold
                     bigFont
                 />
@@ -161,6 +173,7 @@ export const RegionalPage: React.FC = () => {
 const MapSection = styled.section`
     height: 80vh;
     min-height: 620px;
+    scroll-margin-top: 80px;
 
     .region-map {
         height: calc(100% - 65px);

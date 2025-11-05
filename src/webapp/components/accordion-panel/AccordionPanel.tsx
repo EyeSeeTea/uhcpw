@@ -25,6 +25,9 @@ type AccordionPanelProps = {
     isSecondaryColor?: boolean;
     isBold?: boolean;
     bigFont?: boolean;
+    scrollMarginTop?: string;
+    setPendingScrollTab?: (tab: number | null) => void;
+    pendingScrollTab?: number | null;
 };
 
 export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
@@ -35,6 +38,9 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
         isSecondaryColor = false,
         isBold = false,
         bigFont = false,
+        scrollMarginTop,
+        pendingScrollTab,
+        setPendingScrollTab,
     } = props;
 
     return (
@@ -53,6 +59,15 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
                         }}
                         onClick={() => {
                             config.onTitleClick && config.onTitleClick(config.tab);
+                        }}
+                        $scrollMarginTop={scrollMarginTop}
+                        TransitionProps={{
+                            onEntered: () => {
+                                if (pendingScrollTab === config.tab) {
+                                    config.ref?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                                    setPendingScrollTab && setPendingScrollTab(null);
+                                }
+                            },
                         }}
                     >
                         <StyledAccordionSummary
@@ -85,6 +100,7 @@ const StyledAccordion = styled(Accordion)<{
     $isSecondaryColor?: boolean;
     $isGradientColor?: boolean;
     $isSecondaryGradientColor?: boolean;
+    $scrollMarginTop?: string;
 }>`
     background: ${({ $isSecondaryColor, $isGradientColor, $isSecondaryGradientColor }) => {
         if ($isSecondaryColor) return colors.blue20;
@@ -97,6 +113,7 @@ const StyledAccordion = styled(Accordion)<{
     border-radius: 0;
     margin: 4px 0;
     box-shadow: none;
+    scroll-margin-top: ${props => props.$scrollMarginTop || "0"};
 
     &.Mui-expanded {
         margin: 4px 0;

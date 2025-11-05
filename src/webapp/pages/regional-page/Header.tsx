@@ -57,6 +57,10 @@ export const Header: React.FC<HeaderType> = props => {
 };
 
 const Container = styled.div<{ backgroundColor?: string }>`
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
     display: flex;
     justify-content: space-between;
     height: 80px;

@@ -86,7 +86,7 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
             {!isRegionalPage || (isRegionalPage && !isSmallScreen) ? (
                 <>
                     <MenuItem>
-                        <MobileMenuSubItem item="Regions">
+                        <MobileMenuSubItem item={i18n.t("Regional overview")}>
                             <div>
                                 {regionOptions.map(region => {
                                     return (

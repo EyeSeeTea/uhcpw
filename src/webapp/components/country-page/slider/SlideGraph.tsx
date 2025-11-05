@@ -4,7 +4,7 @@ import ReactMarkdown, { Components } from "react-markdown";
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
-import React from "react";
+import React, { useMemo } from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
@@ -28,12 +28,20 @@ type SlideGraphType = {
     countryId: string;
     graphs: VisualizationProps[];
     isRegionalPage?: boolean;
+    hideChartsWithoutData?: boolean;
 };
 
-export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs, isRegionalPage = false }) => {
+export const SlideGraph: React.FC<SlideGraphType> = ({
+    title,
+    countryId,
+    graphs,
+    isRegionalPage = false,
+    hideChartsWithoutData = false,
+}) => {
     const isSmallScreen = useIsSmallScreen();
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
+    const [chartsWithNoData, setChartsWithNoData] = React.useState<Id[]>([]);
 
     const markdownComponents: Components = React.useMemo(
         () => ({
@@ -65,13 +73,30 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
         [currentGraphScreenshot?.visualizationName]
     );
 
+    const handleSetChartWithNoData = React.useCallback((visualizationId: string) => {
+        setChartsWithNoData(prevState => {
+            if (!prevState.includes(visualizationId)) {
+                return [...prevState, visualizationId];
+            }
+            return prevState;
+        });
+    }, []);
+
+    const hideAll = useMemo(() => {
+        return hideChartsWithoutData && chartsWithNoData.length === graphs.length;
+    }, [chartsWithNoData.length, graphs.length, hideChartsWithoutData]);
+
     return (
-        <Container>
+        <Container $isRegionalPage={isRegionalPage} $hideAll={hideAll}>
             {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
 
             {graphs.length > 0
                 ? graphs.map((graph, graphIndex) => (
-                      <VisualizationContainer key={graph.visualizationId} $hasMargin={graphIndex !== 0}>
+                      <VisualizationContainer
+                          key={graph.visualizationId}
+                          $hasMargin={graphIndex !== 0}
+                          $hide={hideChartsWithoutData && !hideAll && chartsWithNoData.includes(graph.visualizationId)}
+                      >
                           {graph.text && <ReactMarkdown components={markdownComponents}>{graph.text}</ReactMarkdown>}
 
                           <VisualizationPlugin
@@ -90,6 +115,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
                               isRegionalPage={isRegionalPage}
                               filterByLatestAvailableYearInRegion={graph.filterByLatestAvailableYearInRegion}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
+                              setChartWithNoData={hideChartsWithoutData ? handleSetChartWithNoData : undefined}
                           />
                       </VisualizationContainer>
                   ))
@@ -125,9 +151,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({ title, countryId, graphs,
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $isRegionalPage?: boolean; $hideAll?: boolean }>`
     max-width: 100%;
     padding: 20px 50px 30px 50px;
+    padding-inline: ${props => (props.$isRegionalPage ? "30px" : "50px")};
+    visibility: ${props => (props.$hideAll ? "hidden" : "visible")};
+    opacity: ${props => (props.$hideAll ? 0 : 1)};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
@@ -135,9 +164,10 @@ const Container = styled.div`
     }
 `;
 
-const VisualizationContainer = styled.div<{ $hasMargin?: boolean }>`
+const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolean }>`
     max-width: 100%;
     padding-inline-end: 50px;
+    display: ${props => (props.$hide ? "none" : "block")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 0;

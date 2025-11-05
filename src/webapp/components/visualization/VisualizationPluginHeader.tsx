@@ -315,6 +315,7 @@ const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?
     font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
     width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
+    font-weight: ${props => (props.$isRegionalPage ? "bold" : "normal")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-left: 15px;
