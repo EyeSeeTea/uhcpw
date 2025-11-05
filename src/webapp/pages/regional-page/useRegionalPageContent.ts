@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Id } from "../../../domain/entities/Ref";
 import { useAppContext } from "../../contexts/app-context";
 import {
+    GapsInCoverageContent,
     RegionInfo,
     RegionMainMapPanelContent,
     RegionNumbersPanelContent,
@@ -10,6 +11,7 @@ import {
 type RegionalPageContent = {
     mainMapPanelContent: RegionMainMapPanelContent;
     numbersPanelContent: RegionNumbersPanelContent;
+    gapsInCoverageContent: GapsInCoverageContent;
     policyChecklistContent: {
         textSectionLeft: string;
         textSectionRight: string;
@@ -59,6 +61,7 @@ function buildRegionalPageInfo(regionalInfo: RegionInfo): RegionalPageContent {
     return {
         mainMapPanelContent: regionalInfo.mainMapPanelContent,
         numbersPanelContent: regionalInfo.numbersPanelContent,
+        gapsInCoverageContent: regionalInfo.gapsInCoverageContent,
         policyChecklistContent: regionalInfo.policyChecklistContent,
     };
 }
