@@ -20,8 +20,10 @@ import { PolicyChecklistSection } from "./PolicyChecklistSection";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
+import { GapsInCoverageSection } from "./GapsInCoverageSection";
+import { RegionalGapsInCoverageState, useRegionalGapsInCoverage } from "./useRegionalGapsInCoverage";
 
-export type RegionalMenuItem = "regionMap" | "numbers" | "policyChecklist" | "resources" | "experts";
+export type RegionalMenuItem = "regionMap" | "numbers" | "gapsInCoverage" | "policyChecklist" | "resources" | "experts";
 
 export type RegionalMenuItemConfig = {
     id: RegionalMenuItem;
@@ -55,12 +57,16 @@ export type RegionalPageState = {
         };
     };
     regionNumbers: RegionNumbersState;
+    gapsInCoverage: RegionalGapsInCoverageState;
     highlightedISO3Countries: string[];
     isEUorEuropeanRegion: boolean;
+    isEuropeanRegion: boolean;
     goTo: (link: string) => void;
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     expandedSectionsAccordion: AccordionConfig | undefined;
     sectionsAccordionConfig: AccordionConfig[];
+    setPendingScrollTab: (tab: number | null) => void;
+    pendingScrollTab: number | null;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -73,6 +79,7 @@ export function useRegionalPage(): RegionalPageState {
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
     const { content, isLoading } = useRegionalPageContent(selectedRegionId);
     const regionNumbers = useRegionNumbers(selectedRegionId, content?.numbersPanelContent);
+    const gapsInCoverage = useRegionalGapsInCoverage(selectedRegionId, content?.gapsInCoverageContent);
     const policyChecklist = useRegionalPolicyChecklist();
 
     const [markers, setMarkers] = useState<GeoJSON.FeatureCollection<GeoJSON.Point, Country>>({
@@ -82,9 +89,11 @@ export function useRegionalPage(): RegionalPageState {
     const [selectedRegion, setSelectedRegion] = useState<Region | undefined>(undefined);
     const [highlightedISO3Countries, setHighlightedISO3Countries] = useState<string[]>([]);
     const [expandedSectionsAccordion, setExpandedSectionsAccordion] = useState<AccordionConfig | undefined>(undefined);
+    const [pendingScrollTab, setPendingScrollTab] = useState<number | null>(null);
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
+    const gapsInCoverageRef = useRef<HTMLElement | null>(null);
     const policyChecklistRef = useRef<HTMLElement | null>(null);
     const resourcesRef = useRef<HTMLElement | null>(null);
     const expertsRef = useRef<HTMLElement | null>(null);
@@ -93,6 +102,7 @@ export function useRegionalPage(): RegionalPageState {
         () => ({
             regionMap: regionMapRef,
             numbers: numbersRef,
+            gapsInCoverage: gapsInCoverageRef,
             policyChecklist: policyChecklistRef,
             resources: resourcesRef,
             experts: expertsRef,
@@ -107,15 +117,39 @@ export function useRegionalPage(): RegionalPageState {
         [selectedRegionId]
     );
 
+    const isEuropeanRegion = useMemo(() => selectedRegionId === ORG_UNIT_GROUP_IDS.EUROPEAN_REGION, [selectedRegionId]);
+
     const menuItemsConfig: RegionalMenuItemConfig[] = useMemo(() => {
+        const resourcesAndExpertsSections: RegionalMenuItemConfig[] = isEuropeanRegion
+            ? []
+            : [
+                  {
+                      id: "resources",
+                      label: i18n.t("Resources"),
+                      ref: refs.resources,
+                  },
+                  {
+                      id: "experts",
+                      label: i18n.t("Experts"),
+                      ref: refs.experts,
+                  },
+              ];
         return [
             { id: "regionMap", label: i18n.t("The region at a glance"), ref: refs.regionMap },
             { id: "numbers", label: i18n.t("Numbers"), ref: refs.numbers },
+            { id: "gapsInCoverage", label: i18n.t("Gaps in coverage"), ref: refs.gapsInCoverage },
             { id: "policyChecklist", label: i18n.t("Policy checklist"), ref: refs.policyChecklist },
-            { id: "resources", label: i18n.t("Resources"), ref: refs.resources },
-            { id: "experts", label: i18n.t("Experts"), ref: refs.experts },
+            ...resourcesAndExpertsSections,
         ];
-    }, [refs.experts, refs.numbers, refs.policyChecklist, refs.regionMap, refs.resources]);
+    }, [
+        refs.experts,
+        refs.gapsInCoverage,
+        refs.numbers,
+        refs.policyChecklist,
+        refs.regionMap,
+        refs.resources,
+        isEuropeanRegion,
+    ]);
 
     const filterInParams = useMemo(() => {
         const regionIdInFilter = countryOrRegion
@@ -128,10 +162,11 @@ export function useRegionalPage(): RegionalPageState {
     }, [regionOptions, countryOrRegion]);
 
     const resetSelectedValues = useCallback(() => {
-        policyChecklist.onSelectChecklistItem(undefined);
+        policyChecklist.onCleanSelection();
         setExpandedSectionsAccordion(undefined);
         regionNumbers.onResetTabs();
-    }, [policyChecklist, regionNumbers]);
+        gapsInCoverage.onResetTabs();
+    }, [policyChecklist, regionNumbers, gapsInCoverage]);
 
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
@@ -168,14 +203,6 @@ export function useRegionalPage(): RegionalPageState {
         }
     }, [filterInParams.region, handleRegionChange, selectedRegionId]);
 
-    const handleHeaderItemClick = useCallback(
-        (item: RegionalMenuItem) => {
-            const targetRef = refs[item];
-            targetRef.current?.scrollIntoView({ behavior: "smooth" });
-        },
-        [refs]
-    );
-
     const goTo = useCallback(
         (link: string) => {
             history.push(link);
@@ -183,8 +210,43 @@ export function useRegionalPage(): RegionalPageState {
         [history]
     );
 
-    const sectionsAccordionConfig: AccordionConfig[] = useMemo(
-        () => [
+    const sectionsAccordionConfig: AccordionConfig[] = useMemo(() => {
+        const resourcesAndExpertsSections = isEuropeanRegion
+            ? []
+            : [
+                  {
+                      tab: 3,
+                      tabTitle: i18n.t("Resources"),
+                      onTitleClick: isEUorEuropeanRegion
+                          ? () => {
+                                goTo("/resources");
+                            }
+                          : undefined,
+                      isSecondaryGradientColor: true,
+                      hasExpandIcon: !isEUorEuropeanRegion,
+                      Component: isEUorEuropeanRegion ? null : CountryResources,
+                      disabled: isEUorEuropeanRegion,
+                      ref: refs.resources,
+                      props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
+                  },
+                  {
+                      tab: 4,
+                      tabTitle: i18n.t("Expert network"),
+                      onTitleClick: isEUorEuropeanRegion
+                          ? () => {
+                                goTo("/about");
+                            }
+                          : undefined,
+                      isSecondaryGradientColor: true,
+                      hasExpandIcon: !isEUorEuropeanRegion,
+                      Component: isEUorEuropeanRegion ? null : CountryExpert,
+                      disabled: isEUorEuropeanRegion,
+                      ref: refs.experts,
+                      props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
+                  },
+              ];
+
+        return [
             {
                 tab: 0,
                 tabTitle: i18n.t("Numbers: financial hardship, unmet need and spending on health"),
@@ -203,6 +265,22 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 1,
+                tabTitle: i18n.t("The story behind the numbers: gaps in coverage"),
+                isGradientColor: true,
+                hasExpandIcon: true,
+                Component: GapsInCoverageSection,
+                ref: refs.gapsInCoverage,
+                props: {
+                    configs: gapsInCoverage.configs,
+                    tabValue: gapsInCoverage.tabValue,
+                    expandedConfig: gapsInCoverage.expandedConfig,
+                    handleAccordionChange: gapsInCoverage.handleAccordionChange,
+                    handleTabChange: gapsInCoverage.handleTabChange,
+                    isSmallScreen: isSmallScreen,
+                },
+            },
+            {
+                tab: 2,
                 tabTitle: i18n.t("Progress is possible: a checklist for policy-makers"),
                 isGradientColor: true,
                 hasExpandIcon: true,
@@ -213,65 +291,64 @@ export function useRegionalPage(): RegionalPageState {
                     textSectionRight: content?.policyChecklistContent.textSectionRight || "",
                     checklist: policyChecklist?.checklist,
                     filteredCountryExperiences: policyChecklist?.filteredCountryExperiences,
-                    selectedChecklistItem: policyChecklist.selectedChecklistItem,
+                    selectedChecklistItems: policyChecklist.selectedChecklistItems,
                     onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
                     isLoading: policyChecklist.isLoading,
                     isSmallScreen: isSmallScreen,
                 },
             },
-            {
-                tab: 2,
-                tabTitle: i18n.t("Resources"),
-                onTitleClick: isEUorEuropeanRegion
-                    ? () => {
-                          goTo("/resources");
-                      }
-                    : undefined,
-                isSecondaryGradientColor: true,
-                hasExpandIcon: !isEUorEuropeanRegion,
-                Component: isEUorEuropeanRegion ? null : CountryResources,
-                disabled: isEUorEuropeanRegion,
-                ref: refs.resources,
-                props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
-            },
-            {
-                tab: 3,
-                tabTitle: i18n.t("Expert network"),
-                onTitleClick: isEUorEuropeanRegion
-                    ? () => {
-                          goTo("/about");
-                      }
-                    : undefined,
-                isSecondaryGradientColor: true,
-                hasExpandIcon: !isEUorEuropeanRegion,
-                Component: isEUorEuropeanRegion ? null : CountryExpert,
-                disabled: isEUorEuropeanRegion,
-                ref: refs.experts,
-                props: { countryIds: selectedRegion?.countries || [], isRegionalPage: true },
-            },
-        ],
-        [
-            content?.policyChecklistContent.textSectionLeft,
-            content?.policyChecklistContent.textSectionRight,
-            goTo,
-            isEUorEuropeanRegion,
-            isSmallScreen,
-            policyChecklist?.checklist,
-            policyChecklist?.filteredCountryExperiences,
-            policyChecklist.isLoading,
-            policyChecklist.onSelectChecklistItem,
-            policyChecklist.selectedChecklistItem,
-            refs.experts,
-            refs.numbers,
-            refs.policyChecklist,
-            refs.resources,
-            regionNumbers.configs,
-            regionNumbers.expandedConfig,
-            regionNumbers.handleAccordionChange,
-            regionNumbers.handleTabChange,
-            regionNumbers.tabValue,
-            selectedRegion?.countries,
-        ]
+            ...resourcesAndExpertsSections,
+        ];
+    }, [
+        isEuropeanRegion,
+        isEUorEuropeanRegion,
+        refs.resources,
+        refs.experts,
+        refs.numbers,
+        refs.gapsInCoverage,
+        refs.policyChecklist,
+        selectedRegion?.countries,
+        regionNumbers.configs,
+        regionNumbers.tabValue,
+        regionNumbers.expandedConfig,
+        regionNumbers.handleAccordionChange,
+        regionNumbers.handleTabChange,
+        isSmallScreen,
+        gapsInCoverage.configs,
+        gapsInCoverage.tabValue,
+        gapsInCoverage.expandedConfig,
+        gapsInCoverage.handleAccordionChange,
+        gapsInCoverage.handleTabChange,
+        content?.policyChecklistContent.textSectionLeft,
+        content?.policyChecklistContent.textSectionRight,
+        policyChecklist?.checklist,
+        policyChecklist?.filteredCountryExperiences,
+        policyChecklist.selectedChecklistItems,
+        policyChecklist.onSelectChecklistItem,
+        policyChecklist.isLoading,
+        goTo,
+    ]);
+
+    const handleHeaderItemClick = useCallback(
+        (item: RegionalMenuItem) => {
+            if (item === "regionMap") {
+                const targetRef = refs.regionMap;
+                targetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                setExpandedSectionsAccordion(undefined);
+                return;
+            }
+
+            const sectionToExpand = getSectionAccordionConfigByHeaderItemId(item, sectionsAccordionConfig);
+            if (isEUorEuropeanRegion && (item === "resources" || item === "experts")) {
+                const targetRef = refs[item];
+                targetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+                setExpandedSectionsAccordion(sectionToExpand);
+            }
+
+            setPendingScrollTab(sectionToExpand ? sectionToExpand.tab : null);
+        },
+        [isEUorEuropeanRegion, refs, sectionsAccordionConfig]
     );
 
     const handleAccordionChange = useCallback(
@@ -306,16 +383,41 @@ export function useRegionalPage(): RegionalPageState {
             },
             checklist: policyChecklist.checklist,
             filteredCountryExperiences: policyChecklist.filteredCountryExperiences,
-            selectedChecklistItem: policyChecklist.selectedChecklistItem,
+            selectedChecklistItems: policyChecklist.selectedChecklistItems,
             onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
+            onCleanSelection: policyChecklist.onCleanSelection,
             isLoading: isLoading || policyChecklist.isLoading,
         },
         regionNumbers: regionNumbers,
+        gapsInCoverage: gapsInCoverage,
         highlightedISO3Countries: highlightedISO3Countries,
         isEUorEuropeanRegion: isEUorEuropeanRegion,
+        isEuropeanRegion: isEuropeanRegion,
         goTo: goTo,
         handleAccordionChange: handleAccordionChange,
         expandedSectionsAccordion: expandedSectionsAccordion,
         sectionsAccordionConfig: sectionsAccordionConfig,
+        setPendingScrollTab: setPendingScrollTab,
+        pendingScrollTab: pendingScrollTab,
     };
+}
+
+function getSectionAccordionConfigByHeaderItemId(
+    item: RegionalMenuItem,
+    sectionsAccordionConfig: AccordionConfig[]
+): AccordionConfig | undefined {
+    switch (item) {
+        case "numbers":
+            return sectionsAccordionConfig[0];
+        case "gapsInCoverage":
+            return sectionsAccordionConfig[1];
+        case "policyChecklist":
+            return sectionsAccordionConfig[2];
+        case "resources":
+            return sectionsAccordionConfig[3];
+        case "experts":
+            return sectionsAccordionConfig[4];
+        default:
+            return undefined;
+    }
 }

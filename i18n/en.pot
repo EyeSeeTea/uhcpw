@@ -5,11 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-11-03T13:32:14.229Z\n"
-"PO-Revision-Date: 2025-11-03T13:32:14.229Z\n"
-
-msgid "404"
-msgstr ""
+"POT-Creation-Date: 2025-11-04T10:39:04.434Z\n"
+"PO-Revision-Date: 2025-11-04T10:39:04.434Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -158,7 +155,7 @@ msgstr ""
 msgid "Countries & areas"
 msgstr ""
 
-msgid "Regions"
+msgid "Regional overview"
 msgstr ""
 
 msgid "Methods"
@@ -309,7 +306,7 @@ msgstr ""
 msgid "Click an item to see examples of country experience"
 msgstr ""
 
-msgid "{{region}} at a glance"
+msgid "The {{region}} at a glance"
 msgstr ""
 
 msgid "Expert network"
@@ -319,6 +316,9 @@ msgid "The region at a glance"
 msgstr ""
 
 msgid "Numbers"
+msgstr ""
+
+msgid "Gaps in coverage"
 msgstr ""
 
 msgid "Policy checklist"

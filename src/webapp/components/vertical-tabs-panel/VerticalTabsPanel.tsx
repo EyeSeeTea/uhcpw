@@ -197,6 +197,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
     min-width: 30px;
     text-transform: none;
     color: ${props => (props.isSecondaryColor ? colors.black : colors.white)};
+    font-size: 16px;
     & span {
         display: none;
     }

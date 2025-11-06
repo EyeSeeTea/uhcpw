@@ -61,5 +61,7 @@ export const chart_MfLZYD6QCPy_Options: (chartSource: ChartSource) => Highcharts
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: orderedCountry,
         currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
+        currentRegionId: currentRegion?.id,
+        isRegionalPage: chartSource.isRegionalPage,
     });
 };

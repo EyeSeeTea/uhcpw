@@ -55,10 +55,10 @@ export function useRegionNumbers(
                           tabTitle: numbersPanelContent.panelOneTitle,
                           Component: SlideGraph,
                           props: {
-                              title: numbersPanelContent.panelOneTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -79,10 +79,10 @@ export function useRegionNumbers(
                           tabTitle: numbersPanelContent.panelTwoTitle,
                           Component: SlideGraph,
                           props: {
-                              title: numbersPanelContent.panelTwoTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -103,10 +103,10 @@ export function useRegionNumbers(
                           tabTitle: numbersPanelContent.panelThreeTitle,
                           Component: SlideGraph,
                           props: {
-                              title: numbersPanelContent.panelThreeTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -138,10 +138,10 @@ export function useRegionNumbers(
                           tabTitle: numbersPanelContent.panelFourTitle,
                           Component: SlideGraph,
                           props: {
-                              title: numbersPanelContent.panelFourTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -173,10 +173,10 @@ export function useRegionNumbers(
                           tabTitle: numbersPanelContent.panelFiveTitle,
                           Component: SlideGraph,
                           props: {
-                              title: numbersPanelContent.panelFiveTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -219,10 +219,10 @@ export function useRegionNumbers(
                           tabTitle: numbersPanelContent.panelSixTitle,
                           Component: SlideGraph,
                           props: {
-                              title: numbersPanelContent.panelSixTitle,
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
+                              hideChartsWithoutData: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,

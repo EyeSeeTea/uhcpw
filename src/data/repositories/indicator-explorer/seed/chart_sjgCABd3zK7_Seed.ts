@@ -11,4 +11,5 @@ export const chart_sjgCABd3zK7_Seed: VisualizationExtra = {
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
     needsToFilterZeroValues: true,
+    needsRounding: true,
 };

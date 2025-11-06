@@ -83,5 +83,7 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: latestAvailableYearByCountryIdOrdered,
         currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
+        currentRegionId: currentRegion?.id,
+        isRegionalPage: chartSource.isRegionalPage,
     });
 };

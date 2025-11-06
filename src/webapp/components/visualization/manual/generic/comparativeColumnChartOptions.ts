@@ -5,6 +5,7 @@ import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/getMaxAxisAndTickInterval";
 import { getMaxYAxisAndYTickInterval } from "../utils/getMaxYAxisAndYTickInterval";
+import { ORG_UNIT_GROUP_IDS } from "../../../../../domain/entities/region/Region";
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -149,6 +150,11 @@ export const comparativeColumnChartOptions: (params: {
           })
         : series;
 
+    const noRotateLabels =
+        chartSource.isRegionalPage &&
+        (currentRegion?.id === ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA ||
+            currentRegion?.id === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS);
+
     return {
         ...baseChartOptions,
         chart: {
@@ -160,7 +166,7 @@ export const comparativeColumnChartOptions: (params: {
 
             //format: "{point.country}",
             labels: {
-                rotation: -90,
+                rotation: noRotateLabels ? 0 : -90,
                 formatter: function () {
                     const countryLabel = (this.value as string).split(" ")[0];
 

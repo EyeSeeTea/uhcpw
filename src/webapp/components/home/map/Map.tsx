@@ -3,7 +3,7 @@ import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { Fab, Tooltip } from "@material-ui/core";
 
-import { style } from "./style";
+import { fullStyle, onlyCountryBordersStyle } from "./style";
 import { HomePagePanel } from "../home-page-panel/HomePagePanel";
 import { CountryPanel } from "../country-panel/CountryPanel";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
@@ -45,6 +45,7 @@ export type MapProps = {
     panelMaxWidth?: number;
     className?: string;
     highlightedISO3Countries?: string[];
+    isRegionPage?: boolean;
 };
 
 export const Map: React.FC<MapProps> = ({
@@ -55,6 +56,7 @@ export const Map: React.FC<MapProps> = ({
     panelMaxWidth,
     className,
     highlightedISO3Countries,
+    isRegionPage = false,
 }) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
@@ -64,7 +66,7 @@ export const Map: React.FC<MapProps> = ({
         if (mapContainerRef.current) {
             const map = new mapboxgl.Map({
                 container: mapContainerRef.current,
-                style: style,
+                style: isRegionPage ? onlyCountryBordersStyle : fullStyle,
                 center: mapState.initialData.center,
                 maxZoom: mapState.initialData.maxZoom,
                 minZoom: mapState.initialData.minZoom,
@@ -75,7 +77,7 @@ export const Map: React.FC<MapProps> = ({
 
             mapRef.current = map;
         }
-    }, [mapState.initialData, mapState.markers]);
+    }, [isRegionPage, mapState.initialData, mapState.markers]);
 
     useEffect(() => {
         if (mapRef.current && !isMobile) {

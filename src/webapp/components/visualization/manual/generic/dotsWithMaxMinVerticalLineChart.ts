@@ -3,6 +3,8 @@ import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval, getMaxValuesInSeriesData } from "../../utils/getMaxAxisAndTickInterval";
+import { ORG_UNIT_GROUP_IDS } from "../../../../../domain/entities/region/Region";
+import { Id } from "../../../../../domain/entities/Ref";
 
 type SerieData = {
     name: string | undefined;
@@ -28,6 +30,8 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     latestAvailableYearByCountryId?: Record<string, string>;
     metadataItems?: Record<string, AnalyticsMetadataItem>;
     currentCountryOrRegionCode?: string;
+    currentRegionId?: Id;
+    isRegionalPage?: boolean;
 }) => Highcharts.Options = ({
     rows,
     seriesIds,
@@ -39,6 +43,8 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     latestAvailableYearByCountryId,
     metadataItems,
     currentCountryOrRegionCode,
+    currentRegionId,
+    isRegionalPage,
 }) => {
     const series = Object.values(seriesIds).map(serieId => {
         const serieChartRows = rows.filter(row => row[0] === serieId);
@@ -120,12 +126,16 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     const maxValuesInSeriesData = getMaxValuesInSeriesData(seriesData);
     const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(maxValuesInSeriesData);
 
+    const noRotateLabels =
+        isRegionalPage &&
+        (currentRegionId === ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA ||
+            currentRegionId === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS);
     return {
         ...baseChartOptions,
         xAxis: {
             categories: categories,
             labels: {
-                rotation: -90,
+                rotation: noRotateLabels ? 0 : -90,
                 formatter: function () {
                     const countryLabel = (this.value as string).split(" ")[0];
 
