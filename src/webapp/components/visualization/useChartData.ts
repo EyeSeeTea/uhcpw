@@ -33,6 +33,7 @@ export function useChartData(params: {
     visualizationName?: string;
     filterByLatestAvailableYearInRegion?: boolean;
     isRegionalPage?: boolean;
+    seriesColors?: Record<string, string>;
 }): ChartDataState {
     const {
         visualizationId,
@@ -43,6 +44,7 @@ export function useChartData(params: {
         visualizationName,
         filterByLatestAvailableYearInRegion,
         isRegionalPage,
+        seriesColors,
     } = params;
     const { compositionRoot } = useAppContext();
 
@@ -129,6 +131,7 @@ export function useChartData(params: {
                         isLatestYearAvailable: isLatestYearAvailable,
                         yearToFilterBy: lastAvailableYearInRegion,
                         isRegionalPage: isRegionalPage,
+                        seriesColors: seriesColors,
                     } as ChartSourceMultiple & ChartSource;
 
                     const visualizationDialogInfo =
@@ -187,6 +190,7 @@ export function useChartData(params: {
         visualizationName,
         filterByLatestAvailableYearInRegion,
         isRegionalPage,
+        seriesColors,
     ]);
 
     const onDownloadExcel = useCallback(
