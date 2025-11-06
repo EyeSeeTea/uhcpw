@@ -74,12 +74,12 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
                     </StyledIconButton>
                     <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
                     <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => setExpanded(false)}>
-                        {i18n.t("Click here to read less")}
+                        {i18n.t("Read less")}
                     </StyledReadMoreButton>
                 </Content>
             ) : (
                 <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => setExpanded(true)}>
-                    {i18n.t("Click here to read more")}
+                    {i18n.t("Read more")}
                 </StyledReadMoreButton>
             )}
 
@@ -114,6 +114,7 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 const Content = styled.div`
     padding: 16px 16px 16px 0;
     color: ${colors.black};
+    font-size: 16px;
 `;
 
 const CountryExperienceContent = styled.div`
@@ -158,6 +159,7 @@ const TextLink = styled.a`
     color: ${colors.accentPrimary};
     text-transform: none;
     text-decoration: none;
+    font-size: 16px;
     &:hover {
         text-decoration: underline;
     }

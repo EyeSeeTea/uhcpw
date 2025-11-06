@@ -1,6 +1,9 @@
 import { Future, FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
-import { ChecklistPolicyMakers } from "../../../domain/entities/region/ChecklistPolicyMakers";
+import {
+    ChecklistPolicyMakers,
+    ChecklistPolicyMakersData,
+} from "../../../domain/entities/region/ChecklistPolicyMakers";
 import { ChecklistPolicyMakersRepository } from "../../../domain/repositories/region/ChecklistPolicyMakersRepository";
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
@@ -18,12 +21,22 @@ const CHECKLIST_POLICY_ITEMS_IDS = {
     CHECKLIST_ITEM7: "tIesxIqS4E6",
     CHECKLIST_ITEM8: "HQP4hNamavA",
     CHECKLIST_ITEM9: "GdxtrTpw17w",
-    CHECKLIST_ITEM10: "VvNMez84Yxg",
-    CHECKLIST_ITEM11: "I6xeinVGPJs",
-    CHECKLIST_ITEM12: "FMVe3jB5dzt",
+    CHECKLIST_ITEM10: "cjdT6RQi1pg",
+    CHECKLIST_ITEM11: "l3sSHjFSBuF",
+    CHECKLIST_ITEM12: "VUX0vOZXdX4",
     CHECKLIST_ITEM13: "rTBhZLVkzzx",
     CHECKLIST_ITEM14: "g2o9wzTIq0G",
-    CHECKLIST_ITEM15: "FOv4eTdnZHa",
+    CHECKLIST_ITEM15: "lsboMe5mSsv",
+    CHECKLIST_ITEM16: "fPKbDm0orJB",
+    CHECKLIST_ITEM17: "FOv4eTdnZHa",
+    CHECKLIST_ITEM18: "FMVe3jB5dzt",
+    CHECKLIST_ITEM19: "I6xeinVGPJs",
+    CHECKLIST_ITEM20: "Di233maIADK",
+    CHECKLIST_ITEM21: "ZJUgQ10iGlc",
+    CHECKLIST_ITEM22: "IY2RoU277Q7",
+    CHECKLIST_ITEM23: "oK3S1qfz6vb",
+    CHECKLIST_ITEM24: "VvNMez84Yxg",
+    CHECKLIST_ITEM25: "ESlw3TZH9UZ",
 } as const;
 
 export class ChecklistPolicyMakersD2Repository implements ChecklistPolicyMakersRepository {
@@ -51,10 +64,13 @@ export class ChecklistPolicyMakersD2Repository implements ChecklistPolicyMakersR
             event.dataValues.find(dv => dv.dataElement === dataElementId)?.value || "";
 
         return {
-            checklist: Object.entries(CHECKLIST_POLICY_ITEMS_IDS).map(([code, dataElementId]) => ({
-                id: code,
-                text: getDataValue(dataElementId),
-            })),
+            checklist: Object.entries(CHECKLIST_POLICY_ITEMS_IDS).reduce(
+                (acc: ChecklistPolicyMakersData[], [code, dataElementId]): ChecklistPolicyMakersData[] => {
+                    const value = getDataValue(dataElementId);
+                    return value ? [...acc, { id: code, text: getDataValue(dataElementId) }] : acc;
+                },
+                []
+            ),
         };
     }
 }

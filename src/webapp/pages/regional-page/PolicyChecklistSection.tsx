@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import { Table, TableBody, TableCell, TableRow, IconButton, Typography, CircularProgress } from "@material-ui/core";
-import { CheckCircleOutline, CheckCircle } from "@material-ui/icons";
 import ReactMarkdown, { Components } from "react-markdown";
 
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
@@ -12,6 +11,7 @@ import { colors } from "../app/themes/dhis2.theme";
 import { ChecklistPolicyMakersWithCountries, CountryExperienceData } from "./useRegionalPolicyChecklist";
 import { CountryExperienceBox } from "./CountryExperienceBox";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { CheckCircleCustomtIcon } from "../../components/icons/CheckCircleCustomtIcon";
 
 type PolicyChecklistSectionProps = {
     textSectionLeft: string;
@@ -61,13 +61,15 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                 <CircularProgress />
             ) : (
                 <>
-                    <ContentWrapper>
-                        <div>
+                    <IntroTextWrapper>
+                        <FirstIntroText>
                             <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
-                        </div>
+                        </FirstIntroText>
 
-                        <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
-                    </ContentWrapper>
+                        <SecondIntroText>
+                            <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
+                        </SecondIntroText>
+                    </IntroTextWrapper>
 
                     <Title variant="body1">{i18n.t("Click an item to see examples of country experience")}</Title>
 
@@ -82,24 +84,34 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                                 item.countryExperiencesIds.length !== 0 &&
                                                 onSelectChecklistItem(item.id)
                                             }
+                                            $isSelectable={item.countryExperiencesIds.length !== 0}
                                         >
-                                            <StyledTableCell>
+                                            <StyledTableCell $isSelected={selectedChecklistItems?.includes(item.id)}>
                                                 <ReactMarkdown components={markdownComponents}>
                                                     {item.text}
                                                 </ReactMarkdown>
                                             </StyledTableCell>
 
-                                            <StyledTableCell align="right">
+                                            <StyledTableCell
+                                                align="right"
+                                                $isSelected={selectedChecklistItems?.includes(item.id)}
+                                            >
                                                 {item.countryExperiencesIds.length === 0 ? null : (
-                                                    <StyledIconButton
-                                                        onClick={() => onSelectChecklistItem(item.id)}
-                                                        $isSelected={selectedChecklistItems?.includes(item.id)}
-                                                    >
-                                                        {selectedChecklistItems?.includes(item.id) ? (
-                                                            <CheckCircle />
-                                                        ) : (
-                                                            <CheckCircleOutline />
-                                                        )}
+                                                    <StyledIconButton onClick={() => onSelectChecklistItem(item.id)}>
+                                                        <CheckCircleCustomtIcon
+                                                            height="28px"
+                                                            width="28px"
+                                                            circleColor={
+                                                                selectedChecklistItems?.includes(item.id)
+                                                                    ? colors.white
+                                                                    : colors.accentPrimary
+                                                            }
+                                                            tickColor={
+                                                                selectedChecklistItems?.includes(item.id)
+                                                                    ? colors.accentPrimary
+                                                                    : colors.white
+                                                            }
+                                                        />
                                                     </StyledIconButton>
                                                 )}
                                             </StyledTableCell>
@@ -132,23 +144,19 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
 });
 
 const Container = styled.div`
-    padding: 40px 20px 40px 60px;
+    padding: 40px 40px 40px 64px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-block-end: 0;
     }
 `;
 
-const StyledTableRow = styled(TableRow)`
-    cursor: pointer;
+const StyledTableRow = styled(TableRow)<{ $isSelectable?: boolean }>`
+    cursor: ${props => (props.$isSelectable ? "pointer" : "default")};
 `;
 
-const StyledIconButton = styled(IconButton)<{ $isSelected?: boolean }>`
+const StyledIconButton = styled(IconButton)`
     padding: 0;
-    svg {
-        font-size: 28px;
-        color: ${props => (props.$isSelected ? colors.green : colors.accentPrimary)};
-    }
 `;
 
 const Title = styled(Typography)`
@@ -156,11 +164,27 @@ const Title = styled(Typography)`
     color: ${colors.blue};
     margin-block-start: 25px;
     margin-block-end: 20px;
-    font-size: 18px;
+    font-size: 16px;
 
     &&& {
         font-weight: bold;
     }
+`;
+
+const IntroTextWrapper = styled.div`
+    display: flex;
+    font-size: 16px;
+    gap: 60px;
+    width: 100%;
+`;
+
+const FirstIntroText = styled.div`
+    width: 550px;
+`;
+
+const SecondIntroText = styled.div`
+    flex: 1;
+    margin-inline-end: 36px;
 `;
 
 const ContentWrapper = styled.div`
@@ -213,19 +237,20 @@ const StyledTable = styled(Table)`
     border-spacing: 0.8px;
     border-collapse: initial;
     tbody > tr:first-child > td {
-        vertical-align: middle;
+        vertical-align: top;
     }
     tbody > tr > td {
         vertical-align: top;
     }
 `;
 
-const StyledTableCell = styled(TableCell)`
+const StyledTableCell = styled(TableCell)<{ $isSelected?: boolean }>`
     color: ${colors.blue};
     font-weight: 500;
-    background-color: ${colors.blue10};
+    background-color: ${props => (props.$isSelected ? colors.blue50 : colors.blue10)};
     color: black;
     align-content: "start";
+    border-width: 4px;
 `;
 
 const Text = styled(Typography)`
