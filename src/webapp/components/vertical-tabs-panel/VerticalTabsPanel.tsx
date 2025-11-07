@@ -193,7 +193,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
     opacity: 1;
     border-inline-end: 150px solid ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
     border-block-start: 4px solid ${colors.white};
-    max-width: 30px;
+    max-width: 50px;
     min-width: 30px;
     text-transform: none;
     color: ${props => (props.isSecondaryColor ? colors.black : colors.white)};
@@ -212,7 +212,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
         transition: background-color 0.3s ease-in-out;
         background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         min-height: 60px;
-        padding: 15px 25px;
+        padding: 15px 50px;
         padding-inline-start: 64px;
         & span {
             display: inline;
