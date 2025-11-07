@@ -294,12 +294,6 @@ msgstr ""
 msgid "Latest avalaible year"
 msgstr ""
 
-msgid "Click here to read less"
-msgstr ""
-
-msgid "Click here to read more"
-msgstr ""
-
 msgid "See {{countryName}} country page"
 msgstr ""
 

@@ -39,6 +39,7 @@ interface VisualizationPluginProps {
     filterByLatestAvailableYearInRegion?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     setChartWithNoData?: (visualizationId: string) => void;
+    seriesColors?: Record<string, string>;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -66,6 +67,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         filterByLatestAvailableYearInRegion = false,
         visualizationIdInIndicatorExplorer,
         setChartWithNoData,
+        seriesColors,
     } = props;
 
     const history = useHistory();
@@ -79,6 +81,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationName,
         filterByLatestAvailableYearInRegion,
         isRegionalPage,
+        seriesColors,
     });
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));

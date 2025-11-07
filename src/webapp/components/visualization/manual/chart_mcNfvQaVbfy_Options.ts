@@ -27,7 +27,7 @@ export const chart_mcNfvQaVbfy_Options: (chartSource: ChartSource) => Highcharts
     const chart = comparativeStackedColumnChartOptions({
         chartSource: chartSourceWithFilteredRowsByLAY,
         seriesNames,
-        seriesColors,
+        seriesColors: chartSource.seriesColors || seriesColors,
         orderByValueInSerie: "eIs7xB9CAmV.CgeNM5PZBLy",
         stackedValuesUpTo100: stackedValuesUpTo100,
         maxValueUpTo100: true,
