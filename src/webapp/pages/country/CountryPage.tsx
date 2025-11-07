@@ -12,6 +12,8 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { CountrySlider } from "../../components/country-page/slider/CountrySlider";
 import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
+import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
+import { useCountryPageSeoConfig } from "./useCountryPageSeoConfig";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
@@ -23,6 +25,7 @@ export const CountryPage: React.FC = () => {
     const isSmallScreen = useIsSmallScreen();
 
     const country = useCountryInfo(countryFilter.selectedCountry);
+    const seoConfig = useCountryPageSeoConfig(country);
 
     const filterInParams = useMemo(() => {
         const countryIdInFilter = countryOrRegion
@@ -74,6 +77,7 @@ export const CountryPage: React.FC = () => {
 
     return (
         <Layout enableRotation={isSmallScreen}>
+            <SeoMetaTags config={seoConfig} />
             <Header
                 countryId={countryFilter.selectedCountry}
                 onCountryChange={handleCountryChange}

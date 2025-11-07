@@ -14,6 +14,8 @@ import { colors } from "../app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel";
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
+import { useRegionalPageSeoConfig } from "./useRegionalPageSeoConfig";
+import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -40,9 +42,11 @@ export const RegionalPage: React.FC = () => {
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
+    const seoConfig = useRegionalPageSeoConfig(selectedRegion);
 
     return (
         <Layout enableRotation={isSmallScreen} disableMinHeight isOverflowVisible>
+            <SeoMetaTags config={seoConfig} />
             <Header
                 selectedRegion={selectedRegionId}
                 onRegionChange={onRegionChange}
