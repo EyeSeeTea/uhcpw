@@ -6,10 +6,12 @@ import InfoIcon from "@material-ui/icons/Info";
 
 import i18n from "../../../locales";
 import { Id } from "../../../domain/entities/Ref";
-import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { colors } from "../app/themes/dhis2.theme";
 import { FullScreenNotesDialog } from "../../components/dialog/FullScreenNotesDialog";
 import { NotesDialog } from "../../components/dialog/NotesDialog";
+import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
+import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 
 type VisualContent = {
     visual?: string;
@@ -17,6 +19,13 @@ type VisualContent = {
     textAbove?: string;
     textBelow?: string;
     textInfo?: string;
+    visualizationId?: string;
+    visualizationName?: string;
+    currentCountryOrRegion?: Id;
+    years?: string[];
+    countries?: Id[];
+    regions?: Id[];
+    seriesColors?: Record<string, string>;
 };
 
 type GapsInCoveragePanelProps = {
@@ -29,8 +38,19 @@ type GapsInCoveragePanelProps = {
 };
 
 export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => {
+    const isSmallScreen = useIsSmallScreen();
+
     const { regionId, title, mainText, progressText, visuals, showDialogInFullScreen = false } = props;
     const [visualTextInfo, setVisualTextInfo] = useState<string | undefined>(undefined);
+    const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualContent | undefined>(undefined);
+
+    const handleOpenScreenshot = React.useCallback((graph: VisualContent) => {
+        setCurrentGraphScreenshot(graph);
+    }, []);
+
+    const handleCloseScreenshot = React.useCallback(() => {
+        setCurrentGraphScreenshot(undefined);
+    }, []);
 
     const markdownComponents: Components = React.useMemo(
         () => ({
@@ -43,6 +63,14 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
         }),
         []
+    );
+
+    const analyticsContent = React.useMemo(
+        () => ({
+            contentGroup: "chart",
+            contentId: currentGraphScreenshot?.visualizationName,
+        }),
+        [currentGraphScreenshot?.visualizationName]
     );
 
     return (
@@ -61,7 +89,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                         </div>
                     )}
 
-                    {visualContent.title && (
+                    {visualContent.title && !visualContent.visualizationId ? (
                         <ChartTitleRow>
                             <ChartTitle variant="h6" gutterBottom>
                                 {visualContent.title}
@@ -75,16 +103,34 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                                 <CustomInfoIconCountry color="primary" className="info-button" />
                             </StyledIconButton>
                         </ChartTitleRow>
-                    )}
+                    ) : null}
 
-                    {visualContent.visual && (
+                    {visualContent.visualizationId && visualContent.years && visualContent.countries ? (
+                        <VisualizationContainer key={visualContent.visualizationId}>
+                            <VisualizationPlugin
+                                visualizationId={visualContent.visualizationId}
+                                visualizationName={visualContent.visualizationName}
+                                years={visualContent.years}
+                                countries={visualContent.countries}
+                                currentCountryOrRegion={visualContent.currentCountryOrRegion}
+                                regions={visualContent.regions}
+                                withoutBackground
+                                useHeaderForCountryOrRegionalPage
+                                showDialogInFullScreen={isSmallScreen}
+                                onDownloadImage={() => handleOpenScreenshot(visualContent)}
+                                analyticsPageTitle={"Regional page"}
+                                seriesColors={visualContent.seriesColors}
+                                isRegionalPage
+                            />
+                        </VisualizationContainer>
+                    ) : visualContent.visual ? (
                         <img
                             style={{ paddingBlockStart: "8px" }}
                             width="100%"
                             alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
                             src={visualContent.visual}
                         />
-                    )}
+                    ) : null}
 
                     {visualContent.textBelow && (
                         <div style={{ marginTop: "12px" }}>
@@ -108,6 +154,36 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                         dialogInfo={visualTextInfo}
                     />
                 ))}
+
+            {currentGraphScreenshot &&
+            currentGraphScreenshot.visualizationId &&
+            currentGraphScreenshot.years &&
+            currentGraphScreenshot.countries ? (
+                <ScreenshotModal
+                    open={true}
+                    onClose={handleCloseScreenshot}
+                    title={currentGraphScreenshot.visualizationName || ""}
+                    backgroundColor={"#f1f9fc"}
+                    analyticsPageTitle={"Regional page"}
+                    analyticsContent={analyticsContent}
+                    forceRotation={isSmallScreen}
+                >
+                    <VisualizationPlugin
+                        visualizationId={currentGraphScreenshot.visualizationId}
+                        visualizationName={currentGraphScreenshot.visualizationName}
+                        years={currentGraphScreenshot.years}
+                        countries={currentGraphScreenshot.countries}
+                        regions={currentGraphScreenshot.regions}
+                        withoutBackground
+                        useHeaderForCountryOrRegionalPage
+                        currentCountryOrRegion={currentGraphScreenshot.currentCountryOrRegion}
+                        isScreenshot={true}
+                        analyticsPageTitle={"Regional page"}
+                        seriesColors={currentGraphScreenshot.seriesColors}
+                        isRegionalPage
+                    />
+                </ScreenshotModal>
+            ) : null}
 
             {progressText && <ReactMarkdown components={markdownComponents}>{progressText}</ReactMarkdown>}
         </Container>
@@ -195,4 +271,26 @@ const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>
 const CustomInfoIconCountry = styled(InfoIcon)`
     color: ${colors.darkBlue};
     font-size: 25px;
+`;
+
+const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolean }>`
+    max-width: 100%;
+    display: ${props => (props.$hide ? "none" : "block")};
+
+    .VisualizationPlugin-container {
+        padding: 0;
+    }
+    .visualization-plugin-header {
+        .MuiTypography-h6 {
+            margin: 0 !important;
+        }
+    }
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding: 0;
+        margin-block-start: ${props => (props.$hasMargin ? "20px" : "0")};
+
+        > div {
+            padding: 0;
+        }
+    }
 `;

@@ -35,6 +35,7 @@ export interface ChartSource {
     isLatestYearAvailable?: boolean;
     yearToFilterBy?: string;
     isRegionalPage?: boolean;
+    seriesColors?: Record<string, string>;
 }
 
 export interface ChartSourceMultiple {
@@ -48,6 +49,7 @@ export interface ChartSourceMultiple {
     isLatestYearAvailable?: boolean;
     yearToFilterBy?: string;
     isRegionalPage?: boolean;
+    seriesColors?: Record<string, string>;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
