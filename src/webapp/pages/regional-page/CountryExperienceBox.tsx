@@ -69,7 +69,7 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
             {expanded ? (
                 <Content>
-                    <StyledIconButton onClick={() => setShowReferences(true)} $color="#185698" padding="4px">
+                    <StyledIconButton onClick={() => setShowReferences(true)}>
                         <CustomInfoIconCountry color="primary" className="info-button" />
                     </StyledIconButton>
                     <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
@@ -169,18 +169,18 @@ const StyledLink = styled(Button)`
     font-size: 16px;
     padding-left: 0;
     span {
-        color: black;
+        color: ${colors.darkBlue};
         text-decoration: none;
         text-transform: none;
     }
 `;
 
-const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`
+const StyledIconButton = styled(IconButton)`
     position: absolute;
     right: 10px;
     top: 10px;
-    padding: ${props => props.padding};
-    color: ${props => props.$color};
+    padding: 4px;
+    color: ${colors.darkBlue};
 `;
 
 const CustomInfoIconCountry = styled(InfoIcon)`
@@ -190,7 +190,7 @@ const CustomInfoIconCountry = styled(InfoIcon)`
 
 const StyledReadMoreButton = styled(Button)<{ marginLeft?: string }>`
     text-transform: none;
-    color: ${colors.black};
+    color: ${colors.darkBlue};
     font-size: 16px;
     padding: 0;
     margin: 0;

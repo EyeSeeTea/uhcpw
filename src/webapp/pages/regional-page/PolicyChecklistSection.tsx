@@ -61,15 +61,15 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                 <CircularProgress />
             ) : (
                 <>
-                    <IntroTextWrapper>
-                        <FirstIntroText>
+                    <ContentWrapper>
+                        <IntroText>
                             <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
-                        </FirstIntroText>
+                        </IntroText>
 
-                        <SecondIntroText>
+                        <IntroText>
                             <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
-                        </SecondIntroText>
-                    </IntroTextWrapper>
+                        </IntroText>
+                    </ContentWrapper>
 
                     <Title variant="body1">{i18n.t("Click an item to see examples of country experience")}</Title>
 
@@ -171,20 +171,8 @@ const Title = styled(Typography)`
     }
 `;
 
-const IntroTextWrapper = styled.div`
-    display: flex;
-    font-size: 16px;
-    gap: 60px;
-    width: 100%;
-`;
-
-const FirstIntroText = styled.div`
+const IntroText = styled.div`
     width: 550px;
-`;
-
-const SecondIntroText = styled.div`
-    flex: 1;
-    margin-inline-end: 36px;
 `;
 
 const ContentWrapper = styled.div`
