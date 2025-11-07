@@ -212,7 +212,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
         transition: background-color 0.3s ease-in-out;
         background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         min-height: 60px;
-        padding: 15px 25px;
+        padding: 15px 50px;
         padding-inline-start: 64px;
         & span {
             display: inline;
