@@ -217,36 +217,34 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelSixMainText,
                               progressText: gapsInCoverageContent.panelSixProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: gapsInCoverageContent.hasPanelSixChartOne
-                                  ? [
-                                        {
-                                            title:
-                                                gapsInCoverageContent.panelSixChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelSixChartOneTitle
-                                                    : undefined,
-                                            textAbove: gapsInCoverageContent.panelSixChartOneTextAbove,
-                                            textBelow: gapsInCoverageContent.panelSixChartOneTextBelow,
-                                            textInfo: gapsInCoverageContent.panelSixChartOneInfoText,
-                                            visualizationId: "mcNfvQaVbfy",
-                                            visualizationName:
-                                                gapsInCoverageContent.panelSixChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelSixChartOneTitle
-                                                    : VisualizationsSeeds["mcNfvQaVbfy"]?.regionalPageName,
-                                            years: [LatestAvailable.id],
-                                            currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                            countries: [...(selectedRegion.countries || [])],
-                                            regions: [selectedRegionId],
-                                            seriesColors: {
-                                                "eIs7xB9CAmV.JGYECk6mKHE": "#6f30a023",
-                                                "eIs7xB9CAmV.xFBx8HXhRn6": "#ffbf002f",
-                                                "eIs7xB9CAmV.NYLedCi0SnS": "#00b04f33",
-                                                "eIs7xB9CAmV.WZQNt5d1TGm": "#ed7d31",
-                                                "eIs7xB9CAmV.bHGxnqq0s6M": "#0070c0",
-                                                "eIs7xB9CAmV.CgeNM5PZBLy": "#c00000",
-                                            },
-                                        },
-                                    ]
-                                  : [],
+                              visuals: [
+                                  {
+                                      title:
+                                          gapsInCoverageContent.panelSixChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelSixChartOneTitle
+                                              : undefined,
+                                      textAbove: gapsInCoverageContent.panelSixChartOneTextAbove,
+                                      textBelow: gapsInCoverageContent.panelSixChartOneTextBelow,
+                                      textInfo: gapsInCoverageContent.panelSixChartOneInfoText,
+                                      visualizationId: "mcNfvQaVbfy",
+                                      visualizationName:
+                                          gapsInCoverageContent.panelSixChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelSixChartOneTitle
+                                              : VisualizationsSeeds["mcNfvQaVbfy"]?.regionalPageName,
+                                      years: [LatestAvailable.id],
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
+                                      seriesColors: {
+                                          "eIs7xB9CAmV.JGYECk6mKHE": "#6f30a023",
+                                          "eIs7xB9CAmV.xFBx8HXhRn6": "#ffbf002f",
+                                          "eIs7xB9CAmV.NYLedCi0SnS": "#00b04f33",
+                                          "eIs7xB9CAmV.WZQNt5d1TGm": "#ed7d31",
+                                          "eIs7xB9CAmV.bHGxnqq0s6M": "#0070c0",
+                                          "eIs7xB9CAmV.CgeNM5PZBLy": "#c00000",
+                                      },
+                                  },
+                              ],
                           },
                       },
                       {

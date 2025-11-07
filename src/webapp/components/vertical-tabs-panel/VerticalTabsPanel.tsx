@@ -193,7 +193,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
     opacity: 1;
     border-inline-end: 150px solid ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
     border-block-start: 4px solid ${colors.white};
-    max-width: 30px;
+    max-width: 50px;
     min-width: 30px;
     text-transform: none;
     color: ${props => (props.isSecondaryColor ? colors.black : colors.white)};
