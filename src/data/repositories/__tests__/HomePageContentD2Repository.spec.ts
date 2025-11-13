@@ -97,7 +97,7 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
     );
     expect(homePageContent.analysis.countries.buttonText).toBe("Country pages");
     expect(homePageContent.analysis.countries.buttonLink).toBe(
-        "https://apps.who.int/dhis2/uhcwatch/#/country-page?country=VGOzFKfSazN"
+        "https://apps.who.int/dhis2/uhcwatch/#/country-page?country=Albania"
     );
 
     expect(homePageContent.analysis.regional.title).toBe("The region at a glance");
