@@ -9,7 +9,7 @@ module.exports = {
         "\\.(jpg|jpeg|png)$": "<rootDir>/config/fileMock.js",
         "\\.svg$": "<rootDir>/config/svgMock.js",
         "react-markdown": "<rootDir>/config/reactMarkdownMock.js",
-        "^.*/components/seo/SeoMetaTags$": "<rootDir>/config/SeoMetaTagsMock.js",
+        "^.*/components/seo/SeoMetaTags$": "<rootDir>/config/seoMetaTagsMock.js",
     },
     setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
     transform: {
