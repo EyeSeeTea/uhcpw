@@ -40,6 +40,7 @@
         "purify-ts-extra-codec": "0.6.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
+        "react-helmet-async": "^1.3.0",
         "react-markdown": "^8.0.7",
         "react-router-dom": "5.2.0",
         "react-scripts": "4.0.3",
@@ -123,7 +124,8 @@
         "cy:e2e:open": "NODE_ENV=test CYPRESS_E2E=true cypress open",
         "cy:e2e:run": "NODE_ENV=test CYPRESS_E2E=true cypress run --browser chrome",
         "prepare": "husky install",
-        "script-example": "npx ts-node src/scripts/example.ts"
+        "script-example": "npx ts-node src/scripts/example.ts",
+        "generate-sitemap": "npx ts-node src/scripts/generateSitemap.ts"
     },
     "manifest.webapp": {
         "name": "UHC watch",

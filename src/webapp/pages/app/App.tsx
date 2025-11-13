@@ -6,6 +6,7 @@ import { CircularProgress } from "@material-ui/core";
 import OldMuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import { HelmetProvider } from "react-helmet-async";
 import { getCompositionRoot } from "../../../CompositionRoot";
 import { Instance } from "../../../data/entities/Instance";
 import { D2Api } from "../../../types/d2-api";
@@ -72,17 +73,19 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
     }
 
     return (
-        <MuiThemeProvider theme={muiTheme}>
-            <OldMuiThemeProvider muiTheme={muiThemeLegacy}>
-                <SnackbarProvider>
-                    <div id="app" className="content">
-                        <AppContext.Provider value={appContext}>
-                            <Router />
-                        </AppContext.Provider>
-                    </div>
-                </SnackbarProvider>
-            </OldMuiThemeProvider>
-        </MuiThemeProvider>
+        <HelmetProvider>
+            <MuiThemeProvider theme={muiTheme}>
+                <OldMuiThemeProvider muiTheme={muiThemeLegacy}>
+                    <SnackbarProvider>
+                        <div id="app" className="content">
+                            <AppContext.Provider value={appContext}>
+                                <Router />
+                            </AppContext.Provider>
+                        </div>
+                    </SnackbarProvider>
+                </OldMuiThemeProvider>
+            </MuiThemeProvider>
+        </HelmetProvider>
     );
 });
 

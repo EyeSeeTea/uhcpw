@@ -5,6 +5,7 @@ import { useAppContext } from "../../../contexts/app-context";
 import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { formatCountryOrRegionParamName } from "../../../utils/formatCountryOrRegionParamName";
+import { usePageType } from "../../../pages/country-or-regional/usePageType";
 
 export function useAppHeader(isScreenRotated?: boolean) {
     const history = useHistory();
@@ -12,6 +13,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
     const { compositionRoot } = useAppContext();
     const { isXs } = useBreakpoint();
     const isSmallScreen = useIsSmallScreen();
+    const pageType = usePageType();
 
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -62,7 +64,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
         (country: Option<string>) => {
             const countryName = country.text;
             const countryNameInFilter = formatCountryOrRegionParamName(countryName);
-            history.push(`/country-page?country=${countryNameInFilter}`);
+            history.push(`/${countryNameInFilter}`);
             handleClose();
             onCloseMenu();
         },
@@ -71,7 +73,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
 
     const isHomePage = useMemo(() => pathname === "/", [pathname]);
 
-    const isCountryPage = useMemo(() => pathname === "/country-page", [pathname]);
+    const isCountryPage = useMemo(() => pageType === "country", [pageType]);
 
     const whoLogoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
 

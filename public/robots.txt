@@ -1,0 +1,3 @@
+User-agent: *
+
+Sitemap: https://apps.who.int/dhis2/uhcwatch/sitemap.xml

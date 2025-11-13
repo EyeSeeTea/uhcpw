@@ -4,7 +4,7 @@ import { Divider } from "../../components/home/common/Divider";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { Hero } from "../../components/country-page/Hero";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
 import { useCountryPage } from "./useCountryPage";
 import { useCountryInfo } from "./useCountryInfo";
@@ -12,48 +12,40 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { MobileSlider } from "../../components/country-page/slider/MobileSlider";
 import { DesktopSlider } from "../../components/country-page/slider/DesktopSlider";
-import {
-    formatCountryOrRegionParamName,
-    parseCountryOrRegionParamToName,
-} from "../../utils/formatCountryOrRegionParamName";
+import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
+import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
+import { useCountryPageSeoConfig } from "./useCountryPageSeoConfig";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
+    const { countryOrRegion } = useParams<{
+        countryOrRegion?: string;
+    }>();
     const { countryFilter, resetTab, handleResetTab } = useCountryPage();
     const { sendEvent } = useAnalytics();
     const isSmallScreen = useIsSmallScreen();
 
     const country = useCountryInfo(countryFilter.selectedCountry);
+    const seoConfig = useCountryPageSeoConfig(country);
 
     const filterInParams = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
-
-        const countryNameInFilter = searchParams.get("country");
-        const countryName = countryNameInFilter ? parseCountryOrRegionParamToName(countryNameInFilter) : undefined;
-
-        const countryIdInFilter = countryName
-            ? countryFilter.countryOptions.find(option => option.text === countryName)?.value
+        const countryIdInFilter = countryOrRegion
+            ? countryFilter.countryOptions.find(
+                  option => formatCountryOrRegionParamName(option.text) === countryOrRegion
+              )?.value
             : null;
 
         return {
             country: countryIdInFilter ? countryIdInFilter : undefined,
         };
-    }, [countryFilter.countryOptions, history.location.search]);
+    }, [countryFilter.countryOptions, countryOrRegion]);
 
     useEffect(() => {
         if (filterInParams.country && filterInParams.country !== countryFilter?.selectedCountry) {
-            const searchParams = new URLSearchParams(history.location.search);
-            const countryName = countryFilter.countryOptions.find(
-                option => option.value === filterInParams.country
-            )?.text;
-            const countryNameInFilter = countryName ? formatCountryOrRegionParamName(countryName) : undefined;
-            if (countryNameInFilter) {
-                searchParams.set("country", countryNameInFilter);
-            }
             countryFilter.onCountryChange(filterInParams.country);
             !resetTab && handleResetTab(true);
         }
-    }, [countryFilter, filterInParams.country, handleResetTab, history.location.search, resetTab]);
+    }, [countryFilter, filterInParams.country, handleResetTab, resetTab]);
 
     const selectedCountryName = useMemo(
         () => countryFilter.countryOptions.find(country => country.value === countryFilter.selectedCountry)?.text,
@@ -67,14 +59,12 @@ export const CountryPage: React.FC = () => {
 
     const handleCountryChange = useCallback(
         (value: string) => {
-            const searchParams = new URLSearchParams(history.location.search);
             const countryName = countryFilter.countryOptions.find(option => option.value === value)?.text;
             const countryNameInFilter = countryName ? formatCountryOrRegionParamName(countryName) : undefined;
             if (value && countryNameInFilter) {
-                searchParams.set("country", countryNameInFilter);
+                history.push(`/${countryNameInFilter}`);
             }
             countryFilter.onCountryChange(value);
-            history.push({ search: searchParams.toString() });
             handleResetTab(true);
         },
         [countryFilter, handleResetTab, history]
@@ -86,6 +76,7 @@ export const CountryPage: React.FC = () => {
 
     return (
         <Layout enableRotation={isSmallScreen}>
+            <SeoMetaTags config={seoConfig} />
             <Header
                 countryId={countryFilter.selectedCountry}
                 onCountryChange={handleCountryChange}

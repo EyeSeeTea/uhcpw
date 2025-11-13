@@ -96,9 +96,7 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
         "Find out about the health system factors that strengthen and undermine financial protection at country level"
     );
     expect(homePageContent.analysis.countries.buttonText).toBe("Country pages");
-    expect(homePageContent.analysis.countries.buttonLink).toBe(
-        "https://apps.who.int/dhis2/uhcwatch/#/country-page?country=Albania"
-    );
+    expect(homePageContent.analysis.countries.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/#/Albania");
 
     expect(homePageContent.analysis.regional.title).toBe("The region at a glance");
     expect(homePageContent.analysis.regional.text).toBe(

@@ -5,9 +5,11 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-09-23T08:39:50.772Z\n"
-"PO-Revision-Date: 2025-09-23T08:39:50.772Z\n"
+"POT-Creation-Date: 2025-11-13T17:02:29.283Z\n"
+"PO-Revision-Date: 2025-11-13T17:02:29.283Z\n"
 
+msgid "404"
+msgstr ""
 
 msgid "Error fetching methods"
 msgstr ""
@@ -251,6 +253,15 @@ msgid "Read less"
 msgstr ""
 
 msgid "Error fetching Methods"
+msgstr ""
+
+msgid "Page Not Found"
+msgstr ""
+
+msgid "The page you are looking for does not exist or has been moved."
+msgstr ""
+
+msgid "Go to Homepage"
 msgstr ""
 
 msgid "Last updated: "

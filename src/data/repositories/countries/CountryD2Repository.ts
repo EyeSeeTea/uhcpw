@@ -13,7 +13,7 @@ import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/Regio
 import { policyExplorerDataSet_ID } from "../utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import _ from "lodash";
-import i18n from "@eyeseetea/d2-ui-components/locales";
+import i18n from "../../../locales";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
