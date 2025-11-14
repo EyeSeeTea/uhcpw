@@ -43,6 +43,7 @@ import { chart_iMI82inOBiD_Seed } from "./chart_iMI82inOBiD_Seed";
 import { chart_q5ldoFcgkSn_Seed } from "./chart_q5ldoFcgkSn_Seed";
 import { chart_WDUV9ZrJiNC_Seed } from "./chart_WDUV9ZrJiNC_Seed";
 import { chart_CdqVV1Ib0XS_Seed } from "./chart_CdqVV1Ib0XS_Seed";
+import { chart_twyY1ulr7uD_Seed } from "./chart_twyY1ulr7uD_Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     // Comparative charts
@@ -94,6 +95,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     xKmSHeJ1GXq: chart_xKmSHeJ1GXq_Seed,
     z6nPPMMbOw5: chart_z6nPPMMbOw5_Seed,
     CdqVV1Ib0XS: chart_CdqVV1Ib0XS_Seed,
+    twyY1ulr7uD: chart_twyY1ulr7uD_Seed,
 };
 
 export const emptyVisualizationExtra = {

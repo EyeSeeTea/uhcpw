@@ -6,6 +6,7 @@ import { baseChartOptions } from "./baseChartOptions";
 import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/getMaxAxisAndTickInterval";
 import { getMaxYAxisAndYTickInterval } from "../utils/getMaxYAxisAndYTickInterval";
 import { ORG_UNIT_GROUP_IDS } from "../../../../../domain/entities/region/Region";
+import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -18,6 +19,7 @@ export const comparativeColumnChartOptions: (params: {
     maxValueUpTo100?: boolean;
     categoryIdsOrder?: string[];
     hideYear?: boolean;
+    useRegionColors?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -29,6 +31,7 @@ export const comparativeColumnChartOptions: (params: {
     maxValueUpTo100,
     categoryIdsOrder,
     hideYear,
+    useRegionColors,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -112,10 +115,13 @@ export const comparativeColumnChartOptions: (params: {
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
+                const regionCodeColor =
+                    useRegionColors && region?.code ? { color: getColorOfRegionByRegionCode(region?.code) } : undefined;
+
                 const color =
                     (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
-                        : undefined;
+                        : regionCodeColor ?? undefined;
 
                 return {
                     name: hideYear ? code : `${code} ${year}`,
