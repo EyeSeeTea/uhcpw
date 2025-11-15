@@ -5,7 +5,6 @@ import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel
 import { Id } from "../../../domain/entities/Ref";
 import { SlideGraph } from "../../components/country-page/slider/SlideGraph";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
-import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
 import { RegionNumbersPanelContent } from "../../../domain/entities/region/RegionInfo";
@@ -226,14 +225,15 @@ export function useRegionNumbers(
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      visualizationId: "d3kq9OCv8tH",
+                                      visualizationId: "twyY1ulr7uD",
                                       visualizationName:
-                                          VisualizationsSeeds["d3kq9OCv8tH"]?.regionalPageName ||
-                                          VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
-                                      years: generateYears().map(year => year.id),
+                                          VisualizationsSeeds["twyY1ulr7uD"]?.regionalPageName ||
+                                          VisualizationsSeeds["twyY1ulr7uD"]?.friendlyName,
+                                      years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphOneText,
+                                      filterByLatestAvailableYearInRegion: true,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,

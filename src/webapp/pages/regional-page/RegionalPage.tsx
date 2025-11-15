@@ -14,6 +14,7 @@ import { colors } from "../app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel";
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -55,10 +56,15 @@ export const RegionalPage: React.FC = () => {
             <MapSection ref={refs.regionMap}>
                 <SectionTitleDivider>
                     <SectionTitle>
-                        {i18n.t(`The {{region}} at a glance`, {
-                            region: selectedRegion?.name,
-                            interpolation: { escapeValue: false },
-                        })}
+                        {i18n.t(
+                            `${
+                                ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA === selectedRegionId ? "" : "The "
+                            }{{region}} at a glance`,
+                            {
+                                region: selectedRegion?.name,
+                                interpolation: { escapeValue: false },
+                            }
+                        )}
                     </SectionTitle>
                 </SectionTitleDivider>
 

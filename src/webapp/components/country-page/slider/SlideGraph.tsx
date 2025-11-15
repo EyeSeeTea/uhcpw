@@ -192,7 +192,8 @@ const StyledGraphTitle = styled(StyledTypography)`
 const Text = styled(Typography)`
     font-family: Lato;
     margin-inline-start: 36px;
-    margin-block: 6px;
+    margin-block-start: 2px;
+    margin-block-end: 6px;
     font-size: 1rem;
     color: ${colors.black};
 `;

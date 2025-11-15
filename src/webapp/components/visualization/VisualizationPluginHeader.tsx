@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Button, IconButton, Typography, Fab } from "@material-ui/core";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
@@ -95,17 +95,6 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 >
                                     {chartFriendlyName}
                                 </StyledTitle>
-
-                                {isRegionalPage && (
-                                    <Fab
-                                        aria-label="Go to indicator explorer"
-                                        color="primary"
-                                        size="small"
-                                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
-                                    >
-                                        <ChevronRightSharpIcon onClick={goToIndicatorExplorer} />
-                                    </Fab>
-                                )}
                             </TitleRow>
 
                             <RowWithGap $gap={6}>
@@ -114,7 +103,22 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 ) : (
                                     !isRegionalPage && categoryTag && <Tag className="category">{categoryTag}</Tag>
                                 )}
+
                                 <RowWithGap $gap={0}>
+                                    {isRegionalPage && (
+                                        <StyledIconButton
+                                            onClick={goToIndicatorExplorer}
+                                            $color="#185698"
+                                            padding="4px"
+                                        >
+                                            <CustomChevronRightSharpIcon
+                                                aria-label="Go to indicator explorer"
+                                                color="primary"
+                                                className="go-to-button"
+                                            />
+                                        </StyledIconButton>
+                                    )}
+
                                     {onShowInfo && (
                                         <StyledIconButton onClick={onShowInfo} $color="#185698" padding="4px">
                                             <CustomInfoIconCountry color="primary" className="info-button" />
@@ -281,6 +285,14 @@ const CustomCloseIcon = styled(CloseIcon)`
 `;
 
 const CustomCloudIcon = styled(DownloadIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
+`;
+
+const CustomChevronRightSharpIcon = styled(ChevronRightSharpIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
