@@ -77,9 +77,8 @@ export const CountryPage: React.FC = () => {
 
             countryFilter.onCountryChange(value);
             history.push({ search: searchParams.toString() });
-            handleResetTab(true);
         },
-        [countryFilter, handleResetTab, history]
+        [countryFilter, history]
     );
 
     const sliderRef = useRef(null);

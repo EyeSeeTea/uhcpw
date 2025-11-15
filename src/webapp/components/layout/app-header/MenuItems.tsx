@@ -56,33 +56,6 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
 
             <StyledDivider />
 
-            {!isCountryPage || (isCountryPage && !isSmallScreen) ? (
-                <>
-                    <MenuItem>
-                        <MobileMenuSubItem item={i18n.t("Countries & areas")}>
-                            <div>
-                                {countryFilter.countryOptions.map(country => {
-                                    return (
-                                        <MenuItem
-                                            key={country.value}
-                                            onClick={() => handleCountryClick(country)}
-                                            onMouseDown={e => {
-                                                e.preventDefault();
-                                                e.stopPropagation();
-                                                handleCountryClick(country);
-                                            }}
-                                        >
-                                            {country.text}
-                                        </MenuItem>
-                                    );
-                                })}
-                            </div>
-                        </MobileMenuSubItem>
-                    </MenuItem>
-                    <StyledDivider />
-                </>
-            ) : null}
-
             {!isRegionalPage || (isRegionalPage && !isSmallScreen) ? (
                 <>
                     <MenuItem>
@@ -100,6 +73,33 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
                                             }}
                                         >
                                             {region.text}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </div>
+                        </MobileMenuSubItem>
+                    </MenuItem>
+                    <StyledDivider />
+                </>
+            ) : null}
+
+            {!isCountryPage || (isCountryPage && !isSmallScreen) ? (
+                <>
+                    <MenuItem>
+                        <MobileMenuSubItem item={i18n.t("Countries & areas")}>
+                            <div>
+                                {countryFilter.countryOptions.map(country => {
+                                    return (
+                                        <MenuItem
+                                            key={country.value}
+                                            onClick={() => handleCountryClick(country)}
+                                            onMouseDown={e => {
+                                                e.preventDefault();
+                                                e.stopPropagation();
+                                                handleCountryClick(country);
+                                            }}
+                                        >
+                                            {country.text}
                                         </MenuItem>
                                     );
                                 })}

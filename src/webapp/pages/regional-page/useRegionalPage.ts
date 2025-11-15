@@ -164,13 +164,6 @@ export function useRegionalPage(): RegionalPageState {
         };
     }, [history.location.search, regionOptions]);
 
-    const resetSelectedValues = useCallback(() => {
-        policyChecklist.onCleanSelection();
-        setExpandedSectionsAccordion(undefined);
-        regionNumbers.onResetTabs();
-        gapsInCoverage.onResetTabs();
-    }, [policyChecklist, regionNumbers, gapsInCoverage]);
-
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
             const searchParams = new URLSearchParams(history.location.search);
@@ -197,9 +190,8 @@ export function useRegionalPage(): RegionalPageState {
             setHighlightedISO3Countries(iso3CountriesInRegion);
             setSelectedRegion(region);
             onRegionChange(newRegion);
-            resetSelectedValues();
         },
-        [countries, history, onRegionChange, regionOptions, regions, resetSelectedValues]
+        [countries, history, onRegionChange, regionOptions, regions]
     );
 
     useEffect(() => {
