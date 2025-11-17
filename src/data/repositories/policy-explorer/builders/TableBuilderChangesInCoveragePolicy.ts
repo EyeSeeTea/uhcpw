@@ -295,4 +295,12 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
             {}
         );
     }
+
+    static fillSubcategories() {
+        return Object.values({
+            ...CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
+        }).reduce((accSubcategories, subcategoryIds) => {
+            return [...accSubcategories, ...subcategoryIds];
+        }, [] as string[]);
+    }
 }

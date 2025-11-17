@@ -1,3 +1,5 @@
+import { HealthCoverage } from "../HealthCoverage";
+
 export type PolicyExplorer = {
     tables: Record<string, PolicyExplorerCell[][]>;
     generalInfo: PolicyExplorerGeneralInfo[];
@@ -9,11 +11,15 @@ export enum PolicyExplorerCellType {
     DATA = "DATA",
 }
 
-export type PolicyExplorerCell = {
-    type: PolicyExplorerCellType;
-    value: string;
+export type PolicyExplorerCell = PolicyExplorerCellHeader | PolicyExplorerCellData;
+type BasePolicyExplorerCell = {
     references?: string;
 };
+export type PolicyExplorerCellHeader = BasePolicyExplorerCell & { type: PolicyExplorerCellType.HEADER; value: string };
+export type PolicyExplorerCellData = BasePolicyExplorerCell & { type: PolicyExplorerCellType.DATA } & (
+        | { value: string }
+        | { value: HealthCoverage; dataType: "coverage" }
+    );
 
 export type PolicyExplorerGeneralInfo = {
     year: string;

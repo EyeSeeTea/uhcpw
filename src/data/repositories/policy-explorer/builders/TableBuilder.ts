@@ -8,6 +8,7 @@ import {
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 } from "../PolicyExplorerCategoryD2Repository";
 import { TableBuilderChangesInCoveragePolicy } from "./TableBuilderChangesInCoveragePolicy";
+import { TableBuilderCoveredHealthcareByType } from "./TableBuilderCoveredHealthcareByType";
 
 export interface TableBuilder {
     buildColumns(params: {
@@ -34,6 +35,8 @@ export function getTableBuilder(policyExplorerCategoryId: string) {
             return new TableBuilderByTypeOfHealthcare();
         case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
             return new TableBuilderChangesInCoveragePolicy();
+        case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
+            return new TableBuilderCoveredHealthcareByType();
         default:
             return new TableBuilderDefault();
     }

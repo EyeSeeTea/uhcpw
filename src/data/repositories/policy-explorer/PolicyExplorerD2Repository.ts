@@ -17,19 +17,23 @@ import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-a
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
-import { CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES } from "./builders/TableBuilderChangesInCoveragePolicy";
+import {
+    CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
+    TableBuilderChangesInCoveragePolicy,
+} from "./builders/TableBuilderChangesInCoveragePolicy";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
-import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
+import { TableBuilderByTypeOfHealthcare } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
+import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -63,6 +67,7 @@ const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     serviceCoverage: "W4CqlzcDPB1",
     userCharges: "mCMVwmnGWJF",
     userChargesByHealthCare: "u800TAhsIBY",
+    userChargesApplyByHealthCare: "u800TAhsIBY_Cat",
     voluntaryHealthInsurance: "uImM4yTeeV3",
     mainGapsInFinancedCoverage: "e6cfI6vWYEF",
     changesInCoveragePolicy: "Dg4b8bTfEIr",
@@ -376,7 +381,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
                 CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID === categoryId ||
-                CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === categoryId
+                [
+                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
+                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+                ].includes(categoryId)
         );
 
         const allPolicyExplorerCategoriesAndSubcategories = hasToFillSubcategories
@@ -501,24 +509,21 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
                     return {
                         ...acc,
-                        [categoryId]: Object.values({
-                            ...CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
-                        }).reduce((accSubcategories, subcategoryIds) => {
-                            return [...accSubcategories, ...subcategoryIds];
-                        }, [] as string[]),
+                        [categoryId]: TableBuilderChangesInCoveragePolicy.fillSubcategories(),
                     };
                 case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
                     return {
                         ...acc,
-                        [categoryId]: Object.entries(
-                            USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS
-                        ).reduce((accSubcategories, subcategories) => {
-                            const subcategoriesSelected = policyExplorerCategories[categoryId];
-                            const [typeOfHealthCare, subcategoriesOfHealthCareIds] = subcategories;
-                            return subcategoriesSelected?.includes(typeOfHealthCare)
-                                ? [...accSubcategories, ...subcategoriesOfHealthCareIds]
-                                : accSubcategories;
-                        }, [] as string[]),
+                        [categoryId]: TableBuilderByTypeOfHealthcare.fillSubcategories(
+                            policyExplorerCategories[categoryId]
+                        ),
+                    };
+                case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
+                    return {
+                        ...acc,
+                        [categoryId]: TableBuilderCoveredHealthcareByType.fillSubcategories(
+                            policyExplorerCategories[categoryId]
+                        ),
                     };
                 default:
                     return {
