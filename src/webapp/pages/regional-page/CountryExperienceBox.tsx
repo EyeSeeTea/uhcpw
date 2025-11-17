@@ -78,16 +78,16 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
             {expanded ? (
                 <Content>
                     <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
-                    <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => setExpanded(false)}>
+                    <StyledReadMoreButton
+                        endIcon={<ExpandLessIcon />}
+                        onClick={() => setExpanded(false)}
+                        style={{ paddingBlockStart: "0" }}
+                    >
                         {i18n.t("Read less")}
                     </StyledReadMoreButton>
                 </Content>
             ) : (
-                <StyledReadMoreButton
-                    endIcon={<ExpandMoreIcon />}
-                    onClick={() => setExpanded(true)}
-                    style={{ marginBottom: "6px" }}
-                >
+                <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => setExpanded(true)}>
                     {i18n.t("Read more")}
                 </StyledReadMoreButton>
             )}
@@ -138,7 +138,6 @@ const CountryExperienceContent = styled.div`
 const StyledTitle = styled(Typography)`
     color: ${colors.black};
     margin-bottom: 0;
-    margin-block-start: 6px;
 
     &.MuiTypography-h6 {
         font-size: 16px;
@@ -186,6 +185,7 @@ const TextLink = styled.a`
 const StyledLink = styled(Button)`
     font-size: 16px;
     padding-left: 0;
+    padding-block-start: 0;
     span {
         color: ${colors.darkBlue};
         text-decoration: none;
@@ -194,7 +194,8 @@ const StyledLink = styled(Button)`
 `;
 
 const StyledIconButton = styled(IconButton)`
-    padding: 4px;
+    padding-inline: 4px;
+    padding-block: 0;
     color: ${colors.darkBlue};
 `;
 
@@ -211,6 +212,7 @@ const StyledReadMoreButton = styled(Button)<{ marginLeft?: string }>`
     margin: 0;
     margin-left: ${props => props.marginLeft || "0"};
     padding-block-start: 6px;
+    margin-block-end: 6px;
 
     :hover {
         background-color: transparent;
@@ -228,4 +230,5 @@ const TitleContainer = styled.div`
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
+    margin-block-start: 6px;
 `;
