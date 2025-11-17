@@ -214,6 +214,7 @@ export function useRegionNumbers(
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphThreeText,
+                                      needToKnowLatestAvailableYearInChart: true,
                                   },
                               ],
                           },

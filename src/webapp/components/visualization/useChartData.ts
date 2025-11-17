@@ -32,6 +32,7 @@ export function useChartData(params: {
     currentCountryOrRegion?: Id;
     visualizationName?: string;
     filterByLatestAvailableYearInRegion?: boolean;
+    needToKnowLatestAvailableYearInChart?: boolean;
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
 }): ChartDataState {
@@ -43,6 +44,7 @@ export function useChartData(params: {
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
     } = params;
@@ -120,6 +122,11 @@ export function useChartData(params: {
                               )
                             : undefined;
 
+                    const lastAvailableYearInChart = needToKnowLatestAvailableYearInChart
+                        ? getLastAvailableYearInChartData(filteredAnalytics, isMultipleVisualizations)
+                        : undefined;
+
+                    const isLatestCOVID19 = years.includes(LatestCOVID19.id);
                     const chartSource = {
                         analyticsResponse: isMultipleVisualizations ? filteredAnalytics : filteredAnalytics[0],
                         visualization: isMultipleVisualizations ? visualizations : visualization,
@@ -127,7 +134,7 @@ export function useChartData(params: {
                         regions: regions,
                         currentCountryOrRegion: currentCountryOrRegion,
                         currentYear: years.length === 1 ? years[0] : undefined,
-                        isLatestCOVID19: years.includes(LatestCOVID19.id),
+                        isLatestCOVID19: isLatestCOVID19,
                         isLatestYearAvailable: isLatestYearAvailable,
                         yearToFilterBy: lastAvailableYearInRegion,
                         isRegionalPage: isRegionalPage,
@@ -161,7 +168,9 @@ export function useChartData(params: {
                         isScatter: visualization?.isScatter,
                         xAxis: visualization?.xAxis,
                         yAxis: visualization?.yAxis,
-                        lastAvailableYearInRegion: lastAvailableYearInRegion,
+                        lastAvailableYearInRegion:
+                            isLatestCOVID19 || isLatestYearAvailable ? undefined : lastAvailableYearInRegion,
+                        lastAvailableYearInChart: lastAvailableYearInChart,
                     });
                 },
                 error => {
@@ -189,6 +198,7 @@ export function useChartData(params: {
         getVisualizationDialogInfo,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
     ]);
@@ -340,4 +350,21 @@ function getLastAvailableYearInRegion(
     }, "0");
 
     return lastAvailableYearInRegion !== "0" ? lastAvailableYearInRegion : undefined;
+}
+
+function getLastAvailableYearInChartData(
+    analyticsResponse: Analytics[],
+    isMultipleVisualizations: boolean
+): string | undefined {
+    const rows = isMultipleVisualizations
+        ? analyticsResponse.flatMap(analytics => analytics.rows)
+        : analyticsResponse[0]?.rows || [];
+
+    const lastAvailableYear = rows.reduce((lastAvailableYear, row): string => {
+        const year = row[2] || "";
+
+        return year > lastAvailableYear ? year : lastAvailableYear;
+    }, "0");
+
+    return lastAvailableYear !== "0" ? lastAvailableYear : undefined;
 }

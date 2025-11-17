@@ -23,6 +23,7 @@ export type ChartDataLoaded = {
     yAxis?: string;
     lastAvailableYearInRegion?: string;
     visualizationIdInIndicatorExplorer?: Id;
+    lastAvailableYearInChart?: string;
 };
 
 export type ChartDataLoading = {
