@@ -40,6 +40,7 @@ interface VisualizationPluginProps {
     visualizationIdInIndicatorExplorer?: Id;
     setChartWithNoData?: (visualizationId: string) => void;
     seriesColors?: Record<string, string>;
+    hasNarrowerText?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -68,6 +69,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationIdInIndicatorExplorer,
         setChartWithNoData,
         seriesColors,
+        hasNarrowerText = false,
     } = props;
 
     const history = useHistory();
@@ -234,6 +236,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 showDialogInFullScreen={openFullScreenDialog || showDialogInFullScreen}
                 isRegionalPage={isRegionalPage}
                 goToIndicatorExplorer={goToIndicatorExplorer}
+                hasNarrowerText={hasNarrowerText}
             />
             <ChartPlugin
                 key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed

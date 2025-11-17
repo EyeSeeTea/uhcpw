@@ -40,9 +40,11 @@ export const GapsInCoverageFirstPanel: React.FC<GapsInCoverageFirstPanelProps> =
 
     return (
         <Container>
-            <StyledTitle variant="h6" gutterBottom>
-                {title}
-            </StyledTitle>
+            <TextContainer>
+                <StyledTitle variant="h6" gutterBottom>
+                    {title}
+                </StyledTitle>
+            </TextContainer>
 
             {mainText && !visual ? (
                 <TextContainer>
@@ -160,5 +162,5 @@ const StyledTitle = styled(Typography)`
 `;
 
 const TextContainer = styled.div`
-    width: 600px;
+    max-width: 600px;
 `;

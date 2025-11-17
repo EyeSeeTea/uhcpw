@@ -39,6 +39,7 @@ interface VisualizationPluginHeaderProps {
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
     goToIndicatorExplorer: () => void;
+    hasNarrowerText?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -62,6 +63,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         isRegionalPage = false,
         onClose,
         goToIndicatorExplorer,
+        hasNarrowerText = false,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountryOrRegion) {
@@ -86,15 +88,17 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryOrRegionalPage ? (
                         <Row $isRegionalPage={isRegionalPage}>
                             <TitleRow>
-                                <StyledTitle
-                                    isScreenshot={isScreenshot}
-                                    variant="h6"
-                                    color="textPrimary"
-                                    style={{ marginLeft: 20, marginRight: isRegionalPage ? 5 : 0 }}
-                                    $isRegionalPage={isRegionalPage}
-                                >
-                                    {chartFriendlyName}
-                                </StyledTitle>
+                                <TitleContainer hasNarrowerText={hasNarrowerText}>
+                                    <StyledTitle
+                                        isScreenshot={isScreenshot}
+                                        variant="h6"
+                                        color="textPrimary"
+                                        style={{ marginLeft: 20, marginRight: isRegionalPage ? 5 : 0 }}
+                                        $isRegionalPage={isRegionalPage}
+                                    >
+                                        {chartFriendlyName}
+                                    </StyledTitle>
+                                </TitleContainer>
                             </TitleRow>
 
                             <RowWithGap $gap={6}>
@@ -332,4 +336,8 @@ const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-left: 15px;
     }
+`;
+
+const TitleContainer = styled.div<{ hasNarrowerText?: boolean }>`
+    max-width: ${props => (props.hasNarrowerText ? "600px" : "100%")};
 `;

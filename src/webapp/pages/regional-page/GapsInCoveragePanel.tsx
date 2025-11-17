@@ -75,9 +75,11 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
 
     return (
         <Container>
-            <StyledTitle variant="h6" gutterBottom>
-                {title}
-            </StyledTitle>
+            <TextContainer>
+                <StyledTitle variant="h6" gutterBottom>
+                    {title}
+                </StyledTitle>
+            </TextContainer>
 
             {mainText && (
                 <TextContainer>
@@ -95,9 +97,11 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
 
                     {visualContent.title && !visualContent.visualizationId ? (
                         <ChartTitleRow>
-                            <ChartTitle variant="h6" gutterBottom>
-                                {visualContent.title}
-                            </ChartTitle>
+                            <TextContainer>
+                                <ChartTitle variant="h6" gutterBottom>
+                                    {visualContent.title}
+                                </ChartTitle>
+                            </TextContainer>
 
                             <StyledIconButton
                                 onClick={() => setVisualTextInfo(visualContent?.textInfo)}
@@ -125,6 +129,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                                 analyticsPageTitle={"Regional page"}
                                 seriesColors={visualContent.seriesColors}
                                 isRegionalPage
+                                hasNarrowerText
                             />
                         </VisualizationContainer>
                     ) : visualContent.visual ? (
@@ -217,7 +222,7 @@ const ChartTitleRow = styled.div`
     width: 100%;
     gap: 24px;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
 `;
 
 const ChartTitle = styled(Typography)`
@@ -312,5 +317,5 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolea
 `;
 
 const TextContainer = styled.div`
-    width: 600px;
+    max-width: 600px;
 `;
