@@ -33,6 +33,8 @@ export type RegionNumbersPanelContent = {
 export type PolicyChecklistContent = {
     textSectionLeft: string;
     textSectionRight: string;
+    downloadFile: string;
+    hasDownloadFile: boolean;
 };
 
 export type GapsInCoverageContent = {

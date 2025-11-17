@@ -121,10 +121,12 @@ export const RegionalPage: React.FC = () => {
                             textSectionRight={policyChecklist.content.textSectionRight}
                             checklist={policyChecklist?.checklist}
                             filteredCountryExperiences={policyChecklist?.filteredCountryExperiences}
-                            selectedChecklistItems={policyChecklist.selectedChecklistItems}
+                            selectedChecklistItem={policyChecklist.selectedChecklistItem}
                             onSelectChecklistItem={policyChecklist.onSelectChecklistItem}
                             isLoading={policyChecklist.isLoading}
                             isSmallScreen={isSmallScreen}
+                            downloadFile={policyChecklist.content.downloadFile}
+                            hasDownloadFile={policyChecklist.content.hasDownloadFile}
                         />
                     </section>
 

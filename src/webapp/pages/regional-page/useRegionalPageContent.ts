@@ -15,6 +15,8 @@ type RegionalPageContent = {
     policyChecklistContent: {
         textSectionLeft: string;
         textSectionRight: string;
+        downloadFile: string;
+        hasDownloadFile: boolean;
     };
 };
 

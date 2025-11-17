@@ -1,7 +1,17 @@
 import React from "react";
 import styled from "styled-components";
-import { Table, TableBody, TableCell, TableRow, IconButton, Typography, CircularProgress } from "@material-ui/core";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableRow,
+    IconButton,
+    Typography,
+    CircularProgress,
+    Button,
+} from "@material-ui/core";
 import ReactMarkdown, { Components } from "react-markdown";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import i18n from "../../../locales";
@@ -18,10 +28,12 @@ type PolicyChecklistSectionProps = {
     textSectionRight: string;
     checklist: Maybe<ChecklistPolicyMakersWithCountries[]>;
     filteredCountryExperiences: Maybe<CountryExperienceData[]>;
-    selectedChecklistItems: Id[] | undefined;
+    selectedChecklistItem: Id | undefined;
     onSelectChecklistItem: (id: Id) => void;
     isLoading: boolean;
     isSmallScreen: boolean;
+    hasDownloadFile?: boolean;
+    downloadFile: string;
 };
 
 export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = React.memo(props => {
@@ -30,19 +42,21 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
         textSectionRight,
         checklist,
         filteredCountryExperiences,
-        selectedChecklistItems,
+        selectedChecklistItem,
         onSelectChecklistItem,
         isLoading,
         isSmallScreen,
+        downloadFile,
+        hasDownloadFile = false,
     } = props;
     const { redirectWithExternalLink } = useAnalytics();
 
     const markdownComponents: Components = React.useMemo(
         () => ({
             p: ({ children }) => (
-                <Text variant="body1" gutterBottom>
+                <Paragraph variant="body1" gutterBottom>
                     {children}
-                </Text>
+                </Paragraph>
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
@@ -71,55 +85,81 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                         </IntroText>
                     </ContentWrapper>
 
-                    <Title variant="body1">{i18n.t("Click an item to see examples of country experience")}</Title>
-
                     <ContentWrapper>
-                        <TableContainer>
-                            <StyledTable>
-                                <TableBody>
-                                    {checklist.map(item => (
-                                        <StyledTableRow
-                                            key={item.id}
-                                            onClick={() =>
-                                                item.countryExperiencesIds.length !== 0 &&
-                                                onSelectChecklistItem(item.id)
-                                            }
-                                            $isSelectable={item.countryExperiencesIds.length !== 0}
+                        <div>
+                            <TableTitleContainer>
+                                <Title variant="body1">
+                                    {i18n.t("Click an item to see examples of country experience")}
+                                </Title>
+                                {hasDownloadFile && (
+                                    <a
+                                        href={downloadFile}
+                                        download
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        onClick={redirectWithExternalLink}
+                                    >
+                                        <DownloadButton
+                                            variant="contained"
+                                            endIcon={<DownloadIcon />}
+                                            color="primary"
+                                            className="download-button"
                                         >
-                                            <StyledTableCell $isSelected={selectedChecklistItems?.includes(item.id)}>
-                                                <ReactMarkdown components={markdownComponents}>
-                                                    {item.text}
-                                                </ReactMarkdown>
-                                            </StyledTableCell>
+                                            <Typography>{i18n.t("Download")}</Typography>
+                                        </DownloadButton>
+                                    </a>
+                                )}
+                            </TableTitleContainer>
 
-                                            <StyledTableCell
-                                                align="right"
-                                                $isSelected={selectedChecklistItems?.includes(item.id)}
+                            <TableContainer>
+                                <StyledTable>
+                                    <TableBody>
+                                        {checklist.map(item => (
+                                            <StyledTableRow
+                                                key={item.id}
+                                                onClick={() =>
+                                                    item.countryExperiencesIds.length !== 0 &&
+                                                    onSelectChecklistItem(item.id)
+                                                }
+                                                $isSelectable={item.countryExperiencesIds.length !== 0}
                                             >
-                                                {item.countryExperiencesIds.length === 0 ? null : (
-                                                    <StyledIconButton onClick={() => onSelectChecklistItem(item.id)}>
-                                                        <CheckCircleCustomtIcon
-                                                            height="28px"
-                                                            width="28px"
-                                                            circleColor={
-                                                                selectedChecklistItems?.includes(item.id)
-                                                                    ? colors.white
-                                                                    : colors.accentPrimary
-                                                            }
-                                                            tickColor={
-                                                                selectedChecklistItems?.includes(item.id)
-                                                                    ? colors.accentPrimary
-                                                                    : colors.white
-                                                            }
-                                                        />
-                                                    </StyledIconButton>
-                                                )}
-                                            </StyledTableCell>
-                                        </StyledTableRow>
-                                    ))}
-                                </TableBody>
-                            </StyledTable>
-                        </TableContainer>
+                                                <StyledTableCell $isSelected={selectedChecklistItem === item.id}>
+                                                    <ReactMarkdown components={markdownComponents}>
+                                                        {item.text}
+                                                    </ReactMarkdown>
+                                                </StyledTableCell>
+
+                                                <StyledTableCell
+                                                    align="right"
+                                                    $isSelected={selectedChecklistItem === item.id}
+                                                >
+                                                    {item.countryExperiencesIds.length === 0 ? null : (
+                                                        <StyledIconButton
+                                                            onClick={() => onSelectChecklistItem(item.id)}
+                                                        >
+                                                            <CheckCircleCustomtIcon
+                                                                height="28px"
+                                                                width="28px"
+                                                                circleColor={
+                                                                    selectedChecklistItem === item.id
+                                                                        ? colors.white
+                                                                        : colors.accentPrimary
+                                                                }
+                                                                tickColor={
+                                                                    selectedChecklistItem === item.id
+                                                                        ? colors.accentPrimary
+                                                                        : colors.white
+                                                                }
+                                                            />
+                                                        </StyledIconButton>
+                                                    )}
+                                                </StyledTableCell>
+                                            </StyledTableRow>
+                                        ))}
+                                    </TableBody>
+                                </StyledTable>
+                            </TableContainer>
+                        </div>
 
                         <CountryExperiencesContainer>
                             {filteredCountryExperiences && filteredCountryExperiences.length > 0
@@ -162,8 +202,6 @@ const StyledIconButton = styled(IconButton)`
 const Title = styled(Typography)`
     font-family: Lato;
     color: ${colors.blue};
-    margin-block-start: 25px;
-    margin-block-end: 20px;
     font-size: 16px;
 
     &&& {
@@ -211,6 +249,7 @@ const CountryExperiencesContainer = styled.div`
     overflow-y: auto;
     max-height: 100%;
     contain: size;
+    margin-block-start: 171px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         overflow: visible;
@@ -241,9 +280,34 @@ const StyledTableCell = styled(TableCell)<{ $isSelected?: boolean }>`
     border-width: 4px;
 `;
 
-const Text = styled(Typography)`
+const TableTitleContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    margin-block-start: 16px;
+`;
+
+const DownloadButton = styled(Button)`
+    border-radius: 20px;
+    height: 42px;
+    background: #185698;
+    text-transform: initial;
+`;
+
+const Paragraph = styled(Typography)`
     font-family: Lato;
+    margin-block: 10px;
+    font-size: 1rem;
     color: ${colors.black};
+
+    &:first-child {
+        margin-block-start: 0;
+    }
+
+    &:last-child {
+        margin-block-end: 0;
+    }
 `;
 
 const StyledLi = styled.li`
@@ -256,6 +320,7 @@ const StyledUl = styled.ul`
     padding-inline-start: 14px;
     font-size: 16px;
     color: ${colors.black};
+    margin-block: 0;
 `;
 
 const TextLink = styled.a`

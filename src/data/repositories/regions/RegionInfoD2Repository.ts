@@ -127,6 +127,7 @@ const REGION_CONTENT_DATA_ELEMENT_IDS = {
     policyChecklist: {
         textSectionLeft: "oXGUkxIIvHM",
         textSectionRight: "lLNV31zJEIZ",
+        downloadFile: "FbeQI0KKwtt",
     },
 } as const;
 
@@ -535,6 +536,9 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.policyChecklist.textSectionRight,
                     regionalContent
                 ),
+                hasDownloadFile:
+                    getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.policyChecklist.downloadFile, regionalContent) !== "",
+                downloadFile: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.policyChecklist.downloadFile}&eventUid=${regionalContent?.event}`,
             },
         };
     }

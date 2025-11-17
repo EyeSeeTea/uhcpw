@@ -41,9 +41,9 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
     const markdownComponents: Components = React.useMemo(
         () => ({
             p: ({ children }) => (
-                <StyledText variant="body1" gutterBottom>
+                <Paragraph variant="body1" gutterBottom>
                     {children}
-                </StyledText>
+                </Paragraph>
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
@@ -63,22 +63,31 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
     return (
         <CountryExperienceContent>
-            <StyledTitle variant="h6" gutterBottom>
-                {title}
-            </StyledTitle>
+            <TitleContainer>
+                <StyledTitle variant="h6" gutterBottom>
+                    {title}
+                </StyledTitle>
 
-            {expanded ? (
-                <Content>
+                {expanded && (
                     <StyledIconButton onClick={() => setShowReferences(true)}>
                         <CustomInfoIconCountry color="primary" className="info-button" />
                     </StyledIconButton>
+                )}
+            </TitleContainer>
+
+            {expanded ? (
+                <Content>
                     <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
                     <StyledReadMoreButton endIcon={<ExpandLessIcon />} onClick={() => setExpanded(false)}>
                         {i18n.t("Read less")}
                     </StyledReadMoreButton>
                 </Content>
             ) : (
-                <StyledReadMoreButton endIcon={<ExpandMoreIcon />} onClick={() => setExpanded(true)}>
+                <StyledReadMoreButton
+                    endIcon={<ExpandMoreIcon />}
+                    onClick={() => setExpanded(true)}
+                    style={{ marginBottom: "6px" }}
+                >
                     {i18n.t("Read more")}
                 </StyledReadMoreButton>
             )}
@@ -112,7 +121,7 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 };
 
 const Content = styled.div`
-    padding: 16px 16px 16px 0;
+    padding: 16px 16px 0px 0;
     color: ${colors.black};
     font-size: 16px;
 `;
@@ -121,15 +130,15 @@ const CountryExperienceContent = styled.div`
     padding: 20px;
     margin-bottom: 24px;
     background-color: ${colors.blue10};
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 `;
 
 const StyledTitle = styled(Typography)`
-    margin-inline-end: 24px;
     color: ${colors.black};
+    margin-bottom: 0;
+    margin-block-start: 6px;
 
     &.MuiTypography-h6 {
         font-size: 16px;
@@ -137,10 +146,19 @@ const StyledTitle = styled(Typography)`
     }
 `;
 
-const StyledText = styled(Typography)`
+const Paragraph = styled(Typography)`
     font-family: Lato;
-    color: ${colors.black};
+    margin-block: 10px;
     font-size: 16px;
+    color: ${colors.black};
+
+    &:first-child {
+        margin-block-start: 0;
+    }
+
+    &:last-child {
+        margin-block-end: 0;
+    }
 `;
 
 const StyledLi = styled.li`
@@ -176,9 +194,6 @@ const StyledLink = styled(Button)`
 `;
 
 const StyledIconButton = styled(IconButton)`
-    position: absolute;
-    right: 10px;
-    top: 10px;
     padding: 4px;
     color: ${colors.darkBlue};
 `;
@@ -195,6 +210,7 @@ const StyledReadMoreButton = styled(Button)<{ marginLeft?: string }>`
     padding: 0;
     margin: 0;
     margin-left: ${props => props.marginLeft || "0"};
+    padding-block-start: 6px;
 
     :hover {
         background-color: transparent;
@@ -204,4 +220,12 @@ const StyledReadMoreButton = styled(Button)<{ marginLeft?: string }>`
         position: relative;
         inset-block-end: 2px;
     }
+`;
+
+const TitleContainer = styled.div`
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
 `;
