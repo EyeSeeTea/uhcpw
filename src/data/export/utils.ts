@@ -87,6 +87,14 @@ const CELL_STYLES = {
     },
 };
 
+export const LEGENDS_STYLE = {
+    cell: {
+        wrapText: true,
+        verticalAlignment: "top",
+    },
+    height: 60,
+};
+
 const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "f6f000",
     "Outpatient specialist visits": "ffc000",

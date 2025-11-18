@@ -35,7 +35,7 @@ import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
 import { getTableSorter } from "./sorters/TableSorter";
-import { mapCellToExportedValue } from "./utils";
+import { getTableLegends, mapCellToExportedValue } from "./utils";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -194,6 +194,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.name || categoryId,
                         type: type,
+                        legends: getTableLegends(category),
                     },
                 ];
             }
