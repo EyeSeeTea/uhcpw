@@ -4,7 +4,7 @@ import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 export const chart_d3kq9OCv8tH_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     categoryTag: "International comparison",
-    friendlyName: "out-of-pocket payments as a share of current spending on health",
+    friendlyName: "Out-of-pocket payments as a share of current spending on health (line chart)",
     regionalPageName: "Out-of-pocket payments as a share of current spending on health, latest available year",
     minCountryFilter: 1,
     hasEURegion: true,
