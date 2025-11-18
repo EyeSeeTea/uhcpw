@@ -1,5 +1,8 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
-import { PolicyExplorerCell } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorerCell,
+    PolicyExplorerCellHeader,
+} from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { D2DataSet } from "../PolicyExplorerD2Repository";
 import { TableBuilderByTypeOfHealthcare } from "./TableBuilderByTypeOfHealthcare";
 import { TableBuilderDefault } from "./TableBuilderDefault";
@@ -15,7 +18,7 @@ export interface TableBuilder {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds?: string[];
         dataSet?: D2DataSet;
-    }): PolicyExplorerCell[];
+    }): PolicyExplorerCellHeader[];
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
         policyExplorerCategoryId: string;

@@ -35,7 +35,7 @@ type ValueMapKey = keyof typeof valueMap;
 const isValueMapKey = (v: string): v is ValueMapKey => v in valueMap;
 
 export class TableBuilderCoveredHealthcareByType implements TableBuilder {
-    buildColumns(_: Parameters<TableBuilder["buildColumns"]>[0]): PolicyExplorerCell[] {
+    buildColumns(_: Parameters<TableBuilder["buildColumns"]>[0]): PolicyExplorerCellHeader[] {
         const commonColumns: PolicyExplorerCellHeader[] = [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
         ];
