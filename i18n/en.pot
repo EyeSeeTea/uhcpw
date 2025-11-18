@@ -5,13 +5,16 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-11-06T16:42:46.961Z\n"
-"PO-Revision-Date: 2025-11-06T16:42:46.961Z\n"
+"POT-Creation-Date: 2025-11-18T04:08:56.145Z\n"
+"PO-Revision-Date: 2025-11-18T04:08:56.145Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
 
 msgid "Country Information coming soon"
+msgstr ""
+
+msgid "User charges (co-payments) for covered health care by type of care"
 msgstr ""
 
 msgid "All countries and areas"
@@ -174,6 +177,15 @@ msgid "Select category"
 msgstr ""
 
 msgid "Get table"
+msgstr ""
+
+msgid "User charges are applied"
+msgstr ""
+
+msgid "Care not covered for most people"
+msgstr ""
+
+msgid "Care not covered"
 msgstr ""
 
 msgid "Select all"
