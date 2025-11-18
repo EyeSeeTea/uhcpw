@@ -16,6 +16,7 @@ const COLUMN_LIMIT = "CZ";
 export type Tab = {
     data: string[][];
     name: string;
+    type?: "text" | "coverage";
 };
 
 export type TabsWithStringOrNumbers = {
@@ -79,7 +80,7 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
                 const column = getColumnLetterByIndex(columnIndex);
                 const cellRef = `${column}${rowNumber}`;
                 addDataValue(sheet, cell, cellRef);
-                const cellStyle = getCellStyles(sheet, tab.name, rowIndex, columnIndex);
+                const cellStyle = getCellStyles(sheet, tab, rowIndex, columnIndex);
                 sheet.cell(cellRef).style(cellStyle);
                 setWidth(sheet, tab.name, columnIndex);
             });

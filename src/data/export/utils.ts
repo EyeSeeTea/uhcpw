@@ -7,7 +7,7 @@ import {
     categoriesNameWithLessThan31Chars,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import { TYPE_OF_HEALTH_CARE_HEADER_NAME } from "../repositories/policy-explorer/builders/TableBuilderByTypeOfHealthcare";
-import { TabsWithStringOrNumbers } from "./exportToCSV";
+import { Tab, TabsWithStringOrNumbers } from "./exportToCSV";
 
 const DEFAULT_HEIGHT = 30;
 
@@ -86,6 +86,19 @@ const CELL_STYLES = {
     },
 };
 
+const healthcareTypeToColor: Record<string, string> = {
+    "Primary care visits": "f6f000",
+    "Outpatient specialist visits": "ffc000",
+    "Emergency care": "c78f3d",
+    "Outpatient prescribed medicines": "c00000",
+    "Medical products": "ed7d31",
+    "Diagnostics tests": "7030a0",
+    "Dental care visits": "00b0f0",
+    "Dental care treatment": "0070c0",
+    "Inpatient care": "00b050",
+    "Inpatient medicines": "385724",
+};
+
 export function addDataValue(sheet: Sheet, value: string, cellRef: string) {
     //@ts-ignore Not properly typed
     const richText = new XlsxPopulate.RichText();
@@ -129,10 +142,11 @@ export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string) 
     });
 }
 
-export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: number, columnDataIndex: number) {
+export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, columnDataIndex: number) {
     const rowNumber = rowDataIndex + 1;
     const column = getColumnLetterByIndex(columnDataIndex);
     const cellRef = `${column}${rowNumber}`;
+    const tabName = tab.name;
 
     const isDownloadDateCell =
         tabName === GENERAL_INFOMRATION_TAB_NAME && sheet.cell(cellRef).value()?.toString()?.includes(DATE_OF_DOWNLOAD);
@@ -171,11 +185,20 @@ export function getCellStyles(sheet: Sheet, tabName: string, rowDataIndex: numbe
 
     return {
         ...CELL_STYLES.dataCell,
+        fontColor: getFontColor(tab, columnDataIndex) || CELL_STYLES.dataCell.fontColor,
         fill: {
             ...CELL_STYLES.dataCell.fill,
             color: isTypeOfHealthCareColumn ? CELL_STYLES.headerCell.fill.color : CELL_STYLES.dataCell.fill.color,
         },
     };
+}
+
+function getFontColor(tab: Tab, columnIndex: number) {
+    if (tab.type === "coverage") {
+        const header = tab.data[1]?.[columnIndex];
+        return header && healthcareTypeToColor[header];
+    }
+    return undefined;
 }
 
 function getRowHeight(cellsInRow: string[]): number {
@@ -226,9 +249,14 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
         return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.typeOfHealthCareColumnOrUserChargesApplyColumn;
     }
 
-    return tabName === categoriesNameWithLessThan31Chars.u800TAhsIBY
-        ? USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.default
-        : COLUMN_WIDTHS.default;
+    switch (tabName) {
+        case categoriesNameWithLessThan31Chars.u800TAhsIBY:
+            return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.default;
+        case categoriesNameWithLessThan31Chars.u800TAhsIBY_Cat:
+            return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.typeOfHealthCareColumnOrUserChargesApplyColumn;
+        default:
+            return COLUMN_WIDTHS.default;
+    }
 }
 
 export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number) {

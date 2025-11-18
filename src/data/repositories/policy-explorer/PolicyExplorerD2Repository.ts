@@ -35,6 +35,7 @@ import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
 import { getTableSorter } from "./sorters/TableSorter";
+import { mapCellToExportedValue } from "./utils";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -57,6 +58,7 @@ export const categoriesNameWithLessThan31Chars: Record<string, string> = {
     Dg4b8bTfEIr: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
+    u800TAhsIBY_Cat: "User charges for covered health",
 };
 
 export const REFERENCES_TAB_NAME = "References";
@@ -179,6 +181,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
             const category = categories.find(({ id }) => id === categoryId);
+            const type: Tab["type"] =
+                category?.id === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY ? "coverage" : "text";
 
             if (rows?.length) {
                 const dataRows = this.getDataFromRows(rows);
@@ -189,6 +193,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         name: Object.keys(categoriesNameWithLessThan31Chars).includes(categoryId)
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.name || categoryId,
+                        type: type,
                     },
                 ];
             }
@@ -279,7 +284,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private getDataFromRows(rows: PolicyExplorerCell[][]): string[][] {
         return rows.reduce((accRowsData: string[][], currentRow: PolicyExplorerCell[]) => {
-            const rowData: string[] = currentRow.map(({ value }) => value);
+            const rowData: string[] = currentRow.map(cell => mapCellToExportedValue(cell));
             return [...accRowsData, rowData];
         }, []);
     }
