@@ -2,7 +2,6 @@ import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import {
     PolicyExplorerCell,
-    PolicyExplorerCellTextData,
     PolicyExplorerCellHeader,
     PolicyExplorerCellType,
     PolicyExplorerCellCoverage,
@@ -62,7 +61,7 @@ export class TableBuilderCoveredHealthcareByType implements TableBuilder {
         const { policyExplorerSubcategoriesIds, dataValuesByGroup, orgUnitName, references, currentRowsInTable } =
             params;
 
-        const orgUnitCell: PolicyExplorerCellTextData = {
+        const orgUnitCell = {
             type: PolicyExplorerCellType.DATA,
             value: orgUnitName,
         };

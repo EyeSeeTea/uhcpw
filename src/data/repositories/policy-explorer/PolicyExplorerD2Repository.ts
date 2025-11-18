@@ -34,6 +34,7 @@ import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
+import { getTableSorter } from "./sorters/TableSorter";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -396,6 +397,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return Object.entries(allPolicyExplorerCategoriesAndSubcategories).reduce(
             (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
                 const tableBuilder = getTableBuilder(policyExplorerCategoryId);
+                const tableSorter = getTableSorter(policyExplorerCategoryId);
 
                 const columns = tableBuilder.buildColumns({
                     policyExplorerCategoryId,
@@ -466,7 +468,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     []
                 );
 
-                const tableWithFilteredColumns = this.filterColumnsWithNoData(columns, rows);
+                const tableWithFilteredColumns = tableSorter.cleanAndSort(columns, rows);
 
                 return {
                     ...accTables,
@@ -532,18 +534,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     };
             }
         }, {});
-    }
-
-    private filterColumnsWithNoData(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]) {
-        const indexesToRemove = columns.reduce((accIndexesToRemove: number[], _column, columnIndex) => {
-            const hasRowsWithoutData = rows.every(row => !row[columnIndex]?.value);
-            return hasRowsWithoutData ? [...accIndexesToRemove, columnIndex] : accIndexesToRemove;
-        }, []);
-
-        const filteredColumns = columns.filter((_column, index) => !indexesToRemove.includes(index));
-        const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
-
-        return filteredColumns.length ? [filteredColumns, ...filteredRows] : [];
     }
 
     private buildReferences(

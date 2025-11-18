@@ -11,12 +11,13 @@ export enum PolicyExplorerCellType {
     DATA = "DATA",
 }
 
-export type PolicyExplorerCell = PolicyExplorerCellHeader | PolicyExplorerCellTextData;
+export type PolicyExplorerCell = PolicyExplorerCellHeader | PolicyExplorerCellData;
 type BasePolicyExplorerCell = {
     references?: string;
 };
 export type PolicyExplorerCellHeader = BasePolicyExplorerCell & { type: PolicyExplorerCellType.HEADER; value: string };
-export type PolicyExplorerCellTextData = BasePolicyExplorerCell & { type: PolicyExplorerCellType.DATA; value: string };
+type PolicyExplorerCellTextData = BasePolicyExplorerCell & { type: PolicyExplorerCellType.DATA; value: string };
+type PolicyExplorerCellData = PolicyExplorerCellTextData | PolicyExplorerCellTypedData;
 type PolicyExplorerCellTypedData = PolicyExplorerCellCoverage;
 export type PolicyExplorerCellCoverage = BasePolicyExplorerCell & {
     type: PolicyExplorerCellType.DATA;
