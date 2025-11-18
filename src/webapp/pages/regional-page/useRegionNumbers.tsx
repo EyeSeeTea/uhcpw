@@ -256,14 +256,16 @@ export function useRegionNumbers(
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      visualizationId: "mUjcWO90CRr",
+                                      visualizationId: "fnOIi0bdISn",
                                       visualizationName:
-                                          VisualizationsSeeds["mUjcWO90CRr"]?.regionalPageName ||
-                                          VisualizationsSeeds["mUjcWO90CRr"]?.friendlyName,
+                                          VisualizationsSeeds["fnOIi0bdISn"]?.regionalPageName ||
+                                          VisualizationsSeeds["fnOIi0bdISn"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphThreeText,
+                                      visualizationIdInIndicatorExplorer: "mUjcWO90CRr",
+                                      needToKnowLatestAvailableYearInChart: true,
                                   },
                                   {
                                       visualizationId: "B4CnzUqVR3n",

@@ -24,6 +24,7 @@ import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
 import { chart_MfLZYD6QCPy_Options } from "./chart_MfLZYD6QCPy_Options";
 import { chart_CdqVV1Ib0XS_Options } from "./chart_CdqVV1Ib0XS_Options";
 import { chart_twyY1ulr7uD_Options } from "./chart_twyY1ulr7uD_Options";
+import { chart_fnOIi0bdISn_Options } from "./chart_fnOIi0bdISn_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -65,6 +66,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     mcNfvQaVbfy: chartSource => chart_mcNfvQaVbfy_Options(chartSource),
     eEKRLRR4mDk: chartSource => chart_eEKRLRR4mDk_Options(chartSource),
     mUjcWO90CRr: chartSource => chart_mUjcWO90CRr_Options(chartSource),
+    fnOIi0bdISn: chartSource => chart_fnOIi0bdISn_Options(chartSource), // same as mUjcWO90CRr
     eibYs7QySNk: chartSource => chart_eibYs7QySNk_Options(chartSource),
     DefU3mkASo6: chartSource => chart_DefU3mkASo6_Options(chartSource),
     GNUHM5lQMTp: chartSource => chart_GNUHM5lQMTp_Options(chartSource),
