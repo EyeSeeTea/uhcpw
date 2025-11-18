@@ -1,6 +1,8 @@
 import { Country } from "../../../../domain/entities/Country";
 import { Analytics } from "../../../../domain/entities/indicator-explorer/Analytics";
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
+import { Id } from "../../../../domain/entities/Ref";
+import { Region } from "../../../../domain/entities/region/Region";
 import { chart_kIpnMBaBvZ9_Options } from "./chart_kIpnMBaBvZ9_Options";
 import { chart_dbc87Ljw8uN_Options } from "./chart_dbc87Ljw8uN_Options";
 import { chart_NOukqSxCI63_Options } from "./chart_NOukqSxCI63_Options";
@@ -20,9 +22,8 @@ import { chart_iMI82inOBiD_Options } from "./chart_iMI82inOBiD_Options";
 import { chart_q5ldoFcgkSn_Options } from "./chart_q5ldoFcgkSn_Options";
 import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
 import { chart_MfLZYD6QCPy_Options } from "./chart_MfLZYD6QCPy_Options";
-import { Id } from "../../../../domain/entities/Ref";
-import { Region } from "../../../../domain/entities/region/Region";
 import { chart_CdqVV1Ib0XS_Options } from "./chart_CdqVV1Ib0XS_Options";
+import { chart_twyY1ulr7uD_Options } from "./chart_twyY1ulr7uD_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -70,6 +71,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     WDUV9ZrJiNC: chartSource => chart_WDUV9ZrJiNC_Options(chartSource),
     MfLZYD6QCPy: chartSource => chart_MfLZYD6QCPy_Options(chartSource),
     CdqVV1Ib0XS: chartSource => chart_CdqVV1Ib0XS_Options(chartSource),
+    twyY1ulr7uD: chartSource => chart_twyY1ulr7uD_Options(chartSource),
 };
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {
