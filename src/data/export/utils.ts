@@ -25,6 +25,7 @@ const USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS = {
     firstColumn: 20,
     typeOfHealthCareColumnOrUserChargesApplyColumn: 20,
     default: 40,
+    icon: 15,
 };
 
 const CELL_STYLES = {
@@ -253,7 +254,7 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
         case categoriesNameWithLessThan31Chars.u800TAhsIBY:
             return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.default;
         case categoriesNameWithLessThan31Chars.u800TAhsIBY_Cat:
-            return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.typeOfHealthCareColumnOrUserChargesApplyColumn;
+            return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.icon;
         default:
             return COLUMN_WIDTHS.default;
     }
