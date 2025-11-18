@@ -11,15 +11,19 @@ export enum PolicyExplorerCellType {
     DATA = "DATA",
 }
 
-export type PolicyExplorerCell = PolicyExplorerCellHeader | PolicyExplorerCellData;
+export type PolicyExplorerCell = PolicyExplorerCellHeader | PolicyExplorerCellTextData;
 type BasePolicyExplorerCell = {
     references?: string;
 };
 export type PolicyExplorerCellHeader = BasePolicyExplorerCell & { type: PolicyExplorerCellType.HEADER; value: string };
-export type PolicyExplorerCellData = BasePolicyExplorerCell & { type: PolicyExplorerCellType.DATA } & (
-        | { value: string }
-        | { value: HealthCoverage; dataType: "coverage" }
-    );
+export type PolicyExplorerCellTextData = BasePolicyExplorerCell & { type: PolicyExplorerCellType.DATA; value: string };
+type PolicyExplorerCellTypedData = PolicyExplorerCellCoverage;
+export type PolicyExplorerCellCoverage = BasePolicyExplorerCell & {
+    type: PolicyExplorerCellType.DATA;
+    value: HealthCoverage;
+    dataType: "coverage";
+    columnName: string;
+};
 
 export type PolicyExplorerGeneralInfo = {
     year: string;
@@ -56,3 +60,7 @@ export type DataOrientation = "inverted" | "normal";
 export type DataOrientationByTable = Record<string, DataOrientation>;
 export const latestAvailableYear = "latest";
 export const firstYearInFilter = 2023;
+
+export function isCellTypedData(cell: PolicyExplorerCell): cell is PolicyExplorerCellTypedData {
+    return cell.type === PolicyExplorerCellType.DATA && "dataType" in cell;
+}

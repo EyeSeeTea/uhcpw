@@ -374,6 +374,7 @@ function invertDataByCategoryId(
 
     const newRows = columns.map((_, index) => {
         const cells = rows.map(row => ({
+            ...row[index],
             type: row[index]?.type || PolicyExplorerCellType.DATA,
             value: row[index]?.value || "",
             references: row[index]?.references || "",

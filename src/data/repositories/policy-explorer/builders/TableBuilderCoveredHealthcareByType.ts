@@ -2,9 +2,10 @@ import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
 import {
     PolicyExplorerCell,
-    PolicyExplorerCellData,
+    PolicyExplorerCellTextData,
     PolicyExplorerCellHeader,
     PolicyExplorerCellType,
+    PolicyExplorerCellCoverage,
 } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
@@ -28,7 +29,7 @@ const valueMap = {
     YES_3: "yes",
     NO_3: "no",
     NOT_COVERED: "notCovered",
-    UNKNOWN_3: "varies",
+    VARIES: "varies",
     DEFAULT: "no",
 } as const;
 type ValueMapKey = keyof typeof valueMap;
@@ -36,18 +37,16 @@ const isValueMapKey = (v: string): v is ValueMapKey => v in valueMap;
 
 export class TableBuilderCoveredHealthcareByType implements TableBuilder {
     buildColumns(_: Parameters<TableBuilder["buildColumns"]>[0]): PolicyExplorerCell[] {
-        const columnsDataElementSectionIds = USER_CHARGES_APPLY_BY_TYPE_OF_HEALTHCARE_DATA_ELEMENT_SECTION_IDS;
-
         const commonColumns: PolicyExplorerCellHeader[] = [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
         ];
 
-        const restColumns = Object.entries(columnsDataElementSectionIds).map<PolicyExplorerCellHeader>(
-            ([columnName, _dataElementIds]) => ({
-                type: PolicyExplorerCellType.HEADER,
-                value: columnName,
-            })
-        );
+        const restColumns = Object.entries(
+            USER_CHARGES_APPLY_BY_TYPE_OF_HEALTHCARE_DATA_ELEMENT_SECTION_IDS
+        ).map<PolicyExplorerCellHeader>(([columnName, _dataElementIds]) => ({
+            type: PolicyExplorerCellType.HEADER,
+            value: columnName,
+        }));
 
         return [...commonColumns, ...restColumns];
     }
@@ -63,29 +62,29 @@ export class TableBuilderCoveredHealthcareByType implements TableBuilder {
         const { policyExplorerSubcategoriesIds, dataValuesByGroup, orgUnitName, references, currentRowsInTable } =
             params;
 
-        const orgUnitCell: PolicyExplorerCellData = {
+        const orgUnitCell: PolicyExplorerCellTextData = {
             type: PolicyExplorerCellType.DATA,
             value: orgUnitName,
         };
 
-        const restCellsInRow: PolicyExplorerCellData[] = Object.values(
+        const restCellsInRow: PolicyExplorerCellCoverage[] = Object.entries(
             USER_CHARGES_APPLY_BY_TYPE_OF_HEALTHCARE_DATA_ELEMENT_SECTION_IDS
         )
-            .filter(dataElementId => policyExplorerSubcategoriesIds.includes(dataElementId))
-            .map(dataElementIdInColumn => {
-                const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementIdInColumn);
+            .filter(([_column, dataElementId]) => policyExplorerSubcategoriesIds.includes(dataElementId))
+            .map(([column, dataElementId]) => {
+                const dataValue = dataValuesByGroup.find(dv => dv.dataElement === dataElementId);
                 const value = dataValue?.value;
                 return {
                     type: PolicyExplorerCellType.DATA,
                     value: value && isValueMapKey(value) ? valueMap[value] : valueMap.DEFAULT,
                     references,
                     dataType: "coverage",
+                    columnName: column || "",
                 };
             });
 
-        const row = [orgUnitCell, ...restCellsInRow];
-
-        return [...currentRowsInTable, row];
+        if (restCellsInRow.every(cell => cell.value === valueMap.DEFAULT)) return [...currentRowsInTable];
+        else return [...currentRowsInTable, [orgUnitCell, ...restCellsInRow]];
     }
 
     static fillSubcategories(subcategoriesSelected: Maybe<string[]>) {
