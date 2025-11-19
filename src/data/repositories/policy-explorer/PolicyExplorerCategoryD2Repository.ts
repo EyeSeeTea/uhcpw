@@ -88,6 +88,7 @@ const DATASET_SERVICE_COVERAGE_CATEGORY = "W4CqlzcDPB1";
 const DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY = "uImM4yTeeV3";
 const DATASET_GAPS_IN_COVERAGE_CATEGORY = "e6cfI6vWYEF";
 const DATASET_USER_CHARGES_COPAYMENTS_CATEGORY = "mCMVwmnGWJF";
+export const DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY = "Nx6S3aQkvWe";
 
 // Program is used to get text and order of each sections
 const PROGRAM_POPULATION_COVERAGE_CATEGORY = "r2HbF3XTeMG";
@@ -106,6 +107,7 @@ const CATEGORY_DATASET_TO_PROGRAM = {
 
 const sectionsList = [
     DATASET_POPULATION_COVERAGE_CATEGORY,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     DATASET_SERVICE_COVERAGE_CATEGORY,
     DATASET_USER_CHARGES_COPAYMENTS_CATEGORY,
     DATASET_GAPS_IN_COVERAGE_CATEGORY,
@@ -269,6 +271,15 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                                 name: "User charges (co-payments) for covered health care by type of care",
                                 subcategories: TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type })),
                                 description: catNotes,
+                            },
+                        ];
+                    } else if (section.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY) {
+                        return [
+                            {
+                                id: section.id,
+                                name: "Entitlements for undocumented migrants",
+                                subcategories: [],
+                                description: notes,
                             },
                         ];
                     } else {
