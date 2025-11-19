@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { PolicyExplorerCellCoverage } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import i18n from "../../../locales";
 
-const DEFAULT_COLOR = "#555";
+const DEFAULT_COLOR = "#000";
 const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "#f6f000",
     "Outpatient specialist visits": "#ffc000",
@@ -86,5 +86,6 @@ const LegendContainer = styled.div`
     gap: 8px;
     span {
         margin-top: 3px;
+        color: #000000;
     }
 `;
