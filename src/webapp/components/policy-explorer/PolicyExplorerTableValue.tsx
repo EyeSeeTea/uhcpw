@@ -7,7 +7,7 @@ import { TableEntitlementsData } from "./TableEntitlementsData";
 
 type PolicyExplorerTableValueProps = {
     cell: PolicyExplorerCell;
-    referencesRef: RefObject<HTMLDivElement>;
+    referencesRef?: RefObject<HTMLDivElement>;
 };
 export const PolicyExplorerTableValue = React.memo(({ cell, referencesRef }: PolicyExplorerTableValueProps) => {
     if (isCellTypedData(cell)) {

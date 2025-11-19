@@ -12,6 +12,7 @@ import { FullScreenNotesDialog } from "../../components/dialog/FullScreenNotesDi
 import { NotesDialog } from "../../components/dialog/NotesDialog";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
+import { PolicyExplorerTable } from "./PolicyExplorerTable";
 
 export type VisualContent = {
     visual?: string;
@@ -26,6 +27,7 @@ export type VisualContent = {
     countries?: Id[];
     regions?: Id[];
     seriesColors?: Record<string, string>;
+    policyCategoryId?: string;
 };
 
 type GapsInCoveragePanelProps = {
@@ -138,6 +140,14 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                             width="100%"
                             alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
                             src={visualContent.visual}
+                        />
+                    ) : visualContent.policyCategoryId &&
+                      visualContent.countries?.length &&
+                      visualContent.years?.length ? (
+                        <PolicyExplorerTable
+                            categoryId={visualContent.policyCategoryId}
+                            countries={visualContent.countries}
+                            years={visualContent.years}
                         />
                     ) : null}
 
