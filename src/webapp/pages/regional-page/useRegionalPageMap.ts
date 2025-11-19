@@ -5,10 +5,10 @@ import { Id } from "../../../domain/entities/Ref";
 import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 
 const initialData: InitialCoordinates = {
-    center: [5.0, 50.0],
+    center: [13.675063, 51.751569],
     maxZoom: 8,
     minZoom: 2.5,
-    zoom: 3,
+    zoom: 2.5,
 };
 
 const CENTER_BY_REGION: Record<Id, [number, number]> = {

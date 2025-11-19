@@ -179,7 +179,7 @@ export const RegionalPage: React.FC = () => {
 };
 
 const MapSection = styled.section`
-    height: 80vh;
+    height: 85vh;
     min-height: 620px;
     scroll-margin-top: 80px;
 
