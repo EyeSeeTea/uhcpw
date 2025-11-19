@@ -11,6 +11,5 @@ export const chart_OB4SCQfCzwz_Seed: VisualizationExtra = {
     allowBreaksInSeries: true,
     hideBosniaAndHerzegovinaRegions: true,
     yearsFilterUpTo2YearsAgo: true,
-    hasEURegion: true,
     isOrgUnitGroupRegions: true,
 };
