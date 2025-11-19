@@ -162,7 +162,7 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
     const cellRef = `${column}${rowNumber}`;
     const tabName = tab.name;
 
-    const isTextCenter = tab.type === "coverage";
+    const isTextCenter = tab.type && ["coverage", "entitlements"].includes(tab.type);
     const isDownloadDateCell =
         tabName === GENERAL_INFOMRATION_TAB_NAME && sheet.cell(cellRef).value()?.toString()?.includes(DATE_OF_DOWNLOAD);
     const isTypeOfHealthCareColumn =
@@ -216,10 +216,18 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
         const fontColor = header && healthcareTypeToColor[header];
 
         const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "🌓" ? 11.5 : undefined;
+        const fontSize = data === "◐" ? 14 : undefined;
 
         return {
             ...(fontColor ? { fontColor } : undefined),
+            ...(fontSize ? { fontSize } : undefined),
+        };
+    } else if (tab.type === "entitlements") {
+        const data = tab.data[rowIndex]?.[columnIndex];
+        const fontSize = data === "◐" ? 15 : undefined;
+
+        return {
+            fontColor: "0460a7",
             ...(fontSize ? { fontSize } : undefined),
         };
     }
@@ -246,6 +254,8 @@ export function setHeight(sheet: Sheet, tab: Tab) {
 function setTabSpecificRowHeight(sheet: Sheet, tab: Tab) {
     if (tab.type === "coverage") {
         sheet.row(3).height(DEFAULT_HEIGHT * 1.5);
+    } else if (tab.type === "entitlements") {
+        sheet.row(3).height(DEFAULT_HEIGHT * 2.5);
     }
 }
 
@@ -286,6 +296,8 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
         case categoriesNameWithLessThan31Chars.u800TAhsIBY:
             return USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS.default;
         case categoriesNameWithLessThan31Chars.u800TAhsIBY_Cat:
+            return COLUMN_WIDTHS.icon;
+        case categoriesNameWithLessThan31Chars.Nx6S3aQkvWe:
             return COLUMN_WIDTHS.icon;
         default:
             return COLUMN_WIDTHS.default;

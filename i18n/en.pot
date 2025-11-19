@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-11-19T04:34:31.436Z\n"
-"PO-Revision-Date: 2025-11-19T04:34:31.436Z\n"
+"POT-Creation-Date: 2025-11-19T05:57:27.959Z\n"
+"PO-Revision-Date: 2025-11-19T05:57:27.959Z\n"
 
 msgid "Error fetching methods"
 msgstr ""
@@ -21,6 +21,12 @@ msgid "Care not covered for most people"
 msgstr ""
 
 msgid "Care not covered"
+msgstr ""
+
+msgid "Most undocumented migrants"
+msgstr ""
+
+msgid "Some undocumented migrants"
 msgstr ""
 
 msgid "All countries and areas"

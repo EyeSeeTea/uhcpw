@@ -2,7 +2,8 @@ import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/e
 import { KOSOVO } from "../../utils";
 import { TableSorter } from "./TableSorter";
 
-export class TableSorterCoveredHealthcareByType implements TableSorter {
+export class TableSorterByValueCount implements TableSorter {
+    constructor(private emptyValue = "") {}
     cleanAndSort(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]): PolicyExplorerCell[][] {
         const sortedDataRows = rows.sort((rowA, rowB) => {
             const countryA = this.getCountryFromRow(rowA);
@@ -12,8 +13,8 @@ export class TableSorterCoveredHealthcareByType implements TableSorter {
             if (countryA === KOSOVO) return 1;
             if (countryB === KOSOVO) return -1;
 
-            const rowAValueCount = rowA.filter(cell => cell.value !== "no").length;
-            const rowBValueCount = rowB.filter(cell => cell.value !== "no").length;
+            const rowAValueCount = rowA.filter(cell => cell.value !== this.emptyValue).length;
+            const rowBValueCount = rowB.filter(cell => cell.value !== this.emptyValue).length;
 
             return rowAValueCount < rowBValueCount ? 1 : -1;
         });

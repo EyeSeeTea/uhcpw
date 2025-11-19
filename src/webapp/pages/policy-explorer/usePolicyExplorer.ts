@@ -20,6 +20,7 @@ import {
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../../../data/repositories/countries/CountryD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
@@ -30,6 +31,7 @@ import { CategoryOption } from "../../components/policy-explorer/category-select
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
 ];
 
@@ -373,16 +375,21 @@ function invertDataByCategoryId(
     const columns = [...rows].shift() || [];
 
     const newRows = columns.map((_, index) => {
-        const cells = rows.map(row => ({
-            ...row[index],
-            type: row[index]?.type || PolicyExplorerCellType.DATA,
-            value: row[index]?.value || "",
-            references: row[index]?.references || "",
-        }));
-        return [...cells];
+        const cells = rows.map(row => {
+            const cell = row[index];
+            if (!cell) {
+                return {
+                    type: PolicyExplorerCellType.DATA,
+                    value: "",
+                    references: "",
+                };
+            }
+            return cell;
+        });
+        return cells;
     });
 
-    const newData = {
+    const newData: PolicyExplorer = {
         ...dataByTable,
         tables: {
             ...dataByTable.tables,
