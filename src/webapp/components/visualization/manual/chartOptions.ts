@@ -25,6 +25,7 @@ import { chart_MfLZYD6QCPy_Options } from "./chart_MfLZYD6QCPy_Options";
 import { chart_CdqVV1Ib0XS_Options } from "./chart_CdqVV1Ib0XS_Options";
 import { chart_twyY1ulr7uD_Options } from "./chart_twyY1ulr7uD_Options";
 import { chart_fnOIi0bdISn_Options } from "./chart_fnOIi0bdISn_Options";
+import { chart_y4qAv6eW4nb_Options } from "./chart_y4qAv6eW4nb_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -74,6 +75,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     MfLZYD6QCPy: chartSource => chart_MfLZYD6QCPy_Options(chartSource),
     CdqVV1Ib0XS: chartSource => chart_CdqVV1Ib0XS_Options(chartSource),
     twyY1ulr7uD: chartSource => chart_twyY1ulr7uD_Options(chartSource),
+    y4qAv6eW4nb: chartSource => chart_y4qAv6eW4nb_Options(chartSource),
 };
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {

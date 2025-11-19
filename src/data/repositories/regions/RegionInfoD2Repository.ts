@@ -116,11 +116,9 @@ const REGION_CONTENT_DATA_ELEMENT_IDS = {
 
         panelSevenTitle: "JyhAK2RHKvc",
         panelSevenMainText: "kJx7fxSvuXV",
-        panelSevenChartOne: "CbTDJDbbGgP",
         panelSevenChartOneTitle: "NOCCHRGKPiu",
         panelSevenChartOneTextAbove: "o20T7eYHg97",
         panelSevenChartOneTextBelow: "dbdRXagIcVP",
-        panelSevenChartOneInfoText: "R6yJSLJ1euk",
         panelSevenProgressText: "JlApFbAchYK",
     },
 
@@ -501,10 +499,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenMainText,
                     regionalContent
                 ),
-                panelSevenChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOne}&eventUid=${regionalContent?.event}`,
-                hasPanelSevenChartOne:
-                    getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOne, regionalContent) !==
-                    "",
                 panelSevenChartOneTitle: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOneTitle,
                     regionalContent
@@ -515,10 +509,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                 ),
                 panelSevenChartOneTextBelow: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOneTextBelow,
-                    regionalContent
-                ),
-                panelSevenChartOneInfoText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSevenChartOneInfoText,
                     regionalContent
                 ),
                 panelSevenProgressText: getDataValue(
