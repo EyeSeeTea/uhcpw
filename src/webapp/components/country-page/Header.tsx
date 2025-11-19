@@ -10,6 +10,7 @@ import { getBackgroundColorByFinancialProtectionStatus } from "../../pages/count
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { UmbrellaIcon } from "../umbrella-icon/UmbrellaIcon";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
+import { Maybe } from "../../../types/utils";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -47,14 +48,22 @@ export const Header: FC<HeaderType> = ({
     const isSmallScreen = useIsSmallScreen();
 
     const handleClick = useCallback(
-        (ref: MutableRefObject<any>, where: "detail" | "resources" | "expert") => {
-            ref.current?.scrollIntoView({ behavior: "smooth" });
+        (ref: Maybe<MutableRefObject<any>>, where: "dashboard" | "detail" | "resources" | "expert") => {
+            if (where === "dashboard") {
+                window.scrollTo(0, 0);
+            }
+
+            ref?.current?.scrollIntoView({ behavior: "smooth" });
             if (where === "detail") {
                 handleResetTab(true);
             }
         },
         [handleResetTab]
     );
+
+    const scrollToTop = useCallback(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, []);
 
     return (
         <Container aria-label="country-page-header" status={country?.status} className={classes.container}>
@@ -73,7 +82,7 @@ export const Header: FC<HeaderType> = ({
             </DropdownContainer>
             <ButtonsContainer>
                 <Button>
-                    <ButtonText>{i18n.t("Dashboard")}</ButtonText>
+                    <ButtonText onClick={scrollToTop}>{i18n.t("Dashboard")}</ButtonText>
                 </Button>
                 <Button>
                     <ButtonText onClick={() => handleClick(sliderRef, "detail")}>{i18n.t("In detail")}</ButtonText>
@@ -92,6 +101,10 @@ export const Header: FC<HeaderType> = ({
 };
 
 const Container = styled.div<{ status: FinancialProtectionStatus | undefined }>`
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
     display: flex;
     justify-content: space-between;
     height: 80px;

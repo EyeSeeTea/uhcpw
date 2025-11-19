@@ -86,7 +86,7 @@ export const CountryPage: React.FC = () => {
     const expertRef = useRef(null);
 
     return (
-        <Layout enableRotation={isSmallScreen}>
+        <Layout enableRotation={isSmallScreen} isOverflowVisible>
             <Header
                 countryId={countryFilter.selectedCountry}
                 onCountryChange={handleCountryChange}
