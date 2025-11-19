@@ -12,14 +12,14 @@ import { Entitlements } from "../../../domain/entities/policy-explorer/Entitleme
 const healthCoverageValueMap: Record<HealthCoverage, string> = {
     yes: "⬤",
     no: "",
-    varies: "🌓",
+    varies: "◐",
     notCovered: "🅧",
 };
 
 const entitlementsValueMap: Record<Entitlements, string> = {
     most: "⬤",
     none: "",
-    some: "🌓",
+    some: "◐",
 };
 
 export function mapCellToExportedValue(cell: PolicyExplorerCell) {

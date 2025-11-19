@@ -216,7 +216,7 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
         const fontColor = header && healthcareTypeToColor[header];
 
         const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "🌓" ? 11.5 : undefined;
+        const fontSize = data === "◐" ? 14 : undefined;
 
         return {
             ...(fontColor ? { fontColor } : undefined),
@@ -224,7 +224,7 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
         };
     } else if (tab.type === "entitlements") {
         const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "🌓" ? 11.5 : undefined;
+        const fontSize = data === "◐" ? 15 : undefined;
 
         return {
             fontColor: "0460a7",
