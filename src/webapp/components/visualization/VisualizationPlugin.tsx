@@ -39,6 +39,7 @@ interface VisualizationPluginProps {
     filterByLatestAvailableYearInRegion?: boolean;
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
+    yearsInIndicatorExplorer?: string[];
     setChartWithNoData?: (visualizationId: string) => void;
     seriesColors?: Record<string, string>;
     hasNarrowerText?: boolean;
@@ -69,6 +70,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         filterByLatestAvailableYearInRegion = false,
         needToKnowLatestAvailableYearInChart = false,
         visualizationIdInIndicatorExplorer,
+        yearsInIndicatorExplorer,
         setChartWithNoData,
         seriesColors,
         hasNarrowerText = false,
@@ -181,21 +183,27 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     const goToIndicatorExplorer = useCallback(() => {
         if (chartData.kind === "Loaded" && yearsFilteredInChart.length > 0 && countries.length > 0) {
             const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
+            const years =
+                yearsInIndicatorExplorer && yearsInIndicatorExplorer.length > 0
+                    ? yearsInIndicatorExplorer
+                    : yearsFilteredInChart;
+
             history.push(
                 `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
                     ...countries,
                     ...regions,
-                ]}&years=${yearsFilteredInChart}&showChartByDefault=true`
+                ]}&years=${years}&showChartByDefault=true`
             );
         }
     }, [
-        chartData,
-        countries,
-        regions,
-        history,
-        visualizationId,
+        chartData.kind,
         yearsFilteredInChart,
+        countries,
         visualizationIdInIndicatorExplorer,
+        visualizationId,
+        yearsInIndicatorExplorer,
+        history,
+        regions,
     ]);
 
     const chartHasData = useMemo(() => {

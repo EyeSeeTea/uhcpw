@@ -22,6 +22,7 @@ type VisualizationProps = {
     filterByLatestAvailableYearInRegion?: boolean;
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
+    yearsInIndicatorExplorer?: string[];
 };
 
 type SlideGraphType = {
@@ -123,6 +124,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               filterByLatestAvailableYearInRegion={graph.filterByLatestAvailableYearInRegion}
                               needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
+                              yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
                               setChartWithNoData={hideChartsWithoutData ? handleSetChartWithNoData : undefined}
                               hasNarrowerText={hasNarrowerText}
                           />
