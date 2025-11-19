@@ -1,11 +1,16 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
-import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorerCell,
+    PolicyExplorerCellHeader,
+    PolicyExplorerCellType,
+} from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
+import { Maybe } from "../../../../types/utils";
 
-type HealthCareType =
+export type HealthCareType =
     | "Primary care visits"
     | "Outpatient specialist visits"
     | "Emergency care"
@@ -229,23 +234,25 @@ const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS: R
 export const TYPE_OF_HEALTH_CARE_HEADER_NAME = "Type of health care";
 
 export class TableBuilderByTypeOfHealthcare implements TableBuilder {
-    buildColumns(params: { policyExplorerCategoryId: string }): PolicyExplorerCell[] {
+    buildColumns(params: { policyExplorerCategoryId: string }): PolicyExplorerCellHeader[] {
         const { policyExplorerCategoryId } = params;
         const columnsDataElementSectionIds =
             policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES
                 ? USER_CHARGE_BY_TYPE_OF_HEALTHCARE_COLUMNS_DATA_ELEMENT_SECTION_IDS
                 : TYPES_OF_USER_CHARGE_COLUMNS_DATA_ELEMENT_SECTION_IDS;
 
-        const commonColumns = [
+        const commonColumns: PolicyExplorerCellHeader[] = [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: TYPE_OF_HEALTH_CARE_HEADER_NAME },
         ];
 
-        const restColumns = Object.entries(columnsDataElementSectionIds).map(([columnName, _dataElementIds]) => ({
-            type: PolicyExplorerCellType.HEADER,
-            value: columnName,
-        }));
+        const restColumns = Object.entries(columnsDataElementSectionIds).map<PolicyExplorerCellHeader>(
+            ([columnName, _dataElementIds]) => ({
+                type: PolicyExplorerCellType.HEADER,
+                value: columnName,
+            })
+        );
 
         return [...commonColumns, ...restColumns];
     }
@@ -324,5 +331,16 @@ export class TableBuilderByTypeOfHealthcare implements TableBuilder {
         );
 
         return [...currentRowsInTable, ...rows];
+    }
+
+    static fillSubcategories(subcategoriesSelected: Maybe<string[]>) {
+        return Object.entries(
+            USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS
+        ).reduce((accSubcategories, subcategories) => {
+            const [typeOfHealthCare, subcategoriesOfHealthCareIds] = subcategories;
+            return subcategoriesSelected?.includes(typeOfHealthCare)
+                ? [...accSubcategories, ...subcategoriesOfHealthCareIds]
+                : accSubcategories;
+        }, [] as string[]);
     }
 }
