@@ -24,6 +24,7 @@ import {
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
 import { TableBuilderByTypeOfHealthcare } from "./builders/TableBuilderByTypeOfHealthcare";
@@ -36,6 +37,7 @@ import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
 import { getTableSorter } from "./sorters/TableSorter";
 import { getTableLegends, mapCellToExportedValue } from "./utils";
+import { TableBuilderEntitlementsForUndocumented } from "./builders/TableBuilderEntitlementsForUndocumented";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -59,6 +61,7 @@ export const categoriesNameWithLessThan31Chars: Record<string, string> = {
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
     u800TAhsIBY_Cat: "User charges for covered health",
+    Nx6S3aQkvWe: "Entitlements for undocumented",
 };
 
 export const REFERENCES_TAB_NAME = "References";
@@ -67,6 +70,7 @@ export const DATE_OF_DOWNLOAD = "Date of download:";
 
 const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     populationCoverage: "uG2PbDfOc0w",
+    entitlementsForUndocumented: "Nx6S3aQkvWe",
     serviceCoverage: "W4CqlzcDPB1",
     userCharges: "mCMVwmnGWJF",
     userChargesByHealthCare: "u800TAhsIBY",
@@ -530,6 +534,13 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     return {
                         ...acc,
                         [categoryId]: TableBuilderCoveredHealthcareByType.fillSubcategories(
+                            policyExplorerCategories[categoryId]
+                        ),
+                    };
+                case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
+                    return {
+                        ...acc,
+                        [categoryId]: TableBuilderEntitlementsForUndocumented.fillSubcategories(
                             policyExplorerCategories[categoryId]
                         ),
                     };

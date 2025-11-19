@@ -1,6 +1,9 @@
 import { PolicyExplorerCell } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
-import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
-import { TableSorterCoveredHealthcareByType } from "./TableSorterCoveredHealthcareByType";
+import {
+    CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+} from "../PolicyExplorerCategoryD2Repository";
+import { TableSorterByValueCount } from "./TableSorterByValueCount";
 
 export interface TableSorter {
     cleanAndSort(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]): PolicyExplorerCell[][];
@@ -26,7 +29,9 @@ class DefaultTableSorter implements TableSorter {
 export function getTableSorter(policyExplorerCategoryId: string) {
     switch (policyExplorerCategoryId) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
-            return new TableSorterCoveredHealthcareByType();
+            return new TableSorterByValueCount("no");
+        case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
+            return new TableSorterByValueCount("none");
         default:
             return new DefaultTableSorter();
     }

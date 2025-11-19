@@ -9,9 +9,11 @@ import { TableBuilderDefault } from "./TableBuilderDefault";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
 } from "../PolicyExplorerCategoryD2Repository";
 import { TableBuilderChangesInCoveragePolicy } from "./TableBuilderChangesInCoveragePolicy";
 import { TableBuilderCoveredHealthcareByType } from "./TableBuilderCoveredHealthcareByType";
+import { TableBuilderEntitlementsForUndocumented } from "./TableBuilderEntitlementsForUndocumented";
 
 export interface TableBuilder {
     buildColumns(params: {
@@ -40,6 +42,8 @@ export function getTableBuilder(policyExplorerCategoryId: string) {
             return new TableBuilderChangesInCoveragePolicy();
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
             return new TableBuilderCoveredHealthcareByType();
+        case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
+            return new TableBuilderEntitlementsForUndocumented();
         default:
             return new TableBuilderDefault();
     }
