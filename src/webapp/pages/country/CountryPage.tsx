@@ -1,10 +1,12 @@
+import styled from "styled-components";
+import { useHistory } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+
 import { Layout } from "../../components/layout/Layout";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { Divider } from "../../components/home/common/Divider";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { Hero } from "../../components/country-page/Hero";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useHistory } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
 import { useCountryPage } from "./useCountryPage";
 import { useCountryInfo } from "./useCountryInfo";
@@ -77,11 +79,11 @@ export const CountryPage: React.FC = () => {
 
             countryFilter.onCountryChange(value);
             history.push({ search: searchParams.toString() });
-            handleResetTab(true);
         },
-        [countryFilter, handleResetTab, history]
+        [countryFilter, history]
     );
 
+    const dashboardRef = useRef(null);
     const sliderRef = useRef(null);
     const resourcesRef = useRef(null);
     const expertRef = useRef(null);
@@ -95,26 +97,40 @@ export const CountryPage: React.FC = () => {
                 sliderRef={sliderRef}
                 resourcesRef={resourcesRef}
                 expertRef={expertRef}
+                dashboardRef={dashboardRef}
                 handleResetTab={handleResetTab}
             />
-            <Hero countryId={countryFilter.selectedCountry} />
+
+            <Section ref={dashboardRef}>
+                <Hero countryId={countryFilter.selectedCountry} />
+            </Section>
+
             <Divider financialProtectionStatus={country?.status} />
-            <section ref={sliderRef}>
+
+            <Section ref={sliderRef}>
                 <CountrySlider
                     countryId={countryFilter.selectedCountry}
                     handleResetTab={handleResetTab}
                     resetTab={resetTab}
                     isSmallScreen={isSmallScreen}
                 />
-            </section>
+            </Section>
+
             <Divider financialProtectionStatus={country?.status} />
-            <section ref={resourcesRef}>
+
+            <Section ref={resourcesRef}>
                 <CountryResources countryIds={[countryFilter.selectedCountry]} />
-            </section>
+            </Section>
+
             <Divider financialProtectionStatus={country?.status} />
-            <section ref={expertRef}>
+
+            <Section ref={expertRef}>
                 <CountryExpert countryIds={[countryFilter.selectedCountry]} />
-            </section>
+            </Section>
         </Layout>
     );
 };
+
+const Section = styled.section`
+    scroll-margin-top: 80px;
+`;

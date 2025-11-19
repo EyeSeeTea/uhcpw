@@ -14,6 +14,8 @@ import { colors } from "../app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel";
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
+import { Backdrop, CircularProgress } from "@material-ui/core";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -35,6 +37,7 @@ export const RegionalPage: React.FC = () => {
         sectionsAccordionConfig,
         setPendingScrollTab,
         pendingScrollTab,
+        isLoadingContent,
     } = useRegionalPage();
 
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
@@ -55,10 +58,15 @@ export const RegionalPage: React.FC = () => {
             <MapSection ref={refs.regionMap}>
                 <SectionTitleDivider>
                     <SectionTitle>
-                        {i18n.t(`The {{region}} at a glance`, {
-                            region: selectedRegion?.name,
-                            interpolation: { escapeValue: false },
-                        })}
+                        {i18n.t(
+                            `${
+                                ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA === selectedRegionId ? "" : "The "
+                            }{{region}} at a glance`,
+                            {
+                                region: selectedRegion?.name,
+                                interpolation: { escapeValue: false },
+                            }
+                        )}
                     </SectionTitle>
                 </SectionTitleDivider>
 
@@ -115,10 +123,12 @@ export const RegionalPage: React.FC = () => {
                             textSectionRight={policyChecklist.content.textSectionRight}
                             checklist={policyChecklist?.checklist}
                             filteredCountryExperiences={policyChecklist?.filteredCountryExperiences}
-                            selectedChecklistItems={policyChecklist.selectedChecklistItems}
+                            selectedChecklistItem={policyChecklist.selectedChecklistItem}
                             onSelectChecklistItem={policyChecklist.onSelectChecklistItem}
-                            isLoading={policyChecklist.isLoading}
+                            isLoading={isLoadingContent || policyChecklist.isLoading}
                             isSmallScreen={isSmallScreen}
+                            downloadFile={policyChecklist.content.downloadFile}
+                            hasDownloadFile={policyChecklist.content.hasDownloadFile}
                         />
                     </section>
 
@@ -166,12 +176,16 @@ export const RegionalPage: React.FC = () => {
                     bigFont
                 />
             )}
+
+            <Backdrop open={isLoadingContent || policyChecklist.isLoading} style={{ color: "#fff", zIndex: 1001 }}>
+                <CircularProgress color="primary" />
+            </Backdrop>
         </Layout>
     );
 };
 
 const MapSection = styled.section`
-    height: 80vh;
+    height: 85vh;
     min-height: 620px;
     scroll-margin-top: 80px;
 

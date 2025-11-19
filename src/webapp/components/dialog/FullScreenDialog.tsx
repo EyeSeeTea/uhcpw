@@ -98,6 +98,6 @@ const CloseButton = styled(Button)`
     position: fixed;
     bottom: 25px;
     right: 25px;
-    z-index: 1000;
+    z-index: 1;
     color: white;
 `;

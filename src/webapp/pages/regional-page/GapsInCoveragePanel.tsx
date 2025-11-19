@@ -13,7 +13,7 @@ import { NotesDialog } from "../../components/dialog/NotesDialog";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 
-type VisualContent = {
+export type VisualContent = {
     visual?: string;
     title?: string;
     textAbove?: string;
@@ -55,9 +55,9 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
     const markdownComponents: Components = React.useMemo(
         () => ({
             p: ({ children }) => (
-                <Text variant="body1" gutterBottom>
+                <Paragraph variant="body1" gutterBottom>
                     {children}
-                </Text>
+                </Paragraph>
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
@@ -75,25 +75,33 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
 
     return (
         <Container>
-            <StyledTitle variant="h6" gutterBottom>
-                {title}
-            </StyledTitle>
+            <TextContainer>
+                <StyledTitle variant="h6" gutterBottom>
+                    {title}
+                </StyledTitle>
+            </TextContainer>
 
-            {mainText && <ReactMarkdown components={markdownComponents}>{mainText}</ReactMarkdown>}
+            {mainText && (
+                <TextContainer>
+                    <ReactMarkdown components={markdownComponents}>{mainText}</ReactMarkdown>
+                </TextContainer>
+            )}
 
             {visuals?.map((visualContent, index) => (
                 <React.Fragment key={`region-${regionId}-visual-content-${index}`}>
                     {visualContent.textAbove && (
-                        <div style={{ marginTop: "12px" }}>
+                        <TextContainer style={{ marginTop: "12px" }}>
                             <ReactMarkdown components={markdownComponents}>{visualContent.textAbove}</ReactMarkdown>
-                        </div>
+                        </TextContainer>
                     )}
 
                     {visualContent.title && !visualContent.visualizationId ? (
                         <ChartTitleRow>
-                            <ChartTitle variant="h6" gutterBottom>
-                                {visualContent.title}
-                            </ChartTitle>
+                            <TextContainer>
+                                <ChartTitle variant="h6" gutterBottom>
+                                    {visualContent.title}
+                                </ChartTitle>
+                            </TextContainer>
 
                             <StyledIconButton
                                 onClick={() => setVisualTextInfo(visualContent?.textInfo)}
@@ -121,6 +129,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                                 analyticsPageTitle={"Regional page"}
                                 seriesColors={visualContent.seriesColors}
                                 isRegionalPage
+                                hasNarrowerText
                             />
                         </VisualizationContainer>
                     ) : visualContent.visual ? (
@@ -133,9 +142,9 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                     ) : null}
 
                     {visualContent.textBelow && (
-                        <div style={{ marginTop: "12px" }}>
+                        <TextContainer style={{ marginTop: "12px" }}>
                             <ReactMarkdown components={markdownComponents}>{visualContent.textBelow}</ReactMarkdown>
-                        </div>
+                        </TextContainer>
                     )}
                 </React.Fragment>
             ))}
@@ -185,7 +194,11 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                 </ScreenshotModal>
             ) : null}
 
-            {progressText && <ReactMarkdown components={markdownComponents}>{progressText}</ReactMarkdown>}
+            {progressText && (
+                <TextContainer>
+                    <ReactMarkdown components={markdownComponents}>{progressText}</ReactMarkdown>
+                </TextContainer>
+            )}
         </Container>
     );
 };
@@ -209,7 +222,7 @@ const ChartTitleRow = styled.div`
     width: 100%;
     gap: 24px;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
 `;
 
 const ChartTitle = styled(Typography)`
@@ -227,11 +240,19 @@ const ChartTitle = styled(Typography)`
     }
 `;
 
-const Text = styled(Typography)`
+const Paragraph = styled(Typography)`
     font-family: Lato;
-    margin-block: 6px;
+    margin-block: 10px;
     font-size: 1rem;
     color: ${colors.black};
+
+    &:first-child {
+        margin-block-start: 0;
+    }
+
+    &:last-child {
+        margin-block-end: 0;
+    }
 `;
 
 const StyledLi = styled.li`
@@ -246,7 +267,7 @@ const StyledUl = styled.ul`
     font-size: 1rem;
     padding-inline-start: 14px;
     color: ${colors.black};
-    margin-inline-start: 14px;
+    margin-inline-start: 0;
     margin-block-start: 0;
 `;
 
@@ -293,4 +314,8 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolea
             padding: 0;
         }
     }
+`;
+
+const TextContainer = styled.div`
+    max-width: 600px;
 `;

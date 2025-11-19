@@ -33,6 +33,8 @@ export type RegionNumbersPanelContent = {
 export type PolicyChecklistContent = {
     textSectionLeft: string;
     textSectionRight: string;
+    downloadFile: string;
+    hasDownloadFile: boolean;
 };
 
 export type GapsInCoverageContent = {
@@ -111,11 +113,8 @@ export type GapsInCoverageContent = {
     panelSevenTitle: string;
     panelSevenMainText: string;
     panelSevenChartOneTitle: string;
-    panelSevenChartOne: string;
-    hasPanelSevenChartOne: boolean;
     panelSevenChartOneTextAbove: string;
     panelSevenChartOneTextBelow: string;
-    panelSevenChartOneInfoText: string;
     panelSevenProgressText: string;
 };
 

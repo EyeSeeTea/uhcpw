@@ -15,6 +15,10 @@ import { LatestAvailable, LatestCOVID19 } from "../../../domain/entities/Year";
 import { Id } from "../../../domain/entities/Ref";
 import { Region } from "../../../domain/entities/region/Region";
 import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
+import {
+    getCommonLastAvailableYearInBothAxis,
+    getLastAvailableYearByCountry,
+} from "../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -32,6 +36,7 @@ export function useChartData(params: {
     currentCountryOrRegion?: Id;
     visualizationName?: string;
     filterByLatestAvailableYearInRegion?: boolean;
+    needToKnowLatestAvailableYearInChart?: boolean;
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
 }): ChartDataState {
@@ -43,6 +48,7 @@ export function useChartData(params: {
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
     } = params;
@@ -120,6 +126,19 @@ export function useChartData(params: {
                               )
                             : undefined;
 
+                    const isLatestCOVID19 = years.includes(LatestCOVID19.id);
+
+                    const lastAvailableYearInChart = needToKnowLatestAvailableYearInChart
+                        ? getLastAvailableYearInChartData({
+                              analyticsResponse: filteredAnalytics,
+                              isMultipleVisualizations: isMultipleVisualizations,
+                              isScatter: visualization?.isScatter,
+                              xAxis: visualization?.xAxis,
+                              yAxis: visualization?.yAxis,
+                              isLatestCOVID19: isLatestCOVID19,
+                          })
+                        : undefined;
+
                     const chartSource = {
                         analyticsResponse: isMultipleVisualizations ? filteredAnalytics : filteredAnalytics[0],
                         visualization: isMultipleVisualizations ? visualizations : visualization,
@@ -127,7 +146,7 @@ export function useChartData(params: {
                         regions: regions,
                         currentCountryOrRegion: currentCountryOrRegion,
                         currentYear: years.length === 1 ? years[0] : undefined,
-                        isLatestCOVID19: years.includes(LatestCOVID19.id),
+                        isLatestCOVID19: isLatestCOVID19,
                         isLatestYearAvailable: isLatestYearAvailable,
                         yearToFilterBy: lastAvailableYearInRegion,
                         isRegionalPage: isRegionalPage,
@@ -162,6 +181,7 @@ export function useChartData(params: {
                         xAxis: visualization?.xAxis,
                         yAxis: visualization?.yAxis,
                         lastAvailableYearInRegion: lastAvailableYearInRegion,
+                        lastAvailableYearInChart: lastAvailableYearInChart,
                     });
                 },
                 error => {
@@ -189,6 +209,7 @@ export function useChartData(params: {
         getVisualizationDialogInfo,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
     ]);
@@ -340,4 +361,29 @@ function getLastAvailableYearInRegion(
     }, "0");
 
     return lastAvailableYearInRegion !== "0" ? lastAvailableYearInRegion : undefined;
+}
+
+function getLastAvailableYearInChartData(params: {
+    analyticsResponse: Analytics[];
+    isMultipleVisualizations: boolean;
+    isScatter?: boolean;
+    xAxis?: string;
+    yAxis?: string;
+    isLatestCOVID19?: boolean;
+}): string | undefined {
+    const { analyticsResponse, isMultipleVisualizations, isScatter, xAxis, yAxis, isLatestCOVID19 } = params;
+    const rows = isMultipleVisualizations
+        ? analyticsResponse.flatMap(analytics => analytics.rows)
+        : analyticsResponse[0]?.rows || [];
+
+    const lastAvailableYearByCountry =
+        isScatter && xAxis && yAxis
+            ? getCommonLastAvailableYearInBothAxis(rows, xAxis, yAxis, isLatestCOVID19)
+            : getLastAvailableYearByCountry(rows, isLatestCOVID19);
+
+    const latestAvailableYear = Object.values(lastAvailableYearByCountry).reduce((lastAvailableYear, year) => {
+        return year > lastAvailableYear ? year : lastAvailableYear;
+    }, "0");
+
+    return latestAvailableYear !== "0" ? latestAvailableYear : undefined;
 }

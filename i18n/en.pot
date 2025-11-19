@@ -167,10 +167,10 @@ msgstr ""
 msgid "Policy explorer"
 msgstr ""
 
-msgid "Countries & areas"
+msgid "Regional overview"
 msgstr ""
 
-msgid "Regional overview"
+msgid "Countries & areas"
 msgstr ""
 
 msgid "Methods"
@@ -304,9 +304,6 @@ msgid "Select region"
 msgstr ""
 
 msgid "Click an item to see examples of country experience"
-msgstr ""
-
-msgid "The {{region}} at a glance"
 msgstr ""
 
 msgid "Expert network"

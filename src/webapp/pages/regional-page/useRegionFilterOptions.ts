@@ -6,10 +6,10 @@ import { Id } from "../../../domain/entities/Ref";
 import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 
 const REGIONS_ORDER: Id[] = [
-    ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
     ORG_UNIT_GROUP_IDS.EUROPEAN_UNION,
-    ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA,
     ORG_UNIT_GROUP_IDS.WESTERN_BALKANS,
+    ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA,
+    ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
 ];
 
 export function useRegionFilterOptions(): Option<Id>[] {

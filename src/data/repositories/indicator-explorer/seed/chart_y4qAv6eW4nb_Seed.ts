@@ -1,0 +1,20 @@
+import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
+import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
+
+export const chart_y4qAv6eW4nb_Seed: VisualizationExtra = {
+    categoryName: sortedCategoryNames.healthSpending,
+    friendlyName: "Voluntary health insurance and out-of-pocket payments as a share of current spending on health",
+    regionalPageName:
+        "Voluntary health insurance and out-of-pocket payments as a share of current spending on health, latest available year",
+    isComparative: true,
+    subcategoryName: sortedSubcategoryNames.comparative,
+    allowedYears: [LatestAvailable, LatestCOVID19],
+    selectedYearsByDefault: [LatestAvailable],
+    isYearSingleSelection: true,
+    hasEURegion: false,
+    hasEuropeanRegion: false,
+    hasEECARegion: false,
+    hasWesternBalkansRegion: false,
+    hasEUCandidatesRegion: false,
+};

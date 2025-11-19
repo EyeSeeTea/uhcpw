@@ -20,7 +20,9 @@ type VisualizationProps = {
     regions: Id[];
     currentCountryOrRegion?: Id;
     filterByLatestAvailableYearInRegion?: boolean;
+    needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
+    yearsInIndicatorExplorer?: string[];
 };
 
 type SlideGraphType = {
@@ -29,6 +31,7 @@ type SlideGraphType = {
     graphs: VisualizationProps[];
     isRegionalPage?: boolean;
     hideChartsWithoutData?: boolean;
+    hasNarrowerText?: boolean;
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({
@@ -37,6 +40,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     graphs,
     isRegionalPage = false,
     hideChartsWithoutData = false,
+    hasNarrowerText = false,
 }) => {
     const isSmallScreen = useIsSmallScreen();
 
@@ -46,9 +50,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     const markdownComponents: Components = React.useMemo(
         () => ({
             p: ({ children }) => (
-                <Text variant="body1" gutterBottom>
+                <Paragraph variant="body1" gutterBottom>
                     {children}
-                </Text>
+                </Paragraph>
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
@@ -97,7 +101,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                           $hasMargin={graphIndex !== 0}
                           $hide={hideChartsWithoutData && !hideAll && chartsWithNoData.includes(graph.visualizationId)}
                       >
-                          {graph.text && <ReactMarkdown components={markdownComponents}>{graph.text}</ReactMarkdown>}
+                          {graph.text && (
+                              <TextContainer hasNarrowerText={hasNarrowerText}>
+                                  <ReactMarkdown components={markdownComponents}>{graph.text}</ReactMarkdown>
+                              </TextContainer>
+                          )}
 
                           <VisualizationPlugin
                               visualizationId={graph.visualizationId}
@@ -114,8 +122,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               showDialogInFullScreen={isSmallScreen}
                               isRegionalPage={isRegionalPage}
                               filterByLatestAvailableYearInRegion={graph.filterByLatestAvailableYearInRegion}
+                              needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
+                              yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
                               setChartWithNoData={hideChartsWithoutData ? handleSetChartWithNoData : undefined}
+                              hasNarrowerText={hasNarrowerText}
                           />
                       </VisualizationContainer>
                   ))
@@ -143,6 +154,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                         isScreenshot={true}
                         analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
                         filterByLatestAvailableYearInRegion={currentGraphScreenshot.filterByLatestAvailableYearInRegion}
+                        needToKnowLatestAvailableYearInChart={
+                            currentGraphScreenshot.needToKnowLatestAvailableYearInChart
+                        }
                         visualizationIdInIndicatorExplorer={currentGraphScreenshot.visualizationIdInIndicatorExplorer}
                     />
                 </ScreenshotModal>
@@ -189,12 +203,20 @@ const StyledGraphTitle = styled(StyledTypography)`
     font-size: 2rem;
 `;
 
-const Text = styled(Typography)`
+const Paragraph = styled(Typography)`
     font-family: Lato;
+    margin-block: 10px;
     margin-inline-start: 36px;
-    margin-block: 6px;
     font-size: 1rem;
     color: ${colors.black};
+
+    &:first-child {
+        margin-block-start: 0;
+    }
+
+    &:last-child {
+        margin-block-end: 0;
+    }
 `;
 
 const StyledLi = styled.li`
@@ -203,4 +225,8 @@ const StyledLi = styled.li`
 
 const StyledUl = styled.ul`
     padding-inline-start: 14px;
+`;
+
+const TextContainer = styled.div<{ hasNarrowerText?: boolean }>`
+    max-width: ${props => (props.hasNarrowerText ? "600px" : "100%")};
 `;

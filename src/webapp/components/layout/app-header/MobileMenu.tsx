@@ -107,7 +107,7 @@ const MenuContainer = styled.div`
     color: white;
     border: 1px solid #d3d4d5;
     padding: 10px;
-    z-index: 10;
+    z-index: 4;
 `;
 
 const Wrapper = styled.div`

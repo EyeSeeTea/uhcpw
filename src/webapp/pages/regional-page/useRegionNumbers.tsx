@@ -5,7 +5,6 @@ import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel
 import { Id } from "../../../domain/entities/Ref";
 import { SlideGraph } from "../../components/country-page/slider/SlideGraph";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
-import { generateYears } from "../../../domain/usecases/utils/generateYears";
 import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
 import { RegionNumbersPanelContent } from "../../../domain/entities/region/RegionInfo";
@@ -59,6 +58,7 @@ export function useRegionNumbers(
                               kind: "graph",
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
+                              hasNarrowerText: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -83,6 +83,7 @@ export function useRegionNumbers(
                               kind: "graph",
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
+                              hasNarrowerText: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -107,6 +108,7 @@ export function useRegionNumbers(
                               kind: "graph",
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
+                              hasNarrowerText: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -142,6 +144,7 @@ export function useRegionNumbers(
                               kind: "graph",
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
+                              hasNarrowerText: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -177,6 +180,7 @@ export function useRegionNumbers(
                               kind: "graph",
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
+                              hasNarrowerText: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -210,6 +214,7 @@ export function useRegionNumbers(
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphThreeText,
+                                      needToKnowLatestAvailableYearInChart: true,
                                   },
                               ],
                           },
@@ -223,17 +228,20 @@ export function useRegionNumbers(
                               kind: "graph",
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
+                              hasNarrowerText: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      visualizationId: "d3kq9OCv8tH",
+                                      visualizationId: "twyY1ulr7uD",
                                       visualizationName:
-                                          VisualizationsSeeds["d3kq9OCv8tH"]?.regionalPageName ||
-                                          VisualizationsSeeds["d3kq9OCv8tH"]?.friendlyName,
-                                      years: generateYears().map(year => year.id),
+                                          VisualizationsSeeds["twyY1ulr7uD"]?.regionalPageName ||
+                                          VisualizationsSeeds["twyY1ulr7uD"]?.friendlyName,
+                                      years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphOneText,
+                                      filterByLatestAvailableYearInRegion: true,
+                                      yearsInIndicatorExplorer: [LatestAvailable.id],
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -249,14 +257,16 @@ export function useRegionNumbers(
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      visualizationId: "mUjcWO90CRr",
+                                      visualizationId: "fnOIi0bdISn",
                                       visualizationName:
-                                          VisualizationsSeeds["mUjcWO90CRr"]?.regionalPageName ||
-                                          VisualizationsSeeds["mUjcWO90CRr"]?.friendlyName,
+                                          VisualizationsSeeds["fnOIi0bdISn"]?.regionalPageName ||
+                                          VisualizationsSeeds["fnOIi0bdISn"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphThreeText,
+                                      visualizationIdInIndicatorExplorer: "mUjcWO90CRr",
+                                      needToKnowLatestAvailableYearInChart: true,
                                   },
                                   {
                                       visualizationId: "B4CnzUqVR3n",

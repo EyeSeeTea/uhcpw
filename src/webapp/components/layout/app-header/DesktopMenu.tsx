@@ -38,39 +38,6 @@ export const DesktopMenu: React.FC = () => {
             </Button>
 
             <MenuButton
-                id="countries"
-                aria-controls="countries & areas"
-                aria-haspopup="true"
-                onClick={handleSetAnchorEl}
-                endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
-            >
-                {i18n.t("Countries & areas")}
-            </MenuButton>
-            <Menu
-                anchorEl={anchorEl}
-                keepMounted
-                open={anchorEl?.id === "countries"}
-                onClose={handleClose}
-                getContentAnchorEl={null}
-                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-                transformOrigin={{ vertical: "top", horizontal: "center" }}
-                PaperProps={{
-                    style: {
-                        maxHeight: 556,
-                        overflowY: "auto",
-                    },
-                }}
-            >
-                {countryFilter.countryOptions.map(country => {
-                    return (
-                        <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
-                            {country.text}
-                        </MenuItem>
-                    );
-                })}
-            </Menu>
-
-            <MenuButton
                 id="regions"
                 aria-controls="Regions"
                 aria-haspopup="true"
@@ -98,6 +65,39 @@ export const DesktopMenu: React.FC = () => {
                     return (
                         <MenuItem key={region.value} onClick={() => handleRegionalClick(region)}>
                             {region.text}
+                        </MenuItem>
+                    );
+                })}
+            </Menu>
+
+            <MenuButton
+                id="countries"
+                aria-controls="countries & areas"
+                aria-haspopup="true"
+                onClick={handleSetAnchorEl}
+                endIcon={anchorEl?.id === "countries" ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+            >
+                {i18n.t("Countries & areas")}
+            </MenuButton>
+            <Menu
+                anchorEl={anchorEl}
+                keepMounted
+                open={anchorEl?.id === "countries"}
+                onClose={handleClose}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
+                PaperProps={{
+                    style: {
+                        maxHeight: 556,
+                        overflowY: "auto",
+                    },
+                }}
+            >
+                {countryFilter.countryOptions.map(country => {
+                    return (
+                        <MenuItem key={country.value} onClick={() => handleCountryClick(country)}>
+                            {country.text}
                         </MenuItem>
                     );
                 })}
