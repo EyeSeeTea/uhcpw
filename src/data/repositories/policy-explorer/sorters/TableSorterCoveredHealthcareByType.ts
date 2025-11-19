@@ -4,8 +4,6 @@ import { TableSorter } from "./TableSorter";
 
 export class TableSorterCoveredHealthcareByType implements TableSorter {
     cleanAndSort(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]): PolicyExplorerCell[][] {
-        if (rows.length <= 1) return rows;
-
         const sortedDataRows = rows.sort((rowA, rowB) => {
             const countryA = this.getCountryFromRow(rowA);
             const countryB = this.getCountryFromRow(rowB);
@@ -20,7 +18,7 @@ export class TableSorterCoveredHealthcareByType implements TableSorter {
             return rowAValueCount < rowBValueCount ? 1 : -1;
         });
 
-        return this.filterColumnsWithNoData(columns, sortedDataRows);
+        return [columns, ...sortedDataRows];
     }
 
     private getCountryFromRow(row: PolicyExplorerCell[]): string {
@@ -31,17 +29,5 @@ export class TableSorterCoveredHealthcareByType implements TableSorter {
         }
 
         return "";
-    }
-
-    private filterColumnsWithNoData(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]) {
-        const indexesToRemove = columns.reduce((accIndexesToRemove: number[], _column, columnIndex) => {
-            const hasRowsWithoutData = rows.every(row => row[columnIndex]?.value === "no");
-            return hasRowsWithoutData ? [...accIndexesToRemove, columnIndex] : accIndexesToRemove;
-        }, []);
-
-        const filteredColumns = columns.filter((_column, index) => !indexesToRemove.includes(index));
-        const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
-
-        return filteredColumns.length ? [filteredColumns, ...filteredRows] : [];
     }
 }
