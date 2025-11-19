@@ -209,9 +209,10 @@ export const PolicyExplorerTable = React.memo(
                     ref={tableContainerRef}
                     id="doublescroll"
                     style={{ overflowX: "auto" }}
+                    className={category.value}
                 >
                     <StyledTable orientation={dataOrientation}>
-                        <TableBody>
+                        <StyledTableBody className={category.value + "-table"}>
                             {rows.map((row, index) => (
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
                                     {row.map((cell, i) => (
@@ -225,7 +226,7 @@ export const PolicyExplorerTable = React.memo(
                                     ))}
                                 </TableRow>
                             ))}
-                        </TableBody>
+                        </StyledTableBody>
                     </StyledTable>
                 </TableContainer>
                 <CategoryInfoDialog isOpen={isNotesDialogOpen} onClose={handleClose} category={category} />
@@ -334,4 +335,13 @@ const SwitchRowColumnButton = styled(Button)`
     width: 170px;
     text-transform: initial;
     background: #185698;
+`;
+
+const StyledTableBody = styled(TableBody)`
+    &.u800TAhsIBY_Cat-table {
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
 `;
