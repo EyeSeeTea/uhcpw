@@ -1,12 +1,10 @@
 import React from "react";
-import CircleIcon from "@material-ui/icons/Brightness1";
-import { SvgIcon } from "material-ui";
 import styled from "styled-components";
 
 import { PolicyExplorerCellCoverage } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import i18n from "../../../locales";
+import { CircleXIcon, FullCircleIcon, HalfCircleIcon } from "./TableCellIcons";
 
-const DEFAULT_COLOR = "#000";
 const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "#f6f000",
     "Outpatient specialist visits": "#ffc000",
@@ -49,28 +47,6 @@ export const TableCoverageData = React.memo(({ cell }: { cell: PolicyExplorerCel
             return <></>;
     }
 });
-
-function FullCircleIcon({ color = DEFAULT_COLOR }: { color?: string }) {
-    return <CircleIcon htmlColor={color} />;
-}
-
-function HalfCircleIcon({ color = DEFAULT_COLOR }: { color?: string }) {
-    return (
-        <SvgIcon viewBox="0 0 24 24">
-            <path d="M12 2a10 10 0 100 20V2z" fill={color} />
-            <path d="M12 2v20a10 10 0 000-20z" fill="none" stroke={color} />
-        </SvgIcon>
-    );
-}
-
-function CircleXIcon({ color = DEFAULT_COLOR }: { color?: string }) {
-    return (
-        <SvgIcon viewBox="0 0 24 24">
-            <circle cx="12" cy="12" r="10" fill={color} />
-            <path d="M8 8l8 8M16 8l-8 8" stroke="#fff" strokeWidth="2" strokeLinecap="round" />
-        </SvgIcon>
-    );
-}
 
 const Container = styled.div`
     display: flex;

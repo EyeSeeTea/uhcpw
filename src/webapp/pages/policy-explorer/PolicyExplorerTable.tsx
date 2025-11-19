@@ -338,7 +338,8 @@ const SwitchRowColumnButton = styled(Button)`
 `;
 
 const StyledTableBody = styled(TableBody)`
-    &.u800TAhsIBY_Cat-table {
+    &.u800TAhsIBY_Cat-table,
+    &.Nx6S3aQkvWe-table {
         td {
             text-align: center;
             vertical-align: middle;
