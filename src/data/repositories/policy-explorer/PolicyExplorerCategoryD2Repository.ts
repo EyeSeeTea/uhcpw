@@ -15,7 +15,6 @@ import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
 import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
-import i18n from "../../../locales";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
 
@@ -267,7 +266,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                             },
                             {
                                 id: CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
-                                name: i18n.t("User charges (co-payments) for covered health care by type of care"),
+                                name: "User charges (co-payments) for covered health care by type of care",
                                 subcategories: TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type })),
                                 description: catNotes,
                             },
