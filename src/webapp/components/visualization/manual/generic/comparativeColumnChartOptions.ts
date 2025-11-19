@@ -7,6 +7,19 @@ import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/g
 import { getMaxYAxisAndYTickInterval } from "../utils/getMaxYAxisAndYTickInterval";
 import { ORG_UNIT_GROUP_IDS } from "../../../../../domain/entities/region/Region";
 import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
+import { fillDataSourceWithEmptyData } from "../utils/fillDataSourceWithEmptyData";
+
+function getCountriesAndYearInRows(rows: string[][]): string[] {
+    const groupByCountryIdAndYear = _(rows)
+        .groupBy(row => {
+            const orgUnitId = row[1]?.toString() || "";
+            const year = row[2] || "";
+
+            return `${orgUnitId}_${year}`;
+        })
+        .value();
+    return Object.keys(groupByCountryIdAndYear);
+}
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -20,6 +33,7 @@ export const comparativeColumnChartOptions: (params: {
     categoryIdsOrder?: string[];
     hideYear?: boolean;
     useRegionColors?: boolean;
+    isDescOrder?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -32,6 +46,7 @@ export const comparativeColumnChartOptions: (params: {
     categoryIdsOrder,
     hideYear,
     useRegionColors,
+    isDescOrder,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -41,15 +56,18 @@ export const comparativeColumnChartOptions: (params: {
 
             return `${orgUnit} ${year}`;
         })
-        .orderBy(items => {
-            if (orderByValueInSerie) {
-                const item = items.find(row => row[0] === orderByValueInSerie);
+        .orderBy(
+            items => {
+                if (orderByValueInSerie) {
+                    const item = items.find(row => row[0] === orderByValueInSerie);
 
-                return item ? (item[3] ? +item[3] : 0) : 0;
-            } else {
-                return _(items).sumBy(row => (row[3] ? +row[3] : 0));
-            }
-        })
+                    return item ? (item[3] ? +item[3] : 0) : 0;
+                } else {
+                    return _(items).sumBy(row => (row[3] ? +row[3] : 0));
+                }
+            },
+            isDescOrder ? "desc" : "asc"
+        )
         .value()
         .flat();
 
@@ -71,29 +89,23 @@ export const comparativeColumnChartOptions: (params: {
             region.linkedOrgUnitId === chartSource.currentCountryOrRegion
     );
 
-    const groupByCountryIdAndYear = _(chartSource.analyticsResponse.rows)
-        .groupBy(row => {
-            const orgUnitId = row[1]?.toString() || "";
-            const year = row[2] || "";
-
-            return `${orgUnitId}_${year}`;
-        })
-        .value();
-    const countriesAndYearInXaxis = Object.keys(groupByCountryIdAndYear);
+    const countriesAndYearInXaxis = getCountriesAndYearInRows(chartSource.analyticsResponse.rows);
+    const sortedCountriesAndYear = orderByValueInSerie
+        ? getCountriesAndYearInRows(groupByDx[orderByValueInSerie] || [])
+        : undefined;
 
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
         const filledDataSourceWithEmptyData =
-            dataSource.length < countriesAndYearInXaxis.length && !!orderByValueInSerie
-                ? countriesAndYearInXaxis.reduce((acc: Array<string[]>, countryAndYear) => {
-                      const [countryId = "", year = ""] = countryAndYear.split("_");
-
-                      const currentDataSourceFound = dataSource.find(row => row[1] === countryId && row[2] === year);
-                      return currentDataSourceFound
-                          ? [...acc, currentDataSourceFound]
-                          : [...acc, [dxId, countryId, year, "0"]];
-                  }, [])
+            dataSource.length < countriesAndYearInXaxis.length && !!orderByValueInSerie && sortedCountriesAndYear
+                ? fillDataSourceWithEmptyData(
+                      dataSource,
+                      countriesAndYearInXaxis,
+                      dxId,
+                      sortedCountriesAndYear,
+                      isDescOrder
+                  )
                 : dataSource;
 
         const serie = {
