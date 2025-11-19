@@ -87,13 +87,18 @@ const CELL_STYLES = {
     },
 };
 
+const CENTER_ALIGNMENT = {
+    horizontalAlignment: "center",
+    verticalAlignment: "center",
+};
+
 export const LEGENDS_STYLE = {
     cell: {
         wrapText: true,
         verticalAlignment: "top",
     },
-    height: 60,
-};
+    height: 50,
+} as const;
 
 const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "f6f000",
@@ -157,6 +162,7 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
     const cellRef = `${column}${rowNumber}`;
     const tabName = tab.name;
 
+    const isTextCenter = tab.type === "coverage";
     const isDownloadDateCell =
         tabName === GENERAL_INFOMRATION_TAB_NAME && sheet.cell(cellRef).value()?.toString()?.includes(DATE_OF_DOWNLOAD);
     const isTypeOfHealthCareColumn =
@@ -189,23 +195,33 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
                         ? CELL_STYLES.dataCell.fill.color
                         : CELL_STYLES.headerCell.fill.color,
             },
+            ...(isTextCenter ? CENTER_ALIGNMENT : {}),
         };
     }
 
     return {
         ...CELL_STYLES.dataCell,
-        fontColor: getFontColor(tab, columnDataIndex) || CELL_STYLES.dataCell.fontColor,
         fill: {
             ...CELL_STYLES.dataCell.fill,
             color: isTypeOfHealthCareColumn ? CELL_STYLES.headerCell.fill.color : CELL_STYLES.dataCell.fill.color,
         },
+        ...(isTextCenter ? CENTER_ALIGNMENT : {}),
+        ...getTabSpecificCellStyles(tab, rowDataIndex, columnDataIndex),
     };
 }
 
-function getFontColor(tab: Tab, columnIndex: number) {
+function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: number) {
     if (tab.type === "coverage") {
         const header = tab.data[1]?.[columnIndex];
-        return header && healthcareTypeToColor[header];
+        const fontColor = header && healthcareTypeToColor[header];
+
+        const data = tab.data[rowIndex]?.[columnIndex];
+        const fontSize = data === "🌓" ? 11.5 : undefined;
+
+        return {
+            ...(fontColor ? { fontColor } : undefined),
+            ...(fontSize ? { fontSize } : undefined),
+        };
     }
     return undefined;
 }
@@ -215,14 +231,22 @@ function getRowHeight(cellsInRow: string[]): number {
     return DEFAULT_HEIGHT * Math.max(...totalLinesInCells);
 }
 
-export function setHeight(sheet: Sheet, data: string[][]) {
+export function setHeight(sheet: Sheet, tab: Tab) {
+    const data = tab.data;
     const rowHeights = data.map(row => {
         return row ? getRowHeight(row) : 0;
     });
-
+    const startRow = tab.legends ? 2 : 1;
     data.forEach((_, rowIndex) => {
-        sheet.row(rowIndex + 1).height(rowHeights[rowIndex] || 1);
+        sheet.row(rowIndex + startRow).height(rowHeights[rowIndex] || 1);
     });
+    setTabSpecificRowHeight(sheet, tab);
+}
+
+function setTabSpecificRowHeight(sheet: Sheet, tab: Tab) {
+    if (tab.type === "coverage") {
+        sheet.row(3).height(DEFAULT_HEIGHT * 1.5);
+    }
 }
 
 function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number): number {

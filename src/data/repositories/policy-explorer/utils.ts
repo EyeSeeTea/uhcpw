@@ -8,7 +8,7 @@ import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "./PolicyExplorerCategoryD2Reposi
 const healthCoverageValueMap: Record<HealthCoverage, string> = {
     yes: "⬤",
     no: "",
-    varies: "◐",
+    varies: "🌓",
     notCovered: "🅧",
 };
 

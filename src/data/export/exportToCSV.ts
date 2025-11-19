@@ -104,7 +104,7 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
                 setWidth(sheet, tab.name, columnIndex);
             });
         });
-        setHeight(sheet, tab.data);
+        setHeight(sheet, tab);
     });
     workbook.deleteSheet("Sheet1");
 
