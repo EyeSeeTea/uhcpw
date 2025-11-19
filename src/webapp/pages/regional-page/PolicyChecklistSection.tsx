@@ -75,7 +75,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                 <CircularProgress />
             ) : (
                 <>
-                    <ContentWrapper>
+                    <TextContentWrapper>
                         <IntroText>
                             <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
                         </IntroText>
@@ -83,7 +83,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                         <IntroText>
                             <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
                         </IntroText>
-                    </ContentWrapper>
+                    </TextContentWrapper>
 
                     <ContentWrapper>
                         <div>
@@ -213,12 +213,26 @@ const IntroText = styled.div`
     width: 550px;
 `;
 
+const TextContentWrapper = styled.div`
+    display: grid;
+    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    height: fit-content;
+    gap: 50px;
+    width: 100%;
+    > * {
+        min-height: 0;
+    }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        grid-template-columns: 1fr;
+    }
+`;
+
 const ContentWrapper = styled.div`
     display: grid;
     grid-template-columns: minmax(0, 50%) minmax(0, 50%);
     gap: 50px;
     width: 100%;
-    align-items: stretch;
     > * {
         min-height: 0;
     }
@@ -242,14 +256,12 @@ const TableContainer = styled.div`
 const CountryExperiencesContainer = styled.div`
     background-color: ${colors.white};
     width: 100%;
-    height: 100%;
-    align-self: center;
     margin-inline-end: 20px;
     min-height: 0;
     overflow-y: auto;
     max-height: 100%;
     contain: size;
-    margin-block-start: 171px;
+    margin-block-start: 86px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         overflow: visible;
