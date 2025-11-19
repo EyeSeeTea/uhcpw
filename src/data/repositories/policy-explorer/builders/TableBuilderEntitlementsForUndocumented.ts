@@ -11,14 +11,14 @@ import { Id } from "../../../../domain/entities/Ref";
 import { Maybe } from "../../../../types/utils";
 
 type EntitlementColumns =
-    | "Same Entitlements as most people"
+    | "Same entitlements as most people"
     | "Entitled to some outpatient care"
     | "Entitled to selected care (e.g. for communicable diseases)"
     | "Entitled to emergency care only"
     | "No entitlements";
 
 export const ENTITLEMENTS_FOR_UNDOCUMENTED_DATA_ELEMENT_SECTION_IDS: Record<EntitlementColumns, Id> = {
-    "Same Entitlements as most people": "zYEg8QUfyO5",
+    "Same entitlements as most people": "zYEg8QUfyO5",
     "Entitled to some outpatient care": "Pa30Ymy7osI",
     "Entitled to selected care (e.g. for communicable diseases)": "obFIF0BaS1X",
     "Entitled to emergency care only": "Bol62L1xEQU",
