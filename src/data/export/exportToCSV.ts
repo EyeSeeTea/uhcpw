@@ -24,7 +24,7 @@ const COLUMN_LIMIT = "CZ";
 export type Tab = {
     data: string[][];
     name: string;
-    type?: "text" | "coverage";
+    type?: "text" | "coverage" | "entitlements";
     legends?: string[];
 };
 

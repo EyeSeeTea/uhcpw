@@ -11,10 +11,10 @@ export function TableEntitlementsLegend() {
     return (
         <Container>
             <LegendContainer>
-                <FullCircleIcon /> <span>{i18n.t("Most undocumented migrants")}</span>
+                <FullCircleIcon color={COLOR} /> <span>{i18n.t("Most undocumented migrants")}</span>
             </LegendContainer>
             <LegendContainer>
-                <HalfCircleIcon /> <span>{i18n.t("Some undocumented migrants")}</span>
+                <HalfCircleIcon color={COLOR} /> <span>{i18n.t("Some undocumented migrants")}</span>
             </LegendContainer>
         </Container>
     );

@@ -36,7 +36,7 @@ import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
 import { getTableSorter } from "./sorters/TableSorter";
-import { getTableLegends, mapCellToExportedValue } from "./utils";
+import { getTableLegends, getTabType, mapCellToExportedValue } from "./utils";
 import { TableBuilderEntitlementsForUndocumented } from "./builders/TableBuilderEntitlementsForUndocumented";
 
 export const generalDataElements: Record<string, string> = {
@@ -185,8 +185,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
             const category = categories.find(({ id }) => id === categoryId);
-            const type: Tab["type"] =
-                category?.id === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY ? "coverage" : "text";
+            const type: Tab["type"] = getTabType(category);
 
             if (rows?.length) {
                 const dataRows = this.getDataFromRows(rows);
