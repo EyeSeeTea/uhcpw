@@ -47,9 +47,12 @@ export const comparativeGroupedColumnChartOptions: (
             color: isOnlyOneYearSelected ? defaultColor : seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
+                const region = chartSource.regions.find(
+                    region => region.id === orgUnitId || region.linkedOrgUnitId === orgUnitId
                 );
+                const orgUnit = region
+                    ? region.code
+                    : mapToWhoCountryCode(chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "");
 
                 const value = row[2] ? +row[2] : 0;
 
