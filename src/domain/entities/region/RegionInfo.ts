@@ -113,11 +113,8 @@ export type GapsInCoverageContent = {
     panelSevenTitle: string;
     panelSevenMainText: string;
     panelSevenChartOneTitle: string;
-    panelSevenChartOne: string;
-    hasPanelSevenChartOne: boolean;
     panelSevenChartOneTextAbove: string;
     panelSevenChartOneTextBelow: string;
-    panelSevenChartOneInfoText: string;
     panelSevenProgressText: string;
 };
 
