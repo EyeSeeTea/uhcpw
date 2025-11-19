@@ -15,6 +15,7 @@ import i18n from "../../../locales";
 import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel";
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
 import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
+import { Backdrop, CircularProgress } from "@material-ui/core";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -36,6 +37,7 @@ export const RegionalPage: React.FC = () => {
         sectionsAccordionConfig,
         setPendingScrollTab,
         pendingScrollTab,
+        isLoadingContent,
     } = useRegionalPage();
 
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
@@ -123,7 +125,7 @@ export const RegionalPage: React.FC = () => {
                             filteredCountryExperiences={policyChecklist?.filteredCountryExperiences}
                             selectedChecklistItem={policyChecklist.selectedChecklistItem}
                             onSelectChecklistItem={policyChecklist.onSelectChecklistItem}
-                            isLoading={policyChecklist.isLoading}
+                            isLoading={isLoadingContent || policyChecklist.isLoading}
                             isSmallScreen={isSmallScreen}
                             downloadFile={policyChecklist.content.downloadFile}
                             hasDownloadFile={policyChecklist.content.hasDownloadFile}
@@ -174,6 +176,10 @@ export const RegionalPage: React.FC = () => {
                     bigFont
                 />
             )}
+
+            <Backdrop open={isLoadingContent || policyChecklist.isLoading} style={{ color: "#fff", zIndex: 1001 }}>
+                <CircularProgress color="primary" />
+            </Backdrop>
         </Layout>
     );
 };

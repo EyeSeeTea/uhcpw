@@ -72,6 +72,7 @@ export type RegionalPageState = {
     sectionsAccordionConfig: AccordionConfig[];
     setPendingScrollTab: (tab: number | null) => void;
     pendingScrollTab: number | null;
+    isLoadingContent: boolean;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -391,7 +392,7 @@ export function useRegionalPage(): RegionalPageState {
             selectedChecklistItem: policyChecklist.selectedChecklistItem,
             onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
             onCleanSelection: policyChecklist.onCleanSelection,
-            isLoading: isLoading || policyChecklist.isLoading,
+            isLoading: policyChecklist.isLoading,
         },
         regionNumbers: regionNumbers,
         gapsInCoverage: gapsInCoverage,
@@ -404,6 +405,7 @@ export function useRegionalPage(): RegionalPageState {
         sectionsAccordionConfig: sectionsAccordionConfig,
         setPendingScrollTab: setPendingScrollTab,
         pendingScrollTab: pendingScrollTab,
+        isLoadingContent: isLoading,
     };
 }
 

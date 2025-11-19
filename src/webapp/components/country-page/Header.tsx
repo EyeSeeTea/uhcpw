@@ -103,7 +103,7 @@ export const Header: FC<HeaderType> = ({
 const Container = styled.div<{ status: FinancialProtectionStatus | undefined }>`
     position: sticky;
     top: 0;
-    z-index: 1;
+    z-index: 2;
 
     display: flex;
     justify-content: space-between;
