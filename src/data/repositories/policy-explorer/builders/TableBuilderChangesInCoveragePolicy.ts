@@ -1,5 +1,9 @@
 import { DataValueSetsDataValue } from "../../../../types/d2-api";
-import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorerCell,
+    PolicyExplorerCellHeader,
+    PolicyExplorerCellType,
+} from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { TableBuilder } from "./TableBuilder";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
@@ -157,14 +161,14 @@ const MONTH_NAME_ORDER = [
 ];
 
 export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
-    buildColumns(params: { dataSet?: D2DataSet }): PolicyExplorerCell[] {
+    buildColumns(params: { dataSet?: D2DataSet }): PolicyExplorerCellHeader[] {
         const { dataSet } = params;
         const columnsNames = this.getColumnsNamesFromChangesInCoveragePolicy(dataSet);
 
         return [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
-            ...columnsNames.map(name => ({
+            ...columnsNames.map<PolicyExplorerCellHeader>(name => ({
                 type: PolicyExplorerCellType.HEADER,
                 value: name,
             })),
@@ -294,5 +298,13 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
             },
             {}
         );
+    }
+
+    static fillSubcategories() {
+        return Object.values({
+            ...CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
+        }).reduce((accSubcategories, subcategoryIds) => {
+            return [...accSubcategories, ...subcategoryIds];
+        }, [] as string[]);
     }
 }

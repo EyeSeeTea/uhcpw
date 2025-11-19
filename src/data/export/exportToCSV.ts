@@ -5,7 +5,15 @@ import {
     GENERAL_INFOMRATION_TAB_NAME,
     REFERENCES_TAB_NAME,
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
-import { addDataValue, getCellStyles, getColumnLetterByIndex, hideEmptyColumn, setHeight, setWidth } from "./utils";
+import {
+    addDataValue,
+    getCellStyles,
+    getColumnLetterByIndex,
+    hideEmptyColumn,
+    LEGENDS_STYLE,
+    setHeight,
+    setWidth,
+} from "./utils";
 import { DATA_TAB_NAME, NOTES_TAB_NAME } from "../repositories/indicator-explorer/AnalyticsD2Repository";
 
 const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
@@ -16,6 +24,8 @@ const COLUMN_LIMIT = "CZ";
 export type Tab = {
     data: string[][];
     name: string;
+    type?: "text" | "coverage" | "entitlements";
+    legends?: string[];
 };
 
 export type TabsWithStringOrNumbers = {
@@ -73,18 +83,28 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
         //@ts-ignore Not properly typed
         sheet.tabColor(tabColor);
 
+        const rowStart = tab.legends ? 2 : 1;
+        if (tab.legends) {
+            sheet.row(1).height(LEGENDS_STYLE.height);
+
+            tab.legends.forEach((legend, index) => {
+                const cellRef = `${getColumnLetterByIndex(index)}1`;
+                sheet.cell(cellRef).value(legend).style(LEGENDS_STYLE.cell);
+            });
+        }
+
         tab.data.forEach((row, rowIndex) => {
-            const rowNumber = rowIndex + 1;
+            const rowNumber = rowIndex + rowStart;
             row.forEach((cell, columnIndex) => {
                 const column = getColumnLetterByIndex(columnIndex);
                 const cellRef = `${column}${rowNumber}`;
                 addDataValue(sheet, cell, cellRef);
-                const cellStyle = getCellStyles(sheet, tab.name, rowIndex, columnIndex);
+                const cellStyle = getCellStyles(sheet, tab, rowIndex, columnIndex);
                 sheet.cell(cellRef).style(cellStyle);
                 setWidth(sheet, tab.name, columnIndex);
             });
         });
-        setHeight(sheet, tab.data);
+        setHeight(sheet, tab);
     });
     workbook.deleteSheet("Sheet1");
 

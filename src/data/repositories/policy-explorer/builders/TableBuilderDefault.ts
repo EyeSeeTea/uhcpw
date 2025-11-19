@@ -1,6 +1,10 @@
 import { DataValueSetsDataValue } from "@eyeseetea/d2-api/api";
 import { TableBuilder } from "./TableBuilder";
-import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorerCell,
+    PolicyExplorerCellHeader,
+    PolicyExplorerCellType,
+} from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
@@ -11,7 +15,7 @@ export class TableBuilderDefault implements TableBuilder {
         policyExplorerSubcategoriesIds: string[];
         programCategories?: PolicyExplorerCategory[];
         dataSet?: D2DataSet;
-    }): PolicyExplorerCell[] {
+    }): PolicyExplorerCellHeader[] {
         const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, programCategories, dataSet } = params;
 
         const programSubcategories = this.getSectionsByCategoryId({
@@ -24,7 +28,7 @@ export class TableBuilderDefault implements TableBuilder {
         return [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
             { type: PolicyExplorerCellType.HEADER, value: PERIOD_HEADER_NAME },
-            ...programSubcategories.map(de => ({
+            ...programSubcategories.map<PolicyExplorerCellHeader>(de => ({
                 type: PolicyExplorerCellType.HEADER,
                 value: "name" in de ? de.name : de.description || de.formName,
             })),
