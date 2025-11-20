@@ -139,20 +139,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelFourMainText,
                               progressText: gapsInCoverageContent.panelFourProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: gapsInCoverageContent.hasPanelFourChartOne
-                                  ? [
-                                        {
-                                            visual: gapsInCoverageContent.panelFourChartOne,
-                                            title:
-                                                gapsInCoverageContent.panelFourChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelFourChartOneTitle
-                                                    : undefined,
-                                            textBelow: gapsInCoverageContent.panelFourChartOneTextBelow,
-                                            textAbove: gapsInCoverageContent.panelFourChartOneTextAbove,
-                                            textInfo: gapsInCoverageContent.panelFourChartOneInfoText,
-                                        },
-                                    ]
-                                  : [],
+                              visuals: [
+                                  {
+                                      policyCategoryId: "Nx6S3aQkvWe",
+                                      countries: selectedRegion.countries || [],
+                                      years: ["latest"],
+                                      title:
+                                          gapsInCoverageContent.panelFourChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelFourChartOneTitle
+                                              : undefined,
+                                      textBelow: gapsInCoverageContent.panelFourChartOneTextBelow,
+                                      textAbove: gapsInCoverageContent.panelFourChartOneTextAbove,
+                                      textInfo: gapsInCoverageContent.panelFourChartOneInfoText,
+                                  },
+                              ],
                           },
                       },
                       {
@@ -166,19 +166,18 @@ export function useRegionalGapsInCoverage(
                               progressText: gapsInCoverageContent.panelFiveProgressText,
                               showDialogInFullScreen: isSmallScreen,
                               visuals: [
-                                  gapsInCoverageContent.hasPanelFiveChartOne
-                                      ? {
-                                            visual: gapsInCoverageContent.panelFiveChartOne,
-                                            title:
-                                                gapsInCoverageContent.panelFiveChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelFiveChartOneTitle
-                                                    : undefined,
-                                            textAbove: gapsInCoverageContent.panelFiveChartOneTextAbove,
-                                            textBelow: gapsInCoverageContent.panelFiveChartOneTextBelow,
-                                            textInfo: gapsInCoverageContent.panelFiveChartOneInfoText,
-                                        }
-                                      : undefined,
-
+                                  {
+                                      policyCategoryId: "u800TAhsIBY_Cat",
+                                      countries: selectedRegion.countries || [],
+                                      years: ["latest"],
+                                      title:
+                                          gapsInCoverageContent.panelFiveChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelFiveChartOneTitle
+                                              : undefined,
+                                      textAbove: gapsInCoverageContent.panelFiveChartOneTextAbove,
+                                      textBelow: gapsInCoverageContent.panelFiveChartOneTextBelow,
+                                      textInfo: gapsInCoverageContent.panelFiveChartOneInfoText,
+                                  },
                                   gapsInCoverageContent.hasPanelFiveChartTwo
                                       ? {
                                             visual: gapsInCoverageContent.panelFiveChartTwo,

@@ -15,7 +15,8 @@ export class GetPolicyExplorerUseCase {
         selectedCountriesIds: Id[],
         years: string[],
         countriesAndSubregions: Country[],
-        programCategories: PolicyExplorerCategory[]
+        programCategories: PolicyExplorerCategory[],
+        useCountryCodes?: boolean
     ): FutureData<PolicyExplorer> {
         return this.getYearsByCategory(years, policyExplorerCategories).flatMap(yearsByCategory => {
             return this.policyExplorerRepository.get(
@@ -23,7 +24,8 @@ export class GetPolicyExplorerUseCase {
                 selectedCountriesIds,
                 yearsByCategory,
                 countriesAndSubregions,
-                programCategories
+                programCategories,
+                useCountryCodes
             );
         });
     }

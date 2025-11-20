@@ -9,13 +9,13 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 export const EMPTY_URL = "/";
 
 export const TableTextData = React.memo(
-    ({ cell, referencesRef }: { cell: PolicyExplorerCell; referencesRef: RefObject<HTMLDivElement> }) => {
+    ({ cell, referencesRef }: { cell: PolicyExplorerCell; referencesRef?: RefObject<HTMLDivElement> }) => {
         const { redirectWithExternalLink } = useAnalytics();
 
         const handleClickEmptyUrl = useCallback(
             event => {
                 event.preventDefault();
-                referencesRef.current?.scrollIntoView({ behavior: "smooth" });
+                referencesRef?.current?.scrollIntoView({ behavior: "smooth" });
             },
             [referencesRef]
         );

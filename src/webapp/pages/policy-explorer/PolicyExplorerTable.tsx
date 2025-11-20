@@ -203,7 +203,7 @@ export const PolicyExplorerTable = React.memo(
                         </Row>
                     </Row>
                 </TableHeader>
-                <TableLegend category={category} />
+                <TableLegend categoryId={category.value} />
                 <TableContainer
                     component={TablePaper}
                     ref={tableContainerRef}
