@@ -86,13 +86,23 @@ const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
-    get(
-        policyExplorerCategories: Record<string, string[]>,
-        selectedCountriesIds: Id[],
-        yearsByCategory: Record<string, string[]>,
-        countriesAndSubregions: Country[],
-        programCategories: PolicyExplorerCategory[]
-    ): FutureData<PolicyExplorer> {
+    get(params: {
+        policyExplorerCategories: Record<string, string[]>;
+        selectedCountriesIds: Id[];
+        yearsByCategory: Record<string, string[]>;
+        countriesAndSubregions: Country[];
+        programCategories: PolicyExplorerCategory[];
+        useCountryCodes?: boolean;
+    }): FutureData<PolicyExplorer> {
+        const {
+            policyExplorerCategories,
+            selectedCountriesIds,
+            yearsByCategory,
+            countriesAndSubregions,
+            programCategories,
+            useCountryCodes = false,
+        } = params;
+
         return Future.joinObj({
             dataSetResponse: apiToFuture(
                 this.api.models.dataSets.get({
@@ -126,6 +136,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     yearsByCategory,
                     dataSet: dataSetResponse.objects[0],
                     programCategories,
+                    useCountryCodes,
                 }),
                 generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndSubregions),
                 references: this.buildReferences(
@@ -364,6 +375,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
         programCategories: PolicyExplorerCategory[];
+        useCountryCodes?: boolean;
     }): Record<string, PolicyExplorerCell[][]> {
         const {
             policyExplorerCategories,
@@ -372,6 +384,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             yearsByCategory,
             dataSet,
             programCategories,
+            useCountryCodes = false,
         } = params;
 
         const deSubstitutor = dataSet
@@ -449,9 +462,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             return accRows;
                         }
 
-                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, countriesAndSubregions, orgUnit)
+                        const orgUnitNameInCell = this.isCountryAlreadyInRows(
+                            accRows,
+                            countriesAndSubregions,
+                            orgUnit,
+                            useCountryCodes
+                        )
                             ? EMPTY_DATA
-                            : this.getCountryName(orgUnit, countriesAndSubregions);
+                            : this.getCountryName(orgUnit, countriesAndSubregions, useCountryCodes);
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =
@@ -491,9 +509,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private isCountryAlreadyInRows(
         accRows: PolicyExplorerCell[][],
         countriesAndSubregions: Country[],
-        orgUnit: Id
+        orgUnit: Id,
+        useCountryCodes = false
     ): boolean {
-        const orgUnitName = this.getCountryName(orgUnit, countriesAndSubregions);
+        const orgUnitName = this.getCountryName(orgUnit, countriesAndSubregions, useCountryCodes);
         return (
             !!orgUnitName && !!accRows?.find((row: PolicyExplorerCell[]) => !!row[0] && row[0]?.value === orgUnitName)
         );
@@ -590,11 +609,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         }));
     }
 
-    private getCountryName(orgUnitId: Id, countriesAndSubregions: Country[]): string {
-        const orgUnitName = countriesAndSubregions.find(country => country.id === orgUnitId)?.name || EMPTY_DATA;
+    private getCountryName(orgUnitId: Id, countriesAndSubregions: Country[], useCountryCodes = false): string {
+        const orgUnit = countriesAndSubregions.find(country => country.id === orgUnitId);
+        const orgUnitName = useCountryCodes ? orgUnit?.code : orgUnit?.name;
         return orgUnitId === REPUBLICA_SERPSKA || orgUnitId === FEDERACIJA_BOSNE_I_HERCEGOVINE
-            ? `Bosnia and Herzegovina (${orgUnitName.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || ""
-            : orgUnitName || "";
+            ? `Bosnia and Herzegovina (${orgUnitName?.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || ""
+            : orgUnitName || EMPTY_DATA;
     }
 }
 

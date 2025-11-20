@@ -10,21 +10,32 @@ import { PolicyExplorerCategory } from "../../entities/policy-explorer/PolicyExp
 export class GetPolicyExplorerUseCase {
     constructor(private policyExplorerRepository: PolicyExplorerRepository) {}
 
-    public execute(
-        policyExplorerCategories: Record<string, string[]>,
-        selectedCountriesIds: Id[],
-        years: string[],
-        countriesAndSubregions: Country[],
-        programCategories: PolicyExplorerCategory[]
-    ): FutureData<PolicyExplorer> {
+    public execute(params: {
+        policyExplorerCategories: Record<string, string[]>;
+        selectedCountriesIds: Id[];
+        years: string[];
+        countriesAndSubregions: Country[];
+        programCategories: PolicyExplorerCategory[];
+        useCountryCodes?: boolean;
+    }): FutureData<PolicyExplorer> {
+        const {
+            policyExplorerCategories,
+            selectedCountriesIds,
+            years,
+            countriesAndSubregions,
+            programCategories,
+            useCountryCodes,
+        } = params;
+
         return this.getYearsByCategory(years, policyExplorerCategories).flatMap(yearsByCategory => {
-            return this.policyExplorerRepository.get(
+            return this.policyExplorerRepository.get({
                 policyExplorerCategories,
                 selectedCountriesIds,
                 yearsByCategory,
                 countriesAndSubregions,
-                programCategories
-            );
+                programCategories,
+                useCountryCodes,
+            });
         });
     }
 

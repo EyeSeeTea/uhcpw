@@ -48,7 +48,14 @@ export function useRegionalPolicyExplorerTable(
                     };
 
                     compositionRoot.policyExplorer.get
-                        .execute(policyCategory, countries, years, countriesAndSubregions, categories)
+                        .execute({
+                            policyExplorerCategories: policyCategory,
+                            selectedCountriesIds: countries,
+                            years: years,
+                            countriesAndSubregions,
+                            programCategories: categories,
+                            useCountryCodes: true,
+                        })
                         .run(
                             policyExplorerData => {
                                 setTableData(invertTableData(policyExplorerData.tables[policyCategoryId]));
