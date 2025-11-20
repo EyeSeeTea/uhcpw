@@ -86,23 +86,14 @@ const REGEX_INSIDE_PARENTHESIS = /BIH \(([^)]+)\)/;
 export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
-    get(params: {
-        policyExplorerCategories: Record<string, string[]>;
-        selectedCountriesIds: Id[];
-        yearsByCategory: Record<string, string[]>;
-        countriesAndSubregions: Country[];
-        programCategories: PolicyExplorerCategory[];
-        useCountryCodes?: boolean;
-    }): FutureData<PolicyExplorer> {
-        const {
-            policyExplorerCategories,
-            selectedCountriesIds,
-            yearsByCategory,
-            countriesAndSubregions,
-            programCategories,
-            useCountryCodes = false,
-        } = params;
-
+    get(
+        policyExplorerCategories: Record<string, string[]>,
+        selectedCountriesIds: Id[],
+        yearsByCategory: Record<string, string[]>,
+        countriesAndSubregions: Country[],
+        programCategories: PolicyExplorerCategory[],
+        useCountryCodes?: boolean
+    ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
                 this.api.models.dataSets.get({

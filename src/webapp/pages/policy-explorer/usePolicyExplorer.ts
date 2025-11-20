@@ -166,13 +166,13 @@ export function usePolicyExplorer({
             setLoading(true);
 
             compositionRoot.policyExplorer.get
-                .execute({
-                    policyExplorerCategories: selectedCategoriesWithSubcategoriesFilter,
-                    selectedCountriesIds: countryFilter.selected,
-                    years: selectedYearFilter ? selectedYearFilter : [],
+                .execute(
+                    selectedCategoriesWithSubcategoriesFilter,
+                    countryFilter.selected,
+                    selectedYearFilter ? selectedYearFilter : [],
                     countriesAndSubregions,
-                    programCategories: policyExplorerCategories,
-                })
+                    policyExplorerCategories
+                )
                 .run(
                     policyExplorer => {
                         setInitialDataByTable(policyExplorer);
