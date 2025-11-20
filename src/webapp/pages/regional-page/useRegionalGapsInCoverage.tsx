@@ -59,7 +59,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoverageFirstPanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelOneTitle,
                               mainText: gapsInCoverageContent.panelOneMainText,
                               progressText: gapsInCoverageContent.panelOneProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -83,7 +82,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelTwoTitle,
                               mainText: gapsInCoverageContent.panelTwoMainText,
                               progressText: gapsInCoverageContent.panelTwoProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -109,7 +107,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelThreeTitle,
                               mainText: gapsInCoverageContent.panelThreeMainText,
                               progressText: gapsInCoverageContent.panelThreeProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -135,7 +132,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelFourTitle,
                               mainText: gapsInCoverageContent.panelFourMainText,
                               progressText: gapsInCoverageContent.panelFourProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -161,7 +157,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelFiveTitle,
                               mainText: gapsInCoverageContent.panelFiveMainText,
                               progressText: gapsInCoverageContent.panelFiveProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -211,7 +206,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelSixTitle,
                               mainText: gapsInCoverageContent.panelSixMainText,
                               progressText: gapsInCoverageContent.panelSixProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -223,7 +217,6 @@ export function useRegionalGapsInCoverage(
                                               : undefined,
                                       textAbove: gapsInCoverageContent.panelSixChartOneTextAbove,
                                       textBelow: gapsInCoverageContent.panelSixChartOneTextBelow,
-                                      textInfo: gapsInCoverageContent.panelSixChartOneInfoText,
                                       visualizationId: "mcNfvQaVbfy",
                                       visualizationName:
                                           gapsInCoverageContent.panelSixChartOneTitle !== ""
@@ -251,7 +244,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelSevenTitle,
                               mainText: gapsInCoverageContent.panelSevenMainText,
                               progressText: gapsInCoverageContent.panelSevenProgressText,
                               showDialogInFullScreen: isSmallScreen,

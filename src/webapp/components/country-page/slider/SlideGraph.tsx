@@ -32,6 +32,8 @@ type SlideGraphType = {
     isRegionalPage?: boolean;
     hideChartsWithoutData?: boolean;
     hasNarrowerText?: boolean;
+    handleSetChartWithNoData?: (visualizationId: string) => void;
+    chartsWithNoData?: Id[];
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({
@@ -41,11 +43,12 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     isRegionalPage = false,
     hideChartsWithoutData = false,
     hasNarrowerText = false,
+    handleSetChartWithNoData,
+    chartsWithNoData,
 }) => {
     const isSmallScreen = useIsSmallScreen();
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
-    const [chartsWithNoData, setChartsWithNoData] = React.useState<Id[]>([]);
 
     const markdownComponents: Components = React.useMemo(
         () => ({
@@ -77,18 +80,9 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
         [currentGraphScreenshot?.visualizationName]
     );
 
-    const handleSetChartWithNoData = React.useCallback((visualizationId: string) => {
-        setChartsWithNoData(prevState => {
-            if (!prevState.includes(visualizationId)) {
-                return [...prevState, visualizationId];
-            }
-            return prevState;
-        });
-    }, []);
-
     const hideAll = useMemo(() => {
-        return hideChartsWithoutData && chartsWithNoData.length === graphs.length;
-    }, [chartsWithNoData.length, graphs.length, hideChartsWithoutData]);
+        return hideChartsWithoutData && chartsWithNoData?.length === graphs.length;
+    }, [chartsWithNoData?.length, graphs.length, hideChartsWithoutData]);
 
     return (
         <Container $isRegionalPage={isRegionalPage} $hideAll={hideAll}>
@@ -99,7 +93,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                       <VisualizationContainer
                           key={graph.visualizationId}
                           $hasMargin={graphIndex !== 0}
-                          $hide={hideChartsWithoutData && !hideAll && chartsWithNoData.includes(graph.visualizationId)}
+                          $hide={hideChartsWithoutData && !hideAll && chartsWithNoData?.includes(graph.visualizationId)}
                       >
                           {graph.text && (
                               <TextContainer hasNarrowerText={hasNarrowerText}>

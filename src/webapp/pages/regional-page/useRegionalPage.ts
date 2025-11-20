@@ -343,16 +343,22 @@ export function useRegionalPage(): RegionalPageState {
             }
 
             const sectionToExpand = getSectionAccordionConfigByHeaderItemId(item, sectionsAccordionConfig);
-            if (isEUorEuropeanRegion && (item === "resources" || item === "experts")) {
-                const targetRef = refs[item];
-                targetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+            if (sectionToExpand) {
+                if (sectionToExpand.tab !== expandedSectionsAccordion?.tab) {
+                    setExpandedSectionsAccordion(sectionToExpand);
+                    setPendingScrollTab(sectionToExpand.tab);
+                } else {
+                    sectionToExpand.ref?.current?.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start",
+                    });
+                    setPendingScrollTab(null);
+                }
             } else {
-                setExpandedSectionsAccordion(sectionToExpand);
+                setPendingScrollTab(null);
             }
-
-            setPendingScrollTab(sectionToExpand ? sectionToExpand.tab : null);
         },
-        [isEUorEuropeanRegion, refs, sectionsAccordionConfig]
+        [expandedSectionsAccordion, refs, sectionsAccordionConfig]
     );
 
     const handleAccordionChange = useCallback(

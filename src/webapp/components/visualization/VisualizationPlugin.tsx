@@ -218,7 +218,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         if (chartData.kind === "Loaded" && setChartWithNoData && !chartHasData) {
             setChartWithNoData(visualizationId);
         }
-    }, [chartData.kind, chartHasData, setChartWithNoData, visualizationId]);
+    }, [chartData, chartHasData, setChartWithNoData, visualizationId]);
 
     return chartData.kind === "Loaded" && chartHasData ? (
         <VisualizationPluginContainer

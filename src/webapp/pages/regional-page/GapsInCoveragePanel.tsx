@@ -31,7 +31,6 @@ export type VisualContent = {
 };
 
 type GapsInCoveragePanelProps = {
-    title?: string;
     regionId: Id;
     mainText?: string;
     progressText?: string;
@@ -42,7 +41,7 @@ type GapsInCoveragePanelProps = {
 export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => {
     const isSmallScreen = useIsSmallScreen();
 
-    const { regionId, title, mainText, progressText, visuals, showDialogInFullScreen = false } = props;
+    const { regionId, mainText, progressText, visuals, showDialogInFullScreen = false } = props;
     const [visualTextInfo, setVisualTextInfo] = useState<string | undefined>(undefined);
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualContent | undefined>(undefined);
 
@@ -77,12 +76,6 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
 
     return (
         <Container>
-            <TextContainer>
-                <StyledTitle variant="h6" gutterBottom>
-                    {title}
-                </StyledTitle>
-            </TextContainer>
-
             {mainText && (
                 <TextContainer>
                     <ReactMarkdown components={markdownComponents}>{mainText}</ReactMarkdown>
@@ -279,15 +272,6 @@ const StyledUl = styled.ul`
     color: ${colors.black};
     margin-inline-start: 0;
     margin-block-start: 0;
-`;
-
-const StyledTitle = styled(Typography)`
-    margin-inline-end: 24px;
-    color: ${colors.black};
-
-    &.MuiTypography-h6 {
-        font-weight: bold;
-    }
 `;
 
 const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`

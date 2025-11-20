@@ -5,28 +5,41 @@ export type RegionMainMapPanelContent = {
 
 export type RegionNumbersPanelContent = {
     panelOneTitle: string;
+    panelOneGraphOneTitle: string;
     panelOneGraphOneText: string;
 
     panelTwoTitle: string;
+    panelTwoGraphOneTitle: string;
     panelTwoGraphOneText: string;
 
     panelThreeTitle: string;
+    panelThreeGraphOneTitle: string;
     panelThreeGraphOneText: string;
+    panelThreeGraphTwoTitle: string;
     panelThreeGraphTwoText: string;
 
     panelFourTitle: string;
+    panelFourGraphOneTitle: string;
     panelFourGraphOneText: string;
     panelFourGraphTwoText: string;
+    panelFourGraphTwoTitle: string;
 
     panelFiveTitle: string;
+    panelFiveGraphOneTitle: string;
     panelFiveGraphOneText: string;
+    panelFiveGraphTwoTitle: string;
     panelFiveGraphTwoText: string;
+    panelFiveGraphThreeTitle: string;
     panelFiveGraphThreeText: string;
 
     panelSixTitle: string;
+    panelSixGraphOneTitle: string;
     panelSixGraphOneText: string;
+    panelSixGraphTwoTitle: string;
     panelSixGraphTwoText: string;
+    panelSixGraphThreeTitle: string;
     panelSixGraphThreeText: string;
+    panelSixGraphFourTitle: string;
     panelSixGraphFourText: string;
 };
 
@@ -99,11 +112,8 @@ export type GapsInCoverageContent = {
     panelSixTitle: string;
     panelSixChartOneTitle: string;
     panelSixMainText: string;
-    panelSixChartOne: string;
-    hasPanelSixChartOne: boolean;
     panelSixChartOneTextAbove: string;
     panelSixChartOneTextBelow: string;
-    panelSixChartOneInfoText: string;
     panelSixProgressText: string;
 
     panelSevenTitle: string;

@@ -13,7 +13,6 @@ import { VisualContent } from "./GapsInCoveragePanel";
 import { Maybe } from "../../../types/utils";
 
 type GapsInCoverageFirstPanelProps = {
-    title?: string;
     regionId: Id;
     mainText?: string;
     progressText?: string;
@@ -22,7 +21,7 @@ type GapsInCoverageFirstPanelProps = {
 };
 
 export const GapsInCoverageFirstPanel: React.FC<GapsInCoverageFirstPanelProps> = props => {
-    const { title, mainText, progressText, visual, showDialogInFullScreen = false } = props;
+    const { mainText, progressText, visual, showDialogInFullScreen = false } = props;
     const [visualTextInfo, setVisualTextInfo] = useState<string | undefined>(undefined);
 
     const markdownComponents: Components = React.useMemo(
@@ -40,12 +39,6 @@ export const GapsInCoverageFirstPanel: React.FC<GapsInCoverageFirstPanelProps> =
 
     return (
         <Container>
-            <TextContainer>
-                <StyledTitle variant="h6" gutterBottom>
-                    {title}
-                </StyledTitle>
-            </TextContainer>
-
             {mainText && !visual ? (
                 <TextContainer>
                     <ReactMarkdown components={markdownComponents}>{mainText}</ReactMarkdown>{" "}
@@ -61,12 +54,7 @@ export const GapsInCoverageFirstPanel: React.FC<GapsInCoverageFirstPanelProps> =
                     )}
 
                     {visual.visual ? (
-                        <img
-                            style={{ paddingBlockStart: "8px" }}
-                            width="100%"
-                            alt={i18n.t(visual.title || "Gaps in coverage chart")}
-                            src={visual.visual}
-                        />
+                        <img width="100%" alt={i18n.t(visual.title || "Gaps in coverage chart")} src={visual.visual} />
                     ) : null}
                 </ContentWrapper>
             ) : null}
@@ -150,15 +138,6 @@ const StyledUl = styled.ul`
     color: ${colors.black};
     margin-inline-start: 0;
     margin-block-start: 0;
-`;
-
-const StyledTitle = styled(Typography)`
-    margin-inline-end: 24px;
-    color: ${colors.black};
-
-    &.MuiTypography-h6 {
-        font-weight: bold;
-    }
 `;
 
 const TextContainer = styled.div`
