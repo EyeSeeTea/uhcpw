@@ -160,7 +160,7 @@ export function useRegionalPage(): RegionalPageState {
         const searchParams = new URLSearchParams(history.location.search);
 
         const regionNameInFilter = searchParams.get("region");
-        const regionName = regionNameInFilter ? parseCountryOrRegionParamToName(regionNameInFilter) : undefined;
+        const regionName = regionNameInFilter ? parseCountryOrRegionParamToName(regionNameInFilter, true) : undefined;
 
         const regionIdInFilter = regionName ? regionOptions.find(option => option.text === regionName)?.value : null;
 

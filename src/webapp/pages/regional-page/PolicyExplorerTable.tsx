@@ -215,9 +215,9 @@ const TablePaper = styled(Paper)`
 const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType }>`
     color: #0460a7;
     font-weight: 500;
-    max-width: 70px;
-    width: 70px;
-    min-width: 70px;
+    max-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "70px" : "15px")};
+    min-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "70px" : "15px")};
+    width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "70px" : "15px")};
     background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
 `;
@@ -236,6 +236,16 @@ const StyledTable = styled(Table)`
 const StyledTableBody = styled(TableBody)`
     &.u800TAhsIBY_Cat-table,
     &.Nx6S3aQkvWe-table {
+        tr:first-child > td {
+            text-align: center;
+            writing-mode: sideways-lr;
+        }
+
+        tr:first-child > td:first-child {
+            text-align: left;
+            writing-mode: unset;
+        }
+
         tr > td:first-child {
             text-align: left;
         }
