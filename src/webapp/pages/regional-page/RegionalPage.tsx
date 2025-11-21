@@ -16,6 +16,8 @@ import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel"
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
 import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { Backdrop, CircularProgress } from "@material-ui/core";
+import { RegionMapPanel } from "../../components/region-map-panel/RegionMapPanel";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -71,19 +73,25 @@ export const RegionalPage: React.FC = () => {
                     </SectionTitle>
                 </SectionTitleDivider>
 
-                <Map
-                    mapState={mapState}
-                    regionMainMapPanelContent={mainPanelContent}
-                    highlightedISO3Countries={highlightedISO3Countries}
-                    className="region-map"
-                    isRegionPage
-                    panelMaxWidth={sidePanelWidth}
-                />
+                {isSmallScreen ? (
+                    <PanelContainer>
+                        <RegionMapPanel mainPanelContent={mainPanelContent} />
+                    </PanelContainer>
+                ) : (
+                    <Map
+                        mapState={mapState}
+                        regionMainMapPanelContent={mainPanelContent}
+                        highlightedISO3Countries={highlightedISO3Countries}
+                        className="region-map"
+                        isRegionPage
+                        panelMaxWidth={sidePanelWidth}
+                    />
+                )}
             </MapSection>
 
             {isSmallScreen ? (
                 <>
-                    <section ref={refs.numbers}>
+                    <Section ref={refs.numbers}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>
                                 {i18n.t("Numbers: financial hardship, unmet need and spending on health")}
@@ -98,9 +106,9 @@ export const RegionalPage: React.FC = () => {
                             handleTabChange={regionNumbers.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
-                    </section>
+                    </Section>
 
-                    <section ref={refs.gapsInCoverage}>
+                    <Section ref={refs.gapsInCoverage}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>{i18n.t("The story behind the numbers: gaps in coverage")}</SectionTitle>
                         </SectionTitleDivider>
@@ -113,9 +121,9 @@ export const RegionalPage: React.FC = () => {
                             handleTabChange={gapsInCoverage.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
-                    </section>
+                    </Section>
 
-                    <section ref={refs.policyChecklist}>
+                    <Section ref={refs.policyChecklist}>
                         <SectionTitleDivider onlyBottomMargin>
                             <SectionTitle>{i18n.t("Progress is possible: a checklist for policy-makers")}</SectionTitle>
                         </SectionTitleDivider>
@@ -132,11 +140,11 @@ export const RegionalPage: React.FC = () => {
                             downloadFile={policyChecklist.content.downloadFile}
                             hasDownloadFile={policyChecklist.content.hasDownloadFile}
                         />
-                    </section>
+                    </Section>
 
                     {!isEuropeanRegion ? (
                         <React.Fragment>
-                            <section ref={refs.resources}>
+                            <Section ref={refs.resources}>
                                 <SectionTitleDivider isLighter>
                                     <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/resources")}>
                                         {i18n.t("Resources")}
@@ -146,9 +154,9 @@ export const RegionalPage: React.FC = () => {
                                 {!isEUorEuropeanRegion && (
                                     <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
                                 )}
-                            </section>
+                            </Section>
 
-                            <section ref={refs.experts}>
+                            <Section ref={refs.experts}>
                                 <SectionTitleDivider isLighter>
                                     <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
                                         {i18n.t("Expert network")}
@@ -162,7 +170,7 @@ export const RegionalPage: React.FC = () => {
                                         isSmallScreen={isSmallScreen}
                                     />
                                 )}
-                            </section>
+                            </Section>
                         </React.Fragment>
                     ) : null}
                 </>
@@ -186,6 +194,13 @@ export const RegionalPage: React.FC = () => {
     );
 };
 
+const PanelContainer = styled.div`
+    font-size: 16px;
+    padding: 16px;
+    background: ${colors.accentPrimary};
+    color: ${colors.white};
+`;
+
 const MapSection = styled.section`
     height: 85vh;
     min-height: 620px;
@@ -194,12 +209,28 @@ const MapSection = styled.section`
     .region-map {
         height: calc(100% - 65px);
     }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        scroll-margin-top: 101px;
+        height: initial;
+        min-height: initial;
+
+        .region-map {
+            height: initial;
+        }
+    }
+`;
+
+const Section = styled.section`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        scroll-margin-top: 101px;
+    }
 `;
 
 const SectionTitle = styled.h2<{ $smallFont?: boolean }>`
     color: ${colors.white};
     margin: 0;
-    margin-left: 64px;
+    margin-left: 32px;
     font-size: ${props => (props.$smallFont ? "16px" : "24px")};
 `;
 

@@ -340,6 +340,12 @@ export function useRegionalPage(): RegionalPageState {
 
     const handleHeaderItemClick = useCallback(
         (item: RegionalMenuItem) => {
+            const ref = refs[item];
+            if (isSmallScreen && ref) {
+                ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                setExpandedSectionsAccordion(undefined);
+            }
+
             if (item === "regionMap") {
                 const targetRef = refs.regionMap;
                 targetRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -363,7 +369,7 @@ export function useRegionalPage(): RegionalPageState {
                 setPendingScrollTab(null);
             }
         },
-        [expandedSectionsAccordion, refs, sectionsAccordionConfig]
+        [expandedSectionsAccordion?.tab, isSmallScreen, refs, sectionsAccordionConfig]
     );
 
     const handleAccordionChange = useCallback(
