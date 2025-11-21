@@ -62,6 +62,8 @@ For production:
 
 ```
 $ yarn build:prod
+# or an alias:
+$ yarn build
 ```
 
 For test:
