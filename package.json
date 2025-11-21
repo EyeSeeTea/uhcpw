@@ -111,6 +111,7 @@
         "seo:test": "cp config/seo/robots.test.txt build/robots.txt",
         "seo:prod": "cp config/seo/robots.prod.txt build/robots.txt && cp config/seo/sitemap.xml build/sitemap.xml && yarn update-sitemap",
         "build-folder": "rm -rf build/ && d2-manifest package.json manifest.webapp && react-scripts build && yarn run manifest && cp -r i18n icon.png build",
+        "build": "yarn build:prod",
         "build:test": "yarn prebuild && yarn build-folder && yarn seo:test && rm -f $npm_package_name-test.zip && cd build && zip --quiet -r ../$npm_package_name-test.zip *",
         "build:prod": "yarn prebuild && yarn build-folder && yarn seo:prod && rm -f $npm_package_name-production.zip && cd build && zip --quiet -r ../$npm_package_name-production.zip *",
         "test": "jest --passWithNoTests",
