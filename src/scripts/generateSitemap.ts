@@ -163,7 +163,7 @@ function main() {
                 type: string,
                 long: "output",
                 short: "o",
-                defaultValue: () => path.join(__dirname, "../../public/sitemap.xml"),
+                defaultValue: () => path.join(__dirname, "../../config/seo/sitemap.xml"),
                 description: "Output path for sitemap.xml file",
             }),
         },
