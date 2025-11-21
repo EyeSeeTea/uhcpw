@@ -8,6 +8,9 @@ msgstr ""
 "POT-Creation-Date: 2025-11-19T05:57:27.959Z\n"
 "PO-Revision-Date: 2025-11-19T05:57:27.959Z\n"
 
+msgid "404"
+msgstr ""
+
 msgid "Error fetching methods"
 msgstr ""
 
@@ -265,6 +268,15 @@ msgid "Read less"
 msgstr ""
 
 msgid "Error fetching Methods"
+msgstr ""
+
+msgid "Page Not Found"
+msgstr ""
+
+msgid "The page you are looking for does not exist or has been moved."
+msgstr ""
+
+msgid "Go to Homepage"
 msgstr ""
 
 msgid "Last updated: "

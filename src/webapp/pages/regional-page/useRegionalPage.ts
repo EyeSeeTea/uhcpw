@@ -8,7 +8,7 @@ import i18n from "../../../locales";
 import { Country } from "../../../domain/entities/Country";
 import { useAppContext } from "../../contexts/app-context";
 import { countriesToGeoJson } from "../../components/home/map/useMap";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useRegionalPageContent } from "./useRegionalPageContent";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { ORG_UNIT_GROUP_IDS, Region } from "../../../domain/entities/region/Region";
@@ -19,10 +19,7 @@ import { NumbersSection } from "./NumbersSection";
 import { PolicyChecklistSection } from "./PolicyChecklistSection";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
-import {
-    formatCountryOrRegionParamName,
-    parseCountryOrRegionParamToName,
-} from "../../utils/formatCountryOrRegionParamName";
+import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
 import { RegionalGapsInCoverageState, useRegionalGapsInCoverage } from "./useRegionalGapsInCoverage";
 
@@ -78,6 +75,9 @@ export type RegionalPageState = {
 export function useRegionalPage(): RegionalPageState {
     const isSmallScreen = useIsSmallScreen();
     const history = useHistory();
+    const { countryOrRegion } = useParams<{
+        countryOrRegion?: string;
+    }>();
     const { regions, countries } = useAppContext();
     const { regionOptions, selectedRegion: selectedRegionId, onRegionChange } = useRegionalPageFilter();
     const { content, isLoading } = useRegionalPageContent(selectedRegionId);
@@ -155,28 +155,23 @@ export function useRegionalPage(): RegionalPageState {
     ]);
 
     const filterInParams = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
-
-        const regionNameInFilter = searchParams.get("region");
-        const regionName = regionNameInFilter ? parseCountryOrRegionParamToName(regionNameInFilter) : undefined;
-
-        const regionIdInFilter = regionName ? regionOptions.find(option => option.text === regionName)?.value : null;
+        const regionIdInFilter = countryOrRegion
+            ? regionOptions.find(option => formatCountryOrRegionParamName(option.text) === countryOrRegion)?.value
+            : null;
 
         return {
             region: regionIdInFilter ? regionIdInFilter : undefined,
         };
-    }, [history.location.search, regionOptions]);
+    }, [regionOptions, countryOrRegion]);
 
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
-            const searchParams = new URLSearchParams(history.location.search);
             const newRegionName = regionOptions.find(option => option.value === newRegion)?.text;
             const regionNameInFilter = newRegionName ? formatCountryOrRegionParamName(newRegionName) : undefined;
 
             if (regionNameInFilter) {
-                searchParams.set("region", regionNameInFilter);
+                history.push(`/${regionNameInFilter}`);
             }
-            history.push({ search: searchParams.toString() });
 
             const region = regions.find(region => region.id === newRegion);
             const countryIdsInRegion = region?.countries || [];
