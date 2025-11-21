@@ -1,7 +1,7 @@
 export const policyExplorerDataSet_ID = "asMJECXNLpV";
 export const policyExplorerProgram_ID = "Ik70ZvT77Ee";
 
-const KOSOVO = "Kosovo*";
+export const KOSOVO = "Kosovo*";
 
 export function sortByCountry(countryA: string, countryB: string) {
     if (countryA === KOSOVO && countryB === KOSOVO) return 0;

@@ -10,6 +10,7 @@ import { getBackgroundColorByFinancialProtectionStatus } from "../../pages/count
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { UmbrellaIcon } from "../umbrella-icon/UmbrellaIcon";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
+import { Maybe } from "../../../types/utils";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -27,6 +28,7 @@ type HeaderType = {
     countryId: string;
     onCountryChange: (value: string) => void;
     countryOptions: Option<string>[];
+    dashboardRef: MutableRefObject<null>;
     sliderRef: MutableRefObject<null>;
     resourcesRef: MutableRefObject<null>;
     expertRef: MutableRefObject<null>;
@@ -40,6 +42,7 @@ export const Header: FC<HeaderType> = ({
     sliderRef,
     resourcesRef,
     expertRef,
+    dashboardRef,
     handleResetTab,
 }) => {
     const country = useCountryInfo(countryId);
@@ -47,8 +50,8 @@ export const Header: FC<HeaderType> = ({
     const isSmallScreen = useIsSmallScreen();
 
     const handleClick = useCallback(
-        (ref: MutableRefObject<any>, where: "detail" | "resources" | "expert") => {
-            ref.current?.scrollIntoView({ behavior: "smooth" });
+        (ref: Maybe<MutableRefObject<any>>, where: "dashboard" | "detail" | "resources" | "expert") => {
+            ref?.current?.scrollIntoView({ behavior: "smooth" });
             if (where === "detail") {
                 handleResetTab(true);
             }
@@ -73,7 +76,9 @@ export const Header: FC<HeaderType> = ({
             </DropdownContainer>
             <ButtonsContainer>
                 <Button>
-                    <ButtonText>{i18n.t("Dashboard")}</ButtonText>
+                    <ButtonText onClick={() => handleClick(dashboardRef, "dashboard")}>
+                        {i18n.t("Dashboard")}
+                    </ButtonText>
                 </Button>
                 <Button>
                     <ButtonText onClick={() => handleClick(sliderRef, "detail")}>{i18n.t("In detail")}</ButtonText>
@@ -92,6 +97,10 @@ export const Header: FC<HeaderType> = ({
 };
 
 const Container = styled.div<{ status: FinancialProtectionStatus | undefined }>`
+    position: sticky;
+    top: 0;
+    z-index: 2;
+
     display: flex;
     justify-content: space-between;
     height: 80px;

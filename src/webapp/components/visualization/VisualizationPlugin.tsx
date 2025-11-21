@@ -37,9 +37,12 @@ interface VisualizationPluginProps {
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
     filterByLatestAvailableYearInRegion?: boolean;
+    needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
+    yearsInIndicatorExplorer?: string[];
     setChartWithNoData?: (visualizationId: string) => void;
     seriesColors?: Record<string, string>;
+    hasNarrowerText?: boolean;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -65,9 +68,12 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         showDialogInFullScreen = false,
         isRegionalPage = false,
         filterByLatestAvailableYearInRegion = false,
+        needToKnowLatestAvailableYearInChart = false,
         visualizationIdInIndicatorExplorer,
+        yearsInIndicatorExplorer,
         setChartWithNoData,
         seriesColors,
+        hasNarrowerText = false,
     } = props;
 
     const history = useHistory();
@@ -80,6 +86,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
     });
@@ -165,27 +172,38 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         if (filterByLatestAvailableYearInRegion && chartData.kind === "Loaded") {
             return chartData?.lastAvailableYearInRegion ? [chartData?.lastAvailableYearInRegion] : [];
         }
+
+        if (needToKnowLatestAvailableYearInChart && chartData.kind === "Loaded") {
+            return chartData?.lastAvailableYearInChart ? [chartData?.lastAvailableYearInChart] : [];
+        }
+
         return years;
-    }, [chartData, filterByLatestAvailableYearInRegion, years]);
+    }, [chartData, filterByLatestAvailableYearInRegion, needToKnowLatestAvailableYearInChart, years]);
 
     const goToIndicatorExplorer = useCallback(() => {
         if (chartData.kind === "Loaded" && yearsFilteredInChart.length > 0 && countries.length > 0) {
             const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
+            const years =
+                yearsInIndicatorExplorer && yearsInIndicatorExplorer.length > 0
+                    ? yearsInIndicatorExplorer
+                    : yearsFilteredInChart;
+
             history.push(
                 `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
                     ...countries,
                     ...regions,
-                ]}&years=${yearsFilteredInChart}&showChartByDefault=true`
+                ]}&years=${years}&showChartByDefault=true`
             );
         }
     }, [
-        chartData,
-        countries,
-        regions,
-        history,
-        visualizationId,
+        chartData.kind,
         yearsFilteredInChart,
+        countries,
         visualizationIdInIndicatorExplorer,
+        visualizationId,
+        yearsInIndicatorExplorer,
+        history,
+        regions,
     ]);
 
     const chartHasData = useMemo(() => {
@@ -234,6 +252,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 showDialogInFullScreen={openFullScreenDialog || showDialogInFullScreen}
                 isRegionalPage={isRegionalPage}
                 goToIndicatorExplorer={goToIndicatorExplorer}
+                hasNarrowerText={hasNarrowerText}
             />
             <ChartPlugin
                 key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed

@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
-import { Button, IconButton, Typography, Fab } from "@material-ui/core";
+import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
@@ -39,6 +39,7 @@ interface VisualizationPluginHeaderProps {
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
     goToIndicatorExplorer: () => void;
+    hasNarrowerText?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -62,6 +63,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         isRegionalPage = false,
         onClose,
         goToIndicatorExplorer,
+        hasNarrowerText = false,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountryOrRegion) {
@@ -86,26 +88,17 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryOrRegionalPage ? (
                         <Row $isRegionalPage={isRegionalPage}>
                             <TitleRow>
-                                <StyledTitle
-                                    isScreenshot={isScreenshot}
-                                    variant="h6"
-                                    color="textPrimary"
-                                    style={{ marginLeft: 20, marginRight: isRegionalPage ? 5 : 0 }}
-                                    $isRegionalPage={isRegionalPage}
-                                >
-                                    {chartFriendlyName}
-                                </StyledTitle>
-
-                                {isRegionalPage && (
-                                    <Fab
-                                        aria-label="Go to indicator explorer"
-                                        color="primary"
-                                        size="small"
-                                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                                <TitleContainer hasNarrowerText={hasNarrowerText}>
+                                    <StyledTitle
+                                        isScreenshot={isScreenshot}
+                                        variant="h6"
+                                        color="textPrimary"
+                                        style={{ marginLeft: 20, marginRight: isRegionalPage ? 5 : 0 }}
+                                        $isRegionalPage={isRegionalPage}
                                     >
-                                        <ChevronRightSharpIcon onClick={goToIndicatorExplorer} />
-                                    </Fab>
-                                )}
+                                        {chartFriendlyName}
+                                    </StyledTitle>
+                                </TitleContainer>
                             </TitleRow>
 
                             <RowWithGap $gap={6}>
@@ -114,7 +107,22 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 ) : (
                                     !isRegionalPage && categoryTag && <Tag className="category">{categoryTag}</Tag>
                                 )}
+
                                 <RowWithGap $gap={0}>
+                                    {isRegionalPage && (
+                                        <StyledIconButton
+                                            onClick={goToIndicatorExplorer}
+                                            $color="#185698"
+                                            padding="4px"
+                                        >
+                                            <CustomChevronRightSharpIcon
+                                                aria-label="Go to indicator explorer"
+                                                color="primary"
+                                                className="go-to-button"
+                                            />
+                                        </StyledIconButton>
+                                    )}
+
                                     {onShowInfo && (
                                         <StyledIconButton onClick={onShowInfo} $color="#185698" padding="4px">
                                             <CustomInfoIconCountry color="primary" className="info-button" />
@@ -288,6 +296,14 @@ const CustomCloudIcon = styled(DownloadIcon)`
     font-size: 20px;
 `;
 
+const CustomChevronRightSharpIcon = styled(ChevronRightSharpIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
+`;
+
 const Tag = styled.div`
     border-radius: 20px;
     background-color: #185698;
@@ -320,4 +336,8 @@ const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-left: 15px;
     }
+`;
+
+const TitleContainer = styled.div<{ hasNarrowerText?: boolean }>`
+    max-width: ${props => (props.hasNarrowerText ? "600px" : "100%")};
 `;

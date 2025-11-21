@@ -54,6 +54,8 @@ export type RegionalPageState = {
         content: {
             textSectionLeft: string;
             textSectionRight: string;
+            downloadFile: string;
+            hasDownloadFile: boolean;
         };
     };
     regionNumbers: RegionNumbersState;
@@ -67,6 +69,7 @@ export type RegionalPageState = {
     sectionsAccordionConfig: AccordionConfig[];
     setPendingScrollTab: (tab: number | null) => void;
     pendingScrollTab: number | null;
+    isLoadingContent: boolean;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -161,13 +164,6 @@ export function useRegionalPage(): RegionalPageState {
         };
     }, [regionOptions, countryOrRegion]);
 
-    const resetSelectedValues = useCallback(() => {
-        policyChecklist.onCleanSelection();
-        setExpandedSectionsAccordion(undefined);
-        regionNumbers.onResetTabs();
-        gapsInCoverage.onResetTabs();
-    }, [policyChecklist, regionNumbers, gapsInCoverage]);
-
     const handleRegionChange = useCallback(
         (newRegion: Id) => {
             const newRegionName = regionOptions.find(option => option.value === newRegion)?.text;
@@ -192,9 +188,8 @@ export function useRegionalPage(): RegionalPageState {
             setHighlightedISO3Countries(iso3CountriesInRegion);
             setSelectedRegion(region);
             onRegionChange(newRegion);
-            resetSelectedValues();
         },
-        [countries, history, onRegionChange, regionOptions, regions, resetSelectedValues]
+        [countries, history, onRegionChange, regionOptions, regions]
     );
 
     useEffect(() => {
@@ -291,10 +286,12 @@ export function useRegionalPage(): RegionalPageState {
                     textSectionRight: content?.policyChecklistContent.textSectionRight || "",
                     checklist: policyChecklist?.checklist,
                     filteredCountryExperiences: policyChecklist?.filteredCountryExperiences,
-                    selectedChecklistItems: policyChecklist.selectedChecklistItems,
+                    selectedChecklistItem: policyChecklist.selectedChecklistItem,
                     onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
                     isLoading: policyChecklist.isLoading,
                     isSmallScreen: isSmallScreen,
+                    downloadFile: content?.policyChecklistContent.downloadFile || "",
+                    hasDownloadFile: content?.policyChecklistContent.hasDownloadFile || false,
                 },
             },
             ...resourcesAndExpertsSections,
@@ -321,9 +318,11 @@ export function useRegionalPage(): RegionalPageState {
         gapsInCoverage.handleTabChange,
         content?.policyChecklistContent.textSectionLeft,
         content?.policyChecklistContent.textSectionRight,
+        content?.policyChecklistContent.downloadFile,
+        content?.policyChecklistContent.hasDownloadFile,
         policyChecklist?.checklist,
         policyChecklist?.filteredCountryExperiences,
-        policyChecklist.selectedChecklistItems,
+        policyChecklist.selectedChecklistItem,
         policyChecklist.onSelectChecklistItem,
         policyChecklist.isLoading,
         goTo,
@@ -380,13 +379,15 @@ export function useRegionalPage(): RegionalPageState {
             content: {
                 textSectionLeft: content?.policyChecklistContent.textSectionLeft || "",
                 textSectionRight: content?.policyChecklistContent.textSectionRight || "",
+                downloadFile: content?.policyChecklistContent.downloadFile || "",
+                hasDownloadFile: content?.policyChecklistContent.hasDownloadFile || false,
             },
             checklist: policyChecklist.checklist,
             filteredCountryExperiences: policyChecklist.filteredCountryExperiences,
-            selectedChecklistItems: policyChecklist.selectedChecklistItems,
+            selectedChecklistItem: policyChecklist.selectedChecklistItem,
             onSelectChecklistItem: policyChecklist.onSelectChecklistItem,
             onCleanSelection: policyChecklist.onCleanSelection,
-            isLoading: isLoading || policyChecklist.isLoading,
+            isLoading: policyChecklist.isLoading,
         },
         regionNumbers: regionNumbers,
         gapsInCoverage: gapsInCoverage,
@@ -399,6 +400,7 @@ export function useRegionalPage(): RegionalPageState {
         sectionsAccordionConfig: sectionsAccordionConfig,
         setPendingScrollTab: setPendingScrollTab,
         pendingScrollTab: pendingScrollTab,
+        isLoadingContent: isLoading,
     };
 }
 

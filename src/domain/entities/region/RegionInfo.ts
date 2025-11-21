@@ -33,6 +33,8 @@ export type RegionNumbersPanelContent = {
 export type PolicyChecklistContent = {
     textSectionLeft: string;
     textSectionRight: string;
+    downloadFile: string;
+    hasDownloadFile: boolean;
 };
 
 export type GapsInCoverageContent = {
@@ -68,8 +70,6 @@ export type GapsInCoverageContent = {
 
     panelFourTitle: string;
     panelFourMainText: string;
-    panelFourChartOne: string;
-    hasPanelFourChartOne: boolean;
     panelFourChartOneTitle: string;
     panelFourChartOneTextAbove: string;
     panelFourChartOneTextBelow: string;
@@ -78,8 +78,6 @@ export type GapsInCoverageContent = {
 
     panelFiveTitle: string;
     panelFiveMainText: string;
-    panelFiveChartOne: string;
-    hasPanelFiveChartOne: boolean;
     panelFiveChartOneTitle: string;
     panelFiveChartOneTextAbove: string;
     panelFiveChartOneTextBelow: string;
@@ -111,11 +109,8 @@ export type GapsInCoverageContent = {
     panelSevenTitle: string;
     panelSevenMainText: string;
     panelSevenChartOneTitle: string;
-    panelSevenChartOne: string;
-    hasPanelSevenChartOne: boolean;
     panelSevenChartOneTextAbove: string;
     panelSevenChartOneTextBelow: string;
-    panelSevenChartOneInfoText: string;
     panelSevenProgressText: string;
 };
 

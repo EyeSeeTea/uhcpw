@@ -10,6 +10,7 @@ export const comparativeStackedColumnChartOptions: (params: {
     maxValueUpTo100?: boolean;
     categoryIdsOrder?: string[];
     hideYear?: boolean;
+    isDescOrder?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -19,6 +20,7 @@ export const comparativeStackedColumnChartOptions: (params: {
     maxValueUpTo100,
     categoryIdsOrder,
     hideYear,
+    isDescOrder,
 }) => {
     const options = comparativeColumnChartOptions({
         chartSource,
@@ -30,6 +32,7 @@ export const comparativeStackedColumnChartOptions: (params: {
         maxValueUpTo100: maxValueUpTo100,
         categoryIdsOrder,
         hideYear,
+        isDescOrder,
     });
 
     return {

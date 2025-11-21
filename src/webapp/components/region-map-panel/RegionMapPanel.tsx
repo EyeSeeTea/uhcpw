@@ -20,16 +20,20 @@ export const RegionMapPanel: React.FC<RegionMapPanelProps> = props => {
     return (
         <Container>
             {mainPanelContent?.title && (
-                <Typography variant="h2" style={{ fontWeight: 400 }} gutterBottom>
+                <ReactMarkdown
+                    components={{
+                        p: ({ children }) => <StyledTitle paragraph>{children}</StyledTitle>,
+                    }}
+                >
                     {mainPanelContent?.title}
-                </Typography>
+                </ReactMarkdown>
             )}
 
             {mainPanelContent?.description && (
                 <ParagraphContainer>
                     <ReactMarkdown
                         components={{
-                            p: ({ children }) => <Typography paragraph>{children}</Typography>,
+                            p: ({ children }) => <StyledTypography paragraph>{children}</StyledTypography>,
                         }}
                     >
                         {mainPanelContent?.description}
@@ -87,4 +91,12 @@ const Marker = styled.img`
     background-size: cover;
     width: 80px;
     margin-bottom: 16px;
+`;
+
+const StyledTitle = styled(Typography)`
+    font-size: 40px;
+`;
+
+const StyledTypography = styled(Typography)`
+    font-size: 20px;
 `;

@@ -19,7 +19,7 @@ export type CountryExperienceData = CountryExperience & {
 export type RegionalPolicyChecklistState = {
     checklist: Maybe<ChecklistPolicyMakersWithCountries[]>;
     filteredCountryExperiences: Maybe<CountryExperienceData[]>;
-    selectedChecklistItems: Id[] | undefined;
+    selectedChecklistItem: Id | undefined;
     onSelectChecklistItem: (id: Id) => void;
     onCleanSelection: () => void;
     isLoading: boolean;
@@ -29,7 +29,7 @@ export function useRegionalPolicyChecklist(): RegionalPolicyChecklistState {
     const { compositionRoot, countries } = useAppContext();
     const [checklist, setChecklist] = useState<ChecklistPolicyMakersWithCountries[] | undefined>(undefined);
     const [countryExperiences, setCountryExperiences] = useState<CountryExperienceData[] | undefined>(undefined);
-    const [selectedChecklistItems, setSelectedChecklistItems] = useState<Id[] | undefined>(undefined);
+    const [selectedChecklistItem, setSelectedChecklistItem] = useState<Id | undefined>(undefined);
     const [filteredCountryExperiences, setFilteredCountryExperiences] = useState<CountryExperienceData[] | undefined>(
         undefined
     );
@@ -64,15 +64,13 @@ export function useRegionalPolicyChecklist(): RegionalPolicyChecklistState {
 
     const onSelectChecklistItem = useCallback(
         (itemId: Id) => {
-            const newSelection = selectedChecklistItems?.includes(itemId)
-                ? selectedChecklistItems.filter(id => id !== itemId)
-                : [...(selectedChecklistItems || []), itemId];
+            const newSelection = selectedChecklistItem === itemId ? undefined : itemId;
 
-            setSelectedChecklistItems(newSelection);
+            setSelectedChecklistItem(newSelection);
 
-            if (newSelection.length && countryExperiences) {
+            if (newSelection && countryExperiences) {
                 const newFilteredCountryExperiences = countryExperiences.filter(ce =>
-                    ce.relatedPolicyChecklistIds.some(id => newSelection.includes(id))
+                    ce.relatedPolicyChecklistIds.some(id => id === newSelection)
                 );
 
                 setFilteredCountryExperiences(
@@ -82,18 +80,18 @@ export function useRegionalPolicyChecklist(): RegionalPolicyChecklistState {
                 setFilteredCountryExperiences(undefined);
             }
         },
-        [checklist, countryExperiences, selectedChecklistItems]
+        [checklist, countryExperiences, selectedChecklistItem]
     );
 
     const onCleanSelection = useCallback(() => {
-        setSelectedChecklistItems(undefined);
+        setSelectedChecklistItem(undefined);
         setFilteredCountryExperiences(undefined);
     }, []);
 
     return {
         checklist: checklist,
         onSelectChecklistItem: onSelectChecklistItem,
-        selectedChecklistItems: selectedChecklistItems,
+        selectedChecklistItem: selectedChecklistItem,
         filteredCountryExperiences: filteredCountryExperiences,
         onCleanSelection: onCleanSelection,
         isLoading: isLoading,

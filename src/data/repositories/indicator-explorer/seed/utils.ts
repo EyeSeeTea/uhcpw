@@ -68,6 +68,7 @@ export const sortedCharts: string[] = [
     // Health spending (health accounts) - comparative
     "d3kq9OCv8tH",
     "ToEa2VuZLDt",
+    "y4qAv6eW4nb",
     "ZZAcIv6O9LY",
     "CdqVV1Ib0XS",
     "xKmSHeJ1GXq",

@@ -106,6 +106,14 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
         document.addEventListener("wheel", preventDefault, { passive: false });
     }, [preventDefault]);
 
+    const getLabel = useCallback((key: string) => {
+        const text = i18n.t(key, { nsSeparator: false });
+
+        const className = startWithNumber(text) ? "start-with-number-label" : undefined;
+
+        return <span className={className}>{text}</span>;
+    }, []);
+
     return (
         <Grid container aria-label={ariaLabel}>
             <StyledGridItem item xs={1} md={5} lg={4} isSecondaryColor={isSecondaryColor}>
@@ -124,9 +132,7 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
                             key={`TabConfig_${config.tabTitle}`}
                             isSecondaryColor={isSecondaryColor}
                             {...a11yProps(config.tab, config.tabTitle)}
-                            label={i18n.t(config.tabTitle, {
-                                nsSeparator: false,
-                            })}
+                            label={getLabel(config.tabTitle)}
                         />
                     ))}
                 </StyledTabs>
@@ -218,6 +224,13 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
             display: inline;
             text-align: start;
         }
+
+        & .start-with-number-label {
+            display: inline-block;
+            padding-left: 10px;
+            text-indent: -12px;
+        }
+
         &[aria-selected="true"] {
             background-color: ${props => (props.isSecondaryColor ? colors.blue50 : colors.accentPrimaryDark)};
             font-weight: ${props => (props.isSecondaryColor ? "bold" : "normal")};
@@ -227,3 +240,8 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
         }
     }
 `;
+
+function startWithNumber(text: string) {
+    const numberedRegex = /^\d+\s/;
+    return numberedRegex.test(text);
+}

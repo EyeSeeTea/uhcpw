@@ -10,6 +10,7 @@ import { GapsInCoveragePanel } from "./GapsInCoveragePanel";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
 import { LatestAvailable } from "../../../domain/entities/Year";
+import { GapsInCoverageFirstPanel } from "./GapsInCoverageFirstPanel";
 
 export type RegionalGapsInCoverageState = {
     configs: (VerticalTabConfig | AccordionConfig)[];
@@ -55,27 +56,25 @@ export function useRegionalGapsInCoverage(
                       {
                           tab: 0,
                           tabTitle: gapsInCoverageContent.panelOneTitle,
-                          Component: GapsInCoveragePanel,
+                          Component: GapsInCoverageFirstPanel,
                           props: {
                               regionId: selectedRegionId,
                               title: gapsInCoverageContent.panelOneTitle,
                               mainText: gapsInCoverageContent.panelOneMainText,
                               progressText: gapsInCoverageContent.panelOneProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: gapsInCoverageContent.hasPanelOneChartOne
-                                  ? [
-                                        {
-                                            visual: gapsInCoverageContent.panelOneChartOne,
-                                            title:
-                                                gapsInCoverageContent.panelOneChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelOneChartOneTitle
-                                                    : undefined,
-                                            textAbove: gapsInCoverageContent.panelOneChartOneTextAbove,
-                                            textBelow: gapsInCoverageContent.panelOneChartOneTextBelow,
-                                            textInfo: gapsInCoverageContent.panelOneChartOneInfoText,
-                                        },
-                                    ]
-                                  : [],
+                              visual: gapsInCoverageContent.hasPanelOneChartOne
+                                  ? {
+                                        visual: gapsInCoverageContent.panelOneChartOne,
+                                        title:
+                                            gapsInCoverageContent.panelOneChartOneTitle !== ""
+                                                ? gapsInCoverageContent.panelOneChartOneTitle
+                                                : undefined,
+                                        textAbove: gapsInCoverageContent.panelOneChartOneTextAbove,
+                                        textBelow: gapsInCoverageContent.panelOneChartOneTextBelow,
+                                        textInfo: gapsInCoverageContent.panelOneChartOneInfoText,
+                                    }
+                                  : undefined,
                           },
                       },
                       {
@@ -140,20 +139,20 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelFourMainText,
                               progressText: gapsInCoverageContent.panelFourProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: gapsInCoverageContent.hasPanelFourChartOne
-                                  ? [
-                                        {
-                                            visual: gapsInCoverageContent.panelFourChartOne,
-                                            title:
-                                                gapsInCoverageContent.panelFourChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelFourChartOneTitle
-                                                    : undefined,
-                                            textBelow: gapsInCoverageContent.panelFourChartOneTextBelow,
-                                            textAbove: gapsInCoverageContent.panelFourChartOneTextAbove,
-                                            textInfo: gapsInCoverageContent.panelFourChartOneInfoText,
-                                        },
-                                    ]
-                                  : [],
+                              visuals: [
+                                  {
+                                      policyCategoryId: "Nx6S3aQkvWe",
+                                      countries: selectedRegion.countries || [],
+                                      years: ["latest"],
+                                      title:
+                                          gapsInCoverageContent.panelFourChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelFourChartOneTitle
+                                              : undefined,
+                                      textBelow: gapsInCoverageContent.panelFourChartOneTextBelow,
+                                      textAbove: gapsInCoverageContent.panelFourChartOneTextAbove,
+                                      textInfo: gapsInCoverageContent.panelFourChartOneInfoText,
+                                  },
+                              ],
                           },
                       },
                       {
@@ -167,19 +166,18 @@ export function useRegionalGapsInCoverage(
                               progressText: gapsInCoverageContent.panelFiveProgressText,
                               showDialogInFullScreen: isSmallScreen,
                               visuals: [
-                                  gapsInCoverageContent.hasPanelFiveChartOne
-                                      ? {
-                                            visual: gapsInCoverageContent.panelFiveChartOne,
-                                            title:
-                                                gapsInCoverageContent.panelFiveChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelFiveChartOneTitle
-                                                    : undefined,
-                                            textAbove: gapsInCoverageContent.panelFiveChartOneTextAbove,
-                                            textBelow: gapsInCoverageContent.panelFiveChartOneTextBelow,
-                                            textInfo: gapsInCoverageContent.panelFiveChartOneInfoText,
-                                        }
-                                      : undefined,
-
+                                  {
+                                      policyCategoryId: "u800TAhsIBY_Cat",
+                                      countries: selectedRegion.countries || [],
+                                      years: ["latest"],
+                                      title:
+                                          gapsInCoverageContent.panelFiveChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelFiveChartOneTitle
+                                              : undefined,
+                                      textAbove: gapsInCoverageContent.panelFiveChartOneTextAbove,
+                                      textBelow: gapsInCoverageContent.panelFiveChartOneTextBelow,
+                                      textInfo: gapsInCoverageContent.panelFiveChartOneInfoText,
+                                  },
                                   gapsInCoverageContent.hasPanelFiveChartTwo
                                       ? {
                                             visual: gapsInCoverageContent.panelFiveChartTwo,
@@ -257,20 +255,23 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelSevenMainText,
                               progressText: gapsInCoverageContent.panelSevenProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: gapsInCoverageContent.hasPanelSevenChartOne
-                                  ? [
-                                        {
-                                            title:
-                                                gapsInCoverageContent.panelSevenChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelSevenChartOneTitle
-                                                    : undefined,
-                                            visual: gapsInCoverageContent.panelSevenChartOne,
-                                            textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
-                                            textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
-                                            textInfo: gapsInCoverageContent.panelSevenChartOneInfoText,
-                                        },
-                                    ]
-                                  : [],
+                              visuals: [
+                                  {
+                                      title:
+                                          gapsInCoverageContent.panelSevenChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelSevenChartOneTitle
+                                              : undefined,
+                                      textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
+                                      textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
+                                      visualizationId: "y4qAv6eW4nb",
+                                      visualizationName:
+                                          gapsInCoverageContent.panelSevenChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelSevenChartOneTitle
+                                              : VisualizationsSeeds["y4qAv6eW4nb"]?.regionalPageName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || [])],
+                                  },
+                              ],
                           },
                       },
                   ]
