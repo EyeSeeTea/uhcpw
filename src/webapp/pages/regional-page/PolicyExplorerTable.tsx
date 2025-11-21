@@ -81,8 +81,11 @@ const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType }>`
 `;
 
 const StyledTable = styled(Table)`
+    width: 100%;
+    table-layout: fixed;
     border-spacing: 0.8px;
     border-collapse: initial;
+
     tbody > tr > td {
         vertical-align: top;
     }
@@ -91,6 +94,10 @@ const StyledTable = styled(Table)`
 const StyledTableBody = styled(TableBody)`
     &.u800TAhsIBY_Cat-table,
     &.Nx6S3aQkvWe-table {
+        tr > td:first-child {
+            text-align: left;
+        }
+
         td {
             text-align: center;
             vertical-align: middle;

@@ -18,17 +18,19 @@ const healthcareTypeToColor: Record<string, string> = {
     "Inpatient medicines": "#385724",
 };
 
+const LEGEND_COLOR = "#929293";
+
 export function TableCoverageLegend() {
     return (
         <Container>
             <LegendContainer>
-                <FullCircleIcon /> <span>{i18n.t("User charges are applied")}</span>
+                <FullCircleIcon color={LEGEND_COLOR} /> <span>{i18n.t("User charges are applied")}</span>
             </LegendContainer>
             <LegendContainer>
-                <HalfCircleIcon /> <span>{i18n.t("Care not covered for most people")}</span>
+                <HalfCircleIcon color={LEGEND_COLOR} /> <span>{i18n.t("Care not covered for most people")}</span>
             </LegendContainer>
             <LegendContainer>
-                <CircleXIcon /> <span>{i18n.t("Care not covered")}</span>
+                <CircleXIcon color={LEGEND_COLOR} /> <span>{i18n.t("Care not covered")}</span>
             </LegendContainer>
         </Container>
     );

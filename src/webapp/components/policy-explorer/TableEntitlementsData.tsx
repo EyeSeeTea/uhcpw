@@ -6,15 +6,16 @@ import i18n from "../../../locales";
 import { FullCircleIcon, HalfCircleIcon } from "./TableCellIcons";
 
 const COLOR = "#0460a7";
+const LEGEND_COLOR = "#929293";
 
 export function TableEntitlementsLegend() {
     return (
         <Container>
             <LegendContainer>
-                <FullCircleIcon color={COLOR} /> <span>{i18n.t("Most undocumented migrants")}</span>
+                <FullCircleIcon color={LEGEND_COLOR} /> <span>{i18n.t("Most undocumented migrants")}</span>
             </LegendContainer>
             <LegendContainer>
-                <HalfCircleIcon color={COLOR} /> <span>{i18n.t("Some undocumented migrants")}</span>
+                <HalfCircleIcon color={LEGEND_COLOR} /> <span>{i18n.t("Some undocumented migrants")}</span>
             </LegendContainer>
         </Container>
     );
