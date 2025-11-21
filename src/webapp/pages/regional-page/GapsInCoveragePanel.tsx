@@ -90,7 +90,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                         </TextContainer>
                     )}
 
-                    {visualContent.title && !visualContent.visualizationId ? (
+                    {visualContent.title && !visualContent.visualizationId && !visualContent.policyCategoryId ? (
                         <ChartTitleRow>
                             <ChartTitle variant="h6" gutterBottom>
                                 {visualContent.title}
@@ -135,6 +135,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                       visualContent.countries?.length &&
                       visualContent.years?.length ? (
                         <PolicyExplorerTable
+                            title={visualContent.title || ""}
                             categoryId={visualContent.policyCategoryId}
                             countries={visualContent.countries}
                             years={visualContent.years}

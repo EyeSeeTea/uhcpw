@@ -129,6 +129,7 @@ export const Map: React.FC<MapProps> = ({
     return (
         <Container ref={mainContainerRef} className={className}>
             <MapContent ref={mapContainerRef} />
+
             <MapSidePanel maxWidth={panelMaxWidth}>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} />
@@ -138,6 +139,7 @@ export const Map: React.FC<MapProps> = ({
                     <HomePagePanel mainPanelContent={homePagePanelContent} isMobile={isMobile} />
                 )}
             </MapSidePanel>
+
             {!isMobile && (
                 <MapControls>
                     <Tooltip title={i18n.t("Zoom in")}>
@@ -145,6 +147,7 @@ export const Map: React.FC<MapProps> = ({
                             <ZoomInIcon fontSize="small" />
                         </MapFab>
                     </Tooltip>
+
                     <Tooltip title={i18n.t("Zoom out")}>
                         <MapFab size="small" onClick={zoomOut}>
                             <ZoomOutIcon fontSize="small" />
@@ -232,16 +235,20 @@ const MapSidePanel = styled.div<{ maxWidth?: number }>`
     position: absolute;
     top: 0;
     bottom: 0;
+    width: ${props => props.maxWidth || 500}px;
     max-width: ${props => props.maxWidth || 500}px;
     background: ${colors.accentPrimary};
     color: white;
     padding: 48px;
     opacity: 0.9;
     z-index: 1;
+    box-sizing: ${props => (props.maxWidth ? "border-box" : "content-box")};
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
         width: calc(100% - 48px);
         padding: 24px;
+        box-sizing: content-box;
     }
 `;
 

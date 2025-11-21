@@ -73,6 +73,7 @@ export type RegionalPageState = {
     setPendingScrollTab: (tab: number | null) => void;
     pendingScrollTab: number | null;
     isLoadingContent: boolean;
+    sidePanelWidth: number | undefined;
 };
 
 export function useRegionalPage(): RegionalPageState {
@@ -93,6 +94,7 @@ export function useRegionalPage(): RegionalPageState {
     const [highlightedISO3Countries, setHighlightedISO3Countries] = useState<string[]>([]);
     const [expandedSectionsAccordion, setExpandedSectionsAccordion] = useState<AccordionConfig | undefined>(undefined);
     const [pendingScrollTab, setPendingScrollTab] = useState<number | null>(null);
+    const [sidePanelWidth, setSidePanelWidth] = useState<number | undefined>(undefined);
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
@@ -261,6 +263,7 @@ export function useRegionalPage(): RegionalPageState {
                     handleAccordionChange: regionNumbers.handleAccordionChange,
                     handleTabChange: regionNumbers.handleTabChange,
                     isSmallScreen: isSmallScreen,
+                    setSidePanelWidth: setSidePanelWidth,
                 },
             },
             {
@@ -277,6 +280,7 @@ export function useRegionalPage(): RegionalPageState {
                     handleAccordionChange: gapsInCoverage.handleAccordionChange,
                     handleTabChange: gapsInCoverage.handleTabChange,
                     isSmallScreen: isSmallScreen,
+                    setSidePanelWidth: setSidePanelWidth,
                 },
             },
             {
@@ -412,6 +416,7 @@ export function useRegionalPage(): RegionalPageState {
         setPendingScrollTab: setPendingScrollTab,
         pendingScrollTab: pendingScrollTab,
         isLoadingContent: isLoading,
+        sidePanelWidth: sidePanelWidth,
     };
 }
 

@@ -73,11 +73,13 @@ type TabsPanelProps = {
     onChangeTabValue: (event: React.ChangeEvent<{}>, newValue: number) => void;
     ariaLabel: string;
     isSecondaryColor?: boolean;
+    onTabsWidthChange?: (width: number) => void;
 };
 
 export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
-    const { tabsConfig, onChangeTabValue, tabValue, ariaLabel, isSecondaryColor = false } = props;
+    const { tabsConfig, onChangeTabValue, tabValue, ariaLabel, isSecondaryColor = false, onTabsWidthChange } = props;
     const classes = useStyles();
+    const gridItemRef = React.useRef<HTMLDivElement | null>(null);
 
     const onWheel = useCallback(
         (event: React.WheelEvent<HTMLButtonElement>) => {
@@ -114,9 +116,24 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
         return <span className={className}>{text}</span>;
     }, []);
 
+    React.useEffect(() => {
+        if (!onTabsWidthChange) return;
+
+        const handleResize = () => {
+            if (gridItemRef.current) {
+                onTabsWidthChange(gridItemRef.current.offsetWidth);
+            }
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, [onTabsWidthChange]);
+
     return (
         <Grid container aria-label={ariaLabel}>
-            <StyledGridItem item xs={1} md={5} lg={4} isSecondaryColor={isSecondaryColor}>
+            <StyledGridItem item ref={gridItemRef} xs={1} md={4} lg={4} isSecondaryColor={isSecondaryColor}>
                 <StyledTabs
                     orientation="vertical"
                     value={tabValue}
@@ -138,7 +155,7 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
                 </StyledTabs>
             </StyledGridItem>
 
-            <RightPanelGrid item xs={11} md={7} lg={8}>
+            <RightPanelGrid item xs={11} md={8} lg={8}>
                 {tabsConfig.map(config => (
                     <TabPanel
                         key={`TabPanelConfig_${config.tabTitle}`}

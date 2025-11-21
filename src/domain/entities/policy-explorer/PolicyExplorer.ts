@@ -13,19 +13,26 @@ export enum PolicyExplorerCellType {
 }
 
 export type PolicyExplorerCell = PolicyExplorerCellHeader | PolicyExplorerCellData;
+
 type BasePolicyExplorerCell = {
     references?: string;
 };
+
 export type PolicyExplorerCellHeader = BasePolicyExplorerCell & { type: PolicyExplorerCellType.HEADER; value: string };
+
 type PolicyExplorerCellTextData = BasePolicyExplorerCell & { type: PolicyExplorerCellType.DATA; value: string };
+
 type PolicyExplorerCellData = PolicyExplorerCellTextData | PolicyExplorerCellTypedData;
+
 type PolicyExplorerCellTypedData = PolicyExplorerCellCoverage | PolicyExplorerCellEntitlements;
+
 export type PolicyExplorerCellCoverage = BasePolicyExplorerCell & {
     type: PolicyExplorerCellType.DATA;
     value: HealthCoverage;
     dataType: "coverage";
     columnName: string;
 };
+
 export type PolicyExplorerCellEntitlements = BasePolicyExplorerCell & {
     type: PolicyExplorerCellType.DATA;
     value: Entitlements;

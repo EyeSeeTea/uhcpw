@@ -38,6 +38,7 @@ export const RegionalPage: React.FC = () => {
         setPendingScrollTab,
         pendingScrollTab,
         isLoadingContent,
+        sidePanelWidth,
     } = useRegionalPage();
 
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
@@ -76,7 +77,7 @@ export const RegionalPage: React.FC = () => {
                     highlightedISO3Countries={highlightedISO3Countries}
                     className="region-map"
                     isRegionPage
-                    panelMaxWidth={535}
+                    panelMaxWidth={sidePanelWidth}
                 />
             </MapSection>
 
