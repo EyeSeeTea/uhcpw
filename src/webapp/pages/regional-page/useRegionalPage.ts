@@ -263,7 +263,7 @@ export function useRegionalPage(): RegionalPageState {
                     handleAccordionChange: regionNumbers.handleAccordionChange,
                     handleTabChange: regionNumbers.handleTabChange,
                     isSmallScreen: isSmallScreen,
-                    setSidePanelWidth: setSidePanelWidth,
+                    sidePanelWidth: sidePanelWidth,
                 },
             },
             {
@@ -320,6 +320,7 @@ export function useRegionalPage(): RegionalPageState {
         regionNumbers.handleAccordionChange,
         regionNumbers.handleTabChange,
         isSmallScreen,
+        sidePanelWidth,
         gapsInCoverage.configs,
         gapsInCoverage.tabValue,
         gapsInCoverage.expandedConfig,

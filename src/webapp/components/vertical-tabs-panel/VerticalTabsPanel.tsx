@@ -74,10 +74,19 @@ type TabsPanelProps = {
     ariaLabel: string;
     isSecondaryColor?: boolean;
     onTabsWidthChange?: (width: number) => void;
+    sidePanelWidth?: number;
 };
 
 export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
-    const { tabsConfig, onChangeTabValue, tabValue, ariaLabel, isSecondaryColor = false, onTabsWidthChange } = props;
+    const {
+        tabsConfig,
+        onChangeTabValue,
+        tabValue,
+        ariaLabel,
+        isSecondaryColor = false,
+        onTabsWidthChange,
+        sidePanelWidth,
+    } = props;
     const classes = useStyles();
     const gridItemRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -132,8 +141,16 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
     }, [onTabsWidthChange]);
 
     return (
-        <Grid container aria-label={ariaLabel}>
-            <StyledGridItem item ref={gridItemRef} xs={1} md={4} lg={4} isSecondaryColor={isSecondaryColor}>
+        <StyledGridContainer container aria-label={ariaLabel}>
+            <StyledGridItem
+                item
+                ref={gridItemRef}
+                xs={1}
+                md={4}
+                lg={4}
+                isSecondaryColor={isSecondaryColor}
+                sidePanelWidth={sidePanelWidth}
+            >
                 <StyledTabs
                     orientation="vertical"
                     value={tabValue}
@@ -167,9 +184,13 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
                     </TabPanel>
                 ))}
             </RightPanelGrid>
-        </Grid>
+        </StyledGridContainer>
     );
 };
+
+const StyledGridContainer = styled(Grid)`
+    flex-wrap: nowrap;
+`;
 
 const RightPanelGrid = styled(Grid)`
     .MuiBox-root {
@@ -177,7 +198,7 @@ const RightPanelGrid = styled(Grid)`
     }
 `;
 
-const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean }>`
+const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean; sidePanelWidth?: number }>`
     background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
     border-inline-end: none;
     margin-block-end: 4px;
@@ -187,6 +208,21 @@ const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean }>`
         border-inline-end: 6px solid ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         width: 30px;
         flex-basis: unset;
+    }
+
+    @media (min-width: 960px) {
+        box-sizing: border-box;
+
+        ${({ sidePanelWidth }) =>
+            sidePanelWidth
+                ? `
+                    width: ${sidePanelWidth}px;
+                    max-width: ${sidePanelWidth}px;
+                    flex: 0 0 ${sidePanelWidth}px;
+                `
+                : `
+                    width: 100%;
+                `}
     }
 `;
 
