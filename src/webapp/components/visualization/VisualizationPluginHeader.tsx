@@ -39,7 +39,6 @@ interface VisualizationPluginHeaderProps {
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
     goToIndicatorExplorer: () => void;
-    hasNarrowerText?: boolean;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -63,7 +62,6 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         isRegionalPage = false,
         onClose,
         goToIndicatorExplorer,
-        hasNarrowerText = false,
     }) => {
         const currentCountryName = useMemo(() => {
             if (currentCountryOrRegion) {
@@ -88,7 +86,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                     {useHeaderForCountryOrRegionalPage ? (
                         <Row $isRegionalPage={isRegionalPage}>
                             <TitleRow>
-                                <TitleContainer hasNarrowerText={hasNarrowerText}>
+                                <TitleContainer>
                                     <StyledTitle
                                         isScreenshot={isScreenshot}
                                         variant="h6"
@@ -338,6 +336,6 @@ const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?
     }
 `;
 
-const TitleContainer = styled.div<{ hasNarrowerText?: boolean }>`
-    max-width: ${props => (props.hasNarrowerText ? "600px" : "100%")};
+const TitleContainer = styled.div`
+    max-width: 100%;
 `;

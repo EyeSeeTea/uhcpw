@@ -75,17 +75,17 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                 <CircularProgress />
             ) : (
                 <>
-                    <TextContentWrapper>
-                        <IntroText>
-                            <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
-                        </IntroText>
-
-                        <IntroText>
-                            <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
-                        </IntroText>
-                    </TextContentWrapper>
-
                     <ContentWrapper>
+                        <TextContentWrapper>
+                            <IntroText>
+                                <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
+                            </IntroText>
+
+                            <IntroText>
+                                <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
+                            </IntroText>
+                        </TextContentWrapper>
+
                         <div>
                             <TableTitleContainer>
                                 <Title variant="body1">
@@ -210,27 +210,16 @@ const Title = styled(Typography)`
 `;
 
 const IntroText = styled.div`
-    width: 550px;
+    width: 100%;
 `;
 
 const TextContentWrapper = styled.div`
-    display: grid;
-    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
-    height: fit-content;
-    gap: 50px;
-    width: 100%;
-    > * {
-        min-height: 0;
-    }
-
-    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        grid-template-columns: 1fr;
-    }
+    display: block;
 `;
 
 const ContentWrapper = styled.div`
     display: grid;
-    grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    grid-template-columns: minmax(0, 33%) minmax(0, 34%) minmax(0, 33%);
     gap: 50px;
     width: 100%;
     > * {
@@ -261,7 +250,7 @@ const CountryExperiencesContainer = styled.div`
     overflow-y: auto;
     max-height: 100%;
     contain: size;
-    margin-block-start: 86px;
+    margin-block-start: 70px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         overflow: visible;
@@ -295,9 +284,7 @@ const StyledTableCell = styled(TableCell)<{ $isSelected?: boolean }>`
 const TableTitleContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items: center;
     height: 70px;
-    margin-block-start: 16px;
 `;
 
 const DownloadButton = styled(Button)`
@@ -315,10 +302,6 @@ const Paragraph = styled(Typography)`
 
     &:first-child {
         margin-block-start: 0;
-    }
-
-    &:last-child {
-        margin-block-end: 0;
     }
 `;
 

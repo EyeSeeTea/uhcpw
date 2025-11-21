@@ -112,32 +112,29 @@ const ContentWrapper = styled.div`
 const Paragraph = styled(Typography)`
     font-family: Lato;
     margin-block: 10px;
-    font-size: 1rem;
+    font-size: 16px;
     color: ${colors.black};
 
     &:first-child {
         margin-block-start: 0;
     }
-
-    &:last-child {
-        margin-block-end: 0;
-    }
 `;
 
 const StyledLi = styled.li`
     font-family: Lato;
-    font-size: 1rem;
+    font-size: 16px;
     line-height: 1.43;
     color: ${colors.black};
 `;
 
 const StyledUl = styled.ul`
     font-family: Lato;
-    font-size: 1rem;
+    font-size: 16px;
     padding-inline-start: 14px;
     color: ${colors.black};
     margin-inline-start: 0;
     margin-block-start: 0;
+    margin-block-end: 0;
 `;
 
 const TextContainer = styled.div`

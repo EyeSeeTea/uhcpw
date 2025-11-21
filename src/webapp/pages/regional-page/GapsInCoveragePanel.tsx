@@ -92,11 +92,9 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
 
                     {visualContent.title && !visualContent.visualizationId ? (
                         <ChartTitleRow>
-                            <TextContainer>
-                                <ChartTitle variant="h6" gutterBottom>
-                                    {visualContent.title}
-                                </ChartTitle>
-                            </TextContainer>
+                            <ChartTitle variant="h6" gutterBottom>
+                                {visualContent.title}
+                            </ChartTitle>
 
                             <StyledIconButton
                                 onClick={() => setVisualTextInfo(visualContent?.textInfo)}
@@ -124,7 +122,6 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                                 analyticsPageTitle={"Regional page"}
                                 seriesColors={visualContent.seriesColors}
                                 isRegionalPage
-                                hasNarrowerText
                             />
                         </VisualizationContainer>
                     ) : visualContent.visual ? (
@@ -230,7 +227,7 @@ const ChartTitleRow = styled.div`
 
 const ChartTitle = styled(Typography)`
     font-family: Lato;
-    margin-block-start: 20px;
+    margin-block-start: 10px;
     margin-block-end: 6px;
     font-size: 1rem;
     font-weight: bold;
@@ -272,6 +269,7 @@ const StyledUl = styled.ul`
     color: ${colors.black};
     margin-inline-start: 0;
     margin-block-start: 0;
+    margin-block-end: 0;
 `;
 
 const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`

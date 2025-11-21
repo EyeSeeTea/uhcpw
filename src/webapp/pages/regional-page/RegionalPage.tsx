@@ -76,6 +76,7 @@ export const RegionalPage: React.FC = () => {
                     highlightedISO3Countries={highlightedISO3Countries}
                     className="region-map"
                     isRegionPage
+                    panelMaxWidth={535}
                 />
             </MapSection>
 

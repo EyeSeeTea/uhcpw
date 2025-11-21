@@ -120,7 +120,6 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
                               yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
                               setChartWithNoData={hideChartsWithoutData ? handleSetChartWithNoData : undefined}
-                              hasNarrowerText={hasNarrowerText}
                           />
                       </VisualizationContainer>
                   ))
@@ -201,7 +200,7 @@ const Paragraph = styled(Typography)`
     font-family: Lato;
     margin-block: 10px;
     margin-inline-start: 36px;
-    font-size: 1rem;
+    font-size: 16px;
     color: ${colors.black};
 
     &:first-child {
@@ -215,10 +214,14 @@ const Paragraph = styled(Typography)`
 
 const StyledLi = styled.li`
     line-height: 1.43;
+    font-size: 16px;
+    color: ${colors.black};
 `;
 
 const StyledUl = styled.ul`
     padding-inline-start: 14px;
+    font-size: 16px;
+    color: ${colors.black};
 `;
 
 const TextContainer = styled.div<{ hasNarrowerText?: boolean }>`
