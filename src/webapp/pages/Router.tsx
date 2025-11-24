@@ -5,10 +5,10 @@ import { HomePage } from "./home/HomePage";
 import { PolicyExplorerPage } from "./policy-explorer/PolicyExplorerPage";
 import { ResourcesByTypePage } from "./resources/by-type/ResourcesByTypePage";
 import { ResourcesPage } from "./resources/landing/ResourcesPage";
-import { CountryPage } from "./country/CountryPage";
 import { MethodsPage } from "./methods/MethodsPage";
 import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPage";
-import { RegionalPage } from "./regional-page/RegionalPage";
+import { CountryOrRegionalPage } from "./country-or-regional/CountryOrRegionalPage";
+import { SeoMetaTags } from "../components/seo/SeoMetaTags";
 
 const ScrollToTop = (): JSX.Element | null => {
     const { pathname } = useLocation();
@@ -23,6 +23,7 @@ const ScrollToTop = (): JSX.Element | null => {
 export const Router: React.FC = React.memo(() => {
     return (
         <HashRouter>
+            <SeoMetaTags />
             <ScrollToTop />
             <Switch>
                 <Route path="/about" render={() => <AboutPage />} />
@@ -35,10 +36,9 @@ export const Router: React.FC = React.memo(() => {
                     path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)"
                     render={() => <ResourcesByTypePage />}
                 />
-                <Route path="/country-page" render={() => <CountryPage />} />
-                <Route path="/regional-page" render={() => <RegionalPage />} />
                 <Route path="/resources" render={() => <ResourcesPage />} />
                 <Route path="/methods" render={() => <MethodsPage />} />
+                <Route path="/:countryOrRegion" render={() => <CountryOrRegionalPage />} />
 
                 {/* Default route */}
                 <Route render={() => <HomePage />} />

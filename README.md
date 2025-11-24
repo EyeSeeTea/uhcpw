@@ -58,8 +58,18 @@ $ yarn cy:e2e:open
 
 ## Build app ZIP
 
+For production:
+
 ```
+$ yarn build:prod
+# or an alias:
 $ yarn build
+```
+
+For test:
+
+```
+$ yarn build:test
 ```
 
 ## Some development tips
@@ -89,4 +99,20 @@ The file `src/contexts/app-context.ts` holds some general context so typical inf
 
 ### Scripts
 
-Check the example script, entry `"script-example"`in `package.json`->scripts and `src/scripts/example.ts`.
+#### generate-sitemap
+
+Generates a sitemap and outputs by default to the `public` directory. The routes config is defined in `src/scripts/generateSitemap.ts`.
+
+```
+yarn run generate-sitemap --base-url "https://apps.who.int/dhis2/uhcwatch/" --auth "user:password"
+# or use env variables REACT_APP_DHIS2_BASE_URL REACT_APP_DHIS2_AUTH instead of args
+```
+
+#### update-sitemap
+
+Takes an existing sitemap as parameter, and updates the lastmod of each url.
+This script is intended to include it as a build step to keep dates fresh, without needing to require credentials to regenerate the sitemap with `generate-sitemap` on each run.
+
+```
+yarn run update-sitemap
+```
