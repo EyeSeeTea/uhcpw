@@ -188,6 +188,7 @@ const Container = styled.div`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-block-end: 0;
+        padding: 40px 40px 40px 32px;
     }
 `;
 
@@ -258,6 +259,7 @@ const CountryExperiencesContainer = styled.div`
         height: auto;
         contain: initial;
         margin-inline-end: 0;
+        margin-block-start: 0px;
     }
 `;
 

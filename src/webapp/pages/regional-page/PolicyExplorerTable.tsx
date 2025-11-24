@@ -185,7 +185,7 @@ const Title = styled(Typography)`
     width: 100%;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-left: 15px;
+        margin-left: 0px;
     }
 `;
 

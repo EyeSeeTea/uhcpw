@@ -28,6 +28,7 @@ type AccordionPanelProps = {
     scrollMarginTop?: string;
     setPendingScrollTab?: (tab: number | null) => void;
     pendingScrollTab?: number | null;
+    leftPadding?: string;
 };
 
 export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
@@ -41,6 +42,7 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
         scrollMarginTop,
         pendingScrollTab,
         setPendingScrollTab,
+        leftPadding,
     } = props;
 
     return (
@@ -77,6 +79,7 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
                             $isBold={isBold}
                             $bigFont={bigFont}
                             $isSecondaryColor={isSecondaryColor}
+                            $leftPadding={leftPadding}
                         >
                             <Typography>{config.tabTitle}</Typography>
                         </StyledAccordionSummary>
@@ -141,9 +144,10 @@ const StyledAccordionSummary = styled(AccordionSummary)<{
     $isBold?: boolean;
     $bigFont?: boolean;
     $isSecondaryColor?: boolean;
+    $leftPadding?: string;
 }>`
     min-height: 48px;
-    padding: 0 25px 0 64px;
+    padding: 0 25px 0 ${props => props.$leftPadding || "64px"};
     justify-content: flex-start;
 
     .MuiTypography-root {

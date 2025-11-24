@@ -61,7 +61,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
 
             {countryAnalysisResource?.length ? (
                 <ResourcesSection aria-label="country-resources">
-                    <FirstRowWithMargin>
+                    <FirstRowWithMargin $isRegionalPage={isRegionalPage}>
                         <StyledTypography variant="h6">{i18n.t("Country or area analysis")}</StyledTypography>
 
                         <Fab
@@ -88,7 +88,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                         })}
                     </StyledGridContainer>
 
-                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1001 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
                 </ResourcesSection>
@@ -96,7 +96,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
 
             {comparativeAnalysisResources?.length ? (
                 <ResourcesSection aria-label="comparative-resources">
-                    <SecondRowWithMargin>
+                    <SecondRowWithMargin $isRegionalPage={isRegionalPage}>
                         <StyledTypography variant="h6">{i18n.t("Comparative analysis")}</StyledTypography>
 
                         <Fab
@@ -123,7 +123,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                         })}
                     </StyledGridContainer>
 
-                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1001 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
                 </ResourcesSection>
@@ -150,7 +150,7 @@ const ResourcesSection = styled.div`
     }
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ $isRegionalPage?: boolean }>`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -158,7 +158,7 @@ const Row = styled.div`
     padding-inline-start: 60px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
-        padding-inline-start: 16px;
+        padding-inline-start: ${props => (props.$isRegionalPage ? "32px" : "16px")};
     }
 `;
 

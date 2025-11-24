@@ -167,7 +167,7 @@ const Container = styled.div<{ $isRegionalPage?: boolean; $hideAll?: boolean }>`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
-        padding-inline-start: 0px;
+        padding-inline-start: 16px;
     }
 `;
 
@@ -209,6 +209,10 @@ const Paragraph = styled(Typography)`
 
     &:last-child {
         margin-block-end: 0;
+    }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-inline-start: 16px;
     }
 `;
 

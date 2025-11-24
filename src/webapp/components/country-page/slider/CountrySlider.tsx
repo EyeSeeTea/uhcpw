@@ -45,6 +45,7 @@ export const CountrySlider: React.FC<CountrySliderProps> = props => {
             configs={sliderConfigs}
             expandedConfig={expandedSliderConfig}
             handleAccordionChange={handleAccordionChange}
+            leftPadding="16px"
         />
     ) : (
         <VerticalTabsPanel
