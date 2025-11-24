@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { VerticalTabConfig } from "../../components/vertical-tabs-panel/VerticalTabsPanel";
 import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel";
@@ -26,6 +26,30 @@ export function useRegionNumbers(
     const { regions } = useAppContext();
     const [tabValue, setTabValue] = useState(0);
     const [expandedConfig, setExpandedConfig] = useState<VerticalTabConfig | AccordionConfig | undefined>(undefined);
+    const [chartsWithNoData, setChartsWithNoData] = useState<Id[]>([]);
+
+    const lastRegionIdRef = useRef<Maybe<Id>>(undefined);
+
+    useEffect(() => {
+        const previousId = lastRegionIdRef.current;
+
+        if (previousId !== undefined && selectedRegionId !== undefined && previousId !== selectedRegionId) {
+            setChartsWithNoData([]);
+        }
+
+        if (selectedRegionId !== undefined) {
+            lastRegionIdRef.current = selectedRegionId;
+        }
+    }, [selectedRegionId]);
+
+    const handleSetChartWithNoData = useCallback((visualizationId: string) => {
+        setChartsWithNoData(prevState => {
+            if (!prevState.includes(visualizationId)) {
+                return [...prevState, visualizationId];
+            }
+            return prevState;
+        });
+    }, []);
 
     const handleTabChange = useCallback((_event: React.ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
@@ -38,6 +62,7 @@ export function useRegionNumbers(
         if (expandedConfig !== undefined) {
             setExpandedConfig(undefined);
         }
+        setChartsWithNoData([]);
     }, [expandedConfig, tabValue]);
 
     const selectedRegion = useMemo(
@@ -59,13 +84,16 @@ export function useRegionNumbers(
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
                               hasNarrowerText: true,
+                              handleSetChartWithNoData: handleSetChartWithNoData,
+                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      visualizationId: "kIpnMBaBvZ9",
-                                      visualizationName:
-                                          VisualizationsSeeds["kIpnMBaBvZ9"]?.regionalPageName ||
-                                          VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName,
+                                      visualizationId: "dbc87Ljw8uN",
+                                      visualizationName: numbersPanelContent.panelOneGraphOneTitle
+                                          ? numbersPanelContent.panelOneGraphOneTitle
+                                          : VisualizationsSeeds["dbc87Ljw8uN"]?.regionalPageName ||
+                                            VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -84,13 +112,16 @@ export function useRegionNumbers(
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
                               hasNarrowerText: true,
+                              handleSetChartWithNoData: handleSetChartWithNoData,
+                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      visualizationId: "dbc87Ljw8uN",
-                                      visualizationName:
-                                          VisualizationsSeeds["dbc87Ljw8uN"]?.regionalPageName ||
-                                          VisualizationsSeeds["dbc87Ljw8uN"]?.friendlyName,
+                                      visualizationId: "kIpnMBaBvZ9",
+                                      visualizationName: numbersPanelContent.panelTwoGraphOneTitle
+                                          ? numbersPanelContent.panelTwoGraphOneTitle
+                                          : VisualizationsSeeds["kIpnMBaBvZ9"]?.regionalPageName ||
+                                            VisualizationsSeeds["kIpnMBaBvZ9"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -109,13 +140,16 @@ export function useRegionNumbers(
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
                               hasNarrowerText: true,
+                              handleSetChartWithNoData: handleSetChartWithNoData,
+                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "GimM6ANOKhd",
-                                      visualizationName:
-                                          VisualizationsSeeds["GimM6ANOKhd"]?.regionalPageName ||
-                                          VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelThreeGraphOneTitle
+                                          ? numbersPanelContent.panelThreeGraphOneTitle
+                                          : VisualizationsSeeds["GimM6ANOKhd"]?.regionalPageName ||
+                                            VisualizationsSeeds["GimM6ANOKhd"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -124,9 +158,10 @@ export function useRegionNumbers(
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "WDUV9ZrJiNC",
-                                      visualizationName:
-                                          VisualizationsSeeds["WDUV9ZrJiNC"]?.regionalPageName ||
-                                          VisualizationsSeeds["WDUV9ZrJiNC"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelThreeGraphTwoTitle
+                                          ? numbersPanelContent.panelThreeGraphTwoTitle
+                                          : VisualizationsSeeds["WDUV9ZrJiNC"]?.regionalPageName ||
+                                            VisualizationsSeeds["WDUV9ZrJiNC"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -145,13 +180,16 @@ export function useRegionNumbers(
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
                               hasNarrowerText: true,
+                              handleSetChartWithNoData: handleSetChartWithNoData,
+                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "VB7bdJ8ZXya",
-                                      visualizationName:
-                                          VisualizationsSeeds["VB7bdJ8ZXya"]?.regionalPageName ||
-                                          VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelFourGraphOneTitle
+                                          ? numbersPanelContent.panelFourGraphOneTitle
+                                          : VisualizationsSeeds["VB7bdJ8ZXya"]?.regionalPageName ||
+                                            VisualizationsSeeds["VB7bdJ8ZXya"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -160,9 +198,10 @@ export function useRegionNumbers(
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "mcNfvQaVbfy",
-                                      visualizationName:
-                                          VisualizationsSeeds["mcNfvQaVbfy"]?.regionalPageName ||
-                                          VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelFourGraphTwoTitle
+                                          ? numbersPanelContent.panelFourGraphTwoTitle
+                                          : VisualizationsSeeds["mcNfvQaVbfy"]?.regionalPageName ||
+                                            VisualizationsSeeds["mcNfvQaVbfy"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -181,13 +220,16 @@ export function useRegionNumbers(
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
                               hasNarrowerText: true,
+                              handleSetChartWithNoData: handleSetChartWithNoData,
+                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "EtHaEt6bnm5_nlYSkEMZxgN",
-                                      visualizationName:
-                                          VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.regionalPageName ||
-                                          VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelFiveGraphOneTitle
+                                          ? numbersPanelContent.panelFiveGraphOneTitle
+                                          : VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.regionalPageName ||
+                                            VisualizationsSeeds["EtHaEt6bnm5_nlYSkEMZxgN"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -196,9 +238,10 @@ export function useRegionNumbers(
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "AophAEpx5e0_BOcLONPSyYS",
-                                      visualizationName:
-                                          VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.regionalPageName ||
-                                          VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelFiveGraphTwoTitle
+                                          ? numbersPanelContent.panelFiveGraphTwoTitle
+                                          : VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.regionalPageName ||
+                                            VisualizationsSeeds["AophAEpx5e0_BOcLONPSyYS"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -207,9 +250,10 @@ export function useRegionNumbers(
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "MfLZYD6QCPy",
-                                      visualizationName:
-                                          VisualizationsSeeds["MfLZYD6QCPy"]?.regionalPageName ||
-                                          VisualizationsSeeds["MfLZYD6QCPy"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelFiveGraphThreeTitle
+                                          ? numbersPanelContent.panelFiveGraphThreeTitle
+                                          : VisualizationsSeeds["MfLZYD6QCPy"]?.regionalPageName ||
+                                            VisualizationsSeeds["MfLZYD6QCPy"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -229,13 +273,16 @@ export function useRegionNumbers(
                               isRegionalPage: true,
                               hideChartsWithoutData: true,
                               hasNarrowerText: true,
+                              handleSetChartWithNoData: handleSetChartWithNoData,
+                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "twyY1ulr7uD",
-                                      visualizationName:
-                                          VisualizationsSeeds["twyY1ulr7uD"]?.regionalPageName ||
-                                          VisualizationsSeeds["twyY1ulr7uD"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelSixGraphOneTitle
+                                          ? numbersPanelContent.panelSixGraphOneTitle
+                                          : VisualizationsSeeds["twyY1ulr7uD"]?.regionalPageName ||
+                                            VisualizationsSeeds["twyY1ulr7uD"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -246,9 +293,10 @@ export function useRegionNumbers(
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "CdqVV1Ib0XS",
-                                      visualizationName:
-                                          VisualizationsSeeds["CdqVV1Ib0XS"]?.regionalPageName ||
-                                          VisualizationsSeeds["CdqVV1Ib0XS"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelSixGraphTwoTitle
+                                          ? numbersPanelContent.panelSixGraphTwoTitle
+                                          : VisualizationsSeeds["CdqVV1Ib0XS"]?.regionalPageName ||
+                                            VisualizationsSeeds["CdqVV1Ib0XS"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -258,9 +306,10 @@ export function useRegionNumbers(
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationId: "fnOIi0bdISn",
-                                      visualizationName:
-                                          VisualizationsSeeds["fnOIi0bdISn"]?.regionalPageName ||
-                                          VisualizationsSeeds["fnOIi0bdISn"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelSixGraphThreeTitle
+                                          ? numbersPanelContent.panelSixGraphThreeTitle
+                                          : VisualizationsSeeds["fnOIi0bdISn"]?.regionalPageName ||
+                                            VisualizationsSeeds["fnOIi0bdISn"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -270,9 +319,10 @@ export function useRegionNumbers(
                                   },
                                   {
                                       visualizationId: "B4CnzUqVR3n",
-                                      visualizationName:
-                                          VisualizationsSeeds["B4CnzUqVR3n"]?.regionalPageName ||
-                                          VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
+                                      visualizationName: numbersPanelContent.panelSixGraphFourTitle
+                                          ? numbersPanelContent.panelSixGraphFourTitle
+                                          : VisualizationsSeeds["B4CnzUqVR3n"]?.regionalPageName ||
+                                            VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
@@ -286,7 +336,7 @@ export function useRegionNumbers(
                       },
                   ]
                 : [],
-        [selectedRegionId, numbersPanelContent, selectedRegion]
+        [selectedRegionId, numbersPanelContent, selectedRegion, handleSetChartWithNoData, chartsWithNoData]
     );
 
     const handleAccordionChange = useCallback(

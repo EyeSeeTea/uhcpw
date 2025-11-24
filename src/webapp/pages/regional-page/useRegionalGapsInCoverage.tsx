@@ -11,6 +11,7 @@ import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
 import { LatestAvailable } from "../../../domain/entities/Year";
 import { GapsInCoverageFirstPanel } from "./GapsInCoverageFirstPanel";
+import { GapsInCoverageTestPanel } from "./GapsInCoverageTestPanel";
 
 export type RegionalGapsInCoverageState = {
     configs: (VerticalTabConfig | AccordionConfig)[];
@@ -59,7 +60,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoverageFirstPanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelOneTitle,
                               mainText: gapsInCoverageContent.panelOneMainText,
                               progressText: gapsInCoverageContent.panelOneProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -83,7 +83,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelTwoTitle,
                               mainText: gapsInCoverageContent.panelTwoMainText,
                               progressText: gapsInCoverageContent.panelTwoProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -109,7 +108,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelThreeTitle,
                               mainText: gapsInCoverageContent.panelThreeMainText,
                               progressText: gapsInCoverageContent.panelThreeProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -135,7 +133,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelFourTitle,
                               mainText: gapsInCoverageContent.panelFourMainText,
                               progressText: gapsInCoverageContent.panelFourProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -161,7 +158,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelFiveTitle,
                               mainText: gapsInCoverageContent.panelFiveMainText,
                               progressText: gapsInCoverageContent.panelFiveProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -211,7 +207,6 @@ export function useRegionalGapsInCoverage(
                           Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelSixTitle,
                               mainText: gapsInCoverageContent.panelSixMainText,
                               progressText: gapsInCoverageContent.panelSixProgressText,
                               showDialogInFullScreen: isSmallScreen,
@@ -223,7 +218,6 @@ export function useRegionalGapsInCoverage(
                                               : undefined,
                                       textAbove: gapsInCoverageContent.panelSixChartOneTextAbove,
                                       textBelow: gapsInCoverageContent.panelSixChartOneTextBelow,
-                                      textInfo: gapsInCoverageContent.panelSixChartOneInfoText,
                                       visualizationId: "mcNfvQaVbfy",
                                       visualizationName:
                                           gapsInCoverageContent.panelSixChartOneTitle !== ""
@@ -248,30 +242,28 @@ export function useRegionalGapsInCoverage(
                       {
                           tab: 6,
                           tabTitle: gapsInCoverageContent.panelSevenTitle,
-                          Component: GapsInCoveragePanel,
+                          // TODO: Replace with correct component when ready
+                          Component: GapsInCoverageTestPanel,
                           props: {
                               regionId: selectedRegionId,
-                              title: gapsInCoverageContent.panelSevenTitle,
                               mainText: gapsInCoverageContent.panelSevenMainText,
                               progressText: gapsInCoverageContent.panelSevenProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: [
-                                  {
-                                      title:
-                                          gapsInCoverageContent.panelSevenChartOneTitle !== ""
-                                              ? gapsInCoverageContent.panelSevenChartOneTitle
-                                              : undefined,
-                                      textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
-                                      textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
-                                      visualizationId: "y4qAv6eW4nb",
-                                      visualizationName:
-                                          gapsInCoverageContent.panelSevenChartOneTitle !== ""
-                                              ? gapsInCoverageContent.panelSevenChartOneTitle
-                                              : VisualizationsSeeds["y4qAv6eW4nb"]?.regionalPageName,
-                                      years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || [])],
-                                  },
-                              ],
+                              visual: {
+                                  title:
+                                      gapsInCoverageContent.panelSevenChartOneTitle !== ""
+                                          ? gapsInCoverageContent.panelSevenChartOneTitle
+                                          : undefined,
+                                  textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
+                                  textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
+                                  visualizationId: "y4qAv6eW4nb",
+                                  visualizationName:
+                                      gapsInCoverageContent.panelSevenChartOneTitle !== ""
+                                          ? gapsInCoverageContent.panelSevenChartOneTitle
+                                          : VisualizationsSeeds["y4qAv6eW4nb"]?.regionalPageName,
+                                  years: [LatestAvailable.id],
+                                  countries: [...(selectedRegion.countries || [])],
+                              },
                           },
                       },
                   ]

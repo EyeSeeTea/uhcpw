@@ -29,7 +29,7 @@ class DefaultTableSorter implements TableSorter {
 export function getTableSorter(policyExplorerCategoryId: string) {
     switch (policyExplorerCategoryId) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
-            return new TableSorterByValueCount("no");
+            return new TableSorterByValueCount("yes");
         case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
             return new TableSorterByValueCount("none");
         default:

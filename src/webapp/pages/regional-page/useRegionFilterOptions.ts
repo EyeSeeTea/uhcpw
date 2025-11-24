@@ -19,7 +19,7 @@ export function useRegionFilterOptions(): Option<Id>[] {
         return regions
             .filter(region => region.isInRegionalPage)
             .sort((a, b) => REGIONS_ORDER.indexOf(a.id) - REGIONS_ORDER.indexOf(b.id))
-            .map(region => ({ value: region.id, text: region.name }));
+            .map(region => ({ value: region.id, text: `${region.name} (${region.code})` }));
     }, [regions]);
 
     return regionOptions;

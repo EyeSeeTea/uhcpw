@@ -22,28 +22,41 @@ const REGION_CONTENT_DATA_ELEMENT_IDS = {
     numbersPanel: {
         panelOneTitle: "DumylnVyci4",
         panelOneGraphOneText: "JCZm0rnQ54f",
+        panelOneGraphOneTitle: "mFzMOvYgfpC",
 
         panelTwoTitle: "r5eemGxoRS6",
         panelTwoGraphOneText: "WvrLV5w1ukz",
+        panelTwoGraphOneTitle: "lDOzvHi3rfF",
 
         panelThree: "OBInDvcfyQZ",
         panelThreeGraphOneText: "nkhaDCLS2oe",
+        panelThreeGraphOneTitle: "UMyEtsEZ4Wi",
         panelThreeGraphTwoText: "zvW54GZzxcJ",
+        panelThreeGraphTwoTitle: "bK1xhrXlx1F",
 
         panelFour: "vel3QNcSAlE",
         panelFourGraphOneText: "YxXbNUMaJGt",
+        panelFourGraphOneTitle: "ingg1SYAm8g",
         panelFourGraphTwoText: "VFZzHUlrL9F",
+        panelFourGraphTwoTitle: "CCW5tOFUB6T",
 
         panelFive: "MCTHdjhXfwc",
         panelFiveGraphOneText: "Y2ZKVlVGlSQ",
+        panelFiveGraphOneTitle: "OpzOMtkSvUP",
         panelFiveGraphTwoText: "vznlgYGtLgG",
+        panelFiveGraphTwoTitle: "INmAzojMnE8",
         panelFiveGraphThreeText: "KRVzyf3td9q",
+        panelFiveGraphThreeTitle: "WGLCeZWoTsF",
 
         panelSix: "Vt8NxwcFltu",
         panelSixGraphOneText: "WaMKgJ1NU9e",
+        panelSixGraphOneTitle: "aR0MueVbgry",
         panelSixGraphTwoText: "cDYD3dcJjZu",
+        panelSixGraphTwoTitle: "N1lBv1E1jof",
         panelSixGraphThreeText: "s8Ivd41Vvh3",
+        panelSixGraphThreeTitle: "qsTvMMYXmmC",
         panelSixGraphFourText: "ZCUrjpW0fbb",
+        panelSixGraphFourTitle: "mMzGV9twwi6",
     },
 
     gapsInCoverage: {
@@ -105,11 +118,9 @@ const REGION_CONTENT_DATA_ELEMENT_IDS = {
 
         panelSixTitle: "iS7XZlaQotB",
         panelSixMainText: "vZXXyyImuqF",
-        panelSixChartOne: "qHQ41g7EPHB",
         panelSixChartOneTitle: "R4jG2qqup3e",
         panelSixChartOneTextAbove: "CgdnY1qHXk2",
         panelSixChartOneTextBelow: "a0zCwMXV7VG",
-        panelSixChartOneInfoText: "bpv0gDZAA1w",
         panelSixProgressText: "T3C9twBZ1H4",
 
         panelSevenTitle: "JyhAK2RHKvc",
@@ -188,6 +199,10 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelOneGraphOneText,
                     regionalContent
                 ),
+                panelOneGraphOneTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelOneGraphOneTitle,
+                    regionalContent
+                ),
 
                 panelTwoTitle: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelTwoTitle,
@@ -197,14 +212,26 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelTwoGraphOneText,
                     regionalContent
                 ),
+                panelTwoGraphOneTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelTwoGraphOneTitle,
+                    regionalContent
+                ),
 
                 panelThreeTitle: getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThree, regionalContent),
                 panelThreeGraphOneText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThreeGraphOneText,
                     regionalContent
                 ),
+                panelThreeGraphOneTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThreeGraphOneTitle,
+                    regionalContent
+                ),
                 panelThreeGraphTwoText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThreeGraphTwoText,
+                    regionalContent
+                ),
+                panelThreeGraphTwoTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelThreeGraphTwoTitle,
                     regionalContent
                 ),
 
@@ -213,8 +240,16 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFourGraphOneText,
                     regionalContent
                 ),
+                panelFourGraphOneTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFourGraphOneTitle,
+                    regionalContent
+                ),
                 panelFourGraphTwoText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFourGraphTwoText,
+                    regionalContent
+                ),
+                panelFourGraphTwoTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFourGraphTwoTitle,
                     regionalContent
                 ),
 
@@ -223,12 +258,24 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphOneText,
                     regionalContent
                 ),
+                panelFiveGraphOneTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphOneTitle,
+                    regionalContent
+                ),
                 panelFiveGraphTwoText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphTwoText,
                     regionalContent
                 ),
+                panelFiveGraphTwoTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphTwoTitle,
+                    regionalContent
+                ),
                 panelFiveGraphThreeText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphThreeText,
+                    regionalContent
+                ),
+                panelFiveGraphThreeTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelFiveGraphThreeTitle,
                     regionalContent
                 ),
 
@@ -237,16 +284,32 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphOneText,
                     regionalContent
                 ),
+                panelSixGraphOneTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphOneTitle,
+                    regionalContent
+                ),
                 panelSixGraphTwoText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphTwoText,
+                    regionalContent
+                ),
+                panelSixGraphTwoTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphTwoTitle,
                     regionalContent
                 ),
                 panelSixGraphThreeText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphThreeText,
                     regionalContent
                 ),
+                panelSixGraphThreeTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphThreeTitle,
+                    regionalContent
+                ),
                 panelSixGraphFourText: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphFourText,
+                    regionalContent
+                ),
+                panelSixGraphFourTitle: getDataValue(
+                    REGION_CONTENT_DATA_ELEMENT_IDS.numbersPanel.panelSixGraphFourTitle,
                     regionalContent
                 ),
             },
@@ -456,10 +519,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixMainText,
                     regionalContent
                 ),
-                panelSixChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOne}&eventUid=${regionalContent?.event}`,
-                hasPanelSixChartOne:
-                    getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOne, regionalContent) !==
-                    "",
                 panelSixChartOneTitle: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOneTitle,
                     regionalContent
@@ -470,10 +529,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                 ),
                 panelSixChartOneTextBelow: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOneTextBelow,
-                    regionalContent
-                ),
-                panelSixChartOneInfoText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelSixChartOneInfoText,
                     regionalContent
                 ),
                 panelSixProgressText: getDataValue(

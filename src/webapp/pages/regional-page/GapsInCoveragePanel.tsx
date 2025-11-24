@@ -31,7 +31,6 @@ export type VisualContent = {
 };
 
 type GapsInCoveragePanelProps = {
-    title?: string;
     regionId: Id;
     mainText?: string;
     progressText?: string;
@@ -42,7 +41,7 @@ type GapsInCoveragePanelProps = {
 export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => {
     const isSmallScreen = useIsSmallScreen();
 
-    const { regionId, title, mainText, progressText, visuals, showDialogInFullScreen = false } = props;
+    const { regionId, mainText, progressText, visuals, showDialogInFullScreen = false } = props;
     const [visualTextInfo, setVisualTextInfo] = useState<string | undefined>(undefined);
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualContent | undefined>(undefined);
 
@@ -77,12 +76,6 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
 
     return (
         <Container>
-            <TextContainer>
-                <StyledTitle variant="h6" gutterBottom>
-                    {title}
-                </StyledTitle>
-            </TextContainer>
-
             {mainText && (
                 <TextContainer>
                     <ReactMarkdown components={markdownComponents}>{mainText}</ReactMarkdown>
@@ -97,13 +90,11 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                         </TextContainer>
                     )}
 
-                    {visualContent.title && !visualContent.visualizationId ? (
+                    {visualContent.title && !visualContent.visualizationId && !visualContent.policyCategoryId ? (
                         <ChartTitleRow>
-                            <TextContainer>
-                                <ChartTitle variant="h6" gutterBottom>
-                                    {visualContent.title}
-                                </ChartTitle>
-                            </TextContainer>
+                            <ChartTitle variant="h6" gutterBottom>
+                                {visualContent.title}
+                            </ChartTitle>
 
                             <StyledIconButton
                                 onClick={() => setVisualTextInfo(visualContent?.textInfo)}
@@ -131,7 +122,6 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                                 analyticsPageTitle={"Regional page"}
                                 seriesColors={visualContent.seriesColors}
                                 isRegionalPage
-                                hasNarrowerText
                             />
                         </VisualizationContainer>
                     ) : visualContent.visual ? (
@@ -145,6 +135,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                       visualContent.countries?.length &&
                       visualContent.years?.length ? (
                         <PolicyExplorerTable
+                            title={visualContent.title || ""}
                             categoryId={visualContent.policyCategoryId}
                             countries={visualContent.countries}
                             years={visualContent.years}
@@ -219,7 +210,7 @@ const Container = styled.div`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
-        padding-inline-start: 0px;
+        padding-inline-start: 32px;
     }
 `;
 
@@ -237,7 +228,7 @@ const ChartTitleRow = styled.div`
 
 const ChartTitle = styled(Typography)`
     font-family: Lato;
-    margin-block-start: 20px;
+    margin-block-start: 10px;
     margin-block-end: 6px;
     font-size: 1rem;
     font-weight: bold;
@@ -279,15 +270,7 @@ const StyledUl = styled.ul`
     color: ${colors.black};
     margin-inline-start: 0;
     margin-block-start: 0;
-`;
-
-const StyledTitle = styled(Typography)`
-    margin-inline-end: 24px;
-    color: ${colors.black};
-
-    &.MuiTypography-h6 {
-        font-weight: bold;
-    }
+    margin-block-end: 0;
 `;
 
 const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`

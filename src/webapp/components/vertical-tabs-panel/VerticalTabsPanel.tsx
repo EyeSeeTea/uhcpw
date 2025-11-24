@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { TabPanel } from "./TabPanel";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 const useStyles = makeStyles(theme => ({
     tab: {
@@ -73,11 +74,22 @@ type TabsPanelProps = {
     onChangeTabValue: (event: React.ChangeEvent<{}>, newValue: number) => void;
     ariaLabel: string;
     isSecondaryColor?: boolean;
+    onTabsWidthChange?: (width: number) => void;
+    sidePanelWidth?: number;
 };
 
 export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
-    const { tabsConfig, onChangeTabValue, tabValue, ariaLabel, isSecondaryColor = false } = props;
+    const {
+        tabsConfig,
+        onChangeTabValue,
+        tabValue,
+        ariaLabel,
+        isSecondaryColor = false,
+        onTabsWidthChange,
+        sidePanelWidth,
+    } = props;
     const classes = useStyles();
+    const gridItemRef = React.useRef<HTMLDivElement | null>(null);
 
     const onWheel = useCallback(
         (event: React.WheelEvent<HTMLButtonElement>) => {
@@ -114,9 +126,32 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
         return <span className={className}>{text}</span>;
     }, []);
 
+    React.useEffect(() => {
+        if (!onTabsWidthChange) return;
+
+        const handleResize = () => {
+            if (gridItemRef.current) {
+                onTabsWidthChange(gridItemRef.current.offsetWidth);
+            }
+        };
+
+        handleResize();
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, [onTabsWidthChange]);
+
     return (
-        <Grid container aria-label={ariaLabel}>
-            <StyledGridItem item xs={1} md={5} lg={4} isSecondaryColor={isSecondaryColor}>
+        <StyledGridContainer container aria-label={ariaLabel}>
+            <StyledGridItem
+                item
+                ref={gridItemRef}
+                xs={1}
+                md={4}
+                lg={4}
+                isSecondaryColor={isSecondaryColor}
+                sidePanelWidth={sidePanelWidth}
+            >
                 <StyledTabs
                     orientation="vertical"
                     value={tabValue}
@@ -138,7 +173,13 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
                 </StyledTabs>
             </StyledGridItem>
 
-            <RightPanelGrid item xs={11} md={7} lg={8}>
+            <RightPanelGrid
+                item
+                xs={11}
+                md={sidePanelWidth ? undefined : 8}
+                lg={sidePanelWidth ? undefined : 8}
+                sidePanelWidth={sidePanelWidth}
+            >
                 {tabsConfig.map(config => (
                     <TabPanel
                         key={`TabPanelConfig_${config.tabTitle}`}
@@ -150,26 +191,58 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
                     </TabPanel>
                 ))}
             </RightPanelGrid>
-        </Grid>
+        </StyledGridContainer>
     );
 };
 
-const RightPanelGrid = styled(Grid)`
+const StyledGridContainer = styled(Grid)`
+    flex-wrap: nowrap;
+`;
+
+const RightPanelGrid = styled(Grid)<{ isSecondaryColor?: boolean; sidePanelWidth?: number }>`
     .MuiBox-root {
         padding: 0;
     }
+
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        flex: 1 1 auto;
+
+        ${({ sidePanelWidth }) =>
+            sidePanelWidth
+                ? `
+                    max-width: calc(100% - ${sidePanelWidth}px);
+                `
+                : `
+                    max-width: 100%;
+                `}
+    }
 `;
 
-const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean }>`
+const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean; sidePanelWidth?: number }>`
     background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
     border-inline-end: none;
     margin-block-end: 4px;
 
-    @media (max-width: 960px) {
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background-color: ${colors.white};
         border-inline-end: 6px solid ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         width: 30px;
         flex-basis: unset;
+    }
+
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        box-sizing: border-box;
+
+        ${({ sidePanelWidth }) =>
+            sidePanelWidth
+                ? `
+                    width: ${sidePanelWidth}px;
+                    max-width: ${sidePanelWidth}px;
+                    flex: 0 0 ${sidePanelWidth}px;
+                `
+                : `
+                    width: 100%;
+                `}
     }
 `;
 
@@ -182,7 +255,7 @@ const StyledTabs = styled(Tabs)<{ isSecondaryColor?: boolean }>`
     background-color: ${colors.white};
     border-block-end: 4px solid ${colors.white};
 
-    @media (min-width: 960px) {
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         width: 100%;
         max-width: unset;
@@ -211,7 +284,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
         border-block-start: 4px solid ${colors.white};
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         width: 100%;
         max-width: unset;
         border-right: unset;

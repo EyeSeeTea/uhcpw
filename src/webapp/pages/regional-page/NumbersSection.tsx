@@ -10,11 +10,19 @@ type NumbersSectionProps = {
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     handleTabChange: (_event: React.ChangeEvent<{}>, newValue: number) => void;
     isSmallScreen?: boolean;
+    sidePanelWidth?: number;
 };
 
 export const NumbersSection: React.FC<NumbersSectionProps> = React.memo(props => {
-    const { configs, tabValue, expandedConfig, handleAccordionChange, handleTabChange, isSmallScreen = false } = props;
-
+    const {
+        configs,
+        tabValue,
+        expandedConfig,
+        handleAccordionChange,
+        handleTabChange,
+        isSmallScreen = false,
+        sidePanelWidth,
+    } = props;
     if (!configs || configs.length === 0) {
         return null;
     }
@@ -33,6 +41,7 @@ export const NumbersSection: React.FC<NumbersSectionProps> = React.memo(props =>
                     tabsConfig={configs}
                     tabValue={tabValue}
                     onChangeTabValue={handleTabChange}
+                    sidePanelWidth={sidePanelWidth}
                     ariaLabel="region-numbers-slider"
                     isSecondaryColor
                 />
@@ -41,4 +50,6 @@ export const NumbersSection: React.FC<NumbersSectionProps> = React.memo(props =>
     );
 });
 
-const Container = styled.div``;
+const Container = styled.div`
+    width: 100%;
+`;
