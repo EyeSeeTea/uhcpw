@@ -125,7 +125,7 @@ export const RegionalPage: React.FC = () => {
 
                     <Section ref={refs.policyChecklist}>
                         <SectionTitleDivider onlyBottomMargin>
-                            <SectionTitle>{i18n.t("Progress is possible: a checklist for policy-makers")}</SectionTitle>
+                            <SectionTitle>{i18n.t("Progress is possible: a policy checklist")}</SectionTitle>
                         </SectionTitleDivider>
 
                         <PolicyChecklistSection

@@ -286,7 +286,7 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 2,
-                tabTitle: i18n.t("Progress is possible: a checklist for policy-makers"),
+                tabTitle: i18n.t("Progress is possible: a policy checklist"),
                 isGradientColor: true,
                 hasExpandIcon: true,
                 Component: PolicyChecklistSection,
