@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { TabPanel } from "./TabPanel";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 const useStyles = makeStyles(theme => ({
     tab: {
@@ -172,7 +173,13 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
                 </StyledTabs>
             </StyledGridItem>
 
-            <RightPanelGrid item xs={11} md={8} lg={8}>
+            <RightPanelGrid
+                item
+                xs={11}
+                md={sidePanelWidth ? undefined : 8}
+                lg={sidePanelWidth ? undefined : 8}
+                sidePanelWidth={sidePanelWidth}
+            >
                 {tabsConfig.map(config => (
                     <TabPanel
                         key={`TabPanelConfig_${config.tabTitle}`}
@@ -192,9 +199,22 @@ const StyledGridContainer = styled(Grid)`
     flex-wrap: nowrap;
 `;
 
-const RightPanelGrid = styled(Grid)`
+const RightPanelGrid = styled(Grid)<{ isSecondaryColor?: boolean; sidePanelWidth?: number }>`
     .MuiBox-root {
         padding: 0;
+    }
+
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        flex: 1 1 auto;
+
+        ${({ sidePanelWidth }) =>
+            sidePanelWidth
+                ? `
+                    max-width: calc(100% - ${sidePanelWidth}px);
+                `
+                : `
+                    max-width: 100%;
+                `}
     }
 `;
 
@@ -203,14 +223,14 @@ const StyledGridItem = styled(Grid)<{ isSecondaryColor?: boolean; sidePanelWidth
     border-inline-end: none;
     margin-block-end: 4px;
 
-    @media (max-width: 960px) {
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background-color: ${colors.white};
         border-inline-end: 6px solid ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         width: 30px;
         flex-basis: unset;
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         box-sizing: border-box;
 
         ${({ sidePanelWidth }) =>
@@ -235,7 +255,7 @@ const StyledTabs = styled(Tabs)<{ isSecondaryColor?: boolean }>`
     background-color: ${colors.white};
     border-block-end: 4px solid ${colors.white};
 
-    @media (min-width: 960px) {
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background-color: ${props => (props.isSecondaryColor ? colors.blue20 : colors.accentPrimary)};
         width: 100%;
         max-width: unset;
@@ -264,7 +284,7 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
         border-block-start: 4px solid ${colors.white};
     }
 
-    @media (min-width: 960px) {
+    @media (min-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         width: 100%;
         max-width: unset;
         border-right: unset;

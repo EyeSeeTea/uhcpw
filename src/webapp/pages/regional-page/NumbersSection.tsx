@@ -50,4 +50,6 @@ export const NumbersSection: React.FC<NumbersSectionProps> = React.memo(props =>
     );
 });
 
-const Container = styled.div``;
+const Container = styled.div`
+    width: 100%;
+`;

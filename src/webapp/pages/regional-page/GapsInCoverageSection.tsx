@@ -11,6 +11,7 @@ type GapsInCoverageSectionProps = {
     handleTabChange: (_event: React.ChangeEvent<{}>, newValue: number) => void;
     isSmallScreen?: boolean;
     setSidePanelWidth?: (width: number) => void;
+    sidePanelWidth?: number;
 };
 
 export const GapsInCoverageSection: React.FC<GapsInCoverageSectionProps> = React.memo(props => {
@@ -22,6 +23,7 @@ export const GapsInCoverageSection: React.FC<GapsInCoverageSectionProps> = React
         handleTabChange,
         isSmallScreen = false,
         setSidePanelWidth,
+        sidePanelWidth,
     } = props;
 
     if (!configs || configs.length === 0) {
@@ -43,6 +45,7 @@ export const GapsInCoverageSection: React.FC<GapsInCoverageSectionProps> = React
                     tabValue={tabValue}
                     onChangeTabValue={handleTabChange}
                     onTabsWidthChange={setSidePanelWidth}
+                    sidePanelWidth={sidePanelWidth}
                     ariaLabel="region-gaps-in-coverage-slider"
                     isSecondaryColor
                 />

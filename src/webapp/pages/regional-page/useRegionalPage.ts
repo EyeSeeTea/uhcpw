@@ -281,6 +281,7 @@ export function useRegionalPage(): RegionalPageState {
                     handleTabChange: gapsInCoverage.handleTabChange,
                     isSmallScreen: isSmallScreen,
                     setSidePanelWidth: setSidePanelWidth,
+                    sidePanelWidth: sidePanelWidth,
                 },
             },
             {

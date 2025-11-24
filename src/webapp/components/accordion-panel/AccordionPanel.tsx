@@ -173,7 +173,8 @@ const StyledAccordionSummary = styled(AccordionSummary)<{
 `;
 
 const StyledAccordionDetails = styled(AccordionDetails)`
-    font-size: 14px;
+    width: 100%;
+    font-size: 16px;
     border-radius: 0;
     border: none;
     background: white;
