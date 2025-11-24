@@ -38,6 +38,7 @@ export const GapsInCoverageSection: React.FC<GapsInCoverageSectionProps> = React
                     expandedConfig={expandedConfig}
                     handleAccordionChange={handleAccordionChange}
                     isSecondaryColor
+                    leftPadding="32px"
                 />
             ) : (
                 <VerticalTabsPanel

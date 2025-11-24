@@ -47,9 +47,9 @@ export const Header: React.FC<HeaderType> = props => {
 
             <ButtonsContainer>
                 {menuItemsConfig.map(item => (
-                    <Button key={item.id} onClick={() => handleHeaderItemClick(item.id)}>
+                    <StyledButton key={item.id} onClick={() => handleHeaderItemClick(item.id)}>
                         <ButtonText>{item.label}</ButtonText>
-                    </Button>
+                    </StyledButton>
                 ))}
             </ButtonsContainer>
         </Container>
@@ -92,6 +92,8 @@ const DropdownContainer = styled.div`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         gap: 0px;
+        margin-block-start: 6px;
+
         img {
             width: 90px;
         }
@@ -106,8 +108,12 @@ const ButtonsContainer = styled.div`
     display: flex;
     gap: 20px;
     align-items: center;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        gap: 10px;
+        gap: 0px;
+        column-gap: 15px;
+        flex-wrap: wrap;
+        margin-block-start: 8px;
     }
 `;
 
@@ -116,4 +122,11 @@ const ButtonText = styled(Typography)`
     font-weight: 600;
     white-space: nowrap;
     color: ${colors.white};
+`;
+
+const StyledButton = styled(Button)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        padding-inline-start: 0px;
+        margin-block-start: 0px;
+    }
 `;

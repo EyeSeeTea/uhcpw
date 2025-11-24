@@ -35,6 +35,7 @@ export const NumbersSection: React.FC<NumbersSectionProps> = React.memo(props =>
                     expandedConfig={expandedConfig}
                     handleAccordionChange={handleAccordionChange}
                     isSecondaryColor
+                    leftPadding="32px"
                 />
             ) : (
                 <VerticalTabsPanel

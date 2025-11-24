@@ -91,7 +91,6 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                         isScreenshot={isScreenshot}
                                         variant="h6"
                                         color="textPrimary"
-                                        style={{ marginLeft: 20, marginRight: isRegionalPage ? 5 : 0 }}
                                         $isRegionalPage={isRegionalPage}
                                     >
                                         {chartFriendlyName}
@@ -330,6 +329,8 @@ const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?
     white-space: "normal";
     width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
     font-weight: ${props => (props.$isRegionalPage ? "bold" : "normal")};
+    margin-right: ${props => (props.$isRegionalPage ? "5px" : "0px")};
+    margin-left: 20px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-left: 15px;
