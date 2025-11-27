@@ -27,7 +27,7 @@ export function useRegionalPolicyExplorerTable(
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        compositionRoot.policyExplorer.getCategories.execute().run(
+        compositionRoot.policyExplorer.getCategories.execute(true).run(
             categories => {
                 if (countries.length) {
                     setLoading(true);

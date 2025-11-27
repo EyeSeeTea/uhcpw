@@ -122,12 +122,17 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
     text: "SAzOXqrxWfI",
 };
 
+const CATEGORIES_ONLY_IN_REGIONAL_PAGE = [
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+];
+
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     cache = new InmemoryCache();
 
     constructor(private api: D2Api) {}
 
-    getAll(): FutureData<PolicyExplorerCategory[]> {
+    getAll(isRegionalPage?: boolean): FutureData<PolicyExplorerCategory[]> {
         return Future.joinObj({
             datasets: apiToFuture(
                 this.api.models.dataSets.get({
@@ -155,7 +160,14 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             const events = sectionsEvent.events[0];
 
             if (dataSet && programs && events) {
-                return Future.success(this.buildCategories(programs, events, dataSet, infoNotes));
+                const categories = this.buildCategories(programs, events, dataSet, infoNotes);
+                return Future.success(
+                    categories.filter(category =>
+                        isRegionalPage
+                            ? CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id)
+                            : !CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id)
+                    )
+                );
             } else {
                 return Future.error("No categories found");
             }
