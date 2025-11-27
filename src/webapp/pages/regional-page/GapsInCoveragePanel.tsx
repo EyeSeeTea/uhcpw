@@ -13,6 +13,7 @@ import { NotesDialog } from "../../components/dialog/NotesDialog";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
 export type VisualContent = {
     visual?: string;
@@ -28,6 +29,7 @@ export type VisualContent = {
     regions?: Id[];
     seriesColors?: Record<string, string>;
     policyCategoryId?: string;
+    maxImgWidth?: number;
 };
 
 type GapsInCoveragePanelProps = {
@@ -40,6 +42,7 @@ type GapsInCoveragePanelProps = {
 
 export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => {
     const isSmallScreen = useIsSmallScreen();
+    const { redirectWithExternalLink } = useAnalytics();
 
     const { regionId, mainText, progressText, visuals, showDialogInFullScreen = false } = props;
     const [visualTextInfo, setVisualTextInfo] = useState<string | undefined>(undefined);
@@ -62,8 +65,13 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
+            a: ({ ...props }) => (
+                <TextLink href={props.href} target="_blank" rel="noreferrer" onClick={redirectWithExternalLink}>
+                    {props.children}
+                </TextLink>
+            ),
         }),
-        []
+        [redirectWithExternalLink]
     );
 
     const analyticsContent = React.useMemo(
@@ -125,9 +133,10 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                             />
                         </VisualizationContainer>
                     ) : visualContent.visual ? (
-                        <img
-                            style={{ paddingBlockStart: "8px" }}
+                        <Image
                             width="100%"
+                            $hasMarginTop={!visualContent.title}
+                            style={visualContent.maxImgWidth ? { maxWidth: `${visualContent.maxImgWidth}px` } : {}}
                             alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
                             src={visualContent.visual}
                         />
@@ -311,4 +320,18 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolea
 
 const TextContainer = styled.div`
     max-width: 600px;
+`;
+
+const Image = styled.img<{ $hasMarginTop?: boolean }>`
+    padding-block-start: 8px;
+    margin-block-start: ${props => (props.$hasMarginTop ? "10px" : "0")};
+`;
+
+const TextLink = styled.a`
+    color: ${colors.accentPrimary};
+    text-transform: none;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 `;

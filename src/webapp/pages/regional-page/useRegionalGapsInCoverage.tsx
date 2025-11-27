@@ -10,7 +10,6 @@ import { GapsInCoveragePanel } from "./GapsInCoveragePanel";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
 import { LatestAvailable } from "../../../domain/entities/Year";
-import { GapsInCoverageFirstPanel } from "./GapsInCoverageFirstPanel";
 import { GapsInCoverageTestPanel } from "./GapsInCoverageTestPanel";
 
 export type RegionalGapsInCoverageState = {
@@ -57,23 +56,26 @@ export function useRegionalGapsInCoverage(
                       {
                           tab: 0,
                           tabTitle: gapsInCoverageContent.panelOneTitle,
-                          Component: GapsInCoverageFirstPanel,
+                          Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelOneMainText,
                               progressText: gapsInCoverageContent.panelOneProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visual: gapsInCoverageContent.hasPanelOneChartOne
-                                  ? {
-                                        visual: gapsInCoverageContent.panelOneChartOne,
-                                        title:
-                                            gapsInCoverageContent.panelOneChartOneTitle !== ""
-                                                ? gapsInCoverageContent.panelOneChartOneTitle
-                                                : undefined,
-                                        textAbove: gapsInCoverageContent.panelOneChartOneTextAbove,
-                                        textBelow: gapsInCoverageContent.panelOneChartOneTextBelow,
-                                        textInfo: gapsInCoverageContent.panelOneChartOneInfoText,
-                                    }
+                              visuals: gapsInCoverageContent.hasPanelOneChartOne
+                                  ? [
+                                        {
+                                            visual: gapsInCoverageContent.panelOneChartOne,
+                                            title:
+                                                gapsInCoverageContent.panelOneChartOneTitle !== ""
+                                                    ? gapsInCoverageContent.panelOneChartOneTitle
+                                                    : undefined,
+                                            textAbove: gapsInCoverageContent.panelOneChartOneTextAbove,
+                                            textBelow: gapsInCoverageContent.panelOneChartOneTextBelow,
+                                            textInfo: gapsInCoverageContent.panelOneChartOneInfoText,
+                                            maxImgWidth: 600,
+                                        },
+                                    ]
                                   : undefined,
                           },
                       },
