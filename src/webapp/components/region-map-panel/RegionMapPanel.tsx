@@ -64,6 +64,7 @@ const Container = styled.div`
     overflow-y: auto;
     font-size: 16px;
     padding: 16px;
+    height: 100%;
 `;
 
 const ParagraphContainer = styled.div`
@@ -95,6 +96,7 @@ const Marker = styled.img`
 
 const StyledTitle = styled(Typography)`
     font-size: 40px;
+    line-height: 1.2;
 `;
 
 const StyledTypography = styled(Typography)`
