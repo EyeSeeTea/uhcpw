@@ -16,6 +16,7 @@ const MAP_CATEGORY_NAME: Record<string, string> = {
     "UHCW_Self-reported unmet need for prescribed medicines due to cost (richest)": "Richest quintile",
 };
 
+// NOTICE: This file is not used in the application. chart_MfLZYD6QCPy_Options.ts is used instead.
 export const chart_MfLZYD6QCPy_Cuztomizations: ChartCustomization = {
     title: { text: "" },
     legend: { ...baseLegend },
