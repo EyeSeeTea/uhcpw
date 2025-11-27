@@ -16,7 +16,6 @@ import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel"
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
 import { useRegionalPageSeoConfig } from "./useRegionalPageSeoConfig";
 import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
-import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { RegionMapPanel } from "../../components/region-map-panel/RegionMapPanel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
@@ -63,20 +62,6 @@ export const RegionalPage: React.FC = () => {
             />
 
             <MapSection ref={refs.regionMap}>
-                <SectionTitleDivider>
-                    <SectionTitle>
-                        {i18n.t(
-                            `${
-                                ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA === selectedRegionId ? "" : "The "
-                            }{{region}} at a glance`,
-                            {
-                                region: selectedRegion?.name,
-                                interpolation: { escapeValue: false },
-                            }
-                        )}
-                    </SectionTitle>
-                </SectionTitleDivider>
-
                 {isSmallScreen ? (
                     <PanelContainer>
                         <RegionMapPanel mainPanelContent={mainPanelContent} />
@@ -206,12 +191,13 @@ const PanelContainer = styled.div`
 `;
 
 const MapSection = styled.section`
+    margin-top: 5px;
     height: 85vh;
     min-height: 620px;
     scroll-margin-top: 80px;
 
     .region-map {
-        height: calc(100% - 65px);
+        height: 100%;
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
