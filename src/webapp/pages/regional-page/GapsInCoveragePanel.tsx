@@ -347,6 +347,10 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolea
 
 const TextContainer = styled.div`
     max-width: 600px;
+
+    p:has(+ ul) {
+        margin-bottom: 0;
+    }
 `;
 
 const Image = styled.img<{ $hasMarginTop?: boolean }>`

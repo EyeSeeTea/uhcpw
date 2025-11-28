@@ -237,6 +237,10 @@ const StyledUl = styled.ul`
 
 const TextContainer = styled.div<{ hasNarrowerText?: boolean }>`
     max-width: ${props => (props.hasNarrowerText ? "600px" : "100%")};
+
+    p:has(+ ul) {
+        margin-bottom: 0;
+    }
 `;
 
 const TextLink = styled.a`
