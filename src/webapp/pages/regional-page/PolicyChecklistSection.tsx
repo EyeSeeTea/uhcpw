@@ -294,6 +294,7 @@ const CountryExperiencesContainer = styled.div`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         overflow: visible;
+        max-height: none;
         height: auto;
         contain: initial;
         margin-inline-end: 0;
