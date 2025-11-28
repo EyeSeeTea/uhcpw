@@ -51,7 +51,8 @@ export const comparativeColumnChartOptions: (params: {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
-            const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
+            const metadataOrgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId];
+            const orgUnit = metadataOrgUnit?.code || metadataOrgUnit?.name || "";
             const year = row[2] || "";
 
             return `${orgUnit} ${year}`;
