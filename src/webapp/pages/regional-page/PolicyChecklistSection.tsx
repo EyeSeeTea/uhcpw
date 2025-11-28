@@ -34,6 +34,7 @@ type PolicyChecklistSectionProps = {
     isSmallScreen: boolean;
     hasDownloadFile?: boolean;
     downloadFile: string;
+    onSetSidePanelWidth?: (width: number) => void;
 };
 
 export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = React.memo(props => {
@@ -48,8 +49,10 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
         isSmallScreen,
         downloadFile,
         hasDownloadFile = false,
+        onSetSidePanelWidth,
     } = props;
     const { redirectWithExternalLink } = useAnalytics();
+    const firstPanelRef = React.useRef<HTMLDivElement | null>(null);
 
     const markdownComponents: Components = React.useMemo(
         () => ({
@@ -69,6 +72,28 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
         [redirectWithExternalLink]
     );
 
+    React.useEffect(() => {
+        if (!onSetSidePanelWidth || !firstPanelRef.current || isLoading) return;
+
+        const element = firstPanelRef.current;
+
+        const observer = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                const width = entry.contentRect.width;
+                onSetSidePanelWidth(width + 64); // adding the left padding of the container
+            }
+        });
+
+        observer.observe(element);
+
+        onSetSidePanelWidth(element.offsetWidth + 64); // adding the left padding of the container
+
+        return () => {
+            observer.disconnect();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onSetSidePanelWidth, isLoading, firstPanelRef.current]);
+
     return (
         <Container>
             {isLoading || !checklist ? (
@@ -76,7 +101,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
             ) : (
                 <>
                     <ContentWrapper>
-                        <TextContentWrapper>
+                        <TextContentWrapper ref={firstPanelRef}>
                             <IntroText>
                                 <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
                             </IntroText>
@@ -184,7 +209,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
 });
 
 const Container = styled.div`
-    padding: 40px 40px 40px 64px;
+    padding: 40px 64px 40px 64px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-block-end: 0;
@@ -220,7 +245,7 @@ const TextContentWrapper = styled.div`
 
 const ContentWrapper = styled.div`
     display: grid;
-    grid-template-columns: minmax(0, 33%) minmax(0, 34%) minmax(0, 33%);
+    grid-template-columns: minmax(0, 33%) minmax(0, 33%) minmax(0, 33%);
     gap: 50px;
     width: 100%;
     > * {
@@ -246,7 +271,6 @@ const TableContainer = styled.div`
 const CountryExperiencesContainer = styled.div`
     background-color: ${colors.white};
     width: 100%;
-    margin-inline-end: 20px;
     min-height: 0;
     overflow-y: auto;
     max-height: 100%;
