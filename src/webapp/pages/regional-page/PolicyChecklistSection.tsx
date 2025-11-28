@@ -186,21 +186,23 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                             </TableContainer>
                         </div>
 
-                        <CountryExperiencesContainer>
-                            {filteredCountryExperiences && filteredCountryExperiences.length > 0
-                                ? filteredCountryExperiences.map(countryExperience => (
-                                      <CountryExperienceBox
-                                          key={countryExperience.countryId}
-                                          countryName={countryExperience.countryName}
-                                          title={countryExperience.title}
-                                          content={countryExperience.content}
-                                          reference={countryExperience.reference}
-                                          showDialogInFullScreen={isSmallScreen}
-                                          disableGoToCountryPage={countryExperience.disableGoToCountryPage}
-                                      />
-                                  ))
-                                : null}
-                        </CountryExperiencesContainer>
+                        <StickyRightColumn>
+                            <CountryExperiencesContainer>
+                                {filteredCountryExperiences && filteredCountryExperiences.length > 0
+                                    ? filteredCountryExperiences.map(countryExperience => (
+                                          <CountryExperienceBox
+                                              key={`${selectedChecklistItem || ""}-${countryExperience.countryId}`}
+                                              countryName={countryExperience.countryName}
+                                              title={countryExperience.title}
+                                              content={countryExperience.content}
+                                              reference={countryExperience.reference}
+                                              showDialogInFullScreen={isSmallScreen}
+                                              disableGoToCountryPage={countryExperience.disableGoToCountryPage}
+                                          />
+                                      ))
+                                    : null}
+                            </CountryExperiencesContainer>
+                        </StickyRightColumn>
                     </ContentWrapper>
                 </>
             )}
@@ -257,6 +259,16 @@ const ContentWrapper = styled.div`
     }
 `;
 
+const StickyRightColumn = styled.div`
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        position: static;
+    }
+`;
+
 const TableContainer = styled.div`
     display: flex;
     gap: 16px;
@@ -271,11 +283,10 @@ const TableContainer = styled.div`
 const CountryExperiencesContainer = styled.div`
     background-color: ${colors.white};
     width: 100%;
-    min-height: 0;
     overflow-y: auto;
-    max-height: 100%;
-    contain: size;
+    flex: 1 1 auto;
     margin-block-start: 70px;
+    max-height: calc(100vh - 70px - 80px);
 
     div:last-child {
         margin-block-end: 0;
@@ -283,7 +294,6 @@ const CountryExperiencesContainer = styled.div`
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         overflow: visible;
-        max-height: none;
         height: auto;
         contain: initial;
         margin-inline-end: 0;
