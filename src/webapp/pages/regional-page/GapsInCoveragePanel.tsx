@@ -38,13 +38,14 @@ type GapsInCoveragePanelProps = {
     progressText?: string;
     visuals?: VisualContent[];
     showDialogInFullScreen?: boolean;
+    rightIcon?: string;
 };
 
 export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => {
     const isSmallScreen = useIsSmallScreen();
     const { redirectWithExternalLink } = useAnalytics();
 
-    const { regionId, mainText, progressText, visuals, showDialogInFullScreen = false } = props;
+    const { regionId, mainText, progressText, visuals, showDialogInFullScreen = false, rightIcon } = props;
     const [visualTextInfo, setVisualTextInfo] = useState<string | undefined>(undefined);
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualContent | undefined>(undefined);
 
@@ -83,144 +84,170 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
     );
 
     return (
-        <Container>
-            {mainText && (
-                <TextContainer>
-                    <ReactMarkdown components={markdownComponents}>{mainText}</ReactMarkdown>
-                </TextContainer>
-            )}
+        <Container $displayflex={!!rightIcon}>
+            <LeftContent>
+                {mainText && (
+                    <TextContainer>
+                        <ReactMarkdown components={markdownComponents}>{mainText}</ReactMarkdown>
+                    </TextContainer>
+                )}
 
-            {visuals?.map((visualContent, index) => (
-                <React.Fragment key={`region-${regionId}-visual-content-${index}`}>
-                    {visualContent.textAbove && (
-                        <TextContainer style={{ marginTop: "12px" }}>
-                            <ReactMarkdown components={markdownComponents}>{visualContent.textAbove}</ReactMarkdown>
-                        </TextContainer>
-                    )}
+                {visuals?.map((visualContent, index) => (
+                    <React.Fragment key={`region-${regionId}-visual-content-${index}`}>
+                        {visualContent.textAbove && (
+                            <TextContainer style={{ marginTop: "12px" }}>
+                                <ReactMarkdown components={markdownComponents}>{visualContent.textAbove}</ReactMarkdown>
+                            </TextContainer>
+                        )}
 
-                    {visualContent.title && !visualContent.visualizationId && !visualContent.policyCategoryId ? (
-                        <ChartTitleRow>
-                            <ChartTitle variant="h6" gutterBottom>
-                                {visualContent.title}
-                            </ChartTitle>
+                        {visualContent.title && !visualContent.visualizationId && !visualContent.policyCategoryId ? (
+                            <ChartTitleRow>
+                                <ChartTitle variant="h6" gutterBottom>
+                                    {visualContent.title}
+                                </ChartTitle>
 
-                            <StyledIconButton
-                                onClick={() => setVisualTextInfo(visualContent?.textInfo)}
-                                $color="#185698"
-                                padding="4px"
-                            >
-                                <CustomInfoIconCountry color="primary" className="info-button" />
-                            </StyledIconButton>
-                        </ChartTitleRow>
-                    ) : null}
+                                <StyledIconButton
+                                    onClick={() => setVisualTextInfo(visualContent?.textInfo)}
+                                    $color="#185698"
+                                    padding="4px"
+                                >
+                                    <CustomInfoIconCountry color="primary" className="info-button" />
+                                </StyledIconButton>
+                            </ChartTitleRow>
+                        ) : null}
 
-                    {visualContent.visualizationId && visualContent.years && visualContent.countries ? (
-                        <VisualizationContainer key={visualContent.visualizationId}>
-                            <VisualizationPlugin
-                                visualizationId={visualContent.visualizationId}
-                                visualizationName={visualContent.visualizationName}
-                                years={visualContent.years}
-                                countries={visualContent.countries}
-                                currentCountryOrRegion={visualContent.currentCountryOrRegion}
-                                regions={visualContent.regions}
-                                withoutBackground
-                                useHeaderForCountryOrRegionalPage
-                                showDialogInFullScreen={isSmallScreen}
-                                onDownloadImage={() => handleOpenScreenshot(visualContent)}
-                                analyticsPageTitle={"Regional page"}
-                                seriesColors={visualContent.seriesColors}
-                                isRegionalPage
+                        {visualContent.visualizationId && visualContent.years && visualContent.countries ? (
+                            <VisualizationContainer key={visualContent.visualizationId}>
+                                <VisualizationPlugin
+                                    visualizationId={visualContent.visualizationId}
+                                    visualizationName={visualContent.visualizationName}
+                                    years={visualContent.years}
+                                    countries={visualContent.countries}
+                                    currentCountryOrRegion={visualContent.currentCountryOrRegion}
+                                    regions={visualContent.regions}
+                                    withoutBackground
+                                    useHeaderForCountryOrRegionalPage
+                                    showDialogInFullScreen={isSmallScreen}
+                                    onDownloadImage={() => handleOpenScreenshot(visualContent)}
+                                    analyticsPageTitle={"Regional page"}
+                                    seriesColors={visualContent.seriesColors}
+                                    isRegionalPage
+                                />
+                            </VisualizationContainer>
+                        ) : visualContent.visual ? (
+                            <Image
+                                width="100%"
+                                $hasMarginTop={!visualContent.title}
+                                style={visualContent.maxImgWidth ? { maxWidth: `${visualContent.maxImgWidth}px` } : {}}
+                                alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
+                                src={visualContent.visual}
                             />
-                        </VisualizationContainer>
-                    ) : visualContent.visual ? (
-                        <Image
-                            width="100%"
-                            $hasMarginTop={!visualContent.title}
-                            style={visualContent.maxImgWidth ? { maxWidth: `${visualContent.maxImgWidth}px` } : {}}
-                            alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
-                            src={visualContent.visual}
-                        />
-                    ) : visualContent.policyCategoryId &&
-                      visualContent.countries?.length &&
-                      visualContent.years?.length ? (
-                        <PolicyExplorerTable
-                            title={visualContent.title || ""}
-                            categoryId={visualContent.policyCategoryId}
-                            countries={visualContent.countries}
-                            years={visualContent.years}
-                        />
-                    ) : null}
+                        ) : visualContent.policyCategoryId &&
+                          visualContent.countries?.length &&
+                          visualContent.years?.length ? (
+                            <PolicyExplorerTable
+                                title={visualContent.title || ""}
+                                categoryId={visualContent.policyCategoryId}
+                                countries={visualContent.countries}
+                                years={visualContent.years}
+                            />
+                        ) : null}
 
-                    {visualContent.textBelow && (
-                        <TextContainer style={{ marginTop: "12px" }}>
-                            <ReactMarkdown components={markdownComponents}>{visualContent.textBelow}</ReactMarkdown>
-                        </TextContainer>
-                    )}
-                </React.Fragment>
-            ))}
-
-            {visualTextInfo &&
-                (showDialogInFullScreen ? (
-                    <FullScreenNotesDialog
-                        isOpen={!!visualTextInfo}
-                        onClose={() => setVisualTextInfo(undefined)}
-                        dialogInfo={visualTextInfo}
-                    />
-                ) : (
-                    <NotesDialog
-                        isOpen={!!visualTextInfo}
-                        onClose={() => setVisualTextInfo(undefined)}
-                        dialogInfo={visualTextInfo}
-                    />
+                        {visualContent.textBelow && (
+                            <TextContainer style={{ marginTop: "12px" }}>
+                                <ReactMarkdown components={markdownComponents}>{visualContent.textBelow}</ReactMarkdown>
+                            </TextContainer>
+                        )}
+                    </React.Fragment>
                 ))}
 
-            {currentGraphScreenshot &&
-            currentGraphScreenshot.visualizationId &&
-            currentGraphScreenshot.years &&
-            currentGraphScreenshot.countries ? (
-                <ScreenshotModal
-                    open={true}
-                    onClose={handleCloseScreenshot}
-                    title={currentGraphScreenshot.visualizationName || ""}
-                    backgroundColor={"#f1f9fc"}
-                    analyticsPageTitle={"Regional page"}
-                    analyticsContent={analyticsContent}
-                    forceRotation={isSmallScreen}
-                >
-                    <VisualizationPlugin
-                        visualizationId={currentGraphScreenshot.visualizationId}
-                        visualizationName={currentGraphScreenshot.visualizationName}
-                        years={currentGraphScreenshot.years}
-                        countries={currentGraphScreenshot.countries}
-                        regions={currentGraphScreenshot.regions}
-                        withoutBackground
-                        useHeaderForCountryOrRegionalPage
-                        currentCountryOrRegion={currentGraphScreenshot.currentCountryOrRegion}
-                        isScreenshot={true}
-                        analyticsPageTitle={"Regional page"}
-                        seriesColors={currentGraphScreenshot.seriesColors}
-                        isRegionalPage
-                    />
-                </ScreenshotModal>
-            ) : null}
+                {visualTextInfo &&
+                    (showDialogInFullScreen ? (
+                        <FullScreenNotesDialog
+                            isOpen={!!visualTextInfo}
+                            onClose={() => setVisualTextInfo(undefined)}
+                            dialogInfo={visualTextInfo}
+                        />
+                    ) : (
+                        <NotesDialog
+                            isOpen={!!visualTextInfo}
+                            onClose={() => setVisualTextInfo(undefined)}
+                            dialogInfo={visualTextInfo}
+                        />
+                    ))}
 
-            {progressText && (
-                <TextContainer>
-                    <ReactMarkdown components={markdownComponents}>{progressText}</ReactMarkdown>
-                </TextContainer>
+                {currentGraphScreenshot &&
+                currentGraphScreenshot.visualizationId &&
+                currentGraphScreenshot.years &&
+                currentGraphScreenshot.countries ? (
+                    <ScreenshotModal
+                        open={true}
+                        onClose={handleCloseScreenshot}
+                        title={currentGraphScreenshot.visualizationName || ""}
+                        backgroundColor={"#f1f9fc"}
+                        analyticsPageTitle={"Regional page"}
+                        analyticsContent={analyticsContent}
+                        forceRotation={isSmallScreen}
+                    >
+                        <VisualizationPlugin
+                            visualizationId={currentGraphScreenshot.visualizationId}
+                            visualizationName={currentGraphScreenshot.visualizationName}
+                            years={currentGraphScreenshot.years}
+                            countries={currentGraphScreenshot.countries}
+                            regions={currentGraphScreenshot.regions}
+                            withoutBackground
+                            useHeaderForCountryOrRegionalPage
+                            currentCountryOrRegion={currentGraphScreenshot.currentCountryOrRegion}
+                            isScreenshot={true}
+                            analyticsPageTitle={"Regional page"}
+                            seriesColors={currentGraphScreenshot.seriesColors}
+                            isRegionalPage
+                        />
+                    </ScreenshotModal>
+                ) : null}
+
+                {progressText && (
+                    <TextContainer>
+                        <ReactMarkdown components={markdownComponents}>{progressText}</ReactMarkdown>
+                    </TextContainer>
+                )}
+            </LeftContent>
+
+            {rightIcon && (
+                <RightIconContainer>
+                    <Icon src={rightIcon} />
+                </RightIconContainer>
             )}
         </Container>
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $displayflex?: boolean }>`
     max-width: 100%;
     padding: 20px 50px 30px 50px;
+    display: ${props => (props.$displayflex ? "flex" : "block")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
         padding-inline-start: 32px;
     }
+`;
+
+const LeftContent = styled.div``;
+
+const RightIconContainer = styled.div`
+    width: calc(100% - 600px);
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+    }
+`;
+
+const Icon = styled.img`
+    width: 100%;
+    max-width: 230px;
+    height: auto;
 `;
 
 const ChartTitleRow = styled.div`

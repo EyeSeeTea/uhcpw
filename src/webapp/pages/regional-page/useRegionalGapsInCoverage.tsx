@@ -10,6 +10,7 @@ import { GapsInCoveragePanel } from "./GapsInCoveragePanel";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
 import { LatestAvailable } from "../../../domain/entities/Year";
+import UmbrellaRed from "../../assets/country-page/umbrella-3.svg";
 
 export type RegionalGapsInCoverageState = {
     configs: (VerticalTabConfig | AccordionConfig)[];
@@ -87,6 +88,7 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelTwoMainText,
                               progressText: gapsInCoverageContent.panelTwoProgressText,
                               showDialogInFullScreen: isSmallScreen,
+                              rightIcon: UmbrellaRed,
                               visuals: gapsInCoverageContent.hasPanelTwoChartOne
                                   ? [
                                         {
