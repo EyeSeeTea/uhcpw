@@ -14,5 +14,6 @@ export const chart_twyY1ulr7uD_Seed: VisualizationExtra = {
     hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
     isComparative: true,
+    isYearSingleSelection: true,
     subcategoryName: sortedSubcategoryNames.comparative,
 };
