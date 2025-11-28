@@ -10,7 +10,6 @@ import { GapsInCoveragePanel } from "./GapsInCoveragePanel";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
 import { LatestAvailable } from "../../../domain/entities/Year";
-import { GapsInCoverageTestPanel } from "./GapsInCoverageTestPanel";
 
 export type RegionalGapsInCoverageState = {
     configs: (VerticalTabConfig | AccordionConfig)[];
@@ -244,28 +243,29 @@ export function useRegionalGapsInCoverage(
                       {
                           tab: 6,
                           tabTitle: gapsInCoverageContent.panelSevenTitle,
-                          // TODO: Replace with correct component when ready
-                          Component: GapsInCoverageTestPanel,
+                          Component: GapsInCoveragePanel,
                           props: {
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelSevenMainText,
                               progressText: gapsInCoverageContent.panelSevenProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visual: {
-                                  title:
-                                      gapsInCoverageContent.panelSevenChartOneTitle !== ""
-                                          ? gapsInCoverageContent.panelSevenChartOneTitle
-                                          : undefined,
-                                  textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
-                                  textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
-                                  visualizationId: "y4qAv6eW4nb",
-                                  visualizationName:
-                                      gapsInCoverageContent.panelSevenChartOneTitle !== ""
-                                          ? gapsInCoverageContent.panelSevenChartOneTitle
-                                          : VisualizationsSeeds["y4qAv6eW4nb"]?.regionalPageName,
-                                  years: [LatestAvailable.id],
-                                  countries: [...(selectedRegion.countries || [])],
-                              },
+                              visuals: [
+                                  {
+                                      title:
+                                          gapsInCoverageContent.panelSevenChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelSevenChartOneTitle
+                                              : undefined,
+                                      textAbove: gapsInCoverageContent.panelSevenChartOneTextAbove,
+                                      textBelow: gapsInCoverageContent.panelSevenChartOneTextBelow,
+                                      visualizationId: "y4qAv6eW4nb",
+                                      visualizationName:
+                                          gapsInCoverageContent.panelSevenChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelSevenChartOneTitle
+                                              : VisualizationsSeeds["y4qAv6eW4nb"]?.regionalPageName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || [])],
+                                  },
+                              ],
                           },
                       },
                   ]

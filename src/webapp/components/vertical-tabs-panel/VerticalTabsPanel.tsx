@@ -300,8 +300,12 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
 
         & .start-with-number-label {
             display: inline-block;
-            padding-left: 10px;
-            text-indent: -12px;
+            padding-left: 20px;
+            text-indent: -20px;
+
+            &::first-letter {
+                margin-right: 8px;
+            }
         }
 
         &[aria-selected="true"] {

@@ -89,7 +89,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                         <div>
                             <TableTitleContainer>
                                 <Title variant="body1">
-                                    {i18n.t("Click an item to see examples of country experience")}
+                                    {i18n.t("Click an item on the policy checklist to see country examples")}
                                 </Title>
                                 {hasDownloadFile && (
                                     <a
@@ -281,6 +281,7 @@ const StyledTableCell = styled(TableCell)<{ $isSelected?: boolean }>`
     color: black;
     align-content: "start";
     border-width: 4px;
+    padding: 12px;
 `;
 
 const TableTitleContainer = styled.div`
@@ -298,7 +299,7 @@ const DownloadButton = styled(Button)`
 
 const Paragraph = styled(Typography)`
     font-family: Lato;
-    margin-block: 10px;
+    margin-block: 0px;
     font-size: 1rem;
     color: ${colors.black};
 
