@@ -104,7 +104,10 @@ const REGION_CONTENT_DATA_ELEMENT_IDS = {
         panelFiveChartOneTitle: "i8WHde0DSXJ",
         panelFiveChartOneTextAbove: "y8cgUDrmjSv",
         panelFiveChartOneTextBelow: "lGXxATwmcQ8",
-        panelFiveChartTwo: "rbenCnH0Lyv",
+        panelFiveChartTwoEU: "rbenCnH0Lyv",
+        panelFiveChartTwoER: "PE5WXzfkHap",
+        panelFiveChartTwoWB: "oOCJW6VzqdB",
+        panelFiveChartTwoEECA: "kn4QEUnYiFy",
         panelFiveChartTwoTextAbove: "jFTkQH2k34M",
         panelFiveChartTwoTextBelow: "JdC3MgLh7gJ",
         panelFiveChartTwoInfoText: "pgCFN1rGP5b",
@@ -184,6 +187,15 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                 : regionOrgUnitId === ORG_UNIT_IDS.WESTERN_BALKANS
                 ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneWB
                 : REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneER;
+
+        const panelFiveChartTwoDEId =
+            regionOrgUnitId === ORG_UNIT_IDS.EUROPEAN_UNION
+                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoEU
+                : regionOrgUnitId === ORG_UNIT_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA
+                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoEECA
+                : regionOrgUnitId === ORG_UNIT_IDS.WESTERN_BALKANS
+                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoWB
+                : REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoER;
 
         return {
             mainMapPanelContent: {
@@ -464,10 +476,8 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartOneInfoText,
                     regionalContent
                 ),
-                panelFiveChartTwo: `${this.api.baseUrl}/api/events/files?dataElementUid=${REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwo}&eventUid=${regionalContent?.event}`,
-                hasPanelFiveChartTwo:
-                    getDataValue(REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwo, regionalContent) !==
-                    "",
+                panelFiveChartTwo: `${this.api.baseUrl}/api/events/files?dataElementUid=${panelFiveChartTwoDEId}&eventUid=${regionalContent?.event}`,
+                hasPanelFiveChartTwo: getDataValue(panelFiveChartTwoDEId, regionalContent) !== "",
                 panelFiveChartTwoTitle: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelFiveChartTwoTitle,
                     regionalContent
