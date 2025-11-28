@@ -147,7 +147,7 @@ const TableHeader = styled.div`
     gap: 24px;
     align-items: center;
     justify-content: space-between;
-    margin-block-start: 16px;
+    margin-block-start: 8px;
 `;
 
 const Title = styled(Typography)`
@@ -191,9 +191,9 @@ const TablePaper = styled(Paper)`
 const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType }>`
     color: #0460a7;
     font-weight: 500;
-    max-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "100px" : "18px")};
-    min-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "100px" : "18px")};
-    width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "100px" : "18px")};
+    max-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "150px" : "18px")};
+    min-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "150px" : "18px")};
+    width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "150px" : "18px")};
     color: black;
     margin: 0;
     padding: 0;

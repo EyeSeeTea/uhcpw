@@ -277,6 +277,10 @@ const CountryExperiencesContainer = styled.div`
     contain: size;
     margin-block-start: 70px;
 
+    div:last-child {
+        margin-block-end: 0;
+    }
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         overflow: visible;
         max-height: none;

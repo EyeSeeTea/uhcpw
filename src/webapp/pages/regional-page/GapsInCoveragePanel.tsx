@@ -264,7 +264,7 @@ const ChartTitleRow = styled.div`
 
 const ChartTitle = styled(Typography)`
     font-family: Lato;
-    margin-block-start: 10px;
+    margin-block-start: 19px;
     margin-block-end: 6px;
     font-size: 1rem;
     font-weight: bold;
