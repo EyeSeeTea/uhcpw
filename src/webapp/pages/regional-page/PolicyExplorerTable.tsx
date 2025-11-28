@@ -147,6 +147,7 @@ const TableHeader = styled.div`
     gap: 24px;
     align-items: center;
     justify-content: space-between;
+    margin-block-start: 16px;
 `;
 
 const Title = styled(Typography)`
