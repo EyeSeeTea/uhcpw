@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { useAppContext } from "../../contexts/app-context";
@@ -8,6 +8,7 @@ import { CategoryOption } from "../../components/policy-explorer/category-select
 
 type RegionalPolicyExplorerTableState = {
     tableData: PolicyExplorerCell[][] | undefined;
+    hasData: boolean;
     category: CategoryOption | undefined;
     isNotesDialogOpen: boolean;
     setIsNotesDialogOpen: (isOpen: boolean) => void;
@@ -76,8 +77,19 @@ export function useRegionalPolicyExplorerTable(
         years,
     ]);
 
+    const hasData = useMemo(() => {
+        return (
+            tableData !== undefined &&
+            tableData.length > 0 &&
+            tableData.some(row => {
+                return row.some(cell => cell.type === PolicyExplorerCellType.DATA && cell.value !== "");
+            })
+        );
+    }, [tableData]);
+
     return {
         tableData: tableData,
+        hasData: hasData,
         category: category,
         isNotesDialogOpen: isNotesDialogOpen,
         setIsNotesDialogOpen: setIsNotesDialogOpen,
