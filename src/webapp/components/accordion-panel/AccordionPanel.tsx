@@ -1,9 +1,10 @@
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import React from "react";
+import React, { useCallback } from "react";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 import { colors } from "../../pages/app/themes/dhis2.theme";
+import i18n from "../../../locales";
 
 export type AccordionConfig = {
     tab: number;
@@ -45,6 +46,14 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
         leftPadding,
     } = props;
 
+    const getLabel = useCallback((key: string) => {
+        const text = i18n.t(key, { nsSeparator: false });
+
+        const className = startWithNumber(text) ? "start-with-number-label" : undefined;
+
+        return <span className={className}>{text}</span>;
+    }, []);
+
     return (
         <AccordionContainer>
             {configs.map(config => {
@@ -81,7 +90,7 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
                             $isSecondaryColor={isSecondaryColor}
                             $leftPadding={leftPadding}
                         >
-                            <Typography>{config.tabTitle}</Typography>
+                            <StyledTypography>{getLabel(config.tabTitle)}</StyledTypography>
                         </StyledAccordionSummary>
                         <StyledAccordionDetails>
                             {config.Component ? <config.Component {...config.props} /> : null}
@@ -97,6 +106,18 @@ const AccordionContainer = styled.div`
     padding: 0;
     background: white;
     color: white;
+`;
+
+const StyledTypography = styled(Typography)`
+    & .start-with-number-label {
+        display: inline-block;
+        padding-left: 20px;
+        text-indent: -20px;
+
+        &::first-letter {
+            margin-right: 8px;
+        }
+    }
 `;
 
 const StyledAccordion = styled(Accordion)<{
@@ -184,3 +205,8 @@ const StyledAccordionDetails = styled(AccordionDetails)`
     background: white;
     padding: 0;
 `;
+
+function startWithNumber(text: string) {
+    const numberedRegex = /^\d+\s/;
+    return numberedRegex.test(text);
+}

@@ -353,7 +353,8 @@ const TextContainer = styled.div`
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        max-width: 100%;
+        width: calc(100% - 64px);
+        max-width: calc(100% - 64px);
     }
 `;
 

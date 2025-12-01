@@ -276,7 +276,12 @@ const StyledTableBody = styled(TableBody)`
     }
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        width: calc(100% - 64px);
+        max-width: calc(100% - 64px);
+    }
+`;
 
 const Center = styled.div`
     height: 350px;

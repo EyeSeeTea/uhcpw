@@ -80,7 +80,7 @@ export const RegionalPage: React.FC = () => {
 
             {isSmallScreen ? (
                 <>
-                    <Section ref={refs.numbers}>
+                    <MobileSection ref={refs.numbers}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>
                                 {i18n.t("Numbers: financial hardship, unmet need and spending on health")}
@@ -95,9 +95,9 @@ export const RegionalPage: React.FC = () => {
                             handleTabChange={regionNumbers.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
-                    </Section>
+                    </MobileSection>
 
-                    <Section ref={refs.gapsInCoverage}>
+                    <MobileSection ref={refs.gapsInCoverage}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>{i18n.t("The story behind the numbers: gaps in coverage")}</SectionTitle>
                         </SectionTitleDivider>
@@ -110,9 +110,9 @@ export const RegionalPage: React.FC = () => {
                             handleTabChange={gapsInCoverage.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
-                    </Section>
+                    </MobileSection>
 
-                    <Section ref={refs.policyChecklist}>
+                    <MobileSection ref={refs.policyChecklist}>
                         <SectionTitleDivider onlyBottomMargin>
                             <SectionTitle>{i18n.t("Progress is possible: a policy checklist")}</SectionTitle>
                         </SectionTitleDivider>
@@ -129,11 +129,11 @@ export const RegionalPage: React.FC = () => {
                             downloadFile={policyChecklist.content.downloadFile}
                             hasDownloadFile={policyChecklist.content.hasDownloadFile}
                         />
-                    </Section>
+                    </MobileSection>
 
                     {!isEuropeanRegion ? (
                         <React.Fragment>
-                            <Section ref={refs.resources}>
+                            <MobileSection ref={refs.resources}>
                                 <SectionTitleDivider isLighter>
                                     <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/resources")}>
                                         {i18n.t("Resources")}
@@ -143,9 +143,9 @@ export const RegionalPage: React.FC = () => {
                                 {!isEUorEuropeanRegion && (
                                     <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
                                 )}
-                            </Section>
+                            </MobileSection>
 
-                            <Section ref={refs.experts}>
+                            <MobileSection ref={refs.experts}>
                                 <SectionTitleDivider isLighter>
                                     <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
                                         {i18n.t("Expert network")}
@@ -159,7 +159,7 @@ export const RegionalPage: React.FC = () => {
                                         isSmallScreen={isSmallScreen}
                                     />
                                 )}
-                            </Section>
+                            </MobileSection>
                         </React.Fragment>
                     ) : null}
                 </>
@@ -201,7 +201,7 @@ const MapSection = styled.section`
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        scroll-margin-top: 101px;
+        scroll-margin-top: 115px;
         height: initial;
         min-height: initial;
 
@@ -211,9 +211,9 @@ const MapSection = styled.section`
     }
 `;
 
-const Section = styled.section`
+const MobileSection = styled.section`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        scroll-margin-top: 101px;
+        scroll-margin-top: 115px;
     }
 `;
 
