@@ -9,7 +9,7 @@ const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "#f6f000",
     "Outpatient specialist visits": "#ffc000",
     "Emergency care": "#c78f3d",
-    "Outpatient prescribed medicines": "#c00000",
+    "Outpatient medicines": "#c00000",
     "Medical products": "#ed7d31",
     "Diagnostics tests": "#7030a0",
     "Dental care visits": "#00b0f0",
