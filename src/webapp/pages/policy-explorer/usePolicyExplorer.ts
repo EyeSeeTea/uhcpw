@@ -91,7 +91,7 @@ export function usePolicyExplorer({
     }, [countryFilter.selected?.length]);
 
     useEffect(() => {
-        compositionRoot.policyExplorer.getCategories.execute().run(
+        compositionRoot.policyExplorer.getCategories.execute(false).run(
             categories => {
                 setPolicyExplorerCategories(categories);
                 setCategoryFilters(buildCategoryFilterOptions(categories));

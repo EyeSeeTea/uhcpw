@@ -74,22 +74,12 @@ type TabsPanelProps = {
     onChangeTabValue: (event: React.ChangeEvent<{}>, newValue: number) => void;
     ariaLabel: string;
     isSecondaryColor?: boolean;
-    onTabsWidthChange?: (width: number) => void;
     sidePanelWidth?: number;
 };
 
 export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
-    const {
-        tabsConfig,
-        onChangeTabValue,
-        tabValue,
-        ariaLabel,
-        isSecondaryColor = false,
-        onTabsWidthChange,
-        sidePanelWidth,
-    } = props;
+    const { tabsConfig, onChangeTabValue, tabValue, ariaLabel, isSecondaryColor = false, sidePanelWidth } = props;
     const classes = useStyles();
-    const gridItemRef = React.useRef<HTMLDivElement | null>(null);
 
     const onWheel = useCallback(
         (event: React.WheelEvent<HTMLButtonElement>) => {
@@ -126,26 +116,10 @@ export const VerticalTabsPanel: React.FC<TabsPanelProps> = props => {
         return <span className={className}>{text}</span>;
     }, []);
 
-    React.useEffect(() => {
-        if (!onTabsWidthChange) return;
-
-        const handleResize = () => {
-            if (gridItemRef.current) {
-                onTabsWidthChange(gridItemRef.current.offsetWidth);
-            }
-        };
-
-        handleResize();
-        window.addEventListener("resize", handleResize);
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, [onTabsWidthChange]);
-
     return (
         <StyledGridContainer container aria-label={ariaLabel}>
             <StyledGridItem
                 item
-                ref={gridItemRef}
                 xs={1}
                 md={4}
                 lg={4}
@@ -300,8 +274,12 @@ const StyledTab = styled(Tab)<{ isSecondaryColor?: boolean }>`
 
         & .start-with-number-label {
             display: inline-block;
-            padding-left: 10px;
-            text-indent: -12px;
+            padding-left: 20px;
+            text-indent: -20px;
+
+            &::first-letter {
+                margin-right: 8px;
+            }
         }
 
         &[aria-selected="true"] {

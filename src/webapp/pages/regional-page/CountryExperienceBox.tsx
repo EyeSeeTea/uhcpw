@@ -77,7 +77,9 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
             {expanded ? (
                 <Content>
-                    <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
+                    <ReactMarkdownContainer>
+                        <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
+                    </ReactMarkdownContainer>
                     <StyledReadMoreButton
                         endIcon={<ExpandLessIcon />}
                         onClick={() => setExpanded(false)}
@@ -124,6 +126,12 @@ const Content = styled.div`
     padding: 16px 16px 0px 0;
     color: ${colors.black};
     font-size: 16px;
+`;
+
+const ReactMarkdownContainer = styled.div`
+    p:has(+ ul) {
+        margin-bottom: 0;
+    }
 `;
 
 const CountryExperienceContent = styled.div`

@@ -162,6 +162,7 @@ const FlexLogoContainer = styled(FlexContainer)<{ isCountryPage?: boolean }>`
 const MenuContainer = styled.div``;
 
 const StyledTypography = styled(Typography)`
+    padding: 6px 0px;
     @media (max-width: 400px) {
         font-size: 14px;
     }

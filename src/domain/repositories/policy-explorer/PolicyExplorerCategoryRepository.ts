@@ -5,6 +5,6 @@ import {
 } from "../../entities/policy-explorer/PolicyExplorerCategory";
 
 export interface PolicyExplorerCategoryRepository {
-    getAll(): FutureData<PolicyExplorerCategory[]>;
+    getAll(isRegionalPage?: boolean): FutureData<PolicyExplorerCategory[]>;
     getSelectCategoryInfo(): FutureData<PolicyExplorerSelectCategoryInfo>;
 }

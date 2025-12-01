@@ -10,6 +10,7 @@ import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndic
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
+import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -47,6 +48,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     chartsWithNoData,
 }) => {
     const isSmallScreen = useIsSmallScreen();
+    const { redirectWithExternalLink } = useAnalytics();
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
 
@@ -59,8 +61,13 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
             ),
             li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
             ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
+            a: ({ ...props }) => (
+                <TextLink href={props.href} target="_blank" rel="noreferrer" onClick={redirectWithExternalLink}>
+                    {props.children}
+                </TextLink>
+            ),
         }),
-        []
+        [redirectWithExternalLink]
     );
 
     const handleOpenScreenshot = React.useCallback((graph: VisualizationProps) => {
@@ -80,9 +87,17 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
         [currentGraphScreenshot?.visualizationName]
     );
 
+    const chartIds = useMemo(() => {
+        return graphs?.map(graph => graph.visualizationId);
+    }, [graphs]);
+
     const hideAll = useMemo(() => {
-        return hideChartsWithoutData && chartsWithNoData?.length === graphs.length;
-    }, [chartsWithNoData?.length, graphs.length, hideChartsWithoutData]);
+        return (
+            hideChartsWithoutData &&
+            !!chartsWithNoData?.length &&
+            chartIds?.every(chartId => chartsWithNoData.includes(chartId))
+        );
+    }, [chartIds, chartsWithNoData, hideChartsWithoutData]);
 
     return (
         <Container $isRegionalPage={isRegionalPage} $hideAll={hideAll}>
@@ -230,4 +245,21 @@ const StyledUl = styled.ul`
 
 const TextContainer = styled.div<{ hasNarrowerText?: boolean }>`
     max-width: ${props => (props.hasNarrowerText ? "600px" : "100%")};
+
+    p:has(+ ul) {
+        margin-bottom: 0;
+    }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        max-width: 100%;
+    }
+`;
+
+const TextLink = styled.a`
+    color: ${colors.accentPrimary};
+    text-transform: none;
+    text-decoration: none;
+    &:hover {
+        text-decoration: underline;
+    }
 `;

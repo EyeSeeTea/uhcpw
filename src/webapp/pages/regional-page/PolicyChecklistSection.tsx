@@ -34,6 +34,7 @@ type PolicyChecklistSectionProps = {
     isSmallScreen: boolean;
     hasDownloadFile?: boolean;
     downloadFile: string;
+    onSetSidePanelWidth?: (width: number) => void;
 };
 
 export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = React.memo(props => {
@@ -48,8 +49,10 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
         isSmallScreen,
         downloadFile,
         hasDownloadFile = false,
+        onSetSidePanelWidth,
     } = props;
     const { redirectWithExternalLink } = useAnalytics();
+    const firstPanelRef = React.useRef<HTMLDivElement | null>(null);
 
     const markdownComponents: Components = React.useMemo(
         () => ({
@@ -69,14 +72,36 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
         [redirectWithExternalLink]
     );
 
+    React.useEffect(() => {
+        if (!onSetSidePanelWidth || !firstPanelRef.current || isLoading) return;
+
+        const element = firstPanelRef.current;
+
+        const observer = new ResizeObserver(entries => {
+            for (const entry of entries) {
+                const width = entry.contentRect.width;
+                onSetSidePanelWidth(width + 64); // adding the left padding of the container
+            }
+        });
+
+        observer.observe(element);
+
+        onSetSidePanelWidth(element.offsetWidth + 64); // adding the left padding of the container
+
+        return () => {
+            observer.disconnect();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [onSetSidePanelWidth, isLoading, firstPanelRef.current]);
+
     return (
         <Container>
             {isLoading || !checklist ? (
                 <CircularProgress />
             ) : (
                 <>
-                    <ContentWrapper>
-                        <TextContentWrapper>
+                    {isSmallScreen && (
+                        <TextContentWrapper ref={firstPanelRef}>
                             <IntroText>
                                 <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
                             </IntroText>
@@ -85,11 +110,25 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                 <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
                             </IntroText>
                         </TextContentWrapper>
+                    )}
+
+                    <ContentWrapper>
+                        {!isSmallScreen && (
+                            <TextContentWrapper ref={firstPanelRef}>
+                                <IntroText>
+                                    <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
+                                </IntroText>
+
+                                <IntroText>
+                                    <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
+                                </IntroText>
+                            </TextContentWrapper>
+                        )}
 
                         <div>
                             <TableTitleContainer>
                                 <Title variant="body1">
-                                    {i18n.t("Click an item to see examples of country experience")}
+                                    {i18n.t("Click an item on the policy checklist to see country examples")}
                                 </Title>
                                 {hasDownloadFile && (
                                     <a
@@ -99,14 +138,20 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                         rel="noopener noreferrer"
                                         onClick={redirectWithExternalLink}
                                     >
-                                        <DownloadButton
-                                            variant="contained"
-                                            endIcon={<DownloadIcon />}
-                                            color="primary"
-                                            className="download-button"
-                                        >
-                                            <Typography>{i18n.t("Download")}</Typography>
-                                        </DownloadButton>
+                                        {isSmallScreen ? (
+                                            <DownloadIconButton>
+                                                <CustomCloudIcon color="primary" className="download-button" />
+                                            </DownloadIconButton>
+                                        ) : (
+                                            <DownloadButton
+                                                variant="contained"
+                                                endIcon={<DownloadIcon />}
+                                                color="primary"
+                                                className="download-button"
+                                            >
+                                                <Typography>{i18n.t("Download")}</Typography>
+                                            </DownloadButton>
+                                        )}
                                     </a>
                                 )}
                             </TableTitleContainer>
@@ -161,21 +206,23 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                             </TableContainer>
                         </div>
 
-                        <CountryExperiencesContainer>
-                            {filteredCountryExperiences && filteredCountryExperiences.length > 0
-                                ? filteredCountryExperiences.map(countryExperience => (
-                                      <CountryExperienceBox
-                                          key={countryExperience.countryId}
-                                          countryName={countryExperience.countryName}
-                                          title={countryExperience.title}
-                                          content={countryExperience.content}
-                                          reference={countryExperience.reference}
-                                          showDialogInFullScreen={isSmallScreen}
-                                          disableGoToCountryPage={countryExperience.disableGoToCountryPage}
-                                      />
-                                  ))
-                                : null}
-                        </CountryExperiencesContainer>
+                        <StickyRightColumn>
+                            <CountryExperiencesContainer>
+                                {filteredCountryExperiences && filteredCountryExperiences.length > 0
+                                    ? filteredCountryExperiences.map(countryExperience => (
+                                          <CountryExperienceBox
+                                              key={`${selectedChecklistItem || ""}-${countryExperience.countryId}`}
+                                              countryName={countryExperience.countryName}
+                                              title={countryExperience.title}
+                                              content={countryExperience.content}
+                                              reference={countryExperience.reference}
+                                              showDialogInFullScreen={isSmallScreen}
+                                              disableGoToCountryPage={countryExperience.disableGoToCountryPage}
+                                          />
+                                      ))
+                                    : null}
+                            </CountryExperiencesContainer>
+                        </StickyRightColumn>
                     </ContentWrapper>
                 </>
             )}
@@ -184,11 +231,11 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
 });
 
 const Container = styled.div`
-    padding: 40px 40px 40px 64px;
+    padding: 40px 64px 40px 64px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-block-end: 0;
-        padding: 40px 40px 40px 32px;
+        padding: 32px;
     }
 `;
 
@@ -216,11 +263,12 @@ const IntroText = styled.div`
 
 const TextContentWrapper = styled.div`
     display: block;
+    margin-block-end: 24px;
 `;
 
 const ContentWrapper = styled.div`
     display: grid;
-    grid-template-columns: minmax(0, 33%) minmax(0, 34%) minmax(0, 33%);
+    grid-template-columns: minmax(0, 33%) minmax(0, 33%) minmax(0, 33%);
     gap: 50px;
     width: 100%;
     > * {
@@ -228,7 +276,17 @@ const ContentWrapper = styled.div`
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 50%) minmax(0, 50%);
+    }
+`;
+
+const StickyRightColumn = styled.div`
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        top: 45px;
     }
 `;
 
@@ -246,20 +304,19 @@ const TableContainer = styled.div`
 const CountryExperiencesContainer = styled.div`
     background-color: ${colors.white};
     width: 100%;
-    margin-inline-end: 20px;
-    min-height: 0;
     overflow-y: auto;
-    max-height: 100%;
-    contain: size;
+    flex: 1 1 auto;
     margin-block-start: 70px;
+    max-height: calc(100vh - 70px - 80px);
+
+    div:last-child {
+        margin-block-end: 0;
+    }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         overflow: visible;
         max-height: none;
         height: auto;
-        contain: initial;
-        margin-inline-end: 0;
-        margin-block-start: 0px;
     }
 `;
 
@@ -281,6 +338,7 @@ const StyledTableCell = styled(TableCell)<{ $isSelected?: boolean }>`
     color: black;
     align-content: "start";
     border-width: 4px;
+    padding: 12px;
 `;
 
 const TableTitleContainer = styled.div`
@@ -298,7 +356,7 @@ const DownloadButton = styled(Button)`
 
 const Paragraph = styled(Typography)`
     font-family: Lato;
-    margin-block: 10px;
+    margin-block: 0px;
     font-size: 1rem;
     color: ${colors.black};
 
@@ -327,4 +385,17 @@ const TextLink = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const DownloadIconButton = styled(IconButton)`
+    padding: 0;
+    color: white;
+`;
+
+const CustomCloudIcon = styled(DownloadIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
 `;

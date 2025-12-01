@@ -23,6 +23,7 @@ export class CountryExperienceD2Repository implements CountryExperienceRepositor
                 fields: eventsFields,
                 skipPaging: true,
                 program: COUNTRY_EXPERIENCE_PROGRAM_ID,
+                order: "eventDate:desc,event:asc",
             })
         ).flatMap(response => {
             if (!response.events[0]) {

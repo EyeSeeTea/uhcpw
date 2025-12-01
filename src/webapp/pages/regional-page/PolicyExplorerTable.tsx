@@ -55,33 +55,8 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
         scrollbar.style.overflow = "auto";
         scrollbar.style.overflowY = "hidden";
         scrollbar.style.position = "relative";
-        scrollbar.style.top = "15px"; // Maybe calculate this dynamically
+        scrollbar.style.top = "7px";
 
-        const style = document.createElement("style");
-        style.innerHTML = `
-                    .${className} {
-                        scrollbar-color: ${colors.accentPrimaryLight} ${colors.accentPrimaryLightest};
-                        scrollbar-width: thin;
-                    }
-    
-                    .${className}::-webkit-scrollbar {
-                        width: 10px;
-                    }
-    
-                    .${className}::-webkit-scrollbar-track {
-                        background:  ${colors.accentPrimaryLightest};
-                    }
-    
-                    .${className}::-webkit-scrollbar-thumb {
-                        background-color: ${colors.accentPrimaryLight};
-                        border-radius: 10px;
-                    }
-    
-                    .${className}::-webkit-scrollbar-thumb:hover {
-                        background: ${colors.accentPrimaryLight};
-                    }
-                `;
-        document.head.appendChild(style);
         scrollbar.className = className;
 
         const scrollbarChild = scrollbar.firstChild as HTMLElement | null;
@@ -172,6 +147,7 @@ const TableHeader = styled.div`
     gap: 24px;
     align-items: center;
     justify-content: space-between;
+    margin-block-start: 8px;
 `;
 
 const Title = styled(Typography)`
@@ -215,18 +191,28 @@ const TablePaper = styled(Paper)`
 const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType }>`
     color: #0460a7;
     font-weight: 500;
-    max-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "70px" : "15px")};
-    min-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "70px" : "15px")};
-    width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "70px" : "15px")};
-    background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
-    color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
+    max-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "150px" : "18px")};
+    min-width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "150px" : "18px")};
+    width: ${props => (props.type === PolicyExplorerCellType.HEADER ? "150px" : "18px")};
+    color: black;
+    margin: 0;
+    padding: 0;
+
+    > p {
+        margin: 0;
+
+        &:first-child {
+            margin: 8px 4px;
+        }
+    }
 `;
 
 const StyledTable = styled(Table)`
     width: 100%;
     table-layout: fixed;
-    border-spacing: 0.8px;
-    border-collapse: initial;
+    border-spacing: 2px 2px;
+    border-collapse: separate;
+    background-color: white;
 
     tbody > tr > td {
         vertical-align: top;
@@ -244,6 +230,11 @@ const StyledTableBody = styled(TableBody)`
         tr:first-child > td:first-child {
             text-align: left;
             writing-mode: unset;
+            visibility: hidden;
+        }
+
+        tr:first-child > td > p {
+            margin: 4px;
         }
 
         tr > td:first-child {
@@ -255,9 +246,42 @@ const StyledTableBody = styled(TableBody)`
             vertical-align: middle;
         }
     }
+
+    &.Nx6S3aQkvWe-table {
+        tr:first-child {
+            background-color: white;
+        }
+
+        tr:nth-child(2n) {
+            background-color: #e5f5ff;
+        }
+
+        tr:nth-child(2n + 1):not(:first-child) {
+            background-color: #f7fcff;
+        }
+    }
+
+    &.u800TAhsIBY_Cat-table {
+        tr:first-child td {
+            background-color: white;
+        }
+
+        tr:not(:first-child) td:nth-child(odd) {
+            background-color: #f7fcff;
+        }
+
+        tr:not(:first-child) td:nth-child(even) {
+            background-color: #e5f5ff;
+        }
+    }
 `;
 
-const Container = styled.div``;
+const Container = styled.div`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        width: calc(100% - 64px);
+        max-width: calc(100% - 64px);
+    }
+`;
 
 const Center = styled.div`
     height: 350px;

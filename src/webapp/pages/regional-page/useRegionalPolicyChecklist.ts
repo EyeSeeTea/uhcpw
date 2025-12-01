@@ -73,14 +73,12 @@ export function useRegionalPolicyChecklist(): RegionalPolicyChecklistState {
                     ce.relatedPolicyChecklistIds.some(id => id === newSelection)
                 );
 
-                setFilteredCountryExperiences(
-                    sortFilteredCountryExperiences(newFilteredCountryExperiences, checklist || [])
-                );
+                setFilteredCountryExperiences(newFilteredCountryExperiences);
             } else {
                 setFilteredCountryExperiences(undefined);
             }
         },
-        [checklist, countryExperiences, selectedChecklistItem]
+        [countryExperiences, selectedChecklistItem]
     );
 
     const onCleanSelection = useCallback(() => {
@@ -120,22 +118,4 @@ function buildCountryExperienceData(countryExperience: CountryExperience, countr
         disableGoToCountryPage: !country?.isInCountryPage,
         countryName: country ? country.name : "Unknown country",
     };
-}
-
-function sortFilteredCountryExperiences(
-    countryExperiences: CountryExperienceData[],
-    checklist: ChecklistPolicyMakersWithCountries[]
-): CountryExperienceData[] {
-    const orderMap: Record<string, number> = checklist.reduce((acc, item, index) => {
-        return { ...acc, [item.id]: index };
-    }, {});
-
-    const getCountryOrder = (country: CountryExperienceData) => {
-        const positions: number[] = country.relatedPolicyChecklistIds
-            .map(id => orderMap[id])
-            .filter((pos): pos is number => pos !== undefined);
-        return positions.length ? Math.min(...positions) : Infinity;
-    };
-
-    return [...countryExperiences].sort((countryA, countryB) => getCountryOrder(countryA) - getCountryOrder(countryB));
 }

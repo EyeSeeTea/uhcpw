@@ -16,7 +16,6 @@ import { AccordionPanel } from "../../components/accordion-panel/AccordionPanel"
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
 import { useRegionalPageSeoConfig } from "./useRegionalPageSeoConfig";
 import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
-import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { RegionMapPanel } from "../../components/region-map-panel/RegionMapPanel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
@@ -63,20 +62,6 @@ export const RegionalPage: React.FC = () => {
             />
 
             <MapSection ref={refs.regionMap}>
-                <SectionTitleDivider>
-                    <SectionTitle>
-                        {i18n.t(
-                            `${
-                                ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA === selectedRegionId ? "" : "The "
-                            }{{region}} at a glance`,
-                            {
-                                region: selectedRegion?.name,
-                                interpolation: { escapeValue: false },
-                            }
-                        )}
-                    </SectionTitle>
-                </SectionTitleDivider>
-
                 {isSmallScreen ? (
                     <PanelContainer>
                         <RegionMapPanel mainPanelContent={mainPanelContent} />
@@ -95,7 +80,7 @@ export const RegionalPage: React.FC = () => {
 
             {isSmallScreen ? (
                 <>
-                    <Section ref={refs.numbers}>
+                    <MobileSection ref={refs.numbers}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>
                                 {i18n.t("Numbers: financial hardship, unmet need and spending on health")}
@@ -110,9 +95,9 @@ export const RegionalPage: React.FC = () => {
                             handleTabChange={regionNumbers.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
-                    </Section>
+                    </MobileSection>
 
-                    <Section ref={refs.gapsInCoverage}>
+                    <MobileSection ref={refs.gapsInCoverage}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>{i18n.t("The story behind the numbers: gaps in coverage")}</SectionTitle>
                         </SectionTitleDivider>
@@ -125,9 +110,9 @@ export const RegionalPage: React.FC = () => {
                             handleTabChange={gapsInCoverage.handleTabChange}
                             isSmallScreen={isSmallScreen}
                         />
-                    </Section>
+                    </MobileSection>
 
-                    <Section ref={refs.policyChecklist}>
+                    <MobileSection ref={refs.policyChecklist}>
                         <SectionTitleDivider onlyBottomMargin>
                             <SectionTitle>{i18n.t("Progress is possible: a policy checklist")}</SectionTitle>
                         </SectionTitleDivider>
@@ -144,11 +129,11 @@ export const RegionalPage: React.FC = () => {
                             downloadFile={policyChecklist.content.downloadFile}
                             hasDownloadFile={policyChecklist.content.hasDownloadFile}
                         />
-                    </Section>
+                    </MobileSection>
 
                     {!isEuropeanRegion ? (
                         <React.Fragment>
-                            <Section ref={refs.resources}>
+                            <MobileSection ref={refs.resources}>
                                 <SectionTitleDivider isLighter>
                                     <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/resources")}>
                                         {i18n.t("Resources")}
@@ -158,9 +143,9 @@ export const RegionalPage: React.FC = () => {
                                 {!isEUorEuropeanRegion && (
                                     <CountryResources countryIds={selectedRegion?.countries || []} isRegionalPage />
                                 )}
-                            </Section>
+                            </MobileSection>
 
-                            <Section ref={refs.experts}>
+                            <MobileSection ref={refs.experts}>
                                 <SectionTitleDivider isLighter>
                                     <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
                                         {i18n.t("Expert network")}
@@ -174,7 +159,7 @@ export const RegionalPage: React.FC = () => {
                                         isSmallScreen={isSmallScreen}
                                     />
                                 )}
-                            </Section>
+                            </MobileSection>
                         </React.Fragment>
                     ) : null}
                 </>
@@ -206,16 +191,17 @@ const PanelContainer = styled.div`
 `;
 
 const MapSection = styled.section`
+    margin-top: 5px;
     height: 85vh;
     min-height: 620px;
     scroll-margin-top: 80px;
 
     .region-map {
-        height: calc(100% - 65px);
+        height: 100%;
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        scroll-margin-top: 101px;
+        scroll-margin-top: 115px;
         height: initial;
         min-height: initial;
 
@@ -225,9 +211,9 @@ const MapSection = styled.section`
     }
 `;
 
-const Section = styled.section`
+const MobileSection = styled.section`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        scroll-margin-top: 101px;
+        scroll-margin-top: 115px;
     }
 `;
 

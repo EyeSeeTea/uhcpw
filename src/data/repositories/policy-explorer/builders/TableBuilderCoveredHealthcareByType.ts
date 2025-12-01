@@ -9,13 +9,37 @@ import {
 import { COUNTRY_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
 import { Maybe } from "../../../../types/utils";
-import { HealthCareType } from "./TableBuilderByTypeOfHealthcare";
+
+type HealthCareType =
+    | "Primary care visits"
+    | "Outpatient specialist visits"
+    | "Emergency care"
+    | "Outpatient medicines"
+    | "Medical products"
+    | "Diagnostics tests"
+    | "Dental care visits"
+    | "Dental care treatment"
+    | "Inpatient care"
+    | "Inpatient medicines";
+
+export const USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE: HealthCareType[] = [
+    "Primary care visits",
+    "Outpatient specialist visits",
+    "Emergency care",
+    "Outpatient medicines",
+    "Medical products",
+    "Diagnostics tests",
+    "Dental care visits",
+    "Dental care treatment",
+    "Inpatient care",
+    "Inpatient medicines",
+];
 
 export const USER_CHARGES_APPLY_BY_TYPE_OF_HEALTHCARE_DATA_ELEMENT_SECTION_IDS: Record<HealthCareType, Id> = {
     "Primary care visits": "q2Q3iwrGu0O",
     "Outpatient specialist visits": "O4qsWEa3bS6",
     "Emergency care": "qcw1buhHOjf",
-    "Outpatient prescribed medicines": "HaEiHOCH79S",
+    "Outpatient medicines": "HaEiHOCH79S",
     "Medical products": "Wie0b5v1MvN",
     "Diagnostics tests": "uoyYFskbl1n",
     "Dental care visits": "C0s9QXe5V1q",
