@@ -87,9 +87,17 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
         [currentGraphScreenshot?.visualizationName]
     );
 
+    const chartIds = useMemo(() => {
+        return graphs?.map(graph => graph.visualizationId);
+    }, [graphs]);
+
     const hideAll = useMemo(() => {
-        return hideChartsWithoutData && chartsWithNoData?.length === graphs.length;
-    }, [chartsWithNoData?.length, graphs.length, hideChartsWithoutData]);
+        return (
+            hideChartsWithoutData &&
+            !!chartsWithNoData?.length &&
+            chartIds?.every(chartId => chartsWithNoData.includes(chartId))
+        );
+    }, [chartIds, chartsWithNoData, hideChartsWithoutData]);
 
     return (
         <Container $isRegionalPage={isRegionalPage} $hideAll={hideAll}>
