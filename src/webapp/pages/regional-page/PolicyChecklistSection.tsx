@@ -100,7 +100,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                 <CircularProgress />
             ) : (
                 <>
-                    <ContentWrapper>
+                    {isSmallScreen && (
                         <TextContentWrapper ref={firstPanelRef}>
                             <IntroText>
                                 <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
@@ -110,6 +110,20 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                 <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
                             </IntroText>
                         </TextContentWrapper>
+                    )}
+
+                    <ContentWrapper>
+                        {!isSmallScreen && (
+                            <TextContentWrapper ref={firstPanelRef}>
+                                <IntroText>
+                                    <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
+                                </IntroText>
+
+                                <IntroText>
+                                    <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
+                                </IntroText>
+                            </TextContentWrapper>
+                        )}
 
                         <div>
                             <TableTitleContainer>
@@ -124,14 +138,20 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                         rel="noopener noreferrer"
                                         onClick={redirectWithExternalLink}
                                     >
-                                        <DownloadButton
-                                            variant="contained"
-                                            endIcon={<DownloadIcon />}
-                                            color="primary"
-                                            className="download-button"
-                                        >
-                                            <Typography>{i18n.t("Download")}</Typography>
-                                        </DownloadButton>
+                                        {isSmallScreen ? (
+                                            <DownloadIconButton>
+                                                <CustomCloudIcon color="primary" className="download-button" />
+                                            </DownloadIconButton>
+                                        ) : (
+                                            <DownloadButton
+                                                variant="contained"
+                                                endIcon={<DownloadIcon />}
+                                                color="primary"
+                                                className="download-button"
+                                            >
+                                                <Typography>{i18n.t("Download")}</Typography>
+                                            </DownloadButton>
+                                        )}
                                     </a>
                                 )}
                             </TableTitleContainer>
@@ -243,6 +263,7 @@ const IntroText = styled.div`
 
 const TextContentWrapper = styled.div`
     display: block;
+    margin-block-end: 24px;
 `;
 
 const ContentWrapper = styled.div`
@@ -255,7 +276,7 @@ const ContentWrapper = styled.div`
     }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 50%) minmax(0, 50%);
     }
 `;
 
@@ -265,7 +286,7 @@ const StickyRightColumn = styled.div`
     align-self: flex-start;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        position: static;
+        top: 45px;
     }
 `;
 
@@ -296,9 +317,6 @@ const CountryExperiencesContainer = styled.div`
         overflow: visible;
         max-height: none;
         height: auto;
-        contain: initial;
-        margin-inline-end: 0;
-        margin-block-start: 0px;
     }
 `;
 
@@ -367,4 +385,17 @@ const TextLink = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const DownloadIconButton = styled(IconButton)`
+    padding: 0;
+    color: white;
+`;
+
+const CustomCloudIcon = styled(DownloadIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
 `;

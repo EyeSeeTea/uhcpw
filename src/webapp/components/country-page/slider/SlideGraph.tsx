@@ -241,6 +241,10 @@ const TextContainer = styled.div<{ hasNarrowerText?: boolean }>`
     p:has(+ ul) {
         margin-bottom: 0;
     }
+
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        max-width: 100%;
+    }
 `;
 
 const TextLink = styled.a`
