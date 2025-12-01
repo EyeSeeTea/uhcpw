@@ -31,7 +31,6 @@ interface PolicyExplorerTableProps {
 
 export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.memo(props => {
     const { title, countries, categoryId, years } = props;
-
     const { tableData, hasData, category, isNotesDialogOpen, setIsNotesDialogOpen, isLoading } =
         useRegionalPolicyExplorerTable(countries, categoryId, years);
 
