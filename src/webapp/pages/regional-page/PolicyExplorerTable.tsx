@@ -31,12 +31,8 @@ interface PolicyExplorerTableProps {
 
 export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.memo(props => {
     const { title, countries, categoryId, years } = props;
-
-    const { tableData, category, isNotesDialogOpen, setIsNotesDialogOpen, isLoading } = useRegionalPolicyExplorerTable(
-        countries,
-        categoryId,
-        years
-    );
+    const { tableData, hasData, category, isNotesDialogOpen, setIsNotesDialogOpen, isLoading } =
+        useRegionalPolicyExplorerTable(countries, categoryId, years);
 
     // TODO: check the other PolicyExplorerTable component in PE and try to unify this functionality
     // Function to create and synchronize the double scroll bar
@@ -92,7 +88,7 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
         );
     }
 
-    return tableData && category ? (
+    return tableData && hasData && category ? (
         <Container>
             <TableHeader>
                 <Title variant="h6" gutterBottom>
