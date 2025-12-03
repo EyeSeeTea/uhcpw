@@ -232,6 +232,10 @@ const StyledTable = styled(Table)`
 const StyledTableBody = styled(TableBody)`
     &.u800TAhsIBY_Cat-table,
     &.Nx6S3aQkvWe-table {
+        tr:first-child {
+            text-align-last: left;
+        }
+
         tr:first-child > td {
             text-align: center;
             writing-mode: sideways-lr;

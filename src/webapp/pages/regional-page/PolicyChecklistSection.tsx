@@ -342,7 +342,7 @@ const TableTitleContainer = styled.div`
     display: flex;
     justify-content: space-between;
     height: 70px;
-    gap: 10px;
+    gap: 12px;
 `;
 
 const DownloadButton = styled(Button)`
