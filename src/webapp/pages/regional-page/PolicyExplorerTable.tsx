@@ -14,13 +14,13 @@ import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 
 import { PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
-import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
 import { TableLegend } from "../../components/policy-explorer/TableLegend";
 import { Id } from "../../../domain/entities/Ref";
 import { useRegionalPolicyExplorerTable } from "./useRegionalPolicyExplorerTable";
 import { colors } from "../app/themes/dhis2.theme";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { NotesDialog } from "../../components/dialog/NotesDialog";
 
 interface PolicyExplorerTableProps {
     title: string;
@@ -127,10 +127,10 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
                 </StyledTable>
             </TableContainer>
 
-            <CategoryInfoDialog
+            <NotesDialog
                 isOpen={isNotesDialogOpen}
                 onClose={() => setIsNotesDialogOpen(false)}
-                category={category}
+                dialogInfo={category.description}
             />
         </Container>
     ) : null;
