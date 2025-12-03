@@ -58,7 +58,7 @@ export const REGION_CODES = {
     EUROPEAN_UNION: "EU",
     EASTERN_EUROPE_AND_CENTRAL_ASIA: "EECA",
     EU_CANDIDATE_COUNTRIES: "EUCC",
-    EUROPEAN_REGION: "EUR",
+    EUROPEAN_REGION: "ER",
 } as const;
 
 export type RegionCodeKey = keyof typeof REGION_CODES;
