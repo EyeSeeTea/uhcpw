@@ -359,7 +359,7 @@ const TextContainer = styled.div`
 `;
 
 const Image = styled.img<{ $hasMarginTop?: boolean }>`
-    margin-block-start: ${props => (props.$hasMarginTop ? "16px" : "5px")};
+    margin-block-start: ${props => (props.$hasMarginTop ? "16px" : "0")};
     margin-block-end: 12px;
 `;
 
