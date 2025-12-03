@@ -40,7 +40,6 @@ interface VisualizationPluginProps {
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
-    setChartWithNoData?: (visualizationId: string) => void;
     seriesColors?: Record<string, string>;
 }
 
@@ -70,7 +69,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         needToKnowLatestAvailableYearInChart = false,
         visualizationIdInIndicatorExplorer,
         yearsInIndicatorExplorer,
-        setChartWithNoData,
         seriesColors,
     } = props;
 
@@ -204,21 +202,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         regions,
     ]);
 
-    const chartHasData = useMemo(() => {
-        return (
-            chartData.kind === "Loaded" &&
-            chartData.analytics.some(analytics => analytics.rows.length > 0) &&
-            yearsFilteredInChart.length > 0
-        );
-    }, [chartData, yearsFilteredInChart]);
-
-    useEffect(() => {
-        if (chartData.kind === "Loaded" && setChartWithNoData && !chartHasData) {
-            setChartWithNoData(visualizationId);
-        }
-    }, [chartData, chartHasData, setChartWithNoData, visualizationId]);
-
-    return chartData.kind === "Loaded" && chartHasData ? (
+    return chartData.kind === "Loaded" &&
+        chartData.analytics.some(analytics => analytics.rows.length > 0) &&
+        yearsFilteredInChart.length > 0 ? (
         <VisualizationPluginContainer
             ref={ref}
             withoutBackground={withoutBackground}

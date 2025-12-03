@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { VerticalTabConfig } from "../../components/vertical-tabs-panel/VerticalTabsPanel";
 import { AccordionConfig } from "../../components/accordion-panel/AccordionPanel";
@@ -26,30 +26,6 @@ export function useRegionNumbers(
     const { regions } = useAppContext();
     const [tabValue, setTabValue] = useState(0);
     const [expandedConfig, setExpandedConfig] = useState<VerticalTabConfig | AccordionConfig | undefined>(undefined);
-    const [chartsWithNoData, setChartsWithNoData] = useState<Id[]>([]);
-
-    const lastRegionIdRef = useRef<Maybe<Id>>(undefined);
-
-    useEffect(() => {
-        const previousId = lastRegionIdRef.current;
-
-        if (previousId !== undefined && selectedRegionId !== undefined && previousId !== selectedRegionId) {
-            setChartsWithNoData([]);
-        }
-
-        if (selectedRegionId !== undefined) {
-            lastRegionIdRef.current = selectedRegionId;
-        }
-    }, [selectedRegionId]);
-
-    const handleSetChartWithNoData = useCallback((visualizationId: string) => {
-        setChartsWithNoData(prevState => {
-            if (!prevState.includes(visualizationId)) {
-                return [...prevState, visualizationId];
-            }
-            return prevState;
-        });
-    }, []);
 
     const handleTabChange = useCallback((_event: React.ChangeEvent<{}>, newValue: number) => {
         setTabValue(newValue);
@@ -62,7 +38,6 @@ export function useRegionNumbers(
         if (expandedConfig !== undefined) {
             setExpandedConfig(undefined);
         }
-        setChartsWithNoData([]);
     }, [expandedConfig, tabValue]);
 
     const selectedRegion = useMemo(
@@ -82,10 +57,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
-                              hideChartsWithoutData: true,
                               hasNarrowerText: true,
-                              handleSetChartWithNoData: handleSetChartWithNoData,
-                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -110,10 +82,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
-                              hideChartsWithoutData: true,
                               hasNarrowerText: true,
-                              handleSetChartWithNoData: handleSetChartWithNoData,
-                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -138,10 +107,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
-                              hideChartsWithoutData: true,
                               hasNarrowerText: true,
-                              handleSetChartWithNoData: handleSetChartWithNoData,
-                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -178,10 +144,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
-                              hideChartsWithoutData: true,
                               hasNarrowerText: true,
-                              handleSetChartWithNoData: handleSetChartWithNoData,
-                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -218,10 +181,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
-                              hideChartsWithoutData: true,
                               hasNarrowerText: true,
-                              handleSetChartWithNoData: handleSetChartWithNoData,
-                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -271,10 +231,7 @@ export function useRegionNumbers(
                               selectedRegionId: selectedRegionId,
                               kind: "graph",
                               isRegionalPage: true,
-                              hideChartsWithoutData: true,
                               hasNarrowerText: true,
-                              handleSetChartWithNoData: handleSetChartWithNoData,
-                              chartsWithNoData: chartsWithNoData,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -336,7 +293,7 @@ export function useRegionNumbers(
                       },
                   ]
                 : [],
-        [selectedRegionId, numbersPanelContent, selectedRegion, handleSetChartWithNoData, chartsWithNoData]
+        [selectedRegionId, numbersPanelContent, selectedRegion]
     );
 
     const handleAccordionChange = useCallback(
