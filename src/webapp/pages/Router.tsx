@@ -11,11 +11,13 @@ import { CountryOrRegionalPage } from "./country-or-regional/CountryOrRegionalPa
 import { SeoMetaTags } from "../components/seo/SeoMetaTags";
 
 const ScrollToTop = (): JSX.Element | null => {
-    const { pathname } = useLocation();
+    const { pathname, state } = useLocation<{ preserveScroll?: boolean }>();
 
     useEffect(() => {
+        if (state?.preserveScroll) return;
+
         window.scrollTo(0, 0);
-    }, [pathname]);
+    }, [pathname, state?.preserveScroll]);
 
     return null;
 };

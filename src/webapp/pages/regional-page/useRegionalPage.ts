@@ -78,7 +78,7 @@ export type RegionalPageState = {
 
 export function useRegionalPage(): RegionalPageState {
     const isSmallScreen = useIsSmallScreen();
-    const history = useHistory();
+    const history = useHistory<{ preserveScroll?: boolean }>();
     const { countryOrRegion } = useParams<{
         countryOrRegion?: string;
     }>();
@@ -175,7 +175,10 @@ export function useRegionalPage(): RegionalPageState {
             const regionNameInFilter = newRegionName ? formatCountryOrRegionParamName(newRegionName) : undefined;
 
             if (regionNameInFilter) {
-                history.push(`/${regionNameInFilter}`);
+                history.push({
+                    pathname: `/${regionNameInFilter}`,
+                    state: { preserveScroll: true },
+                });
             }
 
             const region = regions.find(region => region.id === newRegion);
