@@ -177,19 +177,24 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     }, [chartData, filterByLatestAvailableYearInRegion, needToKnowLatestAvailableYearInChart, years]);
 
     const goToIndicatorExplorer = useCallback(() => {
-        if (chartData.kind === "Loaded" && yearsFilteredInChart.length > 0 && countries.length > 0) {
+        if (chartData.kind === "Loaded" && countries.length > 0) {
             const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
             const years =
                 yearsInIndicatorExplorer && yearsInIndicatorExplorer.length > 0
                     ? yearsInIndicatorExplorer
                     : yearsFilteredInChart;
 
-            history.push(
-                `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
-                    ...countries,
-                    ...regions,
-                ]}&years=${years}&showChartByDefault=true`
-            );
+            const url =
+                years.length > 0
+                    ? `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
+                          ...countries,
+                          ...regions,
+                      ]}&years=${years}&showChartByDefault=true`
+                    : `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
+                          ...countries,
+                          ...regions,
+                      ]}&showChartByDefault=true`;
+            history.push(url);
         }
     }, [
         chartData.kind,
@@ -203,8 +208,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     ]);
 
     return chartData.kind === "Loaded" &&
-        chartData.analytics.some(analytics => analytics.rows.length > 0) &&
-        yearsFilteredInChart.length > 0 ? (
+        ((chartData.analytics.some(analytics => analytics.rows.length > 0) && yearsFilteredInChart.length > 0) ||
+            isRegionalPage) ? (
         <VisualizationPluginContainer
             ref={ref}
             withoutBackground={withoutBackground}
@@ -218,8 +223,18 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 chartFriendlyName={chartData?.friendlyName}
                 categoryTag={chartData?.categoryTag}
                 showInfo={showInfo}
-                onDownloadExcel={isScreenshot ? undefined : downloadExcel}
-                onDownloadImage={isScreenshot ? undefined : handleDownloadImage}
+                onDownloadExcel={
+                    isScreenshot ||
+                    (isRegionalPage && (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0))
+                        ? undefined
+                        : downloadExcel
+                }
+                onDownloadImage={
+                    isScreenshot ||
+                    (isRegionalPage && (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0))
+                        ? undefined
+                        : handleDownloadImage
+                }
                 onShowInfo={isScreenshot ? undefined : onShowInfo}
                 onCloseInfo={isScreenshot ? undefined : onCloseInfo}
                 useHeaderForCountryOrRegionalPage={
@@ -237,19 +252,27 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 isRegionalPage={isRegionalPage}
                 goToIndicatorExplorer={goToIndicatorExplorer}
             />
-            <ChartPlugin
-                key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
-                analytics={chartData.analytics}
-                visualizations={chartData.visualizations}
-                legendSets={chartData.legendSets}
-                customizedOptions={chartData.customization}
-                countries={chartData.countries}
-                regions={chartData.regions}
-                withoutBackground={withoutBackground}
-                externalchartOptions={chartData.chartOptions}
-                isSquareChart={isSquareChart}
-                isMobile={isMobile}
-            />
+            {isRegionalPage && (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0) ? (
+                <Center>
+                    <StyledTypography variant="subtitle1">
+                        {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
+                    </StyledTypography>
+                </Center>
+            ) : (
+                <ChartPlugin
+                    key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
+                    analytics={chartData.analytics}
+                    visualizations={chartData.visualizations}
+                    legendSets={chartData.legendSets}
+                    customizedOptions={chartData.customization}
+                    countries={chartData.countries}
+                    regions={chartData.regions}
+                    withoutBackground={withoutBackground}
+                    externalchartOptions={chartData.chartOptions}
+                    isSquareChart={isSquareChart}
+                    isMobile={isMobile}
+                />
+            )}
         </VisualizationPluginContainer>
     ) : chartData.kind === "Loaded" &&
       (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0) ? (
