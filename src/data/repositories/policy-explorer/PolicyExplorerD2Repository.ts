@@ -38,6 +38,7 @@ import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCove
 import { getTableSorter } from "./sorters/TableSorter";
 import { getTableLegends, getTabType, mapCellToExportedValue } from "./utils";
 import { TableBuilderEntitlementsForUndocumented } from "./builders/TableBuilderEntitlementsForUndocumented";
+import { mapToWhoCountryCode } from "../countries/mapToWhoCountryData";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -603,8 +604,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private getCountryName(orgUnitId: Id, countriesAndSubregions: Country[], useCountryCodes = false): string {
         const orgUnit = countriesAndSubregions.find(country => country.id === orgUnitId);
         const orgUnitName = useCountryCodes ? orgUnit?.code : orgUnit?.name;
+        const orgUnitNameBIH =
+            useCountryCodes && orgUnit?.code
+                ? mapToWhoCountryCode(orgUnit?.code)
+                : `Bosnia and Herzegovina (${orgUnitName?.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || "";
         return orgUnitId === REPUBLICA_SERPSKA || orgUnitId === FEDERACIJA_BOSNE_I_HERCEGOVINE
-            ? `Bosnia and Herzegovina (${orgUnitName?.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || ""
+            ? orgUnitNameBIH
             : orgUnitName || EMPTY_DATA;
     }
 }

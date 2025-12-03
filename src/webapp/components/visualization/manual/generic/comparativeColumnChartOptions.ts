@@ -187,7 +187,14 @@ export const comparativeColumnChartOptions: (params: {
             labels: {
                 rotation: noRotateLabels ? 0 : -90,
                 formatter: function () {
-                    const countryLabel = (this.value as string).split(" ")[0];
+                    if (!this.value || typeof this.value !== "string") {
+                        return this.value || "";
+                    }
+
+                    const parts = this.value.split(" ");
+                    if (parts.length === 0) return this.value || "";
+
+                    const countryLabel = parts[0];
 
                     return countryLabel === currentCountryCode || countryLabel === currentRegion?.code
                         ? `<strong style="color:#49abe2;">${this.value}</strong>`

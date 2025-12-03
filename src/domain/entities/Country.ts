@@ -32,6 +32,6 @@ export type CountrySectionInfo = {
 };
 
 // included in countries list
-export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";
+export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6"; // Brcko District
 export const FederationOfBosniaAndHerzegovina: Id = "j44olg405lZ";
 export const RepublikaSrpska: Id = "FvoXRc5cEEk";
