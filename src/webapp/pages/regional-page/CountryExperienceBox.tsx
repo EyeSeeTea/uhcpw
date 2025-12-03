@@ -3,7 +3,6 @@ import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import ReactMarkdown, { Components } from "react-markdown";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
@@ -32,7 +31,6 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
         showDialogInFullScreen = false,
         disableGoToCountryPage = false,
     } = props;
-    const history = useHistory();
     const { redirectWithExternalLink } = useAnalytics();
 
     const [showReferences, setShowReferences] = useState(false);
@@ -58,8 +56,13 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
     const onCountryLinkClick = useCallback(() => {
         const countryNameInFilter = formatCountryOrRegionParamName(countryName);
-        history.push(`/${countryNameInFilter}`);
-    }, [countryName, history]);
+        const innerPath = `/${countryNameInFilter}`;
+
+        const { origin, pathname } = window.location;
+        const fullUrl = `${origin}${pathname}#${innerPath}`;
+
+        window.open(fullUrl, "_blank", "noopener,noreferrer");
+    }, [countryName]);
 
     return (
         <CountryExperienceContent>

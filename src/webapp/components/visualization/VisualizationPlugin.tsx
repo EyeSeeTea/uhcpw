@@ -9,7 +9,6 @@ import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { FullScreenDialog } from "../dialog/FullScreenDialog";
 import { Id } from "../../../domain/entities/Ref";
-import { useHistory } from "react-router-dom";
 
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 
@@ -72,7 +71,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         seriesColors,
     } = props;
 
-    const history = useHistory();
     const { sendEvent } = useAnalytics();
     const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData({
         visualizationId,
@@ -184,7 +182,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                     ? yearsInIndicatorExplorer
                     : yearsFilteredInChart;
 
-            const url =
+            const innerPath =
                 years.length > 0
                     ? `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
                           ...countries,
@@ -194,7 +192,11 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                           ...countries,
                           ...regions,
                       ]}&showChartByDefault=true`;
-            history.push(url);
+
+            const { origin, pathname } = window.location;
+            const fullUrl = `${origin}${pathname}#${innerPath}`;
+
+            window.open(fullUrl, "_blank", "noopener,noreferrer");
         }
     }, [
         chartData.kind,
@@ -203,7 +205,6 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationIdInIndicatorExplorer,
         visualizationId,
         yearsInIndicatorExplorer,
-        history,
         regions,
     ]);
 
