@@ -79,7 +79,10 @@ export class VisualizationD2Repository implements VisualizationRepository {
         const visualizationsSeedsId =
             Object.keys(VisualizationsSeeds).find(seeds => seeds.includes(d2Visualization.id)) || "";
 
-        const notes = infoNotes ? infoNotes[visualizationsSeedsId] || "" : "";
+        // TODO: Improve how this is done: hardcoded exception because fnOIi0bdISn in Regional page uses notes from mUjcWO90CRr
+        const infoNotesVisualizationId =
+            visualizationsSeedsId === "fnOIi0bdISn" ? "mUjcWO90CRr" : visualizationsSeedsId;
+        const notes = infoNotes ? infoNotes[infoNotesVisualizationId] || "" : "";
 
         const visualizationExtra = {
             ...(VisualizationsSeeds[visualizationsSeedsId] || emptyVisualizationExtra),
