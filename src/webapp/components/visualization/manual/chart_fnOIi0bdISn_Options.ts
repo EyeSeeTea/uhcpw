@@ -140,7 +140,7 @@ export const chart_fnOIi0bdISn_Options: (chartSource: ChartSource) => Highcharts
         visualization: chartSource.visualization,
         currentCountryCode: currentCountryCode,
         currentRegionCode: currentRegionCode,
-        xAxisTitle,
+        xAxisTitle: "Public spending on health as a share of GDP (%)",
         yAxisTitle,
         pointFormat: `{point.country} {point.commonYear} <br/> {point.yearX} ${xAxisTitle}: {point.x} <br/> {point.yearY} ${yAxisTitle}: {point.y}%`,
         seriesWithCountryAndRegionData: seriesWithCountryAndRegionData,

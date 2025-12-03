@@ -81,7 +81,7 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
         categories,
         seriesNames,
         seriesColors,
-        yAxisTitle: "People 16 years and over (%)",
+        yAxisTitle: "Population (%)",
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: latestAvailableYearByCountryIdOrdered,
         currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,

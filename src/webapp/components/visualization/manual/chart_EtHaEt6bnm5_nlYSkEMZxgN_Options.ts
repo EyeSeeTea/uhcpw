@@ -79,7 +79,7 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         categories,
         seriesNames,
         seriesColors,
-        yAxisTitle: "People 16 years and over (%)",
+        yAxisTitle: "Population (%)",
         pointFormat: "{point.y}%",
         latestAvailableYearByCountryId: latestAvailableYearByCountryIdOrdered,
         currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
