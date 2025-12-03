@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { MenuItem, Divider } from "@material-ui/core";
 import styled from "styled-components";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
@@ -10,6 +10,8 @@ import { Option } from "../../dropdown/Option";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
 import { useRegionFilterOptions } from "../../../pages/regional-page/useRegionFilterOptions";
+import { PopUp } from "../../popup/PopUp";
+import { useAppContext } from "../../../contexts/app-context";
 
 type MenuItemsProps = {
     isHomePage: boolean;
@@ -34,6 +36,17 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
     const { countryFilter } = useCountryPage();
     const isSmallScreen = useIsSmallScreen();
     const regionOptions = useRegionFilterOptions();
+    const { generalContent } = useAppContext();
+
+    const [showRegionalPagePopup, setShowRegionalPagePopup] = React.useState(false);
+
+    const onOpenPopup = useCallback(() => {
+        setShowRegionalPagePopup(true);
+    }, []);
+
+    const onClosePopup = useCallback(() => {
+        setShowRegionalPagePopup(false);
+    }, []);
 
     return (
         <>
@@ -56,7 +69,7 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
 
             <StyledDivider />
 
-            {!isRegionalPage || (isRegionalPage && !isSmallScreen) ? (
+            {isRegionalPage && !isSmallScreen ? (
                 <>
                     <MenuItem>
                         <MobileMenuSubItem item={i18n.t("Regional overview")}>
@@ -81,7 +94,12 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
                     </MenuItem>
                     <StyledDivider />
                 </>
-            ) : null}
+            ) : (
+                <>
+                    <MenuItem onClick={onOpenPopup}>{i18n.t("Regional overview")}</MenuItem>
+                    <StyledDivider />
+                </>
+            )}
 
             {!isCountryPage || (isCountryPage && !isSmallScreen) ? (
                 <>
@@ -119,6 +137,16 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
             <StyledDivider />
 
             <MenuItem onClick={() => handleMenuItemClick("/about")}>{i18n.t("About us")}</MenuItem>
+
+            {showRegionalPagePopup && generalContent?.regionalPageMobilePopUp.disclaimer && (
+                <PopUp
+                    isOpen={showRegionalPagePopup}
+                    onClose={onClosePopup}
+                    text={generalContent.regionalPageMobilePopUp.disclaimer}
+                    linkText={generalContent.regionalPageMobilePopUp.buttonText}
+                    linkUrl={generalContent.regionalPageMobilePopUp.url}
+                />
+            )}
         </>
     );
 };

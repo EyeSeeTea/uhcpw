@@ -18,6 +18,12 @@ const methodProgramDataElements = {
     glossaryFile: "PEgZ92ijQMJ",
 } as const;
 
+const regionalPageMobilePopUpDataElements = {
+    disclaimer: "jp8z6xMOMh3",
+    disclaimerButtonText: "IoywoGPlD3X",
+    disclaimerUrl: "qj7OHq9zy30",
+} as const;
+
 export class GeneralContentD2Repository implements GeneralContentRepository {
     constructor(private api: D2Api) {}
 
@@ -53,6 +59,18 @@ export class GeneralContentD2Repository implements GeneralContentRepository {
             },
             glossary: {
                 url: this.getFileUrl(methodsEvent, methodProgramDataElements.glossaryFile),
+            },
+            regionalPageMobilePopUp: {
+                disclaimer:
+                    mainPageContent.find(dv => dv.dataElement === regionalPageMobilePopUpDataElements.disclaimer)
+                        ?.value || "",
+                buttonText:
+                    mainPageContent.find(
+                        dv => dv.dataElement === regionalPageMobilePopUpDataElements.disclaimerButtonText
+                    )?.value || "",
+                url:
+                    mainPageContent.find(dv => dv.dataElement === regionalPageMobilePopUpDataElements.disclaimerUrl)
+                        ?.value || "",
             },
         });
     }

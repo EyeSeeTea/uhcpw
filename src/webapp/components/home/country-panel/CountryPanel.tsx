@@ -44,17 +44,18 @@ const iconStatusMap: Record<FinancialProtectionStatus, string> = {
     InsufficientData: insufficientDataIcon,
 };
 
-export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
+export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalPage }) => {
     return (
-        <Container>
+        <Container $isRegionalPage={isRegionalPage}>
             <Row>
                 <UmbrellaItem>
                     <Marker src={iconStatusMap[country.status]} />
                 </UmbrellaItem>
-                <Typography variant="h2" style={{ fontWeight: 400 }}>
+                <StyledTitle variant="h2" $isRegionalPage={isRegionalPage} style={{ fontWeight: 400 }}>
                     {country.name}
-                </Typography>
+                </StyledTitle>
             </Row>
+
             <Divider style={{ backgroundColor: "white", margin: "38px 0px" }} />
 
             <ReactMarkdown
@@ -68,7 +69,8 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $isRegionalPage?: boolean }>`
+    padding-inline-start: ${props => (props.$isRegionalPage ? "16px" : "0")};
     overflow-y: auto;
     font-size: 16px;
     ul {
@@ -80,9 +82,16 @@ const Container = styled.div`
     }
 `;
 
+const StyledTitle = styled(Typography)<{ $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.$isRegionalPage ? "42px" : "3.75rem")};
+    line-height: 1.2;
+`;
+
 const Row = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
+    margin-bottom: 32px;
 `;
 
 const UmbrellaItem = styled.div`
@@ -96,7 +105,6 @@ const Marker = styled.img`
     background-size: cover;
     width: 80px;
     margin-right: 24px;
-    margin-bottom: 32px;
 `;
 
 const StyledButton = styled(Button)`

@@ -3,6 +3,7 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
 } from "../PolicyExplorerCategoryD2Repository";
+import { TableSorterByPriorityColumns } from "./TableSorterByPriorityColumns";
 import { TableSorterByValueCount } from "./TableSorterByValueCount";
 
 export interface TableSorter {
@@ -30,8 +31,21 @@ export function getTableSorter(policyExplorerCategoryId: string) {
     switch (policyExplorerCategoryId) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
             return new TableSorterByValueCount("yes");
-        case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
-            return new TableSorterByValueCount("none");
+        case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY: {
+            const priorityHeaders: string[] = [
+                "Same entitlements as most people",
+                "Entitled to some outpatient care",
+                "Entitled to selected care",
+                "Entitled to emergency care only",
+                "No entitlements",
+            ];
+
+            const valuePriority = {
+                most: 2,
+                some: 1,
+            };
+            return new TableSorterByPriorityColumns(priorityHeaders, valuePriority);
+        }
         default:
             return new DefaultTableSorter();
     }

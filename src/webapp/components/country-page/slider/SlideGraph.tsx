@@ -4,7 +4,7 @@ import ReactMarkdown, { Components } from "react-markdown";
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
-import React, { useMemo } from "react";
+import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
@@ -31,10 +31,7 @@ type SlideGraphType = {
     countryId: string;
     graphs: VisualizationProps[];
     isRegionalPage?: boolean;
-    hideChartsWithoutData?: boolean;
     hasNarrowerText?: boolean;
-    handleSetChartWithNoData?: (visualizationId: string) => void;
-    chartsWithNoData?: Id[];
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({
@@ -42,10 +39,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     countryId,
     graphs,
     isRegionalPage = false,
-    hideChartsWithoutData = false,
     hasNarrowerText = false,
-    handleSetChartWithNoData,
-    chartsWithNoData,
 }) => {
     const isSmallScreen = useIsSmallScreen();
     const { redirectWithExternalLink } = useAnalytics();
@@ -87,29 +81,13 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
         [currentGraphScreenshot?.visualizationName]
     );
 
-    const chartIds = useMemo(() => {
-        return graphs?.map(graph => graph.visualizationId);
-    }, [graphs]);
-
-    const hideAll = useMemo(() => {
-        return (
-            hideChartsWithoutData &&
-            !!chartsWithNoData?.length &&
-            chartIds?.every(chartId => chartsWithNoData.includes(chartId))
-        );
-    }, [chartIds, chartsWithNoData, hideChartsWithoutData]);
-
     return (
-        <Container $isRegionalPage={isRegionalPage} $hideAll={hideAll}>
+        <Container $isRegionalPage={isRegionalPage}>
             {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
 
             {graphs.length > 0
                 ? graphs.map((graph, graphIndex) => (
-                      <VisualizationContainer
-                          key={graph.visualizationId}
-                          $hasMargin={graphIndex !== 0}
-                          $hide={hideChartsWithoutData && !hideAll && chartsWithNoData?.includes(graph.visualizationId)}
-                      >
+                      <VisualizationContainer key={graph.visualizationId} $hasMargin={graphIndex !== 0}>
                           {graph.text && (
                               <TextContainer hasNarrowerText={hasNarrowerText}>
                                   <ReactMarkdown components={markdownComponents}>{graph.text}</ReactMarkdown>
@@ -134,7 +112,6 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
                               yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
-                              setChartWithNoData={hideChartsWithoutData ? handleSetChartWithNoData : undefined}
                           />
                       </VisualizationContainer>
                   ))
@@ -166,6 +143,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                             currentGraphScreenshot.needToKnowLatestAvailableYearInChart
                         }
                         visualizationIdInIndicatorExplorer={currentGraphScreenshot.visualizationIdInIndicatorExplorer}
+                        isRegionalPage={isRegionalPage}
                     />
                 </ScreenshotModal>
             )}
@@ -173,12 +151,10 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     );
 };
 
-const Container = styled.div<{ $isRegionalPage?: boolean; $hideAll?: boolean }>`
+const Container = styled.div<{ $isRegionalPage?: boolean }>`
     max-width: 100%;
     padding: 20px 50px 30px 50px;
     padding-inline: ${props => (props.$isRegionalPage ? "30px" : "50px")};
-    visibility: ${props => (props.$hideAll ? "hidden" : "visible")};
-    opacity: ${props => (props.$hideAll ? 0 : 1)};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
@@ -186,10 +162,10 @@ const Container = styled.div<{ $isRegionalPage?: boolean; $hideAll?: boolean }>`
     }
 `;
 
-const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolean }>`
+const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $isRegionalPage?: boolean }>`
     max-width: 100%;
-    padding-inline-end: 50px;
-    display: ${props => (props.$hide ? "none" : "block")};
+    padding-inline-end: ${props => (props.$isRegionalPage ? "0px" : "50px")};
+    display: block;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 0;

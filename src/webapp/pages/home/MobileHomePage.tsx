@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { Typography } from "@material-ui/core";
 
@@ -14,11 +14,24 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
 import { ResourcesCarousel } from "../../components/resources-carousel/ResourcesCarousel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { useAppContext } from "../../contexts/app-context";
+import { PopUp } from "../../components/popup/PopUp";
 
 export const MobileHomePage: React.FC = React.memo(() => {
+    const { generalContent } = useAppContext();
     const mapState = useHomePageMap();
     const { resources, news } = useHomeResources();
     const homePageContent = useHomePageContent();
+
+    const [showRegionalPagePopup, setShowRegionalPagePopup] = React.useState(false);
+
+    const onOpenPopup = useCallback(() => {
+        setShowRegionalPagePopup(true);
+    }, []);
+
+    const onClosePopup = useCallback(() => {
+        setShowRegionalPagePopup(false);
+    }, []);
 
     return (
         <React.Fragment>
@@ -94,6 +107,20 @@ export const MobileHomePage: React.FC = React.memo(() => {
                         </Box>
                     </BoxLink>
 
+                    <BoxLink onClick={onOpenPopup}>
+                        <Box color={colors.green}>
+                            <BubbleImg
+                                src={bubblePatternWhite}
+                                alt="Bubble pattern"
+                                aria-hidden="true"
+                                decoding="async"
+                                loading="eager"
+                            />
+
+                            <StyledTitleTypography>{i18n.t("Regional overview")}</StyledTitleTypography>
+                        </Box>
+                    </BoxLink>
+
                     <BoxLink href={homePageContent.methods.buttonLink || ""}>
                         <Box color={colors.green}>
                             <BubbleImg
@@ -135,6 +162,16 @@ export const MobileHomePage: React.FC = React.memo(() => {
 
                 <ResourcesCarousel resourceItems={news} hideTag />
             </section>
+
+            {showRegionalPagePopup && generalContent?.regionalPageMobilePopUp.disclaimer && (
+                <PopUp
+                    isOpen={showRegionalPagePopup}
+                    onClose={onClosePopup}
+                    text={generalContent.regionalPageMobilePopUp.disclaimer}
+                    linkText={generalContent.regionalPageMobilePopUp.buttonText}
+                    linkUrl={generalContent.regionalPageMobilePopUp.url}
+                />
+            )}
         </React.Fragment>
     );
 });

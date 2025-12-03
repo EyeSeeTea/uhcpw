@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useCallback } from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
@@ -19,6 +19,7 @@ import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { RegionMapPanel } from "../../components/region-map-panel/RegionMapPanel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { PopUp } from "../../components/popup/PopUp";
 
 export const RegionalPage: React.FC = () => {
     const {
@@ -48,6 +49,11 @@ export const RegionalPage: React.FC = () => {
     const { markers, mainPanelContent } = regionMap;
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
     const seoConfig = useRegionalPageSeoConfig(selectedRegion);
+    const [showRegionalPagePopup, setShowRegionalPagePopup] = React.useState(true);
+
+    const onClosePopup = useCallback(() => {
+        setShowRegionalPagePopup(false);
+    }, []);
 
     return (
         <Layout enableRotation={isSmallScreen} disableMinHeight isOverflowVisible>
@@ -164,16 +170,26 @@ export const RegionalPage: React.FC = () => {
                     ) : null}
                 </>
             ) : (
-                <AccordionPanel
-                    configs={sectionsAccordionConfig}
-                    expandedConfig={expandedSectionsAccordion}
-                    handleAccordionChange={handleAccordionChange}
-                    scrollMarginTop="80px"
-                    setPendingScrollTab={setPendingScrollTab}
-                    pendingScrollTab={pendingScrollTab}
-                    isBold
-                    bigFont
-                />
+                <>
+                    <AccordionPanel
+                        configs={sectionsAccordionConfig}
+                        expandedConfig={expandedSectionsAccordion}
+                        handleAccordionChange={handleAccordionChange}
+                        scrollMarginTop="80px"
+                        setPendingScrollTab={setPendingScrollTab}
+                        pendingScrollTab={pendingScrollTab}
+                        isBold
+                        bigFont
+                    />
+
+                    {showRegionalPagePopup && (
+                        <PopUp
+                            isOpen={showRegionalPagePopup}
+                            onClose={onClosePopup}
+                            text="This page is still under construction – there may be glitches! It will be formally launched on UHC Day 2025 (12 December)."
+                        />
+                    )}
+                </>
             )}
 
             <Backdrop open={isLoadingContent || policyChecklist.isLoading} style={{ color: "#fff", zIndex: 1001 }}>

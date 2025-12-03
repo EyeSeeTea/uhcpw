@@ -132,7 +132,7 @@ export const Map: React.FC<MapProps> = ({
 
             <MapSidePanel maxWidth={panelMaxWidth}>
                 {mapState.selectedCountry ? (
-                    <CountryPanel country={mapState.selectedCountry} />
+                    <CountryPanel country={mapState.selectedCountry} isRegionalPage={isRegionPage} />
                 ) : regionMainMapPanelContent ? (
                     <RegionMapPanel mainPanelContent={regionMainMapPanelContent} />
                 ) : (

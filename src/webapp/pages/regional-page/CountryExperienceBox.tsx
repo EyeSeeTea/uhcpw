@@ -3,7 +3,6 @@ import { Button, IconButton, Typography } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import ReactMarkdown, { Components } from "react-markdown";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 
@@ -32,7 +31,6 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
         showDialogInFullScreen = false,
         disableGoToCountryPage = false,
     } = props;
-    const history = useHistory();
     const { redirectWithExternalLink } = useAnalytics();
 
     const [showReferences, setShowReferences] = useState(false);
@@ -58,8 +56,13 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
     const onCountryLinkClick = useCallback(() => {
         const countryNameInFilter = formatCountryOrRegionParamName(countryName);
-        history.push(`/${countryNameInFilter}`);
-    }, [countryName, history]);
+        const innerPath = `/${countryNameInFilter}`;
+
+        const { origin, pathname } = window.location;
+        const fullUrl = `${origin}${pathname}#${innerPath}`;
+
+        window.open(fullUrl, "_blank", "noopener,noreferrer");
+    }, [countryName]);
 
     return (
         <CountryExperienceContent>
@@ -80,10 +83,11 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
                     <ReactMarkdownContainer>
                         <ReactMarkdown components={markdownComponents}>{content}</ReactMarkdown>
                     </ReactMarkdownContainer>
+
                     <StyledReadMoreButton
                         endIcon={<ExpandLessIcon />}
                         onClick={() => setExpanded(false)}
-                        style={{ paddingBlockStart: "0" }}
+                        style={{ paddingBlockStart: "5px" }}
                     >
                         {i18n.t("Read less")}
                     </StyledReadMoreButton>
@@ -141,11 +145,14 @@ const CountryExperienceContent = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 5px;
 `;
 
 const StyledTitle = styled(Typography)`
     color: ${colors.black};
     margin-bottom: 0;
+
+    min-height: 26px;
 
     &.MuiTypography-h6 {
         font-size: 16px;
@@ -193,7 +200,13 @@ const TextLink = styled.a`
 const StyledLink = styled(Button)`
     font-size: 16px;
     padding-left: 0;
-    padding-block-start: 0;
+    padding-block: 0;
+    height: 26px;
+
+    > span {
+        height: 26px;
+    }
+
     span {
         color: ${colors.darkBlue};
         text-decoration: none;
@@ -219,8 +232,11 @@ const StyledReadMoreButton = styled(Button)<{ marginLeft?: string }>`
     padding: 0;
     margin: 0;
     margin-left: ${props => props.marginLeft || "0"};
-    padding-block-start: 6px;
-    margin-block-end: 6px;
+    height: 26px;
+
+    > span {
+        height: 26px;
+    }
 
     :hover {
         background-color: transparent;
@@ -238,5 +254,4 @@ const TitleContainer = styled.div`
     align-items: center;
     justify-content: flex-start;
     gap: 8px;
-    margin-block-start: 6px;
 `;

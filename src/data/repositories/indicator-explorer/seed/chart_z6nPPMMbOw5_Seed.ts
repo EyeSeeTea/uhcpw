@@ -16,7 +16,7 @@ const SORTED_FINANCING_SCHEMES = ["Public spending on health", "Voluntary health
 export const chart_z6nPPMMbOw5_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     showCountryTag: true,
-    friendlyName: "Breakdown of current spending on health by financing scheme and type of care",
+    friendlyName: "Breakdown of current spending on health by financing arrangement and type of care",
     isComparative: false,
     subcategoryName: sortedSubcategoryNames.countryLevel,
     maxCountryFilter: 1,

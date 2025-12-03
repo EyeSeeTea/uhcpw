@@ -104,9 +104,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                         <TextContentWrapper ref={firstPanelRef}>
                             <IntroText>
                                 <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
-                            </IntroText>
 
-                            <IntroText>
                                 <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
                             </IntroText>
                         </TextContentWrapper>
@@ -117,9 +115,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                             <TextContentWrapper ref={firstPanelRef}>
                                 <IntroText>
                                     <ReactMarkdown components={markdownComponents}>{textSectionLeft}</ReactMarkdown>
-                                </IntroText>
 
-                                <IntroText>
                                     <ReactMarkdown components={markdownComponents}>{textSectionRight}</ReactMarkdown>
                                 </IntroText>
                             </TextContentWrapper>
@@ -130,6 +126,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                 <Title variant="body1">
                                     {i18n.t("Click an item on the policy checklist to see country examples")}
                                 </Title>
+
                                 {hasDownloadFile && (
                                     <a
                                         href={downloadFile}
@@ -345,6 +342,7 @@ const TableTitleContainer = styled.div`
     display: flex;
     justify-content: space-between;
     height: 70px;
+    gap: 12px;
 `;
 
 const DownloadButton = styled(Button)`
@@ -356,12 +354,16 @@ const DownloadButton = styled(Button)`
 
 const Paragraph = styled(Typography)`
     font-family: Lato;
-    margin-block: 0px;
-    font-size: 1rem;
+    margin-block: 10px;
+    font-size: 16px;
     color: ${colors.black};
 
     &:first-child {
         margin-block-start: 0;
+    }
+
+    &:last-child {
+        margin-block-end: 0;
     }
 `;
 

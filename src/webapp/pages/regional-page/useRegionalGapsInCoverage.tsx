@@ -10,7 +10,8 @@ import { GapsInCoveragePanel } from "./GapsInCoveragePanel";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
 import { VisualizationsSeeds } from "../../../data/repositories/indicator-explorer/seed/VisualizationsSeeds";
 import { LatestAvailable } from "../../../domain/entities/Year";
-import UmbrellaRed from "../../assets/country-page/umbrella-3.svg";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
+import { manageBIHInCountries } from "./bosniaAndHerzegovinaHelper";
 
 export type RegionalGapsInCoverageState = {
     configs: (VerticalTabConfig | AccordionConfig)[];
@@ -88,7 +89,6 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelTwoMainText,
                               progressText: gapsInCoverageContent.panelTwoProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              rightIcon: UmbrellaRed,
                               visuals: gapsInCoverageContent.hasPanelTwoChartOne
                                   ? [
                                         {
@@ -142,7 +142,13 @@ export function useRegionalGapsInCoverage(
                               visuals: [
                                   {
                                       policyCategoryId: "Nx6S3aQkvWe",
-                                      countries: selectedRegion.countries || [],
+                                      countries:
+                                          selectedRegion.id === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS ||
+                                          selectedRegion.id === ORG_UNIT_GROUP_IDS.EUROPEAN_REGION
+                                              ? manageBIHInCountries("addSubRegionsAndFilterBIH", [
+                                                    ...(selectedRegion.countries || []),
+                                                ])
+                                              : [...(selectedRegion.countries || [])],
                                       years: ["latest"],
                                       title:
                                           gapsInCoverageContent.panelFourChartOneTitle !== ""
@@ -167,7 +173,13 @@ export function useRegionalGapsInCoverage(
                               visuals: [
                                   {
                                       policyCategoryId: "u800TAhsIBY_Cat",
-                                      countries: selectedRegion.countries || [],
+                                      countries:
+                                          selectedRegion.id === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS ||
+                                          selectedRegion.id === ORG_UNIT_GROUP_IDS.EUROPEAN_REGION
+                                              ? manageBIHInCountries("addSubRegionsAndFilterBIH", [
+                                                    ...(selectedRegion.countries || []),
+                                                ])
+                                              : [...(selectedRegion.countries || [])],
                                       years: ["latest"],
                                       title:
                                           gapsInCoverageContent.panelFiveChartOneTitle !== ""
