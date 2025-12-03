@@ -743,6 +743,11 @@ export function givenAGeneralContent(): GeneralContent {
         },
         abbreviations: { url: undefined },
         glossary: { url: undefined },
+        regionalPageMobilePopUp: {
+            disclaimer: "This is the regional page mobile pop-up disclaimer.",
+            buttonText: "Learn More",
+            url: "",
+        },
     };
 }
 
