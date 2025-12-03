@@ -137,7 +137,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
             });
             downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
                 backgroundColor: useHeaderForCountryOrRegionalPage ? "white" : "#f1f9fc",
-                exclusionClasses: ["download-button", "info-button", "category"],
+                exclusionClasses: ["download-button", "info-button", "category", "go-to-button"],
             });
         }
     }, [chartData, sendEvent, analyticsPageTitle, useHeaderForCountryOrRegionalPage]);

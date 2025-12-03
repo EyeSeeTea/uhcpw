@@ -60,7 +60,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
     const markdownComponents: Components = React.useMemo(
         () => ({
             p: ({ children }) => (
-                <Paragraph variant="body1" gutterBottom>
+                <Paragraph variant="body1" gutterBottom className="paa">
                     {children}
                 </Paragraph>
             ),
@@ -258,14 +258,13 @@ const ChartTitleRow = styled.div`
     align-items: flex-start;
     width: 100%;
     gap: 24px;
-    align-items: center;
     justify-content: space-between;
+    margin-block-start: 20px;
 `;
 
 const ChartTitle = styled(Typography)`
     font-family: Lato;
-    margin-block-start: 19px;
-    margin-block-end: 6px;
+    margin-block-end: 5px;
     font-size: 1rem;
     font-weight: bold;
     color: ${colors.black};
@@ -280,7 +279,7 @@ const ChartTitle = styled(Typography)`
 const Paragraph = styled(Typography)`
     font-family: Lato;
     margin-block: 10px;
-    font-size: 1rem;
+    font-size: 16px;
     color: ${colors.black};
 
     &:first-child {
@@ -312,6 +311,7 @@ const StyledUl = styled.ul`
 const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`
     padding: ${props => props.padding};
     color: ${props => props.$color};
+    padding-block-start: 0;
 
     svg {
         font-size: 33px;
@@ -319,8 +319,8 @@ const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>
 `;
 
 const CustomInfoIconCountry = styled(InfoIcon)`
-    color: ${colors.darkBlue};
-    font-size: 25px;
+    color: #185698;
+    margin-top: -3px;
 `;
 
 const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolean }>`
@@ -332,7 +332,7 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolea
     }
     .visualization-plugin-header {
         .MuiTypography-h6 {
-            margin: 0 !important;
+            margin-left: 0 !important;
         }
     }
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
@@ -359,8 +359,8 @@ const TextContainer = styled.div`
 `;
 
 const Image = styled.img<{ $hasMarginTop?: boolean }>`
-    padding-block-start: 8px;
-    margin-block-start: ${props => (props.$hasMarginTop ? "10px" : "0")};
+    margin-block-start: ${props => (props.$hasMarginTop ? "16px" : "5px")};
+    margin-block-end: 12px;
 `;
 
 const TextLink = styled.a`

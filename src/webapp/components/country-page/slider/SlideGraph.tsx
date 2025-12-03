@@ -166,6 +166,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                             currentGraphScreenshot.needToKnowLatestAvailableYearInChart
                         }
                         visualizationIdInIndicatorExplorer={currentGraphScreenshot.visualizationIdInIndicatorExplorer}
+                        isRegionalPage={isRegionalPage}
                     />
                 </ScreenshotModal>
             )}
@@ -186,9 +187,9 @@ const Container = styled.div<{ $isRegionalPage?: boolean; $hideAll?: boolean }>`
     }
 `;
 
-const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolean }>`
+const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolean; $isRegionalPage?: boolean }>`
     max-width: 100%;
-    padding-inline-end: 50px;
+    padding-inline-end: ${props => (props.$isRegionalPage ? "0px" : "50px")};
     display: ${props => (props.$hide ? "none" : "block")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {

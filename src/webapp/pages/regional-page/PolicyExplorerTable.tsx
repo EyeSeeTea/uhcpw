@@ -52,6 +52,7 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
         scrollbar.style.overflowY = "hidden";
         scrollbar.style.position = "relative";
         scrollbar.style.top = "7px";
+        scrollbar.style.height = "13px";
 
         scrollbar.className = className;
 
@@ -100,7 +101,9 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
                 </StyledIconButton>
             </TableHeader>
 
-            <TableLegend categoryId={categoryId} />
+            <LegendContainer>
+                <TableLegend categoryId={categoryId} />
+            </LegendContainer>
 
             <TableContainer
                 component={TablePaper}
@@ -133,6 +136,18 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
     ) : null;
 });
 
+const LegendContainer = styled.div`
+    width: 100%;
+    font-size: 14px;
+
+    > div {
+        margin-block: 0;
+        width: 100%;
+        justify-content: flex-start;
+        gap: 3%;
+    }
+`;
+
 const TableHeader = styled.div`
     display: flex;
     flex-direction: row;
@@ -141,15 +156,13 @@ const TableHeader = styled.div`
     align-items: flex-start;
     width: 100%;
     gap: 24px;
-    align-items: center;
     justify-content: space-between;
-    margin-block-start: 8px;
+    margin-block-start: 20px;
 `;
 
 const Title = styled(Typography)`
     font-family: Lato;
-    margin-block-start: 10px;
-    margin-block-end: 6px;
+    margin-block-end: 5px;
     font-size: 1rem;
     font-weight: bold;
     color: ${colors.black};
@@ -157,13 +170,14 @@ const Title = styled(Typography)`
     width: 100%;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-left: 0px;
+        margin-left: 0;
     }
 `;
 
 const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`
     padding: ${props => props.padding};
     color: ${props => props.$color};
+    padding-block-start: 0;
 
     svg {
         font-size: 33px;
@@ -171,8 +185,8 @@ const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>
 `;
 
 const CustomInfoIconCountry = styled(InfoIcon)`
-    color: ${colors.darkBlue};
-    font-size: 25px;
+    color: #185698;
+    margin-top: -3px;
 `;
 
 const TablePaper = styled(Paper)`

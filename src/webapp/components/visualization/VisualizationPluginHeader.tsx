@@ -81,6 +81,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                 className="visualization-plugin-header"
                 $isCountryPage={useHeaderForCountryOrRegionalPage}
                 $reducePaddingBottom={reducePaddingBottom}
+                $isRegionalPage={isRegionalPage}
             >
                 <Row>
                     {useHeaderForCountryOrRegionalPage ? (
@@ -106,7 +107,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                 )}
 
                                 <RowWithGap $gap={0}>
-                                    {isRegionalPage && (
+                                    {isRegionalPage && !isScreenshot && (
                                         <StyledIconButton
                                             onClick={goToIndicatorExplorer}
                                             $color="#185698"
@@ -121,7 +122,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     )}
 
                                     {onShowInfo && (
-                                        <StyledIconButton onClick={onShowInfo} $color="#185698" padding="4px">
+                                        <StyledIconButton onClick={onShowInfo} $color="white" padding="4px">
                                             <CustomInfoIconCountry color="primary" className="info-button" />
                                         </StyledIconButton>
                                     )}
@@ -213,9 +214,25 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
     }
 );
 
-const DataHeader = styled.div<{ $isCountryPage?: boolean; $reducePaddingBottom?: boolean }>`
-    padding-block-start: ${props => (props.$isCountryPage ? "10px" : "48px")};
-    padding-block-end: ${props => (props.$reducePaddingBottom ? "10px" : "48px")};
+const DataHeader = styled.div<{ $isCountryPage?: boolean; $reducePaddingBottom?: boolean; $isRegionalPage?: boolean }>`
+    padding-block-start: ${props => {
+        if (props.$isCountryPage && !props.$isRegionalPage) {
+            return "10px";
+        } else if (props.$isRegionalPage) {
+            return "20px";
+        } else {
+            return "48px";
+        }
+    }};
+    padding-block-end: ${props => {
+        if (props.$isCountryPage && !props.$isRegionalPage) {
+            return "10px";
+        } else if (props.$isRegionalPage) {
+            return "0";
+        } else {
+            return "48px";
+        }
+    }};
     width: 100%;
 `;
 
@@ -225,7 +242,7 @@ const Row = styled.div<{ $isRegionalPage?: boolean }>`
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: flex-start;
-    gap: ${props => (props.$isRegionalPage ? "24px" : "16px")};
+    gap: 24px;
     align-items: ${props => (props.$isRegionalPage ? "center" : "flex-start")};
     width: 100%;
 `;
@@ -242,7 +259,7 @@ const RowWithGap = styled.div<{ $gap: number }>`
     display: flex;
     flex-direction: row;
     margin-bottom: 0px;
-    align-items: center;
+    align-items: flex-start;
     gap: ${props => props.$gap}px;
 `;
 
@@ -257,6 +274,7 @@ const DownloadButton = styled(Button)`
 const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`
     padding: ${props => props.padding};
     color: ${props => props.$color};
+    padding-block-start: 0;
 `;
 
 const CustomInfoIconIndicators = styled(InfoIcon)`
@@ -267,6 +285,7 @@ const CustomInfoIconIndicators = styled(InfoIcon)`
 const CustomInfoIconCountry = styled(InfoIcon)`
     color: #185698;
     font-size: 33px;
+    margin-top: -3px;
 `;
 
 const CustomImageIcon = styled(ImageRoundedIcon)`
@@ -331,6 +350,7 @@ const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?
     font-weight: ${props => (props.$isRegionalPage ? "bold" : "normal")};
     margin-right: ${props => (props.$isRegionalPage ? "5px" : "0px")};
     margin-left: 20px;
+    margin-bottom: ${props => (props.$isRegionalPage ? "5px" : "0px")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-left: 15px;
