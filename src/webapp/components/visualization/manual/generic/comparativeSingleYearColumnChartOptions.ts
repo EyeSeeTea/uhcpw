@@ -5,6 +5,7 @@ import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
+import { getOrgUnitKey } from "../utils/getOrgUnitKey";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -26,7 +27,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
-            const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
+            const orgUnit = getOrgUnitKey(chartSource, orgUnitId);
+
             return `${orgUnit} ${currentYear ?? ""}`;
         })
         .orderBy(items => {

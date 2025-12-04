@@ -8,6 +8,7 @@ import { getMaxYAxisAndYTickInterval } from "../utils/getMaxYAxisAndYTickInterva
 import { ORG_UNIT_GROUP_IDS } from "../../../../../domain/entities/region/Region";
 import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
 import { fillDataSourceWithEmptyData } from "../utils/fillDataSourceWithEmptyData";
+import { getOrgUnitKey } from "../utils/getOrgUnitKey";
 
 function getCountriesAndYearInRows(rows: string[][]): string[] {
     const groupByCountryIdAndYear = _(rows)
@@ -51,8 +52,8 @@ export const comparativeColumnChartOptions: (params: {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
-            const metadataOrgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId];
-            const orgUnit = metadataOrgUnit?.code || metadataOrgUnit?.name || "";
+            const orgUnit = getOrgUnitKey(chartSource, orgUnitId);
+
             const year = row[2] || "";
 
             return `${orgUnit} ${year}`;
