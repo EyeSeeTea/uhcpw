@@ -4,6 +4,7 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
+import { getOrgUnitKey } from "../utils/getOrgUnitKey";
 
 export const comparativeGroupedColumnChartOptions: (
     chartSource: ChartSource,
@@ -20,7 +21,7 @@ export const comparativeGroupedColumnChartOptions: (
             const orgUnit =
                 chartSource.analyticsResponse.metaData.items[orgUnitId]?.[isOnlyOneYearSelected ? "name" : "code"] ||
                 "";
-            return orgUnit;
+            return orgUnit || getOrgUnitKey(chartSource, orgUnitId);
         })
         .orderBy(items => {
             return _(items).sumBy(row => (row[2] ? +row[2] : 0));
