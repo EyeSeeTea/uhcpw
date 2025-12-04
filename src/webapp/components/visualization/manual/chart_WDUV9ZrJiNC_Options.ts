@@ -7,6 +7,7 @@ import { baseChartOptions } from "./generic/baseChartOptions";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../utils/getMaxAxisAndTickInterval";
 import { ORG_UNIT_GROUP_IDS } from "../../../../domain/entities/region/Region";
+import { getOrgUnitKey } from "./utils/getOrgUnitKey";
 
 const orderByValueInSerie = "WmOGqGcov4f";
 
@@ -26,7 +27,7 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
     const orderRows = _(chartSourceWithFilteredRowsByLAY.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
-            const orgUnit = chartSourceWithFilteredRowsByLAY.analyticsResponse.metaData.items[orgUnitId]?.code || "";
+            const orgUnit = getOrgUnitKey(chartSource, orgUnitId);
             const year = row[2] || "";
 
             return `${orgUnit} ${year} `;
