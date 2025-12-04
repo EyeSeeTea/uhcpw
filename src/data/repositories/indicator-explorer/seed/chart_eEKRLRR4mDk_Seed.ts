@@ -12,6 +12,10 @@ export const chart_eEKRLRR4mDk_Seed: VisualizationExtra = {
     isComparative: true,
     isYearSingleSelection: true,
     hasEURegion: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>

@@ -9,8 +9,9 @@ export interface PolicyExplorerRepository {
         policyExplorerCategories: Record<string, string[]>,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
-        countriesAndRegions: Country[],
-        programCategories: PolicyExplorerCategory[]
+        countriesAndSubregions: Country[],
+        programCategories: PolicyExplorerCategory[],
+        useCountryCodes?: boolean
     ): FutureData<PolicyExplorer>;
     saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void>;
 }

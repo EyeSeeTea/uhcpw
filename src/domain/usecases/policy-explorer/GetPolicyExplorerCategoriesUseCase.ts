@@ -5,7 +5,7 @@ import { PolicyExplorerCategoryRepository } from "../../repositories/policy-expl
 export class GetPolicyExplorerCategoriesUseCase {
     constructor(private policyExplorerCategoryRepository: PolicyExplorerCategoryRepository) {}
 
-    public execute(): FutureData<PolicyExplorerCategory[]> {
-        return this.policyExplorerCategoryRepository.getAll();
+    public execute(isRegionalPage?: boolean): FutureData<PolicyExplorerCategory[]> {
+        return this.policyExplorerCategoryRepository.getAll(isRegionalPage);
     }
 }

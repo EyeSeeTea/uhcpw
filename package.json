@@ -1,7 +1,7 @@
 {
     "name": "uhcpw",
     "description": "App for the Universal Health Coverage in the WHO European Region",
-    "version": "1.12.1",
+    "version": "1.13.0",
     "license": "GPL-3.0",
     "author": "EyeSeeTea team",
     "homepage": ".",
@@ -40,6 +40,7 @@
         "purify-ts-extra-codec": "0.6.0",
         "react": "17.0.2",
         "react-dom": "17.0.2",
+        "react-helmet-async": "^1.3.0",
         "react-markdown": "^8.0.7",
         "react-router-dom": "5.2.0",
         "react-scripts": "4.0.3",
@@ -107,8 +108,12 @@
         "start-profiling": "craco start",
         "postinstall": "yarn localize",
         "prebuild": "yarn localize && yarn test",
+        "seo:test": "cp config/seo/robots.test.txt build/robots.txt",
+        "seo:prod": "cp config/seo/robots.prod.txt build/robots.txt && cp config/seo/sitemap.xml build/sitemap.xml && yarn update-sitemap",
         "build-folder": "rm -rf build/ && d2-manifest package.json manifest.webapp && react-scripts build && yarn run manifest && cp -r i18n icon.png build",
-        "build": "yarn build-folder && rm -f $npm_package_name.zip && cd build && zip --quiet -r ../$npm_package_name.zip *",
+        "build": "yarn build:prod",
+        "build:test": "yarn prebuild && yarn build-folder && yarn seo:test && rm -f $npm_package_name-test.zip && cd build && zip --quiet -r ../$npm_package_name-test.zip *",
+        "build:prod": "yarn build-folder && yarn seo:prod && rm -f $npm_package_name-production.zip && cd build && zip --quiet -r ../$npm_package_name-production.zip *",
         "test": "jest --passWithNoTests",
         "test:watch": "jest --watch",
         "test:coverage": "yarn test --coverage",
@@ -123,7 +128,9 @@
         "cy:e2e:open": "NODE_ENV=test CYPRESS_E2E=true cypress open",
         "cy:e2e:run": "NODE_ENV=test CYPRESS_E2E=true cypress run --browser chrome",
         "prepare": "husky install",
-        "script-example": "npx ts-node src/scripts/example.ts"
+        "script-example": "npx ts-node src/scripts/example.ts",
+        "generate-sitemap": "npx ts-node src/scripts/generateSitemap.ts",
+        "update-sitemap": "npx ts-node src/scripts/updateSitemap.ts"
     },
     "manifest.webapp": {
         "name": "UHC watch",

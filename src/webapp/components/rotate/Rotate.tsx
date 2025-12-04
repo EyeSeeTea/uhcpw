@@ -5,11 +5,12 @@ import { useOrientation } from "./useOrientation";
 type Props = {
     children: React.ReactNode;
     enableRotation?: boolean;
+    isOverflowVisible?: boolean;
     width?: string;
     height?: string;
 };
 
-export const Rotate: React.FC<Props> = ({ children, enableRotation, width, height }) => {
+export const Rotate: React.FC<Props> = ({ children, enableRotation, isOverflowVisible = false, width, height }) => {
     const orientation = useOrientation();
 
     const rotate = useMemo(() => {
@@ -17,17 +18,17 @@ export const Rotate: React.FC<Props> = ({ children, enableRotation, width, heigh
     }, [enableRotation, orientation]);
 
     return (
-        <RotatedContent rotate={rotate} width={width} height={height}>
+        <RotatedContent rotate={rotate} width={width} height={height} $isOverflowVisible={isOverflowVisible}>
             {children}
         </RotatedContent>
     );
 };
 
-const RotatedContent = styled.div<{ rotate: boolean; width?: string; height?: string }>`
+const RotatedContent = styled.div<{ rotate: boolean; width?: string; height?: string; $isOverflowVisible: boolean }>`
     width: 100%;
     height: 100%;
     transition: transform 0.3s ease;
-    overflow: auto;
+    overflow: ${props => (props.$isOverflowVisible ? "visible" : "auto")};
 
     ${({ rotate, width, height }) =>
         rotate &&

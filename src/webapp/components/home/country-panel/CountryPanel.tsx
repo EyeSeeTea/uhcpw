@@ -1,7 +1,8 @@
 import React from "react";
 import { Button, Typography } from "@material-ui/core";
 import styled from "styled-components";
-import { Country, CountryStatus } from "../../../../domain/entities/Country";
+
+import { Country } from "../../../../domain/entities/Country";
 import ReactMarkdown from "react-markdown";
 import insufficientDataIcon from "../../../assets/map/icon-insufficient.svg";
 import weakIcon from "../../../assets/map/icon-weak.svg";
@@ -12,8 +13,11 @@ import strongIcon from "../../../assets/map/icon-strong.svg";
 import { Divider } from "material-ui";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
+
 export interface CountryPanelProps {
     country: Country;
+    isRegionalPage?: boolean;
 }
 
 type ButtonItemType = {
@@ -31,7 +35,7 @@ export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
     );
 };
 
-const iconStatusMap: Record<CountryStatus, string> = {
+const iconStatusMap: Record<FinancialProtectionStatus, string> = {
     Strong: strongIcon,
     Emerging: emergingIcon,
     Gaps: gapsIcon,
@@ -40,17 +44,18 @@ const iconStatusMap: Record<CountryStatus, string> = {
     InsufficientData: insufficientDataIcon,
 };
 
-export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
+export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalPage }) => {
     return (
-        <Container>
+        <Container $isRegionalPage={isRegionalPage}>
             <Row>
                 <UmbrellaItem>
                     <Marker src={iconStatusMap[country.status]} />
                 </UmbrellaItem>
-                <Typography variant="h2" style={{ fontWeight: 400 }}>
+                <StyledTitle variant="h2" $isRegionalPage={isRegionalPage} style={{ fontWeight: 400 }}>
                     {country.name}
-                </Typography>
+                </StyledTitle>
             </Row>
+
             <Divider style={{ backgroundColor: "white", margin: "38px 0px" }} />
 
             <ReactMarkdown
@@ -64,7 +69,8 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country }) => {
     );
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $isRegionalPage?: boolean }>`
+    padding-inline-start: ${props => (props.$isRegionalPage ? "16px" : "0")};
     overflow-y: auto;
     font-size: 16px;
     ul {
@@ -76,9 +82,16 @@ const Container = styled.div`
     }
 `;
 
+const StyledTitle = styled(Typography)<{ $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.$isRegionalPage ? "42px" : "3.75rem")};
+    line-height: 1.2;
+`;
+
 const Row = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
+    margin-bottom: 32px;
 `;
 
 const UmbrellaItem = styled.div`
@@ -92,11 +105,11 @@ const Marker = styled.img`
     background-size: cover;
     width: 80px;
     margin-right: 24px;
-    margin-bottom: 32px;
 `;
 
 const StyledButton = styled(Button)`
     background-color: white;
+    opacity: 1;
     padding: 5px 30px;
     color: ${colors.accentPrimary};
     text-transform: initial;

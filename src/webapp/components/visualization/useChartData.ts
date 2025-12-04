@@ -11,10 +11,14 @@ import { visualizationCustomizations } from "./customization/visualizationCustom
 import { chartOptions, chartOptionsMultiple, ChartSource, ChartSourceMultiple } from "./manual/chartOptions";
 import { Country } from "../../../domain/entities/Country";
 import { getBreakInSeriesCountryDescription } from "../../../domain/entities/indicator-explorer/BreakInSeries";
-import { LatestCOVID19 } from "../../../domain/entities/Year";
+import { LatestAvailable, LatestCOVID19 } from "../../../domain/entities/Year";
 import { Id } from "../../../domain/entities/Ref";
-import { Region } from "../../../domain/entities/Region";
+import { Region } from "../../../domain/entities/region/Region";
 import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
+import {
+    getCommonLastAvailableYearInBothAxis,
+    getLastAvailableYearByCountry,
+} from "../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -24,15 +28,30 @@ interface ChartDataState {
     onCloseInfo: () => void;
 }
 
-export function useChartData(
-    visualizationId: string,
-    years: string[],
-    countryIds: Id[],
-    regionIds: Id[],
-    currentCountry?: string,
-    currentRegion?: string,
-    visualizationName?: string
-): ChartDataState {
+export function useChartData(params: {
+    visualizationId: string;
+    years: string[];
+    countryIds: Id[];
+    regionIds: Id[];
+    currentCountryOrRegion?: Id;
+    visualizationName?: string;
+    filterByLatestAvailableYearInRegion?: boolean;
+    needToKnowLatestAvailableYearInChart?: boolean;
+    isRegionalPage?: boolean;
+    seriesColors?: Record<string, string>;
+}): ChartDataState {
+    const {
+        visualizationId,
+        years,
+        countryIds,
+        regionIds,
+        currentCountryOrRegion,
+        visualizationName,
+        filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
+        isRegionalPage,
+        seriesColors,
+    } = params;
     const { compositionRoot } = useAppContext();
 
     const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
@@ -96,16 +115,43 @@ export function useChartData(
                         ? chartOptionsMultiple[visualizationId]
                         : chartOptions[visualizationId];
 
+                    const isLatestYearAvailable = years.includes(LatestAvailable.id);
+
+                    const lastAvailableYearInRegion =
+                        filterByLatestAvailableYearInRegion && currentCountryOrRegion
+                            ? getLastAvailableYearInRegion(
+                                  filteredAnalytics,
+                                  isMultipleVisualizations,
+                                  currentCountryOrRegion
+                              )
+                            : undefined;
+
+                    const isLatestCOVID19 = years.includes(LatestCOVID19.id);
+
+                    const lastAvailableYearInChart = needToKnowLatestAvailableYearInChart
+                        ? getLastAvailableYearInChartData({
+                              analyticsResponse: filteredAnalytics,
+                              isMultipleVisualizations: isMultipleVisualizations,
+                              isScatter: visualization?.isScatter,
+                              xAxis: visualization?.xAxis,
+                              yAxis: visualization?.yAxis,
+                              isLatestCOVID19: isLatestCOVID19,
+                          })
+                        : undefined;
+
                     const chartSource = {
                         analyticsResponse: isMultipleVisualizations ? filteredAnalytics : filteredAnalytics[0],
                         visualization: isMultipleVisualizations ? visualizations : visualization,
                         countries: countriesAndSubregions,
                         regions: regions,
-                        currentCountry: currentCountry,
-                        currentRegion: currentRegion,
+                        currentCountryOrRegion: currentCountryOrRegion,
                         currentYear: years.length === 1 ? years[0] : undefined,
-                        isLatestCOVID19: years.includes(LatestCOVID19.id),
-                    };
+                        isLatestCOVID19: isLatestCOVID19,
+                        isLatestYearAvailable: isLatestYearAvailable,
+                        yearToFilterBy: lastAvailableYearInRegion,
+                        isRegionalPage: isRegionalPage,
+                        seriesColors: seriesColors,
+                    } as ChartSourceMultiple & ChartSource;
 
                     const visualizationDialogInfo =
                         visualization &&
@@ -114,6 +160,7 @@ export function useChartData(
 
                     const chartName =
                         visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
+
                     setChartData({
                         kind: "Loaded",
                         friendlyName: chartName
@@ -129,12 +176,12 @@ export function useChartData(
                         customization: visualizationCustomizations[visualizationId],
                         countries: countriesAndSubregions.filter(country => countryIds.includes(country.id)),
                         regions: regions.filter(region => regionIds.includes(region.id)),
-                        chartOptions: visualizationChartOptions
-                            ? visualizationChartOptions(chartSource as ChartSourceMultiple & ChartSource)
-                            : undefined,
+                        chartOptions: visualizationChartOptions ? visualizationChartOptions(chartSource) : undefined,
                         isScatter: visualization?.isScatter,
                         xAxis: visualization?.xAxis,
                         yAxis: visualization?.yAxis,
+                        lastAvailableYearInRegion: lastAvailableYearInRegion,
+                        lastAvailableYearInChart: lastAvailableYearInChart,
                     });
                 },
                 error => {
@@ -158,10 +205,13 @@ export function useChartData(
         regionIds,
         years,
         countriesAndSubregions,
-        currentCountry,
+        currentCountryOrRegion,
         getVisualizationDialogInfo,
         visualizationName,
-        currentRegion,
+        filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
+        isRegionalPage,
+        seriesColors,
     ]);
 
     const onDownloadExcel = useCallback(
@@ -169,11 +219,15 @@ export function useChartData(
             const seriesData = chartDataLoaded?.chartOptions?.series ?? chartDataLoaded?.customization?.series;
             const seriesIdAndName = (seriesData || []).map(({ id, name }) => ({ id, name }));
             const selectedRegions = regions.filter(region => regionIds.includes(region.id));
+            const periods =
+                filterByLatestAvailableYearInRegion && chartDataLoaded?.lastAvailableYearInRegion
+                    ? [chartDataLoaded?.lastAvailableYearInRegion]
+                    : years;
 
             compositionRoot.indicatorExplorer.downloadAnalytics
                 .execute({
                     visualizationIds: visualizationId.split("_"),
-                    periods: years || [],
+                    periods: periods,
                     countryIds: countryIds || [],
                     selectedRegions: selectedRegions,
                     seriesIdAndName: seriesIdAndName,
@@ -183,7 +237,15 @@ export function useChartData(
                 })
                 .runAsync();
         },
-        [compositionRoot.indicatorExplorer.downloadAnalytics, countryIds, regionIds, regions, visualizationId, years]
+        [
+            compositionRoot.indicatorExplorer.downloadAnalytics,
+            countryIds,
+            filterByLatestAvailableYearInRegion,
+            regionIds,
+            regions,
+            visualizationId,
+            years,
+        ]
     );
 
     const onShowInfo = useCallback(() => {
@@ -280,4 +342,48 @@ function getLegendSetIds(visualization: Visualization, analytics: Analytics) {
     }
 
     return legendSetIds;
+}
+
+function getLastAvailableYearInRegion(
+    analyticsResponse: Analytics[],
+    isMultipleVisualizations: boolean,
+    regionId: Id
+): string | undefined {
+    const rows = isMultipleVisualizations
+        ? analyticsResponse.flatMap(analytics => analytics.rows)
+        : analyticsResponse[0]?.rows || [];
+
+    const lastAvailableYearInRegion = rows.reduce((lastAvailableYear, row): string => {
+        const region = row[1]?.toString() || "";
+        const year = row[2] || "";
+
+        return regionId === region && year > lastAvailableYear ? year : lastAvailableYear;
+    }, "0");
+
+    return lastAvailableYearInRegion !== "0" ? lastAvailableYearInRegion : undefined;
+}
+
+function getLastAvailableYearInChartData(params: {
+    analyticsResponse: Analytics[];
+    isMultipleVisualizations: boolean;
+    isScatter?: boolean;
+    xAxis?: string;
+    yAxis?: string;
+    isLatestCOVID19?: boolean;
+}): string | undefined {
+    const { analyticsResponse, isMultipleVisualizations, isScatter, xAxis, yAxis, isLatestCOVID19 } = params;
+    const rows = isMultipleVisualizations
+        ? analyticsResponse.flatMap(analytics => analytics.rows)
+        : analyticsResponse[0]?.rows || [];
+
+    const lastAvailableYearByCountry =
+        isScatter && xAxis && yAxis
+            ? getCommonLastAvailableYearInBothAxis(rows, xAxis, yAxis, isLatestCOVID19)
+            : getLastAvailableYearByCountry(rows, isLatestCOVID19);
+
+    const latestAvailableYear = Object.values(lastAvailableYearByCountry).reduce((lastAvailableYear, year) => {
+        return year > lastAvailableYear ? year : lastAvailableYear;
+    }, "0");
+
+    return latestAvailableYear !== "0" ? latestAvailableYear : undefined;
 }

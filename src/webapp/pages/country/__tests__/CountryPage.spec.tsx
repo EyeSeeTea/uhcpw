@@ -33,7 +33,7 @@ describe("Country Page", () => {
         expect(scope.getByText(/in detail/i)).toBeInTheDocument();
         expect(scope.getByText(/resources/i)).toBeInTheDocument();
         expect(scope.getByText(/experts/i)).toBeInTheDocument();
-        expect(scope.getByLabelText(/country-dropdown/i)).toBeInTheDocument();
+        expect(scope.getByLabelText(/country-menu-dropdown/i)).toBeInTheDocument();
     });
     it("should render Hero", () => {
         givenAPersons();
@@ -99,7 +99,7 @@ describe("Country Page", () => {
 function renderPage() {
     customRenderWithRouterMatch(
         <CountryPage />,
-        { path: "/country-page", route: `/country-page?country=DVnpk4xiXGJ` },
+        { path: "/:countryOrRegion", route: `/Spain` },
         {
             person: personRepository,
             resource: resourceRepository,

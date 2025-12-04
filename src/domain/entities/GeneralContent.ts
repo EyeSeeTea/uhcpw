@@ -6,6 +6,13 @@ export type GeneralContent = {
     cookies: CookiesDisclaimerContent;
     abbreviations: FileUrl;
     glossary: FileUrl;
+    regionalPageMobilePopUp: RegionalPageMobilePopUpContent;
+};
+
+export type RegionalPageMobilePopUpContent = {
+    disclaimer: string;
+    buttonText: string;
+    url: string;
 };
 
 export type FooterContent = {

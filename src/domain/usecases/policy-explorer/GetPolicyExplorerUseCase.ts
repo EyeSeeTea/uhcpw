@@ -14,16 +14,18 @@ export class GetPolicyExplorerUseCase {
         policyExplorerCategories: Record<string, string[]>,
         selectedCountriesIds: Id[],
         years: string[],
-        countriesAndRegions: Country[],
-        programCategories: PolicyExplorerCategory[]
+        countriesAndSubregions: Country[],
+        programCategories: PolicyExplorerCategory[],
+        useCountryCodes?: boolean
     ): FutureData<PolicyExplorer> {
         return this.getYearsByCategory(years, policyExplorerCategories).flatMap(yearsByCategory => {
             return this.policyExplorerRepository.get(
                 policyExplorerCategories,
                 selectedCountriesIds,
                 yearsByCategory,
-                countriesAndRegions,
-                programCategories
+                countriesAndSubregions,
+                programCategories,
+                useCountryCodes
             );
         });
     }

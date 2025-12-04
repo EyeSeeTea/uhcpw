@@ -8,6 +8,7 @@ export interface VisualizationExtra {
     friendlyName: string;
     countryPageName?: string;
     downloadedFileName?: string;
+    regionalPageName?: string;
     categoryTag?: string;
     notes?: string;
     maxCountryFilter?: number;
@@ -38,6 +39,7 @@ export interface VisualizationExtra {
     yearsFilterUpTo2YearsAgo?: boolean;
     hasCustomFilterXAxisAndYAxisByLastAvailableYear?: boolean;
     needsToFilterZeroValues?: boolean;
+    needsRounding?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

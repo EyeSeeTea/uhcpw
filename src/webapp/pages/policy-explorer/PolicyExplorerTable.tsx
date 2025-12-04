@@ -3,7 +3,6 @@ import React, { RefObject, useCallback, useState, useEffect } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
-import ReactMarkdown, { Components } from "react-markdown";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 
 import i18n from "../../../locales";
@@ -15,9 +14,13 @@ import {
 import { CategoryInfoDialog } from "../../components/dialog/CategoryInfoDialog";
 import useWindowSize from "../../common/hooks/screen/useWindowSize";
 import _ from "lodash";
-import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
-import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import {
+    CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+} from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
+import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
+import { TableLegend } from "../../components/policy-explorer/TableLegend";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -38,7 +41,6 @@ const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     exemptionsFromUserCharges: 160,
     capOnUserCharges: 90,
 };
-const EMPTY_URL = "/";
 const MIN_DATA_CELL_WIDTH = 200;
 
 export const PolicyExplorerTable = React.memo(
@@ -51,23 +53,6 @@ export const PolicyExplorerTable = React.memo(
         hasMoreThanOneCountry,
     }: PolicyExplorerTableProps) => {
         const { width } = useWindowSize();
-        const { redirectWithExternalLink } = useAnalytics();
-
-        const handleClickEmptyUrl = useCallback(
-            event => {
-                event.preventDefault();
-                referencesRef.current?.scrollIntoView({ behavior: "smooth" });
-            },
-            [referencesRef]
-        );
-
-        const cleanMarkdownEmptyLinks = (value: string) => {
-            const regex = /\[[^\]]+\](?!\([^)]+\))/gu;
-
-            return value.replace(regex, match => {
-                return match + `(${EMPTY_URL})`;
-            });
-        };
 
         const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
 
@@ -101,25 +86,6 @@ export const PolicyExplorerTable = React.memo(
                 }
             },
             [category.value, dataOrientation, hasMoreThanOneCountry, rows, width]
-        );
-
-        const markdownComponents: Components = React.useMemo(
-            () => ({
-                a: ({ href, children, ...props }) => {
-                    return href === EMPTY_URL ? (
-                        <a href={href} {...props} onClick={handleClickEmptyUrl}>
-                            {children}
-                        </a>
-                    ) : (
-                        <a href={href} {...props} onClick={redirectWithExternalLink}>
-                            {children}
-                        </a>
-                    );
-                },
-                li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
-                ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
-            }),
-            [handleClickEmptyUrl, redirectWithExternalLink]
         );
 
         // Function to create and synchronize the double scroll bar
@@ -192,6 +158,13 @@ export const PolicyExplorerTable = React.memo(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [tableContainerRef, dataOrientation]);
 
+        const hasAllSameWidth = React.useMemo(() => {
+            return (
+                category.value === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY ||
+                category.value === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+            );
+        }, [category.value]);
+
         return !rows?.length || !dataOrientation ? (
             category && (
                 <NoDataContainer>
@@ -221,11 +194,13 @@ export const PolicyExplorerTable = React.memo(
                                 <Typography variant="h6" color="primary">
                                     {category.text}
                                 </Typography>
+
                                 <InfoButton onClick={() => setIsNotesDialogOpen(true)}>
                                     <InfoIcon color="primary" />
                                 </InfoButton>
                             </Row>
                         )}
+
                         <Row>
                             <SwitchRowColumnButton
                                 aria-label="Row/Column"
@@ -240,14 +215,18 @@ export const PolicyExplorerTable = React.memo(
                         </Row>
                     </Row>
                 </TableHeader>
+
+                <TableLegend categoryId={category.value} />
+
                 <TableContainer
                     component={TablePaper}
                     ref={tableContainerRef}
                     id="doublescroll"
                     style={{ overflowX: "auto" }}
+                    className={category.value}
                 >
-                    <StyledTable orientation={dataOrientation}>
-                        <TableBody>
+                    <StyledTable orientation={dataOrientation} hasAllSameWidth={hasAllSameWidth}>
+                        <StyledTableBody className={category.value + "-table"}>
                             {rows.map((row, index) => (
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
                                     {row.map((cell, i) => (
@@ -256,29 +235,34 @@ export const PolicyExplorerTable = React.memo(
                                             type={cell.type}
                                             cellwidth={getCellWidth(i)}
                                         >
-                                            <ReactMarkdown components={markdownComponents}>
-                                                {cell.references
-                                                    ? `${cleanMarkdownEmptyLinks(cell.value)}\n\n${cell.references}`
-                                                    : cleanMarkdownEmptyLinks(cell.value)}
-                                            </ReactMarkdown>
+                                            <PolicyExplorerTableValue cell={cell} referencesRef={referencesRef} />
                                         </StyledTableCell>
                                     ))}
                                 </TableRow>
                             ))}
-                        </TableBody>
+                        </StyledTableBody>
                     </StyledTable>
                 </TableContainer>
+
                 <CategoryInfoDialog isOpen={isNotesDialogOpen} onClose={handleClose} category={category} />
             </>
         );
     }
 );
 
-export const StyledTable: React.FC<{ orientation: DataOrientation }> = ({ orientation, children }) => {
+export const StyledTable: React.FC<{ orientation: DataOrientation; hasAllSameWidth?: boolean }> = ({
+    orientation,
+    children,
+    hasAllSameWidth = false,
+}) => {
     return orientation === "normal" ? (
-        <StyledNormalTable aria-label="simple table">{children}</StyledNormalTable>
+        <StyledNormalTable aria-label="simple table" hasAllSameWidth={hasAllSameWidth}>
+            {children}
+        </StyledNormalTable>
     ) : (
-        <StyledInvertedTable aria-label="simple table">{children}</StyledInvertedTable>
+        <StyledInvertedTable aria-label="simple table" hasAllSameWidth={hasAllSameWidth}>
+            {children}
+        </StyledInvertedTable>
     );
 };
 
@@ -302,9 +286,12 @@ const TablePaper = styled(Paper)`
     }
 `;
 
-const StyledNormalTable = styled(Table)`
+const StyledNormalTable = styled(Table)<{ hasAllSameWidth?: boolean }>`
+    width: ${props => (props.hasAllSameWidth ? "100%" : "inherit")};
+    table-layout: ${props => (props.hasAllSameWidth ? "fixed" : "auto")};
     border-spacing: 0.8px;
     border-collapse: initial;
+
     tbody > tr:first-child > td {
         vertical-align: middle;
     }
@@ -322,9 +309,12 @@ const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwi
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
 `;
 
-const StyledInvertedTable = styled(Table)`
+const StyledInvertedTable = styled(Table)<{ hasAllSameWidth?: boolean }>`
+    width: ${props => (props.hasAllSameWidth ? "100%" : "inherit")};
+    table-layout: ${props => (props.hasAllSameWidth ? "fixed" : "auto")};
     border-spacing: 0.8px;
     border-collapse: initial;
+
     tbody > tr > td {
         vertical-align: top;
     }
@@ -363,14 +353,6 @@ const Title = styled(Typography)`
     color: #008ad7;
 `;
 
-const StyledLi = styled.li`
-    line-height: 1.43;
-`;
-
-const StyledUl = styled.ul`
-    padding-inline-start: 14px;
-`;
-
 const InfoButton = styled(Button)`
     align-self: baseline;
 `;
@@ -382,4 +364,18 @@ const SwitchRowColumnButton = styled(Button)`
     width: 170px;
     text-transform: initial;
     background: #185698;
+`;
+
+const StyledTableBody = styled(TableBody)`
+    &.u800TAhsIBY_Cat-table,
+    &.Nx6S3aQkvWe-table {
+        tr > td:first-child {
+            text-align: left;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
 `;

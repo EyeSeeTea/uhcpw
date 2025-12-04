@@ -2,7 +2,8 @@ import { Country } from "../../../domain/entities/Country";
 import { Analytics } from "../../../domain/entities/indicator-explorer/Analytics";
 import { LegendSet } from "../../../domain/entities/indicator-explorer/LegendSet";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
-import { Region } from "../../../domain/entities/Region";
+import { Id } from "../../../domain/entities/Ref";
+import { Region } from "../../../domain/entities/region/Region";
 import { ChartCustomization } from "./customization/types";
 
 export type ChartDataLoaded = {
@@ -20,6 +21,9 @@ export type ChartDataLoaded = {
     isScatter?: boolean;
     xAxis?: string;
     yAxis?: string;
+    lastAvailableYearInRegion?: string;
+    visualizationIdInIndicatorExplorer?: Id;
+    lastAvailableYearInChart?: string;
 };
 
 export type ChartDataLoading = {

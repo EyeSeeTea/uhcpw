@@ -5,6 +5,22 @@ import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../../utils/getMaxAxisAndTickInterval";
 import { getMaxYAxisAndYTickInterval } from "../utils/getMaxYAxisAndYTickInterval";
+import { ORG_UNIT_GROUP_IDS } from "../../../../../domain/entities/region/Region";
+import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
+import { fillDataSourceWithEmptyData } from "../utils/fillDataSourceWithEmptyData";
+import { getOrgUnitKey } from "../utils/getOrgUnitKey";
+
+function getCountriesAndYearInRows(rows: string[][]): string[] {
+    const groupByCountryIdAndYear = _(rows)
+        .groupBy(row => {
+            const orgUnitId = row[1]?.toString() || "";
+            const year = row[2] || "";
+
+            return `${orgUnitId}_${year}`;
+        })
+        .value();
+    return Object.keys(groupByCountryIdAndYear);
+}
 
 export const comparativeColumnChartOptions: (params: {
     chartSource: ChartSource;
@@ -17,6 +33,8 @@ export const comparativeColumnChartOptions: (params: {
     maxValueUpTo100?: boolean;
     categoryIdsOrder?: string[];
     hideYear?: boolean;
+    useRegionColors?: boolean;
+    isDescOrder?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -28,24 +46,30 @@ export const comparativeColumnChartOptions: (params: {
     maxValueUpTo100,
     categoryIdsOrder,
     hideYear,
+    useRegionColors,
+    isDescOrder,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
-            const orgUnit = chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "";
+            const orgUnit = getOrgUnitKey(chartSource, orgUnitId);
+
             const year = row[2] || "";
 
-            return `${orgUnit} ${year} `;
+            return `${orgUnit} ${year}`;
         })
-        .orderBy(items => {
-            if (orderByValueInSerie) {
-                const item = items.find(row => row[0] === orderByValueInSerie);
+        .orderBy(
+            items => {
+                if (orderByValueInSerie) {
+                    const item = items.find(row => row[0] === orderByValueInSerie);
 
-                return item ? (item[3] ? +item[3] : 0) : 0;
-            } else {
-                return _(items).sumBy(row => (row[3] ? +row[3] : 0));
-            }
-        })
+                    return item ? (item[3] ? +item[3] : 0) : 0;
+                } else {
+                    return _(items).sumBy(row => (row[3] ? +row[3] : 0));
+                }
+            },
+            isDescOrder ? "desc" : "asc"
+        )
         .value()
         .flat();
 
@@ -59,25 +83,31 @@ export const comparativeColumnChartOptions: (params: {
         .value();
 
     const currentCountryCode =
-        chartSource.countries.find(country => country.id === chartSource.currentCountry)?.code || "";
+        chartSource.countries.find(country => country.id === chartSource.currentCountryOrRegion)?.code || "";
 
-    const maxLengthInDx = Math.max(...keys.map(key => (groupByDx[key] || []).length));
-    const groupByDxWithMaxLength =
-        Object.values(groupByDx).find(groupOfDx => (groupOfDx || []).length === maxLengthInDx) || [];
+    const currentRegion = chartSource.regions.find(
+        region =>
+            region.id === chartSource.currentCountryOrRegion ||
+            region.linkedOrgUnitId === chartSource.currentCountryOrRegion
+    );
+
+    const countriesAndYearInXaxis = getCountriesAndYearInRows(chartSource.analyticsResponse.rows);
+    const sortedCountriesAndYear = orderByValueInSerie
+        ? getCountriesAndYearInRows(groupByDx[orderByValueInSerie] || [])
+        : undefined;
 
     const series = keys.map(dxId => {
         const dataSource = groupByDx[dxId] || [];
 
         const filledDataSourceWithEmptyData =
-            dataSource.length < maxLengthInDx && !!orderByValueInSerie
-                ? groupByDxWithMaxLength.reduce((acc: Array<string[]>, row) => {
-                      const countryId = row[1]?.toString() || "";
-                      const year = row[2] || "";
-                      const currentDataSourceFound = dataSource.find(row => row[1] === countryId && row[2] === year);
-                      return currentDataSourceFound
-                          ? [...acc, currentDataSourceFound]
-                          : [...acc, [dxId, countryId, year, "0"]];
-                  }, [])
+            dataSource.length < countriesAndYearInXaxis.length && !!orderByValueInSerie && sortedCountriesAndYear
+                ? fillDataSourceWithEmptyData(
+                      dataSource,
+                      countriesAndYearInXaxis,
+                      dxId,
+                      sortedCountriesAndYear,
+                      isDescOrder
+                  )
                 : dataSource;
 
         const serie = {
@@ -87,19 +117,28 @@ export const comparativeColumnChartOptions: (params: {
             color: seriesColors[dxId],
             data: filledDataSourceWithEmptyData.map(row => {
                 const orgUnitIdOrCategoryId = row[1]?.toString() || "";
-                const orgUnitCodeOrCategory = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
+                const region = chartSource.regions.find(
+                    region => region.id === orgUnitIdOrCategoryId || region.linkedOrgUnitId === orgUnitIdOrCategoryId
                 );
+                const code = region
+                    ? region.code
+                    : mapToWhoCountryCode(
+                          chartSource.analyticsResponse.metaData.items[orgUnitIdOrCategoryId]?.code || ""
+                      );
+
                 const year = row[2] || "";
                 const value = row[3] ? +row[3] : 0;
 
+                const regionCodeColor =
+                    useRegionColors && region?.code ? { color: getColorOfRegionByRegionCode(region?.code) } : undefined;
+
                 const color =
-                    currentCountryCode === orgUnitCodeOrCategory && currentSerieColor
+                    (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
-                        : undefined;
+                        : regionCodeColor ?? undefined;
 
                 return {
-                    name: hideYear ? orgUnitCodeOrCategory : `${orgUnitCodeOrCategory} ${year} `,
+                    name: hideYear ? code : `${code} ${year}`,
                     y: value,
                     categoryId: row[1] || "",
                     ...color,
@@ -131,6 +170,11 @@ export const comparativeColumnChartOptions: (params: {
           })
         : series;
 
+    const noRotateLabels =
+        chartSource.isRegionalPage &&
+        (currentRegion?.id === ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA ||
+            currentRegion?.id === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS);
+
     return {
         ...baseChartOptions,
         chart: {
@@ -142,11 +186,18 @@ export const comparativeColumnChartOptions: (params: {
 
             //format: "{point.country}",
             labels: {
-                rotation: -90,
+                rotation: noRotateLabels ? 0 : -90,
                 formatter: function () {
-                    const countryLabel = (this.value as string).split(" ")[0];
+                    if (!this.value || typeof this.value !== "string") {
+                        return this.value || "";
+                    }
 
-                    return countryLabel === currentCountryCode
+                    const parts = this.value.split(" ");
+                    if (parts.length === 0) return this.value || "";
+
+                    const countryLabel = parts[0];
+
+                    return countryLabel === currentCountryCode || countryLabel === currentRegion?.code
                         ? `<strong style="color:#49abe2;">${this.value}</strong>`
                         : this.value;
                 },

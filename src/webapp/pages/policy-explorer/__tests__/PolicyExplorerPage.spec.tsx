@@ -276,7 +276,7 @@ function givenPolicyExplorerCategories(): PolicyExplorerCategory[] {
 
     const items = policyExplorerCategoriesData as unknown as PolicyExplorerCategory[];
 
-    when(mockedRepository.getAll()).thenReturn(Future.success(items));
+    when(mockedRepository.getAll(false)).thenReturn(Future.success(items));
     when(mockedRepository.getSelectCategoryInfo()).thenReturn(
         Future.success({ title: "Select Category", text: "text" })
     );
@@ -303,7 +303,7 @@ function givenASimplePolicyExplorer(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerSimple as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything())).thenReturn(
+    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything(), anything())).thenReturn(
         Future.success(items)
     );
 
@@ -317,7 +317,7 @@ function givenAnEmptyPolicyExplorer(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerEmpty as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything())).thenReturn(
+    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything(), anything())).thenReturn(
         Future.success(items)
     );
 
@@ -331,7 +331,7 @@ function givenAPolicyExplorerWithMultipleYears(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerWithMultiplePeriods as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything())).thenReturn(
+    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything(), anything())).thenReturn(
         Future.success(items)
     );
 
@@ -345,7 +345,7 @@ function givenAPolicyExplorerWithMoreThanOneTable(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerWithMoreThanOneTable as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything())).thenReturn(
+    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything(), anything())).thenReturn(
         Future.success(items)
     );
 
@@ -359,7 +359,7 @@ function givenAPolicyExplorerByTypeOfHealthcare(): PolicyExplorer {
 
     const items: PolicyExplorer = policyExplorerByTypeOfHealthcare as unknown as PolicyExplorer;
 
-    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything())).thenReturn(
+    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything(), anything())).thenReturn(
         Future.success(items)
     );
 

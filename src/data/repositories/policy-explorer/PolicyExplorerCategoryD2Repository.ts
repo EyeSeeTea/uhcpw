@@ -15,12 +15,15 @@ import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
 import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
+import { USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderCoveredHealthcareByType";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
 
 export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     USER_CHARGES: "u800TAhsIBY",
     TYPES_OF_USER_CHARGES: "lHk8jtKonPh",
+    // not a section in dataset or program event. Programmatically created and handled based on USER_CHARGES
+    USER_CHARGES_APPLY: "u800TAhsIBY_Cat",
 };
 
 const PROGRAM_CODE_TO_DATA_ELEMENT_CODE = {
@@ -86,6 +89,7 @@ const DATASET_SERVICE_COVERAGE_CATEGORY = "W4CqlzcDPB1";
 const DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY = "uImM4yTeeV3";
 const DATASET_GAPS_IN_COVERAGE_CATEGORY = "e6cfI6vWYEF";
 const DATASET_USER_CHARGES_COPAYMENTS_CATEGORY = "mCMVwmnGWJF";
+export const DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY = "Nx6S3aQkvWe";
 
 // Program is used to get text and order of each sections
 const PROGRAM_POPULATION_COVERAGE_CATEGORY = "r2HbF3XTeMG";
@@ -104,6 +108,7 @@ const CATEGORY_DATASET_TO_PROGRAM = {
 
 const sectionsList = [
     DATASET_POPULATION_COVERAGE_CATEGORY,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     DATASET_SERVICE_COVERAGE_CATEGORY,
     DATASET_USER_CHARGES_COPAYMENTS_CATEGORY,
     DATASET_GAPS_IN_COVERAGE_CATEGORY,
@@ -118,12 +123,17 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
     text: "SAzOXqrxWfI",
 };
 
+const CATEGORIES_ONLY_IN_REGIONAL_PAGE = [
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+];
+
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     cache = new InmemoryCache();
 
     constructor(private api: D2Api) {}
 
-    getAll(): FutureData<PolicyExplorerCategory[]> {
+    getAll(isRegionalPage?: boolean): FutureData<PolicyExplorerCategory[]> {
         return Future.joinObj({
             datasets: apiToFuture(
                 this.api.models.dataSets.get({
@@ -151,7 +161,14 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             const events = sectionsEvent.events[0];
 
             if (dataSet && programs && events) {
-                return Future.success(this.buildCategories(programs, events, dataSet, infoNotes));
+                const categories = this.buildCategories(programs, events, dataSet, infoNotes);
+                return Future.success(
+                    categories.filter(category =>
+                        isRegionalPage
+                            ? CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id)
+                            : !CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id)
+                    )
+                );
             } else {
                 return Future.error("No categories found");
             }
@@ -236,7 +253,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         return [
             ...dataSetSections
                 .filter(({ id }) => CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID !== id)
-                .map((section): PolicyExplorerCategory => {
+                .flatMap((section): PolicyExplorerCategory[] => {
                     const notes = infoNotes[section.id] || "";
 
                     // To prevent fallback on dataSet if section is not in program
@@ -252,15 +269,45 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
 
                     const subDataElements = deSubstitutor.substituteSource(section.dataElements);
 
-                    return {
-                        id: section.id,
-                        name: displayName.replace("Policy Explorer - ", ""),
-                        subcategories:
-                            CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id
-                                ? TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type }))
-                                : this.sortSubcategories(dataElements, sectionsEvent, subDataElements),
-                        description: notes,
-                    };
+                    if (CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id) {
+                        const catNotes = infoNotes[CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY] || "";
+
+                        return [
+                            {
+                                id: section.id,
+                                name: displayName.replace("Policy Explorer - ", ""),
+                                subcategories: TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type })),
+                                description: notes,
+                            },
+                            {
+                                id: CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+                                name: "User charges (co-payments) for covered health care by type of care",
+                                subcategories: USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE.map(type => ({
+                                    id: type,
+                                    name: type,
+                                })),
+                                description: catNotes,
+                            },
+                        ];
+                    } else if (section.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY) {
+                        return [
+                            {
+                                id: section.id,
+                                name: "Entitlements for undocumented migrants",
+                                subcategories: [],
+                                description: notes,
+                            },
+                        ];
+                    } else {
+                        return [
+                            {
+                                id: section.id,
+                                name: displayName.replace("Policy Explorer - ", ""),
+                                subcategories: this.sortSubcategories(dataElements, sectionsEvent, subDataElements),
+                                description: notes,
+                            },
+                        ];
+                    }
                 }),
             changesInCoveragePolicyMergedCategory,
         ];

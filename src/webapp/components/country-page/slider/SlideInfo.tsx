@@ -21,17 +21,17 @@ export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: s
             p: ({
                 children,
             }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLParagraphElement>, HTMLParagraphElement>) => (
-                <Typography variant="body2" style={{ marginBottom: "0px" }}>
+                <StyledParagraph variant="body2" style={{ marginBottom: "0px" }}>
                     {children}
-                </Typography>
+                </StyledParagraph>
             ),
             ul: ({ children }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLUListElement>, HTMLUListElement>) => (
-                <ul style={{ paddingLeft: "1.2em" }}>{children}</ul>
+                <StyledUl style={{ paddingLeft: "1.2em" }}>{children}</StyledUl>
             ),
             li: ({ children }: React.DetailedHTMLProps<React.LiHTMLAttributes<HTMLLIElement>, HTMLLIElement>) => (
-                <li>
+                <StyledLi>
                     <Typography variant="body2">{children}</Typography>
-                </li>
+                </StyledLi>
             ),
             a: ({ ...props }) => (
                 <TextLink href={props.href} target="_blank" rel="noreferrer" onClick={redirectWithExternalLink}>
@@ -120,7 +120,7 @@ const Column = styled.div`
     padding-block: 46px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-block: 30px;
-        color: black;
+        color: ${colors.black};
     }
 `;
 
@@ -133,7 +133,7 @@ const Paragraph = styled(Typography)`
     :not(last-of-type) {
         margin-block-end: 10px;
     }
-    color: black;
+    color: ${colors.black};
 `;
 
 const Image = styled.img`
@@ -149,4 +149,31 @@ const TextLink = styled.a`
     &:hover {
         text-decoration: underline;
     }
+`;
+
+const StyledParagraph = styled(Typography)`
+    font-family: Lato;
+    margin-block: 10px;
+    font-size: 16px;
+    color: ${colors.black};
+
+    &:first-child {
+        margin-block-start: 0;
+    }
+
+    &:last-child {
+        margin-block-end: 0;
+    }
+`;
+
+const StyledLi = styled.li`
+    line-height: 1.43;
+    font-size: 16px;
+    color: ${colors.black};
+`;
+
+const StyledUl = styled.ul`
+    padding-inline-start: 14px;
+    font-size: 16px;
+    color: ${colors.black};
 `;

@@ -101,7 +101,7 @@ export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.mem
                     }
                 </ResourcesContainer>
 
-                <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+                <Backdrop open={loading} style={{ color: "#fff", zIndex: 1001 }}>
                     <CircularProgress color="primary" />
                 </Backdrop>
             </Content>

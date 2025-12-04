@@ -1,44 +1,52 @@
+import styled from "styled-components";
+import { useHistory, useParams } from "react-router-dom";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+
 import { Layout } from "../../components/layout/Layout";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
 import { Divider } from "../../components/home/common/Divider";
 import { CountryResources } from "../../components/country-page/CountryResources";
 import { Hero } from "../../components/country-page/Hero";
-import { useCallback, useEffect, useMemo, useRef } from "react";
-import { useHistory } from "react-router-dom";
 import { Header } from "../../components/country-page/Header";
 import { useCountryPage } from "./useCountryPage";
 import { useCountryInfo } from "./useCountryInfo";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
-import { MobileSlider } from "../../components/country-page/slider/MobileSlider";
-import { DesktopSlider } from "../../components/country-page/slider/DesktopSlider";
+import { CountrySlider } from "../../components/country-page/slider/CountrySlider";
+import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
+import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
+import { useCountryPageSeoConfig } from "./useCountryPageSeoConfig";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
+    const { countryOrRegion } = useParams<{
+        countryOrRegion?: string;
+    }>();
     const { countryFilter, resetTab, handleResetTab } = useCountryPage();
     const { sendEvent } = useAnalytics();
     const isSmallScreen = useIsSmallScreen();
 
     const country = useCountryInfo(countryFilter.selectedCountry);
+    const seoConfig = useCountryPageSeoConfig(country);
 
     const filterInParams = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
-
-        const country = searchParams.get("country");
+        const countryIdInFilter = countryOrRegion
+            ? countryFilter.countryOptions.find(
+                  option => formatCountryOrRegionParamName(option.text) === countryOrRegion
+              )?.value
+            : null;
 
         return {
-            country: country ? country : undefined,
+            country: countryIdInFilter ? countryIdInFilter : undefined,
         };
-    }, [history.location.search]);
+    }, [countryFilter.countryOptions, countryOrRegion]);
 
     useEffect(() => {
         if (filterInParams.country && filterInParams.country !== countryFilter?.selectedCountry) {
-            const searchParams = new URLSearchParams(history.location.search);
-            searchParams.set("country", filterInParams.country);
             countryFilter.onCountryChange(filterInParams.country);
             !resetTab && handleResetTab(true);
         }
-    }, [countryFilter, filterInParams.country, handleResetTab, history.location.search, resetTab]);
+    }, [countryFilter, filterInParams.country, handleResetTab, resetTab]);
 
     const selectedCountryName = useMemo(
         () => countryFilter.countryOptions.find(country => country.value === countryFilter.selectedCountry)?.text,
@@ -52,24 +60,26 @@ export const CountryPage: React.FC = () => {
 
     const handleCountryChange = useCallback(
         (value: string) => {
-            const searchParams = new URLSearchParams(history.location.search);
+            const countryName = countryFilter.countryOptions.find(option => option.value === value)?.text;
+            const countryNameInFilter = countryName ? formatCountryOrRegionParamName(countryName) : undefined;
 
-            if (value) {
-                searchParams.set("country", value);
+            if (value && countryNameInFilter) {
+                history.push(`/${countryNameInFilter}`);
             }
+
             countryFilter.onCountryChange(value);
-            history.push({ search: searchParams.toString() });
-            handleResetTab(true);
         },
-        [countryFilter, handleResetTab, history]
+        [countryFilter, history]
     );
 
+    const dashboardRef = useRef(null);
     const sliderRef = useRef(null);
     const resourcesRef = useRef(null);
     const expertRef = useRef(null);
 
     return (
-        <Layout enableRotation={isSmallScreen}>
+        <Layout enableRotation={isSmallScreen} isOverflowVisible>
+            <SeoMetaTags config={seoConfig} />
             <Header
                 countryId={countryFilter.selectedCountry}
                 onCountryChange={handleCountryChange}
@@ -77,33 +87,40 @@ export const CountryPage: React.FC = () => {
                 sliderRef={sliderRef}
                 resourcesRef={resourcesRef}
                 expertRef={expertRef}
+                dashboardRef={dashboardRef}
                 handleResetTab={handleResetTab}
             />
-            <Hero countryId={countryFilter.selectedCountry} />
-            <Divider countryStatus={country?.status} />
-            <section ref={sliderRef}>
-                {isSmallScreen ? (
-                    <MobileSlider
-                        countryId={countryFilter.selectedCountry}
-                        handleResetTab={handleResetTab}
-                        resetTab={resetTab}
-                    />
-                ) : (
-                    <DesktopSlider
-                        countryId={countryFilter.selectedCountry}
-                        handleResetTab={handleResetTab}
-                        resetTab={resetTab}
-                    />
-                )}
-            </section>
-            <Divider countryStatus={country?.status} />
-            <section ref={resourcesRef}>
-                <CountryResources countryId={countryFilter.selectedCountry} />
-            </section>
-            <Divider countryStatus={country?.status} />
-            <section ref={expertRef}>
-                <CountryExpert countryId={countryFilter.selectedCountry} />
-            </section>
+
+            <Section ref={dashboardRef}>
+                <Hero countryId={countryFilter.selectedCountry} />
+            </Section>
+
+            <Divider financialProtectionStatus={country?.status} />
+
+            <Section ref={sliderRef}>
+                <CountrySlider
+                    countryId={countryFilter.selectedCountry}
+                    handleResetTab={handleResetTab}
+                    resetTab={resetTab}
+                    isSmallScreen={isSmallScreen}
+                />
+            </Section>
+
+            <Divider financialProtectionStatus={country?.status} />
+
+            <Section ref={resourcesRef}>
+                <CountryResources countryIds={[countryFilter.selectedCountry]} />
+            </Section>
+
+            <Divider financialProtectionStatus={country?.status} />
+
+            <Section ref={expertRef}>
+                <CountryExpert countryIds={[countryFilter.selectedCountry]} />
+            </Section>
         </Layout>
     );
 };
+
+const Section = styled.section`
+    scroll-margin-top: 80px;
+`;

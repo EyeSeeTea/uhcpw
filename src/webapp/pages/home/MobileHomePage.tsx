@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import styled from "styled-components";
 import { Typography } from "@material-ui/core";
 
 import { Map } from "../../components/home/map/Map";
-import { useMap } from "../../components/home/map/useMap";
+import { useHomePageMap } from "./useHomePageMap";
 import { useHomeResources } from "./useHomeResources";
 import { NewsletterButton } from "../../components/home/buttons/NewsletterButton";
 import { useHomePageContent } from "./useHomePageContent";
@@ -12,23 +12,33 @@ import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import policyExplorer from "../../assets/policy-explorer.svg";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import i18n from "../../../locales";
-import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ResourcesCarousel } from "../../components/resources-carousel/ResourcesCarousel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { useAppContext } from "../../contexts/app-context";
+import { PopUp } from "../../components/popup/PopUp";
 
 export const MobileHomePage: React.FC = React.memo(() => {
-    const mapState = useMap();
+    const { generalContent } = useAppContext();
+    const mapState = useHomePageMap();
     const { resources, news } = useHomeResources();
     const homePageContent = useHomePageContent();
-    const { redirectWithPageView } = useAnalytics();
-    const regionalReportPageView = redirectWithPageView({ title: "Regional report" });
+
+    const [showRegionalPagePopup, setShowRegionalPagePopup] = React.useState(false);
+
+    const onOpenPopup = useCallback(() => {
+        setShowRegionalPagePopup(true);
+    }, []);
+
+    const onClosePopup = useCallback(() => {
+        setShowRegionalPagePopup(false);
+    }, []);
 
     return (
         <React.Fragment>
             <NewsletterButton content={homePageContent.newsletter} />
 
             <MapSection>
-                <Map mapState={mapState} welcomePanelContent={homePageContent.mainMapPanel} isMobile />
+                <Map mapState={mapState} homePagePanelContent={homePageContent.mainMapPanel} isMobile />
             </MapSection>
 
             <section>
@@ -97,12 +107,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
                         </Box>
                     </BoxLink>
 
-                    <BoxLink
-                        target="_blank"
-                        href={homePageContent.analysis.regional.buttonLink || ""}
-                        rel="noreferrer"
-                        onClick={regionalReportPageView}
-                    >
+                    <BoxLink onClick={onOpenPopup}>
                         <Box color={colors.green}>
                             <BubbleImg
                                 src={bubblePatternWhite}
@@ -112,7 +117,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
                                 loading="eager"
                             />
 
-                            <StyledTitleTypography>{i18n.t("Regional report")}</StyledTitleTypography>
+                            <StyledTitleTypography>{i18n.t("Regional overview")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 
@@ -157,6 +162,16 @@ export const MobileHomePage: React.FC = React.memo(() => {
 
                 <ResourcesCarousel resourceItems={news} hideTag />
             </section>
+
+            {showRegionalPagePopup && generalContent?.regionalPageMobilePopUp.disclaimer && (
+                <PopUp
+                    isOpen={showRegionalPagePopup}
+                    onClose={onClosePopup}
+                    text={generalContent.regionalPageMobilePopUp.disclaimer}
+                    linkText={generalContent.regionalPageMobilePopUp.buttonText}
+                    linkUrl={generalContent.regionalPageMobilePopUp.url}
+                />
+            )}
         </React.Fragment>
     );
 });

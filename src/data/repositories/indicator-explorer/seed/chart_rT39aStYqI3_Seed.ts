@@ -5,12 +5,16 @@ export const chart_rT39aStYqI3_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
     showCountryTag: true,
     friendlyName:
-        "Unmet need for health care due to cost, distance and waiting time (poorest quintile, total, richest quintile)",
+        "Unmet need for health care due to cost, distance and waiting time (poorest quintile, average, richest quintile)",
     countryPageName: "unmet need for health care due to cost, distance and waiting time by income quintile",
     isComparative: false,
     subcategoryName: sortedSubcategoryNames.countryLevel,
     maxCountryFilter: 1,
     allowBreaksInSeries: true,
     hasEURegion: true,
-    isOrgUnitRegions: true,
+    hasEuropeanRegion: true,
+    hasEECARegion: true,
+    hasWesternBalkansRegion: true,
+    hasEUCandidatesRegion: true,
+    isOrgUnitGroupRegions: true,
 };

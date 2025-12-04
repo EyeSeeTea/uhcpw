@@ -5,14 +5,31 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-09-23T08:39:50.772Z\n"
-"PO-Revision-Date: 2025-09-23T08:39:50.772Z\n"
+"POT-Creation-Date: 2025-11-28T07:08:20.061Z\n"
+"PO-Revision-Date: 2025-11-28T07:08:20.061Z\n"
 
+msgid "404"
+msgstr ""
 
 msgid "Error fetching methods"
 msgstr ""
 
 msgid "Country Information coming soon"
+msgstr ""
+
+msgid "User charges are applied"
+msgstr ""
+
+msgid "Care not covered for most people"
+msgstr ""
+
+msgid "Care not covered"
+msgstr ""
+
+msgid "Most undocumented migrants"
+msgstr ""
+
+msgid "Some undocumented migrants"
 msgstr ""
 
 msgid "All countries and areas"
@@ -57,9 +74,6 @@ msgstr ""
 msgid "In detail"
 msgstr ""
 
-msgid "Select category and indicator"
-msgstr ""
-
 msgid "No information available for this category"
 msgstr ""
 
@@ -75,6 +89,15 @@ msgstr ""
 msgid "policy explorer"
 msgstr ""
 
+msgid "Weaker financial protection"
+msgstr ""
+
+msgid "Stronger financial protection"
+msgstr ""
+
+msgid "UHC watch YouTube video player"
+msgstr ""
+
 msgid "Zoom in"
 msgstr ""
 
@@ -87,16 +110,10 @@ msgstr ""
 msgid "Multimedia"
 msgstr ""
 
-msgid "Weaker financial protection"
-msgstr ""
-
-msgid "Stronger financial protection"
-msgstr ""
-
-msgid "UHC watch YouTube video player"
-msgstr ""
-
 msgid "Indicators"
+msgstr ""
+
+msgid "Select category and indicator"
 msgstr ""
 
 msgid "Countries and areas"
@@ -153,10 +170,10 @@ msgstr ""
 msgid "Policy explorer"
 msgstr ""
 
-msgid "Countries & areas"
+msgid "Regional overview"
 msgstr ""
 
-msgid "Regional report"
+msgid "Countries & areas"
 msgstr ""
 
 msgid "Methods"
@@ -253,6 +270,15 @@ msgstr ""
 msgid "Error fetching Methods"
 msgstr ""
 
+msgid "Page Not Found"
+msgstr ""
+
+msgid "The page you are looking for does not exist or has been moved."
+msgstr ""
+
+msgid "Go to Homepage"
+msgstr ""
+
 msgid "Last updated: "
 msgstr ""
 
@@ -281,6 +307,30 @@ msgid "Row/Column"
 msgstr ""
 
 msgid "Latest avalaible year"
+msgstr ""
+
+msgid "See {{countryName}} country page"
+msgstr ""
+
+msgid "Select region"
+msgstr ""
+
+msgid "Click an item on the policy checklist to see country examples"
+msgstr ""
+
+msgid "Expert network"
+msgstr ""
+
+msgid "The region at a glance"
+msgstr ""
+
+msgid "Numbers"
+msgstr ""
+
+msgid "Gaps in coverage"
+msgstr ""
+
+msgid "Policy checklist"
 msgstr ""
 
 msgid "Country analysis"

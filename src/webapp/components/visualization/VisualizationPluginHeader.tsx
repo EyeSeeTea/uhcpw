@@ -5,6 +5,7 @@ import InfoIcon from "@material-ui/icons/Info";
 import DownloadIcon from "@material-ui/icons/CloudDownload";
 import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 import CloseIcon from "@material-ui/icons/Close";
+import ChevronRightSharpIcon from "@material-ui/icons/ChevronRightSharp";
 
 import i18n from "../../../locales";
 import { NotesDialog } from "../dialog/NotesDialog";
@@ -15,6 +16,7 @@ import {
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
 import { FullScreenNotesDialog } from "../dialog/FullScreenNotesDialog";
+import { Id } from "../../../domain/entities/Ref";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 interface VisualizationPluginHeaderProps {
@@ -28,13 +30,15 @@ interface VisualizationPluginHeaderProps {
     onShowInfo?: () => void;
     onCloseInfo?: () => void;
     onClose?: () => void;
-    useHeaderForCountryPage?: boolean;
+    useHeaderForCountryOrRegionalPage?: boolean;
     showCountryTag?: boolean;
     countries: Country[];
-    currentCountry?: string;
+    currentCountryOrRegion?: Id;
     isScreenshot?: boolean;
     reducePaddingBottom?: boolean;
     showDialogInFullScreen?: boolean;
+    isRegionalPage?: boolean;
+    goToIndicatorExplorer: () => void;
 }
 
 export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps> = React.memo(
@@ -49,50 +53,76 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
         onDownloadExcel,
         onDownloadImage,
         countries,
-        currentCountry,
-        useHeaderForCountryPage = false,
+        currentCountryOrRegion,
+        useHeaderForCountryOrRegionalPage = false,
         showCountryTag = false,
         isScreenshot = false,
         reducePaddingBottom = false,
         showDialogInFullScreen = false,
+        isRegionalPage = false,
         onClose,
+        goToIndicatorExplorer,
     }) => {
         const currentCountryName = useMemo(() => {
-            if (currentCountry) {
+            if (currentCountryOrRegion) {
                 const countryId =
-                    (currentCountry === FEDERACIJA_BOSNE_I_HERCEGOVINE || currentCountry === REPUBLICA_SERPSKA) &&
+                    (currentCountryOrRegion === FEDERACIJA_BOSNE_I_HERCEGOVINE ||
+                        currentCountryOrRegion === REPUBLICA_SERPSKA) &&
                     visualizationId === "OB4SCQfCzwz"
                         ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
-                        : currentCountry;
+                        : currentCountryOrRegion;
 
                 return countries.find(({ id }) => id === countryId)?.name;
             }
-        }, [countries, currentCountry, visualizationId]);
+        }, [countries, currentCountryOrRegion, visualizationId]);
 
         return (
             <DataHeader
                 className="visualization-plugin-header"
-                $isCountryPage={useHeaderForCountryPage}
+                $isCountryPage={useHeaderForCountryOrRegionalPage}
                 $reducePaddingBottom={reducePaddingBottom}
+                $isRegionalPage={isRegionalPage}
             >
                 <Row>
-                    {useHeaderForCountryPage ? (
-                        <>
-                            <Row>
-                                <StyledTitle isScreenshot={isScreenshot} variant="h6" color="textPrimary">
-                                    {chartFriendlyName}
-                                </StyledTitle>
-                            </Row>
+                    {useHeaderForCountryOrRegionalPage ? (
+                        <Row $isRegionalPage={isRegionalPage}>
+                            <TitleRow>
+                                <TitleContainer>
+                                    <StyledTitle
+                                        isScreenshot={isScreenshot}
+                                        variant="h6"
+                                        color="textPrimary"
+                                        $isRegionalPage={isRegionalPage}
+                                    >
+                                        {chartFriendlyName}
+                                    </StyledTitle>
+                                </TitleContainer>
+                            </TitleRow>
 
                             <RowWithGap $gap={6}>
-                                {showCountryTag && currentCountryName ? (
+                                {!isRegionalPage && showCountryTag && currentCountryName ? (
                                     <Tag className="category">{currentCountryName}</Tag>
                                 ) : (
-                                    categoryTag && <Tag className="category">{categoryTag}</Tag>
+                                    !isRegionalPage && categoryTag && <Tag className="category">{categoryTag}</Tag>
                                 )}
+
                                 <RowWithGap $gap={0}>
+                                    {isRegionalPage && !isScreenshot && (
+                                        <StyledIconButton
+                                            onClick={goToIndicatorExplorer}
+                                            $color="#185698"
+                                            padding="4px"
+                                        >
+                                            <CustomChevronRightSharpIcon
+                                                aria-label="Go to indicator explorer"
+                                                color="primary"
+                                                className="go-to-button"
+                                            />
+                                        </StyledIconButton>
+                                    )}
+
                                     {onShowInfo && (
-                                        <StyledIconButton onClick={onShowInfo} $color="#185698" padding="4px">
+                                        <StyledIconButton onClick={onShowInfo} $color="white" padding="4px">
                                             <CustomInfoIconCountry color="primary" className="info-button" />
                                         </StyledIconButton>
                                     )}
@@ -115,7 +145,7 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
                                     )}
                                 </RowWithGap>
                             </RowWithGap>
-                        </>
+                        </Row>
                     ) : (
                         <>
                             <Row>
@@ -184,19 +214,37 @@ export const VisualizationPluginHeader: React.FC<VisualizationPluginHeaderProps>
     }
 );
 
-const DataHeader = styled.div<{ $isCountryPage?: boolean; $reducePaddingBottom?: boolean }>`
-    padding-block-start: ${props => (props.$isCountryPage ? "10px" : "48px")};
-    padding-block-end: ${props => (props.$reducePaddingBottom ? "10px" : "48px")};
+const DataHeader = styled.div<{ $isCountryPage?: boolean; $reducePaddingBottom?: boolean; $isRegionalPage?: boolean }>`
+    padding-block-start: ${props => {
+        if (props.$isCountryPage && !props.$isRegionalPage) {
+            return "10px";
+        } else if (props.$isRegionalPage) {
+            return "20px";
+        } else {
+            return "48px";
+        }
+    }};
+    padding-block-end: ${props => {
+        if (props.$isCountryPage && !props.$isRegionalPage) {
+            return "10px";
+        } else if (props.$isRegionalPage) {
+            return "0";
+        } else {
+            return "48px";
+        }
+    }};
     width: 100%;
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ $isRegionalPage?: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-bottom: 0px;
     align-items: flex-start;
-    gap: 1rem;
+    gap: 24px;
+    align-items: ${props => (props.$isRegionalPage ? "center" : "flex-start")};
+    width: 100%;
 `;
 
 const Column = styled.div`
@@ -211,7 +259,7 @@ const RowWithGap = styled.div<{ $gap: number }>`
     display: flex;
     flex-direction: row;
     margin-bottom: 0px;
-    align-items: center;
+    align-items: flex-start;
     gap: ${props => props.$gap}px;
 `;
 
@@ -226,6 +274,7 @@ const DownloadButton = styled(Button)`
 const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>`
     padding: ${props => props.padding};
     color: ${props => props.$color};
+    padding-block-start: 0;
 `;
 
 const CustomInfoIconIndicators = styled(InfoIcon)`
@@ -236,6 +285,7 @@ const CustomInfoIconIndicators = styled(InfoIcon)`
 const CustomInfoIconCountry = styled(InfoIcon)`
     color: #185698;
     font-size: 33px;
+    margin-top: -3px;
 `;
 
 const CustomImageIcon = styled(ImageRoundedIcon)`
@@ -262,6 +312,14 @@ const CustomCloudIcon = styled(DownloadIcon)`
     font-size: 20px;
 `;
 
+const CustomChevronRightSharpIcon = styled(ChevronRightSharpIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
+`;
+
 const Tag = styled.div`
     border-radius: 20px;
     background-color: #185698;
@@ -273,18 +331,32 @@ const Tag = styled.div`
     font-weight: regular;
 `;
 
-const Title = styled(Typography)<{ isScreenshot: boolean }>`
-    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
+const Title = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
+    width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
 `;
 
-const StyledTitle = styled(Typography)<{ isScreenshot: boolean }>`
-    font-size: ${props => (props.isScreenshot ? "1.1rem" : "1.2rem")};
+const TitleRow = styled(Row)`
+    gap: 0px;
+    align-items: center;
+    justify-content: flex-start;
+`;
+
+const StyledTitle = styled(Typography)<{ isScreenshot: boolean; $isRegionalPage?: boolean }>`
+    font-size: ${props => (props.isScreenshot ? "1.1rem" : props.$isRegionalPage ? "1rem" : "1.2rem")};
     white-space: "normal";
+    width: ${props => (props.$isRegionalPage ? "fit-content" : "100%")};
+    font-weight: ${props => (props.$isRegionalPage ? "bold" : "normal")};
+    margin-right: ${props => (props.$isRegionalPage ? "5px" : "0px")};
     margin-left: 20px;
-    width: 100%;
+    margin-bottom: ${props => (props.$isRegionalPage ? "5px" : "0px")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-left: 15px;
     }
+`;
+
+const TitleContainer = styled.div`
+    max-width: 100%;
 `;

@@ -4,7 +4,7 @@ import { AnalyticsRepository } from "../../repositories/indicator-explorer/Analy
 import { VisualizationRepository } from "../../repositories/indicator-explorer/VisualizationRepository";
 import { LatestAvailable, LatestCOVID19 } from "../../entities/Year";
 import { generateYears } from "../utils/generateYears";
-import { Region } from "../../entities/Region";
+import { Region } from "../../entities/region/Region";
 import { Id } from "../../entities/Ref";
 
 export class GetAnalyticsUseCase {
@@ -27,7 +27,7 @@ export class GetAnalyticsUseCase {
                     ? generateYears(2019).map(year => year.id)
                     : sortedPeriods[0] === LatestAvailable.id
                     ? generateYears().map(year => year.id)
-                    : periods;
+                    : sortedPeriods;
 
             return this.analyticsRepository.get(visualization, finalPeriods.sort(), countries, regions);
         });

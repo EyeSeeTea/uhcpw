@@ -1,5 +1,5 @@
 import { CircularProgress, Typography, useMediaQuery, useTheme } from "@material-ui/core";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { downloadHtmlElement } from "../../utils/downloadHtmlElement";
@@ -19,9 +19,9 @@ interface VisualizationPluginProps {
     years: string[];
     countries: Id[];
     regions?: Id[];
-    currentCountry?: string;
+    currentCountryOrRegion?: Id;
     withoutBackground?: boolean;
-    useHeaderForCountryPage?: boolean;
+    useHeaderForCountryOrRegionalPage?: boolean;
     noDataMessage?: string;
     onDownloadImage?: () => void;
     isScreenshot?: boolean;
@@ -34,6 +34,12 @@ interface VisualizationPluginProps {
     onLoadingChange?: (loading: boolean) => void;
     forcePluginFullScreen?: boolean;
     showDialogInFullScreen?: boolean;
+    isRegionalPage?: boolean;
+    filterByLatestAvailableYearInRegion?: boolean;
+    needToKnowLatestAvailableYearInChart?: boolean;
+    visualizationIdInIndicatorExplorer?: Id;
+    yearsInIndicatorExplorer?: string[];
+    seriesColors?: Record<string, string>;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -41,11 +47,11 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationId,
         visualizationName,
         years,
-        currentCountry,
+        currentCountryOrRegion,
         countries,
         regions = EMPTY_REGIONS,
         withoutBackground = false,
-        useHeaderForCountryPage = false,
+        useHeaderForCountryOrRegionalPage = false,
         noDataMessage = "",
         onDownloadImage,
         isScreenshot = false,
@@ -57,17 +63,27 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         onLoadingChange,
         forcePluginFullScreen = false,
         showDialogInFullScreen = false,
+        isRegionalPage = false,
+        filterByLatestAvailableYearInRegion = false,
+        needToKnowLatestAvailableYearInChart = false,
+        visualizationIdInIndicatorExplorer,
+        yearsInIndicatorExplorer,
+        seriesColors,
     } = props;
 
     const { sendEvent } = useAnalytics();
-    const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData(
+    const { chartData, showInfo, onShowInfo, onCloseInfo, onDownloadExcel } = useChartData({
         visualizationId,
         years,
-        countries,
-        regions,
-        currentCountry,
-        visualizationName
-    );
+        countryIds: countries,
+        regionIds: regions,
+        currentCountryOrRegion,
+        visualizationName,
+        filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
+        isRegionalPage,
+        seriesColors,
+    });
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const [openFullScreenDialog, setOpenFullScreenDialog] = React.useState<boolean | undefined>();
@@ -116,11 +132,11 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 contentId: chartData.friendlyName,
             });
             downloadHtmlElement(ref.current, chartData?.friendlyName || "chart-image", {
-                backgroundColor: useHeaderForCountryPage ? "white" : "#f1f9fc",
-                exclusionClasses: ["download-button", "info-button", "category"],
+                backgroundColor: useHeaderForCountryOrRegionalPage ? "white" : "#f1f9fc",
+                exclusionClasses: ["download-button", "info-button", "category", "go-to-button"],
             });
         }
-    }, [chartData, sendEvent, analyticsPageTitle, useHeaderForCountryPage]);
+    }, [chartData, sendEvent, analyticsPageTitle, useHeaderForCountryOrRegionalPage]);
 
     const downloadExcel = React.useCallback(() => {
         if (chartData.kind === "Loaded") {
@@ -146,11 +162,59 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         }
     }, [onDownloadImage, onDirectDownloadImage]);
 
-    return chartData.kind === "Loaded" && chartData.analytics.some(analytics => analytics.rows.length > 0) ? (
+    const yearsFilteredInChart = useMemo(() => {
+        if (filterByLatestAvailableYearInRegion && chartData.kind === "Loaded") {
+            return chartData?.lastAvailableYearInRegion ? [chartData?.lastAvailableYearInRegion] : [];
+        }
+
+        if (needToKnowLatestAvailableYearInChart && chartData.kind === "Loaded") {
+            return chartData?.lastAvailableYearInChart ? [chartData?.lastAvailableYearInChart] : [];
+        }
+
+        return years;
+    }, [chartData, filterByLatestAvailableYearInRegion, needToKnowLatestAvailableYearInChart, years]);
+
+    const goToIndicatorExplorer = useCallback(() => {
+        if (chartData.kind === "Loaded" && countries.length > 0) {
+            const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
+            const years =
+                yearsInIndicatorExplorer && yearsInIndicatorExplorer.length > 0
+                    ? yearsInIndicatorExplorer
+                    : yearsFilteredInChart;
+
+            const innerPath =
+                years.length > 0
+                    ? `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
+                          ...countries,
+                          ...regions,
+                      ]}&years=${years}&showChartByDefault=true`
+                    : `/indicator-explorer?indicator=${visualizationInIndicatorExplorer}&countriesAndAreas=${[
+                          ...countries,
+                          ...regions,
+                      ]}&showChartByDefault=true`;
+
+            const { origin, pathname } = window.location;
+            const fullUrl = `${origin}${pathname}#${innerPath}`;
+
+            window.open(fullUrl, "_blank", "noopener,noreferrer");
+        }
+    }, [
+        chartData.kind,
+        yearsFilteredInChart,
+        countries,
+        visualizationIdInIndicatorExplorer,
+        visualizationId,
+        yearsInIndicatorExplorer,
+        regions,
+    ]);
+
+    return chartData.kind === "Loaded" &&
+        ((chartData.analytics.some(analytics => analytics.rows.length > 0) && yearsFilteredInChart.length > 0) ||
+            isRegionalPage) ? (
         <VisualizationPluginContainer
             ref={ref}
             withoutBackground={withoutBackground}
-            marginStart={!useHeaderForCountryPage && !isScreenshot}
+            marginStart={!useHeaderForCountryOrRegionalPage && !isScreenshot}
             paddingEnd={paddingEnd}
             fullscreen={openFullScreenDialog || false}
         >
@@ -160,12 +224,24 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 chartFriendlyName={chartData?.friendlyName}
                 categoryTag={chartData?.categoryTag}
                 showInfo={showInfo}
-                onDownloadExcel={isScreenshot ? undefined : downloadExcel}
-                onDownloadImage={isScreenshot ? undefined : handleDownloadImage}
+                onDownloadExcel={
+                    isScreenshot ||
+                    (isRegionalPage && (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0))
+                        ? undefined
+                        : downloadExcel
+                }
+                onDownloadImage={
+                    isScreenshot ||
+                    (isRegionalPage && (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0))
+                        ? undefined
+                        : handleDownloadImage
+                }
                 onShowInfo={isScreenshot ? undefined : onShowInfo}
                 onCloseInfo={isScreenshot ? undefined : onCloseInfo}
-                useHeaderForCountryPage={useHeaderForCountryPage || (openFullScreenDialog && isMobile)}
-                currentCountry={currentCountry}
+                useHeaderForCountryOrRegionalPage={
+                    useHeaderForCountryOrRegionalPage || (openFullScreenDialog && isMobile)
+                }
+                currentCountryOrRegion={currentCountryOrRegion}
                 countries={chartData.countries}
                 showCountryTag={chartData.visualizations[0]?.showCountryTag}
                 isScreenshot={isScreenshot}
@@ -174,29 +250,41 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                 }
                 onClose={openFullScreenDialog && isMobile ? handleCloseFullScreen : undefined}
                 showDialogInFullScreen={openFullScreenDialog || showDialogInFullScreen}
+                isRegionalPage={isRegionalPage}
+                goToIndicatorExplorer={goToIndicatorExplorer}
             />
-            <ChartPlugin
-                key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
-                analytics={chartData.analytics}
-                visualizations={chartData.visualizations}
-                legendSets={chartData.legendSets}
-                customizedOptions={chartData.customization}
-                countries={chartData.countries}
-                withoutBackground={withoutBackground}
-                externalchartOptions={chartData.chartOptions}
-                isSquareChart={isSquareChart}
-                isMobile={isMobile}
-            />
+            {isRegionalPage && (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0) ? (
+                <Center>
+                    <StyledTypography variant="subtitle1">
+                        {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
+                    </StyledTypography>
+                </Center>
+            ) : (
+                <ChartPlugin
+                    key={`${showInfo}`} // This is to force the re-render of the chart when the info dialog is opened/closed
+                    analytics={chartData.analytics}
+                    visualizations={chartData.visualizations}
+                    legendSets={chartData.legendSets}
+                    customizedOptions={chartData.customization}
+                    countries={chartData.countries}
+                    regions={chartData.regions}
+                    withoutBackground={withoutBackground}
+                    externalchartOptions={chartData.chartOptions}
+                    isSquareChart={isSquareChart}
+                    isMobile={isMobile}
+                />
+            )}
         </VisualizationPluginContainer>
-    ) : chartData.kind === "Loaded" && chartData.analytics[0]?.rows.length === 0 ? (
+    ) : chartData.kind === "Loaded" &&
+      (chartData.analytics[0]?.rows.length === 0 || yearsFilteredInChart.length === 0) ? (
         <Center>
-            <Typography variant="subtitle1">
+            <StyledTypography variant="subtitle1">
                 {noDataMessage ? noDataMessage : i18n.t("There may be no data")}
-            </Typography>
+            </StyledTypography>
         </Center>
     ) : chartData.kind === "Error" ? (
         <Center>
-            <Typography variant="subtitle1">{chartData.message}</Typography>
+            <StyledTypography variant="subtitle1">{chartData.message}</StyledTypography>
         </Center>
     ) : (
         <Center>
@@ -260,10 +348,14 @@ const Container = styled.div<{
 `;
 
 const Center = styled.div`
-    height: 200px;
+    height: 520px;
     display: flex;
     position: relative;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const StyledTypography = styled(Typography)`
+    color: black;
 `;

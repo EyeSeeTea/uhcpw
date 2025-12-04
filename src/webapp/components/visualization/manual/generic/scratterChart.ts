@@ -4,7 +4,7 @@ import { baseChartOptions } from "./baseChartOptions";
 import { getEU27Label } from "../../customization/charts/utils/getEU27Label";
 import { NamedRef } from "../../../../../domain/entities/Ref";
 import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
-import { ORG_UNIT_IDS, REGION_CODES } from "../../../../../domain/entities/Region";
+import { getRegionCodeByOrgUnitId } from "../../../../../domain/entities/region/Region";
 
 export type ScratterSerie = {
     id: string;
@@ -17,10 +17,11 @@ type CreateScratterChartParams = {
     series: ScratterSerie[];
     visualization: Visualization;
     currentCountryCode: string;
+    currentRegionCode?: string;
     xAxisTitle: string;
     yAxisTitle: string;
     pointFormat: string;
-    countriesWithData: SerieData[];
+    seriesWithCountryAndRegionData: SerieData[];
     countryPositions: Record<string, { x: number; y: number }>;
     displayTendencyLine?: boolean;
     xTickInterval?: number;
@@ -30,23 +31,26 @@ export interface SerieSource extends NamedRef {
     color: string;
 }
 export interface SerieData {
-    country: string;
+    countryCode: string;
+    regionCode: string;
     x: number;
     y: number;
 }
 
 interface CustomPointOptions extends Highcharts.PointOptionsObject {
-    country?: string; // Assuming country is optional
+    countryCode?: string; // Assuming country is optional
+    regionCode?: string; // Assuming region is optional
 }
 
 export const createScratterChart: ({
     series,
     visualization,
     currentCountryCode,
+    currentRegionCode,
     xAxisTitle,
     yAxisTitle,
     pointFormat,
-    countriesWithData,
+    seriesWithCountryAndRegionData,
     countryPositions,
     displayTendencyLine,
     xTickInterval,
@@ -54,10 +58,11 @@ export const createScratterChart: ({
     series,
     visualization: _visualization,
     currentCountryCode,
+    currentRegionCode,
     xAxisTitle,
     yAxisTitle,
     pointFormat,
-    countriesWithData,
+    seriesWithCountryAndRegionData,
     countryPositions,
     displayTendencyLine = true,
     xTickInterval,
@@ -74,15 +79,15 @@ export const createScratterChart: ({
 
     const allData = finalSeries.flatMap(serie => serie.data);
 
-    const maxXAxis = getMaxXAxisValue(countriesWithData.map(data => data.x));
+    const maxXAxis = getMaxXAxisValue(seriesWithCountryAndRegionData.map(data => data.x));
     const xTickIntervalDefault = xTickInterval ?? getXTickInterval(maxXAxis);
     const adjustedMaxXAxis = getMaxXAxisValue(
-        countriesWithData.map(data => data.x),
+        seriesWithCountryAndRegionData.map(data => data.x),
         xTickIntervalDefault
     );
 
     const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(
-        countriesWithData.map(data => data.y)
+        seriesWithCountryAndRegionData.map(data => data.y)
     );
 
     return {
@@ -140,10 +145,13 @@ export const createScratterChart: ({
                     overflow: "allow",
                     crop: false,
                     formatter: function () {
-                        const countryPoint = (this.point as unknown as SerieData).country;
-                        return countryPoint === currentCountryCode
-                            ? `<strong style="color:black;">${countryPoint}</strong>`
-                            : countryPoint;
+                        const countryCodePoint = (this.point as unknown as SerieData).countryCode;
+                        const regionCodePoint = (this.point as unknown as SerieData).regionCode;
+
+                        return (currentCountryCode && countryCodePoint === currentCountryCode) ||
+                            (currentRegionCode && regionCodePoint === currentRegionCode)
+                            ? `<strong style="color:black;">${countryCodePoint || regionCodePoint}</strong>`
+                            : countryCodePoint || regionCodePoint;
                     },
                     x: -2,
                     color: "grey",
@@ -172,24 +180,33 @@ export const pos = {
     left: { x: -2, y: 0 },
 };
 
-export const getScatterSeries = (seriesSource: SerieSource[], countriesWithData: SerieData[], REST_ID: string) => {
+export const getScatterSeries = (
+    seriesSource: SerieSource[],
+    seriesWithCountryAndRegionData: SerieData[],
+    REST_ID: string
+) => {
     return seriesSource.map(serie => {
-        // Handle the EU27 series separately
-        if (serie.id === ORG_UNIT_IDS.EUROPEAN_UNION) {
+        // Handle the region series separately
+        const regionCode = getRegionCodeByOrgUnitId(serie.id);
+        if (regionCode) {
+            const targetRegionCode = getEU27Label(serie.id) || regionCode;
+
             return {
                 ...serie,
-                data: countriesWithData.filter(country => country.country === getEU27Label(serie.id)),
+                data: seriesWithCountryAndRegionData.filter(d => d.regionCode === targetRegionCode),
+            };
+        } else {
+            return {
+                ...serie,
+                data: seriesWithCountryAndRegionData.filter(
+                    serieWithCountryAndRegionData =>
+                        !serieWithCountryAndRegionData.regionCode &&
+                        (serie.id === REST_ID ||
+                            (!!serieWithCountryAndRegionData.countryCode &&
+                                serieWithCountryAndRegionData.countryCode === serie.id))
+                ),
             };
         }
-
-        return {
-            ...serie,
-            data: countriesWithData.filter(
-                country =>
-                    (serie.id === REST_ID || country.country === serie.id) &&
-                    country.country !== REGION_CODES.EUROPEAN_UNION
-            ),
-        };
     });
 };
 
@@ -199,8 +216,8 @@ function applyDataLabelsPositions(
 ) {
     _.forEach(series, serie => {
         _.forEach(serie.points, point => {
-            const country = (point as CustomPointOptions).country;
-            const positions = countryPositions[country as keyof typeof countryPositions] || pos.left;
+            const countryCode = (point as CustomPointOptions).countryCode;
+            const positions = countryPositions[countryCode as keyof typeof countryPositions] || pos.left;
             point.update(
                 {
                     dataLabels: positions,

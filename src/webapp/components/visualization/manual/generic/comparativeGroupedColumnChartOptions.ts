@@ -4,6 +4,7 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
+import { getOrgUnitKey } from "../utils/getOrgUnitKey";
 
 export const comparativeGroupedColumnChartOptions: (
     chartSource: ChartSource,
@@ -20,7 +21,7 @@ export const comparativeGroupedColumnChartOptions: (
             const orgUnit =
                 chartSource.analyticsResponse.metaData.items[orgUnitId]?.[isOnlyOneYearSelected ? "name" : "code"] ||
                 "";
-            return orgUnit;
+            return orgUnit || getOrgUnitKey(chartSource, orgUnitId);
         })
         .orderBy(items => {
             return _(items).sumBy(row => (row[2] ? +row[2] : 0));
@@ -47,9 +48,12 @@ export const comparativeGroupedColumnChartOptions: (
             color: isOnlyOneYearSelected ? defaultColor : seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
-                const orgUnit = mapToWhoCountryCode(
-                    chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || ""
+                const region = chartSource.regions.find(
+                    region => region.id === orgUnitId || region.linkedOrgUnitId === orgUnitId
                 );
+                const orgUnit = region
+                    ? region.code
+                    : mapToWhoCountryCode(chartSource.analyticsResponse.metaData.items[orgUnitId]?.code || "");
 
                 const value = row[2] ? +row[2] : 0;
 

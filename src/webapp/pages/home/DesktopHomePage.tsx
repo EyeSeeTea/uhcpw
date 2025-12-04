@@ -5,13 +5,13 @@ import { Explorers } from "../../components/home/explorers/Explorers";
 import { Map } from "../../components/home/map/Map";
 import { Methods } from "../../components/home/methods/Methods";
 import { Resources } from "../../components/home/resources/Resources";
-import { useMap } from "../../components/home/map/useMap";
+import { useHomePageMap } from "./useHomePageMap";
 import { useHomeResources } from "./useHomeResources";
 import { NewsletterButton } from "../../components/home/buttons/NewsletterButton";
 import { useHomePageContent } from "./useHomePageContent";
 
 export const DesktopHomePage: React.FC = React.memo(() => {
-    const mapState = useMap();
+    const mapState = useHomePageMap();
     const { resources } = useHomeResources();
     const homePageContent = useHomePageContent();
 
@@ -19,7 +19,7 @@ export const DesktopHomePage: React.FC = React.memo(() => {
         <React.Fragment>
             <NewsletterButton content={homePageContent.newsletter} />
             <MapSection>
-                <Map mapState={mapState} welcomePanelContent={homePageContent.mainMapPanel} />
+                <Map mapState={mapState} homePagePanelContent={homePageContent.mainMapPanel} />
             </MapSection>
             <section>
                 <Explorers content={homePageContent.explorers} />

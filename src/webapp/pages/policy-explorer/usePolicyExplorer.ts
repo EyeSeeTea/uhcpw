@@ -6,6 +6,8 @@ import {
     DataOrientationByTable,
     latestAvailableYear,
     firstYearInFilter,
+    isCellTypedData,
+    PolicyExplorerCell,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { Option } from "../../components/dropdown/Option";
 import { useAppContext } from "../../contexts/app-context";
@@ -30,7 +32,8 @@ import { CategoryOption } from "../../components/policy-explorer/category-select
 
 const INITIAL_NORMAL_ORIENTED_TABLES = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
-    ...Object.values(CATEGORY_BY_TYPE_OF_HEALTHCARE),
+    CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
+    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
 ];
 
 export const CATEGORIES_WITHOUT_SUBCATEGORIES = [
@@ -88,7 +91,7 @@ export function usePolicyExplorer({
     }, [countryFilter.selected?.length]);
 
     useEffect(() => {
-        compositionRoot.policyExplorer.getCategories.execute().run(
+        compositionRoot.policyExplorer.getCategories.execute(false).run(
             categories => {
                 setPolicyExplorerCategories(categories);
                 setCategoryFilters(buildCategoryFilterOptions(categories));
@@ -370,18 +373,25 @@ function invertDataByCategoryId(
     if (!dataByTable || !categoryId) return undefined;
 
     const rows = dataByTable.tables[categoryId] || [];
+
     const columns = [...rows].shift() || [];
 
     const newRows = columns.map((_, index) => {
-        const cells = rows.map(row => ({
-            type: row[index]?.type || PolicyExplorerCellType.DATA,
-            value: row[index]?.value || "",
-            references: row[index]?.references || "",
-        }));
-        return [...cells];
+        const cells = rows.map(row => {
+            const cell = row[index];
+            if (!cell) {
+                return {
+                    type: PolicyExplorerCellType.DATA,
+                    value: "",
+                    references: "",
+                };
+            }
+            return cell;
+        });
+        return cells;
     });
 
-    const newData = {
+    const newData: PolicyExplorer = {
         ...dataByTable,
         tables: {
             ...dataByTable.tables,
@@ -412,17 +422,43 @@ function invertDataOfCategoriesIds(
 ): PolicyExplorer | undefined {
     if (!initialDataByTable || !selectedCategoriesIds.length) return undefined;
 
-    const data = { ...initialDataByTable };
+    const data: PolicyExplorer = { ...initialDataByTable };
+
     return selectedCategoriesIds.reduce((acc, categoryId) => {
         const rows = initialDataByTable.tables[categoryId] || [];
         const columns = [...rows].shift() || [];
 
         const newRows = columns.map((_, index) => {
-            const cells = rows.map(row => ({
-                type: row[index]?.type || PolicyExplorerCellType.DATA,
-                value: row[index]?.value || "",
-                references: row[index]?.references || "",
-            }));
+            const cells: PolicyExplorerCell[] = rows.map(row => {
+                const cell = row[index];
+
+                if (!cell) {
+                    const emptyCell: PolicyExplorerCell = {
+                        type: PolicyExplorerCellType.DATA,
+                        value: "",
+                        references: "",
+                    };
+                    return emptyCell;
+                }
+
+                if (isCellTypedData(cell)) {
+                    const cellTypedData: PolicyExplorerCell = {
+                        type: cell.type,
+                        value: cell.value,
+                        references: cell.references,
+                        dataType: cell.dataType,
+                        columnName: cell.dataType === "coverage" ? cell.columnName : undefined,
+                    };
+
+                    return cellTypedData;
+                }
+
+                return {
+                    type: cell.type,
+                    value: cell.value,
+                    references: cell.references,
+                };
+            });
             return [...cells];
         });
 

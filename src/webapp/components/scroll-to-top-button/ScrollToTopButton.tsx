@@ -70,7 +70,7 @@ const StyledButton = styled.button<{ $absoluteTop?: number; $isFixed?: boolean }
     height: auto;
     box-shadow: none;
     border: none;
-    z-index: 1000;
+    z-index: 3;
     background-color: transparent;
     color: ${colors.accentPrimary};
     font-weight: bold;

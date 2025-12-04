@@ -1,3 +1,6 @@
+import { HealthCoverage } from "./HealthCoverage";
+import { Entitlements } from "./Entitlements";
+
 export type PolicyExplorer = {
     tables: Record<string, PolicyExplorerCell[][]>;
     generalInfo: PolicyExplorerGeneralInfo[];
@@ -9,10 +12,31 @@ export enum PolicyExplorerCellType {
     DATA = "DATA",
 }
 
-export type PolicyExplorerCell = {
-    type: PolicyExplorerCellType;
-    value: string;
+export type PolicyExplorerCell = PolicyExplorerCellHeader | PolicyExplorerCellData;
+
+type BasePolicyExplorerCell = {
     references?: string;
+};
+
+export type PolicyExplorerCellHeader = BasePolicyExplorerCell & { type: PolicyExplorerCellType.HEADER; value: string };
+
+type PolicyExplorerCellTextData = BasePolicyExplorerCell & { type: PolicyExplorerCellType.DATA; value: string };
+
+type PolicyExplorerCellData = PolicyExplorerCellTextData | PolicyExplorerCellTypedData;
+
+type PolicyExplorerCellTypedData = PolicyExplorerCellCoverage | PolicyExplorerCellEntitlements;
+
+export type PolicyExplorerCellCoverage = BasePolicyExplorerCell & {
+    type: PolicyExplorerCellType.DATA;
+    value: HealthCoverage;
+    dataType: "coverage";
+    columnName: string;
+};
+
+export type PolicyExplorerCellEntitlements = BasePolicyExplorerCell & {
+    type: PolicyExplorerCellType.DATA;
+    value: Entitlements;
+    dataType: "entitlements";
 };
 
 export type PolicyExplorerGeneralInfo = {
@@ -50,3 +74,7 @@ export type DataOrientation = "inverted" | "normal";
 export type DataOrientationByTable = Record<string, DataOrientation>;
 export const latestAvailableYear = "latest";
 export const firstYearInFilter = 2023;
+
+export function isCellTypedData(cell: PolicyExplorerCell): cell is PolicyExplorerCellTypedData {
+    return cell.type === PolicyExplorerCellType.DATA && "dataType" in cell;
+}

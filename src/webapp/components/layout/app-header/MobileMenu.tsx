@@ -15,18 +15,19 @@ type MobileMenuProps = {
 export const MobileMenu: React.FC<MobileMenuProps> = props => {
     const { isScreenRotated = false } = props;
     const {
-        regionalReport,
         anchorEl,
         isHomePage,
         isCountryPage,
         menuRef,
         open,
+        isRegionalPage,
         onToggleForSmallScreens,
         goToHome,
         handleCountryClick,
         handleMenuItemClick,
         handleClose,
         handleSetAnchorEl,
+        handleRegionalClick,
     } = useAppHeader(isScreenRotated);
     const isSmallScreen = useIsSmallScreen();
 
@@ -58,12 +59,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = props => {
                 open ? (
                     <MenuContainer ref={menuRef}>
                         <MenuItems
-                            regionalReport={regionalReport}
                             isHomePage={isHomePage}
                             isCountryPage={isCountryPage}
                             goToHome={goToHome}
                             handleCountryClick={handleCountryClick}
                             handleMenuItemClick={handleMenuItemClick}
+                            handleRegionalClick={handleRegionalClick}
+                            isRegionalPage={isRegionalPage}
                         />
                     </MenuContainer>
                 ) : null
@@ -83,12 +85,13 @@ export const MobileMenu: React.FC<MobileMenuProps> = props => {
                     }}
                 >
                     <MenuItems
-                        regionalReport={regionalReport}
                         isHomePage={isHomePage}
                         isCountryPage={isCountryPage}
                         goToHome={goToHome}
                         handleCountryClick={handleCountryClick}
                         handleMenuItemClick={handleMenuItemClick}
+                        handleRegionalClick={handleRegionalClick}
+                        isRegionalPage={isRegionalPage}
                     />
                 </StyledMenu>
             )}
@@ -104,7 +107,7 @@ const MenuContainer = styled.div`
     color: white;
     border: 1px solid #d3d4d5;
     padding: 10px;
-    z-index: 10;
+    z-index: 4;
 `;
 
 const Wrapper = styled.div`

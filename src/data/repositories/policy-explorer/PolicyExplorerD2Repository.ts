@@ -17,19 +17,28 @@ import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-a
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
-import { CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES } from "./builders/TableBuilderChangesInCoveragePolicy";
+import {
+    CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
+    TableBuilderChangesInCoveragePolicy,
+} from "./builders/TableBuilderChangesInCoveragePolicy";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
-import { USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderByTypeOfHealthcare";
+import { TableBuilderByTypeOfHealthcare } from "./builders/TableBuilderByTypeOfHealthcare";
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
+import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
+import { getTableSorter } from "./sorters/TableSorter";
+import { getTableLegends, getTabType, mapCellToExportedValue } from "./utils";
+import { TableBuilderEntitlementsForUndocumented } from "./builders/TableBuilderEntitlementsForUndocumented";
+import { mapToWhoCountryCode } from "../countries/mapToWhoCountryData";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -52,6 +61,8 @@ export const categoriesNameWithLessThan31Chars: Record<string, string> = {
     Dg4b8bTfEIr: "Changes in coverage policy",
     u800TAhsIBY: "User charges by health care",
     e6cfI6vWYEF: "Main gaps in financed coverage",
+    u800TAhsIBY_Cat: "User charges for covered health",
+    Nx6S3aQkvWe: "Entitlements for undocumented",
 };
 
 export const REFERENCES_TAB_NAME = "References";
@@ -60,9 +71,11 @@ export const DATE_OF_DOWNLOAD = "Date of download:";
 
 const sortedPolicyExplorerCategoriesToDownload: Record<string, Id> = {
     populationCoverage: "uG2PbDfOc0w",
+    entitlementsForUndocumented: "Nx6S3aQkvWe",
     serviceCoverage: "W4CqlzcDPB1",
     userCharges: "mCMVwmnGWJF",
     userChargesByHealthCare: "u800TAhsIBY",
+    userChargesApplyByHealthCare: "u800TAhsIBY_Cat",
     voluntaryHealthInsurance: "uImM4yTeeV3",
     mainGapsInFinancedCoverage: "e6cfI6vWYEF",
     changesInCoveragePolicy: "Dg4b8bTfEIr",
@@ -78,8 +91,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         policyExplorerCategories: Record<string, string[]>,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
-        countriesAndRegions: Country[],
-        programCategories: PolicyExplorerCategory[]
+        countriesAndSubregions: Country[],
+        programCategories: PolicyExplorerCategory[],
+        useCountryCodes?: boolean
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
             dataSetResponse: apiToFuture(
@@ -98,7 +112,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         }).map(({ dataSetResponse, dataValuesResponse }) => {
             const dataValuesWithOrgUnitNames = this.populateDataValuesWithOrgUnitNames(
                 dataValuesResponse.dataValues,
-                countriesAndRegions
+                countriesAndSubregions
             );
 
             const lastPeriodWithDataByCountry = this.getLastPeriodWithDataByCountry(
@@ -110,15 +124,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 tables: this.buildTables({
                     policyExplorerCategories,
                     dataValuesWithOrgUnitNames,
-                    countriesAndRegions: countriesAndRegions,
+                    countriesAndSubregions: countriesAndSubregions,
                     yearsByCategory,
                     dataSet: dataSetResponse.objects[0],
                     programCategories,
+                    useCountryCodes,
                 }),
-                generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndRegions),
+                generalInfo: this.buildGeneralInfo(dataValuesResponse.dataValues, countriesAndSubregions),
                 references: this.buildReferences(
                     dataValuesResponse.dataValues,
-                    countriesAndRegions,
+                    countriesAndSubregions,
                     lastPeriodWithDataByCountry
                 ),
             };
@@ -173,6 +188,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
             const category = categories.find(({ id }) => id === categoryId);
+            const type: Tab["type"] = getTabType(category);
 
             if (rows?.length) {
                 const dataRows = this.getDataFromRows(rows);
@@ -183,6 +199,8 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                         name: Object.keys(categoriesNameWithLessThan31Chars).includes(categoryId)
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.name || categoryId,
+                        type: type,
+                        legends: getTableLegends(category),
                     },
                 ];
             }
@@ -273,14 +291,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private getDataFromRows(rows: PolicyExplorerCell[][]): string[][] {
         return rows.reduce((accRowsData: string[][], currentRow: PolicyExplorerCell[]) => {
-            const rowData: string[] = currentRow.map(({ value }) => value);
+            const rowData: string[] = currentRow.map(cell => mapCellToExportedValue(cell));
             return [...accRowsData, rowData];
         }, []);
     }
 
     private buildGeneralInfo(
         dataValues: DataValueSetsDataValue[],
-        countriesAndRegions: Country[]
+        countriesAndSubregions: Country[]
     ): PolicyExplorerGeneralInfo[] {
         const dataValuesByOrgUnit = _(dataValues)
             .groupBy(dataValue => dataValue.orgUnit)
@@ -288,7 +306,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
         return Object.entries(dataValuesByOrgUnit)
             .map(([orgUnitId, dataValuesOfCountry]) => {
-                const countryName = this.getCountryName(orgUnitId, countriesAndRegions);
+                const countryName = this.getCountryName(orgUnitId, countriesAndSubregions);
 
                 const dataValuesOfCountryOrderByYear = _.orderBy(dataValuesOfCountry, ["period"], "desc");
                 const sortedYears = dataValuesOfCountryOrderByYear.map(({ period }) => period);
@@ -345,18 +363,20 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private buildTables(params: {
         policyExplorerCategories: Record<string, string[]>;
         dataValuesWithOrgUnitNames: DataValueSetsDataValueWithOrgUnitNames[];
-        countriesAndRegions: Country[];
+        countriesAndSubregions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
         programCategories: PolicyExplorerCategory[];
+        useCountryCodes?: boolean;
     }): Record<string, PolicyExplorerCell[][]> {
         const {
             policyExplorerCategories,
             dataValuesWithOrgUnitNames,
-            countriesAndRegions,
+            countriesAndSubregions,
             yearsByCategory,
             dataSet,
             programCategories,
+            useCountryCodes = false,
         } = params;
 
         const deSubstitutor = dataSet
@@ -376,7 +396,10 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
             categoryId =>
                 CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID === categoryId ||
-                CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === categoryId
+                [
+                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
+                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+                ].includes(categoryId)
         );
 
         const allPolicyExplorerCategoriesAndSubcategories = hasToFillSubcategories
@@ -388,6 +411,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return Object.entries(allPolicyExplorerCategoriesAndSubcategories).reduce(
             (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
                 const tableBuilder = getTableBuilder(policyExplorerCategoryId);
+                const tableSorter = getTableSorter(policyExplorerCategoryId);
 
                 const columns = tableBuilder.buildColumns({
                     policyExplorerCategoryId,
@@ -430,9 +454,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             return accRows;
                         }
 
-                        const orgUnitNameInCell = this.isCountryAlreadyInRows(accRows, countriesAndRegions, orgUnit)
+                        const orgUnitNameInCell = this.isCountryAlreadyInRows(
+                            accRows,
+                            countriesAndSubregions,
+                            orgUnit,
+                            useCountryCodes
+                        )
                             ? EMPTY_DATA
-                            : this.getCountryName(orgUnit, countriesAndRegions);
+                            : this.getCountryName(orgUnit, countriesAndSubregions, useCountryCodes);
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =
@@ -458,7 +487,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     []
                 );
 
-                const tableWithFilteredColumns = this.filterColumnsWithNoData(columns, rows);
+                const tableWithFilteredColumns = tableSorter.cleanAndSort(columns, rows);
 
                 return {
                     ...accTables,
@@ -471,10 +500,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private isCountryAlreadyInRows(
         accRows: PolicyExplorerCell[][],
-        countriesAndRegions: Country[],
-        orgUnit: Id
+        countriesAndSubregions: Country[],
+        orgUnit: Id,
+        useCountryCodes = false
     ): boolean {
-        const orgUnitName = this.getCountryName(orgUnit, countriesAndRegions);
+        const orgUnitName = this.getCountryName(orgUnit, countriesAndSubregions, useCountryCodes);
         return (
             !!orgUnitName && !!accRows?.find((row: PolicyExplorerCell[]) => !!row[0] && row[0]?.value === orgUnitName)
         );
@@ -501,24 +531,28 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
                     return {
                         ...acc,
-                        [categoryId]: Object.values({
-                            ...CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES,
-                        }).reduce((accSubcategories, subcategoryIds) => {
-                            return [...accSubcategories, ...subcategoryIds];
-                        }, [] as string[]),
+                        [categoryId]: TableBuilderChangesInCoveragePolicy.fillSubcategories(),
                     };
                 case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
                     return {
                         ...acc,
-                        [categoryId]: Object.entries(
-                            USER_CHARGE_BY_TYPE_OF_HEALTHCARE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS
-                        ).reduce((accSubcategories, subcategories) => {
-                            const subcategoriesSelected = policyExplorerCategories[categoryId];
-                            const [typeOfHealthCare, subcategoriesOfHealthCareIds] = subcategories;
-                            return subcategoriesSelected?.includes(typeOfHealthCare)
-                                ? [...accSubcategories, ...subcategoriesOfHealthCareIds]
-                                : accSubcategories;
-                        }, [] as string[]),
+                        [categoryId]: TableBuilderByTypeOfHealthcare.fillSubcategories(
+                            policyExplorerCategories[categoryId]
+                        ),
+                    };
+                case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
+                    return {
+                        ...acc,
+                        [categoryId]: TableBuilderCoveredHealthcareByType.fillSubcategories(
+                            policyExplorerCategories[categoryId]
+                        ),
+                    };
+                case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
+                    return {
+                        ...acc,
+                        [categoryId]: TableBuilderEntitlementsForUndocumented.fillSubcategories(
+                            policyExplorerCategories[categoryId]
+                        ),
                     };
                 default:
                     return {
@@ -529,21 +563,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         }, {});
     }
 
-    private filterColumnsWithNoData(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]) {
-        const indexesToRemove = columns.reduce((accIndexesToRemove: number[], _column, columnIndex) => {
-            const hasRowsWithoutData = rows.every(row => !row[columnIndex]?.value);
-            return hasRowsWithoutData ? [...accIndexesToRemove, columnIndex] : accIndexesToRemove;
-        }, []);
-
-        const filteredColumns = columns.filter((_column, index) => !indexesToRemove.includes(index));
-        const filteredRows = rows.map(row => row.filter((_cell, index) => !indexesToRemove.includes(index)));
-
-        return filteredColumns.length ? [filteredColumns, ...filteredRows] : [];
-    }
-
     private buildReferences(
         dataValues: DataValueSetsDataValue[],
-        countriesAndRegions: Country[],
+        countriesAndSubregions: Country[],
         lastPeriodWithDataByCountry: Map<Id, string>
     ): PolicyExplorerReferences[] {
         const dataValuesByOrgUnit = _(dataValues)
@@ -551,7 +573,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             .value();
 
         return Object.keys(dataValuesByOrgUnit).map(orgUnitId => {
-            const country = this.getCountryName(orgUnitId, countriesAndRegions);
+            const country = this.getCountryName(orgUnitId, countriesAndSubregions);
             const references =
                 dataValues.find(
                     dv =>
@@ -571,19 +593,24 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
     private populateDataValuesWithOrgUnitNames(
         dataValues: DataValueSetsDataValue[],
-        countriesAndRegions: Country[]
+        countriesAndSubregions: Country[]
     ): DataValueSetsDataValueWithOrgUnitNames[] {
         return dataValues.map(dataValue => ({
             ...dataValue,
-            orgUnitShortName: this.getCountryName(dataValue.orgUnit, countriesAndRegions),
+            orgUnitShortName: this.getCountryName(dataValue.orgUnit, countriesAndSubregions),
         }));
     }
 
-    private getCountryName(orgUnitId: Id, countriesAndRegions: Country[]): string {
-        const orgUnitName = countriesAndRegions.find(country => country.id === orgUnitId)?.name || EMPTY_DATA;
+    private getCountryName(orgUnitId: Id, countriesAndSubregions: Country[], useCountryCodes = false): string {
+        const orgUnit = countriesAndSubregions.find(country => country.id === orgUnitId);
+        const orgUnitName = useCountryCodes ? orgUnit?.code : orgUnit?.name;
+        const orgUnitNameBIH =
+            useCountryCodes && orgUnit?.code
+                ? mapToWhoCountryCode(orgUnit?.code)
+                : `Bosnia and Herzegovina (${orgUnitName?.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || "";
         return orgUnitId === REPUBLICA_SERPSKA || orgUnitId === FEDERACIJA_BOSNE_I_HERCEGOVINE
-            ? `Bosnia and Herzegovina (${orgUnitName.match(REGEX_INSIDE_PARENTHESIS)?.[1]})` || ""
-            : orgUnitName || "";
+            ? orgUnitNameBIH
+            : orgUnitName || EMPTY_DATA;
     }
 }
 

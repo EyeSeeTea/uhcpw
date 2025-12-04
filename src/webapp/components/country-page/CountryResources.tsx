@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Backdrop, CircularProgress, Fab, Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
@@ -14,15 +14,26 @@ import {
 } from "../../../data/repositories/countries/CountryD2Repository";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { colors } from "../../pages/app/themes/dhis2.theme";
+import { Id } from "../../../domain/entities/Ref";
 
-export const CountryResources: React.FC<{ countryId: string }> = ({ countryId }) => {
+export type CountryResourcesProps = {
+    countryIds: Id[];
+    isRegionalPage?: boolean;
+};
+
+export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, isRegionalPage = false }) => {
     const history = useHistory();
-    const { loading, countryAnalysisResource, comparativeAnalysisResources } = useCountryResources(countryId);
+    const { loading, countryAnalysisResource, comparativeAnalysisResources } = useCountryResources(countryIds);
 
-    const redirectCountryId =
-        countryId === FEDERACIJA_BOSNE_I_HERCEGOVINE || countryId === REPUBLICA_SERPSKA
-            ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
-            : countryId;
+    const redirectCountryIds = useMemo(() => {
+        return countryIds
+            .map(id => {
+                return id === FEDERACIJA_BOSNE_I_HERCEGOVINE || id === REPUBLICA_SERPSKA
+                    ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
+                    : id;
+            })
+            .join(",");
+    }, [countryIds]);
 
     const onArrowClick = useCallback(
         (link: string) => {
@@ -32,22 +43,27 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
     );
 
     return (
-        <Container aria-label="country-page-resources">
-            <Row>
-                <Typography variant="h5">{i18n.t("Resources")}</Typography>
-                <Fab
-                    aria-label="Go to resources"
-                    color="primary"
-                    size="small"
-                    style={{ boxShadow: "none", transform: "scale(0.7)" }}
-                >
-                    <ChevronRightSharpIcon onClick={() => onArrowClick("/resources")} />
-                </Fab>
-            </Row>
+        <Container aria-label="country-page-resources" isRegionalPage={isRegionalPage}>
+            {isRegionalPage ? null : (
+                <Row>
+                    <Typography variant="h5">{i18n.t("Resources")}</Typography>
+
+                    <Fab
+                        aria-label="Go to resources"
+                        color="primary"
+                        size="small"
+                        style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                    >
+                        <ChevronRightSharpIcon onClick={() => onArrowClick("/resources")} />
+                    </Fab>
+                </Row>
+            )}
+
             {countryAnalysisResource?.length ? (
                 <ResourcesSection aria-label="country-resources">
-                    <Row>
-                        <Typography variant="h6">{i18n.t("Country or area analysis")}</Typography>
+                    <FirstRowWithMargin $isRegionalPage={isRegionalPage}>
+                        <StyledTypography variant="h6">{i18n.t("Country or area analysis")}</StyledTypography>
+
                         <Fab
                             aria-label="Go to country or area analysis resources"
                             color="primary"
@@ -55,10 +71,13 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}
                         >
                             <ChevronRightSharpIcon
-                                onClick={() => onArrowClick(`/resources/country-analysis?country=${redirectCountryId}`)}
+                                onClick={() =>
+                                    onArrowClick(`/resources/country-analysis?country=${redirectCountryIds}`)
+                                }
                             />
                         </Fab>
-                    </Row>
+                    </FirstRowWithMargin>
+
                     <StyledGridContainer container spacing={5}>
                         {countryAnalysisResource.map((resource, i) => {
                             return (
@@ -68,7 +87,8 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             );
                         })}
                     </StyledGridContainer>
-                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+
+                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1001 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
                 </ResourcesSection>
@@ -76,8 +96,9 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
 
             {comparativeAnalysisResources?.length ? (
                 <ResourcesSection aria-label="comparative-resources">
-                    <RowWithMargin>
-                        <Typography variant="h6">{i18n.t("Comparative analysis")}</Typography>
+                    <SecondRowWithMargin $isRegionalPage={isRegionalPage}>
+                        <StyledTypography variant="h6">{i18n.t("Comparative analysis")}</StyledTypography>
+
                         <Fab
                             aria-label="Go to comparative analysis resources"
                             color="primary"
@@ -86,11 +107,12 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                         >
                             <ChevronRightSharpIcon
                                 onClick={() =>
-                                    onArrowClick(`/resources/comparative-analysis?country=${redirectCountryId}`)
+                                    onArrowClick(`/resources/comparative-analysis?country=${redirectCountryIds}`)
                                 }
                             />
                         </Fab>
-                    </RowWithMargin>
+                    </SecondRowWithMargin>
+
                     <StyledGridContainer container spacing={5}>
                         {comparativeAnalysisResources.map((resource, i) => {
                             return (
@@ -100,7 +122,8 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
                             );
                         })}
                     </StyledGridContainer>
-                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1 }}>
+
+                    <Backdrop open={loading} style={{ color: "#fff", zIndex: 1001 }}>
                         <CircularProgress color="primary" />
                     </Backdrop>
                 </ResourcesSection>
@@ -109,9 +132,10 @@ export const CountryResources: React.FC<{ countryId: string }> = ({ countryId })
     );
 };
 
-const Container = styled.div`
-    padding: 40px 0px;
+const Container = styled.div<{ isRegionalPage?: boolean }>`
+    padding: ${props => (props.isRegionalPage ? "0 0 40px 0" : "40px 0px")};
     max-width: 80%;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
         padding: 30px 0px;
@@ -126,16 +150,15 @@ const ResourcesSection = styled.div`
     }
 `;
 
-const Row = styled.div`
+const Row = styled.div<{ $isRegionalPage?: boolean }>`
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-block-end: 25px;
     gap: 2px;
     padding-inline-start: 60px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
-        padding-inline-start: 16px;
+        padding-inline-start: ${props => (props.$isRegionalPage ? "32px" : "16px")};
     }
 `;
 
@@ -154,8 +177,19 @@ const StyledGridItem = styled(Grid)`
     }
 `;
 
-const RowWithMargin = styled(Row)`
+const SecondRowWithMargin = styled(Row)`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        margin-block-start: 30px;
+        margin-block: 30px;
     }
+`;
+
+const FirstRowWithMargin = styled(Row)`
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        margin-block-end: 30px;
+        margin-block-start: 10px;
+    }
+`;
+
+const StyledTypography = styled(Typography)`
+    color: ${colors.black};
 `;

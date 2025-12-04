@@ -1,3 +1,4 @@
+import { FinancialProtectionStatus } from "./FinancialProtectionStatus";
 import { Id } from "./Ref";
 
 export type Country = {
@@ -5,7 +6,8 @@ export type Country = {
     name: string;
     longName: string;
     code: string;
-    status: CountryStatus;
+    iso3Code: string;
+    status: FinancialProtectionStatus;
     coordinates?: [number, number];
     parents: { id: string; name: string }[];
     children?: Country[];
@@ -29,9 +31,7 @@ export type CountrySectionInfo = {
     }[];
 };
 
-export type CountryStatus = "Strong" | "Emerging" | "Gaps" | "Weak" | "VeryWeak" | "InsufficientData";
-
 // included in countries list
-export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6";
+export const BosniaAndHerzegovina: Id = "rqaiYTAnMC6"; // Brcko District
 export const FederationOfBosniaAndHerzegovina: Id = "j44olg405lZ";
 export const RepublikaSrpska: Id = "FvoXRc5cEEk";

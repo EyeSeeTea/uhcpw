@@ -58,5 +58,3 @@ export type ResourcesContent = {
 export type MobileDialogContent = {
     text: string;
 };
-
-export type RegionalReportLink = string;
