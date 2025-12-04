@@ -280,6 +280,7 @@ export function useRegionalGapsInCoverage(
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
+                                      filterByLatestAvailableYearInRegion: true,
                                   },
                               ],
                           },
