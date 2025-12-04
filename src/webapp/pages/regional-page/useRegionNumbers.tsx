@@ -289,7 +289,6 @@ export function useRegionNumbers(
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphOneText,
                                       filterByLatestAvailableYearInRegion: true,
-                                      yearsInIndicatorExplorer: [LatestAvailable.id],
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,

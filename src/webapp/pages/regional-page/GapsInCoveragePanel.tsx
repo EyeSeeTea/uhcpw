@@ -30,6 +30,7 @@ export type VisualContent = {
     seriesColors?: Record<string, string>;
     policyCategoryId?: string;
     maxImgWidth?: number;
+    filterByLatestAvailableYearInRegion?: boolean;
 };
 
 type GapsInCoveragePanelProps = {
@@ -131,6 +132,9 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                                     onDownloadImage={() => handleOpenScreenshot(visualContent)}
                                     analyticsPageTitle={"Regional page"}
                                     seriesColors={visualContent.seriesColors}
+                                    filterByLatestAvailableYearInRegion={
+                                        visualContent.filterByLatestAvailableYearInRegion
+                                    }
                                     isRegionalPage
                                 />
                             </VisualizationContainer>
