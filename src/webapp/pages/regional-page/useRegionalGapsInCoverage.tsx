@@ -277,7 +277,9 @@ export function useRegionalGapsInCoverage(
                                               ? gapsInCoverageContent.panelSevenChartOneTitle
                                               : VisualizationsSeeds["y4qAv6eW4nb"]?.regionalPageName,
                                       years: [LatestAvailable.id],
+                                      currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
                                   },
                               ],
                           },
