@@ -4,7 +4,7 @@ import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 export const chart_xKmSHeJ1GXq_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     showCountryTag: true,
-    friendlyName: "Public spending on health as a share of government spending (line chart)",
+    friendlyName: "Public spending on health as a share of government spending (multiple years, line chart)",
     countryPageName: "Public spending on health as a share of government spending",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
