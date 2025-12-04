@@ -12,5 +12,6 @@ export const chart_twyY1ulr7uD_Seed: VisualizationExtra = {
     isOrgUnitRegions: true,
     isComparative: true,
     isYearSingleSelection: true,
+    yearsFilterUpTo2YearsAgo: true,
     subcategoryName: sortedSubcategoryNames.comparative,
 };
