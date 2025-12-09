@@ -12,10 +12,5 @@ export const chart_dbc87Ljw8uN_Seed: VisualizationExtra = {
     allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
-    hasEURegion: true,
-    hasEuropeanRegion: true,
-    hasEECARegion: true,
-    hasWesternBalkansRegion: true,
-    hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
 };
