@@ -206,12 +206,11 @@ export function useRegionalPage(): RegionalPageState {
         }
     }, [filterInParams.region, handleRegionChange, selectedRegionId]);
 
-    const goTo = useCallback(
-        (link: string) => {
-            history.push(link);
-        },
-        [history]
-    );
+    const goTo = useCallback((link: string) => {
+        const { origin, pathname } = window.location;
+        const fullUrl = `${origin}${pathname}#${link}`;
+        window.open(fullUrl, "_blank", "noopener,noreferrer");
+    }, []);
 
     const sectionsAccordionConfig: AccordionConfig[] = useMemo(() => {
         const resourcesAndExpertsSections = isEuropeanRegion
