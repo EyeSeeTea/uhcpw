@@ -117,48 +117,52 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                             </ChartTitleRow>
                         ) : null}
 
-                        {visualContent.visualizationId && visualContent.years && visualContent.countries ? (
-                            <VisualizationContainer key={visualContent.visualizationId}>
-                                <VisualizationPlugin
-                                    visualizationId={visualContent.visualizationId}
-                                    visualizationName={visualContent.visualizationName}
-                                    years={visualContent.years}
-                                    countries={visualContent.countries}
-                                    currentCountryOrRegion={visualContent.currentCountryOrRegion}
-                                    regions={visualContent.regions}
-                                    withoutBackground
-                                    useHeaderForCountryOrRegionalPage
-                                    showDialogInFullScreen={isSmallScreen}
-                                    onDownloadImage={() => handleOpenScreenshot(visualContent)}
-                                    analyticsPageTitle={"Regional page"}
-                                    seriesColors={visualContent.seriesColors}
-                                    filterByLatestAvailableYearInRegion={
-                                        visualContent.filterByLatestAvailableYearInRegion
+                        <VisualContainerContent>
+                            {visualContent.visualizationId && visualContent.years && visualContent.countries ? (
+                                <VisualizationContainer key={visualContent.visualizationId}>
+                                    <VisualizationPlugin
+                                        visualizationId={visualContent.visualizationId}
+                                        visualizationName={visualContent.visualizationName}
+                                        years={visualContent.years}
+                                        countries={visualContent.countries}
+                                        currentCountryOrRegion={visualContent.currentCountryOrRegion}
+                                        regions={visualContent.regions}
+                                        withoutBackground
+                                        useHeaderForCountryOrRegionalPage
+                                        showDialogInFullScreen={isSmallScreen}
+                                        onDownloadImage={() => handleOpenScreenshot(visualContent)}
+                                        analyticsPageTitle={"Regional page"}
+                                        seriesColors={visualContent.seriesColors}
+                                        filterByLatestAvailableYearInRegion={
+                                            visualContent.filterByLatestAvailableYearInRegion
+                                        }
+                                        isRegionalPage
+                                    />
+                                </VisualizationContainer>
+                            ) : visualContent.visual ? (
+                                <Image
+                                    width="100%"
+                                    $hasMarginTop={!visualContent.title}
+                                    style={
+                                        visualContent.maxImgWidth ? { maxWidth: `${visualContent.maxImgWidth}px` } : {}
                                     }
-                                    isRegionalPage
+                                    alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
+                                    src={visualContent.visual}
                                 />
-                            </VisualizationContainer>
-                        ) : visualContent.visual ? (
-                            <Image
-                                width="100%"
-                                $hasMarginTop={!visualContent.title}
-                                style={visualContent.maxImgWidth ? { maxWidth: `${visualContent.maxImgWidth}px` } : {}}
-                                alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
-                                src={visualContent.visual}
-                            />
-                        ) : visualContent.policyCategoryId &&
-                          visualContent.countries?.length &&
-                          visualContent.years?.length ? (
-                            <PolicyExplorerTable
-                                title={visualContent.title || ""}
-                                categoryId={visualContent.policyCategoryId}
-                                countries={visualContent.countries}
-                                years={visualContent.years}
-                            />
-                        ) : null}
+                            ) : visualContent.policyCategoryId &&
+                              visualContent.countries?.length &&
+                              visualContent.years?.length ? (
+                                <PolicyExplorerTable
+                                    title={visualContent.title || ""}
+                                    categoryId={visualContent.policyCategoryId}
+                                    countries={visualContent.countries}
+                                    years={visualContent.years}
+                                />
+                            ) : null}
+                        </VisualContainerContent>
 
                         {visualContent.textBelow && (
-                            <TextContainer style={{ marginTop: "12px" }}>
+                            <TextContainer>
                                 <ReactMarkdown components={markdownComponents}>{visualContent.textBelow}</ReactMarkdown>
                             </TextContainer>
                         )}
@@ -225,6 +229,14 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
         </Container>
     );
 };
+
+const VisualContainerContent: React.FC = ({ children }) => {
+    return <VisualContainer hasChildren={Boolean(children)}>{children}</VisualContainer>;
+};
+
+const VisualContainer = styled.div<{ hasChildren: boolean }>`
+    margin-bottom: ${({ hasChildren }) => (hasChildren ? "20px" : "0")};
+`;
 
 const Container = styled.div<{ $displayflex?: boolean }>`
     max-width: 100%;
@@ -364,7 +376,6 @@ const TextContainer = styled.div`
 
 const Image = styled.img<{ $hasMarginTop?: boolean }>`
     margin-block-start: ${props => (props.$hasMarginTop ? "16px" : "0")};
-    margin-block-end: 12px;
 `;
 
 const TextLink = styled.a`
