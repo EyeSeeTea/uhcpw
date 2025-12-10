@@ -24,6 +24,7 @@ type VisualizationProps = {
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
+    sharedYAxisMax?: number;
 };
 
 type SlideGraphType = {
@@ -81,6 +82,8 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
         [currentGraphScreenshot?.visualizationName]
     );
 
+    //TODO: Make sharedYAxisMax dynamic by unifying the yAxis max here once chart data loads
+
     return (
         <Container $isRegionalPage={isRegionalPage}>
             {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
@@ -112,6 +115,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
                               yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
+                              sharedYAxisMax={graph.sharedYAxisMax}
                           />
                       </VisualizationContainer>
                   ))
@@ -144,6 +148,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                         }
                         visualizationIdInIndicatorExplorer={currentGraphScreenshot.visualizationIdInIndicatorExplorer}
                         isRegionalPage={isRegionalPage}
+                        sharedYAxisMax={currentGraphScreenshot.sharedYAxisMax}
                     />
                 </ScreenshotModal>
             )}

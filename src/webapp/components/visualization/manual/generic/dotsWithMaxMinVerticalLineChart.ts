@@ -32,6 +32,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     currentCountryOrRegionCode?: string;
     currentRegionId?: Id;
     isRegionalPage?: boolean;
+    sharedYAxisConfig?: { max: number; tickInterval: number };
 }) => Highcharts.Options = ({
     rows,
     seriesIds,
@@ -45,6 +46,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     currentCountryOrRegionCode,
     currentRegionId,
     isRegionalPage,
+    sharedYAxisConfig,
 }) => {
     const series = Object.values(seriesIds).map(serieId => {
         const serieChartRows = rows.filter(row => row[0] === serieId);
@@ -124,7 +126,10 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
 
     const seriesData = series.map(serie => serie.data.map(data => data?.y || 0));
     const maxValuesInSeriesData = getMaxValuesInSeriesData(seriesData);
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(maxValuesInSeriesData);
+
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = sharedYAxisConfig
+        ? sharedYAxisConfig
+        : getMaxAxisAndTickInterval(maxValuesInSeriesData);
 
     const noRotateLabels =
         isRegionalPage &&
@@ -179,17 +184,19 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
                                     (isHide && s.name !== this.name && s.visible))
                         );
 
-                        const visibleSeriesData = visibleSeries.map(serie => serie.data.map(data => data?.y || 0));
-                        const maxValuesInVisibleSeriesData = getMaxValuesInSeriesData(visibleSeriesData);
-                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
-                            getMaxAxisAndTickInterval(maxValuesInVisibleSeriesData);
+                        if (!sharedYAxisConfig) {
+                            const visibleSeriesData = visibleSeries.map(serie => serie.data.map(data => data?.y || 0));
+                            const maxValuesInVisibleSeriesData = getMaxValuesInSeriesData(visibleSeriesData);
+                            const { max: adjustedMaxYAxis, tickInterval: yTickInterval } =
+                                getMaxAxisAndTickInterval(maxValuesInVisibleSeriesData);
 
-                        this.chart.yAxis.forEach(yAxis => {
-                            yAxis.update({
-                                max: adjustedMaxYAxis,
-                                tickInterval: yTickInterval,
+                            this.chart.yAxis.forEach(yAxis => {
+                                yAxis.update({
+                                    max: adjustedMaxYAxis,
+                                    tickInterval: yTickInterval,
+                                });
                             });
-                        });
+                        }
 
                         const rangeSeries = chart.series.find(s => s.type === "columnrange");
 

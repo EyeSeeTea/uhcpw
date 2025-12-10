@@ -87,5 +87,6 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
         currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
         currentRegionId: currentRegion?.id,
         isRegionalPage: chartSource.isRegionalPage,
+        sharedYAxisConfig: chartSource.sharedYAxisConfig,
     });
 };

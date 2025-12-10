@@ -85,5 +85,6 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
         currentRegionId: currentRegion?.id,
         isRegionalPage: chartSource.isRegionalPage,
+        sharedYAxisConfig: chartSource.sharedYAxisConfig,
     });
 };

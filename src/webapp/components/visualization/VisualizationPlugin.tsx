@@ -40,6 +40,7 @@ interface VisualizationPluginProps {
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
     seriesColors?: Record<string, string>;
+    sharedYAxisMax?: number;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -69,6 +70,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationIdInIndicatorExplorer,
         yearsInIndicatorExplorer,
         seriesColors,
+        sharedYAxisMax,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -83,6 +85,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
+        sharedYAxisMax,
     });
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));

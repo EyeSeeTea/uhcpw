@@ -19,6 +19,7 @@ import {
     getCommonLastAvailableYearInBothAxis,
     getLastAvailableYearByCountry,
 } from "../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
+import { getTickIntervalByMaxAxisValue } from "./utils/getMaxAxisAndTickInterval";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -39,6 +40,7 @@ export function useChartData(params: {
     needToKnowLatestAvailableYearInChart?: boolean;
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
+    sharedYAxisMax?: number;
 }): ChartDataState {
     const {
         visualizationId,
@@ -51,6 +53,7 @@ export function useChartData(params: {
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
+        sharedYAxisMax,
     } = params;
     const { compositionRoot } = useAppContext();
 
@@ -151,6 +154,12 @@ export function useChartData(params: {
                         yearToFilterBy: lastAvailableYearInRegion,
                         isRegionalPage: isRegionalPage,
                         seriesColors: seriesColors,
+                        sharedYAxisConfig: sharedYAxisMax
+                            ? {
+                                  max: sharedYAxisMax,
+                                  tickInterval: getTickIntervalByMaxAxisValue(sharedYAxisMax),
+                              }
+                            : undefined,
                     } as ChartSourceMultiple & ChartSource;
 
                     const visualizationDialogInfo =
@@ -212,6 +221,7 @@ export function useChartData(params: {
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
+        sharedYAxisMax,
     ]);
 
     const onDownloadExcel = useCallback(

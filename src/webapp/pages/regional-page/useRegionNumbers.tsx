@@ -230,6 +230,7 @@ export function useRegionNumbers(
                                               : [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphOneText,
+                                      sharedYAxisMax: 24,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -246,6 +247,7 @@ export function useRegionNumbers(
                                               : [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphTwoText,
+                                      sharedYAxisMax: 24,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -263,6 +265,7 @@ export function useRegionNumbers(
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphThreeText,
                                       needToKnowLatestAvailableYearInChart: true,
+                                      sharedYAxisMax: 24,
                                   },
                               ],
                           },
