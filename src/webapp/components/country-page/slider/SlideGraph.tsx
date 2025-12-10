@@ -1,16 +1,17 @@
 import { Typography } from "@material-ui/core";
 import ReactMarkdown, { Components } from "react-markdown";
+import styled from "styled-components";
+import React from "react";
 
 import i18n from "../../../../locales";
-import styled from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
-import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { useSyncedGraphs } from "./useSyncedGraphs";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -33,6 +34,7 @@ type SlideGraphType = {
     graphs: VisualizationProps[];
     isRegionalPage?: boolean;
     hasNarrowerText?: boolean;
+    isSyncGraphs?: boolean;
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({
@@ -41,9 +43,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     graphs,
     isRegionalPage = false,
     hasNarrowerText = false,
+    isSyncGraphs,
 }) => {
     const isSmallScreen = useIsSmallScreen();
     const { redirectWithExternalLink } = useAnalytics();
+    const syncGraphsState = useSyncedGraphs(isSyncGraphs);
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
 
@@ -82,8 +86,6 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
         [currentGraphScreenshot?.visualizationName]
     );
 
-    //TODO: Make sharedYAxisMax dynamic by unifying the yAxis max here once chart data loads
-
     return (
         <Container $isRegionalPage={isRegionalPage}>
             {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
@@ -115,7 +117,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
                               yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
-                              sharedYAxisMax={graph.sharedYAxisMax}
+                              syncGraphsState={syncGraphsState}
                           />
                       </VisualizationContainer>
                   ))
@@ -148,7 +150,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                         }
                         visualizationIdInIndicatorExplorer={currentGraphScreenshot.visualizationIdInIndicatorExplorer}
                         isRegionalPage={isRegionalPage}
-                        sharedYAxisMax={currentGraphScreenshot.sharedYAxisMax}
+                        syncGraphsState={syncGraphsState}
                     />
                 </ScreenshotModal>
             )}

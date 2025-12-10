@@ -9,6 +9,7 @@ import { VisualizationPluginHeader } from "./VisualizationPluginHeader";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { FullScreenDialog } from "../dialog/FullScreenDialog";
 import { Id } from "../../../domain/entities/Ref";
+import { SyncGraphsState } from "../country-page/slider/useSyncedGraphs";
 
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 
@@ -40,7 +41,7 @@ interface VisualizationPluginProps {
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
     seriesColors?: Record<string, string>;
-    sharedYAxisMax?: number;
+    syncGraphsState?: SyncGraphsState;
 }
 
 export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.memo(props => {
@@ -70,7 +71,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         visualizationIdInIndicatorExplorer,
         yearsInIndicatorExplorer,
         seriesColors,
-        sharedYAxisMax,
+        syncGraphsState,
     } = props;
 
     const { sendEvent } = useAnalytics();
@@ -85,7 +86,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
-        sharedYAxisMax,
+        syncGraphsState,
     });
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));

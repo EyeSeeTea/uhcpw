@@ -39,7 +39,7 @@ export interface ChartSource {
     yearToFilterBy?: string;
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
-    sharedYAxisConfig?: { max: number; tickInterval: number };
+    sharedYAxisConfig?: { isSharedMax: boolean };
 }
 
 export interface ChartSourceMultiple {
@@ -54,7 +54,7 @@ export interface ChartSourceMultiple {
     yearToFilterBy?: string;
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
-    sharedYAxisConfig?: { max: number; tickInterval: number };
+    sharedYAxisConfig?: { isSharedMax: boolean };
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
