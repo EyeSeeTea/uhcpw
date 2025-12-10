@@ -263,7 +263,7 @@ export function useRegionNumbers(
                                               : [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphThreeText,
-                                      needToKnowLatestAvailableYearInChart: true,
+                                      yearsInIndicatorExplorer: ["2019"],
                                   },
                               ],
                           },
