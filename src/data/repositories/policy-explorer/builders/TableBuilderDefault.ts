@@ -8,8 +8,9 @@ import {
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { BaseTableBuilder } from "./BaseTableBuilder";
 
-export class TableBuilderDefault implements TableBuilder {
+export class TableBuilderDefault extends BaseTableBuilder implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];

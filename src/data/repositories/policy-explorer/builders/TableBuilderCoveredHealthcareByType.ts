@@ -9,6 +9,7 @@ import {
 import { COUNTRY_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
 import { Maybe } from "../../../../types/utils";
+import { BaseTableBuilder } from "./BaseTableBuilder";
 
 type HealthCareType =
     | "Primary care visits"
@@ -58,7 +59,7 @@ const valueMap = {
 type ValueMapKey = keyof typeof valueMap;
 const isValueMapKey = (v: string): v is ValueMapKey => v in valueMap;
 
-export class TableBuilderCoveredHealthcareByType implements TableBuilder {
+export class TableBuilderCoveredHealthcareByType extends BaseTableBuilder implements TableBuilder {
     buildColumns(_: Parameters<TableBuilder["buildColumns"]>[0]): PolicyExplorerCellHeader[] {
         const commonColumns: PolicyExplorerCellHeader[] = [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
