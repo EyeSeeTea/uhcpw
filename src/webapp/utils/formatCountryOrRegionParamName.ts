@@ -2,12 +2,13 @@ export function formatCountryOrRegionParamName(name: string): string {
     if (!name) return "";
 
     const trimmed = name.trim();
+    const normalized = trimmed.normalize("NFD").replace(/\p{Diacritic}/gu, "");
 
-    if (/^Eastern\s+Europe\s*&\s*Central\s+Asia(?:\s*\([^)]*\))?$/i.test(trimmed)) {
+    if (/^Eastern\s+Europe\s*&\s*Central\s+Asia(?:\s*\([^)]*\))?$/i.test(normalized)) {
         return "EasternEuropeAndCentralAsia";
     }
 
-    const bihSubregionsMatch = trimmed.match(/^BIH\s*\(the\s+([^)]+)\)$/i);
+    const bihSubregionsMatch = normalized.match(/^BIH\s*\(the\s+([^)]+)\)$/i);
     if (bihSubregionsMatch && bihSubregionsMatch[1]) {
         const subregion = bihSubregionsMatch[1]
             .trim()
@@ -16,7 +17,7 @@ export function formatCountryOrRegionParamName(name: string): string {
         return `BIH-${subregion}`;
     }
 
-    const withoutParentheses = trimmed.replace(/\s*\([^)]*\)\s*/g, "");
+    const withoutParentheses = normalized.replace(/\s*\([^)]*\)\s*/g, "");
     return withoutParentheses.replace(/\s+/g, "").replace(/[^a-zA-Z0-9&]/g, "");
 }
 
