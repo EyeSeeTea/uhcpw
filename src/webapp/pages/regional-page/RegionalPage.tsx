@@ -49,11 +49,6 @@ export const RegionalPage: React.FC = () => {
     const { markers, mainPanelContent } = regionMap;
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
     const seoConfig = useRegionalPageSeoConfig(selectedRegion);
-    const [showRegionalPagePopup, setShowRegionalPagePopup] = React.useState(true);
-
-    const onClosePopup = useCallback(() => {
-        setShowRegionalPagePopup(false);
-    }, []);
 
     return (
         <Layout enableRotation={isSmallScreen} disableMinHeight isOverflowVisible>
@@ -181,14 +176,6 @@ export const RegionalPage: React.FC = () => {
                         isBold
                         bigFont
                     />
-
-                    {showRegionalPagePopup && (
-                        <PopUp
-                            isOpen={showRegionalPagePopup}
-                            onClose={onClosePopup}
-                            text="This page is still under construction – there may be glitches! It will be formally launched on UHC Day 2025 (12 December)."
-                        />
-                    )}
                 </>
             )}
 
