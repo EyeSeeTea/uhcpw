@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import ReactMarkdown, { Components } from "react-markdown";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import React from "react";
 
 import i18n from "../../../../locales";
@@ -167,6 +167,29 @@ const Container = styled.div<{ $isRegionalPage?: boolean }>`
         padding: 30px;
         padding-inline-start: 16px;
     }
+
+    ${props =>
+        props.$isRegionalPage &&
+        css`
+            & > div {
+                :not(:last-child) {
+                    margin-block-end: 20px;
+                }
+                & > div {
+                    :not(:last-child) {
+                        margin-block-end: 20px;
+                    }
+                }
+
+                .VisualizationPlugin-container {
+                    padding-block-end: 0;
+
+                    & .visualization-plugin-header {
+                        padding: 0;
+                    }
+                }
+            }
+        `}
 `;
 
 const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $isRegionalPage?: boolean }>`
