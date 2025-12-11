@@ -4,7 +4,7 @@ export function formatCountryOrRegionParamName(name: string): string {
     const trimmed = name.trim();
 
     if (/^Eastern\s+Europe\s*&\s*Central\s+Asia(?:\s*\([^)]*\))?$/i.test(trimmed)) {
-        return "EasternEuropeAndCentralAsiaEECA";
+        return "EasternEuropeAndCentralAsia";
     }
 
     const bihSubregionsMatch = trimmed.match(/^BIH\s*\(the\s+([^)]+)\)$/i);
@@ -16,7 +16,8 @@ export function formatCountryOrRegionParamName(name: string): string {
         return `BIH-${subregion}`;
     }
 
-    return trimmed.replace(/\s+/g, "").replace(/[^a-zA-Z0-9&]/g, "");
+    const withoutParentheses = trimmed.replace(/\s*\([^)]*\)\s*/g, "");
+    return withoutParentheses.replace(/\s+/g, "").replace(/[^a-zA-Z0-9&]/g, "");
 }
 
 export function parseCountryOrRegionParamToName(param: string, isRegion?: boolean): string {
@@ -30,26 +31,22 @@ export function parseCountryOrRegionParamToName(param: string, isRegion?: boolea
     }
 
     if (isRegion) {
-        const codeMatch = param.match(/^(.+?)([A-Z]{2,4})$/);
-        if (!codeMatch) {
-            return prettifyToken(param);
+        if (/^EasternEuropeAndCentralAsia$/i.test(param)) {
+            return "Eastern Europe & Central Asia";
         }
 
-        const [, base, code] = codeMatch;
-
-        if (!base) {
-            return prettifyToken(param);
-        }
-
-        if (/^EasternEuropeAndCentralAsia$/i.test(base)) {
-            return `Eastern Europe & Central Asia (${code})`;
-        }
-
-        const name = prettifyToken(base);
-        return `${name} (${code})`;
+        return prettifyToken(param);
     }
 
     return prettifyToken(param);
+}
+
+export function normalizeRegionName(name: string): string {
+    return name
+        .replace(/\s*\([^)]*\)\s*/g, "")
+        .replace(/\s+/g, "")
+        .replace(/&/g, "and") // Optional: normalize & to "and"
+        .toLowerCase();
 }
 
 function prettifyToken(token: string): string {

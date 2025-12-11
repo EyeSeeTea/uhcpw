@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useCallback } from "react";
+import React from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
@@ -19,7 +19,6 @@ import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
 import { Backdrop, CircularProgress } from "@material-ui/core";
 import { RegionMapPanel } from "../../components/region-map-panel/RegionMapPanel";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
-import { PopUp } from "../../components/popup/PopUp";
 
 export const RegionalPage: React.FC = () => {
     const {
