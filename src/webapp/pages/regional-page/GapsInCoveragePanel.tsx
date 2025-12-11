@@ -352,6 +352,7 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $hide?: boolea
         padding: 0;
     }
     .visualization-plugin-header {
+        padding: 0;
         .MuiTypography-h6 {
             margin-left: 0 !important;
         }
