@@ -16,6 +16,7 @@ import { CountrySlider } from "../../components/country-page/slider/CountrySlide
 import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
 import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
 import { useCountryPageSeoConfig } from "./useCountryPageSeoConfig";
+import { useSidePanelWidth } from "./useSidePanelWidth";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
@@ -77,6 +78,11 @@ export const CountryPage: React.FC = () => {
     const resourcesRef = useRef(null);
     const expertRef = useRef(null);
 
+    const sidePanelWidth = useSidePanelWidth({
+        ref: dashboardRef,
+        countryId: countryFilter.selectedCountry,
+    });
+
     return (
         <Layout enableRotation={isSmallScreen} isOverflowVisible>
             <SeoMetaTags config={seoConfig} />
@@ -103,6 +109,7 @@ export const CountryPage: React.FC = () => {
                     handleResetTab={handleResetTab}
                     resetTab={resetTab}
                     isSmallScreen={isSmallScreen}
+                    sidePanelWidth={sidePanelWidth}
                 />
             </Section>
 

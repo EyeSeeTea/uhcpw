@@ -599,7 +599,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             row.map(cell => {
                 if (isValidUid(cell)) {
                     return (
-                        getCustomCellName(visualizationId, seriesIdAndName, cell) ??
+                        getCustomCellName(visualizationId, seriesIdAndName, cell) ||
                         this.getNameFromMetadata(cell, metadata)
                     );
                 } else {

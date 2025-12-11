@@ -9,7 +9,6 @@ export const chart_y4qAv6eW4nb_Seed: VisualizationExtra = {
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     isYearSingleSelection: true,
-    yearsFilterUpTo2YearsAgo: true,
     hasEURegion: true,
     hasEuropeanRegion: true,
     hasEECARegion: true,

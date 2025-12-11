@@ -70,5 +70,6 @@ export const chart_MfLZYD6QCPy_Options: (chartSource: ChartSource) => Highcharts
         currentCountryOrRegionCode: currentCountryCode || currentRegion?.code,
         currentRegionId: currentRegion?.id,
         isRegionalPage: chartSourceFiltered.isRegionalPage,
+        sharedYAxisConfig: chartSourceFiltered.sharedYAxisConfig,
     });
 };

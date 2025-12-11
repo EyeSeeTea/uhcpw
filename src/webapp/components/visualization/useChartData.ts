@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Visualization } from "../../../domain/entities/indicator-explorer/Visualization";
 import { useAppContext } from "../../contexts/app-context";
 
@@ -19,6 +19,7 @@ import {
     getCommonLastAvailableYearInBothAxis,
     getLastAvailableYearByCountry,
 } from "../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
+import { SyncGraphsState } from "../country-page/slider/useSyncedGraphs";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -39,6 +40,7 @@ export function useChartData(params: {
     needToKnowLatestAvailableYearInChart?: boolean;
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
+    syncGraphsState?: SyncGraphsState;
 }): ChartDataState {
     const {
         visualizationId,
@@ -51,12 +53,30 @@ export function useChartData(params: {
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
+        syncGraphsState,
     } = params;
     const { compositionRoot } = useAppContext();
 
-    const [chartData, setChartData] = useState<ChartData>({ kind: "Loading" });
+    const [rawChartData, setRawChartData] = useState<ChartData>({ kind: "Loading" });
     const [showInfo, setShowInfo] = useState<boolean>(false);
     const { countriesAndSubregions, regions } = useAppContext();
+
+    const chartData = useMemo(() => {
+        if (syncGraphsState?.isSyncGraphs && rawChartData?.kind === "Loaded") {
+            return {
+                ...rawChartData,
+                chartOptions: {
+                    ...rawChartData?.chartOptions,
+                    yAxis: {
+                        ...rawChartData?.chartOptions?.yAxis,
+                        ...syncGraphsState.sharedMaxYAxisConfig,
+                    },
+                },
+            };
+        } else {
+            return rawChartData;
+        }
+    }, [rawChartData, syncGraphsState]);
 
     const getVisualizationDialogInfo = useCallback(
         (visualization: Visualization, analytics: Analytics, countries: Country[]) => {
@@ -151,6 +171,7 @@ export function useChartData(params: {
                         yearToFilterBy: lastAvailableYearInRegion,
                         isRegionalPage: isRegionalPage,
                         seriesColors: seriesColors,
+                        sharedYAxisConfig: { isSharedMax: syncGraphsState?.isSyncGraphs },
                     } as ChartSourceMultiple & ChartSource;
 
                     const visualizationDialogInfo =
@@ -161,7 +182,7 @@ export function useChartData(params: {
                     const chartName =
                         visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
 
-                    setChartData({
+                    setRawChartData({
                         kind: "Loaded",
                         friendlyName: chartName
                             ? chartName
@@ -185,14 +206,14 @@ export function useChartData(params: {
                     });
                 },
                 error => {
-                    setChartData({
+                    setRawChartData({
                         kind: "Error",
                         message: "An error has ocurred to loading chart data: " + error,
                     });
                 }
             );
         } else {
-            setChartData({
+            setRawChartData({
                 kind: "Error",
                 message: "Missing visualizationId",
             });
@@ -212,7 +233,19 @@ export function useChartData(params: {
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
+        syncGraphsState?.isSyncGraphs,
     ]);
+
+    useEffect(() => {
+        if (
+            rawChartData?.kind === "Loaded" &&
+            !Array.isArray(rawChartData.chartOptions?.yAxis) &&
+            rawChartData.chartOptions?.yAxis?.max &&
+            syncGraphsState?.isSyncGraphs
+        ) {
+            syncGraphsState.updateSharedYAxisMax(rawChartData.chartOptions?.yAxis?.max);
+        }
+    }, [rawChartData, syncGraphsState, visualizationId]);
 
     const onDownloadExcel = useCallback(
         (chartDataLoaded: ChartDataLoaded) => {
