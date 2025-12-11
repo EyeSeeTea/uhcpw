@@ -10,10 +10,11 @@ type CountrySliderProps = {
     resetTab?: boolean;
     handleResetTab: (value: boolean) => void;
     isSmallScreen?: boolean;
+    sidePanelWidth?: number;
 };
 
 export const CountrySlider: React.FC<CountrySliderProps> = props => {
-    const { countryId, resetTab, handleResetTab, isSmallScreen = false } = props;
+    const { countryId, resetTab, handleResetTab, sidePanelWidth, isSmallScreen = false } = props;
     const { tabValue, handleTabChange, sliderConfigs, expandedSliderConfig, handleAccordionChange, onResetSlider } =
         useCountrySlider(countryId);
 
@@ -53,6 +54,7 @@ export const CountrySlider: React.FC<CountrySliderProps> = props => {
             tabValue={tabValue}
             onChangeTabValue={handleTabChange}
             ariaLabel="country-page-slider"
+            sidePanelWidth={sidePanelWidth}
         />
     );
 };

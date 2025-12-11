@@ -47,6 +47,11 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         },
         {
             name: "",
+            id: ORG_UNIT_IDS.EU_CANDIDATE_COUNTRIES,
+            color: getColorOfRegionByRegionCode(REGION_CODES.EUROPEAN_REGION),
+        },
+        {
+            name: "",
             id: REST_ID,
             color: "#00af50",
         },

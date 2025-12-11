@@ -1,3 +1,7 @@
+import ResizeObserver from "resize-observer-polyfill";
+
+global.ResizeObserver = ResizeObserver;
+
 // Extend Jest timeout
 jest.setTimeout(30000);
 

@@ -410,7 +410,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
         return Object.entries(allPolicyExplorerCategoriesAndSubcategories).reduce(
             (accTables, [policyExplorerCategoryId, policyExplorerSubcategoriesIds]) => {
-                const tableBuilder = getTableBuilder(policyExplorerCategoryId);
+                const tableBuilder = getTableBuilder(policyExplorerCategoryId, dataSet);
                 const tableSorter = getTableSorter(policyExplorerCategoryId);
 
                 const columns = tableBuilder.buildColumns({
@@ -423,15 +423,9 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                 const years = yearsByCategory[policyExplorerCategoryId] || [];
                 const yearsIsLatestAvailableYear = years.length === 1 && years[0] === latestAvailableYear;
 
-                const dataValuesOrderByYear = _.orderBy(
-                    dataValuesWithOrgUnitNames,
-                    ["orgUnitShortName", "period"],
-                    "asc"
-                );
-
                 const finalDataValues = yearsIsLatestAvailableYear
-                    ? this.filterByLatestAvailableYear(dataValuesOrderByYear)
-                    : dataValuesOrderByYear;
+                    ? tableBuilder.filterDataValuesByLatestAvailableYear(dataValuesWithOrgUnitNames)
+                    : _.orderBy(dataValuesWithOrgUnitNames, ["orgUnitShortName", "period"], "asc");
 
                 const sortedDataValues = finalDataValues.sort((dvA, dvB) =>
                     sortByCountry(dvA.orgUnitShortName, dvB.orgUnitShortName)
@@ -508,21 +502,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return (
             !!orgUnitName && !!accRows?.find((row: PolicyExplorerCell[]) => !!row[0] && row[0]?.value === orgUnitName)
         );
-    }
-
-    private filterByLatestAvailableYear(
-        dataValuesOrderByYear: DataValueSetsDataValueWithOrgUnitNames[]
-    ): DataValueSetsDataValueWithOrgUnitNames[] {
-        return _(dataValuesOrderByYear).reduce((acc, dataValue) => {
-            const existedDataValuesForOrgUnit = acc.find(dv => dv.orgUnit === dataValue.orgUnit);
-
-            if (!existedDataValuesForOrgUnit || +existedDataValuesForOrgUnit?.period === +dataValue.period) {
-                return [...acc, dataValue];
-            } else {
-                const newAcc = acc.filter(dv => dv.orgUnit !== dataValue.orgUnit);
-                return [...newAcc, dataValue];
-            }
-        }, [] as DataValueSetsDataValueWithOrgUnitNames[]);
     }
 
     private fillSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {

@@ -1,16 +1,17 @@
 import { Typography } from "@material-ui/core";
 import ReactMarkdown, { Components } from "react-markdown";
+import styled, { css } from "styled-components";
+import React from "react";
 
 import i18n from "../../../../locales";
-import styled from "styled-components";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
-import React from "react";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../../domain/entities/Ref";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { useSyncedGraphs } from "./useSyncedGraphs";
 
 type VisualizationProps = {
     visualizationId: string;
@@ -24,6 +25,7 @@ type VisualizationProps = {
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
+    sharedYAxisMax?: number;
 };
 
 type SlideGraphType = {
@@ -32,6 +34,7 @@ type SlideGraphType = {
     graphs: VisualizationProps[];
     isRegionalPage?: boolean;
     hasNarrowerText?: boolean;
+    isSyncGraphs?: boolean;
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({
@@ -40,9 +43,11 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
     graphs,
     isRegionalPage = false,
     hasNarrowerText = false,
+    isSyncGraphs,
 }) => {
     const isSmallScreen = useIsSmallScreen();
     const { redirectWithExternalLink } = useAnalytics();
+    const syncGraphsState = useSyncedGraphs(isSyncGraphs);
 
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualizationProps>();
 
@@ -112,6 +117,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
                               yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
+                              syncGraphsState={syncGraphsState}
                           />
                       </VisualizationContainer>
                   ))
@@ -144,6 +150,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                         }
                         visualizationIdInIndicatorExplorer={currentGraphScreenshot.visualizationIdInIndicatorExplorer}
                         isRegionalPage={isRegionalPage}
+                        syncGraphsState={syncGraphsState}
                     />
                 </ScreenshotModal>
             )}
@@ -160,6 +167,29 @@ const Container = styled.div<{ $isRegionalPage?: boolean }>`
         padding: 30px;
         padding-inline-start: 16px;
     }
+
+    ${props =>
+        props.$isRegionalPage &&
+        css`
+            & > div {
+                :not(:last-child) {
+                    margin-block-end: 20px;
+                }
+                & > div {
+                    :not(:last-child) {
+                        margin-block-end: 20px;
+                    }
+                }
+
+                .VisualizationPlugin-container {
+                    padding-block-end: 0;
+
+                    & .visualization-plugin-header {
+                        padding: 0;
+                    }
+                }
+            }
+        `}
 `;
 
 const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $isRegionalPage?: boolean }>`

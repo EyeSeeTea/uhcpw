@@ -166,9 +166,9 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
                                                 $isSelectable={item.countryExperiencesIds.length !== 0}
                                             >
                                                 <StyledTableCell $isSelected={selectedChecklistItem === item.id}>
-                                                    <ReactMarkdown components={markdownComponents}>
+                                                    <StyledMarkdown components={markdownComponents}>
                                                         {item.text}
-                                                    </ReactMarkdown>
+                                                    </StyledMarkdown>
                                                 </StyledTableCell>
 
                                                 <StyledTableCell
@@ -400,4 +400,10 @@ const CustomCloudIcon = styled(DownloadIcon)`
     border-radius: 50%;
     padding: 4px;
     font-size: 20px;
+`;
+
+const StyledMarkdown = styled(ReactMarkdown)`
+    p + ul {
+        margin-block-start: -10px;
+    }
 `;

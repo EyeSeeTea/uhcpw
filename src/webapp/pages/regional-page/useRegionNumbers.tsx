@@ -214,6 +214,7 @@ export function useRegionNumbers(
                               kind: "graph",
                               isRegionalPage: true,
                               hasNarrowerText: true,
+                              isSyncGraphs: true,
                               graphs: [
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -262,7 +263,7 @@ export function useRegionNumbers(
                                               : [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelFiveGraphThreeText,
-                                      needToKnowLatestAvailableYearInChart: true,
+                                      yearsInIndicatorExplorer: ["2019"],
                                   },
                               ],
                           },
