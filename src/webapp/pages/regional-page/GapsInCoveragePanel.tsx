@@ -153,12 +153,14 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                             ) : visualContent.policyCategoryId &&
                               visualContent.countries?.length &&
                               visualContent.years?.length ? (
-                                <PolicyExplorerTable
-                                    title={visualContent.title || ""}
-                                    categoryId={visualContent.policyCategoryId}
-                                    countries={visualContent.countries}
-                                    years={visualContent.years}
-                                />
+                                <PolicyExplorerContainer>
+                                    <PolicyExplorerTable
+                                        title={visualContent.title || ""}
+                                        categoryId={visualContent.policyCategoryId}
+                                        countries={visualContent.countries}
+                                        years={visualContent.years}
+                                    />
+                                </PolicyExplorerContainer>
                             ) : null}
                         </VisualContainer>
 
@@ -385,5 +387,11 @@ const TextLink = styled.a`
     text-decoration: none;
     &:hover {
         text-decoration: underline;
+    }
+`;
+
+const PolicyExplorerContainer = styled.div`
+    & > div > div:last-child {
+        margin-block-end: 0;
     }
 `;
