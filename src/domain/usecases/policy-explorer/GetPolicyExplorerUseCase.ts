@@ -1,7 +1,7 @@
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { Future, FutureData } from "../../entities/Future";
 import { Id } from "../../entities/Ref";
-import { latestAvailableYear, PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
+import { LATEST_AVAILABLE_YEAR_CODE, PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerRepository } from "../../repositories/policy-explorer/PolicyExplorerRepository";
 import { generate, generateYears } from "../utils/generateYears";
 import { Country } from "../../entities/Country";
@@ -40,7 +40,9 @@ export class GetPolicyExplorerUseCase {
                 case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID: {
                     const year = years[0];
                     const finalYear =
-                        year === undefined || years[0] === latestAvailableYear ? new Date().getFullYear() : +year;
+                        year === undefined || years[0] === LATEST_AVAILABLE_YEAR_CODE
+                            ? new Date().getFullYear()
+                            : +year;
 
                     return (acc = {
                         ...acc,
