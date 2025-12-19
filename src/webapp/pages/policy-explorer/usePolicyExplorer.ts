@@ -4,7 +4,7 @@ import {
     PolicyExplorer,
     PolicyExplorerCellType,
     DataOrientationByTable,
-    latestAvailableYear,
+    LATEST_AVAILABLE_YEAR_CODE,
     firstYearInFilter,
     isCellTypedData,
     PolicyExplorerCell,
@@ -65,7 +65,7 @@ export function usePolicyExplorer({
         Record<string, string[]> | undefined
     >();
 
-    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([latestAvailableYear]);
+    const [selectedYearFilter, setSelectedYearFilter] = useState<string[] | undefined>([LATEST_AVAILABLE_YEAR_CODE]);
 
     const [initialDataByTable, setInitialDataByTable] = useState<PolicyExplorer | undefined>();
     const [dataByTable, setDataByTable] = useState<PolicyExplorer | undefined>();
@@ -363,7 +363,7 @@ function getYearOptions(): Option[] {
         (year): Option => ({ value: year.id, text: year.id })
     );
 
-    return [...yearsFrom2023UntilCurrent, { value: latestAvailableYear, text: i18n.t("Latest avalaible year") }];
+    return [...yearsFrom2023UntilCurrent, { value: LATEST_AVAILABLE_YEAR_CODE, text: i18n.t("Latest avalaible year") }];
 }
 
 function invertDataByCategoryId(

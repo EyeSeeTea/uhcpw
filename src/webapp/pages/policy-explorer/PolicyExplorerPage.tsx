@@ -194,19 +194,23 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                             </GeneralRow>
                                         ) : null}
 
-                                        <GeneralRow>
-                                            <CreditsText $noWrap>
-                                                {i18n.t("Experts: ", { nsSeparator: false })}
-                                            </CreditsText>
-                                            &nbsp;
-                                            <CreditsText>{info.countryExperts}</CreditsText>
-                                        </GeneralRow>
+                                        {info.countryExperts ? (
+                                            <GeneralRow>
+                                                <CreditsText $noWrap>
+                                                    {i18n.t("Experts: ", { nsSeparator: false })}
+                                                </CreditsText>
+                                                &nbsp;
+                                                <CreditsText>{info.countryExperts}</CreditsText>
+                                            </GeneralRow>
+                                        ) : null}
 
-                                        <GeneralRow>
-                                            <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
-                                            &nbsp;
-                                            <CreditsText>{info.editors}</CreditsText>
-                                        </GeneralRow>
+                                        {info.editors ? (
+                                            <GeneralRow>
+                                                <CreditsText>{i18n.t("Editors: ", { nsSeparator: false })}</CreditsText>
+                                                &nbsp;
+                                                <CreditsText>{info.editors}</CreditsText>
+                                            </GeneralRow>
+                                        ) : null}
 
                                         {info.reviewers ? (
                                             <GeneralRow>

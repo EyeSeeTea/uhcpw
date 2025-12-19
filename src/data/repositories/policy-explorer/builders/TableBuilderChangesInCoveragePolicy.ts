@@ -7,7 +7,6 @@ import {
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { TableBuilder } from "./TableBuilder";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
-import { BaseTableBuilder } from "./BaseTableBuilder";
 
 export const CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES: Record<string, string[]> = {
     MONTH_OF_CHANGE_IN_COVERAGE_POLICY: [
@@ -161,7 +160,7 @@ const MONTH_NAME_ORDER = [
     "December",
 ];
 
-export class TableBuilderChangesInCoveragePolicy extends BaseTableBuilder implements TableBuilder {
+export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
     buildColumns(params: { dataSet?: D2DataSet }): PolicyExplorerCellHeader[] {
         const { dataSet } = params;
         const columnsNames = this.getColumnsNamesFromChangesInCoveragePolicy(dataSet);

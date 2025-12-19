@@ -31,10 +31,9 @@ export interface TableBuilder {
         references: string;
         dataSet?: D2DataSet;
     }): PolicyExplorerCell[][];
-    filterDataValuesByLatestAvailableYear<T extends DataValueSetsDataValue>(dataValues: T[]): T[];
 }
 
-export function getTableBuilder(policyExplorerCategoryId: string, dataSet?: D2DataSet) {
+export function getTableBuilder(policyExplorerCategoryId: string) {
     switch (policyExplorerCategoryId) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES:
@@ -45,17 +44,9 @@ export function getTableBuilder(policyExplorerCategoryId: string, dataSet?: D2Da
         //specific basis for last year is only applicable to regional page for the following tables
         //following tables are only visible in regional page
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
-            return new TableBuilderCoveredHealthcareByType({
-                basisForLatestYear: dataSet?.sections
-                    .find(section => section.id === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES)
-                    ?.dataElements.map(de => de.id),
-            });
+            return new TableBuilderCoveredHealthcareByType();
         case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
-            return new TableBuilderEntitlementsForUndocumented({
-                basisForLatestYear: dataSet?.sections
-                    .find(section => section.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY)
-                    ?.dataElements.map(de => de.id),
-            });
+            return new TableBuilderEntitlementsForUndocumented();
         default:
             return new TableBuilderDefault();
     }
