@@ -41,8 +41,6 @@ export function getTableBuilder(policyExplorerCategoryId: string) {
         case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
             return new TableBuilderChangesInCoveragePolicy();
 
-        //specific basis for last year is only applicable to regional page for the following tables
-        //following tables are only visible in regional page
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
             return new TableBuilderCoveredHealthcareByType();
         case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY:
