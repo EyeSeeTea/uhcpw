@@ -17,6 +17,7 @@ import policyExplorer from "../../assets/policy-explorer.svg";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 import {
     DataOrientation,
+    PolicyExplorerGeneralInfo,
     PolicyExplorerCell,
     PolicyExplorerCellType,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
@@ -172,15 +173,43 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
                 {!isLoading && (
                     <div ref={referencesRef}>
-                        {data?.generalInfo.map(info => {
-                            return (
-                                <div key={info.country}>
-                                    <GeneralDataContainer>
-                                        <GeneralRow>
-                                            <CreditsText style={{ fontWeight: 500 }}>
-                                                <strong>{`${info.country} (${info.year})`}</strong>
-                                            </CreditsText>
-                                        </GeneralRow>
+                        {data?.generalInfo
+                            .map(info => {
+                                const countryReferences = getCleanReferencesByCountry(info.country);
+                                const hasGeneralInfoContent = Boolean(
+                                    info.year ||
+                                        info.lastUpdate ||
+                                        info.countryExperts ||
+                                        info.editors ||
+                                        info.reviewers ||
+                                        info.notes ||
+                                        info.sourceText ||
+                                        countryReferences?.length
+                                );
+
+                                if (!hasGeneralInfoContent) return null;
+
+                                return { info, countryReferences };
+                            })
+                            .filter(
+                                (
+                                    info
+                                ): info is {
+                                    info: PolicyExplorerGeneralInfo;
+                                    countryReferences: string[] | undefined;
+                                } => Boolean(info)
+                            )
+                            .map(({ info, countryReferences }) => {
+                                return (
+                                    <div key={info.country}>
+                                        <GeneralDataContainer>
+                                            <GeneralRow>
+                                                <CreditsText style={{ fontWeight: 500 }}>
+                                                    <strong>
+                                                        {info.year ? `${info.country} (${info.year})` : info.country}
+                                                    </strong>
+                                                </CreditsText>
+                                            </GeneralRow>
 
                                         {info.lastUpdate ? (
                                             <GeneralRow>
@@ -260,12 +289,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                                         ) : null}
                                     </GeneralDataContainer>
                                     <ReferencesContainer>
-                                        {info.country && getCleanReferencesByCountry(info.country)?.length ? (
+                                        {info.country && countryReferences?.length ? (
                                             <>
                                                 <ReferencesTitle>
                                                     {i18n.t("References", { nsSeparator: false })}
                                                 </ReferencesTitle>
-                                                {getCleanReferencesByCountry(info.country)?.map(reference => (
+                                                {countryReferences?.map(reference => (
                                                     <ReactMarkdown
                                                         key={reference}
                                                         components={{
