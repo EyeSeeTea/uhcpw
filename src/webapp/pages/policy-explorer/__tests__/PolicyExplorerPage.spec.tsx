@@ -161,9 +161,7 @@ describe("Given PolicyExplorerPage", () => {
 
             await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Andorra");
 
-            await waitFor(() =>
-                expect(screen.queryByText(/Andorra/, { selector: "strong" })).not.toBeInTheDocument()
-            );
+            await waitFor(() => expect(screen.queryByText(/Andorra/, { selector: "strong" })).not.toBeInTheDocument());
         });
         it("Then should render a message", async () => {});
     });
