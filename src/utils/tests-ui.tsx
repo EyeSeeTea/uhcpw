@@ -294,6 +294,79 @@ export function givenACountries(): Country[] {
                 },
             ],
         },
+        {
+            id: "Rmy6DbwekE1",
+            name: "Andorra",
+            longName: "Principality of Andorra",
+            code: "AND",
+            iso3Code: "AND",
+            status: "Gaps",
+            parents: [
+                {
+                    id: "yuNkB9H6l3A",
+                    name: "UHCW_Income group HIC: High income countries",
+                },
+            ],
+            flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
+            showCountryFlag: false,
+            summary: "",
+            sliderInfo: {
+                gapsSection: {
+                    sectionName: "",
+                    sourceText: "",
+                    content: [
+                        {
+                            title: "",
+                            text: "Country Information coming soon",
+                        },
+                        {
+                            title: "",
+                            text: "Country Information coming soon",
+                        },
+                        {
+                            title: "",
+                            text: "Country Information coming soon",
+                        },
+                        {
+                            title: "",
+                            text: "",
+                        },
+                        {
+                            title: "",
+                            text: "",
+                        },
+                    ],
+                },
+                finProtecSection: {
+                    sectionName: "",
+                    sourceText: "",
+                    content: [
+                        {
+                            title: "",
+                            text: "",
+                        },
+                        {
+                            title: "",
+                            text: "",
+                        },
+                        {
+                            title: "",
+                            text: "",
+                        },
+                        {
+                            title: "",
+                            text: "",
+                        },
+                        {
+                            title: "",
+                            text: "",
+                        },
+                    ],
+                },
+            },
+            isInCountryPage: false,
+            currencyCode: "€",
+        },
     ];
 }
 
