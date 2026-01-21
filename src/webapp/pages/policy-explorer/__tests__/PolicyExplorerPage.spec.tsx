@@ -11,6 +11,7 @@ import policyExplorerEmpty from "./data/policyExplorerEmpty.json";
 import policyExplorerWithMultiplePeriods from "./data/policyExplorerWithMultiplePeriods.json";
 import policyExplorerWithMoreThanOneTable from "./data/policyExplorerWithMoreThanOneTable.json";
 import policyExplorerByTypeOfHealthcare from "./data/policyExplorerByTypeOfHealthcare.json";
+import policyExplorerNoContent from "./data/policyExplorerNoContent.json";
 import userEvent from "@testing-library/user-event";
 import { PolicyExplorerCategoryD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { CountryD2Repository } from "../../../../data/repositories/countries/CountryD2Repository";
@@ -149,6 +150,18 @@ describe("Given PolicyExplorerPage", () => {
 
             const cells = await screen.queryAllByRole("cell");
             expect(cells.length).toBe(0);
+        });
+        it("Then should not render general info for a country without content", async () => {
+            const { policyExplorerCategories } = getPolicyExplorerCategories();
+
+            givenCountries();
+            givenAPolicyExplorerWithoutContent();
+
+            renderPage();
+
+            await selectFiltersAndGetTable([policyExplorerCategories[0]?.name || ""], "Andorra");
+
+            await waitFor(() => expect(screen.queryByText(/Andorra/, { selector: "strong" })).not.toBeInTheDocument());
         });
         it("Then should render a message", async () => {});
     });
@@ -316,6 +329,20 @@ function givenAnEmptyPolicyExplorer(): PolicyExplorer {
     const mockedRepository = mock(PolicyExplorerD2Repository);
 
     const items: PolicyExplorer = policyExplorerEmpty as unknown as PolicyExplorer;
+
+    when(mockedRepository.get(anything(), anything(), anything(), anything(), anything(), anything())).thenReturn(
+        Future.success(items)
+    );
+
+    policyExplorerRepository = instance(mockedRepository);
+
+    return items;
+}
+
+function givenAPolicyExplorerWithoutContent(): PolicyExplorer {
+    const mockedRepository = mock(PolicyExplorerD2Repository);
+
+    const items: PolicyExplorer = policyExplorerNoContent as unknown as PolicyExplorer;
 
     when(mockedRepository.get(anything(), anything(), anything(), anything(), anything(), anything())).thenReturn(
         Future.success(items)

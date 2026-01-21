@@ -44,7 +44,7 @@ export type PolicyExplorerGeneralInfo = {
     country: string;
     countryExperts: string;
     editors: string;
-    lastUpdate: Date;
+    lastUpdate: Date | undefined;
     sourceText: string;
     sourceUrl: string;
     reviewers: string;
@@ -72,7 +72,7 @@ export type PolicyExplorerReferences = {
 export type DataOrientation = "inverted" | "normal";
 
 export type DataOrientationByTable = Record<string, DataOrientation>;
-export const latestAvailableYear = "latest";
+export const LATEST_AVAILABLE_YEAR_CODE = "latest";
 export const firstYearInFilter = 2023;
 
 export function isCellTypedData(cell: PolicyExplorerCell): cell is PolicyExplorerCellTypedData {

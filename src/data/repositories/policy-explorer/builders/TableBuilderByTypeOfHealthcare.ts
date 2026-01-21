@@ -9,7 +9,6 @@ import { COUNTRY_HEADER_NAME, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyEx
 import { CATEGORY_BY_TYPE_OF_HEALTHCARE } from "../PolicyExplorerCategoryD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
 import { Maybe } from "../../../../types/utils";
-import { BaseTableBuilder } from "./BaseTableBuilder";
 
 export type HealthCareType =
     | "Primary care visits"
@@ -234,7 +233,7 @@ const TYPES_OF_USER_CHARGE_TYPE_OF_HEALTHCARE_VALUES_DATA_ELEMENT_SECTION_IDS: R
 
 export const TYPE_OF_HEALTH_CARE_HEADER_NAME = "Type of health care";
 
-export class TableBuilderByTypeOfHealthcare extends BaseTableBuilder implements TableBuilder {
+export class TableBuilderByTypeOfHealthcare implements TableBuilder {
     buildColumns(params: { policyExplorerCategoryId: string }): PolicyExplorerCellHeader[] {
         const { policyExplorerCategoryId } = params;
         const columnsDataElementSectionIds =
