@@ -1,9 +1,12 @@
-import { Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
+import { Dialog, DialogContent, IconButton } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
 import ReactMarkdown from "react-markdown";
 import { Rotate } from "../rotate/Rotate";
 import { useOrientation } from "../rotate/useOrientation";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { createMarkdownComponents } from "./markdownComponents";
+import { useMemo } from "react";
 
 type DialogType = {
     isOpen: boolean;
@@ -14,6 +17,12 @@ type DialogType = {
 
 export const FullScreenNotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo }) => {
     const orientation = useOrientation();
+    const { redirectWithExternalLink } = useAnalytics();
+
+    const markdownComponents = useMemo(
+        () => createMarkdownComponents(redirectWithExternalLink),
+        [redirectWithExternalLink]
+    );
 
     return (
         <Dialog
@@ -30,15 +39,7 @@ export const FullScreenNotesDialog: React.FC<DialogType> = ({ isOpen, onClose, d
             <DialogContainer>
                 <Rotate enableRotation={true} width="75vh" height="70vw">
                     <DialogContent>
-                        <ReactMarkdown
-                            components={{
-                                p: ({ children }) => (
-                                    <Typography style={{ color: "#242626", marginBottom: 8 }}>{children}</Typography>
-                                ),
-                            }}
-                        >
-                            {dialogInfo}
-                        </ReactMarkdown>
+                        <ReactMarkdown components={markdownComponents}>{dialogInfo}</ReactMarkdown>
                     </DialogContent>
                 </Rotate>
 
