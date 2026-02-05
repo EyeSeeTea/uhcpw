@@ -83,7 +83,7 @@ export const CategorySelector = React.memo(
                         endAdornment: (
                             <InputAdornment
                                 position="start"
-                                style={{ top: "calc(50% - 14px)", right: 0, position: "absolute", height: " 24px" }}
+                                style={{ top: "calc(50% - 14px)", right: -7, position: "absolute", height: " 24px" }}
                             >
                                 {expanded ? (
                                     <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
@@ -158,6 +158,7 @@ const StyledDropdownTextField = styled(DropdownTextField)`
     div.MuiInputBase-root {
         border-radius: 20px;
         color: black;
+        padding-inline-end: 20px;
     }
     .MuiInputBase-input {
         caret-color: transparent;
