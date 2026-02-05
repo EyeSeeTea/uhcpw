@@ -20,7 +20,7 @@ export const DropdownTextField = styled(TextField)<{ $isDisabled?: boolean; minW
         border: "1px solid #cfe9f7",
         borderRadius: "8px",
         minWidth: props.minWidth || "200px",
-        padding: "8px 16px",
+        padding: "8px 20px 8px 16px",
     },
     "div.MuiInput-underline:before": {
         border: "none !important",
