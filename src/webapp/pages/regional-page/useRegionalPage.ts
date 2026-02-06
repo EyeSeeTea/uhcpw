@@ -254,7 +254,9 @@ export function useRegionalPage(): RegionalPageState {
         return [
             {
                 tab: 0,
-                tabTitle: i18n.t("Numbers: financial hardship, unmet need and spending on health"),
+                tabTitle: i18n.t("Numbers: financial hardship, unmet need and spending on health", {
+                    nsSeparator: false,
+                }),
                 isGradientColor: true,
                 hasExpandIcon: true,
                 Component: NumbersSection,
@@ -271,7 +273,7 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 1,
-                tabTitle: i18n.t("The story behind the numbers: gaps in coverage"),
+                tabTitle: i18n.t("The story behind the numbers: gaps in coverage", { nsSeparator: false }),
                 isGradientColor: true,
                 hasExpandIcon: true,
                 Component: GapsInCoverageSection,
@@ -288,7 +290,7 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 2,
-                tabTitle: i18n.t("Progress is possible: a policy checklist"),
+                tabTitle: i18n.t("Progress is possible: a policy checklist", { nsSeparator: false }),
                 isGradientColor: true,
                 hasExpandIcon: true,
                 Component: PolicyChecklistSection,

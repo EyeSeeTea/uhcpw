@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2025-11-28T07:08:20.061Z\n"
-"PO-Revision-Date: 2025-11-28T07:08:20.061Z\n"
+"POT-Creation-Date: 2026-02-06T08:38:41.068Z\n"
+"PO-Revision-Date: 2026-02-06T08:38:41.068Z\n"
 
 msgid "404"
 msgstr ""
@@ -316,6 +316,15 @@ msgid "Select region"
 msgstr ""
 
 msgid "Click an item on the policy checklist to see country examples"
+msgstr ""
+
+msgid "Numbers: financial hardship, unmet need and spending on health"
+msgstr ""
+
+msgid "The story behind the numbers: gaps in coverage"
+msgstr ""
+
+msgid "Progress is possible: a policy checklist"
 msgstr ""
 
 msgid "Expert network"
