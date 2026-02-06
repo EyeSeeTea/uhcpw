@@ -82,6 +82,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
         anchorEl,
         containerWidth,
         isSmallScreen,
+        menuContentRef,
     } = useTreeSelectorState;
 
     return (
@@ -172,20 +173,22 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
                     role="listbox"
                     aria-labelledby="tree-selector-input"
                 >
-                    <TreeSelectorList
-                        disabledItems={disabledItems}
-                        hasSelectAll={hasSelectAll}
-                        maxSelection={maxSelection}
-                        disableSearch={disableSearch}
-                        showSubChildren={showSubChildren}
-                        items={items}
-                        selectedIds={selectedIds}
-                        fullWidth={fullWidth}
-                        fullScreen={fullScreen}
-                        placeholder={placeholder}
-                        hasClearAll={hasClearAll}
-                        {...useTreeSelectorState}
-                    />
+                    <div ref={menuContentRef}>
+                        <TreeSelectorList
+                            disabledItems={disabledItems}
+                            hasSelectAll={hasSelectAll}
+                            maxSelection={maxSelection}
+                            disableSearch={disableSearch}
+                            showSubChildren={showSubChildren}
+                            items={items}
+                            selectedIds={selectedIds}
+                            fullWidth={fullWidth}
+                            fullScreen={fullScreen}
+                            placeholder={placeholder}
+                            hasClearAll={hasClearAll}
+                            {...useTreeSelectorState}
+                        />
+                    </div>
                 </StyledMenu>
             )}
 
@@ -233,6 +236,14 @@ const SelectedContainer = styled.div`
 `;
 
 const StyledMenu = styled(Menu)`
+    && {
+        pointer-events: none;
+    }
+
+    && .MuiPaper-root {
+        pointer-events: auto;
+    }
+
     .MuiInputBase-root {
         border-radius: 20px;
     }

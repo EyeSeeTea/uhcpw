@@ -26,6 +26,7 @@ type useTreeSelectorParams = {
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
     parentSort?: (a: string, b: string) => number;
+    fullScreen?: boolean;
 };
 
 type useTreeSelectorState = {
@@ -63,6 +64,7 @@ type useTreeSelectorState = {
     isAllItemParentSelected: (itemParentId: string) => boolean | undefined;
     isItemParentDisabled: (allItemsInSelectedParent: TreeOption[]) => boolean;
     itemsToSelect: string[];
+    menuContentRef: React.MutableRefObject<HTMLDivElement | null>;
 };
 
 export const ALL_NODE_ID = "all";
@@ -85,7 +87,10 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         defaultExpanded = EMPTY_IDS_ARRAY,
         selectedItemsToShowWhenAllSelected = EMPTY_IDS_ARRAY,
         parentSort = (_a: string, _b: string) => 0,
+        fullScreen,
     } = params;
+
+    const menuContentRef = React.useRef<HTMLDivElement | null>(null);
 
     const isSmallScreen = useMediaQuery("(max-width:700px)");
     const { width } = useWindowSize();
@@ -110,6 +115,26 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         setExpanded(!expanded);
         setSearchTerm("");
     }, [expanded, setExpanded, setAnchorEl]);
+
+    React.useEffect(() => {
+        if (!anchorEl || fullScreen) return;
+
+        const onDocMouseDown = (e: MouseEvent) => {
+            const target = e.target;
+
+            if (!(target instanceof Node)) return;
+
+            const clickInsideMenu = menuContentRef.current?.contains(target);
+            const clickOnAnchor = anchorEl.contains(target);
+
+            if (!clickInsideMenu && !clickOnAnchor) {
+                handleClose();
+            }
+        };
+
+        document.addEventListener("mousedown", onDocMouseDown, true);
+        return () => document.removeEventListener("mousedown", onDocMouseDown, true);
+    }, [anchorEl, fullScreen, handleClose]);
 
     const filteredItemsBySearch: TreeOption[] = useMemo(() => {
         return items.reduce((acc: TreeOption[], item) => {
@@ -386,5 +411,6 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         isAllItemParentSelected,
         isItemParentDisabled,
         itemsToSelect,
+        menuContentRef,
     };
 };
