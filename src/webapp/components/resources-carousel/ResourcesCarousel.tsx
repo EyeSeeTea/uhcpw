@@ -13,6 +13,7 @@ import { ResourceItem } from "./ResourceItem";
 import { useHistory } from "react-router-dom";
 import { News } from "../../../domain/entities/resources/Resource";
 import { CountryAnalysisCountry } from "../../pages/resources/landing/ResourcesState";
+import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
 
 export type ResourceItemProp =
     | News
@@ -51,7 +52,11 @@ export const ResourcesCarousel: React.FC<ResourcesCarouselProps> = React.memo(pr
                                         role="listitem"
                                         src={resource.flag}
                                         onClick={() =>
-                                            history.push(`/resources/country-analysis?country=${resource.countryId}`)
+                                            history.push(
+                                                `/resources/country-analysis/${formatCountryOrRegionParamName(
+                                                    resource.countryName
+                                                )}`
+                                            )
                                         }
                                     />
                                 </Tooltip>
