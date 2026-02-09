@@ -83,8 +83,9 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                 ].join("/");
 
                 history.replace(`/${nextPath}`);
+                filters.country.onSelectedChange(value);
             },
-            [baseParams, filters.country.options, history, maybeFoundTheme, pathParts]
+            [baseParams, filters.country, history, maybeFoundTheme, pathParts]
         );
 
         const onThemeChange = useCallback(
