@@ -173,6 +173,8 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
             "{point.country} {point.commonYear} <br/> {point.yearX} Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> {point.yearY} Households with catastrophic health spending (%): {point.y}%",
         seriesWithCountryAndRegionData: seriesWithCountryAndRegionData,
         countryPositions: countryPositionsAdjustment,
+        xTickInterval: 15,
+        yTickInterval: 5,
     });
 
     return {
