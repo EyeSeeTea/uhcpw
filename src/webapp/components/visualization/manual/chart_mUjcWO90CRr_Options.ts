@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
+import { createScatterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/createScatterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
 import { ORG_UNIT_IDS, REGION_CODES } from "../../../../domain/entities/region/Region";
 import { getColorOfRegionByRegionCode } from "../../../pages/regional-page/getColorOfRegion";
@@ -127,7 +127,7 @@ export const chart_mUjcWO90CRr_Options: (chartSource: ChartSource) => Highcharts
         GRE: pos.bottomLeft,
         DEU: pos.bottomLeft,
     };
-    return createScratterChart({
+    return createScatterChart({
         series,
         visualization: chartSource.visualization,
         currentCountryCode: currentCountryCode,

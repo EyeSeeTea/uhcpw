@@ -6,15 +6,15 @@ import { NamedRef } from "../../../../../domain/entities/Ref";
 import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 import { getRegionCodeByOrgUnitId } from "../../../../../domain/entities/region/Region";
 
-export type ScratterSerie = {
+export type ScatterSerie = {
     id: string;
     name: string;
     color: string;
     data: SerieData[];
 };
 
-type CreateScratterChartParams = {
-    series: ScratterSerie[];
+type CreateScatterChartParams = {
+    series: ScatterSerie[];
     visualization: Visualization;
     currentCountryCode: string;
     currentRegionCode?: string;
@@ -43,7 +43,7 @@ interface CustomPointOptions extends Highcharts.PointOptionsObject {
     regionCode?: string; // Assuming region is optional
 }
 
-export const createScratterChart: ({
+export const createScatterChart: ({
     series,
     visualization,
     currentCountryCode,
@@ -56,7 +56,7 @@ export const createScratterChart: ({
     displayTendencyLine,
     xTickInterval,
     yTickInterval,
-}: CreateScratterChartParams) => Highcharts.Options = ({
+}: CreateScatterChartParams) => Highcharts.Options = ({
     series,
     visualization: _visualization,
     currentCountryCode,
