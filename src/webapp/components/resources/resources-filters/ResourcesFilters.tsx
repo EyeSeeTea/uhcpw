@@ -1,5 +1,5 @@
 import { Button, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import i18n from "../../../../locales";
@@ -11,6 +11,13 @@ import {
     BREAKPOINT_WIDTH_SMALL_SCREEN,
     BREAKPOINT_WIDTH_MOBILE_SCREEN,
 } from "../../../common/hooks/screen/useIsSmallScreen";
+import { formatCountryOrRegionParamName, joinCountries } from "../../../utils/formatCountryOrRegionParamName";
+import {
+    findThemeFromParam,
+    formatResourcesThemeParamName,
+    getParamFromThemes,
+} from "../../../utils/formatResourcesThemeParamName";
+import { useAppContext } from "../../../contexts/app-context";
 
 export interface ResourcesFiltersProps {
     filters: ResourcesFiltersState;
@@ -26,48 +33,77 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
         const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
         const history = useHistory();
         const location = useLocation();
+        const { themes } = useAppContext();
 
         const onCategoryChange = useCallback(
             (value: string | undefined) => {
-                const theme = filters.theme.selected;
-                if (value) {
-                    history.push(`/resources/${value}${theme ? `?theme=${theme}` : ""}`);
+                const themeParam = filters.theme.selected
+                    ? getParamFromThemes(themes, filters.theme.selected)
+                    : undefined;
+
+                if (themeParam && value) {
+                    history.push(`/resources/${value}/${themeParam}`);
                 } else {
-                    history.push(`/resources${theme ? `?theme=${theme}` : ""}`);
+                    history.push(`/resources${value ? `/${value}` : ""}`);
                 }
             },
-            [filters.theme.selected, history]
+            [filters.theme.selected, history, themes]
         );
+
+        const { baseParams, maybeFoundTheme, pathParts } = useMemo(() => {
+            // parts: ["resources", :category, :countriesOrTheme?, :countries?]
+            const pathParts = location.pathname.split("/").filter(Boolean);
+
+            // /resources/:category(news|multimedia|country-analysis|comparative-analysis)
+            const baseParams = pathParts.slice(0, 2);
+
+            const maybeFoundTheme = pathParts[2] ? findThemeFromParam(themes, pathParts[2]) : undefined;
+            return {
+                baseParams,
+                maybeFoundTheme,
+                pathParts,
+            };
+        }, [location.pathname, themes]);
 
         const onCountryChange = useCallback(
             (value: string[] | undefined) => {
-                const queryParameters = new URLSearchParams(location.search);
+                const newCountryNamesInParams = filters.country.options
+                    .filter(country => value?.includes(country.id))
+                    .map(country => formatCountryOrRegionParamName(country.name));
 
-                if (value && value.length > 0) {
-                    queryParameters.set("country", value?.join(","));
-                } else {
-                    queryParameters.delete("country");
-                }
+                const newCountryNamesParams =
+                    newCountryNamesInParams && newCountryNamesInParams.length > 0
+                        ? joinCountries(newCountryNamesInParams)
+                        : undefined;
 
-                history.replace({ search: queryParameters.toString() });
+                const nextPath = [
+                    ...baseParams,
+                    ...(maybeFoundTheme && pathParts[2] ? [pathParts[2]] : []),
+                    ...(newCountryNamesParams ? [newCountryNamesParams] : []),
+                ].join("/");
+
+                history.replace(`/${nextPath}`);
             },
-            [history, location.search]
+            [baseParams, filters.country.options, history, maybeFoundTheme, pathParts]
         );
 
         const onThemeChange = useCallback(
             (value: string | undefined) => {
-                const queryParameters = new URLSearchParams(location.search);
+                const maybeCountriesParams = maybeFoundTheme ? pathParts[3] : pathParts[2];
 
-                if (value) {
-                    queryParameters.set("theme", value);
-                } else {
-                    queryParameters.delete("theme");
-                }
+                const newThemeFound = themes.find(theme => value && theme.name === value)?.displayedName;
 
-                history.replace({ search: queryParameters.toString() });
+                const nextPath = [
+                    ...baseParams,
+                    ...(newThemeFound ? [formatResourcesThemeParamName(newThemeFound)] : []),
+                    ...(maybeCountriesParams ? [maybeCountriesParams] : []),
+                ].join("/");
+
+                history.replace(`/${nextPath}`);
+
                 filters.theme.onSelectedChange(value);
             },
-            [filters.theme, history, location.search]
+            [baseParams, filters.theme, history, maybeFoundTheme, pathParts, themes]
         );
 
         return (

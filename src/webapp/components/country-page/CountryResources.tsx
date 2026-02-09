@@ -15,6 +15,8 @@ import {
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { Id } from "../../../domain/entities/Ref";
+import { useAppContext } from "../../contexts/app-context";
+import { formatCountryOrRegionParamName, joinCountries } from "../../utils/formatCountryOrRegionParamName";
 
 export type CountryResourcesProps = {
     countryIds: Id[];
@@ -24,16 +26,21 @@ export type CountryResourcesProps = {
 export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, isRegionalPage = false }) => {
     const history = useHistory();
     const { loading, countryAnalysisResource, comparativeAnalysisResources } = useCountryResources(countryIds);
+    const { countries } = useAppContext();
 
-    const redirectCountryIds = useMemo(() => {
-        return countryIds
-            .map(id => {
-                return id === FEDERACIJA_BOSNE_I_HERCEGOVINE || id === REPUBLICA_SERPSKA
-                    ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
-                    : id;
-            })
-            .join(",");
-    }, [countryIds]);
+    const countryNamesParams = useMemo(() => {
+        const ids = countryIds.map(id => {
+            return id === FEDERACIJA_BOSNE_I_HERCEGOVINE || id === REPUBLICA_SERPSKA
+                ? BOSNIA_AND_HERZEGOVINA_LEVEL_4
+                : id;
+        });
+
+        const countryNamesInParams = countries
+            .filter(country => ids.includes(country.id))
+            .map(country => formatCountryOrRegionParamName(country.name));
+
+        return joinCountries(countryNamesInParams);
+    }, [countryIds, countries]);
 
     const onArrowClick = useCallback(
         (link: string) => {
@@ -71,9 +78,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}
                         >
                             <ChevronRightSharpIcon
-                                onClick={() =>
-                                    onArrowClick(`/resources/country-analysis?country=${redirectCountryIds}`)
-                                }
+                                onClick={() => onArrowClick(`/resources/country-analysis/${countryNamesParams}`)}
                             />
                         </Fab>
                     </FirstRowWithMargin>
@@ -106,9 +111,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
                             style={{ boxShadow: "none", transform: "scale(0.7)" }}
                         >
                             <ChevronRightSharpIcon
-                                onClick={() =>
-                                    onArrowClick(`/resources/comparative-analysis?country=${redirectCountryIds}`)
-                                }
+                                onClick={() => onArrowClick(`/resources/comparative-analysis/${countryNamesParams}`)}
                             />
                         </Fab>
                     </SecondRowWithMargin>

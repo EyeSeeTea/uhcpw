@@ -1,11 +1,13 @@
 import { Box, Typography } from "@material-ui/core";
 
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { ResourceLink } from "../../../../domain/entities/resources/Resource";
 import { Tag } from "../tag/Tag";
 import { useHistory } from "react-router-dom";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { useAppContext } from "../../../contexts/app-context";
+import { getParamFromThemes } from "../../../utils/formatResourcesThemeParamName";
 
 export interface CountryAnalysisProps {
     title: string;
@@ -33,10 +35,13 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => 
     const { title, themeCode, themeName, links, image, date, minimalVersion, type, redirectWithEvent } = props;
 
     const history = useHistory();
+    const { themes } = useAppContext();
 
-    const handleTagClick = () => {
-        history.push(`/resources/${type}?theme=${themeName}`);
-    };
+    const handleTagClick = useCallback(() => {
+        const themeParam = getParamFromThemes(themes, themeName);
+
+        history.push(themeParam ? `/resources/${type}/${themeParam}` : `/resources/${type}`);
+    }, [history, themeName, themes, type]);
 
     const redirectWithDefaultLangForEvent = useMemo(
         () => links[0] && redirectWithEvent(links[0].language),

@@ -35,7 +35,7 @@ export const Router: React.FC = React.memo(() => {
                 />
                 <Route path="/indicator-explorer" render={() => <IndicatorExplorerPage />} />
                 <Route
-                    path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)"
+                    path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)/:countriesOrTheme?/:countries?"
                     render={() => <ResourcesByTypePage />}
                 />
                 <Route path="/resources" render={() => <ResourcesPage />} />
