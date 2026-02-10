@@ -6,15 +6,15 @@ import { NamedRef } from "../../../../../domain/entities/Ref";
 import { getMaxAxisAndTickInterval, getMaxXAxisValue, getXTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 import { getRegionCodeByOrgUnitId } from "../../../../../domain/entities/region/Region";
 
-export type ScratterSerie = {
+export type ScatterSerie = {
     id: string;
     name: string;
     color: string;
     data: SerieData[];
 };
 
-type CreateScratterChartParams = {
-    series: ScratterSerie[];
+type CreateScatterChartParams = {
+    series: ScatterSerie[];
     visualization: Visualization;
     currentCountryCode: string;
     currentRegionCode?: string;
@@ -25,6 +25,7 @@ type CreateScratterChartParams = {
     countryPositions: Record<string, { x: number; y: number }>;
     displayTendencyLine?: boolean;
     xTickInterval?: number;
+    yTickInterval?: number;
 };
 
 export interface SerieSource extends NamedRef {
@@ -42,7 +43,7 @@ interface CustomPointOptions extends Highcharts.PointOptionsObject {
     regionCode?: string; // Assuming region is optional
 }
 
-export const createScratterChart: ({
+export const createScatterChart: ({
     series,
     visualization,
     currentCountryCode,
@@ -54,7 +55,8 @@ export const createScratterChart: ({
     countryPositions,
     displayTendencyLine,
     xTickInterval,
-}: CreateScratterChartParams) => Highcharts.Options = ({
+    yTickInterval,
+}: CreateScatterChartParams) => Highcharts.Options = ({
     series,
     visualization: _visualization,
     currentCountryCode,
@@ -66,6 +68,7 @@ export const createScratterChart: ({
     countryPositions,
     displayTendencyLine = true,
     xTickInterval,
+    yTickInterval,
 }) => {
     const finalSeries = series.map(serie => {
         return {
@@ -86,7 +89,7 @@ export const createScratterChart: ({
         xTickIntervalDefault
     );
 
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxAxisAndTickInterval(
+    const { max: adjustedMaxYAxis, tickInterval: yTickIntervalCalc } = getMaxAxisAndTickInterval(
         seriesWithCountryAndRegionData.map(data => data.y)
     );
 
@@ -113,7 +116,7 @@ export const createScratterChart: ({
                 style: { fontSize: "13px" },
             },
             max: adjustedMaxYAxis,
-            tickInterval: yTickInterval,
+            tickInterval: yTickInterval ?? yTickIntervalCalc,
         },
         legend: { enabled: false },
         series: [

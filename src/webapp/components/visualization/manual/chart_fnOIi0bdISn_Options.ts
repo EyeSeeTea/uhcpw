@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
+import { createScatterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/createScatterChart";
 import { ORG_UNIT_IDS, REGION_CODES } from "../../../../domain/entities/region/Region";
 import { getColorOfRegionByRegionCode } from "../../../pages/regional-page/getColorOfRegion";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
@@ -140,7 +140,7 @@ export const chart_fnOIi0bdISn_Options: (chartSource: ChartSource) => Highcharts
         GRE: pos.bottomLeft,
         DEU: pos.bottomLeft,
     };
-    return createScratterChart({
+    return createScatterChart({
         series,
         visualization: chartSource.visualization,
         currentCountryCode: currentCountryCode,
