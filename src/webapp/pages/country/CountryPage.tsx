@@ -17,6 +17,7 @@ import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegio
 import { SeoMetaTags } from "../../components/seo/SeoMetaTags";
 import { useCountryPageSeoConfig } from "./useCountryPageSeoConfig";
 import { useSidePanelWidth } from "./useSidePanelWidth";
+import { RotateToLandscapeOverlay } from "../../common/hooks/screen/RotateToLandscapeOverlay";
 
 export const CountryPage: React.FC = () => {
     const history = useHistory();
@@ -84,47 +85,51 @@ export const CountryPage: React.FC = () => {
     });
 
     return (
-        <Layout enableRotation={isSmallScreen} isOverflowVisible>
-            <SeoMetaTags config={seoConfig} />
-            <Header
-                countryId={countryFilter.selectedCountry}
-                onCountryChange={handleCountryChange}
-                countryOptions={countryFilter.countryOptions}
-                sliderRef={sliderRef}
-                resourcesRef={resourcesRef}
-                expertRef={expertRef}
-                dashboardRef={dashboardRef}
-                handleResetTab={handleResetTab}
-            />
+        <>
+            <RotateToLandscapeOverlay />
 
-            <Section ref={dashboardRef}>
-                <Hero countryId={countryFilter.selectedCountry} />
-            </Section>
-
-            <Divider financialProtectionStatus={country?.status} />
-
-            <Section ref={sliderRef}>
-                <CountrySlider
+            <Layout enableRotation={isSmallScreen} isOverflowVisible>
+                <SeoMetaTags config={seoConfig} />
+                <Header
                     countryId={countryFilter.selectedCountry}
+                    onCountryChange={handleCountryChange}
+                    countryOptions={countryFilter.countryOptions}
+                    sliderRef={sliderRef}
+                    resourcesRef={resourcesRef}
+                    expertRef={expertRef}
+                    dashboardRef={dashboardRef}
                     handleResetTab={handleResetTab}
-                    resetTab={resetTab}
-                    isSmallScreen={isSmallScreen}
-                    sidePanelWidth={sidePanelWidth}
                 />
-            </Section>
 
-            <Divider financialProtectionStatus={country?.status} />
+                <Section ref={dashboardRef}>
+                    <Hero countryId={countryFilter.selectedCountry} />
+                </Section>
 
-            <Section ref={resourcesRef}>
-                <CountryResources countryIds={[countryFilter.selectedCountry]} />
-            </Section>
+                <Divider financialProtectionStatus={country?.status} />
 
-            <Divider financialProtectionStatus={country?.status} />
+                <Section ref={sliderRef}>
+                    <CountrySlider
+                        countryId={countryFilter.selectedCountry}
+                        handleResetTab={handleResetTab}
+                        resetTab={resetTab}
+                        isSmallScreen={isSmallScreen}
+                        sidePanelWidth={sidePanelWidth}
+                    />
+                </Section>
 
-            <Section ref={expertRef}>
-                <CountryExpert countryIds={[countryFilter.selectedCountry]} />
-            </Section>
-        </Layout>
+                <Divider financialProtectionStatus={country?.status} />
+
+                <Section ref={resourcesRef}>
+                    <CountryResources countryIds={[countryFilter.selectedCountry]} />
+                </Section>
+
+                <Divider financialProtectionStatus={country?.status} />
+
+                <Section ref={expertRef}>
+                    <CountryExpert countryIds={[countryFilter.selectedCountry]} />
+                </Section>
+            </Layout>
+        </>
     );
 };
 
