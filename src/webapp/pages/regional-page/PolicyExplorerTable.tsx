@@ -1,4 +1,5 @@
 import {
+    Button,
     CircularProgress,
     IconButton,
     Paper,
@@ -12,6 +13,7 @@ import {
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 
 import { PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
@@ -21,6 +23,7 @@ import { useRegionalPolicyExplorerTable } from "./useRegionalPolicyExplorerTable
 import { colors } from "../app/themes/dhis2.theme";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { NotesDialog } from "../../components/dialog/NotesDialog";
+import i18n from "../../../locales";
 
 interface PolicyExplorerTableProps {
     title: string;
@@ -31,7 +34,7 @@ interface PolicyExplorerTableProps {
 
 export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.memo(props => {
     const { title, countries, categoryId, years } = props;
-    const { tableData, hasData, category, isNotesDialogOpen, setIsNotesDialogOpen, isLoading } =
+    const { tableData, hasData, category, isNotesDialogOpen, setIsNotesDialogOpen, isLoading, onDownload } =
         useRegionalPolicyExplorerTable(countries, categoryId, years);
 
     // TODO: check the other PolicyExplorerTable component in PE and try to unify this functionality
@@ -95,7 +98,16 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
                 <Title variant="h6" gutterBottom>
                     {title}
                 </Title>
-
+                <DownloadButton
+                    aria-label="Download"
+                    variant="contained"
+                    endIcon={<DownloadIcon />}
+                    color="primary"
+                    onClick={onDownload}
+                    className="download-button"
+                >
+                    <Typography>{i18n.t("Download")}</Typography>
+                </DownloadButton>
                 <StyledIconButton onClick={() => setIsNotesDialogOpen(true)} $color="#185698" padding="4px">
                     <CustomInfoIconCountry color="primary" className="info-button" />
                 </StyledIconButton>
@@ -304,4 +316,13 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+const DownloadButton = styled(Button)`
+    border-radius: 20px;
+    padding: 0px 32px;
+    height: 30px;
+    width: 170px;
+    text-transform: initial;
+    background: #185698;
 `;

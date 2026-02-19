@@ -216,7 +216,7 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
         const fontColor = header && healthcareTypeToColor[header];
 
         const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "◐" ? 14 : undefined;
+        const fontSize = data === "◐" ? 15 : undefined;
 
         return {
             ...(fontColor ? { fontColor } : undefined),
