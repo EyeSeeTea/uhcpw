@@ -80,14 +80,21 @@ export class TableBuilderCoveredHealthcareByType implements TableBuilder {
         policyExplorerSubcategoriesIds: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
+        period?: string;
         references: string;
     }): PolicyExplorerCell[][] {
-        const { policyExplorerSubcategoriesIds, dataValuesByGroup, orgUnitName, references, currentRowsInTable } =
-            params;
+        const {
+            policyExplorerSubcategoriesIds,
+            dataValuesByGroup,
+            orgUnitName,
+            period,
+            references,
+            currentRowsInTable,
+        } = params;
 
         const orgUnitCell = {
             type: PolicyExplorerCellType.DATA,
-            value: orgUnitName,
+            value: [orgUnitName, period].join(" "),
         };
 
         const restCellsInRow: PolicyExplorerCellCoverage[] = Object.entries(
