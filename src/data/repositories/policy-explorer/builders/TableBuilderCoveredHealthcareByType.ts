@@ -53,7 +53,7 @@ const valueMap = {
     NO_3: "no",
     NOT_COVERED: "notCovered",
     VARIES: "varies",
-    DEFAULT: "no",
+    DEFAULT: "none",
 } as const;
 type ValueMapKey = keyof typeof valueMap;
 const isValueMapKey = (v: string): v is ValueMapKey => v in valueMap;
