@@ -59,6 +59,7 @@ export function useRegionalGapsInCoverage(
                           tabTitle: gapsInCoverageContent.panelOneTitle,
                           Component: GapsInCoveragePanel,
                           props: {
+                              tabNumber: 0,
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelOneMainText,
                               progressText: gapsInCoverageContent.panelOneProgressText,
@@ -85,6 +86,7 @@ export function useRegionalGapsInCoverage(
                           tabTitle: gapsInCoverageContent.panelTwoTitle,
                           Component: GapsInCoveragePanel,
                           props: {
+                              tabNumber: 1,
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelTwoMainText,
                               progressText: gapsInCoverageContent.panelTwoProgressText,
@@ -110,6 +112,7 @@ export function useRegionalGapsInCoverage(
                           tabTitle: gapsInCoverageContent.panelThreeTitle,
                           Component: GapsInCoveragePanel,
                           props: {
+                              tabNumber: 2,
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelThreeMainText,
                               progressText: gapsInCoverageContent.panelThreeProgressText,
@@ -135,6 +138,7 @@ export function useRegionalGapsInCoverage(
                           tabTitle: gapsInCoverageContent.panelFourTitle,
                           Component: GapsInCoveragePanel,
                           props: {
+                              tabNumber: 3,
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelFourMainText,
                               progressText: gapsInCoverageContent.panelFourProgressText,
@@ -166,6 +170,7 @@ export function useRegionalGapsInCoverage(
                           tabTitle: gapsInCoverageContent.panelFiveTitle,
                           Component: GapsInCoveragePanel,
                           props: {
+                              tabNumber: 4,
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelFiveMainText,
                               progressText: gapsInCoverageContent.panelFiveProgressText,
@@ -221,6 +226,7 @@ export function useRegionalGapsInCoverage(
                           tabTitle: gapsInCoverageContent.panelSixTitle,
                           Component: GapsInCoveragePanel,
                           props: {
+                              tabNumber: 5,
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelSixMainText,
                               progressText: gapsInCoverageContent.panelSixProgressText,
@@ -259,6 +265,7 @@ export function useRegionalGapsInCoverage(
                           tabTitle: gapsInCoverageContent.panelSevenTitle,
                           Component: GapsInCoveragePanel,
                           props: {
+                              tabNumber: 6,
                               regionId: selectedRegionId,
                               mainText: gapsInCoverageContent.panelSevenMainText,
                               progressText: gapsInCoverageContent.panelSevenProgressText,

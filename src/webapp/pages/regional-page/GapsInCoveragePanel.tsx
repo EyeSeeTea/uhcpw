@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { IconButton, Typography } from "@material-ui/core";
 import ReactMarkdown, { Components } from "react-markdown";
 import InfoIcon from "@material-ui/icons/Info";
+import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
 
 import i18n from "../../../locales";
 import { Id } from "../../../domain/entities/Ref";
@@ -34,6 +35,7 @@ export type VisualContent = {
 };
 
 type GapsInCoveragePanelProps = {
+    tabNumber: number;
     regionId: Id;
     mainText?: string;
     progressText?: string;
@@ -46,7 +48,7 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
     const isSmallScreen = useIsSmallScreen();
     const { redirectWithExternalLink } = useAnalytics();
 
-    const { regionId, mainText, progressText, visuals, showDialogInFullScreen = false, rightIcon } = props;
+    const { tabNumber, regionId, mainText, progressText, visuals, showDialogInFullScreen = false, rightIcon } = props;
     const [visualTextInfo, setVisualTextInfo] = useState<string | undefined>(undefined);
     const [currentGraphScreenshot, setCurrentGraphScreenshot] = React.useState<VisualContent | undefined>(undefined);
 
@@ -93,84 +95,106 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                     </TextContainer>
                 )}
 
-                {visuals?.map((visualContent, index) => (
-                    <React.Fragment key={`region-${regionId}-visual-content-${index}`}>
-                        {visualContent.textAbove && (
-                            <TextContainer>
-                                <ReactMarkdown components={markdownComponents}>{visualContent.textAbove}</ReactMarkdown>
-                            </TextContainer>
-                        )}
+                {visuals?.map((visualContent, visualIndex) => {
+                    const hasDownloadImageButton = tabNumber === 0 && visualIndex === 0 && !!visualContent.visual;
+                    return (
+                        <React.Fragment key={`region-${regionId}-visual-content-${visualIndex}`}>
+                            {visualContent.textAbove && (
+                                <TextContainer>
+                                    <ReactMarkdown components={markdownComponents}>
+                                        {visualContent.textAbove}
+                                    </ReactMarkdown>
+                                </TextContainer>
+                            )}
 
-                        <VisualContainer>
-                            {visualContent.title &&
-                            !visualContent.visualizationId &&
-                            !visualContent.policyCategoryId ? (
-                                <ChartTitleRow>
-                                    <ChartTitle variant="h6" gutterBottom>
-                                        {visualContent.title}
-                                    </ChartTitle>
+                            <VisualContainer hasBlockStartMargin={!hasDownloadImageButton}>
+                                {visualContent.title &&
+                                !visualContent.visualizationId &&
+                                !visualContent.policyCategoryId ? (
+                                    <ChartTitleRow>
+                                        <ChartTitle variant="h6" gutterBottom>
+                                            {visualContent.title}
+                                        </ChartTitle>
 
-                                    <StyledIconButton
-                                        onClick={() => setVisualTextInfo(visualContent?.textInfo)}
-                                        $color="#185698"
-                                        padding="4px"
-                                    >
-                                        <CustomInfoIconCountry color="primary" className="info-button" />
-                                    </StyledIconButton>
-                                </ChartTitleRow>
-                            ) : null}
+                                        <StyledIconButton
+                                            onClick={() => setVisualTextInfo(visualContent?.textInfo)}
+                                            $color="#185698"
+                                            padding="4px"
+                                        >
+                                            <CustomInfoIconCountry color="primary" className="info-button" />
+                                        </StyledIconButton>
+                                    </ChartTitleRow>
+                                ) : null}
 
-                            {visualContent.visualizationId && visualContent.years && visualContent.countries ? (
-                                <VisualizationContainer key={visualContent.visualizationId}>
-                                    <VisualizationPlugin
-                                        visualizationId={visualContent.visualizationId}
-                                        visualizationName={visualContent.visualizationName}
-                                        years={visualContent.years}
-                                        countries={visualContent.countries}
-                                        currentCountryOrRegion={visualContent.currentCountryOrRegion}
-                                        regions={visualContent.regions}
-                                        withoutBackground
-                                        useHeaderForCountryOrRegionalPage
-                                        showDialogInFullScreen={isSmallScreen}
-                                        onDownloadImage={() => handleOpenScreenshot(visualContent)}
-                                        analyticsPageTitle={"Regional page"}
-                                        seriesColors={visualContent.seriesColors}
-                                        filterByLatestAvailableYearInRegion={
-                                            visualContent.filterByLatestAvailableYearInRegion
-                                        }
-                                        isRegionalPage
-                                    />
-                                </VisualizationContainer>
-                            ) : visualContent.visual ? (
-                                <Image
-                                    width="100%"
-                                    style={
-                                        visualContent.maxImgWidth ? { maxWidth: `${visualContent.maxImgWidth}px` } : {}
-                                    }
-                                    alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
-                                    src={visualContent.visual}
-                                />
-                            ) : visualContent.policyCategoryId &&
-                              visualContent.countries?.length &&
-                              visualContent.years?.length ? (
-                                <PolicyExplorerContainer>
-                                    <PolicyExplorerTable
-                                        title={visualContent.title || ""}
-                                        categoryId={visualContent.policyCategoryId}
-                                        countries={visualContent.countries}
-                                        years={visualContent.years}
-                                    />
-                                </PolicyExplorerContainer>
-                            ) : null}
-                        </VisualContainer>
+                                {visualContent.visualizationId && visualContent.years && visualContent.countries ? (
+                                    <VisualizationContainer key={visualContent.visualizationId}>
+                                        <VisualizationPlugin
+                                            visualizationId={visualContent.visualizationId}
+                                            visualizationName={visualContent.visualizationName}
+                                            years={visualContent.years}
+                                            countries={visualContent.countries}
+                                            currentCountryOrRegion={visualContent.currentCountryOrRegion}
+                                            regions={visualContent.regions}
+                                            withoutBackground
+                                            useHeaderForCountryOrRegionalPage
+                                            showDialogInFullScreen={isSmallScreen}
+                                            onDownloadImage={() => handleOpenScreenshot(visualContent)}
+                                            analyticsPageTitle={"Regional page"}
+                                            seriesColors={visualContent.seriesColors}
+                                            filterByLatestAvailableYearInRegion={
+                                                visualContent.filterByLatestAvailableYearInRegion
+                                            }
+                                            isRegionalPage
+                                        />
+                                    </VisualizationContainer>
+                                ) : visualContent.visual ? (
+                                    <ImageContainer>
+                                        {hasDownloadImageButton && (
+                                            <IconButton
+                                                component="a"
+                                                href={visualContent.visual}
+                                                download
+                                                color="primary"
+                                            >
+                                                <CustomImageIcon color="primary" className="download-button" />
+                                            </IconButton>
+                                        )}
 
-                        {visualContent.textBelow && (
-                            <TextContainer>
-                                <ReactMarkdown components={markdownComponents}>{visualContent.textBelow}</ReactMarkdown>
-                            </TextContainer>
-                        )}
-                    </React.Fragment>
-                ))}
+                                        <Image
+                                            width="100%"
+                                            style={
+                                                visualContent.maxImgWidth
+                                                    ? { maxWidth: `${visualContent.maxImgWidth}px` }
+                                                    : {}
+                                            }
+                                            alt={i18n.t(visualContent.title || "Gaps in coverage chart")}
+                                            src={visualContent.visual}
+                                        />
+                                    </ImageContainer>
+                                ) : visualContent.policyCategoryId &&
+                                  visualContent.countries?.length &&
+                                  visualContent.years?.length ? (
+                                    <PolicyExplorerContainer>
+                                        <PolicyExplorerTable
+                                            title={visualContent.title || ""}
+                                            categoryId={visualContent.policyCategoryId}
+                                            countries={visualContent.countries}
+                                            years={visualContent.years}
+                                        />
+                                    </PolicyExplorerContainer>
+                                ) : null}
+                            </VisualContainer>
+
+                            {visualContent.textBelow && (
+                                <TextContainer>
+                                    <ReactMarkdown components={markdownComponents}>
+                                        {visualContent.textBelow}
+                                    </ReactMarkdown>
+                                </TextContainer>
+                            )}
+                        </React.Fragment>
+                    );
+                })}
 
                 {visualTextInfo &&
                     (showDialogInFullScreen ? (
@@ -233,12 +257,21 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
     );
 };
 
-const VisualContainer: React.FC = ({ children }) => {
-    return <VisualContentContainer hasChildren={Boolean(children)}>{children}</VisualContentContainer>;
+type VisualContainerProps = {
+    children?: React.ReactNode;
+    hasBlockStartMargin?: boolean;
 };
 
-const VisualContentContainer = styled.div<{ hasChildren: boolean }>`
-    margin-block-start: 20px;
+const VisualContainer: React.FC<VisualContainerProps> = ({ children, hasBlockStartMargin }) => {
+    return (
+        <VisualContentContainer $hasBlockStartMargin={hasBlockStartMargin} hasChildren={Boolean(children)}>
+            {children}
+        </VisualContentContainer>
+    );
+};
+
+const VisualContentContainer = styled.div<{ hasChildren: boolean; $hasBlockStartMargin?: boolean }>`
+    margin-block-start: ${({ $hasBlockStartMargin }) => ($hasBlockStartMargin ? "20px" : "0")};
     &:has(+ *) {
         margin-block-end: ${({ hasChildren }) => (hasChildren ? "20px" : "0")};
     }
@@ -394,5 +427,25 @@ const TextLink = styled.a`
 const PolicyExplorerContainer = styled.div`
     & > div > div:last-child {
         margin-block-end: 0;
+    }
+`;
+
+const CustomImageIcon = styled(ImageRoundedIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
+`;
+
+const ImageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: fit-content;
+
+    a {
+        align-self: flex-end;
+        padding: 0;
     }
 `;
