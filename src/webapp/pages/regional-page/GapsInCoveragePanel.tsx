@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { IconButton, Typography } from "@material-ui/core";
 import ReactMarkdown, { Components } from "react-markdown";
 import InfoIcon from "@material-ui/icons/Info";
-import ImageRoundedIcon from "@material-ui/icons/ImageRounded";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 
 import i18n from "../../../locales";
 import { Id } from "../../../domain/entities/Ref";
@@ -430,7 +430,7 @@ const PolicyExplorerContainer = styled.div`
     }
 `;
 
-const CustomImageIcon = styled(ImageRoundedIcon)`
+const CustomImageIcon = styled(DownloadIcon)`
     color: white;
     background-color: #185698;
     border-radius: 50%;
