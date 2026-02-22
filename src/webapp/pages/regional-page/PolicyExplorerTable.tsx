@@ -1,5 +1,5 @@
 import {
-    Button,
+    Box,
     CircularProgress,
     IconButton,
     Paper,
@@ -23,7 +23,6 @@ import { useRegionalPolicyExplorerTable } from "./useRegionalPolicyExplorerTable
 import { colors } from "../app/themes/dhis2.theme";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { NotesDialog } from "../../components/dialog/NotesDialog";
-import i18n from "../../../locales";
 
 interface PolicyExplorerTableProps {
     title: string;
@@ -98,19 +97,14 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
                 <Title variant="h6" gutterBottom>
                     {title}
                 </Title>
-                <DownloadButton
-                    aria-label="Download"
-                    variant="contained"
-                    endIcon={<DownloadIcon />}
-                    color="primary"
-                    onClick={onDownload}
-                    className="download-button"
-                >
-                    <Typography>{i18n.t("Download")}</Typography>
-                </DownloadButton>
-                <StyledIconButton onClick={() => setIsNotesDialogOpen(true)} $color="#185698" padding="4px">
-                    <CustomInfoIconCountry color="primary" className="info-button" />
-                </StyledIconButton>
+                <Box display="flex" gridGap={8}>
+                    <StyledIconButton onClick={onDownload} $color="#185698" padding="4px">
+                        <DownloadIconCountry color="primary" className="download-button" />
+                    </StyledIconButton>
+                    <StyledIconButton onClick={() => setIsNotesDialogOpen(true)} $color="#185698" padding="4px">
+                        <CustomInfoIconCountry color="primary" className="info-button" />
+                    </StyledIconButton>
+                </Box>
             </TableHeader>
 
             <LegendContainer>
@@ -197,6 +191,11 @@ const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>
 `;
 
 const CustomInfoIconCountry = styled(InfoIcon)`
+    color: #185698;
+    margin-top: -3px;
+`;
+
+const DownloadIconCountry = styled(DownloadIcon)`
     color: #185698;
     margin-top: -3px;
 `;
@@ -316,13 +315,4 @@ const Center = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-`;
-
-const DownloadButton = styled(Button)`
-    border-radius: 20px;
-    padding: 0px 32px;
-    height: 30px;
-    width: 170px;
-    text-transform: initial;
-    background: #185698;
 `;
