@@ -162,7 +162,6 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
     const cellRef = `${column}${rowNumber}`;
     const tabName = tab.name;
 
-    const isTextCenter = tab.type && ["coverage", "entitlements"].includes(tab.type);
     const isDownloadDateCell =
         tabName === GENERAL_INFOMRATION_TAB_NAME && sheet.cell(cellRef).value()?.toString()?.includes(DATE_OF_DOWNLOAD);
     const isTypeOfHealthCareColumn =
@@ -205,7 +204,6 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
             ...CELL_STYLES.dataCell.fill,
             color: isTypeOfHealthCareColumn ? CELL_STYLES.headerCell.fill.color : CELL_STYLES.dataCell.fill.color,
         },
-        ...(isTextCenter ? CENTER_ALIGNMENT : {}),
         ...getTabSpecificCellStyles(tab, rowDataIndex, columnDataIndex),
     };
 }
@@ -230,6 +228,7 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
             const fontSize = data === "◐" ? 15 : undefined;
 
             return {
+                ...CENTER_ALIGNMENT,
                 ...(fontColor ? { fontColor } : undefined),
                 ...(fontSize ? { fontSize } : undefined),
             };
@@ -239,6 +238,7 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
             const fontSize = data === "◐" ? 15 : undefined;
 
             return {
+                ...CENTER_ALIGNMENT,
                 fontColor: !isCategoryColumn ? "0460a7" : undefined,
                 ...(fontSize ? { fontSize } : undefined),
             };
@@ -265,9 +265,7 @@ export function setHeight(sheet: Sheet, tab: Tab) {
 }
 
 function setTabSpecificRowHeight(sheet: Sheet, tab: Tab) {
-    if (tab.type === "coverage") {
-        sheet.row(3).height(DEFAULT_HEIGHT * 1.5);
-    } else if (tab.type === "entitlements") {
+    if (tab.type && ["coverage", "entitlements"].includes(tab.type)) {
         sheet.row(3).height(DEFAULT_HEIGHT * 2.5);
     }
 }
