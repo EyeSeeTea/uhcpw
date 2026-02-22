@@ -190,7 +190,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return periodByOrgUnitMap;
     }
 
-    saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
+    saveToFile(
+        categories: PolicyExplorerCategory[],
+        policyExplorer: PolicyExplorer,
+        fileName?: string
+    ): FutureData<void> {
         const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
             return (
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
@@ -222,7 +226,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             return accTabs;
         }, []);
 
-        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], FILE_NAME);
+        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], fileName ?? FILE_NAME);
         return Future.success(undefined);
     }
 
