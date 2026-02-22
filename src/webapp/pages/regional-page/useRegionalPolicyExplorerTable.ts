@@ -111,7 +111,8 @@ export function useRegionalPolicyExplorerTable(
                 {
                     ...policyExplorerData,
                     tables: { [category.value]: tableData },
-                }
+                },
+                category.text
             )
             .runAsync();
     }, [compositionRoot.policyExplorer.download, category, tableData, policyExplorerData]);

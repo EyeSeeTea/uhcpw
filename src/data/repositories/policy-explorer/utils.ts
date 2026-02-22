@@ -8,6 +8,7 @@ import {
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
 } from "./PolicyExplorerCategoryD2Repository";
 import { Entitlements } from "../../../domain/entities/policy-explorer/Entitlements";
+import { Tab } from "../../export/exportToCSV";
 
 const healthCoverageValueMap: Record<HealthCoverage, string> = {
     yes: "⬤",
@@ -35,17 +36,82 @@ export function mapCellToExportedValue(cell: PolicyExplorerCell) {
     }
 }
 
-export function getTableLegends(category: Maybe<PolicyExplorerCategory>) {
+export function getTableLegends(category: Maybe<PolicyExplorerCategory>): Maybe<Tab["legends"]> {
     if (category?.id === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY) {
         return [
-            `⬤ - ${i18n.t("User charges are applied")}`,
-            `◐ - ${i18n.t("Care not covered for most people")}`,
-            `🅧 - ${i18n.t("Care not covered")}`,
+            {
+                legend: [
+                    {
+                        text: "⬤",
+                        styles: {
+                            fontColor: "929293",
+                        },
+                    },
+                    {
+                        text: ` - ${i18n.t("User charges are applied")}`,
+                    },
+                ],
+            },
+            {
+                legend: [
+                    {
+                        text: "◐",
+                        styles: {
+                            fontColor: "929293",
+                            fontSize: 15,
+                        },
+                    },
+                    {
+                        text: ` - ${i18n.t("Care not covered for most people")}`,
+                    },
+                ],
+            },
+            {
+                legend: [
+                    {
+                        text: "🅧",
+                        styles: {
+                            fontColor: "929293",
+                        },
+                    },
+                    {
+                        text: ` - ${i18n.t("Care not covered")}`,
+                    },
+                ],
+            },
         ];
     } else if (category?.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY) {
-        return [`⬤ - ${i18n.t("Most undocumented migrants")}`, `◐ - ${i18n.t("Some undocumented migrants")}`];
+        return [
+            {
+                legend: [
+                    {
+                        text: "⬤",
+                        styles: {
+                            fontColor: "0460a7",
+                        },
+                    },
+                    {
+                        text: ` - ${i18n.t("Most undocumented migrants")}`,
+                    },
+                ],
+            },
+            {
+                legend: [
+                    {
+                        text: "◐",
+                        styles: {
+                            fontColor: "0460a7",
+                            fontSize: 15,
+                        },
+                    },
+                    {
+                        text: ` - ${i18n.t("Some undocumented migrants")}`,
+                    },
+                ],
+            },
+        ];
     } else {
-        return [];
+        return undefined;
     }
 }
 

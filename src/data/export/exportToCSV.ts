@@ -25,7 +25,15 @@ export type Tab = {
     data: string[][];
     name: string;
     type?: "text" | "coverage" | "entitlements";
-    legends?: string[];
+    legends?: Array<{
+        legend: Array<{
+            text: string;
+            styles?: {
+                fontColor?: string;
+                fontSize?: number;
+            };
+        }>;
+    }>;
 };
 
 export type TabsWithStringOrNumbers = {
@@ -83,13 +91,22 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
         //@ts-ignore Not properly typed
         sheet.tabColor(tabColor);
 
-        const rowStart = tab.legends ? 2 : 1;
-        if (tab.legends) {
+        const hasLegends = Boolean(tab.legends?.length);
+        const rowStart = hasLegends ? 2 : 1;
+        if (hasLegends) {
             sheet.row(1).height(LEGENDS_STYLE.height);
 
-            tab.legends.forEach((legend, index) => {
+            tab.legends?.forEach(({ legend }, index) => {
                 const cellRef = `${getColumnLetterByIndex(index)}1`;
-                sheet.cell(cellRef).value(legend).style(LEGENDS_STYLE.cell);
+                const legendRichText = legend.reduce(
+                    (acc, legendItem) => acc.add(legendItem.text, legendItem.styles),
+                    new RichText()
+                );
+                sheet
+                    .cell(cellRef)
+                    // value can accept RichText at runtime but it's not included in the TS typings
+                    .value(legendRichText as any)
+                    .style(LEGENDS_STYLE.cell);
             });
         }
 
@@ -158,3 +175,17 @@ function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers
         console.error("Error adding data to sheet", error);
     }
 }
+
+// XlsxPopulate supports RichText values at runtime:
+// https://github.com/EyeSeeTea/xlsx-populate#rich-texts
+// However, the TypeScript definitions do not include RichText in the Cell.value() overloads.
+// We cast here to bypass incomplete typings while preserving runtime behavior.
+type RichTextInstance = {
+    add(text: string, style?: Partial<any>): RichTextInstance;
+};
+
+const RichText = (
+    XlsxPopulate as unknown as {
+        RichText: new () => RichTextInstance;
+    }
+).RichText;
