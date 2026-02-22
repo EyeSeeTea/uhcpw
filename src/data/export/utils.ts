@@ -19,7 +19,7 @@ const COLUMN_WIDTHS = {
     userChargesApplyColumn: 25,
     referencesColumn: 250,
     default: 60,
-    icon: 15,
+    icon: 10,
 };
 
 const USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS = {
@@ -195,7 +195,7 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
                         ? CELL_STYLES.dataCell.fill.color
                         : CELL_STYLES.headerCell.fill.color,
             },
-            ...(isTextCenter ? CENTER_ALIGNMENT : {}),
+            ...getTabSpecificCellStyles(tab, rowDataIndex, columnDataIndex),
         };
     }
 
@@ -211,25 +211,38 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
 }
 
 function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: number) {
-    if (tab.type === "coverage") {
-        const header = tab.data[1]?.[columnIndex];
-        const fontColor = header && healthcareTypeToColor[header];
-
-        const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "◐" ? 15 : undefined;
-
+    if (tab.type && ["coverage", "entitlements"].includes(tab.type) && rowIndex === 1 && columnIndex > 0) {
         return {
-            ...(fontColor ? { fontColor } : undefined),
-            ...(fontSize ? { fontSize } : undefined),
+            ...CENTER_ALIGNMENT,
+            textRotation: 90,
         };
-    } else if (tab.type === "entitlements") {
-        const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "◐" ? 15 : undefined;
+    }
 
-        return {
-            fontColor: "0460a7",
-            ...(fontSize ? { fontSize } : undefined),
-        };
+    const isCategoryColumn = columnIndex === 0;
+
+    switch (tab.type) {
+        case "coverage": {
+            //cell styles
+            const header = tab.data[1]?.[columnIndex];
+            const fontColor = !isCategoryColumn ? header && healthcareTypeToColor[header] : undefined;
+
+            const data = tab.data[rowIndex]?.[columnIndex];
+            const fontSize = data === "◐" ? 15 : undefined;
+
+            return {
+                ...(fontColor ? { fontColor } : undefined),
+                ...(fontSize ? { fontSize } : undefined),
+            };
+        }
+        case "entitlements": {
+            const data = tab.data[rowIndex]?.[columnIndex];
+            const fontSize = data === "◐" ? 15 : undefined;
+
+            return {
+                fontColor: !isCategoryColumn ? "0460a7" : undefined,
+                ...(fontSize ? { fontSize } : undefined),
+            };
+        }
     }
     return undefined;
 }
