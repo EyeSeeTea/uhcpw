@@ -36,80 +36,85 @@ export function mapCellToExportedValue(cell: PolicyExplorerCell) {
     }
 }
 
-export function getTableLegends(category: Maybe<PolicyExplorerCategory>): Maybe<Tab["legends"]> {
+export function getTableLegends(category: Maybe<PolicyExplorerCategory>): Maybe<Tab["legendsRow"]> {
     if (category?.id === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY) {
-        return [
-            {
-                legend: [
-                    {
-                        text: "⬤",
-                        styles: {
-                            fontColor: "929293",
+        return {
+            legends: [
+                {
+                    legend: [
+                        {
+                            text: "⬤",
+                            styles: {
+                                fontColor: "929293",
+                            },
                         },
-                    },
-                    {
-                        text: ` - ${i18n.t("User charges are applied")}`,
-                    },
-                ],
-            },
-            {
-                legend: [
-                    {
-                        text: "◐",
-                        styles: {
-                            fontColor: "929293",
-                            fontSize: 15,
+                        {
+                            text: ` - ${i18n.t("User charges are applied")}`,
                         },
-                    },
-                    {
-                        text: ` - ${i18n.t("Care not covered for most people")}`,
-                    },
-                ],
-            },
-            {
-                legend: [
-                    {
-                        text: "🅧",
-                        styles: {
-                            fontColor: "929293",
+                    ],
+                },
+                {
+                    legend: [
+                        {
+                            text: "◐",
+                            styles: {
+                                fontColor: "929293",
+                                fontSize: 15,
+                            },
                         },
-                    },
-                    {
-                        text: ` - ${i18n.t("Care not covered")}`,
-                    },
-                ],
-            },
-        ];
+                        {
+                            text: ` - ${i18n.t("Care not covered for most people")}`,
+                        },
+                    ],
+                },
+                {
+                    legend: [
+                        {
+                            text: "🅧",
+                            styles: {
+                                fontColor: "929293",
+                            },
+                        },
+                        {
+                            text: ` - ${i18n.t("Care not covered")}`,
+                        },
+                    ],
+                },
+            ],
+            height: 80,
+        };
     } else if (category?.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY) {
-        return [
-            {
-                legend: [
-                    {
-                        text: "⬤",
-                        styles: {
-                            fontColor: "0460a7",
+        return {
+            legends: [
+                {
+                    legend: [
+                        {
+                            text: "⬤",
+                            styles: {
+                                fontColor: "0460a7",
+                            },
                         },
-                    },
-                    {
-                        text: ` - ${i18n.t("Most undocumented migrants")}`,
-                    },
-                ],
-            },
-            {
-                legend: [
-                    {
-                        text: "◐",
-                        styles: {
-                            fontColor: "0460a7",
-                            fontSize: 15,
+                        {
+                            text: ` - ${i18n.t("Most undocumented migrants")}`,
                         },
-                    },
-                    {
-                        text: ` - ${i18n.t("Some undocumented migrants")}`,
-                    },
-                ],
-            },
-        ];
+                    ],
+                },
+                {
+                    legend: [
+                        {
+                            text: "◐",
+                            styles: {
+                                fontColor: "0460a7",
+                                fontSize: 15,
+                            },
+                        },
+                        {
+                            text: ` - ${i18n.t("Some undocumented migrants")}`,
+                        },
+                    ],
+                },
+            ],
+        };
     } else {
         return undefined;
     }

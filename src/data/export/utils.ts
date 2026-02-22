@@ -97,7 +97,7 @@ export const LEGENDS_STYLE = {
         wrapText: true,
         verticalAlignment: "top",
     },
-    height: 50,
+    height: 60,
 } as const;
 
 const healthcareTypeToColor: Record<string, string> = {
@@ -244,7 +244,7 @@ export function setHeight(sheet: Sheet, tab: Tab) {
     const rowHeights = data.map(row => {
         return row ? getRowHeight(row) : 0;
     });
-    const startRow = tab.legends ? 2 : 1;
+    const startRow = tab.legendsRow ? 2 : 1;
     data.forEach((_, rowIndex) => {
         sheet.row(rowIndex + startRow).height(rowHeights[rowIndex] || 1);
     });

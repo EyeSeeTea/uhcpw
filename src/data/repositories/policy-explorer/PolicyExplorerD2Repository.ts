@@ -219,7 +219,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.name || categoryId,
                         type: type,
-                        legends: getTableLegends(category),
+                        legendsRow: getTableLegends(category),
                     },
                 ];
             }

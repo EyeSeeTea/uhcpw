@@ -25,15 +25,18 @@ export type Tab = {
     data: string[][];
     name: string;
     type?: "text" | "coverage" | "entitlements";
-    legends?: Array<{
-        legend: Array<{
-            text: string;
-            styles?: {
-                fontColor?: string;
-                fontSize?: number;
-            };
+    legendsRow?: {
+        legends: Array<{
+            legend: Array<{
+                text: string;
+                styles?: {
+                    fontColor?: string;
+                    fontSize?: number;
+                };
+            }>;
         }>;
-    }>;
+        height?: number;
+    };
 };
 
 export type TabsWithStringOrNumbers = {
@@ -91,12 +94,12 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
         //@ts-ignore Not properly typed
         sheet.tabColor(tabColor);
 
-        const hasLegends = Boolean(tab.legends?.length);
+        const hasLegends = Boolean(tab.legendsRow?.legends.length);
         const rowStart = hasLegends ? 2 : 1;
         if (hasLegends) {
-            sheet.row(1).height(LEGENDS_STYLE.height);
+            sheet.row(1).height(tab.legendsRow?.height ?? LEGENDS_STYLE.height);
 
-            tab.legends?.forEach(({ legend }, index) => {
+            tab.legendsRow?.legends.forEach(({ legend }, index) => {
                 const cellRef = `${getColumnLetterByIndex(index)}1`;
                 const legendRichText = legend.reduce(
                     (acc, legendItem) => acc.add(legendItem.text, legendItem.styles),
