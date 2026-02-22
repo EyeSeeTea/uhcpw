@@ -220,9 +220,8 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
 
     switch (tab.type) {
         case "coverage": {
-            //cell styles
-            const header = tab.data[1]?.[columnIndex];
-            const fontColor = !isCategoryColumn ? header && healthcareTypeToColor[header] : undefined;
+            const healthCareType = tab.data[rowIndex]?.[0];
+            const fontColor = !isCategoryColumn ? healthCareType && healthcareTypeToColor[healthCareType] : undefined;
 
             const data = tab.data[rowIndex]?.[columnIndex];
             const fontSize = data === "◐" ? 15 : undefined;
