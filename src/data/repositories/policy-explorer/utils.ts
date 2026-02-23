@@ -14,6 +14,7 @@ const healthCoverageValueMap: Record<HealthCoverage, string> = {
     no: "",
     varies: "◐",
     notCovered: "🅧",
+    none: "",
 };
 
 const entitlementsValueMap: Record<Entitlements, string> = {
