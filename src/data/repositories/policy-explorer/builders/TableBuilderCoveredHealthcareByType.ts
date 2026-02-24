@@ -9,6 +9,7 @@ import {
 import { COUNTRY_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
 import { Maybe } from "../../../../types/utils";
+import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 type HealthCareType =
     | "Primary care visits"
@@ -59,17 +60,23 @@ type ValueMapKey = keyof typeof valueMap;
 const isValueMapKey = (v: string): v is ValueMapKey => v in valueMap;
 
 export class TableBuilderCoveredHealthcareByType implements TableBuilder {
-    buildColumns(_: Parameters<TableBuilder["buildColumns"]>[0]): PolicyExplorerCellHeader[] {
+    buildColumns(params: {
+        policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds: string[];
+        programCategories?: PolicyExplorerCategory[];
+    }): PolicyExplorerCellHeader[] {
+        const { policyExplorerSubcategoriesIds } = params;
+
         const commonColumns: PolicyExplorerCellHeader[] = [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
         ];
 
-        const restColumns = Object.entries(
-            USER_CHARGES_APPLY_BY_TYPE_OF_HEALTHCARE_DATA_ELEMENT_SECTION_IDS
-        ).map<PolicyExplorerCellHeader>(([columnName, _dataElementIds]) => ({
-            type: PolicyExplorerCellType.HEADER,
-            value: columnName,
-        }));
+        const restColumns = Object.entries(USER_CHARGES_APPLY_BY_TYPE_OF_HEALTHCARE_DATA_ELEMENT_SECTION_IDS)
+            .filter(([_column, dataElementId]) => policyExplorerSubcategoriesIds.includes(dataElementId))
+            .map<PolicyExplorerCellHeader>(([columnName, _dataElementId]) => ({
+                type: PolicyExplorerCellType.HEADER,
+                value: columnName,
+            }));
 
         return [...commonColumns, ...restColumns];
     }
