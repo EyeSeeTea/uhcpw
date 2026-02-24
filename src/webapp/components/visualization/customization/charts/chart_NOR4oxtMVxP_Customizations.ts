@@ -9,7 +9,7 @@ export const chart_NOR4oxtMVxP_Customizations: ChartCustomization = {
     legend: { ...baseLegend, reversed: true },
     series: [
         {
-            id: "OQ4P2FX0ApA",
+            id: "yYSS1uBgnTE",
             name: "Further impoverished",
             color: "#c00000",
             dataLabels: {
@@ -17,7 +17,7 @@ export const chart_NOR4oxtMVxP_Customizations: ChartCustomization = {
             },
         },
         {
-            id: "CMKOYzqDIZD",
+            id: "WsUM8TQ7cEh",
             name: "Impoverished",
             color: "#e46c0b",
             dataLabels: {
