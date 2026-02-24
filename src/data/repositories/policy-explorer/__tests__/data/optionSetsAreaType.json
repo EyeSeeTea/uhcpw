@@ -1,0 +1,30 @@
+{
+    "pager": {
+        "page": 1,
+        "pageCount": 1,
+        "total": 1,
+        "pageSize": 50
+    },
+    "optionSets": [
+        {
+            "options": [
+                {
+                    "code": "POPULATION_COVERAGE",
+                    "name": "Population coverage"
+                },
+                {
+                    "code": "SERVICE_COVERAGE",
+                    "name": "Service coverage"
+                },
+                {
+                    "code": "USER_CHARGES",
+                    "name": "User charges"
+                },
+                {
+                    "code": "VHI",
+                    "name": "VHI"
+                }
+            ]
+        }
+    ]
+}
