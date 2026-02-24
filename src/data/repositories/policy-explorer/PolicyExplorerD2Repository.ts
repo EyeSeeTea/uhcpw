@@ -11,7 +11,10 @@ import {
     PolicyExplorerGeneralInfoToDownloadKeys,
     firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
-import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
+import {
+    PolicyExplorerCategories,
+    PolicyExplorerRepository,
+} from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID, sortByCountry } from "../utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
@@ -88,7 +91,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
     get(
-        policyExplorerCategories: Record<string, string[]>,
+        policyExplorerCategories: PolicyExplorerCategories,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndSubregions: Country[],
