@@ -523,11 +523,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private fillSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
         return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
-                    return {
-                        ...acc,
-                        [categoryId]: TableBuilderChangesInCoveragePolicy.fillSubcategories(),
-                    };
                 case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
                     return {
                         ...acc,
