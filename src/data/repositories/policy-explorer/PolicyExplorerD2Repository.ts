@@ -20,10 +20,8 @@ import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-a
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
-import { TableBuilderChangesInCoveragePolicy } from "./builders/TableBuilderChangesInCoveragePolicy";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
