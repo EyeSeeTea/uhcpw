@@ -11,16 +11,17 @@ import {
     PolicyExplorerGeneralInfoToDownloadKeys,
     firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
-import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
+import {
+    PolicyExplorerCategories,
+    PolicyExplorerRepository,
+} from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { policyExplorerDataSet_ID, sortByCountry } from "../utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
-import { TableBuilderChangesInCoveragePolicy } from "./builders/TableBuilderChangesInCoveragePolicy";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
-    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
@@ -88,7 +89,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
     get(
-        policyExplorerCategories: Record<string, string[]>,
+        policyExplorerCategories: PolicyExplorerCategories,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndSubregions: Country[],
@@ -406,13 +407,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                   }
                 : dataSet;
 
-        const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
-            categoryId =>
-                CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID === categoryId ||
-                [
-                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
-                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
-                ].includes(categoryId)
+        const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(categoryId =>
+            [
+                CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
+                CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+                DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+            ].includes(categoryId)
         );
 
         const allPolicyExplorerCategoriesAndSubcategories = hasToFillSubcategories
@@ -524,11 +524,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private fillSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
         return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
-                    return {
-                        ...acc,
-                        [categoryId]: TableBuilderChangesInCoveragePolicy.fillSubcategories(),
-                    };
                 case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
                     return {
                         ...acc,
