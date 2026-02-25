@@ -3,13 +3,13 @@ import { comparativeStackedColumnChartOptions } from "./generic/comparativeStack
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 
 const seriesNames: Record<string, string> = {
-    WsUM8TQ7cEh: "Impoverished",
-    yYSS1uBgnTE: "Further impoverished",
+    CMKOYzqDIZD: "Impoverished",
+    OQ4P2FX0ApA: "Further impoverished",
 };
 
 const seriesColors: Record<string, string> = {
-    WsUM8TQ7cEh: "#e46c09",
-    yYSS1uBgnTE: "#c00000",
+    CMKOYzqDIZD: "#e46c09",
+    OQ4P2FX0ApA: "#c00000",
 };
 
 export const chart_dbc87Ljw8uN_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
