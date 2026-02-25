@@ -8,7 +8,7 @@ const PARAMETER_ORDER = ["65+ Years", "Average", "<25 Years"];
 
 export const chart_eBxPw4kUnLU_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
-    friendlyName: "Unmet need for dentalcare due to cost, distance and waiting time (<25 years, average, 65+ years)",
+    friendlyName: "Unmet need for dental care due to cost, distance and waiting time (<25 years, average, 65+ years)",
     subcategoryName: sortedSubcategoryNames.comparative,
     isComparative: true,
     allowedYears: [LatestAvailable, LatestCOVID19],

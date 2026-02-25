@@ -22,6 +22,7 @@ import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
