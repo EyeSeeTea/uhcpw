@@ -438,7 +438,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
                 const finalDataValues = yearsIsLatestAvailableYear
                     ? this.filterDataValuesByPeriod(lastAvailableYearByCountry, dataValuesWithOrgUnitNames)
-                    : _.orderBy(dataValuesWithOrgUnitNames, ["orgUnitShortName", "period"], "asc");
+                    : _.orderBy(
+                          dataValuesWithOrgUnitNames,
+                          ["orgUnitShortName", "period"],
+                          ["asc", policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID ? "desc" : "asc"]
+                      );
 
                 const sortedDataValues = finalDataValues.sort((dvA, dvB) =>
                     sortByCountry(dvA.orgUnitShortName, dvB.orgUnitShortName)
