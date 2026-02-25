@@ -30,7 +30,7 @@ class DefaultTableSorter implements TableSorter {
 export function getTableSorter(policyExplorerCategoryId: string) {
     switch (policyExplorerCategoryId) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY:
-            return new TableSorterByValueCount("yes");
+            return new TableSorterByValueCount("yes", ["no", "none"]);
         case DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY: {
             const priorityHeaders: string[] = [
                 "Same entitlements as most people",

@@ -1,1 +1,1 @@
-export type HealthCoverage = "yes" | "no" | "varies" | "notCovered";
+export type HealthCoverage = "yes" | "no" | "varies" | "notCovered" | "none";
