@@ -53,7 +53,7 @@ const valueMap = {
     NO_3: "no",
     NOT_COVERED: "notCovered",
     VARIES: "varies",
-    DEFAULT: "no",
+    DEFAULT: "none",
 } as const;
 type ValueMapKey = keyof typeof valueMap;
 const isValueMapKey = (v: string): v is ValueMapKey => v in valueMap;
@@ -80,14 +80,21 @@ export class TableBuilderCoveredHealthcareByType implements TableBuilder {
         policyExplorerSubcategoriesIds: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
+        period?: string;
         references: string;
     }): PolicyExplorerCell[][] {
-        const { policyExplorerSubcategoriesIds, dataValuesByGroup, orgUnitName, references, currentRowsInTable } =
-            params;
+        const {
+            policyExplorerSubcategoriesIds,
+            dataValuesByGroup,
+            orgUnitName,
+            period,
+            references,
+            currentRowsInTable,
+        } = params;
 
         const orgUnitCell = {
             type: PolicyExplorerCellType.DATA,
-            value: orgUnitName,
+            value: [orgUnitName, period].join(" "),
         };
 
         const restCellsInRow: PolicyExplorerCellCoverage[] = Object.entries(

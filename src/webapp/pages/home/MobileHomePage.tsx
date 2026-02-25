@@ -93,7 +93,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
                         </BigBox>
                     </BoxLink>
 
-                    <BoxLink href={homePageContent.analysis.countries.buttonLink || ""}>
+                    <BoxLink onClick={onOpenPopup}>
                         <Box color={colors.darkBlue}>
                             <BubbleImg
                                 src={bubblePatternWhite}
@@ -103,11 +103,11 @@ export const MobileHomePage: React.FC = React.memo(() => {
                                 loading="eager"
                             />
 
-                            <StyledTitleTypography>{i18n.t("Countries & areas")}</StyledTitleTypography>
+                            <StyledTitleTypography>{i18n.t("Regional overview")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 
-                    <BoxLink onClick={onOpenPopup}>
+                    <BoxLink href={homePageContent.analysis.countries.buttonLink || ""}>
                         <Box color={colors.green}>
                             <BubbleImg
                                 src={bubblePatternWhite}
@@ -117,7 +117,7 @@ export const MobileHomePage: React.FC = React.memo(() => {
                                 loading="eager"
                             />
 
-                            <StyledTitleTypography>{i18n.t("Regional overview")}</StyledTitleTypography>
+                            <StyledTitleTypography>{i18n.t("Countries & areas")}</StyledTitleTypography>
                         </Box>
                     </BoxLink>
 

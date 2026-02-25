@@ -6,7 +6,7 @@ import { PolicyExplorerCategory } from "../../entities/policy-explorer/PolicyExp
 
 export interface PolicyExplorerRepository {
     get(
-        policyExplorerCategories: Record<string, string[]>,
+        policyExplorerCategories: PolicyExplorerCategories,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndSubregions: Country[],
@@ -15,3 +15,6 @@ export interface PolicyExplorerRepository {
     ): FutureData<PolicyExplorer>;
     saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void>;
 }
+
+type SubcategoryId = Id;
+export type PolicyExplorerCategories = Record<Id, SubcategoryId[]>;
