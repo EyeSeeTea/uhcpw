@@ -50,14 +50,16 @@ export const SlideInfo: React.FC<{ sliderInfo: CountrySectionInfo; titleColor: s
             <Grid container>
                 <Grid item xs={9} md={8}>
                     <Column>
-                        {sliderInfo.content.map(({ title, text }) => (
-                            <>
-                                <Title $titleColor={titleColor}>{i18n.t(title)}</Title>
-                                <Paragraph>
-                                    <ReactMarkdown components={markdownComponents}>{i18n.t(text)}</ReactMarkdown>
-                                </Paragraph>
-                            </>
-                        ))}
+                        {sliderInfo.content.map(({ title, text }) =>
+                            title || text ? (
+                                <>
+                                    <Title $titleColor={titleColor}>{i18n.t(title)}</Title>
+                                    <Paragraph>
+                                        <ReactMarkdown components={markdownComponents}>{i18n.t(text)}</ReactMarkdown>
+                                    </Paragraph>
+                                </>
+                            ) : undefined
+                        )}
 
                         <ReactMarkdown components={markdownComponents}>{sliderInfo.sourceText}</ReactMarkdown>
                     </Column>
