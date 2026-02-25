@@ -82,7 +82,6 @@ export function getTableLegends(category: Maybe<PolicyExplorerCategory>): Maybe<
                     ],
                 },
             ],
-            height: 80,
         };
     } else if (category?.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY) {
         return {

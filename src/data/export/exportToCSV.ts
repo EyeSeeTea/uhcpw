@@ -94,13 +94,13 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
         //@ts-ignore Not properly typed
         sheet.tabColor(tabColor);
 
-        const hasLegends = Boolean(tab.legendsRow?.legends.length);
-        const rowStart = hasLegends ? 2 : 1;
-        if (hasLegends) {
-            sheet.row(1).height(tab.legendsRow?.height ?? LEGENDS_STYLE.height);
-
+        const legendsLength = tab.legendsRow?.legends.length ?? 0;
+        const rowStart = legendsLength ? legendsLength + 1 : 1;
+        if (legendsLength) {
             tab.legendsRow?.legends.forEach(({ legend }, index) => {
-                const cellRef = `${getColumnLetterByIndex(index)}1`;
+                const rowNumber = index + 1;
+                sheet.row(rowNumber).height(tab.legendsRow?.height ?? LEGENDS_STYLE.height);
+                const cellRef = `A${rowNumber}`;
                 const legendRichText = legend.reduce(
                     (acc, legendItem) => acc.add(legendItem.text, legendItem.styles),
                     new RichText()

@@ -19,7 +19,7 @@ const COLUMN_WIDTHS = {
     userChargesApplyColumn: 25,
     referencesColumn: 250,
     default: 60,
-    icon: 10,
+    icon: 5,
 };
 
 const USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS = {
@@ -94,17 +94,17 @@ const CENTER_ALIGNMENT = {
 
 export const LEGENDS_STYLE = {
     cell: {
-        wrapText: true,
+        wrapText: false,
         verticalAlignment: "top",
     },
-    height: 60,
+    height: 20,
 } as const;
 
 const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "f6f000",
     "Outpatient specialist visits": "ffc000",
     "Emergency care": "c78f3d",
-    "Outpatient prescribed medicines": "c00000",
+    "Outpatient medicines": "c00000",
     "Medical products": "ed7d31",
     "Diagnostics tests": "7030a0",
     "Dental care visits": "00b0f0",
@@ -256,16 +256,16 @@ export function setHeight(sheet: Sheet, tab: Tab) {
     const rowHeights = data.map(row => {
         return row ? getRowHeight(row) : 0;
     });
-    const startRow = tab.legendsRow ? 2 : 1;
+    const startRow = tab.legendsRow ? tab.legendsRow.legends.length + 1 : 1;
     data.forEach((_, rowIndex) => {
         sheet.row(rowIndex + startRow).height(rowHeights[rowIndex] || 1);
     });
-    setTabSpecificRowHeight(sheet, tab);
+    setTabSpecificRowHeight(sheet, tab, startRow);
 }
 
-function setTabSpecificRowHeight(sheet: Sheet, tab: Tab) {
+function setTabSpecificRowHeight(sheet: Sheet, tab: Tab, row: number) {
     if (tab.type && ["coverage", "entitlements"].includes(tab.type)) {
-        sheet.row(3).height(DEFAULT_HEIGHT * 2.5);
+        sheet.row(row + 1).height(DEFAULT_HEIGHT * 2.5);
     }
 }
 
