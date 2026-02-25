@@ -6,6 +6,7 @@ import policyExplorerProgram from "./data/policyExplorerProgram.json";
 import policyExplorerEvent from "./data/policyExplorerEvent.json";
 import infoNotes from "./data/infoNotes.json";
 import dataElementsNotes from "./data/dataElementsNotes.json";
+import optionSetsAreaType from "./data/optionSetsAreaType.json";
 import { PolicyExplorerCategoryD2Repository } from "../PolicyExplorerCategoryD2Repository";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
@@ -40,6 +41,7 @@ describe("Policy explorer category repository", () => {
         expect(requests?.some(r => (r.url.pathname = "/api/programs"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/events"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/dataElements"))).toBe(true);
+        expect(requests?.some(r => (r.url.pathname = "/api/optionSets"))).toBe(true);
     });
 });
 
@@ -100,6 +102,15 @@ function givenADataSet() {
             endpoint: `/api/dataElements`,
             httpStatusCode: 200,
             response: dataElementsNotes,
+        },
+    ]);
+
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/optionSets`,
+            httpStatusCode: 200,
+            response: optionSetsAreaType,
         },
     ]);
 }

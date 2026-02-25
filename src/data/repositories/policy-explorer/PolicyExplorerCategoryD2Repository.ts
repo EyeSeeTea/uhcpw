@@ -16,8 +16,10 @@ import _ from "lodash";
 import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderCoveredHealthcareByType";
+import { Maybe } from "../../../types/utils";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
+const CHANGES_AREA_CATEGORY_OPTIONSET = "po0HzvS3s3w";
 
 export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     USER_CHARGES: "u800TAhsIBY",
@@ -154,13 +156,20 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                     program: policyExplorerProgram_ID,
                 })
             ),
-        }).flatMap(({ datasets, infoNotes, programMetadata, sectionsEvent }) => {
+            changesAreaCategoryOptionSet: apiToFuture(
+                this.api.models.optionSets.get({
+                    fields: optionSetFields,
+                    filter: { id: { eq: CHANGES_AREA_CATEGORY_OPTIONSET } },
+                })
+            ),
+        }).flatMap(({ datasets, infoNotes, programMetadata, sectionsEvent, changesAreaCategoryOptionSet }) => {
             const dataSet = datasets.objects[0];
             const programs = programMetadata.objects[0];
             const events = sectionsEvent.events[0];
+            const changesAreaTypeOptions = changesAreaCategoryOptionSet?.objects[0];
 
             if (dataSet && programs && events) {
-                const categories = this.buildCategories(programs, events, dataSet, infoNotes);
+                const categories = this.buildCategories(programs, events, dataSet, infoNotes, changesAreaTypeOptions);
                 return Future.success(
                     categories.filter(category =>
                         isRegionalPage
@@ -242,12 +251,16 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         programMetadata: D2Program | undefined,
         sectionsEvent: D2Event | undefined,
         dataSet: D2DataSet | undefined,
-        infoNotes: InfoNotes
+        infoNotes: InfoNotes,
+        changesAreaTypeOptions: D2OptionSet | undefined
     ): PolicyExplorerCategory[] {
         const dataSetSections = dataSet?.sections.filter(section => sectionsList.includes(section.id)) || [];
         const programSections = programMetadata?.programStages[0]?.programStageSections || [];
 
-        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(infoNotes);
+        const changesInCoveragePolicyMergedCategory = this.getChangesInCoveragePolicyMergedCategory(
+            infoNotes,
+            changesAreaTypeOptions
+        );
 
         const deSubstitutor = new DataElementSubstitutor(dataSetSections, PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS);
 
@@ -314,13 +327,20 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         ];
     }
 
-    private getChangesInCoveragePolicyMergedCategory(infoNotes: InfoNotes): PolicyExplorerCategory {
+    private getChangesInCoveragePolicyMergedCategory(
+        infoNotes: InfoNotes,
+        changesAreaTypeOptions: Maybe<D2OptionSet>
+    ): PolicyExplorerCategory {
         const notes = infoNotes ? infoNotes[CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID] || "" : "";
 
         const changesInCoveragePolicyMergedCategory: PolicyExplorerCategory = {
             id: CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
             name: "Changes in coverage policy",
-            subcategories: [],
+            subcategories:
+                changesAreaTypeOptions?.options.map(({ name, code }) => ({
+                    id: code,
+                    name: name,
+                })) ?? [],
             description: notes,
         };
         return changesInCoveragePolicyMergedCategory;
@@ -361,6 +381,8 @@ const eventsFields = {
     eventDate: true,
 } as const;
 
+const optionSetFields = { options: { code: true, name: true } } as const;
+
 type D2DataSet = MetadataPick<{
     dataSets: { fields: typeof dataSetFields };
 }>["dataSets"][number];
@@ -380,5 +402,9 @@ export interface DataValue {
     dataElement: string;
     value: string;
 }
+
+type D2OptionSet = MetadataPick<{
+    optionSets: { fields: typeof optionSetFields };
+}>["optionSets"][number];
 
 type DataElementCode = keyof typeof PROGRAM_CODE_TO_DATA_ELEMENT_CODE;
