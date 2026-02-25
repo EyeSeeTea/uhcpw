@@ -37,6 +37,8 @@ interface VisualizationPluginProps {
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
     filterByLatestAvailableYearInRegion?: boolean;
+    filterByLatestAvailableYearInEURegion?: boolean;
+    euRegionId?: Id;
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
@@ -67,6 +69,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         showDialogInFullScreen = false,
         isRegionalPage = false,
         filterByLatestAvailableYearInRegion = false,
+        filterByLatestAvailableYearInEURegion = false,
+        euRegionId,
         needToKnowLatestAvailableYearInChart = false,
         visualizationIdInIndicatorExplorer,
         yearsInIndicatorExplorer,
@@ -83,6 +87,8 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        filterByLatestAvailableYearInEURegion,
+        euRegionId,
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
@@ -174,13 +180,23 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         if (needToKnowLatestAvailableYearInChart && chartData.kind === "Loaded") {
             return chartData?.lastAvailableYearInChart ? [chartData?.lastAvailableYearInChart] : [];
         }
+        if (filterByLatestAvailableYearInEURegion && chartData.kind === "Loaded") {
+            return chartData?.maxYearToFilterBy ? [chartData?.maxYearToFilterBy] : [];
+        }
 
         return years;
-    }, [chartData, filterByLatestAvailableYearInRegion, needToKnowLatestAvailableYearInChart, years]);
+    }, [
+        chartData,
+        filterByLatestAvailableYearInRegion,
+        needToKnowLatestAvailableYearInChart,
+        filterByLatestAvailableYearInEURegion,
+        years,
+    ]);
 
     const goToIndicatorExplorer = useCallback(() => {
         if (chartData.kind === "Loaded" && countries.length > 0) {
             const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
+
             const years =
                 yearsInIndicatorExplorer && yearsInIndicatorExplorer.length > 0
                     ? yearsInIndicatorExplorer

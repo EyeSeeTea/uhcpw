@@ -9,7 +9,7 @@ import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
 import { RegionNumbersPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { Maybe } from "../../../types/utils";
-import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 import { manageBIHInCountries } from "./bosniaAndHerzegovinaHelper";
 
 export type RegionNumbersState = {
@@ -287,9 +287,10 @@ export function useRegionNumbers(
                                             VisualizationsSeeds["twyY1ulr7uD"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
-                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphOneText,
-                                      filterByLatestAvailableYearInRegion: true,
+                                      regions: [selectedRegionId, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
+                                      euRegionId: ORG_UNIT_IDS.EUROPEAN_UNION,
+                                      filterByLatestAvailableYearInEURegion: true,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -313,10 +314,12 @@ export function useRegionNumbers(
                                             VisualizationsSeeds["fnOIi0bdISn"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
-                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphThreeText,
                                       visualizationIdInIndicatorExplorer: "mUjcWO90CRr",
                                       needToKnowLatestAvailableYearInChart: true,
+                                      regions: [selectedRegionId, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
+                                      euRegionId: ORG_UNIT_IDS.EUROPEAN_UNION,
+                                      filterByLatestAvailableYearInEURegion: true,
                                   },
                                   {
                                       visualizationId: "B4CnzUqVR3n",
@@ -326,10 +329,11 @@ export function useRegionNumbers(
                                             VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
-                                      regions: [selectedRegionId],
+                                      regions: [selectedRegionId, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
+                                      euRegionId: ORG_UNIT_IDS.EUROPEAN_UNION,
+                                      filterByLatestAvailableYearInEURegion: true,
                                       text: numbersPanelContent.panelSixGraphFourText,
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
-                                      filterByLatestAvailableYearInRegion: true,
                                       visualizationIdInIndicatorExplorer: "iMI82inOBiD",
                                   },
                               ],

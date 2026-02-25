@@ -20,5 +20,6 @@ export interface AnalyticsRepository {
         isScatter?: boolean;
         xAxis?: string;
         yAxis?: string;
+        maxYearToFilterBy?: string;
     }): FutureData<void>;
 }

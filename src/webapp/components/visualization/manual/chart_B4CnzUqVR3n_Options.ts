@@ -29,6 +29,7 @@ export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts
             seriesNames,
             seriesColors,
             currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
+            useRegionColors: true,
         }),
         legend: {
             enabled: false,
@@ -39,6 +40,7 @@ export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts
                 seriesNames,
                 seriesColors,
                 currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
+                useRegionColors: true,
             })?.yAxis,
             title: {
                 text: "Government spending (%)",

@@ -2,6 +2,7 @@ import { getColorOfRegionByRegionId } from "../../../pages/regional-page/getColo
 import { ChartSource } from "./chartOptions";
 import { comparativeColumnChartOptions } from "./generic/comparativeColumnChartOptions";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
+import { getChartSourceFilteredByYear } from "./utils/getChartSourceFilteredByYear";
 
 const seriesNames: Record<string, string> = {
     S8OMD0f9IZp: "Out-of-pocket payments as a share of current spending on health",
@@ -18,13 +19,18 @@ export const chart_twyY1ulr7uD_Options: (chartSource: ChartSource) => Highcharts
             region.linkedOrgUnitId === chartSource.currentCountryOrRegion
     );
 
+    const chartSourceWithFilteredRows = chartSource.yearToFilterBy
+        ? getChartSourceFilteredByYear(chartSource)
+        : getChartSourceFilteredByLastAvailableYear(chartSource);
+
     const chart = comparativeColumnChartOptions({
         orderByValueInSerie: "S8OMD0f9IZp",
-        chartSource: getChartSourceFilteredByLastAvailableYear(chartSource),
+        chartSource: chartSourceWithFilteredRows,
         seriesNames,
         seriesColors,
         currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
         useRegionColors: true,
+        hideYear: !chartSource.isRegionalPage,
     });
 
     return {

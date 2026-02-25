@@ -24,6 +24,7 @@ export type ChartDataLoaded = {
     lastAvailableYearInRegion?: string;
     visualizationIdInIndicatorExplorer?: Id;
     lastAvailableYearInChart?: string;
+    maxYearToFilterBy?: string;
 };
 
 export type ChartDataLoading = {
