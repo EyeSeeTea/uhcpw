@@ -226,7 +226,7 @@ export const PolicyExplorerTable = React.memo(
                     className={category.value}
                 >
                     <StyledTable orientation={dataOrientation} hasAllSameWidth={hasAllSameWidth}>
-                        <StyledTableBody className={category.value + "-table"}>
+                        <StyledTableBody $orientation={dataOrientation} className={category.value + "-table"}>
                             {rows.map((row, index) => (
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
                                     {row.map((cell, i) => (
@@ -366,11 +366,39 @@ const SwitchRowColumnButton = styled(Button)`
     background: #185698;
 `;
 
-const StyledTableBody = styled(TableBody)`
+const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
     &.u800TAhsIBY_Cat-table,
     &.Nx6S3aQkvWe-table {
+        tr:first-child {
+            text-align-last: left;
+        }
+
+        tr:first-child > td {
+            text-align: left;
+            writing-mode: ${props => (props.$orientation === "inverted" ? "sideways-lr" : "unset")};
+            width: ${props => (props.$orientation === "inverted" ? "25px" : "150px")};
+            max-height: 100px;
+            height: fit-content;
+
+            &:first-child {
+                width: ${props => (props.$orientation === "inverted" ? "150px" : "90px")};
+            }
+        }
+
+        tr:first-child > td:first-child {
+            text-align: left;
+            writing-mode: unset;
+            visibility: hidden;
+        }
+
+        tr:first-child > td > p {
+            margin: 4px;
+        }
+
         tr > td:first-child {
             text-align: left;
+            width: ${props => (props.$orientation === "inverted" ? "150px" : "90px")};
+            white-space: ${props => (props.$orientation === "inverted" ? "normal" : "nowrap")};
         }
 
         td {

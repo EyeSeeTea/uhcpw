@@ -22,6 +22,7 @@ import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
@@ -469,10 +470,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             accRows,
                             countriesAndSubregions,
                             orgUnit,
-                            useCountryCodes
+                            useCountryCodes ||
+                                policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
                         )
                             ? EMPTY_DATA
-                            : this.getCountryName(orgUnit, countriesAndSubregions, useCountryCodes);
+                            : this.getCountryName(
+                                  orgUnit,
+                                  countriesAndSubregions,
+                                  useCountryCodes ||
+                                      policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                              );
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =
