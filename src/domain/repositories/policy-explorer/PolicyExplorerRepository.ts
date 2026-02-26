@@ -13,7 +13,11 @@ export interface PolicyExplorerRepository {
         programCategories: PolicyExplorerCategory[],
         useCountryCodes?: boolean
     ): FutureData<PolicyExplorer>;
-    saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void>;
+    saveToFile(
+        categories: PolicyExplorerCategory[],
+        policyExplorer: PolicyExplorer,
+        fileName?: string
+    ): FutureData<void>;
 }
 
 type SubcategoryId = Id;

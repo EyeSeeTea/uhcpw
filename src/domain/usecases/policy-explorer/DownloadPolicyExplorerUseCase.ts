@@ -6,7 +6,11 @@ import { PolicyExplorerRepository } from "../../repositories/policy-explorer/Pol
 export class DownloadPolicyExplorerUseCase {
     constructor(private policyExplorerRepository: PolicyExplorerRepository) {}
 
-    public execute(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
-        return this.policyExplorerRepository.saveToFile(categories, policyExplorer);
+    public execute(
+        categories: PolicyExplorerCategory[],
+        policyExplorer: PolicyExplorer,
+        fileName?: string
+    ): FutureData<void> {
+        return this.policyExplorerRepository.saveToFile(categories, policyExplorer, fileName);
     }
 }

@@ -19,7 +19,7 @@ const COLUMN_WIDTHS = {
     userChargesApplyColumn: 25,
     referencesColumn: 250,
     default: 60,
-    icon: 15,
+    icon: 5,
 };
 
 const USER_CHARGES_BY_HEALTH_CARE_COLUMN_WIDTHS = {
@@ -94,17 +94,17 @@ const CENTER_ALIGNMENT = {
 
 export const LEGENDS_STYLE = {
     cell: {
-        wrapText: true,
-        verticalAlignment: "top",
+        wrapText: false,
+        verticalAlignment: "center",
     },
-    height: 50,
+    height: 20,
 } as const;
 
 const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "f6f000",
     "Outpatient specialist visits": "ffc000",
     "Emergency care": "c78f3d",
-    "Outpatient prescribed medicines": "c00000",
+    "Outpatient medicines": "c00000",
     "Medical products": "ed7d31",
     "Diagnostics tests": "7030a0",
     "Dental care visits": "00b0f0",
@@ -162,7 +162,6 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
     const cellRef = `${column}${rowNumber}`;
     const tabName = tab.name;
 
-    const isTextCenter = tab.type && ["coverage", "entitlements"].includes(tab.type);
     const isDownloadDateCell =
         tabName === GENERAL_INFOMRATION_TAB_NAME && sheet.cell(cellRef).value()?.toString()?.includes(DATE_OF_DOWNLOAD);
     const isTypeOfHealthCareColumn =
@@ -195,7 +194,7 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
                         ? CELL_STYLES.dataCell.fill.color
                         : CELL_STYLES.headerCell.fill.color,
             },
-            ...(isTextCenter ? CENTER_ALIGNMENT : {}),
+            ...getTabSpecificCellStyles(tab, rowDataIndex, columnDataIndex),
         };
     }
 
@@ -205,31 +204,44 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
             ...CELL_STYLES.dataCell.fill,
             color: isTypeOfHealthCareColumn ? CELL_STYLES.headerCell.fill.color : CELL_STYLES.dataCell.fill.color,
         },
-        ...(isTextCenter ? CENTER_ALIGNMENT : {}),
         ...getTabSpecificCellStyles(tab, rowDataIndex, columnDataIndex),
     };
 }
 
 function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: number) {
-    if (tab.type === "coverage") {
-        const header = tab.data[1]?.[columnIndex];
-        const fontColor = header && healthcareTypeToColor[header];
-
-        const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "◐" ? 14 : undefined;
-
+    if (tab.type && ["coverage", "entitlements"].includes(tab.type) && rowIndex === 1 && columnIndex > 0) {
         return {
-            ...(fontColor ? { fontColor } : undefined),
-            ...(fontSize ? { fontSize } : undefined),
+            ...CENTER_ALIGNMENT,
+            textRotation: 90,
         };
-    } else if (tab.type === "entitlements") {
-        const data = tab.data[rowIndex]?.[columnIndex];
-        const fontSize = data === "◐" ? 15 : undefined;
+    }
 
-        return {
-            fontColor: "0460a7",
-            ...(fontSize ? { fontSize } : undefined),
-        };
+    const isCategoryColumn = columnIndex === 0;
+
+    switch (tab.type) {
+        case "coverage": {
+            const healthCareType = tab.data[rowIndex]?.[0];
+            const fontColor = !isCategoryColumn ? healthCareType && healthcareTypeToColor[healthCareType] : undefined;
+
+            const data = tab.data[rowIndex]?.[columnIndex];
+            const fontSize = data === "◐" ? 15 : undefined;
+
+            return {
+                ...CENTER_ALIGNMENT,
+                ...(fontColor ? { fontColor } : undefined),
+                ...(fontSize ? { fontSize } : undefined),
+            };
+        }
+        case "entitlements": {
+            const data = tab.data[rowIndex]?.[columnIndex];
+            const fontSize = data === "◐" ? 15 : undefined;
+
+            return {
+                ...CENTER_ALIGNMENT,
+                fontColor: !isCategoryColumn ? "0460a7" : undefined,
+                ...(fontSize ? { fontSize } : undefined),
+            };
+        }
     }
     return undefined;
 }
@@ -244,18 +256,16 @@ export function setHeight(sheet: Sheet, tab: Tab) {
     const rowHeights = data.map(row => {
         return row ? getRowHeight(row) : 0;
     });
-    const startRow = tab.legends ? 2 : 1;
+    const startRow = tab.legendsRow ? tab.legendsRow.legends.length + 1 : 1;
     data.forEach((_, rowIndex) => {
         sheet.row(rowIndex + startRow).height(rowHeights[rowIndex] || 1);
     });
-    setTabSpecificRowHeight(sheet, tab);
+    setTabSpecificRowHeight(sheet, tab, startRow);
 }
 
-function setTabSpecificRowHeight(sheet: Sheet, tab: Tab) {
-    if (tab.type === "coverage") {
-        sheet.row(3).height(DEFAULT_HEIGHT * 1.5);
-    } else if (tab.type === "entitlements") {
-        sheet.row(3).height(DEFAULT_HEIGHT * 2.5);
+function setTabSpecificRowHeight(sheet: Sheet, tab: Tab, row: number) {
+    if (tab.type && ["coverage", "entitlements"].includes(tab.type)) {
+        sheet.row(row + 1).height(DEFAULT_HEIGHT * 2.5);
     }
 }
 
