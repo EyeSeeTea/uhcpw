@@ -22,6 +22,7 @@ import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS,
 } from "./PolicyExplorerCategoryD2Repository";
@@ -191,7 +192,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return periodByOrgUnitMap;
     }
 
-    saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
+    saveToFile(
+        categories: PolicyExplorerCategory[],
+        policyExplorer: PolicyExplorer,
+        fileName?: string
+    ): FutureData<void> {
         const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
             return (
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
@@ -216,14 +221,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.name || categoryId,
                         type: type,
-                        legends: getTableLegends(category),
+                        legendsRow: getTableLegends(category),
                     },
                 ];
             }
             return accTabs;
         }, []);
 
-        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], FILE_NAME);
+        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], fileName ?? FILE_NAME);
         return Future.success(undefined);
     }
 

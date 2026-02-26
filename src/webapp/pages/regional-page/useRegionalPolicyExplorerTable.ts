@@ -1,10 +1,15 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorer,
+    PolicyExplorerCell,
+    PolicyExplorerCellType,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { useAppContext } from "../../contexts/app-context";
 import { Id } from "../../../domain/entities/Ref";
 import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
+import { Maybe } from "../../../types/utils";
 
 type RegionalPolicyExplorerTableState = {
     tableData: PolicyExplorerCell[][] | undefined;
@@ -13,6 +18,7 @@ type RegionalPolicyExplorerTableState = {
     isNotesDialogOpen: boolean;
     setIsNotesDialogOpen: (isOpen: boolean) => void;
     isLoading: boolean;
+    onDownload: () => void;
 };
 
 export function useRegionalPolicyExplorerTable(
@@ -22,7 +28,9 @@ export function useRegionalPolicyExplorerTable(
 ): RegionalPolicyExplorerTableState {
     const { compositionRoot, countriesAndSubregions } = useAppContext();
 
-    const [tableData, setTableData] = useState<PolicyExplorerCell[][] | undefined>();
+    const [tableData, setTableData] = useState<Maybe<PolicyExplorerCell[][]>>();
+    const [policyExplorerData, setPolicyExplorerData] = useState<Maybe<PolicyExplorer>>();
+
     const [category, setCategory] = useState<CategoryOption | undefined>();
     const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -52,6 +60,7 @@ export function useRegionalPolicyExplorerTable(
                         .execute(policyCategory, countries, years, countriesAndSubregions, categories, true)
                         .run(
                             policyExplorerData => {
+                                setPolicyExplorerData(policyExplorerData);
                                 setTableData(invertTableData(policyExplorerData.tables[policyCategoryId]));
                                 setLoading(false);
                             },
@@ -87,6 +96,27 @@ export function useRegionalPolicyExplorerTable(
         );
     }, [tableData]);
 
+    const onDownload = useCallback(() => {
+        if (!tableData || !category || !policyExplorerData) return;
+        compositionRoot.policyExplorer.download
+            .execute(
+                [
+                    {
+                        id: category.value,
+                        name: category.text,
+                        subcategories: category.subcategories.map(option => ({ id: option.value, name: option.text })),
+                        description: category.description,
+                    },
+                ],
+                {
+                    ...policyExplorerData,
+                    tables: { [category.value]: tableData },
+                },
+                category.text
+            )
+            .runAsync();
+    }, [compositionRoot.policyExplorer.download, category, tableData, policyExplorerData]);
+
     return {
         tableData: tableData,
         hasData: hasData,
@@ -94,6 +124,7 @@ export function useRegionalPolicyExplorerTable(
         isNotesDialogOpen: isNotesDialogOpen,
         setIsNotesDialogOpen: setIsNotesDialogOpen,
         isLoading: loading,
+        onDownload: onDownload,
     };
 }
 
