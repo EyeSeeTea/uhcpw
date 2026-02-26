@@ -9,7 +9,7 @@ import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
 import { RegionNumbersPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { Maybe } from "../../../types/utils";
-import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
 import { manageBIHInCountries } from "./bosniaAndHerzegovinaHelper";
 
 export type RegionNumbersState = {
@@ -288,9 +288,9 @@ export function useRegionNumbers(
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
                                       text: numbersPanelContent.panelSixGraphOneText,
-                                      regions: [selectedRegionId, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
-                                      euRegionId: ORG_UNIT_IDS.EUROPEAN_UNION,
-                                      filterByLatestAvailableYearInEURegion: true,
+                                      regions: [selectedRegionId],
+                                      regionForLatestAvailableYearFilter: selectedRegion.linkedOrgUnitId,
+                                      filterByLatestAvailableYearInRegion: true,
                                   },
                                   {
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
@@ -303,6 +303,7 @@ export function useRegionNumbers(
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphTwoText,
+                                      regionForLatestAvailableYearFilter: selectedRegion.linkedOrgUnitId,
                                       filterByLatestAvailableYearInRegion: true,
                                   },
                                   {
@@ -317,9 +318,9 @@ export function useRegionNumbers(
                                       text: numbersPanelContent.panelSixGraphThreeText,
                                       visualizationIdInIndicatorExplorer: "mUjcWO90CRr",
                                       needToKnowLatestAvailableYearInChart: true,
-                                      regions: [selectedRegionId, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
-                                      euRegionId: ORG_UNIT_IDS.EUROPEAN_UNION,
-                                      filterByLatestAvailableYearInEURegion: true,
+                                      regions: [selectedRegionId],
+                                      regionForLatestAvailableYearFilter: selectedRegion.linkedOrgUnitId,
+                                      filterByLatestAvailableYearInRegion: true,
                                   },
                                   {
                                       visualizationId: "B4CnzUqVR3n",
@@ -329,12 +330,12 @@ export function useRegionNumbers(
                                             VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
-                                      regions: [selectedRegionId, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
-                                      euRegionId: ORG_UNIT_IDS.EUROPEAN_UNION,
-                                      filterByLatestAvailableYearInEURegion: true,
+                                      regions: [selectedRegionId],
                                       text: numbersPanelContent.panelSixGraphFourText,
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       visualizationIdInIndicatorExplorer: "iMI82inOBiD",
+                                      regionForLatestAvailableYearFilter: selectedRegion.linkedOrgUnitId,
+                                      filterByLatestAvailableYearInRegion: true,
                                   },
                               ],
                           },

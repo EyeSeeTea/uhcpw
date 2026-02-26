@@ -37,8 +37,7 @@ interface VisualizationPluginProps {
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
     filterByLatestAvailableYearInRegion?: boolean;
-    filterByLatestAvailableYearInEURegion?: boolean;
-    euRegionId?: Id;
+    regionForLatestAvailableYearFilter?: Id;
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
@@ -69,8 +68,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         showDialogInFullScreen = false,
         isRegionalPage = false,
         filterByLatestAvailableYearInRegion = false,
-        filterByLatestAvailableYearInEURegion = false,
-        euRegionId,
+        regionForLatestAvailableYearFilter,
         needToKnowLatestAvailableYearInChart = false,
         visualizationIdInIndicatorExplorer,
         yearsInIndicatorExplorer,
@@ -87,8 +85,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
-        filterByLatestAvailableYearInEURegion,
-        euRegionId,
+        regionForLatestAvailableYearFilter,
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
@@ -180,18 +177,9 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         if (needToKnowLatestAvailableYearInChart && chartData.kind === "Loaded") {
             return chartData?.lastAvailableYearInChart ? [chartData?.lastAvailableYearInChart] : [];
         }
-        if (filterByLatestAvailableYearInEURegion && chartData.kind === "Loaded") {
-            return chartData?.maxYearToFilterBy ? [chartData?.maxYearToFilterBy] : [];
-        }
 
         return years;
-    }, [
-        chartData,
-        filterByLatestAvailableYearInRegion,
-        needToKnowLatestAvailableYearInChart,
-        filterByLatestAvailableYearInEURegion,
-        years,
-    ]);
+    }, [chartData, filterByLatestAvailableYearInRegion, needToKnowLatestAvailableYearInChart, years]);
 
     const goToIndicatorExplorer = useCallback(() => {
         if (chartData.kind === "Loaded" && countries.length > 0) {

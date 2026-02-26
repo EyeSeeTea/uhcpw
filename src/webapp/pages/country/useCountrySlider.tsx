@@ -13,7 +13,7 @@ import {
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
     REPUBLICA_SERPSKA,
 } from "../../../data/repositories/countries/CountryD2Repository";
-import { EU_AVERAGE_REGION_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS } from "../../../domain/entities/region/Region";
 import { SlideGraph } from "../../components/country-page/slider/SlideGraph";
 import { VerticalTabConfig } from "../../components/vertical-tabs-panel/VerticalTabsPanel";
 import { SlideInfo } from "../../components/country-page/slider/SlideInfo";
@@ -345,8 +345,9 @@ export function useCountrySlider(countryId: string): CountrySlider {
                                           VisualizationsSeeds["B4CnzUqVR3n"]?.friendlyName,
                                       years: [LatestAvailable.id],
                                       countries: countriesAndSubregions.map(({ id }) => id),
-                                      regions: EU_AVERAGE_REGION_IDS,
+                                      regions: [ORG_UNIT_GROUP_IDS.EUROPEAN_UNION],
                                       currentCountryOrRegion: countrySelected,
+                                      regionForLatestAvailableYearFilter: ORG_UNIT_IDS.EUROPEAN_UNION,
                                       filterByLatestAvailableYearInRegion: true,
                                   },
                                   {

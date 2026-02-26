@@ -22,12 +22,11 @@ type VisualizationProps = {
     regions: Id[];
     currentCountryOrRegion?: Id;
     filterByLatestAvailableYearInRegion?: boolean;
+    regionForLatestAvailableYearFilter?: Id;
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
     sharedYAxisMax?: number;
-    filterByLatestAvailableYearInEURegion?: boolean;
-    euRegionId?: Id;
 };
 
 type SlideGraphType = {
@@ -116,8 +115,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               showDialogInFullScreen={isSmallScreen}
                               isRegionalPage={isRegionalPage}
                               filterByLatestAvailableYearInRegion={graph.filterByLatestAvailableYearInRegion}
-                              filterByLatestAvailableYearInEURegion={graph.filterByLatestAvailableYearInEURegion}
-                              euRegionId={graph.euRegionId}
+                              regionForLatestAvailableYearFilter={graph.regionForLatestAvailableYearFilter}
                               needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
                               yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
@@ -149,10 +147,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                         isScreenshot={true}
                         analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
                         filterByLatestAvailableYearInRegion={currentGraphScreenshot.filterByLatestAvailableYearInRegion}
-                        filterByLatestAvailableYearInEURegion={
-                            currentGraphScreenshot.filterByLatestAvailableYearInEURegion
-                        }
-                        euRegionId={currentGraphScreenshot.euRegionId}
+                        regionForLatestAvailableYearFilter={currentGraphScreenshot.regionForLatestAvailableYearFilter}
                         needToKnowLatestAvailableYearInChart={
                             currentGraphScreenshot.needToKnowLatestAvailableYearInChart
                         }
