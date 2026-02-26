@@ -60,7 +60,7 @@ export function getTableLegends(category: Maybe<PolicyExplorerCategory>): Maybe<
                             text: "◐",
                             styles: {
                                 fontColor: "929293",
-                                fontSize: 15,
+                                fontSize: 14,
                             },
                         },
                         {
@@ -105,7 +105,7 @@ export function getTableLegends(category: Maybe<PolicyExplorerCategory>): Maybe<
                             text: "◐",
                             styles: {
                                 fontColor: "0460a7",
-                                fontSize: 15,
+                                fontSize: 14,
                             },
                         },
                         {

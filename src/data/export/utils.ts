@@ -95,7 +95,7 @@ const CENTER_ALIGNMENT = {
 export const LEGENDS_STYLE = {
     cell: {
         wrapText: false,
-        verticalAlignment: "top",
+        verticalAlignment: "center",
     },
     height: 20,
 } as const;
