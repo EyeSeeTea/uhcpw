@@ -12,5 +12,13 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_eibYs7QySNk_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    return comparativeGroupedColumnChartOptions(chartSource, seriesNames, seriesColors, seriesColors["2019"]);
+    const filteredYears = chartSource.analyticsResponse.metaData.dimensions.pe || [];
+    const isOnlyOneYearSelected = filteredYears.length === 1;
+    return comparativeGroupedColumnChartOptions({
+        chartSource: chartSource,
+        seriesNames: seriesNames,
+        seriesColors: seriesColors,
+        defaultColor: seriesColors["2019"],
+        isOnlyOneYearSelected: isOnlyOneYearSelected,
+    });
 };
