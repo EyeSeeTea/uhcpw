@@ -1,5 +1,5 @@
 import { ChartSource } from "./chartOptions";
-import { orderLatestAvailableYearByAverageAndPoorest } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
+import { orderLatestAvailableYearByAverageAndOther } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
@@ -39,9 +39,10 @@ export const chart_TLMsmCsJJ2U_Options: (chartSource: ChartSource) => Highcharts
             region.linkedOrgUnitId === chartSource.currentCountryOrRegion
     );
 
-    const orderedCountry = orderLatestAvailableYearByAverageAndPoorest({
+    const orderedCountry = orderLatestAvailableYearByAverageAndOther({
         allRowsFilteredByLAY: chartSourceFiltered.analyticsResponse.rows,
-        seriesIds,
+        seriesIds: seriesIds,
+        otherKey: "more65years",
     });
 
     const categories = Object.keys(orderedCountry).map(orgUnitIdOrRegionId => {
@@ -54,7 +55,7 @@ export const chart_TLMsmCsJJ2U_Options: (chartSource: ChartSource) => Highcharts
                   chartSourceFiltered.analyticsResponse.metaData.items[orgUnitIdOrRegionId]?.code || orgUnitIdOrRegionId
               );
 
-        return chartSourceFiltered.isRegionalPage ? `${code} ${orderedCountry[orgUnitIdOrRegionId]}` : code;
+        return `${code} ${orderedCountry[orgUnitIdOrRegionId]}`;
     });
 
     return createDotsWithMaxMinVerticalLineChart({
