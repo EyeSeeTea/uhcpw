@@ -474,10 +474,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             accRows,
                             countriesAndSubregions,
                             orgUnit,
-                            useCountryCodes
+                            useCountryCodes ||
+                                policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
                         )
                             ? EMPTY_DATA
-                            : this.getCountryName(orgUnit, countriesAndSubregions, useCountryCodes);
+                            : this.getCountryName(
+                                  orgUnit,
+                                  countriesAndSubregions,
+                                  useCountryCodes ||
+                                      policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                              );
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =

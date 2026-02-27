@@ -125,10 +125,9 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
     text: "SAzOXqrxWfI",
 };
 
-const CATEGORIES_ONLY_IN_REGIONAL_PAGE = [
-    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
-    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
-];
+const CATEGORIES_ONLY_IN_REGIONAL_PAGE = [DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY];
+
+const CATEGORIES_ALSO_IN_REGIONAL_PAGE = [CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     cache = new InmemoryCache();
@@ -174,7 +173,9 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                 return Future.success(
                     categories.filter(category =>
                         isRegionalPage
-                            ? CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id)
+                            ? [...CATEGORIES_ALSO_IN_REGIONAL_PAGE, ...CATEGORIES_ONLY_IN_REGIONAL_PAGE].includes(
+                                  category.id
+                              )
                             : !CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id)
                     )
                 );
