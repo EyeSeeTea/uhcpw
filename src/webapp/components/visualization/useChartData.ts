@@ -37,6 +37,7 @@ export function useChartData(params: {
     currentCountryOrRegion?: Id;
     visualizationName?: string;
     filterByLatestAvailableYearInRegion?: boolean;
+    regionForLatestAvailableYearFilter?: Id;
     needToKnowLatestAvailableYearInChart?: boolean;
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
@@ -50,6 +51,7 @@ export function useChartData(params: {
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        regionForLatestAvailableYearFilter,
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
@@ -138,11 +140,11 @@ export function useChartData(params: {
                     const isLatestYearAvailable = years.includes(LatestAvailable.id);
 
                     const lastAvailableYearInRegion =
-                        filterByLatestAvailableYearInRegion && currentCountryOrRegion
+                        filterByLatestAvailableYearInRegion && regionForLatestAvailableYearFilter
                             ? getLastAvailableYearInRegion(
                                   filteredAnalytics,
                                   isMultipleVisualizations,
-                                  currentCountryOrRegion
+                                  regionForLatestAvailableYearFilter
                               )
                             : undefined;
 
@@ -156,6 +158,7 @@ export function useChartData(params: {
                               xAxis: visualization?.xAxis,
                               yAxis: visualization?.yAxis,
                               isLatestCOVID19: isLatestCOVID19,
+                              maxYearToFilterBy: lastAvailableYearInRegion,
                           })
                         : undefined;
 
@@ -168,7 +171,7 @@ export function useChartData(params: {
                         currentYear: years.length === 1 ? years[0] : undefined,
                         isLatestCOVID19: isLatestCOVID19,
                         isLatestYearAvailable: isLatestYearAvailable,
-                        yearToFilterBy: lastAvailableYearInRegion,
+                        maxYearToFilterBy: lastAvailableYearInRegion,
                         isRegionalPage: isRegionalPage,
                         seriesColors: seriesColors,
                         sharedYAxisConfig: { isSharedMax: syncGraphsState?.isSyncGraphs },
@@ -203,6 +206,7 @@ export function useChartData(params: {
                         yAxis: visualization?.yAxis,
                         lastAvailableYearInRegion: lastAvailableYearInRegion,
                         lastAvailableYearInChart: lastAvailableYearInChart,
+                        maxYearToFilterBy: lastAvailableYearInRegion,
                     });
                 },
                 error => {
@@ -234,6 +238,7 @@ export function useChartData(params: {
         isRegionalPage,
         seriesColors,
         syncGraphsState?.isSyncGraphs,
+        regionForLatestAvailableYearFilter,
     ]);
 
     useEffect(() => {
@@ -252,10 +257,7 @@ export function useChartData(params: {
             const seriesData = chartDataLoaded?.chartOptions?.series ?? chartDataLoaded?.customization?.series;
             const seriesIdAndName = (seriesData || []).map(({ id, name }) => ({ id, name }));
             const selectedRegions = regions.filter(region => regionIds.includes(region.id));
-            const periods =
-                filterByLatestAvailableYearInRegion && chartDataLoaded?.lastAvailableYearInRegion
-                    ? [chartDataLoaded?.lastAvailableYearInRegion]
-                    : years;
+            const periods = years;
 
             compositionRoot.indicatorExplorer.downloadAnalytics
                 .execute({
@@ -267,18 +269,11 @@ export function useChartData(params: {
                     isScatter: chartDataLoaded?.isScatter,
                     xAxis: chartDataLoaded?.xAxis,
                     yAxis: chartDataLoaded?.yAxis,
+                    maxYearToFilterBy: chartDataLoaded?.maxYearToFilterBy,
                 })
                 .runAsync();
         },
-        [
-            compositionRoot.indicatorExplorer.downloadAnalytics,
-            countryIds,
-            filterByLatestAvailableYearInRegion,
-            regionIds,
-            regions,
-            visualizationId,
-            years,
-        ]
+        [compositionRoot.indicatorExplorer.downloadAnalytics, countryIds, regionIds, regions, visualizationId, years]
     );
 
     const onShowInfo = useCallback(() => {
@@ -403,16 +398,18 @@ function getLastAvailableYearInChartData(params: {
     xAxis?: string;
     yAxis?: string;
     isLatestCOVID19?: boolean;
+    maxYearToFilterBy?: string;
 }): string | undefined {
-    const { analyticsResponse, isMultipleVisualizations, isScatter, xAxis, yAxis, isLatestCOVID19 } = params;
+    const { analyticsResponse, isMultipleVisualizations, isScatter, xAxis, yAxis, isLatestCOVID19, maxYearToFilterBy } =
+        params;
     const rows = isMultipleVisualizations
         ? analyticsResponse.flatMap(analytics => analytics.rows)
         : analyticsResponse[0]?.rows || [];
 
     const lastAvailableYearByCountry =
         isScatter && xAxis && yAxis
-            ? getCommonLastAvailableYearInBothAxis(rows, xAxis, yAxis, isLatestCOVID19)
-            : getLastAvailableYearByCountry(rows, isLatestCOVID19);
+            ? getCommonLastAvailableYearInBothAxis(rows, xAxis, yAxis, isLatestCOVID19, maxYearToFilterBy)
+            : getLastAvailableYearByCountry(rows, isLatestCOVID19, maxYearToFilterBy);
 
     const latestAvailableYear = Object.values(lastAvailableYearByCountry).reduce((lastAvailableYear, year) => {
         return year > lastAvailableYear ? year : lastAvailableYear;

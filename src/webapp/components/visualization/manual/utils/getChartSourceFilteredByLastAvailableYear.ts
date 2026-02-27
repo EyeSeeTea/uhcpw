@@ -30,6 +30,7 @@ export function getChartSourceFilteredByLastAvailableYear(
                 yAxis,
                 isLatestCOVID19: chartSource.isLatestCOVID19 || false,
                 customFilter: customFilterXAxisAndYAxisByLastAvailableYear,
+                maxYearToFilterBy: chartSource.maxYearToFilterBy,
             }),
         },
     };
@@ -42,18 +43,26 @@ function getFilteredRows({
     yAxis,
     isLatestCOVID19,
     customFilter,
+    maxYearToFilterBy,
 }: {
     rows: Array<string[]>;
     isScatter: boolean;
     xAxis?: string;
     yAxis?: string;
     isLatestCOVID19: boolean;
-    customFilter?: (rows: Array<string[]>, xAxis: string, yAxis: string, isLatestCOVID19: boolean) => Array<string[]>;
+    maxYearToFilterBy?: string;
+    customFilter?: (
+        rows: Array<string[]>,
+        xAxis: string,
+        yAxis: string,
+        isLatestCOVID19: boolean,
+        maxYearToFilterBy?: string
+    ) => Array<string[]>;
 }): Array<string[]> {
     if (isScatter && xAxis && yAxis) {
         const filter = customFilter ?? filterXAxisAndYAxisByLastAvailableYear;
-        return filter(rows, xAxis, yAxis, isLatestCOVID19);
+        return filter(rows, xAxis, yAxis, isLatestCOVID19, maxYearToFilterBy);
     } else {
-        return filterRowsByLastAvailableYear(rows, isLatestCOVID19);
+        return filterRowsByLastAvailableYear(rows, isLatestCOVID19, maxYearToFilterBy);
     }
 }

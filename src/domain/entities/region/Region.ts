@@ -86,3 +86,5 @@ const REGION_ORG_UNIT_CODE_MAP: Record<OrgUnitId, RegionCode> = {
 export function getRegionCodeByOrgUnitId(id: Id): RegionCode | undefined {
     return isOrgUnitId(id) ? REGION_ORG_UNIT_CODE_MAP[id] : undefined;
 }
+
+export const EU_AVERAGE_REGION_IDS: Id[] = [ORG_UNIT_IDS.EUROPEAN_UNION, ORG_UNIT_GROUP_IDS.EUROPEAN_UNION];

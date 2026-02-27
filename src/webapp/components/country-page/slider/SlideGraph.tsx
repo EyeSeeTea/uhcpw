@@ -22,6 +22,7 @@ type VisualizationProps = {
     regions: Id[];
     currentCountryOrRegion?: Id;
     filterByLatestAvailableYearInRegion?: boolean;
+    regionForLatestAvailableYearFilter?: Id;
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
@@ -114,6 +115,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                               showDialogInFullScreen={isSmallScreen}
                               isRegionalPage={isRegionalPage}
                               filterByLatestAvailableYearInRegion={graph.filterByLatestAvailableYearInRegion}
+                              regionForLatestAvailableYearFilter={graph.regionForLatestAvailableYearFilter}
                               needToKnowLatestAvailableYearInChart={graph.needToKnowLatestAvailableYearInChart}
                               visualizationIdInIndicatorExplorer={graph.visualizationIdInIndicatorExplorer}
                               yearsInIndicatorExplorer={graph.yearsInIndicatorExplorer}
@@ -145,6 +147,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
                         isScreenshot={true}
                         analyticsPageTitle={isRegionalPage ? "Regional page" : "Country page"}
                         filterByLatestAvailableYearInRegion={currentGraphScreenshot.filterByLatestAvailableYearInRegion}
+                        regionForLatestAvailableYearFilter={currentGraphScreenshot.regionForLatestAvailableYearFilter}
                         needToKnowLatestAvailableYearInChart={
                             currentGraphScreenshot.needToKnowLatestAvailableYearInChart
                         }

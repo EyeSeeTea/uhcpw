@@ -118,6 +118,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         isScatter?: boolean;
         xAxis?: string;
         yAxis?: string;
+        maxYearToFilterBy?: string;
     }): FutureData<void> {
         const {
             visualizations,
@@ -130,6 +131,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             isScatter,
             xAxis,
             yAxis,
+            maxYearToFilterBy,
         } = params;
 
         return Future.parallel(
@@ -192,16 +194,22 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                             ? getLatestAvailableYearByCountryIdFromTwoCharts(
                                   firstChartAnalyticsResponse?.rows || [],
                                   secondChartAnalyticsResponse?.rows || [],
-                                  isUpTo2019
+                                  isUpTo2019,
+                                  maxYearToFilterBy
                               )
                             : isScatter && xAxis && yAxis
                             ? getCommonLastAvailableYearInBothAxis(
                                   firstChartAnalyticsResponse?.rows || [],
                                   xAxis,
                                   yAxis,
-                                  isUpTo2019
+                                  isUpTo2019,
+                                  maxYearToFilterBy
                               )
-                            : getLastAvailableYearByCountry(firstChartAnalyticsResponse?.rows || [], isUpTo2019)
+                            : getLastAvailableYearByCountry(
+                                  firstChartAnalyticsResponse?.rows || [],
+                                  isUpTo2019,
+                                  maxYearToFilterBy
+                              )
                         : undefined;
 
                 const yearByIndicatorAndCountry =

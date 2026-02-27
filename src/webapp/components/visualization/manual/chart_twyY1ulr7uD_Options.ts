@@ -18,13 +18,16 @@ export const chart_twyY1ulr7uD_Options: (chartSource: ChartSource) => Highcharts
             region.linkedOrgUnitId === chartSource.currentCountryOrRegion
     );
 
+    const chartSourceWithFilteredRows = getChartSourceFilteredByLastAvailableYear(chartSource);
+
     const chart = comparativeColumnChartOptions({
         orderByValueInSerie: "S8OMD0f9IZp",
-        chartSource: getChartSourceFilteredByLastAvailableYear(chartSource),
+        chartSource: chartSourceWithFilteredRows,
         seriesNames,
         seriesColors,
         currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
         useRegionColors: true,
+        hideYear: !chartSource.isRegionalPage,
     });
 
     return {

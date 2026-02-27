@@ -32,6 +32,7 @@ export type VisualContent = {
     policyCategoryId?: string;
     maxImgWidth?: number;
     filterByLatestAvailableYearInRegion?: boolean;
+    regionForLatestAvailableYearFilter?: Id;
 };
 
 type GapsInCoveragePanelProps = {
@@ -143,6 +144,9 @@ export const GapsInCoveragePanel: React.FC<GapsInCoveragePanelProps> = props => 
                                             seriesColors={visualContent.seriesColors}
                                             filterByLatestAvailableYearInRegion={
                                                 visualContent.filterByLatestAvailableYearInRegion
+                                            }
+                                            regionForLatestAvailableYearFilter={
+                                                visualContent.regionForLatestAvailableYearFilter
                                             }
                                             isRegionalPage
                                         />
