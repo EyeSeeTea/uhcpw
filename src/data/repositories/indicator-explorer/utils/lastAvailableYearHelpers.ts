@@ -161,17 +161,25 @@ export function getAllRowsLatestAvailableYearFromTwoCharts(
     return [...filteredFirstChartRows, ...filteredSecondChartRows];
 }
 
-export function orderLatestAvailableYearByAverageAndPoorest(props: {
+export function orderLatestAvailableYearByAverageAndOther<
+    OtherKey extends string,
+    SeriesIds extends Record<"average" | OtherKey, string>
+>(props: {
     latestAvailableYearByCountryId?: Record<string, string>;
     allRowsFilteredByLAY: string[][];
-    seriesIds: Record<string, string>;
+    seriesIds: SeriesIds;
+    otherKey: OtherKey;
 }) {
-    const { latestAvailableYearByCountryId, allRowsFilteredByLAY, seriesIds } = props;
+    const { latestAvailableYearByCountryId, allRowsFilteredByLAY, seriesIds, otherKey } = props;
+
+    const averageId = seriesIds.average;
+    const otherId = seriesIds[otherKey];
+
     return _(allRowsFilteredByLAY)
         .filter(
             ([serieId, countryId]) =>
                 !!serieId &&
-                [seriesIds.average, seriesIds.poorest].includes(serieId) &&
+                [averageId, otherId].includes(serieId) &&
                 !!countryId &&
                 (!latestAvailableYearByCountryId || !!latestAvailableYearByCountryId[countryId])
         )
@@ -179,11 +187,11 @@ export function orderLatestAvailableYearByAverageAndPoorest(props: {
             serieId,
             countryId,
             year,
-            [serieId === seriesIds.average ? "average" : "poorest"]: parseFloat(value || "0"),
+            [serieId === averageId ? "average" : otherKey]: parseFloat(value || "0"),
         }))
         .groupBy(row => `${row.countryId}-${row.year}`)
         .map(group => _.merge({}, ...group))
-        .orderBy(["average", "poorest"], ["asc", "asc"])
+        .orderBy(["average", otherKey], ["asc", "asc"])
         .reduce((acc, { countryId, year }) => {
             if (countryId && year) acc[countryId] = year;
             return acc;

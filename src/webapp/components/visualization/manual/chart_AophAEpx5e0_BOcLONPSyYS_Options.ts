@@ -2,7 +2,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import {
     getAllRowsLatestAvailableYearFromTwoCharts,
     getLatestAvailableYearByCountryIdFromTwoCharts,
-    orderLatestAvailableYearByAverageAndPoorest,
+    orderLatestAvailableYearByAverageAndOther,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
@@ -54,10 +54,11 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
     );
 
     // By ordering latestAvailableYearByCountryId it order data and labels
-    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest({
-        latestAvailableYearByCountryId,
-        allRowsFilteredByLAY,
-        seriesIds,
+    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndOther({
+        latestAvailableYearByCountryId: latestAvailableYearByCountryId,
+        allRowsFilteredByLAY: allRowsFilteredByLAY,
+        seriesIds: seriesIds,
+        otherKey: "poorest",
     });
 
     const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(orgUnitIdOrRegionId => {

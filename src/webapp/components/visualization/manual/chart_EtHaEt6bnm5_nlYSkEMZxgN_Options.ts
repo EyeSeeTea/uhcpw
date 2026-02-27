@@ -2,7 +2,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import {
     getAllRowsLatestAvailableYearFromTwoCharts,
     getLatestAvailableYearByCountryIdFromTwoCharts,
-    orderLatestAvailableYearByAverageAndPoorest,
+    orderLatestAvailableYearByAverageAndOther,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
@@ -52,10 +52,11 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         chartSource.isLatestCOVID19
     );
 
-    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest({
-        latestAvailableYearByCountryId,
-        allRowsFilteredByLAY,
-        seriesIds,
+    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndOther({
+        latestAvailableYearByCountryId: latestAvailableYearByCountryId,
+        allRowsFilteredByLAY: allRowsFilteredByLAY,
+        seriesIds: seriesIds,
+        otherKey: "poorest",
     });
 
     const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(orgUnitIdOrRegionId => {

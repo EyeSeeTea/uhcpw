@@ -1,7 +1,7 @@
 import { ChartSource } from "./chartOptions";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
-import { orderLatestAvailableYearByAverageAndPoorest } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
+import { orderLatestAvailableYearByAverageAndOther } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 
 type SeriesKey = "poorest" | "average" | "richest";
@@ -40,9 +40,10 @@ export const chart_MfLZYD6QCPy_Options: (chartSource: ChartSource) => Highcharts
             region.linkedOrgUnitId === chartSourceFiltered.currentCountryOrRegion
     );
 
-    const orderedCountry = orderLatestAvailableYearByAverageAndPoorest({
+    const orderedCountry = orderLatestAvailableYearByAverageAndOther({
         allRowsFilteredByLAY: chartSourceFiltered.analyticsResponse.rows,
-        seriesIds,
+        seriesIds: seriesIds,
+        otherKey: "poorest",
     });
 
     const categories = Object.keys(orderedCountry).map(orgUnitIdOrRegionId => {

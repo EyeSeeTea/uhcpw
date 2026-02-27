@@ -58,10 +58,13 @@ export const sortedCharts: string[] = [
     // Unmet need - comparative
     "xJhFIBuwGVC",
     "EtHaEt6bnm5_nlYSkEMZxgN",
+    "TLMsmCsJJ2U",
     "zkEtsohZTTf",
     "AophAEpx5e0_BOcLONPSyYS",
+    "eBxPw4kUnLU",
     "eibYs7QySNk",
     "MfLZYD6QCPy",
+    "oaYpnZIdm5C",
     // Health spending (health accounts) - country level
     "OB4SCQfCzwz",
     "z6nPPMMbOw5",
