@@ -158,7 +158,7 @@ export const PolicyExplorerTable = React.memo(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [tableContainerRef, dataOrientation]);
 
-        const hasAllSameWidth = React.useMemo(() => {
+        const isCompactTable = React.useMemo(() => {
             return (
                 category.value === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY ||
                 category.value === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
@@ -225,7 +225,7 @@ export const PolicyExplorerTable = React.memo(
                     style={{ overflowX: "auto" }}
                     className={category.value}
                 >
-                    <StyledTable orientation={dataOrientation} hasAllSameWidth={hasAllSameWidth}>
+                    <StyledTable orientation={dataOrientation} fullWidth={!isCompactTable}>
                         <StyledTableBody $orientation={dataOrientation} className={category.value + "-table"}>
                             {rows.map((row, index) => (
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
@@ -233,7 +233,7 @@ export const PolicyExplorerTable = React.memo(
                                         <StyledTableCell
                                             key={`${category.value}_${i}_${cell.value}`}
                                             type={cell.type}
-                                            cellwidth={getCellWidth(i)}
+                                            cellwidth={!isCompactTable ? getCellWidth(i) : undefined}
                                         >
                                             <PolicyExplorerTableValue cell={cell} referencesRef={referencesRef} />
                                         </StyledTableCell>
@@ -250,17 +250,16 @@ export const PolicyExplorerTable = React.memo(
     }
 );
 
-export const StyledTable: React.FC<{ orientation: DataOrientation; hasAllSameWidth?: boolean }> = ({
-    orientation,
-    children,
-    hasAllSameWidth = false,
-}) => {
+export const StyledTable: React.FC<{
+    orientation: DataOrientation;
+    fullWidth?: boolean;
+}> = ({ orientation, children, fullWidth = true }) => {
     return orientation === "normal" ? (
-        <StyledNormalTable aria-label="simple table" hasAllSameWidth={hasAllSameWidth}>
+        <StyledNormalTable aria-label="simple table" fullWidth={fullWidth}>
             {children}
         </StyledNormalTable>
     ) : (
-        <StyledInvertedTable aria-label="simple table" hasAllSameWidth={hasAllSameWidth}>
+        <StyledInvertedTable aria-label="simple table" fullWidth={fullWidth}>
             {children}
         </StyledInvertedTable>
     );
@@ -286,9 +285,9 @@ const TablePaper = styled(Paper)`
     }
 `;
 
-const StyledNormalTable = styled(Table)<{ hasAllSameWidth?: boolean }>`
-    width: ${props => (props.hasAllSameWidth ? "100%" : "inherit")};
-    table-layout: ${props => (props.hasAllSameWidth ? "fixed" : "auto")};
+const StyledNormalTable = styled(Table)<{ fullWidth?: boolean }>`
+    width: ${props => (props.fullWidth ? "100%" : "fit-content")};
+    table-layout: ${props => (props.fullWidth ? "auto" : "fixed")};
     border-spacing: 0.8px;
     border-collapse: initial;
 
@@ -309,9 +308,9 @@ const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwi
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
 `;
 
-const StyledInvertedTable = styled(Table)<{ hasAllSameWidth?: boolean }>`
-    width: ${props => (props.hasAllSameWidth ? "100%" : "inherit")};
-    table-layout: ${props => (props.hasAllSameWidth ? "fixed" : "auto")};
+const StyledInvertedTable = styled(Table)<{ fullWidth?: boolean }>`
+    width: ${props => (props.fullWidth ? "100%" : "fit-content")};
+    table-layout: ${props => (props.fullWidth ? "auto" : "fixed")};
     border-spacing: 0.8px;
     border-collapse: initial;
 
@@ -376,12 +375,13 @@ const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
         tr:first-child > td {
             text-align: left;
             writing-mode: ${props => (props.$orientation === "inverted" ? "sideways-lr" : "unset")};
-            width: ${props => (props.$orientation === "inverted" ? "25px" : "150px")};
-            max-height: 100px;
-            height: fit-content;
+            width: ${props => (props.$orientation === "inverted" ? "25px" : "100px")};
+            max-height: ${props => (props.$orientation === "inverted" ? "90px" : "fit-content")};
+            height: ${props => (props.$orientation === "inverted" ? "90px" : "fit-content")};
 
             &:first-child {
-                width: ${props => (props.$orientation === "inverted" ? "150px" : "90px")};
+                width: ${props => (props.$orientation === "inverted" ? "100px" : "90px")};
+                min-width: ${props => (props.$orientation === "inverted" ? "100px" : "90px")};
             }
         }
 
@@ -404,6 +404,14 @@ const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
         td {
             text-align: center;
             vertical-align: middle;
+            padding: 4px;
+            > p {
+                margin: 0;
+
+                &:first-child {
+                    margin: 8px 4px;
+                }
+            }
         }
     }
 `;
