@@ -380,8 +380,8 @@ const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
             height: ${props => (props.$orientation === "inverted" ? "90px" : "fit-content")};
 
             &:first-child {
-                width: ${props => (props.$orientation === "inverted" ? "100px" : "90px")};
-                min-width: ${props => (props.$orientation === "inverted" ? "100px" : "90px")};
+                width: ${props => (props.$orientation === "inverted" ? "180px" : "90px")};
+                min-width: ${props => (props.$orientation === "inverted" ? "180px" : "90px")};
             }
         }
 
@@ -397,7 +397,8 @@ const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
 
         tr > td:first-child {
             text-align: left;
-            width: ${props => (props.$orientation === "inverted" ? "150px" : "90px")};
+            width: ${props => (props.$orientation === "inverted" ? "180px" : "90px")};
+            min-width: ${props => (props.$orientation === "inverted" ? "180px" : "90px")};
             white-space: ${props => (props.$orientation === "inverted" ? "normal" : "nowrap")};
         }
 
