@@ -80,12 +80,7 @@ const REGION_CONTENT_DATA_ELEMENT_IDS = {
 
         panelThreeTitle: "kK1KJ3gplux",
         panelThreeMainText: "VpB8DwK3GLJ",
-        panelThreeChartOneEU: "AiQgw1HTjfR",
-        panelThreeChartOneER: "wzsBDjTLG7t",
-        panelThreeChartOneWB: "pAqMDdCiPB6",
-        panelThreeChartOneEECA: "RYh6HzIxJdI",
         panelThreeChartOneTitle: "awssReAi6Nz",
-        panelThreeChartOneInfoText: "p15rbYNnCer",
         panelThreeChartOneTextBelow: "GbR7FpRyeXI",
         panelThreeChartOneTextAbove: "Mckk9OrIAGP",
         panelThreeProgressText: "AZqM9ptgmJH",
@@ -178,15 +173,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
     private buildRegionInfo(regionalInfo: D2Event, regionalContent: D2Event, regionOrgUnitId: Id): RegionInfo {
         const getDataValue = (dataElementId: Id, event: D2Event): string =>
             event.dataValues.find(dv => dv.dataElement === dataElementId)?.value || "";
-
-        const panelThreeChartOneDEId =
-            regionOrgUnitId === ORG_UNIT_IDS.EUROPEAN_UNION
-                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneEU
-                : regionOrgUnitId === ORG_UNIT_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA
-                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneEECA
-                : regionOrgUnitId === ORG_UNIT_IDS.WESTERN_BALKANS
-                ? REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneWB
-                : REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneER;
 
         const panelFiveChartTwoDEId =
             regionOrgUnitId === ORG_UNIT_IDS.EUROPEAN_UNION
@@ -400,8 +386,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeMainText,
                     regionalContent
                 ),
-                panelThreeChartOne: `${this.api.baseUrl}/api/events/files?dataElementUid=${panelThreeChartOneDEId}&eventUid=${regionalContent?.event}`,
-                hasPanelThreeChartOne: getDataValue(panelThreeChartOneDEId, regionalContent) !== "",
                 panelThreeChartOneTitle: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneTitle,
                     regionalContent
@@ -412,10 +396,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                 ),
                 panelThreeChartOneTextAbove: getDataValue(
                     REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneTextAbove,
-                    regionalContent
-                ),
-                panelThreeChartOneInfoText: getDataValue(
-                    REGION_CONTENT_DATA_ELEMENT_IDS.gapsInCoverage.panelThreeChartOneInfoText,
                     regionalContent
                 ),
                 panelThreeProgressText: getDataValue(

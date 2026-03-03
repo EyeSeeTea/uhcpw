@@ -1,6 +1,8 @@
 import { Id, Ref } from "../Ref";
 import { VisualizationBreakInSeries } from "./BreakInSeries";
 import { Year } from "../Year";
+import { PolicyExplorerChartData } from "./PolicyExplorerChartData";
+import { Metadata } from "../../../data/repositories/indicator-explorer/AnalyticsD2Repository";
 
 export interface VisualizationExtra {
     categoryName: string;
@@ -29,6 +31,11 @@ export interface VisualizationExtra {
     allowedYears?: Year[];
     sortColumns?: (headerRow: string[]) => string[];
     sortDataRows?: (headerRow: string[], dataRows: string[][]) => string[][];
+    getRowWithDataName?: (
+        row: string[],
+        metadata: Metadata,
+        policyExplorerChartData?: PolicyExplorerChartData[]
+    ) => string[];
     isYearSingleSelection?: boolean;
     hideBosniaAndHerzegovinaRegions?: boolean;
     hide?: boolean;
@@ -40,6 +47,8 @@ export interface VisualizationExtra {
     hasCustomFilterXAxisAndYAxisByLastAvailableYear?: boolean;
     needsToFilterZeroValues?: boolean;
     needsRounding?: boolean;
+    splitRequestsByOrgUnitLevel?: boolean;
+    needPolicyExplorerChartData?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

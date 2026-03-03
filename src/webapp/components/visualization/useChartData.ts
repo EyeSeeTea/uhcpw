@@ -20,6 +20,7 @@ import {
     getLastAvailableYearByCountry,
 } from "../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { SyncGraphsState } from "../country-page/slider/useSyncedGraphs";
+import { PolicyExplorerChartData } from "../../../domain/entities/indicator-explorer/PolicyExplorerChartData";
 
 interface ChartDataState {
     chartData: ChartData;
@@ -125,7 +126,7 @@ export function useChartData(params: {
             const selectedRegions = regions.filter(region => regionIds.includes(region.id));
 
             getChartData(compositionRoot, visualizationIds, years, countryIds, selectedRegions).run(
-                ({ visualizations, analytics, legendSets }) => {
+                ({ visualizations, analytics, legendSets, allPolicyExplorerChartData }) => {
                     const visualization = visualizations[0];
                     const needsToFilterZeroValues = visualization?.needsToFilterZeroValues;
 
@@ -165,6 +166,11 @@ export function useChartData(params: {
                     const chartSource = {
                         analyticsResponse: isMultipleVisualizations ? filteredAnalytics : filteredAnalytics[0],
                         visualization: isMultipleVisualizations ? visualizations : visualization,
+                        policyExplorerChartData: visualization?.needPolicyExplorerChartData
+                            ? isMultipleVisualizations
+                                ? allPolicyExplorerChartData
+                                : allPolicyExplorerChartData?.[0]
+                            : undefined,
                         countries: countriesAndSubregions,
                         regions: regions,
                         currentCountryOrRegion: currentCountryOrRegion,
@@ -304,6 +310,7 @@ function getChartData(
     visualizations: Visualization[];
     analytics: Analytics[];
     legendSets: LegendSet[];
+    allPolicyExplorerChartData: PolicyExplorerChartData[][] | undefined;
 }> {
     // Function to fetch data for a single visualizationId
     const fetchDataForId = (visualizationId: string) => {
@@ -324,6 +331,9 @@ function getChartData(
                     legendSetIds.length > 0
                         ? compositionRoot.indicatorExplorer.getLegendSets.execute(legendSetIds)
                         : Future.success([]),
+                policyExplorerChartData: visualization.needPolicyExplorerChartData
+                    ? compositionRoot.indicatorExplorer.getPolicyExplorerChartData.execute(years, countryIds)
+                    : Future.success(undefined),
             });
         });
     };
@@ -333,11 +343,20 @@ function getChartData(
         const analytics = results.map(result => result.analytics);
         // Flatten the legendSets arrays from each result into a single array
         const legendSets = results.reduce((acc, result) => [...acc, ...result.legendSets], [] as LegendSet[]);
+        const policyExplorerChartData = results.some(result => result.policyExplorerChartData)
+            ? results
+                  .map(result => result.policyExplorerChartData)
+                  .filter(
+                      (data: PolicyExplorerChartData[] | undefined): data is PolicyExplorerChartData[] =>
+                          data !== undefined
+                  )
+            : undefined;
 
         return {
             visualizations: visualizations,
             analytics: analytics,
             legendSets: legendSets,
+            allPolicyExplorerChartData: policyExplorerChartData,
         };
     });
 }

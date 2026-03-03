@@ -3,6 +3,8 @@ import { Analytics } from "../../../../domain/entities/indicator-explorer/Analyt
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { Id } from "../../../../domain/entities/Ref";
 import { Region } from "../../../../domain/entities/region/Region";
+import { PolicyExplorerChartData } from "../../../../domain/entities/indicator-explorer/PolicyExplorerChartData";
+
 import { chart_kIpnMBaBvZ9_Options } from "./chart_kIpnMBaBvZ9_Options";
 import { chart_dbc87Ljw8uN_Options } from "./chart_dbc87Ljw8uN_Options";
 import { chart_NOukqSxCI63_Options } from "./chart_NOukqSxCI63_Options";
@@ -29,11 +31,13 @@ import { chart_y4qAv6eW4nb_Options } from "./chart_y4qAv6eW4nb_Options";
 import { chart_oaYpnZIdm5C_Options } from "./chart_oaYpnZIdm5C_Options";
 import { chart_TLMsmCsJJ2U_Options } from "./chart_TLMsmCsJJ2U_Options";
 import { chart_eBxPw4kUnLU_Options } from "./chart_eBxPw4kUnLU_Options";
+import { chart_IXF2wBMnwpa_Options } from "./chart_IXF2wBMnwpa_Options";
 import { chart_wFITZgQ3udq_Options } from "./chart_wFITZgQ3udq_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
+    policyExplorerChartData?: PolicyExplorerChartData[];
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
@@ -50,6 +54,7 @@ export interface ChartSource {
 export interface ChartSourceMultiple {
     analyticsResponse: Analytics[];
     visualization: Visualization[];
+    policyExplorerChartData?: PolicyExplorerChartData[][];
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
@@ -88,6 +93,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     wFITZgQ3udq: chartSource => chart_wFITZgQ3udq_Options(chartSource),
     TLMsmCsJJ2U: chartSource => chart_TLMsmCsJJ2U_Options(chartSource),
     eBxPw4kUnLU: chartSource => chart_eBxPw4kUnLU_Options(chartSource),
+    IXF2wBMnwpa: chartSource => chart_IXF2wBMnwpa_Options(chartSource),
 };
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {
