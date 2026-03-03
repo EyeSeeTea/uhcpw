@@ -29,10 +29,13 @@ import { chart_y4qAv6eW4nb_Options } from "./chart_y4qAv6eW4nb_Options";
 import { chart_oaYpnZIdm5C_Options } from "./chart_oaYpnZIdm5C_Options";
 import { chart_TLMsmCsJJ2U_Options } from "./chart_TLMsmCsJJ2U_Options";
 import { chart_eBxPw4kUnLU_Options } from "./chart_eBxPw4kUnLU_Options";
+import { PolicyExplorerChartData } from "../../../../domain/entities/indicator-explorer/PolicyExplorerChartData";
+import { chart_IXF2wBMnwpa_Options } from "./chart_IXF2wBMnwpa_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
+    policyExplorerChartData?: PolicyExplorerChartData[];
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
@@ -48,6 +51,7 @@ export interface ChartSource {
 export interface ChartSourceMultiple {
     analyticsResponse: Analytics[];
     visualization: Visualization[];
+    policyExplorerChartData?: PolicyExplorerChartData[][];
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
@@ -84,6 +88,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     oaYpnZIdm5C: chartSource => chart_oaYpnZIdm5C_Options(chartSource),
     TLMsmCsJJ2U: chartSource => chart_TLMsmCsJJ2U_Options(chartSource),
     eBxPw4kUnLU: chartSource => chart_eBxPw4kUnLU_Options(chartSource),
+    IXF2wBMnwpa: chartSource => chart_IXF2wBMnwpa_Options(chartSource),
 };
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {

@@ -117,20 +117,24 @@ export function useRegionalGapsInCoverage(
                               mainText: gapsInCoverageContent.panelThreeMainText,
                               progressText: gapsInCoverageContent.panelThreeProgressText,
                               showDialogInFullScreen: isSmallScreen,
-                              visuals: gapsInCoverageContent.hasPanelThreeChartOne
-                                  ? [
-                                        {
-                                            visual: gapsInCoverageContent.panelThreeChartOne,
-                                            title:
-                                                gapsInCoverageContent.panelThreeChartOneTitle !== ""
-                                                    ? gapsInCoverageContent.panelThreeChartOneTitle
-                                                    : undefined,
-                                            textBelow: gapsInCoverageContent.panelThreeChartOneTextBelow,
-                                            textAbove: gapsInCoverageContent.panelThreeChartOneTextAbove,
-                                            textInfo: gapsInCoverageContent.panelThreeChartOneInfoText,
-                                        },
-                                    ]
-                                  : [],
+                              visuals: [
+                                  {
+                                      title:
+                                          gapsInCoverageContent.panelThreeChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelThreeChartOneTitle
+                                              : undefined,
+                                      textBelow: gapsInCoverageContent.panelThreeChartOneTextBelow,
+                                      textAbove: gapsInCoverageContent.panelThreeChartOneTextAbove,
+                                      visualizationId: "IXF2wBMnwpa",
+                                      visualizationName:
+                                          gapsInCoverageContent.panelThreeChartOneTitle !== ""
+                                              ? gapsInCoverageContent.panelThreeChartOneTitle
+                                              : VisualizationsSeeds["IXF2wBMnwpa"]?.regionalPageName,
+                                      years: [LatestAvailable.id],
+                                      countries: [...(selectedRegion.countries || [])],
+                                      regions: [selectedRegionId],
+                                  },
+                              ],
                           },
                       },
                       {
