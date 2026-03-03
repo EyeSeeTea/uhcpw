@@ -177,10 +177,11 @@ export function useChartData(params: {
                         sharedYAxisConfig: { isSharedMax: syncGraphsState?.isSyncGraphs },
                     } as ChartSourceMultiple & ChartSource;
 
+                    const selectedCountries = countriesAndSubregions.filter(country => countryIds.includes(country.id));
                     const visualizationDialogInfo =
                         visualization &&
                         filteredAnalytics[0] &&
-                        getVisualizationDialogInfo(visualization, filteredAnalytics[0], countriesAndSubregions);
+                        getVisualizationDialogInfo(visualization, filteredAnalytics[0], selectedCountries);
 
                     const chartName =
                         visualizationName && visualizationName[0]?.toUpperCase() + visualizationName.slice(1);
@@ -198,7 +199,7 @@ export function useChartData(params: {
                         analytics: filteredAnalytics,
                         legendSets,
                         customization: visualizationCustomizations[visualizationId],
-                        countries: countriesAndSubregions.filter(country => countryIds.includes(country.id)),
+                        countries: selectedCountries,
                         regions: regions.filter(region => regionIds.includes(region.id)),
                         chartOptions: visualizationChartOptions ? visualizationChartOptions(chartSource) : undefined,
                         isScatter: visualization?.isScatter,
