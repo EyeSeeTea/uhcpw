@@ -1,7 +1,11 @@
 import _ from "lodash";
 
-export function filterRowsByLastAvailableYear(rows: Array<string[]>, isUpTo2019?: boolean): Array<string[]> {
-    const lastAvailableYearByCountry = getLastAvailableYearByCountry(rows, isUpTo2019);
+export function filterRowsByLastAvailableYear(
+    rows: Array<string[]>,
+    isUpTo2019?: boolean,
+    maxYearToFilterBy?: string
+): Array<string[]> {
+    const lastAvailableYearByCountry = getLastAvailableYearByCountry(rows, isUpTo2019, maxYearToFilterBy);
 
     return filterRowsByYearInCountry(rows, lastAvailableYearByCountry);
 }
@@ -10,20 +14,35 @@ export function filterXAxisAndYAxisByLastAvailableYear(
     rows: Array<string[]>,
     xAxis: string,
     yAxis: string,
-    isUpTo2019?: boolean
+    isUpTo2019?: boolean,
+    maxYearToFilterBy?: string
 ): Array<string[]> {
-    const lastAvailableYearByCountry = getCommonLastAvailableYearInBothAxis(rows, xAxis, yAxis, isUpTo2019);
+    const lastAvailableYearByCountry = getCommonLastAvailableYearInBothAxis(
+        rows,
+        xAxis,
+        yAxis,
+        isUpTo2019,
+        maxYearToFilterBy
+    );
 
     return filterRowsByYearInCountry(rows, lastAvailableYearByCountry);
 }
 
-export const getLastAvailableYearByCountry = (rows: Array<string[]>, isUpTo2019?: boolean): Record<string, string> => {
+export const getLastAvailableYearByCountry = (
+    rows: Array<string[]>,
+    isUpTo2019?: boolean,
+    maxYearToFilterBy?: string
+): Record<string, string> => {
     return rows.reduce((acc: Record<string, string>, row) => {
         const countryId = row[1]?.toString() || "";
         const year = row[2] || "";
 
-        return ((isUpTo2019 && Number(year) <= 2019) || !isUpTo2019) &&
-            (!acc[countryId] || (acc[countryId] !== undefined && Number(acc[countryId]) < Number(year)))
+        const yearIsLessOrEqual2019 = !isUpTo2019 || Number(year) <= 2019;
+        const yearIsLessOrEqualMaxYear = !maxYearToFilterBy || Number(year) <= Number(maxYearToFilterBy);
+
+        const accYearIsLessThanYear = acc[countryId] !== undefined && Number(acc[countryId]) < Number(year);
+
+        return yearIsLessOrEqual2019 && yearIsLessOrEqualMaxYear && (!acc[countryId] || accYearIsLessThanYear)
             ? { ...acc, [countryId]: year }
             : acc;
     }, {});
@@ -60,17 +79,19 @@ export function getCommonLastAvailableYearInBothAxis(
     rows: Array<string[]>,
     xAxis: string,
     yAxis: string,
-    isUpTo2019?: boolean
+    isUpTo2019?: boolean,
+    maxYearToFilterBy?: string
 ): Record<string, string> {
     const groupedByCountry = getGroupedYearsByCountry(rows, xAxis, yAxis);
 
+    const yearFilter = (year: string) => {
+        const numericYear = Number(year);
+        return (!isUpTo2019 || numericYear <= 2019) && (!maxYearToFilterBy || numericYear <= Number(maxYearToFilterBy));
+    };
+
     return Object.keys(groupedByCountry).reduce((acc, countryId) => {
-        const filteredXYears = [...(groupedByCountry[countryId]?.xYears || [])].filter(year => {
-            return isUpTo2019 ? Number(year) <= 2019 : true;
-        });
-        const filteredYYears = [...(groupedByCountry[countryId]?.yYears || [])].filter(year => {
-            return isUpTo2019 ? Number(year) <= 2019 : true;
-        });
+        const filteredXYears = [...(groupedByCountry[countryId]?.xYears || [])].filter(yearFilter);
+        const filteredYYears = [...(groupedByCountry[countryId]?.yYears || [])].filter(yearFilter);
 
         const commonYears = filteredXYears
             .filter(year => filteredYYears.includes(year))
@@ -125,10 +146,19 @@ export const filterRowsByYearInCountry = (
 export function getLatestAvailableYearByCountryIdFromTwoCharts(
     firstChartRows: Array<string[]>,
     secondChartRows: Array<string[]>,
-    isUpTo2019?: boolean
+    isUpTo2019?: boolean,
+    maxYearToFilterBy?: string
 ): Record<string, string> {
-    const firstChartLatestAvailableYearByCountry = getLastAvailableYearByCountry(firstChartRows, isUpTo2019);
-    const secondChartLatestAvailableYearByCountry = getLastAvailableYearByCountry(secondChartRows, isUpTo2019);
+    const firstChartLatestAvailableYearByCountry = getLastAvailableYearByCountry(
+        firstChartRows,
+        isUpTo2019,
+        maxYearToFilterBy
+    );
+    const secondChartLatestAvailableYearByCountry = getLastAvailableYearByCountry(
+        secondChartRows,
+        isUpTo2019,
+        maxYearToFilterBy
+    );
 
     const allCountryIdsUnique = [
         ...new Set([
@@ -147,12 +177,14 @@ export function getLatestAvailableYearByCountryIdFromTwoCharts(
 export function getAllRowsLatestAvailableYearFromTwoCharts(
     firstChartRows: Array<string[]>,
     secondChartRows: Array<string[]>,
-    isUpTo2019?: boolean
+    isUpTo2019?: boolean,
+    maxYearToFilterBy?: string
 ): Array<string[]> {
     const latestAvailableYearByCountryId = getLatestAvailableYearByCountryIdFromTwoCharts(
         firstChartRows || [],
         secondChartRows || [],
-        isUpTo2019
+        isUpTo2019,
+        maxYearToFilterBy
     );
 
     const filteredFirstChartRows = filterRowsByYearInCountry(firstChartRows || [], latestAvailableYearByCountryId);

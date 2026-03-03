@@ -2,7 +2,6 @@ import { getColorOfRegionByRegionId } from "../../../pages/regional-page/getColo
 import { ChartSource } from "./chartOptions";
 import { comparativeColumnChartOptions } from "./generic/comparativeColumnChartOptions";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
-import { getChartSourceFilteredByYear } from "./utils/getChartSourceFilteredByYear";
 
 const seriesNames: Record<string, string> = {
     aYK8f4GuHBP: "Public spending on health as a share of government spending",
@@ -19,9 +18,7 @@ export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts
             region.linkedOrgUnitId === chartSource.currentCountryOrRegion
     );
 
-    const chartSourceWithFilteredRows = chartSource.yearToFilterBy
-        ? getChartSourceFilteredByYear(chartSource)
-        : getChartSourceFilteredByLastAvailableYear(chartSource);
+    const chartSourceWithFilteredRows = getChartSourceFilteredByLastAvailableYear(chartSource);
 
     return {
         ...comparativeColumnChartOptions({
@@ -29,6 +26,7 @@ export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts
             seriesNames,
             seriesColors,
             currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
+            useRegionColors: true,
         }),
         legend: {
             enabled: false,
@@ -39,6 +37,7 @@ export const chart_B4CnzUqVR3n_Options: (chartSource: ChartSource) => Highcharts
                 seriesNames,
                 seriesColors,
                 currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
+                useRegionColors: true,
             })?.yAxis,
             title: {
                 text: "Government spending (%)",

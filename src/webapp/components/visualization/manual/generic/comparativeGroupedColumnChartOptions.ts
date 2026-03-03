@@ -6,15 +6,24 @@ import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
 import { getOrgUnitKey } from "../utils/getOrgUnitKey";
 
-export const comparativeGroupedColumnChartOptions: (
-    chartSource: ChartSource,
-    seriesNames: Record<string, string>,
-    seriesColors: Record<string, string>,
-    defaultColor?: string
-) => Highcharts.Options = (chartSource, seriesNames, seriesColors, defaultColor) => {
-    const filteredYears = chartSource.analyticsResponse.metaData.dimensions.pe || [];
-    const isOnlyOneYearSelected = filteredYears.length === 1;
-
+export const comparativeGroupedColumnChartOptions: (params: {
+    chartSource: ChartSource;
+    seriesNames: Record<string, string>;
+    seriesColors: Record<string, string>;
+    defaultColor?: string;
+    isOnlyOneYearSelected?: boolean;
+    orderByValueInSerie?: string;
+    isDescOrder?: boolean;
+}) => Highcharts.Options = params => {
+    const {
+        chartSource,
+        seriesNames,
+        seriesColors,
+        defaultColor,
+        isOnlyOneYearSelected,
+        orderByValueInSerie,
+        isDescOrder,
+    } = params;
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
             const orgUnitId = row[1]?.toString() || "";
@@ -23,9 +32,17 @@ export const comparativeGroupedColumnChartOptions: (
                 "";
             return orgUnit || getOrgUnitKey(chartSource, orgUnitId);
         })
-        .orderBy(items => {
-            return _(items).sumBy(row => (row[2] ? +row[2] : 0));
-        })
+        .orderBy(
+            items => {
+                if (orderByValueInSerie) {
+                    const item = items.find(row => row[0] === orderByValueInSerie);
+                    return item ? (item[2] ? +item[2] : 0) : 0;
+                } else {
+                    return _(items).sumBy(row => (row[2] ? +row[2] : 0));
+                }
+            },
+            isDescOrder ? "desc" : "asc"
+        )
         .value()
         .flat();
 
@@ -45,7 +62,7 @@ export const comparativeGroupedColumnChartOptions: (
             id: dxId,
             type: "column",
             name: seriesNames[dxId],
-            color: isOnlyOneYearSelected ? defaultColor : seriesColors[dxId],
+            color: isOnlyOneYearSelected && defaultColor ? defaultColor : seriesColors[dxId],
             data: dataSource.map(row => {
                 const orgUnitId = row[1]?.toString() || "";
                 const region = chartSource.regions.find(

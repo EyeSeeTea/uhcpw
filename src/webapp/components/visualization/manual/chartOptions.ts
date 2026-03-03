@@ -3,6 +3,8 @@ import { Analytics } from "../../../../domain/entities/indicator-explorer/Analyt
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { Id } from "../../../../domain/entities/Ref";
 import { Region } from "../../../../domain/entities/region/Region";
+import { PolicyExplorerChartData } from "../../../../domain/entities/indicator-explorer/PolicyExplorerChartData";
+
 import { chart_kIpnMBaBvZ9_Options } from "./chart_kIpnMBaBvZ9_Options";
 import { chart_dbc87Ljw8uN_Options } from "./chart_dbc87Ljw8uN_Options";
 import { chart_NOukqSxCI63_Options } from "./chart_NOukqSxCI63_Options";
@@ -29,8 +31,8 @@ import { chart_y4qAv6eW4nb_Options } from "./chart_y4qAv6eW4nb_Options";
 import { chart_oaYpnZIdm5C_Options } from "./chart_oaYpnZIdm5C_Options";
 import { chart_TLMsmCsJJ2U_Options } from "./chart_TLMsmCsJJ2U_Options";
 import { chart_eBxPw4kUnLU_Options } from "./chart_eBxPw4kUnLU_Options";
-import { PolicyExplorerChartData } from "../../../../domain/entities/indicator-explorer/PolicyExplorerChartData";
 import { chart_IXF2wBMnwpa_Options } from "./chart_IXF2wBMnwpa_Options";
+import { chart_wFITZgQ3udq_Options } from "./chart_wFITZgQ3udq_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -46,6 +48,7 @@ export interface ChartSource {
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
     sharedYAxisConfig?: { isSharedMax: boolean };
+    maxYearToFilterBy?: string;
 }
 
 export interface ChartSourceMultiple {
@@ -62,6 +65,7 @@ export interface ChartSourceMultiple {
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
     sharedYAxisConfig?: { isSharedMax: boolean };
+    maxYearToFilterBy?: string;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
@@ -86,6 +90,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     twyY1ulr7uD: chartSource => chart_twyY1ulr7uD_Options(chartSource),
     y4qAv6eW4nb: chartSource => chart_y4qAv6eW4nb_Options(chartSource),
     oaYpnZIdm5C: chartSource => chart_oaYpnZIdm5C_Options(chartSource),
+    wFITZgQ3udq: chartSource => chart_wFITZgQ3udq_Options(chartSource),
     TLMsmCsJJ2U: chartSource => chart_TLMsmCsJJ2U_Options(chartSource),
     eBxPw4kUnLU: chartSource => chart_eBxPw4kUnLU_Options(chartSource),
     IXF2wBMnwpa: chartSource => chart_IXF2wBMnwpa_Options(chartSource),

@@ -27,9 +27,19 @@ export class DownloadAnalyticsUseCase {
         isScatter?: boolean;
         xAxis?: string;
         yAxis?: string;
+        maxYearToFilterBy?: string;
     }): FutureData<void> {
-        const { visualizationIds, periods, countryIds, seriesIdAndName, isScatter, xAxis, yAxis, selectedRegions } =
-            params;
+        const {
+            visualizationIds,
+            periods,
+            countryIds,
+            seriesIdAndName,
+            isScatter,
+            xAxis,
+            yAxis,
+            selectedRegions,
+            maxYearToFilterBy,
+        } = params;
 
         const sortedPeriods = periods.sort();
 
@@ -75,6 +85,7 @@ export class DownloadAnalyticsUseCase {
                 isScatter: isScatter,
                 xAxis: xAxis,
                 yAxis: yAxis,
+                maxYearToFilterBy: maxYearToFilterBy,
             });
         });
     }

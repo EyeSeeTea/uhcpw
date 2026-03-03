@@ -202,6 +202,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         isScatter?: boolean;
         xAxis?: string;
         yAxis?: string;
+        maxYearToFilterBy?: string;
     }): FutureData<void> {
         const {
             visualizations,
@@ -215,6 +216,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             isScatter,
             xAxis,
             yAxis,
+            maxYearToFilterBy,
         } = params;
 
         return Future.parallel(
@@ -291,6 +293,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                               firstChartAnalyticsRows: firstChartAnalyticsResponse?.rows || [],
                               secondChartAnalyticsRows: secondChartAnalyticsResponse?.rows || [],
                               policyExplorerChartData: policyExplorerChartData,
+                              maxYearToFilterBy: maxYearToFilterBy,
                           })
                         : undefined;
 
@@ -819,6 +822,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         firstChartAnalyticsRows: Array<string[]>;
         secondChartAnalyticsRows: Array<string[]>;
         policyExplorerChartData?: PolicyExplorerChartData[];
+        maxYearToFilterBy?: string;
     }) {
         const {
             visualizationIds,
@@ -830,12 +834,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             firstChartAnalyticsRows,
             secondChartAnalyticsRows,
             policyExplorerChartData,
+            maxYearToFilterBy,
         } = params;
 
         if (visualizationIds.includes("IXF2wBMnwpa")) {
             const columnRows = firstChartAnalyticsRows.filter(row => row[0] !== "WmOGqGcov4f");
 
-            const lastAvailableYearByCountry = getLastAvailableYearByCountry(columnRows, isUpTo2019);
+            const lastAvailableYearByCountry = getLastAvailableYearByCountry(columnRows, isUpTo2019, maxYearToFilterBy);
 
             return Object.entries(lastAvailableYearByCountry).reduce(
                 (acc: Record<string, string>, [countryId, year]) => {
@@ -861,11 +866,18 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 ? getLatestAvailableYearByCountryIdFromTwoCharts(
                       firstChartAnalyticsRows,
                       secondChartAnalyticsRows,
-                      isUpTo2019
+                      isUpTo2019,
+                      maxYearToFilterBy
                   )
                 : isScatter && xAxis && yAxis
-                ? getCommonLastAvailableYearInBothAxis(firstChartAnalyticsRows, xAxis, yAxis, isUpTo2019)
-                : getLastAvailableYearByCountry(firstChartAnalyticsRows, isUpTo2019);
+                ? getCommonLastAvailableYearInBothAxis(
+                      firstChartAnalyticsRows,
+                      xAxis,
+                      yAxis,
+                      isUpTo2019,
+                      maxYearToFilterBy
+                  )
+                : getLastAvailableYearByCountry(firstChartAnalyticsRows, isUpTo2019, maxYearToFilterBy);
         }
     }
 }

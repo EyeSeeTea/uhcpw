@@ -296,6 +296,7 @@ export function useRegionalGapsInCoverage(
                                       currentCountryOrRegion: selectedRegion.linkedOrgUnitId,
                                       countries: [...(selectedRegion.countries || [])],
                                       regions: [selectedRegionId],
+                                      regionForLatestAvailableYearFilter: selectedRegion.linkedOrgUnitId,
                                       filterByLatestAvailableYearInRegion: true,
                                   },
                               ],

@@ -44,13 +44,15 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
     const latestAvailableYearByCountryId = getLatestAvailableYearByCountryIdFromTwoCharts(
         firstChartAnalyticsResponse?.rows || [],
         secondChartAnalyticsResponse?.rows || [],
-        chartSource.isLatestCOVID19
+        chartSource.isLatestCOVID19,
+        chartSource.maxYearToFilterBy
     );
 
     const allRowsFilteredByLAY = getAllRowsLatestAvailableYearFromTwoCharts(
         firstChartAnalyticsResponse?.rows || [],
         secondChartAnalyticsResponse?.rows || [],
-        chartSource.isLatestCOVID19
+        chartSource.isLatestCOVID19,
+        chartSource.maxYearToFilterBy
     );
 
     // By ordering latestAvailableYearByCountryId it order data and labels

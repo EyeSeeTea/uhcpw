@@ -65,6 +65,7 @@ export const sortedCharts: string[] = [
     "eibYs7QySNk",
     "MfLZYD6QCPy",
     "oaYpnZIdm5C",
+    "wFITZgQ3udq",
     // Health spending (health accounts) - country level
     "OB4SCQfCzwz",
     "z6nPPMMbOw5",

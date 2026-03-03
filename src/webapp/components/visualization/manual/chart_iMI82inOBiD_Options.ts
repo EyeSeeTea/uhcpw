@@ -21,7 +21,6 @@ export const chart_iMI82inOBiD_Options: (chartSource: ChartSource) => Highcharts
         chartSource,
         seriesNames,
         seriesColors,
-        currentYear: chartSource.currentYear,
         currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
     });
 
