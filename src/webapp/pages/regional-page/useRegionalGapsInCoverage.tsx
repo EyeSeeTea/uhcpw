@@ -132,7 +132,6 @@ export function useRegionalGapsInCoverage(
                                               : VisualizationsSeeds["IXF2wBMnwpa"]?.regionalPageName,
                                       years: [LatestAvailable.id],
                                       countries: [...(selectedRegion.countries || [])],
-                                      regions: [selectedRegionId],
                                   },
                               ],
                           },
