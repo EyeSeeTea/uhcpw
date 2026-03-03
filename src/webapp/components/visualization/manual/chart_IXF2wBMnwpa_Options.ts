@@ -47,6 +47,19 @@ export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts
         columnRowsGreaterOrEqual99,
     });
 
+    const separatorIndex = categories.findIndex(category => category === null);
+    const hasLower = columnRowsLowerThan99.length > 0;
+    const hasGreater = columnRowsGreaterOrEqual99.length > 0;
+
+    const hasGap = hasLower && hasGreater;
+
+    const singleTitleText =
+        hasGreater && !hasLower
+            ? "Population coverage > 99%"
+            : !hasGreater && hasLower
+            ? "Population coverage < 99%"
+            : "";
+
     const series = [
         {
             id: "CGk1OOt70Dz_residence",
@@ -88,6 +101,13 @@ export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts
 
     return {
         ...baseChartOptions,
+        title: hasGap
+            ? { text: null }
+            : {
+                  text: singleTitleText,
+                  align: "center",
+                  style: { fontSize: "13px" },
+              },
         xAxis: {
             categories: categories.map(category => {
                 if (!category) return "";
@@ -149,14 +169,21 @@ export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts
             marginTop: 30,
             events: {
                 render: function (this: Highcharts.Chart & { customTitlesGroup?: Highcharts.SVGElement }) {
+                    if (!hasGap) {
+                        this.customTitlesGroup?.destroy();
+
+                        const centerX = this.plotLeft + this.plotWidth / 2;
+                        this.title?.attr({ x: centerX });
+
+                        return;
+                    }
+
                     if (!this.customTitlesGroup) {
                         this.customTitlesGroup = this.renderer.g("custom-titles").add();
                     } else {
                         this.customTitlesGroup.destroy();
                         this.customTitlesGroup = this.renderer.g("custom-titles").add();
                     }
-                    const separatorIndex = categories.findIndex(category => category === null);
-                    if (separatorIndex <= 0 || separatorIndex >= categories.length - 1) return;
 
                     const firstRight = separatorIndex + 1;
                     const lastRight = categories.length - 1;

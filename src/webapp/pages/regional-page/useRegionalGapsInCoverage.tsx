@@ -131,7 +131,13 @@ export function useRegionalGapsInCoverage(
                                               ? gapsInCoverageContent.panelThreeChartOneTitle
                                               : VisualizationsSeeds["IXF2wBMnwpa"]?.regionalPageName,
                                       years: [LatestAvailable.id],
-                                      countries: [...(selectedRegion.countries || [])],
+                                      countries:
+                                          selectedRegion.id === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS ||
+                                          selectedRegion.id === ORG_UNIT_GROUP_IDS.EUROPEAN_REGION
+                                              ? manageBIHInCountries("addSubRegionsAndFilterBIH", [
+                                                    ...(selectedRegion.countries || []),
+                                                ])
+                                              : [...(selectedRegion.countries || [])],
                                   },
                               ],
                           },
