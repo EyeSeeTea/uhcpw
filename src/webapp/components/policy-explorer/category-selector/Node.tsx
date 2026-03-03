@@ -62,14 +62,23 @@ const StyledTreeItem = styled(TreeItem)`
         font-weight: 500;
         font-size: 14px;
     }
+    .MuiTreeItem-content {
+        align-items: baseline;
+    }
+    .MuiTreeItem-iconContainer {
+        align-self: flex-start;
+        margin-top: 13px;
+    }
 `;
 
 const StyledTypography = styled(Typography)<{ $disabled?: boolean }>`
     color: ${props => (props.$disabled ? "#8e8e8e" : undefined)};
+    margin: 0;
+    padding-top: 3px;
 `;
 
 const Row = styled.div`
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
 `;
