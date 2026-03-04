@@ -66,7 +66,6 @@ const whoCountrycodes: Record<string, string> = {
     "BIH-4-1": "BIH",
     "BIH-4-2": "BIH-F",
     "BIH-4-3": "BIH-R",
-    GRL: "EU",
 };
 
 export const whoCountryNames: Record<Id, string> = {
@@ -87,7 +86,6 @@ const whoCountryNameToCountryName: Record<string, string> = {
     "Kosovo*": "Kosovo",
     "BIH (the Federation of Bosnia and Herzegovina)": "Federacija Bosne i Hercegovine",
     "BIH (the Republika Srpska)": "Republica Serpska",
-    EU: "Greenland",
     "Bosnia and Herzegovina": "Brcko District",
 };
 
