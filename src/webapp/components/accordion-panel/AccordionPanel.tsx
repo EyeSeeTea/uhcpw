@@ -106,6 +106,8 @@ const AccordionContainer = styled.div`
     padding: 0;
     background: white;
     color: white;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 `;
 
 const StyledTypography = styled(Typography)`
