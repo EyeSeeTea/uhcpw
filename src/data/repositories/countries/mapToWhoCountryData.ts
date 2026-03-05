@@ -87,6 +87,7 @@ const whoCountryNameToCountryName: Record<string, string> = {
     "BIH (the Federation of Bosnia and Herzegovina)": "Federacija Bosne i Hercegovine",
     "BIH (the Republika Srpska)": "Republica Serpska",
     "Bosnia and Herzegovina": "Brcko District",
+    EU: "European Union (EU)",
 };
 
 export function mapFromWhoToD2CountryName(countryName: string): string {
