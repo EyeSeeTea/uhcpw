@@ -58,7 +58,6 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
             };
         }) || []),
     ];
-    console.log("series", series);
 
     const countryId = firstChartAnalyticsResponse?.metaData.dimensions.ou?.length
         ? firstChartAnalyticsResponse?.metaData.dimensions.ou[0]
