@@ -28,7 +28,7 @@ import { DataStoreClient } from "../../DataStoreClient";
 import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
 import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
 import { getVisualizationTemplate } from "./visualization-template/getVisualizationTemplate";
-import { Region } from "../../../domain/entities/region/Region";
+import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS, Region } from "../../../domain/entities/region/Region";
 import { getYearByIndicatorAndCountry } from "../../../webapp/components/visualization/manual/chart_kIpnMBaBvZ9_Options";
 import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
 import { ceilAnalyticsRows } from "./utils/ceilAnalyticsRows";
@@ -42,6 +42,7 @@ import {
     POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_PAYMENT,
     POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_RESIDENCE,
 } from "./PolicyExplorerChartDataD2Repository";
+import { getRegionCodeById } from "../regions/utils";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -259,8 +260,11 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     })
                 ),
             }).flatMap(({ analyticsResponses, metadata, orgUnitsResponse, orgUnitGroupsResponse }) => {
-                const orgUnits: D2OrgUnit[] = orgUnitsResponse.objects;
-                const orgUnitGroups: D2OrgUnitGroup[] = orgUnitGroupsResponse.objects;
+                const orgUnits: D2OrgUnit[] = this.addRegionCodesToOrgUnit(orgUnitsResponse.objects);
+                const orgUnitGroups: D2OrgUnitGroup[] = this.addRegionCodesToOrgUnitGroup(
+                    orgUnitGroupsResponse.objects
+                );
+
                 const mergedVisualization = this.mergeVisualizations(visualizations);
 
                 const isMultipleVisualizations = mergedVisualization.id.includes("_");
@@ -369,6 +373,34 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 }
                 return Future.success(undefined);
             });
+        });
+    }
+
+    private addRegionCodesToOrgUnit(orgUnits: D2OrgUnit[]): D2OrgUnit[] {
+        const regionOrgUnitIds: Set<Id> = new Set(Object.values(ORG_UNIT_IDS));
+        const regionCodeById = getRegionCodeById(ORG_UNIT_IDS);
+
+        return orgUnits.map(orgUnit => {
+            if (regionOrgUnitIds.has(orgUnit.id)) {
+                const code = regionCodeById.get(orgUnit.id);
+                return code ? { ...orgUnit, code } : orgUnit;
+            } else {
+                return orgUnit;
+            }
+        });
+    }
+
+    private addRegionCodesToOrgUnitGroup(orgUnitGroups: D2OrgUnitGroup[]): D2OrgUnitGroup[] {
+        const regionOrgUnitGroupIds: Set<Id> = new Set(Object.values(ORG_UNIT_GROUP_IDS));
+        const regionCodeById = getRegionCodeById(ORG_UNIT_GROUP_IDS);
+
+        return orgUnitGroups.map(orgUnitGroup => {
+            if (regionOrgUnitGroupIds.has(orgUnitGroup.id)) {
+                const code = regionCodeById.get(orgUnitGroup.id);
+                return code ? { ...orgUnitGroup, code } : orgUnitGroup;
+            } else {
+                return orgUnitGroup;
+            }
         });
     }
 
