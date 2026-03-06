@@ -42,6 +42,10 @@ export const chart_AQ8dYmv00zb_Options: (chartSource: ChartSource) => Highcharts
         dataSeriesColors
     );
 
+    const [yAxisTitle = "Current €PPP per person"] = chartSource.visualization.axes
+        .filter(axis => axis.type === "RANGE")
+        .map(axis => axis.title.text);
+
     return {
         ...chartOptions,
         chart: {
@@ -51,7 +55,7 @@ export const chart_AQ8dYmv00zb_Options: (chartSource: ChartSource) => Highcharts
         series,
         yAxis: {
             title: {
-                text: "Current €PPP per person",
+                text: yAxisTitle,
                 style: { fontSize: "13px" },
             },
         },
