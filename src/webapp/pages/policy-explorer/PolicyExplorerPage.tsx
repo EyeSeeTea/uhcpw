@@ -24,7 +24,10 @@ import {
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import mapBackground from "../../assets/map-background.jpg";
-import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import {
+    BREAKPOINT_WIDTH_MOBILE_SCREEN,
+    BREAKPOINT_WIDTH_SMALL_SCREEN,
+} from "../../common/hooks/screen/useIsSmallScreen";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
@@ -410,6 +413,14 @@ const DownloadButton = styled(Button)`
     align-self: flex-end;
     margin-block-start: 20px;
     background: #185698;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_MOBILE_SCREEN}px) {
+        height: 50px;
+        width: 100%;
+        margin-block-start: 26px;
+        justify-content: center;
+        padding: 6px 16px;
+    }
 `;
 
 const Center = styled.div`
