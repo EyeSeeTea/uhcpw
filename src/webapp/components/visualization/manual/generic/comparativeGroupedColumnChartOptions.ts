@@ -77,6 +77,7 @@ export const comparativeGroupedColumnChartOptions: (params: {
                 return {
                     name: orgUnit,
                     y: value,
+                    id: orgUnit,
                 };
             }),
         };

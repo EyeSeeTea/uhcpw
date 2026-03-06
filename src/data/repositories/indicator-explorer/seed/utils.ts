@@ -69,6 +69,7 @@ export const sortedCharts: string[] = [
     // Health spending (health accounts) - country level
     "OB4SCQfCzwz",
     "z6nPPMMbOw5",
+    "flLqTxfuuWI",
     // Health spending (health accounts) - comparative
     "CdqVV1Ib0XS",
     "ZZAcIv6O9LY",
@@ -80,6 +81,7 @@ export const sortedCharts: string[] = [
     "twyY1ulr7uD",
     "d3kq9OCv8tH",
     "y4qAv6eW4nb",
+    "AQ8dYmv00zb",
     // Combined indicators
     "kIpnMBaBvZ9",
     "mUjcWO90CRr",

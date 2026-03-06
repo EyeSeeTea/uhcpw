@@ -1,12 +1,12 @@
 import Highcharts, { PointOptionsObject, SeriesColumnOptions } from "highcharts";
 import _ from "lodash";
 
-type ColorOverrides = Record<string, Record<string, string>>;
+export type ColorOverrides = Record<string, Record<string, string>>;
 type UsedColorsBySeries = Record<string, string[]>;
 
 type ChartWithSwatches = Highcharts.Chart & {
     customSwatches?: Highcharts.SVGElement[];
-    legend: any;
+    legend: unknown;
 };
 
 export function overrideDataSeriesColorAndUpdateLegends(
@@ -36,7 +36,7 @@ const buildUsedColorsBySeries = (
         if (!overrides) return acc;
 
         const colors = (serie.data as PointOptionsObject[])?.flatMap(point =>
-            point.name && overrides[point.name] ? [overrides[point.name]] : []
+            point.id && overrides[point.id] ? [overrides[point.id]] : []
         );
 
         if (colors.length === 0) return acc;
@@ -101,7 +101,7 @@ function applyColorOverridesToSeries(
         return {
             ...serie,
             data: (serie.data as PointOptionsObject[]).map(point => {
-                const color = point.name ? overrides[point.name] : undefined;
+                const color = point.id ? overrides[point.id] : undefined;
                 return color ? { ...point, color } : point;
             }),
         };

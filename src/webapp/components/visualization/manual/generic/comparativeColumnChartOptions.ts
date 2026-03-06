@@ -141,6 +141,7 @@ export const comparativeColumnChartOptions: (params: {
                     name: hideYear ? code : `${code} ${year}`,
                     y: value,
                     categoryId: row[1] || "",
+                    id: code,
                     ...color,
                 };
             }),
