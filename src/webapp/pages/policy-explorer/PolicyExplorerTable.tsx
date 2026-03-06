@@ -21,6 +21,7 @@ import {
 import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
 import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
 import { TableLegend } from "../../components/policy-explorer/TableLegend";
+import { BREAKPOINT_WIDTH_MOBILE_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 interface PolicyExplorerTableProps {
     category: CategoryOption;
@@ -187,10 +188,9 @@ export const PolicyExplorerTable = React.memo(
         ) : (
             <>
                 <TableHeader>
-                    <Row>
+                    <TitleButtonRow>
                         {category && (
                             <Row>
-                                {/* padding */}
                                 <Typography variant="h6" color="primary">
                                     {category.text}
                                 </Typography>
@@ -213,7 +213,7 @@ export const PolicyExplorerTable = React.memo(
                                 <Typography>{i18n.t("Row/Column")}</Typography>
                             </SwitchRowColumnButton>
                         </Row>
-                    </Row>
+                    </TitleButtonRow>
                 </TableHeader>
 
                 <TableLegend categoryId={category.value} />
@@ -269,6 +269,13 @@ const Row = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+`;
+
+const TitleButtonRow = styled(Row)`
+    @media (max-width: ${BREAKPOINT_WIDTH_MOBILE_SCREEN}px) {
+        flex-direction: column;
+        margin-block-start: 16px;
+    }
 `;
 
 const TableHeader = styled.div`
@@ -363,6 +370,14 @@ const SwitchRowColumnButton = styled(Button)`
     width: 170px;
     text-transform: initial;
     background: #185698;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_MOBILE_SCREEN}px) {
+        height: 50px;
+        width: 100%;
+        margin-block-start: 20px;
+        justify-content: center;
+        padding: 6px 16px;
+    }
 `;
 
 const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
