@@ -4,7 +4,7 @@ import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../u
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
 
 const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["65+ Years", "Average", "<25 Years"];
+const PARAMETER_ORDER = ["65+ years", "Average", "<25 years"];
 
 export const chart_eBxPw4kUnLU_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,

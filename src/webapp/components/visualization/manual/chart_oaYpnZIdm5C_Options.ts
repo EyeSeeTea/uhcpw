@@ -13,9 +13,9 @@ const seriesIds: Record<SeriesKey, string> = {
 };
 
 const seriesNames: Record<typeof seriesIds[keyof typeof seriesIds], string> = {
-    [seriesIds.more65years]: "65+ Years",
+    [seriesIds.more65years]: "65+ years",
     [seriesIds.average]: "Average",
-    [seriesIds.less25years]: "<25 Years",
+    [seriesIds.less25years]: "<25 years",
 };
 
 const seriesColors: Record<typeof seriesIds[keyof typeof seriesIds], string> = {
