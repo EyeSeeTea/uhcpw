@@ -32,11 +32,6 @@ import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS, Region } from "../../../domain/entiti
 import { getYearByIndicatorAndCountry } from "../../../webapp/components/visualization/manual/chart_kIpnMBaBvZ9_Options";
 import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
 import { ceilAnalyticsRows } from "./utils/ceilAnalyticsRows";
-import {
-    BosniaAndHerzegovina,
-    FederationOfBosniaAndHerzegovina,
-    RepublikaSrpska,
-} from "../../../domain/entities/Country";
 import { PolicyExplorerChartData } from "../../../domain/entities/indicator-explorer/PolicyExplorerChartData";
 import {
     POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_PAYMENT,
@@ -66,8 +61,6 @@ const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
     },
 };
 
-const LEVEL_4_IDS = new Set([BosniaAndHerzegovina, RepublikaSrpska, FederationOfBosniaAndHerzegovina]);
-
 export class AnalyticsD2Repository implements AnalyticsRepository {
     constructor(private api: D2Api, private d2DataEngine: unknown, private dataStoreClient: DataStoreClient) {}
 
@@ -77,32 +70,36 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         countryIds: Id[],
         regions: Region[]
     ): FutureData<Analytics> {
-        //NOTICE: This was done because for chart IXF2wBMnwpa we need to split the request by org unit level 3 and 4,
-        // because sometimes the endpoint returns 409 error when we request both levels together
-        if (!visualization.splitRequestsByOrgUnitLevel) {
-            return this.fetchAnalytics(countryIds, visualization, periods, regions);
-        } else {
-            const orgUnitIdsLevel3 = countryIds.filter(id => !LEVEL_4_IDS.has(id));
-            const orgUnitIdsLevel4 = countryIds.filter(id => LEVEL_4_IDS.has(id));
+        const periodChunks = _.chunk(periods, 10);
 
-            if (orgUnitIdsLevel3.length === 0 && orgUnitIdsLevel4.length === 0) {
-                return Future.error<string, Analytics>("No data found");
-            }
-
-            if (orgUnitIdsLevel3.length === 0) {
-                return this.fetchAnalytics(orgUnitIdsLevel4, visualization, periods, regions);
-            }
-
-            if (orgUnitIdsLevel4.length === 0) {
-                return this.fetchAnalytics(orgUnitIdsLevel3, visualization, periods, regions);
-            }
-
-            return this.fetchAnalytics(orgUnitIdsLevel3, visualization, periods, regions).flatMap(analyticsLevel3 => {
-                return this.fetchAnalytics(orgUnitIdsLevel4, visualization, periods, regions).map(analyticsLevel4 => {
-                    return this.mergeAnalytics(analyticsLevel3, analyticsLevel4);
-                });
-            });
+        if (periodChunks.length === 0) {
+            return Future.error("No periods provided");
         }
+
+        if (periodChunks.length === 1) {
+            return this.fetchAnalytics(countryIds, visualization, periods, regions);
+        }
+
+        return this.fetchAnalyticsByPeriodChunks(countryIds, visualization, periodChunks, regions);
+    }
+
+    private fetchAnalyticsByPeriodChunks(
+        countryIds: Id[],
+        visualization: Visualization,
+        periodChunks: string[][],
+        regions: Region[]
+    ): FutureData<Analytics> {
+        if (periodChunks.length === 0) {
+            return Future.error("No periods provided");
+        }
+
+        const $analytics = periodChunks.map(periodChunk =>
+            this.fetchAnalytics(countryIds, visualization, periodChunk, regions)
+        );
+
+        return Future.parallel($analytics, { maxConcurrency: 3 }).map(results =>
+            results.reduce((acc, analytics) => this.mergeAnalytics(acc, analytics))
+        );
     }
 
     private fetchAnalytics(
@@ -151,40 +148,37 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             });
     }
 
-    private mergeAnalytics(analyticsLevel3: Analytics, analyticsLevel4: Analytics): Analytics {
-        const headers = analyticsLevel3.headers;
+    private mergeAnalytics(analyticsA: Analytics, analyticsB: Analytics): Analytics {
+        const headers = analyticsA.headers;
 
         const items: Record<string, AnalyticsMetadataItem> = {
-            ...analyticsLevel3.metaData.items,
-            ...analyticsLevel4.metaData.items,
+            ...analyticsA.metaData.items,
+            ...analyticsB.metaData.items,
         };
 
         const dimensionKeys = Array.from(
-            new Set([
-                ...Object.keys(analyticsLevel3.metaData.dimensions),
-                ...Object.keys(analyticsLevel4.metaData.dimensions),
-            ])
+            new Set([...Object.keys(analyticsA.metaData.dimensions), ...Object.keys(analyticsB.metaData.dimensions)])
         );
 
         const dimensions = dimensionKeys.reduce<Record<string, string[]>>((acc, key) => {
-            const valuesFromLevel3 = analyticsLevel3.metaData.dimensions[key] ?? [];
-            const valuesFromLevel4 = analyticsLevel4.metaData.dimensions[key] ?? [];
+            const valuesFromA = analyticsA.metaData.dimensions[key] ?? [];
+            const valuesFromB = analyticsB.metaData.dimensions[key] ?? [];
 
             return {
                 ...acc,
-                [key]: [...new Set([...valuesFromLevel3, ...valuesFromLevel4])],
+                [key]: [...new Set([...valuesFromA, ...valuesFromB])],
             };
         }, {});
 
-        const rows = [...(analyticsLevel3.rows ?? []), ...(analyticsLevel4.rows ?? [])];
+        const rows = [...(analyticsA.rows ?? []), ...(analyticsB.rows ?? [])];
 
         return {
-            headers: headers,
+            headers,
             metaData: {
-                items: items,
-                dimensions: dimensions,
+                items,
+                dimensions,
             },
-            rows: rows,
+            rows,
         };
     }
 
