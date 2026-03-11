@@ -3,7 +3,7 @@ import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../u
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
 const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
-const PARAMETER_ORDER = ["65+ Years", "Average", "<25 Years"];
+const PARAMETER_ORDER = ["65+ years", "Average", "<25 years"];
 
 export const chart_oaYpnZIdm5C_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
