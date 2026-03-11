@@ -1,4 +1,4 @@
-import { mapFromWhoToD2CountryName, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
+import { mapFromWhoCountryNameToId, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
 import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
@@ -196,8 +196,11 @@ function getDataWithCountryCodesRow(params: {
 function getCountryCodesRow(countriesAndYearsHeaders: string[], orgUnits: D2OrgUnit[]): string[] {
     return countriesAndYearsHeaders.map(countryAndYear => {
         const [country, year] = countryAndYear.split("-");
+        const countryName = country || "";
         const orgUnitCode =
-            orgUnits.find(orgUnit => orgUnit.shortName === mapFromWhoToD2CountryName(country || ""))?.code || "";
+            orgUnits.find(
+                orgUnit => orgUnit.shortName === countryName || orgUnit.id === mapFromWhoCountryNameToId(countryName)
+            )?.code || countryName;
         return `${mapToWhoCountryCode(orgUnitCode)}-${year}`;
     });
 }

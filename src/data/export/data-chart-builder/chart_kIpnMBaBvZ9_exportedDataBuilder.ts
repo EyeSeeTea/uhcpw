@@ -1,4 +1,4 @@
-import { mapFromWhoToD2CountryName, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
+import { mapFromWhoCountryNameToId, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
 import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { cellNameByVisualizationId } from "../../repositories/indicator-explorer/utils/getCustomCellName";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
@@ -101,15 +101,15 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
                 Number(valueYAxis?.replace(",", "."))
             );
 
-            const d2CountryName = mapFromWhoToD2CountryName(countryName);
-            const countryCode = orgUnits.find(ou => ou.shortName === d2CountryName)?.code;
-            const whoCountryCode = countryCode ? mapToWhoCountryCode(countryCode) : countryCode;
+            const maybeCountryCode =
+                orgUnits.find(
+                    orgUnit =>
+                        orgUnit.shortName === countryName || orgUnit.id === mapFromWhoCountryNameToId(countryName)
+                )?.code || countryName;
 
-            if (whoCountryCode === undefined) {
-                throw new Error("Country code not found");
-            }
+            const maybeWhoCountryCode = mapToWhoCountryCode(maybeCountryCode);
 
-            return [...acc, [countryName, yearX, yearY, whoCountryCode, ...parametersData]];
+            return [...acc, [countryName, yearX, yearY, maybeWhoCountryCode, ...parametersData]];
         },
         []
     );
