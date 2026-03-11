@@ -3,7 +3,7 @@ import { VisualizationExtra } from "../../../../domain/entities/indicator-explor
 
 export const chart_wFITZgQ3udq_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.unmetNeed,
-    friendlyName: "Unmet need for social care (help with personal care or with household activities)",
+    friendlyName: "Unmet need for social care (help with personal care or household activities)",
     selectedYearsByDefault: [{ id: "2019" }],
     allowedYears: [{ id: "2019" }],
     isYearSingleSelection: true,
