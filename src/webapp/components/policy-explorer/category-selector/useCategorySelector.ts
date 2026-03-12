@@ -11,11 +11,20 @@ export type SubcategoryOption = {
     text: string;
 };
 
-export type CategoryOption = {
-    value: string;
+export type CategoryOption = CategorySelectableOption | CategoryGroupOption;
+
+export type CategorySelectableOption = {
+    type: "selectable";
     text: string;
+    value: string;
     subcategories: SubcategoryOption[];
     description: string;
+};
+
+export type CategoryGroupOption = {
+    type: "group";
+    text: string;
+    categories: CategorySelectableOption[];
 };
 
 type useCategorySelectorParmas = {
@@ -34,7 +43,7 @@ type State = {
     handleSubcategoriesChange: (parentCategoryId: string, subcategoryId: string, selected: boolean) => void;
     isAllCategorySelected: (categoryId: string) => boolean;
     isSubcategorySelected: (categoryId: string, subcategoryId: string) => boolean;
-    categoriesSelection: CategoryOption[];
+    categoriesSelection: CategorySelectableOption[];
     filteredCategories: CategoryOption[];
     handleClear: () => void;
     handleSelectAll: () => void;
@@ -72,8 +81,8 @@ export const useCategorySelector = ({
 
     const handleClose = useCallback(() => {
         setAnchorEl(null);
-        setExpanded(!expanded);
-    }, [expanded, setExpanded, setAnchorEl]);
+        setExpanded(false);
+    }, [setExpanded, setAnchorEl]);
 
     const handleSearchChange = useCallback(
         (term: string) => {
@@ -126,17 +135,14 @@ export const useCategorySelector = ({
 
     const isAllCategorySelected = useCallback(
         (categoryId: string) => {
-            const selectedCategoryOption = categoryOptions.find(({ value }) => value === categoryId);
+            const selectedCategoryOption = findSelectableCategory(categoryOptions, categoryId);
+
             return (
                 (!!selectedCategoryOption?.subcategories.length &&
-                    selectedCategoryOption?.subcategories.every(
-                        subcategory =>
-                            !!selectedCategoriesWithSubcategories &&
-                            selectedCategoriesWithSubcategories[categoryId]?.includes(subcategory.value)
+                    selectedCategoryOption.subcategories.every(
+                        subcategory => !!selectedCategoriesWithSubcategories?.[categoryId]?.includes(subcategory.value)
                     )) ||
-                (!selectedCategoryOption?.subcategories.length &&
-                    !!selectedCategoriesWithSubcategories &&
-                    !!selectedCategoriesWithSubcategories[categoryId])
+                (!selectedCategoryOption?.subcategories.length && !!selectedCategoriesWithSubcategories?.[categoryId])
             );
         },
         [categoryOptions, selectedCategoriesWithSubcategories]
@@ -152,40 +158,69 @@ export const useCategorySelector = ({
         [selectedCategoriesWithSubcategories]
     );
 
-    const categoriesSelection = useMemo(
-        () =>
-            categoryOptions
-                .filter(
+    const categoriesSelection = useMemo((): CategorySelectableOption[] => {
+        return getSelectableCategories(categoryOptions)
+            .filter(
+                category =>
+                    !!selectedCategoriesWithSubcategories &&
+                    Object.keys(selectedCategoriesWithSubcategories).includes(category.value)
+            )
+            .map(category => ({
+                ...category,
+                subcategories: category.subcategories.filter(
                     ({ value }) =>
                         !!selectedCategoriesWithSubcategories &&
-                        Object.keys(selectedCategoriesWithSubcategories).includes(value)
-                )
-                .map(category => ({
-                    ...category,
-                    subcategories: category.subcategories.filter(
-                        ({ value }) =>
-                            !!selectedCategoriesWithSubcategories &&
-                            selectedCategoriesWithSubcategories[category.value]?.includes(value)
-                    ),
-                })),
-        [categoryOptions, selectedCategoriesWithSubcategories]
-    );
+                        selectedCategoriesWithSubcategories[category.value]?.includes(value)
+                ),
+            }));
+    }, [categoryOptions, selectedCategoriesWithSubcategories]);
 
     const filteredCategories = useMemo(() => {
         return categoryOptions
-            .map(category => ({
-                ...category,
-                subcategories: CATEGORIES_WITHOUT_SUBCATEGORIES.includes(category.value)
+            .map((category): CategoryOption | undefined => {
+                if (category.type === "group") {
+                    const filteredSelectableCategories = category.categories
+                        .map(selectableCategory => ({
+                            ...selectableCategory,
+                            subcategories: CATEGORIES_WITHOUT_SUBCATEGORIES.includes(selectableCategory.value)
+                                ? selectableCategory.subcategories
+                                : selectableCategory.subcategories.filter(subcategory =>
+                                      subcategory.text.toLowerCase().includes(searchTerm.toLowerCase())
+                                  ),
+                        }))
+                        .filter(
+                            selectableCategory =>
+                                (selectableCategory.subcategories.length &&
+                                    !CATEGORIES_WITHOUT_SUBCATEGORIES.includes(selectableCategory.value)) ||
+                                selectableCategory.text.toLowerCase().includes(searchTerm.toLowerCase())
+                        );
+
+                    return filteredSelectableCategories.length
+                        ? {
+                              ...category,
+                              categories: filteredSelectableCategories,
+                          }
+                        : undefined;
+                }
+
+                const filteredSubcategories = CATEGORIES_WITHOUT_SUBCATEGORIES.includes(category.value)
                     ? category.subcategories
                     : category.subcategories.filter(subcategory =>
                           subcategory.text.toLowerCase().includes(searchTerm.toLowerCase())
-                      ),
-            }))
-            .filter(
-                ({ value, text, subcategories }) =>
-                    (subcategories.length && !CATEGORIES_WITHOUT_SUBCATEGORIES.includes(value)) ||
-                    text.toLowerCase().includes(searchTerm.toLowerCase())
-            );
+                      );
+
+                const shouldInclude =
+                    (filteredSubcategories.length && !CATEGORIES_WITHOUT_SUBCATEGORIES.includes(category.value)) ||
+                    category.text.toLowerCase().includes(searchTerm.toLowerCase());
+
+                return shouldInclude
+                    ? {
+                          ...category,
+                          subcategories: filteredSubcategories,
+                      }
+                    : undefined;
+            })
+            .filter((category): category is CategoryOption => !!category);
     }, [categoryOptions, searchTerm]);
 
     const handleClear = useCallback(() => {
@@ -193,20 +228,23 @@ export const useCategorySelector = ({
     }, [onSelect]);
 
     const handleSelectAll = useCallback(() => {
-        const categoriesToSelect = filteredCategories.reduce((accCategoriesToSelect, category) => {
-            return {
-                ...accCategoriesToSelect,
-                [category.value]: category.subcategories.map(({ value }) => value),
-            };
-        }, {});
+        const categoriesToSelect = getSelectableCategories(filteredCategories).reduce<Record<string, string[]>>(
+            (accCategoriesToSelect, category) => {
+                return {
+                    ...accCategoriesToSelect,
+                    [category.value]: category.subcategories.map(({ value }) => value),
+                };
+            },
+            {}
+        );
 
-        if (!isEmpty(filteredCategories) && onSelect) {
+        if (!isEmpty(filteredCategories)) {
             onSelect(categoriesToSelect);
         }
     }, [filteredCategories, onSelect]);
 
     const disableSelectAll = useMemo(() => {
-        const categoriesToBeSelected = filteredCategories.filter(category => {
+        const categoriesToBeSelected = getSelectableCategories(filteredCategories).filter(category => {
             const categoryNotSelected =
                 !!selectedCategoriesWithSubcategories &&
                 !Object.keys(selectedCategoriesWithSubcategories).includes(category.value);
@@ -251,3 +289,11 @@ export const useCategorySelector = ({
         isSmallScreen,
     };
 };
+
+function getSelectableCategories(options: CategoryOption[]): CategorySelectableOption[] {
+    return options.flatMap(option => (option.type === "group" ? option.categories : [option]));
+}
+
+function findSelectableCategory(options: CategoryOption[], categoryId: string): CategorySelectableOption | undefined {
+    return getSelectableCategories(options).find(category => category.value === categoryId);
+}

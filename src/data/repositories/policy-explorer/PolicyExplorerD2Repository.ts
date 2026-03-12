@@ -30,7 +30,7 @@ import { TableBuilderByTypeOfHealthcare } from "./builders/TableBuilderByTypeOfH
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
@@ -94,7 +94,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndSubregions: Country[],
-        programCategories: PolicyExplorerCategory[],
+        programCategories: PolicyExplorerSelectableCategory[],
         useCountryCodes?: boolean
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
@@ -193,7 +193,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     }
 
     saveToFile(
-        categories: PolicyExplorerCategory[],
+        categories: PolicyExplorerSelectableCategory[],
         policyExplorer: PolicyExplorer,
         fileName?: string
     ): FutureData<void> {
@@ -383,7 +383,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         countriesAndSubregions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
-        programCategories: PolicyExplorerCategory[];
+        programCategories: PolicyExplorerSelectableCategory[];
         useCountryCodes?: boolean;
         lastAvailableYearByCountry: Map<string, string>;
     }): Record<string, PolicyExplorerCell[][]> {

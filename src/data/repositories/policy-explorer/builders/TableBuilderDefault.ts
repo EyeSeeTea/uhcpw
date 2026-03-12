@@ -7,13 +7,13 @@ import {
 } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME, D2DataSet, EMPTY_DATA, PERIOD_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID } from "../PolicyExplorerCategoryD2Repository";
-import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export class TableBuilderDefault implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
-        programCategories?: PolicyExplorerCategory[];
+        programCategories?: PolicyExplorerSelectableCategory[];
         dataSet?: D2DataSet;
     }): PolicyExplorerCellHeader[] {
         const { policyExplorerCategoryId, policyExplorerSubcategoriesIds, programCategories, dataSet } = params;
@@ -104,7 +104,7 @@ export class TableBuilderDefault implements TableBuilder {
     private getProgramDataElementsSection(
         policyExplorerCategoryId: string,
         policyExplorerSubcategoriesIds: string[],
-        programCategories?: PolicyExplorerCategory[]
+        programCategories?: PolicyExplorerSelectableCategory[]
     ) {
         return (
             programCategories
@@ -122,7 +122,7 @@ export class TableBuilderDefault implements TableBuilder {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
         dataSet?: D2DataSet;
-        programCategories?: PolicyExplorerCategory[];
+        programCategories?: PolicyExplorerSelectableCategory[];
     }): Array<{ name: string } | { description?: string; formName: string }> {
         if (policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID) {
             return this.getDataElementsSection(policyExplorerCategoryId, policyExplorerSubcategoriesIds, dataSet);

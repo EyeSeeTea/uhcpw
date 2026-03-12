@@ -2,8 +2,10 @@ import { Future, FutureData } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
 import {
     PolicyExplorerCategory,
+    PolicyExplorerSelectableCategory,
     PolicyExplorerSelectCategoryInfo,
     PolicyExplorerSubcategory,
+    PolicyExplorerGroupCategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
 import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../utils";
@@ -20,6 +22,9 @@ import { Maybe } from "../../../types/utils";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
 const CHANGES_AREA_CATEGORY_OPTIONSET = "po0HzvS3s3w";
+
+// NOTICE: This is hardcoded because this is not a section in metadata
+export const COMPARATIVE_POLICY_CHARTS_CATEGORY_GROUP_ID = "COMPARATIVE_POLICY_CHARTS_CATEGORY_GROUP_ID";
 
 export const CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     USER_CHARGES: "u800TAhsIBY",
@@ -117,7 +122,7 @@ const sectionsList = [
     DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
     CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
     // CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
-    ...CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
+    CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 ];
 
 const selectCategoryInfoDataElements: Record<string, Id> = {
@@ -170,15 +175,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
 
             if (dataSet && programs && events) {
                 const categories = this.buildCategories(programs, events, dataSet, infoNotes, changesAreaTypeOptions);
-                return Future.success(
-                    categories.filter(category =>
-                        isRegionalPage
-                            ? [...CATEGORIES_ALSO_IN_REGIONAL_PAGE, ...CATEGORIES_ONLY_IN_REGIONAL_PAGE].includes(
-                                  category.id
-                              )
-                            : !CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id)
-                    )
-                );
+                return Future.success(this.filterCategoriesByPage(categories, isRegionalPage));
             } else {
                 return Future.error("No categories found");
             }
@@ -261,6 +258,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             infoNotes,
             changesAreaTypeOptions
         );
+        const comparativePolicyChartsCategory = this.getComparativePolicyChartsCategories(infoNotes);
 
         const deSubstitutor = new DataElementSubstitutor(dataSetSections, PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS);
 
@@ -284,23 +282,13 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                     const subDataElements = deSubstitutor.substituteSource(section.dataElements);
 
                     if (CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id) {
-                        const catNotes = infoNotes[CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY] || "";
-
                         return [
                             {
                                 id: section.id,
                                 name: displayName.replace("Policy Explorer - ", ""),
                                 subcategories: TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type })),
                                 description: notes,
-                            },
-                            {
-                                id: CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
-                                name: "User charges (co-payments) for covered health care by type of care",
-                                subcategories: USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE.map(type => ({
-                                    id: type,
-                                    name: type,
-                                })),
-                                description: catNotes,
+                                type: "selectable",
                             },
                         ];
                     } else if (section.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY) {
@@ -310,6 +298,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                                 name: "Entitlements for undocumented migrants",
                                 subcategories: [],
                                 description: notes,
+                                type: "selectable",
                             },
                         ];
                     } else {
@@ -319,11 +308,13 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                                 name: displayName.replace("Policy Explorer - ", ""),
                                 subcategories: this.sortSubcategories(dataElements, sectionsEvent, subDataElements),
                                 description: notes,
+                                type: "selectable",
                             },
                         ];
                     }
                 }),
             changesInCoveragePolicyMergedCategory,
+            comparativePolicyChartsCategory,
         ];
     }
 
@@ -342,8 +333,67 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                     name: name,
                 })) ?? [],
             description: notes,
+            type: "selectable",
         };
         return changesInCoveragePolicyMergedCategory;
+    }
+
+    private getComparativePolicyChartsCategories(infoNotes: InfoNotes): PolicyExplorerGroupCategory {
+        const catNotes = infoNotes[CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY] || "";
+
+        const category: PolicyExplorerSelectableCategory = {
+            id: CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+            name: "User charges (co-payments) for covered health care by type of care",
+            subcategories: USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE.map(type => ({
+                id: type,
+                name: type,
+            })),
+            description: catNotes,
+            type: "selectable",
+        };
+
+        const comparativePolicyChartsCategory: PolicyExplorerGroupCategory = {
+            id: COMPARATIVE_POLICY_CHARTS_CATEGORY_GROUP_ID,
+            name: "Comparative policy charts",
+            categories: [category],
+            description: "",
+            type: "group",
+        };
+        return comparativePolicyChartsCategory;
+    }
+
+    private filterCategoriesByPage(
+        categories: PolicyExplorerCategory[],
+        isRegionalPage?: boolean
+    ): PolicyExplorerCategory[] {
+        const allowedRegionalCategories = [...CATEGORIES_ALSO_IN_REGIONAL_PAGE, ...CATEGORIES_ONLY_IN_REGIONAL_PAGE];
+
+        return categories
+            .map(category => {
+                if (category.type === "group") {
+                    const filteredChildren = category.categories.filter(child =>
+                        isRegionalPage
+                            ? allowedRegionalCategories.includes(child.id)
+                            : !CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(child.id)
+                    );
+
+                    if (filteredChildren.length === 0) {
+                        return undefined;
+                    }
+
+                    return {
+                        ...category,
+                        categories: filteredChildren,
+                    };
+                }
+
+                const shouldInclude = isRegionalPage
+                    ? allowedRegionalCategories.includes(category.id)
+                    : !CATEGORIES_ONLY_IN_REGIONAL_PAGE.includes(category.id);
+
+                return shouldInclude ? category : undefined;
+            })
+            .filter((category): category is PolicyExplorerCategory => category !== undefined);
     }
 }
 

@@ -18,13 +18,13 @@ import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
 } from "../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
-import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
+import { CategorySelectableOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
 import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
 import { TableLegend } from "../../components/policy-explorer/TableLegend";
 import { BREAKPOINT_WIDTH_MOBILE_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 interface PolicyExplorerTableProps {
-    category: CategoryOption;
+    category: CategorySelectableOption;
     rows?: PolicyExplorerCell[][];
     dataOrientation?: DataOrientation;
     onSwitchRowColumn: (categoryId: string) => void;

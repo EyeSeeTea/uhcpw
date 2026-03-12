@@ -9,7 +9,7 @@ import {
 import { COUNTRY_HEADER_NAME } from "../PolicyExplorerD2Repository";
 import { Id } from "../../../../domain/entities/Ref";
 import { Maybe } from "../../../../types/utils";
-import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 type HealthCareType =
     | "Primary care visits"
@@ -63,7 +63,7 @@ export class TableBuilderCoveredHealthcareByType implements TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds: string[];
-        programCategories?: PolicyExplorerCategory[];
+        programCategories?: PolicyExplorerSelectableCategory[];
     }): PolicyExplorerCellHeader[] {
         const { policyExplorerSubcategoriesIds } = params;
 

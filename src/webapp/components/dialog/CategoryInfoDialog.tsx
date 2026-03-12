@@ -4,14 +4,14 @@ import CloseIcon from "@material-ui/icons/Close";
 import ReactMarkdown from "react-markdown";
 
 import i18n from "../../../locales";
-import { CategoryOption } from "../policy-explorer/category-selector/useCategorySelector";
+import { CategorySelectableOption } from "../policy-explorer/category-selector/useCategorySelector";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { createMarkdownComponents } from "./markdownComponents";
 import { useMemo } from "react";
 
 type DialogType = {
     isOpen: boolean;
-    category: CategoryOption;
+    category: CategorySelectableOption;
     onClose: () => void;
 };
 
