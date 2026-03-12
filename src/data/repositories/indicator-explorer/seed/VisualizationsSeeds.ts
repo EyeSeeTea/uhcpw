@@ -53,12 +53,14 @@ import { chart_IXF2wBMnwpa_Seed } from "./chart_IXF2wBMnwpa_Seed";
 import { chart_wFITZgQ3udq_Seed } from "./chart_wFITZgQ3udq_Seed";
 import { chart_flLqTxfuuWI_Seed } from "./chart_flLqTxfuuWI_Seed";
 import { chart_AQ8dYmv00zb_Seed } from "./chart_AQ8dYmv00zb_Seed";
+import { chart_c5Cx8pOI9aj_Seed } from "./chart_c5Cx8pOI9aj_Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     // Comparative charts
     kIpnMBaBvZ9: chart_kIpnMBaBvZ9_Seed,
     dbc87Ljw8uN: chart_dbc87Ljw8uN_Seed,
     NOukqSxCI63: chart_NOukqSxCI63_Seed,
+    c5Cx8pOI9aj: chart_c5Cx8pOI9aj_Seed,
     GimM6ANOKhd: chart_GimM6ANOKhd_Seed,
     VB7bdJ8ZXya: chart_VB7bdJ8ZXya_Seed,
     mcNfvQaVbfy: chart_mcNfvQaVbfy_Seed,
