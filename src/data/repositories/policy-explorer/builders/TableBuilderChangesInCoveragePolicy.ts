@@ -309,19 +309,21 @@ export const CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES_BY_CHANGE_IN_YEARS: Record
 };
 
 const MONTH_NAME_ORDER = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
     "December",
-];
+    "November",
+    "October",
+    "September",
+    "August",
+    "July",
+    "June",
+    "May",
+    "April",
+    "March",
+    "February",
+    "January",
+] as const;
+
+const MONTH_REGEX = /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/i;
 
 export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
     buildColumns(params: { dataSet?: D2DataSet }): PolicyExplorerCellHeader[] {
@@ -433,6 +435,21 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
         );
     }
 
+    private getMonthNameFromValue(value: string): string | null {
+        const match = value.match(MONTH_REGEX);
+        if (!match) return null;
+
+        const month = match[0];
+        return month.charAt(0).toUpperCase() + month.slice(1).toLowerCase();
+    }
+
+    private getMonthOrderFromValue(value: string): number {
+        const monthName = this.getMonthNameFromValue(value);
+        if (!monthName) return Number.MAX_SAFE_INTEGER;
+
+        return MONTH_NAME_ORDER.indexOf(monthName as typeof MONTH_NAME_ORDER[number]);
+    }
+
     private getSubcategoriesIdsByChangeInTheYearSortedByMonth(
         dataValuesByGroup: DataValueSetsDataValue[]
     ): typeof CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES_BY_CHANGE_IN_YEARS {
@@ -440,22 +457,32 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
             CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES?.MONTH_OF_CHANGE_IN_COVERAGE_POLICY || []
         )
             .map((monthDataElementId, index) => {
-                const dataValue =
+                const rawValue =
                     dataValuesByGroup.find(dv => dv.dataElement === monthDataElementId)?.value.trim() || EMPTY_DATA;
+                const value = rawValue.trim();
+                const monthName = this.getMonthNameFromValue(value);
+
                 return {
                     id: monthDataElementId,
-                    value: dataValue,
                     originalIndex: index,
-                    isSortable: MONTH_NAME_ORDER.includes(dataValue),
+                    monthName: monthName,
+                    monthOrder: this.getMonthOrderFromValue(value),
                 };
             })
             .sort((a, b) => {
-                if (a.isSortable && b.isSortable) {
-                    return MONTH_NAME_ORDER.indexOf(a.value) - MONTH_NAME_ORDER.indexOf(b.value);
+                const aHasMonth = a.monthName !== null;
+                const bHasMonth = b.monthName !== null;
+
+                if (aHasMonth && bHasMonth) {
+                    return a.monthOrder - b.monthOrder;
                 }
+
+                if (aHasMonth) return -1;
+                if (bHasMonth) return 1;
+
                 return a.originalIndex - b.originalIndex;
             })
-            .map(month => month.id);
+            .map(item => item.id);
 
         return sortedDataElementMonthsIds.reduce(
             (acc: Record<string, string[]>, monthId: string): Record<string, string[]> => {
@@ -466,6 +493,7 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
                         CHANGES_IN_COVERAGE_POLICY_SUBCATEGORIES_BY_CHANGE_IN_YEARS[changeInTheYearKey] || [];
 
                     const isMonthIdInclude = changeInTheYearValueIds.includes(monthId);
+
                     return isMonthIdInclude;
                 });
 
