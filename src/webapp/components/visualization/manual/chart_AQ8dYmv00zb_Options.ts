@@ -35,6 +35,7 @@ export const chart_AQ8dYmv00zb_Options: (chartSource: ChartSource) => Highcharts
         seriesColors,
         categoryIdsOrder: Object.keys(seriesNames),
         isDescOrder: true,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 
     const { events, series } = overrideDataSeriesColorAndUpdateLegends(

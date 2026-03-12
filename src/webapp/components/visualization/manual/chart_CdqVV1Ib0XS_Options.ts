@@ -26,6 +26,7 @@ export const chart_CdqVV1Ib0XS_Options: (chartSource: ChartSource) => Highcharts
         orderByValueInSerie: "S8OMD0f9IZp",
         stackedValuesUpTo100: stackedValuesUpTo100,
         maxValueUpTo100: true,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 
     return {
