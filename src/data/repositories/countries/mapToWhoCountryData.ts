@@ -81,15 +81,15 @@ export function mapToWhoCountryName(countryId: Id, countryName: string): string 
     return whoCountryNames[countryId] || countryName;
 }
 
-const whoCountryNameToCountryName: Record<string, string> = {
-    "Netherlands (Kingdom of the)": "Netherlands",
-    "Kosovo*": "Kosovo",
-    "BIH (the Federation of Bosnia and Herzegovina)": "Federacija Bosne i Hercegovine",
-    "BIH (the Republika Srpska)": "Republica Serpska",
-    "Bosnia and Herzegovina": "Brcko District",
-    EU: "European Union (EU)",
+export const whoCountryNamesToIds: Record<string, Id> = {
+    "Netherlands (Kingdom of the)": "rEQqufy2KNi",
+    "Kosovo*": "NEPywTBN52g",
+    "BIH (the Federation of Bosnia and Herzegovina)": "j44olg405lZ",
+    "BIH (the Republika Srpska)": "FvoXRc5cEEk",
+    "Bosnia and Herzegovina": "rqaiYTAnMC6",
+    EU: ORG_UNIT_IDS.EUROPEAN_UNION,
 };
 
-export function mapFromWhoToD2CountryName(countryName: string): string {
-    return whoCountryNameToCountryName[countryName] || countryName;
+export function mapFromWhoCountryNameToId(countryName: string): Id | undefined {
+    return whoCountryNamesToIds[countryName];
 }
