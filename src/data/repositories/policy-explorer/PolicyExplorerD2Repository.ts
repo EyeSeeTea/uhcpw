@@ -504,6 +504,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             period,
                             references: areMarkdownReferences ? references : "",
                             dataSet: substitutedDataSet,
+                            sortByMonth: policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
                         });
                     },
                     []

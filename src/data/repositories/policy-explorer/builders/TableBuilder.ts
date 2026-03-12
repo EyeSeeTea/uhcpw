@@ -32,6 +32,7 @@ export interface TableBuilder {
         period?: string;
         references: string;
         dataSet?: D2DataSet;
+        sortByMonth?: boolean;
     }): PolicyExplorerCell[][];
 }
 
