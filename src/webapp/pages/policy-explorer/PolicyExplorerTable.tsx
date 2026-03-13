@@ -1,5 +1,5 @@
 import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography } from "@material-ui/core";
-import React, { RefObject, useCallback, useState, useEffect } from "react";
+import React, { RefObject, useCallback, useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
 import SwitchIcon from "@material-ui/icons/Cached";
@@ -43,6 +43,8 @@ const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     capOnUserCharges: 90,
 };
 const MIN_DATA_CELL_WIDTH = 200;
+const FIRST_COLUMN_SPECIAL_INVERTED_WIDTH = 180;
+const CELL_HORIZONTAL_PADDING = 8; // 4px left + 4px right
 
 export const PolicyExplorerTable = React.memo(
     ({
@@ -53,7 +55,7 @@ export const PolicyExplorerTable = React.memo(
         referencesRef,
         hasMoreThanOneCountry,
     }: PolicyExplorerTableProps) => {
-        const { width } = useWindowSize();
+        const { width } = useWindowSize(true);
 
         const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
 
@@ -61,10 +63,28 @@ export const PolicyExplorerTable = React.memo(
             setIsNotesDialogOpen(false);
         }, []);
 
+        const isSpecialTable = React.useMemo(() => {
+            return (
+                category.value === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY ||
+                category.value === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+            );
+        }, [category.value]);
+
         const getCellWidth = React.useCallback(
             columnIndex => {
                 // 128 is the padding of the screen
                 const totalWidth = width - 128;
+
+                const isSpecialInverted = isSpecialTable && dataOrientation === "inverted";
+                if (isSpecialInverted) {
+                    const totalColumns = rows?.[0]?.length || 1;
+                    const totalPadding = totalColumns * CELL_HORIZONTAL_PADDING;
+                    const dataColumns = Math.max(totalColumns - 1, 1);
+                    const availableWidth = Math.max(totalWidth - FIRST_COLUMN_SPECIAL_INVERTED_WIDTH - totalPadding, 0);
+                    const dataColumnWidth = availableWidth / dataColumns;
+
+                    return columnIndex === 0 ? FIRST_COLUMN_SPECIAL_INVERTED_WIDTH : dataColumnWidth;
+                }
 
                 if (dataOrientation === "inverted" && hasMoreThanOneCountry) {
                     const columnWidth = (totalWidth - MIN_DATA_CELL_WIDTH) / (rows?.[0]?.length || 1);
@@ -86,7 +106,7 @@ export const PolicyExplorerTable = React.memo(
                     ];
                 }
             },
-            [category.value, dataOrientation, hasMoreThanOneCountry, rows, width]
+            [category.value, dataOrientation, hasMoreThanOneCountry, isSpecialTable, rows, width]
         );
 
         // Function to create and synchronize the double scroll bar
@@ -159,14 +179,11 @@ export const PolicyExplorerTable = React.memo(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [tableContainerRef, dataOrientation]);
 
-        const isCompactTable = React.useMemo(() => {
-            return (
-                category.value === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY ||
-                category.value === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
-            );
-        }, [category.value]);
+        const isEmpty = useMemo(() => {
+            return !rows?.length || (isSpecialTable && rows.every(row => row.length === 1));
+        }, [rows, isSpecialTable]);
 
-        return !rows?.length || !dataOrientation ? (
+        return isEmpty || !dataOrientation ? (
             category && (
                 <NoDataContainer>
                     <Wrapper>
@@ -225,18 +242,15 @@ export const PolicyExplorerTable = React.memo(
                     style={{ overflowX: "auto" }}
                     className={category.value}
                 >
-                    <StyledTable
-                        orientation={dataOrientation}
-                        fullWidth={!isCompactTable || dataOrientation === "normal"}
-                    >
+                    <StyledTable orientation={dataOrientation} fullWidth>
                         <StyledTableBody $orientation={dataOrientation} className={category.value + "-table"}>
-                            {rows.map((row, index) => (
+                            {rows?.map((row, index) => (
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
                                     {row.map((cell, i) => (
                                         <StyledTableCell
                                             key={`${category.value}_${i}_${cell.value}`}
                                             type={cell.type}
-                                            cellwidth={!isCompactTable ? getCellWidth(i) : undefined}
+                                            cellwidth={getCellWidth(i)}
                                         >
                                             <PolicyExplorerTableValue cell={cell} referencesRef={referencesRef} />
                                         </StyledTableCell>
@@ -393,7 +407,8 @@ const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
         tr:first-child > td {
             text-align: left;
             writing-mode: ${props => (props.$orientation === "inverted" ? "sideways-lr" : "unset")};
-            width: ${props => (props.$orientation === "inverted" ? "25px" : "100px")};
+            width: ${props => (props.$orientation === "inverted" ? "auto" : "100px")};
+            min-width: ${props => (props.$orientation === "inverted" ? "0" : "100px")};
             max-height: ${props => (props.$orientation === "inverted" ? "90px" : "fit-content")};
             height: ${props => (props.$orientation === "inverted" ? "90px" : "fit-content")};
 
