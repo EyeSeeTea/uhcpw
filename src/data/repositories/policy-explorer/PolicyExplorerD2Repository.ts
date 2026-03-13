@@ -211,8 +211,22 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const category = categories.find(({ id }) => id === categoryId);
             const type: Tab["type"] = getTabType(category);
 
-            if (rows?.length) {
-                const dataRows = this.getDataFromRows(rows);
+            const rowsWithoutCountryLabel =
+                categoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                    ? rows?.map(row =>
+                          row.map(cell =>
+                              cell.type === "HEADER" && cell.value === COUNTRY_HEADER_NAME
+                                  ? {
+                                        ...cell,
+                                        value: "",
+                                    }
+                                  : cell
+                          )
+                      )
+                    : rows;
+
+            if (rowsWithoutCountryLabel?.length) {
+                const dataRows = this.getDataFromRows(rowsWithoutCountryLabel);
                 return [
                     ...accTabs,
                     {

@@ -113,11 +113,22 @@ const healthcareTypeToColor: Record<string, string> = {
     "Inpatient medicines": "385724",
 };
 
-export function addDataValue(sheet: Sheet, value: string, cellRef: string) {
-    //@ts-ignore Not properly typed
-    const richText = new XlsxPopulate.RichText();
-    richText.add(value);
-    sheet.cell(cellRef).value(value);
+export function addDataValue(params: {
+    sheet: Sheet;
+    value: string | number;
+    cellRef: string;
+    tab: Tab;
+    rowIndex: number;
+    columnIndex: number;
+}) {
+    const { sheet, value, cellRef, tab, rowIndex, columnIndex } = params;
+    const isSpecialTable = !!tab.type && ["coverage", "entitlements"].includes(tab.type);
+    const isRotatedHeader = isSpecialTable && rowIndex === 1 && columnIndex > 0;
+
+    const stringValue = value?.toString?.() ?? "";
+    const finalValue = isRotatedHeader ? `  ${stringValue}` : stringValue;
+
+    sheet.cell(cellRef).value(finalValue);
 }
 
 export function getColumnLetterByIndex(columnIndex: number): string {
@@ -211,7 +222,8 @@ export function getCellStyles(sheet: Sheet, tab: Tab, rowDataIndex: number, colu
 function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: number) {
     if (tab.type && ["coverage", "entitlements"].includes(tab.type) && rowIndex === 1 && columnIndex > 0) {
         return {
-            ...CENTER_ALIGNMENT,
+            horizontalAlignment: "center",
+            verticalAlignment: "bottom",
             textRotation: 90,
         };
     }
@@ -224,21 +236,35 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
             const fontColor = !isCategoryColumn ? healthCareType && healthcareTypeToColor[healthCareType] : undefined;
 
             const data = tab.data[rowIndex]?.[columnIndex];
-            const fontSize = data === "◐" ? 15 : undefined;
+            const fontSize = data === "◐" ? 15 : data === "🅧" ? 12 : undefined;
 
             return {
                 ...CENTER_ALIGNMENT,
+                ...(isCategoryColumn
+                    ? {
+                          horizontalAlignment: "left",
+                          verticalAlignment: "center",
+                          indent: 1,
+                      }
+                    : undefined),
                 ...(fontColor ? { fontColor } : undefined),
                 ...(fontSize ? { fontSize } : undefined),
             };
         }
         case "entitlements": {
             const data = tab.data[rowIndex]?.[columnIndex];
-            const fontSize = data === "◐" ? 15 : undefined;
+            const fontSize = data === "◐" ? 15 : data === "🅧" ? 12 : undefined;
 
             return {
                 ...CENTER_ALIGNMENT,
                 fontColor: !isCategoryColumn ? "0460a7" : undefined,
+                ...(isCategoryColumn
+                    ? {
+                          horizontalAlignment: "left",
+                          verticalAlignment: "center",
+                          indent: 1,
+                      }
+                    : undefined),
                 ...(fontSize ? { fontSize } : undefined),
             };
         }

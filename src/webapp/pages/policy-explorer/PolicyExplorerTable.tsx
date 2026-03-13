@@ -225,7 +225,10 @@ export const PolicyExplorerTable = React.memo(
                     style={{ overflowX: "auto" }}
                     className={category.value}
                 >
-                    <StyledTable orientation={dataOrientation} fullWidth={!isCompactTable}>
+                    <StyledTable
+                        orientation={dataOrientation}
+                        fullWidth={!isCompactTable || dataOrientation === "normal"}
+                    >
                         <StyledTableBody $orientation={dataOrientation} className={category.value + "-table"}>
                             {rows.map((row, index) => (
                                 <TableRow key={`${category.value}_${index}_${row.toString()}`}>
