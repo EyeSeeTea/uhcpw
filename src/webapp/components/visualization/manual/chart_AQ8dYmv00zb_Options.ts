@@ -38,7 +38,7 @@ export const chart_AQ8dYmv00zb_Options: (chartSource: ChartSource) => Highcharts
         hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 
-    const { events, series } = overrideDataSeriesColorAndUpdateLegends(
+    const { series } = overrideDataSeriesColorAndUpdateLegends(
         chartOptions.series as Highcharts.SeriesColumnOptions[],
         dataSeriesColors
     );
@@ -51,7 +51,6 @@ export const chart_AQ8dYmv00zb_Options: (chartSource: ChartSource) => Highcharts
         ...chartOptions,
         chart: {
             ...chartOptions.chart,
-            events,
         },
         series,
         yAxis: {
