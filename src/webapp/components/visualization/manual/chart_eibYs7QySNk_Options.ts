@@ -35,7 +35,7 @@ export const chart_eibYs7QySNk_Options: (chartSource: ChartSource) => Highcharts
         isOnlyOneYearSelected: isOnlyOneYearSelected,
     });
 
-    const { events, series } = overrideDataSeriesColorAndUpdateLegends(
+    const { series } = overrideDataSeriesColorAndUpdateLegends(
         chartOptions.series as SeriesColumnOptions[],
         dataSeriesColors
     );
@@ -44,7 +44,6 @@ export const chart_eibYs7QySNk_Options: (chartSource: ChartSource) => Highcharts
         ...chartOptions,
         chart: {
             ...chartOptions.chart,
-            events,
         },
         series,
     };
