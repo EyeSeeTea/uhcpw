@@ -14,14 +14,14 @@ import {
 import { TableBuilderChangesInCoveragePolicy } from "./TableBuilderChangesInCoveragePolicy";
 import { TableBuilderCoveredHealthcareByType } from "./TableBuilderCoveredHealthcareByType";
 import { TableBuilderEntitlementsForUndocumented } from "./TableBuilderEntitlementsForUndocumented";
-import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export interface TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds?: string[];
         dataSet?: D2DataSet;
-        programCategories?: PolicyExplorerCategory[];
+        programCategories?: PolicyExplorerSelectableCategory[];
     }): PolicyExplorerCellHeader[];
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];

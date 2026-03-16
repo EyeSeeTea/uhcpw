@@ -1,13 +1,13 @@
 import { FutureData } from "../../entities/Future";
 import { PolicyExplorer } from "../../entities/policy-explorer/PolicyExplorer";
-import { PolicyExplorerCategory } from "../../entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerRepository } from "../../repositories/policy-explorer/PolicyExplorerRepository";
 
 export class DownloadPolicyExplorerUseCase {
     constructor(private policyExplorerRepository: PolicyExplorerRepository) {}
 
     public execute(
-        categories: PolicyExplorerCategory[],
+        categories: PolicyExplorerSelectableCategory[],
         policyExplorer: PolicyExplorer,
         fileName?: string
     ): FutureData<void> {

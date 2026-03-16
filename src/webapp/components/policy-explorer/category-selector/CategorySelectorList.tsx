@@ -74,28 +74,70 @@ export const CategorySelectorList = React.memo(
                     defaultExpandIcon={<ArrowDropDownIcon />}
                     style={fullScreen ? {} : { maxHeight: 300, flexGrow: 1, overflowY: "auto" }}
                 >
-                    {filteredCategories.map(category => (
-                        <Node
-                            key={category.value}
-                            nodeId={category.value}
-                            name={category.text}
-                            selected={isAllCategorySelected(category.value)}
-                            onSelectedChange={(nodeId: string, selected: boolean) =>
-                                handleSelectedAllSubcategories(nodeId, selected, category.subcategories)
-                            }
-                        >
-                            {category.subcategories.map(({ value, text }) => (
-                                <Leaf
-                                    key={value}
-                                    nodeId={value}
-                                    parentId={category.value}
-                                    name={text}
-                                    selected={isSubcategorySelected(category.value, value)}
-                                    onSelectedChange={handleSubcategoriesChange}
-                                />
-                            ))}
-                        </Node>
-                    ))}
+                    {filteredCategories.map(category => {
+                        if (category.type === "group") {
+                            return (
+                                <Node
+                                    key={category.text}
+                                    nodeId={category.text}
+                                    name={category.text}
+                                    selected={false}
+                                    onSelectedChange={() => undefined}
+                                    disabledSelection
+                                >
+                                    {category.categories.map(selectableCategory => (
+                                        <Node
+                                            key={selectableCategory.value}
+                                            nodeId={selectableCategory.value}
+                                            name={selectableCategory.text}
+                                            selected={isAllCategorySelected(selectableCategory.value)}
+                                            onSelectedChange={(nodeId: string, selected: boolean) =>
+                                                handleSelectedAllSubcategories(
+                                                    nodeId,
+                                                    selected,
+                                                    selectableCategory.subcategories
+                                                )
+                                            }
+                                        >
+                                            {selectableCategory.subcategories.map(({ value, text }) => (
+                                                <Leaf
+                                                    key={value}
+                                                    nodeId={value}
+                                                    parentId={selectableCategory.value}
+                                                    name={text}
+                                                    selected={isSubcategorySelected(selectableCategory.value, value)}
+                                                    onSelectedChange={handleSubcategoriesChange}
+                                                />
+                                            ))}
+                                        </Node>
+                                    ))}
+                                </Node>
+                            );
+                        }
+
+                        return (
+                            <Node
+                                key={category.value}
+                                nodeId={category.value}
+                                name={category.text}
+                                selected={isAllCategorySelected(category.value)}
+                                onSelectedChange={(nodeId: string, selected: boolean) =>
+                                    handleSelectedAllSubcategories(nodeId, selected, category.subcategories)
+                                }
+                            >
+                                {category.subcategories.map(({ value, text }) => (
+                                    <Leaf
+                                        key={value}
+                                        nodeId={value}
+                                        parentId={category.value}
+                                        name={text}
+                                        selected={isSubcategorySelected(category.value, value)}
+                                        onSelectedChange={handleSubcategoriesChange}
+                                    />
+                                ))}
+                            </Node>
+                        );
+                    })}
                 </TreeView>
             </div>
         );

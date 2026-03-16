@@ -30,7 +30,7 @@ import { TableBuilderByTypeOfHealthcare } from "./builders/TableBuilderByTypeOfH
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
@@ -94,7 +94,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndSubregions: Country[],
-        programCategories: PolicyExplorerCategory[],
+        programCategories: PolicyExplorerSelectableCategory[],
         useCountryCodes?: boolean
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
@@ -193,7 +193,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     }
 
     saveToFile(
-        categories: PolicyExplorerCategory[],
+        categories: PolicyExplorerSelectableCategory[],
         policyExplorer: PolicyExplorer,
         fileName?: string
     ): FutureData<void> {
@@ -211,8 +211,22 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const category = categories.find(({ id }) => id === categoryId);
             const type: Tab["type"] = getTabType(category);
 
-            if (rows?.length) {
-                const dataRows = this.getDataFromRows(rows);
+            const rowsWithoutCountryLabel =
+                categoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                    ? rows?.map(row =>
+                          row.map(cell =>
+                              cell.type === "HEADER" && cell.value === COUNTRY_HEADER_NAME
+                                  ? {
+                                        ...cell,
+                                        value: "",
+                                    }
+                                  : cell
+                          )
+                      )
+                    : rows;
+
+            if (rowsWithoutCountryLabel?.length) {
+                const dataRows = this.getDataFromRows(rowsWithoutCountryLabel);
                 return [
                     ...accTabs,
                     {
@@ -383,7 +397,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         countriesAndSubregions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
-        programCategories: PolicyExplorerCategory[];
+        programCategories: PolicyExplorerSelectableCategory[];
         useCountryCodes?: boolean;
         lastAvailableYearByCountry: Map<string, string>;
     }): Record<string, PolicyExplorerCell[][]> {

@@ -28,6 +28,10 @@ import {
     BREAKPOINT_WIDTH_MOBILE_SCREEN,
     BREAKPOINT_WIDTH_SMALL_SCREEN,
 } from "../../common/hooks/screen/useIsSmallScreen";
+import {
+    CategoryOption,
+    CategorySelectableOption,
+} from "../../components/policy-explorer/category-selector/useCategorySelector";
 
 export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.memo(props => {
     const snackbar = useSnackbar();
@@ -78,9 +82,25 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         }
     }, [errorMessage, snackbar]);
 
-    const categories = useMemo(() => {
-        return filters.category.options.filter(
-            category => filters.category.selected && Object.keys(filters.category.selected)?.includes(category.value)
+    const selectedCategories = useMemo(() => {
+        return filters.category.options.reduce(
+            (accSelected: CategorySelectableOption[], category: CategoryOption): CategorySelectableOption[] => {
+                if (category.type === "group") {
+                    const selectedSubcategories = category.categories.filter(
+                        selectableCategory =>
+                            filters.category.selected &&
+                            Object.keys(filters.category.selected)?.includes(selectableCategory.value)
+                    );
+                    return [...accSelected, ...selectedSubcategories];
+                } else {
+                    return category.type === "selectable" &&
+                        filters.category.selected &&
+                        Object.keys(filters.category.selected)?.includes(category.value)
+                        ? [...accSelected, category]
+                        : accSelected;
+                }
+            },
+            []
         );
     }, [filters.category]);
 
@@ -155,7 +175,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                             <Typography>{i18n.t("Download")}</Typography>
                         </DownloadButton>
 
-                        {categories.map(category => (
+                        {selectedCategories.map(category => (
                             <PolicyExplorerTable
                                 key={category.value}
                                 category={category}

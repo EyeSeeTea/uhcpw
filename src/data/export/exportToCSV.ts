@@ -118,7 +118,7 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
             row.forEach((cell, columnIndex) => {
                 const column = getColumnLetterByIndex(columnIndex);
                 const cellRef = `${column}${rowNumber}`;
-                addDataValue(sheet, cell, cellRef);
+                addDataValue({ sheet, value: cell, cellRef, tab, rowIndex, columnIndex });
                 const cellStyle = getCellStyles(sheet, tab, rowIndex, columnIndex);
                 sheet.cell(cellRef).style(cellStyle);
                 setWidth(sheet, tab.name, columnIndex);
