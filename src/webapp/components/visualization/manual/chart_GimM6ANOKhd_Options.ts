@@ -26,5 +26,6 @@ export const chart_GimM6ANOKhd_Options: (chartSource: ChartSource) => Highcharts
         seriesNames,
         seriesColors,
         orderByValueInSerie: "GeiKSyJLeKt",
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 };

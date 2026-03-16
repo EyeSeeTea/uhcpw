@@ -1,5 +1,5 @@
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
-import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder } from "../utils/sortColumnsAndDataRows";
 
@@ -12,7 +12,6 @@ export const chart_WDUV9ZrJiNC_Seed: VisualizationExtra = {
     friendlyName: "Households with catastrophic health spending on average and in the poorest quintile",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
-    allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
@@ -22,4 +21,6 @@ export const chart_WDUV9ZrJiNC_Seed: VisualizationExtra = {
     hasWesternBalkansRegion: true,
     hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
+    includeLatestCOVID19: true,
+    includeLatestAvailableYear: true,
 };

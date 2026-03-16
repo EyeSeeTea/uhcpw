@@ -14,7 +14,12 @@ export const chart_NOukqSxCI63_Options: (chartSource: ChartSource) => Highcharts
     const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear(chartSource);
 
     return {
-        ...comparativeColumnChartOptions({ chartSource: chartSourceWithFilteredRowsByLAY, seriesNames, seriesColors }),
+        ...comparativeColumnChartOptions({
+            chartSource: chartSourceWithFilteredRowsByLAY,
+            seriesNames,
+            seriesColors,
+            hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
+        }),
         legend: {
             enabled: false,
         },

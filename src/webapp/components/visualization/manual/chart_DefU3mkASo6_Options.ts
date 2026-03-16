@@ -27,6 +27,7 @@ export const chart_DefU3mkASo6_Options: (chartSource: ChartSource) => Highcharts
             seriesColors,
             orderByValueInSerie: "yYSS1uBgnTE",
             stackedValuesUpTo100: stackedValuesUpTo100,
+            hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
         }),
     };
 };

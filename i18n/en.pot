@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-02-19T15:31:58.860Z\n"
-"PO-Revision-Date: 2026-02-19T15:31:58.860Z\n"
+"POT-Creation-Date: 2026-03-16T11:24:04.701Z\n"
+"PO-Revision-Date: 2026-03-16T11:24:04.701Z\n"
 
 msgid "404"
 msgstr ""
@@ -236,10 +236,10 @@ msgstr ""
 msgid "All years"
 msgstr ""
 
-msgid "2019 or latest available year before COVID-19"
+msgid "Latest available year"
 msgstr ""
 
-msgid "Latest available year"
+msgid "2019 or latest available year before COVID-19"
 msgstr ""
 
 msgid ""

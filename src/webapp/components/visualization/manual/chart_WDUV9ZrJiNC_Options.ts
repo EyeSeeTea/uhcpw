@@ -23,6 +23,7 @@ const seriesColors: Record<string, string> = {
 
 export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
     const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear(chartSource);
+    const hideYear = !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19;
 
     const orderRows = _(chartSourceWithFilteredRowsByLAY.analyticsResponse.rows)
         .groupBy(row => {
@@ -82,7 +83,7 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
                 const value = row[3] ? +row[3] : 0;
 
                 return {
-                    name: `${code} ${year} `,
+                    name: hideYear ? code : `${code} ${year} `,
                     y: value,
                 };
             }),
