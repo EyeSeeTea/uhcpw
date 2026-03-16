@@ -236,11 +236,13 @@ export function useIndicatorExplorer(params?: {
     useEffect(() => {
         const selectedIndicator = indicators.find(indicator => indicator.id === selectedIndicatorFilter);
 
-        const yearOptionsInFilter = getYearOptionsInFilter(
-            selectedIndicator?.allowedYears,
-            isYearSingleSelection,
-            selectedIndicator?.yearsFilterUpTo2YearsAgo
-        );
+        const yearOptionsInFilter = getYearOptionsInFilter({
+            allowedYears: selectedIndicator?.allowedYears,
+            isYearSingleSelection: isYearSingleSelection,
+            isYearsFilterUpTo2YearsAgo: selectedIndicator?.yearsFilterUpTo2YearsAgo,
+            includeLatestAvailableYear: selectedIndicator?.includeLatestAvailableYear,
+            includeLatestCOVID19: selectedIndicator?.includeLatestCOVID19,
+        });
 
         setYearsFilters(yearOptionsInFilter);
 

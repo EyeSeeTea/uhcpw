@@ -91,5 +91,6 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Options: (
         currentRegionId: currentRegion?.id,
         isRegionalPage: chartSource.isRegionalPage,
         sharedYAxisConfig: chartSource.sharedYAxisConfig,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 };

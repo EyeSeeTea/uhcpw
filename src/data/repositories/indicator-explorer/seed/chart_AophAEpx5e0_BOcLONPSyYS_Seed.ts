@@ -1,4 +1,4 @@
-import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
@@ -15,9 +15,10 @@ export const chart_AophAEpx5e0_BOcLONPSyYS_Seed: VisualizationExtra = {
         "Unmet need for dental care due to cost, distance and waiting time on average and in the poorest and richest income quintiles, latest available year",
     subcategoryName: sortedSubcategoryNames.comparative,
     isComparative: true,
-    allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
+    includeLatestAvailableYear: true,
+    includeLatestCOVID19: true,
     hasEURegion: true,
     hasEuropeanRegion: true,
     hasEECARegion: true,

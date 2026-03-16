@@ -37,6 +37,18 @@ const allYearsFiltersUpTo2YearsAgo: TreeOption[] = generateYears(new Date().getF
     parents: [allYearsItem],
 }));
 
+const LATEST_AVAILABLE_YEAR_OPTION = {
+    id: LatestAvailable.id,
+    name: i18n.t("Latest available year"),
+    parents: [],
+};
+
+const LATEST_COVID19_YEAR_OPTION = {
+    id: LatestCOVID19.id,
+    name: i18n.t("2019 or latest available year before COVID-19"),
+    parents: [],
+};
+
 export function getDisabledRegionIds(
     countryAndRegionsOptions: TreeOption[],
     selectedIndicator: Indicator | undefined
@@ -259,32 +271,43 @@ export function getSelectedYearsInFilter(newIndicator: Indicator | undefined): s
     }
 }
 
-export function getYearOptionsInFilter(
-    allowedYears: Year[] | undefined,
-    isYearSingleSelection: boolean,
-    isYearsFilterUpTo2YearsAgo?: boolean
-): TreeOption[] {
+export function getYearOptionsInFilter(params: {
+    allowedYears: Year[] | undefined;
+    isYearSingleSelection: boolean;
+    isYearsFilterUpTo2YearsAgo?: boolean;
+    includeLatestAvailableYear?: boolean;
+    includeLatestCOVID19?: boolean;
+}): TreeOption[] {
+    const {
+        allowedYears,
+        isYearSingleSelection,
+        isYearsFilterUpTo2YearsAgo,
+        includeLatestAvailableYear,
+        includeLatestCOVID19,
+    } = params;
     const allYears = isYearsFilterUpTo2YearsAgo ? allYearsFiltersUpTo2YearsAgo : allYearsFiltersUpToLastYear;
 
     if (allowedYears) {
         // HERE: there are charts that are ONLY latest COVID19, there are charts that are ONLY LAY, and there are charts that allow both and another years
         return allowedYears.map(year =>
             year.id === LatestCOVID19.id
-                ? {
-                      id: LatestCOVID19.id,
-                      name: i18n.t("2019 or latest available year before COVID-19"),
-                      parents: [],
-                  }
+                ? LATEST_COVID19_YEAR_OPTION
                 : year.id === LatestAvailable.id
-                ? {
-                      id: LatestAvailable.id,
-                      name: i18n.t("Latest available year"),
-                      parents: [],
-                  }
+                ? LATEST_AVAILABLE_YEAR_OPTION
                 : { id: year.id, name: year.id, parents: [] }
         );
     } else if (isYearSingleSelection) {
-        return allYears.map(year => ({ ...year, parents: [] }));
+        const singleYearsOptions = allYears.map(year => ({ ...year, parents: [] }));
+        const specialYearsOptions = [LATEST_AVAILABLE_YEAR_OPTION, LATEST_COVID19_YEAR_OPTION].filter(option => {
+            if (option.id === LatestAvailable.id) {
+                return includeLatestAvailableYear;
+            } else if (option.id === LatestCOVID19.id) {
+                return includeLatestCOVID19;
+            }
+            return false;
+        });
+
+        return [...specialYearsOptions, ...singleYearsOptions];
     } else {
         return allYears;
     }

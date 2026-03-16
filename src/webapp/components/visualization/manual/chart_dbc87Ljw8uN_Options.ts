@@ -19,6 +19,7 @@ export const chart_dbc87Ljw8uN_Options: (chartSource: ChartSource) => Highcharts
         chartSource: chartSourceWithFilteredRowsByLAY,
         seriesNames,
         seriesColors,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
     return {
         ...chartOptions,

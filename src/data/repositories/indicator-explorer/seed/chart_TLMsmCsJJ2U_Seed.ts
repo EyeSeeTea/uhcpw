@@ -1,4 +1,4 @@
-import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
@@ -11,9 +11,10 @@ export const chart_TLMsmCsJJ2U_Seed: VisualizationExtra = {
     friendlyName: "Unmet need for health care due to cost, distance and waiting time (<25 years, average, 65+ years)",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
-    allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
+    includeLatestAvailableYear: true,
+    includeLatestCOVID19: true,
     hasEURegion: true,
     isOrgUnitRegions: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),

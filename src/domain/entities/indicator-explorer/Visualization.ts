@@ -49,6 +49,8 @@ export interface VisualizationExtra {
     needsRounding?: boolean;
     splitRequestsByOrgUnitLevel?: boolean;
     needPolicyExplorerChartData?: boolean;
+    includeLatestAvailableYear?: boolean;
+    includeLatestCOVID19?: boolean;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

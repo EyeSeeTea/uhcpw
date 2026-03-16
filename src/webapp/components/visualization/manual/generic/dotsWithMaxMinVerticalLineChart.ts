@@ -33,6 +33,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     currentRegionId?: Id;
     isRegionalPage?: boolean;
     sharedYAxisConfig?: { isSharedMax: boolean };
+    hideYear?: boolean;
 }) => Highcharts.Options = ({
     rows,
     seriesIds,
@@ -47,6 +48,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
     currentRegionId,
     isRegionalPage,
     sharedYAxisConfig,
+    hideYear,
 }) => {
     const series = Object.values(seriesIds).map(serieId => {
         const serieChartRows = rows.filter(row => row[0] === serieId);
@@ -139,11 +141,13 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
             labels: {
                 rotation: noRotateLabels ? 0 : -90,
                 formatter: function () {
-                    const countryLabel = (this.value as string).split(" ")[0];
+                    const xLabel = this.value as string;
+                    const countryLabel = xLabel.split(" ")[0];
+                    const yearLabel = xLabel.split(" ")[1];
+                    const isCurrentCountryOrRegion = countryLabel === currentCountryOrRegionCode;
+                    const label = hideYear ? countryLabel : `${countryLabel} ${yearLabel}`;
 
-                    return countryLabel === currentCountryOrRegionCode
-                        ? `<strong style="color:#49abe2;">${this.value}</strong>`
-                        : this.value;
+                    return isCurrentCountryOrRegion ? `<strong style="color:#49abe2;">${label}</strong>` : label;
                 },
             },
         },

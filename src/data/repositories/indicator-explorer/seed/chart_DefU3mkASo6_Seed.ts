@@ -1,4 +1,4 @@
-import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
@@ -17,10 +17,11 @@ export const chart_DefU3mkASo6_Seed: VisualizationExtra = {
     friendlyName: "breakdown of households with catastrophic health spending by risk of impoverishment",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
-    allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
     sortColumns: (headerRow: string[]) => sortColumnsRowByColumnsOrder(headerRow, COLUMNS_ORDER),
     sortDataRows: (headerRow: string[], dataRows: string[][]) =>
         sortDataRowsByParameterOrder(headerRow, dataRows, PARAMETER_ORDER),
+    includeLatestCOVID19: true,
+    includeLatestAvailableYear: true,
 };
