@@ -2,6 +2,11 @@ html {
     background-color: #f3f3f3;
     font-family: Lato, Roboto, Arial, sans-serif;
     overflow-y: scroll;
+    /* Force browsers to respect the defined font-size */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
