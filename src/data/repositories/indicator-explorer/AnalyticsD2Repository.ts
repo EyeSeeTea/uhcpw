@@ -20,7 +20,7 @@ import { Maybe } from "../../../types/utils";
 import {
     filterRowsByYearInCountry,
     filterRowsByYearIndicatorAndCountry,
-    getCommonLastAvailableYearInBothAxis,
+    getCommonLastAvailableYearInTwoDataIds,
     getLastAvailableYearByCountry,
     getLatestAvailableYearByCountryIdFromTwoCharts,
 } from "./utils/lastAvailableYearHelpers";
@@ -864,9 +864,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         } = params;
 
         if (visualizationIds.includes("IXF2wBMnwpa")) {
-            const columnRows = firstChartAnalyticsRows.filter(row => row[0] !== "WmOGqGcov4f");
-
-            const lastAvailableYearByCountry = getLastAvailableYearByCountry(columnRows, isUpTo2019, maxYearToFilterBy);
+            const lastAvailableYearByCountry = getCommonLastAvailableYearInTwoDataIds({
+                rows: firstChartAnalyticsRows,
+                dataId1: "CGk1OOt70Dz",
+                dataId2: "WmOGqGcov4f",
+                isUpTo2019,
+                maxYearToFilterBy,
+            });
 
             return Object.entries(lastAvailableYearByCountry).reduce(
                 (acc: Record<string, string>, [countryId, year]) => {
@@ -896,13 +900,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                       maxYearToFilterBy
                   )
                 : isScatter && xAxis && yAxis
-                ? getCommonLastAvailableYearInBothAxis(
-                      firstChartAnalyticsRows,
-                      xAxis,
-                      yAxis,
+                ? getCommonLastAvailableYearInTwoDataIds({
+                      rows: firstChartAnalyticsRows,
+                      dataId1: xAxis,
+                      dataId2: yAxis,
                       isUpTo2019,
-                      maxYearToFilterBy
-                  )
+                      maxYearToFilterBy,
+                  })
                 : getLastAvailableYearByCountry(firstChartAnalyticsRows, isUpTo2019, maxYearToFilterBy);
         }
     }

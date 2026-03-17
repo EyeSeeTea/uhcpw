@@ -1,9 +1,9 @@
 import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSource } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
-import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { Id } from "../../../../domain/entities/Ref";
+import { filterRowsByCommonLastAvailableYearInTwoDataIds } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 
 const POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_RESIDENCE = "TKq3zGVr1vj";
 const POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_PAYMENT = "BAuD3jhIXTY";
@@ -21,15 +21,22 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    const scatterRows = chartSource.analyticsResponse.rows.filter(row => row[0] === "WmOGqGcov4f");
-
-    const chartSourceWithFilteredRowsByLAY = getChartSourceFilteredByLastAvailableYear({
+    const chartSourceWithFilteredRowsByLAY = {
         ...chartSource,
         analyticsResponse: {
             ...chartSource.analyticsResponse,
-            rows: chartSource.analyticsResponse.rows.filter(row => row[0] !== "WmOGqGcov4f"),
+            rows: filterRowsByCommonLastAvailableYearInTwoDataIds({
+                rows: chartSource.analyticsResponse.rows,
+                dataId1: "CGk1OOt70Dz",
+                dataId2: "WmOGqGcov4f",
+                isUpTo2019: chartSource.isLatestCOVID19 || false,
+                maxYearToFilterBy: chartSource.maxYearToFilterBy,
+            }),
         },
-    });
+    };
+
+    const scatterRows = chartSourceWithFilteredRowsByLAY.analyticsResponse.rows.filter(row => row[0] === "WmOGqGcov4f");
+
     const columnRows = getColumnRows(chartSourceWithFilteredRowsByLAY);
 
     const { columnRowsLowerThan99, columnRowsGreaterOrEqual99 } = splitColumnRowsBy99(columnRows);

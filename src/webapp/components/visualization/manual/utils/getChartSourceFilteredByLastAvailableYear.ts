@@ -1,6 +1,6 @@
 import {
     filterRowsByLastAvailableYear,
-    filterXAxisAndYAxisByLastAvailableYear,
+    filterRowsByCommonLastAvailableYearInTwoDataIds,
 } from "../../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { ChartSource } from "../chartOptions";
 
@@ -60,8 +60,15 @@ function getFilteredRows({
     ) => Array<string[]>;
 }): Array<string[]> {
     if (isScatter && xAxis && yAxis) {
-        const filter = customFilter ?? filterXAxisAndYAxisByLastAvailableYear;
-        return filter(rows, xAxis, yAxis, isLatestCOVID19, maxYearToFilterBy);
+        return customFilter
+            ? customFilter(rows, xAxis, yAxis, isLatestCOVID19, maxYearToFilterBy)
+            : filterRowsByCommonLastAvailableYearInTwoDataIds({
+                  rows,
+                  dataId1: xAxis,
+                  dataId2: yAxis,
+                  isUpTo2019: isLatestCOVID19,
+                  maxYearToFilterBy,
+              });
     } else {
         return filterRowsByLastAvailableYear(rows, isLatestCOVID19, maxYearToFilterBy);
     }
