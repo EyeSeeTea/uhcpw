@@ -263,6 +263,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         const deSubstitutor = new DataElementSubstitutor(dataSetSections, PROGRAM_DATA_ELEMENT_CODE_SUBSTITUTIONS);
 
         return [
+            comparativePolicyChartsCategory,
             ...dataSetSections
                 .filter(({ id }) => CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID !== id)
                 .flatMap((section): PolicyExplorerCategory[] => {
@@ -314,7 +315,6 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                     }
                 }),
             changesInCoveragePolicyMergedCategory,
-            comparativePolicyChartsCategory,
         ];
     }
 
