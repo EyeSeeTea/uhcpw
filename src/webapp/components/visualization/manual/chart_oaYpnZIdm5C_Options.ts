@@ -72,5 +72,6 @@ export const chart_oaYpnZIdm5C_Options: (chartSource: ChartSource) => Highcharts
         currentRegionId: currentRegion?.id,
         isRegionalPage: chartSourceFiltered.isRegionalPage,
         sharedYAxisConfig: chartSourceFiltered.sharedYAxisConfig,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 };
