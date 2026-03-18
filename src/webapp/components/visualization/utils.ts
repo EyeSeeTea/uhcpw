@@ -95,16 +95,18 @@ export function filterEmptyYearsInSeries(options: Highcharts.Options): Highchart
             lastIndexWithDataReverse === -1 ? -1 : (serie.data || []).length - 1 - lastIndexWithDataReverse;
 
         return {
-            firstIndex: !acc.firstIndex
-                ? firstIndexWithData
-                : firstIndexWithData < acc.firstIndex && firstIndexWithData !== -1
-                ? firstIndexWithData
-                : acc.firstIndex,
-            lastIndex: !acc.lastIndex
-                ? lastIndexWithData
-                : lastIndexWithData > acc.lastIndex && lastIndexWithData !== -1
-                ? lastIndexWithData
-                : acc.lastIndex,
+            firstIndex:
+                acc.firstIndex === undefined || acc.firstIndex === -1 || acc.firstIndex === null
+                    ? firstIndexWithData
+                    : firstIndexWithData < acc.firstIndex && firstIndexWithData !== -1
+                    ? firstIndexWithData
+                    : acc.firstIndex,
+            lastIndex:
+                acc.lastIndex === undefined || acc.lastIndex === -1 || acc.lastIndex === null
+                    ? lastIndexWithData
+                    : lastIndexWithData > acc.lastIndex && lastIndexWithData !== -1
+                    ? lastIndexWithData
+                    : acc.lastIndex,
         };
     }, {} as Record<string, number | undefined>);
 
