@@ -47,8 +47,8 @@ describe("Policy explorer category repository", () => {
 
 function verifyCategory(category?: PolicyExplorerCategory) {
     if (!category) fail("Category is undefined");
-    expect(category.id).toBe("uG2PbDfOc0w");
-    expect(category.name).toBe("Population coverage");
+    expect(category.id).toBe("COMPARATIVE_POLICY_CHARTS_CATEGORY_GROUP_ID");
+    expect(category.name).toBe("Comparative policy charts");
     // TODO: /api/events mockup overlap between event infos and event programs
     // expect(category.description).toBe(
     //     "This section focuses on the basis for entitlement to publicly financed health care. It describes the basis for entitlement; entitlements for refugees, asylum seekers and undocumented migrants; and the groups of people who lack coverage and their entitlements."
