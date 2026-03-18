@@ -9,7 +9,7 @@ import {
 } from "../../../../data/repositories/indicator-explorer/seed/chart_kIpnMBaBvZ9_Seed";
 import {
     filterRowsByYearIndicatorAndCountry,
-    getGroupedYearsByCountry,
+    getGroupedYearsByCountryInTwoDataIds,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 
 export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
@@ -248,14 +248,14 @@ export function getYearByIndicatorAndCountry(
         yYears: string;
     }
 > {
-    const groupedYearsByCountry = getGroupedYearsByCountry(rows, xAxis, yAxis);
+    const groupedYearsByCountry = getGroupedYearsByCountryInTwoDataIds({ rows, dataId1: xAxis, dataId2: yAxis });
 
     return Object.keys(groupedYearsByCountry).reduce(
         (acc, countryId): Record<string, { xYears: string; yYears: string }> => {
-            const filteredXYears = [...(groupedYearsByCountry[countryId]?.xYears || [])].filter(year => {
+            const filteredXYears = [...(groupedYearsByCountry[countryId]?.dataId1Years || [])].filter(year => {
                 return isUpTo2019 ? Number(year) <= 2019 : true;
             });
-            const filteredYYears = [...(groupedYearsByCountry[countryId]?.yYears || [])].filter(year => {
+            const filteredYYears = [...(groupedYearsByCountry[countryId]?.dataId2Years || [])].filter(year => {
                 return isUpTo2019 ? Number(year) <= 2019 : true;
             });
 

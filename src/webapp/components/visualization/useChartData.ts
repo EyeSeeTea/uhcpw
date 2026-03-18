@@ -16,7 +16,7 @@ import { Id } from "../../../domain/entities/Ref";
 import { Region } from "../../../domain/entities/region/Region";
 import { filterZeroValuesAnalytics } from "../../../domain/entities/indicator-explorer/utils/filterZeroValuesAnalytics";
 import {
-    getCommonLastAvailableYearInBothAxis,
+    getCommonLastAvailableYearInTwoDataIds,
     getLastAvailableYearByCountry,
 } from "../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { SyncGraphsState } from "../country-page/slider/useSyncedGraphs";
@@ -428,7 +428,13 @@ function getLastAvailableYearInChartData(params: {
 
     const lastAvailableYearByCountry =
         isScatter && xAxis && yAxis
-            ? getCommonLastAvailableYearInBothAxis(rows, xAxis, yAxis, isLatestCOVID19, maxYearToFilterBy)
+            ? getCommonLastAvailableYearInTwoDataIds({
+                  rows,
+                  dataId1: xAxis,
+                  dataId2: yAxis,
+                  isUpTo2019: isLatestCOVID19,
+                  maxYearToFilterBy,
+              })
             : getLastAvailableYearByCountry(rows, isLatestCOVID19, maxYearToFilterBy);
 
     const latestAvailableYear = Object.values(lastAvailableYearByCountry).reduce((lastAvailableYear, year) => {

@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { Id } from "../../../../domain/entities/Ref";
 
 export function filterRowsByLastAvailableYear(
     rows: Array<string[]>,
@@ -10,20 +11,21 @@ export function filterRowsByLastAvailableYear(
     return filterRowsByYearInCountry(rows, lastAvailableYearByCountry);
 }
 
-export function filterXAxisAndYAxisByLastAvailableYear(
-    rows: Array<string[]>,
-    xAxis: string,
-    yAxis: string,
-    isUpTo2019?: boolean,
-    maxYearToFilterBy?: string
-): Array<string[]> {
-    const lastAvailableYearByCountry = getCommonLastAvailableYearInBothAxis(
+export function filterRowsByCommonLastAvailableYearInTwoDataIds(params: {
+    rows: Array<string[]>;
+    dataId1: Id;
+    dataId2: Id;
+    isUpTo2019?: boolean;
+    maxYearToFilterBy?: string;
+}): Array<string[]> {
+    const { rows, dataId1, dataId2, isUpTo2019, maxYearToFilterBy } = params;
+    const lastAvailableYearByCountry = getCommonLastAvailableYearInTwoDataIds({
         rows,
-        xAxis,
-        yAxis,
+        dataId1: dataId1,
+        dataId2: dataId2,
         isUpTo2019,
-        maxYearToFilterBy
-    );
+        maxYearToFilterBy,
+    });
 
     return filterRowsByYearInCountry(rows, lastAvailableYearByCountry);
 }
@@ -75,14 +77,15 @@ export function filterRowsByYearIndicatorAndCountry(
     });
 }
 
-export function getCommonLastAvailableYearInBothAxis(
-    rows: Array<string[]>,
-    xAxis: string,
-    yAxis: string,
-    isUpTo2019?: boolean,
-    maxYearToFilterBy?: string
-): Record<string, string> {
-    const groupedByCountry = getGroupedYearsByCountry(rows, xAxis, yAxis);
+export function getCommonLastAvailableYearInTwoDataIds(params: {
+    rows: Array<string[]>;
+    dataId1: Id;
+    dataId2: Id;
+    isUpTo2019?: boolean;
+    maxYearToFilterBy?: string;
+}): Record<string, string> {
+    const { rows, dataId1, dataId2, isUpTo2019, maxYearToFilterBy } = params;
+    const groupedByCountry = getGroupedYearsByCountryInTwoDataIds({ rows, dataId1: dataId1, dataId2: dataId2 });
 
     const yearFilter = (year: string) => {
         const numericYear = Number(year);
@@ -90,8 +93,8 @@ export function getCommonLastAvailableYearInBothAxis(
     };
 
     return Object.keys(groupedByCountry).reduce((acc, countryId) => {
-        const filteredXYears = [...(groupedByCountry[countryId]?.xYears || [])].filter(yearFilter);
-        const filteredYYears = [...(groupedByCountry[countryId]?.yYears || [])].filter(yearFilter);
+        const filteredXYears = [...(groupedByCountry[countryId]?.dataId1Years || [])].filter(yearFilter);
+        const filteredYYears = [...(groupedByCountry[countryId]?.dataId2Years || [])].filter(yearFilter);
 
         const commonYears = filteredXYears
             .filter(year => filteredYYears.includes(year))
@@ -104,32 +107,34 @@ export function getCommonLastAvailableYearInBothAxis(
     }, {} as Record<string, string>);
 }
 
-export function getGroupedYearsByCountry(
-    rows: Array<string[]>,
-    xAxis: string,
-    yAxis: string
-): Record<
+export function getGroupedYearsByCountryInTwoDataIds(params: {
+    rows: Array<string[]>;
+    dataId1: Id;
+    dataId2: Id;
+}): Record<
     string,
     {
-        xYears: Set<string>;
-        yYears: Set<string>;
+        dataId1Years: Set<string>;
+        dataId2Years: Set<string>;
     }
 > {
+    const { rows, dataId1, dataId2 } = params;
+
     return rows.reduce((acc, row) => {
         const dataId = row[0]?.toString() || "";
         const countryId = row[1]?.toString() || "";
         const year = row[2] || "";
 
-        const countryData = acc[countryId] || { xYears: new Set<string>(), yYears: new Set<string>() };
+        const countryData = acc[countryId] || { dataId1Years: new Set<string>(), dataId2Years: new Set<string>() };
 
-        if (dataId === xAxis) {
-            countryData.xYears.add(year);
-        } else if (dataId === yAxis) {
-            countryData.yYears.add(year);
+        if (dataId === dataId1) {
+            countryData.dataId1Years.add(year);
+        } else if (dataId === dataId2) {
+            countryData.dataId2Years.add(year);
         }
 
         return { ...acc, [countryId]: countryData };
-    }, {} as Record<string, { xYears: Set<string>; yYears: Set<string> }>);
+    }, {} as Record<string, { dataId1Years: Set<string>; dataId2Years: Set<string> }>);
 }
 
 export const filterRowsByYearInCountry = (
