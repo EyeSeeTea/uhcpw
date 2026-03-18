@@ -12,7 +12,7 @@ export const chart_oaYpnZIdm5C_Seed: VisualizationExtra = {
     isYearSingleSelection: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     selectedYearsByDefault: [{ id: "2019" }],
-    allowedYears: [{ id: "2019" }],
+    allowedYears: [{ id: "2019" }, { id: "2014" }],
     hasEURegion: true,
     hasEuropeanRegion: true,
     hasEECARegion: true,

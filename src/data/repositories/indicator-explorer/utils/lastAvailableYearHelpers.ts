@@ -223,9 +223,12 @@ export function orderLatestAvailableYearByAverageAndOther<
         }))
         .groupBy(row => `${row.countryId}-${row.year}`)
         .map(group => _.merge({}, ...group))
-        .orderBy(["average", otherKey], ["asc", "asc"])
-        .reduce((acc, { countryId, year }) => {
-            if (countryId && year) acc[countryId] = year;
+        .orderBy(
+            [row => (parseFloat(row.average) === 0 || row.average === undefined ? 0 : 1), "average", otherKey],
+            ["asc", "asc", "asc"]
+        )
+        .reduce((acc: Record<string, string>, { countryId, year }): Record<string, string> => {
+            if (countryId && year) return { ...acc, [countryId]: year };
             return acc;
-        }, {} as Record<string, string>);
+        }, {});
 }
