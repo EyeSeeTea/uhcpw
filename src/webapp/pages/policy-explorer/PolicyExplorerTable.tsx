@@ -405,7 +405,8 @@ const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
         }
 
         tr:first-child > td {
-            text-align: left;
+            text-align: ${props => (props.$orientation === "inverted" ? "left" : "center")};
+            text-align-last: ${props => (props.$orientation === "inverted" ? "left" : "center")};
             writing-mode: ${props => (props.$orientation === "inverted" ? "sideways-lr" : "unset")};
             width: ${props => (props.$orientation === "inverted" ? "auto" : "100px")};
             min-width: ${props => (props.$orientation === "inverted" ? "0" : "100px")};
