@@ -236,7 +236,7 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
             const fontColor = !isCategoryColumn ? healthCareType && healthcareTypeToColor[healthCareType] : undefined;
 
             const data = tab.data[rowIndex]?.[columnIndex];
-            const fontSize = data === "◐" ? 15 : data === "🅧" ? 12 : undefined;
+            const fontSize = data === "◐" ? 13 : data === "🅧" ? 12 : 11;
 
             return {
                 ...CENTER_ALIGNMENT,
@@ -253,7 +253,7 @@ function getTabSpecificCellStyles(tab: Tab, rowIndex: number, columnIndex: numbe
         }
         case "entitlements": {
             const data = tab.data[rowIndex]?.[columnIndex];
-            const fontSize = data === "◐" ? 15 : data === "🅧" ? 12 : undefined;
+            const fontSize = data === "◐" ? 13 : data === "🅧" ? 12 : 11;
 
             return {
                 ...CENTER_ALIGNMENT,
