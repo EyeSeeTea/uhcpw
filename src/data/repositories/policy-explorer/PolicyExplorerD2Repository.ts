@@ -15,7 +15,7 @@ import {
     PolicyExplorerCategories,
     PolicyExplorerRepository,
 } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
-import { policyExplorerDataSet_ID, sortByCountry } from "../utils";
+import { sortByCountry } from "../utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
@@ -38,6 +38,7 @@ import { getTableSorter } from "./sorters/TableSorter";
 import { getTableLegends, getTabType, mapCellToExportedValue } from "./utils";
 import { TableBuilderEntitlementsForUndocumented } from "./builders/TableBuilderEntitlementsForUndocumented";
 import { mapToWhoCountryCode } from "../countries/mapToWhoCountryData";
+import { getPolicyExplorerDataValues, policyExplorerDataSet_ID } from "../common/getPolicyExplorerDataValues";
 
 export const generalDataElements: Record<string, string> = {
     sourceUrl: "pDEHTRpRL8X",
@@ -104,24 +105,18 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                     filter: { id: { eq: policyExplorerDataSet_ID } },
                 })
             ),
-            dataValuesResponse: apiToFuture(
-                this.api.dataValues.getSet({
-                    dataSet: [policyExplorerDataSet_ID],
-                    orgUnit: selectedCountriesIds,
-                    period: this.getPeriods(yearsByCategory),
-                })
-            ),
-        }).map(({ dataSetResponse, dataValuesResponse }) => {
+            dataValues: getPolicyExplorerDataValues(this.api, this.getPeriods(yearsByCategory), selectedCountriesIds),
+        }).map(({ dataSetResponse, dataValues }) => {
             const dataSet: D2DataSet | undefined = dataSetResponse.objects[0];
 
             const dataValuesWithOrgUnitNames = this.populateDataValuesWithOrgUnitNames(
-                dataValuesResponse.dataValues,
+                dataValues,
                 countriesAndSubregions
             );
 
             const lastAvailableYearByCountry = this.getLastAvailableYearByCountry(
                 dataSet,
-                dataValuesResponse.dataValues,
+                dataValues,
                 policyExplorerCategories
             );
 
