@@ -6,7 +6,7 @@ import {
     PolicyExplorerSubcategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
-import { policyExplorerDataSet_ID, policyExplorerProgram_ID } from "../utils";
+import { policyExplorerProgram_ID } from "../utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { getMainPagesContent } from "../common/getMainPagesContent";
@@ -16,6 +16,7 @@ import _ from "lodash";
 import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderCoveredHealthcareByType";
+import { policyExplorerDataSet_ID } from "../common/getPolicyExplorerDataValues";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
 
