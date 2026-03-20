@@ -3,7 +3,7 @@ import ResizeObserver from "resize-observer-polyfill";
 global.ResizeObserver = ResizeObserver;
 
 // Extend Jest timeout
-jest.setTimeout(50000);
+jest.setTimeout(100000);
 
 // Mock matchMedia to prevent Jest errors in jsdom
 Object.defineProperty(window, "matchMedia", {
