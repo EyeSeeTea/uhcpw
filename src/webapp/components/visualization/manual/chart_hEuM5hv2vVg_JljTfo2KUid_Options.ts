@@ -1,0 +1,200 @@
+import _ from "lodash";
+import { baseLegend } from "../customization/legends/baseLegend";
+import { ChartSourceMultiple } from "./chartOptions";
+import { baseChartOptions } from "./generic/baseChartOptions";
+import { yAxisformatNumberLabel } from "../customization/yAxis/formatNumberLabel";
+import { getMaxAxisAndTickInterval, sumSeriesData } from "../utils/getMaxAxisAndTickInterval";
+import { getMaxYAxisAndYTickInterval, SeriesWithData } from "./utils/getMaxYAxisAndYTickInterval";
+
+const SORTED_SERIES_IDS = [
+    "agkIMfYuSaZ",
+    "f8hFmRxdI6p",
+    "mrTd16bN3Po",
+    "Inov4dcmJ07",
+    "jHqrLFoXwSJ",
+    "seopiAnJoR5",
+    "WmOGqGcov4f",
+];
+
+const seriesNames: Record<string, string> = {
+    agkIMfYuSaZ: "Younger",
+    f8hFmRxdI6p: "Adults only",
+    mrTd16bN3Po: "Multigenerational",
+    Inov4dcmJ07: "Older",
+    jHqrLFoXwSJ: "Only older",
+    seopiAnJoR5: "Only older",
+    WmOGqGcov4f: "Average",
+};
+
+const seriesColors: Record<string, string> = {
+    agkIMfYuSaZ: "#bac4e2",
+    f8hFmRxdI6p: "#8fa2d4",
+    mrTd16bN3Po: "#4472c4",
+    Inov4dcmJ07: "#2f5597",
+    jHqrLFoXwSJ: "#203864",
+    seopiAnJoR5: "#FF8739",
+    WmOGqGcov4f: "#c00001",
+};
+
+export const chart_hEuM5hv2vVg_JljTfo2KUid_Options: (
+    chartSource: ChartSourceMultiple
+) => Highcharts.Options = chartSource => {
+    const [firstChartAnalyticsResponse, secondChartAnalyticsResponse] = chartSource.analyticsResponse;
+    const [firstChartVisualization, secondChartVisualization] = chartSource.visualization;
+
+    const filteredYears = firstChartAnalyticsResponse?.metaData.dimensions.pe || [];
+
+    const allYears = _([
+        ..._.map(firstChartAnalyticsResponse?.rows, row => row[1]),
+        ..._.map(secondChartAnalyticsResponse?.rows, row => row[1]),
+    ])
+        .uniq()
+        .filter(year => !!year && filteredYears.includes(year))
+        .compact()
+        .orderBy()
+        .value();
+
+    const firstChartDataByDx = formatDxGroupsFromRows(firstChartAnalyticsResponse?.rows, allYears);
+    const secondChartDataByDx = formatDxGroupsFromRows(secondChartAnalyticsResponse?.rows, allYears);
+    const series = [
+        ...(firstChartAnalyticsResponse?.metaData.dimensions.dx?.reverse().map(dxId => {
+            return {
+                id: dxId,
+                type: "line",
+                color: seriesColors[dxId],
+                name: seriesNames[dxId],
+                data: firstChartDataByDx[dxId]?.map(row => (row[2] ? +row[2] : null)),
+                marker: {
+                    enabled: true,
+                    symbol: "circle",
+                },
+            };
+        }) || []),
+        ...(secondChartAnalyticsResponse?.metaData.dimensions.dx?.map(dxId => {
+            return {
+                id: dxId,
+                type: "column",
+                color: seriesColors[dxId],
+                name: seriesNames[dxId],
+                data: secondChartDataByDx[dxId]?.map(row => (row[2] ? +row[2] : null)),
+                yAxis: 1,
+            };
+        }) || []),
+    ];
+
+    const sortedSeries = _.sortBy(series, s => SORTED_SERIES_IDS.indexOf(s.id));
+
+    const columnSeriesData = sortedSeries.filter(s => s.type === "column").map(s => s.data || []);
+    const sumOfColumnSeriesData = sumSeriesData(columnSeriesData);
+    const { max: adjustedMaxColumnYAxis, tickInterval: yColumnTickInterval } =
+        getMaxAxisAndTickInterval(sumOfColumnSeriesData);
+
+    const lineData = _.compact(_.flatten(sortedSeries.filter(s => s.type === "line").map(s => s.data || [])));
+    const { max: adjustedMaxLineYAxis, tickInterval: yLineTickInterval } = getMaxAxisAndTickInterval(lineData);
+
+    return {
+        ...baseChartOptions,
+        xAxis: {
+            categories: allYears,
+        },
+        yAxis: [
+            {
+                title: {
+                    text: firstChartVisualization?.axes[0]?.title.text,
+                    style: { fontSize: "13px" },
+                },
+                labels: yAxisformatNumberLabel.yAxis?.labels,
+                max: adjustedMaxLineYAxis,
+                tickInterval: yLineTickInterval,
+                min: 0,
+            },
+            {
+                title: {
+                    text: secondChartVisualization?.axes[0]?.title.text,
+                    style: { fontSize: "13px" },
+                    rotation: 270,
+                    x: 5,
+                },
+                opposite: true,
+                labels: yAxisformatNumberLabel.yAxis?.labels,
+                max: adjustedMaxColumnYAxis,
+                tickInterval: yColumnTickInterval,
+                min: 0,
+            },
+        ],
+        legend: {
+            ...baseLegend,
+            symbolHeight: 13,
+            symbolWidth: 13,
+            symbolRadius: 0,
+            width: 150,
+            itemStyle: { ...baseLegend.itemStyle, whiteSpace: "normal", textOverflow: "none" },
+        },
+        series: sortedSeries,
+        plotOptions: {
+            column: {
+                stacking: "normal",
+            },
+            series: {
+                events: {
+                    legendItemClick: function (this: Highcharts.Series) {
+                        const isSelectedSerieHide = this.visible;
+                        const typeSelectedSerie = this.options.type;
+                        const selectedSerieIndex = this.index;
+                        const seriesInChart = this.chart.series as SeriesWithData[];
+
+                        const visibleSeries = seriesInChart.filter((serie, index) => {
+                            const isSelectedSerie = index === selectedSerieIndex;
+                            const isSelectedSerieVisible = !isSelectedSerieHide && isSelectedSerie;
+                            const isNotSelectedSeriesVisible = !isSelectedSerie && serie.visible;
+                            return (
+                                serie.options?.type === typeSelectedSerie &&
+                                (isSelectedSerieVisible || isNotSelectedSeriesVisible)
+                            );
+                        });
+
+                        const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
+                            visibleSeries,
+                            {
+                                isStacked: typeSelectedSerie === "column",
+                            }
+                        );
+
+                        this.chart.yAxis.forEach(yAxis => {
+                            const isYAxisFromSelectedChartType = yAxis.series.every(
+                                s => s.options.type === typeSelectedSerie
+                            );
+
+                            if (isYAxisFromSelectedChartType) {
+                                yAxis.update(
+                                    {
+                                        max: adjustedMaxYAxis,
+                                        tickInterval: yTickInterval,
+                                    },
+                                    true
+                                );
+                            }
+                        });
+
+                        return true;
+                    },
+                },
+            },
+        },
+    } as Highcharts.Options;
+};
+
+function formatDxGroupsFromRows(rows: string[][] | undefined, years: string[]) {
+    return _(rows)
+        .orderBy(row => row[1])
+        .groupBy(row => row[0])
+        .mapValues(rows => {
+            if (!rows || !rows[0]) {
+                return [];
+            }
+            const dxId = rows[0][0];
+
+            return years.map(year => _.find(rows, r => r.includes(year)) || [dxId, year, null]);
+        })
+        .value();
+}

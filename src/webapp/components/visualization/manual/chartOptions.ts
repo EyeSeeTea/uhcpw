@@ -34,6 +34,8 @@ import { chart_eBxPw4kUnLU_Options } from "./chart_eBxPw4kUnLU_Options";
 import { chart_IXF2wBMnwpa_Options } from "./chart_IXF2wBMnwpa_Options";
 import { chart_wFITZgQ3udq_Options } from "./chart_wFITZgQ3udq_Options";
 import { chart_AQ8dYmv00zb_Options } from "./chart_AQ8dYmv00zb_Options";
+import { chart_AjY0AISVVs5_dVRGqsjce2n_Options } from "./chart_AjY0AISVVs5_dVRGqsjce2n_Options";
+import { chart_hEuM5hv2vVg_JljTfo2KUid_Options } from "./chart_hEuM5hv2vVg_JljTfo2KUid_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -102,4 +104,6 @@ export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMulti
     Uf4B2PFIO6f_VQyARVycY60: chartSource => chart_Uf4B2PFIO6f_VQyARVycY60_Options(chartSource),
     EtHaEt6bnm5_nlYSkEMZxgN: chartSource => chart_EtHaEt6bnm5_nlYSkEMZxgN_Options(chartSource),
     AophAEpx5e0_BOcLONPSyYS: chartSource => chart_AophAEpx5e0_BOcLONPSyYS_Options(chartSource),
+    AjY0AISVVs5_dVRGqsjce2n: chartSource => chart_AjY0AISVVs5_dVRGqsjce2n_Options(chartSource),
+    hEuM5hv2vVg_JljTfo2KUid: chartSource => chart_hEuM5hv2vVg_JljTfo2KUid_Options(chartSource),
 };
