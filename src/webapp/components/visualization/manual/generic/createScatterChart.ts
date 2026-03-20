@@ -117,6 +117,7 @@ export const createScatterChart: ({
             },
             max: adjustedMaxYAxis,
             tickInterval: yTickInterval ?? yTickIntervalCalc,
+            min: 0,
         },
         legend: { enabled: false },
         series: [
