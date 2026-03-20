@@ -11,10 +11,10 @@ import { Maybe } from "../../../types/utils";
 import { getCurrencyCodeFromCountryId } from "./getCurrencyCodeFromCountryId";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
-import { policyExplorerDataSet_ID } from "../utils";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import _ from "lodash";
 import i18n from "../../../locales";
+import { getPolicyExplorerDataValues } from "../common/getPolicyExplorerDataValues";
 
 export const countryInfoProgram = "xgaF9UtfrzK";
 
@@ -156,17 +156,13 @@ export class CountryD2Repository implements CountryRepository {
             .flatMap(({ countries, bosniaAndHerzegovinaRegions, ...rest }) => {
                 const countryIds = countries.objects.map(c => c.id);
                 const bosniaAndHerzegovinaIds = bosniaAndHerzegovinaRegions.objects.map(r => r.id);
-                return apiToFuture(
-                    this.api.dataValues.getSet({
-                        dataSet: [policyExplorerDataSet_ID],
-                        orgUnit: countryIds.concat(bosniaAndHerzegovinaIds),
-                        period: this.periodsForGap(),
-                    })
-                ).map(gapText => ({
+                const allOrgUnitIds = countryIds.concat(bosniaAndHerzegovinaIds);
+
+                return getPolicyExplorerDataValues(this.api, this.periodsForGap(), allOrgUnitIds).map(dataValues => ({
                     countries,
                     bosniaAndHerzegovinaRegions,
                     ...rest,
-                    gapText,
+                    gapTextDataValues: dataValues,
                 }));
             })
             .map(
@@ -176,9 +172,9 @@ export class CountryD2Repository implements CountryRepository {
                     additionalCountriesInfo,
                     programMetadata,
                     sectionsEvent,
-                    gapText,
+                    gapTextDataValues,
                 }) => {
-                    const gapTextsByCountry = this.buildGapsTextByCountry(gapText.dataValues);
+                    const gapTextsByCountry = this.buildGapsTextByCountry(gapTextDataValues);
 
                     const countriesIdsInCountryPage = this.getCountriesIdsInCountryPage(
                         programMetadata.objects[0],
