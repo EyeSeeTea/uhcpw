@@ -305,6 +305,13 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                           )
                         : undefined;
 
+                const yearsWithData = mergedVisualization.getYearsWithData
+                    ? analyticsResponses.reduce((acc: string[], response): string[] => {
+                          const filteredYears = mergedVisualization.getYearsWithData?.(response.rows) || [];
+                          return [...acc, ...filteredYears];
+                      }, [])
+                    : [];
+
                 const dataRowsAndBreakInSeriesDescriptions = analyticsResponses.map(analyticsResponse => {
                     return this.getDataRowsAndBreakInSeriesDescriptions({
                         visualization: mergedVisualization,
@@ -316,6 +323,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         latestAvailableYearByCountryId,
                         yearByIndicatorAndCountry,
                         policyExplorerChartData: policyExplorerChartData,
+                        yearsWithData: yearsWithData,
                     });
                 });
 
@@ -517,6 +525,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
               >
             | undefined;
         policyExplorerChartData?: PolicyExplorerChartData[];
+        yearsWithData?: string[];
     }): { breakInSeriesDescriptions: string[][]; dataRows: string[][] } {
         const {
             visualization,
@@ -528,6 +537,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             latestAvailableYearByCountryId,
             yearByIndicatorAndCountry,
             policyExplorerChartData,
+            yearsWithData,
         } = params;
 
         const filteredAnalyticsResponse = this.filterAnalyticsResponse(
@@ -545,6 +555,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             metadata,
             seriesIdAndName,
             policyExplorerChartData: policyExplorerChartData,
+            yearsWithData: yearsWithData,
         });
 
         const orgUnitsInChart = this.getOrgUnitsInChart({
@@ -658,6 +669,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         metadata: Metadata;
         seriesIdAndName: { id: string | undefined; name: string | undefined }[];
         policyExplorerChartData?: PolicyExplorerChartData[];
+        yearsWithData?: string[];
     }): string[][] {
         const {
             visualization,
@@ -667,6 +679,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             metadata,
             seriesIdAndName,
             policyExplorerChartData,
+            yearsWithData,
         } = params;
 
         const columns = analyticsResponse.headers.map(header => {
@@ -700,6 +713,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 seriesIdAndName,
                 getRowWithDataName: visualization.getRowWithDataName,
                 policyExplorerChartData: policyExplorerChartData,
+                yearsWithData: yearsWithData,
             })
         )
             .sortBy(row => row[1])
@@ -733,11 +747,22 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             policyExplorerChartData?: PolicyExplorerChartData[]
         ) => string[];
         policyExplorerChartData?: PolicyExplorerChartData[];
+        yearsWithData?: string[];
     }): string[][] {
-        const { rows, metadata, visualizationId, seriesIdAndName, getRowWithDataName, policyExplorerChartData } =
-            params;
+        const {
+            rows,
+            metadata,
+            visualizationId,
+            seriesIdAndName,
+            getRowWithDataName,
+            policyExplorerChartData,
+            yearsWithData,
+        } = params;
+        const filteredRows: string[][] = yearsWithData
+            ? rows.filter(row => row[1] && yearsWithData.includes(row[1]))
+            : rows;
 
-        return rows.map(row => {
+        return filteredRows.map(row => {
             return getRowWithDataName
                 ? getRowWithDataName(row, metadata, policyExplorerChartData)
                 : row.map((cell): string => {

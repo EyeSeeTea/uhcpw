@@ -27,15 +27,17 @@ export const chart_AjY0AISVVs5_dVRGqsjce2n_Options: (
 ) => Highcharts.Options = chartSource => {
     const [firstChartAnalyticsResponse, secondChartAnalyticsResponse] = chartSource.analyticsResponse;
     const [firstChartVisualization, secondChartVisualization] = chartSource.visualization;
-
-    const filteredYears = firstChartAnalyticsResponse?.metaData.dimensions.pe || [];
+    const columnDataRows = secondChartAnalyticsResponse?.rows || [];
+    const yearsWithData: string[] = [
+        ...new Set(columnDataRows.map(row => row[1]).filter((year): year is string => !!year)),
+    ].sort();
 
     const allYears = _([
         ..._.map(firstChartAnalyticsResponse?.rows, row => row[1]),
         ..._.map(secondChartAnalyticsResponse?.rows, row => row[1]),
     ])
         .uniq()
-        .filter(year => !!year && filteredYears.includes(year))
+        .filter(year => !!year && yearsWithData.includes(year))
         .compact()
         .orderBy()
         .value();

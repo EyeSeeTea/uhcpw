@@ -51,6 +51,7 @@ export interface VisualizationExtra {
     needPolicyExplorerChartData?: boolean;
     includeLatestAvailableYear?: boolean;
     includeLatestCOVID19?: boolean;
+    getYearsWithData?: (dataRows: string[][]) => string[];
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };
