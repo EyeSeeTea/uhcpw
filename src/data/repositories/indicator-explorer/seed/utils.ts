@@ -43,6 +43,8 @@ export const sortedCharts: string[] = [
     "ZxNdsDM8NSb",
     "q5ldoFcgkSn",
     "TzWcDtEOTPX",
+    "hEuM5hv2vVg_JljTfo2KUid",
+    "AjY0AISVVs5_dVRGqsjce2n",
     "Uf4B2PFIO6f_VQyARVycY60",
     // Financial hardship - comparative
     "dbc87Ljw8uN",
