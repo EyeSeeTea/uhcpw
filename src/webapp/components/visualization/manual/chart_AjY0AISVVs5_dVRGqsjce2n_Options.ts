@@ -56,6 +56,7 @@ export const chart_AjY0AISVVs5_dVRGqsjce2n_Options: (
                     enabled: true,
                     symbol: "circle",
                 },
+                yAxis: 1,
             };
         }) || []),
         ...(secondChartAnalyticsResponse?.metaData.dimensions.dx?.map(dxId => {
@@ -65,7 +66,7 @@ export const chart_AjY0AISVVs5_dVRGqsjce2n_Options: (
                 color: seriesColors[dxId],
                 name: seriesNames[dxId],
                 data: secondChartDataByDx[dxId]?.map(row => (row[2] ? +row[2] : null)),
-                yAxis: 1,
+                yAxis: 0,
             };
         }) || []),
     ];
@@ -74,8 +75,10 @@ export const chart_AjY0AISVVs5_dVRGqsjce2n_Options: (
 
     const columnSeriesData = sortedSeries.filter(s => s.type === "column").map(s => s.data || []);
     const sumOfColumnSeriesData = sumSeriesData(columnSeriesData);
-    const { max: adjustedMaxColumnYAxis, tickInterval: yColumnTickInterval } =
-        getMaxAxisAndTickInterval(sumOfColumnSeriesData);
+    const { max: adjustedMaxColumnYAxis, tickInterval: yColumnTickInterval } = getMaxAxisAndTickInterval(
+        sumOfColumnSeriesData,
+        true
+    );
 
     const lineData = _.compact(_.flatten(sortedSeries.filter(s => s.type === "line").map(s => s.data || [])));
     const { max: adjustedMaxLineYAxis, tickInterval: yLineTickInterval } = getMaxAxisAndTickInterval(lineData);
@@ -88,26 +91,26 @@ export const chart_AjY0AISVVs5_dVRGqsjce2n_Options: (
         yAxis: [
             {
                 title: {
+                    text: secondChartVisualization?.axes[0]?.title.text,
+                    style: { fontSize: "13px" },
+                },
+                labels: yAxisformatNumberLabel.yAxis?.labels,
+                max: adjustedMaxColumnYAxis,
+                tickInterval: yColumnTickInterval,
+                min: 0,
+            },
+            {
+                title: {
                     text: firstChartVisualization?.axes[0]?.title.text,
                     style: { fontSize: "13px" },
+                    rotation: 270,
+                    x: 5,
                 },
                 labels: yAxisformatNumberLabel.yAxis?.labels,
                 max: adjustedMaxLineYAxis,
                 tickInterval: yLineTickInterval,
                 min: 0,
-            },
-            {
-                title: {
-                    text: secondChartVisualization?.axes[0]?.title.text,
-                    style: { fontSize: "13px" },
-                    rotation: 270,
-                    x: 5,
-                },
                 opposite: true,
-                labels: yAxisformatNumberLabel.yAxis?.labels,
-                max: adjustedMaxColumnYAxis,
-                tickInterval: yColumnTickInterval,
-                min: 0,
             },
         ],
         legend: {
@@ -145,6 +148,7 @@ export const chart_AjY0AISVVs5_dVRGqsjce2n_Options: (
                             visibleSeries,
                             {
                                 isStacked: typeSelectedSerie === "column",
+                                maxValueUpTo100: typeSelectedSerie === "column",
                             }
                         );
 
