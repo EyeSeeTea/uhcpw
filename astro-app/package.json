@@ -1,0 +1,23 @@
+{
+    "name": "uhcpw-astro-app",
+    "type": "module",
+    "version": "0.0.1",
+    "license": "GPL-3.0",
+    "author": "EyeSeeTea team",
+    "engines": {
+        "node": ">=22.12.0"
+    },
+    "scripts": {
+        "start": "astro dev",
+        "build": "astro build",
+        "preview": "astro preview",
+        "astro": "astro",
+        "prettify": "prettier \"./**/*.{js,jsx,json,css,ts,tsx}\" --write"
+    },
+    "dependencies": {
+        "astro": "^6.0.8"
+    },
+    "devDependencies": {
+        "prettier": "^3.8.1"
+    }
+}
