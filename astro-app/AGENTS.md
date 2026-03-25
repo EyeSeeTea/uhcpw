@@ -19,23 +19,36 @@ Only the `methods` and `about` pages are in scope for the initial PoC. The objec
 - `@shared/types/*` → `../src/types/*`
 - `@shared/utils/*` → `../src/utils/*`
 
+Aliases are defined in `tsconfig.json` (type-checking), `astro.config.mjs` → `vite.resolve.alias` (bundling), and `vitest.config.ts` (tests).
+
 ## Commands
 
 ```sh
-yarn start      # Dev server
-yarn build      # Production build (static output)
+yarn start      # Dev server (astro dev)
+yarn build      # Production build (static output to dist/)
 yarn preview    # Preview built site
+yarn test       # Vitest (run once)
+yarn test:watch # Vitest (watch mode)
 yarn lint       # ESLint
-yarn test       # Vitest
 yarn prettify   # Prettier
 ```
 
 ## Key decisions
 
 - TypeScript 5.x (Astro requirement) — root project stays on 4.9 for now.
+- React 18 in astro-app (required by `@astrojs/react`). Parent uses React 17 — safe because islands are independently hydrated.
+- Shared dependency versions match parent `package.json` exactly to avoid runtime mismatches.
 - Frontmatter data fetching for the PoC; Content Collections with a custom DHIS2 loader planned as follow-up.
 - Prefer Astro components + scoped styles for static content; React islands only where interactivity is needed.
 - Vitest for testing (native Vite/ESM support); Jest stays in the root project for existing `src/` tests.
+- ESLint v10 with flat config (`eslint.config.mjs`).
+
+## Gotchas
+
+- **`verbatimModuleSyntax: false`** in tsconfig — Astro's strict config enables this, but parent shared code has 500+ type imports without `type` keyword. Fixing the parent is a separate follow-up.
+- **`skipLibCheck: true`** — Parent hand-written `.d.ts` files (`d2-analytics.d.ts`, `d2.d.ts`, `i18n.d.ts`) have type errors under TS 5.x strict mode.
+- **`PersonD2Repository.ts` excluded from tsconfig `include`** — It imports a `.png` from `webapp/assets/` which Astro types as `ImageMetadata` instead of `string`. The file is still importable at build time; it's only excluded from proactive type-checking.
+- **Parent test files excluded from tsconfig** — `__tests__/`, `*.spec.*`, `*.test.*`, `tests-ui.tsx`, and `data/export/` are excluded to avoid irrelevant type errors from parent test code.
 
 ## References
 
