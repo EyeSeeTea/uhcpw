@@ -1,18 +1,24 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
+import {
+    PolicyExplorer,
+    PolicyExplorerCell,
+    PolicyExplorerCellType,
+} from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { useAppContext } from "../../contexts/app-context";
 import { Id } from "../../../domain/entities/Ref";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
-import { CategoryOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
+import { PolicyExplorerSelectableCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { CategorySelectableOption } from "../../components/policy-explorer/category-selector/useCategorySelector";
+import { Maybe } from "../../../types/utils";
 
 type RegionalPolicyExplorerTableState = {
     tableData: PolicyExplorerCell[][] | undefined;
     hasData: boolean;
-    category: CategoryOption | undefined;
+    category: CategorySelectableOption | undefined;
     isNotesDialogOpen: boolean;
     setIsNotesDialogOpen: (isOpen: boolean) => void;
     isLoading: boolean;
+    onDownload: () => void;
 };
 
 export function useRegionalPolicyExplorerTable(
@@ -22,8 +28,10 @@ export function useRegionalPolicyExplorerTable(
 ): RegionalPolicyExplorerTableState {
     const { compositionRoot, countriesAndSubregions } = useAppContext();
 
-    const [tableData, setTableData] = useState<PolicyExplorerCell[][] | undefined>();
-    const [category, setCategory] = useState<CategoryOption | undefined>();
+    const [tableData, setTableData] = useState<Maybe<PolicyExplorerCell[][]>>();
+    const [policyExplorerData, setPolicyExplorerData] = useState<Maybe<PolicyExplorer>>();
+
+    const [category, setCategory] = useState<CategorySelectableOption | undefined>();
     const [isNotesDialogOpen, setIsNotesDialogOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -31,8 +39,12 @@ export function useRegionalPolicyExplorerTable(
         compositionRoot.policyExplorer.getCategories.execute(true).run(
             categories => {
                 if (countries.length) {
+                    const selectableCategories = categories.flatMap(category =>
+                        category.type === "group" ? category.categories : [category]
+                    );
+
                     setLoading(true);
-                    const category = categories.find(cat => cat.id === policyCategoryId);
+                    const category = selectableCategories.find(cat => cat.id === policyCategoryId);
 
                     if (!category) {
                         setCategory(undefined);
@@ -49,9 +61,10 @@ export function useRegionalPolicyExplorerTable(
                     };
 
                     compositionRoot.policyExplorer.get
-                        .execute(policyCategory, countries, years, countriesAndSubregions, categories, true)
+                        .execute(policyCategory, countries, years, countriesAndSubregions, selectableCategories, true)
                         .run(
                             policyExplorerData => {
+                                setPolicyExplorerData(policyExplorerData);
                                 setTableData(invertTableData(policyExplorerData.tables[policyCategoryId]));
                                 setLoading(false);
                             },
@@ -87,6 +100,28 @@ export function useRegionalPolicyExplorerTable(
         );
     }, [tableData]);
 
+    const onDownload = useCallback(() => {
+        if (!tableData || !category || !policyExplorerData) return;
+        compositionRoot.policyExplorer.download
+            .execute(
+                [
+                    {
+                        id: category.value,
+                        name: category.text,
+                        subcategories: category.subcategories.map(option => ({ id: option.value, name: option.text })),
+                        description: category.description,
+                        type: "selectable",
+                    },
+                ],
+                {
+                    ...policyExplorerData,
+                    tables: { [category.value]: tableData },
+                },
+                category.text
+            )
+            .runAsync();
+    }, [compositionRoot.policyExplorer.download, category, tableData, policyExplorerData]);
+
     return {
         tableData: tableData,
         hasData: hasData,
@@ -94,6 +129,7 @@ export function useRegionalPolicyExplorerTable(
         isNotesDialogOpen: isNotesDialogOpen,
         setIsNotesDialogOpen: setIsNotesDialogOpen,
         isLoading: loading,
+        onDownload: onDownload,
     };
 }
 
@@ -122,11 +158,12 @@ function invertTableData(tableData: PolicyExplorerCell[][] | undefined): PolicyE
     return newRows;
 }
 
-function buildCategoryOption(category: PolicyExplorerCategory): CategoryOption {
+function buildCategoryOption(category: PolicyExplorerSelectableCategory): CategorySelectableOption {
     return {
         value: category.id,
         text: category.name,
         subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
         description: category.description,
+        type: "selectable",
     };
 }

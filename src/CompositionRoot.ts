@@ -54,6 +54,8 @@ import { GetChecklistPolicyMakersUseCase } from "./domain/usecases/region/GetChe
 import { ChecklistPolicyMakersD2Repository } from "./data/repositories/regions/ChecklistPolicyMakersD2Repository";
 import { GetCountryExperiencesUseCase } from "./domain/usecases/region/GetCountryExperiencesUseCase";
 import { CountryExperienceD2Repository } from "./data/repositories/regions/CountryExperienceD2Repository";
+import { GetPolicyExplorerChartDataUseCase } from "./domain/usecases/indicator-explorer/GetPolicyExplorerChartDataUseCase";
+import { PolicyExplorerChartDataD2Repository } from "./data/repositories/indicator-explorer/PolicyExplorerChartDataD2Repository";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -82,6 +84,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         regionInfo: new RegionInfoD2Repository(api),
         checklistPolicyMakers: new ChecklistPolicyMakersD2Repository(api),
         countryExperience: new CountryExperienceD2Repository(api),
+        policyExplorerChartData: new PolicyExplorerChartDataD2Repository(api),
     };
 }
 
@@ -122,9 +125,14 @@ export function getCompositionRoot(
             getVisualizations: new GetVisualizationsUseCase(repositories.visualization),
             getVisualization: new GetVisualizationByIdUseCase(repositories.visualization),
             getAnalytics: new GetAnalyticsUseCase(repositories.visualization, repositories.analytics),
-            downloadAnalytics: new DownloadAnalyticsUseCase(repositories.visualization, repositories.analytics),
+            downloadAnalytics: new DownloadAnalyticsUseCase(
+                repositories.visualization,
+                repositories.analytics,
+                repositories.policyExplorerChartData
+            ),
             getLegendSets: new GetLegendSetsUseCase(repositories.legendSet),
             getPageContent: new GetIndicatorExplorerPageContentUseCase(repositories.indicatorExplorer),
+            getPolicyExplorerChartData: new GetPolicyExplorerChartDataUseCase(repositories.policyExplorerChartData),
         },
         resources: {
             get: new GetResourcesUseCase(repositories.resource),

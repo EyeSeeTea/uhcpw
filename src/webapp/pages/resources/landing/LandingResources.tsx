@@ -9,6 +9,7 @@ import { SimpleResourceItem } from "../../../components/resources/common/SimpleR
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { LandingResourcesState } from "./ResourcesState";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { formatCountryOrRegionParamName } from "../../../utils/formatCountryOrRegionParamName";
 
 export const LandingResources: React.FC<{ resources: LandingResourcesState }> = React.memo(({ resources }) => {
     const history = useHistory();
@@ -27,7 +28,11 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
                                             role="listitem"
                                             src={country.flag}
                                             onClick={() =>
-                                                history.push(`/resources/country-analysis?country=${country.countryId}`)
+                                                history.push(
+                                                    `/resources/country-analysis/${formatCountryOrRegionParamName(
+                                                        country.countryName
+                                                    )}`
+                                                )
                                             }
                                         />
                                     </Tooltip>

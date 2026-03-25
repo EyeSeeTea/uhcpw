@@ -89,12 +89,12 @@ export const jFtGKQIQTGp_visualization = {
             dimension: "dx",
             items: [
                 {
-                    dimensionItem: "WsUM8TQ7cEh",
-                    id: "WsUM8TQ7cEh",
+                    dimensionItem: "CMKOYzqDIZD",
+                    id: "CMKOYzqDIZD",
                 },
                 {
-                    dimensionItem: "yYSS1uBgnTE",
-                    id: "yYSS1uBgnTE",
+                    dimensionItem: "OQ4P2FX0ApA",
+                    id: "OQ4P2FX0ApA",
                 },
             ],
         },
@@ -114,13 +114,13 @@ export const jFtGKQIQTGp_visualization = {
         {
             dataDimensionItemType: "DATA_ELEMENT",
             dataElement: {
-                id: "WsUM8TQ7cEh",
+                id: "CMKOYzqDIZD",
             },
         },
         {
             dataDimensionItemType: "DATA_ELEMENT",
             dataElement: {
-                id: "yYSS1uBgnTE",
+                id: "OQ4P2FX0ApA",
             },
         },
     ],

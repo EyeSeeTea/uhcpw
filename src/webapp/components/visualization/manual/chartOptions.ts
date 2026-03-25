@@ -3,6 +3,8 @@ import { Analytics } from "../../../../domain/entities/indicator-explorer/Analyt
 import { Visualization } from "../../../../domain/entities/indicator-explorer/Visualization";
 import { Id } from "../../../../domain/entities/Ref";
 import { Region } from "../../../../domain/entities/region/Region";
+import { PolicyExplorerChartData } from "../../../../domain/entities/indicator-explorer/PolicyExplorerChartData";
+
 import { chart_kIpnMBaBvZ9_Options } from "./chart_kIpnMBaBvZ9_Options";
 import { chart_dbc87Ljw8uN_Options } from "./chart_dbc87Ljw8uN_Options";
 import { chart_NOukqSxCI63_Options } from "./chart_NOukqSxCI63_Options";
@@ -26,10 +28,19 @@ import { chart_CdqVV1Ib0XS_Options } from "./chart_CdqVV1Ib0XS_Options";
 import { chart_twyY1ulr7uD_Options } from "./chart_twyY1ulr7uD_Options";
 import { chart_fnOIi0bdISn_Options } from "./chart_fnOIi0bdISn_Options";
 import { chart_y4qAv6eW4nb_Options } from "./chart_y4qAv6eW4nb_Options";
+import { chart_oaYpnZIdm5C_Options } from "./chart_oaYpnZIdm5C_Options";
+import { chart_TLMsmCsJJ2U_Options } from "./chart_TLMsmCsJJ2U_Options";
+import { chart_eBxPw4kUnLU_Options } from "./chart_eBxPw4kUnLU_Options";
+import { chart_IXF2wBMnwpa_Options } from "./chart_IXF2wBMnwpa_Options";
+import { chart_wFITZgQ3udq_Options } from "./chart_wFITZgQ3udq_Options";
+import { chart_AQ8dYmv00zb_Options } from "./chart_AQ8dYmv00zb_Options";
+import { chart_AjY0AISVVs5_dVRGqsjce2n_Options } from "./chart_AjY0AISVVs5_dVRGqsjce2n_Options";
+import { chart_hEuM5hv2vVg_JljTfo2KUid_Options } from "./chart_hEuM5hv2vVg_JljTfo2KUid_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
     visualization: Visualization;
+    policyExplorerChartData?: PolicyExplorerChartData[];
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
@@ -40,11 +51,13 @@ export interface ChartSource {
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
     sharedYAxisConfig?: { isSharedMax: boolean };
+    maxYearToFilterBy?: string;
 }
 
 export interface ChartSourceMultiple {
     analyticsResponse: Analytics[];
     visualization: Visualization[];
+    policyExplorerChartData?: PolicyExplorerChartData[][];
     countries: Country[];
     regions: Region[];
     currentCountryOrRegion?: Id;
@@ -55,6 +68,7 @@ export interface ChartSourceMultiple {
     isRegionalPage?: boolean;
     seriesColors?: Record<string, string>;
     sharedYAxisConfig?: { isSharedMax: boolean };
+    maxYearToFilterBy?: string;
 }
 
 export const chartOptions: Record<string, (chartSource: ChartSource) => Highcharts.Options> = {
@@ -78,10 +92,18 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     CdqVV1Ib0XS: chartSource => chart_CdqVV1Ib0XS_Options(chartSource),
     twyY1ulr7uD: chartSource => chart_twyY1ulr7uD_Options(chartSource),
     y4qAv6eW4nb: chartSource => chart_y4qAv6eW4nb_Options(chartSource),
+    oaYpnZIdm5C: chartSource => chart_oaYpnZIdm5C_Options(chartSource),
+    wFITZgQ3udq: chartSource => chart_wFITZgQ3udq_Options(chartSource),
+    TLMsmCsJJ2U: chartSource => chart_TLMsmCsJJ2U_Options(chartSource),
+    eBxPw4kUnLU: chartSource => chart_eBxPw4kUnLU_Options(chartSource),
+    IXF2wBMnwpa: chartSource => chart_IXF2wBMnwpa_Options(chartSource),
+    AQ8dYmv00zb: chartSource => chart_AQ8dYmv00zb_Options(chartSource),
 };
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {
     Uf4B2PFIO6f_VQyARVycY60: chartSource => chart_Uf4B2PFIO6f_VQyARVycY60_Options(chartSource),
     EtHaEt6bnm5_nlYSkEMZxgN: chartSource => chart_EtHaEt6bnm5_nlYSkEMZxgN_Options(chartSource),
     AophAEpx5e0_BOcLONPSyYS: chartSource => chart_AophAEpx5e0_BOcLONPSyYS_Options(chartSource),
+    AjY0AISVVs5_dVRGqsjce2n: chartSource => chart_AjY0AISVVs5_dVRGqsjce2n_Options(chartSource),
+    hEuM5hv2vVg_JljTfo2KUid: chartSource => chart_hEuM5hv2vVg_JljTfo2KUid_Options(chartSource),
 };

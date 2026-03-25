@@ -1,4 +1,5 @@
 import {
+    Box,
     CircularProgress,
     IconButton,
     Paper,
@@ -12,6 +13,7 @@ import {
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import InfoIcon from "@material-ui/icons/Info";
+import DownloadIcon from "@material-ui/icons/CloudDownload";
 
 import { PolicyExplorerCellType } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
@@ -31,7 +33,7 @@ interface PolicyExplorerTableProps {
 
 export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.memo(props => {
     const { title, countries, categoryId, years } = props;
-    const { tableData, hasData, category, isNotesDialogOpen, setIsNotesDialogOpen, isLoading } =
+    const { tableData, hasData, category, isNotesDialogOpen, setIsNotesDialogOpen, isLoading, onDownload } =
         useRegionalPolicyExplorerTable(countries, categoryId, years);
 
     // TODO: check the other PolicyExplorerTable component in PE and try to unify this functionality
@@ -95,10 +97,16 @@ export const PolicyExplorerTable: React.FC<PolicyExplorerTableProps> = React.mem
                 <Title variant="h6" gutterBottom>
                     {title}
                 </Title>
-
-                <StyledIconButton onClick={() => setIsNotesDialogOpen(true)} $color="#185698" padding="4px">
-                    <CustomInfoIconCountry color="primary" className="info-button" />
-                </StyledIconButton>
+                <Box display="flex" gridGap={6}>
+                    <StyledIconButton onClick={() => setIsNotesDialogOpen(true)} $color="#185698" padding="4px">
+                        <CustomInfoIconCountry color="primary" className="info-button" />
+                    </StyledIconButton>
+                    <ImageContainer>
+                        <IconButton component="a" onClick={onDownload} download color="primary">
+                            <CustomImageIcon color="primary" className="download-button" />
+                        </IconButton>
+                    </ImageContainer>
+                </Box>
             </TableHeader>
 
             <LegendContainer>
@@ -187,6 +195,26 @@ const StyledIconButton = styled(IconButton)<{ $color: string; padding: string }>
 const CustomInfoIconCountry = styled(InfoIcon)`
     color: #185698;
     margin-top: -3px;
+`;
+
+const CustomImageIcon = styled(DownloadIcon)`
+    color: white;
+    background-color: #185698;
+    border-radius: 50%;
+    padding: 4px;
+    font-size: 20px;
+`;
+
+const ImageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: fit-content;
+
+    a {
+        align-self: flex-end;
+        padding: 0;
+    }
 `;
 
 const TablePaper = styled(Paper)`

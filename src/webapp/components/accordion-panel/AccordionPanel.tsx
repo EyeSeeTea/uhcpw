@@ -90,7 +90,7 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
                             $isSecondaryColor={isSecondaryColor}
                             $leftPadding={leftPadding}
                         >
-                            <StyledTypography>{getLabel(config.tabTitle)}</StyledTypography>
+                            <StyledTypography $bigFont={bigFont}>{getLabel(config.tabTitle)}</StyledTypography>
                         </StyledAccordionSummary>
                         <StyledAccordionDetails>
                             {config.Component ? <config.Component {...config.props} /> : null}
@@ -106,9 +106,28 @@ const AccordionContainer = styled.div`
     padding: 0;
     background: white;
     color: white;
+    /* Force browsers to respect the defined font-size */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 `;
 
-const StyledTypography = styled(Typography)`
+const StyledTypography = styled(Typography)<{
+    $bigFont?: boolean;
+}>`
+    max-height: 999999px;
+
+    /* Force browsers to respect the defined font-size */
+    -webkit-text-size-adjust: 100% !important;
+    -moz-text-size-adjust: 100% !important;
+    -ms-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+
+    font-size: ${props => (props.$bigFont ? "24px" : "16px")} !important;
+
+    display: inline-block;
+
     & .start-with-number-label {
         display: inline-block;
         padding-left: 20px;

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
     PolicyExplorer,
     PolicyExplorerCellType,
@@ -17,6 +17,7 @@ import { useMultiCountryOptionsV2 } from "../../common/hooks/countries/useMultiC
 import { PolicyExplorerState } from "./PolicyExplorerState";
 import {
     PolicyExplorerCategory,
+    PolicyExplorerSelectableCategory,
     PolicyExplorerSelectCategoryInfo,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import {
@@ -158,6 +159,12 @@ export function usePolicyExplorer({
         sendEvent,
     ]);
 
+    const selectablePolicyExplorerCategories: PolicyExplorerSelectableCategory[] = useMemo(() => {
+        return policyExplorerCategories.flatMap(category =>
+            category.type === "group" ? category.categories : [category]
+        );
+    }, [policyExplorerCategories]);
+
     const onGetTable = useCallback(() => {
         if (
             selectedCategoriesWithSubcategoriesFilter &&
@@ -172,7 +179,7 @@ export function usePolicyExplorer({
                     countryFilter.selected,
                     selectedYearFilter ? selectedYearFilter : [],
                     countriesAndSubregions,
-                    policyExplorerCategories
+                    selectablePolicyExplorerCategories
                 )
                 .run(
                     policyExplorer => {
@@ -205,7 +212,7 @@ export function usePolicyExplorer({
         compositionRoot.policyExplorer.get,
         selectedYearFilter,
         countriesAndSubregions,
-        policyExplorerCategories,
+        selectablePolicyExplorerCategories,
         sendAnalyticsEvents,
     ]);
 
@@ -265,13 +272,13 @@ export function usePolicyExplorer({
             contentGroup: "policy",
             contentId: undefined,
         });
-        compositionRoot.policyExplorer.download.execute(policyExplorerCategories, data).runAsync();
+        compositionRoot.policyExplorer.download.execute(selectablePolicyExplorerCategories, data).runAsync();
     }, [
         initialDataByTable,
         selectedCategoriesWithSubcategoriesFilter,
         sendEvent,
         compositionRoot.policyExplorer.download,
-        policyExplorerCategories,
+        selectablePolicyExplorerCategories,
     ]);
 
     return {
@@ -322,7 +329,10 @@ function generateBulkAnalyticsEvents(args: {
     return _(selectedCategoriesWithSubcategoriesFilter)
         .toPairs()
         .map(([key, value]): Maybe<[category: string, subcategories: string[]]> => {
-            const category = policyExplorerCategories.find(category => category.id === key);
+            const category = _(policyExplorerCategories)
+                .flatMap(category => (category.type === "group" ? category.categories : [category]))
+                .find(category => category.id === key);
+
             if (!category) return undefined;
 
             const subcategories = category.subcategories
@@ -484,10 +494,33 @@ function getInitialDataOrientationByTable(selectedCategoriesIds: string[]): Data
 }
 
 function buildCategoryFilterOptions(categories: PolicyExplorerCategory[]): CategoryOption[] {
-    return categories.map(category => ({
-        value: category.id,
-        text: category.name,
-        subcategories: category.subcategories?.map(subcategory => ({ value: subcategory.id, text: subcategory.name })),
-        description: category.description,
-    }));
+    return categories.map(category => {
+        if (category.type === "group") {
+            return {
+                type: "group",
+                text: category.name,
+                categories: category.categories.map(selectableCategory => ({
+                    type: "selectable",
+                    value: selectableCategory.id,
+                    text: selectableCategory.name,
+                    subcategories: selectableCategory.subcategories?.map(subcategory => ({
+                        value: subcategory.id,
+                        text: subcategory.name,
+                    })),
+                    description: selectableCategory.description,
+                })),
+            };
+        }
+
+        return {
+            type: "selectable",
+            value: category.id,
+            text: category.name,
+            subcategories: category.subcategories.map(sub => ({
+                value: sub.id,
+                text: sub.name,
+            })),
+            description: category.description,
+        };
+    });
 }

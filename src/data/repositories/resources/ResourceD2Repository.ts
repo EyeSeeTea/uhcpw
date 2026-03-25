@@ -173,7 +173,7 @@ export class ResourceD2Repository implements ResourceRepository {
             ).flatMap(response => {
                 const events = hasCountriesFilter ? this.filterCountries(response.events, filters) : response.events;
 
-                return Future.success(this.buildResources(events, filters, favorites));
+                return Future.success(this.buildResources(events, { filters, favorites, hasCountriesFilter }));
             });
         });
     }
@@ -217,7 +217,15 @@ export class ResourceD2Repository implements ResourceRepository {
         }
     }
 
-    private buildResources(events: D2Event[], filters: ResourceFilters, favorites: FavoriteResources): Resource[] {
+    private buildResources(
+        events: D2Event[],
+        options: {
+            filters: ResourceFilters;
+            favorites: FavoriteResources;
+            hasCountriesFilter?: boolean;
+        }
+    ): Resource[] {
+        const { filters, favorites, hasCountriesFilter } = options;
         return _.compact(
             _(
                 events.flatMap(event => {
@@ -254,7 +262,7 @@ export class ResourceD2Repository implements ResourceRepository {
                             : undefined,
                         isCountryAnalysisCategory &&
                         (!filters.category || filters.category === "country-analysis") &&
-                        (!filters.countries ||
+                        (!hasCountriesFilter ||
                             (mainCountryForCountryAnalysis &&
                                 filters.countries?.includes(mainCountryForCountryAnalysis)))
                             ? this.buildCountryAnalysis(event, favorites)

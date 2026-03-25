@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/scratterChart";
+import { createScatterChart, getScatterSeries, pos, SerieData, SerieSource } from "./generic/createScatterChart";
 import { getEU27Label } from "../customization/charts/utils/getEU27Label";
 import { ORG_UNIT_IDS, REGION_CODES } from "../../../../domain/entities/region/Region";
 import { getColorOfRegionByRegionCode } from "../../../pages/regional-page/getColorOfRegion";
@@ -115,7 +115,7 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
         EU27: pos.top,
     };
 
-    const scratterChart = createScratterChart({
+    const scatterChart = createScatterChart({
         series,
         visualization: chartSource.visualization,
         currentCountryCode: currentCountryCode,
@@ -131,13 +131,13 @@ export const chart_eEKRLRR4mDk_Options: (chartSource: ChartSource) => Highcharts
     });
 
     return {
-        ...scratterChart,
+        ...scatterChart,
         yAxis: {
-            ...scratterChart.yAxis,
+            ...scatterChart.yAxis,
             min: 0,
         },
         xAxis: {
-            ...scratterChart.xAxis,
+            ...scatterChart.xAxis,
             labels: {
                 formatter: function () {
                     return `${this.value}`;

@@ -16,24 +16,6 @@ export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
         <>
             <SectionHeader header={content.title} subheader={content.subtitle} />
             <Content container>
-                <CountryContext item md={6} xs={12}>
-                    <BubbleImg
-                        src={bubblePatternWhite}
-                        alt="Bubble pattern"
-                        aria-hidden="true"
-                        decoding="async"
-                        loading="eager"
-                    />
-
-                    <SectionBlock title={content.countries.title} text={content.countries.text} />
-
-                    <ButtonContainer>
-                        <Link href={content.countries.buttonLink || ""}>
-                            {i18n.t(content.countries.buttonText || "")}
-                        </Link>
-                    </ButtonContainer>
-                </CountryContext>
-
                 <Region item md={6} xs={12}>
                     <BubbleImg
                         src={bubblePatternWhite}
@@ -51,6 +33,24 @@ export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
                         </Link>
                     </ButtonContainer>
                 </Region>
+
+                <CountryContext item md={6} xs={12}>
+                    <BubbleImg
+                        src={bubblePatternWhite}
+                        alt="Bubble pattern"
+                        aria-hidden="true"
+                        decoding="async"
+                        loading="eager"
+                    />
+
+                    <SectionBlock title={content.countries.title} text={content.countries.text} />
+
+                    <ButtonContainer>
+                        <Link href={content.countries.buttonLink || ""}>
+                            {i18n.t(content.countries.buttonText || "")}
+                        </Link>
+                    </ButtonContainer>
+                </CountryContext>
             </Content>
             <Divider />
         </>
@@ -60,7 +60,7 @@ export const Analysis: React.FC<AnalysisProps> = ({ content }) => {
 const Content = styled(Grid)``;
 
 const CountryContext = styled(Grid)`
-    background: #0360a6;
+    background: ${colors.green};
     color: white;
     padding: 65px 55px;
     position: relative;
@@ -68,7 +68,7 @@ const CountryContext = styled(Grid)`
 `;
 
 const Region = styled(Grid)`
-    background: #4fac56;
+    background: ${colors.darkBlue};
     color: white;
     padding: 65px 55px;
     position: relative;
@@ -90,7 +90,7 @@ const ButtonContainer = styled.div`
 `;
 
 const Link = styled.a<{ isRegional?: boolean }>`
-    color: ${props => (props.isRegional ? "#4fad56" : colors.accentPrimary)};
+    color: ${props => (props.isRegional ? colors.accentPrimary : colors.green)};
     background-color: white;
     font-size: 14px;
     border-radius: 30px;

@@ -43,10 +43,13 @@ export const sortedCharts: string[] = [
     "ZxNdsDM8NSb",
     "q5ldoFcgkSn",
     "TzWcDtEOTPX",
+    "hEuM5hv2vVg_JljTfo2KUid",
+    "AjY0AISVVs5_dVRGqsjce2n",
     "Uf4B2PFIO6f_VQyARVycY60",
     // Financial hardship - comparative
     "dbc87Ljw8uN",
     "NOukqSxCI63",
+    "c5Cx8pOI9aj",
     "GimM6ANOKhd",
     "WDUV9ZrJiNC",
     "VB7bdJ8ZXya",
@@ -58,13 +61,18 @@ export const sortedCharts: string[] = [
     // Unmet need - comparative
     "xJhFIBuwGVC",
     "EtHaEt6bnm5_nlYSkEMZxgN",
+    "TLMsmCsJJ2U",
     "zkEtsohZTTf",
     "AophAEpx5e0_BOcLONPSyYS",
+    "eBxPw4kUnLU",
     "eibYs7QySNk",
     "MfLZYD6QCPy",
+    "oaYpnZIdm5C",
+    "wFITZgQ3udq",
     // Health spending (health accounts) - country level
     "OB4SCQfCzwz",
     "z6nPPMMbOw5",
+    "flLqTxfuuWI",
     // Health spending (health accounts) - comparative
     "CdqVV1Ib0XS",
     "ZZAcIv6O9LY",
@@ -76,8 +84,10 @@ export const sortedCharts: string[] = [
     "twyY1ulr7uD",
     "d3kq9OCv8tH",
     "y4qAv6eW4nb",
+    "AQ8dYmv00zb",
     // Combined indicators
     "kIpnMBaBvZ9",
     "mUjcWO90CRr",
     "eEKRLRR4mDk",
+    "IXF2wBMnwpa",
 ];

@@ -14,13 +14,22 @@ export const chart_GNUHM5lQMTp_Options: (chartSource: ChartSource) => Highcharts
     const chartSourceWithFilteredRows = getChartSourceFilteredByLastAvailableYear(chartSource);
 
     return {
-        ...comparativeColumnChartOptions({ chartSource: chartSourceWithFilteredRows, seriesNames, seriesColors }),
+        ...comparativeColumnChartOptions({
+            chartSource: chartSourceWithFilteredRows,
+            seriesNames,
+            seriesColors,
+            hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
+        }),
         legend: {
             enabled: false,
         },
         yAxis: {
-            ...comparativeColumnChartOptions({ chartSource: chartSourceWithFilteredRows, seriesNames, seriesColors })
-                ?.yAxis,
+            ...comparativeColumnChartOptions({
+                chartSource: chartSourceWithFilteredRows,
+                seriesNames,
+                seriesColors,
+                hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
+            })?.yAxis,
             title: {
                 text: "Household budget (%)",
                 style: { fontSize: "13px" },

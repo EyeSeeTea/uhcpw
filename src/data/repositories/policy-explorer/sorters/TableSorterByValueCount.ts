@@ -2,23 +2,33 @@ import { PolicyExplorerCell, PolicyExplorerCellType } from "../../../../domain/e
 import { TableSorter } from "./TableSorter";
 
 export class TableSorterByValueCount implements TableSorter {
-    constructor(private emptyValue = "") {}
+    constructor(private valueToExclude = "", private emptyValues: string[] = []) {}
     cleanAndSort(columns: PolicyExplorerCell[], rows: PolicyExplorerCell[][]): PolicyExplorerCell[][] {
         const sortedDataRows = rows.sort((rowA, rowB) => {
             const countryA = this.getCountryFromRow(rowA);
             const countryB = this.getCountryFromRow(rowB);
+            const compareByCountry = countryA.localeCompare(countryB, "und", { sensitivity: "base" });
 
-            const rowAValueCount = rowA.filter(cell => cell.value !== this.emptyValue).length;
-            const rowBValueCount = rowB.filter(cell => cell.value !== this.emptyValue).length;
+            const emptyRowA = this.isEmpty(rowA);
+            const emptyRowB = this.isEmpty(rowB);
 
-            if (rowAValueCount !== rowBValueCount) {
-                return rowAValueCount < rowBValueCount ? 1 : -1;
+            if (emptyRowA || emptyRowB) {
+                return emptyRowA && emptyRowB ? compareByCountry : emptyRowA ? -1 : 1;
             }
 
-            return countryA.localeCompare(countryB, "und", { sensitivity: "base" });
+            const valueCountDiff = this.getValueCount(rowB) - this.getValueCount(rowA);
+            return valueCountDiff !== 0 ? valueCountDiff : compareByCountry;
         });
 
         return [columns, ...sortedDataRows];
+    }
+
+    private getValueCount(row: PolicyExplorerCell[]): number {
+        return row.filter(cell => cell.value !== this.valueToExclude).length;
+    }
+
+    private isEmpty(row: PolicyExplorerCell[]): boolean {
+        return row.slice(1).every(cell => this.emptyValues.includes(cell.value));
     }
 
     private getCountryFromRow(row: PolicyExplorerCell[]): string {

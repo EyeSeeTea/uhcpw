@@ -4,15 +4,25 @@ import CloseIcon from "@material-ui/icons/Close";
 import ReactMarkdown from "react-markdown";
 
 import i18n from "../../../locales";
-import { CategoryOption } from "../policy-explorer/category-selector/useCategorySelector";
+import { CategorySelectableOption } from "../policy-explorer/category-selector/useCategorySelector";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { createMarkdownComponents } from "./markdownComponents";
+import { useMemo } from "react";
 
 type DialogType = {
     isOpen: boolean;
-    category: CategoryOption;
+    category: CategorySelectableOption;
     onClose: () => void;
 };
 
 export const CategoryInfoDialog: React.FC<DialogType> = ({ isOpen, onClose, category }) => {
+    const { redirectWithExternalLink } = useAnalytics();
+
+    const markdownComponents = useMemo(
+        () => createMarkdownComponents(redirectWithExternalLink),
+        [redirectWithExternalLink]
+    );
+
     return (
         <Dialog open={isOpen} onClose={onClose}>
             <DialogContainer>
@@ -31,17 +41,7 @@ export const CategoryInfoDialog: React.FC<DialogType> = ({ isOpen, onClose, cate
                     {category.description ? (
                         <>
                             <Title variant="body2">{i18n.t(category.text)}</Title>
-                            <ReactMarkdown
-                                components={{
-                                    p: ({ children }) => (
-                                        <Typography variant="body2" gutterBottom>
-                                            {children}
-                                        </Typography>
-                                    ),
-                                }}
-                            >
-                                {category.description}
-                            </ReactMarkdown>
+                            <ReactMarkdown components={markdownComponents}>{category.description}</ReactMarkdown>
                         </>
                     ) : (
                         <Typography variant="body2">{i18n.t("No information available for this category")}</Typography>

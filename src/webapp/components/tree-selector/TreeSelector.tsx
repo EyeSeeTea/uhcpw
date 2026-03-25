@@ -127,7 +127,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
                             aria-label={`expand-tree-${ariaLabel || placeholder || "icon"}`}
                             style={{
                                 top: "calc(50% - 14px)",
-                                right: 0,
+                                right: -7,
                                 position: "absolute",
                                 height: "24px",
                             }}

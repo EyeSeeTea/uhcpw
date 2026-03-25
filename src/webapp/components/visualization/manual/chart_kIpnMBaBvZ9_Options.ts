@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 import { ChartSource } from "./chartOptions";
-import { createScratterChart, pos } from "./generic/scratterChart";
+import { createScatterChart, pos } from "./generic/createScatterChart";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 import {
     kIpnMBaBvZ9_xAxisOutOfPocket,
@@ -9,7 +9,7 @@ import {
 } from "../../../../data/repositories/indicator-explorer/seed/chart_kIpnMBaBvZ9_Seed";
 import {
     filterRowsByYearIndicatorAndCountry,
-    getGroupedYearsByCountry,
+    getGroupedYearsByCountryInTwoDataIds,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 
 export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
@@ -162,7 +162,7 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
               MDA: pos.right,
           };
 
-    const scatterChart = createScratterChart({
+    const scatterChart = createScatterChart({
         series,
         visualization: chartSourceWithFilteredRowsByLAY.visualization,
         currentCountryCode,
@@ -173,6 +173,8 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
             "{point.country} {point.commonYear} <br/> {point.yearX} Out-of-pocket payments as a share of current spending on health: {point.x}% <br/> {point.yearY} Households with catastrophic health spending (%): {point.y}%",
         seriesWithCountryAndRegionData: seriesWithCountryAndRegionData,
         countryPositions: countryPositionsAdjustment,
+        xTickInterval: 15,
+        yTickInterval: 5,
     });
 
     return {
@@ -246,14 +248,14 @@ export function getYearByIndicatorAndCountry(
         yYears: string;
     }
 > {
-    const groupedYearsByCountry = getGroupedYearsByCountry(rows, xAxis, yAxis);
+    const groupedYearsByCountry = getGroupedYearsByCountryInTwoDataIds({ rows, dataId1: xAxis, dataId2: yAxis });
 
     return Object.keys(groupedYearsByCountry).reduce(
         (acc, countryId): Record<string, { xYears: string; yYears: string }> => {
-            const filteredXYears = [...(groupedYearsByCountry[countryId]?.xYears || [])].filter(year => {
+            const filteredXYears = [...(groupedYearsByCountry[countryId]?.dataId1Years || [])].filter(year => {
                 return isUpTo2019 ? Number(year) <= 2019 : true;
             });
-            const filteredYYears = [...(groupedYearsByCountry[countryId]?.yYears || [])].filter(year => {
+            const filteredYYears = [...(groupedYearsByCountry[countryId]?.dataId2Years || [])].filter(year => {
                 return isUpTo2019 ? Number(year) <= 2019 : true;
             });
 

@@ -6,6 +6,7 @@ import policyExplorerProgram from "./data/policyExplorerProgram.json";
 import policyExplorerEvent from "./data/policyExplorerEvent.json";
 import infoNotes from "./data/infoNotes.json";
 import dataElementsNotes from "./data/dataElementsNotes.json";
+import optionSetsAreaType from "./data/optionSetsAreaType.json";
 import { PolicyExplorerCategoryD2Repository } from "../PolicyExplorerCategoryD2Repository";
 import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
@@ -40,13 +41,14 @@ describe("Policy explorer category repository", () => {
         expect(requests?.some(r => (r.url.pathname = "/api/programs"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/events"))).toBe(true);
         expect(requests?.some(r => (r.url.pathname = "/api/dataElements"))).toBe(true);
+        expect(requests?.some(r => (r.url.pathname = "/api/optionSets"))).toBe(true);
     });
 });
 
 function verifyCategory(category?: PolicyExplorerCategory) {
     if (!category) fail("Category is undefined");
-    expect(category.id).toBe("uG2PbDfOc0w");
-    expect(category.name).toBe("Population coverage");
+    expect(category.id).toBe("COMPARATIVE_POLICY_CHARTS_CATEGORY_GROUP_ID");
+    expect(category.name).toBe("Comparative policy charts");
     // TODO: /api/events mockup overlap between event infos and event programs
     // expect(category.description).toBe(
     //     "This section focuses on the basis for entitlement to publicly financed health care. It describes the basis for entitlement; entitlements for refugees, asylum seekers and undocumented migrants; and the groups of people who lack coverage and their entitlements."
@@ -100,6 +102,15 @@ function givenADataSet() {
             endpoint: `/api/dataElements`,
             httpStatusCode: 200,
             response: dataElementsNotes,
+        },
+    ]);
+
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: `/api/optionSets`,
+            httpStatusCode: 200,
+            response: optionSetsAreaType,
         },
     ]);
 }

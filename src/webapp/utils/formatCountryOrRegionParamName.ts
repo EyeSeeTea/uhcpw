@@ -64,3 +64,8 @@ function prettifyToken(token: string): string {
             .replace(/\b(And|Of|The)\b/g, w => w.toLowerCase()) || ""
     );
 }
+
+export function joinCountries(countries?: string[]): string | undefined {
+    if (!countries || countries.length === 0) return undefined;
+    return [...countries].sort().join("-");
+}

@@ -37,6 +37,7 @@ interface VisualizationPluginProps {
     showDialogInFullScreen?: boolean;
     isRegionalPage?: boolean;
     filterByLatestAvailableYearInRegion?: boolean;
+    regionForLatestAvailableYearFilter?: Id;
     needToKnowLatestAvailableYearInChart?: boolean;
     visualizationIdInIndicatorExplorer?: Id;
     yearsInIndicatorExplorer?: string[];
@@ -67,6 +68,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         showDialogInFullScreen = false,
         isRegionalPage = false,
         filterByLatestAvailableYearInRegion = false,
+        regionForLatestAvailableYearFilter,
         needToKnowLatestAvailableYearInChart = false,
         visualizationIdInIndicatorExplorer,
         yearsInIndicatorExplorer,
@@ -83,6 +85,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
         currentCountryOrRegion,
         visualizationName,
         filterByLatestAvailableYearInRegion,
+        regionForLatestAvailableYearFilter,
         needToKnowLatestAvailableYearInChart,
         isRegionalPage,
         seriesColors,
@@ -181,6 +184,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
     const goToIndicatorExplorer = useCallback(() => {
         if (chartData.kind === "Loaded" && countries.length > 0) {
             const visualizationInIndicatorExplorer = visualizationIdInIndicatorExplorer || visualizationId;
+
             const years =
                 yearsInIndicatorExplorer && yearsInIndicatorExplorer.length > 0
                     ? yearsInIndicatorExplorer

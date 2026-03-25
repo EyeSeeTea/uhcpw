@@ -1,8 +1,10 @@
-import { colors, Dialog, DialogContent, IconButton, Typography } from "@material-ui/core";
+import { Dialog, DialogContent, IconButton } from "@material-ui/core";
 import styled from "styled-components";
 import CloseIcon from "@material-ui/icons/Close";
 import ReactMarkdown from "react-markdown";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { useMemo } from "react";
+import { createMarkdownComponents } from "./markdownComponents";
 
 type DialogType = {
     isOpen: boolean;
@@ -12,6 +14,11 @@ type DialogType = {
 
 export const NotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo }) => {
     const { redirectWithExternalLink } = useAnalytics();
+
+    const markdownComponents = useMemo(
+        () => createMarkdownComponents(redirectWithExternalLink),
+        [redirectWithExternalLink]
+    );
 
     return (
         <Dialog
@@ -25,27 +32,7 @@ export const NotesDialog: React.FC<DialogType> = ({ isOpen, onClose, dialogInfo 
         >
             <DialogContainer>
                 <DialogContent>
-                    <ReactMarkdown
-                        components={{
-                            p: ({ children }) => (
-                                <Typography style={{ color: "#242626", marginBottom: 8 }}>{children}</Typography>
-                            ),
-                            li: ({ children, ...props }) => <StyledLi {...props}>{children} </StyledLi>,
-                            ul: ({ children, ...props }) => <StyledUl {...props}>{children}</StyledUl>,
-                            a: ({ ...props }) => (
-                                <TextLink
-                                    href={props.href}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    onClick={redirectWithExternalLink}
-                                >
-                                    {props.children}
-                                </TextLink>
-                            ),
-                        }}
-                    >
-                        {dialogInfo}
-                    </ReactMarkdown>
+                    <ReactMarkdown components={markdownComponents}>{dialogInfo}</ReactMarkdown>
                 </DialogContent>
                 <CloseIconButton onClick={onClose}>
                     <CloseIcon
@@ -77,21 +64,4 @@ const CloseIconButton = styled(IconButton)`
     position: absolute;
     right: 10px;
     top: 10px;
-`;
-
-const StyledLi = styled.li`
-    line-height: 1.43;
-`;
-
-const StyledUl = styled.ul`
-    padding-inline-start: 14px;
-`;
-
-const TextLink = styled.a`
-    color: ${colors.blue};
-    text-transform: none;
-    text-decoration: none;
-    &:hover {
-        text-decoration: underline;
-    }
 `;

@@ -22,6 +22,7 @@ export const chart_y4qAv6eW4nb_Options: (chartSource: ChartSource) => Highcharts
         orderByValueInSerie: "ygo5a7mdudU",
         categoryIdsOrder: Object.keys(seriesNames),
         isDescOrder: true,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
     return {
         ...chartOptions,

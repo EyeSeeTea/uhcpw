@@ -1,6 +1,6 @@
 import { Backdrop, CircularProgress, Container, Grid, GridSize, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { Layout } from "../../../components/layout/Layout";
@@ -13,28 +13,53 @@ import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import mapBackground from "../../../assets/map-background.jpg";
 import { ScrollToTopButton } from "../../../components/scroll-to-top-button/ScrollToTopButton";
+import { useAppContext } from "../../../contexts/app-context";
+import { normalizeRegionName, parseCountryOrRegionParamToName } from "../../../utils/formatCountryOrRegionParamName";
+import { findThemeFromParam } from "../../../utils/formatResourcesThemeParamName";
 
 type ResourcesByTypePageProps = {
     paging?: boolean;
 };
 
 export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.memo(({ paging = true }) => {
-    const history = useHistory();
     const { sendEvent } = useAnalytics();
-    const { category } = useParams<{ category: string }>();
+    const { themes, countries } = useAppContext();
+
+    const {
+        category,
+        countriesOrTheme,
+        countries: countriesInParams,
+    } = useParams<{
+        category: string;
+        countriesOrTheme?: string;
+        countries?: string;
+    }>();
+
     const isSmallScreen = useIsSmallScreen();
 
     const filterInParams = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
+        const foundTheme = countriesOrTheme ? findThemeFromParam(themes, countriesOrTheme) : undefined;
 
-        const country = searchParams.get("country");
-        const theme = searchParams.get("theme");
+        const hasThemeInPath = !!(countriesOrTheme && foundTheme);
+        // NOTICE: use theme name to filter resources by theme in ResourceRepository get()
+        const theme = hasThemeInPath ? foundTheme?.name : undefined;
+
+        const maybeCountries = !hasThemeInPath ? countriesOrTheme : countriesInParams;
+        const countryNames = maybeCountries
+            ? maybeCountries
+                  .split("-")
+                  .map(countryName => normalizeRegionName(parseCountryOrRegionParamToName(countryName)))
+            : [];
+
+        const countryIdsInFilter = countries
+            .filter(country => countryNames.includes(normalizeRegionName(country.name)))
+            .map(country => country.id);
 
         return {
-            country: country ? country.split(",") : undefined,
-            theme: theme ? theme : undefined,
+            country: countryIdsInFilter.length > 0 ? countryIdsInFilter : undefined,
+            theme: theme,
         };
-    }, [history.location.search]);
+    }, [countries, countriesInParams, countriesOrTheme, themes]);
 
     const { loading, title, filters, items, onGetResources, hasMore, loadingMore, loadingRef } = useResourcesByType({
         category,

@@ -1,5 +1,5 @@
 import { VisualizationExtra } from "../../../../domain/entities/indicator-explorer/Visualization";
-import { LatestAvailable, LatestCOVID19 } from "../../../../domain/entities/Year";
+import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
 export const chart_GimM6ANOKhd_Seed: VisualizationExtra = {
@@ -9,7 +9,6 @@ export const chart_GimM6ANOKhd_Seed: VisualizationExtra = {
     categoryTag: "International comparison",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
-    allowedYears: [LatestAvailable, LatestCOVID19],
     selectedYearsByDefault: [LatestAvailable],
     isYearSingleSelection: true,
     hasEURegion: true,
@@ -18,4 +17,6 @@ export const chart_GimM6ANOKhd_Seed: VisualizationExtra = {
     hasWesternBalkansRegion: true,
     hasEUCandidatesRegion: true,
     isOrgUnitRegions: true,
+    includeLatestCOVID19: true,
+    includeLatestAvailableYear: true,
 };

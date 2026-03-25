@@ -1,21 +1,11 @@
 import { FutureData, Future } from "../../../domain/entities/Future";
 import { Id } from "../../../domain/entities/Ref";
-import {
-    isOrgUnitRegionKey,
-    isRegionCodeKey,
-    isRegionNameKey,
-    ORG_UNIT_GROUP_IDS,
-    ORG_UNIT_IDS,
-    Region,
-    REGION_CODES,
-    REGION_NAMES,
-    RegionCodeKey,
-    RegionNameKey,
-} from "../../../domain/entities/region/Region";
+import { isOrgUnitRegionKey, ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS, Region } from "../../../domain/entities/region/Region";
 import { RegionRepository } from "../../../domain/repositories/region/RegionRepository";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { BOSNIA_AND_HERZEGOVINA_LEVEL_3, BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../countries/CountryD2Repository";
+import { getKeyById, getRegionCodeById, getRegionNameById } from "./utils";
 
 const REGION_INFO_PROGRAM_ID = "XAoS3zq3bZg";
 const EUROPEAN_REGIONS_ORG_UNIT_ID = "CPXbH8dBIz8";
@@ -89,28 +79,6 @@ export class RegionD2Repository implements RegionRepository {
             };
         }, []);
     }
-}
-
-function getKeyById<T extends Record<string, string>>(id: string, idsRecord: T): keyof T | undefined {
-    return Object.entries(idsRecord).find(([, value]) => value === id)?.[0] as keyof T | undefined;
-}
-
-function getRegionCodeById(idsRecord: Partial<Record<RegionCodeKey, Id>>): Map<Id, string> {
-    return new Map(
-        Object.entries(idsRecord).reduce<[Id, string][]>(
-            (acc, [key, id]) => (id && isRegionCodeKey(key) ? [...acc, [id, REGION_CODES[key]]] : acc),
-            []
-        )
-    );
-}
-
-function getRegionNameById(idsRecord: Partial<Record<RegionNameKey, Id>>): Map<Id, string> {
-    return new Map(
-        Object.entries(idsRecord).reduce<[Id, string][]>(
-            (acc, [key, id]) => (id && isRegionNameKey(key) ? [...acc, [id, REGION_NAMES[key]]] : acc),
-            []
-        )
-    );
 }
 
 const organisationUnitGroupsFields = {

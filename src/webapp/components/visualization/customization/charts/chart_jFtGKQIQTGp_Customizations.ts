@@ -9,13 +9,13 @@ export const chart_jFtGKQIQTGp_Customizations: ChartCustomization = {
     legend: { ...baseLegend, reversed: true },
     series: [
         {
-            id: "yYSS1uBgnTE",
+            id: "OQ4P2FX0ApA",
             name: "Further impoverished",
             color: "#c00000",
             dataLabels: { enabled: false },
         },
         {
-            id: "WsUM8TQ7cEh",
+            id: "CMKOYzqDIZD",
             name: "Impoverished",
             color: "#e46c09",
             dataLabels: { enabled: false },

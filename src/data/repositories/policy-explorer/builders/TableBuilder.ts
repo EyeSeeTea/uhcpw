@@ -14,26 +14,29 @@ import {
 import { TableBuilderChangesInCoveragePolicy } from "./TableBuilderChangesInCoveragePolicy";
 import { TableBuilderCoveredHealthcareByType } from "./TableBuilderCoveredHealthcareByType";
 import { TableBuilderEntitlementsForUndocumented } from "./TableBuilderEntitlementsForUndocumented";
+import { PolicyExplorerSelectableCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 export interface TableBuilder {
     buildColumns(params: {
         policyExplorerCategoryId: string;
         policyExplorerSubcategoriesIds?: string[];
         dataSet?: D2DataSet;
+        programCategories?: PolicyExplorerSelectableCategory[];
     }): PolicyExplorerCellHeader[];
     buildRows(params: {
         currentRowsInTable: PolicyExplorerCell[][];
         policyExplorerCategoryId: string;
-        policyExplorerSubcategoriesIds?: string[];
+        policyExplorerSubcategoriesIds: string[];
         dataValuesByGroup: DataValueSetsDataValue[];
         orgUnitName: string;
         period?: string;
         references: string;
         dataSet?: D2DataSet;
+        sortByMonth?: boolean;
     }): PolicyExplorerCell[][];
 }
 
-export function getTableBuilder(policyExplorerCategoryId: string) {
+export function getTableBuilder(policyExplorerCategoryId: string): TableBuilder {
     switch (policyExplorerCategoryId) {
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
         case CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES:

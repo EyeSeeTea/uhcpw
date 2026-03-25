@@ -4,12 +4,13 @@ import React from "react";
 
 const DEFAULT_COLOR = "#000";
 const ICON_SIZE = "20px";
+const HALF_CIRCLE_SIZE = "19px";
 
 export function FullCircleIcon({ color = DEFAULT_COLOR, size = ICON_SIZE }: { color?: string; size?: string }) {
     return <CircleIcon htmlColor={color} style={{ fontSize: size }} />;
 }
 
-export function HalfCircleIcon({ color = DEFAULT_COLOR, size = ICON_SIZE }: { color?: string; size?: string }) {
+export function HalfCircleIcon({ color = DEFAULT_COLOR, size = HALF_CIRCLE_SIZE }: { color?: string; size?: string }) {
     return (
         <SvgIcon viewBox="0 0 24 24" style={{ width: size, height: size }}>
             <path d="M12 2a10 10 0 100 20V2z" fill={color} />

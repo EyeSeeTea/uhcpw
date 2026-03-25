@@ -46,6 +46,26 @@ export const countryInfoDataElements: Record<string, string> = {
     finProtecText4: "LyhjBnSS8tf",
     finProtecTitle5: "D4kbP5uMvYC",
     finProtecText5: "qF3rhM9dieb",
+    finProtecTitle6: "LVxMbtZfjgG",
+    finProtecText6: "HkEyu9AG8V5",
+    finProtecTitle7: "Mo7cSkfgK4l",
+    finProtecText7: "H3X0nSwkUiq",
+    finProtecTitle8: "NUGclZOYmXC",
+    finProtecText8: "OTeIfWYPI5h",
+    finProtecTitle9: "UdgL85w9X1B",
+    finProtecText9: "cqstoNeE5Rv",
+    finProtecTitle10: "NfnSAMgmvDm",
+    finProtecText10: "eFrf80BqNIn",
+    finProtecTitle11: "CJ0R8JJOieQ",
+    finProtecText11: "NO5tUKlD0ww",
+    finProtecTitle12: "N329ACV1HVl",
+    finProtecText12: "vt4dueyLSOb",
+    finProtecTitle13: "gkvnHjt6HAM",
+    finProtecText13: "T4ABWx3UtU9",
+    finProtecTitle14: "qqnTAlPG2zz",
+    finProtecText14: "PxVJRfDkDLM",
+    finProtecTitle15: "ULyWxSzdIQF",
+    finProtecText15: "dxpiqhUIfJk",
     finProtecSourceText: "AzNWXx1JPip",
 };
 
@@ -300,129 +320,97 @@ export class CountryD2Repository implements CountryRepository {
     private buildSliderInfo(additionalCountryInfo: Maybe<D2Event>, gapText: Maybe<GapsText>) {
         const defaultGapText = i18n.t("Country Information coming soon");
 
-        const gapsSectionName =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSectionName)
-                ?.value || "";
-        const gapsTitle1 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle1)
-                ?.value || "";
-        const gapsText1 = gapText?.gapsText1 || defaultGapText;
-        const gapsTitle2 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle2)
-                ?.value || "";
-        const gapsText2 = gapText?.gapsText2 || defaultGapText;
-        const gapsTitle3 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle3)
-                ?.value || "";
-        const gapsText3 = gapText?.gapsText3 || defaultGapText;
-        const gapsTitle4 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle4)
-                ?.value || "";
-        const gapsText4 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText4)?.value ||
-            "";
-        const gapsTitle5 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsTitle5)
-                ?.value || "";
-        const gapsText5 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsText5)?.value ||
-            "";
+        const dataValueByDataElement = _(additionalCountryInfo?.dataValues)
+            .keyBy(dv => dv.dataElement)
+            .value();
+        const getValue = (dataElement: Maybe<string>) =>
+            dataElement ? dataValueByDataElement?.[dataElement]?.value || "" : "";
 
-        const gapsSourceText =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.gapsSourceText)
-                ?.value || "";
+        const gapsSectionName = getValue(countryInfoDataElements.gapsSectionName);
+        const gapsSourceText = getValue(countryInfoDataElements.gapsSourceText);
+        const gapsContent: { title: string; text: string }[] = [
+            { title: getValue(countryInfoDataElements.gapsTitle1), text: gapText?.gapsText1 || defaultGapText },
+            { title: getValue(countryInfoDataElements.gapsTitle2), text: gapText?.gapsText2 || defaultGapText },
+            { title: getValue(countryInfoDataElements.gapsTitle3), text: gapText?.gapsText3 || defaultGapText },
+            { title: getValue(countryInfoDataElements.gapsTitle4), text: getValue(countryInfoDataElements.gapsText4) },
+            { title: getValue(countryInfoDataElements.gapsTitle5), text: getValue(countryInfoDataElements.gapsText5) },
+        ];
 
-        const finProtecSectionName =
-            additionalCountryInfo?.dataValues.find(
-                dv => dv.dataElement === countryInfoDataElements.finProtecSectionName
-            )?.value || "";
-        const finProtecTitle1 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle1)
-                ?.value || "";
-        const finProtecText1 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText1)
-                ?.value || "";
-        const finProtecTitle2 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle2)
-                ?.value || "";
-        const finProtecText2 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText2)
-                ?.value || "";
-        const finProtecTitle3 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle3)
-                ?.value || "";
-        const finProtecText3 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText3)
-                ?.value || "";
-        const finProtecTitle4 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle4)
-                ?.value || "";
-        const finProtecText4 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText4)
-                ?.value || "";
-        const finProtecTitle5 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecTitle5)
-                ?.value || "";
-        const finProtecText5 =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecText5)
-                ?.value || "";
-
-        const finProtecSourceText =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.finProtecSourceText)
-                ?.value || "";
+        const finProtecSectionName = getValue(countryInfoDataElements.finProtecSectionName);
+        const finProtecSourceText = getValue(countryInfoDataElements.finProtecSourceText);
+        const finProtecContent: { title: string; text: string }[] = [
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle1),
+                text: getValue(countryInfoDataElements.finProtecText1),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle2),
+                text: getValue(countryInfoDataElements.finProtecText2),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle3),
+                text: getValue(countryInfoDataElements.finProtecText3),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle4),
+                text: getValue(countryInfoDataElements.finProtecText4),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle5),
+                text: getValue(countryInfoDataElements.finProtecText5),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle6),
+                text: getValue(countryInfoDataElements.finProtecText6),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle7),
+                text: getValue(countryInfoDataElements.finProtecText7),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle8),
+                text: getValue(countryInfoDataElements.finProtecText8),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle9),
+                text: getValue(countryInfoDataElements.finProtecText9),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle10),
+                text: getValue(countryInfoDataElements.finProtecText10),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle11),
+                text: getValue(countryInfoDataElements.finProtecText11),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle12),
+                text: getValue(countryInfoDataElements.finProtecText12),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle13),
+                text: getValue(countryInfoDataElements.finProtecText13),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle14),
+                text: getValue(countryInfoDataElements.finProtecText14),
+            },
+            {
+                title: getValue(countryInfoDataElements.finProtecTitle15),
+                text: getValue(countryInfoDataElements.finProtecText15),
+            },
+        ];
 
         return {
             gapsSection: {
                 sectionName: gapsSectionName,
                 sourceText: gapsSourceText,
-                content: [
-                    {
-                        title: gapsTitle1,
-                        text: gapsText1,
-                    },
-                    {
-                        title: gapsTitle2,
-                        text: gapsText2,
-                    },
-                    {
-                        title: gapsTitle3,
-                        text: gapsText3,
-                    },
-                    {
-                        title: gapsTitle4,
-                        text: gapsText4,
-                    },
-                    {
-                        title: gapsTitle5,
-                        text: gapsText5,
-                    },
-                ],
+                content: gapsContent,
             },
             finProtecSection: {
                 sectionName: finProtecSectionName,
                 sourceText: finProtecSourceText,
-                content: [
-                    {
-                        title: finProtecTitle1,
-                        text: finProtecText1,
-                    },
-                    {
-                        title: finProtecTitle2,
-                        text: finProtecText2,
-                    },
-                    {
-                        title: finProtecTitle3,
-                        text: finProtecText3,
-                    },
-                    {
-                        title: finProtecTitle4,
-                        text: finProtecText4,
-                    },
-                    {
-                        title: finProtecTitle5,
-                        text: finProtecText5,
-                    },
-                ],
+                content: finProtecContent,
             },
         };
     }

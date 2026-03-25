@@ -2,7 +2,7 @@ import { ChartSourceMultiple } from "./chartOptions";
 import {
     getAllRowsLatestAvailableYearFromTwoCharts,
     getLatestAvailableYearByCountryIdFromTwoCharts,
-    orderLatestAvailableYearByAverageAndPoorest,
+    orderLatestAvailableYearByAverageAndOther,
 } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { createDotsWithMaxMinVerticalLineChart } from "./generic/dotsWithMaxMinVerticalLineChart";
@@ -43,19 +43,22 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
     const latestAvailableYearByCountryId = getLatestAvailableYearByCountryIdFromTwoCharts(
         firstChartAnalyticsResponse?.rows || [],
         secondChartAnalyticsResponse?.rows || [],
-        chartSource.isLatestCOVID19
+        chartSource.isLatestCOVID19,
+        chartSource.maxYearToFilterBy
     );
 
     const allRowsFilteredByLAY = getAllRowsLatestAvailableYearFromTwoCharts(
         firstChartAnalyticsResponse?.rows || [],
         secondChartAnalyticsResponse?.rows || [],
-        chartSource.isLatestCOVID19
+        chartSource.isLatestCOVID19,
+        chartSource.maxYearToFilterBy
     );
 
-    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndPoorest({
-        latestAvailableYearByCountryId,
-        allRowsFilteredByLAY,
-        seriesIds,
+    const latestAvailableYearByCountryIdOrdered = orderLatestAvailableYearByAverageAndOther({
+        latestAvailableYearByCountryId: latestAvailableYearByCountryId,
+        allRowsFilteredByLAY: allRowsFilteredByLAY,
+        seriesIds: seriesIds,
+        otherKey: "poorest",
     });
 
     const categories = Object.keys(latestAvailableYearByCountryIdOrdered).map(orgUnitIdOrRegionId => {
@@ -86,5 +89,6 @@ export const chart_EtHaEt6bnm5_nlYSkEMZxgN_Options: (
         currentRegionId: currentRegion?.id,
         isRegionalPage: chartSource.isRegionalPage,
         sharedYAxisConfig: chartSource.sharedYAxisConfig,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 };

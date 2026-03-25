@@ -25,7 +25,18 @@ export type Tab = {
     data: string[][];
     name: string;
     type?: "text" | "coverage" | "entitlements";
-    legends?: string[];
+    legendsRow?: {
+        legends: Array<{
+            legend: Array<{
+                text: string;
+                styles?: {
+                    fontColor?: string;
+                    fontSize?: number;
+                };
+            }>;
+        }>;
+        height?: number;
+    };
 };
 
 export type TabsWithStringOrNumbers = {
@@ -83,13 +94,22 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
         //@ts-ignore Not properly typed
         sheet.tabColor(tabColor);
 
-        const rowStart = tab.legends ? 2 : 1;
-        if (tab.legends) {
-            sheet.row(1).height(LEGENDS_STYLE.height);
-
-            tab.legends.forEach((legend, index) => {
-                const cellRef = `${getColumnLetterByIndex(index)}1`;
-                sheet.cell(cellRef).value(legend).style(LEGENDS_STYLE.cell);
+        const legendsLength = tab.legendsRow?.legends.length ?? 0;
+        const rowStart = legendsLength ? legendsLength + 1 : 1;
+        if (legendsLength) {
+            tab.legendsRow?.legends.forEach(({ legend }, index) => {
+                const rowNumber = index + 1;
+                sheet.row(rowNumber).height(tab.legendsRow?.height ?? LEGENDS_STYLE.height);
+                const cellRef = `A${rowNumber}`;
+                const legendRichText = legend.reduce(
+                    (acc, legendItem) => acc.add(legendItem.text, legendItem.styles),
+                    new RichText()
+                );
+                sheet
+                    .cell(cellRef)
+                    // value can accept RichText at runtime but it's not included in the TS typings
+                    .value(legendRichText as any)
+                    .style(LEGENDS_STYLE.cell);
             });
         }
 
@@ -98,7 +118,7 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
             row.forEach((cell, columnIndex) => {
                 const column = getColumnLetterByIndex(columnIndex);
                 const cellRef = `${column}${rowNumber}`;
-                addDataValue(sheet, cell, cellRef);
+                addDataValue({ sheet, value: cell, cellRef, tab, rowIndex, columnIndex });
                 const cellStyle = getCellStyles(sheet, tab, rowIndex, columnIndex);
                 sheet.cell(cellRef).style(cellStyle);
                 setWidth(sheet, tab.name, columnIndex);
@@ -158,3 +178,17 @@ function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers
         console.error("Error adding data to sheet", error);
     }
 }
+
+// XlsxPopulate supports RichText values at runtime:
+// https://github.com/EyeSeeTea/xlsx-populate#rich-texts
+// However, the TypeScript definitions do not include RichText in the Cell.value() overloads.
+// We cast here to bypass incomplete typings while preserving runtime behavior.
+type RichTextInstance = {
+    add(text: string, style?: Partial<any>): RichTextInstance;
+};
+
+const RichText = (
+    XlsxPopulate as unknown as {
+        RichText: new () => RichTextInstance;
+    }
+).RichText;

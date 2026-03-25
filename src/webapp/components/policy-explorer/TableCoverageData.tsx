@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { PolicyExplorerCellCoverage } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import i18n from "../../../locales";
 import { CircleXIcon, FullCircleIcon, HalfCircleIcon } from "./TableCellIcons";
+import { BREAKPOINT_WIDTH_MOBILE_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
 const healthcareTypeToColor: Record<string, string> = {
     "Primary care visits": "#f6f000",
@@ -56,6 +57,10 @@ const Container = styled.div`
     justify-content: center;
     gap: 10%;
     margin-block: 16px;
+
+    @media (max-width: ${BREAKPOINT_WIDTH_MOBILE_SCREEN}px) {
+        flex-direction: column;
+    }
 `;
 
 const LegendContainer = styled.div`

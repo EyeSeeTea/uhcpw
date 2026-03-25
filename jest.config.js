@@ -1,5 +1,11 @@
 module.exports = {
-    collectCoverageFrom: ["src/**/*.js"],
+    collectCoverageFrom: [
+        "src/**/*.{ts,tsx}",
+        "!src/**/*.d.ts",
+        "!src/**/__tests__/**",
+        "!src/**/*.spec.{ts,tsx}",
+        "!src/**/*.test.{ts,tsx}",
+    ],
     testPathIgnorePatterns: ["/node_modules/", "/cypress"],
     transformIgnorePatterns: ["/node_modules/(?!@eyeseetea/d2-ui-components)"],
     modulePaths: ["src"],
@@ -24,8 +30,8 @@ module.exports = {
         navigator: true,
         Element: true,
     },
-    collectCoverage: true,
+    collectCoverage: false,
+    coverageProvider: "v8",
     coverageReporters: ["json", "lcov", "text"],
-    collectCoverageFrom: ["**/*.ts", "**/*.tsx"],
     coveragePathIgnorePatterns: ["<rootDir>/node_modules", "<rootDir>/cypress"],
 };

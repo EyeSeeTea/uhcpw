@@ -1,6 +1,6 @@
 import { ChartSource } from "./chartOptions";
 import { comparativeStackedColumnChartOptions } from "./generic/comparativeStackedColumnChartOptions";
-import { getChartSourceFilteredByYear } from "./utils/getChartSourceFilteredByYear";
+import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
 
 const seriesNames: Record<string, string> = {
     yOmEYW4OgYj: "Public spending on health",
@@ -15,9 +15,7 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_CdqVV1Ib0XS_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    const chartSourceWithFilteredRows = chartSource.yearToFilterBy
-        ? getChartSourceFilteredByYear(chartSource)
-        : chartSource;
+    const chartSourceWithFilteredRows = getChartSourceFilteredByLastAvailableYear(chartSource);
 
     const stackedValuesUpTo100 = chartSourceWithFilteredRows.visualization.percentStackedValues;
 
@@ -28,6 +26,7 @@ export const chart_CdqVV1Ib0XS_Options: (chartSource: ChartSource) => Highcharts
         orderByValueInSerie: "S8OMD0f9IZp",
         stackedValuesUpTo100: stackedValuesUpTo100,
         maxValueUpTo100: true,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 
     return {

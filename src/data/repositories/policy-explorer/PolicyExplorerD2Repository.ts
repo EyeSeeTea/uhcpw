@@ -11,13 +11,15 @@ import {
     PolicyExplorerGeneralInfoToDownloadKeys,
     firstYearInFilter,
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
-import { PolicyExplorerRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
+import {
+    PolicyExplorerCategories,
+    PolicyExplorerRepository,
+} from "../../../domain/repositories/policy-explorer/PolicyExplorerRepository";
 import { sortByCountry } from "../utils";
 import { D2Api, DataValueSetsDataValue, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Tab, exportToCSVWithStyles } from "../../export/exportToCSV";
 import { getTableBuilder } from "./builders/TableBuilder";
-import { TableBuilderChangesInCoveragePolicy } from "./builders/TableBuilderChangesInCoveragePolicy";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
@@ -28,7 +30,7 @@ import { TableBuilderByTypeOfHealthcare } from "./builders/TableBuilderByTypeOfH
 import { Id } from "../../../domain/entities/Ref";
 import { Country } from "../../../domain/entities/Country";
 import { FEDERACIJA_BOSNE_I_HERCEGOVINE, REPUBLICA_SERPSKA } from "../countries/CountryD2Repository";
-import { PolicyExplorerCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { generate } from "../../../domain/usecases/utils/generateYears";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
 import { TableBuilderCoveredHealthcareByType } from "./builders/TableBuilderCoveredHealthcareByType";
@@ -89,11 +91,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     constructor(private api: D2Api) {}
 
     get(
-        policyExplorerCategories: Record<string, string[]>,
+        policyExplorerCategories: PolicyExplorerCategories,
         selectedCountriesIds: Id[],
         yearsByCategory: Record<string, string[]>,
         countriesAndSubregions: Country[],
-        programCategories: PolicyExplorerCategory[],
+        programCategories: PolicyExplorerSelectableCategory[],
         useCountryCodes?: boolean
     ): FutureData<PolicyExplorer> {
         return Future.joinObj({
@@ -185,7 +187,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         return periodByOrgUnitMap;
     }
 
-    saveToFile(categories: PolicyExplorerCategory[], policyExplorer: PolicyExplorer): FutureData<void> {
+    saveToFile(
+        categories: PolicyExplorerSelectableCategory[],
+        policyExplorer: PolicyExplorer,
+        fileName?: string
+    ): FutureData<void> {
         const sortedCategoriesToDownload = Object.keys(policyExplorer.tables).sort((categoryIdA, categoryIdB) => {
             return (
                 Object.values(sortedPolicyExplorerCategoriesToDownload).indexOf(categoryIdA) -
@@ -200,8 +206,22 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             const category = categories.find(({ id }) => id === categoryId);
             const type: Tab["type"] = getTabType(category);
 
-            if (rows?.length) {
-                const dataRows = this.getDataFromRows(rows);
+            const rowsWithoutCountryLabel =
+                categoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                    ? rows?.map(row =>
+                          row.map(cell =>
+                              cell.type === "HEADER" && cell.value === COUNTRY_HEADER_NAME
+                                  ? {
+                                        ...cell,
+                                        value: "",
+                                    }
+                                  : cell
+                          )
+                      )
+                    : rows;
+
+            if (rowsWithoutCountryLabel?.length) {
+                const dataRows = this.getDataFromRows(rowsWithoutCountryLabel);
                 return [
                     ...accTabs,
                     {
@@ -210,14 +230,14 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             ? categoriesNameWithLessThan31Chars[categoryId] || categoryId
                             : category?.name || categoryId,
                         type: type,
-                        legends: getTableLegends(category),
+                        legendsRow: getTableLegends(category),
                     },
                 ];
             }
             return accTabs;
         }, []);
 
-        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], FILE_NAME);
+        exportToCSVWithStyles([generalInformationTab, ...tabs, referencesTab], fileName ?? FILE_NAME);
         return Future.success(undefined);
     }
 
@@ -372,7 +392,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         countriesAndSubregions: Country[];
         yearsByCategory: Record<string, string[]>;
         dataSet?: D2DataSet;
-        programCategories: PolicyExplorerCategory[];
+        programCategories: PolicyExplorerSelectableCategory[];
         useCountryCodes?: boolean;
         lastAvailableYearByCountry: Map<string, string>;
     }): Record<string, PolicyExplorerCell[][]> {
@@ -401,13 +421,12 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                   }
                 : dataSet;
 
-        const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(
-            categoryId =>
-                CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID === categoryId ||
-                [
-                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
-                    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
-                ].includes(categoryId)
+        const hasToFillSubcategories = Object.keys(policyExplorerCategories).some(categoryId =>
+            [
+                CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
+                CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+                DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+            ].includes(categoryId)
         );
 
         const allPolicyExplorerCategoriesAndSubcategories = hasToFillSubcategories
@@ -433,7 +452,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
 
                 const finalDataValues = yearsIsLatestAvailableYear
                     ? this.filterDataValuesByPeriod(lastAvailableYearByCountry, dataValuesWithOrgUnitNames)
-                    : _.orderBy(dataValuesWithOrgUnitNames, ["orgUnitShortName", "period"], "asc");
+                    : _.orderBy(
+                          dataValuesWithOrgUnitNames,
+                          ["orgUnitShortName", "period"],
+                          ["asc", policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID ? "desc" : "asc"]
+                      );
 
                 const sortedDataValues = finalDataValues.sort((dvA, dvB) =>
                     sortByCountry(dvA.orgUnitShortName, dvB.orgUnitShortName)
@@ -460,10 +483,16 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             accRows,
                             countriesAndSubregions,
                             orgUnit,
-                            useCountryCodes
+                            useCountryCodes ||
+                                policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
                         )
                             ? EMPTY_DATA
-                            : this.getCountryName(orgUnit, countriesAndSubregions, useCountryCodes);
+                            : this.getCountryName(
+                                  orgUnit,
+                                  countriesAndSubregions,
+                                  useCountryCodes ||
+                                      policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                              );
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
                         const references =
@@ -484,6 +513,7 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             period,
                             references: areMarkdownReferences ? references : "",
                             dataSet: substitutedDataSet,
+                            sortByMonth: policyExplorerCategoryId === CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
                         });
                     },
                     []
@@ -515,11 +545,6 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
     private fillSubcategories(policyExplorerCategories: Record<string, string[]>): Record<string, string[]> {
         return Object.keys(policyExplorerCategories).reduce((acc, categoryId) => {
             switch (categoryId) {
-                case CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID:
-                    return {
-                        ...acc,
-                        [categoryId]: TableBuilderChangesInCoveragePolicy.fillSubcategories(),
-                    };
                 case CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES:
                     return {
                         ...acc,

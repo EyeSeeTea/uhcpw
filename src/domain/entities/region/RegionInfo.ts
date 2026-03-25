@@ -73,12 +73,9 @@ export type GapsInCoverageContent = {
 
     panelThreeTitle: string;
     panelThreeMainText: string;
-    panelThreeChartOne: string;
-    hasPanelThreeChartOne: boolean;
     panelThreeChartOneTitle: string;
     panelThreeChartOneTextAbove: string;
     panelThreeChartOneTextBelow: string;
-    panelThreeChartOneInfoText: string;
     panelThreeProgressText: string;
 
     panelFourTitle: string;

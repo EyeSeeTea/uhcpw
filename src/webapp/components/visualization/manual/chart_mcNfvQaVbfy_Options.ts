@@ -31,6 +31,7 @@ export const chart_mcNfvQaVbfy_Options: (chartSource: ChartSource) => Highcharts
         orderByValueInSerie: "eIs7xB9CAmV.CgeNM5PZBLy",
         stackedValuesUpTo100: stackedValuesUpTo100,
         maxValueUpTo100: true,
+        hideYear: !chartSource.isLatestYearAvailable && !chartSource.isLatestCOVID19,
     });
 
     return {
