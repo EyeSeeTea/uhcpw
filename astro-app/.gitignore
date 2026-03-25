@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# AI related settings
+.claude/settings.local.json
+.playwright-cli/
