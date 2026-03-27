@@ -43,12 +43,9 @@ yarn prettify   # Prettier
 - Vitest for testing (native Vite/ESM support); Jest stays in the root project for existing `src/` tests.
 - ESLint v10 with flat config (`eslint.config.mjs`).
 
-## Gotchas
+## Caveats & Technical Debt
 
-- **`verbatimModuleSyntax: false`** in tsconfig — Astro's strict config enables this, but parent shared code has 500+ type imports without `type` keyword. Fixing the parent is a separate follow-up.
-- **`skipLibCheck: true`** — Parent hand-written `.d.ts` files (`d2-analytics.d.ts`, `d2.d.ts`, `i18n.d.ts`) have type errors under TS 5.x strict mode.
-- **`PersonD2Repository.ts` excluded from tsconfig `include`** — It imports a `.png` from `webapp/assets/` which Astro types as `ImageMetadata` instead of `string`. The file is still importable at build time; it's only excluded from proactive type-checking.
-- **Parent test files excluded from tsconfig** — `__tests__/`, `*.spec.*`, `*.test.*`, `tests-ui.tsx`, and `data/export/` are excluded to avoid irrelevant type errors from parent test code.
+All migration caveats, workarounds, and technical debt are tracked in [`docs/migration-caveats.md`](./docs/migration-caveats.md). **Keep that file updated** whenever you encounter a new issue, caveat, or workaround during any migration phase.
 
 ## References
 

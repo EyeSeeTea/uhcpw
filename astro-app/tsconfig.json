@@ -11,7 +11,8 @@
             "@shared/domain/*": ["../src/domain/*"],
             "@shared/data/*": ["../src/data/*"],
             "@shared/types/*": ["../src/types/*"],
-            "@shared/utils/*": ["../src/utils/*"]
+            "@shared/utils/*": ["../src/utils/*"],
+            "@shared/CompositionRoot": ["../src/CompositionRoot"]
         }
     },
     "include": [
@@ -20,7 +21,8 @@
         "../src/domain/**/*",
         "../src/data/**/*",
         "../src/types/**/*",
-        "../src/utils/**/*"
+        "../src/utils/**/*",
+        "../src/CompositionRoot.ts"
     ],
     "exclude": [
         "node_modules",

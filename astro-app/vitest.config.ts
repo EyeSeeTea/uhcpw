@@ -9,6 +9,7 @@ export default defineConfig({
             "@shared/data": path.resolve(import.meta.dirname, "../src/data"),
             "@shared/types": path.resolve(import.meta.dirname, "../src/types"),
             "@shared/utils": path.resolve(import.meta.dirname, "../src/utils"),
+            "@shared/CompositionRoot": path.resolve(import.meta.dirname, "../src/CompositionRoot"),
         },
     },
     test: {

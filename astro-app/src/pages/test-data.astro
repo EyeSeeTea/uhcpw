@@ -1,0 +1,34 @@
+---
+import { getServerCompositionRoot } from "@/lib/composition-root.server";
+import { runFuture } from "@/lib/future-bridge";
+
+const compositionRoot = getServerCompositionRoot();
+
+const methods = await runFuture(compositionRoot.method.get.execute());
+const teamPersons = await runFuture(compositionRoot.about.getPersons.execute(true));
+const expertPersons = await runFuture(compositionRoot.about.getPersons.execute(false));
+const officeInfo = await runFuture(compositionRoot.about.getOfficeInfo.execute());
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Test Data - Build-Time DHIS2 Fetch</title>
+	</head>
+	<body>
+		<h1>Build-Time Data Validation</h1>
+
+		<h2>Methods</h2>
+		<pre id="methods">{JSON.stringify(methods, null, 2)}</pre>
+
+		<h2>Team Persons</h2>
+		<pre id="team-persons">{JSON.stringify(teamPersons, null, 2)}</pre>
+
+		<h2>Expert Persons</h2>
+		<pre id="expert-persons">{JSON.stringify(expertPersons, null, 2)}</pre>
+
+		<h2>Office Info</h2>
+		<pre id="office-info">{JSON.stringify(officeInfo, null, 2)}</pre>
+	</body>
+</html>
