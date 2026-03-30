@@ -310,7 +310,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                           const filteredYears = mergedVisualization.getYearsWithData?.(response.rows) || [];
                           return [...acc, ...filteredYears];
                       }, [])
-                    : [];
+                    : undefined;
 
                 const dataRowsAndBreakInSeriesDescriptions = analyticsResponses.map(analyticsResponse => {
                     return this.getDataRowsAndBreakInSeriesDescriptions({
