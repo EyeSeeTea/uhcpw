@@ -76,14 +76,29 @@ Compare at these sizes (matching the SPA's breakpoints):
 
 ## Comparison Toolkit
 
-Use the right tool for each aspect of comparison. **Screenshots are not always necessary** — often a DOM snapshot or style query is faster and more precise.
+Use the right tool for each aspect of comparison. **Computed style queries are the primary comparison tool** — they give exact values and catch differences that are invisible in screenshots (e.g., 28px vs 48px font sizes). Screenshots are a secondary tool for overall layout impressions.
 
-### Screenshots (visual overview)
-Take when you need a broad visual impression or to spot layout/color issues.
+### Computed Styles (primary — always do first)
+**Run these BEFORE taking any screenshots.** Query computed styles on key elements from the SPA to get the exact target values, then verify the Astro page matches.
+
+For every page, always compare at minimum:
+- **Headings**: font-size, font-weight, line-height, margin
+- **Body text**: font-size, font-weight, line-height, color
+- **Key containers**: padding, margin, background-color, gap
+- **Links/buttons**: font-size, color, background-color, border-radius, padding
+
 ```bash
-playwright-cli -s=astro screenshot --filename=screenshots/visual-compare/<page>-astro-<viewport>.png
+# Get font-size of a heading from the SPA (the source of truth)
+playwright-cli -s=spa eval "getComputedStyle(document.querySelector('h3')).fontSize"
+# Then verify the Astro page matches
+playwright-cli -s=astro eval "getComputedStyle(document.querySelector('h3')).fontSize"
+
+# Compare multiple properties at once
+playwright-cli -s=spa eval "getComputedStyle(document.querySelector('.main-content')).padding"
+playwright-cli -s=astro eval "getComputedStyle(document.querySelector('.main-content')).padding"
 ```
-Then use the **Read** tool to view and compare.
+
+**Strategy**: Query the SPA first (it's the reference), then check Astro matches. Report any mismatches with both values.
 
 ### DOM Snapshots (structure comparison)
 Use `snapshot` to compare element structure, text content, link targets, and accessibility tree without needing to visually parse a screenshot.
@@ -92,18 +107,6 @@ playwright-cli -s=astro snapshot
 playwright-cli -s=spa snapshot
 ```
 Good for: verifying nav items, link hrefs, heading hierarchy, aria labels, text content.
-
-### Computed Styles (precise CSS comparison)
-Use `eval` to query computed styles on specific elements when you need exact values.
-```bash
-# Get background color of the header
-playwright-cli -s=astro eval "getComputedStyle(document.querySelector('.toolbar-top')).background"
-# Get font-family
-playwright-cli -s=spa eval "getComputedStyle(document.querySelector('header')).fontFamily"
-# Compare padding
-playwright-cli -s=astro eval "getComputedStyle(document.querySelector('.footer-top')).padding"
-```
-Good for: verifying exact colors, font sizes, spacing, breakpoint behavior.
 
 ### Element Visibility / Layout
 ```bash
@@ -120,6 +123,13 @@ playwright-cli -s=astro eval "window.scrollTo(0, document.body.scrollHeight)"
 # Scroll to a specific section
 playwright-cli -s=spa eval "document.querySelector('#footer').scrollIntoView()"
 ```
+
+### Screenshots (secondary — for overall layout validation)
+Take **after** computed style checks pass, to confirm overall visual impression and catch layout/alignment issues that individual style queries might miss.
+```bash
+playwright-cli -s=astro screenshot --filename=screenshots/visual-compare/<page>-astro-<viewport>.png
+```
+Then use the **Read** tool to view and compare.
 
 ## Steps
 
@@ -143,10 +153,10 @@ playwright-cli -s=spa eval "document.querySelector('#footer').scrollIntoView()"
       # Wait for SPA to finish loading (see "Waiting for SPA Load" above)
       ```
 
-   b. **For each viewport**, resize and compare using the appropriate tools:
-      - Start with **DOM snapshots** to compare structure and content
-      - Use **computed style queries** for specific CSS values that look off
-      - Take **screenshots** for overall visual impression or when structure checks pass but something still looks wrong
+   b. **For each viewport**, resize and compare in this order:
+      1. **Computed style queries first**: Query key CSS properties (font-size, font-weight, padding, colors, etc.) from the SPA, then verify the Astro page matches. This is the most reliable way to catch differences.
+      2. **DOM snapshots**: Compare structure, text content, and accessibility tree.
+      3. **Screenshots last**: Take for overall layout validation after style checks pass, or to show the user the final result.
 
 4. **Report results**
 
