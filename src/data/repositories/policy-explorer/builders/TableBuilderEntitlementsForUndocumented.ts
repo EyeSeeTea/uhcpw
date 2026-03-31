@@ -34,17 +34,22 @@ type ValueMapKey = keyof typeof valueMap;
 const isValueMapKey = (v: string): v is ValueMapKey => v in valueMap;
 
 export class TableBuilderEntitlementsForUndocumented implements TableBuilder {
-    buildColumns(_: Parameters<TableBuilder["buildColumns"]>[0]): PolicyExplorerCellHeader[] {
+    buildColumns(params: {
+        policyExplorerCategoryId: string;
+        policyExplorerSubcategoriesIds: string[];
+    }): PolicyExplorerCellHeader[] {
+        const { policyExplorerSubcategoriesIds } = params;
+
         const commonColumns: PolicyExplorerCellHeader[] = [
             { type: PolicyExplorerCellType.HEADER, value: COUNTRY_HEADER_NAME },
         ];
 
-        const restColumns = Object.entries(
-            ENTITLEMENTS_FOR_UNDOCUMENTED_DATA_ELEMENT_SECTION_IDS
-        ).map<PolicyExplorerCellHeader>(([columnName, _dataElementIds]) => ({
-            type: PolicyExplorerCellType.HEADER,
-            value: columnName,
-        }));
+        const restColumns = Object.entries(ENTITLEMENTS_FOR_UNDOCUMENTED_DATA_ELEMENT_SECTION_IDS)
+            .filter(([_column, dataElementId]) => policyExplorerSubcategoriesIds.includes(dataElementId))
+            .map<PolicyExplorerCellHeader>(([columnName, _dataElementIds]) => ({
+                type: PolicyExplorerCellType.HEADER,
+                value: columnName,
+            }));
 
         return [...commonColumns, ...restColumns];
     }
@@ -84,8 +89,8 @@ export class TableBuilderEntitlementsForUndocumented implements TableBuilder {
     static fillSubcategories(subcategoriesSelected: Maybe<string[]>) {
         return Object.entries(ENTITLEMENTS_FOR_UNDOCUMENTED_DATA_ELEMENT_SECTION_IDS).reduce(
             (accSubcategories, subcategories) => {
-                const [section, dataElementId] = subcategories;
-                return subcategoriesSelected?.includes(section)
+                const [_section, dataElementId] = subcategories;
+                return subcategoriesSelected?.includes(dataElementId)
                     ? [...accSubcategories, dataElementId]
                     : accSubcategories;
             },

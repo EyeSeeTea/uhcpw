@@ -201,24 +201,28 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
         const generalInformationTab = this.getGeneralInformationTab(policyExplorer.generalInfo);
         const referencesTab = this.getReferencesTab(policyExplorer.references);
 
+        const categoriesWithoutCountryLabel = [
+            CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+            DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+        ];
+
         const tabs = sortedCategoriesToDownload.reduce((accTabs: Tab[], categoryId: string) => {
             const rows = policyExplorer.tables[categoryId];
             const category = categories.find(({ id }) => id === categoryId);
             const type: Tab["type"] = getTabType(category);
 
-            const rowsWithoutCountryLabel =
-                categoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
-                    ? rows?.map(row =>
-                          row.map(cell =>
-                              cell.type === "HEADER" && cell.value === COUNTRY_HEADER_NAME
-                                  ? {
-                                        ...cell,
-                                        value: "",
-                                    }
-                                  : cell
-                          )
+            const rowsWithoutCountryLabel = categoriesWithoutCountryLabel.includes(categoryId)
+                ? rows?.map(row =>
+                      row.map(cell =>
+                          cell.type === "HEADER" && cell.value === COUNTRY_HEADER_NAME
+                              ? {
+                                    ...cell,
+                                    value: "",
+                                }
+                              : cell
                       )
-                    : rows;
+                  )
+                : rows;
 
             if (rowsWithoutCountryLabel?.length) {
                 const dataRows = this.getDataFromRows(rowsWithoutCountryLabel);
@@ -433,6 +437,11 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
             ? this.fillSubcategories(policyExplorerCategories)
             : policyExplorerCategories;
 
+        const categoriesWithOrgUnitCodes = [
+            CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+            DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+        ];
+
         const tables = {};
 
         return Object.entries(allPolicyExplorerCategoriesAndSubcategories).reduce(
@@ -483,15 +492,13 @@ export class PolicyExplorerD2Repository implements PolicyExplorerRepository {
                             accRows,
                             countriesAndSubregions,
                             orgUnit,
-                            useCountryCodes ||
-                                policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                            useCountryCodes || categoriesWithOrgUnitCodes.includes(policyExplorerCategoryId)
                         )
                             ? EMPTY_DATA
                             : this.getCountryName(
                                   orgUnit,
                                   countriesAndSubregions,
-                                  useCountryCodes ||
-                                      policyExplorerCategoryId === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY
+                                  useCountryCodes || categoriesWithOrgUnitCodes.includes(policyExplorerCategoryId)
                               );
                         const dataValuesByGroup = dataValuesByCountryAndYear[group] || [];
 
