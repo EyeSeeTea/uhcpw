@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Self-hosted Lato font — matching SPA's public/includes/lato-font.css
+   ========================================================================== */
+
+@font-face {
+    font-family: "Lato";
+    src: url("/fonts/Lato-Regular.woff2") format("woff2"),
+        url("/fonts/Lato-Regular.woff") format("woff");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+}
+
+@font-face {
+    font-family: "Lato";
+    src: url("/fonts/Lato-Bold.woff2") format("woff2"),
+        url("/fonts/Lato-Bold.woff") format("woff");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+}
+
+@font-face {
+    font-family: "Lato";
+    src: url("/fonts/Lato-Italic.woff2") format("woff2"),
+        url("/fonts/Lato-Italic.woff") format("woff");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+}
+
+/* ==========================================================================
+   Design tokens — ported from src/webapp/pages/app/themes/dhis2.theme.ts
+   ========================================================================== */
+
+:root {
+    /* ── Brand gradients ─────────────────────────────────────────────────── */
+    --gradient-primary: linear-gradient(90deg, rgba(10, 160, 244, 1) 0%, rgba(240, 247, 252, 1) 100%);
+    --gradient-primary-2: linear-gradient(90deg, rgba(103, 163, 195, 1) 0%, rgba(9, 74, 148, 1) 100%);
+    --gradient-primary-mobile: linear-gradient(90deg, #185698 0%, #0aa0f4 100%);
+    --gradient-orange: linear-gradient(90deg, #ff9355 0%, #ffbc88 100%);
+    --gradient-blue: linear-gradient(90deg, #008ad7 0%, #c4e4f6 100%);
+    --gradient-blue-light: linear-gradient(90deg, #008ad7 0%, #e5f3fb 100%);
+    --gradient-blue-light-2: linear-gradient(90deg, #80c4eb 0%, #f2f9fd 100%);
+
+    /* ── Accent colors ───────────────────────────────────────────────────── */
+    --color-accent-primary: #0089d6;
+    --color-accent-primary-dark: #004ba0;
+    --color-accent-primary-light: #63a4ff;
+    --color-accent-primary-lightest: #eaf4ff;
+
+    --color-accent-secondary: #fb8c00;
+    --color-accent-secondary-light: #f57c00;
+    --color-accent-secondary-dark: #ff9800;
+
+    /* ── Blues ────────────────────────────────────────────────────────────── */
+    --color-dark-blue: #0360a7;
+    --color-blue: #008ad7;
+    --color-blue-50: #80c4eb;
+    --color-blue-20: #cce8f7;
+    --color-blue-10: #e5f3fb;
+    --color-blue-5: #f2f9fd;
+
+    /* ── Neutrals ────────────────────────────────────────────────────────── */
+    --color-black: #000000;
+    --color-grey-black: #494949;
+    --color-grey: #9e9e9e;
+    --color-grey-light: #e0e0e0;
+    --color-grey-disabled: #8e8e8e;
+    --color-blue-grey: #eceff1;
+    --color-snow: #f4f6f8;
+    --color-white: #ffffff;
+
+    --color-black-100: #242626;
+    --color-black-70: #666767;
+    --color-black-50: #929293;
+    --color-black-30: #bdbebe;
+    --color-black-10: #e9e9e9;
+
+    --color-dark-grey: #b3b3b3;
+    --color-light-grey: #f8f8f8;
+
+    /* ── Status colors ───────────────────────────────────────────────────── */
+    --color-negative: #e53935;
+    --color-warning: #f19c02;
+    --color-positive: #3d9305;
+    --color-info: #eaf4ff;
+
+    /* ── Extra named colors ──────────────────────────────────────────────── */
+    --color-navy-blue: #002060;
+    --color-purple: #67389a;
+    --color-yellow: #ffc844;
+    --color-red: #c42929;
+    --color-orange: #ff8d4e;
+    --color-green: #4fad56;
+    --color-dark-red: #920c09;
+    --color-peach: #ffdfbe;
+
+    /* ── Typography ──────────────────────────────────────────────────────── */
+    --font-family-base: "Lato", "Roboto", "Helvetica", "Arial", sans-serif;
+    --font-size-base: 16px;
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-lg: 1.25rem; /* 20px */
+
+    /* ── Breakpoints ─────────────────────────────────────────────────────── */
+    --breakpoint-small-screen: 960px;
+    --breakpoint-mobile: 600px;
+
+    /* ── Layout ───────────────────────────────────────────────────────────── */
+    --footer-top-bg: #0089d6;
+    --footer-bottom-bg: #0360a6;
+}
+
+/* ==========================================================================
+   CSS Reset
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    overflow-y: scroll;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-white);
+    color: var(--color-black);
+}
+
+li {
+    line-height: 1.75;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}

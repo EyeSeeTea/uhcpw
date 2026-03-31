@@ -43,6 +43,13 @@ yarn prettify   # Prettier
 - Vitest for testing (native Vite/ESM support); Jest stays in the root project for existing `src/` tests.
 - ESLint v10 with flat config (`eslint.config.mjs`).
 
+## Migrating a Component or Page
+
+- Look and feel should be a perfect match, except explicitely asked, or agreed because tradeoffs
+- Do not make up content. Respect same content as in source.
+- Use the visual-compare skill to verify your work can be considered complete.
+- If the content is dynamic in source, do not hardcode, unless you are creating a mock - in that case ask the user.
+
 ## Caveats & Technical Debt
 
 All migration caveats, workarounds, and technical debt are tracked in [`docs/migration-caveats.md`](./docs/migration-caveats.md). **Keep that file updated** whenever you encounter a new issue, caveat, or workaround during any migration phase.
