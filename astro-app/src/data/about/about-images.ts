@@ -2,7 +2,7 @@ import type { D2Api } from "@shared/types/d2-api";
 import type { PersonState } from "./about-data";
 import type { OfficeInfo } from "@shared/domain/entities/about/OfficeInfo";
 import { downloadImages, ImageDownloadOptions, type ImageMap } from "@/lib/image-downloader";
-const AVATAR_FALLBACK = "/images/avatar-empty.png";
+import { AVATAR_FALLBACK } from "./about-data";
 
 const PERSON_IMAGE_OPTIONS = {
     width: 400, // 2x of 200px display size for retina

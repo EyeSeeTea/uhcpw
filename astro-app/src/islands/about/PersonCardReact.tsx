@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-const AVATAR_FALLBACK = "/images/avatar-empty.png";
+import { AVATAR_FALLBACK } from "@/data/about/about-data";
 
 export interface PersonCardReactProps {
     person: {

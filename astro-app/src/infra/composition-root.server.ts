@@ -30,7 +30,8 @@ function init(): { api: D2Api; compositionRoot: CompositionRoot } {
 
     const instance = new Instance({ url: baseUrl, username, password });
     cachedApi = new D2Api({ baseUrl, auth: { username, password }, backend: "xhr" });
-    cachedRoot = getCompositionRoot(cachedApi, null as unknown, instance);
+    // d2DataEngine is only used by the React SPA runtime, not needed for SSG builds
+    cachedRoot = getCompositionRoot(cachedApi, null as Parameters<typeof getCompositionRoot>[1], instance);
 
     return { api: cachedApi, compositionRoot: cachedRoot };
 }

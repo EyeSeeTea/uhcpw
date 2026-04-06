@@ -7,6 +7,7 @@ import { getAboutPageData } from "@/data/about/about-data";
 import { getServerD2Api } from "@/infra/composition-root.server";
 import { downloadAboutPersonImages, downloadOfficeImage } from "@/data/about/about-images";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+import "@/styles/experts-network.css";
 
 const { team, experts, officeInfo, countryTreeOptions, parentSortOrder, generalContent } =
     await getAboutPageData();

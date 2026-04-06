@@ -1,47 +1,5 @@
 ---
-interface NavItem {
-    readonly label: string;
-    readonly href: string;
-    readonly children?: readonly { readonly label: string; readonly href: string }[];
-}
-
-const regions = [
-    { label: "European Union (EU)", href: "/regional-overview/eu" },
-    { label: "Western Balkans (WB)", href: "/regional-overview/wb" },
-    { label: "Eastern Europe & Central Asia (EECA)", href: "/regional-overview/eeca" },
-    { label: "European Region (ER)", href: "/regional-overview/er" },
-];
-
-const countries = [
-    { label: "Albania", href: "/countries/albania" },
-    { label: "Belgium", href: "/countries/belgium" },
-    { label: "BIH (the Federation of Bosnia and Herzegovina)", href: "/countries/bih-federation" },
-    { label: "BIH (the Republika Srpska)", href: "/countries/bih-republika-srpska" },
-    { label: "Bulgaria", href: "/countries/bulgaria" },
-    { label: "Croatia", href: "/countries/croatia" },
-    { label: "Estonia", href: "/countries/estonia" },
-    { label: "Georgia", href: "/countries/georgia" },
-    { label: "Kyrgyzstan", href: "/countries/kyrgyzstan" },
-    { label: "Monaco", href: "/countries/monaco" },
-    { label: "Montenegro", href: "/countries/montenegro" },
-    { label: "North Macedonia", href: "/countries/north-macedonia" },
-    { label: "Republic of Moldova", href: "/countries/moldova" },
-    { label: "Romania", href: "/countries/romania" },
-    { label: "Spain", href: "/countries/spain" },
-    { label: "Tajikistan", href: "/countries/tajikistan" },
-    { label: "Ukraine", href: "/countries/ukraine" },
-    { label: "Kosovo*", href: "/countries/kosovo" },
-];
-
-const navItems: readonly NavItem[] = [
-    { label: "Indicator explorer", href: "/indicator-explorer" },
-    { label: "Policy explorer", href: "/policy-explorer" },
-    { label: "Regional overview", href: "/regional-overview", children: regions },
-    { label: "Countries & areas", href: "/countries", children: countries },
-    { label: "Methods", href: "/methods" },
-    { label: "Resources", href: "/resources" },
-    { label: "About us", href: "/about" },
-];
+import { navItems } from "@/data/navigation";
 ---
 
 <nav class="desktop-nav" aria-label="Main navigation">
@@ -73,7 +31,7 @@ const navItems: readonly NavItem[] = [
     )}
 </nav>
 
-<style is:global>
+<style>
     .desktop-nav {
         display: none;
         align-items: center;
@@ -87,7 +45,7 @@ const navItems: readonly NavItem[] = [
         }
     }
 
-    .desktop-nav .nav-link {
+    .nav-link {
         display: flex;
         align-items: center;
         margin: 16px 8px;
@@ -106,24 +64,24 @@ const navItems: readonly NavItem[] = [
         border: none;
     }
 
-    .desktop-nav .nav-link:hover {
+    .nav-link:hover {
         background-color: rgba(150, 150, 150, 0.1);
     }
 
-    .desktop-nav .caret {
+    .caret {
         transition: transform 200ms;
         margin-left: 2px;
     }
 
-    .desktop-nav .nav-dropdown {
+    .nav-dropdown {
         position: relative;
     }
 
-    .desktop-nav .nav-dropdown.open .caret {
+    .nav-dropdown:global(.open) .caret {
         transform: rotate(180deg);
     }
 
-    .desktop-nav .dropdown-menu {
+    .dropdown-menu {
         position: absolute;
         top: 100%;
         left: 50%;
@@ -139,11 +97,11 @@ const navItems: readonly NavItem[] = [
         white-space: normal;
     }
 
-    .desktop-nav .dropdown-menu[hidden] {
+    .dropdown-menu[hidden] {
         display: none;
     }
 
-    .desktop-nav .dropdown-item {
+    .dropdown-item {
         display: block;
         padding: 6px 16px;
         color: var(--color-black);
@@ -153,7 +111,7 @@ const navItems: readonly NavItem[] = [
         white-space: nowrap;
     }
 
-    .desktop-nav .dropdown-item:hover {
+    .dropdown-item:hover {
         background-color: rgba(0, 0, 0, 0.04);
     }
 </style>

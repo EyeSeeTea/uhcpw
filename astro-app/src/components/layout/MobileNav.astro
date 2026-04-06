@@ -1,15 +1,7 @@
 ---
-const isHomePage = Astro.url.pathname === "/";
+import { navItems } from "@/data/navigation";
 
-const navItems = [
-    { label: "Indicator explorer", href: "/indicator-explorer" },
-    { label: "Policy explorer", href: "/policy-explorer" },
-    { label: "Regional overview", href: "/regional-overview" },
-    { label: "Countries & areas", href: "/countries" },
-    { label: "Methods", href: "/methods" },
-    { label: "Resources", href: "/resources" },
-    { label: "About us", href: "/about" },
-];
+const isHomePage = Astro.url.pathname === "/";
 ---
 
 <div class="mobile-nav-wrapper">

@@ -5,6 +5,7 @@ import { defaultSeoConfig } from "@shared/domain/entities/SeoConfig";
 import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
 import SeoHead from "@/components/seo/SeoHead.astro";
+import { resolveGeneralContentUrls } from "@/data/general-content";
 import "@/styles/theme.css";
 
 interface Props {
@@ -14,14 +15,7 @@ interface Props {
 
 const { seo = defaultSeoConfig, generalContent } = Astro.props;
 
-/** Remove duplicate slashes in URL paths (preserves ://) */
-function normalizeUrl(url: string | null | undefined): string | undefined {
-    if (!url) return undefined;
-    return url.replace(/([^:])\/\/+/g, "$1/");
-}
-
-const abbreviationsUrl = normalizeUrl(generalContent?.abbreviations.url);
-const glossaryUrl = normalizeUrl(generalContent?.glossary.url);
+const { abbreviationsUrl, glossaryUrl } = resolveGeneralContentUrls(generalContent);
 ---
 
 <!doctype html>

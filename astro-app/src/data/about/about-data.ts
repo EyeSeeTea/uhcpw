@@ -1,3 +1,5 @@
+export const AVATAR_FALLBACK = "/images/avatar-empty.png";
+
 import type { Person } from "@shared/domain/entities/Person";
 import type { Country } from "@shared/domain/entities/Country";
 import type { OfficeInfo } from "@shared/domain/entities/about/OfficeInfo";

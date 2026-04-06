@@ -5,6 +5,7 @@ import { getServerCompositionRoot } from "@/infra/composition-root.server";
 import { runFuture } from "@/infra/future-bridge";
 import { renderMarkdown } from "@/lib/markdown";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+import { resolveGeneralContentUrls } from "@/data/general-content";
 import bubblePattern from "@/assets/bubble-pattern-white.png";
 
 const compositionRoot = getServerCompositionRoot();
@@ -16,14 +17,13 @@ const [methods, generalContent] = await Promise.all([
 
 const seo = getSeoConfigForRoute(Astro.url.pathname);
 
-const abbreviationsUrl = (generalContent.abbreviations.url ?? "https://cmyn.short.gy/abbreviations").replace(/([^:])\/\/+/g, "$1/");
-const glossaryUrl = (generalContent.glossary.url ?? "https://cmyn.short.gy/glossary").replace(/([^:])\/\/+/g, "$1/");
+const { abbreviationsUrl, glossaryUrl } = resolveGeneralContentUrls(generalContent);
 
 const gridRows = Math.ceil(methods.length / 2);
 ---
 
 <Layout seo={seo} generalContent={generalContent}>
-    <div class="title-banner" aria-label="methods-page-header">
+    <div class="title-banner" aria-label="Methods page header">
         <Image
             class="bubble-img"
             src={bubblePattern}
@@ -35,9 +35,9 @@ const gridRows = Math.ceil(methods.length / 2);
     </div>
 
     <div class="main-content">
-        <div class="methods-grid" style={`--grid-rows: ${gridRows}`} aria-label="methods-container">
+        <div class="methods-grid" style={`--grid-rows: ${gridRows}`} aria-label="Methods list">
             {methods.map((method) => (
-                <div class="method-item" aria-label="method-item">
+                <div class="method-item" aria-label="Method section">
                     <h5>{method.sectionName}</h5>
 
                     <div class="text-container">
@@ -54,7 +54,7 @@ const gridRows = Math.ceil(methods.length / 2);
                 </div>
             ))}
 
-            <div class="download-links" aria-label="methods-buttons">
+            <div class="download-links" aria-label="Download links">
                 <a class="download-link" href={abbreviationsUrl} target="_blank" rel="noreferrer">Abbreviations</a>
                 <a class="download-link" href={glossaryUrl} target="_blank" rel="noreferrer">Glossary</a>
             </div>

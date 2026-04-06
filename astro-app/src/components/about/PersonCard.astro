@@ -1,8 +1,7 @@
 ---
 import type { PersonState } from "@/data/about/about-data";
 import { renderMarkdown } from "@/lib/markdown";
-
-const AVATAR_FALLBACK = "/images/avatar-empty.png";
+import { AVATAR_FALLBACK } from "@/data/about/about-data";
 
 interface Props {
     person: PersonState;
@@ -26,8 +25,9 @@ const institutionHtml = person.institution
         class="person-image"
         src={imageSrc}
         alt={fullName}
+        width="200"
+        height="200"
         loading="lazy"
-        onerror={`this.onerror=null;this.src='${AVATAR_FALLBACK}'`}
     />
 
     <div class="person-info">

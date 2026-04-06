@@ -19,8 +19,7 @@ const textHtml = renderMarkdown(officeText);
                 <img
                     src={officeImage}
                     alt="WHO Barcelona Office"
-                    width="100%"
-                    style="padding-block-start: 16px;"
+                    class="office-image"
                     loading="lazy"
                 />
             </a>
@@ -48,6 +47,11 @@ const textHtml = renderMarkdown(officeText);
 
     .image-column a {
         display: block;
+    }
+
+    .office-image {
+        width: 100%;
+        padding-block-start: 16px;
     }
 
     .caption {
