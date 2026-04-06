@@ -312,7 +312,7 @@ const TablePaper = styled(Paper)`
 const StyledNormalTable = styled(Table)<{ fullWidth?: boolean }>`
     width: ${props => (props.fullWidth ? "100%" : "fit-content")};
     table-layout: ${props => (props.fullWidth ? "auto" : "fixed")};
-    border-spacing: 0.8px;
+    border-spacing: 3px;
     border-collapse: initial;
 
     tbody > tr:first-child > td {
@@ -335,7 +335,7 @@ const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwi
 const StyledInvertedTable = styled(Table)<{ fullWidth?: boolean }>`
     width: ${props => (props.fullWidth ? "100%" : "fit-content")};
     table-layout: ${props => (props.fullWidth ? "auto" : "fixed")};
-    border-spacing: 0.8px;
+    border-spacing: 3px;
     border-collapse: initial;
 
     tbody > tr > td {
@@ -398,6 +398,15 @@ const SwitchRowColumnButton = styled(Button)`
 `;
 
 const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
+    tr:first-child > td {
+        background-color: #d3e5f5;
+        color: #0460a7;
+
+        .MuiTableCell-root {
+            border: none;
+        }
+    }
+
     &.u800TAhsIBY_Cat-table,
     &.Nx6S3aQkvWe-table {
         tr:first-child {
