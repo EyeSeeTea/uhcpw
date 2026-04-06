@@ -36,7 +36,7 @@ export const chart_fk2LtKtsiQG_Options: (chartSource: ChartSource) => Highcharts
         yAxis: {
             ...chart?.yAxis,
             title: {
-                text: "GDP (%)",
+                text: chartSource.visualization.axes[0]?.title.text ?? "GDP (%)",
                 style: { fontSize: "13px" },
             },
         },
