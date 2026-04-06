@@ -272,6 +272,8 @@ export const PolicyExplorerTable = React.memo(
     }
 );
 
+// use js approach on sticky header instead of css because overflow-x conflicts with position: sticky;
+// we need to support horizontal scroll because the tables can have a lot of columns
 function stickyHeader(container: HTMLDivElement | null): Maybe<() => void> {
     if (!container) return;
 
