@@ -1,43 +1,81 @@
+import type { Country } from "@shared/domain/entities/Country";
+import type { Region } from "@shared/domain/entities/region/Region";
+import { ORG_UNIT_GROUP_IDS } from "@shared/domain/entities/region/Region";
+import { KOSOVO } from "@shared/data/repositories/countries/CountryD2Repository";
+import { formatCountryOrRegionParamName } from "@shared/webapp/utils/formatCountryOrRegionParamName";
+import { getServerCompositionRoot } from "@/infra/composition-root.server";
+import { runFuture } from "@/infra/future-bridge";
+
 export interface NavItem {
     readonly label: string;
     readonly href: string;
     readonly children?: readonly { readonly label: string; readonly href: string }[];
 }
 
-const regions = [
-    { label: "European Union (EU)", href: "/regional-overview/eu" },
-    { label: "Western Balkans (WB)", href: "/regional-overview/wb" },
-    { label: "Eastern Europe & Central Asia (EECA)", href: "/regional-overview/eeca" },
-    { label: "European Region (ER)", href: "/regional-overview/er" },
+const REGIONS_ORDER: readonly string[] = [
+    ORG_UNIT_GROUP_IDS.EUROPEAN_UNION,
+    ORG_UNIT_GROUP_IDS.WESTERN_BALKANS,
+    ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA,
+    ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
 ];
 
-const countries = [
-    { label: "Albania", href: "/countries/albania" },
-    { label: "Belgium", href: "/countries/belgium" },
-    { label: "BIH (the Federation of Bosnia and Herzegovina)", href: "/countries/bih-federation" },
-    { label: "BIH (the Republika Srpska)", href: "/countries/bih-republika-srpska" },
-    { label: "Bulgaria", href: "/countries/bulgaria" },
-    { label: "Croatia", href: "/countries/croatia" },
-    { label: "Estonia", href: "/countries/estonia" },
-    { label: "Georgia", href: "/countries/georgia" },
-    { label: "Kyrgyzstan", href: "/countries/kyrgyzstan" },
-    { label: "Monaco", href: "/countries/monaco" },
-    { label: "Montenegro", href: "/countries/montenegro" },
-    { label: "North Macedonia", href: "/countries/north-macedonia" },
-    { label: "Republic of Moldova", href: "/countries/moldova" },
-    { label: "Romania", href: "/countries/romania" },
-    { label: "Spain", href: "/countries/spain" },
-    { label: "Tajikistan", href: "/countries/tajikistan" },
-    { label: "Ukraine", href: "/countries/ukraine" },
-    { label: "Kosovo*", href: "/countries/kosovo" },
-];
+function buildCountryNavItems(countries: ReadonlyArray<Country>): readonly { label: string; href: string }[] {
+    const subregions = countries.flatMap(c => (c.children ? c.children : []));
+    const all = [...countries, ...subregions];
 
-export const navItems: readonly NavItem[] = [
-    { label: "Indicator explorer", href: "/indicator-explorer" },
-    { label: "Policy explorer", href: "/policy-explorer" },
-    { label: "Regional overview", href: "/regional-overview", children: regions },
-    { label: "Countries & areas", href: "/countries", children: countries },
-    { label: "Methods", href: "/methods" },
-    { label: "Resources", href: "/resources" },
-    { label: "About us", href: "/about" },
-];
+    return all
+        .filter(c => c.isInCountryPage)
+        .sort((a, b) => {
+            if (a.id === KOSOVO) return 1;
+            if (b.id === KOSOVO) return -1;
+            return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+        })
+        .map(c => ({
+            label: c.name,
+            href: `/${formatCountryOrRegionParamName(c.name)}`,
+        }));
+}
+
+function buildRegionNavItems(regions: ReadonlyArray<Region>): readonly { label: string; href: string }[] {
+    return [...regions]
+        .filter(r => r.isInRegionalPage)
+        .sort((a, b) => REGIONS_ORDER.indexOf(a.id) - REGIONS_ORDER.indexOf(b.id))
+        .map(r => {
+            const label = `${r.name} (${r.code})`;
+            return {
+                label,
+                href: `/${formatCountryOrRegionParamName(label)}`,
+            };
+        });
+}
+
+let cached: Promise<readonly NavItem[]> | undefined;
+
+export function getNavItems(): Promise<readonly NavItem[]> {
+    if (!cached) {
+        cached = fetchNavItems();
+    }
+    return cached;
+}
+
+async function fetchNavItems(): Promise<readonly NavItem[]> {
+    const compositionRoot = getServerCompositionRoot();
+
+    const [countries, regions] = await Promise.all([
+        runFuture(compositionRoot.countries.get.execute()),
+        runFuture(compositionRoot.regions.get.execute()),
+    ]);
+
+    const countryChildren = buildCountryNavItems(countries);
+    const regionChildren = buildRegionNavItems(regions);
+
+    return [
+        { label: "Indicator explorer", href: "/indicator-explorer" },
+        { label: "Policy explorer", href: "/policy-explorer" },
+        { label: "Regional overview", href: "/regional-overview", children: regionChildren },
+        { label: "Countries & areas", href: "/countries", children: countryChildren },
+        { label: "Methods", href: "/methods" },
+        { label: "Resources", href: "/resources" },
+        { label: "About us", href: "/about" },
+    ];
+}

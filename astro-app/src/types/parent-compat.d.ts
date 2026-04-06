@@ -19,6 +19,7 @@
 import "react";
 
 declare module "react" {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface FunctionComponent<P = {}> {
         (props: P & { children?: React.ReactNode }): React.ReactNode;
     }

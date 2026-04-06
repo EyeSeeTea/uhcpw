@@ -1,13 +1,15 @@
 ---
+import type { NavItem } from "@/data/navigation";
 import DesktopNav from "./DesktopNav.astro";
 import MobileNav from "./MobileNav.astro";
 
 interface Props {
     abbreviationsUrl?: string;
     glossaryUrl?: string;
+    navItems: readonly NavItem[];
 }
 
-const { abbreviationsUrl, glossaryUrl } = Astro.props;
+const { abbreviationsUrl, glossaryUrl, navItems } = Astro.props;
 
 const isHomePage = Astro.url.pathname === "/";
 ---
@@ -36,8 +38,8 @@ const isHomePage = Astro.url.pathname === "/";
                 </a>
             </div>
 
-            <DesktopNav />
-            <MobileNav />
+            <DesktopNav navItems={navItems} />
+            <MobileNav navItems={navItems} />
         </div>
     </div>
 </header>

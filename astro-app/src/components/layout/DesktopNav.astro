@@ -1,5 +1,11 @@
 ---
-import { navItems } from "@/data/navigation";
+import type { NavItem } from "@/data/navigation";
+
+interface Props {
+    navItems: readonly NavItem[];
+}
+
+const { navItems } = Astro.props;
 ---
 
 <nav class="desktop-nav" aria-label="Main navigation">
