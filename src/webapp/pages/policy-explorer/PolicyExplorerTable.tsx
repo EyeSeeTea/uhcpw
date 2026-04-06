@@ -22,6 +22,7 @@ import { CategorySelectableOption } from "../../components/policy-explorer/categ
 import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
 import { TableLegend } from "../../components/policy-explorer/TableLegend";
 import { BREAKPOINT_WIDTH_MOBILE_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { Maybe } from "../../../types/utils";
 
 interface PolicyExplorerTableProps {
     category: CategorySelectableOption;
@@ -179,6 +180,10 @@ export const PolicyExplorerTable = React.memo(
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [tableContainerRef, dataOrientation]);
 
+        useEffect(() => {
+            return stickyHeader(tableContainerRef.current);
+        }, [rows, dataOrientation]);
+
         const isEmpty = useMemo(() => {
             return !rows?.length || (isSpecialTable && rows.every(row => row.length === 1));
         }, [rows, isSpecialTable]);
@@ -266,6 +271,40 @@ export const PolicyExplorerTable = React.memo(
         );
     }
 );
+
+function stickyHeader(container: HTMLDivElement | null): Maybe<() => void> {
+    if (!container) return;
+
+    const handleScroll = () => {
+        const table = container.querySelector("table");
+        const headerRow = table?.querySelector("tbody > tr:first-child");
+        if (!table || !headerRow) return;
+
+        const headerCells = headerRow.querySelectorAll<HTMLElement>("td");
+        const tableRect = table.getBoundingClientRect();
+        const headerHeight = headerRow.getBoundingClientRect().height;
+
+        if (tableRect.top < 0 && tableRect.bottom > 0) {
+            const offset = Math.min(-tableRect.top, tableRect.height - headerHeight);
+            headerCells.forEach(cell => {
+                cell.style.transform = `translateY(${offset}px)`;
+                cell.style.willChange = "transform";
+                cell.style.zIndex = "2";
+            });
+        } else {
+            headerCells.forEach(cell => {
+                cell.style.transform = "";
+                cell.style.willChange = "";
+                cell.style.zIndex = "";
+            });
+        }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+}
 
 export const StyledTable: React.FC<{
     orientation: DataOrientation;
