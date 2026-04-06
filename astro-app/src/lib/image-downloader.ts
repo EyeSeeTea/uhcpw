@@ -28,7 +28,7 @@ function urlHash(url: string): string {
 
 function normalizeUrl(url: string): string {
     // Fix double slashes in path (baseUrl trailing slash + /api/)
-    return url.replace(/(https?:\/\/)|(\/)+/g, (m, proto) => proto || "/");
+    return url.replace(/(https?:\/\/)|(\/)+/g, (_match, proto) => proto || "/");
 }
 
 function getAuthHeaders(): Record<string, string> {

@@ -6,11 +6,8 @@
         "jsxImportSource": "react",
         "verbatimModuleSyntax": false,
         "skipLibCheck": true,
+        "typeRoots": ["./node_modules/@types", "../node_modules/@types"],
         "paths": {
-            "react": ["./node_modules/@types/react"],
-            "react/jsx-runtime": ["./node_modules/@types/react/jsx-runtime"],
-            "react-dom": ["./node_modules/@types/react-dom"],
-            "react-dom/*": ["./node_modules/@types/react-dom/*"],
             "@/*": ["./src/*"],
             "@shared/domain/*": ["../src/domain/*"],
             "@shared/data/*": ["../src/data/*"],

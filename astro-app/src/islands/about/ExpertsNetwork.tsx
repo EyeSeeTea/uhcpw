@@ -51,6 +51,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = ({
             </div>
 
             <div className="experts-selector-row">
+                {/* @ts-expect-error TS2786: TreeSelector's React 17 FC return type (ReactElement) is not assignable to React 18's ReactNode */}
                 <TreeSelector
                     hasSelectAll
                     hasClearAll
