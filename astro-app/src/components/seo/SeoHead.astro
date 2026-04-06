@@ -1,0 +1,33 @@
+---
+import type { SeoConfig } from "@shared/domain/entities/SeoConfig";
+
+interface Props {
+    seo: SeoConfig;
+}
+
+const { seo } = Astro.props;
+
+const canonicalUrl = Astro.site
+    ? new URL(Astro.url.pathname.replace(/^\//, ""), Astro.site.href.replace(/\/?$/, "/")).href
+    : undefined;
+const imageUrl = seo.image ?? "https://apps.who.int/dhis2/uhcwatch/uhcw.png";
+---
+
+<title>{seo.title}</title>
+<meta name="description" content={seo.description} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content={seo.title} />
+<meta property="og:description" content={seo.description} />
+<meta property="og:image" content={imageUrl} />
+{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={seo.title} />
+<meta name="twitter:description" content={seo.description} />
+<meta name="twitter:image" content={imageUrl} />
+
+<!-- Canonical -->
+{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}

@@ -1,5 +1,20 @@
 ---
+interface Props {
+    disclaimer?: string;
+    privacyPolicyUrl?: string;
+    abbreviationsUrl?: string;
+    glossaryUrl?: string;
+}
+
+const { disclaimer, privacyPolicyUrl, abbreviationsUrl, glossaryUrl } = Astro.props;
 const currentYear = new Date().getFullYear();
+
+const defaultDisclaimer =
+    "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)";
+const defaultPrivacyUrl = "https://www.who.int/about/policies/privacy";
+
+const disclaimerText = disclaimer || defaultDisclaimer;
+const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 ---
 
 <footer class="site-footer">
@@ -8,10 +23,7 @@ const currentYear = new Date().getFullYear();
         <div class="footer-grid">
             <div class="footer-col">
                 <img src="/images/who-logo-white.png" alt="WHO logo" class="footer-who-logo" />
-                <p class="disclaimer">
-                    * All references to Kosovo should be understood to be in the context of
-                    the United Nations Security Council resolution 1244 (1999)
-                </p>
+                <p class="disclaimer">{disclaimerText}</p>
             </div>
 
             <div class="footer-col">
@@ -68,21 +80,18 @@ const currentYear = new Date().getFullYear();
         <details class="accordion">
             <summary class="accordion-summary">Abbreviations &amp; glossary</summary>
             <div class="accordion-details">
-                <a href="#" class="footer-link">Abbreviations</a>
-                <a href="#" class="footer-link">Glossary</a>
+                {abbreviationsUrl && <a href={abbreviationsUrl} class="footer-link" target="_blank" rel="noopener noreferrer">Abbreviations</a>}
+                {glossaryUrl && <a href={glossaryUrl} class="footer-link" target="_blank" rel="noopener noreferrer">Glossary</a>}
             </div>
         </details>
 
         <details class="accordion">
             <summary class="accordion-summary">WHO privacy policy &amp; disclaimer</summary>
             <div class="accordion-details">
-                <a href="https://www.who.int/about/policies/privacy" class="footer-link" target="_blank" rel="noopener noreferrer">
+                <a href={policyUrl} class="footer-link" target="_blank" rel="noopener noreferrer">
                     WHO Privacy Policy
                 </a>
-                <p>
-                    * All references to Kosovo should be understood to be in the context of
-                    the United Nations Security Council resolution 1244 (1999)
-                </p>
+                <p>{disclaimerText}</p>
             </div>
         </details>
 
@@ -100,7 +109,7 @@ const currentYear = new Date().getFullYear();
 
     <!-- Bottom bar (shared) -->
     <div class="footer-bottom">
-        <a href="https://www.who.int/about/policies/privacy" class="footer-link footer-bottom-privacy" target="_blank" rel="noopener noreferrer">
+        <a href={policyUrl} class="footer-link footer-bottom-privacy" target="_blank" rel="noopener noreferrer">
             WHO privacy policy
         </a>
         <span>&copy; {currentYear} WHO</span>

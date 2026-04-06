@@ -1,7 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { defaultSeoConfig } from "@shared/domain/entities/SeoConfig";
+import { getServerCompositionRoot } from "../lib/composition-root.server";
+import { runFuture } from "../lib/future-bridge";
+
+const compositionRoot = getServerCompositionRoot();
+const generalContent = await runFuture(compositionRoot.general.getContent.execute());
+
+const seo = { ...defaultSeoConfig, title: "UHC Watch - Page Not Found" };
 ---
 
-<Layout title="UHC Watch - 404">
+<Layout seo={seo} generalContent={generalContent}>
     <h1>UHC Watch - Page not found - 404</h1>
 </Layout>

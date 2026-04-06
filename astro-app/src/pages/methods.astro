@@ -4,6 +4,7 @@ import Layout from "../layouts/Layout.astro";
 import { getServerCompositionRoot } from "../lib/composition-root.server";
 import { runFuture } from "../lib/future-bridge";
 import { renderMarkdown } from "../lib/markdown";
+import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
 import bubblePattern from "../assets/bubble-pattern-white.png";
 
 const compositionRoot = getServerCompositionRoot();
@@ -13,13 +14,15 @@ const [methods, generalContent] = await Promise.all([
     runFuture(compositionRoot.general.getContent.execute()),
 ]);
 
-const abbreviationsUrl = generalContent.abbreviations.url ?? "https://cmyn.short.gy/abbreviations";
-const glossaryUrl = generalContent.glossary.url ?? "https://cmyn.short.gy/glossary";
+const seo = getSeoConfigForRoute(Astro.url.pathname);
+
+const abbreviationsUrl = (generalContent.abbreviations.url ?? "https://cmyn.short.gy/abbreviations").replace(/([^:])\/\/+/g, "$1/");
+const glossaryUrl = (generalContent.glossary.url ?? "https://cmyn.short.gy/glossary").replace(/([^:])\/\/+/g, "$1/");
 
 const gridRows = Math.ceil(methods.length / 2);
 ---
 
-<Layout title="UHC Watch - Methods">
+<Layout seo={seo} generalContent={generalContent}>
     <div class="title-banner" aria-label="methods-page-header">
         <Image
             class="bubble-img"

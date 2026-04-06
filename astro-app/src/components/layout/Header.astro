@@ -1,17 +1,26 @@
 ---
 import DesktopNav from "./DesktopNav.astro";
 import MobileNav from "./MobileNav.astro";
+
+interface Props {
+    abbreviationsUrl?: string;
+    glossaryUrl?: string;
+}
+
+const { abbreviationsUrl, glossaryUrl } = Astro.props;
+
+const isHomePage = Astro.url.pathname === "/";
 ---
 
-<header class="site-header">
+<header class:list={["site-header", { "is-home": isHomePage }]}>
     <div class="toolbar-top">
         <div class="toolbar-top-content">
             <span class="office-title">
                 WHO Barcelona Office for Health Systems Financing
             </span>
             <div class="top-links">
-                <a href="#" class="top-link">Abbreviations</a>
-                <a href="#" class="top-link">Glossary</a>
+                {abbreviationsUrl && <a href={abbreviationsUrl} class="top-link" target="_blank" rel="noopener noreferrer">Abbreviations</a>}
+                {glossaryUrl && <a href={glossaryUrl} class="top-link" target="_blank" rel="noopener noreferrer">Glossary</a>}
             </div>
         </div>
     </div>
@@ -171,6 +180,13 @@ import MobileNav from "./MobileNav.astro";
     .uhc-logo {
         width: 180px;
         height: auto;
+    }
+
+    /* Hide UHC logo on desktop home page (matches SPA behavior) */
+    @media (min-width: 961px) {
+        .is-home .uhc-logo {
+            display: none;
+        }
     }
 
     @media (max-width: 600px) {

@@ -6,9 +6,12 @@ import { ExpertsNetwork } from "../islands/ExpertsNetwork";
 import { getAboutPageData } from "../lib/about-data";
 import { getServerD2Api } from "../lib/composition-root.server";
 import { downloadAboutPersonImages, downloadOfficeImage } from "../lib/about-images";
+import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
 
 const { team, experts, officeInfo, countryTreeOptions, parentSortOrder, generalContent } =
     await getAboutPageData();
+
+const seo = getSeoConfigForRoute(Astro.url.pathname);
 
 const api = getServerD2Api();
 
@@ -27,7 +30,7 @@ const expertsSubtitle =
     "Experts working with the WHO Barcelona Office to assess financial protection at country or area level";
 ---
 
-<Layout title="UHC Watch - About">
+<Layout seo={seo} generalContent={generalContent}>
     <div class="title-container">
         <h3>WHO Barcelona Office for Health Systems Financing</h3>
     </div>
