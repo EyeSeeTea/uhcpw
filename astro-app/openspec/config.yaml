@@ -29,6 +29,7 @@ context: |
   - Run: yarn start
   - Test: yarn test
   - Lint: yarn lint
+  - Astro check: yarn astro check
 
   Code conventions:
   - <Key conventions (naming, style, patterns)>

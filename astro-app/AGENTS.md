@@ -30,6 +30,7 @@ yarn preview    # Preview built site
 yarn test       # Vitest (run once)
 yarn test:watch # Vitest (watch mode)
 yarn lint       # ESLint
+yarn astro check # Runs diagnostics (such as type-checking within .astro files)
 yarn prettify   # Prettier
 ```
 
