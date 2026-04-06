@@ -2,10 +2,10 @@
 import type { SeoConfig } from "@shared/domain/entities/SeoConfig";
 import type { GeneralContent } from "@shared/domain/entities/GeneralContent";
 import { defaultSeoConfig } from "@shared/domain/entities/SeoConfig";
-import Header from "../components/layout/Header.astro";
-import Footer from "../components/layout/Footer.astro";
-import SeoHead from "../components/seo/SeoHead.astro";
-import "../styles/theme.css";
+import Header from "@/components/layout/Header.astro";
+import Footer from "@/components/layout/Footer.astro";
+import SeoHead from "@/components/seo/SeoHead.astro";
+import "@/styles/theme.css";
 
 interface Props {
     seo?: SeoConfig;

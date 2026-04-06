@@ -6,8 +6,8 @@ import muiThemeLegacy from "@shared/webapp/pages/app/themes/dhis2-legacy.theme";
 import { TreeSelector } from "@shared/webapp/components/tree-selector/TreeSelector";
 import { PersonCardReact } from "./PersonCardReact";
 
-import type { TreeOption } from "../lib/about-data";
-import type { PersonState } from "../lib/about-data";
+import type { TreeOption } from "@/data/about/about-data";
+import type { PersonState } from "@/data/about/about-data";
 
 export interface ExpertsNetworkProps {
     experts: readonly PersonState[];

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { Future } from "@shared/domain/entities/Future";
-import { runFuture } from "./future-bridge";
+import { runFuture } from "../future-bridge";
 
 describe("runFuture", () => {
     it("resolves with data on success", async () => {

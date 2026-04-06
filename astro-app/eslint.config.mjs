@@ -15,6 +15,19 @@ export default [
                 sourceType: "module",
             },
         },
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            group: ["../**/data/*", "../**/infra/*", "../**/lib/*", "../**/islands/*", "../**/components/*", "../**/layouts/*", "../**/styles/*", "../**/assets/*"],
+                            message: "Use @/ absolute imports for cross-directory references (e.g., @/data/about/about-data).",
+                        },
+                    ],
+                },
+            ],
+        },
     },
     {
         ignores: ["dist/", "node_modules/", ".astro/"],

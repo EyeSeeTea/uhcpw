@@ -12,8 +12,12 @@ The `tsconfig.json` SHALL define path aliases mapping `@shared/domain/*`, `@shar
 - **THEN** `astro check` resolves the import without type errors
 
 #### Scenario: TypeScript resolves local import
-- **WHEN** a file imports from `@/lib/some-module`
-- **THEN** `astro check` resolves the import to `astro-app/src/lib/some-module`
+- **WHEN** a file imports from `@/data/about/about-data`
+- **THEN** `astro check` resolves the import to `astro-app/src/data/about/about-data`
+
+#### Scenario: TypeScript resolves infra import
+- **WHEN** a file imports from `@/infra/composition-root.server`
+- **THEN** `astro check` resolves the import to `astro-app/src/infra/composition-root.server`
 
 ### Requirement: Vite resolves path aliases at build time
 

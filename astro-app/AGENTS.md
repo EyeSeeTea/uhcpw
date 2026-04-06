@@ -51,6 +51,32 @@ yarn prettify   # Prettier
 - Use the visual-compare skill to verify your work can be considered complete.
 - If the content is dynamic in source, do not hardcode, unless you are creating a mock - in that case ask the user.
 
+## Source Directory Structure
+
+```
+src/
+├── data/<feature>/       # Page-specific data fetching, shaping, validation
+├── infra/                # Framework glue: API init, adapter patterns
+├── lib/                  # Generic reusable utilities (no domain knowledge)
+├── islands/<feature>/    # React islands grouped by feature/page
+├── components/<feature>/ # Astro components grouped by feature/page
+├── pages/                # Astro page routes
+├── layouts/              # Astro layout wrappers
+├── styles/               # Global CSS and design tokens
+└── types/                # TypeScript type declarations
+```
+
+**Where to put new files:**
+- Data fetching/shaping for a page → `data/<feature>/` (e.g., `data/about/about-data.ts`)
+- Framework plumbing (composition root, adapters) → `infra/`
+- Generic utility with no domain knowledge → `lib/`
+- React island for a page → `islands/<feature>/`
+- Astro component for a page → `components/<feature>/`
+
+**Test convention:** All tests go in `__tests__/` subfolders within their parent directory (e.g., `data/about/__tests__/about-data.test.ts`). Do not colocate test files as siblings.
+
+**Import convention:** Use `@/` absolute imports for cross-directory references (e.g., `@/data/about/about-data`, `@/infra/composition-root.server`). Use relative imports only within the same module (e.g., `../about-data` from `__tests__/`, `./PersonCardReact` from a sibling). This is enforced by ESLint via `no-restricted-imports`.
+
 ## Caveats & Technical Debt
 
 All migration caveats, workarounds, and technical debt are tracked in [`docs/migration-caveats.md`](./docs/migration-caveats.md). **Keep that file updated** whenever you encounter a new issue, caveat, or workaround during any migration phase.

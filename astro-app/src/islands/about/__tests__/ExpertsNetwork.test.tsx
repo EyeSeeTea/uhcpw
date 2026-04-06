@@ -1,9 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import { ExpertsNetwork } from "./ExpertsNetwork";
-import type { PersonState } from "../lib/about-data";
-import type { TreeOption } from "../lib/about-data";
+import { ExpertsNetwork } from "../ExpertsNetwork";
+import type { PersonState } from "@/data/about/about-data";
+import type { TreeOption } from "@/data/about/about-data";
 
 vi.mock("@material-ui/core/styles", () => ({
     MuiThemeProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,

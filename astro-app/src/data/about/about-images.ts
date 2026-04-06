@@ -1,7 +1,7 @@
 import type { D2Api } from "@shared/types/d2-api";
 import type { PersonState } from "./about-data";
 import type { OfficeInfo } from "@shared/domain/entities/about/OfficeInfo";
-import { downloadImages, ImageDownloadOptions, type ImageMap } from "./image-downloader";
+import { downloadImages, ImageDownloadOptions, type ImageMap } from "@/lib/image-downloader";
 const AVATAR_FALLBACK = "/images/avatar-empty.png";
 
 const PERSON_IMAGE_OPTIONS = {

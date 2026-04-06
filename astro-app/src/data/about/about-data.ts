@@ -3,8 +3,8 @@ import type { Country } from "@shared/domain/entities/Country";
 import type { OfficeInfo } from "@shared/domain/entities/about/OfficeInfo";
 import type { GeneralContent } from "@shared/domain/entities/GeneralContent";
 import { KOSOVO, SORTED_COUNTRY_GROUPINGS } from "@shared/data/repositories/countries/CountryD2Repository";
-import { getServerCompositionRoot } from "./composition-root.server";
-import { runFuture } from "./future-bridge";
+import { getServerCompositionRoot } from "@/infra/composition-root.server";
+import { runFuture } from "@/infra/future-bridge";
 
 /** Locally-defined TreeOption to avoid pulling MUI deps at build time. */
 export type TreeOption = {

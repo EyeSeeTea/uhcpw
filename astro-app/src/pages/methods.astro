@@ -1,11 +1,11 @@
 ---
 import { Image } from "astro:assets";
-import Layout from "../layouts/Layout.astro";
-import { getServerCompositionRoot } from "../lib/composition-root.server";
-import { runFuture } from "../lib/future-bridge";
-import { renderMarkdown } from "../lib/markdown";
+import Layout from "@/layouts/Layout.astro";
+import { getServerCompositionRoot } from "@/infra/composition-root.server";
+import { runFuture } from "@/infra/future-bridge";
+import { renderMarkdown } from "@/lib/markdown";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
-import bubblePattern from "../assets/bubble-pattern-white.png";
+import bubblePattern from "@/assets/bubble-pattern-white.png";
 
 const compositionRoot = getServerCompositionRoot();
 

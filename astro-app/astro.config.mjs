@@ -37,7 +37,7 @@ export default defineConfig({
                     if (id === "@dhis2/analytics") return "\0stub:dhis2-analytics";
                     // Wrap cancel fn as nullary for Fluture + XHR backend compat
                     if (id.endsWith("utils/futures") || id.endsWith("utils/futures.ts")) {
-                        return path.resolve(import.meta.dirname, "./src/lib/futures.ts");
+                        return "\0compat:futures";
                     }
                     return null;
                 },
@@ -45,6 +45,7 @@ export default defineConfig({
                     if (id === "\0compat:d2-api") return "export * from '@eyeseetea/d2-api/2.36'; export const getMockApiFromClass = () => () => ({});";
                     if (id === "\0stub:d2-ui-locales") return "export default {};";
                     if (id === "\0stub:dhis2-analytics") return "export const getRelativePeriodsOptionsById = () => ({}); export const WEEKLY = ''; export const DAILY = ''; export class Analytics {} export const layoutGetDimensionItems = () => []; export const DIMENSION_ID_PERIOD = ''; export const WEEKS_THIS_YEAR = ''; export const COLOR_SET_DEFAULT = ''; export const isYearOverYear = () => false;";
+                    if (id === "\0compat:futures") return "import { Future } from '@shared/domain/entities/Future'; export function apiToFuture(res) { return Future.fromComputation((resolve, reject) => { res.getData().then(resolve).catch(err => reject(err ? err.message : 'Unknown error')); return () => res.cancel(); }); }";
                     return null;
                 },
             },

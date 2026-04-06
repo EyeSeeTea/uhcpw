@@ -1,11 +1,11 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import OfficeHeader from "../components/about/OfficeHeader.astro";
-import TeamSection from "../components/about/TeamSection.astro";
-import { ExpertsNetwork } from "../islands/ExpertsNetwork";
-import { getAboutPageData } from "../lib/about-data";
-import { getServerD2Api } from "../lib/composition-root.server";
-import { downloadAboutPersonImages, downloadOfficeImage } from "../lib/about-images";
+import Layout from "@/layouts/Layout.astro";
+import OfficeHeader from "@/components/about/OfficeHeader.astro";
+import TeamSection from "@/components/about/TeamSection.astro";
+import { ExpertsNetwork } from "@/islands/about/ExpertsNetwork";
+import { getAboutPageData } from "@/data/about/about-data";
+import { getServerD2Api } from "@/infra/composition-root.server";
+import { downloadAboutPersonImages, downloadOfficeImage } from "@/data/about/about-images";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
 
 const { team, experts, officeInfo, countryTreeOptions, parentSortOrder, generalContent } =

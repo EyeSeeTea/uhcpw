@@ -1,10 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import Layout from "../layouts/Layout.astro";
+import Layout from "@/layouts/Layout.astro";
 import { defaultSeoConfig } from "@shared/domain/entities/SeoConfig";
-import { getServerCompositionRoot } from "../lib/composition-root.server";
-import { runFuture } from "../lib/future-bridge";
-import bubblePattern from "../assets/bubble-pattern-white.png";
+import { getServerCompositionRoot } from "@/infra/composition-root.server";
+import { runFuture } from "@/infra/future-bridge";
+import bubblePattern from "@/assets/bubble-pattern-white.png";
 
 const compositionRoot = getServerCompositionRoot();
 const generalContent = await runFuture(compositionRoot.general.getContent.execute());
