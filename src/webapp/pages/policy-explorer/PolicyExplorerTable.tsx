@@ -46,6 +46,7 @@ const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
 const MIN_DATA_CELL_WIDTH = 200;
 const FIRST_COLUMN_SPECIAL_INVERTED_WIDTH = 180;
 const CELL_HORIZONTAL_PADDING = 8; // 4px left + 4px right
+const BORDER_SPACING = 3;
 
 export const PolicyExplorerTable = React.memo(
     ({
@@ -80,11 +81,24 @@ export const PolicyExplorerTable = React.memo(
                 if (isSpecialInverted) {
                     const totalColumns = rows?.[0]?.length || 1;
                     const totalPadding = totalColumns * CELL_HORIZONTAL_PADDING;
+                    const totalBorderSpacing = (totalColumns + 1) * BORDER_SPACING;
                     const dataColumns = Math.max(totalColumns - 1, 1);
-                    const availableWidth = Math.max(totalWidth - FIRST_COLUMN_SPECIAL_INVERTED_WIDTH - totalPadding, 0);
+                    const availableWidth = Math.max(
+                        totalWidth - FIRST_COLUMN_SPECIAL_INVERTED_WIDTH - totalPadding - totalBorderSpacing,
+                        0
+                    );
                     const dataColumnWidth = availableWidth / dataColumns;
 
                     return columnIndex === 0 ? FIRST_COLUMN_SPECIAL_INVERTED_WIDTH : dataColumnWidth;
+                }
+
+                if (isSpecialTable && dataOrientation === "normal") {
+                    const totalColumns = rows?.[0]?.length || 1;
+                    const totalPadding = totalColumns * CELL_HORIZONTAL_PADDING;
+                    const totalBorderSpacing = (totalColumns + 1) * BORDER_SPACING;
+                    const availableWidth = Math.max(totalWidth - totalPadding - totalBorderSpacing, 0);
+
+                    return availableWidth / totalColumns;
                 }
 
                 if (dataOrientation === "inverted" && hasMoreThanOneCountry) {
