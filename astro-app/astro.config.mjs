@@ -6,6 +6,12 @@ import path from "node:path";
 // https://astro.build/config
 export default defineConfig({
     integrations: [react()],
+    image: {
+        remotePatterns: [
+            { protocol: "https" },
+            { protocol: "http" },
+        ],
+    },
     vite: {
         plugins: [
             // Compat patches for shared-code transitive dependencies with broken ESM.
@@ -52,6 +58,7 @@ export default defineConfig({
                 "@shared/types": path.resolve(import.meta.dirname, "../src/types"),
                 "@shared/utils": path.resolve(import.meta.dirname, "../src/utils"),
                 "@shared/CompositionRoot": path.resolve(import.meta.dirname, "../src/CompositionRoot"),
+                "@shared/webapp": path.resolve(import.meta.dirname, "../src/webapp"),
             },
         },
     },

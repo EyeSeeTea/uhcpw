@@ -1,7 +1,116 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import OfficeHeader from "../components/about/OfficeHeader.astro";
+import TeamSection from "../components/about/TeamSection.astro";
+import { ExpertsNetwork } from "../islands/ExpertsNetwork";
+import { getAboutPageData } from "../lib/about-data";
+import { getServerD2Api } from "../lib/composition-root.server";
+import { downloadAboutPersonImages, downloadOfficeImage } from "../lib/about-images";
+
+const { team, experts, officeInfo, countryTreeOptions, parentSortOrder, generalContent } =
+    await getAboutPageData();
+
+const api = getServerD2Api();
+
+// Download and optimize images at build time (with DHIS2 auth via D2Api)
+const [{ persons: teamWithImages }, { persons: expertsWithImages }, officeImageLocal] =
+    await Promise.all([
+        downloadAboutPersonImages(api, team),
+        downloadAboutPersonImages(api, experts),
+        downloadOfficeImage(api, officeInfo),
+    ]);
+
+const expertsTitle =
+    generalContent.aboutUs.title || "The Financial Protection Expert Network";
+const expertsSubtitle =
+    generalContent.aboutUs.subtitle ||
+    "Experts working with the WHO Barcelona Office to assess financial protection at country or area level";
 ---
 
 <Layout title="UHC Watch - About">
-    <h1>UHC Watch - About</h1>
+    <div class="title-container">
+        <h3>WHO Barcelona Office for Health Systems Financing</h3>
+    </div>
+
+    <div class="gradient-divider"></div>
+
+    <div class="header-section">
+        <div class="container">
+            <OfficeHeader
+                officeImage={officeImageLocal}
+                officeVideo={officeInfo.officeVideo}
+                officeText={officeInfo.officeText}
+            />
+        </div>
+    </div>
+
+    <section class="people-section" aria-label="Office team">
+        <div class="container">
+            <TeamSection team={teamWithImages} />
+        </div>
+    </section>
+
+    <div class="gradient-divider"></div>
+
+    <section class="experts-section" aria-label="Experts">
+        <div class="container">
+            <ExpertsNetwork
+                client:only="react"
+                experts={expertsWithImages}
+                countryOptions={countryTreeOptions}
+                parentSortOrder={parentSortOrder}
+                title={expertsTitle}
+                subtitle={expertsSubtitle}
+            />
+        </div>
+    </section>
 </Layout>
+
+<style>
+    .title-container {
+        background: var(--gradient-primary-2);
+        color: white;
+        padding: 32px 64px;
+    }
+
+    .title-container h3 {
+        margin: 0;
+        font-weight: 400;
+        font-size: 3rem;
+        line-height: 1.167;
+        letter-spacing: 0;
+    }
+
+    .gradient-divider {
+        background: linear-gradient(90deg, rgb(255, 141, 78) 0%, rgb(255, 223, 190) 100%);
+        height: 20px;
+    }
+
+    .header-section {
+        background: var(--gradient-primary-2);
+        padding-bottom: 64px;
+    }
+
+    .container {
+        max-width: 1920px;
+        margin: 0 auto;
+        overflow: hidden;
+    }
+
+    .people-section {
+        background: white;
+        padding-bottom: 64px;
+    }
+
+    .experts-section {
+        background: white;
+        padding-bottom: 64px;
+        min-height: 400px;
+    }
+
+    @media (max-width: 959px) {
+        .title-container {
+            padding: 32px;
+        }
+    }
+</style>

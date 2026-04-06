@@ -10,10 +10,12 @@ export default defineConfig({
             "@shared/types": path.resolve(import.meta.dirname, "../src/types"),
             "@shared/utils": path.resolve(import.meta.dirname, "../src/utils"),
             "@shared/CompositionRoot": path.resolve(import.meta.dirname, "../src/CompositionRoot"),
+            "@shared/webapp": path.resolve(import.meta.dirname, "../src/webapp"),
         },
     },
     test: {
         environment: "jsdom",
         include: ["src/**/*.test.{ts,tsx}"],
+        setupFiles: ["./src/test-setup.ts"],
     },
 });

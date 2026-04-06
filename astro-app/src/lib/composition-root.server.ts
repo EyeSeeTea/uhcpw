@@ -4,13 +4,18 @@ import { getCompositionRoot } from "@shared/CompositionRoot";
 
 type CompositionRoot = ReturnType<typeof getCompositionRoot>;
 
+let cachedApi: D2Api | undefined;
 let cachedRoot: CompositionRoot | undefined;
 
-export function getServerCompositionRoot(): CompositionRoot {
-    if (cachedRoot) return cachedRoot;
+function stripQuotes(s: string): string {
+    return s.replace(/^['"]|['"]$/g, "");
+}
 
-    const baseUrl = import.meta.env.DHIS2_BASE_URL;
-    const auth = import.meta.env.DHIS2_AUTH;
+function init(): { api: D2Api; compositionRoot: CompositionRoot } {
+    if (cachedApi && cachedRoot) return { api: cachedApi, compositionRoot: cachedRoot };
+
+    const baseUrl = stripQuotes(import.meta.env.DHIS2_BASE_URL ?? "");
+    const auth = stripQuotes(import.meta.env.DHIS2_AUTH ?? "");
 
     const missing = [!baseUrl && "DHIS2_BASE_URL", !auth && "DHIS2_AUTH"].filter(Boolean);
 
@@ -24,8 +29,16 @@ export function getServerCompositionRoot(): CompositionRoot {
     }
 
     const instance = new Instance({ url: baseUrl, username, password });
-    const api = new D2Api({ baseUrl, auth: { username, password }, backend: "xhr" });
+    cachedApi = new D2Api({ baseUrl, auth: { username, password }, backend: "xhr" });
+    cachedRoot = getCompositionRoot(cachedApi, null as unknown, instance);
 
-    cachedRoot = getCompositionRoot(api, null as unknown, instance);
-    return cachedRoot;
+    return { api: cachedApi, compositionRoot: cachedRoot };
+}
+
+export function getServerCompositionRoot(): CompositionRoot {
+    return init().compositionRoot;
+}
+
+export function getServerD2Api(): D2Api {
+    return init().api;
 }

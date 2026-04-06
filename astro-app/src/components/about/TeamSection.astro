@@ -1,0 +1,87 @@
+---
+import type { PersonState } from "../../lib/about-data";
+import PersonCard from "./PersonCard.astro";
+
+interface Props {
+    team: PersonState[];
+}
+
+const { team } = Astro.props;
+---
+
+<section class="team-section" aria-label="Office team">
+    <div class="title-container">
+        <h3 class="title">The WHO Barcelona Office team</h3>
+        <h5 class="subtitle">Staff and consultants</h5>
+    </div>
+
+    <div class="team-grid" role="list">
+        {team.map((member) => (
+            <div class="team-item" role="listitem">
+                <PersonCard
+                    person={member}
+                    isExpert={false}
+                />
+            </div>
+        ))}
+    </div>
+</section>
+
+<style>
+    .team-section {
+        background: var(--color-white);
+        padding-bottom: 64px;
+    }
+
+    .title-container {
+        padding: 64px 32px 16px 32px;
+    }
+
+    .title {
+        margin: 0;
+        font-weight: 500;
+        font-family: var(--font-family-base);
+        font-size: 3rem;
+        line-height: 1.167;
+    }
+
+    .subtitle {
+        margin: 10px 0 0 0;
+        color: rgba(36, 38, 38, 0.7);
+        font-weight: 400;
+        font-family: var(--font-family-base);
+        font-size: 1.5rem;
+        line-height: 1.334;
+    }
+
+    /* Matches MUI Grid container spacing={6} with md (auto flex-grow) items */
+    .team-grid {
+        display: flex;
+        flex-wrap: wrap;
+        margin: -24px;
+        padding: 0 32px;
+    }
+
+    .team-item {
+        flex-grow: 1;
+        flex-basis: 0;
+        max-width: 100%;
+        padding: 24px;
+    }
+
+    @media (max-width: 959px) {
+        .title-container {
+            padding: 32px 32px 16px 32px;
+        }
+
+        .subtitle {
+            max-width: 100%;
+        }
+
+        .team-item {
+            flex-grow: 0;
+            flex-basis: 50%;
+            max-width: 50%;
+        }
+    }
+</style>

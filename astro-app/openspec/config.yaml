@@ -72,11 +72,11 @@ rules:
     - "Boy Scout Rule: leave every file you touch cleaner than you found it."
 
   proposal:
-    - "Must include: Goals, Non-goals, User impact, Compatibility, and Rollback plan.""
+    - "Must include: Goals, Non-goals, User impact, Compatibility, and Rollback plan."
     - If changing public interfaces, explicitly list old vs new.
 
   design:
-    - "Must describe: data flow through the architecture layers.""
+    - "Must describe: data flow through the architecture layers."
     - Note known constraints when relevant.
     - "UI design gate: when a change includes user-facing UI, the design phase MUST produce wireframes or mockups in Pencil (.pen files) before implementation begins. Designs are stored in openspec/designs/ and exported to openspec/designs/exports/."
 

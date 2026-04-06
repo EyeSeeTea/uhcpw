@@ -28,4 +28,6 @@ screenshots/
 
 # AI related settings
 .claude/settings.local.json
-.playwright-cli/
+.playwright-cli
+# Build-time downloaded images
+/public/images/about/
