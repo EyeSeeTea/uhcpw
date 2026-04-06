@@ -1,5 +1,8 @@
 import React, { useCallback, useState } from "react";
-import { AVATAR_FALLBACK } from "@/data/about/about-data";
+
+// TODO: review - This causes a circular dependency error
+// import { AVATAR_FALLBACK } from "@/data/about/about-data";
+const AVATAR_FALLBACK = "/images/avatar-empty.png";
 
 export interface PersonCardReactProps {
     person: {
