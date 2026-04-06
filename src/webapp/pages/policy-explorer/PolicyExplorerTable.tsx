@@ -188,11 +188,11 @@ export const PolicyExplorerTable = React.memo(
 
         const tableContainerRef = React.useRef<HTMLDivElement>(null);
 
-        // Add the double scroll bar effect when the component mounts
+        // Add the double scroll bar effect when the component mounts or layout changes
         useEffect(() => {
             doubleScroll(tableContainerRef.current);
             // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [tableContainerRef, dataOrientation]);
+        }, [tableContainerRef, dataOrientation, width]);
 
         useEffect(() => {
             return stickyHeader(tableContainerRef.current);
