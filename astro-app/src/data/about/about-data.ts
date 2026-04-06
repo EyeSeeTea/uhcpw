@@ -55,9 +55,7 @@ export function sortExperts(experts: ReadonlyArray<PersonState>): ReadonlyArray<
     });
 }
 
-export function buildCountryTreeOptions(
-    countries: ReadonlyArray<Country>
-): ReadonlyArray<TreeOption> {
+export function buildCountryTreeOptions(countries: ReadonlyArray<Country>): ReadonlyArray<TreeOption> {
     return countries.map(country => ({
         id: country.id,
         name: country.name,

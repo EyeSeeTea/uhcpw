@@ -116,9 +116,7 @@ export async function downloadImages(
     urls: ReadonlyArray<string>,
     options: ImageDownloadOptions
 ): Promise<ImageMap> {
-    const uniqueUrls = [...new Set(
-        urls.filter((u): u is string => typeof u === "string" && u.length > 0)
-    )];
+    const uniqueUrls = [...new Set(urls.filter((u): u is string => typeof u === "string" && u.length > 0))];
 
     const results = await Promise.allSettled(
         uniqueUrls.map(async url => ({

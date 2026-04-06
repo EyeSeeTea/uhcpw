@@ -1,11 +1,5 @@
 import { describe, it, expect } from "vitest";
-import {
-    mapPersonsWithCountry,
-    sortTeam,
-    sortExperts,
-    buildCountryTreeOptions,
-    ALL_NODE_ID,
-} from "../about-data";
+import { mapPersonsWithCountry, sortTeam, sortExperts, buildCountryTreeOptions, ALL_NODE_ID } from "../about-data";
 import type { Person } from "@shared/domain/entities/Person";
 import type { Country } from "@shared/domain/entities/Country";
 
@@ -193,8 +187,6 @@ describe("buildCountryTreeOptions", () => {
 
         const result = buildCountryTreeOptions(countries);
 
-        expect(result[0]?.parents).toEqual([
-            { id: ALL_NODE_ID, name: "All countries and areas" },
-        ]);
+        expect(result[0]?.parents).toEqual([{ id: ALL_NODE_ID, name: "All countries and areas" }]);
     });
 });

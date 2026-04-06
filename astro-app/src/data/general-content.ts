@@ -9,15 +9,9 @@ export interface ResolvedUrls {
     readonly glossaryUrl: string | undefined;
 }
 
-export function resolveGeneralContentUrls(
-    generalContent: GeneralContent | undefined
-): ResolvedUrls {
+export function resolveGeneralContentUrls(generalContent: GeneralContent | undefined): ResolvedUrls {
     return {
-        abbreviationsUrl: normalizeUrl(
-            generalContent?.abbreviations.url ?? FALLBACK_ABBREVIATIONS_URL
-        ),
-        glossaryUrl: normalizeUrl(
-            generalContent?.glossary.url ?? FALLBACK_GLOSSARY_URL
-        ),
+        abbreviationsUrl: normalizeUrl(generalContent?.abbreviations.url ?? FALLBACK_ABBREVIATIONS_URL),
+        glossaryUrl: normalizeUrl(generalContent?.glossary.url ?? FALLBACK_GLOSSARY_URL),
     };
 }

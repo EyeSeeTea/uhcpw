@@ -23,9 +23,7 @@ export const PersonCardReact: React.FC<PersonCardReactProps> = React.memo(({ per
     }, []);
 
     const positionLines = person.position.replace(/\\n/g, "\n").split("\n");
-    const institutionLines = person.institution
-        ? person.institution.replace(/\\n/g, "\n").split("\n")
-        : [];
+    const institutionLines = person.institution ? person.institution.replace(/\\n/g, "\n").split("\n") : [];
 
     return (
         <div className="person-card" role="listitem">
