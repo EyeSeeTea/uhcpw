@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import { MuiThemeProvider } from "@material-ui/core/styles";
-// @ts-expect-error — legacy MUI v0 import (no types)
 import OldMuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import { muiTheme } from "@shared/webapp/pages/app/themes/dhis2.theme";
 import muiThemeLegacy from "@shared/webapp/pages/app/themes/dhis2-legacy.theme";
@@ -11,9 +10,9 @@ import type { TreeOption } from "../lib/about-data";
 import type { PersonState } from "../lib/about-data";
 
 export interface ExpertsNetworkProps {
-    experts: PersonState[];
-    countryOptions: TreeOption[];
-    parentSortOrder: string[];
+    experts: readonly PersonState[];
+    countryOptions: readonly TreeOption[];
+    parentSortOrder: readonly string[];
     title: string;
     subtitle: string;
 }
@@ -58,7 +57,7 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = ({
                     hasSelectAll
                     hasClearAll
                     topClearAll={-35}
-                    items={countryOptions}
+                    items={countryOptions as TreeOption[]}
                     selectedIds={selectedCountries}
                     onSelectedIdsChange={setSelectedCountries}
                     placeholder="Select country or area"

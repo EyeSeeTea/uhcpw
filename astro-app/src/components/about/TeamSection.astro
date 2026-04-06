@@ -3,7 +3,7 @@ import type { PersonState } from "../../lib/about-data";
 import PersonCard from "./PersonCard.astro";
 
 interface Props {
-    team: PersonState[];
+    team: readonly PersonState[];
 }
 
 const { team } = Astro.props;

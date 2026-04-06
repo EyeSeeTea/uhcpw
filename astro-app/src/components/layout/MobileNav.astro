@@ -135,7 +135,7 @@ const navItems = [
 </style>
 
 <script>
-    const nav = document.getElementById("mobile-nav");
+    const nav = document.getElementById("mobile-nav") as HTMLDetailsElement | null;
     if (nav) {
         document.addEventListener("click", (e) => {
             if (nav.open && !nav.contains(e.target as Node)) {
