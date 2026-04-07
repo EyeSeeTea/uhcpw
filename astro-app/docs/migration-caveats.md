@@ -89,3 +89,27 @@ The shared `getCompositionRoot()` instantiates every repository in the applicati
 - Lazy-load repositories in the shared `CompositionRoot` (breaks eagerness but fixes transitive dep issues)
 - Create a minimal `getServerCompositionRoot()` in the shared code that only instantiates server-relevant repositories
 - Accept the current Vite plugin approach as pragmatic for the migration period
+
+---
+
+## Phase 4: About Page — React Islands with Material-UI
+
+### Material-UI providers crash Astro SSR at module-load time
+
+**Files:** `src/islands/about/ExpertsNetwork.tsx`, `src/islands/about/ExpertsNetworkSelector.tsx`
+
+The shared `TreeSelector` component depends on two layered Material-UI providers — `@material-ui/core` (`MuiThemeProvider`) and the legacy `material-ui` v0 (`OldMuiThemeProvider`). Importing these at module top-level inside a React island used by an SSR'd Astro page crashes the prerender step:
+
+```
+Error [ERR_UNSUPPORTED_DIR_IMPORT]: Directory import
+'/node_modules/@material-ui/core/styles' is not supported resolving ES modules
+Did you mean to import "@material-ui/core/styles/index.js"?
+```
+
+The crash is **import-time, not render-time**: Node's ESM loader fails while resolving the directory import, before any JSX is evaluated. Gating the providers behind a `useState` + `useEffect` flag is **not enough** — the imports themselves are evaluated when the island chunk is loaded by the prerender process.
+
+**Workaround:** put the providers + `TreeSelector` subtree in their own module (`ExpertsNetworkSelector.tsx`) and load it via dynamic `import("./ExpertsNetworkSelector")` inside `useEffect`. The dynamic import is only evaluated client-side, so the MUI imports never enter the SSR module graph. Render an `aria-hidden` placeholder until the dynamic import resolves, sized to match the hydrated selector to minimize CLS.
+
+This pattern lets the rest of the island (title, subtitle, experts grid) render with `client:load` and produce real static HTML at build time, instead of falling back to `client:only="react"`.
+
+**Resolution:** None upstream — the legacy `material-ui` v0 package is unmaintained and uses CJS-style directory imports that conflict with strict ESM resolution. Long-term: replace `TreeSelector` with a lightweight alternative that doesn't depend on MUI v0. Any future island that wraps a shared MUI-based component should follow the same dynamic-import-in-`useEffect` pattern.

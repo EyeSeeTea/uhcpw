@@ -1,13 +1,8 @@
-import React, { useState, useMemo } from "react";
-import { MuiThemeProvider } from "@material-ui/core/styles";
-import OldMuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import { muiTheme } from "@shared/webapp/pages/app/themes/dhis2.theme";
-import muiThemeLegacy from "@shared/webapp/pages/app/themes/dhis2-legacy.theme";
-import { TreeSelector } from "@shared/webapp/components/tree-selector/TreeSelector";
+import React, { useState, useMemo, useEffect } from "react";
 import { PersonCardReact } from "./PersonCardReact";
+import type { ExpertsNetworkSelectorProps } from "./ExpertsNetworkSelector";
 
-import type { TreeOption } from "@/data/about/about-data";
-import type { PersonState } from "@/data/about/about-data";
+import type { PersonState, TreeOption } from "@/data/about/about-data";
 
 export interface ExpertsNetworkProps {
     experts: readonly PersonState[];
@@ -17,6 +12,18 @@ export interface ExpertsNetworkProps {
     subtitle: string;
 }
 
+type SelectorComponent = React.ComponentType<ExpertsNetworkSelectorProps>;
+
+/**
+ * SSR-safe experts network island.
+ *
+ * The title, subtitle and experts grid render on both server and client so the
+ * static HTML emitted by `astro build` contains real content. The Material-UI
+ * providers and `TreeSelector` live in `ExpertsNetworkSelector.tsx`, which is
+ * loaded via dynamic `import()` only after mount — this keeps the legacy MUI v0
+ * imports out of Astro's SSR module graph (they fail with ERR_UNSUPPORTED_DIR_IMPORT
+ * during prerender).
+ */
 export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = ({
     experts,
     countryOptions,
@@ -25,6 +32,25 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = ({
     subtitle,
 }) => {
     const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+    const [Selector, setSelector] = useState<SelectorComponent | null>(null);
+
+    useEffect(() => {
+        let cancelled = false;
+        import("./ExpertsNetworkSelector")
+            .then(mod => {
+                if (!cancelled) {
+                    // setState with a function would invoke the function as an updater;
+                    // wrap in an arrow to store the component itself.
+                    setSelector(() => mod.ExpertsNetworkSelector);
+                }
+            })
+            .catch(error => {
+                console.error("Failed to load ExpertsNetworkSelector chunk", error);
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, []);
 
     const parentSort = useMemo(
         () => (a: string, b: string) => parentSortOrder.indexOf(a) - parentSortOrder.indexOf(b),
@@ -37,39 +63,31 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = ({
     }, [experts, selectedCountries]);
 
     return (
-        <MuiThemeProvider theme={muiTheme}>
-            <OldMuiThemeProvider muiTheme={muiThemeLegacy}>
-                <section>
-                    <div className="experts-title-container">
-                        <h3 className="experts-title">{title}</h3>
-                        <h5 className="experts-subtitle">{subtitle}</h5>
-                    </div>
+        <section>
+            <div className="experts-title-container">
+                <h3 className="experts-title">{title}</h3>
+                <h5 className="experts-subtitle">{subtitle}</h5>
+            </div>
 
-                    <div className="experts-selector-row">
-                        {/* @ts-expect-error TS2786: TreeSelector's React 17 FC return type (ReactElement) is not assignable to React 18's ReactNode */}
-                        <TreeSelector
-                            hasSelectAll
-                            hasClearAll
-                            topClearAll={-35}
-                            items={countryOptions as TreeOption[]}
-                            selectedIds={selectedCountries}
-                            onSelectedIdsChange={setSelectedCountries}
-                            placeholder="Select country or area"
-                            showParentIfChecked={true}
-                            showOnlyAllParentSelectedIfChecked={true}
-                            allSelectedLabel="All countries/areas"
-                            parentSort={parentSort}
-                        />
-                    </div>
+            <div className="experts-selector-row">
+                {Selector ? (
+                    <Selector
+                        countryOptions={countryOptions}
+                        selectedCountries={selectedCountries}
+                        onSelectedCountriesChange={setSelectedCountries}
+                        parentSort={parentSort}
+                    />
+                ) : (
+                    <div className="experts-selector-placeholder" aria-hidden="true" />
+                )}
+            </div>
 
-                    <div className="experts-grid" role="list" aria-label="Experts network">
-                        {filteredExperts.map((expert, index) => (
-                            <PersonCardReact key={`${expert.firstName}-${expert.lastName}-${index}`} person={expert} />
-                        ))}
-                    </div>
-                </section>
-            </OldMuiThemeProvider>
-        </MuiThemeProvider>
+            <div className="experts-grid" role="list" aria-label="Experts network">
+                {filteredExperts.map((expert, index) => (
+                    <PersonCardReact key={`${expert.firstName}-${expert.lastName}-${index}`} person={expert} />
+                ))}
+            </div>
+        </section>
     );
 };
 
