@@ -10,12 +10,25 @@ declare global {
     }
 }
 
+export interface GoogleAnalyticsRepositoryOptions {
+    /**
+     * When true, skip the initial `gtag('config', ...)` call that the repository
+     * would normally issue on first construction. Useful when the host app has
+     * already emitted its own `config` call (e.g., from a server-rendered layout
+     * snippet in an MPA) and does not want the repository to override it with
+     * `send_page_view: false`.
+     */
+    skipInitialConfig?: boolean;
+}
+
 /* Set accessToConsole key in localStorage to see debug logs */
 export class GoogleAnalyticsRepository implements AnalyticsRepository {
     private analytics?: Analytics;
 
+    constructor(private options: GoogleAnalyticsRepositoryOptions = {}) {}
+
     send(event: AnalyticsEvent) {
-        if (!this.analytics) this.analytics = new Analytics();
+        if (!this.analytics) this.analytics = new Analytics(this.options);
         this.analytics.sendAnalytics(event);
     }
 }
@@ -25,13 +38,13 @@ class Analytics {
     queue: AnalyticsEvent[] = [];
     accessToConsole = false;
 
-    constructor() {
+    constructor(private options: GoogleAnalyticsRepositoryOptions) {
         this.accessToConsole = localStorage.getItem("accessToConsole") === "true";
 
         if (!window.gtag) this.intialize().then(() => this.queue.forEach(e => this.sendAnalytics(e)));
         else {
             this.initialized = true;
-            this.setAnalyticsConfig();
+            if (!this.options.skipInitialConfig) this.setAnalyticsConfig();
         }
     }
 
@@ -83,7 +96,7 @@ class Analytics {
             script.onload = () => {
                 if (this.accessToConsole) console.debug("GA4: script loaded");
                 window.gtag("js", new Date());
-                this.setAnalyticsConfig();
+                if (!this.options.skipInitialConfig) this.setAnalyticsConfig();
                 this.initialized = true;
                 resolve();
             };
