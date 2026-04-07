@@ -1,7 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import type { NavItem } from "@/data/navigation";
 import DesktopNav from "./DesktopNav.astro";
 import MobileNav from "./MobileNav.astro";
+import whoLogoBlue from "@/assets/layout/who-logo-blue.png";
+import uhcwHomeLogo from "@/assets/layout/uhcw-home-logo.png";
 
 interface Props {
     abbreviationsUrl?: string;
@@ -31,10 +34,27 @@ const isHomePage = Astro.url.pathname === "/";
         <div class="toolbar-bottom-content">
             <div class="logo-group">
                 <a href="/" class="logo-link">
-                    <img src="/images/who-logo-blue.png" alt="WHO logo" class="who-logo" />
+                    <Image
+                        src={whoLogoBlue}
+                        alt="WHO logo"
+                        class="who-logo"
+                        widths={[100, 150, 200, 300]}
+                        sizes="(max-width: 600px) 100px, 150px"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
                 </a>
                 <a href="/" class="logo-link">
-                    <img src="/images/uhcw-home-logo.png" alt="UHC watch logo to go home" class="uhc-logo" />
+                    <Image
+                        src={uhcwHomeLogo}
+                        alt="UHC watch logo to go home"
+                        class="uhc-logo"
+                        widths={[130, 180, 260, 360]}
+                        sizes="(max-width: 600px) 130px, 180px"
+                        loading="eager"
+                        decoding="async"
+                    />
                 </a>
             </div>
 

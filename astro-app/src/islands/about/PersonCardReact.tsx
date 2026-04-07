@@ -32,6 +32,10 @@ export const PersonCardReact: React.FC<PersonCardReactProps> = React.memo(({ per
                     className="person-card-image"
                     src={imgSrc}
                     alt={`${person.firstName} ${person.lastName}`}
+                    width={200}
+                    height={200}
+                    loading="lazy"
+                    decoding="async"
                     onError={handleImageError}
                 />
                 <div className="person-card-row">

@@ -29,6 +29,16 @@ describe("PersonCardReact", () => {
         expect(img).toHaveAttribute("src", "https://example.com/photo.jpg");
     });
 
+    it("declares intrinsic dimensions and lazy loading on the avatar", () => {
+        render(<PersonCardReact person={basePerson} />);
+
+        const img = screen.getByRole("img", { name: "Jane Doe" });
+        expect(img).toHaveAttribute("width", "200");
+        expect(img).toHaveAttribute("height", "200");
+        expect(img).toHaveAttribute("loading", "lazy");
+        expect(img).toHaveAttribute("decoding", "async");
+    });
+
     it("sets role listitem on the container", () => {
         render(<PersonCardReact person={basePerson} />);
         expect(screen.getByRole("listitem")).toBeInTheDocument();

@@ -17,7 +17,7 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
 const api = getServerD2Api();
 
 // Download and optimize images at build time (with DHIS2 auth via D2Api)
-const [{ persons: teamWithImages }, { persons: expertsWithImages }, officeImageLocal] =
+const [{ persons: teamWithImages }, { persons: expertsWithImages }, officeImage] =
     await Promise.all([
         downloadAboutPersonImages(api, team),
         downloadAboutPersonImages(api, experts),
@@ -41,7 +41,9 @@ const expertsSubtitle =
     <div class="header-section">
         <div class="container">
             <OfficeHeader
-                officeImage={officeImageLocal}
+                officeImage={officeImage.src}
+                officeImageWidth={officeImage.width}
+                officeImageHeight={officeImage.height}
                 officeVideo={officeInfo.officeVideo}
                 officeText={officeInfo.officeText}
             />

@@ -3,11 +3,13 @@ import { renderMarkdown } from "@/lib/markdown";
 
 interface Props {
     officeImage: string;
+    officeImageWidth: number;
+    officeImageHeight: number;
     officeVideo: string;
     officeText: string;
 }
 
-const { officeImage, officeVideo, officeText } = Astro.props;
+const { officeImage, officeImageWidth, officeImageHeight, officeVideo, officeText } = Astro.props;
 
 const textHtml = renderMarkdown(officeText);
 ---
@@ -20,7 +22,11 @@ const textHtml = renderMarkdown(officeText);
                     src={officeImage}
                     alt="WHO Barcelona Office"
                     class="office-image"
-                    loading="lazy"
+                    width={officeImageWidth}
+                    height={officeImageHeight}
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
                 />
             </a>
             <p class="caption">WHO Barcelona Office for Health Systems Financing</p>
