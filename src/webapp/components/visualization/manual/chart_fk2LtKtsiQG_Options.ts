@@ -26,6 +26,7 @@ export const chart_fk2LtKtsiQG_Options: (chartSource: ChartSource) => Highcharts
         seriesColors,
         currentSerieColor: currentRegion ? getColorOfRegionByRegionId(currentRegion.id) : "#c00000",
         useRegionColors: true,
+        hideYear: true,
     });
 
     return {
