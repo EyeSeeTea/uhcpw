@@ -49,9 +49,6 @@ export const chart_AQ8dYmv00zb_Options: (chartSource: ChartSource) => Highcharts
 
     return {
         ...chartOptions,
-        chart: {
-            ...chartOptions.chart,
-        },
         series,
         yAxis: {
             title: {

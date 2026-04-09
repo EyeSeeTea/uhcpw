@@ -42,9 +42,6 @@ export const chart_eibYs7QySNk_Options: (chartSource: ChartSource) => Highcharts
 
     return {
         ...chartOptions,
-        chart: {
-            ...chartOptions.chart,
-        },
         series,
     };
 };
