@@ -1,3 +1,4 @@
+import { topLegend } from "../customization/legends/topLegend";
 import { ChartSource } from "./chartOptions";
 import { comparativeGroupedColumnChartOptions } from "./generic/comparativeGroupedColumnChartOptions";
 
@@ -12,10 +13,15 @@ const seriesColors: Record<string, string> = {
 };
 
 export const chart_wFITZgQ3udq_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    return comparativeGroupedColumnChartOptions({
+    const chartOptions = comparativeGroupedColumnChartOptions({
         chartSource: chartSource,
         seriesNames: seriesNames,
         seriesColors: seriesColors,
         orderByValueInSerie: "q264eA2maJQ",
     });
+
+    return {
+        ...chartOptions,
+        legend: topLegend,
+    };
 };

@@ -3,6 +3,7 @@ import { comparativeGroupedColumnChartOptions } from "./generic/comparativeGroup
 import { REGION_CODES } from "../../../../domain/entities/region/Region";
 import Highcharts, { SeriesColumnOptions } from "highcharts";
 import { overrideDataSeriesColorAndUpdateLegends } from "../customization/charts/utils/overrideDataSeriesColorAndUpdateLegends";
+import { topLegend } from "../customization/legends/topLegend";
 
 const seriesNames: Record<string, string> = {
     "2014": "2014",
@@ -42,9 +43,7 @@ export const chart_eibYs7QySNk_Options: (chartSource: ChartSource) => Highcharts
 
     return {
         ...chartOptions,
-        chart: {
-            ...chartOptions.chart,
-        },
+        legend: topLegend,
         series,
     };
 };
