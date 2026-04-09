@@ -1,3 +1,9 @@
+import { REGION_CODES } from "../../../../domain/entities/region/Region";
+import { SeriesColumnOptions } from "highcharts";
+import {
+    ColorOverrides,
+    overrideDataSeriesColorAndUpdateLegends,
+} from "../customization/charts/utils/overrideDataSeriesColorAndUpdateLegends";
 import { ChartSource } from "./chartOptions";
 import { comparativeGroupedColumnChartOptions } from "./generic/comparativeGroupedColumnChartOptions";
 
@@ -11,11 +17,33 @@ const seriesColors: Record<string, string> = {
     fWXNjoVI44u: "#2f5597",
 };
 
+const dataSeriesColors: ColorOverrides = {
+    q264eA2maJQ: {
+        [REGION_CODES.EUROPEAN_UNION]: "#FFD073",
+    },
+    fWXNjoVI44u: {
+        [REGION_CODES.EUROPEAN_UNION]: "#FF8739",
+    },
+};
+
 export const chart_wFITZgQ3udq_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
-    return comparativeGroupedColumnChartOptions({
+    const chartOptions = comparativeGroupedColumnChartOptions({
         chartSource: chartSource,
         seriesNames: seriesNames,
         seriesColors: seriesColors,
         orderByValueInSerie: "q264eA2maJQ",
     });
+
+    const { series } = overrideDataSeriesColorAndUpdateLegends(
+        chartOptions.series as SeriesColumnOptions[],
+        dataSeriesColors
+    );
+
+    return {
+        ...chartOptions,
+        chart: {
+            ...chartOptions.chart,
+        },
+        series,
+    };
 };
