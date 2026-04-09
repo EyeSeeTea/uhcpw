@@ -4,6 +4,7 @@ import {
     ColorOverrides,
     overrideDataSeriesColorAndUpdateLegends,
 } from "../customization/charts/utils/overrideDataSeriesColorAndUpdateLegends";
+import { topLegend } from "../customization/legends/topLegend";
 import { ChartSource } from "./chartOptions";
 import { comparativeGroupedColumnChartOptions } from "./generic/comparativeGroupedColumnChartOptions";
 
@@ -41,6 +42,7 @@ export const chart_wFITZgQ3udq_Options: (chartSource: ChartSource) => Highcharts
 
     return {
         ...chartOptions,
+        legend: topLegend,
         series,
     };
 };

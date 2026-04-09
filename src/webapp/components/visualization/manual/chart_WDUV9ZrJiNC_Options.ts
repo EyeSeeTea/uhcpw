@@ -4,7 +4,7 @@ import _ from "lodash";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { getMaxYAxisAndYTickInterval } from "./utils/getMaxYAxisAndYTickInterval";
 import { baseChartOptions } from "./generic/baseChartOptions";
-import { baseLegend } from "../customization/legends/baseLegend";
+import { topLegend } from "../customization/legends/topLegend";
 import { setYAxisMaxAxisAndTickIntervalWhenLegendItemClick } from "../utils/getMaxAxisAndTickInterval";
 import { ORG_UNIT_GROUP_IDS } from "../../../../domain/entities/region/Region";
 import { getOrgUnitKey } from "./utils/getOrgUnitKey";
@@ -124,7 +124,7 @@ export const chart_WDUV9ZrJiNC_Options: (chartSource: ChartSource) => Highcharts
             max: adjustedMaxYAxis,
             tickInterval: yTickInterval,
         },
-        legend: baseLegend,
+        legend: topLegend,
         series,
         plotOptions: {
             column: {
