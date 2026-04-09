@@ -26,6 +26,7 @@ type useTreeSelectorParams = {
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
     parentSort?: (a: string, b: string) => number;
+    closeOnSelect?: boolean;
 };
 
 type useTreeSelectorState = {
@@ -93,6 +94,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         defaultExpanded = EMPTY_IDS_ARRAY,
         selectedItemsToShowWhenAllSelected = EMPTY_IDS_ARRAY,
         parentSort = (_a: string, _b: string) => 0,
+        closeOnSelect = false,
     } = params;
 
     const isSmallScreen = useMediaQuery("(max-width:700px)");
@@ -181,6 +183,10 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
                 if (onSelectedIdsChange) {
                     onSelectedIdsChange(selection);
                 }
+
+                if (closeOnSelect || maxSelection === 1) {
+                    handleClose();
+                }
             } else {
                 const isParent = items.find(item => item.parents.some(parent => parent.id === nodeId));
 
@@ -207,6 +213,9 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         [
             selectedIds,
             onSelectedIdsChange,
+            closeOnSelect,
+            handleClose,
+            maxSelection,
             items,
             showOnlyAllParentSelectedIfChecked,
             selectedItemsToShowWhenAllSelected,
