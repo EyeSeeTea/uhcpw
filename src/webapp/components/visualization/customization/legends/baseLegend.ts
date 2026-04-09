@@ -5,7 +5,6 @@ export const baseLegend = {
     align: "right",
     verticalAlign: "middle",
     layout: "vertical",
-    alignTo: "plotBox",
     itemMarginTop: 10,
     itemMarginBottom: 10,
     itemStyle: {
