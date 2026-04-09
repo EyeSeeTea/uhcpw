@@ -26,6 +26,7 @@ type useTreeSelectorParams = {
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
     parentSort?: (a: string, b: string) => number;
+    closeOnSelect?: boolean;
 };
 
 type useTreeSelectorState = {
@@ -68,6 +69,14 @@ type useTreeSelectorState = {
 export const ALL_NODE_ID = "all";
 const EMPTY_IDS_ARRAY: string[] = [];
 
+function removeDiacritics(text: string): string {
+    return text
+        .trim()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu, "")
+        .toLowerCase();
+}
+
 export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorState => {
     const {
         items,
@@ -85,6 +94,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         defaultExpanded = EMPTY_IDS_ARRAY,
         selectedItemsToShowWhenAllSelected = EMPTY_IDS_ARRAY,
         parentSort = (_a: string, _b: string) => 0,
+        closeOnSelect = false,
     } = params;
 
     const isSmallScreen = useMediaQuery("(max-width:700px)");
@@ -113,12 +123,13 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
 
     const filteredItemsBySearch: TreeOption[] = useMemo(() => {
         return items.reduce((acc: TreeOption[], item) => {
+            const normalizedSearch = removeDiacritics(searchTerm);
             const filteredItemChildren =
                 item.children?.length && showSubChildren
-                    ? item.children?.filter(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                    ? item.children?.filter(item => removeDiacritics(item.name).includes(normalizedSearch))
                     : undefined;
 
-            if (item.name.toLowerCase().includes(searchTerm.toLowerCase()) || filteredItemChildren?.length) {
+            if (removeDiacritics(item.name).includes(normalizedSearch) || filteredItemChildren?.length) {
                 // When searching the Federation of Bosnia and Herzegovina return also the Republika Srpska
                 const itemChildren =
                     item.id === BOSNIA_AND_HERZEGOVINA_LEVEL_4 &&
@@ -172,6 +183,10 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
                 if (onSelectedIdsChange) {
                     onSelectedIdsChange(selection);
                 }
+
+                if (closeOnSelect || maxSelection === 1) {
+                    handleClose();
+                }
             } else {
                 const isParent = items.find(item => item.parents.some(parent => parent.id === nodeId));
 
@@ -198,6 +213,9 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         [
             selectedIds,
             onSelectedIdsChange,
+            closeOnSelect,
+            handleClose,
+            maxSelection,
             items,
             showOnlyAllParentSelectedIfChecked,
             selectedItemsToShowWhenAllSelected,
@@ -217,7 +235,8 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         (term: string) => {
             if (term) {
                 const parentsToExpand: string[] = [];
-                const filterItems = items.filter(item => item.name.toLowerCase().includes(term.toLowerCase()));
+                const normalizedTerm = removeDiacritics(term);
+                const filterItems = items.filter(item => removeDiacritics(item.name).includes(normalizedTerm));
                 const filterParents = _.uniqBy(filterItems.map(item => item.parents).flat(), "id");
                 filterParents.forEach(({ id }) => {
                     const finalChildren = filterItems.filter(item => item.parents.some(parent => parent.id === id));
