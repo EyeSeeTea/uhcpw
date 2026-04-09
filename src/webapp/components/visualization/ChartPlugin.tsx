@@ -12,6 +12,7 @@ import { filterEmptyYearsInSeries, getCategories, getSeriesChart } from "./utils
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
 import { Region } from "../../../domain/entities/region/Region";
+import { withLegendAlignment } from "./customization/legends/alignLegendToPlotArea";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -126,7 +127,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             const newOptions = {
                 chart: {
                     ...originalChartOptions.chart,
-                    events: customizedOptions?.chart?.events ? { ...customizedOptions?.chart?.events } : undefined,
+                    events: withLegendAlignment(customizedOptions?.chart?.events),
                     renderTo: undefined,
                 },
 
@@ -234,6 +235,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 ...externalchartOptions,
                 chart: {
                     ...externalchartOptions?.chart,
+                    events: withLegendAlignment(externalchartOptions?.chart?.events),
                     height: isMobile ? undefined : externalchartOptions?.chart?.height,
                 },
             });
