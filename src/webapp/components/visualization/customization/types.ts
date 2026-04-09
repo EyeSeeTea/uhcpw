@@ -52,6 +52,7 @@ export type LegendCustomization = {
     align?: "center" | "left" | "right";
     verticalAlign?: "bottom" | "middle" | "top";
     layout?: "horizontal" | "proximate" | "vertical";
+    alignTo?: "plotBox" | "spacingBox";
     reversed?: boolean;
     itemMarginTop?: number;
     itemStyle?: CSSProperties;
