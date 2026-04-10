@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import type { NavItem } from "@/data/navigation";
+import type { RegionalDisclaimer } from "@/data/general-content";
 import DesktopNav from "./DesktopNav.astro";
 import MobileNav from "./MobileNav.astro";
 import whoLogoBlue from "@/assets/layout/who-logo-blue.png";
@@ -10,9 +11,10 @@ interface Props {
     abbreviationsUrl?: string;
     glossaryUrl?: string;
     navItems: readonly NavItem[];
+    regionalDisclaimer?: RegionalDisclaimer;
 }
 
-const { abbreviationsUrl, glossaryUrl, navItems } = Astro.props;
+const { abbreviationsUrl, glossaryUrl, navItems, regionalDisclaimer } = Astro.props;
 
 const isHomePage = Astro.url.pathname === "/";
 ---
@@ -59,7 +61,7 @@ const isHomePage = Astro.url.pathname === "/";
             </div>
 
             <DesktopNav navItems={navItems} />
-            <MobileNav navItems={navItems} />
+            <MobileNav navItems={navItems} regionalDisclaimer={regionalDisclaimer} />
         </div>
     </div>
 </header>
