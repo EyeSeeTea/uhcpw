@@ -90,5 +90,5 @@ export type AnalyticsEvent =
     | PolicyCategoryEvent;
 
 export function getCurrentPageLocation(): string {
-    return window.location.hash.split("?")[0] ?? "";
+    return window.location.pathname + window.location.search;
 }

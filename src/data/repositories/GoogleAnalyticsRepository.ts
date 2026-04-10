@@ -63,19 +63,18 @@ class Analytics {
     }
 
     setAnalyticsConfig() {
-        /** When using HashRouter, set send_page_view to false to avoid sending dynamic page
-         * events. When HashRouter is not used, set to true to avoid duplicated events.
-         * */
+        /** Manual page view tracking is used (explicit sendPageView() calls per page component),
+         * so send_page_view remains false to avoid duplicate events. */
         if (this.accessToConsole)
             console.debug("GA4: config", appConfig.gaTagId, {
                 page_title: "Config",
-                page_location: window.location.pathname,
+                page_location: window.location.pathname + window.location.search,
                 send_page_view: false,
             });
 
         window.gtag("config", appConfig.gaTagId, {
             page_title: "Config",
-            page_location: window.location.pathname,
+            page_location: window.location.pathname + window.location.search,
             send_page_view: false,
         });
     }
