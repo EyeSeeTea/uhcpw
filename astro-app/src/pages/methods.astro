@@ -31,14 +31,14 @@ const gridRows = Math.ceil(methods.length / 2);
             aria-hidden="true"
             loading="eager"
         />
-        <h3>Methods</h3>
+        <h1>Methods</h1>
     </div>
 
     <div class="main-content">
         <div class="methods-grid" style={`--grid-rows: ${gridRows}`} aria-label="Methods list">
             {methods.map((method) => (
                 <div class="method-item" aria-label="Method section">
-                    <h5>{method.sectionName}</h5>
+                    <h2>{method.sectionName}</h2>
 
                     <div class="text-container">
                         <div class="markdown-content" set:html={renderMarkdown(method.shortText)} />
@@ -76,7 +76,7 @@ const gridRows = Math.ceil(methods.length / 2);
         overflow: hidden;
     }
 
-    .title-banner h3 {
+    .title-banner h1 {
         margin: 0;
         font-size: 3rem;
         font-weight: 400;
@@ -136,7 +136,7 @@ const gridRows = Math.ceil(methods.length / 2);
 
     /* ── Method Item ──────────────────────────────────────────────────────── */
 
-    .method-item h5 {
+    .method-item h2 {
         margin: 0 0 10px 0;
         font-size: 1.5rem;
         font-weight: 400;

@@ -2,17 +2,22 @@
 
 ### Requirement: Title banner with accent-primary background
 
-The Methods page SHALL render a title banner at the top with the accent-primary background color (`#0089d6`), white text displaying "Methods", and a bubble pattern overlay image positioned to the right. On mobile viewports (≤ 600px), the banner SHALL display a map background image instead of the solid color.
+The Methods page SHALL render a title banner at the top with the accent-primary background color (`#0089d6`), white text displaying "Methods" as an **H1** heading, and a bubble pattern overlay image positioned to the right. On mobile viewports (≤ 600px), the banner SHALL display a map background image instead of the solid color.
 
-#### Scenario: Desktop title banner
+#### Scenario: Desktop title banner with H1
 
 - **WHEN** the Methods page is rendered at a viewport wider than 600px
-- **THEN** the title banner displays with accent-primary background, white "Methods" heading, and bubble pattern overlay
+- **THEN** the title banner displays with accent-primary background, white **H1** "Methods" heading, and bubble pattern overlay
 
 #### Scenario: Mobile title banner
 
 - **WHEN** the Methods page is rendered at a viewport of 600px or narrower
 - **THEN** the title banner displays with a map background image instead of the solid color
+
+#### Scenario: Page has exactly one H1
+
+- **WHEN** the Methods page is rendered
+- **THEN** the document contains exactly one `<h1>` element
 
 ### Requirement: Two-column grid layout for method sections
 
@@ -30,7 +35,7 @@ The page SHALL render method sections in a two-column CSS Grid with `grid-auto-f
 
 ### Requirement: Method section with expand/collapse
 
-Each method section SHALL display the section name as a heading, followed by the short text (rendered as HTML from markdown). A "Read more" toggle SHALL expand to show the full text content. When expanded, a "Read less" toggle SHALL collapse back to the short text. The toggle MUST use native HTML `<details>`/`<summary>` elements — no client-side JavaScript.
+Each method section SHALL display the section name as an **H2** heading, followed by the short text (rendered as HTML from markdown). A "Read more" toggle SHALL expand to show the full text content. When expanded, a "Read less" toggle SHALL collapse back to the short text. The toggle MUST use native HTML `<details>`/`<summary>` elements — no client-side JavaScript.
 
 #### Scenario: Method section initially collapsed
 
@@ -103,3 +108,11 @@ The methods page SHALL use a shared data-layer function for resolving abbreviati
 #### Scenario: Fallback URLs applied consistently
 - **WHEN** generalContent has no abbreviations or glossary URL
 - **THEN** fallback URLs are applied by the shared function, ensuring consistency across page content and header/footer
+
+### Requirement: Methods page heading hierarchy is sequential
+The Methods page SHALL have a sequential heading hierarchy with no skipped levels. The page title SHALL be H1, and method section names SHALL be H2.
+
+#### Scenario: No skipped heading levels
+- **WHEN** the Methods page is rendered
+- **THEN** the heading hierarchy is: H1 (page title) → H2 (method section names)
+- **AND** no heading level is skipped

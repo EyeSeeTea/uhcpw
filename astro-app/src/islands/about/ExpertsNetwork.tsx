@@ -65,8 +65,8 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = ({
     return (
         <section>
             <div className="experts-title-container">
-                <h3 className="experts-title">{title}</h3>
-                <h5 className="experts-subtitle">{subtitle}</h5>
+                <h2 className="experts-title">{title}</h2>
+                <h3 className="experts-subtitle">{subtitle}</h3>
             </div>
 
             <div className="experts-selector-row">

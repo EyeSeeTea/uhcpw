@@ -8,11 +8,15 @@ The `/about` page SHALL render three sections in this order: office header, team
 - **THEN** the page contains: a title banner, an orange gradient divider, the office header section, a team section, an orange gradient divider, and the experts network section — in that order
 
 ### Requirement: Title banner with office name
-The page SHALL display a title banner with the text "WHO Barcelona Office for Health Systems Financing" on a gradient-primary-2 background with white text.
+The page SHALL display a title banner with the text "WHO Barcelona Office for Health Systems Financing" as an **H1** heading on a gradient-primary-2 background with white text.
 
-#### Scenario: Title banner renders
+#### Scenario: Title banner renders with H1
 - **WHEN** the `/about` page is rendered
-- **THEN** a banner with the heading "WHO Barcelona Office for Health Systems Financing" is visible at the top with `gradientPrimary2` background and white text
+- **THEN** a banner with an **H1** heading "WHO Barcelona Office for Health Systems Financing" is visible at the top with `gradientPrimary2` background and white text
+
+#### Scenario: Page has exactly one H1
+- **WHEN** the `/about` page is rendered
+- **THEN** the document contains exactly one `<h1>` element
 
 ### Requirement: Office header section with image and text
 The header section SHALL display the office image (linked to the video URL, opening in a new tab), a caption, and the office description text rendered as markdown. The layout is two columns on desktop (image left, text right) and single column on mobile.
@@ -30,7 +34,7 @@ The header section SHALL display the office image (linked to the video URL, open
 - **THEN** the image and text stack vertically (single column)
 
 ### Requirement: Team section renders grid of person cards
-The team section SHALL display a title "The WHO Barcelona Office team", subtitle "Staff and consultants", and a responsive grid of person cards for all office team members, sorted alphabetically by first name.
+The team section SHALL display an **H2** title "The WHO Barcelona Office team", an **H3** subtitle "Staff and consultants", and a responsive grid of person cards for all office team members, sorted alphabetically by first name.
 
 #### Scenario: Team members sorted by first name
 - **WHEN** team data is fetched and rendered
@@ -43,7 +47,12 @@ The team section SHALL display a title "The WHO Barcelona Office team", subtitle
 - **THEN** team cards are arranged in a 2-column grid (xs=6)
 
 ### Requirement: Experts section renders as a React island
-The experts network section SHALL be rendered as a React island with `client:only="react"` to avoid SSR issues with Material-UI dependencies. It includes the TreeSelector for country filtering and a grid of expert person cards.
+The experts network section SHALL be rendered as a React island. The section title SHALL be an **H2** and the subtitle SHALL be an **H3**. It includes the TreeSelector for country filtering and a grid of expert person cards.
+
+#### Scenario: Experts section heading hierarchy
+- **WHEN** the experts section renders
+- **THEN** the experts title is an `<h2>` element
+- **AND** the experts subtitle is an `<h3>` element
 
 #### Scenario: Experts island hydrates in browser
 - **WHEN** the page loads in a browser
@@ -99,4 +108,12 @@ The office image rendered by `OfficeHeader.astro` is the about page's hero eleme
 - **THEN** the returned object has `src`, `width`, and `height` fields
 - **AND** `width` is 770 (the configured `OFFICE_IMAGE_OPTIONS.width`) or less
 - **AND** `height` reflects the resized image's actual height
+
+### Requirement: About page heading hierarchy is sequential
+The `/about` page SHALL have a sequential heading hierarchy with no skipped levels. The page title SHALL be H1, section titles SHALL be H2, and subtitles SHALL be H3.
+
+#### Scenario: No skipped heading levels
+- **WHEN** the `/about` page is rendered
+- **THEN** the heading hierarchy is: H1 (page title) → H2 (section titles) → H3 (subtitles)
+- **AND** no heading level is skipped (e.g., no H1 → H3 without H2)
 
