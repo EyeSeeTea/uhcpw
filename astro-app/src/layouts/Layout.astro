@@ -8,7 +8,7 @@ import SeoHead from "@/components/seo/SeoHead.astro";
 import Analytics from "@/components/analytics/Analytics.astro";
 import { resolveGeneralContentUrls, resolveRegionalDisclaimer } from "@/data/general-content";
 import { getNavItems } from "@/data/navigation";
-import "@/styles/theme.css";
+import themeCSS from "@/styles/theme.css?inline";
 
 interface Props {
     seo?: SeoConfig;
@@ -27,8 +27,11 @@ const navItems = await getNavItems();
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="preload" href="/fonts/Lato-Regular.woff2" as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href="/fonts/Lato-Bold.woff2" as="font" type="font/woff2" crossorigin />
         <link rel="icon" href="/favicon.ico" />
         <SeoHead seo={seo} />
+        <slot name="head" />
         <Analytics />
     </head>
     <body>
@@ -49,6 +52,8 @@ const navItems = await getNavItems();
         />
     </body>
 </html>
+
+<style set:html={themeCSS}></style>
 
 <style>
     main {
