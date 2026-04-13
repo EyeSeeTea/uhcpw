@@ -62,8 +62,8 @@ async function fetchNavItems(): Promise<readonly NavItem[]> {
     const compositionRoot = getServerCompositionRoot();
 
     const [countries, regions] = await Promise.all([
-        runFuture(compositionRoot.countries.get.execute()),
-        runFuture(compositionRoot.regions.get.execute()),
+        runFuture(compositionRoot.countries.get.execute(), "countries.get"),
+        runFuture(compositionRoot.regions.get.execute(), "regions.get"),
     ]);
 
     const countryChildren = buildCountryNavItems(countries);

@@ -11,8 +11,8 @@ import bubblePattern from "@/assets/bubble-pattern-white.png";
 const compositionRoot = getServerCompositionRoot();
 
 const [methods, generalContent] = await Promise.all([
-    runFuture(compositionRoot.method.get.execute()),
-    runFuture(compositionRoot.general.getContent.execute()),
+    runFuture(compositionRoot.method.get.execute(), "methods.get"),
+    runFuture(compositionRoot.general.getContent.execute(), "generalContent.get"),
 ]);
 
 const seo = getSeoConfigForRoute(Astro.url.pathname);

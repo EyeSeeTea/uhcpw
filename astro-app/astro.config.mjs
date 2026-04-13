@@ -1,15 +1,37 @@
 // @ts-check
-import { defineConfig, envField } from "astro/config";
+/* eslint-disable no-undef -- process and performance are Node.js globals */
+import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import path from "node:path";
 import { loadEnv } from "vite";
 
 const env = loadEnv(process.env.NODE_ENV ?? "", process.cwd(), "");
+/** Inline Astro integration that logs build start/end with total duration. */
+function buildLogger() {
+    let start = 0;
+    return {
+        name: "build-logger",
+        hooks: {
+            "astro:build:start": () => {
+                start = performance.now();
+                import("./src/lib/logger.ts").then(m =>
+                    m.logger.info("Build started"),
+                );
+            },
+            "astro:build:done": () => {
+                const durationMs = (performance.now() - start).toFixed(1);
+                import("./src/lib/logger.ts").then(m =>
+                    m.logger.info({ durationMs }, "Build completed"),
+                );
+            },
+        },
+    };
+}
 
 // https://astro.build/config
 export default defineConfig({
     site: env.SITE_URL || "https://apps.who.int/dhis2/uhcwatch",
-    integrations: [react()],
+    integrations: [react(), buildLogger()],
     image: {
         remotePatterns: [
             { protocol: "https" },

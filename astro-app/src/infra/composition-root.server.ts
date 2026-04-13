@@ -1,6 +1,9 @@
 import { D2Api } from "@shared/types/d2-api";
 import { Instance } from "@shared/data/entities/Instance";
 import { getCompositionRoot } from "@shared/CompositionRoot";
+import { createLogger, startTimer } from "@/lib/logger";
+
+const log = createLogger("composition-root");
 
 type CompositionRoot = ReturnType<typeof getCompositionRoot>;
 
@@ -13,6 +16,8 @@ function stripQuotes(s: string): string {
 
 function init(): { api: D2Api; compositionRoot: CompositionRoot } {
     if (cachedApi && cachedRoot) return { api: cachedApi, compositionRoot: cachedRoot };
+
+    const endTimer = startTimer(log, "Composition root initialization");
 
     const baseUrl = stripQuotes(import.meta.env.DHIS2_BASE_URL ?? "");
     const auth = stripQuotes(import.meta.env.DHIS2_AUTH ?? "");
@@ -32,6 +37,8 @@ function init(): { api: D2Api; compositionRoot: CompositionRoot } {
     cachedApi = new D2Api({ baseUrl, auth: { username, password }, backend: "xhr" });
     // d2DataEngine is only used by the React SPA runtime, not needed for SSG builds
     cachedRoot = getCompositionRoot(cachedApi, null as Parameters<typeof getCompositionRoot>[1], instance);
+
+    endTimer();
 
     return { api: cachedApi, compositionRoot: cachedRoot };
 }

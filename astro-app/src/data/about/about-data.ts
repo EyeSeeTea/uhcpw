@@ -7,6 +7,9 @@ import type { GeneralContent } from "@shared/domain/entities/GeneralContent";
 import { KOSOVO, SORTED_COUNTRY_GROUPINGS } from "@shared/data/repositories/countries/CountryD2Repository";
 import { getServerCompositionRoot } from "@/infra/composition-root.server";
 import { runFuture } from "@/infra/future-bridge";
+import { createLogger, startTimer } from "@/lib/logger";
+
+const log = createLogger("about-data");
 
 /** Locally-defined TreeOption to avoid pulling MUI deps at build time. */
 export type TreeOption = {
@@ -86,20 +89,23 @@ export type AboutPageData = {
 };
 
 export async function getAboutPageData(): Promise<AboutPageData> {
+    const endTimer = startTimer(log, "About page data load");
     const compositionRoot = getServerCompositionRoot();
 
     const [teamRaw, expertsRaw, officeInfo, countries, generalContent] = await Promise.all([
-        runFuture(compositionRoot.about.getPersons.execute(true)),
-        runFuture(compositionRoot.about.getPersons.execute(false)),
-        runFuture(compositionRoot.about.getOfficeInfo.execute()),
-        runFuture(compositionRoot.countries.get.execute()),
-        runFuture(compositionRoot.general.getContent.execute()),
+        runFuture(compositionRoot.about.getPersons.execute(true), "about.getTeam"),
+        runFuture(compositionRoot.about.getPersons.execute(false), "about.getExperts"),
+        runFuture(compositionRoot.about.getOfficeInfo.execute(), "about.getOfficeInfo"),
+        runFuture(compositionRoot.countries.get.execute(), "countries.get"),
+        runFuture(compositionRoot.general.getContent.execute(), "generalContent.get"),
     ]);
 
     const team = sortTeam(mapPersonsWithCountry(teamRaw, countries));
     const experts = sortExperts(mapPersonsWithCountry(expertsRaw, countries));
     const countryTreeOptions = buildCountryTreeOptions(countries);
     const parentSortOrder = buildParentSortOrder();
+
+    endTimer();
 
     return {
         team,
