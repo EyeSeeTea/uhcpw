@@ -30,6 +30,26 @@ export default [
         },
     },
     {
+        files: ["src/pages/**/*.astro"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    paths: [
+                        {
+                            name: "@/infra/composition-root.server",
+                            message: "Pages must not import infra modules directly. Create a data module in src/data/<feature>/ instead.",
+                        },
+                        {
+                            name: "@/infra/future-bridge",
+                            message: "Pages must not import infra modules directly. Create a data module in src/data/<feature>/ instead.",
+                        },
+                    ],
+                },
+            ],
+        },
+    },
+    {
         ignores: ["dist/", "node_modules/", ".astro/"],
     },
 ];

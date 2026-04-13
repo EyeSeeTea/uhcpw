@@ -1,19 +1,13 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
-import { getServerCompositionRoot } from "@/infra/composition-root.server";
-import { runFuture } from "@/infra/future-bridge";
+import { getMethodsPageData } from "@/data/methods/methods-data";
 import { renderMarkdown } from "@/lib/markdown";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
 import { resolveGeneralContentUrls } from "@/data/general-content";
 import bubblePattern from "@/assets/bubble-pattern-white.png";
 
-const compositionRoot = getServerCompositionRoot();
-
-const [methods, generalContent] = await Promise.all([
-    runFuture(compositionRoot.method.get.execute(), "methods.get"),
-    runFuture(compositionRoot.general.getContent.execute(), "generalContent.get"),
-]);
+const { methods, generalContent } = await getMethodsPageData();
 
 const seo = getSeoConfigForRoute(Astro.url.pathname);
 

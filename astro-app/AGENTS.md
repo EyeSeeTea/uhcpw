@@ -77,6 +77,31 @@ src/
 
 **Import convention:** Use `@/` absolute imports for cross-directory references (e.g., `@/data/about/about-data`, `@/infra/composition-root.server`). Use relative imports only within the same module (e.g., `../about-data` from `__tests__/`, `./PersonCardReact` from a sibling). This is enforced by ESLint via `no-restricted-imports`.
 
+## Data Layer Convention
+
+Astro pages must not call the composition root or future bridge directly. All data fetching goes through modules in `src/data/<feature>/`.
+
+**Pattern:**
+
+```
+Page (.astro frontmatter)
+  → Data module (src/data/<feature>/<feature>-data.ts)
+    → Composition root + runFuture (src/infra/)
+      → Shared use cases (../src/)
+```
+
+**Example:** The methods page calls `getMethodsPageData()` from `src/data/methods/methods-data.ts`, which internally uses the composition root and returns a typed `MethodsPageData`. The page never imports from `@/infra/`.
+
+**Why:** Consistent entry points make the codebase navigable and testable. Pages stay focused on rendering; data modules own fetching and transformation.
+
+**Enforcement:** ESLint `no-restricted-imports` prevents `src/pages/**/*.astro` from importing `@/infra/composition-root.server` or `@/infra/future-bridge`. If you need to fetch data in a page, create or extend a data module in `src/data/`.
+
+**When adding a new page:**
+1. Create `src/data/<feature>/<feature>-data.ts` with a `get<Feature>PageData()` function
+2. The function calls `getServerCompositionRoot()` and `runFuture()` internally
+3. Return a typed result object — the page destructures it in frontmatter
+4. Shared data (like `generalContent`) can use existing modules (e.g., `getGeneralContent()` from `@/data/general-content`)
+
 ## Caveats & Technical Debt
 
 All migration caveats, workarounds, and technical debt are tracked in [`docs/migration-caveats.md`](./docs/migration-caveats.md). **Keep that file updated** whenever you encounter a new issue, caveat, or workaround during any migration phase.

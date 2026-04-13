@@ -4,25 +4,13 @@ import OfficeHeader from "@/components/about/OfficeHeader.astro";
 import TeamSection from "@/components/about/TeamSection.astro";
 import { ExpertsNetwork } from "@/islands/about/ExpertsNetwork";
 import { getAboutPageData } from "@/data/about/about-data";
-import { getServerD2Api } from "@/infra/composition-root.server";
-import { downloadAboutPersonImages, downloadOfficeImage } from "@/data/about/about-images";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
 import "@/styles/experts-network.css";
 
-const { team, experts, officeInfo, countryTreeOptions, parentSortOrder, generalContent } =
+const { team, experts, officeInfo, officeImage, countryTreeOptions, parentSortOrder, generalContent } =
     await getAboutPageData();
 
 const seo = getSeoConfigForRoute(Astro.url.pathname);
-
-const api = getServerD2Api();
-
-// Download and optimize images at build time (with DHIS2 auth via D2Api)
-const [{ persons: teamWithImages }, { persons: expertsWithImages }, officeImage] =
-    await Promise.all([
-        downloadAboutPersonImages(api, team),
-        downloadAboutPersonImages(api, experts),
-        downloadOfficeImage(api, officeInfo),
-    ]);
 
 const expertsTitle =
     generalContent.aboutUs.title || "The Financial Protection Expert Network";
@@ -52,7 +40,7 @@ const expertsSubtitle =
 
     <section class="people-section" aria-label="Office team">
         <div class="container">
-            <TeamSection team={teamWithImages} />
+            <TeamSection team={team} />
         </div>
     </section>
 
@@ -62,7 +50,7 @@ const expertsSubtitle =
         <div class="container">
             <ExpertsNetwork
                 client:load
-                experts={expertsWithImages}
+                experts={experts}
                 countryOptions={countryTreeOptions}
                 parentSortOrder={parentSortOrder}
                 title={expertsTitle}

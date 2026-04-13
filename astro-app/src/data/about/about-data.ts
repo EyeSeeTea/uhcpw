@@ -5,9 +5,10 @@ import type { Country } from "@shared/domain/entities/Country";
 import type { OfficeInfo } from "@shared/domain/entities/about/OfficeInfo";
 import type { GeneralContent } from "@shared/domain/entities/GeneralContent";
 import { KOSOVO, SORTED_COUNTRY_GROUPINGS } from "@shared/data/repositories/countries/CountryD2Repository";
-import { getServerCompositionRoot } from "@/infra/composition-root.server";
+import { getServerCompositionRoot, getServerD2Api } from "@/infra/composition-root.server";
 import { runFuture } from "@/infra/future-bridge";
 import { createLogger, startTimer } from "@/lib/logger";
+import { downloadAboutPersonImages, downloadOfficeImage, type OfficeImageResult } from "./about-images";
 
 const log = createLogger("about-data");
 
@@ -83,6 +84,7 @@ export type AboutPageData = {
     team: ReadonlyArray<PersonState>;
     experts: ReadonlyArray<PersonState>;
     officeInfo: OfficeInfo;
+    officeImage: OfficeImageResult;
     countryTreeOptions: ReadonlyArray<TreeOption>;
     parentSortOrder: ReadonlyArray<string>;
     generalContent: GeneralContent;
@@ -105,12 +107,21 @@ export async function getAboutPageData(): Promise<AboutPageData> {
     const countryTreeOptions = buildCountryTreeOptions(countries);
     const parentSortOrder = buildParentSortOrder();
 
+    const api = getServerD2Api();
+    const [{ persons: teamWithImages }, { persons: expertsWithImages }, officeImage] =
+        await Promise.all([
+            downloadAboutPersonImages(api, team),
+            downloadAboutPersonImages(api, experts),
+            downloadOfficeImage(api, officeInfo),
+        ]);
+
     endTimer();
 
     return {
-        team,
-        experts,
+        team: teamWithImages,
+        experts: expertsWithImages,
         officeInfo,
+        officeImage,
         countryTreeOptions,
         parentSortOrder,
         generalContent,

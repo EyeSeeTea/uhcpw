@@ -2,12 +2,10 @@
 import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import { defaultSeoConfig } from "@shared/domain/entities/SeoConfig";
-import { getServerCompositionRoot } from "@/infra/composition-root.server";
-import { runFuture } from "@/infra/future-bridge";
+import { getGeneralContent } from "@/data/general-content";
 import bubblePattern from "@/assets/bubble-pattern-white.png";
 
-const compositionRoot = getServerCompositionRoot();
-const generalContent = await runFuture(compositionRoot.general.getContent.execute(), "generalContent.get");
+const generalContent = await getGeneralContent();
 
 const seo = { ...defaultSeoConfig, title: "UHC Watch - Page Not Found" };
 ---
