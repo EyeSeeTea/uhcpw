@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { navItems } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
 <nav class="desktop-nav" aria-label="Main navigation">
@@ -30,7 +31,7 @@ const { navItems } = Astro.props;
                 </div>
             </div>
         ) : (
-            <a href={item.href} class="nav-link">
+            <a href={item.href} class:list={["nav-link", { "nav-link--active": currentPath === item.href }]}>
                 {item.label}
             </a>
         )
@@ -54,7 +55,7 @@ const { navItems } = Astro.props;
     .nav-link {
         display: flex;
         align-items: center;
-        margin: 16px 8px;
+        margin: 16px 16px;
         padding: 6px 8px;
         font-family: var(--font-family-base);
         font-size: var(--font-size-sm);
@@ -74,9 +75,14 @@ const { navItems } = Astro.props;
         background-color: rgba(150, 150, 150, 0.1);
     }
 
+    .nav-link--active {
+        color: var(--color-accent-primary);
+    }
+
     .caret {
         transition: transform 200ms;
-        margin-left: 2px;
+        margin-left: 8px;
+        margin-right: -4px;
     }
 
     .nav-dropdown {

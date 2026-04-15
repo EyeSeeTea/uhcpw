@@ -54,19 +54,25 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
                                 {item.label}
                             </button>
                         ) : item.children && item.children.length > 0 ? (
-                            <details class="menu-submenu">
-                                <summary class="menu-link menu-submenu-summary">
+                            <div class="menu-submenu-wrapper">
+                                <button
+                                    type="button"
+                                    class="menu-link menu-link--button menu-submenu-toggle"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    data-submenu-trigger
+                                >
                                     <span>{item.label}</span>
                                     <svg class="caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
                                         <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
                                     </svg>
-                                </summary>
-                                <div class="menu-submenu-panel">
+                                </button>
+                                <div class="menu-submenu-popup" role="menu" hidden>
                                     {item.children.map(child => (
-                                        <a href={child.href} class="menu-link menu-sublink">{child.label}</a>
+                                        <a href={child.href} class="menu-link menu-sublink" role="menuitem">{child.label}</a>
                                     ))}
                                 </div>
-                            </details>
+                            </div>
                         ) : (
                             <a href={item.href} class="menu-link">{item.label}</a>
                         )}
@@ -102,7 +108,7 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
                 data-mobile-modal-close
                 aria-label="Close"
             >
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
                     <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                 </svg>
             </button>
@@ -172,14 +178,18 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
     }
 
     .menu-link {
-        display: block;
-        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        padding: 6px 16px;
+        min-height: 48px;
+        box-sizing: border-box;
         color: white;
         text-decoration: none;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
         font-weight: 500;
-        line-height: 1.75;
+        line-height: 1.5;
         border-radius: 4px;
+        white-space: nowrap;
     }
 
     .menu-link--home {
@@ -209,49 +219,53 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
         border-top: 1px solid #b5b5b5;
     }
 
-    /* ── Submenu accordion (e.g. Countries & areas) ─────────────────────── */
-    .menu-submenu {
-        display: block;
+    /* ── Submenu popup (e.g. Countries & areas) ──────────────────────────── */
+    .menu-submenu-wrapper {
+        position: relative;
     }
 
-    .menu-submenu-summary {
+    .menu-submenu-toggle {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 8px;
-        cursor: pointer;
-        list-style: none;
     }
 
-    .menu-submenu-summary::-webkit-details-marker {
-        display: none;
-    }
-
-    .menu-submenu-summary .caret {
+    .menu-submenu-toggle .caret {
         flex-shrink: 0;
         transition: transform 200ms;
     }
 
-    .menu-submenu[open] > .menu-submenu-summary .caret {
+    .menu-submenu-toggle[aria-expanded="true"] .caret {
         transform: rotate(180deg);
     }
 
-    .menu-submenu-panel {
+    .menu-submenu-popup {
+        position: fixed;
+        background: var(--color-accent-primary);
+        color: white;
+        border: 1px solid #d3d4d5;
+        padding: 0 10px;
         max-height: 558px;
         overflow-y: auto;
+        z-index: 101;
         display: flex;
         flex-direction: column;
-        padding-block: 4px;
+    }
+
+    .menu-submenu-popup[hidden] {
+        display: none;
     }
 
     .menu-sublink {
-        padding-inline-start: 28px;
         font-weight: 400;
+        font-size: 1rem;
     }
 
     /* ── Regional disclaimer dialog ─────────────────────────────────────── */
     .regional-dialog {
-        max-width: min(560px, 92vw);
+        position: relative;
+        max-width: min(600px, calc(100vw - 64px));
         width: max-content;
         border: none;
         border-radius: 4px;
@@ -275,6 +289,7 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
     }
 
     .regional-dialog-body {
+        padding: 16px 16px 8px;
         font-family: var(--font-family-base, Lato), sans-serif;
         font-size: 1rem;
         line-height: 1.5;
@@ -309,7 +324,8 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
 
     .regional-dialog-cta {
         display: inline-block;
-        margin-top: 12px;
+        margin-top: 4px;
+        margin-left: 16px;
         color: var(--color-accent-primary);
         text-decoration: none;
         font-weight: 500;
@@ -321,19 +337,26 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
 
     .regional-dialog-close {
         position: absolute;
-        top: -10px;
-        right: -10px;
-        width: 24px;
-        height: 24px;
+        top: 10px;
+        right: 10px;
+        width: 44px;
+        height: 44px;
         border: none;
         border-radius: 50%;
-        background-color: var(--color-accent-primary);
-        color: white;
+        background: none;
+        color: var(--color-accent-primary);
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
         padding: 0;
+    }
+
+    .regional-dialog-close svg {
+        background-color: #035fa7;
+        color: white;
+        border-radius: 50%;
+        padding: 5px;
     }
 
     .visually-hidden {
@@ -355,23 +378,120 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
         "mobile-regional-disclaimer-dialog",
     ) as HTMLDialogElement | null;
 
+    function closeAllSubmenus() {
+        nav?.querySelectorAll<HTMLButtonElement>("[data-submenu-trigger]").forEach(btn => {
+            btn.setAttribute("aria-expanded", "false");
+            const popup = btn.nextElementSibling as HTMLElement | null;
+            if (popup) popup.setAttribute("hidden", "");
+        });
+    }
+
+    function positionPopup(_trigger: HTMLElement, popup: HTMLElement) {
+        const menuDropdown = nav?.querySelector(".menu-dropdown") as HTMLElement | null;
+        if (!menuDropdown) return;
+
+        const menuRect = menuDropdown.getBoundingClientRect();
+
+        // Match SPA MUI Menu positioning: right-aligned with the main menu,
+        // positioned near the top of the viewport with enough room to scroll.
+        const top = 16;
+        const rightOffset = window.innerWidth - menuRect.right;
+        popup.style.top = `${top}px`;
+        popup.style.right = `${rightOffset}px`;
+        popup.style.left = "auto";
+        popup.style.maxHeight = `${Math.min(558, window.innerHeight - top - 16)}px`;
+    }
+
     if (nav) {
-        // Outer "click outside closes" — only triggered when the click target
-        // is not inside the menu DOM. Nested <details> live inside `nav`, so
-        // they are unaffected by this handler.
-        document.addEventListener("click", e => {
-            if (nav.open && !nav.contains(e.target as Node)) {
-                nav.open = false;
-            }
+        // Submenu popup toggles
+        nav.querySelectorAll<HTMLButtonElement>("[data-submenu-trigger]").forEach(btn => {
+            const popup = btn.nextElementSibling as HTMLElement | null;
+            if (!popup) return;
+
+            btn.addEventListener("click", e => {
+                e.stopPropagation();
+                const isOpen = btn.getAttribute("aria-expanded") === "true";
+                closeAllSubmenus();
+                if (!isOpen) {
+                    btn.setAttribute("aria-expanded", "true");
+                    popup.removeAttribute("hidden");
+                    positionPopup(btn, popup);
+                }
+            });
+
+            // Close popup on Escape
+            popup.addEventListener("keydown", e => {
+                if (e.key === "Escape") {
+                    closeAllSubmenus();
+                    btn.focus();
+                }
+            });
         });
 
-        // Close the outer menu after navigation: any link click (top-level or
-        // inside an expanded submenu).
-        nav.querySelectorAll("a.menu-link").forEach(link => {
+        // Close popup on item selection (link click inside popup)
+        nav.querySelectorAll(".menu-submenu-popup a.menu-link").forEach(link => {
             link.addEventListener("click", () => {
+                closeAllSubmenus();
                 nav.open = false;
             });
         });
+
+        // Outside-click handler — uses capture phase to intercept clicks
+        // before they reach underlying elements (links, buttons, etc.).
+        // Closes one layer at a time: popup first, then main menu.
+        document.addEventListener("click", e => {
+            const target = e.target as Element;
+            const isInsidePopup = target.closest?.(".menu-submenu-popup");
+            const isInsideNav = nav.contains(target as Node);
+            const hasOpenPopup = Boolean(
+                nav.querySelector('[data-submenu-trigger][aria-expanded="true"]'),
+            );
+
+            if (isInsidePopup) return;
+
+            if (hasOpenPopup) {
+                // A submenu popup is open — close only the popup
+                closeAllSubmenus();
+                if (!isInsideNav) {
+                    // Click was outside nav entirely — swallow it so
+                    // underlying elements (links, etc.) don't activate
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                return;
+            }
+
+            if (nav.open && !isInsideNav) {
+                // Only the main menu is open — close it and swallow click
+                nav.open = false;
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
+
+        // Close submenu popup when clicking elsewhere inside the menu
+        // (e.g. tapping another menu item while popup is open)
+        nav.addEventListener("click", e => {
+            const target = e.target as Element;
+            const isInsideWrapper = target.closest?.(".menu-submenu-wrapper");
+            if (!isInsideWrapper) {
+                closeAllSubmenus();
+            }
+        });
+
+        // Close the outer menu after navigation: any top-level link click
+        nav.querySelectorAll("a.menu-link:not(.menu-sublink)").forEach(link => {
+            link.addEventListener("click", () => {
+                closeAllSubmenus();
+                nav.open = false;
+            });
+        });
+
+        // Close submenus when the outer <details> menu closes
+        const observer = new MutationObserver(() => {
+            if (!nav.open) closeAllSubmenus();
+        });
+        observer.observe(nav, { attributes: true });
     }
 
     if (nav && dialog) {

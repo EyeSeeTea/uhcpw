@@ -77,6 +77,7 @@ const isHomePage = Astro.url.pathname === "/";
         background: var(--gradient-primary);
         min-height: 20px;
         padding: 12px 64px;
+        padding-right: 60px;
     }
 
     @media (max-width: 960px) {
@@ -109,6 +110,7 @@ const isHomePage = Astro.url.pathname === "/";
     }
 
     .top-link {
+        box-sizing: content-box;
         margin: 0 16px;
         padding: 6px 8px;
         font-family: var(--font-family-base);
@@ -167,6 +169,11 @@ const isHomePage = Astro.url.pathname === "/";
     @media (max-width: 960px) {
         .toolbar-bottom {
             padding-left: 0;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .toolbar-bottom {
             padding-right: 0;
         }
     }
@@ -187,23 +194,36 @@ const isHomePage = Astro.url.pathname === "/";
     @media (max-width: 960px) {
         .logo-group {
             padding-inline: 40px;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .logo-group {
+            padding-inline: 10px;
         }
     }
 
     .logo-link {
-        display: flex;
-        align-items: center;
+        display: block;
         margin: 10px;
+        cursor: pointer;
+        line-height: normal;
+    }
+
+    .who-logo,
+    .uhc-logo {
+        display: inline;
+        height: auto;
     }
 
     .who-logo {
         width: 150px;
-        height: auto;
     }
 
     .uhc-logo {
         width: 180px;
-        height: auto;
     }
 
     /* Hide UHC logo on desktop home page (matches SPA behavior) */
