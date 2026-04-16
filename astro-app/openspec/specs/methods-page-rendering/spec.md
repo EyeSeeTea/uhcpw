@@ -116,3 +116,11 @@ The Methods page SHALL have a sequential heading hierarchy with no skipped level
 - **WHEN** the Methods page is rendered
 - **THEN** the heading hierarchy is: H1 (page title) → H2 (method section names)
 - **AND** no heading level is skipped
+## Requirements
+### Requirement: Title banner height matches SPA
+The `.title-banner` MUST render at the same height as the SPA's TitleContainer.
+
+#### Scenario: Desktop viewport
+- **WHEN** the /methods page is rendered at desktop width
+- **THEN** the title banner height matches the SPA, achieved by using the same line-height (1.167) on the heading text as MUI Typography variant="h3"
+

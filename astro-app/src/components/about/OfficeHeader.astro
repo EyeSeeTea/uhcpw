@@ -23,7 +23,6 @@ const textHtml = renderMarkdown(officeText);
                     alt="WHO Barcelona Office"
                     class="office-image"
                     width={officeImageWidth}
-                    height={officeImageHeight}
                     loading="eager"
                     fetchpriority="high"
                     decoding="async"
@@ -46,9 +45,14 @@ const textHtml = renderMarkdown(officeText);
     .office-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 40px;
-        align-items: start;
-        padding: 32px;
+        align-items: flex-start;
+        padding: 32px 12px;
+        margin-bottom: -20px;
+    }
+
+    .image-column,
+    .text-column {
+        padding: 20px;
     }
 
     .image-column a {
@@ -57,12 +61,13 @@ const textHtml = renderMarkdown(officeText);
 
     .office-image {
         width: 100%;
+        height: auto;
         padding-block-start: 16px;
     }
 
     .caption {
         font-weight: 300;
-        margin-top: 20px;
+        margin-top: 25px;
         margin-bottom: 0;
         font-family: var(--font-family-base);
         font-size: var(--font-size-base);
@@ -75,6 +80,8 @@ const textHtml = renderMarkdown(officeText);
 
     .text-content {
         max-width: 600px;
+        padding-inline: 24px;
+        margin: 0 auto;
         font-family: var(--font-family-base);
     }
 
@@ -93,6 +100,12 @@ const textHtml = renderMarkdown(officeText);
 
         .text-content {
             max-width: 100%;
+        }
+    }
+
+    @media (max-width: 599px) {
+        .text-content {
+            padding-inline: 16px;
         }
     }
 </style>

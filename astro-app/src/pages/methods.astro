@@ -36,12 +36,12 @@ const gridRows = Math.ceil(methods.length / 2);
                     <h2>{method.sectionName}</h2>
 
                     <div class="text-container">
-                        <div class="markdown-content" set:html={renderMarkdown(method.shortText)} />
+                        <div class="markdown-content short-text" set:html={renderMarkdown(method.shortText)} />
 
                         <details>
                             <summary>
-                                <span class="label-read-more">Read more<span class="chevron" aria-hidden="true">&#x25BE;</span></span>
-                                <span class="label-read-less">Read less<span class="chevron" aria-hidden="true">&#x25B4;</span></span>
+                                <span class="label-read-more">Read more<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg></span>
+                                <span class="label-read-less">Read less<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg></span>
                             </summary>
                             <div class="markdown-content" set:html={renderMarkdown(method.text)} />
                         </details>
@@ -75,6 +75,7 @@ const gridRows = Math.ceil(methods.length / 2);
         margin: 0;
         font-size: 3rem;
         font-weight: 400;
+        line-height: 1.167;
         z-index: 1;
     }
 
@@ -91,12 +92,7 @@ const gridRows = Math.ceil(methods.length / 2);
 
     @media (max-width: 600px) {
         .title-banner {
-            background: url("/assets/map-background.jpg") center / cover;
-            padding: 24px 40px;
-        }
-
-        .bubble-img {
-            display: none;
+            background: url("/assets/map-background.jpg") center;
         }
     }
 
@@ -145,7 +141,7 @@ const gridRows = Math.ceil(methods.length / 2);
 
     .markdown-content :global(p) {
         font-size: var(--font-size-sm);
-        line-height: 1.5;
+        line-height: 1.43;
         margin: 0 0 10px 0;
     }
 
@@ -156,13 +152,12 @@ const gridRows = Math.ceil(methods.length / 2);
 
     .markdown-content :global(li) {
         font-size: var(--font-size-sm);
-        line-height: 1.75;
+        line-height: 1.43;
     }
 
     .markdown-content :global(a) {
         color: var(--color-accent-primary);
         text-decoration: none;
-        padding: 0 3px;
     }
 
     .markdown-content :global(a:hover) {
@@ -173,6 +168,12 @@ const gridRows = Math.ceil(methods.length / 2);
 
     details {
         border: none;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .text-container:has(details[open]) .short-text {
+        display: none;
     }
 
     summary {
@@ -197,9 +198,12 @@ const gridRows = Math.ceil(methods.length / 2);
 
     .chevron {
         margin-inline-start: 4px;
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
         position: relative;
-        bottom: 1px;
-        font-size: 1em;
+        inset-block-end: 2px;
+        flex-shrink: 0;
     }
 
     /* Default (closed): show "Read more", hide "Read less" */
