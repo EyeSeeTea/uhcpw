@@ -35,6 +35,17 @@
     height: 56px;
 }
 
+/*
+ * Astro's global `* { box-sizing: border-box }` reset (theme.css) otherwise
+ * clamps the TreeSelector's SearchInput Paper to 22px. The SPA uses the
+ * default content-box, where the Paper's 10px padding + 1px border expand
+ * the inline 20px inner height to 42px. Scoped to the shared TreeSelector's
+ * stable popover id so no other MUI Menus are affected.
+ */
+#tree-selector-menu [role="search"] {
+    box-sizing: content-box;
+}
+
 .experts-grid {
     display: flex;
     flex-wrap: wrap;
