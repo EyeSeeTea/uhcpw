@@ -1,3 +1,3 @@
 export const LEGEND_SYMBOL_SIZE = 13;
-export const LEGEND_SYMBOL_RADIUS = 7;
-export const MARKER_RADIUS = 6.5;
+export const LEGEND_SYMBOL_RADIUS = Math.ceil(LEGEND_SYMBOL_SIZE / 2);
+export const MARKER_RADIUS = LEGEND_SYMBOL_SIZE / 2;
