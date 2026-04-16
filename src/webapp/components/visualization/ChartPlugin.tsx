@@ -13,6 +13,7 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
 import { Region } from "../../../domain/entities/region/Region";
 import { withLegendAlignment } from "./customization/legends/alignLegendToPlotArea";
+import { MARKER_RADIUS } from "./customization/chartConstants";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -172,7 +173,16 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
                     const customization = countrySerieCustomization || serieCustomization || allSeriesCustomization;
 
-                    return customization ? { ...serie, ...customization } : serie;
+                    const merged = customization ? { ...serie, ...customization } : serie;
+
+                    if ("marker" in merged && merged.marker) {
+                        const marker = merged.marker as Record<string, unknown>;
+                        if (!("radius" in marker)) {
+                            return { ...merged, marker: { ...marker, radius: MARKER_RADIUS } };
+                        }
+                    }
+
+                    return merged;
                 }),
                 lang: originalChartOptions.lang,
                 noData: originalChartOptions.noData,
