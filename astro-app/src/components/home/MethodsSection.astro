@@ -1,0 +1,107 @@
+---
+import { Image } from "astro:assets";
+import SectionHeader from "./SectionHeader.astro";
+import SectionBlock from "./SectionBlock.astro";
+import SectionDivider from "./SectionDivider.astro";
+import bubblePatternWhite from "@/assets/bubble-pattern-white.png";
+import type { MethodsContent } from "@shared/domain/entities/HomePageContent";
+
+interface Props {
+    content: MethodsContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section>
+    <SectionHeader
+        header={content.title}
+        subtitle={content.subtitle}
+        bubblePosition="left"
+        url={content.buttonLink}
+    />
+
+    <div class="columns">
+        <div class="col-focus">
+            <SectionBlock title={content.column1.title} text={content.column1.text} />
+        </div>
+
+        <div class="col-analysis">
+            <Image
+                class="bubble-img"
+                src={bubblePatternWhite}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+            />
+
+            <SectionBlock title={content.column2.title} text={content.column2.text} />
+        </div>
+
+        <div class="col-story">
+            <Image
+                class="bubble-img"
+                src={bubblePatternWhite}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+            />
+
+            <SectionBlock title={content.column3.title} text={content.column3.text} />
+        </div>
+    </div>
+
+    <SectionDivider />
+</section>
+
+<style>
+    .columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    @media (max-width: 959px) {
+        .columns {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .col-focus {
+        background: linear-gradient(90deg, rgba(79, 172, 86, 1) 0%, rgba(161, 238, 167, 1) 100%);
+        color: white;
+        padding: 65px 55px;
+    }
+
+    .col-analysis {
+        background: #fe8c4f;
+        color: white;
+        padding: 65px 55px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .col-story {
+        background: var(--color-dark-blue);
+        color: white;
+        padding: 65px 55px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    @media (max-width: 959px) {
+        .col-focus,
+        .col-analysis,
+        .col-story {
+            padding: 40px 30px;
+        }
+    }
+
+    .bubble-img {
+        position: absolute;
+        top: -170px;
+        left: -400px;
+        height: auto;
+        pointer-events: none;
+        opacity: 0.9;
+    }
+</style>

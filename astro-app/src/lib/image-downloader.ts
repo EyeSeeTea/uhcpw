@@ -7,6 +7,10 @@ import type { D2Api } from "@shared/types/d2-api";
 const FETCH_TIMEOUT_MS = 10000;
 const BASE_OUTPUT_DIR = "public/images";
 
+export function isRemoteImageUrl(url: string): boolean {
+    return typeof url === "string" && url.startsWith("http");
+}
+
 export interface ImageDownloadOptions {
     /** Width to resize to. Height is inferred if not provided. */
     width: number;

@@ -1,0 +1,85 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { HomeMap } from "@/islands/home/HomeMap";
+import Explorers from "@/components/home/Explorers.astro";
+import AnalysisSection from "@/components/home/AnalysisSection.astro";
+import MethodsSection from "@/components/home/MethodsSection.astro";
+import ResourcesSection from "@/components/home/ResourcesSection.astro";
+import NewsletterButton from "@/components/home/NewsletterButton.astro";
+import MobileCardGrid from "@/components/home/MobileCardGrid.astro";
+import MobileResourcesSection from "@/components/home/MobileResourcesSection.astro";
+import MobileNewsSection from "@/components/home/MobileNewsSection.astro";
+import { getHomePageData } from "@/data/home/home-data";
+import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+
+const { homePageContent, resources, mobileResources, news, markers, initialMapData, generalContent } =
+    await getHomePageData();
+
+const seo = getSeoConfigForRoute(Astro.url.pathname);
+---
+
+<Layout seo={seo} generalContent={generalContent}>
+    <section class="map-section">
+        <HomeMap
+            client:only="react"
+            markers={markers}
+            homePagePanelContent={homePageContent.mainMapPanel}
+            initialData={initialMapData}
+        />
+    </section>
+
+    <MobileCardGrid content={homePageContent} />
+
+    <div class="desktop-sections">
+        <Explorers content={homePageContent.explorers} />
+
+        <AnalysisSection content={homePageContent.analysis} />
+
+        <MethodsSection content={homePageContent.methods} />
+
+        <ResourcesSection resources={resources} />
+    </div>
+
+    <MobileResourcesSection resources={mobileResources} />
+
+    <MobileNewsSection news={news} />
+
+    <NewsletterButton content={homePageContent.newsletter} />
+</Layout>
+
+<style>
+    .map-section {
+        height: 80vh;
+        min-height: 620px;
+        background-color: #a3cbe4;
+    }
+
+    @media (max-width: 959px) {
+        .map-section {
+            height: 50vh;
+        }
+    }
+
+    @media (max-width: 550px) {
+        .map-section {
+            min-height: 600px;
+        }
+    }
+
+    @media (max-width: 500px) {
+        .map-section {
+            min-height: 550px;
+        }
+    }
+
+    .desktop-sections {
+        display: block;
+    }
+
+    @media (max-width: 959px) {
+        .desktop-sections {
+            display: none;
+        }
+    }
+</style>
+

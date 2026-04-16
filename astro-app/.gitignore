@@ -31,3 +31,4 @@ screenshots/
 .playwright-cli
 # Build-time downloaded images
 /public/images/about/
+/public/images/home/

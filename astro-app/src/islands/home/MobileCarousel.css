@@ -1,0 +1,123 @@
+.mobile-carousel {
+    background: #e5e5ea;
+    padding: 24px;
+}
+
+.mobile-carousel-track {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.mobile-carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.mobile-carousel-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+.mobile-carousel-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-carousel-card.is-full-width {
+    max-width: 500px;
+}
+
+.mobile-carousel-image-link {
+    display: block;
+    text-decoration: none;
+}
+
+.mobile-carousel-image,
+.mobile-carousel-image-placeholder {
+    display: block;
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    background: #f0f0f0;
+}
+
+.mobile-carousel-body {
+    padding: 20px 0 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-carousel-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-inline: 16px;
+}
+
+.mobile-carousel-tag {
+    display: inline-block;
+    background: #185698;
+    color: white;
+    text-decoration: none;
+    border-radius: 20px;
+    padding: 4px 16px;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    margin-inline-end: 16px;
+    margin-block-end: 8px;
+    text-transform: none;
+}
+
+.mobile-carousel-tag:hover {
+    opacity: 0.7;
+}
+
+.mobile-carousel-year {
+    font-size: 1rem;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.mobile-carousel-title {
+    margin: 0 16px 16px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.mobile-carousel-title a {
+    color: black;
+    text-decoration: none;
+}
+
+.mobile-carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.mobile-carousel-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: none;
+    background-color: #b6b6b6;
+    padding: 0;
+    cursor: pointer;
+}
+
+.mobile-carousel-dot.is-active {
+    background-color: #0360a7;
+}

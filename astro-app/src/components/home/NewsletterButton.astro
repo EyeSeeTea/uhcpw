@@ -1,0 +1,51 @@
+---
+import type { NewsletterContent } from "@shared/domain/entities/HomePageContent";
+
+interface Props {
+    content: NewsletterContent;
+}
+
+const { content } = Astro.props;
+---
+
+{content.buttonLink && content.buttonText && (
+    <a
+        class="newsletter-button"
+        href={content.buttonLink}
+        target="_blank"
+        rel="noreferrer"
+    >
+        {content.buttonText}
+    </a>
+)}
+
+<style>
+    .newsletter-button {
+        position: fixed;
+        inset-block-end: 0;
+        inset-inline-end: 20%;
+        z-index: 1800;
+        border: 1px solid #ff8d4e;
+        background-color: #ff8d4e;
+        border-radius: 4px 4px 0 0;
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1), -2px 0 4px rgba(0, 0, 0, 0.1), 2px 0 4px rgba(0, 0, 0, 0.1);
+        color: white;
+        padding: 6px 16px;
+        font-size: 0.875rem;
+        font-family: var(--font-family-base);
+        text-decoration: none;
+        text-transform: none;
+        cursor: pointer;
+    }
+
+    .newsletter-button:hover {
+        background-color: #ff5c01;
+        border-color: #ff5c01;
+    }
+
+    @media (max-width: 600px) {
+        .newsletter-button {
+            inset-inline-end: 10%;
+        }
+    }
+</style>

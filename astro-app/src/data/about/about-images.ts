@@ -3,7 +3,12 @@ import sharp from "sharp";
 import type { D2Api } from "@shared/types/d2-api";
 import type { PersonState } from "./about-data";
 import type { OfficeInfo } from "@shared/domain/entities/about/OfficeInfo";
-import { downloadImages, ImageDownloadOptions, type ImageMap } from "@/lib/image-downloader";
+import {
+    downloadImages,
+    isRemoteImageUrl,
+    ImageDownloadOptions,
+    type ImageMap,
+} from "@/lib/image-downloader";
 import { AVATAR_FALLBACK } from "./about-data";
 
 export interface OfficeImageResult {
@@ -27,10 +32,6 @@ const OFFICE_IMAGE_OPTIONS = {
     fit: "inside" as const,
     outputSubdir: "about/content",
 } satisfies ImageDownloadOptions;
-
-function isRemoteImageUrl(url: string): boolean {
-    return typeof url === "string" && url.startsWith("http");
-}
 
 /**
  * Downloads and optimizes all person images (team + experts) at build time.

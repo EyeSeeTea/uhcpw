@@ -1,0 +1,162 @@
+---
+import { Image } from "astro:assets";
+import SectionHeader from "./SectionHeader.astro";
+import SectionBlock from "./SectionBlock.astro";
+import SectionDivider from "./SectionDivider.astro";
+import bubblePatternWhite from "@/assets/bubble-pattern-white.png";
+import indicatorExplorerIcon from "@/assets/indicator-explorer.svg";
+import policyExplorerIcon from "@/assets/policy-explorer.svg";
+import type { ExplorersContent } from "@shared/domain/entities/HomePageContent";
+
+interface Props {
+    content: ExplorersContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section>
+    <SectionHeader
+        header={content.title}
+        subtitle={content.subtitle}
+        bubblePosition="right"
+    />
+
+    <div class="columns">
+        <div class="indicator-explorer">
+            <Image
+                class="bubble-img"
+                src={bubblePatternWhite}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+            />
+
+            <div class="column-content">
+                <div class="content-area">
+                    <SectionBlock title={content.indicator.title} text={content.indicator.text} />
+                    <div class="button-container">
+                        <a class="cta-button" href={content.indicator.buttonLink || ""}>
+                            {content.indicator.buttonText}
+                        </a>
+                    </div>
+                </div>
+                <div class="icon-area">
+                    <Image class="explorer-icon" src={indicatorExplorerIcon} alt="Indicator explorer" />
+                </div>
+            </div>
+        </div>
+
+        <div class="policy-explorer">
+            <div class="column-content">
+                <div class="content-area">
+                    <SectionBlock title={content.policy.title} text={content.policy.text} />
+                    <div class="button-container">
+                        <a class="cta-button" href={content.policy.buttonLink || ""}>
+                            {content.policy.buttonText}
+                        </a>
+                    </div>
+                </div>
+                <div class="icon-area">
+                    <Image class="explorer-icon" src={policyExplorerIcon} alt="Policy explorer" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <SectionDivider />
+</section>
+
+<style>
+    .columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 959px) {
+        .columns {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .indicator-explorer {
+        background: #fe8c4f;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .policy-explorer {
+        background: var(--color-accent-primary, #0089d6);
+        color: white;
+    }
+
+    .bubble-img {
+        position: absolute;
+        top: -130px;
+        left: -400px;
+        height: auto;
+        pointer-events: none;
+        opacity: 0.9;
+    }
+
+    .column-content {
+        width: 100%;
+        padding: 65px 55px;
+        display: flex;
+        justify-content: space-between;
+        gap: 5px;
+        position: relative;
+    }
+
+    @media (max-width: 959px) {
+        .column-content {
+            padding: 40px 30px;
+        }
+    }
+
+    .content-area {
+        flex: 1;
+    }
+
+    .icon-area {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .explorer-icon {
+        width: auto;
+        height: auto;
+    }
+
+    @media (max-width: 1440px) {
+        .explorer-icon {
+            width: 100px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .explorer-icon {
+            width: 100px;
+        }
+    }
+
+    .button-container {
+        margin-top: 30px;
+    }
+
+    .cta-button {
+        box-sizing: content-box;
+        color: var(--color-accent-primary, #0089d6);
+        background-color: white;
+        font-size: 16px;
+        border-radius: 30px;
+        padding: 10px 40px;
+        width: fit-content;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        text-transform: none;
+        text-decoration: none;
+    }
+</style>

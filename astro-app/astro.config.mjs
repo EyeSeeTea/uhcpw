@@ -39,6 +39,13 @@ export default defineConfig({
         ],
     },
     vite: {
+        define: {
+            // Shared `src/app-config.ts` reads `process.env.REACT_APP_BASE_PATH`
+            // (CRA-style static replacement). Vite does not replace it, so the
+            // browser would throw `process is not defined` on first import.
+            // Astro owns routing, so the base path is always "/".
+            "process.env.REACT_APP_BASE_PATH": JSON.stringify("/"),
+        },
         plugins: [
             // Compat patches for shared-code transitive dependencies with broken ESM.
             // Astro's prerender build externalizes node_modules, and Node's ESM loader then
@@ -46,6 +53,21 @@ export default defineConfig({
             // named exports. These deps are pulled in by getCompositionRoot() but are not
             // used by the build-time data fetching use cases (method.get, about.getPersons,
             // about.getOfficeInfo), so stubs/redirects are safe.
+            // Force ?url for SVG imports from the shared SPA source tree.
+            // Without this, Astro's image integration converts SVGs to ImageMetadata
+            // objects, which breaks <img src={svg}> in React components like
+            // HomePagePanel and CountryPanel.
+            {
+                name: "shared-svg-url",
+                enforce: "pre",
+                async resolveId(id, importer) {
+                    if (id.endsWith(".svg") && !id.includes("?") && importer?.includes("/src/webapp/")) {
+                        const resolved = await this.resolve(id + "?url", importer, { skipSelf: true });
+                        return resolved;
+                    }
+                    return null;
+                },
+            },
             {
                 name: "compat-shared-deps",
                 enforce: "pre",
@@ -61,6 +83,9 @@ export default defineConfig({
                     if (id.endsWith("utils/futures") || id.endsWith("utils/futures.ts")) {
                         return "\0compat:futures";
                     }
+                    // material-ui v0 Divider requires MuiThemeProvider context.
+                    // Stub with a plain <hr> to avoid pulling in the v0 theme system.
+                    if (id === "material-ui") return "\0stub:material-ui-v0";
                     return null;
                 },
                 load(id) {
@@ -68,6 +93,7 @@ export default defineConfig({
                     if (id === "\0stub:d2-ui-locales") return "export default {};";
                     if (id === "\0stub:dhis2-analytics") return "export const getRelativePeriodsOptionsById = () => ({}); export const WEEKLY = ''; export const DAILY = ''; export class Analytics {} export const layoutGetDimensionItems = () => []; export const DIMENSION_ID_PERIOD = ''; export const WEEKS_THIS_YEAR = ''; export const COLOR_SET_DEFAULT = ''; export const isYearOverYear = () => false;";
                     if (id === "\0compat:futures") return "import { Future } from '@shared/domain/entities/Future'; export function apiToFuture(res) { return Future.fromComputation((resolve, reject) => { res.getData().then(resolve).catch(err => reject(err ? err.message : 'Unknown error')); return () => res.cancel(); }); }";
+                    if (id === "\0stub:material-ui-v0") return "import React from 'react'; export const Divider = (props) => React.createElement('hr', { style: { backgroundColor: 'white', border: 'none', height: '1px', ...props.style } });";
                     return null;
                 },
             },
@@ -78,6 +104,11 @@ export default defineConfig({
             noExternal: ["@dhis2/analytics", "@eyeseetea/d2-ui-components"],
         },
         resolve: {
+            // Force a single React instance. Root node_modules contains React 17
+            // (SPA); astro-app/node_modules contains React 18. Without dedupe,
+            // MUI (resolved from root) would pull React 17 while the island uses
+            // React 18 — breaking context propagation (ThemeProvider → Button).
+            dedupe: ["react", "react-dom"],
             alias: {
                 "@": path.resolve(import.meta.dirname, "./src"),
                 "@shared/domain": path.resolve(import.meta.dirname, "../src/domain"),
