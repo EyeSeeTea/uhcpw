@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { MARKER_RADIUS } from "../customization/chartConstants";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
@@ -112,6 +113,10 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                 stacking: "normal",
             },
             scatter: {
+                marker: {
+                    symbol: "circle",
+                    radius: MARKER_RADIUS,
+                },
                 enableMouseTracking: false,
                 dataLabels: {
                     enabled: true,
