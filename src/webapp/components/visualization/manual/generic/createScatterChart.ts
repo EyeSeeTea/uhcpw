@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { MARKER_RADIUS } from "../../customization/chartConstants";
 import { Visualization } from "../../../../../domain/entities/indicator-explorer/Visualization";
 import { baseChartOptions } from "./baseChartOptions";
 import { getEU27Label } from "../../customization/charts/utils/getEU27Label";
@@ -76,6 +77,7 @@ export const createScatterChart: ({
             type: "scatter",
             marker: {
                 symbol: "circle",
+                radius: MARKER_RADIUS,
             },
         };
     });

@@ -103,9 +103,6 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
         ],
         legend: {
             ...baseLegend,
-            symbolHeight: 10,
-            symbolWidth: 10,
-            symbolRadius: 0,
             width: 250,
             itemStyle: { ...baseLegend.itemStyle, whiteSpace: "normal", textOverflow: "none" },
         },

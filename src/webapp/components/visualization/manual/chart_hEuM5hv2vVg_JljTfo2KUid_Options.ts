@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { MARKER_RADIUS } from "../customization/chartConstants";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSourceMultiple } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
@@ -69,6 +70,7 @@ export const chart_hEuM5hv2vVg_JljTfo2KUid_Options: (
                 marker: {
                     enabled: true,
                     symbol: "circle",
+                    radius: MARKER_RADIUS,
                 },
                 yAxis: 1,
             };
@@ -129,9 +131,6 @@ export const chart_hEuM5hv2vVg_JljTfo2KUid_Options: (
         ],
         legend: {
             ...baseLegend,
-            symbolHeight: 13,
-            symbolWidth: 13,
-            symbolRadius: 0,
             width: 150,
             itemStyle: { ...baseLegend.itemStyle, whiteSpace: "normal", textOverflow: "none" },
         },

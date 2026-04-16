@@ -54,6 +54,10 @@ export type LegendCustomization = {
     layout?: "horizontal" | "proximate" | "vertical";
     reversed?: boolean;
     itemMarginTop?: number;
+    itemMarginBottom?: number;
+    symbolHeight?: number;
+    symbolWidth?: number;
+    symbolRadius?: number;
     itemStyle?: CSSProperties;
 };
 

@@ -1,5 +1,6 @@
 import _ from "lodash";
 
+import { MARKER_RADIUS } from "../customization/chartConstants";
 import { ChartSource } from "./chartOptions";
 import { createScatterChart, pos } from "./generic/createScatterChart";
 import { getChartSourceFilteredByLastAvailableYear } from "./utils/getChartSourceFilteredByLastAvailableYear";
@@ -108,6 +109,7 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
             data: serieData,
             marker: {
                 symbol: "circle",
+                radius: MARKER_RADIUS,
             },
         };
     });
