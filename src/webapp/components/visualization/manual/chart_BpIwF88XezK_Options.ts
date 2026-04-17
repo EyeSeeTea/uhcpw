@@ -20,6 +20,7 @@ export const chart_BpIwF88XezK_Options: (chartSource: ChartSource) => Highcharts
         seriesColors,
         currentYear: chartSource.currentYear,
         orderByValueInSerie: "S0rJgTIK3Gv",
+        stackedValuesUpTo100: true,
         useRegionColors: false,
         hideYear: true,
     });
@@ -31,13 +32,6 @@ export const chart_BpIwF88XezK_Options: (chartSource: ChartSource) => Highcharts
             title: {
                 text: "Current spending on health (%)",
                 style: { fontSize: "13px" },
-            },
-        },
-        plotOptions: {
-            ...chart.plotOptions,
-            column: {
-                ...chart.plotOptions?.column,
-                stacking: "normal",
             },
         },
     };
