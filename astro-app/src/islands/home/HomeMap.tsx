@@ -1,70 +1,37 @@
-import "mapbox-gl/dist/mapbox-gl.css";
-import "./HomeMap.css";
-import React, { useState, useCallback, useMemo, useEffect } from "react";
-import { MuiThemeProvider, StylesProvider } from "@material-ui/core/styles";
-import type { Country } from "@shared/domain/entities/Country";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import type { MainMapPanelContent } from "@shared/domain/entities/HomePageContent";
 import type { InitialCoordinates } from "@shared/webapp/components/home/map/MapState";
-import { AppContext } from "@shared/webapp/contexts/app-context";
-import { HomePagePanel } from "@shared/webapp/components/home/home-page-panel/HomePagePanel";
-import { CountryPanel } from "@shared/webapp/components/home/country-panel/CountryPanel";
-import { muiTheme } from "@shared/webapp/pages/app/themes/dhis2.theme";
-import { buildAstroAnalyticsContext } from "./analytics-context";
-import { MapView } from "./MapView";
+import type { HomeMarkerCountry } from "@/data/home/home-data";
 
 export interface HomeMapProps {
-    markers: GeoJSON.FeatureCollection<GeoJSON.Point, Country>;
+    markers: GeoJSON.FeatureCollection<GeoJSON.Point, HomeMarkerCountry>;
     homePagePanelContent: MainMapPanelContent;
     initialData: InitialCoordinates;
 }
 
-const MOBILE_QUERY = "(max-width: 959px)";
+const DESKTOP_QUERY = "(min-width: 960px)";
 
-export const HomeMap: React.FC<HomeMapProps> = ({
-    markers,
-    homePagePanelContent,
-    initialData,
-}) => {
-    const [selectedCountry, setSelectedCountry] = useState<Country | undefined>();
-    const [isMobile, setIsMobile] = useState(false);
+// Lazy-import so the Mapbox + MUI bundles only download on desktop viewports.
+const HomeMapDesktop = lazy(() =>
+    import("./HomeMapDesktop").then(m => ({ default: m.HomeMapDesktop })),
+);
+
+export const HomeMap: React.FC<HomeMapProps> = props => {
+    const [isDesktop, setIsDesktop] = useState(false);
 
     useEffect(() => {
-        const mq = window.matchMedia(MOBILE_QUERY);
-        setIsMobile(mq.matches);
-        const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        const mq = window.matchMedia(DESKTOP_QUERY);
+        setIsDesktop(mq.matches);
+        const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
         mq.addEventListener("change", onChange);
         return () => mq.removeEventListener("change", onChange);
     }, []);
 
-    const onSelectedCountryChange = useCallback((country?: Country) => {
-        setSelectedCountry(country);
-    }, []);
-
-    const analyticsContext = useMemo(() => buildAstroAnalyticsContext(), []);
+    if (!isDesktop) return null;
 
     return (
-        <StylesProvider injectFirst>
-            <MuiThemeProvider theme={muiTheme}>
-                <AppContext.Provider value={analyticsContext}>
-                    <div className="home-map-container">
-                        <MapView
-                            initialData={initialData}
-                            markers={markers}
-                            onSelectedCountryChange={onSelectedCountryChange}
-                            isMobile={isMobile}
-                        >
-                            {selectedCountry ? (
-                                <CountryPanel country={selectedCountry} />
-                            ) : (
-                                <HomePagePanel
-                                    mainPanelContent={homePagePanelContent}
-                                    isMobile={isMobile}
-                                />
-                            )}
-                        </MapView>
-                    </div>
-                </AppContext.Provider>
-            </MuiThemeProvider>
-        </StylesProvider>
+        <Suspense fallback={null}>
+            <HomeMapDesktop {...props} />
+        </Suspense>
     );
 };

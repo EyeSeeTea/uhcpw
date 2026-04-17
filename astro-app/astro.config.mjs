@@ -6,6 +6,10 @@ import path from "node:path";
 import { loadEnv } from "vite";
 
 const env = loadEnv(process.env.NODE_ENV ?? "", process.cwd(), "");
+
+// Directory that @shared/webapp resolves to. Used by the SVG plugin below to
+// scope its rewrite to shared SPA code only.
+const sharedWebappDir = path.resolve(import.meta.dirname, "../src/webapp") + path.sep;
 /** Inline Astro integration that logs build start/end with total duration. */
 function buildLogger() {
     let start = 0;
@@ -61,7 +65,7 @@ export default defineConfig({
                 name: "shared-svg-url",
                 enforce: "pre",
                 async resolveId(id, importer) {
-                    if (id.endsWith(".svg") && !id.includes("?") && importer?.includes("/src/webapp/")) {
+                    if (id.endsWith(".svg") && !id.includes("?") && importer?.startsWith(sharedWebappDir)) {
                         const resolved = await this.resolve(id + "?url", importer, { skipSelf: true });
                         return resolved;
                     }

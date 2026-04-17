@@ -43,6 +43,26 @@ Small boxes (Regional overview, Countries & areas, Methods, Resources) SHALL ren
 - **WHEN** a big box renders at 390px viewport
 - **THEN** its outer height is between 186px and 190px
 
+### Requirement: Mobile map hero overlays static copy and YouTube iframe
+A static `MobileMapHero.astro` component SHALL overlay the mobile `.map-section` with the SPA's mobile panel content: the `mainMapPanel` description (rendered from markdown) and the YouTube `<iframe>` from `content.videoLink`. The overlay SHALL match the SPA's visual treatment:
+
+- Background color `#0089d6` at `opacity: 0.9`, `position: absolute; inset: 0`.
+- Outer padding `24px`, inner wrapper padding `16px` (total 40px from the edge).
+- Typography: `font-family: Lato, Roboto, Helvetica, Arial, sans-serif`, `font-size: 16px`, `font-weight: 400`, `line-height: 24px`, `color: white`, no `text-shadow`.
+- Description paragraphs: `margin: 0 0 16px`.
+- Video wrapper: `position: relative`, `width: 100%`, `max-width: 70ch`, `margin: 40px 0`, `aspect-ratio: 16 / 9`, `overflow: hidden`.
+- Iframe: no `loading` attribute (matches SPA), `allowfullscreen`, `referrerpolicy="strict-origin-when-cross-origin"`, absolute-positioned to fill the wrapper.
+
+The component SHALL be rendered inside a `.mobile-only` wrapper in `index.astro` whose scoped CSS hides it at `>= 960px` (`display: none`). The component itself does not carry the media query, so the wrapper is the single source of truth for the mobile-only breakpoint.
+
+#### Scenario: Mobile hero computed styles match SPA
+- **WHEN** the hero renders at viewport < 960px
+- **THEN** a paragraph inside `.mobile-map-hero .description` computes `font-family` starting with `Lato`, `font-size: 16px`, `line-height: 24px`, `margin: 0px 0px 16px`, and `text-shadow: none`
+
+#### Scenario: Mobile hero background overlay
+- **WHEN** the hero renders at viewport < 960px
+- **THEN** `.mobile-map-hero` computes `background-color: rgb(0, 137, 214)` and `opacity: 0.9`, overlaying the static map image underneath
+
 ### Requirement: Mobile carousel uses CSS scroll-snap with bullet pagination
 The mobile carousel island SHALL use a horizontally scrolling track with `scroll-snap-type: x mandatory` and `scroll-snap-align: center` per slide. Bullet dots below the track SHALL reflect and control the active slide. Native scrollbars SHALL be hidden. The island SHALL ship without third-party carousel dependencies.
 

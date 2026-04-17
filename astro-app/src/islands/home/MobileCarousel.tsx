@@ -1,6 +1,6 @@
 import "./MobileCarousel.css";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import type { HomeResourceState } from "@/data/home/home-data";
+import { resourceTagHref, type HomeResourceState } from "@/data/home/home-data";
 
 export interface MobileCarouselProps {
     items: ReadonlyArray<HomeResourceState>;
@@ -24,10 +24,19 @@ export const MobileCarousel: React.FC<MobileCarouselProps> = ({
         const onScroll = () => {
             cancelAnimationFrame(frame);
             frame = requestAnimationFrame(() => {
-                const slideWidth = track.scrollWidth / Math.max(items.length, 1);
-                if (slideWidth <= 0) return;
-                const index = Math.round(track.scrollLeft / slideWidth);
-                setActiveIndex(Math.max(0, Math.min(items.length - 1, index)));
+                // Slides can have different widths (is-full-width for news), so
+                // derive the active index from each child's own offsetLeft
+                // rather than a uniform slide width.
+                const children = Array.from(track.children) as HTMLElement[];
+                const scrollLeft = track.scrollLeft;
+                const nearest = children.reduce(
+                    (best, child, i) => {
+                        const delta = Math.abs(child.offsetLeft - scrollLeft);
+                        return delta < best.delta ? { delta, index: i } : best;
+                    },
+                    { delta: Infinity, index: 0 },
+                );
+                setActiveIndex(nearest.index);
             });
         };
 
@@ -38,15 +47,13 @@ export const MobileCarousel: React.FC<MobileCarouselProps> = ({
         };
     }, [items.length]);
 
-    const goTo = useCallback(
-        (index: number) => {
-            const track = trackRef.current;
-            if (!track) return;
-            const slideWidth = track.scrollWidth / Math.max(items.length, 1);
-            track.scrollTo({ left: index * slideWidth, behavior: "smooth" });
-        },
-        [items.length],
-    );
+    const goTo = useCallback((index: number) => {
+        const track = trackRef.current;
+        if (!track) return;
+        const child = track.children[index] as HTMLElement | undefined;
+        if (!child) return;
+        track.scrollTo({ left: child.offsetLeft, behavior: "smooth" });
+    }, []);
 
     if (items.length === 0) return null;
 
@@ -101,7 +108,7 @@ const ResourceSlide: React.FC<{ item: HomeResourceState; hideTag: boolean }> = (
                 <div className="mobile-carousel-body">
                     <div className="mobile-carousel-meta">
                         {!hideTag && (
-                            <a className="mobile-carousel-tag" href={`/resources/${item.kind}`}>
+                            <a className="mobile-carousel-tag" href={resourceTagHref(item.kind)}>
                                 {item.tagLabel}
                             </a>
                         )}

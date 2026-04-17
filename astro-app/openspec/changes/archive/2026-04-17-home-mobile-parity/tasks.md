@@ -37,7 +37,16 @@
 - [ ] 6.2 [FE] Visual diff at 360px and 768px: regressions check
 - [ ] 6.3 [FE] Verify `astro build` produces identical desktop HTML for the box grid and map sections
 - [x] 6.4 [FE] Run `yarn lint` and `yarn test` — all pass (74/74 tests)
-- [ ] 6.5 [CR] Code review: confirm carousel island is dependency-free, no SPA context leaks, desktop bundle unchanged
+- [x] 6.5 [CR] Code review: confirm carousel island is dependency-free, no SPA context leaks, desktop bundle unchanged
+
+## 7a. Mobile map static pivot (supersedes §1)
+
+- [x] 7a.1 [FE] Pivot `HomeMap.tsx`: render `null` below 960px; lazy-import `HomeMapDesktop` only on desktop so Mapbox/MUI bundles do not ship to mobile
+- [x] 7a.2 [FE] Extract a static mapbox backdrop from the SPA and save as `src/assets/mapbox-map-background.png`
+- [x] 7a.3 [FE] In `index.astro`, render the static image inside `.map-section` with `widths={[480, 768, 960]}` and `sizes="(max-width: 959px) 100vw, 0px"`; hide it at `>= 960px`
+- [x] 7a.4 [FE] Add `src/components/home/MobileMapHero.astro` with the `#0089d6` opacity-0.9 overlay, `24px` outer + `16px` inner padding, Lato 16px/24px typography, no text-shadow
+- [x] 7a.5 [FE] Embed the YouTube iframe with SPA-matching wrapper styles: `max-width: 70ch`, `margin: 40px 0`, `aspect-ratio: 16 / 9`; iframe has no `loading` attribute
+- [x] 7a.6 [FE] Verify at 390px: computed paragraph styles match the SPA (Lato, 16px, 24px, `margin: 0 0 16px`, no text-shadow); overlay background is `rgb(0, 137, 214)` at `opacity: 0.9`
 
 ## 7. Specs
 

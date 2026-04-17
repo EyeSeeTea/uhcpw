@@ -34,10 +34,10 @@ describe("Astro build output (smoke)", () => {
     it.skipIf(!existsSync(indexHtml))("rendered index.html includes the gtag loader and config", () => {
         const html = readFileSync(indexHtml, "utf8");
         expect(html).toMatch(/<script[^>]*src="https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=G-[A-Z0-9]+"/);
-        // Astro's define:vars injects `const gaTagId = "..."` and the script
-        // references the variable, so match either the literal or variable form.
-        expect(html).toMatch(
-            new RegExp(`gtag\\(["']config["'],\\s*(?:["']${PROD_TAG}["']|gaTagId)\\)`),
-        );
+        // Astro's define:vars injects `const gaTagId = "G-..."` and the script
+        // references the variable. Assert both pieces separately so a build
+        // that forgot to substitute the value can't pass by accident.
+        expect(html).toMatch(new RegExp(`const\\s+gaTagId\\s*=\\s*["']${PROD_TAG}["']`));
+        expect(html).toMatch(/gtag\(["']config["'],\s*gaTagId\)/);
     });
 });

@@ -110,6 +110,23 @@ isMobile = mq.matches (subscribed to "change")
   └─ HomePagePanel    ── isMobile prop drives panel variant
 ```
 
+### 8. Pivot: static image + static hero on mobile (supersedes decisions §1–§3)
+
+**Choice:** After initial delivery, the mobile map branch was replaced with a fully static approach. `HomeMap.tsx` now returns `null` below 960px and lazy-imports `HomeMapDesktop` only on desktop. Mobile renders a static PNG (`src/assets/mapbox-map-background.png`, extracted from the SPA's Mapbox view) inside `.map-section`, plus a new Astro component `MobileMapHero.astro` that reproduces the SPA's mobile panel (description + YouTube iframe) over a `#0089d6` overlay at `opacity: 0.9`.
+
+**Why:** Hydrating Mapbox GL + MUI on mobile — even to render a decorative backdrop and a trimmed panel — shipped a large JS payload that users never interacted with. A static image preserves the SPA's look while cutting the mobile JS budget for the map section to zero. The side-panel's `HomePagePanel` mobile variant is a few hundred bytes of static HTML in Astro; there is no benefit to driving it from a React component once markers are gone.
+
+**Trade-offs:**
+
+- The static PNG has to be re-exported from the SPA if the Mapbox styling or country markers change. Acceptable: the SPA mobile map is already a static-feeling backdrop.
+- `matchMedia("(min-width: 960px)")` still drives desktop hydration, so the map still live-updates on resize.
+
+**What this replaces:**
+
+- Decision §1 (`matchMedia` passing `isMobile` to `MapView` / `HomePagePanel`) — no longer needed; those components never render on mobile.
+- Decision §2 (skip marker rendering when `isMobile`) — n/a; `MapView` never runs on mobile.
+- Decision §3 (wire `isMobile` into `HomePagePanel`) — replaced by the static `MobileMapHero.astro`.
+
 ## Risks / Trade-offs
 
 - **`matchMedia` evaluated post-hydration causes one-frame flicker on resize across the breakpoint.** Acceptable: users almost never cross the 960px boundary mid-session, and the side panel is opacity 0.9 so the swap is visually subtle.

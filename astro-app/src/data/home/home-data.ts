@@ -2,11 +2,17 @@ import type { HomePageContent } from "@shared/domain/entities/HomePageContent";
 import type { Country } from "@shared/domain/entities/Country";
 import type { GeneralContent } from "@shared/domain/entities/GeneralContent";
 import type { Resource } from "@shared/domain/entities/resources/Resource";
-import { countriesToGeoJson } from "@shared/webapp/components/home/map/utils/countriesToGeoJson";
 import { getServerCompositionRoot, getServerD2Api } from "@/infra/composition-root.server";
 import { runFuture } from "@/infra/future-bridge";
 import { createLogger, startTimer } from "@/lib/logger";
 import { downloadHomeResourceImages } from "./home-images";
+
+/** Fields the home-page map UI reads. Anything else is stripped from the
+ * marker payload before it's serialized into the SSR HTML. */
+export type HomeMarkerCountry = Pick<
+    Country,
+    "id" | "name" | "status" | "summary" | "coordinates"
+>;
 
 const log = createLogger("home-data");
 
@@ -26,7 +32,7 @@ export type HomePageData = {
     resources: ReadonlyArray<HomeResourceState>;
     mobileResources: ReadonlyArray<HomeResourceState>;
     news: ReadonlyArray<HomeResourceState>;
-    markers: GeoJSON.FeatureCollection<GeoJSON.Point, Country>;
+    markers: GeoJSON.FeatureCollection<GeoJSON.Point, HomeMarkerCountry>;
     initialMapData: { center: [number, number]; maxZoom: number; minZoom: number; zoom: number };
     generalContent: GeneralContent;
 };
@@ -45,6 +51,10 @@ const TAG_LABELS: Record<HomeResourceState["kind"], string> = {
     multimedia: "Multimedia",
 };
 
+export function resourceTagHref(kind: HomeResourceState["kind"]): string {
+    return `/resources/${kind}`;
+}
+
 function resourceUrl(resource: Resource): string {
     switch (resource.kind) {
         case "news":
@@ -56,92 +66,81 @@ function resourceUrl(resource: Resource): string {
     }
 }
 
-export function buildHomeNews(resources: ReadonlyArray<Resource>): ReadonlyArray<HomeResourceState> {
-    const states: HomeResourceState[] = [];
-    for (const resource of resources) {
-        if (resource.kind !== "news") continue;
-        if (!resource.favouriteSection) continue;
-        const url = resourceUrl(resource);
-        if (!url) continue;
-        states.push({
-            id: resource.id,
-            title: resource.title,
-            imageOriginal: resource.imageOriginal,
-            date: resource.date,
-            kind: resource.kind,
-            url,
-            favouriteHomeOrder: resource.favouriteSectionOrder,
-            tagLabel: TAG_LABELS[resource.kind],
-        });
-    }
+function toHomeResourceState(resource: Resource, order: number): HomeResourceState | null {
+    const url = resourceUrl(resource);
+    if (!url) return null;
+    return {
+        id: resource.id,
+        title: resource.title,
+        imageOriginal: resource.imageOriginal,
+        date: resource.date,
+        kind: resource.kind,
+        url,
+        favouriteHomeOrder: order,
+        tagLabel: TAG_LABELS[resource.kind],
+    };
+}
 
-    return states.sort((a, b) => a.favouriteHomeOrder - b.favouriteHomeOrder).slice(0, 6);
+export function buildHomeNews(resources: ReadonlyArray<Resource>): ReadonlyArray<HomeResourceState> {
+    return resources
+        .flatMap(r => {
+            if (r.kind !== "news" || !r.favouriteSection) return [];
+            const state = toHomeResourceState(r, r.favouriteSectionOrder);
+            return state ? [state] : [];
+        })
+        .sort((a, b) => a.favouriteHomeOrder - b.favouriteHomeOrder)
+        .slice(0, 6);
 }
 
 export function buildHomeResources(
     resources: ReadonlyArray<Resource>,
     options: { excludeNews?: boolean } = {},
 ): ReadonlyArray<HomeResourceState> {
-    const byId = new Map<string, Resource>();
-    for (const resource of resources) {
-        if (!resource.favouriteHome) continue;
-        if (options.excludeNews && resource.kind === "news") continue;
-        const current = byId.get(resource.id);
+    const byId = resources.reduce((acc, resource) => {
+        if (!resource.favouriteHome) return acc;
+        if (options.excludeNews && resource.kind === "news") return acc;
+        const current = acc.get(resource.id);
         if (!current || RESOURCES_PRIORITY[resource.kind] < RESOURCES_PRIORITY[current.kind]) {
-            byId.set(resource.id, resource);
+            acc.set(resource.id, resource);
         }
-    }
+        return acc;
+    }, new Map<string, Resource>());
 
-    const states: HomeResourceState[] = [];
-    for (const resource of byId.values()) {
-        const url = resourceUrl(resource);
-        if (!url) continue;
-        states.push({
-            id: resource.id,
-            title: resource.title,
-            imageOriginal: resource.imageOriginal,
-            date: resource.date,
-            kind: resource.kind,
-            url,
-            favouriteHomeOrder: resource.favouriteHomeOrder,
-            tagLabel: TAG_LABELS[resource.kind],
-        });
-    }
-
-    return states.sort((a, b) => a.favouriteHomeOrder - b.favouriteHomeOrder).slice(0, 6);
-}
-
-// The home-page CountryPanel only reads {id, name, status, summary, coordinates}.
-// We strip the rest (sliderInfo, children tree, parents, flag, longName, etc.)
-// before the GeoJSON is serialized into the SSR HTML so the marker payload
-// stays small.
-function slimCountryForMarker(country: Country): Country {
-    return {
-        id: country.id,
-        name: country.name,
-        status: country.status,
-        summary: country.summary,
-        coordinates: country.coordinates,
-        longName: "",
-        code: "",
-        iso3Code: "",
-        parents: [],
-        flag: "",
-        showCountryFlag: false,
-        sliderInfo: {
-            gapsSection: { sectionName: "", sourceText: "", content: [] },
-            finProtecSection: { sectionName: "", sourceText: "", content: [] },
-        },
-        isInCountryPage: false,
-        currencyCode: "",
-    };
+    return Array.from(byId.values())
+        .flatMap(r => {
+            const state = toHomeResourceState(r, r.favouriteHomeOrder);
+            return state ? [state] : [];
+        })
+        .sort((a, b) => a.favouriteHomeOrder - b.favouriteHomeOrder)
+        .slice(0, 6);
 }
 
 export function buildMapMarkers(
     countries: ReadonlyArray<Country>,
-): GeoJSON.FeatureCollection<GeoJSON.Point, Country> {
-    const markerCountries = countries.filter(c => c.summary).map(slimCountryForMarker);
-    return countriesToGeoJson(markerCountries);
+): GeoJSON.FeatureCollection<GeoJSON.Point, HomeMarkerCountry> {
+    return {
+        type: "FeatureCollection",
+        features: countries.flatMap(country =>
+            country.summary && country.coordinates
+                ? [
+                      {
+                          type: "Feature" as const,
+                          properties: {
+                              id: country.id,
+                              name: country.name,
+                              status: country.status,
+                              summary: country.summary,
+                              coordinates: country.coordinates,
+                          },
+                          geometry: {
+                              type: "Point" as const,
+                              coordinates: country.coordinates,
+                          },
+                      },
+                  ]
+                : [],
+        ),
+    };
 }
 
 export async function getHomePageData(): Promise<HomePageData> {

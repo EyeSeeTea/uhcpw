@@ -17,7 +17,7 @@ const gridRows = Math.ceil(methods.length / 2);
 ---
 
 <Layout seo={seo} generalContent={generalContent}>
-    <link slot="head" rel="preload" href="/assets/map-background.jpg" as="image" media="(max-width: 600px)" fetchpriority="high" />
+    <link slot="head" rel="preload" href="/assets/map-background.jpg" as="image" media="(max-width: 960px)" fetchpriority="high" />
     <div class="title-banner" aria-label="Methods page header">
         <Image
             class="bubble-img"
@@ -90,7 +90,7 @@ const gridRows = Math.ceil(methods.length / 2);
         opacity: 0.9;
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 960px) {
         .title-banner {
             background: url("/assets/map-background.jpg") center;
         }

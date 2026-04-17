@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import { HomeMap } from "@/islands/home/HomeMap";
 import Explorers from "@/components/home/Explorers.astro";
@@ -7,8 +8,10 @@ import MethodsSection from "@/components/home/MethodsSection.astro";
 import ResourcesSection from "@/components/home/ResourcesSection.astro";
 import NewsletterButton from "@/components/home/NewsletterButton.astro";
 import MobileCardGrid from "@/components/home/MobileCardGrid.astro";
+import MobileMapHero from "@/components/home/MobileMapHero.astro";
 import MobileResourcesSection from "@/components/home/MobileResourcesSection.astro";
 import MobileNewsSection from "@/components/home/MobileNewsSection.astro";
+import mapBackground from "@/assets/mapbox-map-background.png";
 import { getHomePageData } from "@/data/home/home-data";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
 
@@ -20,6 +23,17 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
 
 <Layout seo={seo} generalContent={generalContent}>
     <section class="map-section">
+        <Image
+            class="mobile-map-static"
+            src={mapBackground}
+            alt=""
+            loading="eager"
+            widths={[480, 768, 960]}
+            sizes="(max-width: 959px) 100vw, 0px"
+        />
+        <div class="mobile-only">
+            <MobileMapHero content={homePageContent.mainMapPanel} />
+        </div>
         <HomeMap
             client:only="react"
             markers={markers}
@@ -49,6 +63,7 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
 
 <style>
     .map-section {
+        position: relative;
         height: 80vh;
         min-height: 620px;
         background-color: #a3cbe4;
@@ -69,6 +84,29 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
     @media (max-width: 500px) {
         .map-section {
             min-height: 550px;
+        }
+    }
+
+    .mobile-map-static {
+        display: none;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .mobile-only {
+        display: none;
+    }
+
+    @media (max-width: 959px) {
+        .mobile-map-static {
+            display: block;
+        }
+
+        .mobile-only {
+            display: block;
         }
     }
 

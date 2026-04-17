@@ -1,11 +1,14 @@
 import React, { useRef, useEffect, useCallback } from "react";
 import mapboxgl, { type LngLatLike } from "mapbox-gl";
-import type { Country } from "@shared/domain/entities/Country";
 import type { InitialCoordinates } from "@shared/webapp/components/home/map/MapState";
 import { fullStyle } from "@shared/webapp/components/home/map/style";
 import type { FinancialProtectionStatus } from "@shared/domain/entities/FinancialProtectionStatus";
+import type { HomeMarkerCountry } from "@/data/home/home-data";
 
+// Public token; safe to expose since it's scoped per domain. Falls back to the
+// legacy SPA token so builds work without any env configuration.
 mapboxgl.accessToken =
+    import.meta.env.PUBLIC_MAPBOX_TOKEN ||
     "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
 
 const markerStatusClass: Record<FinancialProtectionStatus, string> = {
@@ -19,9 +22,8 @@ const markerStatusClass: Record<FinancialProtectionStatus, string> = {
 
 export interface MapViewProps {
     initialData: InitialCoordinates;
-    markers: GeoJSON.FeatureCollection<GeoJSON.Point, Country>;
-    onSelectedCountryChange: (country?: Country) => void;
-    isMobile?: boolean;
+    markers: GeoJSON.FeatureCollection<GeoJSON.Point, HomeMarkerCountry>;
+    onSelectedCountryChange: (country?: HomeMarkerCountry) => void;
     children?: React.ReactNode;
 }
 
@@ -29,12 +31,18 @@ export const MapView: React.FC<MapViewProps> = ({
     initialData,
     markers,
     onSelectedCountryChange,
-    isMobile = false,
     children,
 }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const mapContainerRef = useRef<HTMLDivElement>(null);
     const mapRef = useRef<mapboxgl.Map | null>(null);
+
+    // Stable ref so the init effect below doesn't need to re-run when the
+    // parent passes a new callback identity.
+    const onSelectedCountryChangeRef = useRef(onSelectedCountryChange);
+    useEffect(() => {
+        onSelectedCountryChangeRef.current = onSelectedCountryChange;
+    }, [onSelectedCountryChange]);
 
     useEffect(() => {
         if (!mapContainerRef.current) return;
@@ -51,36 +59,33 @@ export const MapView: React.FC<MapViewProps> = ({
 
         mapRef.current = map;
 
-        if (!isMobile) {
-            map.on("load", () => {
-                markers.features.forEach(feature => {
-                    const el = document.createElement("div");
-                    el.className = `marker ${markerStatusClass[feature.properties.status]}`;
+        map.on("load", () => {
+            markers.features.forEach(feature => {
+                const el = document.createElement("div");
+                el.className = `marker ${markerStatusClass[feature.properties.status]}`;
 
-                    const marker = new mapboxgl.Marker(el)
-                        .setLngLat(feature.geometry.coordinates as LngLatLike)
-                        .addTo(map);
+                const marker = new mapboxgl.Marker(el)
+                    .setLngLat(feature.geometry.coordinates as LngLatLike)
+                    .addTo(map);
 
-                    marker.getElement().addEventListener("mouseenter", () => {
-                        onSelectedCountryChange(feature.properties);
-                    });
+                marker.getElement().addEventListener("mouseenter", () => {
+                    onSelectedCountryChangeRef.current(feature.properties);
                 });
             });
-        }
+        });
 
         return () => {
             map.remove();
         };
-    }, [initialData, markers, onSelectedCountryChange, isMobile]);
+    }, []);
 
     useEffect(() => {
-        if (isMobile) return;
         const el = containerRef.current;
         if (!el) return;
-        const handleLeave = () => onSelectedCountryChange(undefined);
+        const handleLeave = () => onSelectedCountryChangeRef.current(undefined);
         el.addEventListener("mouseleave", handleLeave);
         return () => el.removeEventListener("mouseleave", handleLeave);
-    }, [onSelectedCountryChange, isMobile]);
+    }, []);
 
     const zoomIn = useCallback(() => {
         const map = mapRef.current;

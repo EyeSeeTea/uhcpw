@@ -9,7 +9,7 @@ interface Props {
     officeText: string;
 }
 
-const { officeImage, officeImageWidth, officeImageHeight, officeVideo, officeText } = Astro.props;
+const { officeImage, officeImageWidth, officeVideo, officeText } = Astro.props;
 
 const textHtml = renderMarkdown(officeText);
 ---

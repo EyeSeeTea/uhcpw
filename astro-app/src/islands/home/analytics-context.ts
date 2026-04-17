@@ -1,13 +1,22 @@
 import type { AppContextState } from "@shared/webapp/contexts/app-context";
 import { getAnalytics } from "@/infra/analytics.client";
 
-function unavailable<T extends object>(field: string): T {
+// Shared webapp components defensively read fields from AppContext that this
+// Astro island doesn't wire up (api, currentUser). Throwing on access surfaces
+// as opaque React render errors, so we return undefined and warn once per
+// field to keep misuse visible in development without breaking the page.
+function stubField<T extends object>(field: string): T {
+    const warned = new Set<string>();
     return new Proxy({} as T, {
-        get() {
-            throw new Error(
-                `AppContextState.${field} is not available in Astro islands. ` +
-                    `Only compositionRoot.googleAnalytics is wired up.`,
-            );
+        get(_target, prop) {
+            const key = String(prop);
+            if (!warned.has(key)) {
+                warned.add(key);
+                console.warn(
+                    `AppContextState.${field}.${key} is not wired in Astro islands.`,
+                );
+            }
+            return undefined;
         },
     });
 }
@@ -29,8 +38,8 @@ export function buildAstroAnalyticsContext(): AppContextState {
     } as AppContextState["compositionRoot"];
 
     return {
-        api: unavailable<AppContextState["api"]>("api"),
-        currentUser: unavailable<AppContextState["currentUser"]>("currentUser"),
+        api: stubField<AppContextState["api"]>("api"),
+        currentUser: stubField<AppContextState["currentUser"]>("currentUser"),
         countries: [],
         themes: [],
         generalContent: undefined,
