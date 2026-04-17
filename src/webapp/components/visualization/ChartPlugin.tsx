@@ -175,11 +175,8 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
 
                     const merged = customization ? { ...serie, ...customization } : serie;
 
-                    if ("marker" in merged && merged.marker) {
-                        const marker = merged.marker as Record<string, unknown>;
-                        if (!("radius" in marker)) {
-                            return { ...merged, marker: { ...marker, radius: MARKER_RADIUS } };
-                        }
+                    if ("marker" in merged && merged.marker && !merged.marker.radius) {
+                        return { ...merged, marker: { ...merged.marker, radius: MARKER_RADIUS } };
                     }
 
                     return merged;
