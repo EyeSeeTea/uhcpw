@@ -25,6 +25,7 @@ import { chart_q5ldoFcgkSn_Options } from "./chart_q5ldoFcgkSn_Options";
 import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
 import { chart_MfLZYD6QCPy_Options } from "./chart_MfLZYD6QCPy_Options";
 import { chart_CdqVV1Ib0XS_Options } from "./chart_CdqVV1Ib0XS_Options";
+import { chart_BpIwF88XezK_Options } from "./chart_BpIwF88XezK_Options";
 import { chart_twyY1ulr7uD_Options } from "./chart_twyY1ulr7uD_Options";
 import { chart_fnOIi0bdISn_Options } from "./chart_fnOIi0bdISn_Options";
 import { chart_y4qAv6eW4nb_Options } from "./chart_y4qAv6eW4nb_Options";
@@ -91,6 +92,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     WDUV9ZrJiNC: chartSource => chart_WDUV9ZrJiNC_Options(chartSource),
     MfLZYD6QCPy: chartSource => chart_MfLZYD6QCPy_Options(chartSource),
     CdqVV1Ib0XS: chartSource => chart_CdqVV1Ib0XS_Options(chartSource),
+    BpIwF88XezK: chartSource => chart_BpIwF88XezK_Options(chartSource),
     twyY1ulr7uD: chartSource => chart_twyY1ulr7uD_Options(chartSource),
     y4qAv6eW4nb: chartSource => chart_y4qAv6eW4nb_Options(chartSource),
     oaYpnZIdm5C: chartSource => chart_oaYpnZIdm5C_Options(chartSource),

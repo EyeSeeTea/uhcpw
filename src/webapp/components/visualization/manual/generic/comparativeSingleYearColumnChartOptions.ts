@@ -15,6 +15,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
+    useRegionColors?: boolean;
+    hideYear?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -23,6 +25,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
+    useRegionColors = true,
+    hideYear,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -83,12 +87,12 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 const color =
                     (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
-                        : region?.code
+                        : useRegionColors && region?.code
                         ? { color: getColorOfRegionByRegionCode(region?.code) }
                         : undefined;
 
                 return {
-                    name: `${code} ${currentYear ?? ""}`,
+                    name: hideYear ? code : `${code} ${currentYear ?? ""}`,
                     y: value,
                     ...color,
                 };
