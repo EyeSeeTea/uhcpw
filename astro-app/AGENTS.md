@@ -102,6 +102,23 @@ Page (.astro frontmatter)
 3. Return a typed result object — the page destructures it in frontmatter
 4. Shared data (like `generalContent`) can use existing modules (e.g., `getGeneralContent()` from `@/data/general-content`)
 
+### Server-only imports and the island boundary
+
+Anything that reaches for Node APIs (`node:fs`, `node:crypto`, `sharp`, etc.) or the composition root is **server-only** and must never end up in a client bundle.
+
+Vite follows value imports transitively. If a React island imports a single value from a module that (directly or indirectly) imports a server-only module, the entire chain gets pulled into the client bundle and the build fails with errors like `"createHash" is not exported by "__vite-browser-external"`. Type-only imports are erased by the TypeScript transform and are safe.
+
+**Rule:** keep `<feature>-data.ts` (server orchestration: composition root, build-time fetching, image downloads) separate from `<feature>-resource.ts` / `<feature>-types.ts` (pure types + pure helpers with no runtime deps). Islands and components import from the pure leaf; only pages import from the server module.
+
+```
+data/<feature>/
+├── <feature>-data.ts      ← server only: getXxxPageData, composition root, image prefetch
+├── <feature>-resource.ts  ← pure: types, tag helpers, build* functions (no node:*, no sharp, no composition root)
+├── <feature>-images.ts    ← server only: downloadXxxImages (imports image-downloader)
+```
+
+When adding a helper that an island needs, put it in the pure leaf, not the `-data` module.
+
 ## Caveats & Technical Debt
 
 All migration caveats, workarounds, and technical debt are tracked in [`docs/migration-caveats.md`](./docs/migration-caveats.md). **Keep that file updated** whenever you encounter a new issue, caveat, or workaround during any migration phase.

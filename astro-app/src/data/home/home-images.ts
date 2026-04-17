@@ -1,5 +1,5 @@
 import type { D2Api } from "@shared/types/d2-api";
-import type { HomeResourceState } from "./home-data";
+import type { HomeResourceState } from "./home-resource";
 import {
     downloadImages,
     isRemoteImageUrl,
@@ -22,7 +22,7 @@ export async function downloadHomeResourceImages(
 
     const remapped = resources.map(resource => ({
         ...resource,
-        imageOriginal: imageMap.get(resource.imageOriginal) ?? resource.imageOriginal,
+        imageOriginal: imageMap.get(resource.imageOriginal) ?? "",
     }));
 
     return { resources: remapped, imageMap };

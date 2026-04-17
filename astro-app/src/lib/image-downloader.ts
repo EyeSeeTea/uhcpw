@@ -3,9 +3,12 @@ import path from "node:path";
 import { createHash } from "node:crypto";
 import sharp from "sharp";
 import type { D2Api } from "@shared/types/d2-api";
+import { createLogger } from "@/lib/logger";
 
 const FETCH_TIMEOUT_MS = 10000;
 const BASE_OUTPUT_DIR = "public/images";
+
+const log = createLogger("image-downloader");
 
 export function isRemoteImageUrl(url: string): boolean {
     return typeof url === "string" && url.startsWith("http");
@@ -44,23 +47,39 @@ function getAuthHeaders(): Record<string, string> {
 
 async function fetchImageBuffer(_api: D2Api, remoteUrl: string): Promise<Buffer | null> {
     const normalizedUrl = normalizeUrl(remoteUrl);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
 
     try {
-        const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
-
         const response = await fetch(normalizedUrl, {
             signal: controller.signal,
             headers: getAuthHeaders(),
         });
 
-        clearTimeout(timeout);
-        if (!response.ok) return null;
+        if (!response.ok) {
+            log.warn({ url: remoteUrl, status: response.status }, "Remote image prefetch failed");
+            return null;
+        }
 
         const buffer = Buffer.from(await response.arrayBuffer());
-        return buffer.length > 0 ? buffer : null;
-    } catch {
+        if (buffer.length === 0) {
+            log.warn({ url: remoteUrl, reason: "empty body" }, "Remote image prefetch failed");
+            return null;
+        }
+        return buffer;
+    } catch (err) {
+        const isTimeout =
+            controller.signal.aborted ||
+            (err instanceof Error && (err.name === "AbortError" || err.name === "TimeoutError"));
+        if (isTimeout) {
+            log.warn({ url: remoteUrl, reason: "timeout" }, "Remote image prefetch failed");
+        } else {
+            const message = err instanceof Error ? err.message : String(err);
+            log.warn({ url: remoteUrl, error: message }, "Remote image prefetch failed");
+        }
         return null;
+    } finally {
+        clearTimeout(timeout);
     }
 }
 
@@ -103,7 +122,9 @@ export async function downloadAndOptimizeImage(
             .toFile(outputFile);
 
         return publicPath;
-    } catch {
+    } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        log.warn({ url: remoteUrl, error: message }, "Remote image optimization failed");
         return null;
     }
 }

@@ -113,3 +113,27 @@ The crash is **import-time, not render-time**: Node's ESM loader fails while res
 This pattern lets the rest of the island (title, subtitle, experts grid) render with `client:load` and produce real static HTML at build time, instead of falling back to `client:only="react"`.
 
 **Resolution:** None upstream — the legacy `material-ui` v0 package is unmaintained and uses CJS-style directory imports that conflict with strict ESM resolution. Long-term: replace `TreeSelector` with a lightweight alternative that doesn't depend on MUI v0. Any future island that wraps a shared MUI-based component should follow the same dynamic-import-in-`useEffect` pattern.
+
+---
+
+## Phase 5: Home Page
+
+### Server-only modules must not be reachable from island value imports
+
+**Files:** `src/data/home/home-resource.ts` (pure leaf), `src/data/home/home-data.ts` (server orchestrator), `src/data/home/home-images.ts` (server image prefetch)
+
+Vite follows value imports transitively into the client bundle. If an island imports *any value* (even a trivial helper like `resourceTagHref`) from a module that transitively imports `@/lib/image-downloader` → `sharp` → `node:crypto`, the client build fails with:
+
+```
+"createHash" is not exported by "__vite-browser-external"
+```
+
+Type-only imports (`import type { … }`) are erased by TypeScript and are safe.
+
+**Workaround (this repo's pattern):** split per-feature data modules in two:
+- `<feature>-resource.ts` — pure types + pure helpers. Safe for islands and components.
+- `<feature>-data.ts` — server orchestration (`getXxxPageData()`, composition root, image prefetch). Pages only.
+
+Triggered by `MobileCarousel.tsx` importing `resourceTagHref` from `home-data.ts`, which transitively reached the image downloader via `home-images.ts`. Moving `resourceTagHref` and the pure `build*` helpers to `home-resource.ts` fixed the client bundle.
+
+**Resolution:** enforce with an ESLint `no-restricted-imports` rule for `src/islands/**` that blocks importing values from `@/data/**/*-data` (type imports still allowed) — follow-up.

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { D2Api } from "@shared/types/d2-api";
-import type { HomeResourceState } from "../home-data";
+import type { HomeResourceState } from "../home-resource";
 
 const downloadImagesMock = vi.fn();
 
@@ -48,13 +48,13 @@ describe("downloadHomeResourceImages", () => {
         expect(result[0]?.imageOriginal).toBe("/images/home/resources/a.avif");
     });
 
-    it("keeps the original URL when the optimizer returns no mapping", async () => {
+    it("clears the image URL when the optimizer returns no mapping so the UI renders a placeholder", async () => {
         const resources = [makeResource({ imageOriginal: "http://example.com/b.png" })];
         downloadImagesMock.mockResolvedValueOnce(new Map());
 
         const { resources: result } = await downloadHomeResourceImages(api, resources);
 
-        expect(result[0]?.imageOriginal).toBe("http://example.com/b.png");
+        expect(result[0]?.imageOriginal).toBe("");
     });
 
     it("only sends remote URLs to downloadImages (skips empty/local paths)", async () => {

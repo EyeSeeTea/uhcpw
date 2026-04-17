@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildHomeNews, buildHomeResources, buildMapMarkers } from "../home-data";
+import { buildHomeNews, buildHomeResources, buildMapMarkers } from "../home-resource";
 import type { Resource } from "@shared/domain/entities/resources/Resource";
 import type { Country } from "@shared/domain/entities/Country";
 

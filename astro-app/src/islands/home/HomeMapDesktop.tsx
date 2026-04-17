@@ -10,7 +10,7 @@ import { muiTheme } from "@shared/webapp/pages/app/themes/dhis2.theme";
 import { buildAstroAnalyticsContext } from "./analytics-context";
 import { MapView } from "./MapView";
 import type { HomeMapProps } from "./HomeMap";
-import type { HomeMarkerCountry } from "@/data/home/home-data";
+import type { HomeMarkerCountry } from "@/data/home/home-resource";
 
 export const HomeMapDesktop: React.FC<HomeMapProps> = ({
     markers,

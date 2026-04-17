@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, useEffect, useState } from "react";
 import type { MainMapPanelContent } from "@shared/domain/entities/HomePageContent";
 import type { InitialCoordinates } from "@shared/webapp/components/home/map/MapState";
-import type { HomeMarkerCountry } from "@/data/home/home-data";
+import type { HomeMarkerCountry } from "@/data/home/home-resource";
 
 export interface HomeMapProps {
     markers: GeoJSON.FeatureCollection<GeoJSON.Point, HomeMarkerCountry>;

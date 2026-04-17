@@ -3,7 +3,7 @@ import mapboxgl, { type LngLatLike } from "mapbox-gl";
 import type { InitialCoordinates } from "@shared/webapp/components/home/map/MapState";
 import { fullStyle } from "@shared/webapp/components/home/map/style";
 import type { FinancialProtectionStatus } from "@shared/domain/entities/FinancialProtectionStatus";
-import type { HomeMarkerCountry } from "@/data/home/home-data";
+import type { HomeMarkerCountry } from "@/data/home/home-resource";
 
 // Public token; safe to expose since it's scoped per domain. Falls back to the
 // legacy SPA token so builds work without any env configuration.

@@ -1,6 +1,6 @@
 import "./MobileCarousel.css";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { resourceTagHref, type HomeResourceState } from "@/data/home/home-data";
+import { resourceTagHref, type HomeResourceState } from "@/data/home/home-resource";
 
 export interface MobileCarouselProps {
     items: ReadonlyArray<HomeResourceState>;
