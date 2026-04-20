@@ -49,6 +49,7 @@ export const useStyles = makeStyles(theme => ({
         },
         "@media (max-width: 960px)": {
             paddingLeft: 0,
+            paddingRight: 0,
         },
     },
     rest: {
@@ -155,7 +156,7 @@ const FlexContainer = styled.div<{ isFullWidth?: boolean; isWrap?: boolean }>`
 
 const FlexLogoContainer = styled(FlexContainer)<{ isCountryPage?: boolean }>`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        padding-inline: ${props => (props.isCountryPage ? "5px" : "40px")};
+        padding-inline: ${props => (props.isCountryPage ? "5px" : "10px")};
     }
 `;
 
