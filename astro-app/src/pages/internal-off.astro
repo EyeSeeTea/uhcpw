@@ -1,0 +1,29 @@
+---
+// Layout-less opt-out page for the internal-traffic flag. Mirror of
+// `internal-on.astro`, but removes the flag instead of setting it.
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="robots" content="noindex,nofollow" />
+        <title>UHC Watch — Internal traffic: off</title>
+    </head>
+    <body>
+        <script is:inline>
+            try {
+                localStorage.removeItem("uhcpw_internal");
+            } catch {
+                // localStorage blocked — nothing to clear, proceed to redirect.
+            }
+            location.replace("/");
+        </script>
+        <noscript>
+            <p>
+                This page clears an analytics opt-out flag in your browser and then
+                redirects you to the home page. It requires JavaScript to work.
+            </p>
+        </noscript>
+    </body>
+</html>

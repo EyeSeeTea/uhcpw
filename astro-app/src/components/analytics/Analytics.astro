@@ -20,5 +20,16 @@ const gaTagId = getAnalyticsTagId();
     // eslint-disable-next-line prefer-rest-params
     window.gtag = function () { window.dataLayer.push(arguments); };
     window.gtag("js", new Date());
-    window.gtag("config", gaTagId);
+    // Staff and contributors can opt out by visiting `/internal-on`, which sets
+    // `localStorage.uhcpw_internal = "1"`. When set, we tag the config with
+    // `traffic_type: "internal"` so GA4's Internal Traffic Data Filter can
+    // exclude these events. `/internal-off` clears the flag.
+    let uhcpwIsInternal;
+    try {
+        uhcpwIsInternal = localStorage.getItem("uhcpw_internal") === "1";
+    } catch {
+        uhcpwIsInternal = false;
+    }
+    if (uhcpwIsInternal) window.gtag("config", gaTagId, { traffic_type: "internal" });
+    else window.gtag("config", gaTagId);
 </script>

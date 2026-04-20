@@ -65,18 +65,17 @@ class Analytics {
     setAnalyticsConfig() {
         /** Manual page view tracking is used (explicit sendPageView() calls per page component),
          * so send_page_view remains false to avoid duplicate events. */
-        if (this.accessToConsole)
-            console.debug("GA4: config", appConfig.gaTagId, {
-                page_title: "Config",
-                page_location: window.location.pathname + window.location.search,
-                send_page_view: false,
-            });
-
-        window.gtag("config", appConfig.gaTagId, {
+        const configParams: Record<string, unknown> = {
             page_title: "Config",
             page_location: window.location.pathname + window.location.search,
             send_page_view: false,
-        });
+        };
+
+        if (isInternalTraffic()) configParams.traffic_type = "internal";
+
+        if (this.accessToConsole) console.debug("GA4: config", appConfig.gaTagId, configParams);
+
+        window.gtag("config", appConfig.gaTagId, configParams);
     }
 
     private async intialize() {
@@ -194,4 +193,12 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
 
 function booleanToYesNo(value: boolean) {
     return value ? "yes" : "no";
+}
+
+function isInternalTraffic(): boolean {
+    try {
+        return window.localStorage.getItem("uhcpw_internal") === "1";
+    } catch {
+        return false;
+    }
 }
