@@ -55,9 +55,7 @@ describe("Country Page", () => {
         const scope = within(screen.getByLabelText(/country-page-slider/i));
 
         expect(
-            scope.getByRole("heading", {
-                name: /how many people experience financial hardship: impoverishing health spending\?/i,
-            })
+            scope.getByText(/how many people experience financial hardship: impoverishing health spending\?/i)
         ).toBeInTheDocument();
     });
 

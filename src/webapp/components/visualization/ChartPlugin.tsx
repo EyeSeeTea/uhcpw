@@ -268,6 +268,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={chartOptions}
+                            immutable={true}
                             containerProps={{
                                 "aria-label": `chart-${visualizations[0]?.friendlyName}`,
                                 style: { height: "100%" },

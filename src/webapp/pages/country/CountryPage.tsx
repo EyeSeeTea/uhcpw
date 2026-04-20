@@ -20,7 +20,7 @@ import { useSidePanelWidth } from "./useSidePanelWidth";
 import { RotateToLandscapeOverlay } from "../../common/hooks/screen/RotateToLandscapeOverlay";
 
 export const CountryPage: React.FC = () => {
-    const history = useHistory();
+    const history = useHistory<{ preserveScroll?: boolean }>();
     const { countryOrRegion } = useParams<{
         countryOrRegion?: string;
     }>();
@@ -46,9 +46,8 @@ export const CountryPage: React.FC = () => {
     useEffect(() => {
         if (filterInParams.country && filterInParams.country !== countryFilter?.selectedCountry) {
             countryFilter.onCountryChange(filterInParams.country);
-            !resetTab && handleResetTab(true);
         }
-    }, [countryFilter, filterInParams.country, handleResetTab, resetTab]);
+    }, [countryFilter, filterInParams.country]);
 
     const selectedCountryName = useMemo(
         () => countryFilter.countryOptions.find(country => country.value === countryFilter.selectedCountry)?.text,
@@ -66,7 +65,10 @@ export const CountryPage: React.FC = () => {
             const countryNameInFilter = countryName ? formatCountryOrRegionParamName(countryName) : undefined;
 
             if (value && countryNameInFilter) {
-                history.push(`/${countryNameInFilter}`);
+                history.push({
+                    pathname: `/${countryNameInFilter}`,
+                    state: { preserveScroll: true },
+                });
             }
 
             countryFilter.onCountryChange(value);
