@@ -77,15 +77,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
                 </div>
             </div>
 
-            <details class="accordion mobile-only mobile-accordion-about">
-                <summary class="accordion-summary">About us</summary>
-                <div class="accordion-details">
-                    <a href="/about" class="footer-link">About us</a>
-                    <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link" target="_blank" rel="noopener noreferrer">
-                        WHO Barcelona Office for Health Systems Financing
-                    </a>
-                </div>
-            </details>
+            <a href="/about" class="mobile-only mobile-about-link">About us</a>
 
             <details class="accordion mobile-only mobile-accordion-glossary">
                 <summary class="accordion-summary">Abbreviations &amp; glossary</summary>
@@ -149,7 +141,6 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         row-gap: 0;
         max-width: 1536px;
         margin: 0 auto;
-        padding: 0 24px;
     }
 
     .footer-who-logo {
@@ -244,7 +235,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
                 "logo flag"
-                "acc-about    acc-about"
+                "about-link   about-link"
                 "acc-glossary acc-glossary"
                 "acc-policy   acc-policy"
                 "acc-contact  acc-contact";
@@ -252,7 +243,6 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             row-gap: 8px;
             justify-items: center;
             align-items: center;
-            padding: 0 8px;
         }
 
         /* Hide desktop text columns on mobile */
@@ -268,10 +258,25 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             justify-self: stretch;
         }
 
-        .mobile-accordion-about    { grid-area: acc-about; }
         .mobile-accordion-glossary { grid-area: acc-glossary; }
         .mobile-accordion-policy   { grid-area: acc-policy; }
         .mobile-accordion-contact  { grid-area: acc-contact; }
+
+        /* Mobile About-us pill — values mirror SPA MobileAppFooter AboutUsLink */
+        .mobile-about-link {
+            grid-area: about-link;
+            display: flex;
+            align-items: center;
+            min-height: 56px;
+            padding: 0 16px;
+            background-color: var(--color-accent-primary);
+            color: var(--color-white);
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: var(--font-size-lg);
+        }
     }
 
     @media (max-width: 500px) {
@@ -300,11 +305,23 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         color: var(--color-white);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 20px;
-        margin: 8px 0;
         overflow: hidden;
+        /* interpolate-size enables animating auto → fixed sizes on ::details-content */
+        interpolate-size: allow-keywords;
+    }
+
+    .accordion::details-content {
+        block-size: 0;
+        overflow: clip;
+        transition: block-size 250ms ease, content-visibility 250ms allow-discrete;
+    }
+
+    .accordion[open]::details-content {
+        block-size: auto;
     }
 
     .accordion-summary {
+        min-height: 56px;
         padding: 12px 16px;
         font-weight: 500;
         font-size: var(--font-size-lg);
@@ -313,6 +330,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        box-sizing: border-box;
     }
 
     .accordion-summary::-webkit-details-marker {
@@ -357,18 +375,8 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
     }
 
     @media (max-width: 960px) {
-        .footer-bottom {
-            justify-content: center;
-        }
-
         .footer-bottom-privacy {
             display: none;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .footer-bottom {
-            padding-inline-start: 1rem;
         }
     }
 </style>
