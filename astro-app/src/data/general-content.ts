@@ -13,8 +13,8 @@ const FALLBACK_ABBREVIATIONS_URL = "https://cmyn.short.gy/abbreviations";
 const FALLBACK_GLOSSARY_URL = "https://cmyn.short.gy/glossary";
 
 export interface ResolvedUrls {
-    readonly abbreviationsUrl: string | undefined;
-    readonly glossaryUrl: string | undefined;
+    readonly abbreviationsUrl: string;
+    readonly glossaryUrl: string;
 }
 
 export interface RegionalDisclaimer {
@@ -23,10 +23,13 @@ export interface RegionalDisclaimer {
     readonly buttonUrl: string | undefined;
 }
 
-export function resolveGeneralContentUrls(generalContent: GeneralContent | undefined): ResolvedUrls {
+export function resolveGeneralContentUrls(
+    generalContent: Pick<GeneralContent, "abbreviations" | "glossary"> | undefined,
+): ResolvedUrls {
     return {
-        abbreviationsUrl: normalizeUrl(generalContent?.abbreviations.url ?? FALLBACK_ABBREVIATIONS_URL),
-        glossaryUrl: normalizeUrl(generalContent?.glossary.url ?? FALLBACK_GLOSSARY_URL),
+        abbreviationsUrl:
+            normalizeUrl(generalContent?.abbreviations.url) ?? FALLBACK_ABBREVIATIONS_URL,
+        glossaryUrl: normalizeUrl(generalContent?.glossary.url) ?? FALLBACK_GLOSSARY_URL,
     };
 }
 

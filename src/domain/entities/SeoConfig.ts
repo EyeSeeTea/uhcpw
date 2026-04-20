@@ -61,6 +61,11 @@ export const seoRouteConfigs: SeoRouteConfig = {
         description:
             "Explore how UHC Watch monitors financial hardship, unmet need, coverage policy, and health spending to assess progress toward universal health coverage.",
     },
+    "/area-overview": {
+        title: "UHC Watch - Area overview",
+        description:
+            "Financial-protection status and summary for every country and area tracked by UHC Watch.",
+    },
 };
 
 /**

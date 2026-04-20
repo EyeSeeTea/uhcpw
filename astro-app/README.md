@@ -48,3 +48,28 @@ toggle once in DevTools and reload:
 ```js
 localStorage.setItem("accessToConsole", "true");
 ```
+
+## LLM-friendly endpoints
+
+The build emits an [llms.txt](https://llmstxt.org/) index and markdown
+companions so LLM crawlers can read clean page content without HTML chrome:
+
+| Path                    | Content-Type     | Source                                                |
+| :---------------------- | :--------------- | :---------------------------------------------------- |
+| `/llms.txt`             | `text/plain`     | Auto-generated from SEO + general CMS                 |
+| `/index.md`             | `text/markdown`  | `src/lib/llms-txt/home-summary.md`                    |
+| `/about.md`             | `text/markdown`  | Same loader as `/about` (`getAboutPageData`)          |
+| `/methods.md`           | `text/markdown`  | Same loader as `/methods` (`getMethodsPageData`)      |
+| `/area-overview.md`  | `text/markdown`  | Map markers from `getHomePageData()` (no HTML route)  |
+
+Serializer logic lives in `src/lib/llms-txt/serializers.ts`; endpoints are
+plain Astro `GET` handlers under `src/pages/`. Editing CMS content
+automatically propagates to the markdown companions on the next build.
+
+**Charset:** the endpoints emit `Content-Type: text/markdown; charset=utf-8`
+(and `text/plain; charset=utf-8` for `/llms.txt`), but most static hosts apply
+their own content type based on file extension. Configure the host so that
+`.md` and `.txt` under `dist/` are served with `charset=utf-8` — otherwise
+browsers may fall back to Windows-1252 and show mojibake (`â€"` etc.) on
+content that contains em-dashes or non-ASCII names.
+
