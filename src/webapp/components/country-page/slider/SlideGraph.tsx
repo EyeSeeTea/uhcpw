@@ -3,7 +3,6 @@ import ReactMarkdown, { Components } from "react-markdown";
 import styled, { css } from "styled-components";
 import React from "react";
 
-import i18n from "../../../../locales";
 import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
@@ -30,7 +29,6 @@ type VisualizationProps = {
 };
 
 type SlideGraphType = {
-    title?: string;
     countryId: string;
     graphs: VisualizationProps[];
     isRegionalPage?: boolean;
@@ -39,7 +37,6 @@ type SlideGraphType = {
 };
 
 export const SlideGraph: React.FC<SlideGraphType> = ({
-    title,
     countryId,
     graphs,
     isRegionalPage = false,
@@ -89,8 +86,6 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
 
     return (
         <Container $isRegionalPage={isRegionalPage}>
-            {title && <StyledGraphTitle variant="h3">{i18n.t(title)}</StyledGraphTitle>}
-
             {graphs.length > 0
                 ? graphs.map((graph, graphIndex) => (
                       <VisualizationContainer key={graph.visualizationId} $hasMargin={graphIndex !== 0}>
@@ -163,8 +158,8 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
 
 const Container = styled.div<{ $isRegionalPage?: boolean }>`
     max-width: 100%;
-    padding: 20px 50px 30px 50px;
-    padding-inline: ${props => (props.$isRegionalPage ? "30px" : "50px")};
+    padding: 20px 30px 30px 30px;
+    padding-inline: 30px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
@@ -208,16 +203,6 @@ const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $isRegionalPag
             padding: 0;
         }
     }
-`;
-
-const StyledTypography = styled(Typography)`
-    color: black;
-`;
-
-const StyledGraphTitle = styled(StyledTypography)`
-    margin-bottom: 50px;
-    font-weight: 500;
-    font-size: 2rem;
 `;
 
 const Paragraph = styled(Typography)`

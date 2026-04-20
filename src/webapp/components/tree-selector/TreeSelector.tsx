@@ -47,6 +47,7 @@ interface TreeSelectorProps {
     defaultExpanded?: string[];
     selectedItemsToShowWhenAllSelected?: string[];
     parentSort?: (a: string, b: string) => number;
+    closeOnSelect?: boolean;
 }
 
 export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {

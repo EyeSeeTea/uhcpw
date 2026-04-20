@@ -71,6 +71,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                             disableSearch={!isMobile}
                             showParentIfChecked={true}
                             hasSelectAll={!filters.year.isSingleSelection}
+                            closeOnSelect={filters.year.isSingleSelection}
                             fullScreen={isMobile}
                         />
                     </Center>

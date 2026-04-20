@@ -129,9 +129,6 @@ export const chart_hEuM5hv2vVg_JljTfo2KUid_Options: (
         ],
         legend: {
             ...baseLegend,
-            symbolHeight: 13,
-            symbolWidth: 13,
-            symbolRadius: 0,
             width: 150,
             itemStyle: { ...baseLegend.itemStyle, whiteSpace: "normal", textOverflow: "none" },
         },

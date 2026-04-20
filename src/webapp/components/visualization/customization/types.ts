@@ -54,6 +54,10 @@ export type LegendCustomization = {
     layout?: "horizontal" | "proximate" | "vertical";
     reversed?: boolean;
     itemMarginTop?: number;
+    itemMarginBottom?: number;
+    symbolHeight?: number;
+    symbolWidth?: number;
+    symbolRadius?: number;
     itemStyle?: CSSProperties;
 };
 
@@ -66,7 +70,7 @@ export type SerieCustomization = {
     id: string;
     color?: string;
     name?: string;
-    marker?: { enabled: boolean; symbol: "circle" | string };
+    marker?: { enabled: boolean; symbol: "circle" | string; radius?: number };
     dataLabels?: {
         enabled: boolean;
     };
@@ -74,7 +78,7 @@ export type SerieCustomization = {
 
 export type AllSeriesCustomization = {
     color: string;
-    marker?: { enabled: boolean; symbol: "circle" | string };
+    marker?: { enabled: boolean; symbol: "circle" | string; radius?: number };
     dataLabels?: {
         enabled: boolean;
     };
