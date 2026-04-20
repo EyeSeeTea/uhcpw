@@ -1,13 +1,13 @@
 import React, { useMemo } from "react";
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 
 import i18n from "../../../../locales";
 import { colors } from "../../../pages/app/themes/dhis2.theme";
 import whoLogoWhite from "../../../assets/who-logo-white.png";
 import europeFlag from "../../../assets/europe-flag.png";
-import { AboutUsInfo } from "./AboutUsInfo";
 import { AbbreviationsAndGlossary } from "./AbbreviationsAndGlossary";
 import { PrivacyPolicyAndDisclaimer } from "./PrivacyPolicyAndDisclaimer";
 import { ContactUs } from "./ContactUs";
@@ -15,11 +15,6 @@ import { ContactUs } from "./ContactUs";
 export const MobileAppFooter: React.FC = () => {
     const items = useMemo(
         () => [
-            {
-                id: "about-us",
-                title: i18n.t("About us"),
-                content: <AboutUsInfo fullWidth />,
-            },
             {
                 id: "abbreviations-glossary",
                 title: i18n.t("Abbreviations & glossary"),
@@ -49,6 +44,10 @@ export const MobileAppFooter: React.FC = () => {
                         <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
                     </EuropeContainer>
                 </FlexContainer>
+
+                <AboutUsLink to="/about">
+                    <Typography>{i18n.t("About us")}</Typography>
+                </AboutUsLink>
 
                 {items.map(item => (
                     <StyledAccordion key={item.id}>
@@ -150,6 +149,25 @@ const StyledAccordionSummary = styled(AccordionSummary)`
 
     .MuiSvgIcon-root {
         color: white;
+    }
+`;
+
+const AboutUsLink = styled(NavLink)`
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 16px;
+    margin: 8px 0;
+    background-color: ${colors.accentPrimary};
+    color: white;
+    text-decoration: none;
+    border: 1px solid #ffffff33;
+    border-radius: 20px;
+
+    .MuiTypography-root {
+        font-weight: 500;
+        font-size: 20px;
+        margin: 12px 0;
     }
 `;
 
