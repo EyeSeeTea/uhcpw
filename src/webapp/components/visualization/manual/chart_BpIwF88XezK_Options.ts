@@ -30,7 +30,7 @@ export const chart_BpIwF88XezK_Options: (chartSource: ChartSource) => Highcharts
         yAxis: {
             ...chart?.yAxis,
             title: {
-                text: "Current spending on health (%)",
+                text: "Current spending health (%)",
                 style: { fontSize: "13px" },
             },
         },
