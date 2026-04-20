@@ -1,3 +1,4 @@
+import { MARKER_RADIUS } from "../customization/chartConstants";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSource } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
@@ -152,9 +153,6 @@ export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts
         ],
         legend: {
             ...baseLegend,
-            symbolHeight: 10,
-            symbolWidth: 10,
-            symbolRadius: 0,
             width: 250,
             itemStyle: { ...baseLegend.itemStyle, whiteSpace: "normal", textOverflow: "none" },
         },
@@ -166,7 +164,7 @@ export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts
             scatter: {
                 marker: {
                     symbol: "circle",
-                    radius: 4,
+                    radius: MARKER_RADIUS,
                     lineWidth: 0.5,
                     lineColor: "#666",
                 },

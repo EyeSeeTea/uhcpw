@@ -106,9 +106,6 @@ export const chart_kIpnMBaBvZ9_Options: (chartSource: ChartSource) => Highcharts
             ...serie,
             type: "scatter",
             data: serieData,
-            marker: {
-                symbol: "circle",
-            },
         };
     });
 

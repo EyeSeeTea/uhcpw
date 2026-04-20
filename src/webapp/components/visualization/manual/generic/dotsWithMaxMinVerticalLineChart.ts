@@ -1,5 +1,6 @@
 import { AnalyticsMetadataItem } from "@dhis2/analytics";
 import { mapToWhoCountryCode } from "../../../../../data/repositories/countries/mapToWhoCountryData";
+import { MARKER_RADIUS } from "../../customization/chartConstants";
 import { baseLegend } from "../../customization/legends/baseLegend";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval, getMaxValuesInSeriesData } from "../../utils/getMaxAxisAndTickInterval";
@@ -172,6 +173,7 @@ export const createDotsWithMaxMinVerticalLineChart: (params: {
                 marker: {
                     enabled: true,
                     symbol: "circle",
+                    radius: MARKER_RADIUS,
                 },
                 events: {
                     legendItemClick: function () {
