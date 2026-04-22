@@ -363,12 +363,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                         : allRowsSorted;
 
                 // only force indicator column for default sheets, excluding custom exports
+                const filterDxName = resolveFilterDxName(mergedVisualization, analyticsResponses);
                 const allRowsSortedToDownload = hasCustomExportBuilder
                     ? allRowsWithYearColumn
-                    : this.addIndicatorColumnIfMissing({
-                          visualization: mergedVisualization,
-                          rows: allRowsWithYearColumn,
-                      });
+                    : this.addIndicatorColumnIfMissing(allRowsWithYearColumn, filterDxName);
 
                 const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
@@ -810,13 +808,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         return entity?.code ? mapToWhoCountryCode(entity.code) : undefined;
     }
 
-    private addIndicatorColumnIfMissing(params: { visualization: Visualization; rows: string[][] }): string[][] {
-        const { visualization, rows } = params;
+    private addIndicatorColumnIfMissing(rows: string[][], indicatorName: Maybe<string>): string[][] {
         const [headerRow, ...dataRows] = rows;
-        if (!headerRow || headerRow.includes(INDICATOR_COLUMN)) return rows;
-
-        const indicatorName = resolveFilterDxName(visualization);
-        if (!indicatorName) return rows;
+        if (!headerRow || !indicatorName || headerRow.includes(INDICATOR_COLUMN)) return rows;
 
         return [[INDICATOR_COLUMN, ...headerRow], ...dataRows.map(row => [indicatorName, ...row])];
     }
@@ -1060,10 +1054,14 @@ function insertArrayAt<T>(arr: T[], index: number, value: T): T[] {
     return [...arr.slice(0, index), value, ...arr.slice(index)];
 }
 
-function resolveFilterDxName(visualization: Visualization): Maybe<string> {
+function resolveFilterDxName(visualization: Visualization, analyticsResponses: Analytics[]): Maybe<string> {
     const allDims = [...visualization.filters, ...visualization.columns, ...visualization.rows];
     const dxDim = allDims.find(dim => dim.id === "dx");
-    return dxDim?.items[0]?.name?.replace("UHCW_", "");
+    const dxItem = dxDim?.items[0];
+    if (!dxItem) return undefined;
+
+    const metadataName = analyticsResponses[0]?.metaData.items[dxItem.id]?.name;
+    return (metadataName ?? dxItem.name)?.replace("UHCW_", "");
 }
 
 function renameIndicatorHeaderToParameter(tabs: Tab[]): Tab[] {
