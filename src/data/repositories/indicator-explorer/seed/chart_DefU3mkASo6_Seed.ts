@@ -10,7 +10,7 @@ const PARAMETER_ORDER = [
     "Not at risk of impoverishment",
 ];
 
-const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Indicator", "Country / Area", "Year", "Value"];
 
 export const chart_DefU3mkASo6_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.financialHardship,

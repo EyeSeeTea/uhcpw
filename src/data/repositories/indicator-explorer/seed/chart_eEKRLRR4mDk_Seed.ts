@@ -2,7 +2,7 @@ import { VisualizationExtra } from "../../../../domain/entities/indicator-explor
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { sortedCategoryNames } from "./utils";
 
-const COLUMNS_ORDER = ["Country / Area", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Indicator", "Country / Area", "Value"];
 const PARAMETER_ORDER = ["GDP per person in current PPP", "Public spending on health as a share of GDP"];
 
 export const chart_eEKRLRR4mDk_Seed: VisualizationExtra = {
