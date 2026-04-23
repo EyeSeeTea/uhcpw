@@ -7,6 +7,8 @@ import {
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import {
     addDataValue,
+    applyAutoWidthsToXlsxPopulateSheet,
+    computeAutoColumnWidths,
     getCellStyles,
     getColumnLetterByIndex,
     hideEmptyColumn,
@@ -44,24 +46,17 @@ export type TabsWithStringOrNumbers = {
     name: string;
 };
 
-export const exportToCSV = (tabs: TabsWithStringOrNumbers[], fileName: string) => {
-    const tabsWithNumbers = tabs.map(tab => {
-        if (tab.name === DATA_TAB_NAME) {
-            return {
-                ...tab,
-                data: tab.data.map(row =>
-                    row.map(cell => (typeof cell === "string" ? parseDataValueFromStringToNumber(cell) : cell))
-                ),
-            };
-        } else {
-            return tab;
-        }
-    });
+export const exportToCSV = (tabs: TabsWithStringOrNumbers[], fileName: string): void => {
+    const tabsWithNumbers = parseDataTabNumbers(tabs);
 
-    const xlsxTabs = tabsWithNumbers.map(tab => ({
-        ...tab,
-        xlsx: XLSX.utils.aoa_to_sheet(tab.data),
-    }));
+    const xlsxTabs = tabsWithNumbers.map(tab => {
+        const sheet = XLSX.utils.aoa_to_sheet(tab.data);
+        if (tab.name === DATA_TAB_NAME) {
+            // skipFirstRow: row 1 is the chart title
+            sheet["!cols"] = computeAutoColumnWidths(tab.data, { skipFirstRow: true }).map(wch => ({ wch }));
+        }
+        return { ...tab, xlsx: sheet };
+    });
 
     const Sheets = xlsxTabs.reduce((acc, tab) => ({ ...acc, [tab.name]: tab.xlsx }), {});
     const wb = {
@@ -72,6 +67,65 @@ export const exportToCSV = (tabs: TabsWithStringOrNumbers[], fileName: string) =
     const data = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
 };
+
+// Pivot output from pivotToCombinedMatrix: [Country, Abbreviation, Year, Abbreviation+Year, ...indicators].
+// The first 4 are metadata; anything at or beyond this index is an indicator-data column.
+const COMBINED_INDICATOR_DATA_COLUMN_START = 4;
+const COMBINED_INDICATOR_DATA_COLUMN_WIDTH = 30;
+const COMBINED_INDICATOR_HEADER_ROW_HEIGHT = 35;
+
+export async function exportCombinedIndicatorsToXlsx(tabs: TabsWithStringOrNumbers[], fileName: string): Promise<void> {
+    const tabsWithNumbers = parseDataTabNumbers(tabs);
+    const workbook = await XlsxPopulate.fromBlankAsync();
+
+    tabsWithNumbers.forEach((tab, tabIndex) => {
+        const sheet = tabIndex === 0 ? workbook.sheet(0).name(tab.name) : workbook.addSheet(tab.name);
+        addDataToSheet(sheet, tab.data);
+        applyCombinedIndicatorStyles(sheet, tab);
+    });
+
+    const blob = await workbook.outputAsync();
+    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+}
+
+function applyCombinedIndicatorStyles(sheet: XlsxPopulate.Sheet, tab: TabsWithStringOrNumbers): void {
+    const columnCount = tab.data.reduce((max, row) => Math.max(max, row.length), 0);
+    if (tab.data.length > 0 && columnCount > 0) {
+        const lastColumn = getColumnLetterByIndex(columnCount - 1);
+        sheet.range(`A1:${lastColumn}${tab.data.length}`).style({ fontFamily: "Calibri", fontSize: 11 });
+    }
+
+    if (tab.name !== DATA_TAB_NAME) return;
+
+    applyAutoWidthsToXlsxPopulateSheet(sheet, tab.data, {
+        cappedFromIndex: COMBINED_INDICATOR_DATA_COLUMN_START,
+        cappedMaxWidth: COMBINED_INDICATOR_DATA_COLUMN_WIDTH,
+        skipFirstRow: true,
+    });
+
+    const headerRow = tab.data[1];
+    if (!headerRow) return;
+
+    const headerRowNumber = 2;
+    sheet.row(headerRowNumber).height(COMBINED_INDICATOR_HEADER_ROW_HEIGHT);
+    headerRow.forEach((_, columnIndex) => {
+        if (columnIndex < COMBINED_INDICATOR_DATA_COLUMN_START) return;
+        const cellRef = `${getColumnLetterByIndex(columnIndex)}${headerRowNumber}`;
+        sheet.cell(cellRef).style({ wrapText: true });
+    });
+}
+
+function parseDataTabNumbers(tabs: TabsWithStringOrNumbers[]): TabsWithStringOrNumbers[] {
+    return tabs.map(tab => {
+        if (tab.name !== DATA_TAB_NAME) return tab;
+        return {
+            ...tab,
+            data: tab.data.map(row =>
+                row.map(cell => (typeof cell === "string" ? parseDataValueFromStringToNumber(cell) : cell))
+            ),
+        };
+    });
+}
 
 function parseDataValueFromStringToNumber(value: string): string | number {
     if (value === "") {

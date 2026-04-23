@@ -7,7 +7,7 @@ import { AnalyticsRepository } from "../../../domain/repositories/indicator-expl
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { isValidUid } from "../../../utils/uid";
-import { exportToCSV, exportToCSVIncludingChart, Tab } from "../../export/exportToCSV";
+import { exportCombinedIndicatorsToXlsx, exportToCSV, exportToCSVIncludingChart, Tab } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
@@ -497,7 +497,15 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         } else {
             console.error("Exported data chart builder not found for visualization: ", mergedVisualization.id);
 
-            exportToCSV(tabs, chartName || mergedVisualization.name);
+            const isCombinedIndicator = mergedVisualization.categoryName === sortedCategoryNames.combinedIndicators;
+            const exportFileName = chartName || mergedVisualization.name;
+            if (isCombinedIndicator) {
+                return Future.fromPromise(exportCombinedIndicatorsToXlsx(tabs, exportFileName)).flatMapError(error => {
+                    console.error("Error exporting combined indicators:", error);
+                    return Future.success(undefined);
+                });
+            }
+            exportToCSV(tabs, exportFileName);
             return Future.success(undefined);
         }
     }
