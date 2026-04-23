@@ -64,7 +64,6 @@ const Container = styled.div`
     overflow-y: auto;
     font-size: 16px;
     padding: 16px;
-    height: 100%;
 `;
 
 const ParagraphContainer = styled.div`

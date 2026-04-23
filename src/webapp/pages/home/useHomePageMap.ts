@@ -21,7 +21,7 @@ export function useHomePageMap(): MapState {
     const { countries } = useAppContext();
 
     useEffect(() => {
-        const countriesWithSummary = countries.filter(country => country.summary);
+        const countriesWithSummary = countries.filter(country => country.generalSummary || country.homePageSummary);
 
         setMarkers(countriesToGeoJson(countriesWithSummary));
     }, [countries]);
