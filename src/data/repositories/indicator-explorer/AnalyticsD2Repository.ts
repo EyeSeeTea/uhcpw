@@ -38,7 +38,16 @@ import {
     POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_RESIDENCE,
 } from "./PolicyExplorerChartDataD2Repository";
 import { getRegionCodeById } from "../regions/utils";
-import { COUNTRY_AREA_COLUMN, INDICATOR_COLUMN, PARAMETER_COLUMN, YEAR_COLUMN } from "./utils/sortColumnsAndDataRows";
+import {
+    ABBREVIATION_AND_YEAR_COLUMN,
+    ABBREVIATION_COLUMN,
+    COUNTRY_AREA_COLUMN,
+    INDICATOR_COLUMN,
+    PARAMETER_COLUMN,
+    VALUE_COLUMN,
+    YEAR_COLUMN,
+} from "./utils/sortColumnsAndDataRows";
+import { sortedCategoryNames } from "./seed/utils";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -368,6 +377,17 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     ? allRowsWithYearColumn
                     : this.addIndicatorColumnIfMissing(allRowsWithYearColumn, filterDxName);
 
+                // combined-indicator charts use a pivot matrix: one row per country, indicators as columns
+                const isCombinedIndicator = mergedVisualization.categoryName === sortedCategoryNames.combinedIndicators;
+                const finalRowsToDownload =
+                    isCombinedIndicator && !hasCustomExportBuilder
+                        ? this.pivotToCombinedMatrix({
+                              rows: allRowsSortedToDownload,
+                              orgUnits,
+                              orgUnitGroups,
+                          })
+                        : allRowsSortedToDownload;
+
                 const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
                 const tabs = [
@@ -377,7 +397,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     },
                     {
                         name: DATA_TAB_NAME,
-                        data: [[chartName || mergedVisualization.name], ...allRowsSortedToDownload],
+                        data: [[chartName || mergedVisualization.name], ...finalRowsToDownload],
                     },
                 ];
 
@@ -813,6 +833,56 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         if (!headerRow || !indicatorName || headerRow.includes(INDICATOR_COLUMN)) return rows;
 
         return [[INDICATOR_COLUMN, ...headerRow], ...dataRows.map(row => [indicatorName, ...row])];
+    }
+
+    // Operates on the post-pipeline table so it inherits name resolution, region-code injection,
+    // and policy-explorer lookups. The `{code} {year}` split is a round-trip — consider unifying
+    // on a tidy-data intermediate when revisiting the custom-exporter charts.
+    private pivotToCombinedMatrix(params: {
+        rows: string[][];
+        orgUnits: D2OrgUnit[];
+        orgUnitGroups: D2OrgUnitGroup[];
+    }): string[][] {
+        const { rows, orgUnits, orgUnitGroups } = params;
+        const [header = [], ...dataRows] = rows;
+
+        const indicatorIndex = header.indexOf(INDICATOR_COLUMN);
+        const countryIndex = header.indexOf(COUNTRY_AREA_COLUMN);
+        const yearIndex = header.indexOf(YEAR_COLUMN);
+        const valueIndex = header.indexOf(VALUE_COLUMN);
+
+        if (indicatorIndex < 0 || countryIndex < 0 || valueIndex < 0) return rows;
+
+        const codeByCountryName = buildCodeByCountryName(orgUnits, orgUnitGroups);
+        const uniqueIndicators = _.uniq(dataRows.map(row => row[indicatorIndex] ?? ""));
+        const uniqueCountries = _.uniq(dataRows.map(row => row[countryIndex] ?? ""));
+
+        const newHeader = [
+            COUNTRY_AREA_COLUMN,
+            ABBREVIATION_COLUMN,
+            YEAR_COLUMN,
+            ABBREVIATION_AND_YEAR_COLUMN,
+            ...uniqueIndicators,
+        ];
+
+        const newRows = uniqueCountries.map(country => {
+            const countryRows = dataRows.filter(row => row[countryIndex] === country);
+            const abbreviation = codeByCountryName.get(country) ?? "";
+            const codeAndYearCell = yearIndex >= 0 ? countryRows[0]?.[yearIndex] ?? "" : "";
+            const rawYear =
+                abbreviation && codeAndYearCell.startsWith(`${abbreviation} `)
+                    ? codeAndYearCell.slice(abbreviation.length + 1)
+                    : codeAndYearCell;
+
+            const valuesByIndicator = new Map(
+                countryRows.map(row => [row[indicatorIndex] ?? "", row[valueIndex] ?? ""])
+            );
+            const valueCells = uniqueIndicators.map(indicator => valuesByIndicator.get(indicator) ?? "");
+
+            return [country, abbreviation, rawYear, codeAndYearCell, ...valueCells];
+        });
+
+        return [newHeader, ...newRows];
     }
 
     mapAnalyticsResponseRows(params: {

@@ -4,6 +4,9 @@ export const INDICATOR_COLUMN = "Indicator";
 export const PARAMETER_COLUMN = "Parameter";
 export const COUNTRY_AREA_COLUMN = "Country / Area";
 export const YEAR_COLUMN = "Year";
+export const ABBREVIATION_COLUMN = "Abbreviation";
+export const ABBREVIATION_AND_YEAR_COLUMN = "Abbreviation and year";
+export const VALUE_COLUMN = "Value";
 
 export function sortColumnsRowByColumnsOrder(headerRow: string[], columnsOrder: string[]): string[] {
     const sortedHeader = _.sortBy(headerRow, header => {
