@@ -1,5 +1,6 @@
 ---
 import { resourceTagHref, type HomeResourceState } from "@/data/home/home-resource";
+import { href } from "@/lib/href";
 
 interface Props {
     resource: HomeResourceState;
@@ -15,7 +16,7 @@ const year = new Date(resource.date).getFullYear();
         {resource.imageOriginal ? (
             <img
                 class="resource-image"
-                src={resource.imageOriginal}
+                src={href(resource.imageOriginal)}
                 alt={resource.title}
                 loading="lazy"
             />
@@ -26,7 +27,7 @@ const year = new Date(resource.date).getFullYear();
 
     <div class="card-body">
         <div class="meta-row">
-            <a class="tag" href={resourceTagHref(resource.kind)}>
+            <a class="tag" href={href(resourceTagHref(resource.kind))}>
                 {resource.tagLabel}
             </a>
             <span class="year">{year}</span>

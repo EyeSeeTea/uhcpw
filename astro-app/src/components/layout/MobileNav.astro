@@ -1,6 +1,7 @@
 ---
 import type { NavItem } from "@/data/navigation";
 import type { RegionalDisclaimer } from "@/data/general-content";
+import { href, isActivePath } from "@/lib/href";
 
 interface Props {
     navItems: readonly NavItem[];
@@ -8,7 +9,7 @@ interface Props {
 }
 
 const { navItems, regionalDisclaimer } = Astro.props;
-const isHomePage = Astro.url.pathname === "/";
+const isHomePage = isActivePath(Astro.url.pathname, href("/"));
 
 // "Regional overview" gets special-cased on mobile: when the disclaimer popup
 // content is available it renders as a button that opens a modal dialog (parity
@@ -31,7 +32,7 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
         </summary>
         <nav class="menu-dropdown" aria-label="Mobile navigation">
             {!isHomePage && (
-                <a href="/" class="menu-link menu-link--home" aria-label="Home">
+                <a href={href("/")} class="menu-link menu-link--home" aria-label="Home">
                     <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
                         <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
                     </svg>
@@ -69,12 +70,12 @@ const hasRegionalModal = Boolean(regionalDisclaimer);
                                 </button>
                                 <div class="menu-submenu-popup" role="menu" hidden>
                                     {item.children.map(child => (
-                                        <a href={child.href} class="menu-link menu-sublink" role="menuitem">{child.label}</a>
+                                        <a href={href(child.href)} class="menu-link menu-sublink" role="menuitem">{child.label}</a>
                                     ))}
                                 </div>
                             </div>
                         ) : (
-                            <a href={item.href} class="menu-link">{item.label}</a>
+                            <a href={href(item.href)} class="menu-link">{item.label}</a>
                         )}
                     </>
                 );

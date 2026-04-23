@@ -9,6 +9,13 @@ import Analytics from "@/components/analytics/Analytics.astro";
 import { resolveGeneralContentUrls, resolveRegionalDisclaimer } from "@/data/general-content";
 import { getNavItems } from "@/data/navigation";
 import themeCSS from "@/styles/theme.css?inline";
+import faviconUrl from "@/assets/favicon.ico?url";
+import latoRegularWoff2 from "@/assets/fonts/Lato-Regular.woff2?url";
+import latoRegularWoff from "@/assets/fonts/Lato-Regular.woff?url";
+import latoBoldWoff2 from "@/assets/fonts/Lato-Bold.woff2?url";
+import latoBoldWoff from "@/assets/fonts/Lato-Bold.woff?url";
+import latoItalicWoff2 from "@/assets/fonts/Lato-Italic.woff2?url";
+import latoItalicWoff from "@/assets/fonts/Lato-Italic.woff?url";
 
 interface Props {
     seo?: SeoConfig;
@@ -22,6 +29,36 @@ const regionalDisclaimer = resolveRegionalDisclaimer(generalContent);
 const navItems = await getNavItems();
 
 const buildInfoContent = `v${__BUILD_INFO__.version} / ${__BUILD_INFO__.commit} / ${__BUILD_INFO__.buildDate}`;
+
+// @font-face lives here (not in theme.css) so src URLs can be fingerprinted by
+// Vite and match the <link rel="preload"> URLs above — otherwise the browser
+// downloads each font twice or ignores the preload hint.
+const fontFaceCSS = `
+@font-face {
+    font-family: "Lato";
+    src: url("${latoRegularWoff2}") format("woff2"), url("${latoRegularWoff}") format("woff");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+}
+@font-face {
+    font-family: "Lato";
+    src: url("${latoBoldWoff2}") format("woff2"), url("${latoBoldWoff}") format("woff");
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+}
+@font-face {
+    font-family: "Lato";
+    src: url("${latoItalicWoff2}") format("woff2"), url("${latoItalicWoff}") format("woff");
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    text-rendering: optimizeLegibility;
+}
+`;
 ---
 
 <!doctype html>
@@ -30,9 +67,9 @@ const buildInfoContent = `v${__BUILD_INFO__.version} / ${__BUILD_INFO__.commit} 
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="build-info" content={buildInfoContent} />
-        <link rel="preload" href="/fonts/Lato-Regular.woff2" as="font" type="font/woff2" crossorigin />
-        <link rel="preload" href="/fonts/Lato-Bold.woff2" as="font" type="font/woff2" crossorigin />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="preload" href={latoRegularWoff2} as="font" type="font/woff2" crossorigin />
+        <link rel="preload" href={latoBoldWoff2} as="font" type="font/woff2" crossorigin />
+        <link rel="icon" href={faviconUrl} />
         <SeoHead seo={seo} />
         <slot name="head" />
         <Analytics />
@@ -56,6 +93,7 @@ const buildInfoContent = `v${__BUILD_INFO__.version} / ${__BUILD_INFO__.commit} 
     </body>
 </html>
 
+<style set:html={fontFaceCSS} is:global></style>
 <style set:html={themeCSS}></style>
 
 <style>

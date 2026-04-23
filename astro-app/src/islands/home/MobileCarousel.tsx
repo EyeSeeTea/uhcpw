@@ -1,6 +1,7 @@
 import "./MobileCarousel.css";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { resourceTagHref, type HomeResourceState } from "@/data/home/home-resource";
+import { href } from "@/lib/href";
 
 export interface MobileCarouselProps {
     items: ReadonlyArray<HomeResourceState>;
@@ -96,7 +97,7 @@ const ResourceSlide: React.FC<{ item: HomeResourceState; hideTag: boolean }> = (
                     {item.imageOriginal ? (
                         <img
                             className="mobile-carousel-image"
-                            src={item.imageOriginal}
+                            src={href(item.imageOriginal)}
                             alt={item.title}
                             loading="lazy"
                         />
@@ -108,7 +109,7 @@ const ResourceSlide: React.FC<{ item: HomeResourceState; hideTag: boolean }> = (
                 <div className="mobile-carousel-body">
                     <div className="mobile-carousel-meta">
                         {!hideTag && (
-                            <a className="mobile-carousel-tag" href={resourceTagHref(item.kind)}>
+                            <a className="mobile-carousel-tag" href={href(resourceTagHref(item.kind))}>
                                 {item.tagLabel}
                             </a>
                         )}

@@ -2,6 +2,7 @@
 import type { PersonState } from "@/data/about/about-data";
 import { renderMarkdown } from "@/lib/markdown";
 import { AVATAR_FALLBACK } from "@/data/about/about-data";
+import { href } from "@/lib/href";
 
 interface Props {
     person: PersonState;
@@ -12,7 +13,7 @@ const { person, isExpert } = Astro.props;
 
 const fullName = `${person.firstName} ${person.lastName}`;
 const hasImage = person.image && !person.image.includes("avatar-empty");
-const imageSrc = hasImage ? person.image : AVATAR_FALLBACK;
+const imageSrc = href(hasImage ? person.image : AVATAR_FALLBACK);
 
 const positionHtml = renderMarkdown(person.position.replace(/\\n/g, "\n"));
 const institutionHtml = person.institution

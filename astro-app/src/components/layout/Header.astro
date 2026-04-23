@@ -6,6 +6,7 @@ import DesktopNav from "./DesktopNav.astro";
 import MobileNav from "./MobileNav.astro";
 import whoLogoBlue from "@/assets/layout/who-logo-blue.png";
 import uhcwHomeLogo from "@/assets/layout/uhcw-home-logo.png";
+import { href, isActivePath } from "@/lib/href";
 
 interface Props {
     abbreviationsUrl?: string;
@@ -16,7 +17,7 @@ interface Props {
 
 const { abbreviationsUrl, glossaryUrl, navItems, regionalDisclaimer } = Astro.props;
 
-const isHomePage = Astro.url.pathname === "/";
+const isHomePage = isActivePath(Astro.url.pathname, href("/"));
 ---
 
 <header class:list={["site-header", { "is-home": isHomePage }]}>
@@ -35,7 +36,7 @@ const isHomePage = Astro.url.pathname === "/";
     <div class="toolbar-bottom">
         <div class="toolbar-bottom-content">
             <div class="logo-group">
-                <a href="/" class="logo-link">
+                <a href={href("/")} class="logo-link">
                     <Image
                         src={whoLogoBlue}
                         alt="WHO logo"
@@ -47,7 +48,7 @@ const isHomePage = Astro.url.pathname === "/";
                         decoding="async"
                     />
                 </a>
-                <a href="/" class="logo-link">
+                <a href={href("/")} class="logo-link">
                     <Image
                         src={uhcwHomeLogo}
                         alt="UHC watch logo to go home"

@@ -1,5 +1,6 @@
 ---
 import { renderMarkdown } from "@/lib/markdown";
+import { href } from "@/lib/href";
 
 interface Props {
     officeImage: string;
@@ -19,7 +20,7 @@ const textHtml = renderMarkdown(officeText);
         <div class="image-column">
             <a href={officeVideo} target="_blank" rel="noreferrer">
                 <img
-                    src={officeImage}
+                    src={href(officeImage)}
                     alt="WHO Barcelona Office"
                     class="office-image"
                     width={officeImageWidth}

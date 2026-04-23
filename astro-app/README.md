@@ -25,6 +25,56 @@ All commands are run from the root of the project, from a terminal:
 
 Feel free to check [Astro documentation](https://docs.astro.build)
 
+## Deployment configuration
+
+The site adapts to the URL subpath it is served under via two environment variables,
+both optional and both read at build time:
+
+| Variable           | Default                                   | Purpose                                                       |
+| :----------------- | :---------------------------------------- | :------------------------------------------------------------ |
+| `ASTRO_BASE_PATH`  | `/`                                       | URL subpath the site is served under                          |
+| `SITE_URL`         | `https://apps.who.int/dhis2/uhcwatch`     | Absolute origin (and optional path) used for canonical / OG URLs |
+
+### `ASTRO_BASE_PATH`
+
+Sets Astro's `base` config. The build normalizes the value (a leading slash is added
+if missing, trailing slashes are stripped, invalid characters throw). The normalized
+value flows to:
+
+- Astro's router and prerenderer — `Astro.url.pathname` includes the base.
+- Vite — all bundled assets (`?url` imports, CSS `url()`, `<Image>`) are emitted under
+  the base.
+- Hydrated React islands — propagated via `process.env.REACT_APP_BASE_PATH` so
+  `BrowserRouter` basename agrees with the prerendered links.
+- Hand-authored links — the `href()` helper in `src/lib/href.ts` reads
+  `import.meta.env.BASE_URL` (which equals the normalized base).
+
+Examples:
+
+```sh
+yarn build                         # builds for root ('/')
+ASTRO_BASE_PATH=/UHCW yarn build   # production subpath
+ASTRO_BASE_PATH=/preview/pr-42 yarn build  # preview deploy
+```
+
+### `SITE_URL`
+
+Sets Astro's `site` config. Used by `SeoHead.astro` to construct absolute canonical
+URLs and OG image URLs.
+
+**Consistency requirement:** `SITE_URL` and `ASTRO_BASE_PATH` must agree about whether
+the subpath is present:
+
+- Subpath deploy — `SITE_URL=https://host/UHCW` **and** `ASTRO_BASE_PATH=/UHCW`
+  (both include it), **or** `SITE_URL=https://host` **and** `ASTRO_BASE_PATH=/UHCW`
+  (neither duplicates it — canonical URLs still resolve correctly because
+  `Astro.url.pathname` already includes the base and is resolved against the origin).
+- Root deploy — `SITE_URL=https://host` **and** `ASTRO_BASE_PATH` unset.
+
+The one broken combination is `SITE_URL=https://host/UHCW` with `ASTRO_BASE_PATH=/`
+(or unset) — canonical URLs will silently drop the `/UHCW` portion. Use origin-only
+`SITE_URL` unless you are intentionally encoding the base into both.
+
 ## Analytics
 
 The site reports to Google Analytics 4 using the same tag IDs as the React SPA.

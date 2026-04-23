@@ -1,5 +1,6 @@
 ---
 import type { NavItem } from "@/data/navigation";
+import { href, isActivePath } from "@/lib/href";
 
 interface Props {
     navItems: readonly NavItem[];
@@ -26,12 +27,12 @@ const currentPath = Astro.url.pathname;
                 </button>
                 <div class="dropdown-menu" role="menu" hidden>
                     {item.children.map(child => (
-                        <a href={child.href} class="dropdown-item" role="menuitem">{child.label}</a>
+                        <a href={href(child.href)} class="dropdown-item" role="menuitem">{child.label}</a>
                     ))}
                 </div>
             </div>
         ) : (
-            <a href={item.href} class:list={["nav-link", { "nav-link--active": currentPath === item.href }]}>
+            <a href={href(item.href)} class:list={["nav-link", { "nav-link--active": isActivePath(currentPath, href(item.href)) }]}>
                 {item.label}
             </a>
         )

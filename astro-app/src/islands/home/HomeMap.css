@@ -88,8 +88,6 @@
     }
 }
 
-/* Pin SVGs are served from public/assets/map/ because Mapbox GL resolves them
-   as runtime URLs (not bundler imports). */
 .marker {
     background-size: cover;
     width: 15px;
@@ -104,40 +102,40 @@
 }
 
 .marker-insufficientdata {
-    background-image: url("/assets/map/pin-insufficient.svg");
+    background-image: url("../../assets/map-pins/pin-insufficient.svg");
 }
 .marker-insufficientdata:hover {
-    background-image: url("/assets/map/pin-insufficient-hover.svg");
+    background-image: url("../../assets/map-pins/pin-insufficient-hover.svg");
 }
 .marker-very-weak {
-    background-image: url("/assets/map/pin-very-weak.svg");
+    background-image: url("../../assets/map-pins/pin-very-weak.svg");
 }
 .marker-very-weak:hover {
-    background-image: url("/assets/map/pin-very-weak-hover.svg");
+    background-image: url("../../assets/map-pins/pin-very-weak-hover.svg");
 }
 .marker-weak {
-    background-image: url("/assets/map/pin-weak.svg");
+    background-image: url("../../assets/map-pins/pin-weak.svg");
 }
 .marker-weak:hover {
-    background-image: url("/assets/map/pin-weak-hover.svg");
+    background-image: url("../../assets/map-pins/pin-weak-hover.svg");
 }
 .marker-gaps {
-    background-image: url("/assets/map/pin-gaps.svg");
+    background-image: url("../../assets/map-pins/pin-gaps.svg");
 }
 .marker-gaps:hover {
-    background-image: url("/assets/map/pin-gaps-hover.svg");
+    background-image: url("../../assets/map-pins/pin-gaps-hover.svg");
 }
 .marker-emerging {
-    background-image: url("/assets/map/pin-emerging.svg");
+    background-image: url("../../assets/map-pins/pin-emerging.svg");
 }
 .marker-emerging:hover {
-    background-image: url("/assets/map/pin-emerging-hover.svg");
+    background-image: url("../../assets/map-pins/pin-emerging-hover.svg");
 }
 .marker-strong {
-    background-image: url("/assets/map/pin-strong.svg");
+    background-image: url("../../assets/map-pins/pin-strong.svg");
 }
 .marker-strong:hover {
-    background-image: url("/assets/map/pin-strong-hover.svg");
+    background-image: url("../../assets/map-pins/pin-strong-hover.svg");
 }
 
 .mapboxgl-ctrl-logo {

@@ -1,41 +1,4 @@
 /* ==========================================================================
-   Self-hosted Lato font — matching SPA's public/includes/lato-font.css
-   ========================================================================== */
-
-@font-face {
-    font-family: "Lato";
-    src:
-        url("/fonts/Lato-Regular.woff2") format("woff2"),
-        url("/fonts/Lato-Regular.woff") format("woff");
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    text-rendering: optimizeLegibility;
-}
-
-@font-face {
-    font-family: "Lato";
-    src:
-        url("/fonts/Lato-Bold.woff2") format("woff2"),
-        url("/fonts/Lato-Bold.woff") format("woff");
-    font-style: normal;
-    font-weight: 700;
-    font-display: swap;
-    text-rendering: optimizeLegibility;
-}
-
-@font-face {
-    font-family: "Lato";
-    src:
-        url("/fonts/Lato-Italic.woff2") format("woff2"),
-        url("/fonts/Lato-Italic.woff") format("woff");
-    font-style: italic;
-    font-weight: 400;
-    font-display: swap;
-    text-rendering: optimizeLegibility;
-}
-
-/* ==========================================================================
    Design tokens — ported from src/webapp/pages/app/themes/dhis2.theme.ts
    ========================================================================== */
 

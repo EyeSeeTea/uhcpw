@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from "react";
+import { href } from "@/lib/href";
 
 // TODO: review - This causes a circular dependency error
 // import { AVATAR_FALLBACK } from "@/data/about/about-data";
@@ -16,10 +17,10 @@ export interface PersonCardReactProps {
 }
 
 export const PersonCardReact: React.FC<PersonCardReactProps> = React.memo(({ person }) => {
-    const [imgSrc, setImgSrc] = useState(person.image);
+    const [imgSrc, setImgSrc] = useState(href(person.image));
 
     const handleImageError = useCallback(() => {
-        setImgSrc(AVATAR_FALLBACK);
+        setImgSrc(href(AVATAR_FALLBACK));
     }, []);
 
     const positionLines = person.position.replace(/\\n/g, "\n").split("\n");

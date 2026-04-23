@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import whoLogoWhite from "@/assets/layout/who-logo-white.png";
 import europeFlag from "@/assets/layout/europe-flag.png";
+import { href } from "@/lib/href";
 
 interface Props {
     disclaimer?: string;
@@ -59,7 +60,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 
             <div class="footer-col footer-links-col">
                 <div class="footer-links">
-                    <a href="/about" class="footer-link">About us</a>
+                    <a href={href("/about")} class="footer-link">About us</a>
                     <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link" target="_blank" rel="noopener noreferrer">
                         WHO Barcelona Office for Health Systems Financing
                     </a>
@@ -77,7 +78,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
                 </div>
             </div>
 
-            <a href="/about" class="mobile-only mobile-about-link">About us</a>
+            <a href={href("/about")} class="mobile-only mobile-about-link">About us</a>
 
             <details class="accordion mobile-only mobile-accordion-glossary">
                 <summary class="accordion-summary">Abbreviations &amp; glossary</summary>

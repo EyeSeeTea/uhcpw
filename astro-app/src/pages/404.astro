@@ -4,6 +4,7 @@ import Layout from "@/layouts/Layout.astro";
 import { defaultSeoConfig } from "@shared/domain/entities/SeoConfig";
 import { getGeneralContent } from "@/data/general-content";
 import bubblePattern from "@/assets/bubble-pattern-white.png";
+import { href } from "@/lib/href";
 
 const generalContent = await getGeneralContent();
 
@@ -26,7 +27,7 @@ const seo = { ...defaultSeoConfig, title: "UHC Watch - Page Not Found" };
         <div class="content-container">
             <h4>404</h4>
             <p>The page you are looking for does not exist or has been moved.</p>
-            <a href="/" class="home-button">Go to Homepage</a>
+            <a href={href("/")} class="home-button">Go to Homepage</a>
         </div>
     </div>
 </Layout>

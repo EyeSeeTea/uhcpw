@@ -119,6 +119,26 @@ data/<feature>/
 
 When adding a helper that an island needs, put it in the pure leaf, not the `-data` module.
 
+## Internal links and base path
+
+The site can be built under an arbitrary URL subpath (`ASTRO_BASE_PATH`, defaults to `/`). Two rules for keeping links correct regardless of deployment:
+
+- **Bundled assets are automatic.** Anything imported through Vite — `?url` imports, CSS `url()` in bundled CSS, Astro `<Image>`, image-downloader outputs — is fingerprinted and base-prefixed for you. Prefer this path: put static assets in `src/assets/` (not `public/`) and import them.
+- **Hand-authored paths need `href()`.** For string literals in templates (`<a href="…">`, `<link rel="icon">`), and any path you construct at runtime in a client island, use `href()` from `@/lib/href`:
+
+  ```astro
+  ---
+  import { href } from "@/lib/href";
+  ---
+  <a href={href("/about")}>About</a>
+  ```
+
+  `href()` passes absolute URLs and non-HTTP schemes (`https:`, `//`, `mailto:`, `data:`, `blob:`) through unchanged, so it is safe to apply to values of unknown origin (e.g., resource URLs coming from CMS data).
+
+Use `isActivePath(Astro.url.pathname, href("/about"))` for nav-highlight comparisons — it normalizes trailing slashes on both sides.
+
+Anything else you add — new pages, new asset references, new nav items — should follow these two rules so that builds for `/`, `/UHCW`, `/preview/pr-123`, etc. all work without source edits.
+
 ## Caveats & Technical Debt
 
 All migration caveats, workarounds, and technical debt are tracked in [`docs/migration-caveats.md`](./docs/migration-caveats.md). **Keep that file updated** whenever you encounter a new issue, caveat, or workaround during any migration phase.

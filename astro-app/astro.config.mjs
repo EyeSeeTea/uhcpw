@@ -9,6 +9,24 @@ import { getBuildInfo } from "./src/lib/build-info.ts";
 const env = loadEnv(process.env.NODE_ENV ?? "", process.cwd(), "");
 const buildInfo = getBuildInfo();
 
+// Base path the site is served under. Defaults to "/" for dev/root deployments;
+// set `ASTRO_BASE_PATH` (e.g. "/UHCW", "/preview/pr-123") for subpath deploys.
+// Normalized to a leading slash and no trailing slash ("/" stays as-is) so
+// downstream consumers (vite.define, BrowserRouter basename, href() helper)
+// see a single canonical form regardless of how the env var was written.
+const basePath = normalizeBasePath(env.ASTRO_BASE_PATH);
+
+/** @param {string | undefined} raw */
+function normalizeBasePath(raw) {
+    if (!raw || raw === "/") return "/";
+    const trimmed = raw.replace(/^\/+|\/+$/g, "");
+    if (!trimmed) return "/";
+    if (!/^[A-Za-z0-9._~\-/]+$/.test(trimmed)) {
+        throw new Error(`ASTRO_BASE_PATH contains invalid characters: ${JSON.stringify(raw)}`);
+    }
+    return "/" + trimmed;
+}
+
 // Directory that @shared/webapp resolves to. Used by the SVG plugin below to
 // scope its rewrite to shared SPA code only.
 const sharedWebappDir = path.resolve(import.meta.dirname, "../src/webapp") + path.sep;
@@ -37,6 +55,7 @@ function buildLogger() {
 // https://astro.build/config
 export default defineConfig({
     site: env.SITE_URL || "https://apps.who.int/dhis2/uhcwatch",
+    base: basePath,
     integrations: [react(), buildLogger()],
     image: {
         remotePatterns: [
@@ -49,8 +68,9 @@ export default defineConfig({
             // Shared `src/app-config.ts` reads `process.env.REACT_APP_BASE_PATH`
             // (CRA-style static replacement). Vite does not replace it, so the
             // browser would throw `process is not defined` on first import.
-            // Astro owns routing, so the base path is always "/".
-            "process.env.REACT_APP_BASE_PATH": JSON.stringify("/"),
+            // Keep this in sync with Astro's `base` so hydrated SPA islands
+            // agree with the prerendered links.
+            "process.env.REACT_APP_BASE_PATH": JSON.stringify(basePath),
             __BUILD_INFO__: JSON.stringify(buildInfo),
         },
         plugins: [

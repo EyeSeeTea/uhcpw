@@ -1,5 +1,6 @@
 ---
 import type { SeoConfig } from "@shared/domain/entities/SeoConfig";
+import uhcwPng from "@/assets/uhcw.png?url";
 
 interface Props {
     seo: SeoConfig;
@@ -7,10 +8,18 @@ interface Props {
 
 const { seo } = Astro.props;
 
+// `Astro.url.pathname` already includes the configured `base`, so resolving it
+// as an absolute URL against `Astro.site` drops any path portion of `site` (per
+// the URL constructor when the first arg is absolute). This is correct only
+// when `SITE_URL` and `ASTRO_BASE_PATH` are kept consistent: either both include
+// the subpath (e.g. site=https://host/UHCW, base=/UHCW) or neither does
+// (site=https://host, base=/). Mixing them — e.g. site with a path while
+// base=/ — will silently produce wrong canonicals.
 const canonicalUrl = Astro.site
-    ? new URL(Astro.url.pathname.replace(/^\//, ""), Astro.site.href.replace(/\/?$/, "/")).href
+    ? new URL(Astro.url.pathname, Astro.site).href
     : undefined;
-const imageUrl = seo.image ?? "https://apps.who.int/dhis2/uhcwatch/uhcw.png";
+const defaultImageUrl = Astro.site ? new URL(uhcwPng, Astro.site).href : uhcwPng;
+const imageUrl = seo.image ?? defaultImageUrl;
 ---
 
 <title>{seo.title}</title>
