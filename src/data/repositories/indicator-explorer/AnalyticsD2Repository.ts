@@ -761,20 +761,10 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         const finalColumns = addCountryOrAreaColumn ? [COUNTRY_AREA_COLUMN, ...columns] : columns;
 
         const hasCustomExportBuilder = visualizationsExportedDataChartBuilder[visualization.id] !== undefined;
-        // only add code prefix to year for default sheets, excluding custom exports
-        const rowsForMapping = hasCustomExportBuilder
-            ? analyticsResponse.rows
-            : this.addCountryCodeToYearInRows({
-                  rows: analyticsResponse.rows,
-                  headers: analyticsResponse.headers,
-                  orgUnits,
-                  orgUnitGroups,
-                  addCountryOrAreaColumn,
-              });
 
         const mappedRows = _(
             this.mapAnalyticsResponseRows({
-                rows: rowsForMapping,
+                rows: analyticsResponse.rows,
                 metadata,
                 visualizationId: visualization.id,
                 seriesIdAndName,
@@ -786,7 +776,18 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             .sortBy(row => row[1])
             .value();
 
-        const dataRowsWithCountryIfRequired = mappedRows.map(row => {
+        // only add code prefix to year for default sheets, excluding custom exports.
+        const rowsWithCodeYear = hasCustomExportBuilder
+            ? mappedRows
+            : this.addCountryCodeToYearInRows({
+                  rows: mappedRows,
+                  headers: analyticsResponse.headers,
+                  orgUnits,
+                  orgUnitGroups,
+                  addCountryOrAreaColumn,
+              });
+
+        const dataRowsWithCountryIfRequired = rowsWithCodeYear.map(row => {
             if (addCountryOrAreaColumn) {
                 const countryOrArea = orgUnits.length === 1 ? orgUnits[0] : orgUnitGroups[0];
                 const countryName = countryOrArea
@@ -813,11 +814,12 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         if (peIndex < 0) return rows;
 
         const ouIndex = headers.findIndex(h => h.name === "ou");
-        const codeById = buildCodeById(orgUnits, orgUnitGroups);
+        // rows are post-mapping: ou cell contains the country NAME, not the UID
+        const codeByCountryName = buildCodeByCountryName(orgUnits, orgUnitGroups);
         const fallbackCode = addCountryOrAreaColumn ? this.getSingleEntityCode(orgUnits, orgUnitGroups) : undefined;
 
         return rows.map(row => {
-            const prefix = ouIndex >= 0 ? codeById.get(row[ouIndex] ?? "") : fallbackCode;
+            const prefix = ouIndex >= 0 ? codeByCountryName.get(row[ouIndex] ?? "") : fallbackCode;
             if (!prefix || !row[peIndex]) return row;
             return row.map((cell, i) => (i === peIndex ? `${prefix} ${cell}` : cell));
         });
@@ -1153,10 +1155,6 @@ function buildCodeMap<K>(entities: CodedEntity[], getKey: (entity: CodedEntity) 
         return key === undefined ? [] : [[key, mapToWhoCountryCode(entity.code)]];
     });
     return new Map(entries);
-}
-
-function buildCodeById(orgUnits: D2OrgUnit[], orgUnitGroups: D2OrgUnitGroup[]): Map<Id, string> {
-    return buildCodeMap([...orgUnits, ...orgUnitGroups], entity => entity.id);
 }
 
 function buildCodeByCountryName(orgUnits: D2OrgUnit[], orgUnitGroups: D2OrgUnitGroup[]): Map<string, string> {
