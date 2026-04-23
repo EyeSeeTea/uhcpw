@@ -10,6 +10,7 @@
     "scripts": {
         "start": "astro dev",
         "build": "astro build",
+        "check:asset-names": "node scripts/check-asset-names.mjs",
         "preview": "astro preview",
         "astro": "astro",
         "prettify": "prettier \"./**/*.{js,jsx,json,css,ts,tsx}\" --write",
