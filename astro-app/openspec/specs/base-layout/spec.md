@@ -38,3 +38,11 @@ The Layout SHALL use Astro's `<slot />` mechanism so pages inject their unique c
 #### Scenario: Page content rendered in slot
 - **WHEN** a page places `<h1>Hello</h1>` inside `<Layout>`
 - **THEN** the rendered HTML contains `<h1>Hello</h1>` between the header and footer markup
+## Requirements
+### Requirement: Layout renders build info meta tag
+The Layout SHALL render a single `<meta name="build-info" content="v{version} / {commit} / {buildDate}">` tag inside `<head>`, with values sourced from the build-info resolver at build time.
+
+#### Scenario: Meta tag appears in head
+- **WHEN** any page uses `<Layout>`
+- **THEN** the rendered HTML `<head>` contains exactly one `<meta name="build-info" content="...">` tag with the current build's version, commit, and date
+

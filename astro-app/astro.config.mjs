@@ -4,8 +4,10 @@ import { defineConfig } from "astro/config";
 import react from "@astrojs/react";
 import path from "node:path";
 import { loadEnv } from "vite";
+import { getBuildInfo } from "./src/lib/build-info.ts";
 
 const env = loadEnv(process.env.NODE_ENV ?? "", process.cwd(), "");
+const buildInfo = getBuildInfo();
 
 // Directory that @shared/webapp resolves to. Used by the SVG plugin below to
 // scope its rewrite to shared SPA code only.
@@ -49,6 +51,7 @@ export default defineConfig({
             // browser would throw `process is not defined` on first import.
             // Astro owns routing, so the base path is always "/".
             "process.env.REACT_APP_BASE_PATH": JSON.stringify("/"),
+            __BUILD_INFO__: JSON.stringify(buildInfo),
         },
         plugins: [
             // Compat patches for shared-code transitive dependencies with broken ESM.
