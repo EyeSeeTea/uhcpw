@@ -63,8 +63,7 @@ export const seoRouteConfigs: SeoRouteConfig = {
     },
     "/area-overview": {
         title: "UHC Watch - Area overview",
-        description:
-            "Financial-protection status and summary for every country and area tracked by UHC Watch.",
+        description: "Financial-protection status and summary for every country and area tracked by UHC Watch.",
     },
 };
 
