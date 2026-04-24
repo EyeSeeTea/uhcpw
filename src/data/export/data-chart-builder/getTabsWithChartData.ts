@@ -1,5 +1,7 @@
 import { mapFromWhoCountryNameToId, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
 import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { insertArrayAt } from "../../repositories/indicator-explorer/utils/insertArrayAt";
+import { COUNTRY_AREA_COLUMN } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 export function getTabsWithChartData(
@@ -92,8 +94,11 @@ export function getTabsWithChartData(
         valueIndex: valueIndex,
     });
 
+    const countryInsertIndex = Math.max(headersBase.indexOf(COUNTRY_AREA_COLUMN), 0);
     const dataByDataParamWithCountry =
-        isCountryChart && country ? dataByDataParam.map(row => [country, ...row]) : dataByDataParam;
+        isCountryChart && country
+            ? dataByDataParam.map(row => insertArrayAt(row, countryInsertIndex, country))
+            : dataByDataParam;
 
     const data =
         hasCountryCodeRow && orgUnits

@@ -51,6 +51,7 @@ import {
     YEAR_COLUMN,
 } from "./utils/sortColumnsAndDataRows";
 import { sortedCategoryNames } from "./seed/utils";
+import { insertArrayAt } from "./utils/insertArrayAt";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -1135,10 +1136,6 @@ const organisationUnitGroupsFields = {
 export type D2OrgUnitGroup = MetadataPick<{
     organisationUnitGroups: { fields: typeof organisationUnitGroupsFields };
 }>["organisationUnitGroups"][number];
-
-function insertArrayAt<T>(arr: T[], index: number, value: T): T[] {
-    return [...arr.slice(0, index), value, ...arr.slice(index)];
-}
 
 function resolveFilterDxName(visualization: Visualization, analyticsResponses: Analytics[]): Maybe<string> {
     const allDims = [...visualization.filters, ...visualization.columns, ...visualization.rows];

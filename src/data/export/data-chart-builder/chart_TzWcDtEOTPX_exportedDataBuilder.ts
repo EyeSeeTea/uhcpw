@@ -12,7 +12,7 @@ const SORTED_PARAMETERS = [
     "Not at risk of impoverishment",
 ];
 const HEADER_DATA_PARAM_NAME = INDICATOR_COLUMN;
-const HEADERS_BASE = [COUNTRY_AREA_COLUMN, INDICATOR_COLUMN];
+const HEADERS_BASE = [INDICATOR_COLUMN, COUNTRY_AREA_COLUMN];
 
 export const chart_TzWcDtEOTPX_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,

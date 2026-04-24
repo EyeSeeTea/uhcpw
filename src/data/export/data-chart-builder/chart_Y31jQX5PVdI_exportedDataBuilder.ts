@@ -7,7 +7,7 @@ import { getTabsWithChartData } from "./getTabsWithChartData";
 
 const SORTED_PARAMETERS = ["Households with catastrophic health spending"];
 const HEADER_DATA_PARAM_NAME = INDICATOR_COLUMN;
-const HEADERS_BASE = [COUNTRY_AREA_COLUMN, INDICATOR_COLUMN];
+const HEADERS_BASE = [INDICATOR_COLUMN, COUNTRY_AREA_COLUMN];
 
 export const chart_Y31jQX5PVdI_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,
