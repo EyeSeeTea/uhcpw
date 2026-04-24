@@ -16,7 +16,7 @@ import userEvent from "@testing-library/user-event";
 import { PolicyExplorerCategoryD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerCategoryD2Repository";
 import { CountryD2Repository } from "../../../../data/repositories/countries/CountryD2Repository";
 import { PolicyExplorerD2Repository } from "../../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
-import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 import { Country } from "../../../../domain/entities/Country";
 import {
     PolicyExplorer,
@@ -252,7 +252,7 @@ describe("Given PolicyExplorerPage", () => {
     });
 });
 
-function verifySearchParamsInUrl(search: string, policyExplorerCategories: PolicyExplorerCategory[]) {
+function verifySearchParamsInUrl(search: string, policyExplorerCategories: PolicyExplorerSelectableCategory[]) {
     const searchParams = new URLSearchParams(search);
     const categoryParam = searchParams.get("category");
     const countryParam = searchParams.get("country");
@@ -284,10 +284,10 @@ function renderPage() {
     return { history };
 }
 
-function givenPolicyExplorerCategories(): PolicyExplorerCategory[] {
+function givenPolicyExplorerCategories(): PolicyExplorerSelectableCategory[] {
     const mockedRepository = mock(PolicyExplorerCategoryD2Repository);
 
-    const items = policyExplorerCategoriesData as unknown as PolicyExplorerCategory[];
+    const items = policyExplorerCategoriesData as unknown as PolicyExplorerSelectableCategory[];
 
     when(mockedRepository.getAll(false)).thenReturn(Future.success(items));
     when(mockedRepository.getSelectCategoryInfo()).thenReturn(
