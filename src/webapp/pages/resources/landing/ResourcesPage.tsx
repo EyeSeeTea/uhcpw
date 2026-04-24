@@ -48,6 +48,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
                             onGetResources={onGetResources}
                             disabledCountryFilter
                             disabledYearFilter
+                            isAllResourcesPage
                         />
                     </FiltersContainer>
 
