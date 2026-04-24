@@ -47,8 +47,8 @@ export const visualizationsExportedDataChartBuilder: Record<string, ExportedData
     pWFRTFfh5mA: (tabs, chartName) => chart_pWFRTFfh5mA_exportedDataBuilder(tabs, chartName),
     uRZCilOIr1C: (tabs, chartName) => chat_uRZCilOIr1C_exportedDataBuilder(tabs, chartName),
     cGE32OzPgMS: (tabs, chartName) => chart_cGE32OzPgMS_exportedDataBuilder(tabs, chartName),
-    fY7K8ATEDgQ: (tabs, chartName) => chat_fY7K8ATEDgQ_exportedDataBuilder(tabs, chartName),
     z6nPPMMbOw5: (tabs, chartName) => chart_z6nPPMMbOw5_exportedDataBuilder(tabs, chartName),
+    fY7K8ATEDgQ: (tabs, chartName) => chat_fY7K8ATEDgQ_exportedDataBuilder(tabs, chartName),
 };
 
 // Exporters that read the `Indicator` column directly. Charts in this registry bypass the
