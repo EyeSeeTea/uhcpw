@@ -26,7 +26,10 @@ import {
 } from "./utils/lastAvailableYearHelpers";
 import { DataStoreClient } from "../../DataStoreClient";
 import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
-import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
+import {
+    customHeaderExportedDataChartBuilder,
+    visualizationsExportedDataChartBuilder,
+} from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
 import { getVisualizationTemplate } from "./visualization-template/getVisualizationTemplate";
 import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS, Region } from "../../../domain/entities/region/Region";
 import { getYearByIndicatorAndCountry } from "../../../webapp/components/visualization/manual/chart_kIpnMBaBvZ9_Options";
@@ -357,7 +360,8 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                 );
 
                 const hasCustomExportBuilder =
-                    visualizationsExportedDataChartBuilder[mergedVisualization.id] !== undefined;
+                    visualizationsExportedDataChartBuilder[mergedVisualization.id] !== undefined ||
+                    customHeaderExportedDataChartBuilder[mergedVisualization.id] !== undefined;
 
                 // only add code prefix to year for default sheets, excluding custom exports
                 const allRowsWithYearColumn =
@@ -451,12 +455,12 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         orgUnitGroups: D2OrgUnitGroup[];
     }): FutureData<void> {
         const { mergedVisualization, tabs, chartName, orgUnits, orgUnitGroups } = params;
-        const exportedDataChartBuilder = visualizationsExportedDataChartBuilder[mergedVisualization.id];
+        const customHeaderBuilder = customHeaderExportedDataChartBuilder[mergedVisualization.id];
+        const defaultBuilder = visualizationsExportedDataChartBuilder[mergedVisualization.id];
+        const exportedDataChartBuilder = customHeaderBuilder ?? defaultBuilder;
 
         if (exportedDataChartBuilder) {
-            // custom exporter still expects "Parameter"
-            // Rename at this boundary to preserve their contract.
-            const tabsForCustomBuilder = renameIndicatorHeaderToParameter(tabs);
+            const tabsForCustomBuilder = customHeaderBuilder ? tabs : renameIndicatorHeaderToParameter(tabs);
 
             return getVisualizationTemplate(this.api, mergedVisualization.id)
                 .flatMap(templateArrayBuffer => {
@@ -768,7 +772,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
 
         const finalColumns = addCountryOrAreaColumn ? [COUNTRY_AREA_COLUMN, ...columns] : columns;
 
-        const hasCustomExportBuilder = visualizationsExportedDataChartBuilder[visualization.id] !== undefined;
+        const hasCustomExportBuilder =
+            visualizationsExportedDataChartBuilder[visualization.id] !== undefined ||
+            customHeaderExportedDataChartBuilder[visualization.id] !== undefined;
 
         const mappedRows = _(
             this.mapAnalyticsResponseRows({
