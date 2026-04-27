@@ -4,7 +4,7 @@ import { getTabsWithChartData } from "./getTabsWithChartData";
 
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
 const HEADER_DATA_PARAM_NAME = "Quintile";
-const HEADERS_BASE = ["Quintile / Country - Year"];
+const HEADERS_BASE = ["Country Year"];
 const DATA_PARAM_SORT_BY = "Poorest";
 
 export const chart_GimM6ANOKhd_exportedDataBuilder: (

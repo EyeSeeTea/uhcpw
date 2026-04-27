@@ -4,7 +4,7 @@ import { getTabsWithChartData } from "./getTabsWithChartData";
 
 const SORTED_PARAMETERS = ["Further impoverished", "Impoverished"];
 const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Parameters / Country - Year"];
+const HEADERS_BASE = ["Country Year"];
 
 export const chart_dbc87Ljw8uN_exportedDataBuilder: (
     tabs: Tab[],

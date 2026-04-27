@@ -60,7 +60,7 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
 
     const headersBase = [
         [
-            "Country / Parameter",
+            "Country",
             `Year ${PARAMETER_NAMES.x}`,
             `Year ${PARAMETER_NAMES.y}`,
             "Label",

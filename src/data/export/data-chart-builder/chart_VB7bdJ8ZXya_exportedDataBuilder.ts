@@ -11,7 +11,7 @@ const SORTED_PARAMETERS = [
     "Diagnostic tests",
 ];
 const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Parameter / Country - Year"];
+const HEADERS_BASE = ["Country Year"];
 const DATA_PARAM_SORT_BY = "Medicines";
 
 export const chart_VB7bdJ8ZXya_exportedDataBuilder: (
