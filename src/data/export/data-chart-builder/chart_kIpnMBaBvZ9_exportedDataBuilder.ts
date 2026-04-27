@@ -1,6 +1,12 @@
 import { mapFromWhoCountryNameToId, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
 import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { cellNameByVisualizationId } from "../../repositories/indicator-explorer/utils/getCustomCellName";
+import {
+    COUNTRY_AREA_COLUMN,
+    PARAMETER_COLUMN,
+    VALUE_COLUMN,
+    YEAR_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 const PARAMETER_NAMES: {
@@ -34,10 +40,10 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
 
     const headers = dataTab.data[1];
 
-    const parameterIndex = headers?.indexOf("Parameter");
-    const countryIndex = headers?.indexOf("Country / Area");
-    const yearIndex = headers?.indexOf("Year");
-    const valueIndex = headers?.indexOf("Value");
+    const parameterIndex = headers?.indexOf(PARAMETER_COLUMN);
+    const countryIndex = headers?.indexOf(COUNTRY_AREA_COLUMN);
+    const yearIndex = headers?.indexOf(YEAR_COLUMN);
+    const valueIndex = headers?.indexOf(VALUE_COLUMN);
 
     if (
         countryIndex === undefined ||
@@ -60,7 +66,7 @@ export const chart_kIpnMBaBvZ9_exportedDataBuilder: (
 
     const headersBase = [
         [
-            "Country",
+            COUNTRY_AREA_COLUMN,
             `Year ${PARAMETER_NAMES.x}`,
             `Year ${PARAMETER_NAMES.y}`,
             "Label",

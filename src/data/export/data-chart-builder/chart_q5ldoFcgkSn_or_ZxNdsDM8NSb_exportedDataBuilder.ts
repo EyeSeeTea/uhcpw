@@ -1,3 +1,9 @@
+import {
+    PARAMETER_COLUMN,
+    QUINTILE_COLUMN,
+    COUNTRY_AREA_COLUMN,
+    YEAR_QUINTILE_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartDataWithSeriesByCategory } from "./getTabsWithChartDataWithSeriesByCategory";
 
@@ -9,9 +15,9 @@ const SORTED_PARAMETERS = [
     "Outpatient care",
     "Diagnostic tests",
 ];
-const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADER_DATA_QUINTILE_NAME = "Quintile";
-const HEADERS_BASE = ["Country / Area", "Year Quintile"];
+const HEADER_DATA_PARAM_NAME = PARAMETER_COLUMN;
+const HEADER_DATA_QUINTILE_NAME = QUINTILE_COLUMN;
+const HEADERS_BASE = [COUNTRY_AREA_COLUMN, YEAR_QUINTILE_COLUMN];
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
 
 export const chart_q5ldoFcgkSn_or_ZxNdsDM8NSb_exportedDataBuilder: (

@@ -1,10 +1,14 @@
 import { D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import {
+    PARAMETER_COLUMN,
+    COUNTRY_YEAR_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartData } from "./getTabsWithChartData";
 
 const SORTED_PARAMETERS = ["Further impoverished", "Impoverished"];
-const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Country Year"];
+const HEADER_DATA_PARAM_NAME = PARAMETER_COLUMN;
+const HEADERS_BASE = [COUNTRY_YEAR_COLUMN];
 
 export const chart_dbc87Ljw8uN_exportedDataBuilder: (
     tabs: Tab[],

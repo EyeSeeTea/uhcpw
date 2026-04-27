@@ -1,7 +1,11 @@
 import { mapFromWhoCountryNameToId, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
 import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { insertArrayAt } from "../../repositories/indicator-explorer/utils/insertArrayAt";
-import { COUNTRY_AREA_COLUMN } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
+import {
+    COUNTRY_AREA_COLUMN,
+    VALUE_COLUMN,
+    YEAR_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 const COUNTRY_YEAR_SEPARATOR = "-";
@@ -38,10 +42,10 @@ export function getTabsWithChartData(
     }
 
     const headers = dataTab.data[1];
-    const countryIndex = headers?.indexOf("Country / Area");
+    const countryIndex = headers?.indexOf(COUNTRY_AREA_COLUMN);
     const dataParamIndex = headers?.indexOf(headerDataParamName);
-    const yearIndex = headers?.indexOf("Year");
-    const valueIndex = headers?.indexOf("Value");
+    const yearIndex = headers?.indexOf(YEAR_COLUMN);
+    const valueIndex = headers?.indexOf(VALUE_COLUMN);
     if (
         countryIndex === undefined ||
         countryIndex === -1 ||

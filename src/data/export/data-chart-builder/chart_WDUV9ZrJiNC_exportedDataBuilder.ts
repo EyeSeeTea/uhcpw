@@ -1,10 +1,14 @@
 import { D2OrgUnit, DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import {
+    COUNTRY_YEAR_COLUMN,
+    PARAMETER_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartData } from "./getTabsWithChartData";
 
 const SORTED_PARAMETERS = ["All households", "Poorest consumption quintile"];
-const HEADERS_BASE = ["Country Year"];
-const HEADER_DATA_PARAM_NAME = "Parameter";
+const HEADERS_BASE = [COUNTRY_YEAR_COLUMN];
+const HEADER_DATA_PARAM_NAME = PARAMETER_COLUMN;
 const DATA_PARAM_SORT_BY = "All households";
 
 export const chart_WDUV9ZrJiNC_exportedDataBuilder: (
