@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-04-27T06:54:30.812Z\n"
-"PO-Revision-Date: 2026-04-27T06:54:30.812Z\n"
+"POT-Creation-Date: 2026-04-28T11:12:03.536Z\n"
+"PO-Revision-Date: 2026-04-28T11:12:03.536Z\n"
 
 msgid "404"
 msgstr ""
@@ -307,9 +307,6 @@ msgid "Country information coming soon"
 msgstr ""
 
 msgid "Row/Column"
-msgstr ""
-
-msgid "Latest avalaible year"
 msgstr ""
 
 msgid "See {{countryName}} country page"

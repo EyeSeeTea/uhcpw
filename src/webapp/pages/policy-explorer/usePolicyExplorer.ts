@@ -373,7 +373,7 @@ function getYearOptions(): Option[] {
         (year): Option => ({ value: year.id, text: year.id })
     );
 
-    return [...yearsFrom2023UntilCurrent, { value: LATEST_AVAILABLE_YEAR_CODE, text: i18n.t("Latest avalaible year") }];
+    return [...yearsFrom2023UntilCurrent, { value: LATEST_AVAILABLE_YEAR_CODE, text: i18n.t("Latest available year") }];
 }
 
 function invertDataByCategoryId(
