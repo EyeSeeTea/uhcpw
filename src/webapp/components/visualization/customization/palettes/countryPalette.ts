@@ -60,9 +60,27 @@ export const countryPalette = [
 
 export const EU27Color = "#185698";
 
+export type ColorWeight = "base" | "medium" | "light";
+
 export const regionColors = {
-    WESTERN_BALKANS: "#83668E",
-    EUROPEAN_UNION: EU27Color,
-    EASTERN_EUROPE_AND_CENTRAL_ASIA: "#E587B3",
-    EUROPEAN_REGION: "#0089D6",
+    WESTERN_BALKANS: {
+        base: "#83668E",
+        medium: "#A98CB3",
+        light: "#CBB9D1",
+    },
+    EUROPEAN_UNION: {
+        base: "#185698",
+        medium: "#4E7DB1",
+        light: "#9DB9D8",
+    },
+    EASTERN_EUROPE_AND_CENTRAL_ASIA: {
+        base: "#E587B3",
+        medium: "#EDA1C5",
+        light: "#F3C2D8",
+    },
+    EUROPEAN_REGION: {
+        base: "#0089D6",
+        medium: "#59ACE0",
+        light: "#99D1F0",
+    },
 } as const;

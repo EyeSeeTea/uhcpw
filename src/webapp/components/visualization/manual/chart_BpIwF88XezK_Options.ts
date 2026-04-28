@@ -21,7 +21,6 @@ export const chart_BpIwF88XezK_Options: (chartSource: ChartSource) => Highcharts
         currentYear: chartSource.currentYear,
         orderByValueInSerie: "S0rJgTIK3Gv",
         stackedValuesUpTo100: true,
-        useRegionColors: false,
         hideYear: true,
     });
 
