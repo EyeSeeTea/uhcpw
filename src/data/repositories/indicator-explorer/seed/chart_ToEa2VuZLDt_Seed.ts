@@ -4,7 +4,7 @@ import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 export const chart_ToEa2VuZLDt_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
     categoryTag: "International comparison",
-    friendlyName: "Voluntary health insurance as a share of current spending on health",
+    friendlyName: "Voluntary health spending as a share of current spending on health (multiple years, line chart)",
     minCountryFilter: 1,
     isOrgUnitRegions: true,
     hasEURegion: true,
