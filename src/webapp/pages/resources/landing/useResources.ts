@@ -10,7 +10,7 @@ import {
     ResourcesListBySectionState,
     ResourcesState,
 } from "./ResourcesState";
-import { useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { buildResourcesBySection } from "../by-type/useResourcesByType";
 import { useResourcesFilters } from "../common/useResourcesFilters";
@@ -18,6 +18,7 @@ import { Future, FutureData } from "../../../../domain/entities/Future";
 import { ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { CompositionRoot } from "../../../../CompositionRoot";
 import i18n from "../../../../locales";
+import { findThemeFromParam } from "../../../utils/formatResourcesThemeParamName";
 
 const RESOURCES_PRIORITY: Record<"country-analysis" | "comparative-analysis" | "news" | "multimedia", number> = {
     "country-analysis": 1,
@@ -28,19 +29,23 @@ const RESOURCES_PRIORITY: Record<"country-analysis" | "comparative-analysis" | "
 
 export function useResources(): ResourcesState {
     const { compositionRoot, countries, themes } = useAppContext();
-    const history = useHistory();
     const isSmallScreen = useIsSmallScreen();
 
     const [loading, setLoading] = useState<boolean>(false);
     const [items, setItems] = useState<ResourceState[] | undefined>(undefined);
 
+    const { theme } = useParams<{
+        theme?: string;
+    }>();
+
     const themeFilter = useMemo(() => {
-        const searchParams = new URLSearchParams(history.location.search);
+        const foundTheme = theme ? findThemeFromParam(themes, theme) : undefined;
 
-        const theme = searchParams.get("theme");
+        // NOTICE: use theme name to filter resources by theme in ResourceRepository get()
+        const themeName = foundTheme ? foundTheme?.name : undefined;
 
-        return theme ?? undefined;
-    }, [history.location.search]);
+        return themeName;
+    }, [theme, themes]);
 
     const filters = useResourcesFilters({ theme: themeFilter });
 
@@ -58,7 +63,7 @@ export function useResources(): ResourcesState {
                 theme: filters.theme.selected,
                 countries: filters.country.selected,
                 years: filters.year.selected,
-                isFavouriteSection: filters.search.term ? undefined : true,
+                isFavouriteSection: filters.theme.selected || filters.search.term ? undefined : true,
             }),
             advancedResponse: executeAdvancedSearch(compositionRoot, countries, themes, filters.search.term),
         }).run(

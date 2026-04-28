@@ -25,10 +25,18 @@ export interface ResourcesFiltersProps {
     disabledCountryFilter?: boolean;
     disabledYearFilter?: boolean;
     disabledThemeFilter?: boolean;
+    isAllResourcesPage?: boolean;
 }
 
 export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
-    ({ filters, onGetResources, disabledCountryFilter, disabledYearFilter, disabledThemeFilter }) => {
+    ({
+        filters,
+        onGetResources,
+        disabledCountryFilter,
+        disabledYearFilter,
+        disabledThemeFilter,
+        isAllResourcesPage,
+    }) => {
         const theme = useTheme();
         const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
         const history = useHistory();
@@ -50,20 +58,36 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
             [filters.theme.selected, history, themes]
         );
 
-        const { baseParams, maybeFoundTheme, pathParts } = useMemo(() => {
-            // parts: ["resources", :category, :countriesOrTheme?, :countries?]
+        const { baseParams, themeParam, countriesParam } = useMemo(() => {
             const pathParts = location.pathname.split("/").filter(Boolean);
 
-            // /resources/:category(news|multimedia|country-analysis|comparative-analysis)
-            const baseParams = pathParts.slice(0, 2);
+            if (isAllResourcesPage) {
+                //  ["resources", :theme?]
+                const themePart = pathParts[1];
 
-            const maybeFoundTheme = pathParts[2] ? findThemeFromParam(themes, pathParts[2]) : undefined;
-            return {
-                baseParams,
-                maybeFoundTheme,
-                pathParts,
-            };
-        }, [location.pathname, themes]);
+                return {
+                    baseParams: pathParts.slice(0, 1), // ["resources"]
+                    themeParam: themePart,
+                    countriesParam: undefined,
+                };
+            } else {
+                // ["resources", :category, :countriesOrTheme?, :countries?]
+
+                const countriesOrThemePart = pathParts[2];
+                const countrysPart = pathParts[3];
+                return {
+                    baseParams: pathParts.slice(0, 2), // ["resources", category]
+                    themeParam:
+                        countriesOrThemePart && findThemeFromParam(themes, countriesOrThemePart)
+                            ? countriesOrThemePart
+                            : undefined,
+                    countriesParam:
+                        countriesOrThemePart && !findThemeFromParam(themes, countriesOrThemePart)
+                            ? countriesOrThemePart
+                            : countrysPart,
+                };
+            }
+        }, [location.pathname, isAllResourcesPage, themes]);
 
         const onCountryChange = useCallback(
             (value: string[] | undefined) => {
@@ -72,39 +96,34 @@ export const ResourcesFilters: React.FC<ResourcesFiltersProps> = React.memo(
                     .map(country => formatCountryOrRegionParamName(country.name));
 
                 const newCountryNamesParams =
-                    newCountryNamesInParams && newCountryNamesInParams.length > 0
-                        ? joinCountries(newCountryNamesInParams)
-                        : undefined;
+                    newCountryNamesInParams.length > 0 ? joinCountries(newCountryNamesInParams) : undefined;
 
                 const nextPath = [
                     ...baseParams,
-                    ...(maybeFoundTheme && pathParts[2] ? [pathParts[2]] : []),
+                    ...(themeParam ? [themeParam] : []),
                     ...(newCountryNamesParams ? [newCountryNamesParams] : []),
                 ].join("/");
 
                 history.replace(`/${nextPath}`);
                 filters.country.onSelectedChange(value);
             },
-            [baseParams, filters.country, history, maybeFoundTheme, pathParts]
+            [baseParams, filters.country, history, themeParam]
         );
 
         const onThemeChange = useCallback(
             (value: string | undefined) => {
-                const maybeCountriesParams = maybeFoundTheme ? pathParts[3] : pathParts[2];
-
-                const newThemeFound = themes.find(theme => value && theme.name === value)?.displayedName;
+                const newTheme = themes.find(theme => value && theme.name === value)?.displayedName;
 
                 const nextPath = [
                     ...baseParams,
-                    ...(newThemeFound ? [formatResourcesThemeParamName(newThemeFound)] : []),
-                    ...(maybeCountriesParams ? [maybeCountriesParams] : []),
+                    ...(newTheme ? [formatResourcesThemeParamName(newTheme)] : []),
+                    ...(countriesParam ? [countriesParam] : []),
                 ].join("/");
 
                 history.replace(`/${nextPath}`);
-
                 filters.theme.onSelectedChange(value);
             },
-            [baseParams, filters.theme, history, maybeFoundTheme, pathParts, themes]
+            [baseParams, countriesParam, filters.theme, history, themes]
         );
 
         return (
