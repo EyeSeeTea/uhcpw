@@ -2,7 +2,7 @@ import { VisualizationExtra } from "../../../../domain/entities/indicator-explor
 import { sortColumnsRowByColumnsOrder, sortDataRowsByParameterOrder } from "../utils/sortColumnsAndDataRows";
 import { sortedCategoryNames } from "./utils";
 
-const COLUMNS_ORDER = ["Country / Area", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Indicator", "Country / Area", "Value"];
 const PARAMETER_ORDER = [
     "Out-of-pocket payments as a share of current spending on health (hf3)",
     "Public spending on health as a share of GDP",

@@ -1,4 +1,9 @@
 import { DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import {
+    COUNTRY_AREA_COLUMN,
+    VALUE_COLUMN,
+    YEAR_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
 export function getTabsWithChartDataWithSeriesByCategory(
@@ -10,6 +15,7 @@ export function getTabsWithChartDataWithSeriesByCategory(
         headersBase: string[];
         sortedDataParams: string[];
         sortedDataCategories: string[];
+        splitYearAndCategoryHeaders?: boolean;
     }
 ): TabsWithStringOrNumbers[] {
     const {
@@ -19,6 +25,7 @@ export function getTabsWithChartDataWithSeriesByCategory(
         headersBase,
         sortedDataParams,
         sortedDataCategories,
+        splitYearAndCategoryHeaders = false,
     } = options;
 
     const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
@@ -27,11 +34,11 @@ export function getTabsWithChartDataWithSeriesByCategory(
     }
 
     const headers = dataTab.data[1];
-    const countryIndex = headers?.indexOf("Country / Area");
+    const countryIndex = headers?.indexOf(COUNTRY_AREA_COLUMN);
     const dataParamIndex = headers?.indexOf(headerDataParamName);
     const categoryIndex = headers?.indexOf(headerDataCategoryName);
-    const yearIndex = headers?.indexOf("Year");
-    const valueIndex = headers?.indexOf("Value");
+    const yearIndex = headers?.indexOf(YEAR_COLUMN);
+    const valueIndex = headers?.indexOf(VALUE_COLUMN);
     if (
         countryIndex === undefined ||
         countryIndex === -1 ||
@@ -57,34 +64,30 @@ export function getTabsWithChartDataWithSeriesByCategory(
         .map(row => row[yearIndex])
         .filter((year): year is string => year !== undefined);
 
-    const allYearsUnique = [...new Set(allYears)].map(year => Number(year)).sort((yearA, yearB) => yearA - yearB);
+    const uniqueYears = [...new Set(allYears)].sort((a, b) => Number(a) - Number(b));
 
-    const restHeaders = allYearsUnique.reduce(
-        (acc: string[], year: number) => [...acc, ...sortedDataCategories.map(category => `${year}-${category}`)],
-        []
-    );
+    const yearCategoryKeys = uniqueYears.flatMap(year => sortedDataCategories.map(category => ({ year, category })));
 
-    const finalHeaders = [[...headersBase, ...restHeaders]];
+    const finalHeaders = splitYearAndCategoryHeaders
+        ? [
+              [...headersBase.map(() => ""), ...yearCategoryKeys.map(({ year }) => year)],
+              [...headersBase, ...yearCategoryKeys.map(({ category }) => category)],
+          ]
+        : [[...headersBase, ...yearCategoryKeys.map(({ year, category }) => `${year}-${category}`)]];
 
-    const dataByDataParam: TabsWithStringOrNumbers["data"] = sortedDataParams
-        .reduce((acc: TabsWithStringOrNumbers["data"], param): TabsWithStringOrNumbers["data"] => {
-            const paramData = restHeaders.flatMap(yearAndQuintile => {
-                const [year, category] = yearAndQuintile.split("-");
-                const row = dataTab.data.find(
-                    row =>
-                        row[dataParamIndex] === param &&
-                        row[yearIndex] === year?.toString() &&
-                        row[categoryIndex] === category
-                );
-                const value = row ? row[valueIndex] : undefined;
-                if (!row || !value) {
-                    return 0;
-                }
-                return Number(value?.replace(",", "."));
-            });
-            return [...acc, [param, ...paramData]];
-        }, [])
-        .map(row => [country, ...row]);
+    const dataByDataParam: TabsWithStringOrNumbers["data"] = sortedDataParams.map((param): (string | number)[] => {
+        const paramData = yearCategoryKeys.map(({ year, category }) => {
+            const row = dataTab.data.find(
+                candidate =>
+                    candidate[dataParamIndex] === param &&
+                    candidate[yearIndex] === year &&
+                    candidate[categoryIndex] === category
+            );
+            const value = row ? row[valueIndex] : undefined;
+            return !row || !value ? 0 : Number(value.replace(",", "."));
+        });
+        return [country, param, ...paramData];
+    });
 
     const data = [[chartName], ...finalHeaders, ...dataByDataParam];
 

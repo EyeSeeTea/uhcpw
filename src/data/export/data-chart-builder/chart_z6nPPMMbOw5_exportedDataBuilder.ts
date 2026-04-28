@@ -1,10 +1,14 @@
+import {
+    COUNTRY_AREA_COLUMN,
+    INDICATOR_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartDataWithSeriesByCategory } from "./getTabsWithChartDataWithSeriesByCategory";
 
 const SORTED_PARAMETERS = ["Out-of-pocket payments", "Voluntary health insurance", "Public spending on health"];
 const HEADER_DATA_PARAM_NAME = "Financing scheme";
 const HEADER_DATA_CATEGORY_NAME = "Type of care";
-const HEADERS_BASE = ["Country / Area", "Parameter"];
+const HEADERS_BASE = [COUNTRY_AREA_COLUMN, INDICATOR_COLUMN];
 const SORTED_CATEGORIES = [
     "Inpatient care",
     "Outpatient care",
@@ -25,5 +29,6 @@ export const chart_z6nPPMMbOw5_exportedDataBuilder: (tabs: Tab[], chartName: str
         headersBase: HEADERS_BASE,
         sortedDataParams: SORTED_PARAMETERS,
         sortedDataCategories: SORTED_CATEGORIES,
+        splitYearAndCategoryHeaders: true,
     });
 };

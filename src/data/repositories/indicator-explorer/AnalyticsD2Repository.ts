@@ -7,11 +7,11 @@ import { AnalyticsRepository } from "../../../domain/repositories/indicator-expl
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { isValidUid } from "../../../utils/uid";
-import { exportToCSV, exportToCSVIncludingChart, Tab } from "../../export/exportToCSV";
+import { exportCombinedIndicatorsToXlsx, exportToCSV, exportToCSVIncludingChart, Tab } from "../../export/exportToCSV";
 import { fetchData } from "./analytics/fetchData";
 import { D2Visualization } from "./VisualizationD2Repository";
 import { getCustomCellName } from "./utils/getCustomCellName";
-import { mapToWhoCountryName } from "../countries/mapToWhoCountryData";
+import { mapToWhoCountryCode, mapToWhoCountryName } from "../countries/mapToWhoCountryData";
 import {
     getBreakInSeriesCountryDescription,
     VisualizationBreakInSeries,
@@ -26,7 +26,10 @@ import {
 } from "./utils/lastAvailableYearHelpers";
 import { DataStoreClient } from "../../DataStoreClient";
 import { ChartFileTemplateIdsByVisualization } from "../../../domain/entities/ChartFileTemplateIdsByVisualization";
-import { visualizationsExportedDataChartBuilder } from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
+import {
+    customHeaderExportedDataChartBuilder,
+    visualizationsExportedDataChartBuilder,
+} from "../../export/data-chart-builder/visualizationsExportedDataChartBuilder";
 import { getVisualizationTemplate } from "./visualization-template/getVisualizationTemplate";
 import { ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS, Region } from "../../../domain/entities/region/Region";
 import { getYearByIndicatorAndCountry } from "../../../webapp/components/visualization/manual/chart_kIpnMBaBvZ9_Options";
@@ -38,6 +41,17 @@ import {
     POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_RESIDENCE,
 } from "./PolicyExplorerChartDataD2Repository";
 import { getRegionCodeById } from "../regions/utils";
+import {
+    ABBREVIATION_AND_YEAR_COLUMN,
+    ABBREVIATION_COLUMN,
+    COUNTRY_AREA_COLUMN,
+    INDICATOR_COLUMN,
+    PARAMETER_COLUMN,
+    VALUE_COLUMN,
+    YEAR_COLUMN,
+} from "./utils/sortColumnsAndDataRows";
+import { sortedCategoryNames } from "./seed/utils";
+import { insertArrayAt } from "./utils/insertArrayAt";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -49,15 +63,15 @@ const HEADER_NAMES_BY_VISUALIZATION: Record<string, Record<string, string>> = {
         [SERVICE_PRIMARY_NAME_COLUMN]: "Type of care",
     },
     EtHaEt6bnm5_nlYSkEMZxgN: {
-        yooLFrJORoj: "Parameter",
+        yooLFrJORoj: INDICATOR_COLUMN,
     },
     AophAEpx5e0_BOcLONPSyYS: {
-        yooLFrJORoj: "Parameter",
+        yooLFrJORoj: INDICATOR_COLUMN,
     },
     default: {
-        ou: "Country / Area",
-        pe: "Year",
-        dx: "Parameter",
+        ou: COUNTRY_AREA_COLUMN,
+        pe: YEAR_COLUMN,
+        dx: INDICATOR_COLUMN,
     },
 };
 
@@ -346,10 +360,38 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     []
                 );
 
-                const allRowsSortedToDownload =
+                const hasCustomExportBuilder =
+                    visualizationsExportedDataChartBuilder[mergedVisualization.id] !== undefined ||
+                    customHeaderExportedDataChartBuilder[mergedVisualization.id] !== undefined;
+
+                // only add code prefix to year for default sheets, excluding custom exports
+                const allRowsWithYearColumn =
                     mergedVisualization.showYearInDownloadFile && periods.length === 1 && periods[0]
-                        ? this.addYearToDataRows(allRowsSorted, periods[0])
+                        ? this.addYearColumnIfMissing(
+                              allRowsSorted,
+                              periods[0],
+                              orgUnits,
+                              orgUnitGroups,
+                              !hasCustomExportBuilder
+                          )
                         : allRowsSorted;
+
+                // only force indicator column for default sheets, excluding custom exports
+                const filterDxName = resolveFilterDxName(mergedVisualization, analyticsResponses);
+                const allRowsSortedToDownload = hasCustomExportBuilder
+                    ? allRowsWithYearColumn
+                    : this.addIndicatorColumnIfMissing(allRowsWithYearColumn, filterDxName);
+
+                // combined-indicator charts use a pivot matrix: one row per country, indicators as columns
+                const isCombinedIndicator = mergedVisualization.categoryName === sortedCategoryNames.combinedIndicators;
+                const finalRowsToDownload =
+                    isCombinedIndicator && !hasCustomExportBuilder
+                        ? this.pivotToCombinedMatrix({
+                              rows: allRowsSortedToDownload,
+                              orgUnits,
+                              orgUnitGroups,
+                          })
+                        : allRowsSortedToDownload;
 
                 const chartName = `${mergedVisualization.categoryName}: ${mergedVisualization.friendlyName}`;
 
@@ -360,7 +402,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     },
                     {
                         name: DATA_TAB_NAME,
-                        data: [[chartName || mergedVisualization.name], ...allRowsSortedToDownload],
+                        data: [[chartName || mergedVisualization.name], ...finalRowsToDownload],
                     },
                 ];
 
@@ -414,14 +456,18 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         orgUnitGroups: D2OrgUnitGroup[];
     }): FutureData<void> {
         const { mergedVisualization, tabs, chartName, orgUnits, orgUnitGroups } = params;
-        const exportedDataChartBuilder = visualizationsExportedDataChartBuilder[mergedVisualization.id];
+        const customHeaderBuilder = customHeaderExportedDataChartBuilder[mergedVisualization.id];
+        const defaultBuilder = visualizationsExportedDataChartBuilder[mergedVisualization.id];
+        const exportedDataChartBuilder = customHeaderBuilder ?? defaultBuilder;
 
         if (exportedDataChartBuilder) {
+            const tabsForCustomBuilder = customHeaderBuilder ? tabs : renameIndicatorHeaderToParameter(tabs);
+
             return getVisualizationTemplate(this.api, mergedVisualization.id)
                 .flatMap(templateArrayBuffer => {
                     try {
                         const tabsWithChart = exportedDataChartBuilder(
-                            tabs,
+                            tabsForCustomBuilder,
                             chartName || mergedVisualization.name,
                             orgUnits,
                             orgUnitGroups
@@ -438,14 +484,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                     } catch (error) {
                         console.error("Error creating exported data for chart: ", error);
 
-                        exportToCSV(tabs, chartName || mergedVisualization.name);
+                        exportToCSV(tabsForCustomBuilder, chartName || mergedVisualization.name);
                     }
                     return Future.success(undefined);
                 })
                 .flatMapError(error => {
                     console.error("Error while downloading chart template: ", error);
                     const tabsWithChart = exportedDataChartBuilder(
-                        tabs,
+                        tabsForCustomBuilder,
                         chartName || mergedVisualization.name,
                         orgUnits,
                         orgUnitGroups
@@ -456,22 +502,44 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         } else {
             console.error("Exported data chart builder not found for visualization: ", mergedVisualization.id);
 
-            exportToCSV(tabs, chartName || mergedVisualization.name);
+            const isCombinedIndicator = mergedVisualization.categoryName === sortedCategoryNames.combinedIndicators;
+            const exportFileName = chartName || mergedVisualization.name;
+            if (isCombinedIndicator) {
+                return Future.fromPromise(exportCombinedIndicatorsToXlsx(tabs, exportFileName)).flatMapError(error => {
+                    console.error("Error exporting combined indicators:", error);
+                    return Future.success(undefined);
+                });
+            }
+            exportToCSV(tabs, exportFileName);
             return Future.success(undefined);
         }
     }
 
-    private addYearToDataRows(dataRows: string[][], period: string): string[][] {
-        const header = dataRows[0];
-        const restRows = dataRows.slice(1);
+    private addYearColumnIfMissing(
+        dataRows: string[][],
+        period: string,
+        orgUnits: D2OrgUnit[],
+        orgUnitGroups: D2OrgUnitGroup[],
+        includeCountryCodePrefix: boolean
+    ): string[][] {
+        const [header = [], ...restRows] = dataRows;
+        if (header.includes(YEAR_COLUMN)) return dataRows;
 
-        const yearColumnIndex = header?.findIndex(header => header === "Year");
-        if (yearColumnIndex !== -1) return dataRows;
+        const countryAreaIndex = header.indexOf(COUNTRY_AREA_COLUMN);
+        const insertAt = countryAreaIndex + 1;
+        const codeByCountryName = includeCountryCodePrefix
+            ? buildCodeByCountryName(orgUnits, orgUnitGroups)
+            : undefined;
 
-        const newHeaderRow = ["Year", ...(header || [])];
-        const newDataRows = restRows.map(row => [period, ...row]);
+        const buildYearCell = (row: string[]): string => {
+            const prefix = codeByCountryName?.get(row[countryAreaIndex] ?? "");
+            return prefix ? `${prefix} ${period}` : period;
+        };
 
-        return [newHeaderRow || [], ...newDataRows];
+        return [
+            insertArrayAt(header, insertAt, YEAR_COLUMN),
+            ...restRows.map(row => insertArrayAt(row, insertAt, buildYearCell(row))),
+        ];
     }
 
     private sortColumnsAndDataRows(allRows: string[][], visualization: Visualization): string[][] {
@@ -691,7 +759,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             }
 
             if (SERVICE_PRIMARY_NAME_COLUMN === header.name) {
-                return "Parameter";
+                return PARAMETER_COLUMN;
             }
 
             const defaultHeaderNames = HEADER_NAMES_BY_VISUALIZATION.default;
@@ -700,10 +768,14 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             return defaultName ?? header.column.charAt(0).toUpperCase() + header.column.slice(1).toLowerCase();
         });
 
-        const existsCountryColumn = columns.includes("Country / Area");
+        const existsCountryColumn = columns.includes(COUNTRY_AREA_COLUMN);
         const addCountryOrAreaColumn = !existsCountryColumn && (orgUnits.length === 1 || orgUnitGroups.length === 1);
 
-        const finalColumns = addCountryOrAreaColumn ? ["Country / Area", ...columns] : columns;
+        const finalColumns = addCountryOrAreaColumn ? [COUNTRY_AREA_COLUMN, ...columns] : columns;
+
+        const hasCustomExportBuilder =
+            visualizationsExportedDataChartBuilder[visualization.id] !== undefined ||
+            customHeaderExportedDataChartBuilder[visualization.id] !== undefined;
 
         const mappedRows = _(
             this.mapAnalyticsResponseRows({
@@ -719,7 +791,18 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
             .sortBy(row => row[1])
             .value();
 
-        const dataRowsWithCountryIfRequired = mappedRows.map(row => {
+        // only add code prefix to year for default sheets, excluding custom exports.
+        const rowsWithCodeYear = hasCustomExportBuilder
+            ? mappedRows
+            : this.addCountryCodeToYearInRows({
+                  rows: mappedRows,
+                  headers: analyticsResponse.headers,
+                  orgUnits,
+                  orgUnitGroups,
+                  addCountryOrAreaColumn,
+              });
+
+        const dataRowsWithCountryIfRequired = rowsWithCodeYear.map(row => {
             if (addCountryOrAreaColumn) {
                 const countryOrArea = orgUnits.length === 1 ? orgUnits[0] : orgUnitGroups[0];
                 const countryName = countryOrArea
@@ -731,6 +814,92 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
         });
 
         return [finalColumns, ...dataRowsWithCountryIfRequired];
+    }
+
+    private addCountryCodeToYearInRows(params: {
+        rows: string[][];
+        headers: Analytics["headers"];
+        orgUnits: D2OrgUnit[];
+        orgUnitGroups: D2OrgUnitGroup[];
+        addCountryOrAreaColumn: boolean;
+    }): string[][] {
+        const { rows, headers, orgUnits, orgUnitGroups, addCountryOrAreaColumn } = params;
+
+        const peIndex = headers.findIndex(h => h.name === "pe");
+        if (peIndex < 0) return rows;
+
+        const ouIndex = headers.findIndex(h => h.name === "ou");
+        // rows are post-mapping: ou cell contains the country NAME, not the UID
+        const codeByCountryName = buildCodeByCountryName(orgUnits, orgUnitGroups);
+        const fallbackCode = addCountryOrAreaColumn ? this.getSingleEntityCode(orgUnits, orgUnitGroups) : undefined;
+
+        return rows.map(row => {
+            const prefix = ouIndex >= 0 ? codeByCountryName.get(row[ouIndex] ?? "") : fallbackCode;
+            if (!prefix || !row[peIndex]) return row;
+            return row.map((cell, i) => (i === peIndex ? `${prefix} ${cell}` : cell));
+        });
+    }
+
+    private getSingleEntityCode(orgUnits: D2OrgUnit[], orgUnitGroups: D2OrgUnitGroup[]): string | undefined {
+        const entity = orgUnits[0] ?? orgUnitGroups[0];
+        return entity?.code ? mapToWhoCountryCode(entity.code) : undefined;
+    }
+
+    private addIndicatorColumnIfMissing(rows: string[][], indicatorName: Maybe<string>): string[][] {
+        const [headerRow, ...dataRows] = rows;
+        if (!headerRow || !indicatorName || headerRow.includes(INDICATOR_COLUMN)) return rows;
+
+        return [[INDICATOR_COLUMN, ...headerRow], ...dataRows.map(row => [indicatorName, ...row])];
+    }
+
+    // Operates on the post-pipeline table so it inherits name resolution, region-code injection,
+    // and policy-explorer lookups. The `{code} {year}` split is a round-trip — consider unifying
+    // on a tidy-data intermediate when revisiting the custom-exporter charts.
+    private pivotToCombinedMatrix(params: {
+        rows: string[][];
+        orgUnits: D2OrgUnit[];
+        orgUnitGroups: D2OrgUnitGroup[];
+    }): string[][] {
+        const { rows, orgUnits, orgUnitGroups } = params;
+        const [header = [], ...dataRows] = rows;
+
+        const indicatorIndex = header.indexOf(INDICATOR_COLUMN);
+        const countryIndex = header.indexOf(COUNTRY_AREA_COLUMN);
+        const yearIndex = header.indexOf(YEAR_COLUMN);
+        const valueIndex = header.indexOf(VALUE_COLUMN);
+
+        if (indicatorIndex < 0 || countryIndex < 0 || valueIndex < 0) return rows;
+
+        const codeByCountryName = buildCodeByCountryName(orgUnits, orgUnitGroups);
+        const uniqueIndicators = _.uniq(dataRows.map(row => row[indicatorIndex] ?? ""));
+        const uniqueCountries = _.uniq(dataRows.map(row => row[countryIndex] ?? ""));
+
+        const newHeader = [
+            COUNTRY_AREA_COLUMN,
+            ABBREVIATION_COLUMN,
+            YEAR_COLUMN,
+            ABBREVIATION_AND_YEAR_COLUMN,
+            ...uniqueIndicators,
+        ];
+
+        const newRows = uniqueCountries.map(country => {
+            const countryRows = dataRows.filter(row => row[countryIndex] === country);
+            const abbreviation = codeByCountryName.get(country) ?? "";
+            const codeAndYearCell = yearIndex >= 0 ? countryRows[0]?.[yearIndex] ?? "" : "";
+            const rawYear =
+                abbreviation && codeAndYearCell.startsWith(`${abbreviation} `)
+                    ? codeAndYearCell.slice(abbreviation.length + 1)
+                    : codeAndYearCell;
+
+            const valuesByIndicator = new Map(
+                countryRows.map(row => [row[indicatorIndex] ?? "", row[valueIndex] ?? ""])
+            );
+            const valueCells = uniqueIndicators.map(indicator => valuesByIndicator.get(indicator) ?? "");
+
+            return [country, abbreviation, rawYear, codeAndYearCell, ...valueCells];
+        });
+
+        return [newHeader, ...newRows];
     }
 
     mapAnalyticsResponseRows(params: {
@@ -958,6 +1127,7 @@ export type D2OrgUnit = MetadataPick<{
 const organisationUnitGroupsFields = {
     id: true,
     shortName: true,
+    code: true,
     organisationUnits: {
         id: true,
     },
@@ -966,3 +1136,40 @@ const organisationUnitGroupsFields = {
 export type D2OrgUnitGroup = MetadataPick<{
     organisationUnitGroups: { fields: typeof organisationUnitGroupsFields };
 }>["organisationUnitGroups"][number];
+
+function resolveFilterDxName(visualization: Visualization, analyticsResponses: Analytics[]): Maybe<string> {
+    const allDims = [...visualization.filters, ...visualization.columns, ...visualization.rows];
+    const dxDim = allDims.find(dim => dim.id === "dx");
+    const dxItem = dxDim?.items[0];
+    if (!dxItem) return undefined;
+
+    const metadataName = analyticsResponses[0]?.metaData.items[dxItem.id]?.name;
+    return (metadataName ?? dxItem.name)?.replace("UHCW_", "");
+}
+
+function renameIndicatorHeaderToParameter(tabs: Tab[]): Tab[] {
+    return tabs.map(tab => {
+        if (tab.name !== DATA_TAB_NAME) return tab;
+        const [chartNameRow, headerRow, ...dataRows] = tab.data;
+        if (!headerRow) return tab;
+        const renamedHeader = headerRow.map(col => (col === INDICATOR_COLUMN ? PARAMETER_COLUMN : col));
+        return { ...tab, data: [chartNameRow || [], renamedHeader, ...dataRows] };
+    });
+}
+
+type CodedEntity = { id: Id; shortName?: string; code?: string };
+
+function buildCodeMap<K>(entities: CodedEntity[], getKey: (entity: CodedEntity) => K | undefined): Map<K, string> {
+    const entries = entities.flatMap((entity): Array<[K, string]> => {
+        if (!entity.code) return [];
+        const key = getKey(entity);
+        return key === undefined ? [] : [[key, mapToWhoCountryCode(entity.code)]];
+    });
+    return new Map(entries);
+}
+
+function buildCodeByCountryName(orgUnits: D2OrgUnit[], orgUnitGroups: D2OrgUnitGroup[]): Map<string, string> {
+    return buildCodeMap([...orgUnits, ...orgUnitGroups], entity =>
+        mapToWhoCountryName(entity.id, entity.shortName || "")
+    );
+}
