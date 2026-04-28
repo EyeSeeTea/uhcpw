@@ -53,6 +53,14 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
         }
     }, [countryId]);
 
+    const summary = React.useMemo(() => {
+        if (country?.countryPageSummary) {
+            return `${country.generalSummary}\n\n${country.countryPageSummary}`;
+        }
+
+        return country?.generalSummary || "";
+    }, [country]);
+
     if (!countryIdSelected) return <CircularProgress />;
 
     return (
@@ -64,7 +72,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                             a: ({ ...props }) => <ButtonItem {...props} />,
                         }}
                     >
-                        {country.summary}
+                        {summary}
                     </ReactMarkdown>
                 </InfoGrid>
             )}

@@ -13,7 +13,10 @@ export type Country = {
     children?: Country[];
     flag: string;
     showCountryFlag: boolean;
-    summary: string;
+    generalSummary: string;
+    countryPageSummary: string;
+    homePageSummary: string;
+    regionalPageSummary: string;
     sliderInfo: {
         gapsSection: CountrySectionInfo;
         finProtecSection: CountrySectionInfo;

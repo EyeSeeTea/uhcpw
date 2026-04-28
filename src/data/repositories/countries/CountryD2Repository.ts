@@ -20,7 +20,10 @@ export const countryInfoProgram = "xgaF9UtfrzK";
 
 export const countryInfoDataElements: Record<string, string> = {
     flag: "RCQZDELfNQJ",
-    summary: "B6gzpUbzpW3",
+    generalSummary: "B6gzpUbzpW3",
+    countryPageSummary: "oYMx5VDFZAx",
+    homePageSummary: "Xr07iby2vDP",
+    regionalPageSummary: "lG0DaM1IP9W",
     status: "btOzN3badgN",
     geometry: "YNMHjDxsci9",
     showCountryFlag: "OKAdmIvHqGo",
@@ -263,9 +266,21 @@ export class CountryD2Repository implements CountryRepository {
         gapTextByCountry: GapsTextMap;
     }): Country {
         const { countryId, orgUnit, isInCountryPage, additionalCountryInfo, gapTextByCountry } = props;
-        const summary =
-            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.summary)?.value ||
-            "";
+        const generalSummary =
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.generalSummary)
+                ?.value || "";
+
+        const countryPageSummary =
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.countryPageSummary)
+                ?.value || "";
+
+        const homePageSummary =
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.homePageSummary)
+                ?.value || "";
+
+        const regionalPageSummary =
+            additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.regionalPageSummary)
+                ?.value || "";
 
         const rawStatus =
             additionalCountryInfo?.dataValues.find(dv => dv.dataElement === countryInfoDataElements.status)?.value ||
@@ -294,7 +309,10 @@ export class CountryD2Repository implements CountryRepository {
                 .filter(oug => SORTED_COUNTRY_GROUPINGS.includes(oug.id)),
             flag: `${this.api.baseUrl}/api/events/files?dataElementUid=${countryInfoDataElements.flag}&eventUid=${additionalCountryInfo?.event}`,
             showCountryFlag: showCountryFlag === "true",
-            summary,
+            generalSummary,
+            countryPageSummary,
+            homePageSummary,
+            regionalPageSummary,
             sliderInfo: this.buildSliderInfo(additionalCountryInfo, gapTextByCountry.get(countryId)),
             isInCountryPage: isInCountryPage,
             currencyCode: getCurrencyCodeFromCountryId(countryId),

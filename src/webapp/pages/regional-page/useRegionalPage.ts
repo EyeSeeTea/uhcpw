@@ -7,7 +7,6 @@ import { useRegionalPageFilter } from "./useRegionalPageFilter";
 import i18n from "../../../locales";
 import { Country } from "../../../domain/entities/Country";
 import { useAppContext } from "../../contexts/app-context";
-import { countriesToGeoJson } from "../../components/home/map/useMap";
 import { useHistory, useParams } from "react-router-dom";
 import { useRegionalPageContent } from "./useRegionalPageContent";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
@@ -26,6 +25,7 @@ import {
 } from "../../utils/formatCountryOrRegionParamName";
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
 import { RegionalGapsInCoverageState, useRegionalGapsInCoverage } from "./useRegionalGapsInCoverage";
+import { countriesToGeoJson } from "../../components/home/map/utils/countriesToGeoJson";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "gapsInCoverage" | "policyChecklist" | "resources" | "experts";
 
@@ -188,7 +188,8 @@ export function useRegionalPage(): RegionalPageState {
             const countryIdsInRegion = region?.countries || [];
 
             const countriesWithSummary = countries.filter(
-                country => countryIdsInRegion.includes(country.id) && country.summary
+                country =>
+                    countryIdsInRegion.includes(country.id) && (country.generalSummary || country.regionalPageSummary)
             );
 
             const iso3CountriesInRegion = countries
