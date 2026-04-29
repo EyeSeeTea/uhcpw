@@ -31,9 +31,23 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
             widths={[480, 768, 960]}
             sizes="(max-width: 959px) 100vw, 0px"
         />
-        <div class="mobile-only">
+        <div class="mobile-only" id="mobile-hero-mount"></div>
+        <template id="mobile-hero-tpl">
             <MobileMapHero content={homePageContent.mainMapPanel} />
-        </div>
+        </template>
+        <script>
+            // Gate render to mobile widths so the YouTube facade (lite-youtube)
+            // is never connected to the DOM on desktop, where it isn't shown.
+            const tpl = document.getElementById("mobile-hero-tpl");
+            const mount = document.getElementById("mobile-hero-mount");
+            if (
+                tpl instanceof HTMLTemplateElement &&
+                mount &&
+                window.matchMedia("(max-width: 959px)").matches
+            ) {
+                mount.appendChild(tpl.content.cloneNode(true));
+            }
+        </script>
         <HomeMap
             client:only="react"
             markers={markers}

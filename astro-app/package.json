@@ -19,6 +19,7 @@
         "test:watch": "LOG_LEVEL=silent vitest"
     },
     "dependencies": {
+        "@astro-community/astro-embed-youtube": "^0.5.10",
         "@astrojs/react": "^5.0.1",
         "@dhis2/d2-i18n": "1.1.0",
         "@eyeseetea/d2-api": "1.13.1",
