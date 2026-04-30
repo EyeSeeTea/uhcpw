@@ -4,7 +4,6 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
-import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
 import { getOrgUnitKey } from "../utils/getOrgUnitKey";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
@@ -15,7 +14,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
-    useRegionColors?: boolean;
+    regionColorsBySeries?: Record<string, Record<string, string>>;
     hideYear?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
@@ -25,7 +24,7 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
-    useRegionColors = true,
+    regionColorsBySeries,
     hideYear,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
@@ -87,8 +86,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 const color =
                     (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
-                        : useRegionColors && region?.code
-                        ? { color: getColorOfRegionByRegionCode(region?.code) }
+                        : !!regionColorsBySeries && region?.code
+                        ? { color: regionColorsBySeries?.[region.code]?.[dxId] || seriesColors[dxId] }
                         : undefined;
 
                 return {
