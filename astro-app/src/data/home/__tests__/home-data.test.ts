@@ -14,7 +14,10 @@ function makeCountry(overrides: Partial<Country>): Country {
         parents: [],
         flag: "",
         showCountryFlag: false,
-        summary: "",
+        generalSummary: "",
+        countryPageSummary: "",
+        homePageSummary: "",
+        regionalPageSummary: "",
         sliderInfo: {
             gapsSection: { sectionName: "", sourceText: "", content: [] },
             finProtecSection: { sectionName: "", sourceText: "", content: [] },
@@ -261,9 +264,9 @@ describe("buildHomeNews", () => {
 describe("buildMapMarkers", () => {
     it("includes only countries with summary data", () => {
         const countries: Country[] = [
-            makeCountry({ id: "c1", name: "Albania", summary: "Has summary", coordinates: [20, 41] }),
-            makeCountry({ id: "c2", name: "Belgium", summary: "" }),
-            makeCountry({ id: "c3", name: "Chile", summary: "Also has summary", coordinates: [-70, -33] }),
+            makeCountry({ id: "c1", name: "Albania", generalSummary: "Has summary", coordinates: [20, 41] }),
+            makeCountry({ id: "c2", name: "Belgium", generalSummary: "" }),
+            makeCountry({ id: "c3", name: "Chile", homePageSummary: "Also has summary", coordinates: [-70, -33] }),
         ];
 
         const result = buildMapMarkers(countries);
@@ -276,7 +279,7 @@ describe("buildMapMarkers", () => {
 
     it("creates valid GeoJSON Point features", () => {
         const countries: Country[] = [
-            makeCountry({ id: "c1", name: "Albania", summary: "Has data", coordinates: [20.1, 41.3] }),
+            makeCountry({ id: "c1", name: "Albania", generalSummary: "Has data", coordinates: [20.1, 41.3] }),
         ];
 
         const result = buildMapMarkers(countries);
@@ -290,7 +293,7 @@ describe("buildMapMarkers", () => {
 
     it("returns empty FeatureCollection when no countries have summary", () => {
         const countries: Country[] = [
-            makeCountry({ id: "c1", name: "Albania", summary: "" }),
+            makeCountry({ id: "c1", name: "Albania", generalSummary: "" }),
         ];
 
         const result = buildMapMarkers(countries);

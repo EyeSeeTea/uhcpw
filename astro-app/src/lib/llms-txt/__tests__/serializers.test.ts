@@ -195,14 +195,16 @@ describe("serializeAreaOverviewMarkdown", () => {
             properties: {
                 name: "Spain",
                 status: "Emerging",
-                summary: "Strong progress on financial protection.",
+                generalSummary: "Strong progress on financial protection.",
+                homePageSummary: "",
             },
         },
         {
             properties: {
                 name: "Albania",
                 status: "VeryWeak",
-                summary: "Significant gaps in coverage.",
+                generalSummary: "Significant gaps in coverage.",
+                homePageSummary: "",
             },
         },
     ];
@@ -229,7 +231,8 @@ describe("serializeAreaOverviewMarkdown", () => {
                     properties: {
                         name: "Atlantis",
                         status: "InsufficientData",
-                        summary: "   ",
+                        generalSummary: "   ",
+                        homePageSummary: "   ",
                     },
                 },
             ],

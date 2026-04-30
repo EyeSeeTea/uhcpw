@@ -25,7 +25,8 @@ export type AreaMarkerFeature = Readonly<{
     properties: Readonly<{
         name: string;
         status: FinancialProtectionStatus;
-        summary: string;
+        generalSummary: string;
+        homePageSummary: string;
     }>;
 }>;
 
@@ -53,11 +54,18 @@ export function serializeMethodsMarkdown(data: MethodsPageData, title: string): 
 
 export function serializeAreaOverviewMarkdown(features: ReadonlyArray<AreaMarkerFeature>, title: string): string {
     const areaSections = features
-        .filter(f => f.properties.summary.trim().length > 0)
+        .map(f => ({
+            ...f,
+            summary: [f.properties.generalSummary, f.properties.homePageSummary]
+                .map(s => s.trim())
+                .filter(s => s.length > 0)
+                .join("\n\n"),
+        }))
+        .filter(f => f.summary.length > 0)
         .sort((a, b) => a.properties.name.localeCompare(b.properties.name))
         .map(feature => {
-            const { name, status, summary } = feature.properties;
-            return [`## ${name}`, `- Status: ${STATUS_LABELS[status]}`, summary.trim()].join("\n\n");
+            const { name, status } = feature.properties;
+            return [`## ${name}`, `- Status: ${STATUS_LABELS[status]}`, feature.summary].join("\n\n");
         });
     const intro =
         areaSections.length === 0

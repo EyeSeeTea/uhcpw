@@ -26,7 +26,10 @@ function makeCountry(overrides: Partial<Country>): Country {
         parents: [],
         flag: "",
         showCountryFlag: false,
-        summary: "",
+        generalSummary: "",
+        countryPageSummary: "",
+        homePageSummary: "",
+        regionalPageSummary: "",
         sliderInfo: {
             gapsSection: { sectionName: "", sourceText: "", content: [] },
             finProtecSection: { sectionName: "", sourceText: "", content: [] },

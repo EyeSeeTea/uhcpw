@@ -5,7 +5,7 @@ import type { Resource } from "@shared/domain/entities/resources/Resource";
  * marker payload before it's serialized into the SSR HTML. */
 export type HomeMarkerCountry = Pick<
     Country,
-    "id" | "name" | "status" | "summary" | "coordinates"
+    "id" | "name" | "status" | "generalSummary" | "homePageSummary" | "coordinates"
 >;
 
 export type HomeResourceState = Readonly<{
@@ -103,7 +103,7 @@ export function buildMapMarkers(
     return {
         type: "FeatureCollection",
         features: countries.flatMap(country =>
-            country.summary && country.coordinates
+            (country.generalSummary || country.homePageSummary) && country.coordinates
                 ? [
                       {
                           type: "Feature" as const,
@@ -111,7 +111,8 @@ export function buildMapMarkers(
                               id: country.id,
                               name: country.name,
                               status: country.status,
-                              summary: country.summary,
+                              generalSummary: country.generalSummary,
+                              homePageSummary: country.homePageSummary,
                               coordinates: country.coordinates,
                           },
                           geometry: {
