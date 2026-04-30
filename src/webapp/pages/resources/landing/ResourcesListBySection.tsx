@@ -23,6 +23,7 @@ export const ResourcesListBySection: React.FC<{
                     <ResourceGroup
                         title={section.title}
                         seeAllUrl={`${section.seeAllUrl}${themeSelected ? `?theme=${themeSelected}` : ""}`}
+                        hideHeaderRow={section.kind === "country-comparative-analysis"}
                     >
                         {section.resources.map(resource => (
                             <StyledGrid key={resource.id} item {...getSectionGridSize(section.kind)}>

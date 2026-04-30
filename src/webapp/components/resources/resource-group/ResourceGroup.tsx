@@ -11,10 +11,11 @@ export interface ResourceGroupProps {
     seeAllUrl: string;
     isMobileLanding?: boolean;
     centerItems?: boolean;
+    hideHeaderRow?: boolean;
 }
 
 export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(
-    ({ title, seeAllUrl, children, isMobileLanding = false, centerItems = false }) => {
+    ({ title, seeAllUrl, children, isMobileLanding = false, centerItems = false, hideHeaderRow = false }) => {
         const history = useHistory();
 
         const onSeeAll = useCallback(() => {
@@ -23,20 +24,23 @@ export const ResourceGroup: React.FC<ResourceGroupProps> = React.memo(
 
         return (
             <Container aria-label={title}>
-                <Row>
-                    <Title variant="h5">{title}</Title>
-                    <Box width={2} />
-                    {seeAllUrl && (
-                        <Fab
-                            aria-label={`go to ${title}`}
-                            color="primary"
-                            size="small"
-                            style={{ boxShadow: "none", transform: "scale(0.7)" }}
-                        >
-                            <ChevronRightSharpIcon onClick={onSeeAll} />
-                        </Fab>
-                    )}
-                </Row>
+                {!hideHeaderRow && (
+                    <Row>
+                        <Title variant="h5">{title}</Title>
+                        <Box width={2} />
+                        {seeAllUrl && (
+                            <Fab
+                                aria-label={`go to ${title}`}
+                                color="primary"
+                                size="small"
+                                style={{ boxShadow: "none", transform: "scale(0.7)" }}
+                            >
+                                <ChevronRightSharpIcon onClick={onSeeAll} />
+                            </Fab>
+                        )}
+                    </Row>
+                )}
+
                 {isMobileLanding ? (
                     children
                 ) : (
