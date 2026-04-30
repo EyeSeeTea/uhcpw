@@ -1,8 +1,14 @@
 import { mapFromWhoCountryNameToId, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
 import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import { insertArrayAt } from "../../repositories/indicator-explorer/utils/insertArrayAt";
-import { COUNTRY_AREA_COLUMN } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
+import {
+    COUNTRY_AREA_COLUMN,
+    VALUE_COLUMN,
+    YEAR_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
+
+const COUNTRY_YEAR_SEPARATOR = "-";
 
 export function getTabsWithChartData(
     tabs: Tab[],
@@ -36,10 +42,10 @@ export function getTabsWithChartData(
     }
 
     const headers = dataTab.data[1];
-    const countryIndex = headers?.indexOf("Country / Area");
+    const countryIndex = headers?.indexOf(COUNTRY_AREA_COLUMN);
     const dataParamIndex = headers?.indexOf(headerDataParamName);
-    const yearIndex = headers?.indexOf("Year");
-    const valueIndex = headers?.indexOf("Value");
+    const yearIndex = headers?.indexOf(YEAR_COLUMN);
+    const valueIndex = headers?.indexOf(VALUE_COLUMN);
     if (
         countryIndex === undefined ||
         countryIndex === -1 ||
@@ -62,7 +68,11 @@ export function getTabsWithChartData(
         ? []
         : dataTab.data
               .slice(2)
-              .map(row => (row[countryIndex] && row[yearIndex] ? `${row[countryIndex]}-${row[yearIndex]}` : undefined))
+              .map(row =>
+                  row[countryIndex] && row[yearIndex]
+                      ? `${row[countryIndex]}${COUNTRY_YEAR_SEPARATOR}${row[yearIndex]}`
+                      : undefined
+              )
               .filter((countryAndYear): countryAndYear is string => countryAndYear !== undefined);
 
     const countriesAndYearsUnique = isCountryChart ? [] : [...new Set(allCountriesAndYears)];
@@ -77,10 +87,6 @@ export function getTabsWithChartData(
     const allYearsUnique = isCountryChart
         ? [...new Set(allYears)].map(year => Number(year)).sort((yearA, yearB) => yearA - yearB)
         : [];
-
-    const restHeaders = isCountryChart ? allYearsUnique : countriesAndYearsUnique;
-
-    const finalHeaders = [[...headersBase, ...restHeaders]];
 
     const dataByDataParam: TabsWithStringOrNumbers["data"] = getDataSortedByDataParam({
         dataTab: dataTab,
@@ -99,6 +105,15 @@ export function getTabsWithChartData(
         isCountryChart && country
             ? dataByDataParam.map(row => insertArrayAt(row, countryInsertIndex, country))
             : dataByDataParam;
+
+    const countriesAndYearsUniqueHeader = countriesAndYearsUnique.map(countryAndYear => {
+        const [countryName, year] = countryAndYear.split(COUNTRY_YEAR_SEPARATOR);
+        return `${countryName} ${year}`;
+    });
+
+    const restHeaders = isCountryChart ? allYearsUnique : countriesAndYearsUniqueHeader;
+
+    const finalHeaders = [[...headersBase, ...restHeaders]];
 
     const data =
         hasCountryCodeRow && orgUnits
@@ -168,7 +183,7 @@ function getDataSortedByDataParam(params: {
             return [...acc, [param, ...paramData]];
         } else {
             const paramData = countriesAndYearsUnique.map(countryAndYear => {
-                const [country, year] = countryAndYear.split("-");
+                const [country, year] = countryAndYear.split(COUNTRY_YEAR_SEPARATOR);
                 const row = dataTab.data.find(
                     row => row[dataParamIndex] === param && row[yearIndex] === year && row[countryIndex] === country
                 );
@@ -200,13 +215,13 @@ function getDataWithCountryCodesRow(params: {
 
 function getCountryCodesRow(countriesAndYearsHeaders: string[], orgUnits: D2OrgUnit[]): string[] {
     return countriesAndYearsHeaders.map(countryAndYear => {
-        const [country, year] = countryAndYear.split("-");
+        const [country, year] = countryAndYear.split(COUNTRY_YEAR_SEPARATOR);
         const countryName = country || "";
         const orgUnitCode =
             orgUnits.find(
                 orgUnit => orgUnit.shortName === countryName || orgUnit.id === mapFromWhoCountryNameToId(countryName)
             )?.code || countryName;
-        return `${mapToWhoCountryCode(orgUnitCode)}-${year}`;
+        return `${mapToWhoCountryCode(orgUnitCode)} ${year}`;
     });
 }
 

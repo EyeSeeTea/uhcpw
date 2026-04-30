@@ -6,6 +6,8 @@ import {
 } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
+const YEAR_CATEGORY_SEPARATOR = " ";
+
 export function getTabsWithChartDataWithSeriesByCategory(
     tabs: Tab[],
     options: {
@@ -73,7 +75,12 @@ export function getTabsWithChartDataWithSeriesByCategory(
               [...headersBase.map(() => ""), ...yearCategoryKeys.map(({ year }) => year)],
               [...headersBase, ...yearCategoryKeys.map(({ category }) => category)],
           ]
-        : [[...headersBase, ...yearCategoryKeys.map(({ year, category }) => `${year}-${category}`)]];
+        : [
+              [
+                  ...headersBase,
+                  ...yearCategoryKeys.map(({ year, category }) => `${year}${YEAR_CATEGORY_SEPARATOR}${category}`),
+              ],
+          ];
 
     const dataByDataParam: TabsWithStringOrNumbers["data"] = sortedDataParams.map((param): (string | number)[] => {
         const paramData = yearCategoryKeys.map(({ year, category }) => {

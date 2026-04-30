@@ -51,6 +51,14 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
     const [selectedOption, setSelectedOption] = React.useState<IndicatorOption | undefined>(
         options.find(option => option.value === selectedValue)
     );
+
+    React.useEffect(() => {
+        const initialValue = options.find(option => option.value === selectedValue);
+        if (initialValue && initialValue !== selectedOption) {
+            setSelectedOption(initialValue);
+        }
+    }, [selectedValue, options, selectedOption]);
+
     const [expanded, setExpanded] = React.useState(false);
     const [openedMenu, setOpenedMenu] = React.useState(false);
     const [searchTerm, setSearchTerm] = React.useState<string>("");
