@@ -45,6 +45,14 @@ const iconStatusMap: Record<FinancialProtectionStatus, string> = {
 };
 
 export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalPage }) => {
+    const summary = React.useMemo(() => {
+        if (isRegionalPage) {
+            return `${country.generalSummary}\n\n${country.regionalPageSummary}`;
+        }
+
+        return `${country.generalSummary}\n\n${country.homePageSummary}`;
+    }, [country, isRegionalPage]);
+
     return (
         <Container $isRegionalPage={isRegionalPage}>
             <Row>
@@ -63,7 +71,7 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalP
                     a: ({ ...props }) => <ButtonItem {...props} />,
                 }}
             >
-                {country.summary}
+                {summary}
             </ReactMarkdown>
         </Container>
     );

@@ -4,7 +4,6 @@ import { baseLegend } from "../../customization/legends/baseLegend";
 import { ChartSource } from "../chartOptions";
 import { baseChartOptions } from "./baseChartOptions";
 import { getMaxAxisAndTickInterval } from "../../utils/getMaxAxisAndTickInterval";
-import { getColorOfRegionByRegionCode } from "../../../../pages/regional-page/getColorOfRegion";
 import { getOrgUnitKey } from "../utils/getOrgUnitKey";
 
 export const comparativeSingleYearColumnChartOptions: (params: {
@@ -15,6 +14,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor?: string;
     orderByValueInSerie?: string;
     stackedValuesUpTo100?: boolean;
+    regionColorsBySeries?: Record<string, Record<string, string>>;
+    hideYear?: boolean;
 }) => Highcharts.Options = ({
     chartSource,
     seriesNames,
@@ -23,6 +24,8 @@ export const comparativeSingleYearColumnChartOptions: (params: {
     currentSerieColor,
     orderByValueInSerie,
     stackedValuesUpTo100,
+    regionColorsBySeries,
+    hideYear,
 }) => {
     const orderRows = _(chartSource.analyticsResponse.rows)
         .groupBy(row => {
@@ -83,12 +86,12 @@ export const comparativeSingleYearColumnChartOptions: (params: {
                 const color =
                     (currentCountryCode === code || code === currentRegion?.code) && currentSerieColor
                         ? { color: currentSerieColor }
-                        : region?.code
-                        ? { color: getColorOfRegionByRegionCode(region?.code) }
+                        : !!regionColorsBySeries && region?.code
+                        ? { color: regionColorsBySeries?.[region.code]?.[dxId] || seriesColors[dxId] }
                         : undefined;
 
                 return {
-                    name: `${code} ${currentYear ?? ""}`,
+                    name: hideYear ? code : `${code} ${currentYear ?? ""}`,
                     y: value,
                     ...color,
                 };
@@ -98,7 +101,10 @@ export const comparativeSingleYearColumnChartOptions: (params: {
         return stackedValuesUpTo100 ? { ...serie, stacking: "percent" } : serie;
     });
 
-    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(series);
+    const { max: adjustedMaxYAxis, tickInterval: yTickInterval } = getMaxYAxisAndYTickInterval(
+        series,
+        stackedValuesUpTo100
+    );
 
     return {
         ...baseChartOptions,

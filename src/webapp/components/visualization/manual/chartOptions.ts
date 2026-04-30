@@ -25,6 +25,7 @@ import { chart_q5ldoFcgkSn_Options } from "./chart_q5ldoFcgkSn_Options";
 import { chart_WDUV9ZrJiNC_Options } from "./chart_WDUV9ZrJiNC_Options";
 import { chart_MfLZYD6QCPy_Options } from "./chart_MfLZYD6QCPy_Options";
 import { chart_CdqVV1Ib0XS_Options } from "./chart_CdqVV1Ib0XS_Options";
+import { chart_BpIwF88XezK_Options } from "./chart_BpIwF88XezK_Options";
 import { chart_twyY1ulr7uD_Options } from "./chart_twyY1ulr7uD_Options";
 import { chart_fnOIi0bdISn_Options } from "./chart_fnOIi0bdISn_Options";
 import { chart_y4qAv6eW4nb_Options } from "./chart_y4qAv6eW4nb_Options";
@@ -37,6 +38,8 @@ import { chart_AQ8dYmv00zb_Options } from "./chart_AQ8dYmv00zb_Options";
 import { chart_fk2LtKtsiQG_Options } from "./chart_fk2LtKtsiQG_Options";
 import { chart_AjY0AISVVs5_dVRGqsjce2n_Options } from "./chart_AjY0AISVVs5_dVRGqsjce2n_Options";
 import { chart_hEuM5hv2vVg_JljTfo2KUid_Options } from "./chart_hEuM5hv2vVg_JljTfo2KUid_Options";
+import { chart_nD19UhusyuR_Options } from "./chart_nD19UhusyuR_Options";
+import { chart_qRl2vEbBY0u_Options } from "./chart_qRl2vEbBY0u_Options";
 
 export interface ChartSource {
     analyticsResponse: Analytics;
@@ -91,6 +94,7 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     WDUV9ZrJiNC: chartSource => chart_WDUV9ZrJiNC_Options(chartSource),
     MfLZYD6QCPy: chartSource => chart_MfLZYD6QCPy_Options(chartSource),
     CdqVV1Ib0XS: chartSource => chart_CdqVV1Ib0XS_Options(chartSource),
+    BpIwF88XezK: chartSource => chart_BpIwF88XezK_Options(chartSource),
     twyY1ulr7uD: chartSource => chart_twyY1ulr7uD_Options(chartSource),
     y4qAv6eW4nb: chartSource => chart_y4qAv6eW4nb_Options(chartSource),
     oaYpnZIdm5C: chartSource => chart_oaYpnZIdm5C_Options(chartSource),
@@ -100,6 +104,8 @@ export const chartOptions: Record<string, (chartSource: ChartSource) => Highchar
     IXF2wBMnwpa: chartSource => chart_IXF2wBMnwpa_Options(chartSource),
     AQ8dYmv00zb: chartSource => chart_AQ8dYmv00zb_Options(chartSource),
     fk2LtKtsiQG: chartSource => chart_fk2LtKtsiQG_Options(chartSource),
+    nD19UhusyuR: chartSource => chart_nD19UhusyuR_Options(chartSource),
+    qRl2vEbBY0u: chartSource => chart_qRl2vEbBY0u_Options(chartSource),
 };
 
 export const chartOptionsMultiple: Record<string, (chartSource: ChartSourceMultiple) => Highcharts.Options> = {

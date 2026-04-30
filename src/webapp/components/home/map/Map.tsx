@@ -232,6 +232,7 @@ const MapContent = styled.div`
 `;
 
 const MapSidePanel = styled.div<{ maxWidth?: number }>`
+    overflow-y: auto;
     position: absolute;
     top: 0;
     bottom: 0;

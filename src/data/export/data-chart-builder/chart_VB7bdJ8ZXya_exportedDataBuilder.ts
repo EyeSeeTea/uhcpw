@@ -1,4 +1,8 @@
 import { D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import {
+    PARAMETER_COLUMN,
+    COUNTRY_YEAR_COLUMN,
+} from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartData } from "./getTabsWithChartData";
 
@@ -10,8 +14,8 @@ const SORTED_PARAMETERS = [
     "Outpatient care",
     "Diagnostic tests",
 ];
-const HEADER_DATA_PARAM_NAME = "Parameter";
-const HEADERS_BASE = ["Parameter / Country - Year"];
+const HEADER_DATA_PARAM_NAME = PARAMETER_COLUMN;
+const HEADERS_BASE = [COUNTRY_YEAR_COLUMN];
 const DATA_PARAM_SORT_BY = "Medicines";
 
 export const chart_VB7bdJ8ZXya_exportedDataBuilder: (

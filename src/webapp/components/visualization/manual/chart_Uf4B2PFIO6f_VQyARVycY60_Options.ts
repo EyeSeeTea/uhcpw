@@ -120,6 +120,7 @@ export const chart_Uf4B2PFIO6f_VQyARVycY60_Options: (
                 enableMouseTracking: false,
                 dataLabels: {
                     enabled: true,
+                    y: -5,
                     formatter: function () {
                         return this.y + "%";
                     },

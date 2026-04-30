@@ -83,7 +83,9 @@ export const RegionalPage: React.FC = () => {
                     <MobileSection ref={refs.numbers}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>
-                                {i18n.t("Numbers: financial hardship, unmet need and spending on health")}
+                                {i18n.t("Numbers: financial hardship, unmet need and spending on health", {
+                                    nsSeparator: false,
+                                })}
                             </SectionTitle>
                         </SectionTitleDivider>
 
@@ -99,7 +101,11 @@ export const RegionalPage: React.FC = () => {
 
                     <MobileSection ref={refs.gapsInCoverage}>
                         <SectionTitleDivider onlyTopMargin>
-                            <SectionTitle>{i18n.t("The story behind the numbers: gaps in coverage")}</SectionTitle>
+                            <SectionTitle>
+                                {i18n.t("The story behind the numbers: gaps in coverage", {
+                                    nsSeparator: false,
+                                })}
+                            </SectionTitle>
                         </SectionTitleDivider>
 
                         <GapsInCoverageSection
@@ -114,7 +120,11 @@ export const RegionalPage: React.FC = () => {
 
                     <MobileSection ref={refs.policyChecklist}>
                         <SectionTitleDivider onlyBottomMargin>
-                            <SectionTitle>{i18n.t("Progress is possible: a policy checklist")}</SectionTitle>
+                            <SectionTitle>
+                                {i18n.t("Progress is possible: a policy checklist", {
+                                    nsSeparator: false,
+                                })}
+                            </SectionTitle>
                         </SectionTitleDivider>
 
                         <PolicyChecklistSection

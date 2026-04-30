@@ -345,6 +345,51 @@ export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number)
     sheet.column(columnDataIndex + 1).width(width);
 }
 
+type AutoWidthOptions = {
+    readonly minWidth?: number;
+    readonly cappedFromIndex?: number;
+    readonly cappedMaxWidth?: number;
+    readonly skipFirstRow?: boolean;
+};
+
+const DEFAULT_AUTO_WIDTH_MIN = 8;
+// Excel width units are based on the "0" glyph; most letters render narrower, so scaling the
+// longest-content character count by 0.9 gives a better fit with the default font (Calibri 11).
+const CHAR_TO_WIDTH_MULTIPLIER = 0.9;
+
+export function computeAutoColumnWidths(
+    rows: ReadonlyArray<ReadonlyArray<string | number | null | undefined>>,
+    options: AutoWidthOptions = {}
+): number[] {
+    const { minWidth = DEFAULT_AUTO_WIDTH_MIN, cappedFromIndex, cappedMaxWidth, skipFirstRow } = options;
+
+    const measuredRows = skipFirstRow ? rows.slice(1) : rows;
+    const columnCount = measuredRows.reduce((max, row) => Math.max(max, row.length), 0);
+
+    return Array.from({ length: columnCount }, (_, col) => {
+        const longest = measuredRows.reduce((max, row) => {
+            const cell = row[col];
+            const text = cell === null || cell === undefined ? "" : String(cell);
+            return Math.max(max, text.length);
+        }, 0);
+        const scaled = longest * CHAR_TO_WIDTH_MULTIPLIER;
+        const cap = cappedFromIndex !== undefined && col >= cappedFromIndex ? cappedMaxWidth : undefined;
+        const widthWithMin = Math.max(scaled, minWidth);
+        return cap !== undefined ? Math.min(widthWithMin, cap) : widthWithMin;
+    });
+}
+
+export function applyAutoWidthsToXlsxPopulateSheet(
+    sheet: Sheet,
+    rows: ReadonlyArray<ReadonlyArray<string | number | null | undefined>>,
+    options?: AutoWidthOptions
+): void {
+    const widths = computeAutoColumnWidths(rows, options);
+    widths.forEach((width, index) => {
+        sheet.column(index + 1).width(width);
+    });
+}
+
 export function parseDataValuesStringToNumber(data: string[][], valueIndex: number): TabsWithStringOrNumbers["data"] {
     return data.map((row, rowNumber) => {
         const value = row[valueIndex];

@@ -3,7 +3,7 @@ import { LatestAvailable } from "../../../../domain/entities/Year";
 import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 import { sortColumnsRowByColumnsOrder } from "../utils/sortColumnsAndDataRows";
 
-const COLUMNS_ORDER = ["Country / Area", "Year", "Parameter", "Value"];
+const COLUMNS_ORDER = ["Indicator", "Country / Area", "Year", "Value"];
 
 export const chart_WDUV9ZrJiNC_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.financialHardship,
