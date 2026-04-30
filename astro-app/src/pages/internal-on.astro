@@ -13,14 +13,14 @@
         <title>UHC Watch — Internal traffic: on</title>
     </head>
     <body>
-        <script is:inline>
+        <script is:inline define:vars={{ basePath: import.meta.env.BASE_URL }}>
             try {
                 localStorage.setItem("uhcpw_internal", "1");
             } catch {
                 // localStorage blocked (private mode, sandboxed context) —
                 // nothing we can do; fall through to the redirect anyway.
             }
-            location.replace("/");
+            location.replace(basePath);
         </script>
         <noscript>
             <p>

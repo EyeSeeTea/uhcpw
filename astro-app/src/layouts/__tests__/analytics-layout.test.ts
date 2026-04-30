@@ -39,16 +39,18 @@ describe("Internal-traffic toggle pages", () => {
     const onPath = path.join(projectRoot, "src/pages/internal-on.astro");
     const offPath = path.join(projectRoot, "src/pages/internal-off.astro");
 
-    it("internal-on sets the flag and redirects", () => {
+    it("internal-on sets the flag and redirects to the configured base URL", () => {
         const source = readFileSync(onPath, "utf8");
         expect(source).toContain('localStorage.setItem("uhcpw_internal", "1")');
-        expect(source).toContain('location.replace("/")');
+        expect(source).toContain("define:vars={{ basePath: import.meta.env.BASE_URL }}");
+        expect(source).toContain("location.replace(basePath)");
     });
 
-    it("internal-off clears the flag and redirects", () => {
+    it("internal-off clears the flag and redirects to the configured base URL", () => {
         const source = readFileSync(offPath, "utf8");
         expect(source).toContain('localStorage.removeItem("uhcpw_internal")');
-        expect(source).toContain('location.replace("/")');
+        expect(source).toContain("define:vars={{ basePath: import.meta.env.BASE_URL }}");
+        expect(source).toContain("location.replace(basePath)");
     });
 
     it("toggle pages do not load the base layout or GA4", () => {
@@ -82,6 +84,11 @@ describe("Astro build output (smoke)", () => {
         expect(html).not.toMatch(/googletagmanager\.com/);
         expect(html).not.toMatch(/gtag\(["']config["']/);
         expect(html).toContain('localStorage.setItem("uhcpw_internal", "1")');
+        // Astro's define:vars injects `const basePath = "<BASE_URL>"`. Default
+        // build base is "/", so verify the inlined value and that the redirect
+        // uses the variable (not a hard-coded "/").
+        expect(html).toMatch(/const\s+basePath\s*=\s*["']\/["']/);
+        expect(html).toContain("location.replace(basePath)");
     });
 
     it.skipIf(!existsSync(internalOffHtml))("internal-off/index.html contains no GA4 loader or config", () => {
@@ -89,5 +96,7 @@ describe("Astro build output (smoke)", () => {
         expect(html).not.toMatch(/googletagmanager\.com/);
         expect(html).not.toMatch(/gtag\(["']config["']/);
         expect(html).toContain('localStorage.removeItem("uhcpw_internal")');
+        expect(html).toMatch(/const\s+basePath\s*=\s*["']\/["']/);
+        expect(html).toContain("location.replace(basePath)");
     });
 });
