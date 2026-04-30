@@ -1,0 +1,32 @@
+---
+// Layout-less opt-in page for the internal-traffic flag. Intentionally does
+// NOT use the base Layout — we don't want to load the GA4 loader or emit a
+// page_view for this URL. The inline script below flips the flag and
+// redirects to the home page.
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="robots" content="noindex,nofollow" />
+        <title>UHC Watch — Internal traffic: on</title>
+    </head>
+    <body>
+        <script is:inline>
+            try {
+                localStorage.setItem("uhcpw_internal", "1");
+            } catch {
+                // localStorage blocked (private mode, sandboxed context) —
+                // nothing we can do; fall through to the redirect anyway.
+            }
+            location.replace("/");
+        </script>
+        <noscript>
+            <p>
+                This page sets an analytics opt-out flag in your browser and then
+                redirects you to the home page. It requires JavaScript to work.
+            </p>
+        </noscript>
+    </body>
+</html>

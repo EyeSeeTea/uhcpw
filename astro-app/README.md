@@ -99,6 +99,31 @@ toggle once in DevTools and reload:
 localStorage.setItem("accessToConsole", "true");
 ```
 
+### Excluding internal traffic
+
+UHCW staff and contributors can opt out of being counted as regular visitors.
+Two layout-less pages toggle a browser-local flag:
+
+- Visit `/internal-on` once per browser to set `localStorage.uhcpw_internal = "1"`.
+- Visit `/internal-off` to clear it.
+
+Both pages immediately redirect to `/`. While the flag is set, the site's
+`gtag("config", ...)` bootstrap adds `traffic_type: "internal"` to every
+GA4 hit emitted from that browser — in both the Astro site and the React SPA
+(they share the origin, and therefore the flag, via `localStorage`).
+
+For the tag to actually drop internal events from reports, the matching
+**Internal Traffic Data Filter** must be configured in each GA4 data stream
+(prod `G-NMLFDE4DY7`, dev `G-5DKB563RGC`). In GA4 Admin:
+
+1. Data Streams → stream → Configure tag settings → Show all →
+   Define internal traffic. Add a rule with `traffic_type = internal`
+   (optionally also add office IP ranges).
+2. Admin → Data Filters → activate the "Internal Traffic" filter. Use
+   "Testing" mode first to verify tagging in DebugView, then switch to
+   "Active" to exclude the events. Data Filters are **not retroactive** —
+   hits recorded before activation stay in reports.
+
 ## LLM-friendly endpoints
 
 The build emits an [llms.txt](https://llmstxt.org/) index and markdown

@@ -26,10 +26,46 @@ describe("Analytics.astro snippet", () => {
         expect(layoutSource).toContain("@/components/analytics/Analytics.astro");
         expect(layoutSource).toMatch(/<Analytics\s*\/?>/);
     });
+
+    it("reads the internal-traffic opt-in flag and tags the config when set", () => {
+        const source = readFileSync(analyticsComponentPath, "utf8");
+        expect(source).toContain('localStorage.getItem("uhcpw_internal")');
+        expect(source).toMatch(/try\s*{[\s\S]*localStorage\.getItem\("uhcpw_internal"\)[\s\S]*}\s*catch/);
+        expect(source).toContain('traffic_type: "internal"');
+    });
+});
+
+describe("Internal-traffic toggle pages", () => {
+    const onPath = path.join(projectRoot, "src/pages/internal-on.astro");
+    const offPath = path.join(projectRoot, "src/pages/internal-off.astro");
+
+    it("internal-on sets the flag and redirects", () => {
+        const source = readFileSync(onPath, "utf8");
+        expect(source).toContain('localStorage.setItem("uhcpw_internal", "1")');
+        expect(source).toContain('location.replace("/")');
+    });
+
+    it("internal-off clears the flag and redirects", () => {
+        const source = readFileSync(offPath, "utf8");
+        expect(source).toContain('localStorage.removeItem("uhcpw_internal")');
+        expect(source).toContain('location.replace("/")');
+    });
+
+    it("toggle pages do not load the base layout or GA4", () => {
+        for (const p of [onPath, offPath]) {
+            const source = readFileSync(p, "utf8");
+            expect(source).not.toContain("@/layouts/Layout.astro");
+            expect(source).not.toContain("@/components/analytics/Analytics.astro");
+            expect(source).not.toMatch(/googletagmanager\.com/);
+            expect(source).not.toMatch(/gtag\(["']config["']/);
+        }
+    });
 });
 
 describe("Astro build output (smoke)", () => {
     const indexHtml = path.join(distDir, "index.html");
+    const internalOnHtml = path.join(distDir, "internal-on/index.html");
+    const internalOffHtml = path.join(distDir, "internal-off/index.html");
 
     it.skipIf(!existsSync(indexHtml))("rendered index.html includes the gtag loader and config", () => {
         const html = readFileSync(indexHtml, "utf8");
@@ -39,5 +75,19 @@ describe("Astro build output (smoke)", () => {
         // that forgot to substitute the value can't pass by accident.
         expect(html).toMatch(new RegExp(`const\\s+gaTagId\\s*=\\s*["']${PROD_TAG}["']`));
         expect(html).toMatch(/gtag\(["']config["'],\s*gaTagId\)/);
+    });
+
+    it.skipIf(!existsSync(internalOnHtml))("internal-on/index.html contains no GA4 loader or config", () => {
+        const html = readFileSync(internalOnHtml, "utf8");
+        expect(html).not.toMatch(/googletagmanager\.com/);
+        expect(html).not.toMatch(/gtag\(["']config["']/);
+        expect(html).toContain('localStorage.setItem("uhcpw_internal", "1")');
+    });
+
+    it.skipIf(!existsSync(internalOffHtml))("internal-off/index.html contains no GA4 loader or config", () => {
+        const html = readFileSync(internalOffHtml, "utf8");
+        expect(html).not.toMatch(/googletagmanager\.com/);
+        expect(html).not.toMatch(/gtag\(["']config["']/);
+        expect(html).toContain('localStorage.removeItem("uhcpw_internal")');
     });
 });
