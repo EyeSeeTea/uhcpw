@@ -121,7 +121,7 @@ const favoriteDataElements = {
 } as const;
 
 export const resourcesProgram = "wWo0lhm5GsY";
-export const favoritesProgram = "QD9npLUMvCG";
+const favoritesProgram = "QD9npLUMvCG";
 
 export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
