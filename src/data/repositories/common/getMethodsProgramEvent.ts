@@ -3,7 +3,7 @@ import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Maybe } from "../../../types/utils";
 
-export const methodProgram = "ncAcyjKwLSS";
+const methodProgram = "ncAcyjKwLSS";
 
 export function getMethodsProgramEvent(api: D2Api): FutureData<Maybe<D2Event>> {
     return apiToFuture(
