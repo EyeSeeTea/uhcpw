@@ -9,7 +9,6 @@ import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 
 const CHECKLIST_POLICY_PROGRAM_ID = "ai5rB7mcqHH";
-const CHECKLIST_OU_ID = "H8RixfF8ugH";
 
 const CHECKLIST_POLICY_ITEMS_IDS = {
     CHECKLIST_ITEM1: "oPhocZVsULJ",
@@ -48,7 +47,6 @@ export class ChecklistPolicyMakersD2Repository implements ChecklistPolicyMakersR
                 fields: eventsFields,
                 skipPaging: true,
                 program: CHECKLIST_POLICY_PROGRAM_ID,
-                orgUnit: CHECKLIST_OU_ID,
             })
         ).flatMap(response => {
             if (!response.events[0]) {
