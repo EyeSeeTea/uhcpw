@@ -24,6 +24,8 @@ import { chart_nhaxK33nlhb_exportedDataBuilder } from "./chart_nhaxK33nlhb_expor
 import { chart_OB4SCQfCzwz_exportedDataBuilder } from "./chart_OB4SCQfCzwz_exportedDataBuilder";
 import { chart_sjgCABd3zK7_exportedDataBuilder } from "./chart_sjgCABd3zK7_exportedDataBuilder";
 import { chart_qipBCG0Hc9Y_exportedDataBuilder } from "./chart_qipBCG0Hc9Y_exportedDataBuilder";
+import { chart_mUjcWO90CRr_exportedDataBuilder } from "./chart_mUjcWO90CRr_exportedDataBuilder";
+import { chart_eEKRLRR4mDk_exportedDataBuilder } from "./chart_eEKRLRR4mDk_exportedDataBuilder";
 
 type ExportedDataChartBuilder = (
     tabs: Tab[],
@@ -49,6 +51,9 @@ export const visualizationsExportedDataChartBuilder: Record<string, ExportedData
     cGE32OzPgMS: (tabs, chartName) => chart_cGE32OzPgMS_exportedDataBuilder(tabs, chartName),
     z6nPPMMbOw5: (tabs, chartName) => chart_z6nPPMMbOw5_exportedDataBuilder(tabs, chartName),
     fY7K8ATEDgQ: (tabs, chartName) => chat_fY7K8ATEDgQ_exportedDataBuilder(tabs, chartName),
+    mUjcWO90CRr: (tabs, chartName, orgUnits) => chart_mUjcWO90CRr_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
+    fnOIi0bdISn: (tabs, chartName, orgUnits) => chart_mUjcWO90CRr_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
+    eEKRLRR4mDk: (tabs, chartName, orgUnits) => chart_eEKRLRR4mDk_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
 };
 
 // Exporters that read the `Indicator` column directly. Charts in this registry bypass the
