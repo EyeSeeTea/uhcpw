@@ -16,6 +16,7 @@ import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
+import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 import { USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderCoveredHealthcareByType";
 import { Maybe } from "../../../types/utils";
 import { policyExplorerDataSet_ID } from "../common/getPolicyExplorerDataValues";
@@ -120,6 +121,7 @@ const sectionsList = [
     DATASET_USER_CHARGES_COPAYMENTS_CATEGORY,
     DATASET_GAPS_IN_COVERAGE_CATEGORY,
     DATASET_VOLUNTARY_HEALTH_INSURANCE_CATEGORY,
+    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES,
     // CATEGORY_BY_TYPE_OF_HEALTHCARE.TYPES_OF_USER_CHARGES,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 ];
@@ -283,6 +285,18 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                         }) || sectionFallback;
 
                     const subDataElements = deSubstitutor.substituteSource(section.dataElements);
+
+                    if (section.id === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES) {
+                        return [
+                            {
+                                id: section.id,
+                                name: displayName.replace("Policy Explorer - ", ""),
+                                subcategories: TYPES_OF_HEALTH_CARE.map(type => ({ id: type, name: type })),
+                                description: notes,
+                                type: "selectable",
+                            },
+                        ];
+                    }
 
                     return [
                         {
