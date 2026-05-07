@@ -196,8 +196,9 @@ export const PolicyExplorerTable = React.memo(
         }, [tableContainerRef, dataOrientation, width]);
 
         useEffect(() => {
+            if (isSpecialTable && dataOrientation === "inverted") return;
             return stickyHeader(tableContainerRef.current);
-        }, [rows, dataOrientation]);
+        }, [rows, dataOrientation, isSpecialTable]);
 
         const isEmpty = useMemo(() => {
             return !rows?.length || (isSpecialTable && rows.every(row => row.length === 1));
