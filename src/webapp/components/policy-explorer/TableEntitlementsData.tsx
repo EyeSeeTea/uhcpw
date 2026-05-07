@@ -5,7 +5,7 @@ import { PolicyExplorerCellEntitlements } from "../../../domain/entities/policy-
 import i18n from "../../../locales";
 import { FullCircleIcon, HalfCircleIcon } from "./TableCellIcons";
 
-const COLOR = "#0460a7";
+const COLOR = "#185698";
 
 export function TableEntitlementsLegend() {
     return (
