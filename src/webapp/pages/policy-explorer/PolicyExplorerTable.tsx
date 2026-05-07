@@ -141,6 +141,7 @@ export const PolicyExplorerTable = React.memo(
             scrollbar.style.overflowY = "hidden";
             scrollbar.style.position = "relative";
             scrollbar.style.top = "15px"; // Maybe calculate this dynamically
+            scrollbar.style.zIndex = "3";
 
             const style = document.createElement("style");
             style.innerHTML = `
@@ -195,8 +196,9 @@ export const PolicyExplorerTable = React.memo(
         }, [tableContainerRef, dataOrientation, width]);
 
         useEffect(() => {
+            if (isSpecialTable && dataOrientation === "inverted") return;
             return stickyHeader(tableContainerRef.current);
-        }, [rows, dataOrientation]);
+        }, [rows, dataOrientation, isSpecialTable]);
 
         const isEmpty = useMemo(() => {
             return !rows?.length || (isSpecialTable && rows.every(row => row.length === 1));
@@ -299,20 +301,33 @@ function stickyHeader(container: HTMLDivElement | null): Maybe<() => void> {
         const headerCells = headerRow.querySelectorAll<HTMLElement>("td");
         const tableRect = table.getBoundingClientRect();
         const headerHeight = headerRow.getBoundingClientRect().height;
+        const topScrollbar = container.previousElementSibling as HTMLElement | null;
+        const topScrollbarHeight = topScrollbar?.getBoundingClientRect().height ?? 0;
 
         if (tableRect.top < 0 && tableRect.bottom > 0) {
-            const offset = Math.min(-tableRect.top, tableRect.height - headerHeight);
+            const headerOffset = Math.min(-tableRect.top, tableRect.height - headerHeight);
             headerCells.forEach(cell => {
-                cell.style.transform = `translateY(${offset}px)`;
+                cell.style.transform = `translateY(${headerOffset}px)`;
                 cell.style.willChange = "transform";
                 cell.style.zIndex = "2";
             });
+
+            if (topScrollbar) {
+                const containerRect = container.getBoundingClientRect();
+                const scrollbarOffset = Math.min(-containerRect.top, containerRect.height - topScrollbarHeight);
+                topScrollbar.style.transform = `translateY(${scrollbarOffset}px)`;
+                topScrollbar.style.willChange = "transform";
+            }
         } else {
             headerCells.forEach(cell => {
                 cell.style.transform = "";
                 cell.style.willChange = "";
                 cell.style.zIndex = "";
             });
+            if (topScrollbar) {
+                topScrollbar.style.transform = "";
+                topScrollbar.style.willChange = "";
+            }
         }
     };
 
