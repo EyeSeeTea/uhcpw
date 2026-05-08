@@ -28,6 +28,8 @@ import { chart_mUjcWO90CRr_exportedDataBuilder } from "./chart_mUjcWO90CRr_expor
 import { chart_eEKRLRR4mDk_exportedDataBuilder } from "./chart_eEKRLRR4mDk_exportedDataBuilder";
 import { chart_DefU3mkASo6_exportedDataBuilder } from "./chart_DefU3mkASo6_exportedDataBuilder";
 import { chart_NOukqSxCI63_exportedDataBuilder } from "./chart_NOukqSxCI63_exportedDataBuilder";
+import { chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder } from "./chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder";
+import { chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder } from "./chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder";
 
 type ExportedDataChartBuilder = (
     tabs: Tab[],
@@ -72,4 +74,6 @@ export const customHeaderExportedDataChartBuilder: Record<string, ExportedDataCh
     OB4SCQfCzwz: (tabs, chartName) => chart_OB4SCQfCzwz_exportedDataBuilder(tabs, chartName),
     sjgCABd3zK7: (tabs, chartName) => chart_sjgCABd3zK7_exportedDataBuilder(tabs, chartName),
     qipBCG0Hc9Y: (tabs, chartName) => chart_qipBCG0Hc9Y_exportedDataBuilder(tabs, chartName),
+    hEuM5hv2vVg_JljTfo2KUid: (tabs, chartName) => chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder(tabs, chartName), // with visualization template
+    AjY0AISVVs5_dVRGqsjce2n: (tabs, chartName) => chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder(tabs, chartName), // with visualization template
 };
