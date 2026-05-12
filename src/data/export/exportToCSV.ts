@@ -188,6 +188,8 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
     FileSaver.saveAs(data, fileName + fileExtension);
 };
 
+const CHARTS_WITHOUT_COLUMN_LIMIT = ["kIpnMBaBvZ9", "mUjcWO90CRr", "fnOIi0bdISn", "eEKRLRR4mDk"];
+
 export const exportToCSVIncludingChart = async (params: {
     chartId: string;
     tabs: TabsWithStringOrNumbers[];
@@ -202,7 +204,7 @@ export const exportToCSVIncludingChart = async (params: {
     const chartTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
     if (chartTab) {
         addDataToSheet(chartSheet, chartTab.data);
-        const columnLimit = chartId !== "kIpnMBaBvZ9" ? COLUMN_LIMIT : undefined;
+        const columnLimit = !CHARTS_WITHOUT_COLUMN_LIMIT.includes(chartId) ? COLUMN_LIMIT : undefined;
         if (columnLimit) {
             hideEmptyColumn(chartSheet, columnLimit);
         }

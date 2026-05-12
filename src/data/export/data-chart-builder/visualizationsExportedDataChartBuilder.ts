@@ -24,6 +24,12 @@ import { chart_nhaxK33nlhb_exportedDataBuilder } from "./chart_nhaxK33nlhb_expor
 import { chart_OB4SCQfCzwz_exportedDataBuilder } from "./chart_OB4SCQfCzwz_exportedDataBuilder";
 import { chart_sjgCABd3zK7_exportedDataBuilder } from "./chart_sjgCABd3zK7_exportedDataBuilder";
 import { chart_qipBCG0Hc9Y_exportedDataBuilder } from "./chart_qipBCG0Hc9Y_exportedDataBuilder";
+import { chart_mUjcWO90CRr_exportedDataBuilder } from "./chart_mUjcWO90CRr_exportedDataBuilder";
+import { chart_eEKRLRR4mDk_exportedDataBuilder } from "./chart_eEKRLRR4mDk_exportedDataBuilder";
+import { chart_DefU3mkASo6_exportedDataBuilder } from "./chart_DefU3mkASo6_exportedDataBuilder";
+import { chart_NOukqSxCI63_exportedDataBuilder } from "./chart_NOukqSxCI63_exportedDataBuilder";
+import { chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder } from "./chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder";
+import { chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder } from "./chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder";
 
 type ExportedDataChartBuilder = (
     tabs: Tab[],
@@ -49,18 +55,25 @@ export const visualizationsExportedDataChartBuilder: Record<string, ExportedData
     cGE32OzPgMS: (tabs, chartName) => chart_cGE32OzPgMS_exportedDataBuilder(tabs, chartName),
     z6nPPMMbOw5: (tabs, chartName) => chart_z6nPPMMbOw5_exportedDataBuilder(tabs, chartName),
     fY7K8ATEDgQ: (tabs, chartName) => chat_fY7K8ATEDgQ_exportedDataBuilder(tabs, chartName),
+    mUjcWO90CRr: (tabs, chartName, orgUnits) => chart_mUjcWO90CRr_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
+    fnOIi0bdISn: (tabs, chartName, orgUnits) => chart_mUjcWO90CRr_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
+    eEKRLRR4mDk: (tabs, chartName, orgUnits) => chart_eEKRLRR4mDk_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
+    NOukqSxCI63: (tabs, chartName, orgUnits) => chart_NOukqSxCI63_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
+    DefU3mkASo6: (tabs, chartName, orgUnits) => chart_DefU3mkASo6_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
 };
 
 // Exporters that read the `Indicator` column directly. Charts in this registry bypass the
 // `Indicator` -> `Parameter` rename applied to `visualizationsExportedDataChartBuilder` entries.
 export const customHeaderExportedDataChartBuilder: Record<string, ExportedDataChartBuilder> = {
-    Y31jQX5PVdI: (tabs, chartName) => chart_Y31jQX5PVdI_exportedDataBuilder(tabs, chartName),
-    TzWcDtEOTPX: (tabs, chartName) => chart_TzWcDtEOTPX_exportedDataBuilder(tabs, chartName),
-    NOR4oxtMVxP: (tabs, chartName) => chart_NOR4oxtMVxP_exportedDataBuilder(tabs, chartName),
+    Y31jQX5PVdI: (tabs, chartName) => chart_Y31jQX5PVdI_exportedDataBuilder(tabs, chartName), // with visualization template
+    TzWcDtEOTPX: (tabs, chartName) => chart_TzWcDtEOTPX_exportedDataBuilder(tabs, chartName), // with visualization template
+    NOR4oxtMVxP: (tabs, chartName) => chart_NOR4oxtMVxP_exportedDataBuilder(tabs, chartName), // with visualization template
     Uf4B2PFIO6f_VQyARVycY60: (tabs, chartName) => chart_Uf4B2PFIO6f_VQyARVycY60_exportedDataBuilder(tabs, chartName),
     rT39aStYqI3: (tabs, chartName) => chart_rT39aStYqI3_exportedDataBuilder(tabs, chartName),
     nhaxK33nlhb: (tabs, chartName) => chart_nhaxK33nlhb_exportedDataBuilder(tabs, chartName),
     OB4SCQfCzwz: (tabs, chartName) => chart_OB4SCQfCzwz_exportedDataBuilder(tabs, chartName),
     sjgCABd3zK7: (tabs, chartName) => chart_sjgCABd3zK7_exportedDataBuilder(tabs, chartName),
     qipBCG0Hc9Y: (tabs, chartName) => chart_qipBCG0Hc9Y_exportedDataBuilder(tabs, chartName),
+    hEuM5hv2vVg_JljTfo2KUid: (tabs, chartName) => chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder(tabs, chartName), // with visualization template
+    AjY0AISVVs5_dVRGqsjce2n: (tabs, chartName) => chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder(tabs, chartName), // with visualization template
 };
