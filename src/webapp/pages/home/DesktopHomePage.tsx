@@ -38,6 +38,6 @@ export const DesktopHomePage: React.FC = React.memo(() => {
 });
 
 const MapSection = styled.section`
-    height: 80vh;
+    height: 90vh;
     min-height: 620px;
 `;
