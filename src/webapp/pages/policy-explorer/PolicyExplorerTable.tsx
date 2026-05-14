@@ -400,6 +400,10 @@ const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwi
     min-width: ${props => (props.cellwidth ? `${props.cellwidth}px` : "initial")};
     background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
+    padding-block: 8px;
+    > p {
+        margin: 0px;
+    }
 `;
 
 const StyledInvertedTable = styled(Table)<{ fullWidth?: boolean }>`
