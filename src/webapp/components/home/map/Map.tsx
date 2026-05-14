@@ -88,11 +88,6 @@ export const Map: React.FC<MapProps> = ({
         enabled: enabled,
     });
 
-    const sidePanelFixedHeight = useMemo(() => {
-        if (panelContentHeight === undefined) return undefined;
-        return panelMaxWidth !== undefined ? panelContentHeight + MAP_SIDE_PANEL_PADDING_PX * 2 : panelContentHeight;
-    }, [panelContentHeight, panelMaxWidth]);
-
     const panelActualHeight = useMemo(
         () => (panelContentHeight !== undefined ? panelContentHeight + MAP_SIDE_PANEL_PADDING_PX * 2 : undefined),
         [panelContentHeight]
@@ -182,7 +177,7 @@ export const Map: React.FC<MapProps> = ({
             {measurementContainer}
             <MapContent ref={mapContainerRef} />
 
-            <MapSidePanel maxWidth={panelMaxWidth} $fixedHeight={sidePanelFixedHeight}>
+            <MapSidePanel maxWidth={panelMaxWidth} $measured={panelContentHeight !== undefined}>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} isRegionalPage={isRegionPage} />
                 ) : regionMainMapPanelContent ? (
@@ -283,9 +278,10 @@ const MapContent = styled.div`
     }
 `;
 
-const MapSidePanel = styled.div<{ maxWidth?: number; $fixedHeight?: number }>`
+const MapSidePanel = styled.div<{ maxWidth?: number; $measured?: boolean }>`
     position: absolute;
     top: 0;
+    bottom: 0;
     width: ${props => props.maxWidth || 500}px;
     max-width: ${props => props.maxWidth || 500}px;
     background: ${colors.accentPrimary};
@@ -294,7 +290,7 @@ const MapSidePanel = styled.div<{ maxWidth?: number; $fixedHeight?: number }>`
     opacity: 0.9;
     z-index: 1;
     box-sizing: ${props => (props.maxWidth ? "border-box" : "content-box")};
-    ${props => (props.$fixedHeight ? `height: ${props.$fixedHeight}px;` : "bottom: 0; overflow-y: auto;")}
+    overflow-y: ${props => (props.$measured ? "hidden" : "auto")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
