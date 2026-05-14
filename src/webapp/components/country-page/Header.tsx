@@ -28,10 +28,10 @@ type HeaderType = {
     countryId: string;
     onCountryChange: (value: string) => void;
     countryOptions: Option<string>[];
-    dashboardRef: MutableRefObject<null>;
-    sliderRef: MutableRefObject<null>;
-    resourcesRef: MutableRefObject<null>;
-    expertRef: MutableRefObject<null>;
+    dashboardRef: MutableRefObject<HTMLDivElement | null>;
+    sliderRef: MutableRefObject<HTMLDivElement | null>;
+    resourcesRef: MutableRefObject<HTMLDivElement | null>;
+    expertRef: MutableRefObject<HTMLDivElement | null>;
     handleResetTab: (value: boolean) => void;
 };
 
