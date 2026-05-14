@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
@@ -48,6 +48,7 @@ export const RegionalPage: React.FC = () => {
     const { markers, mainPanelContent } = regionMap;
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
     const seoConfig = useRegionalPageSeoConfig(selectedRegion);
+    const [mapPanelHeight, setMapPanelHeight] = useState<number | undefined>(undefined);
 
     return (
         <Layout enableRotation={isSmallScreen} disableMinHeight isOverflowVisible>
@@ -61,7 +62,7 @@ export const RegionalPage: React.FC = () => {
                 isSmallScreen={isSmallScreen}
             />
 
-            <MapSection ref={refs.regionMap}>
+            <MapSection ref={refs.regionMap} $panelHeight={mapPanelHeight}>
                 {isSmallScreen ? (
                     <PanelContainer>
                         <RegionMapPanel mainPanelContent={mainPanelContent} />
@@ -74,6 +75,7 @@ export const RegionalPage: React.FC = () => {
                         className="region-map"
                         isRegionPage
                         panelMaxWidth={sidePanelWidth}
+                        onPanelHeightComputed={setMapPanelHeight}
                     />
                 )}
             </MapSection>
@@ -202,9 +204,9 @@ const PanelContainer = styled.div`
     color: ${colors.white};
 `;
 
-const MapSection = styled.section`
+const MapSection = styled.section<{ $panelHeight?: number }>`
     margin-top: 5px;
-    height: 85vh;
+    height: ${props => (props.$panelHeight ? `max(85vh, ${props.$panelHeight}px)` : "85vh")};
     min-height: 620px;
     scroll-margin-top: 80px;
 
