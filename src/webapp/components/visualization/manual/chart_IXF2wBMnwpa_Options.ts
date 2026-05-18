@@ -5,7 +5,11 @@ import { baseChartOptions } from "./generic/baseChartOptions";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { Id } from "../../../../domain/entities/Ref";
 import { filterRowsByCommonLastAvailableYearInTwoDataIds } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
-import { buildXAxisCategories, splitColumnRowsBy99, splitScatterRows } from "./utils/IXF2wBMnwpa_Helpers";
+import {
+    buildXAxisCategories,
+    splitColumnRowsBy99,
+    splitScatterRows,
+} from "../../../../data/export/data-chart-builder/chart_IXF2wBMnwpa_helpers";
 
 const POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_RESIDENCE = "TKq3zGVr1vj";
 const POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_PAYMENT = "BAuD3jhIXTY";

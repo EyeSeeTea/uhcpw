@@ -22,6 +22,7 @@ export function getTabsWithChartData(
         isSortByDataSum?: boolean;
         hasCountryCodeRow?: boolean;
         orgUnits?: D2OrgUnit[];
+        countriesAndYearsUniqueParam?: (string | null)[];
     }
 ): TabsWithStringOrNumbers[] {
     const {
@@ -34,6 +35,7 @@ export function getTabsWithChartData(
         isCountryChart = false,
         isSortByDataSum = false,
         hasCountryCodeRow = false,
+        countriesAndYearsUniqueParam,
     } = options;
 
     const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
@@ -64,18 +66,9 @@ export function getTabsWithChartData(
         throw new Error("Missing country in the data tab");
     }
 
-    const allCountriesAndYears = isCountryChart
+    const countriesAndYearsUnique = isCountryChart
         ? []
-        : dataTab.data
-              .slice(2)
-              .map(row =>
-                  row[countryIndex] && row[yearIndex]
-                      ? `${row[countryIndex]}${COUNTRY_YEAR_SEPARATOR}${row[yearIndex]}`
-                      : undefined
-              )
-              .filter((countryAndYear): countryAndYear is string => countryAndYear !== undefined);
-
-    const countriesAndYearsUnique = isCountryChart ? [] : [...new Set(allCountriesAndYears)];
+        : countriesAndYearsUniqueParam ?? getCountriesAndYearsUnique(dataTab.data, countryIndex, yearIndex);
 
     const allYears = isCountryChart
         ? dataTab.data
@@ -107,6 +100,8 @@ export function getTabsWithChartData(
             : dataByDataParam;
 
     const countriesAndYearsUniqueHeader = countriesAndYearsUnique.map(countryAndYear => {
+        if (!countryAndYear) return null;
+
         const [countryName, year] = countryAndYear.split(COUNTRY_YEAR_SEPARATOR);
         return `${countryName} ${year}`;
     });
@@ -151,7 +146,7 @@ function getDataSortedByDataParam(params: {
     sortedDataParams: string[];
     isCountryChart: boolean;
     allYearsUnique: number[];
-    countriesAndYearsUnique: string[];
+    countriesAndYearsUnique: (string | null)[];
     dataParamIndex: number;
     yearIndex: number;
     countryIndex: number;
@@ -183,6 +178,8 @@ function getDataSortedByDataParam(params: {
             return [...acc, [param, ...paramData]];
         } else {
             const paramData = countriesAndYearsUnique.map(countryAndYear => {
+                if (!countryAndYear) return null;
+
                 const [country, year] = countryAndYear.split(COUNTRY_YEAR_SEPARATOR);
                 const row = dataTab.data.find(
                     row => row[dataParamIndex] === param && row[yearIndex] === year && row[countryIndex] === country
@@ -200,9 +197,9 @@ function getDataSortedByDataParam(params: {
 
 function getDataWithCountryCodesRow(params: {
     headersBase: string[];
-    countriesAndYearsUnique: string[];
+    countriesAndYearsUnique: (string | null)[];
     orgUnits: D2OrgUnit[];
-    finalHeaders: (string | number)[][];
+    finalHeaders: (string | number | null)[][];
     dataByDataParamWithCountry: (string | number | null)[][];
 }) {
     const { headersBase, countriesAndYearsUnique, orgUnits, finalHeaders, dataByDataParamWithCountry } = params;
@@ -213,8 +210,10 @@ function getDataWithCountryCodesRow(params: {
     ];
 }
 
-function getCountryCodesRow(countriesAndYearsHeaders: string[], orgUnits: D2OrgUnit[]): string[] {
+function getCountryCodesRow(countriesAndYearsHeaders: (string | null)[], orgUnits: D2OrgUnit[]): (string | null)[] {
     return countriesAndYearsHeaders.map(countryAndYear => {
+        if (!countryAndYear) return null;
+
         const [country, year] = countryAndYear.split(COUNTRY_YEAR_SEPARATOR);
         const countryName = country || "";
         const orgUnitCode =
@@ -341,4 +340,17 @@ function sortByIndexes(params: {
     return sortedCountryCodesRow
         ? [sortedHeaders, sortedCountryCodesRow, ...sortedRows]
         : [sortedHeaders, ...sortedRows];
+}
+
+function getCountriesAndYearsUnique(data: Array<string[]>, countryIndex: number, yearIndex: number): Array<string> {
+    const allCountriesAndYears = data
+        .slice(2)
+        .map(row =>
+            row[countryIndex] && row[yearIndex]
+                ? `${row[countryIndex]}${COUNTRY_YEAR_SEPARATOR}${row[yearIndex]}`
+                : undefined
+        )
+        .filter((countryAndYear): countryAndYear is string => countryAndYear !== undefined);
+
+    return [...new Set(allCountriesAndYears)];
 }

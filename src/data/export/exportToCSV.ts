@@ -195,8 +195,9 @@ export const exportToCSVIncludingChart = async (params: {
     tabs: TabsWithStringOrNumbers[];
     templateArrayBuffer: ArrayBuffer;
     fileName: string;
+    columnIndexToNotHide?: number;
 }) => {
-    const { chartId, tabs, templateArrayBuffer, fileName } = params;
+    const { chartId, tabs, templateArrayBuffer, fileName, columnIndexToNotHide } = params;
 
     const workbook = await XlsxPopulate.fromDataAsync(templateArrayBuffer);
 
@@ -206,7 +207,7 @@ export const exportToCSVIncludingChart = async (params: {
         addDataToSheet(chartSheet, chartTab.data);
         const columnLimit = !CHARTS_WITHOUT_COLUMN_LIMIT.includes(chartId) ? COLUMN_LIMIT : undefined;
         if (columnLimit) {
-            hideEmptyColumn(chartSheet, columnLimit);
+            hideEmptyColumn(chartSheet, columnLimit, columnIndexToNotHide);
         }
     }
 

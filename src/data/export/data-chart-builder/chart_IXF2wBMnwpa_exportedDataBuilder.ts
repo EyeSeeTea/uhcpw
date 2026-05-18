@@ -4,12 +4,8 @@ import {
     COUNTRY_YEAR_COLUMN,
 } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
+import { splitColumnRowsBy99, splitScatterRows, buildXAxisCategories } from "./chart_IXF2wBMnwpa_helpers";
 import { getTabsWithChartData } from "./getTabsWithChartData";
-import {
-    buildXAxisCategories,
-    splitColumnRowsBy99,
-    splitScatterRows,
-} from "../../../webapp/components/visualization/manual/utils/IXF2wBMnwpa_Helpers";
 
 const COLUMN_ROWS = ["Population covered (residence)", "Population covered (payment of contributions)"];
 const SCATTER_ROW = "Households with catastrophic health spending";
@@ -40,20 +36,69 @@ export const chart_IXF2wBMnwpa_exportedDataBuilder: (
         columnRowsGreaterOrEqual99,
     });
 
-    const categories = buildXAxisCategories({
+    const countriesAndYearsUniqueCategories = buildXAxisCategories({
         scatterLowerThan99,
         columnRowsLowerThan99,
         scatterGreaterOrEqual99,
         columnRowsGreaterOrEqual99,
     });
 
-    return getTabsWithChartData(tabs, {
+    const tabsWithChart = getTabsWithChartData(tabs, {
         chartName,
         headerDataParamName: HEADER_DATA_PARAM_NAME,
         headersBase: HEADERS_BASE,
         sortedDataParams: SORTED_PARAMETERS,
-        isSortByDataSum: true,
         hasCountryCodeRow: true,
         orgUnits,
+        countriesAndYearsUniqueParam: countriesAndYearsUniqueCategories,
+    });
+
+    const dataTabWithChart = tabsWithChart.find(tab => tab.name === DATA_TAB_NAME);
+    if (!dataTabWithChart) {
+        throw new Error("Data tab with chart data not found");
+    }
+
+    const dataWithAllHeaders = addPopulationCoverageHeaders(
+        dataTabWithChart.data,
+        chartName,
+        columnRowsLowerThan99,
+        columnRowsGreaterOrEqual99
+    );
+
+    return tabsWithChart.map(tab => {
+        if (tab.name === DATA_TAB_NAME) {
+            return {
+                ...tab,
+                data: dataWithAllHeaders,
+            };
+        }
+        return tab;
     });
 };
+
+function addPopulationCoverageHeaders(
+    data: Array<(string | number | null)[]>,
+    chartName: string,
+    columnRowsLowerThan99: Array<string[]>,
+    columnRowsGreaterOrEqual99: Array<string[]>
+): Array<(string | number | null)[]> {
+    const hasLower = columnRowsLowerThan99.length > 0;
+    const hasGreater = columnRowsGreaterOrEqual99.length > 0;
+
+    const countryAndYearRow = data[1];
+    const separatorIndex = countryAndYearRow?.findIndex(category => category === null) ?? 0;
+
+    const populationCoverageHeaderText =
+        hasGreater && !hasLower
+            ? ["", "Population coverage > 99%"]
+            : !hasGreater && hasLower
+            ? ["", "Population coverage < 99%"]
+            : Array.from({ length: separatorIndex + 2 }, (_, i) => {
+                  if (i === 1) return "Population coverage > 99%";
+                  if (i === separatorIndex + 1) return "Population coverage < 99%";
+                  return null;
+              });
+
+    const chartData = data.slice(1);
+    return [[chartName], populationCoverageHeaderText, ...chartData];
+}

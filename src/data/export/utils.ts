@@ -155,13 +155,15 @@ export function generateColumnLettersUntilLimit(limitLetter: string): string[] {
     return Array.from({ length: maxIndex + 1 }, (_, i) => getColumnLetterByIndex(i));
 }
 
-export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string) {
+export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string, columnIndexToNotHide?: number) {
     generateColumnLettersUntilLimit(columnLimit).forEach(columnLetter => {
         const columnValues: TabsWithStringOrNumbers["data"] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
         const columnIsEmpty = columnValues.every((value: (string | number | null)[]) =>
             value.every(cell => cell === "" || cell === undefined || cell === null)
         );
-        if (columnIsEmpty) {
+        const columnLetterNotToHide = columnIndexToNotHide ? getColumnLetterByIndex(columnIndexToNotHide) : null;
+
+        if (columnIsEmpty && columnLetter !== columnLetterNotToHide) {
             sheet.column(columnLetter).hidden(true);
         }
     });

@@ -1,3 +1,6 @@
+import { DATA_TAB_NAME } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
+import { TabsWithStringOrNumbers } from "../exportToCSV";
+
 export function splitColumnRowsBy99(rows: Array<string[]>) {
     return rows.reduce<{
         columnRowsGreaterOrEqual99: Array<string[]>;
@@ -82,4 +85,17 @@ export function buildXAxisCategories(params: {
     return lowerPart.length > 0 && greaterPart.length > 0
         ? [...greaterPart, null, ...lowerPart]
         : [...greaterPart, ...lowerPart];
+}
+
+export function getSeparatingColumn(tabs: TabsWithStringOrNumbers[]): number | undefined {
+    const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
+    if (!dataTab) {
+        throw new Error(`Data tab not found`);
+    }
+
+    const countryAndYearRow = dataTab.data[2];
+    const separatorIndex = countryAndYearRow?.findIndex(category => category === null) ?? 0;
+    const nextCountry = countryAndYearRow ? countryAndYearRow[separatorIndex + 1] : undefined;
+
+    return !!separatorIndex && !!nextCountry ? separatorIndex : undefined;
 }
