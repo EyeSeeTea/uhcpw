@@ -12,6 +12,7 @@ import {
     getCellStyles,
     getColumnLetterByIndex,
     hideEmptyColumn,
+    hideEmptyRows,
     LEGENDS_STYLE,
     setHeight,
     setWidth,
@@ -196,8 +197,9 @@ export const exportToCSVIncludingChart = async (params: {
     templateArrayBuffer: ArrayBuffer;
     fileName: string;
     columnIndexToNotHide?: number;
+    hideRowLimit?: number;
 }) => {
-    const { chartId, tabs, templateArrayBuffer, fileName, columnIndexToNotHide } = params;
+    const { chartId, tabs, templateArrayBuffer, fileName, columnIndexToNotHide, hideRowLimit } = params;
 
     const workbook = await XlsxPopulate.fromDataAsync(templateArrayBuffer);
 
@@ -208,6 +210,9 @@ export const exportToCSVIncludingChart = async (params: {
         const columnLimit = !CHARTS_WITHOUT_COLUMN_LIMIT.includes(chartId) ? COLUMN_LIMIT : undefined;
         if (columnLimit) {
             hideEmptyColumn(chartSheet, columnLimit, columnIndexToNotHide);
+        }
+        if (hideRowLimit) {
+            hideEmptyRows(chartSheet, hideRowLimit);
         }
     }
 

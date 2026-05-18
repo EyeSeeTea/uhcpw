@@ -485,6 +485,7 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                                 ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
                                 : chartName || mergedVisualization.name,
                             columnIndexToNotHide,
+                            hideRowLimit: mergedVisualization?.hideRowLimit,
                         });
                     } catch (error) {
                         console.error("Error creating exported data for chart: ", error);

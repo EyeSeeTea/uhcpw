@@ -155,6 +155,10 @@ export function generateColumnLettersUntilLimit(limitLetter: string): string[] {
     return Array.from({ length: maxIndex + 1 }, (_, i) => getColumnLetterByIndex(i));
 }
 
+export function generateRowNumbersUntilLimit(limit: number): number[] {
+    return Array.from({ length: limit + 1 }, (_, i) => i + 1);
+}
+
 export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string, columnIndexToNotHide?: number) {
     generateColumnLettersUntilLimit(columnLimit).forEach(columnLetter => {
         const columnValues: TabsWithStringOrNumbers["data"] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
@@ -165,6 +169,15 @@ export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string, 
 
         if (columnIsEmpty && columnLetter !== columnLetterNotToHide) {
             sheet.column(columnLetter).hidden(true);
+        }
+    });
+}
+
+export function hideEmptyRows(sheet: XlsxPopulate.Sheet, rowLimit: number) {
+    generateRowNumbersUntilLimit(rowLimit).forEach(rowNumber => {
+        const cellValue = sheet.cell(`A${rowNumber}`).value();
+        if (cellValue === "" || cellValue === undefined || cellValue === null) {
+            sheet.row(rowNumber).hidden(true);
         }
     });
 }

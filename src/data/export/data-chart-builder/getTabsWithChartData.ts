@@ -141,6 +141,81 @@ export function getTabsWithChartData(
     });
 }
 
+export function getTabsWithLineChartData(
+    tabs: Tab[],
+    options: {
+        chartName: string;
+        headersBase: string[];
+        orgUnits: D2OrgUnit[];
+    }
+): TabsWithStringOrNumbers[] {
+    const { chartName, headersBase, orgUnits } = options;
+
+    const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
+    if (!dataTab) throw new Error("Data tab not found");
+
+    const headers = dataTab.data[1];
+    const countryIndex = headers?.indexOf(COUNTRY_AREA_COLUMN);
+    const yearIndex = headers?.indexOf(YEAR_COLUMN);
+    const valueIndex = headers?.indexOf(VALUE_COLUMN);
+
+    if (
+        countryIndex === undefined ||
+        countryIndex === -1 ||
+        yearIndex === undefined ||
+        yearIndex === -1 ||
+        valueIndex === undefined ||
+        valueIndex === -1
+    ) {
+        throw new Error("Missing required columns in the data tab");
+    }
+
+    const dataRows = dataTab.data.slice(2);
+
+    const allYears = [...new Set(dataRows.map(row => row[yearIndex]).filter(Boolean))].sort();
+    const allCountries = [
+        ...new Set(
+            dataRows.map(row => row[countryIndex]).filter((country): country is string => country !== undefined)
+        ),
+    ].sort();
+
+    const headerRow = [...headersBase, ...allCountries];
+
+    const countryCodesRow = [
+        ...headersBase,
+        ...allCountries.map(country => {
+            const countryName = country || "";
+            const orgUnitCode =
+                orgUnits.find(
+                    orgUnit =>
+                        orgUnit.shortName === countryName || orgUnit.id === mapFromWhoCountryNameToId(countryName)
+                )?.code || countryName;
+            return mapToWhoCountryCode(orgUnitCode);
+        }),
+    ];
+
+    const yearDataRows = allYears.map(year => {
+        const yearText = year || "";
+
+        const valuesPerCountry = allCountries.map(country => {
+            const row = dataRows.find(r => r[yearIndex] === yearText && r[countryIndex] === country);
+            const raw = row?.[valueIndex];
+            if (!raw) return null;
+            return Number(raw.replace(",", "."));
+        });
+        return [yearText, ...valuesPerCountry];
+    });
+
+    const data: TabsWithStringOrNumbers["data"] = [[chartName], headerRow, countryCodesRow, ...yearDataRows];
+
+    return tabs.map((tab): TabsWithStringOrNumbers => {
+        if (tab.name === DATA_TAB_NAME) {
+            return { name: DATA_TAB_NAME, data };
+        }
+        return tab;
+    });
+}
+
 function getDataSortedByDataParam(params: {
     dataTab: Tab;
     sortedDataParams: string[];
