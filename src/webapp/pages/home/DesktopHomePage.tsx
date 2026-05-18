@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { Analysis } from "../../components/home/analysis/Analysis";
 import { Explorers } from "../../components/home/explorers/Explorers";
@@ -14,12 +14,17 @@ export const DesktopHomePage: React.FC = React.memo(() => {
     const mapState = useHomePageMap();
     const { resources } = useHomeResources();
     const homePageContent = useHomePageContent();
+    const [panelHeight, setPanelHeight] = useState<number | undefined>(undefined);
 
     return (
         <React.Fragment>
             <NewsletterButton content={homePageContent.newsletter} />
-            <MapSection>
-                <Map mapState={mapState} homePagePanelContent={homePageContent.mainMapPanel} />
+            <MapSection $panelHeight={panelHeight}>
+                <Map
+                    mapState={mapState}
+                    homePagePanelContent={homePageContent.mainMapPanel}
+                    onPanelHeightComputed={setPanelHeight}
+                />
             </MapSection>
             <section>
                 <Explorers content={homePageContent.explorers} />
@@ -37,7 +42,7 @@ export const DesktopHomePage: React.FC = React.memo(() => {
     );
 });
 
-const MapSection = styled.section`
-    height: 90vh;
+const MapSection = styled.section<{ $panelHeight?: number }>`
+    height: ${props => (props.$panelHeight ? `max(90vh, ${props.$panelHeight}px)` : "90vh")};
     min-height: 620px;
 `;
