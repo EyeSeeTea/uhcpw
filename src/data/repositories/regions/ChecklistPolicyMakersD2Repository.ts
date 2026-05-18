@@ -36,6 +36,12 @@ const CHECKLIST_POLICY_ITEMS_IDS = {
     CHECKLIST_ITEM23: "oK3S1qfz6vb",
     CHECKLIST_ITEM24: "VvNMez84Yxg",
     CHECKLIST_ITEM25: "ESlw3TZH9UZ",
+    // Items 26-30: replace each placeholder with the real DHIS2 data element UID once created
+    CHECKLIST_ITEM26: "ITEM26REPLAC",
+    CHECKLIST_ITEM27: "ITEM27REPLAC",
+    CHECKLIST_ITEM28: "ITEM28REPLAC",
+    CHECKLIST_ITEM29: "ITEM29REPLAC",
+    CHECKLIST_ITEM30: "ITEM30REPLAC",
 } as const;
 
 export class ChecklistPolicyMakersD2Repository implements ChecklistPolicyMakersRepository {
