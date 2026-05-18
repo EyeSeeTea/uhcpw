@@ -140,7 +140,7 @@ export const PolicyExplorerTable = React.memo(
             scrollbar.style.overflow = "auto";
             scrollbar.style.overflowY = "hidden";
             scrollbar.style.position = "relative";
-            scrollbar.style.top = "15px"; // Maybe calculate this dynamically
+            scrollbar.style.top = "13px"; // Maybe calculate this dynamically
             scrollbar.style.zIndex = "3";
 
             const style = document.createElement("style");
@@ -400,6 +400,10 @@ const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwi
     min-width: ${props => (props.cellwidth ? `${props.cellwidth}px` : "initial")};
     background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
+    padding-block: 8px;
+    > p {
+        margin: 0px;
+    }
 `;
 
 const StyledInvertedTable = styled(Table)<{ fullWidth?: boolean }>`
@@ -481,6 +485,14 @@ const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
     &.Nx6S3aQkvWe-table {
         tr:first-child {
             text-align-last: left;
+        }
+        tr:not(:first-child) {
+            td {
+                padding-block: 3px;
+                p {
+                    margin-block: 0px;
+                }
+            }
         }
 
         tr:first-child > td {
