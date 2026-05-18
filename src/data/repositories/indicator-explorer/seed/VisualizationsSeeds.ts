@@ -83,7 +83,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     eBxPw4kUnLU: chart_eBxPw4kUnLU_Seed,
     WDUV9ZrJiNC: chart_WDUV9ZrJiNC_Seed,
     IXF2wBMnwpa: chart_IXF2wBMnwpa_Seed,
-    // Household spending on health
+    // Household spending on health (survey data)
     pWFRTFfh5mA: chart_pWFRTFfh5mA_Seed,
     uRZCilOIr1C: chat_uRZCilOIr1C_Seed,
     qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
@@ -111,7 +111,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     MfLZYD6QCPy: chart_MfLZYD6QCPy_Seed,
     oaYpnZIdm5C: chart_oaYpnZIdm5C_Seed,
     wFITZgQ3udq: chart_wFITZgQ3udq_Seed,
-    // Health spending (health accounts)
+    // Health spending (health accounts data)
     ToEa2VuZLDt: chart_ToEa2VuZLDt_Seed,
     OB4SCQfCzwz: chart_OB4SCQfCzwz_Seed,
     d3kq9OCv8tH: chart_d3kq9OCv8tH_Seed,
