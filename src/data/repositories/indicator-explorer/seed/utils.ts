@@ -7,10 +7,10 @@ type SortedCategoryNames = {
 };
 
 export const sortedCategoryNames: SortedCategoryNames = {
-    householdHealthSpending: "Household spending on health",
+    householdHealthSpending: "Household spending on health (survey data)",
     financialHardship: "Financial hardship",
     unmetNeed: "Unmet need",
-    healthSpending: "Health spending (health accounts)",
+    healthSpending: "Health spending (health accounts data)",
     combinedIndicators: "Combined indicators",
 };
 
@@ -25,14 +25,14 @@ export const sortedSubcategoryNames: SortedSubcategoryNames = {
 };
 
 export const sortedCharts: string[] = [
-    // Household spending on health - country level
+    // Household spending on health (survey data) - country level
     "pWFRTFfh5mA",
     "qipBCG0Hc9Y",
     "fY7K8ATEDgQ",
     "cGE32OzPgMS",
     "uRZCilOIr1C",
     "sjgCABd3zK7",
-    // Household spending on health - comparative
+    // Household spending on health (survey data) - comparative
     "GNUHM5lQMTp",
     // Financial hardship - country level
     "jFtGKQIQTGp",
@@ -69,11 +69,11 @@ export const sortedCharts: string[] = [
     "MfLZYD6QCPy",
     "oaYpnZIdm5C",
     "wFITZgQ3udq",
-    // Health spending (health accounts) - country level
+    // Health spending (health accounts data) - country level
     "OB4SCQfCzwz",
     "z6nPPMMbOw5",
     "flLqTxfuuWI",
-    // Health spending (health accounts) - comparative
+    // Health spending (health accounts data) - comparative
     "CdqVV1Ib0XS",
     "qRl2vEbBY0u",
     "BpIwF88XezK",
