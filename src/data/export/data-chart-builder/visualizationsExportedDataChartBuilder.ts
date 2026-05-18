@@ -30,6 +30,7 @@ import { chart_DefU3mkASo6_exportedDataBuilder } from "./chart_DefU3mkASo6_expor
 import { chart_NOukqSxCI63_exportedDataBuilder } from "./chart_NOukqSxCI63_exportedDataBuilder";
 import { chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder } from "./chart_hEuM5hv2vVg_JljTfo2KUid_exportedDataBuilder";
 import { chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder } from "./chart_AjY0AISVVs5_dVRGqsjce2n_exportedDataBuilder";
+import { chart_IXF2wBMnwpa_exportedDataBuilder } from "./chart_IXF2wBMnwpa_exportedDataBuilder";
 
 type ExportedDataChartBuilder = (
     tabs: Tab[],
@@ -60,6 +61,7 @@ export const visualizationsExportedDataChartBuilder: Record<string, ExportedData
     eEKRLRR4mDk: (tabs, chartName, orgUnits) => chart_eEKRLRR4mDk_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
     NOukqSxCI63: (tabs, chartName, orgUnits) => chart_NOukqSxCI63_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
     DefU3mkASo6: (tabs, chartName, orgUnits) => chart_DefU3mkASo6_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
+    IXF2wBMnwpa: (tabs, chartName, orgUnits) => chart_IXF2wBMnwpa_exportedDataBuilder(tabs, chartName, orgUnits), // with visualization template
 };
 
 // Exporters that read the `Indicator` column directly. Charts in this registry bypass the
