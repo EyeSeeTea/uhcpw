@@ -58,6 +58,12 @@ export function useAppHeader(isScreenRotated?: boolean) {
         [history, handleClose, onCloseMenu]
     );
 
+    const handleResourcesMenuItemClick = useCallback(() => {
+        history.push("/resources?reset");
+        handleClose();
+        onCloseMenu();
+    }, [handleClose, history, onCloseMenu]);
+
     const handleCountryClick = useCallback(
         (country: Option<Id>) => {
             const countryName = country.text;
@@ -126,6 +132,7 @@ export function useAppHeader(isScreenRotated?: boolean) {
         goToHome,
         handleCountryClick,
         handleMenuItemClick,
+        handleResourcesMenuItemClick,
         handleClose,
         handleSetAnchorEl,
         handleRegionalClick,

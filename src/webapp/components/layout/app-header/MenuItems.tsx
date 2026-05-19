@@ -19,6 +19,7 @@ type MenuItemsProps = {
     goToHome: (closeMenu?: boolean) => void;
     handleCountryClick: (country: Option<Id>) => void;
     handleMenuItemClick: (link: string) => void;
+    handleResourcesMenuItemClick: () => void;
     handleRegionalClick: (region: Option<Id>) => void;
     isRegionalPage?: boolean;
 };
@@ -29,6 +30,7 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
         goToHome,
         handleCountryClick,
         handleMenuItemClick,
+        handleResourcesMenuItemClick,
         handleRegionalClick,
         isRegionalPage = false,
     } = props;
@@ -132,7 +134,7 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
 
             <StyledDivider />
 
-            <MenuItem onClick={() => handleMenuItemClick("/resources")}>{i18n.t("Resources")}</MenuItem>
+            <MenuItem onClick={handleResourcesMenuItemClick}>{i18n.t("Resources")}</MenuItem>
 
             <StyledDivider />
 
