@@ -8,6 +8,7 @@ import { CategoryOption } from "../useCategorySelector";
 
 const categoryOptions: CategoryOption[] = [
     {
+        type: "selectable",
         value: "mCMVwmnGWJF",
         text: "User Charges (co-payments)",
         subcategories: [
@@ -28,6 +29,7 @@ const categoryOptions: CategoryOption[] = [
             "This section focuses on user charges (co-payments) for covered services. It provides an overview of the types of user charges and protection mechanisms in place. More detailed information on the level and design of user charges is in the section on user charges by type of health care.",
     },
     {
+        type: "selectable",
         value: "uImM4yTeeV3",
         text: "Voluntary Health Insurance",
         subcategories: [
@@ -48,6 +50,7 @@ const categoryOptions: CategoryOption[] = [
             "This section focuses on the role voluntary health insurance (VHI) plays in relation to publicly financed health care, the share of population covered by VHI and its contribution to spending on health. It provides information on who sells and buys VHI, who regulates VHI and whether there are policies in place to make VHI more accessible or affordable.",
     },
     {
+        type: "selectable",
         value: "e6cfI6vWYEF",
         text: "Gaps in coverage",
         subcategories: [

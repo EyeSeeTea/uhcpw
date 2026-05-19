@@ -24,7 +24,7 @@ import {
     PolicyExplorerCellType,
 } from "../../../../domain/entities/policy-explorer/PolicyExplorer";
 import { givenACountriesAndSubregions } from "../../../../utils/tests-ui";
-import { PolicyExplorerCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerSelectableCategory } from "../../../../domain/entities/policy-explorer/PolicyExplorerCategory";
 
 const mockWebServer = new MockWebServer();
 const api = getD2APiFromInstance(new Instance({ url: "/" }));
@@ -586,8 +586,8 @@ describe("Given Policy Explorer repository", () => {
     });
 });
 
-function givenAProgramEventValues() {
-    return programEventValues as PolicyExplorerCategory[];
+function givenAProgramEventValues(): PolicyExplorerSelectableCategory[] {
+    return programEventValues as PolicyExplorerSelectableCategory[];
 }
 
 function givenAPolicyExplorerDataSet() {
