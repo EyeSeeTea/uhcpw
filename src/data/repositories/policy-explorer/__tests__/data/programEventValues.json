@@ -1,6 +1,7 @@
 [
     {
         "id": "uG2PbDfOc0w",
+        "type": "selectable",
         "name": "Population coverage",
         "subcategories": [
             {
@@ -44,6 +45,7 @@
     },
     {
         "id": "W4CqlzcDPB1",
+        "type": "selectable",
         "name": "Service coverage",
         "subcategories": [
             {
@@ -115,6 +117,7 @@
     },
     {
         "id": "mCMVwmnGWJF",
+        "type": "selectable",
         "name": "User charges (co-payments)",
         "subcategories": [
             {
@@ -154,12 +157,14 @@
     },
     {
         "id": "u800TAhsIBY",
+        "type": "selectable",
         "name": "User charges (co-payments) by type of health care",
         "subcategories": [],
         "description": "This section focuses on the design of user charges (co-payments) for covered services. It describes the level and type of user charges and protection mechanisms in place for the following types of health care: outpatient primary care visits, outpatient specialist visits, outpatient emergency visits, outpatient prescribed medicines, medical products, diagnostic tests, dental care visits, dental care treatment, inpatient care and inpatient medicines."
     },
     {
         "id": "uImM4yTeeV3",
+        "type": "selectable",
         "name": "Voluntary health insurance",
         "subcategories": [
             {
@@ -207,6 +212,7 @@
     },
     {
         "id": "e6cfI6vWYEF",
+        "type": "selectable",
         "name": "Main gaps in publicly financed coverage",
         "subcategories": [
             {
@@ -226,6 +232,7 @@
     },
     {
         "id": "Dg4b8bTfEIr",
+        "type": "selectable",
         "name": "Changes in coverage policy",
         "subcategories": []
     }

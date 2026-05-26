@@ -14,7 +14,14 @@ import { useRegionFilterOptions } from "../../../pages/regional-page/useRegionFi
 export const DesktopMenu: React.FC = () => {
     const classes = useStyles();
     const { countryFilter } = useCountryPage();
-    const { anchorEl, handleCountryClick, handleClose, handleSetAnchorEl, handleRegionalClick } = useAppHeader();
+    const {
+        anchorEl,
+        handleCountryClick,
+        handleClose,
+        handleSetAnchorEl,
+        handleRegionalClick,
+        handleResourcesMenuItemClick,
+    } = useAppHeader();
     const regionOptions = useRegionFilterOptions();
 
     return (
@@ -107,7 +114,16 @@ export const DesktopMenu: React.FC = () => {
                 {i18n.t("Methods")}
             </Button>
 
-            <Button className={classes.menu} activeClassName={classes.menuActive} component={NavLink} to={"/resources"}>
+            <Button
+                className={classes.menu}
+                activeClassName={classes.menuActive}
+                component={NavLink}
+                to="/resources"
+                onClick={(e: React.MouseEvent) => {
+                    e.preventDefault();
+                    handleResourcesMenuItemClick();
+                }}
+            >
                 {i18n.t("Resources")}
             </Button>
 
