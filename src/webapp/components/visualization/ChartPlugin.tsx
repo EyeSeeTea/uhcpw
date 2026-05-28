@@ -13,7 +13,7 @@ import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
 import { Region } from "../../../domain/entities/region/Region";
 import { withLegendAlignment } from "./customization/legends/alignLegendToPlotArea";
-import { MARKER_RADIUS } from "./customization/chartConstants";
+import { BOOST_SERIES_THRESHOLD, MARKER_RADIUS } from "./customization/chartConstants";
 import { Maybe } from "../../../types/utils";
 
 export interface ChartPluginProps {
@@ -132,6 +132,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                     events: withLegendAlignment(customizedOptions?.chart?.events),
                     renderTo: undefined,
                 },
+                boost: { seriesThreshold: BOOST_SERIES_THRESHOLD },
 
                 legend: {
                     ...originalChartOptions.legend,
@@ -242,6 +243,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                     events: withLegendAlignment(externalchartOptions?.chart?.events),
                     height: isMobile ? undefined : externalchartOptions?.chart?.height,
                 },
+                boost: { seriesThreshold: BOOST_SERIES_THRESHOLD, ...externalchartOptions?.boost },
                 series: applyDefaultMarkerRadius(externalchartOptions?.series),
             });
 
