@@ -14,7 +14,7 @@ const SORTED_PARAMETERS = [
     "Inpatient care",
 ];
 const HEADER_DATA_PARAM_NAME = INDICATOR_COLUMN;
-const HEADERS_BASE = [INDICATOR_COLUMN, COUNTRY_AREA_COLUMN];
+const HEADERS_BASE = [COUNTRY_AREA_COLUMN, INDICATOR_COLUMN];
 
 export const chart_sjgCABd3zK7_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,
