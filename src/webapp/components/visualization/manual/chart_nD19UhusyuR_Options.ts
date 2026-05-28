@@ -7,7 +7,7 @@ const seriesNames: Record<string, string> = {
 };
 
 const seriesColors: Record<string, string> = {
-    ygo5a7mdudU: "#ffc000",
+    ygo5a7mdudU: "#00b050",
 };
 
 export const chart_nD19UhusyuR_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
