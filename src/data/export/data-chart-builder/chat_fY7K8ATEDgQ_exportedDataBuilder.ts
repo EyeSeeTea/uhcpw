@@ -1,12 +1,12 @@
 import {
     COUNTRY_AREA_COLUMN,
-    INDICATOR_COLUMN,
     PARAMETER_COLUMN,
+    QUINTILE_COLUMN,
 } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartDataWithSeriesByCategory } from "./getTabsWithChartDataWithSeriesByCategory";
 
-const SORTED_PARAMETERS = [
+const SORTED_TYPES_OF_CARE = [
     "Inpatient care",
     "Medicines",
     "Dental care",
@@ -15,8 +15,8 @@ const SORTED_PARAMETERS = [
     "Diagnostic tests",
 ];
 const HEADER_DATA_PARAM_NAME = PARAMETER_COLUMN;
-const HEADER_DATA_QUINTILE_NAME = "Quintile";
-const HEADERS_BASE = [COUNTRY_AREA_COLUMN, INDICATOR_COLUMN];
+const HEADER_DATA_QUINTILE_NAME = QUINTILE_COLUMN;
+const HEADERS_BASE = [COUNTRY_AREA_COLUMN, QUINTILE_COLUMN];
 const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest"];
 
 export const chat_fY7K8ATEDgQ_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
@@ -25,11 +25,11 @@ export const chat_fY7K8ATEDgQ_exportedDataBuilder: (tabs: Tab[], chartName: stri
 ) => {
     return getTabsWithChartDataWithSeriesByCategory(tabs, {
         chartName,
-        headerDataParamName: HEADER_DATA_PARAM_NAME,
-        headerDataCategoryName: HEADER_DATA_QUINTILE_NAME,
+        headerDataParamName: HEADER_DATA_QUINTILE_NAME,
+        headerDataCategoryName: HEADER_DATA_PARAM_NAME,
         headersBase: HEADERS_BASE,
-        sortedDataParams: SORTED_PARAMETERS,
-        sortedDataCategories: SORTED_QUINTILES,
+        sortedDataParams: SORTED_QUINTILES,
+        sortedDataCategories: SORTED_TYPES_OF_CARE,
         splitYearAndCategoryHeaders: true,
     });
 };

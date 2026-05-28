@@ -11,7 +11,7 @@ const SORTED_PARAMETERS = [
     "Average household capacity to pay",
 ];
 const HEADER_DATA_PARAM_NAME = INDICATOR_COLUMN;
-const HEADERS_BASE = [INDICATOR_COLUMN, COUNTRY_AREA_COLUMN];
+const HEADERS_BASE = [COUNTRY_AREA_COLUMN, INDICATOR_COLUMN];
 
 export const chart_Uf4B2PFIO6f_VQyARVycY60_exportedDataBuilder: (
     tabs: Tab[],
