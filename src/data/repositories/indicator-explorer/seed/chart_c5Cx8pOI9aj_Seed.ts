@@ -7,5 +7,6 @@ export const chart_c5Cx8pOI9aj_Seed: VisualizationExtra = {
     friendlyName: "Households with catastrophic health spending (multiple years, line chart)",
     isComparative: true,
     minCountryFilter: 1,
-    hideRowLimit: 40, // exported chart until row 40 that is year 2036
+    chartDataStartRow: 50,
+    hideRowLimit: 150,
 };

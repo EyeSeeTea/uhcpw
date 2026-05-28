@@ -159,9 +159,17 @@ export function generateRowNumbersUntilLimit(limit: number): number[] {
     return Array.from({ length: limit + 1 }, (_, i) => i + 1);
 }
 
-export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string, columnIndexToNotHide?: number) {
+export function hideEmptyColumn(
+    sheet: XlsxPopulate.Sheet,
+    columnLimit: string,
+    columnIndexToNotHide?: number,
+    dataStartRow = 1
+) {
     generateColumnLettersUntilLimit(columnLimit).forEach(columnLetter => {
-        const columnValues: TabsWithStringOrNumbers["data"] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
+        const rowEnd = dataStartRow + 6;
+        const columnValues: TabsWithStringOrNumbers["data"] = sheet
+            .range(`${columnLetter}${dataStartRow}:${columnLetter}${rowEnd}`)
+            .value();
         const columnIsEmpty = columnValues.every((value: (string | number | null)[]) =>
             value.every(cell => cell === "" || cell === undefined || cell === null)
         );
@@ -173,8 +181,8 @@ export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string, 
     });
 }
 
-export function hideEmptyRows(sheet: XlsxPopulate.Sheet, rowLimit: number) {
-    generateRowNumbersUntilLimit(rowLimit).forEach(rowNumber => {
+export function hideEmptyRows(sheet: XlsxPopulate.Sheet, rowLimit: number, startRow = 1) {
+    Array.from({ length: rowLimit - startRow + 1 }, (_, i) => i + startRow).forEach(rowNumber => {
         const cellValue = sheet.cell(`A${rowNumber}`).value();
         if (cellValue === "" || cellValue === undefined || cellValue === null) {
             sheet.row(rowNumber).hidden(true);

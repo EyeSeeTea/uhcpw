@@ -198,21 +198,23 @@ export const exportToCSVIncludingChart = async (params: {
     fileName: string;
     columnIndexToNotHide?: number;
     hideRowLimit?: number;
+    chartDataStartRow?: number;
 }) => {
-    const { chartId, tabs, templateArrayBuffer, fileName, columnIndexToNotHide, hideRowLimit } = params;
+    const { chartId, tabs, templateArrayBuffer, fileName, columnIndexToNotHide, hideRowLimit, chartDataStartRow } =
+        params;
 
     const workbook = await XlsxPopulate.fromDataAsync(templateArrayBuffer);
 
     const chartSheet = workbook.sheet(DATA_TAB_NAME);
     const chartTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
     if (chartTab) {
-        addDataToSheet(chartSheet, chartTab.data);
+        addDataToSheet(chartSheet, chartTab.data, chartDataStartRow);
         const columnLimit = !CHARTS_WITHOUT_COLUMN_LIMIT.includes(chartId) ? COLUMN_LIMIT : undefined;
         if (columnLimit) {
-            hideEmptyColumn(chartSheet, columnLimit, columnIndexToNotHide);
+            hideEmptyColumn(chartSheet, columnLimit, columnIndexToNotHide, chartDataStartRow);
         }
         if (hideRowLimit) {
-            hideEmptyRows(chartSheet, hideRowLimit);
+            hideEmptyRows(chartSheet, hideRowLimit, chartDataStartRow);
         }
     }
 
@@ -226,10 +228,10 @@ export const exportToCSVIncludingChart = async (params: {
     FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
 };
 
-function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"]) {
+function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"], startRow = 1) {
     try {
         data.forEach((row, rowIndex) => {
-            const rowNumber = rowIndex + 1;
+            const rowNumber = rowIndex + startRow;
             row.forEach((cell, columnIndex) => {
                 const column = getColumnLetterByIndex(columnIndex);
                 const cellRef = `${column}${rowNumber}`;
