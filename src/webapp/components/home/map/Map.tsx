@@ -33,7 +33,7 @@ import { FinancialProtectionStatus } from "../../../../domain/entities/Financial
 
 const MAP_SIDE_PANEL_PADDING_PX = 48;
 
-mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN ?? "";
 
 // Fix bug in production build
 // https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-750489778
