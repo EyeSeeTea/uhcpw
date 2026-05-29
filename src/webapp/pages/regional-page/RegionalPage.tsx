@@ -123,7 +123,7 @@ export const RegionalPage: React.FC = () => {
                     <MobileSection ref={refs.policyChecklist}>
                         <SectionTitleDivider onlyBottomMargin>
                             <SectionTitle>
-                                {i18n.t("Progress is possible: a policy checklist", {
+                                {i18n.t("Progress is possible: a coverage policy checklist", {
                                     nsSeparator: false,
                                 })}
                             </SectionTitle>

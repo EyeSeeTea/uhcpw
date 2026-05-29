@@ -293,7 +293,7 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 2,
-                tabTitle: i18n.t("Progress is possible: a policy checklist", {
+                tabTitle: i18n.t("Progress is possible: a coverage policy checklist", {
                     nsSeparator: false,
                 }),
                 isGradientColor: true,
