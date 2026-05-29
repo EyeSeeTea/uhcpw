@@ -413,6 +413,22 @@ export function applyAutoWidthsToXlsxPopulateSheet(
     });
 }
 
+export function toSafeNumber(cell: string | number | null | undefined): number {
+    const n = Number(cell ?? 0);
+    return isNaN(n) ? 0 : n;
+}
+
+export function toPercentage(cell: string | number | null, total: number): number {
+    return total > 0 ? parseFloat(((toSafeNumber(cell) / total) * 100).toFixed(2)) : 0;
+}
+
+export function sumByKey(entries: ReadonlyArray<{ key: string; value: number }>): Record<string, number> {
+    return entries.reduce<Record<string, number>>(
+        (acc, { key, value }) => ({ ...acc, [key]: (acc[key] ?? 0) + value }),
+        {}
+    );
+}
+
 export function parseDataValuesStringToNumber(data: string[][], valueIndex: number): TabsWithStringOrNumbers["data"] {
     return data.map((row, rowNumber) => {
         const value = row[valueIndex];
