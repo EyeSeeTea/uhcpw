@@ -8,5 +8,5 @@ export const chart_c5Cx8pOI9aj_Seed: VisualizationExtra = {
     isComparative: true,
     minCountryFilter: 1,
     chartDataStartRow: 50,
-    hideRowLimit: 150,
+    hideRowLimit: 154,
 };
