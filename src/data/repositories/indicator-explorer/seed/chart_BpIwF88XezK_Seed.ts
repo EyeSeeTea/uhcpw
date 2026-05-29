@@ -3,7 +3,7 @@ import { VisualizationExtra } from "../../../../domain/entities/indicator-explor
 
 export const chart_BpIwF88XezK_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
-    friendlyName: "Breakdown of current spending on health on medicines by financing scheme",
+    friendlyName: "Breakdown of current spending on medicines by financing arrangement",
     isComparative: true,
     subcategoryName: sortedSubcategoryNames.comparative,
     isOrgUnitRegions: true,
