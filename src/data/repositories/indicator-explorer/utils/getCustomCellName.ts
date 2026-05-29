@@ -36,6 +36,12 @@ const cellNameByVisualizationAndCellId: Record<Id, CellNamesByCellId> = {
         dVcHTdCFpNv: "Richest",
         GyiW7dS7BIl: "Average",
     },
+    AjY0AISVVs5_dVRGqsjce2n: {
+        y3QAiY2cQD1: "LINE_65+",
+    },
+    hEuM5hv2vVg_JljTfo2KUid: {
+        seopiAnJoR5: "LINE_Only older",
+    },
 };
 
 function isXAxes(visualizationId: Id, axeId: Id): boolean {
