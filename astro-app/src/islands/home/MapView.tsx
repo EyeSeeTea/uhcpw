@@ -5,11 +5,8 @@ import { fullStyle } from "@shared/webapp/components/home/map/style";
 import type { FinancialProtectionStatus } from "@shared/domain/entities/FinancialProtectionStatus";
 import type { HomeMarkerCountry } from "@/data/home/home-resource";
 
-// Public token; safe to expose since it's scoped per domain. Falls back to the
-// legacy SPA token so builds work without any env configuration.
-mapboxgl.accessToken =
-    import.meta.env.PUBLIC_MAPBOX_TOKEN ||
-    "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
+// Public token; safe to expose since it's scoped per domain.
+mapboxgl.accessToken = import.meta.env.PUBLIC_MAPBOX_TOKEN ?? "";
 
 const markerStatusClass: Record<FinancialProtectionStatus, string> = {
     InsufficientData: "marker-insufficientdata",
