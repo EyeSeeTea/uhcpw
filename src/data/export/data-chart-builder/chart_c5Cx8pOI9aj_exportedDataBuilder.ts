@@ -35,14 +35,10 @@ export const chart_c5Cx8pOI9aj_exportedDataBuilder: (
 
     const dataRows = dataTab.data.slice(2);
 
-    const allYears = [
-        ...new Set(dataRows.map(row => row[yearIndex]).filter((y): y is string => Boolean(y))),
-    ].sort();
+    const allYears = [...new Set(dataRows.map(row => row[yearIndex]).filter((y): y is string => Boolean(y)))].sort();
 
     const allCountries = [
-        ...new Set(
-            dataRows.map(row => row[countryIndex]).filter((c): c is string => c !== undefined)
-        ),
+        ...new Set(dataRows.map(row => row[countryIndex]).filter((c): c is string => c !== undefined)),
     ].sort();
 
     const headerRow = [...HEADERS_BASE, ...allYears];
