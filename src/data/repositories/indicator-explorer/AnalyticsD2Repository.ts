@@ -52,6 +52,7 @@ import {
 } from "./utils/sortColumnsAndDataRows";
 import { sortedCategoryNames } from "./seed/utils";
 import { insertArrayAt } from "./utils/insertArrayAt";
+import { getSeparatingColumn } from "../../export/data-chart-builder/chart_IXF2wBMnwpa_helpers";
 
 const SERVICE_PRIMARY_NAME_COLUMN = "GgAVGT9wRCM";
 export const DATA_TAB_NAME = "Data";
@@ -473,6 +474,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                             orgUnitGroups
                         );
 
+                        const columnIndexToNotHide =
+                            "IXF2wBMnwpa" === mergedVisualization.id ? getSeparatingColumn(tabsWithChart) : undefined;
+
                         exportToCSVIncludingChart({
                             chartId: mergedVisualization.id,
                             tabs: tabsWithChart,
@@ -480,6 +484,9 @@ export class AnalyticsD2Repository implements AnalyticsRepository {
                             fileName: mergedVisualization.downloadedFileName
                                 ? `${mergedVisualization.categoryName}: ${mergedVisualization.downloadedFileName}`
                                 : chartName || mergedVisualization.name,
+                            columnIndexToNotHide,
+                            hideRowLimit: mergedVisualization?.hideRowLimit,
+                            chartDataStartRow: mergedVisualization.chartDataStartRow,
                         });
                     } catch (error) {
                         console.error("Error creating exported data for chart: ", error);

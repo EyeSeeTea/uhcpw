@@ -4,6 +4,7 @@
         "name": "Spain",
         "longName": "Kingdom of Spain",
         "code": "SPA",
+        "iso3Code": "ESP",
         "coordinates": [-3.68444, 40.3086],
         "status": "Strong",
         "parents": [
@@ -21,7 +22,11 @@
             }
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=FCuiVk73pT3",
-        "summary": "**Financial hardship (2020)**\r\n\r\n* Impoverishing health spending: 1.6% of households\r\n* Catastrophic health spending: 2.9% of households\r\n* Main drivers: medical products on average; medical products and outpatient medicines for low-income households\r\n\r\n\r\n**Unmet need (2022)**\r\n\r\n* Health care: 1.2% of people\r\n* Dental care: 4.6% of people\r\n\r\n[Financial protection report](https://apps.who.int/iris/handle/10665/347403)",
+        "showCountryFlag": true,
+        "generalSummary": "**Financial hardship (2020)**\r\n\r\n* Impoverishing health spending: 1.6% of households\r\n* Catastrophic health spending: 2.9% of households\r\n* Main drivers: medical products on average; medical products and outpatient medicines for low-income households\r\n\r\n\r\n**Unmet need (2022)**\r\n\r\n* Health care: 1.2% of people\r\n* Dental care: 4.6% of people\r\n\r\n[Financial protection report](https://apps.who.int/iris/handle/10665/347403)",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
         "sliderInfo": {
             "gapsSection": {
                 "sectionName": "",
@@ -71,11 +76,12 @@
                     },
                     {
                         "title": "Increase public spending on health and use resources to meet equity and efficiency goals",
-                        "text": "Strengthening financial protection is likely to require additional public spending on health. To ensure additional spending meets equity and efficiency goals, it should be targeted carefully to reduce financial hardship and unmet need for households with low incomes.\r\n\r\nSource: WHO Regional Office for Europe, based on [‘Can people afford to pay for health care? New evidence on financial protection in Spain’ (2021)](https://iris.who.int/handle/10665/347403)."
+                        "text": "Strengthening financial protection is likely to require additional public spending on health. To ensure additional spending meets equity and efficiency goals, it should be targeted carefully to reduce financial hardship and unmet need for households with low incomes.\r\n\r\nSource: WHO Regional Office for Europe, based on ['Can people afford to pay for health care? New evidence on financial protection in Spain' (2021)](https://iris.who.int/handle/10665/347403)."
                     }
                 ]
             }
         },
-        "isInCountryPage": true
+        "isInCountryPage": true,
+        "currencyCode": "EUR"
     }
 ]

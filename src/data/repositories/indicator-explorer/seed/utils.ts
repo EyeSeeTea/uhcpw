@@ -7,10 +7,10 @@ type SortedCategoryNames = {
 };
 
 export const sortedCategoryNames: SortedCategoryNames = {
-    householdHealthSpending: "Household spending on health",
+    householdHealthSpending: "Household spending on health (survey data)",
     financialHardship: "Financial hardship",
     unmetNeed: "Unmet need",
-    healthSpending: "Health spending (health accounts)",
+    healthSpending: "Health spending (health accounts data)",
     combinedIndicators: "Combined indicators",
 };
 
@@ -25,14 +25,14 @@ export const sortedSubcategoryNames: SortedSubcategoryNames = {
 };
 
 export const sortedCharts: string[] = [
-    // Household spending on health - country level
+    // Household spending on health (survey data) - country level
     "pWFRTFfh5mA",
     "qipBCG0Hc9Y",
     "fY7K8ATEDgQ",
     "cGE32OzPgMS",
     "uRZCilOIr1C",
     "sjgCABd3zK7",
-    // Household spending on health - comparative
+    // Household spending on health (survey data) - comparative
     "GNUHM5lQMTp",
     // Financial hardship - country level
     "jFtGKQIQTGp",
@@ -43,8 +43,8 @@ export const sortedCharts: string[] = [
     "ZxNdsDM8NSb",
     "q5ldoFcgkSn",
     "TzWcDtEOTPX",
-    "hEuM5hv2vVg_JljTfo2KUid",
     "AjY0AISVVs5_dVRGqsjce2n",
+    "hEuM5hv2vVg_JljTfo2KUid",
     "Uf4B2PFIO6f_VQyARVycY60",
     // Financial hardship - comparative
     "dbc87Ljw8uN",
@@ -69,22 +69,23 @@ export const sortedCharts: string[] = [
     "MfLZYD6QCPy",
     "oaYpnZIdm5C",
     "wFITZgQ3udq",
-    // Health spending (health accounts) - country level
+    // Health spending (health accounts data) - country level
     "OB4SCQfCzwz",
     "z6nPPMMbOw5",
     "flLqTxfuuWI",
-    // Health spending (health accounts) - comparative
+    // Health spending (health accounts data) - comparative
     "CdqVV1Ib0XS",
     "qRl2vEbBY0u",
     "BpIwF88XezK",
+    "bGXcyPKaMWD",
     "ZZAcIv6O9LY",
     "B4CnzUqVR3n",
     "iMI82inOBiD",
     "xKmSHeJ1GXq",
-    "BYAT5Woc9EJ",
     "fk2LtKtsiQG",
-    "ToEa2VuZLDt",
+    "BYAT5Woc9EJ",
     "nD19UhusyuR",
+    "ToEa2VuZLDt",
     "twyY1ulr7uD",
     "d3kq9OCv8tH",
     "y4qAv6eW4nb",

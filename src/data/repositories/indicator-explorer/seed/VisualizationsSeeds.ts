@@ -56,10 +56,10 @@ import { chart_flLqTxfuuWI_Seed } from "./chart_flLqTxfuuWI_Seed";
 import { chart_AQ8dYmv00zb_Seed } from "./chart_AQ8dYmv00zb_Seed";
 import { chart_c5Cx8pOI9aj_Seed } from "./chart_c5Cx8pOI9aj_Seed";
 import { chart_fk2LtKtsiQG_Seed } from "./chart_fk2LtKtsiQG_Seed";
+import { chart_bGXcyPKaMWD_Seed } from "./chart_bGXcyPKaMWD_Seed";
 import { chart_AjY0AISVVs5_dVRGqsjce2n_Seed } from "./chart_AjY0AISVVs5_dVRGqsjce2n_Seed";
 import { chart_hEuM5hv2vVg_JljTfo2KUid_Seed } from "./chart_hEuM5hv2vVg_JljTfo2KUid_Seed";
 import { chart_nD19UhusyuR_Seed } from "./chart_nD19UhusyuR_Seed";
-import { chart_qRl2vEbBY0u_Seed } from "./chart_qRl2vEbBY0u_Seed";
 
 export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     // Comparative charts
@@ -83,7 +83,7 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     eBxPw4kUnLU: chart_eBxPw4kUnLU_Seed,
     WDUV9ZrJiNC: chart_WDUV9ZrJiNC_Seed,
     IXF2wBMnwpa: chart_IXF2wBMnwpa_Seed,
-    // Household spending on health
+    // Household spending on health (survey data)
     pWFRTFfh5mA: chart_pWFRTFfh5mA_Seed,
     uRZCilOIr1C: chat_uRZCilOIr1C_Seed,
     qipBCG0Hc9Y: chart_qipBCG0Hc9Y_Seed,
@@ -111,10 +111,11 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     MfLZYD6QCPy: chart_MfLZYD6QCPy_Seed,
     oaYpnZIdm5C: chart_oaYpnZIdm5C_Seed,
     wFITZgQ3udq: chart_wFITZgQ3udq_Seed,
-    // Health spending (health accounts)
+    // Health spending (health accounts data)
     ToEa2VuZLDt: chart_ToEa2VuZLDt_Seed,
     OB4SCQfCzwz: chart_OB4SCQfCzwz_Seed,
     d3kq9OCv8tH: chart_d3kq9OCv8tH_Seed,
+    bGXcyPKaMWD: chart_bGXcyPKaMWD_Seed,
     ZZAcIv6O9LY: chart_ZZAcIv6O9LY_Seed,
     fk2LtKtsiQG: chart_fk2LtKtsiQG_Seed,
     BYAT5Woc9EJ: chart_BYAT5Woc9EJ_Seed,
@@ -127,7 +128,8 @@ export const VisualizationsSeeds: Record<string, VisualizationExtra> = {
     y4qAv6eW4nb: chart_y4qAv6eW4nb_Seed,
     AQ8dYmv00zb: chart_AQ8dYmv00zb_Seed,
     nD19UhusyuR: chart_nD19UhusyuR_Seed,
-    qRl2vEbBY0u: chart_qRl2vEbBY0u_Seed,
+    // Hidden qRl2vEbBY0u for now as the data that they have is not fully curated
+    // qRl2vEbBY0u: chart_qRl2vEbBY0u_Seed,
 };
 
 export const emptyVisualizationExtra = {

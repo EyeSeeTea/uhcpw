@@ -1,4 +1,6 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback, useMemo } from "react";
+import { useAppContext } from "../../../contexts/app-context";
+import { useMapSidePanelHeight } from "./useMapSidePanelHeight";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
 import styled from "styled-components";
 import { Fab, Tooltip } from "@material-ui/core";
@@ -29,7 +31,9 @@ import { RegionMainMapPanelContent } from "../../../../domain/entities/region/Re
 import { RegionMapPanel } from "../../region-map-panel/RegionMapPanel";
 import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
 
-mapboxgl.accessToken = "pk.eyJ1IjoibW11a2ltIiwiYSI6ImNqNnduNHB2bDE3MHAycXRiOHR3aG0wMTYifQ.ConO2Bqm3yxPukZk6L9cjA";
+const MAP_SIDE_PANEL_PADDING_PX = 48;
+
+mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN ?? "";
 
 // Fix bug in production build
 // https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-750489778
@@ -46,6 +50,7 @@ export type MapProps = {
     className?: string;
     highlightedISO3Countries?: string[];
     isRegionPage?: boolean;
+    onPanelHeightComputed?: (height: number) => void;
 };
 
 export const Map: React.FC<MapProps> = ({
@@ -57,10 +62,51 @@ export const Map: React.FC<MapProps> = ({
     className,
     highlightedISO3Countries,
     isRegionPage = false,
+    onPanelHeightComputed,
 }) => {
     const mainContainerRef = useRef<any>(null);
     const mapContainerRef = useRef<any>(null);
     const mapRef = useRef<any>(null);
+
+    const { countries } = useAppContext();
+
+    const contentWidthPx = useMemo(
+        () => (panelMaxWidth !== undefined ? panelMaxWidth - MAP_SIDE_PANEL_PADDING_PX * 2 : 500),
+        [panelMaxWidth]
+    );
+    const enabled = useMemo(
+        () => (isRegionPage ? panelMaxWidth !== undefined : !isMobile),
+        [isMobile, isRegionPage, panelMaxWidth]
+    );
+
+    const { height: panelContentHeight, measurementContainer } = useMapSidePanelHeight({
+        countries: countries,
+        homePagePanelContent: homePagePanelContent,
+        regionMainMapPanelContent: regionMainMapPanelContent,
+        isRegionalPage: isRegionPage,
+        contentWidthPx: contentWidthPx,
+        enabled: enabled,
+    });
+
+    const panelActualHeight = useMemo(
+        () => (panelContentHeight !== undefined ? panelContentHeight + MAP_SIDE_PANEL_PADDING_PX * 2 : undefined),
+        [panelContentHeight]
+    );
+
+    useEffect(() => {
+        if (panelActualHeight !== undefined) {
+            onPanelHeightComputed?.(panelActualHeight);
+        }
+    }, [panelActualHeight, onPanelHeightComputed]);
+
+    // Resizes the map container
+    useEffect(() => {
+        if (panelActualHeight === undefined || !mapRef.current) return;
+        const rafId = requestAnimationFrame(() => {
+            mapRef.current?.resize();
+        });
+        return () => cancelAnimationFrame(rafId);
+    }, [panelActualHeight]);
 
     useEffect(() => {
         if (mapContainerRef.current) {
@@ -128,9 +174,10 @@ export const Map: React.FC<MapProps> = ({
 
     return (
         <Container ref={mainContainerRef} className={className}>
+            {measurementContainer}
             <MapContent ref={mapContainerRef} />
 
-            <MapSidePanel maxWidth={panelMaxWidth}>
+            <MapSidePanel maxWidth={panelMaxWidth} $measured={panelContentHeight !== undefined}>
                 {mapState.selectedCountry ? (
                     <CountryPanel country={mapState.selectedCountry} isRegionalPage={isRegionPage} />
                 ) : regionMainMapPanelContent ? (
@@ -231,8 +278,7 @@ const MapContent = styled.div`
     }
 `;
 
-const MapSidePanel = styled.div<{ maxWidth?: number }>`
-    overflow-y: auto;
+const MapSidePanel = styled.div<{ maxWidth?: number; $measured?: boolean }>`
     position: absolute;
     top: 0;
     bottom: 0;
@@ -240,16 +286,20 @@ const MapSidePanel = styled.div<{ maxWidth?: number }>`
     max-width: ${props => props.maxWidth || 500}px;
     background: ${colors.accentPrimary};
     color: white;
-    padding: 48px;
+    padding: ${MAP_SIDE_PANEL_PADDING_PX}px;
     opacity: 0.9;
     z-index: 1;
     box-sizing: ${props => (props.maxWidth ? "border-box" : "content-box")};
+    overflow-y: ${props => (props.$measured ? "hidden" : "auto")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         max-width: 100%;
-        width: calc(100% - 48px);
+        width: calc(100% - ${MAP_SIDE_PANEL_PADDING_PX}px);
         padding: 24px;
         box-sizing: content-box;
+        height: auto;
+        bottom: 0;
+        overflow-y: auto;
     }
 `;
 

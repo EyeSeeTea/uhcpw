@@ -12,6 +12,7 @@ import {
     getCellStyles,
     getColumnLetterByIndex,
     hideEmptyColumn,
+    hideEmptyRows,
     LEGENDS_STYLE,
     setHeight,
     setWidth,
@@ -188,23 +189,32 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
     FileSaver.saveAs(data, fileName + fileExtension);
 };
 
+const CHARTS_WITHOUT_COLUMN_LIMIT = ["kIpnMBaBvZ9", "mUjcWO90CRr", "fnOIi0bdISn", "eEKRLRR4mDk"];
+
 export const exportToCSVIncludingChart = async (params: {
     chartId: string;
     tabs: TabsWithStringOrNumbers[];
     templateArrayBuffer: ArrayBuffer;
     fileName: string;
+    columnIndexToNotHide?: number;
+    hideRowLimit?: number;
+    chartDataStartRow?: number;
 }) => {
-    const { chartId, tabs, templateArrayBuffer, fileName } = params;
+    const { chartId, tabs, templateArrayBuffer, fileName, columnIndexToNotHide, hideRowLimit, chartDataStartRow } =
+        params;
 
     const workbook = await XlsxPopulate.fromDataAsync(templateArrayBuffer);
 
     const chartSheet = workbook.sheet(DATA_TAB_NAME);
     const chartTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
     if (chartTab) {
-        addDataToSheet(chartSheet, chartTab.data);
-        const columnLimit = chartId !== "kIpnMBaBvZ9" ? COLUMN_LIMIT : undefined;
+        addDataToSheet(chartSheet, chartTab.data, chartDataStartRow);
+        const columnLimit = !CHARTS_WITHOUT_COLUMN_LIMIT.includes(chartId) ? COLUMN_LIMIT : undefined;
         if (columnLimit) {
-            hideEmptyColumn(chartSheet, columnLimit);
+            hideEmptyColumn(chartSheet, columnLimit, columnIndexToNotHide, chartDataStartRow);
+        }
+        if (hideRowLimit) {
+            hideEmptyRows(chartSheet, hideRowLimit, chartDataStartRow);
         }
     }
 
@@ -218,10 +228,10 @@ export const exportToCSVIncludingChart = async (params: {
     FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
 };
 
-function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"]) {
+function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"], startRow = 1) {
     try {
         data.forEach((row, rowIndex) => {
-            const rowNumber = rowIndex + 1;
+            const rowNumber = rowIndex + startRow;
             row.forEach((cell, columnIndex) => {
                 const column = getColumnLetterByIndex(columnIndex);
                 const cellRef = `${column}${rowNumber}`;
