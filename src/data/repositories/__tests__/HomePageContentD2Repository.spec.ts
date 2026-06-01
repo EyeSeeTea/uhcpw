@@ -78,7 +78,7 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
     );
     expect(homePageContent.explorers.indicator.buttonText).toBe("Explore data");
     expect(homePageContent.explorers.indicator.buttonLink).toBe(
-        "https://apps.who.int/dhis2/uhcwatch/#/indicator-explorer"
+        "https://apps.who.int/dhis2/uhcwatch/indicator-explorer"
     );
 
     expect(homePageContent.explorers.policy.title).toBe("Policy explorer");
@@ -86,7 +86,7 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
         "Information on population coverage, service coverage, user charges and voluntary health insurance"
     );
     expect(homePageContent.explorers.policy.buttonText).toBe("Explore data");
-    expect(homePageContent.explorers.policy.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/#/policy-explorer");
+    expect(homePageContent.explorers.policy.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/policy-explorer");
 
     expect(homePageContent.analysis.title).toBe("Analysis");
     expect(homePageContent.analysis.subtitle).toBe("Country-level and comparative analysis of financial protection");
@@ -96,7 +96,7 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
         "Find out about the health system factors that strengthen and undermine financial protection at country level"
     );
     expect(homePageContent.analysis.countries.buttonText).toBe("Country pages");
-    expect(homePageContent.analysis.countries.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/#/Albania");
+    expect(homePageContent.analysis.countries.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/Albania");
 
     expect(homePageContent.analysis.regional.title).toBe("The region at a glance");
     expect(homePageContent.analysis.regional.text).toBe(
@@ -104,7 +104,7 @@ function verifyContentIsParsed(homePageContent?: HomePageContent) {
     );
 
     expect(homePageContent.methods.title).toBe("Methods");
-    expect(homePageContent.methods.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/#/methods");
+    expect(homePageContent.methods.buttonLink).toBe("https://apps.who.int/dhis2/uhcwatch/methods");
     expect(homePageContent.methods.subtitle).toBe("How financial protection is monitored matters");
 
     expect(homePageContent.methods.column1.title).toBe("A focus on equity");

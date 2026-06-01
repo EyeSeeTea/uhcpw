@@ -1,0 +1,81 @@
+---
+import { YouTube } from "@astro-community/astro-embed-youtube";
+import type { MainMapPanelContent } from "@shared/domain/entities/HomePageContent";
+import { renderMarkdown } from "@/lib/markdown";
+
+interface Props {
+    content: MainMapPanelContent;
+}
+
+const { content } = Astro.props;
+const descriptionHtml = renderMarkdown(content.description);
+---
+
+<div class="mobile-map-hero">
+    <div class="mobile-map-hero-inner">
+        <div class="description" set:html={descriptionHtml} />
+
+        {
+            content.videoLink && (
+                <div class="video-wrapper">
+                    <YouTube id={content.videoLink} title="UHC watch YouTube video player" />
+                </div>
+            )
+        }
+    </div>
+</div>
+
+<style>
+    .mobile-map-hero {
+        position: absolute;
+        inset: 0;
+        padding: 24px;
+        color: white;
+        z-index: 1;
+        box-sizing: border-box;
+        overflow-y: auto;
+        font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 24px;
+    }
+
+    .mobile-map-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-color: #0089d6;
+        opacity: 0.9;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .mobile-map-hero-inner {
+        padding: 16px;
+        box-sizing: border-box;
+    }
+
+    .description {
+        max-width: 100%;
+    }
+
+    .description :global(p) {
+        margin: 0 0 16px;
+        line-height: 24px;
+    }
+
+    .description :global(a) {
+        color: white;
+        text-decoration: underline;
+    }
+
+    .video-wrapper {
+        width: 100%;
+        max-width: 70ch;
+        margin: 40px 0;
+    }
+
+    .video-wrapper :global(lite-youtube) {
+        width: 100%;
+    }
+</style>

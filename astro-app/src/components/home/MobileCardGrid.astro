@@ -1,0 +1,240 @@
+---
+import { Image } from "astro:assets";
+import bubblePatternWhite from "@/assets/bubble-pattern-white.png";
+import indicatorExplorerIcon from "@/assets/indicator-explorer.svg";
+import policyExplorerIcon from "@/assets/policy-explorer.svg";
+import type { HomePageContent } from "@shared/domain/entities/HomePageContent";
+
+interface Props {
+    content: HomePageContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section class="mobile-card-grid">
+    <div class="grid">
+        <a class="box-link" href={content.explorers.indicator.buttonLink || ""}>
+            <div class="big-box" style="background-color: #fe8c4f;">
+                <Image
+                    class="bubble-img bubble-img-big"
+                    src={bubblePatternWhite}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                />
+                <div class="flex-wrapper">
+                    <span class="title-text">Indicator explorer</span>
+                    <Image class="box-icon" src={indicatorExplorerIcon} alt="Indicator explorer" />
+                </div>
+                <p class="description-text">
+                    Over 50 indicators of financial hardship, unmet need for health care and spending on health
+                </p>
+            </div>
+        </a>
+
+        <a class="box-link" href={content.explorers.policy.buttonLink || ""}>
+            <div class="big-box" style="background-color: #0089d6;">
+                <Image
+                    class="bubble-img bubble-img-big"
+                    src={bubblePatternWhite}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                />
+                <div class="flex-wrapper">
+                    <span class="title-text">Policy explorer</span>
+                    <Image class="box-icon" src={policyExplorerIcon} alt="Policy explorer" />
+                </div>
+                <p class="description-text">
+                    Information on population coverage, service coverage, user charges and voluntary health insurance
+                </p>
+            </div>
+        </a>
+
+        <a class="box-link" href={content.analysis.regional.buttonLink || ""}>
+            <div class="small-box" style="background-color: var(--color-dark-blue);">
+                <Image
+                    class="bubble-img"
+                    src={bubblePatternWhite}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                />
+                <span class="title-text">Regional overview</span>
+            </div>
+        </a>
+
+        <a class="box-link" href={content.analysis.countries.buttonLink || ""}>
+            <div class="small-box" style="background-color: #4fad56;">
+                <Image
+                    class="bubble-img"
+                    src={bubblePatternWhite}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                />
+                <span class="title-text">Countries & areas</span>
+            </div>
+        </a>
+
+        <a class="box-link" href={content.methods.buttonLink || ""}>
+            <div class="small-box" style="background-color: #4fad56;">
+                <Image
+                    class="bubble-img"
+                    src={bubblePatternWhite}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                />
+                <span class="title-text">Methods</span>
+            </div>
+        </a>
+
+        <a class="box-link" href={content.resources.buttonLink || ""}>
+            <div class="small-box" style="background-color: var(--color-dark-blue);">
+                <Image
+                    class="bubble-img"
+                    src={bubblePatternWhite}
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                />
+                <span class="title-text">Resources</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<style>
+    .mobile-card-grid {
+        display: none;
+    }
+
+    @media (max-width: 959px) {
+        .mobile-card-grid {
+            display: block;
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: auto;
+        gap: 20px;
+        padding: 32px;
+    }
+
+    @media (max-width: 500px) {
+        .grid {
+            gap: 12px;
+            padding: 20px;
+        }
+    }
+
+    .box-link {
+        text-decoration: none;
+        color: inherit;
+        display: block;
+        cursor: pointer;
+        height: 100%;
+    }
+
+    .small-box {
+        position: relative;
+        padding: 14px;
+        min-height: 30px;
+        border-radius: 21px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        overflow: hidden;
+        line-height: 30px;
+    }
+
+    .big-box {
+        position: relative;
+        padding: 14px;
+        min-height: 188px;
+        border-radius: 21px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: white;
+        text-align: left;
+        overflow: hidden;
+    }
+
+    /* Override the global `img { max-width: 100% }` from theme.css so the
+       625x227 bubble PNG can preserve its aspect ratio and bleed past the
+       box edge — same visual as the SPA's plain <img>. */
+    .bubble-img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: auto;
+        height: 100%;
+        max-width: none;
+        opacity: 0.9;
+        pointer-events: none;
+    }
+
+    .bubble-img-big {
+        right: -150px;
+    }
+
+    .flex-wrapper {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .title-text {
+        font-weight: 500;
+        font-size: 20px;
+    }
+
+    @media (max-width: 575px) {
+        .title-text {
+            font-size: 16px;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .title-text {
+            font-size: 14px;
+        }
+    }
+
+    .description-text {
+        font-weight: 400;
+        font-size: 16px;
+        margin: 8px 0 0;
+    }
+
+    @media (max-width: 575px) {
+        .description-text {
+            font-size: 12px;
+        }
+    }
+
+    .box-icon {
+        width: 80px;
+        height: auto;
+    }
+
+    @media (max-width: 500px) {
+        .box-icon {
+            width: 50px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .box-icon {
+            width: 30px;
+        }
+    }
+</style>

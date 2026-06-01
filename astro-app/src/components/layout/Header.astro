@@ -1,0 +1,246 @@
+---
+import { Image } from "astro:assets";
+import type { NavItem } from "@/data/navigation";
+import type { RegionalDisclaimer } from "@/data/general-content";
+import DesktopNav from "./DesktopNav.astro";
+import MobileNav from "./MobileNav.astro";
+import whoLogoBlue from "@/assets/layout/who-logo-blue.png";
+import uhcwHomeLogo from "@/assets/layout/uhcw-home-logo.png";
+import { href, isActivePath } from "@/lib/href";
+
+interface Props {
+    abbreviationsUrl?: string;
+    glossaryUrl?: string;
+    navItems: readonly NavItem[];
+    regionalDisclaimer?: RegionalDisclaimer;
+}
+
+const { abbreviationsUrl, glossaryUrl, navItems, regionalDisclaimer } = Astro.props;
+
+const isHomePage = isActivePath(Astro.url.pathname, href("/"));
+---
+
+<header class:list={["site-header", { "is-home": isHomePage }]}>
+    <div class="toolbar-top">
+        <div class="toolbar-top-content">
+            <span class="office-title">
+                WHO Barcelona Office for Health Systems Financing
+            </span>
+            <div class="top-links">
+                {abbreviationsUrl && <a href={abbreviationsUrl} class="top-link" target="_blank" rel="noopener noreferrer">Abbreviations</a>}
+                {glossaryUrl && <a href={glossaryUrl} class="top-link" target="_blank" rel="noopener noreferrer">Glossary</a>}
+            </div>
+        </div>
+    </div>
+
+    <div class="toolbar-bottom">
+        <div class="toolbar-bottom-content">
+            <div class="logo-group">
+                <a href={href("/")} class="logo-link">
+                    <Image
+                        src={whoLogoBlue}
+                        alt="WHO logo"
+                        class="who-logo"
+                        widths={[100, 150, 200, 300]}
+                        sizes="(max-width: 600px) 100px, 150px"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    />
+                </a>
+                <a href={href("/")} class="logo-link">
+                    <Image
+                        src={uhcwHomeLogo}
+                        alt="UHC watch logo to go home"
+                        class="uhc-logo"
+                        widths={[130, 180, 260, 360]}
+                        sizes="(max-width: 600px) 130px, 180px"
+                        loading="eager"
+                        decoding="async"
+                    />
+                </a>
+            </div>
+
+            <DesktopNav navItems={navItems} />
+            <MobileNav navItems={navItems} regionalDisclaimer={regionalDisclaimer} />
+        </div>
+    </div>
+</header>
+
+<style>
+    .site-header {
+        position: relative;
+        z-index: 10;
+    }
+
+    /* ── Top toolbar (gradient bar with office title) ───────────────────── */
+    .toolbar-top {
+        background: var(--gradient-primary);
+        min-height: 20px;
+        padding: 12px 64px;
+        padding-right: 60px;
+    }
+
+    @media (max-width: 960px) {
+        .toolbar-top {
+            background: var(--gradient-primary-mobile);
+        }
+    }
+
+    @media (max-width: 500px) {
+        .toolbar-top {
+            padding: 12px 10px;
+        }
+    }
+
+    .toolbar-top-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .office-title {
+        padding: 6px 0;
+        font-size: 1rem;
+        color: var(--color-white);
+    }
+
+    .top-links {
+        display: flex;
+        align-items: center;
+    }
+
+    .top-link {
+        box-sizing: content-box;
+        margin: 0 16px;
+        padding: 6px 8px;
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        line-height: 1.75;
+        color: var(--color-black);
+        text-decoration: none;
+        border-radius: 4px;
+        cursor: pointer;
+        min-width: 64px;
+        text-align: center;
+    }
+
+    .top-link:hover {
+        background-color: rgba(150, 150, 150, 0.1);
+        transition: background-color 250ms;
+    }
+
+    @media (max-width: 960px) {
+        .office-title {
+            color: var(--color-white);
+            text-align: center;
+        }
+
+        .top-links {
+            display: none;
+        }
+
+        .toolbar-top-content {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .office-title {
+            font-size: 14px;
+        }
+    }
+
+    /* ── Bottom toolbar (logos + nav) ───────────────────────────────────── */
+    .toolbar-bottom {
+        background: var(--color-white);
+        min-height: 70px;
+        padding-left: 48px;
+        padding-right: 64px;
+    }
+
+    @media (max-width: 1279px) {
+        .toolbar-bottom {
+            padding-left: 40px;
+            padding-right: 40px;
+        }
+    }
+
+    @media (max-width: 960px) {
+        .toolbar-bottom {
+            padding-left: 0;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .toolbar-bottom {
+            padding-right: 0;
+        }
+    }
+
+    .toolbar-bottom-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .logo-group {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    @media (max-width: 960px) {
+        .logo-group {
+            padding-inline: 40px;
+            flex-shrink: 1;
+            min-width: 0;
+        }
+    }
+
+    @media (max-width: 420px) {
+        .logo-group {
+            padding-inline: 10px;
+        }
+    }
+
+    .logo-link {
+        display: block;
+        margin: 10px;
+        cursor: pointer;
+        line-height: normal;
+    }
+
+    .who-logo,
+    .uhc-logo {
+        display: inline;
+        height: auto;
+    }
+
+    .who-logo {
+        width: 150px;
+    }
+
+    .uhc-logo {
+        width: 180px;
+    }
+
+    /* Hide UHC logo on desktop home page (matches SPA behavior) */
+    @media (min-width: 961px) {
+        .is-home .uhc-logo {
+            display: none;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .who-logo {
+            width: 100px;
+        }
+
+        .uhc-logo {
+            width: 130px;
+        }
+    }
+</style>

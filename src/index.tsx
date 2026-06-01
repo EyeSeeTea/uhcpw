@@ -17,6 +17,14 @@ declare global {
     }
 }
 
+// DHIS2 launches the app at `/api/apps/<name>/index.html`; strip the trailing
+// `index.html` so BrowserRouter sees the canonical `/` route instead of an
+// unmatched path.
+if (window.location.pathname.endsWith("/index.html")) {
+    const stripped = window.location.pathname.slice(0, -"index.html".length);
+    window.history.replaceState(null, "", stripped + window.location.search + window.location.hash);
+}
+
 const isDev = process.env.NODE_ENV === "development";
 
 async function getBaseUrl() {

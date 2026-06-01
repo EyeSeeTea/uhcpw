@@ -1,0 +1,39 @@
+---
+import { MobileCarousel } from "@/islands/home/MobileCarousel";
+import type { HomeResourceState } from "@/data/home/home-resource";
+
+interface Props {
+    resources: ReadonlyArray<HomeResourceState>;
+}
+
+const { resources } = Astro.props;
+---
+
+<section class="mobile-resources-section">
+    <h2 class="mobile-resources-title">Resources</h2>
+
+    <MobileCarousel
+        client:media="(max-width: 959px)"
+        items={resources}
+        ariaLabel="Resources carousel"
+    />
+</section>
+
+<style>
+    .mobile-resources-section {
+        display: none;
+    }
+
+    @media (max-width: 959px) {
+        .mobile-resources-section {
+            display: block;
+        }
+    }
+
+    .mobile-resources-title {
+        margin: 24px 32px 16px 32px;
+        font-weight: 400;
+        font-size: 24px;
+        line-height: 1.5;
+    }
+</style>

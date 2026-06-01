@@ -1,0 +1,117 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import OfficeHeader from "@/components/about/OfficeHeader.astro";
+import TeamSection from "@/components/about/TeamSection.astro";
+import { ExpertsNetwork } from "@/islands/about/ExpertsNetwork";
+import { getAboutPageData } from "@/data/about/about-data";
+import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+import "@/styles/experts-network.css";
+
+const { team, experts, officeInfo, officeImage, countryTreeOptions, parentSortOrder, generalContent } =
+    await getAboutPageData();
+
+const seo = getSeoConfigForRoute(Astro.url.pathname);
+
+const expertsTitle =
+    generalContent.aboutUs.title || "The Financial Protection Expert Network";
+const expertsSubtitle =
+    generalContent.aboutUs.subtitle ||
+    "Experts working with the WHO Barcelona Office to assess financial protection at country or area level";
+---
+
+<Layout seo={seo} generalContent={generalContent}>
+    <div class="title-container">
+        <h1>WHO Barcelona Office for Health Systems Financing</h1>
+    </div>
+
+    <div class="gradient-divider"></div>
+
+    <div class="header-section">
+        <div class="container">
+            <OfficeHeader
+                officeImage={officeImage.src}
+                officeImageWidth={officeImage.width}
+                officeImageHeight={officeImage.height}
+                officeVideo={officeInfo.officeVideo}
+                officeText={officeInfo.officeText}
+            />
+        </div>
+    </div>
+
+    <section class="people-section" aria-label="Office team">
+        <div class="container">
+            <TeamSection team={team} />
+        </div>
+    </section>
+
+    <div class="gradient-divider"></div>
+
+    <section class="experts-section" aria-label="Experts">
+        <div class="container">
+            <ExpertsNetwork
+                client:visible
+                experts={experts}
+                countryOptions={countryTreeOptions}
+                parentSortOrder={parentSortOrder}
+                title={expertsTitle}
+                subtitle={expertsSubtitle}
+            />
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .title-container {
+        background: var(--gradient-primary-2);
+        color: white;
+        padding: 32px 64px;
+    }
+
+    .title-container h1 {
+        margin: 0;
+        font-weight: 400;
+        font-size: 3rem;
+        line-height: 1.167;
+        letter-spacing: 0;
+    }
+
+    .gradient-divider {
+        background: linear-gradient(90deg, rgb(255, 141, 78) 0%, rgb(255, 223, 190) 100%);
+        height: 20px;
+    }
+
+    .header-section {
+        background: var(--gradient-primary-2);
+        padding-bottom: 64px;
+    }
+
+    .container {
+        max-width: 1920px;
+        margin: 0 auto;
+        overflow: hidden;
+        padding: 0 24px;
+    }
+
+    .people-section {
+        background: white;
+        padding-bottom: 64px;
+    }
+
+    .experts-section {
+        background: white;
+        padding-bottom: 64px;
+        min-height: 400px;
+    }
+
+    @media (max-width: 959px) {
+        .title-container {
+            padding: 32px;
+        }
+    }
+
+    @media (max-width: 599px) {
+        .container {
+            padding: 0 16px;
+        }
+    }
+</style>

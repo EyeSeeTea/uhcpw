@@ -1,0 +1,102 @@
+---
+import { Image } from "astro:assets";
+import bubblePattern from "@/assets/bubble-pattern.svg";
+
+interface Props {
+    header: string;
+    subtitle?: string;
+    bubblePosition?: "left" | "right";
+    url?: string;
+}
+
+const { header, subtitle, bubblePosition, url } = Astro.props;
+const hasSubtitle = !!subtitle;
+---
+
+<div class:list={["section-header", { "has-subtitle": hasSubtitle }]}>
+    {bubblePosition && (
+        <Image
+            class:list={["bubble", bubblePosition === "right" ? "bubble-right" : "bubble-left"]}
+            src={bubblePattern}
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+        />
+    )}
+
+    <div class="row">
+        {url ? (
+            <h3 class="title"><a href={url}>{header}</a></h3>
+        ) : (
+            <h3 class="title">{header}</h3>
+        )}
+    </div>
+
+    {subtitle && <p class="subtitle">{subtitle}</p>}
+</div>
+
+<style>
+    .section-header {
+        box-sizing: content-box;
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 55px 0 0;
+        overflow: hidden;
+    }
+
+    .section-header.has-subtitle {
+        height: 150px;
+        padding: 40px 0 0;
+    }
+
+    .bubble {
+        position: absolute;
+        top: 0;
+        height: 190px;
+        width: auto;
+        pointer-events: none;
+        opacity: 0.9;
+    }
+
+    .bubble-right {
+        right: -50px;
+        left: unset;
+    }
+
+    .bubble-left {
+        left: -200px;
+        right: unset;
+    }
+
+    .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .title {
+        font-weight: 500;
+        font-size: 3rem;
+        line-height: 1.167;
+        letter-spacing: 0em;
+        margin: 0;
+    }
+
+    .title a {
+        text-transform: none;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .subtitle {
+        color: dimgrey;
+        font-weight: 400;
+        margin-top: 10px;
+        font-size: 1.5rem;
+        line-height: 1.334;
+    }
+</style>

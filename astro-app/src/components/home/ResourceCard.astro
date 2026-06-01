@@ -1,0 +1,127 @@
+---
+import { resourceTagHref, type HomeResourceState } from "@/data/home/home-resource";
+import { href } from "@/lib/href";
+
+interface Props {
+    resource: HomeResourceState;
+}
+
+const { resource } = Astro.props;
+
+const year = new Date(resource.date).getFullYear();
+---
+
+<article class="resource-card">
+    <a href={resource.url} target="_blank" rel="noreferrer" class="image-link">
+        {resource.imageOriginal ? (
+            <img
+                class="resource-image"
+                src={href(resource.imageOriginal)}
+                alt={resource.title}
+                loading="lazy"
+            />
+        ) : (
+            <div class="image-placeholder"></div>
+        )}
+    </a>
+
+    <div class="card-body">
+        <div class="meta-row">
+            <a class="tag" href={href(resourceTagHref(resource.kind))}>
+                {resource.tagLabel}
+            </a>
+            <span class="year">{year}</span>
+        </div>
+
+        <h3 class="title">
+            <a href={resource.url} target="_blank" rel="noreferrer">{resource.title}</a>
+        </h3>
+    </div>
+</article>
+
+<style>
+    .resource-card {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        padding-block: 16px;
+    }
+
+    .image-link {
+        display: block;
+        width: 100%;
+    }
+
+    .resource-image {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        display: block;
+    }
+
+    .image-placeholder {
+        width: 100%;
+        height: 300px;
+        background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+    }
+
+    .card-body {
+        margin-top: 20px;
+    }
+
+    .meta-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 8px;
+    }
+
+    .tag {
+        background: #185698;
+        color: white;
+        border-radius: 20px;
+        padding: 4px 16px;
+        font-size: 0.875rem;
+        line-height: 1.43;
+        letter-spacing: 0.01071em;
+        text-decoration: none;
+        text-transform: none;
+        display: inline-block;
+    }
+
+    .tag:hover {
+        opacity: 0.7;
+    }
+
+    .year {
+        font-size: 0.875rem;
+        line-height: 1.43;
+        letter-spacing: 0.01071em;
+        color: inherit;
+    }
+
+    .title {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        letter-spacing: 0.00938em;
+        margin: 0;
+    }
+
+    .title a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .title a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 959px) {
+        .resource-image,
+        .image-placeholder {
+            height: 400px;
+        }
+    }
+</style>

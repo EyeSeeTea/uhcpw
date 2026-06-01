@@ -10,12 +10,25 @@ declare global {
     }
 }
 
+export interface GoogleAnalyticsRepositoryOptions {
+    /**
+     * When true, skip the initial `gtag('config', ...)` call that the repository
+     * would normally issue on first construction. Useful when the host app has
+     * already emitted its own `config` call (e.g., from a server-rendered layout
+     * snippet in an MPA) and does not want the repository to override it with
+     * `send_page_view: false`.
+     */
+    skipInitialConfig?: boolean;
+}
+
 /* Set accessToConsole key in localStorage to see debug logs */
 export class GoogleAnalyticsRepository implements AnalyticsRepository {
     private analytics?: Analytics;
 
+    constructor(private options: GoogleAnalyticsRepositoryOptions = {}) {}
+
     send(event: AnalyticsEvent) {
-        if (!this.analytics) this.analytics = new Analytics();
+        if (!this.analytics) this.analytics = new Analytics(this.options);
         this.analytics.sendAnalytics(event);
     }
 }
@@ -25,13 +38,13 @@ class Analytics {
     queue: AnalyticsEvent[] = [];
     accessToConsole = false;
 
-    constructor() {
+    constructor(private options: GoogleAnalyticsRepositoryOptions) {
         this.accessToConsole = localStorage.getItem("accessToConsole") === "true";
 
         if (!window.gtag) this.intialize().then(() => this.queue.forEach(e => this.sendAnalytics(e)));
         else {
             this.initialized = true;
-            this.setAnalyticsConfig();
+            if (!this.options.skipInitialConfig) this.setAnalyticsConfig();
         }
     }
 
@@ -50,21 +63,19 @@ class Analytics {
     }
 
     setAnalyticsConfig() {
-        /** When using HashRouter, set send_page_view to false to avoid sending dynamic page
-         * events. When HashRouter is not used, set to true to avoid duplicated events.
-         * */
-        if (this.accessToConsole)
-            console.debug("GA4: config", appConfig.gaTagId, {
-                page_title: "Config",
-                page_location: window.location.pathname,
-                send_page_view: false,
-            });
-
-        window.gtag("config", appConfig.gaTagId, {
+        /** Manual page view tracking is used (explicit sendPageView() calls per page component),
+         * so send_page_view remains false to avoid duplicate events. */
+        const configParams: Record<string, unknown> = {
             page_title: "Config",
-            page_location: window.location.pathname,
+            page_location: window.location.pathname + window.location.search,
             send_page_view: false,
-        });
+        };
+
+        if (isInternalTraffic()) configParams.traffic_type = "internal";
+
+        if (this.accessToConsole) console.debug("GA4: config", appConfig.gaTagId, configParams);
+
+        window.gtag("config", appConfig.gaTagId, configParams);
     }
 
     private async intialize() {
@@ -83,7 +94,7 @@ class Analytics {
             script.onload = () => {
                 if (this.accessToConsole) console.debug("GA4: script loaded");
                 window.gtag("js", new Date());
-                this.setAnalyticsConfig();
+                if (!this.options.skipInitialConfig) this.setAnalyticsConfig();
                 this.initialized = true;
                 resolve();
             };
@@ -182,4 +193,12 @@ function buildAnalyticsEvent(event: AnalyticsEvent) {
 
 function booleanToYesNo(value: boolean) {
     return value ? "yes" : "no";
+}
+
+function isInternalTraffic(): boolean {
+    try {
+        return window.localStorage.getItem("uhcpw_internal") === "1";
+    } catch {
+        return false;
+    }
 }

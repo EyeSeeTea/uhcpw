@@ -1,0 +1,136 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import { defaultSeoConfig } from "@shared/domain/entities/SeoConfig";
+import { getGeneralContent } from "@/data/general-content";
+import bubblePattern from "@/assets/bubble-pattern-white.png";
+import { href } from "@/lib/href";
+
+const generalContent = await getGeneralContent();
+
+const seo = { ...defaultSeoConfig, title: "UHC Watch - Page Not Found" };
+---
+
+<Layout seo={seo} generalContent={generalContent}>
+    <div class="title-banner" aria-label="not-found-page-header">
+        <Image
+            class="bubble-img"
+            src={bubblePattern}
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+        />
+        <h3>Page Not Found</h3>
+    </div>
+
+    <div class="content-section">
+        <div class="content-container">
+            <h4>404</h4>
+            <p>The page you are looking for does not exist or has been moved.</p>
+            <a href={href("/")} class="home-button">Go to Homepage</a>
+        </div>
+    </div>
+</Layout>
+
+<style>
+    .title-banner {
+        position: relative;
+        background-color: var(--color-accent-secondary);
+        padding: 60px 0 60px 150px;
+        overflow: hidden;
+    }
+
+    .title-banner h3 {
+        font-size: 44px;
+        font-weight: 400;
+        color: white;
+        margin: 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .bubble-img {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        height: 100%;
+        width: auto;
+        object-fit: cover;
+        opacity: 0.3;
+    }
+
+    .content-section {
+        padding: 80px 0;
+        background-color: white;
+    }
+
+    .content-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+        max-width: 768px;
+        margin: 0 auto;
+        padding: 0 16px;
+    }
+
+    .content-container h4 {
+        font-size: 72px;
+        font-weight: 700;
+        color: var(--color-accent-secondary);
+        margin: 0;
+    }
+
+    .content-container p {
+        font-size: 18px;
+        color: #494949;
+        max-width: 600px;
+        margin: 0;
+    }
+
+    .home-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 32px;
+        font-size: 16px;
+        text-transform: none;
+        text-decoration: none;
+        background-color: var(--color-accent-secondary);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .home-button:hover {
+        background-color: var(--color-accent-primary);
+    }
+
+    @media (max-width: 600px) {
+        .title-banner {
+            padding: 30px 20px;
+        }
+
+        .title-banner h3 {
+            font-size: 32px;
+        }
+
+        .bubble-img {
+            display: none;
+        }
+
+        .content-section {
+            padding: 40px 0;
+        }
+
+        .content-container h4 {
+            font-size: 48px;
+        }
+
+        .content-container p {
+            font-size: 16px;
+        }
+    }
+</style>

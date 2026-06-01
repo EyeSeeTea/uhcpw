@@ -1,0 +1,6 @@
+services:
+  proxy:
+    image: httpd:2.4
+    network_mode: host
+    volumes:
+      - ./dev/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro

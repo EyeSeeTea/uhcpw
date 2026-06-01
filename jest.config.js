@@ -6,7 +6,7 @@ module.exports = {
         "!src/**/*.spec.{ts,tsx}",
         "!src/**/*.test.{ts,tsx}",
     ],
-    testPathIgnorePatterns: ["/node_modules/", "/cypress"],
+    testPathIgnorePatterns: ["/node_modules/", "/cypress", "/astro-app"],
     transformIgnorePatterns: ["/node_modules/(?!@eyeseetea/d2-ui-components)"],
     modulePaths: ["src"],
     moduleDirectories: ["node_modules"],

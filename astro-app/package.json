@@ -1,0 +1,56 @@
+{
+    "name": "uhcpw-astro-app",
+    "type": "module",
+    "version": "0.0.1",
+    "license": "GPL-3.0",
+    "author": "EyeSeeTea team",
+    "engines": {
+        "node": ">=22.12.0"
+    },
+    "scripts": {
+        "start": "astro dev",
+        "build": "astro build",
+        "check:asset-names": "node scripts/check-asset-names.mjs",
+        "preview": "astro preview",
+        "astro": "astro",
+        "prettify": "prettier \"./**/*.{js,jsx,json,css,ts,tsx}\" --write",
+        "lint": "eslint src/",
+        "test": "LOG_LEVEL=silent vitest run",
+        "test:watch": "LOG_LEVEL=silent vitest"
+    },
+    "dependencies": {
+        "@astro-community/astro-embed-youtube": "^0.5.10",
+        "@astrojs/react": "^5.0.1",
+        "@dhis2/d2-i18n": "1.1.0",
+        "@eyeseetea/d2-api": "1.13.1",
+        "astro": "^6.0.8",
+        "fluture": "14.0.0",
+        "lodash": "4.17.21",
+        "mapbox-gl": "2.12.0",
+        "marked": "^17.0.5",
+        "pino": "^10.3.1",
+        "purify-ts": "1.2.0",
+        "react": "18",
+        "react-dom": "18"
+    },
+    "devDependencies": {
+        "@astrojs/check": "^0.9.8",
+        "@eslint/js": "^10.0.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@types/geojson": "^7946.0.16",
+        "@types/lodash": "4.14.181",
+        "@types/react": "18",
+        "@types/react-dom": "18",
+        "@typescript-eslint/eslint-plugin": "^8.57.2",
+        "@typescript-eslint/parser": "^8.57.2",
+        "eslint": "^10.1.0",
+        "eslint-plugin-astro": "^1.6.0",
+        "jsdom": "^29.0.1",
+        "pino-pretty": "^13.1.3",
+        "prettier": "^3.8.1",
+        "typescript": "^5.9",
+        "typescript-eslint": "^8.57.2",
+        "vitest": "^4.1.1"
+    }
+}

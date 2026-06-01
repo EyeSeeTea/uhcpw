@@ -1,0 +1,143 @@
+/* Styles for the home-page map island. Loaded with the island JS bundle via
+   an import from HomeMap.tsx, so they travel with the component rather than
+   leaking globally from the page. */
+
+.home-map-container {
+    width: 100%;
+    height: 100%;
+}
+
+.map-root {
+    height: 100%;
+    width: 100%;
+    position: relative;
+}
+
+.map-canvas-container {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+}
+
+.map-side-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 500px;
+    max-width: 500px;
+    background: #0089d6;
+    color: white;
+    padding: 48px;
+    opacity: 0.9;
+    z-index: 1;
+    box-sizing: content-box;
+}
+
+@media (max-width: 959px) {
+    .map-side-panel {
+        max-width: 100%;
+        width: calc(100% - 48px);
+        padding: 24px;
+    }
+}
+
+.map-controls {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    z-index: 1;
+}
+
+.map-zoom-btn {
+    background: #0360a7;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    min-height: 30px;
+    margin: 4px;
+    cursor: pointer;
+    padding: 0;
+    font-size: 23px;
+    font-weight: 500;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+        0 3px 5px -1px rgba(0, 0, 0, 0.2),
+        0 6px 10px 0 rgba(0, 0, 0, 0.14),
+        0 1px 18px 0 rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-zoom-btn:hover {
+    background: #0360a7;
+    box-shadow:
+        0 5px 5px -3px rgba(0, 0, 0, 0.2),
+        0 8px 10px 1px rgba(0, 0, 0, 0.14),
+        0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 959px) {
+    .map-controls {
+        display: none;
+    }
+}
+
+.marker {
+    background-size: cover;
+    width: 15px;
+    height: 20px;
+    position: absolute;
+}
+
+.marker:hover {
+    width: 35px;
+    height: 48px;
+    cursor: pointer;
+}
+
+.marker-insufficientdata {
+    background-image: url("../../assets/map-pins/pin-insufficient.svg");
+}
+.marker-insufficientdata:hover {
+    background-image: url("../../assets/map-pins/pin-insufficient-hover.svg");
+}
+.marker-very-weak {
+    background-image: url("../../assets/map-pins/pin-very-weak.svg");
+}
+.marker-very-weak:hover {
+    background-image: url("../../assets/map-pins/pin-very-weak-hover.svg");
+}
+.marker-weak {
+    background-image: url("../../assets/map-pins/pin-weak.svg");
+}
+.marker-weak:hover {
+    background-image: url("../../assets/map-pins/pin-weak-hover.svg");
+}
+.marker-gaps {
+    background-image: url("../../assets/map-pins/pin-gaps.svg");
+}
+.marker-gaps:hover {
+    background-image: url("../../assets/map-pins/pin-gaps-hover.svg");
+}
+.marker-emerging {
+    background-image: url("../../assets/map-pins/pin-emerging.svg");
+}
+.marker-emerging:hover {
+    background-image: url("../../assets/map-pins/pin-emerging-hover.svg");
+}
+.marker-strong {
+    background-image: url("../../assets/map-pins/pin-strong.svg");
+}
+.marker-strong:hover {
+    background-image: url("../../assets/map-pins/pin-strong-hover.svg");
+}
+
+.mapboxgl-ctrl-logo {
+    display: none !important;
+}

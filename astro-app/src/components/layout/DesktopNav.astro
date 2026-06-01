@@ -1,0 +1,166 @@
+---
+import type { NavItem } from "@/data/navigation";
+import { href, isActivePath } from "@/lib/href";
+
+interface Props {
+    navItems: readonly NavItem[];
+}
+
+const { navItems } = Astro.props;
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="desktop-nav" aria-label="Main navigation">
+    {navItems.map(item =>
+        item.children ? (
+            <div class="nav-dropdown">
+                <button
+                    class="nav-link nav-link--dropdown"
+                    type="button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                >
+                    {item.label}
+                    <svg class="caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
+                    </svg>
+                </button>
+                <div class="dropdown-menu" role="menu" hidden>
+                    {item.children.map(child => (
+                        <a href={href(child.href)} class="dropdown-item" role="menuitem">{child.label}</a>
+                    ))}
+                </div>
+            </div>
+        ) : (
+            <a href={href(item.href)} class:list={["nav-link", { "nav-link--active": isActivePath(currentPath, href(item.href)) }]}>
+                {item.label}
+            </a>
+        )
+    )}
+</nav>
+
+<style>
+    .desktop-nav {
+        display: none;
+        align-items: center;
+        white-space: nowrap;
+        flex-wrap: nowrap;
+    }
+
+    @media (min-width: 1280px) {
+        .desktop-nav {
+            display: flex;
+        }
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        margin: 16px 16px;
+        padding: 6px 8px;
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-sm);
+        font-weight: 500;
+        line-height: 1.75;
+        text-transform: none;
+        text-decoration: none;
+        color: var(--color-black);
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 250ms;
+        background: none;
+        border: none;
+    }
+
+    .nav-link:hover {
+        background-color: rgba(150, 150, 150, 0.1);
+    }
+
+    .nav-link--active {
+        color: var(--color-accent-primary);
+    }
+
+    .caret {
+        transition: transform 200ms;
+        margin-left: 8px;
+        margin-right: -4px;
+    }
+
+    .nav-dropdown {
+        position: relative;
+    }
+
+    .nav-dropdown:global(.open) .caret {
+        transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--color-white);
+        border-radius: 4px;
+        box-shadow: 0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12);
+        min-width: 200px;
+        max-height: 556px;
+        overflow-y: auto;
+        z-index: 100;
+        padding: 8px 0;
+        white-space: normal;
+    }
+
+    .dropdown-menu[hidden] {
+        display: none;
+    }
+
+    .dropdown-item {
+        display: block;
+        padding: 6px 16px;
+        color: var(--color-black);
+        text-decoration: none;
+        font-size: 1rem;
+        line-height: 1.5;
+        white-space: nowrap;
+    }
+
+    .dropdown-item:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+</style>
+
+<script>
+    function closeAllDropdowns() {
+        document.querySelectorAll('.nav-dropdown').forEach((d) => {
+            const menu = d.querySelector('.dropdown-menu');
+            const btn = d.querySelector('.nav-link--dropdown');
+            if (menu) menu.setAttribute('hidden', '');
+            if (btn) btn.setAttribute('aria-expanded', 'false');
+            d.classList.remove('open');
+        });
+    }
+
+    document.querySelectorAll('.nav-dropdown').forEach((dropdown) => {
+        const button = dropdown.querySelector('.nav-link--dropdown');
+        const menu = dropdown.querySelector('.dropdown-menu');
+        if (!button || !menu) return;
+
+        button.addEventListener('click', () => {
+            const isHidden = menu.hasAttribute('hidden');
+
+            closeAllDropdowns();
+
+            if (isHidden) {
+                menu.removeAttribute('hidden');
+                button.setAttribute('aria-expanded', 'true');
+                dropdown.classList.add('open');
+            }
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!(e.target as Element).closest('.nav-dropdown')) {
+            closeAllDropdowns();
+        }
+    });
+</script>

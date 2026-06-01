@@ -26,55 +26,55 @@ async function getStaticRoutes(): Promise<SitemapUrl[]> {
             priority: 1.0,
         },
         {
-            loc: `/#/about`,
+            loc: `/about`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: 0.8,
         },
         {
-            loc: `/#/policy-explorer`,
+            loc: `/policy-explorer`,
             lastmod: currentDate,
             changefreq: "weekly",
             priority: 0.9,
         },
         {
-            loc: `/#/indicator-explorer`,
+            loc: `/indicator-explorer`,
             lastmod: currentDate,
             changefreq: "weekly",
             priority: 0.9,
         },
         {
-            loc: `/#/resources`,
+            loc: `/resources`,
             lastmod: currentDate,
             changefreq: "weekly",
             priority: 0.8,
         },
         {
-            loc: `/#/resources/news`,
+            loc: `/resources/news`,
             lastmod: currentDate,
             changefreq: "weekly",
             priority: 0.7,
         },
         {
-            loc: `/#/resources/multimedia`,
+            loc: `/resources/multimedia`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: 0.7,
         },
         {
-            loc: `/#/resources/country-analysis`,
+            loc: `/resources/country-analysis`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: 0.7,
         },
         {
-            loc: `/#/resources/comparative-analysis`,
+            loc: `/resources/comparative-analysis`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: 0.7,
         },
         {
-            loc: `/#/methods`,
+            loc: `/methods`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: 0.6,
@@ -84,7 +84,7 @@ async function getStaticRoutes(): Promise<SitemapUrl[]> {
 
 async function getDynamicRoutes(baseUrl: string, auth: string): Promise<SitemapUrl[]> {
     const baseRoute: SitemapUrl = {
-        loc: `/#/`,
+        loc: `/`,
         lastmod: currentDate,
         changefreq: "monthly" as const,
         priority: 0.7,

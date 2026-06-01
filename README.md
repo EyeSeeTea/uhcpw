@@ -29,9 +29,37 @@ Notes:
 
 -   The optional environment variable `REACT_APP_PROXY_LOG_LEVEL` can be helpful to debug the proxyfied requests (accepts: "warn" | "debug" | "info" | "error" | "silent")
 
+-   The optional environment variable `REACT_APP_BASE_PATH` sets the basename for the SPA router. Defaults to `"/"` for local development. Set to `/dhis2/uhcwatch` for production deployment under a sub-path.
+
 -   Create a file `.env.local` (copy it from `.env`) to customize environment variables so you can simply run `yarn start`.
 
 -   [why-did-you-render](https://github.com/welldone-software/why-did-you-render) is installed, but it does not work when using standard react scripts (`yarn start`). Instead, use `yarn start-profiling` to debug re-renders with WDYR. Note that hot reloading does not work out-of-the-box with [craco](https://github.com/gsoft-inc/craco).
+
+## Integrated development (SPA + Astro)
+
+To run the SPA and Astro site side-by-side behind a single reverse proxy:
+
+1. Start the SPA dev server (port 8081):
+
+```
+$ yarn start
+```
+
+2. Start the Astro dev server (port 4321):
+
+```
+$ cd astro-app && yarn start
+```
+
+3. Start the Apache reverse proxy (port 3000):
+
+```
+$ docker compose up
+```
+
+Then open `http://localhost:3000`. The proxy routes `/about` and `/methods` to Astro, and everything else to the SPA.
+
+To add more Astro pages to the proxy, edit `dev/httpd.conf` and add `ProxyPass`/`ProxyPassReverse` entries before the SPA catch-all block.
 
 ## Tests
 

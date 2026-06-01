@@ -1,0 +1,130 @@
+---
+import type { PersonState } from "@/data/about/about-data";
+import { renderMarkdown } from "@/lib/markdown";
+import { AVATAR_FALLBACK } from "@/data/about/about-data";
+import { href } from "@/lib/href";
+
+interface Props {
+    person: PersonState;
+    isExpert: boolean;
+}
+
+const { person, isExpert } = Astro.props;
+
+const fullName = `${person.firstName} ${person.lastName}`;
+const hasImage = person.image && !person.image.includes("avatar-empty");
+const imageSrc = href(hasImage ? person.image : AVATAR_FALLBACK);
+
+const positionHtml = renderMarkdown(person.position.replace(/\\n/g, "\n"));
+const institutionHtml = person.institution
+    ? renderMarkdown(person.institution.replace(/\\n/g, "\n"))
+    : "";
+---
+
+<div class="person-card">
+    <img
+        class="person-image"
+        src={imageSrc}
+        alt={fullName}
+        width="200"
+        height="200"
+        loading="lazy"
+    />
+
+    <div class="person-info">
+        <div class:list={["name-container", { "name-row": isExpert, "name-column": !isExpert }]}>
+            <span class="name">{person.firstName}</span>
+            <span class="name">{person.lastName}</span>
+        </div>
+
+        <div class="markdown-text" set:html={positionHtml} />
+
+        {institutionHtml && (
+            <div class="markdown-text" set:html={institutionHtml} />
+        )}
+
+        {person.countryName && (
+            <p class="country">{person.countryName}</p>
+        )}
+    </div>
+</div>
+
+<style>
+    .person-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        padding: 16px;
+    }
+
+    .person-image {
+        width: 200px;
+        height: 200px;
+        max-width: none;
+        border-radius: 50%;
+        margin-bottom: 6px;
+        object-fit: cover;
+        object-position: 50% 0%;
+    }
+
+    .person-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 8px;
+    }
+
+    .name-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .name-row {
+        flex-direction: row;
+    }
+
+    .name-column {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .name {
+        font-weight: 700;
+        white-space: nowrap;
+        text-align: center;
+        font-family: var(--font-family-base);
+    }
+
+    .name-row .name {
+        padding-right: 5px;
+    }
+
+    .markdown-text {
+        text-align: center;
+        font-family: var(--font-family-base);
+    }
+
+    .markdown-text :global(p) {
+        margin: 0 0 4px 0;
+        text-align: center;
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-base);
+        line-height: 1.5;
+    }
+
+    .country {
+        margin: 0 0 4px 0;
+        text-align: center;
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-base);
+        line-height: 1.5;
+    }
+
+    @media (max-width: 599px) {
+        .person-image {
+            width: 150px;
+            height: 150px;
+        }
+    }
+</style>
