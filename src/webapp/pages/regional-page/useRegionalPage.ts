@@ -444,7 +444,10 @@ export function useRegionalPage(): RegionalPageState {
 
         const sectionFromHash = getRegionalMenuItemFromHash(location.hash);
         if (!sectionFromHash) return;
-        if (sectionFromHash !== "regionMap" && !getSectionAccordionConfigByHeaderItemId(sectionFromHash, sectionsAccordionConfig)) {
+        if (
+            sectionFromHash !== "regionMap" &&
+            !getSectionAccordionConfigByHeaderItemId(sectionFromHash, sectionsAccordionConfig)
+        ) {
             return;
         }
 
