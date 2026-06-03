@@ -10,6 +10,7 @@ export const VALUE_COLUMN = "Value";
 export const QUINTILE_COLUMN = "Quintile";
 export const COUNTRY_YEAR_COLUMN = "Country Year";
 export const YEAR_QUINTILE_COLUMN = "Year Quintile";
+export const TYPE_OF_CARE_COLUMN = "Type of care";
 
 export function sortColumnsRowByColumnsOrder(headerRow: string[], columnsOrder: string[]): string[] {
     const sortedHeader = _.sortBy(headerRow, header => {

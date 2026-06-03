@@ -1,4 +1,3 @@
-import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 import XlsxPopulate from "@eyeseetea/xlsx-populate";
 import {
@@ -8,7 +7,6 @@ import {
 import {
     addDataValue,
     applyAutoWidthsToXlsxPopulateSheet,
-    computeAutoColumnWidths,
     getCellStyles,
     getColumnLetterByIndex,
     hideEmptyColumn,
@@ -48,26 +46,29 @@ export type TabsWithStringOrNumbers = {
 };
 
 export const exportToCSV = (tabs: TabsWithStringOrNumbers[], fileName: string): void => {
-    const tabsWithNumbers = parseDataTabNumbers(tabs);
+    exportToCSVAsync(tabs, fileName).catch(error => console.error("Error exporting to CSV", error));
+};
 
-    const xlsxTabs = tabsWithNumbers.map(tab => {
-        const sheet = XLSX.utils.aoa_to_sheet(tab.data);
+async function exportToCSVAsync(tabs: TabsWithStringOrNumbers[], fileName: string): Promise<void> {
+    const tabsWithNumbers = parseDataTabNumbers(tabs);
+    const workbook = await XlsxPopulate.fromBlankAsync();
+    tabsWithNumbers.forEach((tab, tabIndex) => {
+        const sheet = tabIndex === 0 ? workbook.sheet(0).name(tab.name) : workbook.addSheet(tab.name);
+        addDataToSheet(sheet, tab.data);
+        if (tab.name === DATA_TAB_NAME || tab.name === NOTES_TAB_NAME) {
+            const columnCount = tab.data.reduce((max, row) => Math.max(max, row.length), 0);
+            const lastColumn = getColumnLetterByIndex(columnCount - 1);
+            sheet.range(`A1:${lastColumn}${tab.data.length}`).style({ fontFamily: "Arial", fontSize: 10 });
+        }
         if (tab.name === DATA_TAB_NAME) {
             // skipFirstRow: row 1 is the chart title
-            sheet["!cols"] = computeAutoColumnWidths(tab.data, { skipFirstRow: true }).map(wch => ({ wch }));
+            applyAutoWidthsToXlsxPopulateSheet(sheet, tab.data, { skipFirstRow: true });
+            sheet.cell("A1").style({ bold: true });
         }
-        return { ...tab, xlsx: sheet };
     });
-
-    const Sheets = xlsxTabs.reduce((acc, tab) => ({ ...acc, [tab.name]: tab.xlsx }), {});
-    const wb = {
-        Sheets,
-        SheetNames: tabsWithNumbers.map(tab => tab.name),
-    };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, fileName + fileExtension);
-};
+    const blob = await workbook.outputAsync();
+    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+}
 
 // Pivot output from pivotToCombinedMatrix: [Country, Abbreviation, Year, Abbreviation+Year, ...indicators].
 // The first 4 are metadata; anything at or beyond this index is an indicator-data column.
