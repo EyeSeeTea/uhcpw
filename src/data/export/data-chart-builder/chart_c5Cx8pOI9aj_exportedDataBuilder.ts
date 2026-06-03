@@ -46,10 +46,8 @@ export const chart_c5Cx8pOI9aj_exportedDataBuilder: (
 
     const countryDataRows = allCountries.map(country => {
         const orgUnitCode =
-            orgUnits.find(
-                orgUnit =>
-                    orgUnit.shortName === country || orgUnit.id === mapFromWhoCountryNameToId(country)
-            )?.code ?? country;
+            orgUnits.find(orgUnit => orgUnit.shortName === country || orgUnit.id === mapFromWhoCountryNameToId(country))
+                ?.code ?? country;
         const countryCode = mapToWhoCountryCode(orgUnitCode);
         const valuesPerYear = allYears.map(year => {
             const row = dataRows.find(r => r[yearIndex] === year && r[countryIndex] === country);
