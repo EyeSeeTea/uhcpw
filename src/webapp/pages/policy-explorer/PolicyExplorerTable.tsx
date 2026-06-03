@@ -140,7 +140,7 @@ export const PolicyExplorerTable = React.memo(
             scrollbar.style.overflow = "auto";
             scrollbar.style.overflowY = "hidden";
             scrollbar.style.position = "relative";
-            scrollbar.style.top = "13px"; // Maybe calculate this dynamically
+            scrollbar.style.top = "2px"; // Maybe calculate this dynamically
             scrollbar.style.zIndex = "3";
 
             const style = document.createElement("style");
