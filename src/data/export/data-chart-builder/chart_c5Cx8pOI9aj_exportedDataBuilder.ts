@@ -1,3 +1,4 @@
+import { mapFromWhoCountryNameToId, mapToWhoCountryCode } from "../../repositories/countries/mapToWhoCountryData";
 import { DATA_TAB_NAME, D2OrgUnit } from "../../repositories/indicator-explorer/AnalyticsD2Repository";
 import {
     COUNTRY_AREA_COLUMN,
@@ -7,13 +8,13 @@ import {
 } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
-const HEADERS_BASE = [COUNTRY_YEAR_COLUMN];
+const HEADERS_BASE = [COUNTRY_YEAR_COLUMN, COUNTRY_YEAR_COLUMN];
 
 export const chart_c5Cx8pOI9aj_exportedDataBuilder: (
     tabs: Tab[],
     chartName: string,
     orgUnits: D2OrgUnit[]
-) => TabsWithStringOrNumbers[] = (tabs, chartName) => {
+) => TabsWithStringOrNumbers[] = (tabs, chartName, orgUnits) => {
     const dataTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
     if (!dataTab) throw new Error("Data tab not found");
 
@@ -44,13 +45,19 @@ export const chart_c5Cx8pOI9aj_exportedDataBuilder: (
     const headerRow = [...HEADERS_BASE, ...allYears];
 
     const countryDataRows = allCountries.map(country => {
+        const orgUnitCode =
+            orgUnits.find(
+                orgUnit =>
+                    orgUnit.shortName === country || orgUnit.id === mapFromWhoCountryNameToId(country)
+            )?.code ?? country;
+        const countryCode = mapToWhoCountryCode(orgUnitCode);
         const valuesPerYear = allYears.map(year => {
             const row = dataRows.find(r => r[yearIndex] === year && r[countryIndex] === country);
             const raw = row?.[valueIndex];
             if (!raw) return null;
             return Number(raw.replace(",", "."));
         });
-        return [country, ...valuesPerYear];
+        return [country, countryCode, ...valuesPerYear];
     });
 
     const data: TabsWithStringOrNumbers["data"] = [[chartName], headerRow, ...countryDataRows];
