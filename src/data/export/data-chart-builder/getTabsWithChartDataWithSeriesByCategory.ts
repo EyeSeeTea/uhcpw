@@ -6,7 +6,7 @@ import {
 } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 
-const YEAR_CATEGORY_SEPARATOR = " ";
+export const YEAR_CATEGORY_SEPARATOR = " ";
 
 export function getTabsWithChartDataWithSeriesByCategory(
     tabs: Tab[],

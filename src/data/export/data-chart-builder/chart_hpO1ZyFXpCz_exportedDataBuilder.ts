@@ -1,5 +1,6 @@
 import {
     COUNTRY_AREA_COLUMN,
+    TYPE_OF_CARE_COLUMN,
     PARAMETER_COLUMN,
 } from "../../repositories/indicator-explorer/utils/sortColumnsAndDataRows";
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
@@ -14,7 +15,7 @@ const SORTED_PARAMETERS = [
     "Diagnostic tests",
 ];
 const HEADER_DATA_PARAM_NAME = PARAMETER_COLUMN;
-const HEADERS_BASE = [COUNTRY_AREA_COLUMN, PARAMETER_COLUMN];
+const HEADERS_BASE = [COUNTRY_AREA_COLUMN, TYPE_OF_CARE_COLUMN];
 
 export const chart_hpO1ZyFXpCz_exportedDataBuilder: (tabs: Tab[], chartName: string) => TabsWithStringOrNumbers[] = (
     tabs,
