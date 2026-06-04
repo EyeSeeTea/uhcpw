@@ -42,7 +42,10 @@ export function givenACountries(): Country[] {
             parents: [{ id: "EUR", name: "Europe" }],
             flag: "http://es.png",
             showCountryFlag: true,
-            summary: "**Financial hardship (2018)**",
+            generalSummary: "**General: Financial hardship (2018)**",
+            countryPageSummary: "**Country: Financial hardship (2018)**",
+            homePageSummary: "**Home: Financial hardship (2018)**",
+            regionalPageSummary: "**Regional: Financial hardship (2018)**",
             sliderInfo: {
                 gapsSection: {
                     sectionName: "Gaps in current expenditure",
@@ -96,8 +99,14 @@ export function givenACountries(): Country[] {
                 },
             ],
             flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=Hs9oneaS45G",
-            summary:
-                "**Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            generalSummary:
+                "**General: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            countryPageSummary:
+                "**Country: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            homePageSummary:
+                "**Home: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            regionalPageSummary:
+                "**Regional: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
             sliderInfo: {
                 gapsSection: {
                     sectionName: "test B&H",
@@ -166,7 +175,10 @@ export function givenACountries(): Country[] {
                     status: "Gaps",
                     parents: [],
                     flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=rqLyMfQ48Vh",
-                    summary: "Test Federation of Bosnia and Herzegovin",
+                    generalSummary: "**General: Test Federation of Bosnia and Herzegovin**",
+                    countryPageSummary: "**Country: Test Federation of Bosnia and Herzegovin**",
+                    homePageSummary: "**Home: Test Federation of Bosnia and Herzegovin**",
+                    regionalPageSummary: "**Regional: Test Federation of Bosnia and Herzegovin**",
                     sliderInfo: {
                         gapsSection: {
                             sectionName: "Test Federation of Bosnia and Herzegovin",
@@ -235,7 +247,10 @@ export function givenACountries(): Country[] {
                     status: "Gaps",
                     parents: [],
                     flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=J7AKOh6AZko",
-                    summary: "Republika Srpska",
+                    generalSummary: "**General: Republika Srpska**",
+                    countryPageSummary: "**Country: Republika Srpska**",
+                    homePageSummary: "**Home: Republika Srpska**",
+                    regionalPageSummary: "**Regional: Republika Srpska**",
                     sliderInfo: {
                         gapsSection: {
                             sectionName: "Republika Srpska",
@@ -309,7 +324,10 @@ export function givenACountries(): Country[] {
             ],
             flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
             showCountryFlag: false,
-            summary: "",
+            generalSummary: "**General**",
+            countryPageSummary: "**Country**",
+            homePageSummary: "**Home**",
+            regionalPageSummary: "**Regional**",
             sliderInfo: {
                 gapsSection: {
                     sectionName: "",
@@ -384,7 +402,10 @@ export function givenACountriesAndSubregions(): Country[] {
             coordinates: [2982, 12] as [number, number],
             parents: [{ id: "EUR", name: "Europe" }],
             flag: "http://es.png",
-            summary: "**Financial hardship (2018)**",
+            generalSummary: "**General: Financial hardship (2018)**",
+            countryPageSummary: "**Country: Financial hardship (2018)**",
+            homePageSummary: "**Home: Financial hardship (2018)**",
+            regionalPageSummary: "**Regional: Financial hardship (2018)**",
             sliderInfo: {
                 gapsSection: {
                     sectionName: "Gaps in current expenditure",
@@ -438,8 +459,14 @@ export function givenACountriesAndSubregions(): Country[] {
                 },
             ],
             flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=Hs9oneaS45G",
-            summary:
-                "**Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            generalSummary:
+                "**General: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            countryPageSummary:
+                "**Country: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            homePageSummary:
+                "**Home: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+            regionalPageSummary:
+                "**Regional: Financial hardship (2015)** * Impoverishing health spending: 4.3% of households * Catastrophic health spending: 8.8% of households * Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households **Unmet need** Internationally comparable data on unmet need are not available for Bosnia and Herzegovina",
             sliderInfo: {
                 gapsSection: {
                     sectionName: "test B&H",
@@ -508,7 +535,10 @@ export function givenACountriesAndSubregions(): Country[] {
                     status: "Gaps",
                     parents: [],
                     flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=rqLyMfQ48Vh",
-                    summary: "Test Federation of Bosnia and Herzegovin",
+                    generalSummary: "**General: Test Federation of Bosnia and Herzegovin**",
+                    countryPageSummary: "**Country: Test Federation of Bosnia and Herzegovin**",
+                    homePageSummary: "**Home: Test Federation of Bosnia and Herzegovin**",
+                    regionalPageSummary: "**Regional: Test Federation of Bosnia and Herzegovin**",
                     sliderInfo: {
                         gapsSection: {
                             sectionName: "Test Federation of Bosnia and Herzegovin",
@@ -577,7 +607,10 @@ export function givenACountriesAndSubregions(): Country[] {
                     status: "Gaps",
                     parents: [],
                     flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=J7AKOh6AZko",
-                    summary: "Republika Srpska",
+                    generalSummary: "**General: Republika Srpska**",
+                    countryPageSummary: "**Country: Republika Srpska**",
+                    homePageSummary: "**Home: Republika Srpska**",
+                    regionalPageSummary: "**Regional: Republika Srpska**",
                     sliderInfo: {
                         gapsSection: {
                             sectionName: "Republika Srpska",
@@ -648,7 +681,10 @@ export function givenACountriesAndSubregions(): Country[] {
             status: "Gaps",
             parents: [],
             flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=J7AKOh6AZko",
-            summary: "Republika Srpska",
+            generalSummary: "**General: Republika Srpska**",
+            countryPageSummary: "**Country: Republika Srpska**",
+            homePageSummary: "**Home: Republika Srpska**",
+            regionalPageSummary: "**Regional: Republika Srpska**",
             sliderInfo: {
                 gapsSection: {
                     sectionName: "Republika Srpska",
@@ -717,7 +753,10 @@ export function givenACountriesAndSubregions(): Country[] {
             status: "Gaps",
             parents: [],
             flag: "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=rqLyMfQ48Vh",
-            summary: "Test Federation of Bosnia and Herzegovin",
+            generalSummary: "**General: Test Federation of Bosnia and Herzegovin**",
+            countryPageSummary: "**Country: Test Federation of Bosnia and Herzegovin**",
+            homePageSummary: "**Home: Test Federation of Bosnia and Herzegovin**",
+            regionalPageSummary: "**Regional: Test Federation of Bosnia and Herzegovin**",
             sliderInfo: {
                 gapsSection: {
                     sectionName: "Test Federation of Bosnia and Herzegovin",

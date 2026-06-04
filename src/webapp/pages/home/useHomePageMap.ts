@@ -8,7 +8,7 @@ const initialData: InitialCoordinates = {
     center: [13.675063, 51.751569],
     maxZoom: 8,
     minZoom: 2.5,
-    zoom: 2.5,
+    zoom: 2.6,
 };
 
 export function useHomePageMap(): MapState {
@@ -21,7 +21,7 @@ export function useHomePageMap(): MapState {
     const { countries } = useAppContext();
 
     useEffect(() => {
-        const countriesWithSummary = countries.filter(country => country.summary);
+        const countriesWithSummary = countries.filter(country => country.generalSummary || country.homePageSummary);
 
         setMarkers(countriesToGeoJson(countriesWithSummary));
     }, [countries]);

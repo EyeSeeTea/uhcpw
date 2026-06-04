@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router-dom";
 import { generateYears } from "../../../../domain/usecases/utils/generateYears";
 import { Option } from "../../../components/dropdown/Option";
 import { useAppContext } from "../../../contexts/app-context";
@@ -14,6 +15,10 @@ export function useResourcesFilters(params: {
     const { category, countries, theme, countryOptionsToSelect } = params;
     const { compositionRoot, themes } = useAppContext();
     const countryFilter = useMultiCountryOptionsV2({ selectedCountries: countries, countryOptionsToSelect });
+
+    const history = useHistory();
+    const { search: locationSearch } = useLocation();
+    const shouldReset = new URLSearchParams(locationSearch).has("reset");
 
     const [searchTerm, setSearchTerm] = useState<string>("");
 
@@ -59,6 +64,14 @@ export function useResourcesFilters(params: {
     useEffect(() => {
         setYearFilters(generateYears(new Date().getFullYear()).map(year => ({ value: year.id, text: year.id })));
     }, []);
+
+    useEffect(() => {
+        if (!shouldReset) return;
+        setSearchTerm("");
+        setSelectedThemeFilter(undefined);
+        setSelectedYearFilter(undefined);
+        history.replace("/resources");
+    }, [history, shouldReset]);
 
     const onSearchTermChange = useCallback((value: string) => {
         setSearchTerm(value);

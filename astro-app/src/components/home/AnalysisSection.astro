@@ -1,0 +1,130 @@
+---
+import { Image } from "astro:assets";
+import SectionHeader from "./SectionHeader.astro";
+import SectionBlock from "./SectionBlock.astro";
+import SectionDivider from "./SectionDivider.astro";
+import bubblePatternWhite from "@/assets/bubble-pattern-white.png";
+import type { AnalysisContent } from "@shared/domain/entities/HomePageContent";
+
+interface Props {
+    content: AnalysisContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section>
+    <SectionHeader header={content.title} subtitle={content.subtitle} />
+
+    <div class="columns">
+        <div class="region">
+            <Image
+                class="bubble-img"
+                src={bubblePatternWhite}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+            />
+
+            <SectionBlock title={content.regional.title} text={content.regional.text} />
+
+            <div class="button-container">
+                <a class="cta-button cta-regional" href={content.regional.buttonLink || ""}>
+                    {content.regional.buttonText}
+                </a>
+            </div>
+        </div>
+
+        <div class="country-context">
+            <Image
+                class="bubble-img"
+                src={bubblePatternWhite}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+            />
+
+            <SectionBlock title={content.countries.title} text={content.countries.text} />
+
+            <div class="button-container">
+                <a class="cta-button cta-country" href={content.countries.buttonLink || ""}>
+                    {content.countries.buttonText}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <SectionDivider />
+</section>
+
+<style>
+    .columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 959px) {
+        .columns {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .region {
+        background: var(--color-dark-blue);
+        color: white;
+        padding: 65px 55px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .country-context {
+        background: var(--color-green, #4fad56);
+        color: white;
+        padding: 65px 55px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    @media (max-width: 959px) {
+        .region,
+        .country-context {
+            padding: 40px 30px;
+        }
+    }
+
+    .bubble-img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: auto;
+        pointer-events: none;
+        opacity: 0.9;
+    }
+
+    .button-container {
+        margin-top: 30px;
+    }
+
+    .cta-button {
+        box-sizing: content-box;
+        background-color: white;
+        font-size: 16px;
+        border-radius: 30px;
+        padding: 10px 40px;
+        width: fit-content;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        text-transform: none;
+        text-decoration: none;
+    }
+
+    .cta-regional {
+        color: var(--color-accent-primary, #0089d6);
+    }
+
+    .cta-country {
+        color: var(--color-green, #4fad56);
+    }
+</style>

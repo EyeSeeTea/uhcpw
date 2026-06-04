@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useHistory, useParams } from "react-router-dom";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { CountryExpert } from "../../components/country-page/CountryExpert";
@@ -20,7 +20,7 @@ import { useSidePanelWidth } from "./useSidePanelWidth";
 import { RotateToLandscapeOverlay } from "../../common/hooks/screen/RotateToLandscapeOverlay";
 
 export const CountryPage: React.FC = () => {
-    const history = useHistory();
+    const history = useHistory<{ preserveScroll?: boolean }>();
     const { countryOrRegion } = useParams<{
         countryOrRegion?: string;
     }>();
@@ -46,9 +46,8 @@ export const CountryPage: React.FC = () => {
     useEffect(() => {
         if (filterInParams.country && filterInParams.country !== countryFilter?.selectedCountry) {
             countryFilter.onCountryChange(filterInParams.country);
-            !resetTab && handleResetTab(true);
         }
-    }, [countryFilter, filterInParams.country, handleResetTab, resetTab]);
+    }, [countryFilter, filterInParams.country]);
 
     const selectedCountryName = useMemo(
         () => countryFilter.countryOptions.find(country => country.value === countryFilter.selectedCountry)?.text,
@@ -60,13 +59,25 @@ export const CountryPage: React.FC = () => {
             sendEvent({ name: "country_page_view", pageTitle: "Country page", country: selectedCountryName });
     }, [sendEvent, selectedCountryName]);
 
+    const dashboardRef = useRef<HTMLDivElement | null>(null);
+    const sliderRef = useRef<HTMLDivElement | null>(null);
+    const resourcesRef = useRef<HTMLDivElement | null>(null);
+    const expertRef = useRef<HTMLDivElement | null>(null);
+
+    const wasAtBottom = useRef(false);
+
     const handleCountryChange = useCallback(
         (value: string) => {
             const countryName = countryFilter.countryOptions.find(option => option.value === value)?.text;
             const countryNameInFilter = countryName ? formatCountryOrRegionParamName(countryName) : undefined;
 
+            wasAtBottom.current = isScrolledToBottom();
+
             if (value && countryNameInFilter) {
-                history.push(`/${countryNameInFilter}`);
+                history.push({
+                    pathname: `/${countryNameInFilter}`,
+                    state: { preserveScroll: true },
+                });
             }
 
             countryFilter.onCountryChange(value);
@@ -74,10 +85,33 @@ export const CountryPage: React.FC = () => {
         [countryFilter, history]
     );
 
-    const dashboardRef = useRef(null);
-    const sliderRef = useRef(null);
-    const resourcesRef = useRef(null);
-    const expertRef = useRef(null);
+    useLayoutEffect(() => {
+        if (!wasAtBottom.current) return;
+
+        const observer = new ResizeObserver(scrollToBottom);
+        observer.observe(document.body);
+
+        const onUserScroll = () => release();
+        USER_SCROLL_EVENTS.forEach(event =>
+            window.addEventListener(event, onUserScroll, { passive: true, once: true })
+        );
+
+        const hardStopTimer = window.setTimeout(() => release(), SCROLL_LOCK_MAX_MS);
+
+        const dispose = () => {
+            observer.disconnect();
+            window.clearTimeout(hardStopTimer);
+            USER_SCROLL_EVENTS.forEach(event => window.removeEventListener(event, onUserScroll));
+        };
+        const release = () => {
+            dispose();
+            wasAtBottom.current = false;
+        };
+
+        scrollToBottom();
+
+        return dispose;
+    }, [countryFilter.selectedCountry]);
 
     const sidePanelWidth = useSidePanelWidth({
         ref: dashboardRef,
@@ -132,6 +166,19 @@ export const CountryPage: React.FC = () => {
         </>
     );
 };
+
+const SCROLL_LOCK_MAX_MS = 10000;
+const BOTTOM_EPSILON_PX = 330; //footer height
+const USER_SCROLL_EVENTS: ReadonlyArray<keyof WindowEventMap> = ["wheel", "touchmove", "keydown"];
+
+function isScrolledToBottom(): boolean {
+    const distanceFromBottom = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+    return distanceFromBottom <= BOTTOM_EPSILON_PX;
+}
+
+function scrollToBottom(): void {
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "auto" });
+}
 
 const Section = styled.section`
     scroll-margin-top: 80px;

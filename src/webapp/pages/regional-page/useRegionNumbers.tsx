@@ -101,7 +101,7 @@ export function useRegionNumbers(
                                       years: [LatestAvailable.id],
                                       countries:
                                           selectedRegion.id === ORG_UNIT_GROUP_IDS.WESTERN_BALKANS
-                                              ? manageBIHInCountries("addSubRegionsAndFilterBIH", [
+                                              ? manageBIHInCountries("addSubRegions", [
                                                     ...(selectedRegion.countries || []),
                                                 ])
                                               : [...(selectedRegion.countries || [])],

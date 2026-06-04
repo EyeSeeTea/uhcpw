@@ -1,0 +1,42 @@
+---
+import SectionHeader from "./SectionHeader.astro";
+import ResourceCard from "./ResourceCard.astro";
+import type { HomeResourceState } from "@/data/home/home-resource";
+
+interface Props {
+    resources: ReadonlyArray<HomeResourceState>;
+}
+
+const { resources } = Astro.props;
+---
+
+<section class="resources-section">
+    <SectionHeader header="Resources" />
+
+    <div class="resources-grid">
+        {resources.map((resource) => (
+            <ResourceCard resource={resource} />
+        ))}
+    </div>
+</section>
+
+<style>
+    .resources-section {
+        background: white;
+    }
+
+    .resources-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
+        padding: 0 48px 48px;
+    }
+
+    @media (max-width: 959px) {
+        .resources-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 0 24px 24px;
+        }
+    }
+</style>

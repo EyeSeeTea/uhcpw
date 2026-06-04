@@ -1,0 +1,112 @@
+---
+import { renderMarkdown } from "@/lib/markdown";
+import { href } from "@/lib/href";
+
+interface Props {
+    officeImage: string;
+    officeImageWidth: number;
+    officeImageHeight: number;
+    officeVideo: string;
+    officeText: string;
+}
+
+const { officeImage, officeImageWidth, officeVideo, officeText } = Astro.props;
+
+const textHtml = renderMarkdown(officeText);
+---
+
+<section class="office-header" aria-label="WHO Barcelona Office">
+    <div class="office-grid">
+        <div class="image-column">
+            <a href={officeVideo} target="_blank" rel="noreferrer">
+                <img
+                    src={href(officeImage)}
+                    alt="WHO Barcelona Office"
+                    class="office-image"
+                    width={officeImageWidth}
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                />
+            </a>
+            <p class="caption">WHO Barcelona Office for Health Systems Financing</p>
+        </div>
+
+        <div class="text-column">
+            <div class="text-content" set:html={textHtml} />
+        </div>
+    </div>
+</section>
+
+<style>
+    .office-header {
+        color: var(--color-white);
+    }
+
+    .office-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: flex-start;
+        padding: 32px 12px;
+        margin-bottom: -20px;
+    }
+
+    .image-column,
+    .text-column {
+        padding: 20px;
+    }
+
+    .image-column a {
+        display: block;
+    }
+
+    .office-image {
+        width: 100%;
+        height: auto;
+        padding-block-start: 16px;
+    }
+
+    .caption {
+        font-weight: 300;
+        margin-top: 25px;
+        margin-bottom: 0;
+        font-family: var(--font-family-base);
+        font-size: var(--font-size-base);
+    }
+
+    .text-column {
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .text-content {
+        max-width: 600px;
+        padding-inline: 24px;
+        margin: 0 auto;
+        font-family: var(--font-family-base);
+    }
+
+    .text-content :global(p) {
+        font-weight: 300;
+        margin-block-start: 1em;
+        margin-block-end: 1em;
+        font-size: var(--font-size-base);
+        line-height: 1.5;
+    }
+
+    @media (max-width: 959px) {
+        .office-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .text-content {
+            max-width: 100%;
+        }
+    }
+
+    @media (max-width: 599px) {
+        .text-content {
+            padding-inline: 16px;
+        }
+    }
+</style>

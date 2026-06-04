@@ -1,0 +1,92 @@
+schema: spec-driven
+
+context: |
+  Project: UHC Watch Astro PoC
+
+  What it is:
+  - A proof of concept for a static site using Astro
+  - Demonstrates methods for building and structuring an Astro project
+  - Reuses everything possible from the existing React SPA located in ../src
+
+  Tech stack:
+  - TypeScript
+  - Astro
+  - React (for components)
+  - yarn (package manager)
+
+  Directory structure:
+  - src/
+    - pages/
+    - components/
+    - layouts/
+    - styles/
+
+  Configuration:
+  - <Environment variables, config files, etc.>
+
+  Canonical commands:
+  - Build: yarn build
+  - Run: yarn start
+  - Test: yarn test
+  - Lint: yarn lint
+  - Astro check: yarn astro check
+
+  Code conventions:
+  - <Key conventions (naming, style, patterns)>
+
+  Architecture:
+  - Clean Architecture with layers: UI, Application, Domain, Infrastructure (reused from React SPA as much as possible)
+  - Custom server composition root for Astro to wire up dependencies
+
+  Git workflow:
+  - Feature branches start from `feature/static-site`
+  - Branch naming: feature/static-site/<name> for features, feature/static-site/fix/<name> for bugs
+  - Commits follow Conventional Commits
+
+  Non-goals (do NOT introduce these):
+  - Adding new features beyond the static site proof of concept
+  - Refactoring existing React SPA code unless necessary for reuse
+  - Introducing new dependencies without a clear justification
+
+  Extension principles:
+  - <How to add new features correctly>
+
+  Testing strategy:
+  - <Test types and where they live>
+  - <Test conventions>
+
+  Code style:
+  - Prefer functional/declarative patterns over imperative loops with mutable state
+  - Use flatMap, find, reduce, map, filter instead of for...of + push/break
+  - Avoid mutating function arguments or shared state — return new objects/arrays
+  - Apply immutability comprehensively; use Readonly<T> for data structures
+  - Prefer composition over inheritance
+
+rules:
+  project:
+    - "Specs first: before modifying any behavior, check openspec/specs/ for existing specs. If behavior is unclear, read the spec. If no spec exists, propose one under changes/."
+    - Follow code conventions as defined in the project context above.
+    - "New code goes in the correct directory per the architecture."
+    - "Clean Architecture: domain layer must have no framework or infrastructure dependencies. All external access goes through repository interfaces."
+    - "Git: always branch from `development` unless the feature depends on an unmerged branch. Use feature/<name> for features, fix/<name> for bugs. All commits must follow Conventional Commits."
+    - "Definition of Done: a change is complete when specs are updated, code aligns with specs, tests pass, and no breaking surfaces are altered without a proposal."
+    - "Boy Scout Rule: leave every file you touch cleaner than you found it."
+
+  proposal:
+    - "Must include: Goals, Non-goals, User impact, Compatibility, and Rollback plan."
+    - If changing public interfaces, explicitly list old vs new.
+
+  design:
+    - "Must describe: data flow through the architecture layers."
+    - Note known constraints when relevant.
+    - "UI design gate: when a change includes user-facing UI, the design phase MUST produce wireframes or mockups in Pencil (.pen files) before implementation begins. Designs are stored in openspec/designs/ and exported to openspec/designs/exports/."
+
+  tasks:
+    - Include at least one task for tests when behavior changes.
+    - Include a task to update specs/ when behavior changes.
+    - "Tag each task with the responsible agent role: [BE], [FE], [GD], [DB], [CR], or other as applicable."
+
+  specs:
+    - "Tests are the behavioral source of truth. Specs provide design context that tests cannot express (goals, non-goals, design decisions, rationale)."
+    - "Specs and tests are complementary: specs capture the 'why', tests capture the 'what'."
+    - "Keep specs lean: avoid duplicating in markdown what is already asserted by well-named tests."

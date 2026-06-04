@@ -1,0 +1,540 @@
+---
+import type { NavItem } from "@/data/navigation";
+import type { RegionalDisclaimer } from "@/data/general-content";
+import { href, isActivePath } from "@/lib/href";
+
+interface Props {
+    navItems: readonly NavItem[];
+    regionalDisclaimer?: RegionalDisclaimer;
+}
+
+const { navItems, regionalDisclaimer } = Astro.props;
+const isHomePage = isActivePath(Astro.url.pathname, href("/"));
+
+// "Regional overview" gets special-cased on mobile: when the disclaimer popup
+// content is available it renders as a button that opens a modal dialog (parity
+// with the SPA's PopUp). Its `children` (the per-region links used by the
+// desktop dropdown) are intentionally ignored on mobile. If the disclaimer is
+// missing the trigger falls back to a plain link so the menu still works.
+const REGIONAL_OVERVIEW_LABEL = "Regional overview";
+const hasRegionalModal = Boolean(regionalDisclaimer);
+---
+
+<div class="mobile-nav-wrapper">
+    <details class="mobile-nav" id="mobile-nav">
+        <summary class="menu-toggle" aria-label="Toggle navigation menu">
+            <svg class="icon-menu" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+            </svg>
+            <svg class="icon-close" viewBox="0 0 24 24" width="28" height="28" fill="currentColor" aria-hidden="true">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+            </svg>
+        </summary>
+        <nav class="menu-dropdown" aria-label="Mobile navigation">
+            {!isHomePage && (
+                <a href={href("/")} class="menu-link menu-link--home" aria-label="Home">
+                    <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true">
+                        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                    </svg>
+                </a>
+            )}
+            {navItems.map((item, i) => {
+                const isRegional = item.label === REGIONAL_OVERVIEW_LABEL;
+                const showDivider = i > 0 || !isHomePage;
+                return (
+                    <>
+                        {showDivider && <hr class="menu-divider" />}
+                        {isRegional && hasRegionalModal ? (
+                            <button
+                                type="button"
+                                class="menu-link menu-link--button"
+                                data-mobile-modal-trigger="regional-disclaimer"
+                                aria-haspopup="dialog"
+                                aria-controls="mobile-regional-disclaimer-dialog"
+                            >
+                                {item.label}
+                            </button>
+                        ) : item.children && item.children.length > 0 ? (
+                            <div class="menu-submenu-wrapper">
+                                <button
+                                    type="button"
+                                    class="menu-link menu-link--button menu-submenu-toggle"
+                                    aria-expanded="false"
+                                    aria-haspopup="true"
+                                    data-submenu-trigger
+                                >
+                                    <span>{item.label}</span>
+                                    <svg class="caret" viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z" />
+                                    </svg>
+                                </button>
+                                <div class="menu-submenu-popup" role="menu" hidden>
+                                    {item.children.map(child => (
+                                        <a href={href(child.href)} class="menu-link menu-sublink" role="menuitem">{child.label}</a>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <a href={href(item.href)} class="menu-link">{item.label}</a>
+                        )}
+                    </>
+                );
+            })}
+        </nav>
+    </details>
+
+    {regionalDisclaimer && (
+        <dialog
+            id="mobile-regional-disclaimer-dialog"
+            class="regional-dialog"
+            aria-labelledby="mobile-regional-disclaimer-title"
+        >
+            <div class="regional-dialog-content">
+                <h2 id="mobile-regional-disclaimer-title" class="visually-hidden">Regional overview</h2>
+                <div class="regional-dialog-body" set:html={regionalDisclaimer.disclaimerHtml} />
+                {regionalDisclaimer.buttonText && regionalDisclaimer.buttonUrl && (
+                    <a
+                        class="regional-dialog-cta"
+                        href={regionalDisclaimer.buttonUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {regionalDisclaimer.buttonText}
+                    </a>
+                )}
+            </div>
+            <button
+                type="button"
+                class="regional-dialog-close"
+                data-mobile-modal-close
+                aria-label="Close"
+            >
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                </svg>
+            </button>
+        </dialog>
+    )}
+</div>
+
+<style>
+    .mobile-nav-wrapper {
+        display: none;
+        position: relative;
+    }
+
+    @media (max-width: 1279px) {
+        .mobile-nav-wrapper {
+            display: block;
+        }
+    }
+
+    .mobile-nav {
+        position: relative;
+    }
+
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        list-style: none;
+        padding: 8px;
+        border-radius: 4px;
+        color: var(--color-grey-black);
+    }
+
+    .menu-toggle::-webkit-details-marker {
+        display: none;
+    }
+
+    .menu-toggle:hover {
+        background-color: rgba(0, 0, 0, 0.04);
+    }
+
+    .icon-close {
+        display: none;
+    }
+
+    .mobile-nav[open] > .menu-toggle .icon-menu {
+        display: none;
+    }
+
+    .mobile-nav[open] > .menu-toggle .icon-close {
+        display: block;
+    }
+
+    .menu-dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--color-accent-primary);
+        color: white;
+        border: 1px solid #d3d4d5;
+        padding: 10px;
+        z-index: 100;
+        min-width: 200px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menu-link {
+        display: flex;
+        align-items: center;
+        padding: 6px 16px;
+        min-height: 48px;
+        box-sizing: border-box;
+        color: white;
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        line-height: 1.5;
+        border-radius: 4px;
+        white-space: nowrap;
+    }
+
+    .menu-link--home {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+    }
+
+    .menu-link--button {
+        background: none;
+        border: none;
+        font-family: inherit;
+        text-align: left;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .menu-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .menu-divider {
+        margin: 7px auto;
+        width: 80%;
+        border: none;
+        border-top: 1px solid #b5b5b5;
+    }
+
+    /* ── Submenu popup (e.g. Countries & areas) ──────────────────────────── */
+    .menu-submenu-wrapper {
+        position: relative;
+    }
+
+    .menu-submenu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .menu-submenu-toggle .caret {
+        flex-shrink: 0;
+        transition: transform 200ms;
+    }
+
+    .menu-submenu-toggle[aria-expanded="true"] .caret {
+        transform: rotate(180deg);
+    }
+
+    .menu-submenu-popup {
+        position: fixed;
+        background: var(--color-accent-primary);
+        color: white;
+        border: 1px solid #d3d4d5;
+        padding: 0 10px;
+        max-height: 558px;
+        overflow-y: auto;
+        z-index: 101;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menu-submenu-popup[hidden] {
+        display: none;
+    }
+
+    .menu-sublink {
+        font-weight: 400;
+        font-size: 1rem;
+    }
+
+    /* ── Regional disclaimer dialog ─────────────────────────────────────── */
+    .regional-dialog {
+        position: relative;
+        max-width: min(600px, calc(100vw - 64px));
+        width: max-content;
+        border: none;
+        border-radius: 4px;
+        padding: 0;
+        box-shadow: 0 11px 15px -7px rgba(0, 0, 0, 0.2),
+            0 24px 38px 3px rgba(0, 0, 0, 0.14),
+            0 9px 46px 8px rgba(0, 0, 0, 0.12);
+        color: var(--color-black);
+        background: var(--color-white);
+        overflow: visible;
+    }
+
+    .regional-dialog::backdrop {
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .regional-dialog-content {
+        padding: 25px;
+        max-height: min(80vh, 560px);
+        overflow-y: auto;
+    }
+
+    .regional-dialog-body {
+        padding: 16px 16px 8px;
+        font-family: var(--font-family-base, Lato), sans-serif;
+        font-size: 1rem;
+        line-height: 1.5;
+        color: var(--color-black);
+    }
+
+    .regional-dialog-body :global(p) {
+        margin-block: 10px;
+    }
+
+    .regional-dialog-body :global(p:first-child) {
+        margin-block-start: 0;
+    }
+
+    .regional-dialog-body :global(p:last-child) {
+        margin-block-end: 0;
+    }
+
+    .regional-dialog-body :global(ul) {
+        padding-inline-start: 14px;
+        margin: 0;
+    }
+
+    .regional-dialog-body :global(a) {
+        color: var(--color-accent-primary);
+        text-decoration: none;
+    }
+
+    .regional-dialog-body :global(a:hover) {
+        text-decoration: underline;
+    }
+
+    .regional-dialog-cta {
+        display: inline-block;
+        margin-top: 4px;
+        margin-left: 16px;
+        color: var(--color-accent-primary);
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .regional-dialog-cta:hover {
+        text-decoration: underline;
+    }
+
+    .regional-dialog-close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 44px;
+        height: 44px;
+        border: none;
+        border-radius: 50%;
+        background: none;
+        color: var(--color-accent-primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .regional-dialog-close svg {
+        background-color: #035fa7;
+        color: white;
+        border-radius: 50%;
+        padding: 5px;
+    }
+
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+</style>
+
+<script>
+    const nav = document.getElementById("mobile-nav") as HTMLDetailsElement | null;
+    const dialog = document.getElementById(
+        "mobile-regional-disclaimer-dialog",
+    ) as HTMLDialogElement | null;
+
+    function closeAllSubmenus() {
+        nav?.querySelectorAll<HTMLButtonElement>("[data-submenu-trigger]").forEach(btn => {
+            btn.setAttribute("aria-expanded", "false");
+            const popup = btn.nextElementSibling as HTMLElement | null;
+            if (popup) popup.setAttribute("hidden", "");
+        });
+    }
+
+    function positionPopup(_trigger: HTMLElement, popup: HTMLElement) {
+        const menuDropdown = nav?.querySelector(".menu-dropdown") as HTMLElement | null;
+        if (!menuDropdown) return;
+
+        const menuRect = menuDropdown.getBoundingClientRect();
+
+        // Match SPA MUI Menu positioning: right-aligned with the main menu,
+        // positioned near the top of the viewport with enough room to scroll.
+        const top = 16;
+        const rightOffset = window.innerWidth - menuRect.right;
+        popup.style.top = `${top}px`;
+        popup.style.right = `${rightOffset}px`;
+        popup.style.left = "auto";
+        popup.style.maxHeight = `${Math.min(558, window.innerHeight - top - 16)}px`;
+    }
+
+    if (nav) {
+        // Submenu popup toggles
+        nav.querySelectorAll<HTMLButtonElement>("[data-submenu-trigger]").forEach(btn => {
+            const popup = btn.nextElementSibling as HTMLElement | null;
+            if (!popup) return;
+
+            btn.addEventListener("click", e => {
+                e.stopPropagation();
+                const isOpen = btn.getAttribute("aria-expanded") === "true";
+                closeAllSubmenus();
+                if (!isOpen) {
+                    btn.setAttribute("aria-expanded", "true");
+                    popup.removeAttribute("hidden");
+                    positionPopup(btn, popup);
+                }
+            });
+
+            // Close popup on Escape
+            popup.addEventListener("keydown", e => {
+                if (e.key === "Escape") {
+                    closeAllSubmenus();
+                    btn.focus();
+                }
+            });
+        });
+
+        // Close popup on item selection (link click inside popup)
+        nav.querySelectorAll(".menu-submenu-popup a.menu-link").forEach(link => {
+            link.addEventListener("click", () => {
+                closeAllSubmenus();
+                nav.open = false;
+            });
+        });
+
+        // Outside-click handler — uses capture phase to intercept clicks
+        // before they reach underlying elements (links, buttons, etc.).
+        // Closes one layer at a time: popup first, then main menu.
+        document.addEventListener("click", e => {
+            const target = e.target as Element;
+            const isInsidePopup = target.closest?.(".menu-submenu-popup");
+            const isInsideNav = nav.contains(target as Node);
+            const hasOpenPopup = Boolean(
+                nav.querySelector('[data-submenu-trigger][aria-expanded="true"]'),
+            );
+
+            if (isInsidePopup) return;
+
+            if (hasOpenPopup) {
+                // A submenu popup is open — close only the popup
+                closeAllSubmenus();
+                if (!isInsideNav) {
+                    // Click was outside nav entirely — swallow it so
+                    // underlying elements (links, etc.) don't activate
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                return;
+            }
+
+            if (nav.open && !isInsideNav) {
+                // Only the main menu is open — close it and swallow click
+                nav.open = false;
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
+
+        // Close submenu popup when clicking elsewhere inside the menu
+        // (e.g. tapping another menu item while popup is open)
+        nav.addEventListener("click", e => {
+            const target = e.target as Element;
+            const isInsideWrapper = target.closest?.(".menu-submenu-wrapper");
+            if (!isInsideWrapper) {
+                closeAllSubmenus();
+            }
+        });
+
+        // Close the outer menu after navigation: any top-level link click
+        nav.querySelectorAll("a.menu-link:not(.menu-sublink)").forEach(link => {
+            link.addEventListener("click", () => {
+                closeAllSubmenus();
+                nav.open = false;
+            });
+        });
+
+        // Close submenus when the outer <details> menu closes
+        const observer = new MutationObserver(() => {
+            if (!nav.open) closeAllSubmenus();
+        });
+        observer.observe(nav, { attributes: true });
+    }
+
+    if (nav && dialog) {
+        const hamburger = nav.querySelector<HTMLElement>("summary.menu-toggle");
+
+        const triggers = nav.querySelectorAll<HTMLButtonElement>(
+            '[data-mobile-modal-trigger="regional-disclaimer"]',
+        );
+        triggers.forEach(trigger => {
+            trigger.addEventListener("click", e => {
+                e.stopPropagation();
+                // Collapse the outer mobile menu so the modal is the focused
+                // surface and the menu panel is not visible behind the dialog
+                // backdrop.
+                nav.open = false;
+                dialog.showModal();
+            });
+        });
+
+        const closeButtons = dialog.querySelectorAll<HTMLButtonElement>(
+            "[data-mobile-modal-close]",
+        );
+        closeButtons.forEach(btn => {
+            btn.addEventListener("click", () => dialog.close());
+        });
+
+        // Close on backdrop click. The dialog itself fills the centered
+        // content area; the backdrop is the dialog element's outside region.
+        dialog.addEventListener("click", e => {
+            if (e.target === dialog) dialog.close();
+        });
+
+        // Return focus to the hamburger toggle once the dialog closes.
+        // The "Regional overview" trigger itself is inside the collapsed
+        // menu and therefore not focusable, so the menu toggle is the
+        // closest visible return target — letting keyboard users press
+        // Enter to re-open the menu without leaving the header. Deferred
+        // via rAF so it runs AFTER Chromium's native focus-restore step
+        // (which would otherwise clobber a synchronous focus call).
+        dialog.addEventListener("close", () => {
+            if (!hamburger) return;
+            requestAnimationFrame(() => hamburger.focus());
+        });
+    }
+</script>

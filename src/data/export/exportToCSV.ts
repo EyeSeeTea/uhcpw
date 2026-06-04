@@ -1,4 +1,3 @@
-import * as XLSX from "xlsx";
 import * as FileSaver from "file-saver";
 import XlsxPopulate from "@eyeseetea/xlsx-populate";
 import {
@@ -7,9 +6,11 @@ import {
 } from "../repositories/policy-explorer/PolicyExplorerD2Repository";
 import {
     addDataValue,
+    applyAutoWidthsToXlsxPopulateSheet,
     getCellStyles,
     getColumnLetterByIndex,
     hideEmptyColumn,
+    hideEmptyRows,
     LEGENDS_STYLE,
     setHeight,
     setWidth,
@@ -44,34 +45,89 @@ export type TabsWithStringOrNumbers = {
     name: string;
 };
 
-export const exportToCSV = (tabs: TabsWithStringOrNumbers[], fileName: string) => {
-    const tabsWithNumbers = tabs.map(tab => {
+export const exportToCSV = (tabs: TabsWithStringOrNumbers[], fileName: string): void => {
+    exportToCSVAsync(tabs, fileName).catch(error => console.error("Error exporting to CSV", error));
+};
+
+async function exportToCSVAsync(tabs: TabsWithStringOrNumbers[], fileName: string): Promise<void> {
+    const tabsWithNumbers = parseDataTabNumbers(tabs);
+    const workbook = await XlsxPopulate.fromBlankAsync();
+    tabsWithNumbers.forEach((tab, tabIndex) => {
+        const sheet = tabIndex === 0 ? workbook.sheet(0).name(tab.name) : workbook.addSheet(tab.name);
+        addDataToSheet(sheet, tab.data);
+        if (tab.name === DATA_TAB_NAME || tab.name === NOTES_TAB_NAME) {
+            const columnCount = tab.data.reduce((max, row) => Math.max(max, row.length), 0);
+            const lastColumn = getColumnLetterByIndex(columnCount - 1);
+            sheet.range(`A1:${lastColumn}${tab.data.length}`).style({ fontFamily: "Arial", fontSize: 10 });
+        }
         if (tab.name === DATA_TAB_NAME) {
-            return {
-                ...tab,
-                data: tab.data.map(row =>
-                    row.map(cell => (typeof cell === "string" ? parseDataValueFromStringToNumber(cell) : cell))
-                ),
-            };
-        } else {
-            return tab;
+            // skipFirstRow: row 1 is the chart title
+            applyAutoWidthsToXlsxPopulateSheet(sheet, tab.data, { skipFirstRow: true });
+            sheet.cell("A1").style({ bold: true });
         }
     });
+    const blob = await workbook.outputAsync();
+    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+}
 
-    const xlsxTabs = tabsWithNumbers.map(tab => ({
-        ...tab,
-        xlsx: XLSX.utils.aoa_to_sheet(tab.data),
-    }));
+// Pivot output from pivotToCombinedMatrix: [Country, Abbreviation, Year, Abbreviation+Year, ...indicators].
+// The first 4 are metadata; anything at or beyond this index is an indicator-data column.
+const COMBINED_INDICATOR_DATA_COLUMN_START = 4;
+const COMBINED_INDICATOR_DATA_COLUMN_WIDTH = 30;
+const COMBINED_INDICATOR_HEADER_ROW_HEIGHT = 35;
 
-    const Sheets = xlsxTabs.reduce((acc, tab) => ({ ...acc, [tab.name]: tab.xlsx }), {});
-    const wb = {
-        Sheets,
-        SheetNames: tabsWithNumbers.map(tab => tab.name),
-    };
-    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-    const data = new Blob([excelBuffer], { type: fileType });
-    FileSaver.saveAs(data, fileName + fileExtension);
-};
+export async function exportCombinedIndicatorsToXlsx(tabs: TabsWithStringOrNumbers[], fileName: string): Promise<void> {
+    const tabsWithNumbers = parseDataTabNumbers(tabs);
+    const workbook = await XlsxPopulate.fromBlankAsync();
+
+    tabsWithNumbers.forEach((tab, tabIndex) => {
+        const sheet = tabIndex === 0 ? workbook.sheet(0).name(tab.name) : workbook.addSheet(tab.name);
+        addDataToSheet(sheet, tab.data);
+        applyCombinedIndicatorStyles(sheet, tab);
+    });
+
+    const blob = await workbook.outputAsync();
+    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+}
+
+function applyCombinedIndicatorStyles(sheet: XlsxPopulate.Sheet, tab: TabsWithStringOrNumbers): void {
+    const columnCount = tab.data.reduce((max, row) => Math.max(max, row.length), 0);
+    if (tab.data.length > 0 && columnCount > 0) {
+        const lastColumn = getColumnLetterByIndex(columnCount - 1);
+        sheet.range(`A1:${lastColumn}${tab.data.length}`).style({ fontFamily: "Calibri", fontSize: 11 });
+    }
+
+    if (tab.name !== DATA_TAB_NAME) return;
+
+    applyAutoWidthsToXlsxPopulateSheet(sheet, tab.data, {
+        cappedFromIndex: COMBINED_INDICATOR_DATA_COLUMN_START,
+        cappedMaxWidth: COMBINED_INDICATOR_DATA_COLUMN_WIDTH,
+        skipFirstRow: true,
+    });
+
+    const headerRow = tab.data[1];
+    if (!headerRow) return;
+
+    const headerRowNumber = 2;
+    sheet.row(headerRowNumber).height(COMBINED_INDICATOR_HEADER_ROW_HEIGHT);
+    headerRow.forEach((_, columnIndex) => {
+        if (columnIndex < COMBINED_INDICATOR_DATA_COLUMN_START) return;
+        const cellRef = `${getColumnLetterByIndex(columnIndex)}${headerRowNumber}`;
+        sheet.cell(cellRef).style({ wrapText: true });
+    });
+}
+
+function parseDataTabNumbers(tabs: TabsWithStringOrNumbers[]): TabsWithStringOrNumbers[] {
+    return tabs.map(tab => {
+        if (tab.name !== DATA_TAB_NAME) return tab;
+        return {
+            ...tab,
+            data: tab.data.map(row =>
+                row.map(cell => (typeof cell === "string" ? parseDataValueFromStringToNumber(cell) : cell))
+            ),
+        };
+    });
+}
 
 function parseDataValueFromStringToNumber(value: string): string | number {
     if (value === "") {
@@ -134,23 +190,32 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
     FileSaver.saveAs(data, fileName + fileExtension);
 };
 
+const CHARTS_WITHOUT_COLUMN_LIMIT = ["kIpnMBaBvZ9", "mUjcWO90CRr", "fnOIi0bdISn", "eEKRLRR4mDk"];
+
 export const exportToCSVIncludingChart = async (params: {
     chartId: string;
     tabs: TabsWithStringOrNumbers[];
     templateArrayBuffer: ArrayBuffer;
     fileName: string;
+    columnIndexToNotHide?: number;
+    hideRowLimit?: number;
+    chartDataStartRow?: number;
 }) => {
-    const { chartId, tabs, templateArrayBuffer, fileName } = params;
+    const { chartId, tabs, templateArrayBuffer, fileName, columnIndexToNotHide, hideRowLimit, chartDataStartRow } =
+        params;
 
     const workbook = await XlsxPopulate.fromDataAsync(templateArrayBuffer);
 
     const chartSheet = workbook.sheet(DATA_TAB_NAME);
     const chartTab = tabs.find(tab => tab.name === DATA_TAB_NAME);
     if (chartTab) {
-        addDataToSheet(chartSheet, chartTab.data);
-        const columnLimit = chartId !== "kIpnMBaBvZ9" ? COLUMN_LIMIT : undefined;
+        addDataToSheet(chartSheet, chartTab.data, chartDataStartRow);
+        const columnLimit = !CHARTS_WITHOUT_COLUMN_LIMIT.includes(chartId) ? COLUMN_LIMIT : undefined;
         if (columnLimit) {
-            hideEmptyColumn(chartSheet, columnLimit);
+            hideEmptyColumn(chartSheet, columnLimit, columnIndexToNotHide, chartDataStartRow);
+        }
+        if (hideRowLimit) {
+            hideEmptyRows(chartSheet, hideRowLimit, chartDataStartRow);
         }
     }
 
@@ -164,10 +229,10 @@ export const exportToCSVIncludingChart = async (params: {
     FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
 };
 
-function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"]) {
+function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"], startRow = 1) {
     try {
         data.forEach((row, rowIndex) => {
-            const rowNumber = rowIndex + 1;
+            const rowNumber = rowIndex + startRow;
             row.forEach((cell, columnIndex) => {
                 const column = getColumnLetterByIndex(columnIndex);
                 const cellRef = `${column}${rowNumber}`;

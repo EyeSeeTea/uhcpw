@@ -16,7 +16,6 @@ const REGION_INFO_DATA_ELEMENT_IDS = {
 } as const;
 
 const REGION_CONTENT_PROGRAM_ID = "ai5rB7mcqHH";
-const REGION_CONTENT_OU_ID = "H8RixfF8ugH";
 
 const REGION_CONTENT_DATA_ELEMENT_IDS = {
     numbersPanel: {
@@ -154,7 +153,6 @@ export class RegionInfoD2Repository implements RegionInfoRepository {
                     fields: eventsFields,
                     skipPaging: true,
                     program: REGION_CONTENT_PROGRAM_ID,
-                    orgUnit: REGION_CONTENT_OU_ID,
                 })
             ),
         }).flatMap(response => {

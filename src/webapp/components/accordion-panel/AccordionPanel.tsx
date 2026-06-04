@@ -74,8 +74,11 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = props => {
                         $scrollMarginTop={scrollMarginTop}
                         TransitionProps={{
                             onEntered: () => {
-                                if (pendingScrollTab === config.tab) {
+                                if (pendingScrollTab === config.tab || expandedConfig?.tab === config.tab) {
                                     config.ref?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                                }
+
+                                if (pendingScrollTab === config.tab) {
                                     setPendingScrollTab && setPendingScrollTab(null);
                                 }
                             },

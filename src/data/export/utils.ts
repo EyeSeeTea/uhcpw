@@ -155,14 +155,37 @@ export function generateColumnLettersUntilLimit(limitLetter: string): string[] {
     return Array.from({ length: maxIndex + 1 }, (_, i) => getColumnLetterByIndex(i));
 }
 
-export function hideEmptyColumn(sheet: XlsxPopulate.Sheet, columnLimit: string) {
+export function generateRowNumbersUntilLimit(limit: number): number[] {
+    return Array.from({ length: limit + 1 }, (_, i) => i + 1);
+}
+
+export function hideEmptyColumn(
+    sheet: XlsxPopulate.Sheet,
+    columnLimit: string,
+    columnIndexToNotHide?: number,
+    dataStartRow = 1
+) {
     generateColumnLettersUntilLimit(columnLimit).forEach(columnLetter => {
-        const columnValues: TabsWithStringOrNumbers["data"] = sheet.range(`${columnLetter}1:${columnLetter}7`).value();
+        const rowEnd = dataStartRow + 6;
+        const columnValues: TabsWithStringOrNumbers["data"] = sheet
+            .range(`${columnLetter}${dataStartRow}:${columnLetter}${rowEnd}`)
+            .value();
         const columnIsEmpty = columnValues.every((value: (string | number | null)[]) =>
             value.every(cell => cell === "" || cell === undefined || cell === null)
         );
-        if (columnIsEmpty) {
+        const columnLetterNotToHide = columnIndexToNotHide ? getColumnLetterByIndex(columnIndexToNotHide) : null;
+
+        if (columnIsEmpty && columnLetter !== columnLetterNotToHide) {
             sheet.column(columnLetter).hidden(true);
+        }
+    });
+}
+
+export function hideEmptyRows(sheet: XlsxPopulate.Sheet, rowLimit: number, startRow = 1) {
+    Array.from({ length: rowLimit - startRow + 1 }, (_, i) => i + startRow).forEach(rowNumber => {
+        const cellValue = sheet.cell(`A${rowNumber}`).value();
+        if (cellValue === "" || cellValue === undefined || cellValue === null) {
+            sheet.row(rowNumber).hidden(true);
         }
     });
 }
@@ -343,6 +366,67 @@ function getColumnWidth(sheet: Sheet, tabName: string, columnDataIndex: number):
 export function setWidth(sheet: Sheet, tabName: string, columnDataIndex: number) {
     const width = getColumnWidth(sheet, tabName, columnDataIndex);
     sheet.column(columnDataIndex + 1).width(width);
+}
+
+type AutoWidthOptions = {
+    readonly minWidth?: number;
+    readonly cappedFromIndex?: number;
+    readonly cappedMaxWidth?: number;
+    readonly skipFirstRow?: boolean;
+};
+
+const DEFAULT_AUTO_WIDTH_MIN = 8;
+// Excel width units are based on the "0" glyph; most letters render narrower, so scaling the
+// longest-content character count by 0.9 gives a better fit with the default font (Calibri 11).
+const CHAR_TO_WIDTH_MULTIPLIER = 0.9;
+
+export function computeAutoColumnWidths(
+    rows: ReadonlyArray<ReadonlyArray<string | number | null | undefined>>,
+    options: AutoWidthOptions = {}
+): number[] {
+    const { minWidth = DEFAULT_AUTO_WIDTH_MIN, cappedFromIndex, cappedMaxWidth, skipFirstRow } = options;
+
+    const measuredRows = skipFirstRow ? rows.slice(1) : rows;
+    const columnCount = measuredRows.reduce((max, row) => Math.max(max, row.length), 0);
+
+    return Array.from({ length: columnCount }, (_, col) => {
+        const longest = measuredRows.reduce((max, row) => {
+            const cell = row[col];
+            const text = cell === null || cell === undefined ? "" : String(cell);
+            return Math.max(max, text.length);
+        }, 0);
+        const scaled = longest * CHAR_TO_WIDTH_MULTIPLIER;
+        const cap = cappedFromIndex !== undefined && col >= cappedFromIndex ? cappedMaxWidth : undefined;
+        const widthWithMin = Math.max(scaled, minWidth);
+        return cap !== undefined ? Math.min(widthWithMin, cap) : widthWithMin;
+    });
+}
+
+export function applyAutoWidthsToXlsxPopulateSheet(
+    sheet: Sheet,
+    rows: ReadonlyArray<ReadonlyArray<string | number | null | undefined>>,
+    options?: AutoWidthOptions
+): void {
+    const widths = computeAutoColumnWidths(rows, options);
+    widths.forEach((width, index) => {
+        sheet.column(index + 1).width(width);
+    });
+}
+
+export function toSafeNumber(cell: string | number | null | undefined): number {
+    const n = Number(cell ?? 0);
+    return isNaN(n) ? 0 : n;
+}
+
+export function toPercentage(cell: string | number | null, total: number): number {
+    return total > 0 ? parseFloat(((toSafeNumber(cell) / total) * 100).toFixed(2)) : 0;
+}
+
+export function sumByKey(entries: ReadonlyArray<{ key: string; value: number }>): Record<string, number> {
+    return entries.reduce<Record<string, number>>(
+        (acc, { key, value }) => ({ ...acc, [key]: (acc[key] ?? 0) + value }),
+        {}
+    );
 }
 
 export function parseDataValuesStringToNumber(data: string[][], valueIndex: number): TabsWithStringOrNumbers["data"] {

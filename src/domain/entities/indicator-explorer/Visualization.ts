@@ -52,6 +52,8 @@ export interface VisualizationExtra {
     includeLatestAvailableYear?: boolean;
     includeLatestCOVID19?: boolean;
     getYearsWithData?: (dataRows: string[][]) => string[];
+    hideRowLimit?: number;
+    chartDataStartRow?: number;
 }
 
 export type VisualizationInfo = { title?: string; infoNotes: string[]; sourceName: string; sourceLink: string };

@@ -1,0 +1,39 @@
+{
+    "extends": "astro/tsconfigs/strict",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "jsx": "react-jsx",
+        "jsxImportSource": "react",
+        "verbatimModuleSyntax": false,
+        "skipLibCheck": true,
+        "typeRoots": ["./node_modules/@types", "../node_modules/@types"],
+        "paths": {
+            "@/*": ["./src/*"],
+            "@shared/domain/*": ["../src/domain/*"],
+            "@shared/data/*": ["../src/data/*"],
+            "@shared/types/*": ["../src/types/*"],
+            "@shared/utils/*": ["../src/utils/*"],
+            "@shared/CompositionRoot": ["../src/CompositionRoot"],
+            "@shared/webapp/*": ["../src/webapp/*"]
+        }
+    },
+    "include": [
+        ".astro/types.d.ts",
+        "src/**/*",
+        "../src/domain/**/*",
+        "../src/data/**/*",
+        "../src/types/**/*",
+        "../src/utils/**/*",
+        "../src/CompositionRoot.ts"
+    ],
+    "exclude": [
+        "node_modules",
+        "dist",
+        "../src/**/__tests__/**",
+        "../src/**/*.spec.*",
+        "../src/**/*.test.*",
+        "../src/utils/tests-ui.tsx",
+        "../src/data/export/**",
+        "../src/data/repositories/PersonD2Repository.ts"
+    ]
+}

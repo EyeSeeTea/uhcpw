@@ -1,0 +1,383 @@
+---
+import { Image } from "astro:assets";
+import whoLogoWhite from "@/assets/layout/who-logo-white.png";
+import europeFlag from "@/assets/layout/europe-flag.png";
+import { href } from "@/lib/href";
+
+interface Props {
+    disclaimer?: string;
+    privacyPolicyUrl?: string;
+    abbreviationsUrl?: string;
+    glossaryUrl?: string;
+}
+
+const { disclaimer, privacyPolicyUrl, abbreviationsUrl, glossaryUrl } = Astro.props;
+const currentYear = new Date().getFullYear();
+
+const defaultDisclaimer =
+    "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)";
+const defaultPrivacyUrl = "https://www.who.int/about/policies/privacy";
+
+const disclaimerText = disclaimer || defaultDisclaimer;
+const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
+---
+
+{/*
+    Footer uses a single grid that adapts via grid-template-areas across breakpoints.
+    The WHO logo and Europe flag are rendered exactly ONCE; previously the footer
+    rendered separate desktop and mobile variants and the browser downloaded the
+    inactive copy too.
+*/}
+<footer class="site-footer">
+    <div class="footer-top">
+        <div class="footer-grid">
+            <Image
+                src={whoLogoWhite}
+                alt="WHO logo"
+                class="footer-who-logo"
+                widths={[100, 130, 150, 200, 300]}
+                sizes="(max-width: 450px) 100px, (max-width: 500px) 130px, 150px"
+                loading="lazy"
+                decoding="async"
+            />
+
+            <div class="europe-container">
+                <Image
+                    src={europeFlag}
+                    alt="European Union flag"
+                    class="europe-flag"
+                    widths={[60, 80, 100, 200]}
+                    sizes="(max-width: 450px) 60px, (max-width: 500px) 80px, 100px"
+                    loading="lazy"
+                    decoding="async"
+                />
+                <p class="europe-text">
+                    Co-funded by the European Union
+                </p>
+            </div>
+
+            <p class="disclaimer">{disclaimerText}</p>
+
+            <div class="footer-col footer-links-col">
+                <div class="footer-links">
+                    <a href={href("/about")} class="footer-link">About us</a>
+                    <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link" target="_blank" rel="noopener noreferrer">
+                        WHO Barcelona Office for Health Systems Financing
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-col footer-contact-col">
+                <p class="footer-heading">Contact our office</p>
+                <div class="footer-links">
+                    <span>Sant Pau Art Nouveau Site (La Merc&egrave;)</span>
+                    <span>Sant Antoni Maria Claret 167</span>
+                    <span>08025 Barcelona, Spain</span>
+                    <span>Tel: +34 673 290 861</span>
+                    <span>Email: <a href="mailto:uhcwatch@who.int" class="footer-link">uhcwatch@who.int</a></span>
+                </div>
+            </div>
+
+            <a href={href("/about")} class="mobile-only mobile-about-link">About us</a>
+
+            <details class="accordion mobile-only mobile-accordion-glossary">
+                <summary class="accordion-summary">Abbreviations &amp; glossary</summary>
+                <div class="accordion-details">
+                    {abbreviationsUrl && <a href={abbreviationsUrl} class="footer-link" target="_blank" rel="noopener noreferrer">Abbreviations</a>}
+                    {glossaryUrl && <a href={glossaryUrl} class="footer-link" target="_blank" rel="noopener noreferrer">Glossary</a>}
+                </div>
+            </details>
+
+            <details class="accordion mobile-only mobile-accordion-policy">
+                <summary class="accordion-summary">WHO privacy policy &amp; disclaimer</summary>
+                <div class="accordion-details">
+                    <a href={policyUrl} class="footer-link" target="_blank" rel="noopener noreferrer">
+                        WHO Privacy Policy
+                    </a>
+                    <p>{disclaimerText}</p>
+                </div>
+            </details>
+
+            <details class="accordion mobile-only mobile-accordion-contact">
+                <summary class="accordion-summary">Contact our office</summary>
+                <div class="accordion-details">
+                    <span>Sant Pau Art Nouveau Site (La Merc&egrave;)</span>
+                    <span>Sant Antoni Maria Claret 167</span>
+                    <span>08025 Barcelona, Spain</span>
+                    <span>Tel: +34 673 290 861</span>
+                    <span>Email: <a href="mailto:uhcwatch@who.int" class="footer-link">uhcwatch@who.int</a></span>
+                </div>
+            </details>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <a href={policyUrl} class="footer-link footer-bottom-privacy" target="_blank" rel="noopener noreferrer">
+            WHO privacy policy
+        </a>
+        <span>&copy; {currentYear} WHO</span>
+    </div>
+</footer>
+
+<style>
+    .site-footer {
+        margin-top: auto;
+    }
+
+    /* ── Footer Top ──────────────────────────────────────────────────────── */
+    .footer-top {
+        padding: 48px 32px;
+        background: var(--footer-top-bg);
+        color: var(--color-white);
+    }
+
+    /* ── Unified grid (desktop default) ──────────────────────────────────── */
+    .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas:
+            "logo  flag  links contact"
+            "discl flag  links contact";
+        column-gap: 48px;
+        row-gap: 0;
+        max-width: 1536px;
+        margin: 0 auto;
+    }
+
+    .footer-who-logo {
+        grid-area: logo;
+        width: 150px;
+        height: auto;
+    }
+
+    .europe-container {
+        grid-area: flag;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-self: start;
+    }
+
+    .europe-flag {
+        width: 100px;
+        height: auto;
+    }
+
+    .europe-text {
+        width: 150px;
+        margin-left: 16px;
+        font-size: var(--font-size-sm);
+    }
+
+    .disclaimer {
+        grid-area: discl;
+        margin-top: 16px;
+        padding-left: 5px;
+        max-width: 700px;
+        font-size: var(--font-size-sm);
+        line-height: 1.6;
+    }
+
+    .footer-links-col {
+        grid-area: links;
+    }
+
+    .footer-contact-col {
+        grid-area: contact;
+    }
+
+    .footer-col {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-heading {
+        margin: 0 0 12px;
+        font-size: 1rem;
+        font-weight: 400;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: 1rem;
+    }
+
+    .footer-link {
+        color: var(--color-white);
+        text-decoration: none;
+    }
+
+    .footer-link:hover {
+        opacity: 0.85;
+    }
+
+    /* Mobile accordions hidden on desktop */
+    .mobile-only {
+        display: none;
+    }
+
+    /* ── Tablet (≤1200px): collapse to 2 columns ──────────────────────────── */
+    @media (max-width: 1200px) {
+        .footer-grid {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-areas:
+                "logo  flag"
+                "discl flag"
+                "links contact";
+            row-gap: 24px;
+        }
+    }
+
+    /* ── Mobile (≤960px): logos row on top, accordions below ──────────────── */
+    @media (max-width: 960px) {
+        .footer-grid {
+            grid-template-columns: 1fr 1fr;
+            grid-template-areas:
+                "logo flag"
+                "about-link   about-link"
+                "acc-glossary acc-glossary"
+                "acc-policy   acc-policy"
+                "acc-contact  acc-contact";
+            column-gap: 20px;
+            row-gap: 8px;
+            justify-items: center;
+            align-items: center;
+        }
+
+        /* Hide desktop text columns on mobile */
+        .disclaimer,
+        .footer-links-col,
+        .footer-contact-col {
+            display: none;
+        }
+
+        .mobile-only {
+            display: block;
+            width: 100%;
+            justify-self: stretch;
+        }
+
+        .mobile-accordion-glossary { grid-area: acc-glossary; }
+        .mobile-accordion-policy   { grid-area: acc-policy; }
+        .mobile-accordion-contact  { grid-area: acc-contact; }
+
+        /* Mobile About-us pill — values mirror SPA MobileAppFooter AboutUsLink */
+        .mobile-about-link {
+            grid-area: about-link;
+            display: flex;
+            align-items: center;
+            min-height: 56px;
+            padding: 0 16px;
+            background-color: var(--color-accent-primary);
+            color: var(--color-white);
+            text-decoration: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: var(--font-size-lg);
+        }
+    }
+
+    @media (max-width: 500px) {
+        .footer-who-logo {
+            width: 130px;
+        }
+
+        .europe-flag {
+            width: 80px;
+        }
+    }
+
+    @media (max-width: 450px) {
+        .footer-who-logo {
+            width: 100px;
+        }
+
+        .europe-flag {
+            width: 60px;
+        }
+    }
+
+    /* ── Accordion ───────────────────────────────────────────────────────── */
+    .accordion {
+        background-color: var(--color-accent-primary);
+        color: var(--color-white);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        overflow: hidden;
+        /* interpolate-size enables animating auto → fixed sizes on ::details-content */
+        interpolate-size: allow-keywords;
+    }
+
+    .accordion::details-content {
+        block-size: 0;
+        overflow: clip;
+        transition: block-size 250ms ease, content-visibility 250ms allow-discrete;
+    }
+
+    .accordion[open]::details-content {
+        block-size: auto;
+    }
+
+    .accordion-summary {
+        min-height: 56px;
+        padding: 12px 16px;
+        font-weight: 500;
+        font-size: var(--font-size-lg);
+        cursor: pointer;
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
+
+    .accordion-summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .accordion-summary::after {
+        content: "";
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z'/%3E%3C/svg%3E");
+        background-size: contain;
+        background-repeat: no-repeat;
+        transition: transform 200ms;
+        flex-shrink: 0;
+    }
+
+    .accordion[open] > .accordion-summary::after {
+        transform: rotate(180deg);
+    }
+
+    .accordion-details {
+        padding: 0 16px 16px;
+        font-size: var(--font-size-sm);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* ── Footer Bottom ───────────────────────────────────────────────────── */
+    .footer-bottom {
+        padding-inline-start: 3.75rem;
+        height: 50px;
+        background: var(--footer-bottom-bg);
+        color: var(--color-white);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        font-size: 1rem;
+    }
+
+    @media (max-width: 960px) {
+        .footer-bottom-privacy {
+            display: none;
+        }
+    }
+</style>

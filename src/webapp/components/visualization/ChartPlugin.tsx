@@ -12,6 +12,9 @@ import { filterEmptyYearsInSeries, getCategories, getSeriesChart } from "./utils
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { addBreaksInSeries } from "./addBreaksInSeries";
 import { Region } from "../../../domain/entities/region/Region";
+import { withLegendAlignment } from "./customization/legends/alignLegendToPlotArea";
+import { BOOST_SERIES_THRESHOLD, MARKER_RADIUS } from "./customization/chartConstants";
+import { Maybe } from "../../../types/utils";
 
 export interface ChartPluginProps {
     analytics: Analytics[];
@@ -126,9 +129,10 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
             const newOptions = {
                 chart: {
                     ...originalChartOptions.chart,
-                    events: customizedOptions?.chart?.events ? { ...customizedOptions?.chart?.events } : undefined,
+                    events: withLegendAlignment(customizedOptions?.chart?.events),
                     renderTo: undefined,
                 },
+                boost: { seriesThreshold: BOOST_SERIES_THRESHOLD },
 
                 legend: {
                     ...originalChartOptions.legend,
@@ -155,24 +159,26 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                             : { ...originalChartOptions.yAxis, ...(customizedOptions?.yAxis || {}) }
                         : originalChartOptions.yAxis,
 
-                series: orderedByValueInSerie?.map(serie => {
-                    const countrySerieCustomization = customizedOptions?.countryOrRegionSerie
-                        ? customizedOptions?.countryOrRegionSerie(countries, regions, {
-                              id: serie.id || "",
-                              name: serie.name || "",
-                          })
-                        : undefined;
+                series: applyDefaultMarkerRadius(
+                    orderedByValueInSerie?.map(serie => {
+                        const countrySerieCustomization = customizedOptions?.countryOrRegionSerie
+                            ? customizedOptions?.countryOrRegionSerie(countries, regions, {
+                                  id: serie.id || "",
+                                  name: serie.name || "",
+                              })
+                            : undefined;
 
-                    const serieCustomization = customizedOptions?.series?.find(
-                        customSerie => serie.id === customSerie.id
-                    );
+                        const serieCustomization = customizedOptions?.series?.find(
+                            customSerie => serie.id === customSerie.id
+                        );
 
-                    const allSeriesCustomization = customizedOptions?.allSeries;
+                        const allSeriesCustomization = customizedOptions?.allSeries;
 
-                    const customization = countrySerieCustomization || serieCustomization || allSeriesCustomization;
+                        const customization = countrySerieCustomization || serieCustomization || allSeriesCustomization;
 
-                    return customization ? { ...serie, ...customization } : serie;
-                }),
+                        return customization ? { ...serie, ...customization } : serie;
+                    })
+                ),
                 lang: originalChartOptions.lang,
                 noData: originalChartOptions.noData,
                 credits: { enabled: false },
@@ -234,8 +240,11 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                 ...externalchartOptions,
                 chart: {
                     ...externalchartOptions?.chart,
+                    events: withLegendAlignment(externalchartOptions?.chart?.events),
                     height: isMobile ? undefined : externalchartOptions?.chart?.height,
                 },
+                boost: { seriesThreshold: BOOST_SERIES_THRESHOLD, ...externalchartOptions?.boost },
+                series: applyDefaultMarkerRadius(externalchartOptions?.series),
             });
 
             canvasRef.current?.remove();
@@ -261,6 +270,7 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
                         <HighchartsReact
                             highcharts={Highcharts}
                             options={chartOptions}
+                            immutable={true}
                             containerProps={{
                                 "aria-label": `chart-${visualizations[0]?.friendlyName}`,
                                 style: { height: "100%" },
@@ -272,6 +282,20 @@ export const ChartPlugin: React.FC<ChartPluginProps> = React.memo(
         );
     }
 );
+
+// Applies the default marker radius to series level markers without an explicit radius
+// Does not affect markers set via plotOptions
+function applyDefaultMarkerRadius<T>(series: Maybe<T[]>): Maybe<T[]> {
+    return series?.map(serie => {
+        if (serie && typeof serie === "object" && "marker" in serie) {
+            const marker = serie.marker;
+            if (marker && typeof marker === "object" && !("radius" in marker)) {
+                return { ...serie, marker: { ...marker, radius: MARKER_RADIUS } };
+            }
+        }
+        return serie;
+    });
+}
 
 const ChartPluginContainer = styled.div<{
     $isSquareChart: boolean;

@@ -25,7 +25,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=BmB55K7tCIi",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 8.2% of households\n* Catastrophic health spending: 12.5% of households\n* Most at risk: lower-income households, older people and householdswith children\n* Main drivers: outpatient medicines and inpatient care on average; outpatient medicines for low-income households\n\n**Unmet need (2020)**\n\n* Health care: 10.6% of people\n* Dental care: 15.4% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 8.2% of households\n* Catastrophic health spending: 12.5% of households\n* Most at risk: lower-income households, older people and householdswith children\n* Main drivers: outpatient medicines and inpatient care on average; outpatient medicines for low-income households\n\n**Unmet need (2020)**\n\n* Health care: 10.6% of people\n* Dental care: 15.4% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "Rmy6DbwekE1",
@@ -45,7 +74,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "cWrL45je7mw",
@@ -69,7 +127,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=PLI9Mn8M6gW",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 7.9% of households\n* Catastrophic health spending: 17.1% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Armenia"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 7.9% of households\n* Catastrophic health spending: 17.1% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Armenia",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "e9IoKRAkYLO",
@@ -93,7 +180,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=mwyJJmHyaKb",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1% of households\n* Catastrophic health spending: 3.2% of households\n* Most at risk: lower-income households, older people and householdswith children\n* Main drivers: dental care, diagnostic tests and outpatient care on average; dental care for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 0.5% of people\n* Dental care: 0.9% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1% of households\n* Catastrophic health spending: 3.2% of households\n* Most at risk: lower-income households, older people and householdswith children\n* Main drivers: dental care, diagnostic tests and outpatient care on average; dental care for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 0.5% of people\n* Dental care: 0.9% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "ST86paYjRHP",
@@ -117,7 +233,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "Tr4i6jeDDqj",
@@ -141,7 +286,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "KwgjnBBpe5b",
@@ -165,7 +339,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=bplBE9KfZ1u",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 1.1% of households\n* Catastrophic health spending: 5.2% of households\n* Most at risk: lower-income households, unemployed people, inactive people and people with a lower level of education\n* Main drivers: medical products on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 1.0% of people\n* Dental care: 2.7% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 1.1% of households\n* Catastrophic health spending: 5.2% of households\n* Most at risk: lower-income households, unemployed people, inactive people and people with a lower level of education\n* Main drivers: medical products on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 1.0% of people\n* Dental care: 2.7% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "n8iofJiiX4T",
@@ -193,7 +396,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=q1mIPCMsNEz",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 4.3% of households\n* Catastrophic health spending: 8.8% of households\n* Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Bosnia and Herzegovina"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 4.3% of households\n* Catastrophic health spending: 8.8% of households\n* Main drivers: outpatient medicines and diagnostic tests on average; outpatient medicines for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Bosnia and Herzegovina",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "AjeCGGb8H76",
@@ -217,7 +449,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=g4CF2TZTYJW",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 8% of households\n* Catastrophic health spending: 19.2% of households\n* Most at risk: lower-income households, older people and people in rural areas\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 1.0% of people\n* Dental care: 2.0% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 8% of households\n* Catastrophic health spending: 19.2% of households\n* Most at risk: lower-income households, older people and people in rural areas\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 1.0% of people\n* Dental care: 2.0% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "lbMrRSBsXh3",
@@ -241,7 +502,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=HUG5JQdF7j8",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 1.9% of households\n* Catastrophic health spending: 3.6% of households\n* Main drivers: dental care and outpatient medicines on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.3% of people\n* Dental care: 0.6% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 1.9% of households\n* Catastrophic health spending: 3.6% of households\n* Main drivers: dental care and outpatient medicines on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.3% of people\n* Dental care: 0.6% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "Mb9IYOFZYCv",
@@ -265,7 +555,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=zYm1KxVEkfj",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1.8% of households\n* Catastrophic health spending: 5% of households\n* Most at risk: lower-income households, older people and people who are publicly covered and do not have voluntary health insurance\n* Main drivers: diagnostic tests and inpatient care on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 0.1% of people\n* Dental care: 1.7% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1.8% of households\n* Catastrophic health spending: 5% of households\n* Most at risk: lower-income households, older people and people who are publicly covered and do not have voluntary health insurance\n* Main drivers: diagnostic tests and inpatient care on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 0.1% of people\n* Dental care: 1.7% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "XKKI1hhyFxk",
@@ -289,7 +608,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=sJ6o8xkOx3v",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 4.2% of households\n* Main drivers: outpatient medicines, medical products and dental care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.2% of people\n* Dental care: 0.8% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 4.2% of households\n* Main drivers: outpatient medicines, medical products and dental care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.2% of people\n* Dental care: 0.8% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "CCl7hAqlrmE",
@@ -313,7 +661,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=rK31fOUOxG6",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1.8% of households\n* Catastrophic health spending: 2.6% of households\n* Main drivers: medical products on average; outpatient medicines and dental care for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.1% of people\n* Dental care: 7.5% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1.8% of households\n* Catastrophic health spending: 2.6% of households\n* Main drivers: medical products on average; outpatient medicines and dental care for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.1% of people\n* Dental care: 7.5% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "XeWqwCw9G5s",
@@ -337,7 +714,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=nHuusj6yg94",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 7.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 9.1% of people\n* Dental care: 2.6% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 7.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 9.1% of people\n* Dental care: 2.6% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "bnQX2QIuIY9",
@@ -361,7 +767,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=ZEiaqFmRpHT",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 1.2% of households\n* Catastrophic health spending: 3.8% of households\n* Most at risk: lower-income households and older people\n* Main drivers: outpatient medicines, outpatient care and dental care on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 6.5% of people\n* Dental care: 7.6% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 1.2% of households\n* Catastrophic health spending: 3.8% of households\n* Most at risk: lower-income households and older people\n* Main drivers: outpatient medicines, outpatient care and dental care on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 6.5% of people\n* Dental care: 7.6% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "VnTycSnraEY",
@@ -385,7 +820,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=mnR3ySYvG2m",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 1.5% of households\n* Catastrophic health spending: 2.1% of households\n* Main drivers: outpatient care and diagnostic tests on average; outpatient medicines for low-income households\n\n\n**Unmet need (2021)**\n\n* Health care: 2.8% of people\n* Dental care: 5.3% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 1.5% of households\n* Catastrophic health spending: 2.1% of households\n* Main drivers: outpatient care and diagnostic tests on average; outpatient medicines for low-income households\n\n\n**Unmet need (2021)**\n\n* Health care: 2.8% of people\n* Dental care: 5.3% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "fg8TSIHSGHX",
@@ -409,7 +873,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=Dhgfw3sDXeT",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 6.8% of households\n* Catastrophic health spending: 17.4% of households\n* Main drivers: outpatient medicines and inpatient care on average; outpatient medicines for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Georgia"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 6.8% of households\n* Catastrophic health spending: 17.4% of households\n* Main drivers: outpatient medicines and inpatient care on average; outpatient medicines for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Georgia",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "Ri2tb7LBVtP",
@@ -433,7 +926,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=K1eYC6QiGLP",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 1% of households\n* Catastrophic health spending: 2.4% of households\n* Main drivers: dental care on average; outpatient medicines and medical products for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.3% of people\n* Dental care: 0.6% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 1% of households\n* Catastrophic health spending: 2.4% of households\n* Main drivers: dental care on average; outpatient medicines and medical products for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.3% of people\n* Dental care: 0.6% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "eyvitcZL4ex",
@@ -457,7 +979,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=PRcuLf3o7cj",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 10.6% of households\n* Main drivers: outpatient medicines and inpatient care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 9.0% of people\n* Dental care: 12.1% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 10.6% of households\n* Main drivers: outpatient medicines and inpatient care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 9.0% of people\n* Dental care: 12.1% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "IZy3ESdFnp5",
@@ -468,7 +1019,36 @@
         "parents": [],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "g49fuSiB623",
@@ -492,7 +1072,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=WjH7wFwKhrM",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 5.9% of households\n* Catastrophic health spending: 11.6% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.4% of people\n* Dental care: 1.1% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 5.9% of households\n* Catastrophic health spending: 11.6% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.4% of people\n* Dental care: 1.1% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "Bc3mYAhlY1a",
@@ -512,7 +1121,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "uvTw0Kus5KZ",
@@ -536,7 +1174,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=QNygv968BQZ",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 0.9% of households\n* Catastrophic health spending: 1.2% of households\n* Most at risk: lower-income households and people with medical cards\n* Main drivers: inpatient care on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 2.6% of people\n* Dental care: 1.9% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 0.9% of households\n* Catastrophic health spending: 1.2% of households\n* Most at risk: lower-income households and people with medical cards\n* Main drivers: inpatient care on average; outpatient medicines for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 2.6% of people\n* Dental care: 1.9% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "XebDUbuPqVx",
@@ -556,7 +1223,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=Nsu8pLNcoeG",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 2.6% of households\n* Catastrophic health spending: 5.7% of households\n* Main drivers: dental care and outpatient medicines on average and especially for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Israel"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 2.6% of households\n* Catastrophic health spending: 5.7% of households\n* Main drivers: dental care and outpatient medicines on average and especially for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Israel",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "ElwEWppmGgv",
@@ -580,7 +1276,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=UwQw60UcFb8",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 4.3% of households\n* Catastrophic health spending: 9.9% of households\n* Main drivers: outpatient medicines and dental care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.8% of people\n* Dental care: 1.6% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 4.3% of households\n* Catastrophic health spending: 9.9% of households\n* Main drivers: outpatient medicines and dental care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.8% of people\n* Dental care: 1.6% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "ibGsqmiVkoU",
@@ -604,7 +1329,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=ei18aKgiKsL",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.6% of households\n* Catastrophic health spending: 5.8% of households\n* Main drivers: outpatient medicines and dental care on average; outpatient medicines low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Kazakhstan"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.6% of households\n* Catastrophic health spending: 5.8% of households\n* Main drivers: outpatient medicines and dental care on average; outpatient medicines low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Kazakhstan",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "tDFavWinSwr",
@@ -628,7 +1382,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=dKMnv2xE6Zg",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2014)**\n\n* Impoverishing health spending: 3.6% of households\n* Catastrophic health spending: 12.8% of households\n* Most at risk: lower-income households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Kyrgyzstan"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2014)**\n\n* Impoverishing health spending: 3.6% of households\n* Catastrophic health spending: 12.8% of households\n* Most at risk: lower-income households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Kyrgyzstan",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "gxi9jcBYyrL",
@@ -652,7 +1435,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=vzQC7yNoMwD",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 4.2% of households\n* Catastrophic health spending: 15% of households\n* Most at risk: lower-income households and people with medical cards\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 5.4% of people\n* Dental care: 9.7% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 4.2% of households\n* Catastrophic health spending: 15% of households\n* Most at risk: lower-income households and people with medical cards\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 5.4% of people\n* Dental care: 9.7% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "T1irZBQ9gNW",
@@ -676,7 +1488,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=nrR8uWXuH12",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 5.6% of households\n* Catastrophic health spending: 15.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.9% of people\n* Dental care: 2.4% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2016)**\n\n* Impoverishing health spending: 5.6% of households\n* Catastrophic health spending: 15.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.9% of people\n* Dental care: 2.4% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "mmJUi0PpvGi",
@@ -700,7 +1541,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=aOkwX06EwqY",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 2% of households\n* Catastrophic health spending: 2.4% of households\n* Most at risk: lower-income households and older people\n* Main drivers: medical products on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 0.5% of people\n* Dental care: 0.8% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 2% of households\n* Catastrophic health spending: 2.4% of households\n* Most at risk: lower-income households and older people\n* Main drivers: medical products on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 0.5% of people\n* Dental care: 0.8% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "TIhakAVsQwM",
@@ -724,7 +1594,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=h5IuBX4geQQ",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 6.9% of households\n* Main drivers: dental care and outpatient medicines on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.3% of people\n* Dental care: 0.2% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 6.9% of households\n* Main drivers: dental care and outpatient medicines on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.3% of people\n* Dental care: 0.2% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "cZ8823L0fLJ",
@@ -744,7 +1643,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "JX7HJfPfbog",
@@ -772,7 +1700,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=ZYqyXNqqWvR",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 5.5% of households\n* Catastrophic health spending: 9.4% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2021)**\n\n* Health care: 1.6% of people\n* Dental care: 2.1% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 5.5% of households\n* Catastrophic health spending: 9.4% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2021)**\n\n* Health care: 1.6% of people\n* Dental care: 2.1% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "rEQqufy2KNi",
@@ -796,7 +1753,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=t98nvyipq8K",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 0.1% of households\n* Catastrophic health spending: 0.5% of households\n* Main drivers: medical products and outpatient care on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.2% of people\n* Dental care: 0.2% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 0.1% of households\n* Catastrophic health spending: 0.5% of households\n* Main drivers: medical products and outpatient care on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.2% of people\n* Dental care: 0.2% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "cfBaKMnsXd1",
@@ -824,7 +1810,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=ycB7sepCOiw",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 3.9% of households\n* Catastrophic health spending: 6.5% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2020)**\n\n* Health care: 1.7% of people\n* Dental care: 1.7% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 3.9% of households\n* Catastrophic health spending: 6.5% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2020)**\n\n* Health care: 1.7% of people\n* Dental care: 1.7% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "oy494aJtjTB",
@@ -844,7 +1859,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "wMTP4GblKr8",
@@ -868,7 +1912,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=UiuU5jid3YI",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 9.4% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.3% of people\n* Dental care: 1.0% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 9.4% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.3% of people\n* Dental care: 1.0% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "PevCwH17M73",
@@ -892,7 +1965,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=j7XpolFUoFH",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 3.7% of households\n* Catastrophic health spending: 10.6% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.9% of people\n* Dental care: 8.2% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 3.7% of households\n* Catastrophic health spending: 10.6% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.9% of people\n* Dental care: 8.2% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "yBqy4nxuOCA",
@@ -920,7 +2022,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=hDPbpx1tL5G",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.9% of households\n* Catastrophic health spending: 11.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for the Republic of Moldova"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.9% of households\n* Catastrophic health spending: 11.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for the Republic of Moldova",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "N9i1v07Ro0E",
@@ -944,7 +2075,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=DuT5KesGxg3",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 5.6% of households\n* Catastrophic health spending: 12.5% of households\n* Most at risk: lower-income households and older people\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 4.9% of people\n* Dental care: 5.2% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 5.6% of households\n* Catastrophic health spending: 12.5% of households\n* Most at risk: lower-income households and older people\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n**Unmet need (2022)**\n\n* Health care: 4.9% of people\n* Dental care: 5.2% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "i3v8r9XNls2",
@@ -968,7 +2128,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "SAsS1Kwc4iW",
@@ -988,7 +2177,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "oroMC4mMzMq",
@@ -1016,7 +2234,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=l0bMZWK0Z4w",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 7.3% of households\n* Catastrophic health spending: 12.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2021)**\n\n* Health care: 5.3% of people\n* Dental care: 3.5% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 7.3% of households\n* Catastrophic health spending: 12.2% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2021)**\n\n* Health care: 5.3% of people\n* Dental care: 3.5% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "RDiXMdNXg16",
@@ -1040,7 +2287,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=FGmRGHJPfuc",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 5.1% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.8% of people\n* Dental care: 2.1% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 5.1% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.8% of people\n* Dental care: 2.1% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "PY4aKgi30fr",
@@ -1064,7 +2340,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=V9GpRvGOT90",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 0.2% of households\n* Catastrophic health spending: 0.8% of households\n* Main drivers: dental care and inpatient care on average; medical products, outpatient medicines and dental care for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 3.7% of people\n* Dental care: 3.7% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 0.2% of households\n* Catastrophic health spending: 0.8% of households\n* Main drivers: dental care and inpatient care on average; medical products, outpatient medicines and dental care for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 3.7% of people\n* Dental care: 3.7% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "DVnpk4xiXGJ",
@@ -1088,7 +2393,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=FCuiVk73pT3",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 1.6% of households\n* Catastrophic health spending: 2.9% of households\n* Main drivers: medical products on average; medical products and outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.2% of people\n* Dental care: 4.6% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2020)**\n\n* Impoverishing health spending: 1.6% of households\n* Catastrophic health spending: 2.9% of households\n* Main drivers: medical products on average; medical products and outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.2% of people\n* Dental care: 4.6% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "IFAb1JUZ0Fz",
@@ -1112,7 +2446,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=AaR2qnvkmB9",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1% of households\n* Catastrophic health spending: 1.6% of households\n* Main drivers: dental care and outpatient medicines on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.8% of people\n* Dental care: 2.3% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2015)**\n\n* Impoverishing health spending: 1% of households\n* Catastrophic health spending: 1.6% of households\n* Main drivers: dental care and outpatient medicines on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 1.8% of people\n* Dental care: 2.3% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "q2HqXV5OO3z",
@@ -1132,7 +2495,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=W9U6BZdyGZP",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 1.5% of households\n* Catastrophic health spending: 2.7% of households\n\n**Unmet need (2021)**\n\n* Health care: 0.5% of people\n* Dental care: 2.6% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2017)**\n\n* Impoverishing health spending: 1.5% of households\n* Catastrophic health spending: 2.7% of households\n\n**Unmet need (2021)**\n\n* Health care: 0.5% of people\n* Dental care: 2.6% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "xb2ezJcUoSR",
@@ -1156,7 +2548,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=o2zOqgc7i6N",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "HwqfuL9pQz5",
@@ -1180,7 +2601,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=undefined",
         "showCountryFlag": false,
-        "summary": ""
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "eVEK7djdWqV",
@@ -1204,7 +2654,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=olC5zaL9zBu",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 2.6% of households\n* Catastrophic health spending: 4.3% of households\n* Main drivers: dental care on average; outpatient medicines and medical products for low-income households\n\n**Unmet need (2021)**\n\n* Health care: 2.3% of people\n* Dental care: 2.9% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2018)**\n\n* Impoverishing health spending: 2.6% of households\n* Catastrophic health spending: 4.3% of households\n* Main drivers: dental care on average; outpatient medicines and medical products for low-income households\n\n**Unmet need (2021)**\n\n* Health care: 2.3% of people\n* Dental care: 2.9% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "VJrTuNXAg9G",
@@ -1232,7 +2711,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=yVZTM3lYm2n",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 11% of households\n* Catastrophic health spending: 17% of households\n* Main drivers: outpatient medicines on average and especially for lower-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Ukraine"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 11% of households\n* Catastrophic health spending: 17% of households\n* Main drivers: outpatient medicines on average and especially for lower-income households\n\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Ukraine",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "Gnz4lqrVEMf",
@@ -1252,7 +2760,36 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=DiJXB5SXlK4",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 0.7% of households\n* Catastrophic health spending: 1.5% of households\n* Main drivers: medical products and dental care on average; medical products and outpatient medicines for low-income households\n\n\n**Unmet need (2018 )**\n\n* Health care: 4.5% of people\n* Dental care: 2.5% of people"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 0.7% of households\n* Catastrophic health spending: 1.5% of households\n* Main drivers: medical products and dental care on average; medical products and outpatient medicines for low-income households\n\n\n**Unmet need (2018 )**\n\n* Health care: 4.5% of people\n* Dental care: 2.5% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     },
     {
         "id": "kpFgAwwSjCZ",
@@ -1276,6 +2813,35 @@
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=CZVfDcw3eSG",
         "showCountryFlag": false,
-        "summary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 13.9 % of households\n* Catastrophic health spending: 23.9% of households\n* Most at risk: lower-income households and older people\n* Main drivers: outpatient medicines and diagnostic tests on average and especially for low-income households\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Uzbekistan"
+        "longName": "",
+        "iso3Code": "",
+        "generalSummary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 13.9 % of households\n* Catastrophic health spending: 23.9% of households\n* Most at risk: lower-income households and older people\n* Main drivers: outpatient medicines and diagnostic tests on average and especially for low-income households\n\n**Unmet need**\n\nInternationally comparable data on unmet need are not available for Uzbekistan",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
+        "sliderInfo": {
+            "gapsSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            },
+            "finProtecSection": {
+                "sectionName": "",
+                "sourceText": "",
+                "content": [
+                    {
+                        "title": "",
+                        "text": ""
+                    }
+                ]
+            }
+        },
+        "isInCountryPage": false,
+        "currencyCode": ""
     }
 ]

@@ -7,8 +7,7 @@ import { useRegionalPageFilter } from "./useRegionalPageFilter";
 import i18n from "../../../locales";
 import { Country } from "../../../domain/entities/Country";
 import { useAppContext } from "../../contexts/app-context";
-import { countriesToGeoJson } from "../../components/home/map/useMap";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useRegionalPageContent } from "./useRegionalPageContent";
 import { RegionMainMapPanelContent } from "../../../domain/entities/region/RegionInfo";
 import { ORG_UNIT_GROUP_IDS, Region } from "../../../domain/entities/region/Region";
@@ -26,6 +25,12 @@ import {
 } from "../../utils/formatCountryOrRegionParamName";
 import { GapsInCoverageSection } from "./GapsInCoverageSection";
 import { RegionalGapsInCoverageState, useRegionalGapsInCoverage } from "./useRegionalGapsInCoverage";
+import { countriesToGeoJson } from "../../components/home/map/utils/countriesToGeoJson";
+import {
+    getHashFromRegionalMenuItem,
+    getRegionalMenuItemFromHash,
+    getRegionalMenuItemFromTab,
+} from "./regionalPageNavigation";
 
 export type RegionalMenuItem = "regionMap" | "numbers" | "gapsInCoverage" | "policyChecklist" | "resources" | "experts";
 
@@ -80,6 +85,7 @@ export type RegionalPageState = {
 export function useRegionalPage(): RegionalPageState {
     const isSmallScreen = useIsSmallScreen();
     const history = useHistory<{ preserveScroll?: boolean }>();
+    const location = useLocation();
     const { countryOrRegion } = useParams<{
         countryOrRegion?: string;
     }>();
@@ -99,6 +105,7 @@ export function useRegionalPage(): RegionalPageState {
     const [expandedSectionsAccordion, setExpandedSectionsAccordion] = useState<AccordionConfig | undefined>(undefined);
     const [pendingScrollTab, setPendingScrollTab] = useState<number | null>(null);
     const [sidePanelWidth, setSidePanelWidth] = useState<number | undefined>(undefined);
+    const lastProcessedHashRef = useRef<string | null>(null);
 
     const regionMapRef = useRef<HTMLElement | null>(null);
     const numbersRef = useRef<HTMLElement | null>(null);
@@ -180,6 +187,7 @@ export function useRegionalPage(): RegionalPageState {
             if (regionNameInFilter) {
                 history.push({
                     pathname: `/${regionNameInFilter}`,
+                    hash: location.hash,
                     state: { preserveScroll: true },
                 });
             }
@@ -188,7 +196,8 @@ export function useRegionalPage(): RegionalPageState {
             const countryIdsInRegion = region?.countries || [];
 
             const countriesWithSummary = countries.filter(
-                country => countryIdsInRegion.includes(country.id) && country.summary
+                country =>
+                    countryIdsInRegion.includes(country.id) && (country.generalSummary || country.regionalPageSummary)
             );
 
             const iso3CountriesInRegion = countries
@@ -200,7 +209,7 @@ export function useRegionalPage(): RegionalPageState {
             setSelectedRegion(region);
             onRegionChange(newRegion);
         },
-        [countries, history, onRegionChange, regionOptions, regions]
+        [countries, history, location.hash, onRegionChange, regionOptions, regions]
     );
 
     useEffect(() => {
@@ -254,7 +263,9 @@ export function useRegionalPage(): RegionalPageState {
         return [
             {
                 tab: 0,
-                tabTitle: i18n.t("Numbers: financial hardship, unmet need and spending on health"),
+                tabTitle: i18n.t("Numbers: financial hardship, unmet need and spending on health", {
+                    nsSeparator: false,
+                }),
                 isGradientColor: true,
                 hasExpandIcon: true,
                 Component: NumbersSection,
@@ -271,7 +282,9 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 1,
-                tabTitle: i18n.t("The story behind the numbers: gaps in coverage"),
+                tabTitle: i18n.t("The story behind the numbers: gaps in coverage", {
+                    nsSeparator: false,
+                }),
                 isGradientColor: true,
                 hasExpandIcon: true,
                 Component: GapsInCoverageSection,
@@ -288,7 +301,9 @@ export function useRegionalPage(): RegionalPageState {
             },
             {
                 tab: 2,
-                tabTitle: i18n.t("Progress is possible: a policy checklist"),
+                tabTitle: i18n.t("Progress is possible: a coverage policy checklist", {
+                    nsSeparator: false,
+                }),
                 isGradientColor: true,
                 hasExpandIcon: true,
                 Component: PolicyChecklistSection,
@@ -342,8 +357,25 @@ export function useRegionalPage(): RegionalPageState {
         goTo,
     ]);
 
+    const replaceHash = useCallback(
+        (hash: string) => {
+            history.replace({
+                pathname: location.pathname,
+                hash: hash,
+                state: history.location.state,
+            });
+            lastProcessedHashRef.current = hash;
+        },
+        [history, location.pathname]
+    );
+
     const handleHeaderItemClick = useCallback(
-        (item: RegionalMenuItem) => {
+        (item: RegionalMenuItem, options?: { updateHash?: boolean }) => {
+            if (options?.updateHash !== false) {
+                const hash = getHashFromRegionalMenuItem(item);
+                replaceHash(`#${hash}`);
+            }
+
             const ref = refs[item];
             if (isSmallScreen && ref) {
                 ref.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -373,7 +405,7 @@ export function useRegionalPage(): RegionalPageState {
                 setPendingScrollTab(null);
             }
         },
-        [expandedSectionsAccordion?.tab, isSmallScreen, refs, sectionsAccordionConfig]
+        [expandedSectionsAccordion?.tab, isSmallScreen, refs, replaceHash, sectionsAccordionConfig]
     );
 
     const handleAccordionChange = useCallback(
@@ -382,9 +414,58 @@ export function useRegionalPage(): RegionalPageState {
                 ? sectionsAccordionConfig.find(config => config.tab === tabId)
                 : undefined;
             setExpandedSectionsAccordion(sliderConfigSelected);
+
+            if (isExpanded) {
+                const sectionItem = getRegionalMenuItemFromTab(tabId);
+                if (sectionItem) {
+                    const hash = getHashFromRegionalMenuItem(sectionItem);
+                    replaceHash(`#${hash}`);
+                }
+            } else if (location.hash) {
+                const sectionItem = getRegionalMenuItemFromTab(tabId);
+                const currentHashSection = getRegionalMenuItemFromHash(location.hash);
+
+                if (sectionItem && currentHashSection === sectionItem) {
+                    replaceHash("");
+                }
+            }
         },
-        [sectionsAccordionConfig]
+        [location.hash, replaceHash, sectionsAccordionConfig]
     );
+
+    useEffect(() => {
+        if (filterInParams.region && selectedRegionId !== filterInParams.region) return;
+        if (isLoading || policyChecklist.isLoading) return;
+        if (!location.hash) {
+            lastProcessedHashRef.current = "";
+            return;
+        }
+        if (lastProcessedHashRef.current === location.hash) return;
+
+        const sectionFromHash = getRegionalMenuItemFromHash(location.hash);
+        if (!sectionFromHash) return;
+        if (
+            sectionFromHash !== "regionMap" &&
+            !getSectionAccordionConfigByHeaderItemId(sectionFromHash, sectionsAccordionConfig)
+        ) {
+            return;
+        }
+
+        const scrollAfterRender = window.setTimeout(() => {
+            lastProcessedHashRef.current = location.hash;
+            handleHeaderItemClick(sectionFromHash, { updateHash: false });
+        }, 0);
+
+        return () => window.clearTimeout(scrollAfterRender);
+    }, [
+        filterInParams.region,
+        handleHeaderItemClick,
+        isLoading,
+        location.hash,
+        policyChecklist.isLoading,
+        sectionsAccordionConfig,
+        selectedRegionId,
+    ]);
 
     return {
         isSmallScreen: isSmallScreen,

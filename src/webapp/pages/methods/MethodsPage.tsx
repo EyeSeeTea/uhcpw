@@ -7,7 +7,6 @@ import React from "react";
 
 import { colors } from "../app/themes/dhis2.theme";
 import { Layout } from "../../components/layout/Layout";
-import bubblePatternWhite from "../../assets/bubble-pattern-white.png";
 import i18n from "../../../locales";
 import { useMethods } from "./useMethods";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
@@ -77,13 +76,6 @@ export const MethodsPage: React.FC = () => {
     return (
         <Layout>
             <TitleContainer aria-label="methods-page-header">
-                <BubbleImg
-                    src={bubblePatternWhite}
-                    alt="Bubble pattern"
-                    aria-hidden="true"
-                    decoding="async"
-                    loading="eager"
-                />
                 <Typography variant="h3">{i18n.t("Methods")}</Typography>
             </TitleContainer>
 
@@ -127,7 +119,7 @@ export const MethodsPage: React.FC = () => {
 };
 
 const TitleContainer = styled.div`
-    background-color: ${colors.accentPrimary};
+    background: ${colors.gradientPrimary};
     color: white;
     padding: 24px 200px 24px 64px;
     display: flex;
@@ -140,16 +132,6 @@ const TitleContainer = styled.div`
         background: ${props => props.color} url(${mapBackground});
         background-position: center;
     }
-`;
-
-const BubbleImg = styled.img`
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: auto;
-    height: auto;
-    pointer-events: none;
-    opacity: 0.9;
 `;
 
 const ButtonsGridItem = styled(Grid)`

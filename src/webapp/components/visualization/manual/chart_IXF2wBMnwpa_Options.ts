@@ -1,9 +1,15 @@
+import { MARKER_RADIUS } from "../customization/chartConstants";
 import { baseLegend } from "../customization/legends/baseLegend";
 import { ChartSource } from "./chartOptions";
 import { baseChartOptions } from "./generic/baseChartOptions";
 import { mapToWhoCountryCode } from "../../../../data/repositories/countries/mapToWhoCountryData";
 import { Id } from "../../../../domain/entities/Ref";
 import { filterRowsByCommonLastAvailableYearInTwoDataIds } from "../../../../data/repositories/indicator-explorer/utils/lastAvailableYearHelpers";
+import {
+    buildXAxisCategories,
+    splitColumnRowsBy99,
+    splitScatterRows,
+} from "../../../../data/export/data-chart-builder/chart_IXF2wBMnwpa_helpers";
 
 const POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_RESIDENCE = "TKq3zGVr1vj";
 const POPULATION_COVERAGE_BASIS_FOR_ENTITLEMENT_PAYMENT = "BAuD3jhIXTY";
@@ -152,9 +158,6 @@ export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts
         ],
         legend: {
             ...baseLegend,
-            symbolHeight: 10,
-            symbolWidth: 10,
-            symbolRadius: 0,
             width: 250,
             itemStyle: { ...baseLegend.itemStyle, whiteSpace: "normal", textOverflow: "none" },
         },
@@ -166,7 +169,7 @@ export const chart_IXF2wBMnwpa_Options: (chartSource: ChartSource) => Highcharts
             scatter: {
                 marker: {
                     symbol: "circle",
-                    radius: 4,
+                    radius: MARKER_RADIUS,
                     lineWidth: 0.5,
                     lineColor: "#666",
                 },
@@ -266,92 +269,6 @@ function getColumnRows(chartSource: ChartSource): Array<string[]> {
 
         return hasResidenceForRow || hasPaymentForRow;
     });
-}
-
-function splitColumnRowsBy99(rows: Array<string[]>) {
-    return rows.reduce<{
-        columnRowsGreaterOrEqual99: Array<string[]>;
-        columnRowsLowerThan99: Array<string[]>;
-    }>(
-        (acc, row) => {
-            const numericValue = Number(row[3]);
-
-            return numericValue >= 99
-                ? {
-                      ...acc,
-                      columnRowsGreaterOrEqual99: [...acc.columnRowsGreaterOrEqual99, row],
-                  }
-                : {
-                      ...acc,
-                      columnRowsLowerThan99: [...acc.columnRowsLowerThan99, row],
-                  };
-        },
-        {
-            columnRowsGreaterOrEqual99: [],
-            columnRowsLowerThan99: [],
-        }
-    );
-}
-
-function splitScatterRows(params: {
-    scatterRows: Array<string[]>;
-    columnRowsLowerThan99: Array<string[]>;
-    columnRowsGreaterOrEqual99: Array<string[]>;
-}): {
-    scatterLowerThan99: Array<string[]>;
-    scatterGreaterOrEqual99: Array<string[]>;
-} {
-    const makeCountryYearKey = (row: string[]) => `${row[1]}-${row[2]}`;
-
-    const lowerKeys = new Set(params.columnRowsLowerThan99.map(makeCountryYearKey));
-    const greaterOrEqualKeys = new Set(params.columnRowsGreaterOrEqual99.map(makeCountryYearKey));
-
-    return params.scatterRows.reduce<{
-        scatterLowerThan99: Array<string[]>;
-        scatterGreaterOrEqual99: Array<string[]>;
-    }>(
-        (acc, row) => {
-            const key = makeCountryYearKey(row);
-
-            return greaterOrEqualKeys.has(key)
-                ? { ...acc, scatterGreaterOrEqual99: [...acc.scatterGreaterOrEqual99, row] }
-                : lowerKeys.has(key)
-                ? { ...acc, scatterLowerThan99: [...acc.scatterLowerThan99, row] }
-                : acc;
-        },
-        {
-            scatterLowerThan99: [],
-            scatterGreaterOrEqual99: [],
-        }
-    );
-}
-
-function buildXAxisCategories(params: {
-    scatterLowerThan99: Array<string[]>;
-    columnRowsLowerThan99: Array<string[]>;
-    scatterGreaterOrEqual99: Array<string[]>;
-    columnRowsGreaterOrEqual99: Array<string[]>;
-}): Array<string | null> {
-    const keyOf = (row: string[]) => `${row[1]}-${row[2]}`;
-
-    const buildPart = (scatterRows: Array<string[]>, columnRows: Array<string[]>): string[] => {
-        const scatterKeysSorted = [...scatterRows].sort((a, b) => Number(a[3]) - Number(b[3])).map(keyOf);
-
-        const scatterKeySet = new Set(scatterKeysSorted);
-
-        const remainingColumnKeysSorted = columnRows
-            .map(keyOf)
-            .filter(key => !scatterKeySet.has(key))
-            .sort((a, b) => a.localeCompare(b, undefined, { sensitivity: "base" }));
-
-        return [...remainingColumnKeysSorted, ...scatterKeysSorted];
-    };
-    const lowerPart = buildPart(params.scatterLowerThan99, params.columnRowsLowerThan99);
-    const greaterPart = buildPart(params.scatterGreaterOrEqual99, params.columnRowsGreaterOrEqual99);
-
-    return lowerPart.length > 0 && greaterPart.length > 0
-        ? [...greaterPart, null, ...lowerPart]
-        : [...greaterPart, ...lowerPart];
 }
 
 function buildSeriesData(params: {

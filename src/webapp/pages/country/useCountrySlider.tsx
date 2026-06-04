@@ -112,7 +112,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               kind: "graph",
                               countryId: countryId,
-                              title: sliderInfo?.sliderOne || "",
                               graphs: [
                                   {
                                       visualizationId: "jFtGKQIQTGp",
@@ -140,7 +139,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countryId,
                               kind: "graph",
-                              title: sliderInfo?.sliderTwo || "",
                               graphs: [
                                   {
                                       visualizationId: "Y31jQX5PVdI",
@@ -168,7 +166,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countryId,
                               kind: "graph",
-                              title: sliderInfo?.sliderThree || "",
                               graphs: [
                                   {
                                       visualizationId: "geNXcoXc3mf",
@@ -196,7 +193,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countryId,
                               kind: "graph",
-                              title: sliderInfo?.sliderFour || "",
                               graphs: [
                                   {
                                       visualizationId: "hpO1ZyFXpCz",
@@ -224,7 +220,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countryId,
                               kind: "graph",
-                              title: sliderInfo?.sliderFive || "",
                               graphs: [
                                   {
                                       visualizationId: "VB7bdJ8ZXya",
@@ -252,7 +247,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countryId,
                               kind: "graph",
-                              title: sliderInfo?.sliderSix || "",
                               graphs: [
                                   {
                                       visualizationId: "xJhFIBuwGVC",
@@ -280,7 +274,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countryId,
                               kind: "graph",
-                              title: sliderInfo?.sliderSeven || "",
                               graphs: [
                                   {
                                       visualizationId: "rT39aStYqI3",
@@ -308,7 +301,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countrySelected,
                               kind: "graph",
-                              title: sliderInfo?.sliderEight || "",
                               graphs: [
                                   {
                                       visualizationId: "OB4SCQfCzwz",
@@ -336,7 +328,6 @@ export function useCountrySlider(countryId: string): CountrySlider {
                           props: {
                               countryId: countrySelected,
                               kind: "graph",
-                              title: sliderInfo?.sliderNine || "",
                               graphs: [
                                   {
                                       visualizationId: "B4CnzUqVR3n",

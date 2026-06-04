@@ -158,7 +158,7 @@ const Content = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 64px;
+    padding: 24px 200px 24px 64px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${props => props.color} url(${mapBackground});
         background-position: center;

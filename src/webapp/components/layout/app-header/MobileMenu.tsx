@@ -25,6 +25,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = props => {
         goToHome,
         handleCountryClick,
         handleMenuItemClick,
+        handleResourcesMenuItemClick,
         handleClose,
         handleSetAnchorEl,
         handleRegionalClick,
@@ -64,6 +65,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = props => {
                             goToHome={goToHome}
                             handleCountryClick={handleCountryClick}
                             handleMenuItemClick={handleMenuItemClick}
+                            handleResourcesMenuItemClick={handleResourcesMenuItemClick}
                             handleRegionalClick={handleRegionalClick}
                             isRegionalPage={isRegionalPage}
                         />
@@ -90,6 +92,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = props => {
                         goToHome={goToHome}
                         handleCountryClick={handleCountryClick}
                         handleMenuItemClick={handleMenuItemClick}
+                        handleResourcesMenuItemClick={handleResourcesMenuItemClick}
                         handleRegionalClick={handleRegionalClick}
                         isRegionalPage={isRegionalPage}
                     />

@@ -100,13 +100,15 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                 <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
             </TitleContainer>
 
+            <MainSection>
+                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
+            </MainSection>
+
             <MainSection
                 key={`${filters.indicators.selected}-${filters.countryAndRegions.selected?.join(
                     ","
                 )}-${filters.year.selected?.join(",")}`}
             >
-                <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
-
                 {showVisualization && filters.indicators.selected ? (
                     <VisualizationPlugin
                         visualizationId={filters.indicators.selected}

@@ -1,7 +1,7 @@
 import { Tab, TabsWithStringOrNumbers } from "../exportToCSV";
 import { getTabsWithChartData } from "./getTabsWithChartData";
 
-const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "Total", "Richest", "4th"];
+const SORTED_QUINTILES = ["Poorest", "2nd", "3rd", "4th", "Richest", "Total"];
 const HEADER_DATA_PARAM_NAME = "Quintile";
 const HEADERS_BASE = ["Country / Area", "Quintile"];
 

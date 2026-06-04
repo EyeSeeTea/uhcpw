@@ -1,0 +1,250 @@
+---
+import { Image } from "astro:assets";
+import Layout from "@/layouts/Layout.astro";
+import { getMethodsPageData } from "@/data/methods/methods-data";
+import { renderMarkdown } from "@/lib/markdown";
+import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+import { resolveGeneralContentUrls } from "@/data/general-content";
+import bubblePattern from "@/assets/bubble-pattern-white.png";
+import mapBackgroundUrl from "@/assets/map-background.jpg?url";
+
+const { methods, generalContent } = await getMethodsPageData();
+
+const seo = getSeoConfigForRoute(Astro.url.pathname);
+
+const { abbreviationsUrl, glossaryUrl } = resolveGeneralContentUrls(generalContent);
+
+const gridRows = Math.ceil(methods.length / 2);
+---
+
+<Layout seo={seo} generalContent={generalContent}>
+    <link slot="head" rel="preload" href={mapBackgroundUrl} as="image" media="(max-width: 960px)" fetchpriority="high" />
+    <div class="title-banner" aria-label="Methods page header">
+        <Image
+            class="bubble-img"
+            src={bubblePattern}
+            alt=""
+            aria-hidden="true"
+            loading="eager"
+        />
+        <h1>Methods</h1>
+    </div>
+
+    <div class="main-content">
+        <div class="methods-grid" style={`--grid-rows: ${gridRows}`} aria-label="Methods list">
+            {methods.map((method) => (
+                <div class="method-item" aria-label="Method section">
+                    <h2>{method.sectionName}</h2>
+
+                    <div class="text-container">
+                        <div class="markdown-content short-text" set:html={renderMarkdown(method.shortText)} />
+
+                        <details>
+                            <summary>
+                                <span class="label-read-more">Read more<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"/></svg></span>
+                                <span class="label-read-less">Read less<svg class="chevron" aria-hidden="true" viewBox="0 0 24 24" focusable="false"><path d="M12 8l-6 6 1.41 1.41L12 10.83l4.59 4.58L18 14z"/></svg></span>
+                            </summary>
+                            <div class="markdown-content" set:html={renderMarkdown(method.text)} />
+                        </details>
+                    </div>
+                </div>
+            ))}
+
+            <div class="download-links" aria-label="Download links">
+                <a class="download-link" href={abbreviationsUrl} target="_blank" rel="noreferrer">Abbreviations</a>
+                <a class="download-link" href={glossaryUrl} target="_blank" rel="noreferrer">Glossary</a>
+            </div>
+        </div>
+    </div>
+</Layout>
+
+<style define:vars={{ mapBackground: `url("${mapBackgroundUrl}")` }}>
+    /* ── Title Banner ─────────────────────────────────────────────────────── */
+
+    .title-banner {
+        background-color: var(--color-accent-primary);
+        color: white;
+        padding: 24px 200px 24px 64px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .title-banner h1 {
+        margin: 0;
+        font-size: 3rem;
+        font-weight: 400;
+        line-height: 1.167;
+        z-index: 1;
+    }
+
+    .bubble-img {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: auto;
+        height: auto;
+        max-width: none;
+        pointer-events: none;
+        opacity: 0.9;
+    }
+
+    @media (max-width: 960px) {
+        .title-banner {
+            background: var(--mapBackground) center;
+        }
+    }
+
+    /* ── Main Content ─────────────────────────────────────────────────────── */
+
+    .main-content {
+        padding: 80px 64px;
+    }
+
+    @media (max-width: 600px) {
+        .main-content {
+            padding: 40px;
+        }
+    }
+
+    /* ── Methods Grid ─────────────────────────────────────────────────────── */
+
+    .methods-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(var(--grid-rows), auto);
+        grid-auto-flow: column;
+        gap: 40px;
+    }
+
+    @media (max-width: 600px) {
+        .methods-grid {
+            grid-template-columns: 1fr;
+            grid-auto-flow: row;
+        }
+    }
+
+    /* ── Method Item ──────────────────────────────────────────────────────── */
+
+    .method-item h2 {
+        margin: 0 0 10px 0;
+        font-size: 1.5rem;
+        font-weight: 400;
+    }
+
+    .text-container {
+        width: 95%;
+    }
+
+    /* ── Markdown Typography ──────────────────────────────────────────────── */
+
+    .markdown-content :global(p) {
+        font-size: var(--font-size-sm);
+        line-height: 1.43;
+        margin: 0 0 10px 0;
+    }
+
+    .markdown-content :global(ul) {
+        padding-left: 1.2em;
+        margin: 0 0 10px 0;
+    }
+
+    .markdown-content :global(li) {
+        font-size: var(--font-size-sm);
+        line-height: 1.43;
+    }
+
+    .markdown-content :global(a) {
+        color: var(--color-accent-primary);
+        text-decoration: none;
+    }
+
+    .markdown-content :global(a:hover) {
+        text-decoration: underline;
+    }
+
+    /* ── Expand / Collapse ────────────────────────────────────────────────── */
+
+    details {
+        border: none;
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .text-container:has(details[open]) .short-text {
+        display: none;
+    }
+
+    summary {
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+        color: var(--color-accent-primary);
+        font-weight: 700;
+        font-size: var(--font-size-sm);
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    summary::-webkit-details-marker {
+        display: none;
+    }
+
+    summary::marker {
+        content: "";
+    }
+
+    .chevron {
+        margin-inline-start: 4px;
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        position: relative;
+        inset-block-end: 2px;
+        flex-shrink: 0;
+    }
+
+    /* Default (closed): show "Read more", hide "Read less" */
+    .label-read-more {
+        display: inline-flex;
+        align-items: center;
+    }
+    .label-read-less {
+        display: none;
+    }
+
+    /* Open: show "Read less", hide "Read more" */
+    details[open] .label-read-more {
+        display: none;
+    }
+    details[open] .label-read-less {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* ── Download Links ───────────────────────────────────────────────────── */
+
+    .download-links {
+        display: flex;
+        gap: 20px;
+        height: max-content;
+    }
+
+    .download-link {
+        border-radius: 20px;
+        color: white;
+        background-color: var(--color-accent-primary);
+        text-decoration: none;
+        font-size: 14px;
+        line-height: 2;
+        padding: 5px 15px;
+        text-align: center;
+    }
+
+    .download-link:hover {
+        opacity: 0.5;
+    }
+</style>

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useState } from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
@@ -48,6 +48,7 @@ export const RegionalPage: React.FC = () => {
     const { markers, mainPanelContent } = regionMap;
     const mapState = useRegionalPageMap({ selectedRegionId: selectedRegionId, markers: markers });
     const seoConfig = useRegionalPageSeoConfig(selectedRegion);
+    const [mapPanelHeight, setMapPanelHeight] = useState<number | undefined>(undefined);
 
     return (
         <Layout enableRotation={isSmallScreen} disableMinHeight isOverflowVisible>
@@ -61,7 +62,7 @@ export const RegionalPage: React.FC = () => {
                 isSmallScreen={isSmallScreen}
             />
 
-            <MapSection ref={refs.regionMap}>
+            <MapSection ref={refs.regionMap} $panelHeight={mapPanelHeight}>
                 {isSmallScreen ? (
                     <PanelContainer>
                         <RegionMapPanel mainPanelContent={mainPanelContent} />
@@ -74,6 +75,7 @@ export const RegionalPage: React.FC = () => {
                         className="region-map"
                         isRegionPage
                         panelMaxWidth={sidePanelWidth}
+                        onPanelHeightComputed={setMapPanelHeight}
                     />
                 )}
             </MapSection>
@@ -83,7 +85,9 @@ export const RegionalPage: React.FC = () => {
                     <MobileSection ref={refs.numbers}>
                         <SectionTitleDivider onlyTopMargin>
                             <SectionTitle>
-                                {i18n.t("Numbers: financial hardship, unmet need and spending on health")}
+                                {i18n.t("Numbers: financial hardship, unmet need and spending on health", {
+                                    nsSeparator: false,
+                                })}
                             </SectionTitle>
                         </SectionTitleDivider>
 
@@ -99,7 +103,11 @@ export const RegionalPage: React.FC = () => {
 
                     <MobileSection ref={refs.gapsInCoverage}>
                         <SectionTitleDivider onlyTopMargin>
-                            <SectionTitle>{i18n.t("The story behind the numbers: gaps in coverage")}</SectionTitle>
+                            <SectionTitle>
+                                {i18n.t("The story behind the numbers: gaps in coverage", {
+                                    nsSeparator: false,
+                                })}
+                            </SectionTitle>
                         </SectionTitleDivider>
 
                         <GapsInCoverageSection
@@ -114,7 +122,11 @@ export const RegionalPage: React.FC = () => {
 
                     <MobileSection ref={refs.policyChecklist}>
                         <SectionTitleDivider onlyBottomMargin>
-                            <SectionTitle>{i18n.t("Progress is possible: a policy checklist")}</SectionTitle>
+                            <SectionTitle>
+                                {i18n.t("Progress is possible: a coverage policy checklist", {
+                                    nsSeparator: false,
+                                })}
+                            </SectionTitle>
                         </SectionTitleDivider>
 
                         <PolicyChecklistSection
@@ -192,9 +204,9 @@ const PanelContainer = styled.div`
     color: ${colors.white};
 `;
 
-const MapSection = styled.section`
+const MapSection = styled.section<{ $panelHeight?: number }>`
     margin-top: 5px;
-    height: 85vh;
+    height: ${props => (props.$panelHeight ? `max(85vh, ${props.$panelHeight}px)` : "85vh")};
     min-height: 620px;
     scroll-margin-top: 80px;
 

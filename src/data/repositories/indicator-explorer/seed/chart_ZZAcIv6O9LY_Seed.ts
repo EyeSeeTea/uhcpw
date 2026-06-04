@@ -3,7 +3,7 @@ import { sortedCategoryNames, sortedSubcategoryNames } from "./utils";
 
 export const chart_ZZAcIv6O9LY_Seed: VisualizationExtra = {
     categoryName: sortedCategoryNames.healthSpending,
-    friendlyName: "public spending on health as a share of current spending on health",
+    friendlyName: "Public spending on health as a share of current spending on health (multiple years, line chart)",
     minCountryFilter: 1,
     isOrgUnitRegions: true,
     hasEURegion: true,

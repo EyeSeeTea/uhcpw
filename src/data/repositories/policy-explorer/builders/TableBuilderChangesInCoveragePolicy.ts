@@ -372,10 +372,14 @@ export class TableBuilderChangesInCoveragePolicy implements TableBuilder {
                 const areaTypeCatDataElementId = AREA_OF_CHANGE_IN_COVERAGE_POLICY_CAT.find(areaCategory =>
                     subcategoriesIdsInAChangeOfTheYear.includes(areaCategory)
                 );
-                const areaTypeCatDataValue =
-                    dataValuesByGroup.find(dv => dv.dataElement === areaTypeCatDataElementId)?.value ?? "";
+                const areaTypeCatDataValues =
+                    dataValuesByGroup.find(dv => dv.dataElement === areaTypeCatDataElementId)?.value.split(",") ?? [];
 
-                if (policyExplorerSubcategoriesIds && !policyExplorerSubcategoriesIds.includes(areaTypeCatDataValue)) {
+                const isAreaTypeInSubcategories = areaTypeCatDataValues.some(areaType =>
+                    policyExplorerSubcategoriesIds?.includes(areaType)
+                );
+
+                if (!isAreaTypeInSubcategories) {
                     return accRows;
                 }
 

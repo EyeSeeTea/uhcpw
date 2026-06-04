@@ -1,17 +1,41 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: i18next-conv\n"
-"POT-Creation-Date: 2025-04-11T14:01:00.625Z\n"
+"POT-Creation-Date: 2026-05-26T11:07:30.881Z\n"
 "PO-Revision-Date: 2018-10-25T09:02:35.143Z\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
+msgid "404"
+msgstr ""
+
 msgid "Error fetching methods"
 msgstr ""
 
+msgid "Country Information coming soon"
+msgstr ""
+
+msgid "User charges are applied"
+msgstr ""
+
+msgid "Care not covered for most people"
+msgstr ""
+
+msgid "Care not covered"
+msgstr ""
+
+msgid "Most undocumented migrants"
+msgstr ""
+
+msgid "Some undocumented migrants"
+msgstr ""
+
 msgid "All countries and areas"
+msgstr ""
+
+msgid "Please rotate your device"
 msgstr ""
 
 msgid "Select country or area"
@@ -56,6 +80,9 @@ msgstr ""
 msgid "No information available for this category"
 msgstr ""
 
+msgid "Save"
+msgstr ""
+
 msgid "Clear"
 msgstr ""
 
@@ -63,6 +90,15 @@ msgid "indicator explorer"
 msgstr ""
 
 msgid "policy explorer"
+msgstr ""
+
+msgid "Weaker financial protection"
+msgstr ""
+
+msgid "Stronger financial protection"
+msgstr ""
+
+msgid "UHC watch YouTube video player"
 msgstr ""
 
 msgid "Zoom in"
@@ -75,12 +111,6 @@ msgid "News"
 msgstr ""
 
 msgid "Multimedia"
-msgstr ""
-
-msgid "Weaker financial protection"
-msgstr ""
-
-msgid "Stronger financial protection"
 msgstr ""
 
 msgid "Indicators"
@@ -101,7 +131,10 @@ msgstr ""
 msgid "Get chart"
 msgstr ""
 
-msgid "Co-funded by the European Union"
+msgid "Abbreviations"
+msgstr ""
+
+msgid "Glossary"
 msgstr ""
 
 msgid "About us"
@@ -122,16 +155,16 @@ msgstr ""
 msgid "Tel: +34 673 290 861"
 msgstr ""
 
+msgid "Co-funded by the European Union"
+msgstr ""
+
 msgid "WHO privacy policy"
 msgstr ""
 
-msgid "Mobile-friendly version coming soon"
+msgid "Abbreviations & glossary"
 msgstr ""
 
-msgid "Abbreviations"
-msgstr ""
-
-msgid "Glossary"
+msgid "WHO privacy policy & disclaimer"
 msgstr ""
 
 msgid "Indicator explorer"
@@ -140,10 +173,10 @@ msgstr ""
 msgid "Policy explorer"
 msgstr ""
 
-msgid "Countries & areas"
+msgid "Regional overview"
 msgstr ""
 
-msgid "Regional report"
+msgid "Countries & areas"
 msgstr ""
 
 msgid "Methods"
@@ -179,6 +212,9 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
+msgid "Back to top"
+msgstr ""
+
 msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
@@ -187,16 +223,35 @@ msgstr[1] ""
 msgid "There may be no data"
 msgstr ""
 
+msgid ""
+"Over 50 indicators of financial hardship, unmet need for health care and "
+"spending on health"
+msgstr ""
+
+msgid ""
+"Information on population coverage, service coverage, user charges and "
+"voluntary health insurance"
+msgstr ""
+
 msgid "All years"
 msgstr ""
 
-msgid "You can only select {{count}} countries at a time with this indicator"
+msgid "Latest available year"
+msgstr ""
+
+msgid "2019 or latest available year before COVID-19"
+msgstr ""
+
+msgid ""
+"You can only select {{count}} countries or areas at a time with this "
+"indicator"
 msgid_plural ""
-"You can only select {{count}} countries at a time with this indicator"
+"You can only select {{count}} countries or areas at a time with this "
+"indicator"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "You can only select one country at a time with this indicator"
+msgid "You can only select one country or area at a time with this indicator"
 msgstr ""
 
 msgid "This indicator needs at least {{count}} countries"
@@ -209,25 +264,22 @@ msgid_plural "This indicator needs to select only {{count}} country"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid "2019 or latest available year before COVID-19"
-msgstr ""
-
-msgid "Latest available year"
-msgstr ""
-
 msgid "Read more"
 msgstr ""
 
 msgid "Read less"
 msgstr ""
 
-msgid "Abbreviations"
-msgstr ""
-
-msgid "Glossary"
-msgstr ""
-
 msgid "Error fetching Methods"
+msgstr ""
+
+msgid "Page Not Found"
+msgstr ""
+
+msgid "The page you are looking for does not exist or has been moved."
+msgstr ""
+
+msgid "Go to Homepage"
 msgstr ""
 
 msgid "Last updated: "
@@ -257,7 +309,37 @@ msgstr ""
 msgid "Row/Column"
 msgstr ""
 
-msgid "Latest avalaible year"
+msgid "See {{countryName}} country page"
+msgstr ""
+
+msgid "Select region"
+msgstr ""
+
+msgid "Click an item on the policy checklist to see country examples"
+msgstr ""
+
+msgid "Numbers: financial hardship, unmet need and spending on health"
+msgstr ""
+
+msgid "The story behind the numbers: gaps in coverage"
+msgstr ""
+
+msgid "Progress is possible: a coverage policy checklist"
+msgstr ""
+
+msgid "Expert network"
+msgstr ""
+
+msgid "The region at a glance"
+msgstr ""
+
+msgid "Numbers"
+msgstr ""
+
+msgid "Gaps in coverage"
+msgstr ""
+
+msgid "Policy checklist"
 msgstr ""
 
 msgid "Country analysis"

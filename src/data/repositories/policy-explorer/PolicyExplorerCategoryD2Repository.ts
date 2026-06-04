@@ -15,11 +15,12 @@ import { getMainPagesContent } from "../common/getMainPagesContent";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
-import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 import { DataElementSubstitutor } from "./builders/DataElementSubstitutor";
+import { TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderByTypeOfHealthcare";
 import { USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE } from "./builders/TableBuilderCoveredHealthcareByType";
 import { Maybe } from "../../../types/utils";
 import { policyExplorerDataSet_ID } from "../common/getPolicyExplorerDataValues";
+import { ENTITLEMENTS_FOR_UNDOCUMENTED_DATA_ELEMENT_SECTION_IDS } from "./builders/TableBuilderEntitlementsForUndocumented";
 
 export const CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID = "Dg4b8bTfEIr";
 const CHANGES_AREA_CATEGORY_OPTIONSET = "po0HzvS3s3w";
@@ -116,7 +117,6 @@ const CATEGORY_DATASET_TO_PROGRAM = {
 
 const sectionsList = [
     DATASET_POPULATION_COVERAGE_CATEGORY,
-    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
     DATASET_SERVICE_COVERAGE_CATEGORY,
     DATASET_USER_CHARGES_COPAYMENTS_CATEGORY,
     DATASET_GAPS_IN_COVERAGE_CATEGORY,
@@ -131,9 +131,12 @@ const selectCategoryInfoDataElements: Record<string, Id> = {
     text: "SAzOXqrxWfI",
 };
 
-const CATEGORIES_ONLY_IN_REGIONAL_PAGE = [DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY];
+const CATEGORIES_ONLY_IN_REGIONAL_PAGE: string[] = [];
 
-const CATEGORIES_ALSO_IN_REGIONAL_PAGE = [CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY];
+const CATEGORIES_ALSO_IN_REGIONAL_PAGE: string[] = [
+    CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+    DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+];
 
 export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategoryRepository {
     cache = new InmemoryCache();
@@ -283,7 +286,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
 
                     const subDataElements = deSubstitutor.substituteSource(section.dataElements);
 
-                    if (CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES === section.id) {
+                    if (section.id === CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES) {
                         return [
                             {
                                 id: section.id,
@@ -293,27 +296,17 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
                                 type: "selectable",
                             },
                         ];
-                    } else if (section.id === DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY) {
-                        return [
-                            {
-                                id: section.id,
-                                name: "Entitlements for undocumented migrants",
-                                subcategories: [],
-                                description: notes,
-                                type: "selectable",
-                            },
-                        ];
-                    } else {
-                        return [
-                            {
-                                id: section.id,
-                                name: displayName.replace("Policy Explorer - ", ""),
-                                subcategories: this.sortSubcategories(dataElements, sectionsEvent, subDataElements),
-                                description: notes,
-                                type: "selectable",
-                            },
-                        ];
                     }
+
+                    return [
+                        {
+                            id: section.id,
+                            name: displayName.replace("Policy Explorer - ", ""),
+                            subcategories: this.sortSubcategories(dataElements, sectionsEvent, subDataElements),
+                            description: notes,
+                            type: "selectable",
+                        },
+                    ];
                 }),
             changesInCoveragePolicyMergedCategory,
         ];
@@ -340,23 +333,35 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
     }
 
     private getComparativePolicyChartsCategories(infoNotes: InfoNotes): PolicyExplorerGroupCategory {
-        const catNotes = infoNotes[CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY] || "";
-
-        const category: PolicyExplorerSelectableCategory = {
-            id: CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
-            name: "User charges (co-payments) for covered health care by type of care",
-            subcategories: USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE.map(type => ({
-                id: type,
-                name: type,
-            })),
-            description: catNotes,
-            type: "selectable",
-        };
+        const categories: PolicyExplorerSelectableCategory[] = [
+            {
+                id: DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY,
+                name: "Entitlements for undocumented migrants",
+                subcategories: Object.entries(ENTITLEMENTS_FOR_UNDOCUMENTED_DATA_ELEMENT_SECTION_IDS).map(
+                    ([title, id]) => ({
+                        id: id,
+                        name: title,
+                    })
+                ),
+                description: infoNotes[DATASET_ENTITLEMENTS_FOR_UNDOCUMENTED_CATEGORY] || "",
+                type: "selectable",
+            },
+            {
+                id: CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
+                name: "User charges (co-payments) for covered health care by type of care",
+                subcategories: USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE.map(type => ({
+                    id: type,
+                    name: type,
+                })),
+                description: infoNotes[CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY] || "",
+                type: "selectable",
+            },
+        ];
 
         const comparativePolicyChartsCategory: PolicyExplorerGroupCategory = {
             id: COMPARATIVE_POLICY_CHARTS_CATEGORY_GROUP_ID,
             name: "Comparative policy charts",
-            categories: [category],
+            categories: categories,
             description: "",
             type: "group",
         };

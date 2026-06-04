@@ -4,6 +4,7 @@
         "name": "Czechia",
         "longName": "Czech Republic",
         "code": "CZH",
+        "iso3Code": "CZE",
         "coordinates": [15.473299, 49.817328],
         "status": "Strong",
         "parents": [
@@ -21,7 +22,11 @@
             }
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=sJ6o8xkOx3v",
-        "summary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 4.2% of households\n* Main drivers: outpatient medicines, medical products and dental care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.2% of people\n* Dental care: 0.8% of people",
+        "showCountryFlag": false,
+        "generalSummary": "**Financial hardship (2019)**\n\n* Impoverishing health spending: 2.2% of households\n* Catastrophic health spending: 4.2% of households\n* Main drivers: outpatient medicines, medical products and dental care on average; outpatient medicines for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 0.2% of people\n* Dental care: 0.8% of people",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
         "sliderInfo": {
             "gapsSection": {
                 "sectionName": "",
@@ -76,13 +81,15 @@
                 ]
             }
         },
-        "isInCountryPage": false
+        "isInCountryPage": false,
+        "currencyCode": "CZK"
     },
     {
         "id": "wMTP4GblKr8",
         "name": "Poland",
         "longName": "Republic of Poland",
         "code": "POL",
+        "iso3Code": "POL",
         "coordinates": [19.356472, 52.196611],
         "status": "Gaps",
         "parents": [
@@ -100,7 +107,11 @@
             }
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=UiuU5jid3YI",
-        "summary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 9.4% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.3% of people\n* Dental care: 1.0% of people\n\n[Financial protection report](https://apps.who.int/iris/handle/10665/330606)",
+        "showCountryFlag": false,
+        "generalSummary": "**Financial hardship (2021)**\n\n* Impoverishing health spending: 3.3% of households\n* Catastrophic health spending: 9.4% of households\n* Main drivers: outpatient medicines on average and especially for low-income households\n\n\n**Unmet need (2022)**\n\n* Health care: 2.3% of people\n* Dental care: 1.0% of people\n\n[Financial protection report](https://apps.who.int/iris/handle/10665/330606)",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
         "sliderInfo": {
             "gapsSection": {
                 "sectionName": "",
@@ -155,13 +166,15 @@
                 ]
             }
         },
-        "isInCountryPage": false
+        "isInCountryPage": false,
+        "currencyCode": "PLN"
     },
     {
         "id": "DVnpk4xiXGJ",
         "name": "Spain",
         "longName": "Kingdom of Spain",
         "code": "SPA",
+        "iso3Code": "ESP",
         "coordinates": [-3.68444, 40.3086],
         "status": "Strong",
         "parents": [
@@ -179,7 +192,11 @@
             }
         ],
         "flag": "/dhis2/api/events/files?dataElementUid=RCQZDELfNQJ&eventUid=FCuiVk73pT3",
-        "summary": "**Financial hardship (2020)**\r\n\r\n* Impoverishing health spending: 1.6% of households\r\n* Catastrophic health spending: 2.9% of households\r\n* Main drivers: medical products on average; medical products and outpatient medicines for low-income households\r\n\r\n\r\n**Unmet need (2022)**\r\n\r\n* Health care: 1.2% of people\r\n* Dental care: 4.6% of people\r\n\r\n[Financial protection report](https://apps.who.int/iris/handle/10665/347403)",
+        "showCountryFlag": true,
+        "generalSummary": "**Financial hardship (2020)**\r\n\r\n* Impoverishing health spending: 1.6% of households\r\n* Catastrophic health spending: 2.9% of households\r\n* Main drivers: medical products on average; medical products and outpatient medicines for low-income households\r\n\r\n\r\n**Unmet need (2022)**\r\n\r\n* Health care: 1.2% of people\r\n* Dental care: 4.6% of people\r\n\r\n[Financial protection report](https://apps.who.int/iris/handle/10665/347403)",
+        "countryPageSummary": "",
+        "homePageSummary": "",
+        "regionalPageSummary": "",
         "sliderInfo": {
             "gapsSection": {
                 "sectionName": "",
@@ -203,7 +220,7 @@
                     },
                     {
                         "title": "",
-                        "text": "Source: WHO Regional Office for Europe, based on [UHC watch policy explorer](https://apps.who.int/dhis2/uhcwatch/#/policy-explorer)."
+                        "text": "Source: WHO Regional Office for Europe, based on [UHC watch policy explorer](https://apps.who.int/dhis2/uhcwatch/policy-explorer)."
                     }
                 ]
             },
@@ -229,11 +246,12 @@
                     },
                     {
                         "title": "Increase public spending on health and use resources to meet equity and efficiency goals",
-                        "text": "Strengthening financial protection is likely to require additional public spending on health. To ensure additional spending meets equity and efficiency goals, it should be targeted carefully to reduce financial hardship and unmet need for households with low incomes.\r\n\r\nSource: WHO Regional Office for Europe, based on [‘Can people afford to pay for health care? New evidence on financial protection in Spain’ (2021)](https://iris.who.int/handle/10665/347403)."
+                        "text": "Strengthening financial protection is likely to require additional public spending on health. To ensure additional spending meets equity and efficiency goals, it should be targeted carefully to reduce financial hardship and unmet need for households with low incomes.\r\n\r\nSource: WHO Regional Office for Europe, based on ['Can people afford to pay for health care? New evidence on financial protection in Spain' (2021)](https://iris.who.int/handle/10665/347403)."
                     }
                 ]
             }
         },
-        "isInCountryPage": true
+        "isInCountryPage": true,
+        "currencyCode": "EUR"
     }
 ]

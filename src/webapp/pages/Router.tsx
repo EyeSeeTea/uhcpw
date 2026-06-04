@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { HashRouter, Route, Switch, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Switch, useLocation } from "react-router-dom";
 import { AboutPage } from "./about/AboutPage";
 import { HomePage } from "./home/HomePage";
 import { PolicyExplorerPage } from "./policy-explorer/PolicyExplorerPage";
@@ -9,6 +9,7 @@ import { MethodsPage } from "./methods/MethodsPage";
 import { IndicatorExplorerPage } from "./indicator-explorer/IndicatorExplorerPage";
 import { CountryOrRegionalPage } from "./country-or-regional/CountryOrRegionalPage";
 import { SeoMetaTags } from "../components/seo/SeoMetaTags";
+import { appConfig } from "../../app-config";
 
 const ScrollToTop = (): JSX.Element | null => {
     const { pathname, state } = useLocation<{ preserveScroll?: boolean }>();
@@ -24,7 +25,7 @@ const ScrollToTop = (): JSX.Element | null => {
 
 export const Router: React.FC = React.memo(() => {
     return (
-        <HashRouter>
+        <BrowserRouter basename={appConfig.basePath}>
             <SeoMetaTags />
             <ScrollToTop />
             <Switch>
@@ -38,13 +39,13 @@ export const Router: React.FC = React.memo(() => {
                     path="/resources/:category(news|multimedia|country-analysis|comparative-analysis)/:countriesOrTheme?/:countries?"
                     render={() => <ResourcesByTypePage />}
                 />
-                <Route path="/resources" render={() => <ResourcesPage />} />
+                <Route path="/resources/:theme?" render={() => <ResourcesPage />} />
                 <Route path="/methods" render={() => <MethodsPage />} />
                 <Route path="/:countryOrRegion" render={() => <CountryOrRegionalPage />} />
 
                 {/* Default route */}
                 <Route render={() => <HomePage />} />
             </Switch>
-        </HashRouter>
+        </BrowserRouter>
     );
 });

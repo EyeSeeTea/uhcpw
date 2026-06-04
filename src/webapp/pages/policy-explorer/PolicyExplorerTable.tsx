@@ -22,6 +22,7 @@ import { CategorySelectableOption } from "../../components/policy-explorer/categ
 import { PolicyExplorerTableValue } from "../../components/policy-explorer/PolicyExplorerTableValue";
 import { TableLegend } from "../../components/policy-explorer/TableLegend";
 import { BREAKPOINT_WIDTH_MOBILE_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
+import { Maybe } from "../../../types/utils";
 
 interface PolicyExplorerTableProps {
     category: CategorySelectableOption;
@@ -45,6 +46,7 @@ const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
 const MIN_DATA_CELL_WIDTH = 200;
 const FIRST_COLUMN_SPECIAL_INVERTED_WIDTH = 180;
 const CELL_HORIZONTAL_PADDING = 8; // 4px left + 4px right
+const BORDER_SPACING = 3;
 
 export const PolicyExplorerTable = React.memo(
     ({
@@ -79,11 +81,24 @@ export const PolicyExplorerTable = React.memo(
                 if (isSpecialInverted) {
                     const totalColumns = rows?.[0]?.length || 1;
                     const totalPadding = totalColumns * CELL_HORIZONTAL_PADDING;
+                    const totalBorderSpacing = (totalColumns + 1) * BORDER_SPACING;
                     const dataColumns = Math.max(totalColumns - 1, 1);
-                    const availableWidth = Math.max(totalWidth - FIRST_COLUMN_SPECIAL_INVERTED_WIDTH - totalPadding, 0);
+                    const availableWidth = Math.max(
+                        totalWidth - FIRST_COLUMN_SPECIAL_INVERTED_WIDTH - totalPadding - totalBorderSpacing,
+                        0
+                    );
                     const dataColumnWidth = availableWidth / dataColumns;
 
                     return columnIndex === 0 ? FIRST_COLUMN_SPECIAL_INVERTED_WIDTH : dataColumnWidth;
+                }
+
+                if (isSpecialTable && dataOrientation === "normal") {
+                    const totalColumns = rows?.[0]?.length || 1;
+                    const totalPadding = totalColumns * CELL_HORIZONTAL_PADDING;
+                    const totalBorderSpacing = (totalColumns + 1) * BORDER_SPACING;
+                    const availableWidth = Math.max(totalWidth - totalPadding - totalBorderSpacing, 0);
+
+                    return availableWidth / totalColumns;
                 }
 
                 if (dataOrientation === "inverted" && hasMoreThanOneCountry) {
@@ -125,7 +140,8 @@ export const PolicyExplorerTable = React.memo(
             scrollbar.style.overflow = "auto";
             scrollbar.style.overflowY = "hidden";
             scrollbar.style.position = "relative";
-            scrollbar.style.top = "15px"; // Maybe calculate this dynamically
+            scrollbar.style.top = "2px"; // Maybe calculate this dynamically
+            scrollbar.style.zIndex = "3";
 
             const style = document.createElement("style");
             style.innerHTML = `
@@ -173,11 +189,16 @@ export const PolicyExplorerTable = React.memo(
 
         const tableContainerRef = React.useRef<HTMLDivElement>(null);
 
-        // Add the double scroll bar effect when the component mounts
+        // Add the double scroll bar effect when the component mounts or layout changes
         useEffect(() => {
             doubleScroll(tableContainerRef.current);
             // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [tableContainerRef, dataOrientation]);
+        }, [tableContainerRef, dataOrientation, width]);
+
+        useEffect(() => {
+            if (isSpecialTable && dataOrientation === "inverted") return;
+            return stickyHeader(tableContainerRef.current);
+        }, [rows, dataOrientation, isSpecialTable]);
 
         const isEmpty = useMemo(() => {
             return !rows?.length || (isSpecialTable && rows.every(row => row.length === 1));
@@ -267,6 +288,55 @@ export const PolicyExplorerTable = React.memo(
     }
 );
 
+// use js approach on sticky header instead of css because overflow-x conflicts with position: sticky;
+// we need to support horizontal scroll because the tables can have a lot of columns
+function stickyHeader(container: HTMLDivElement | null): Maybe<() => void> {
+    if (!container) return;
+
+    const handleScroll = () => {
+        const table = container.querySelector("table");
+        const headerRow = table?.querySelector("tbody > tr:first-child");
+        if (!table || !headerRow) return;
+
+        const headerCells = headerRow.querySelectorAll<HTMLElement>("td");
+        const tableRect = table.getBoundingClientRect();
+        const headerHeight = headerRow.getBoundingClientRect().height;
+        const topScrollbar = container.previousElementSibling as HTMLElement | null;
+        const topScrollbarHeight = topScrollbar?.getBoundingClientRect().height ?? 0;
+
+        if (tableRect.top < 0 && tableRect.bottom > 0) {
+            const headerOffset = Math.min(-tableRect.top, tableRect.height - headerHeight);
+            headerCells.forEach(cell => {
+                cell.style.transform = `translateY(${headerOffset}px)`;
+                cell.style.willChange = "transform";
+                cell.style.zIndex = "2";
+            });
+
+            if (topScrollbar) {
+                const containerRect = container.getBoundingClientRect();
+                const scrollbarOffset = Math.min(-containerRect.top, containerRect.height - topScrollbarHeight);
+                topScrollbar.style.transform = `translateY(${scrollbarOffset}px)`;
+                topScrollbar.style.willChange = "transform";
+            }
+        } else {
+            headerCells.forEach(cell => {
+                cell.style.transform = "";
+                cell.style.willChange = "";
+                cell.style.zIndex = "";
+            });
+            if (topScrollbar) {
+                topScrollbar.style.transform = "";
+                topScrollbar.style.willChange = "";
+            }
+        }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+}
+
 export const StyledTable: React.FC<{
     orientation: DataOrientation;
     fullWidth?: boolean;
@@ -312,7 +382,7 @@ const TablePaper = styled(Paper)`
 const StyledNormalTable = styled(Table)<{ fullWidth?: boolean }>`
     width: ${props => (props.fullWidth ? "100%" : "fit-content")};
     table-layout: ${props => (props.fullWidth ? "auto" : "fixed")};
-    border-spacing: 0.8px;
+    border-spacing: 3px;
     border-collapse: initial;
 
     tbody > tr:first-child > td {
@@ -330,12 +400,16 @@ const StyledTableCell = styled(TableCell)<{ type: PolicyExplorerCellType; cellwi
     min-width: ${props => (props.cellwidth ? `${props.cellwidth}px` : "initial")};
     background-color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#d3e5f5" : "#f4f8fc")};
     color: ${props => (props.type === PolicyExplorerCellType.HEADER ? "#0460a7" : "black")};
+    padding-block: 8px;
+    > p {
+        margin: 0px;
+    }
 `;
 
 const StyledInvertedTable = styled(Table)<{ fullWidth?: boolean }>`
     width: ${props => (props.fullWidth ? "100%" : "fit-content")};
     table-layout: ${props => (props.fullWidth ? "auto" : "fixed")};
-    border-spacing: 0.8px;
+    border-spacing: 3px;
     border-collapse: initial;
 
     tbody > tr > td {
@@ -398,10 +472,27 @@ const SwitchRowColumnButton = styled(Button)`
 `;
 
 const StyledTableBody = styled(TableBody)<{ $orientation: DataOrientation }>`
+    tr:first-child > td {
+        background-color: #d3e5f5;
+        color: #0460a7;
+
+        .MuiTableCell-root {
+            border: none;
+        }
+    }
+
     &.u800TAhsIBY_Cat-table,
     &.Nx6S3aQkvWe-table {
         tr:first-child {
             text-align-last: left;
+        }
+        tr:not(:first-child) {
+            td {
+                padding-block: 3px;
+                p {
+                    margin-block: 0px;
+                }
+            }
         }
 
         tr:first-child > td {

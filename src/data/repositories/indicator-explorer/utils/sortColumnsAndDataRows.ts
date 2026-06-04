@@ -1,5 +1,17 @@
 import _ from "lodash";
 
+export const INDICATOR_COLUMN = "Indicator";
+export const PARAMETER_COLUMN = "Parameter";
+export const COUNTRY_AREA_COLUMN = "Country / Area";
+export const YEAR_COLUMN = "Year";
+export const ABBREVIATION_COLUMN = "Abbreviation";
+export const ABBREVIATION_AND_YEAR_COLUMN = "Abbreviation and year";
+export const VALUE_COLUMN = "Value";
+export const QUINTILE_COLUMN = "Quintile";
+export const COUNTRY_YEAR_COLUMN = "Country Year";
+export const YEAR_QUINTILE_COLUMN = "Year Quintile";
+export const TYPE_OF_CARE_COLUMN = "Type of care";
+
 export function sortColumnsRowByColumnsOrder(headerRow: string[], columnsOrder: string[]): string[] {
     const sortedHeader = _.sortBy(headerRow, header => {
         const index = columnsOrder.indexOf(header);
@@ -14,17 +26,16 @@ export function sortDataRowsByParameterOrder(
     dataRows: string[][],
     parameterOrder: string[]
 ): string[][] {
-    const yearIndex = headerRow.findIndex(header => header === "Year");
-
-    const countryIndex = headerRow.findIndex(header => header === "Country / Area");
-    const parameterIndex = headerRow.findIndex(header => header === "Parameter");
+    const yearIndex = headerRow.findIndex(header => header === YEAR_COLUMN);
+    const countryIndex = headerRow.findIndex(header => header === COUNTRY_AREA_COLUMN);
+    const indicatorIndex = headerRow.findIndex(header => header === INDICATOR_COLUMN);
 
     const sortedDataRows = _.orderBy(
         dataRows,
         [
             row => row[yearIndex],
             row => row[countryIndex],
-            row => parameterOrder.indexOf(row[parameterIndex]?.toString() || ""),
+            row => parameterOrder.indexOf(row[indicatorIndex]?.toString() || ""),
         ],
         ["asc", "asc", "asc"]
     );
