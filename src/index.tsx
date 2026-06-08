@@ -1,3 +1,4 @@
+import "./bootstrapPublicPath";
 import "./webapp/utils/wdyr";
 import { Provider } from "@dhis2/app-runtime";
 import i18n from "@dhis2/d2-i18n";
