@@ -10,6 +10,7 @@ import { App } from "./webapp/pages/app/App";
 import { D2Api } from "./types/d2-api";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { colors } from "./webapp/pages/app/themes/dhis2.theme";
+import { appConfig } from "./app-config";
 
 declare global {
     interface Window {
@@ -29,9 +30,10 @@ const isDev = process.env.NODE_ENV === "development";
 
 async function getBaseUrl() {
     if (isDev) {
-        return "/dhis2"; // See src/setupProxy.js
+        return `${window.location.origin}/dhis2`; // See src/setupProxy.js
     } else {
-        const manifest = await fetch("manifest.webapp").then(res => res.json());
+        const manifestUrl = `${appConfig.basePath.replace(/\/+$/, "")}/manifest.webapp`;
+        const manifest = await fetch(manifestUrl).then(res => res.json());
         return manifest.activities.dhis.href;
     }
 }
