@@ -7,7 +7,7 @@
     <priority>1</priority>
   </url>
   <url>
-    <loc>https://apps.who.int/dhis2/uhcwatch/about</loc>
+    <loc>https://apps.who.int/dhis2/uhcwatch/about/</loc>
     <lastmod>2025-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -55,7 +55,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://apps.who.int/dhis2/uhcwatch/methods</loc>
+    <loc>https://apps.who.int/dhis2/uhcwatch/methods/</loc>
     <lastmod>2025-11-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
