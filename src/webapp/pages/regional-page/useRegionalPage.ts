@@ -1,4 +1,5 @@
 import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { openInNewTab } from "../../utils/fullUrlForPath";
 
 import { Option } from "../../components/dropdown/Option";
 import { Id } from "../../../domain/entities/Ref";
@@ -219,9 +220,7 @@ export function useRegionalPage(): RegionalPageState {
     }, [filterInParams.region, handleRegionChange, selectedRegionId]);
 
     const goTo = useCallback((link: string) => {
-        const { origin, pathname } = window.location;
-        const fullUrl = `${origin}${pathname}#${link}`;
-        window.open(fullUrl, "_blank", "noopener,noreferrer");
+        openInNewTab(link);
     }, []);
 
     const sectionsAccordionConfig: AccordionConfig[] = useMemo(() => {
