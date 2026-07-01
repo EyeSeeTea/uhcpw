@@ -10,6 +10,7 @@ import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { FullScreenDialog } from "../dialog/FullScreenDialog";
 import { Id } from "../../../domain/entities/Ref";
 import { SyncGraphsState } from "../country-page/slider/useSyncedGraphs";
+import { openInNewTab } from "../../utils/fullUrlForPath";
 
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 
@@ -201,10 +202,7 @@ export const VisualizationPlugin: React.FC<VisualizationPluginProps> = React.mem
                           ...regions,
                       ]}&showChartByDefault=true`;
 
-            const { origin, pathname } = window.location;
-            const fullUrl = `${origin}${pathname}#${innerPath}`;
-
-            window.open(fullUrl, "_blank", "noopener,noreferrer");
+            openInNewTab(innerPath);
         }
     }, [
         chartData.kind,
