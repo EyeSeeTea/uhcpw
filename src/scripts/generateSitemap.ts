@@ -26,7 +26,7 @@ async function getStaticRoutes(): Promise<SitemapUrl[]> {
             priority: 1.0,
         },
         {
-            loc: `/about`,
+            loc: `/about/`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: 0.8,
@@ -74,7 +74,7 @@ async function getStaticRoutes(): Promise<SitemapUrl[]> {
             priority: 0.7,
         },
         {
-            loc: `/methods`,
+            loc: `/methods/`,
             lastmod: currentDate,
             changefreq: "monthly",
             priority: 0.6,

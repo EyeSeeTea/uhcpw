@@ -1,4 +1,5 @@
 import { MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { openInNewTab } from "../../utils/fullUrlForPath";
 
 import { Option } from "../../components/dropdown/Option";
 import { Id } from "../../../domain/entities/Ref";
@@ -73,6 +74,7 @@ export type RegionalPageState = {
     isEUorEuropeanRegion: boolean;
     isEuropeanRegion: boolean;
     goTo: (link: string) => void;
+    aboutPageUrl: string;
     handleAccordionChange: (event: React.ChangeEvent<{}>, tabId: number, isExpanded: boolean) => void;
     expandedSectionsAccordion: AccordionConfig | undefined;
     sectionsAccordionConfig: AccordionConfig[];
@@ -219,10 +221,13 @@ export function useRegionalPage(): RegionalPageState {
     }, [filterInParams.region, handleRegionChange, selectedRegionId]);
 
     const goTo = useCallback((link: string) => {
-        const { origin, pathname } = window.location;
-        const fullUrl = `${origin}${pathname}#${link}`;
-        window.open(fullUrl, "_blank", "noopener,noreferrer");
+        openInNewTab(link);
     }, []);
+
+    const aboutPageUrl = useMemo(
+        () => (selectedRegion?.code ? `/about?region=${selectedRegion.code}#experts` : "/about#experts"),
+        [selectedRegion?.code]
+    );
 
     const sectionsAccordionConfig: AccordionConfig[] = useMemo(() => {
         const resourcesAndExpertsSections = isEuropeanRegion
@@ -248,7 +253,7 @@ export function useRegionalPage(): RegionalPageState {
                       tabTitle: i18n.t("Expert network"),
                       onTitleClick: isEUorEuropeanRegion
                           ? () => {
-                                goTo("/about");
+                                goTo(aboutPageUrl);
                             }
                           : undefined,
                       isSecondaryGradientColor: true,
@@ -355,6 +360,7 @@ export function useRegionalPage(): RegionalPageState {
         policyChecklist.onSelectChecklistItem,
         policyChecklist.isLoading,
         goTo,
+        aboutPageUrl,
     ]);
 
     const replaceHash = useCallback(
@@ -502,6 +508,7 @@ export function useRegionalPage(): RegionalPageState {
         isEUorEuropeanRegion: isEUorEuropeanRegion,
         isEuropeanRegion: isEuropeanRegion,
         goTo: goTo,
+        aboutPageUrl: aboutPageUrl,
         handleAccordionChange: handleAccordionChange,
         expandedSectionsAccordion: expandedSectionsAccordion,
         sectionsAccordionConfig: sectionsAccordionConfig,

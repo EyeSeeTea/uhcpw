@@ -19,6 +19,11 @@ describe("renderMarkdown", () => {
         expect(html).toContain('<a href="https://example.com">example</a>');
     });
 
+    it("renders links opening in a new tab when externalLinks is enabled", () => {
+        const html = renderMarkdown("[example](https://example.com)", { externalLinks: true });
+        expect(html).toContain('<a href="https://example.com" target="_blank" rel="noreferrer">example</a>');
+    });
+
     it("renders bold and italic", () => {
         const html = renderMarkdown("**bold** and *italic*");
         expect(html).toContain("<strong>bold</strong>");

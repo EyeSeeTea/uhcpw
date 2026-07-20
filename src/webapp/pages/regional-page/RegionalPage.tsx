@@ -35,6 +35,7 @@ export const RegionalPage: React.FC = () => {
         isEUorEuropeanRegion,
         isEuropeanRegion,
         goTo,
+        aboutPageUrl,
         expandedSectionsAccordion,
         handleAccordionChange,
         sectionsAccordionConfig,
@@ -159,7 +160,7 @@ export const RegionalPage: React.FC = () => {
 
                             <MobileSection ref={refs.experts}>
                                 <SectionTitleDivider isLighter>
-                                    <SectionTitle onClick={() => isEUorEuropeanRegion && goTo("/about")}>
+                                    <SectionTitle onClick={() => isEUorEuropeanRegion && goTo(aboutPageUrl)}>
                                         {i18n.t("Expert network")}
                                     </SectionTitle>
                                 </SectionTitleDivider>

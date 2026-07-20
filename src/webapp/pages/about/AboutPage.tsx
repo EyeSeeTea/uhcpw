@@ -1,5 +1,6 @@
 import { Container, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect, useMemo, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 import i18n from "../../../locales";
@@ -11,13 +12,33 @@ import { colors } from "../app/themes/dhis2.theme";
 import { useAbout } from "./useAbout";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 
-export const AboutPage: React.FC = React.memo(() => {
-    const { team, experts, countryFilter, officeInfo } = useAbout();
-    const { sendPageView } = useAnalytics();
+const EXPERTS_HASH = "#experts";
 
-    React.useEffect(() => {
+export const AboutPage: React.FC<{ searchParams?: string }> = React.memo(props => {
+    const regionCode = useMemo(
+        () => new URLSearchParams(props.searchParams).get("region") ?? undefined,
+        [props.searchParams]
+    );
+    const { team, experts, countryFilter, officeInfo, isLoading } = useAbout({ regionCode });
+    const { sendPageView } = useAnalytics();
+    const location = useLocation();
+    const expertsRef = useRef<HTMLDivElement>(null);
+    const hasScrolledToExpertsRef = useRef(false);
+
+    useEffect(() => {
         sendPageView({ title: "About us" });
     }, [sendPageView]);
+
+    useEffect(() => {
+        if (location.hash !== EXPERTS_HASH || isLoading || hasScrolledToExpertsRef.current) return;
+
+        hasScrolledToExpertsRef.current = true;
+        const scrollAfterRender = window.setTimeout(() => {
+            expertsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 0);
+
+        return () => window.clearTimeout(scrollAfterRender);
+    }, [location.hash, isLoading]);
 
     return (
         <Layout>
@@ -40,7 +61,7 @@ export const AboutPage: React.FC = React.memo(() => {
             </PeopleSection>
             <GradientDividerOrange />
 
-            <PeopleSection aria-label="Experts">
+            <PeopleSection aria-label="Experts" ref={expertsRef}>
                 <StyledContainer maxWidth="xl">
                     <ExpertsNetwork members={experts} countryFilter={countryFilter} />
                 </StyledContainer>

@@ -12,6 +12,7 @@ import { FullScreenNotesDialog } from "../../components/dialog/FullScreenNotesDi
 import { NotesDialog } from "../../components/dialog/NotesDialog";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { formatCountryOrRegionParamName } from "../../utils/formatCountryOrRegionParamName";
+import { openInNewTab } from "../../utils/fullUrlForPath";
 
 type CountryExperienceBoxProps = {
     countryName: string;
@@ -56,12 +57,7 @@ export const CountryExperienceBox: React.FC<CountryExperienceBoxProps> = props =
 
     const onCountryLinkClick = useCallback(() => {
         const countryNameInFilter = formatCountryOrRegionParamName(countryName);
-        const innerPath = `/${countryNameInFilter}`;
-
-        const { origin, pathname } = window.location;
-        const fullUrl = `${origin}${pathname}#${innerPath}`;
-
-        window.open(fullUrl, "_blank", "noopener,noreferrer");
+        openInNewTab(`/${countryNameInFilter}`);
     }, [countryName]);
 
     return (
