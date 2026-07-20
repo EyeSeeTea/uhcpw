@@ -29,7 +29,7 @@ export const Router: React.FC = React.memo(() => {
             <SeoMetaTags />
             <ScrollToTop />
             <Switch>
-                <Route path="/about" render={() => <AboutPage />} />
+                <Route path="/about" render={props => <AboutPage searchParams={props.location.search} />} />
                 <Route
                     path="/policy-explorer"
                     render={props => <PolicyExplorerPage searchParams={props.location.search} />}
