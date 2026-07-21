@@ -8,6 +8,7 @@ export type ResourcesState = {
     experts: PersonState[];
     countryFilter: CountryFilterState;
     onFilterChange: (value: string) => void;
+    isLoading: boolean;
 };
 
 export interface PersonState extends Person {
