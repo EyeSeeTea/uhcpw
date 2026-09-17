@@ -37,8 +37,13 @@ export const MobileAppFooter: React.FC = () => {
     return (
         <>
             <FooterTop>
-                <FlexContainer>
+                <FlexContainer direction="column">
                     <WhoLogo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
+                    <FundingText variant="body2">
+                        {i18n.t(
+                            "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                        )}
+                    </FundingText>
                     <EuropeContainer>
                         <EuropeFlag src={europeFlag} alt="WHO logo" />
                         <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
@@ -123,6 +128,11 @@ const WhoLogo = styled.img`
 const EuropeText = styled(Typography)`
     max-width: 150px;
     margin-left: 16px;
+`;
+
+const FundingText = styled(Typography)`
+    max-width: 320px;
+    text-align: center;
 `;
 
 const FooterTop = styled.div`

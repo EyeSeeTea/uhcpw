@@ -22,9 +22,7 @@ export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
         <Container>
             {showTitle && (
                 <StyledNavLink to={"/about"}>
-                    <Typography variant="body1" gutterBottom>
-                        {i18n.t("About us")}
-                    </Typography>
+                    <Typography variant="body2">{i18n.t("About us")}</Typography>
                 </StyledNavLink>
             )}
 
@@ -50,6 +48,7 @@ const Container = styled.div`
 const StyledNavLink = styled(NavLink)`
     color: white;
     text-decoration: none;
+    margin-bottom: 8px;
 `;
 
 const StyledLink = styled(Link)`

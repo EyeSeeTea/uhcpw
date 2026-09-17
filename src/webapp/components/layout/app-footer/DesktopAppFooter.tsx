@@ -28,6 +28,11 @@ export const DesktopAppFooter: React.FC = () => {
                         </FirstGrid>
 
                         <Grid item lg={3} md={6} xs={12}>
+                            <FundingText variant="body2">
+                                {i18n.t(
+                                    "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                                )}
+                            </FundingText>
                             <EuropeContainer>
                                 <img src={europeFlag} width={100} alt="WHO logo" />
                                 <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
@@ -93,6 +98,11 @@ const Disclaimer = styled(Typography)`
     margin-block-start: 16px;
     padding-inline-start: 0.3125rem;
     max-width: 43.75rem;
+`;
+
+const FundingText = styled(Typography)`
+    margin-block-end: 12px;
+    max-width: 18.75rem;
 `;
 
 const FirstGrid = styled(Grid)`

@@ -15,11 +15,7 @@ export const ContactUs: React.FC<ContactUsProps> = props => {
 
     return (
         <Container>
-            {showTitle && (
-                <Typography variant="body1" gutterBottom>
-                    {i18n.t("Contact our office")}
-                </Typography>
-            )}
+            {showTitle && <Heading variant="body2">{i18n.t("Contact our office")}</Heading>}
 
             <Typography variant="body2" gutterBottom>
                 {i18n.t("Sant Pau Art Nouveau Site (La Mercè)")}
@@ -56,6 +52,10 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 4px;
+`;
+
+const Heading = styled(Typography)`
+    margin-bottom: 8px;
 `;
 
 const MailLink = styled.a`
