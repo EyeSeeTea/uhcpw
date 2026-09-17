@@ -41,6 +41,10 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
                 decoding="async"
             />
 
+            <p class="funding-text">
+                The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain
+            </p>
+
             <div class="europe-container">
                 <Image
                     src={europeFlag}
@@ -59,8 +63,8 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             <p class="disclaimer">{disclaimerText}</p>
 
             <div class="footer-col footer-links-col">
+                <a href={href("/about")} class="footer-link footer-heading">About us</a>
                 <div class="footer-links">
-                    <a href={href("/about")} class="footer-link">About us</a>
                     <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link" target="_blank" rel="noopener noreferrer">
                         WHO Barcelona Office for Health Systems Financing
                     </a>
@@ -136,7 +140,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         grid-template-areas:
-            "logo  flag  links contact"
+            "logo  fund  links contact"
             "discl flag  links contact";
         column-gap: 48px;
         row-gap: 0;
@@ -169,6 +173,16 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         font-size: var(--font-size-sm);
     }
 
+    .funding-text {
+        grid-area: fund;
+        align-self: start;
+        margin-top: 0;
+        margin-bottom: 12px;
+        max-width: 300px;
+        font-size: var(--font-size-sm);
+        line-height: 1.6;
+    }
+
     .disclaimer {
         grid-area: discl;
         margin-top: 16px;
@@ -193,7 +207,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 
     .footer-heading {
         margin: 0 0 12px;
-        font-size: 1rem;
+        font-size: var(--font-size-sm);
         font-weight: 400;
     }
 
@@ -201,7 +215,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         display: flex;
         flex-direction: column;
         gap: 4px;
-        font-size: 1rem;
+        font-size: var(--font-size-sm);
     }
 
     .footer-link {
@@ -223,7 +237,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         .footer-grid {
             grid-template-columns: repeat(2, 1fr);
             grid-template-areas:
-                "logo  flag"
+                "logo  fund"
                 "discl flag"
                 "links contact";
             row-gap: 24px;
@@ -235,7 +249,9 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         .footer-grid {
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
-                "logo flag"
+                "logo logo"
+                "fund fund"
+                "flag flag"
                 "about-link   about-link"
                 "acc-glossary acc-glossary"
                 "acc-policy   acc-policy"
@@ -244,6 +260,16 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             row-gap: 8px;
             justify-items: center;
             align-items: center;
+        }
+
+        .funding-text {
+            max-width: 320px;
+            margin-bottom: 0;
+            text-align: center;
+        }
+
+        .europe-container {
+            align-self: center;
         }
 
         /* Hide desktop text columns on mobile */
