@@ -4,17 +4,18 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { NavLink } from "react-router-dom";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { getBarcelonaOfficeLines } from "./footerTextLines";
+import { TextLines } from "./TextLines";
 
 const URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING =
     "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)";
 
-type AboutUsInfoProps = {
-    fullWidth?: boolean;
+type AboutUsInfoProps = Readonly<{
     showTitle?: boolean;
-};
+}>;
 
 export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
-    const { fullWidth = false, showTitle = true } = props;
+    const { showTitle = true } = props;
 
     const { redirectWithExternalLink } = useAnalytics();
 
@@ -22,9 +23,7 @@ export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
         <Container>
             {showTitle && (
                 <StyledNavLink to={"/about"}>
-                    <Typography variant="body1" gutterBottom>
-                        {i18n.t("About us")}
-                    </Typography>
+                    <Typography variant="body1">{i18n.t("About us")}</Typography>
                 </StyledNavLink>
             )}
 
@@ -33,8 +32,10 @@ export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
                 target="_blank"
                 onClick={redirectWithExternalLink}
             >
-                <StyledTypography variant="body2" gutterBottom $fullWidth={fullWidth}>
-                    {i18n.t("WHO Barcelona Office for Health Systems Financing")}
+                <StyledTypography variant="body1" gutterBottom>
+                    <TextLines
+                        lines={getBarcelonaOfficeLines(i18n.t("WHO Barcelona Office for Health Systems Financing"))}
+                    />
                 </StyledTypography>
             </StyledLink>
         </Container>
@@ -50,6 +51,7 @@ const Container = styled.div`
 const StyledNavLink = styled(NavLink)`
     color: white;
     text-decoration: none;
+    margin-bottom: 8px;
 `;
 
 const StyledLink = styled(Link)`
@@ -57,8 +59,7 @@ const StyledLink = styled(Link)`
     text-decoration: none;
 `;
 
-const StyledTypography = styled(Typography)<{ $fullWidth?: boolean }>`
+const StyledTypography = styled(Typography)`
     color: white;
     text-decoration: none;
-    max-width: ${props => (props.$fullWidth ? "100%" : "60%")};
 `;

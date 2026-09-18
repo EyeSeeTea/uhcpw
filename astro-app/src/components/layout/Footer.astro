@@ -3,6 +3,13 @@ import { Image } from "astro:assets";
 import whoLogoWhite from "@/assets/layout/who-logo-white.png";
 import europeFlag from "@/assets/layout/europe-flag.png";
 import { href } from "@/lib/href";
+import {
+    getBarcelonaOfficeLines,
+    getDesktopFundingLines,
+    getDisclaimerLines,
+    getEuropeanUnionLines,
+    getMobileFundingLines,
+} from "@shared/webapp/components/layout/app-footer/footerTextLines";
 
 interface Props {
     disclaimer?: string;
@@ -17,9 +24,16 @@ const currentYear = new Date().getFullYear();
 const defaultDisclaimer =
     "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)";
 const defaultPrivacyUrl = "https://www.who.int/about/policies/privacy";
+const fundingText =
+    "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain";
 
 const disclaimerText = disclaimer || defaultDisclaimer;
 const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
+const disclaimerLines = getDisclaimerLines(disclaimerText);
+const desktopFundingLines = getDesktopFundingLines(fundingText);
+const mobileFundingLines = getMobileFundingLines(fundingText);
+const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for Health Systems Financing");
+const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Union");
 ---
 
 {/*
@@ -31,49 +45,59 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 <footer class="site-footer">
     <div class="footer-top">
         <div class="footer-grid">
-            <Image
-                src={whoLogoWhite}
-                alt="WHO logo"
-                class="footer-who-logo"
-                widths={[100, 130, 150, 200, 300]}
-                sizes="(max-width: 450px) 100px, (max-width: 500px) 130px, 150px"
-                loading="lazy"
-                decoding="async"
-            />
-
-            <div class="europe-container">
+            <div class="logo-flag-group">
                 <Image
-                    src={europeFlag}
-                    alt="European Union flag"
-                    class="europe-flag"
-                    widths={[60, 80, 100, 200]}
-                    sizes="(max-width: 450px) 60px, (max-width: 500px) 80px, 100px"
+                    src={whoLogoWhite}
+                    alt="WHO logo"
+                    class="footer-who-logo"
+                    widths={[100, 130, 150, 200, 300]}
+                    sizes="(max-width: 450px) 100px, (max-width: 500px) 130px, 150px"
                     loading="lazy"
                     decoding="async"
                 />
-                <p class="europe-text">
-                    Co-funded by the European Union
-                </p>
+
+                <div class="europe-container">
+                    <Image
+                        src={europeFlag}
+                        alt="European Union flag"
+                        class="europe-flag"
+                        widths={[60, 80, 100, 200]}
+                        sizes="(max-width: 450px) 60px, (max-width: 500px) 80px, 100px"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                    {/* The trailing space inside each line separates the words when mobile joins the lines into one */}
+                    <p class="europe-text">
+                        {europeanUnionLines.map(line => <span class="text-line">{`${line} `}</span>)}
+                    </p>
+                </div>
             </div>
 
-            <p class="disclaimer">{disclaimerText}</p>
+            {/* Desktop and mobile break the funding text at different words; CSS shows one set of lines */}
+            <p class="funding-text">
+                {desktopFundingLines.map(line => <span class="text-line desktop-line">{line}</span>)}
+                {mobileFundingLines.map(line => <span class="text-line mobile-line">{line}</span>)}
+            </p>
 
-            <div class="footer-col footer-links-col">
+            <p class="disclaimer">
+                {disclaimerLines.map(line => <span class="text-line">{line}</span>)}
+            </p>
+
+            <div class="footer-col footer-info-col">
+                <a href={href("/about")} class="footer-link footer-heading">About us</a>
                 <div class="footer-links">
-                    <a href={href("/about")} class="footer-link">About us</a>
-                    <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link" target="_blank" rel="noopener noreferrer">
-                        WHO Barcelona Office for Health Systems Financing
+                    <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link bcn-office-link" target="_blank" rel="noopener noreferrer">
+                        {barcelonaOfficeLines.map(line => <span class="text-line">{line}</span>)}
                     </a>
                 </div>
             </div>
 
             <div class="footer-col footer-contact-col">
-                <p class="footer-heading">Contact our office</p>
                 <div class="footer-links">
                     <span>Sant Pau Art Nouveau Site (La Merc&egrave;)</span>
                     <span>Sant Antoni Maria Claret 167</span>
                     <span>08025 Barcelona, Spain</span>
-                    <span>Tel: +34 673 290 861</span>
+                    <span class="contact-phone">Tel: +34 673 290 861</span>
                     <span>Email: <a href="mailto:uhcwatch@who.int" class="footer-link">uhcwatch@who.int</a></span>
                 </div>
             </div>
@@ -104,7 +128,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
                     <span>Sant Pau Art Nouveau Site (La Merc&egrave;)</span>
                     <span>Sant Antoni Maria Claret 167</span>
                     <span>08025 Barcelona, Spain</span>
-                    <span>Tel: +34 673 290 861</span>
+                    <span class="contact-phone">Tel: +34 673 290 861</span>
                     <span>Email: <a href="mailto:uhcwatch@who.int" class="footer-link">uhcwatch@who.int</a></span>
                 </div>
             </details>
@@ -134,14 +158,18 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
     /* ── Unified grid (desktop default) ──────────────────────────────────── */
     .footer-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         grid-template-areas:
-            "logo  flag  links contact"
-            "discl flag  links contact";
+            "logo  fund  info"
+            "discl flag  contact";
         column-gap: 48px;
         row-gap: 0;
         max-width: 1536px;
         margin: 0 auto;
+    }
+
+    .logo-flag-group {
+        display: contents;
     }
 
     .footer-who-logo {
@@ -166,24 +194,44 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
     .europe-text {
         width: 150px;
         margin-left: 16px;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
+    }
+
+    .funding-text {
+        grid-area: fund;
+        align-self: start;
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-size: 1rem;
+        line-height: 1.6;
     }
 
     .disclaimer {
         grid-area: discl;
-        margin-top: 16px;
         padding-left: 5px;
         max-width: 700px;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
         line-height: 1.6;
     }
 
-    .footer-links-col {
-        grid-area: links;
+    /* Unbreakable lines keep the client's line breaks at every width; on desktop the grid column grows to fit them */
+    .text-line {
+        display: block;
+        white-space: nowrap;
     }
 
+    .mobile-line {
+        display: none;
+    }
+
+    .footer-info-col {
+        grid-area: info;
+    }
+
+    /* Keeps the gap below the Barcelona Office link that the funding text's fourth line used to create */
     .footer-contact-col {
         grid-area: contact;
+        margin-top: 1.6rem;
     }
 
     .footer-col {
@@ -202,6 +250,14 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         flex-direction: column;
         gap: 4px;
         font-size: 1rem;
+    }
+
+    .bcn-office-link {
+        display: block;
+    }
+
+    .contact-phone {
+        margin-top: 24px;
     }
 
     .footer-link {
@@ -223,10 +279,14 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         .footer-grid {
             grid-template-columns: repeat(2, 1fr);
             grid-template-areas:
-                "logo  flag"
+                "logo  fund"
                 "discl flag"
-                "links contact";
+                "info  contact";
             row-gap: 24px;
+        }
+
+        .footer-contact-col {
+            margin-top: 0;
         }
     }
 
@@ -235,7 +295,8 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         .footer-grid {
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
-                "logo flag"
+                "logogroup logogroup"
+                "fund fund"
                 "about-link   about-link"
                 "acc-glossary acc-glossary"
                 "acc-policy   acc-policy"
@@ -246,9 +307,54 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             align-items: center;
         }
 
+        /* 14px like the SPA's body2, so the longest mobile line fits a 360px screen */
+        .funding-text {
+            max-width: 100%;
+            margin-block-end: 14px;
+            text-align: center;
+            font-size: var(--font-size-sm);
+        }
+
+        .desktop-line {
+            display: none;
+        }
+
+        .mobile-line {
+            display: block;
+        }
+
+        /* The logos span the whole row: the WHO logo touches the left padding and the EU text the right one */
+        .logo-flag-group {
+            display: flex;
+            grid-area: logogroup;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+        }
+
+        /* The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo touch the padding */
+        .footer-who-logo {
+            --who-logo-width: 150px;
+            width: var(--who-logo-width);
+            flex-shrink: 0;
+            margin-inline-start: calc(var(--who-logo-width) * -0.0337);
+        }
+
+        .europe-container {
+            align-self: center;
+            flex-shrink: 0;
+        }
+
+        /* 14px like the SPA's body2; as wide as its longest line, so it ends exactly at the right padding */
+        .europe-text {
+            width: auto;
+            font-size: var(--font-size-sm);
+        }
+
         /* Hide desktop text columns on mobile */
         .disclaimer,
-        .footer-links-col,
+        .footer-info-col,
         .footer-contact-col {
             display: none;
         }
@@ -280,9 +386,16 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         }
     }
 
+    /* From 580px the logos row has room for the whole EU label (logo, flag and label need about 490px) */
+    @media (min-width: 580px) and (max-width: 960px) {
+        .europe-text .text-line {
+            display: inline;
+        }
+    }
+
     @media (max-width: 500px) {
         .footer-who-logo {
-            width: 130px;
+            --who-logo-width: 130px;
         }
 
         .europe-flag {
@@ -292,7 +405,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 
     @media (max-width: 450px) {
         .footer-who-logo {
-            width: 100px;
+            --who-logo-width: 100px;
         }
 
         .europe-flag {
