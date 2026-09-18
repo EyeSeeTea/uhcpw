@@ -3,6 +3,11 @@ import { Image } from "astro:assets";
 import whoLogoWhite from "@/assets/layout/who-logo-white.png";
 import europeFlag from "@/assets/layout/europe-flag.png";
 import { href } from "@/lib/href";
+import {
+    getBarcelonaOfficeLines,
+    getDisclaimerLines,
+    getFundingLines,
+} from "@shared/webapp/components/layout/app-footer/footerTextLines";
 
 interface Props {
     disclaimer?: string;
@@ -17,9 +22,14 @@ const currentYear = new Date().getFullYear();
 const defaultDisclaimer =
     "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)";
 const defaultPrivacyUrl = "https://www.who.int/about/policies/privacy";
+const fundingText =
+    "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain";
 
 const disclaimerText = disclaimer || defaultDisclaimer;
 const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
+const disclaimerLines = getDisclaimerLines(disclaimerText);
+const fundingLines = getFundingLines(fundingText);
+const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for Health Systems Financing");
 ---
 
 {/*
@@ -58,17 +68,20 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
                 </div>
             </div>
 
+            {/* The trailing space inside each line separates the words when mobile renders the lines inline */}
             <p class="funding-text">
-                The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain
+                {fundingLines.map(line => <span class="text-line">{`${line} `}</span>)}
             </p>
 
-            <p class="disclaimer">{disclaimerText}</p>
+            <p class="disclaimer">
+                {disclaimerLines.map(line => <span class="text-line">{`${line} `}</span>)}
+            </p>
 
             <div class="footer-col footer-info-col">
                 <a href={href("/about")} class="footer-link footer-heading">About us</a>
                 <div class="footer-links">
                     <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link bcn-office-link" target="_blank" rel="noopener noreferrer">
-                        WHO Barcelona Office for Health Systems Financing
+                        {barcelonaOfficeLines.map(line => <span class="text-line">{line}</span>)}
                     </a>
                 </div>
             </div>
@@ -183,7 +196,6 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         align-self: start;
         margin-top: 0;
         margin-bottom: 12px;
-        max-width: 300px;
         font-size: 1rem;
         line-height: 1.6;
     }
@@ -196,12 +208,20 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         line-height: 1.6;
     }
 
+    /* Unbreakable lines keep the client's line breaks at every desktop width; the grid column grows to fit them */
+    .text-line {
+        display: block;
+        white-space: nowrap;
+    }
+
     .footer-info-col {
         grid-area: info;
     }
 
+    /* Keeps the gap below the Barcelona Office link that the funding text's fourth line used to create */
     .footer-contact-col {
         grid-area: contact;
+        margin-top: 1.6rem;
     }
 
     .footer-col {
@@ -224,7 +244,6 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 
     .bcn-office-link {
         display: block;
-        max-width: 50%;
     }
 
     .contact-phone {
@@ -255,6 +274,10 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
                 "info  contact";
             row-gap: 24px;
         }
+
+        .footer-contact-col {
+            margin-top: 0;
+        }
     }
 
     /* ── Mobile (≤960px): logos row on top, accordions below ──────────────── */
@@ -278,6 +301,12 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             max-width: 100%;
             margin-block-bottom: 14px;
             text-align: center;
+        }
+
+        /* Mobile lets the funding text wrap to the screen width again */
+        .text-line {
+            display: inline;
+            white-space: normal;
         }
 
         .logo-flag-group {
