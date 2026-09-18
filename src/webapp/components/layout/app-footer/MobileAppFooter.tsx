@@ -11,7 +11,7 @@ import europeFlag from "../../../assets/europe-flag.png";
 import { AbbreviationsAndGlossary } from "./AbbreviationsAndGlossary";
 import { PrivacyPolicyAndDisclaimer } from "./PrivacyPolicyAndDisclaimer";
 import { ContactUs } from "./ContactUs";
-import { getMobileFundingLines } from "./footerTextLines";
+import { getEuropeanUnionLines, getMobileFundingLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
 
 export const MobileAppFooter: React.FC = () => {
@@ -42,8 +42,12 @@ export const MobileAppFooter: React.FC = () => {
                 <FlexContainer>
                     <WhoLogo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
                     <EuropeContainer>
-                        <EuropeFlag src={europeFlag} alt="WHO logo" />
-                        <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
+                        <EuropeFlag src={europeFlag} alt="European Union flag" />
+                        <EuropeText variant="body2">
+                            {getEuropeanUnionLines(i18n.t("Co-funded by the European Union")).map(line => (
+                                <EuropeTextLine key={line}>{line} </EuropeTextLine>
+                            ))}
+                        </EuropeText>
                     </EuropeContainer>
                 </FlexContainer>
 
@@ -82,30 +86,22 @@ export const MobileAppFooter: React.FC = () => {
     );
 };
 
+// The logos span the whole row: the WHO logo touches the left padding and the EU text the right one.
 const FlexContainer = styled.div`
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     width: 100%;
     height: 100%;
-    gap: 30px;
+    gap: 12px;
     margin-block-end: 16px;
-    padding-inline: 0px;
-
-    @media (max-width: 500px) {
-        gap: 20px;
-    }
-
-    @media (max-width: 360px) {
-        padding-inline: 0;
-    }
 `;
 
 const EuropeContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    min-width: 0;
+    flex-shrink: 0;
 `;
 
 const EuropeFlag = styled.img`
@@ -120,23 +116,36 @@ const EuropeFlag = styled.img`
     }
 `;
 
+// The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo touch the padding.
 const WhoLogo = styled.img`
-    width: 150px;
+    --who-logo-width: 150px;
+    width: var(--who-logo-width);
     flex-shrink: 0;
+    margin-inline-start: calc(var(--who-logo-width) * -0.0337);
 
     @media (max-width: 500px) {
-        width: 130px;
+        --who-logo-width: 130px;
     }
 
     @media (max-width: 450px) {
-        width: 100px;
+        --who-logo-width: 100px;
     }
 `;
 
 const EuropeText = styled(Typography)`
-    max-width: 150px;
     margin-left: 16px;
-    min-width: 0;
+`;
+
+// Unbreakable left-aligned lines keep the label as wide as its longest line, so it ends exactly at the right padding.
+// From 580px the row has room for the whole label (logo, flag and label need about 490px), so the lines join into one;
+// the trailing space inside each line separates the words then.
+const EuropeTextLine = styled.span`
+    display: block;
+    white-space: nowrap;
+
+    @media (min-width: 580px) {
+        display: inline;
+    }
 `;
 
 const FundingText = styled(Typography)`

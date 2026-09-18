@@ -4,6 +4,7 @@ const disclaimerLineStarts = ["understood", "Nations", "(1999)"] as const;
 const desktopFundingLineStarts = ["acknowledges", "Autonomous"] as const;
 const mobileFundingLineStarts = ["acknowledges", "the Autonomous"] as const;
 const barcelonaOfficeLineStarts = ["Health"] as const;
+const europeanUnionLineStarts = ["European"] as const;
 
 export function getDisclaimerLines(text: string): ReadonlyArray<string> {
     return splitIntoLines(text, disclaimerLineStarts);
@@ -19,6 +20,10 @@ export function getMobileFundingLines(text: string): ReadonlyArray<string> {
 
 export function getBarcelonaOfficeLines(text: string): ReadonlyArray<string> {
     return splitIntoLines(text, barcelonaOfficeLineStarts);
+}
+
+export function getEuropeanUnionLines(text: string): ReadonlyArray<string> {
+    return splitIntoLines(text, europeanUnionLineStarts);
 }
 
 type SplitState = Readonly<{ lines: ReadonlyArray<string>; rest: string }>;

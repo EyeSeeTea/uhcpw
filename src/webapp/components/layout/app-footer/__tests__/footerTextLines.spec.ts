@@ -2,6 +2,7 @@ import {
     getBarcelonaOfficeLines,
     getDesktopFundingLines,
     getDisclaimerLines,
+    getEuropeanUnionLines,
     getMobileFundingLines,
 } from "../footerTextLines";
 
@@ -53,6 +54,15 @@ describe("footerTextLines", () => {
             expect(getBarcelonaOfficeLines("WHO Barcelona Office for Health Systems Financing")).toEqual([
                 "WHO Barcelona Office for",
                 "Health Systems Financing",
+            ]);
+        });
+    });
+
+    describe("getEuropeanUnionLines", () => {
+        it("splits the EU co-funding label into two lines", () => {
+            expect(getEuropeanUnionLines("Co-funded by the European Union")).toEqual([
+                "Co-funded by the",
+                "European Union",
             ]);
         });
     });
