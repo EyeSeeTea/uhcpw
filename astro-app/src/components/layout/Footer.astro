@@ -7,6 +7,7 @@ import {
     getBarcelonaOfficeLines,
     getDesktopFundingLines,
     getDisclaimerLines,
+    getEuropeanUnionLines,
     getMobileFundingLines,
 } from "@shared/webapp/components/layout/app-footer/footerTextLines";
 
@@ -32,6 +33,7 @@ const disclaimerLines = getDisclaimerLines(disclaimerText);
 const desktopFundingLines = getDesktopFundingLines(fundingText);
 const mobileFundingLines = getMobileFundingLines(fundingText);
 const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for Health Systems Financing");
+const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Union");
 ---
 
 {/*
@@ -64,8 +66,9 @@ const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for H
                         loading="lazy"
                         decoding="async"
                     />
+                    {/* The trailing space inside each line separates the words when mobile joins the lines into one */}
                     <p class="europe-text">
-                        Co-funded by the European Union
+                        {europeanUnionLines.map(line => <span class="text-line">{`${line} `}</span>)}
                     </p>
                 </div>
             </div>
@@ -320,27 +323,32 @@ const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for H
             display: block;
         }
 
+        /* The logos span the whole row: the WHO logo touches the left padding and the EU text the right one */
         .logo-flag-group {
             display: flex;
             grid-area: logogroup;
-            justify-content: flex-end;
+            justify-content: space-between;
             align-items: center;
-            gap: 30px;
+            gap: 12px;
             width: 100%;
         }
 
+        /* The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo touch the padding */
         .footer-who-logo {
+            --who-logo-width: 150px;
+            width: var(--who-logo-width);
             flex-shrink: 0;
+            margin-inline-start: calc(var(--who-logo-width) * -0.0337);
         }
 
         .europe-container {
             align-self: center;
-            min-width: 0;
+            flex-shrink: 0;
         }
 
-        /* 14px like the SPA's body2 */
+        /* 14px like the SPA's body2; as wide as its longest line, so it ends exactly at the right padding */
         .europe-text {
-            min-width: 0;
+            width: auto;
             font-size: var(--font-size-sm);
         }
 
@@ -378,23 +386,26 @@ const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for H
         }
     }
 
+    /* From 580px the logos row has room for the whole EU label (logo, flag and label need about 490px) */
+    @media (min-width: 580px) and (max-width: 960px) {
+        .europe-text .text-line {
+            display: inline;
+        }
+    }
+
     @media (max-width: 500px) {
         .footer-who-logo {
-            width: 130px;
+            --who-logo-width: 130px;
         }
 
         .europe-flag {
             width: 80px;
         }
-
-        .logo-flag-group {
-            gap: 33px;
-        }
     }
 
     @media (max-width: 450px) {
         .footer-who-logo {
-            width: 100px;
+            --who-logo-width: 100px;
         }
 
         .europe-flag {
