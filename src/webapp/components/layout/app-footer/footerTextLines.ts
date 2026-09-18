@@ -1,15 +1,20 @@
-// The desktop footer breaks these texts at the points the client asked for: each word opens a new line.
+// The footer breaks these texts at the points the client asked for: each entry opens a new line.
 // A text without those words (edited in DHIS2 or translated) stays in one piece and wraps naturally.
 const disclaimerLineStarts = ["understood", "Nations", "(1999)"] as const;
-const fundingLineStarts = ["acknowledges", "Autonomous"] as const;
+const desktopFundingLineStarts = ["acknowledges", "Autonomous"] as const;
+const mobileFundingLineStarts = ["acknowledges", "the Autonomous"] as const;
 const barcelonaOfficeLineStarts = ["Health"] as const;
 
 export function getDisclaimerLines(text: string): ReadonlyArray<string> {
     return splitIntoLines(text, disclaimerLineStarts);
 }
 
-export function getFundingLines(text: string): ReadonlyArray<string> {
-    return splitIntoLines(text, fundingLineStarts);
+export function getDesktopFundingLines(text: string): ReadonlyArray<string> {
+    return splitIntoLines(text, desktopFundingLineStarts);
+}
+
+export function getMobileFundingLines(text: string): ReadonlyArray<string> {
+    return splitIntoLines(text, mobileFundingLineStarts);
 }
 
 export function getBarcelonaOfficeLines(text: string): ReadonlyArray<string> {

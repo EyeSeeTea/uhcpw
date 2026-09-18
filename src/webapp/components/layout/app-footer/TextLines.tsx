@@ -13,7 +13,7 @@ export const TextLines: React.FC<TextLinesProps> = ({ lines }) => (
     </>
 );
 
-// Unbreakable lines keep the client's line breaks at every desktop width; the grid column grows to fit them.
+// Unbreakable lines keep the client's line breaks whatever the width of the container.
 const TextLine = styled.span`
     display: block;
     white-space: nowrap;

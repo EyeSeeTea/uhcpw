@@ -1,4 +1,9 @@
-import { getBarcelonaOfficeLines, getDisclaimerLines, getFundingLines } from "../footerTextLines";
+import {
+    getBarcelonaOfficeLines,
+    getDesktopFundingLines,
+    getDisclaimerLines,
+    getMobileFundingLines,
+} from "../footerTextLines";
 
 const disclaimer =
     "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)";
@@ -23,12 +28,22 @@ describe("footerTextLines", () => {
         });
     });
 
-    describe("getFundingLines", () => {
-        it("splits the funding acknowledgement into the three lines requested by the client", () => {
-            expect(getFundingLines(funding)).toEqual([
+    describe("getDesktopFundingLines", () => {
+        it("splits the funding acknowledgement into the three desktop lines requested by the client", () => {
+            expect(getDesktopFundingLines(funding)).toEqual([
                 "The WHO Regional Office for Europe gratefully",
                 "acknowledges funding from the Government of the",
                 "Autonomous Community of Catalonia, Spain",
+            ]);
+        });
+    });
+
+    describe("getMobileFundingLines", () => {
+        it("splits the funding acknowledgement into the three mobile lines requested by the client", () => {
+            expect(getMobileFundingLines(funding)).toEqual([
+                "The WHO Regional Office for Europe gratefully",
+                "acknowledges funding from the Government of",
+                "the Autonomous Community of Catalonia, Spain",
             ]);
         });
     });

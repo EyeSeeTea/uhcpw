@@ -8,7 +8,7 @@ import europeFlag from "../../../assets/europe-flag.png";
 import { AboutUsInfo } from "./AboutUsInfo";
 import { ContactUs } from "./ContactUs";
 import { useAppContext } from "../../../contexts/app-context";
-import { getDisclaimerLines, getFundingLines } from "./footerTextLines";
+import { getDesktopFundingLines, getDisclaimerLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
 
 export const DesktopAppFooter: React.FC = () => {
@@ -23,7 +23,7 @@ export const DesktopAppFooter: React.FC = () => {
 
                         <FundingText variant="body1">
                             <TextLines
-                                lines={getFundingLines(
+                                lines={getDesktopFundingLines(
                                     i18n.t(
                                         "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
                                     )

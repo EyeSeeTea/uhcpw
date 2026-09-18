@@ -11,6 +11,8 @@ import europeFlag from "../../../assets/europe-flag.png";
 import { AbbreviationsAndGlossary } from "./AbbreviationsAndGlossary";
 import { PrivacyPolicyAndDisclaimer } from "./PrivacyPolicyAndDisclaimer";
 import { ContactUs } from "./ContactUs";
+import { getMobileFundingLines } from "./footerTextLines";
+import { TextLines } from "./TextLines";
 
 export const MobileAppFooter: React.FC = () => {
     const items = useMemo(
@@ -46,9 +48,13 @@ export const MobileAppFooter: React.FC = () => {
                 </FlexContainer>
 
                 <FundingText variant="body2">
-                    {i18n.t(
-                        "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
-                    )}
+                    <TextLines
+                        lines={getMobileFundingLines(
+                            i18n.t(
+                                "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                            )
+                        )}
+                    />
                 </FundingText>
 
                 <AboutUsLink to="/about">
