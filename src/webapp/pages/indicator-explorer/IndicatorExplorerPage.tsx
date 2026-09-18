@@ -102,54 +102,54 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
-            </MainSection>
 
-            <MainSection
-                key={`${filters.indicators.selected}-${filters.countryAndRegions.selected?.join(
-                    ","
-                )}-${filters.year.selected?.join(",")}`}
-            >
-                {showVisualization && filters.indicators.selected ? (
-                    <VisualizationPlugin
-                        visualizationId={filters.indicators.selected}
-                        years={filters.year.selected || []}
-                        countries={filters.countryAndRegions.selectedCountriesAndSubregions || []}
-                        regions={filters.countryAndRegions.selectedRegions || []}
-                        noDataMessage={pageContent?.noDataMessage}
-                        onDownloadImage={handleOpenScreenshot}
-                        isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
-                        analyticsPageTitle="Indicator explorer"
-                        onLoadingChange={handlePlugingLoadingChange}
-                        fullScreenInMobile={true}
-                        onCloseFullScreen={closeVisualization}
-                        forcePluginFullScreen={forcePluginFullScreen}
-                    />
-                ) : (
-                    <EmptyContent info={pageContent?.selectCategory} />
-                )}
-
-                <ScreenshotModal
-                    open={openScreenshot}
-                    onClose={handleCloseScreenshot}
-                    title={chartName}
-                    backgroundColor={"#f1f9fc"}
-                    isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
-                    analyticsPageTitle="Indicator explorer"
-                    analyticsContent={analyticsContent}
-                    forceRotation={isMobile}
+                <React.Fragment
+                    key={`${filters.indicators.selected}-${filters.countryAndRegions.selected?.join(
+                        ","
+                    )}-${filters.year.selected?.join(",")}`}
                 >
-                    <VisualizationPlugin
-                        visualizationId={filters.indicators.selected || ""}
-                        years={filters.year.selected || []}
-                        countries={filters.countryAndRegions.selectedCountriesAndSubregions || []}
-                        regions={filters.countryAndRegions.selectedRegions || []}
-                        noDataMessage={pageContent?.noDataMessage}
-                        isScreenshot={true}
-                        withoutBackground
+                    {showVisualization && filters.indicators.selected ? (
+                        <VisualizationPlugin
+                            visualizationId={filters.indicators.selected}
+                            years={filters.year.selected || []}
+                            countries={filters.countryAndRegions.selectedCountriesAndSubregions || []}
+                            regions={filters.countryAndRegions.selectedRegions || []}
+                            noDataMessage={pageContent?.noDataMessage}
+                            onDownloadImage={handleOpenScreenshot}
+                            isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
+                            analyticsPageTitle="Indicator explorer"
+                            onLoadingChange={handlePlugingLoadingChange}
+                            fullScreenInMobile={true}
+                            onCloseFullScreen={closeVisualization}
+                            forcePluginFullScreen={forcePluginFullScreen}
+                        />
+                    ) : (
+                        <EmptyContent info={pageContent?.selectCategory} />
+                    )}
+
+                    <ScreenshotModal
+                        open={openScreenshot}
+                        onClose={handleCloseScreenshot}
+                        title={chartName}
+                        backgroundColor={"#f1f9fc"}
                         isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
                         analyticsPageTitle="Indicator explorer"
-                    />
-                </ScreenshotModal>
+                        analyticsContent={analyticsContent}
+                        forceRotation={isMobile}
+                    >
+                        <VisualizationPlugin
+                            visualizationId={filters.indicators.selected || ""}
+                            years={filters.year.selected || []}
+                            countries={filters.countryAndRegions.selectedCountriesAndSubregions || []}
+                            regions={filters.countryAndRegions.selectedRegions || []}
+                            noDataMessage={pageContent?.noDataMessage}
+                            isScreenshot={true}
+                            withoutBackground
+                            isSquareChart={filters.indicators.selected === "kIpnMBaBvZ9"}
+                            analyticsPageTitle="Indicator explorer"
+                        />
+                    </ScreenshotModal>
+                </React.Fragment>
             </MainSection>
         </Layout>
     );
