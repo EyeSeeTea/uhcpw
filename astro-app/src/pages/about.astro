@@ -10,7 +10,7 @@ import "@/styles/experts-network.css";
 const { team, experts, officeInfo, officeImage, countryTreeOptions, parentSortOrder, generalContent } =
     await getAboutPageData();
 
-const seo = getSeoConfigForRoute(Astro.url.pathname);
+const seo = getSeoConfigForRoute(Astro.url.pathname, import.meta.env.BASE_URL);
 
 const expertsTitle =
     generalContent.aboutUs.title || "The Financial Protection Expert Network";

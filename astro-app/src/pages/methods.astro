@@ -10,7 +10,7 @@ import mapBackgroundUrl from "@/assets/map-background.jpg?url";
 
 const { methods, generalContent } = await getMethodsPageData();
 
-const seo = getSeoConfigForRoute(Astro.url.pathname);
+const seo = getSeoConfigForRoute(Astro.url.pathname, import.meta.env.BASE_URL);
 
 const { abbreviationsUrl, glossaryUrl } = resolveGeneralContentUrls(generalContent);
 
