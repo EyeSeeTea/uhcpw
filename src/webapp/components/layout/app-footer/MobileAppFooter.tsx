@@ -28,7 +28,7 @@ export const MobileAppFooter: React.FC = () => {
             {
                 id: "contact-our-office",
                 title: i18n.t("Contact our office"),
-                content: <ContactUs showTitle={false} />,
+                content: <ContactUs showTitle={false} isMobile />,
             },
         ],
         []
@@ -37,18 +37,19 @@ export const MobileAppFooter: React.FC = () => {
     return (
         <>
             <FooterTop>
-                <FlexContainer direction="column">
+                <FlexContainer>
                     <WhoLogo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
-                    <FundingText variant="body2">
-                        {i18n.t(
-                            "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
-                        )}
-                    </FundingText>
                     <EuropeContainer>
                         <EuropeFlag src={europeFlag} alt="WHO logo" />
                         <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
                     </EuropeContainer>
                 </FlexContainer>
+
+                <FundingText variant="body2">
+                    {i18n.t(
+                        "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                    )}
+                </FundingText>
 
                 <AboutUsLink to="/about">
                     <Typography>{i18n.t("About us")}</Typography>
@@ -75,19 +76,18 @@ export const MobileAppFooter: React.FC = () => {
     );
 };
 
-const FlexContainer = styled.div<{ direction?: "row" | "column" }>`
+const FlexContainer = styled.div`
     display: flex;
-    flex-direction: ${props => props.direction || "row"};
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-end;
     width: 100%;
     height: 100%;
-    gap: 20px;
+    gap: 30px;
     margin-block-end: 16px;
-    padding-inline: 8px;
+    padding-inline: 0px;
 
     @media (max-width: 500px) {
-        gap: 16px;
+        gap: 20px;
     }
 
     @media (max-width: 360px) {
@@ -99,6 +99,7 @@ const EuropeContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    min-width: 0;
 `;
 
 const EuropeFlag = styled.img`
@@ -115,6 +116,7 @@ const EuropeFlag = styled.img`
 
 const WhoLogo = styled.img`
     width: 150px;
+    flex-shrink: 0;
 
     @media (max-width: 500px) {
         width: 130px;
@@ -128,11 +130,14 @@ const WhoLogo = styled.img`
 const EuropeText = styled(Typography)`
     max-width: 150px;
     margin-left: 16px;
+    min-width: 0;
 `;
 
 const FundingText = styled(Typography)`
-    max-width: 320px;
+    width: 100%;
+    max-width: 100%;
     text-align: center;
+    margin-block: 20px;
 `;
 
 const FooterTop = styled.div`

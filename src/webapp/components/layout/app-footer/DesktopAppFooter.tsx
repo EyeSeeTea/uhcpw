@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid, Typography, Link } from "@material-ui/core";
+import { Container, Typography, Link } from "@material-ui/core";
 import styled from "styled-components";
 
 import i18n from "../../../../locales";
@@ -16,37 +16,35 @@ export const DesktopAppFooter: React.FC = () => {
         <>
             <FooterTop>
                 <Container maxWidth="xl">
-                    <Grid container spacing={6}>
-                        <FirstGrid item lg={3} md={6} xs={12}>
-                            <img src={whoLogoWhite} width={150} alt="WHO logo" loading="eager" decoding="async" />
-                            <Disclaimer variant="body2">
-                                {i18n.t(
-                                    generalContent?.footer.disclaimer ||
-                                        "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)"
-                                )}
-                            </Disclaimer>
-                        </FirstGrid>
+                    <FooterGrid>
+                        <Logo src={whoLogoWhite} width={150} alt="WHO logo" loading="eager" decoding="async" />
 
-                        <Grid item lg={3} md={6} xs={12}>
-                            <FundingText variant="body2">
-                                {i18n.t(
-                                    "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
-                                )}
-                            </FundingText>
-                            <EuropeContainer>
-                                <img src={europeFlag} width={100} alt="WHO logo" />
-                                <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
-                            </EuropeContainer>
-                        </Grid>
+                        <FundingText variant="body1">
+                            {i18n.t(
+                                "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                            )}
+                        </FundingText>
 
-                        <Grid item lg={3} md={6} xs={12}>
+                        <InfoArea>
                             <AboutUsInfo />
-                        </Grid>
+                        </InfoArea>
 
-                        <Grid item lg={3} md={6} xs={12}>
-                            <ContactUs />
-                        </Grid>
-                    </Grid>
+                        <Disclaimer variant="body1">
+                            {i18n.t(
+                                generalContent?.footer.disclaimer ||
+                                    "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)"
+                            )}
+                        </Disclaimer>
+
+                        <EuropeContainer>
+                            <img src={europeFlag} width={100} alt="WHO logo" />
+                            <EuropeText variant="body1">{i18n.t("Co-funded by the European Union")}</EuropeText>
+                        </EuropeContainer>
+
+                        <ContactArea>
+                            <ContactUs showTitle={false} />
+                        </ContactArea>
+                    </FooterGrid>
                 </Container>
             </FooterTop>
 
@@ -61,7 +59,40 @@ export const DesktopAppFooter: React.FC = () => {
     );
 };
 
+const FooterGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-areas:
+        "logo  fund  info"
+        "discl flag  contact";
+    column-gap: 48px;
+    row-gap: 8px;
+
+    @media (max-width: 1200px) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas:
+            "logo  fund"
+            "discl flag"
+            "info  contact";
+        row-gap: 24px;
+    }
+`;
+
+const Logo = styled.img`
+    grid-area: logo;
+`;
+
+const InfoArea = styled.div`
+    grid-area: info;
+`;
+
+const ContactArea = styled.div`
+    grid-area: contact;
+`;
+
 const EuropeContainer = styled.div`
+    grid-area: flag;
+    align-self: start;
     display: flex;
     flex-direction: row;
     align-items: end;
@@ -95,18 +126,13 @@ const Cookies = styled(Link)`
 `;
 
 const Disclaimer = styled(Typography)`
-    margin-block-start: 16px;
+    grid-area: discl;
     padding-inline-start: 0.3125rem;
     max-width: 43.75rem;
 `;
 
 const FundingText = styled(Typography)`
+    grid-area: fund;
     margin-block-end: 12px;
     max-width: 18.75rem;
-`;
-
-const FirstGrid = styled(Grid)`
-    &.MuiGrid-item {
-        padding-inline-end: 0;
-    }
 `;

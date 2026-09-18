@@ -22,7 +22,7 @@ export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
         <Container>
             {showTitle && (
                 <StyledNavLink to={"/about"}>
-                    <Typography variant="body2">{i18n.t("About us")}</Typography>
+                    <Typography variant="body1">{i18n.t("About us")}</Typography>
                 </StyledNavLink>
             )}
 
@@ -31,7 +31,7 @@ export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
                 target="_blank"
                 onClick={redirectWithExternalLink}
             >
-                <StyledTypography variant="body2" gutterBottom $fullWidth={fullWidth}>
+                <StyledTypography variant="body1" gutterBottom $fullWidth={fullWidth}>
                     {i18n.t("WHO Barcelona Office for Health Systems Financing")}
                 </StyledTypography>
             </StyledLink>
@@ -59,5 +59,5 @@ const StyledLink = styled(Link)`
 const StyledTypography = styled(Typography)<{ $fullWidth?: boolean }>`
     color: white;
     text-decoration: none;
-    max-width: ${props => (props.$fullWidth ? "100%" : "60%")};
+    max-width: ${props => (props.$fullWidth ? "100%" : "50%")};
 `;

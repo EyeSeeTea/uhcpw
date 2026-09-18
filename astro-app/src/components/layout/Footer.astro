@@ -31,53 +31,54 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 <footer class="site-footer">
     <div class="footer-top">
         <div class="footer-grid">
-            <Image
-                src={whoLogoWhite}
-                alt="WHO logo"
-                class="footer-who-logo"
-                widths={[100, 130, 150, 200, 300]}
-                sizes="(max-width: 450px) 100px, (max-width: 500px) 130px, 150px"
-                loading="lazy"
-                decoding="async"
-            />
+            <div class="logo-flag-group">
+                <Image
+                    src={whoLogoWhite}
+                    alt="WHO logo"
+                    class="footer-who-logo"
+                    widths={[100, 130, 150, 200, 300]}
+                    sizes="(max-width: 450px) 100px, (max-width: 500px) 130px, 150px"
+                    loading="lazy"
+                    decoding="async"
+                />
+
+                <div class="europe-container">
+                    <Image
+                        src={europeFlag}
+                        alt="European Union flag"
+                        class="europe-flag"
+                        widths={[60, 80, 100, 200]}
+                        sizes="(max-width: 450px) 60px, (max-width: 500px) 80px, 100px"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                    <p class="europe-text">
+                        Co-funded by the European Union
+                    </p>
+                </div>
+            </div>
 
             <p class="funding-text">
                 The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain
             </p>
 
-            <div class="europe-container">
-                <Image
-                    src={europeFlag}
-                    alt="European Union flag"
-                    class="europe-flag"
-                    widths={[60, 80, 100, 200]}
-                    sizes="(max-width: 450px) 60px, (max-width: 500px) 80px, 100px"
-                    loading="lazy"
-                    decoding="async"
-                />
-                <p class="europe-text">
-                    Co-funded by the European Union
-                </p>
-            </div>
-
             <p class="disclaimer">{disclaimerText}</p>
 
-            <div class="footer-col footer-links-col">
+            <div class="footer-col footer-info-col">
                 <a href={href("/about")} class="footer-link footer-heading">About us</a>
                 <div class="footer-links">
-                    <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link bcn-office-link" target="_blank" rel="noopener noreferrer">
                         WHO Barcelona Office for Health Systems Financing
                     </a>
                 </div>
             </div>
 
             <div class="footer-col footer-contact-col">
-                <p class="footer-heading">Contact our office</p>
                 <div class="footer-links">
                     <span>Sant Pau Art Nouveau Site (La Merc&egrave;)</span>
                     <span>Sant Antoni Maria Claret 167</span>
                     <span>08025 Barcelona, Spain</span>
-                    <span>Tel: +34 673 290 861</span>
+                    <span class="contact-phone">Tel: +34 673 290 861</span>
                     <span>Email: <a href="mailto:uhcwatch@who.int" class="footer-link">uhcwatch@who.int</a></span>
                 </div>
             </div>
@@ -108,7 +109,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
                     <span>Sant Pau Art Nouveau Site (La Merc&egrave;)</span>
                     <span>Sant Antoni Maria Claret 167</span>
                     <span>08025 Barcelona, Spain</span>
-                    <span>Tel: +34 673 290 861</span>
+                    <span class="contact-phone">Tel: +34 673 290 861</span>
                     <span>Email: <a href="mailto:uhcwatch@who.int" class="footer-link">uhcwatch@who.int</a></span>
                 </div>
             </details>
@@ -138,14 +139,18 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
     /* ── Unified grid (desktop default) ──────────────────────────────────── */
     .footer-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         grid-template-areas:
-            "logo  fund  links contact"
-            "discl flag  links contact";
+            "logo  fund  info"
+            "discl flag  contact";
         column-gap: 48px;
         row-gap: 0;
         max-width: 1536px;
         margin: 0 auto;
+    }
+
+    .logo-flag-group {
+        display: contents;
     }
 
     .footer-who-logo {
@@ -170,7 +175,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
     .europe-text {
         width: 150px;
         margin-left: 16px;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
     }
 
     .funding-text {
@@ -179,21 +184,20 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         margin-top: 0;
         margin-bottom: 12px;
         max-width: 300px;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
         line-height: 1.6;
     }
 
     .disclaimer {
         grid-area: discl;
-        margin-top: 16px;
         padding-left: 5px;
         max-width: 700px;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
         line-height: 1.6;
     }
 
-    .footer-links-col {
-        grid-area: links;
+    .footer-info-col {
+        grid-area: info;
     }
 
     .footer-contact-col {
@@ -207,7 +211,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 
     .footer-heading {
         margin: 0 0 12px;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
         font-weight: 400;
     }
 
@@ -215,7 +219,16 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         display: flex;
         flex-direction: column;
         gap: 4px;
-        font-size: var(--font-size-sm);
+        font-size: 1rem;
+    }
+
+    .bcn-office-link {
+        display: block;
+        max-width: 50%;
+    }
+
+    .contact-phone {
+        margin-top: 24px;
     }
 
     .footer-link {
@@ -239,7 +252,7 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
             grid-template-areas:
                 "logo  fund"
                 "discl flag"
-                "links contact";
+                "info  contact";
             row-gap: 24px;
         }
     }
@@ -249,9 +262,8 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         .footer-grid {
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
-                "logo logo"
+                "logogroup logogroup"
                 "fund fund"
-                "flag flag"
                 "about-link   about-link"
                 "acc-glossary acc-glossary"
                 "acc-policy   acc-policy"
@@ -263,18 +275,36 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
         }
 
         .funding-text {
-            max-width: 320px;
-            margin-bottom: 0;
+            max-width: 100%;
+            margin-block-bottom: 14px;
             text-align: center;
+        }
+
+        .logo-flag-group {
+            display: flex;
+            grid-area: logogroup;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 30px;
+            width: 100%;
+        }
+
+        .footer-who-logo {
+            flex-shrink: 0;
         }
 
         .europe-container {
             align-self: center;
+            min-width: 0;
+        }
+
+        .europe-text {
+            min-width: 0;
         }
 
         /* Hide desktop text columns on mobile */
         .disclaimer,
-        .footer-links-col,
+        .footer-info-col,
         .footer-contact-col {
             display: none;
         }
@@ -313,6 +343,10 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 
         .europe-flag {
             width: 80px;
+        }
+
+        .logo-flag-group {
+            gap: 33px;
         }
     }
 
