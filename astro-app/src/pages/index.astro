@@ -13,12 +13,12 @@ import MobileResourcesSection from "@/components/home/MobileResourcesSection.ast
 import MobileNewsSection from "@/components/home/MobileNewsSection.astro";
 import mapBackground from "@/assets/mapbox-map-background.png";
 import { getHomePageData } from "@/data/home/home-data";
-import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+import { getSeoConfigForAstroRoute } from "@/lib/seo";
 
 const { homePageContent, resources, mobileResources, news, markers, initialMapData, generalContent } =
     await getHomePageData();
 
-const seo = getSeoConfigForRoute(Astro.url.pathname, import.meta.env.BASE_URL);
+const seo = getSeoConfigForAstroRoute(Astro.url.pathname);
 ---
 
 <Layout seo={seo} generalContent={generalContent}>

@@ -3,14 +3,14 @@ import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import { getMethodsPageData } from "@/data/methods/methods-data";
 import { renderMarkdown } from "@/lib/markdown";
-import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+import { getSeoConfigForAstroRoute } from "@/lib/seo";
 import { resolveGeneralContentUrls } from "@/data/general-content";
 import bubblePattern from "@/assets/bubble-pattern-white.png";
 import mapBackgroundUrl from "@/assets/map-background.jpg?url";
 
 const { methods, generalContent } = await getMethodsPageData();
 
-const seo = getSeoConfigForRoute(Astro.url.pathname, import.meta.env.BASE_URL);
+const seo = getSeoConfigForAstroRoute(Astro.url.pathname);
 
 const { abbreviationsUrl, glossaryUrl } = resolveGeneralContentUrls(generalContent);
 
