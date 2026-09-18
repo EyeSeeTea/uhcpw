@@ -5,8 +5,9 @@ import europeFlag from "@/assets/layout/europe-flag.png";
 import { href } from "@/lib/href";
 import {
     getBarcelonaOfficeLines,
+    getDesktopFundingLines,
     getDisclaimerLines,
-    getFundingLines,
+    getMobileFundingLines,
 } from "@shared/webapp/components/layout/app-footer/footerTextLines";
 
 interface Props {
@@ -28,7 +29,8 @@ const fundingText =
 const disclaimerText = disclaimer || defaultDisclaimer;
 const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 const disclaimerLines = getDisclaimerLines(disclaimerText);
-const fundingLines = getFundingLines(fundingText);
+const desktopFundingLines = getDesktopFundingLines(fundingText);
+const mobileFundingLines = getMobileFundingLines(fundingText);
 const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for Health Systems Financing");
 ---
 
@@ -68,13 +70,14 @@ const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for H
                 </div>
             </div>
 
-            {/* The trailing space inside each line separates the words when mobile renders the lines inline */}
+            {/* Desktop and mobile break the funding text at different words; CSS shows one set of lines */}
             <p class="funding-text">
-                {fundingLines.map(line => <span class="text-line">{`${line} `}</span>)}
+                {desktopFundingLines.map(line => <span class="text-line desktop-line">{line}</span>)}
+                {mobileFundingLines.map(line => <span class="text-line mobile-line">{line}</span>)}
             </p>
 
             <p class="disclaimer">
-                {disclaimerLines.map(line => <span class="text-line">{`${line} `}</span>)}
+                {disclaimerLines.map(line => <span class="text-line">{line}</span>)}
             </p>
 
             <div class="footer-col footer-info-col">
@@ -208,10 +211,14 @@ const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for H
         line-height: 1.6;
     }
 
-    /* Unbreakable lines keep the client's line breaks at every desktop width; the grid column grows to fit them */
+    /* Unbreakable lines keep the client's line breaks at every width; on desktop the grid column grows to fit them */
     .text-line {
         display: block;
         white-space: nowrap;
+    }
+
+    .mobile-line {
+        display: none;
     }
 
     .footer-info-col {
@@ -297,16 +304,20 @@ const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for H
             align-items: center;
         }
 
+        /* 14px like the SPA's body2, so the longest mobile line fits a 360px screen */
         .funding-text {
             max-width: 100%;
-            margin-block-bottom: 14px;
+            margin-block-end: 14px;
             text-align: center;
+            font-size: var(--font-size-sm);
         }
 
-        /* Mobile lets the funding text wrap to the screen width again */
-        .text-line {
-            display: inline;
-            white-space: normal;
+        .desktop-line {
+            display: none;
+        }
+
+        .mobile-line {
+            display: block;
         }
 
         .logo-flag-group {
@@ -327,8 +338,10 @@ const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for H
             min-width: 0;
         }
 
+        /* 14px like the SPA's body2 */
         .europe-text {
             min-width: 0;
+            font-size: var(--font-size-sm);
         }
 
         /* Hide desktop text columns on mobile */
