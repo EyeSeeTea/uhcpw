@@ -8,6 +8,8 @@ import europeFlag from "../../../assets/europe-flag.png";
 import { AboutUsInfo } from "./AboutUsInfo";
 import { ContactUs } from "./ContactUs";
 import { useAppContext } from "../../../contexts/app-context";
+import { getDisclaimerLines, getFundingLines } from "./footerTextLines";
+import { TextLines } from "./TextLines";
 
 export const DesktopAppFooter: React.FC = () => {
     const { generalContent } = useAppContext();
@@ -20,9 +22,13 @@ export const DesktopAppFooter: React.FC = () => {
                         <Logo src={whoLogoWhite} width={150} alt="WHO logo" loading="eager" decoding="async" />
 
                         <FundingText variant="body1">
-                            {i18n.t(
-                                "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
-                            )}
+                            <TextLines
+                                lines={getFundingLines(
+                                    i18n.t(
+                                        "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                                    )
+                                )}
+                            />
                         </FundingText>
 
                         <InfoArea>
@@ -30,10 +36,14 @@ export const DesktopAppFooter: React.FC = () => {
                         </InfoArea>
 
                         <Disclaimer variant="body1">
-                            {i18n.t(
-                                generalContent?.footer.disclaimer ||
-                                    "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)"
-                            )}
+                            <TextLines
+                                lines={getDisclaimerLines(
+                                    i18n.t(
+                                        generalContent?.footer.disclaimer ||
+                                            "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)"
+                                    )
+                                )}
+                            />
                         </Disclaimer>
 
                         <EuropeContainer>
@@ -134,5 +144,4 @@ const Disclaimer = styled(Typography)`
 const FundingText = styled(Typography)`
     grid-area: fund;
     margin-block-end: 12px;
-    max-width: 18.75rem;
 `;
