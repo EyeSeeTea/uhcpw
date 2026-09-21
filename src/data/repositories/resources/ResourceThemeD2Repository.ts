@@ -11,12 +11,16 @@ const resourceThemeOptionSet = "ie8po5iPlaw";
 
 const THEME_OPTION_FP = "XtkFOVtkBtT";
 const THEME_OPTION_VIH = "nyzMcROMpmY";
+const THEME_OPTION_GPB = "nPnx6YQDuIA";
 
-const themeOptionsDisplayedName: Record<string, Record<string, any>> = {
+const themeOptionsDisplayedName: Readonly<Record<string, Readonly<{ showCode: boolean }>>> = {
     [THEME_OPTION_FP]: {
         showCode: true,
     },
     [THEME_OPTION_VIH]: {
+        showCode: true,
+    },
+    [THEME_OPTION_GPB]: {
         showCode: true,
     },
 };
