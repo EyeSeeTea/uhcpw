@@ -4,13 +4,12 @@ import styled from "styled-components";
 import veryWeakIconLegend from "../../../assets/map/icon-very-weak-legend.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-gaps.svg";
-import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import i18n from "../../../../locales";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import ReactMarkdown from "react-markdown";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { VideoPillLink } from "../../video-pill/VideoPill";
 
 type MainPanelProps = {
     mainPanelContent?: MainMapPanelContent;
@@ -73,10 +72,13 @@ export const HomePagePanel: React.FC<MainPanelProps> = ({ mainPanelContent, isMo
                     />
                 </VideoWrapper>
             ) : mainPanelContent?.buttonLink && mainPanelContent?.buttonText ? (
-                <VideoLink href={mainPanelContent?.buttonLink} target="_blank" rel="noreferrer" onClick={welcomeVideo}>
-                    <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
-                    <Typography>{mainPanelContent?.buttonText}</Typography>
-                </VideoLink>
+                <VideoPillLink
+                    href={mainPanelContent?.buttonLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={welcomeVideo}
+                    label={mainPanelContent?.buttonText}
+                />
             ) : null}
         </Container>
     );
@@ -113,21 +115,6 @@ const Marker = styled.img`
     background-size: cover;
     width: 80px;
     margin-bottom: 16px;
-`;
-
-const VideoLink = styled.a`
-    display: flex;
-    gap: 5px;
-    width: fit-content;
-    text-decoration: none;
-    background-color: white;
-    padding: 5px 15px;
-    color: ${colors.accentPrimary};
-    text-transform: initial;
-    border-radius: 40px;
-    &:hover {
-        background-color: ${colors.greyLight};
-    }
 `;
 
 const VideoWrapper = styled.div`

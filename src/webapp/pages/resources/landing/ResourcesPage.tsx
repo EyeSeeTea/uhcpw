@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import i18n from "../../../../locales";
 import { Layout } from "../../../components/layout/Layout";
+import { ExplainerVideoButton } from "../../../components/resources/explainer-videos/ExplainerVideoButton";
 import { ResourcesFilters } from "../../../components/resources/resources-filters/ResourcesFilters";
 import { colors } from "../../app/themes/dhis2.theme";
 import { useResources } from "./useResources";
@@ -29,6 +30,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
             <TitleAndSearchContainer>
                 <TitleContainer>
                     <Typography variant="h3">{i18n.t("Resources")}</Typography>
+                    <ExplainerVideoButton />
                 </TitleContainer>
 
                 <SearchContainer>
@@ -76,6 +78,10 @@ export const ResourcesPage: React.FC = React.memo(() => {
 });
 
 const TitleContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 32px;
     background: ${colors.gradientPrimary};
     color: white;
     padding: 24px 200px 24px 64px;
