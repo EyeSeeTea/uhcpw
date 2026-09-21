@@ -20,8 +20,8 @@ export const EmptyContent: React.FC<EmptyContentProps> = React.memo(({ infos }) 
 
     return (
         <Container>
-            {availableInfos.map(info => (
-                <InfoBox key={info.title} info={info} />
+            {availableInfos.map((info, index) => (
+                <InfoBox key={index} info={info} />
             ))}
         </Container>
     );
