@@ -13,10 +13,9 @@ const selectCategoryInfoDataElements: Readonly<Record<"title" | "text", Id>> = {
     text: "XVZ0MsAkYaC",
 };
 
-// TODO: replace the placeholders with the ids of the data elements once they exist in the main pages program and delete dataSourcesInfoFallback
 const dataSourcesInfoDataElements: Readonly<Record<"title" | "text", Id>> = {
-    title: "TODO_DATA_SOURCES_TITLE",
-    text: "TODO_DATA_SOURCES_TEXT",
+    title: "UD3RlPzN605",
+    text: "EVfINfwONps",
 };
 
 const dataSourcesInfoFallback: InfoBoxContent = {
