@@ -98,7 +98,7 @@ export const MapView: React.FC<MapViewProps> = ({
         <div ref={containerRef} className="map-root">
             <div ref={mapContainerRef} className="map-canvas-container" />
 
-            <div className="map-side-panel">{children}</div>
+            {children ? <div className="map-side-panel">{children}</div> : null}
 
             <div className="map-controls">
                 <button className="map-zoom-btn" onClick={zoomIn} aria-label="Zoom in">

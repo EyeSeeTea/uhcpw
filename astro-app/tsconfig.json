@@ -13,6 +13,7 @@
             "@shared/data/*": ["../src/data/*"],
             "@shared/types/*": ["../src/types/*"],
             "@shared/utils/*": ["../src/utils/*"],
+            "@shared/locales": ["../src/locales/index.js"],
             "@shared/CompositionRoot": ["../src/CompositionRoot"],
             "@shared/webapp/*": ["../src/webapp/*"]
         }
