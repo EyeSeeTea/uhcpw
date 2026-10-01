@@ -8,7 +8,7 @@ import { getMainPagesEvent } from "../common/getMainPagesContent";
 
 // FILE data elements of the main pages program that hold the explainer video of each page
 const videoDataElementByPage: Readonly<Partial<Record<ExplainerPage, Id>>> = {
-    resources: "R3va0rPB42z",
+    resources: "R3va0rPB42z", // R3va0rPB42z is a test video DE
 };
 
 const defaultVideoMimeType = "video/mp4";
