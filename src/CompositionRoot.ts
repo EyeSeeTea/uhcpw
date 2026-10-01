@@ -20,6 +20,8 @@ import { GetResourceCategoriesUseCase } from "./domain/usecases/resources/GetRes
 import { ResourceCategoryD2Repository } from "./data/repositories/resources/ResourceCategoryD2Repository";
 import { ResourceThemeD2Repository } from "./data/repositories/resources/ResourceThemeD2Repository";
 import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
+import { ExplainerD2Repository } from "./data/repositories/explainers/ExplainerD2Repository";
+import { GetExplainerUseCase } from "./domain/usecases/explainers/GetExplainerUseCase";
 import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
 import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
@@ -70,6 +72,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         resource: new ResourceD2Repository(api),
         resourceCategory: new ResourceCategoryD2Repository(api),
         resourceTheme: new ResourceThemeD2Repository(api),
+        explainer: new ExplainerD2Repository(api),
         person: new PersonD2Repository(api),
         method: new MethodD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
@@ -138,6 +141,9 @@ export function getCompositionRoot(
             get: new GetResourcesUseCase(repositories.resource),
             getCategories: new GetResourceCategoriesUseCase(repositories.resourceCategory),
             getThemes: new GetResourceThemesUseCase(repositories.resourceTheme),
+        },
+        explainers: {
+            get: new GetExplainerUseCase(repositories.explainer),
         },
         about: {
             getPersons: new GetPersonsUseCase(repositories.person),
