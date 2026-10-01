@@ -1,12 +1,12 @@
 import { CircularProgress, Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import i18n from "../../../../locales";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { ExplainerInfoState } from "./useExplainerInfo";
+import i18n from "../../../locales";
+import { colors } from "../../pages/app/themes/dhis2.theme";
+import { ExplainerVideoState } from "./useExplainerVideo";
 
 type ExplainerVideoProps = {
-    state: ExplainerInfoState;
+    state: ExplainerVideoState;
 };
 
 export const ExplainerVideo: React.FC<ExplainerVideoProps> = React.memo(({ state }) => {

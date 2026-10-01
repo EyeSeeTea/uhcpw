@@ -1,34 +1,35 @@
 import { useEffect, useState } from "react";
-import { useAppContext } from "../../../contexts/app-context";
+import { ExplainerPage } from "../../../domain/entities/explainers/Explainer";
+import { useAppContext } from "../../contexts/app-context";
 
-export type ExplainerInfoState =
+export type ExplainerVideoState =
     | Readonly<{ kind: "loading" }>
     | Readonly<{ kind: "loaded"; videoUrl: string }>
     | Readonly<{ kind: "error"; message: string }>;
 
 /**
- * The explainer info is requested the first time the hook is enabled and kept while the component using it stays
- * mounted, so enabling it again does not download the video twice. Disabling it before the download ends cancels it.
+ * The video is requested the first time the hook is enabled and kept while the component using it stays mounted, so
+ * enabling it again does not download the video twice. Disabling it before the download ends cancels it.
  */
-export function useExplainerInfo(enabled: boolean): ExplainerInfoState {
+export function useExplainerVideo(page: ExplainerPage, enabled: boolean): ExplainerVideoState {
     const { compositionRoot } = useAppContext();
     const [videoUrl, setVideoUrl] = useState<string | undefined>(undefined);
     const [error, setError] = useState<string | undefined>(undefined);
-    const getExplainerInfo = compositionRoot.resources.getExplainerInfo;
+    const getExplainer = compositionRoot.explainers.get;
 
     useEffect(() => {
         if (!enabled || videoUrl) return undefined;
 
         setError(undefined);
 
-        return getExplainerInfo.execute().run(
-            info => setVideoUrl(URL.createObjectURL(info.video)),
+        return getExplainer.execute(page).run(
+            ({ video }) => setVideoUrl(URL.createObjectURL(video)),
             message => {
                 console.error(message);
                 setError(message);
             }
         );
-    }, [enabled, videoUrl, getExplainerInfo]);
+    }, [enabled, videoUrl, getExplainer, page]);
 
     useEffect(() => {
         return videoUrl ? () => URL.revokeObjectURL(videoUrl) : undefined;

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-09-21T13:49:37.418Z\n"
-"PO-Revision-Date: 2026-09-21T13:49:37.418Z\n"
+"POT-Creation-Date: 2026-10-01T08:25:23.350Z\n"
+"PO-Revision-Date: 2026-10-01T08:25:23.350Z\n"
 
 msgid "404"
 msgstr ""
@@ -84,6 +84,15 @@ msgid "Save"
 msgstr ""
 
 msgid "Clear"
+msgstr ""
+
+msgid "The video could not be loaded"
+msgstr ""
+
+msgid "Explainer video"
+msgstr ""
+
+msgid "Close"
 msgstr ""
 
 msgid "indicator explorer"
@@ -203,15 +212,6 @@ msgid "Get table"
 msgstr ""
 
 msgid "Select all"
-msgstr ""
-
-msgid "The video could not be loaded"
-msgstr ""
-
-msgid "Explainer Video"
-msgstr ""
-
-msgid "Close"
 msgstr ""
 
 msgid "Select theme"

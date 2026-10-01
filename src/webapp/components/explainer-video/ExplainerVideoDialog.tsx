@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle, IconButton, Typography } from "@mat
 import CloseIcon from "@material-ui/icons/Close";
 import React from "react";
 import styled from "styled-components";
-import i18n from "../../../../locales";
+import i18n from "../../../locales";
 
 const titleId = "explainer-video-dialog-title";
 
