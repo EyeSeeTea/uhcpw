@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { getYouTubeEmbedUrl } from "../../../../domain/entities/YouTubeVideo";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
-import { VideoDialog } from "../../video-dialog/VideoDialog";
+import { YouTubeVideoDialog } from "../../video-dialog/YouTubeVideoDialog";
 import { VideoPillButton, VideoPillLink } from "../../video-pill/VideoPill";
-import { YouTubeEmbed } from "../../youtube-embed/YouTubeEmbed";
 
 type WelcomeVideoButtonProps = {
     link: string;
@@ -38,9 +37,7 @@ export const WelcomeVideoButton: React.FC<WelcomeVideoButtonProps> = React.memo(
         <>
             <VideoPillButton label={text} onClick={openDialog} />
 
-            <VideoDialog open={isDialogOpen} title={text} onClose={closeDialog}>
-                <YouTubeEmbed src={`${embedUrl}?autoplay=1`} title={text} />
-            </VideoDialog>
+            <YouTubeVideoDialog open={isDialogOpen} title={text} embedUrl={embedUrl} onClose={closeDialog} />
         </>
     );
 });

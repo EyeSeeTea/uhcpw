@@ -24,6 +24,13 @@ describe("renderMarkdown", () => {
         expect(html).toContain('<a href="https://example.com" target="_blank" rel="noreferrer">example</a>');
     });
 
+    it("adds the embed URL to YouTube links when externalLinks is enabled", () => {
+        const html = renderMarkdown("[video](https://www.youtube.com/watch?v=YEApPgSC3X8)", { externalLinks: true });
+        expect(html).toContain(
+            '<a href="https://www.youtube.com/watch?v=YEApPgSC3X8" target="_blank" rel="noreferrer" data-youtube-embed="https://www.youtube.com/embed/YEApPgSC3X8">video</a>'
+        );
+    });
+
     it("renders bold and italic", () => {
         const html = renderMarkdown("**bold** and *italic*");
         expect(html).toContain("<strong>bold</strong>");
