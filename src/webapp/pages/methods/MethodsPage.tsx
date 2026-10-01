@@ -12,10 +12,10 @@ import { useMethods } from "./useMethods";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { ColumnGridContainer } from "../../components/ColumnGridContainer";
 import mapBackground from "../../assets/map-background.jpg";
-import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { useReferenceLinks } from "../../common/hooks/analytics/useReferenceLinks";
-import { getYouTubeEmbedUrl } from "../../../domain/entities/YouTubeVideo";
 import { YouTubeVideoDialog } from "../../components/video-dialog/YouTubeVideoDialog";
+import { useDesktopYouTubeEmbedUrl } from "../../components/video-dialog/useDesktopYouTubeEmbedUrl";
 import { Maybe } from "../../../types/utils";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
@@ -46,9 +46,8 @@ const MarkdownLink: React.FC<{
     children: React.ReactNode;
 }> = ({ href, children }) => {
     const { redirectWithExternalLink, sendEvent } = useAnalytics();
-    const isSmallScreen = useIsSmallScreen();
     const [dialogTitle, setDialogTitle] = React.useState<Maybe<string>>(undefined);
-    const embedUrl = href && !isSmallScreen ? getYouTubeEmbedUrl(href) : undefined;
+    const embedUrl = useDesktopYouTubeEmbedUrl(href);
 
     const openDialog = React.useCallback(
         (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

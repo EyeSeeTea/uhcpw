@@ -6,18 +6,38 @@ import ReactMarkdown from "react-markdown";
 import i18n from "../../../../locales";
 import { OfficeInfo } from "../../../../domain/entities/about/OfficeInfo";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { YouTubeVideoDialog } from "../../video-dialog/YouTubeVideoDialog";
+import { useDesktopYouTubeEmbedUrl } from "../../video-dialog/useDesktopYouTubeEmbedUrl";
+
+const videoPageView = { title: "[Video] WHO Barcelona Office" };
 
 export const Header: React.FC<{ officeInfo: OfficeInfo | undefined }> = React.memo(({ officeInfo }) => {
-    const { redirectWithPageView } = useAnalytics();
+    const { redirectWithPageView, clickWithPageView } = useAnalytics();
+    const [isDialogOpen, setIsDialogOpen] = React.useState(false);
+    const embedUrl = useDesktopYouTubeEmbedUrl(officeInfo?.officeVideo);
 
-    const videoPageView = redirectWithPageView({ title: "[Video] WHO Barcelona Office" });
+    const openDialog = React.useCallback(
+        (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+            mouseEvent.preventDefault();
+            clickWithPageView(videoPageView, () => setIsDialogOpen(true));
+        },
+        [clickWithPageView]
+    );
+    const closeDialog = React.useCallback(() => setIsDialogOpen(false), []);
 
     if (!officeInfo) return null;
+
+    const caption = i18n.t("WHO Barcelona Office for Health Systems Financing");
 
     return (
         <HeaderGrid container spacing={5} alignItems="flex-start">
             <Grid item md={6} xs={12}>
-                <a href={officeInfo.officeVideo} target="_blank" rel="noreferrer" onClick={videoPageView}>
+                <a
+                    href={officeInfo.officeVideo}
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={embedUrl ? openDialog : redirectWithPageView(videoPageView)}
+                >
                     <img
                         style={{ paddingBlockStart: "16px" }}
                         width="100%"
@@ -25,7 +45,11 @@ export const Header: React.FC<{ officeInfo: OfficeInfo | undefined }> = React.me
                         src={officeInfo.officeImage}
                     />
                 </a>
-                <Caption role="caption">{i18n.t("WHO Barcelona Office for Health Systems Financing")}</Caption>
+                <Caption role="caption">{caption}</Caption>
+
+                {embedUrl && (
+                    <YouTubeVideoDialog open={isDialogOpen} title={caption} embedUrl={embedUrl} onClose={closeDialog} />
+                )}
             </Grid>
             <Grid item md={6} xs={12}>
                 <Container maxWidth="sm">

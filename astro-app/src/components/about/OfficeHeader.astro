@@ -1,6 +1,7 @@
 ---
 import { renderMarkdown } from "@/lib/markdown";
 import { href } from "@/lib/href";
+import { getYouTubeEmbedUrl } from "@shared/domain/entities/YouTubeVideo";
 
 interface Props {
     officeImage: string;
@@ -13,12 +14,20 @@ interface Props {
 const { officeImage, officeImageWidth, officeVideo, officeText } = Astro.props;
 
 const textHtml = renderMarkdown(officeText);
+const caption = "WHO Barcelona Office for Health Systems Financing";
+const videoEmbedUrl = getYouTubeEmbedUrl(officeVideo);
 ---
 
 <section class="office-header" aria-label="WHO Barcelona Office">
     <div class="office-grid">
         <div class="image-column">
-            <a href={officeVideo} target="_blank" rel="noreferrer">
+            <a
+                href={officeVideo}
+                target="_blank"
+                rel="noreferrer"
+                data-youtube-embed={videoEmbedUrl}
+                data-youtube-title={caption}
+            >
                 <img
                     src={href(officeImage)}
                     alt="WHO Barcelona Office"
@@ -29,7 +38,7 @@ const textHtml = renderMarkdown(officeText);
                     decoding="async"
                 />
             </a>
-            <p class="caption">WHO Barcelona Office for Health Systems Financing</p>
+            <p class="caption">{caption}</p>
         </div>
 
         <div class="text-column">

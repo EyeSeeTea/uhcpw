@@ -8,7 +8,7 @@ type OpenVideo = Readonly<{ title: string; embedUrl: string }>;
 
 const smallScreenQuery = `(max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px)`;
 
-export const MethodsYouTubeDialog: React.FC = () => {
+export const YouTubeLinkDialog: React.FC = () => {
     const [video, setVideo] = useState<OpenVideo | undefined>(undefined);
 
     useEffect(() => {
@@ -18,7 +18,8 @@ export const MethodsYouTubeDialog: React.FC = () => {
             if (!link || !embedUrl || window.matchMedia(smallScreenQuery).matches) return;
 
             event.preventDefault();
-            setVideo({ title: link.textContent?.trim() || "", embedUrl });
+            const title = link.getAttribute("data-youtube-title") || link.textContent?.trim() || "";
+            setVideo({ title, embedUrl });
         };
 
         document.addEventListener("click", onClick);

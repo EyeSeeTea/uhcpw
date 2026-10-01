@@ -3,6 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import OfficeHeader from "@/components/about/OfficeHeader.astro";
 import TeamSection from "@/components/about/TeamSection.astro";
 import { ExpertsNetwork } from "@/islands/about/ExpertsNetwork";
+import { YouTubeLinkDialog } from "@/islands/common/YouTubeLinkDialog";
 import { getAboutPageData } from "@/data/about/about-data";
 import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
 import "@/styles/experts-network.css";
@@ -58,6 +59,8 @@ const expertsSubtitle =
             />
         </div>
     </section>
+
+    <YouTubeLinkDialog client:only="react" />
 </Layout>
 
 <style>
