@@ -88,21 +88,21 @@ describe("ResourcesByTypePage for ", () => {
 
             expect(screen.getByRole("heading", { name: /news/i })).toBeInTheDocument();
         });
-        it("should has country selector disabled", async () => {
+        it("should have country selector enabled", async () => {
             givenANewsResources(0);
 
             renderPage("news");
 
             const input = await screen.findByLabelText(/input Select country or area/i);
 
-            expect(input).toBeDisabled();
+            expect(input).toBeEnabled();
         });
         it("should render any items if there not resources", async () => {
             givenANewsResources(0);
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -111,7 +111,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -120,7 +120,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await screen.findAllByRole("listitem");
 
@@ -131,7 +131,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await verifyNewsItems(resources);
         });
@@ -145,21 +145,21 @@ describe("ResourcesByTypePage for ", () => {
 
             expect(screen.getByRole("heading", { name: /multimedia/i })).toBeInTheDocument();
         });
-        it("should has country selector disabled", async () => {
+        it("should have country selector enabled", async () => {
             givenAMultimediaResources(0);
 
             renderPage("multimedia");
 
             const input = await screen.findByLabelText(/input Select country or area/i);
 
-            expect(input).toBeDisabled();
+            expect(input).toBeEnabled();
         });
         it("should render any items if there not resources", async () => {
             givenAMultimediaResources(0);
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -168,7 +168,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -177,7 +177,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await screen.findAllByRole("listitem");
 
@@ -188,7 +188,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await verifyMultimediaItems(resources);
         });
@@ -441,12 +441,7 @@ function givenAResourceCategories(): ResourceCategory[] {
     return data;
 }
 
-async function selectFiltersAndSearch(options?: {
-    theme?: string;
-    country?: string;
-    year?: string;
-    isCountryDisabled?: boolean;
-}) {
+async function selectFiltersAndSearch(options?: { theme?: string; country?: string; year?: string }) {
     const mainElement = screen.getByRole("main");
     const main = within(mainElement);
 
@@ -454,9 +449,7 @@ async function selectFiltersAndSearch(options?: {
 
     await selectYearsFilter(main, options?.year || "2019");
 
-    if (!options?.isCountryDisabled) {
-        await selectCountry(main, options?.country || "Spain");
-    }
+    await selectCountry(main, options?.country || "Spain");
 
     const searchButton = main.getByLabelText(/search/i);
 

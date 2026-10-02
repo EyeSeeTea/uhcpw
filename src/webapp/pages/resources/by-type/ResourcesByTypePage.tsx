@@ -68,10 +68,6 @@ export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.mem
         paging,
     });
 
-    const disabledCountryFilter = useMemo(() => {
-        return category === "news" || category === "multimedia";
-    }, [category]);
-
     React.useEffect(() => {
         sendEvent({ name: "resource_kind_page_view", pageTitle: "Resources", category: category });
     }, [sendEvent, category]);
@@ -92,11 +88,7 @@ export const ResourcesByTypePage: React.FC<ResourcesByTypePageProps> = React.mem
                 {isSmallScreen && <ScrollToTopButton />}
                 <ResourcesContainer maxWidth="xl">
                     <FiltersContainer>
-                        <ResourcesFilters
-                            filters={filters}
-                            onGetResources={onGetResources}
-                            disabledCountryFilter={disabledCountryFilter}
-                        />
+                        <ResourcesFilters filters={filters} onGetResources={onGetResources} />
                     </FiltersContainer>
 
                     {
