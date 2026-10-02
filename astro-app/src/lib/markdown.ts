@@ -1,4 +1,5 @@
 import { Marked, marked, type Tokens } from "marked";
+import { getYouTubeEmbedUrl } from "@shared/domain/entities/YouTubeVideo";
 
 marked.setOptions({
     async: false,
@@ -10,7 +11,9 @@ const externalLinkMarked = new Marked({ async: false, gfm: true });
 externalLinkMarked.use({
     renderer: {
         link({ href, text }: Tokens.Link): string {
-            return `<a href="${href}" target="_blank" rel="noreferrer">${text}</a>`;
+            const embedUrl = getYouTubeEmbedUrl(href);
+            const embedAttribute = embedUrl ? ` data-youtube-embed="${embedUrl}"` : "";
+            return `<a href="${href}" target="_blank" rel="noreferrer"${embedAttribute}>${text}</a>`;
         },
     },
 });

@@ -14,6 +14,9 @@ import { ColumnGridContainer } from "../../components/ColumnGridContainer";
 import mapBackground from "../../assets/map-background.jpg";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { useReferenceLinks } from "../../common/hooks/analytics/useReferenceLinks";
+import { YouTubeVideoDialog } from "../../components/video-dialog/YouTubeVideoDialog";
+import { useDesktopYouTubeEmbedUrl } from "../../components/video-dialog/useDesktopYouTubeEmbedUrl";
+import { Maybe } from "../../../types/utils";
 
 const MethodsMarkdown = ({ children }: { children: string }) => {
     return (
@@ -42,18 +45,42 @@ const MarkdownLink: React.FC<{
     href?: string | undefined;
     children: React.ReactNode;
 }> = ({ href, children }) => {
-    const { redirectWithExternalLink } = useAnalytics();
+    const { redirectWithExternalLink, sendEvent } = useAnalytics();
+    const [dialogTitle, setDialogTitle] = React.useState<Maybe<string>>(undefined);
+    const embedUrl = useDesktopYouTubeEmbedUrl(href);
+
+    const openDialog = React.useCallback(
+        (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+            mouseEvent.preventDefault();
+            const { href, innerText } = mouseEvent.currentTarget;
+            sendEvent({ name: "external_link", href, text: innerText });
+            setDialogTitle(innerText);
+        },
+        [sendEvent]
+    );
+    const closeDialog = React.useCallback(() => setDialogTitle(undefined), []);
 
     return (
-        <TextLink
-            href={href}
-            style={{ paddingInline: 0 }}
-            target="_blank"
-            rel="noreferrer"
-            onClick={redirectWithExternalLink}
-        >
-            {children}
-        </TextLink>
+        <>
+            <TextLink
+                href={href}
+                style={{ paddingInline: 0 }}
+                target="_blank"
+                rel="noreferrer"
+                onClick={embedUrl ? openDialog : redirectWithExternalLink}
+            >
+                {children}
+            </TextLink>
+
+            {embedUrl && (
+                <YouTubeVideoDialog
+                    open={dialogTitle !== undefined}
+                    title={dialogTitle || ""}
+                    embedUrl={embedUrl}
+                    onClose={closeDialog}
+                />
+            )}
+        </>
     );
 };
 
