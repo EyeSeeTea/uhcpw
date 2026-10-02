@@ -6,15 +6,18 @@ import ReactMarkdown from "react-markdown";
 import i18n from "../../../../locales";
 import { OfficeInfo } from "../../../../domain/entities/about/OfficeInfo";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
+import { getYouTubeEmbedUrl } from "../../../../domain/entities/YouTubeVideo";
+import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { YouTubeVideoDialog } from "../../video-dialog/YouTubeVideoDialog";
-import { useDesktopYouTubeEmbedUrl } from "../../video-dialog/useDesktopYouTubeEmbedUrl";
+import { YouTubeEmbed } from "../../youtube-embed/YouTubeEmbed";
 
 const videoPageView = { title: "[Video] WHO Barcelona Office" };
 
 export const Header: React.FC<{ officeInfo: OfficeInfo | undefined }> = React.memo(({ officeInfo }) => {
     const { redirectWithPageView, clickWithPageView } = useAnalytics();
     const [isDialogOpen, setIsDialogOpen] = React.useState(false);
-    const embedUrl = useDesktopYouTubeEmbedUrl(officeInfo?.officeVideo);
+    const isSmallScreen = useIsSmallScreen();
+    const embedUrl = officeInfo?.officeVideo ? getYouTubeEmbedUrl(officeInfo.officeVideo) : undefined;
 
     const openDialog = React.useCallback(
         (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
@@ -32,22 +35,26 @@ export const Header: React.FC<{ officeInfo: OfficeInfo | undefined }> = React.me
     return (
         <HeaderGrid container spacing={5} alignItems="flex-start">
             <Grid item md={6} xs={12}>
-                <a
-                    href={officeInfo.officeVideo}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={embedUrl ? openDialog : redirectWithPageView(videoPageView)}
-                >
-                    <img
-                        style={{ paddingBlockStart: "16px" }}
-                        width="100%"
-                        alt="WHO Barcelona Office"
-                        src={officeInfo.officeImage}
-                    />
-                </a>
+                {isSmallScreen && embedUrl ? (
+                    <OfficeVideo src={embedUrl} title={caption} />
+                ) : (
+                    <a
+                        href={officeInfo.officeVideo}
+                        target="_blank"
+                        rel="noreferrer"
+                        onClick={embedUrl ? openDialog : redirectWithPageView(videoPageView)}
+                    >
+                        <img
+                            style={{ paddingBlockStart: "16px" }}
+                            width="100%"
+                            alt="WHO Barcelona Office"
+                            src={officeInfo.officeImage}
+                        />
+                    </a>
+                )}
                 <Caption role="caption">{caption}</Caption>
 
-                {embedUrl && (
+                {!isSmallScreen && embedUrl && (
                     <YouTubeVideoDialog open={isDialogOpen} title={caption} embedUrl={embedUrl} onClose={closeDialog} />
                 )}
             </Grid>
@@ -70,6 +77,10 @@ const HeaderGrid = styled(Grid)`
     margin-top: 0px;
     color: white;
     padding: 32px;
+`;
+
+const OfficeVideo = styled(YouTubeEmbed)`
+    margin-block-start: 16px;
 `;
 
 const Caption = styled(Typography)`

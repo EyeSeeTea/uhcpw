@@ -1,4 +1,5 @@
 ---
+import { YouTube } from "@astro-community/astro-embed-youtube";
 import { renderMarkdown } from "@/lib/markdown";
 import { href } from "@/lib/href";
 import { getYouTubeEmbedUrl } from "@shared/domain/entities/YouTubeVideo";
@@ -22,6 +23,7 @@ const videoEmbedUrl = getYouTubeEmbedUrl(officeVideo);
     <div class="office-grid">
         <div class="image-column">
             <a
+                id="office-video-link"
                 href={officeVideo}
                 target="_blank"
                 rel="noreferrer"
@@ -38,6 +40,24 @@ const videoEmbedUrl = getYouTubeEmbedUrl(officeVideo);
                     decoding="async"
                 />
             </a>
+            {
+                videoEmbedUrl && (
+                    <template id="office-video-tpl">
+                        <div class="office-video">
+                            <YouTube id={videoEmbedUrl} title={caption} />
+                        </div>
+                    </template>
+                )
+            }
+            <script>
+                // On mobile the office video plays embedded instead of behind the image link. Gate render
+                // so the YouTube facade (lite-youtube) is never connected to the DOM on desktop.
+                const tpl = document.getElementById("office-video-tpl");
+                const link = document.getElementById("office-video-link");
+                if (tpl instanceof HTMLTemplateElement && link && window.matchMedia("(max-width: 959px)").matches) {
+                    link.replaceWith(tpl.content.cloneNode(true));
+                }
+            </script>
             <p class="caption">{caption}</p>
         </div>
 
@@ -73,6 +93,15 @@ const videoEmbedUrl = getYouTubeEmbedUrl(officeVideo);
         width: 100%;
         height: auto;
         padding-block-start: 16px;
+    }
+
+    .office-video {
+        padding-block-start: 16px;
+    }
+
+    .office-video :global(lite-youtube) {
+        width: 100%;
+        max-width: 100%;
     }
 
     .caption {
