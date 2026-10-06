@@ -5,34 +5,29 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 
-type ContactUsProps = {
-    showTitle?: boolean;
+type ContactUsProps = Readonly<{
     isMobile?: boolean;
-};
+}>;
 
 export const ContactUs: React.FC<ContactUsProps> = props => {
-    const { showTitle = true, isMobile = false } = props;
+    const { isMobile = false } = props;
     const { redirectWithExternalLink } = useAnalytics();
+    const variant = isMobile ? "body2" : "body1";
 
     return (
         <Container>
-            {showTitle && <Heading variant="body1">{i18n.t("Contact our office")}</Heading>}
+            {/* Mobile separates the address from the phone and email; desktop lists them all together */}
+            <Address $isSpaced={isMobile}>
+                <Typography variant={variant}>{i18n.t("Sant Pau Art Nouveau Site (La Mercè)")}</Typography>
 
-            <Wrapper>
-                <Typography variant={isMobile ? "body2" : "body1"}>
-                    {i18n.t("Sant Pau Art Nouveau Site (La Mercè)")}
-                </Typography>
+                <Typography variant={variant}>{i18n.t("Sant Antoni Maria Claret 167")}</Typography>
 
-                <Typography variant={isMobile ? "body2" : "body1"}>{i18n.t("Sant Antoni Maria Claret 167")}</Typography>
+                <Typography variant={variant}>{i18n.t("08025 Barcelona, Spain")}</Typography>
+            </Address>
 
-                <Typography variant={isMobile ? "body2" : "body1"}>{i18n.t("08025 Barcelona, Spain")}</Typography>
-            </Wrapper>
+            <Typography variant={variant}>{i18n.t("Tel: +34 673 290 861", { nsSeparator: false })}</Typography>
 
-            <Typography variant={isMobile ? "body2" : "body1"}>
-                {i18n.t("Tel: +34 673 290 861", { nsSeparator: false })}
-            </Typography>
-
-            <Typography variant={isMobile ? "body2" : "body1"}>
+            <Typography variant={variant}>
                 {i18n.t("Email:")}{" "}
                 <MailLink
                     href="mailto:uhcwatch@who.int"
@@ -52,15 +47,11 @@ const Container = styled.div`
     flex-direction: column;
 `;
 
-const Heading = styled(Typography)`
-    margin-bottom: 8px;
-`;
-
 const MailLink = styled.a`
     text-decoration: none;
     color: inherit;
 `;
 
-const Wrapper = styled.div`
-    margin-block-end: 30px;
+const Address = styled.div<{ $isSpaced: boolean }>`
+    margin-block-end: ${props => (props.$isSpaced ? "30px" : "0")};
 `;
