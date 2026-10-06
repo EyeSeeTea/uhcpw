@@ -198,6 +198,13 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         font-size: 1rem;
     }
 
+    /* Without the paragraph margins the flag starts at the top of its row, level with the other two columns */
+    @media (min-width: 961px) {
+        .europe-text {
+            margin-block: 0;
+        }
+    }
+
     .funding-text {
         grid-area: fund;
         align-self: start;
