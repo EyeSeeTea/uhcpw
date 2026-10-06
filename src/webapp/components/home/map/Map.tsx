@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useCallback, useMemo } from "react";
 import { useAppContext } from "../../../contexts/app-context";
 import { useMapSidePanelHeight } from "./useMapSidePanelHeight";
 import mapboxgl, { LngLatLike } from "mapbox-gl";
+import MapboxWorker from "mapbox-gl/dist/mapbox-gl-csp-worker?worker";
 import styled from "styled-components";
 import { Fab, Tooltip } from "@material-ui/core";
 
@@ -33,13 +34,10 @@ import { FinancialProtectionStatus } from "../../../../domain/entities/Financial
 
 const MAP_SIDE_PANEL_PADDING_PX = 48;
 
-mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN ?? "";
+mapboxgl.accessToken = import.meta.env.REACT_APP_MAPBOX_TOKEN ?? "";
 
-// Fix bug in production build
-// https://github.com/mapbox/mapbox-gl-js/issues/10173#issuecomment-750489778
-// @ts-ignore
-// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
-mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+// Keep the CSP worker in a separate asset for both development and production.
+mapboxgl.workerClass = MapboxWorker;
 
 export type MapProps = {
     mapState: MapState;

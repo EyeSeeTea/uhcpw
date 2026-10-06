@@ -60,7 +60,7 @@ function givenAHomePageContent() {
 }
 
 function verifyContentIsParsed(homePageContent?: HomePageContent) {
-    if (!homePageContent) fail("Home Page Content is undefined");
+    if (!homePageContent) throw new Error("Home Page Content is undefined");
 
     expect(homePageContent.mainMapPanel.title).toBe("UHC watch(TEST)");
     expect(homePageContent.mainMapPanel.description).toBe(

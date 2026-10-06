@@ -5,11 +5,24 @@ monitor Universal Health Coverage in the WHO European Region (UHCPW).
 
 ## Setup
 
-Install dependencies:
+Use the pinned Node 24 LTS runtime with nvm and Yarn 4. The SPA uses
+`node_modules`; Astro keeps its separate toolchain.
 
 ```
+$ nvm install
+$ nvm use
+$ npm install --global corepack
+$ corepack enable
 $ yarn install
 ```
+
+Corepack uses the Yarn version pinned in `package.json`; no Yarn executable is
+stored in this repository. Node 24 requires Corepack to be installed separately
+if it is not already available. Use `corepack yarn` instead of `yarn` if you
+prefer not to enable the shims. Third-party dependency lifecycle scripts are
+disabled. The SPA's own postinstall still runs localization (GNU gettext is
+required). Run `yarn prepare` if you want the Git hooks installed; Cypress's
+binary must be provisioned explicitly with `yarn cypress install` before E2E tests.
 
 ## Development
 
@@ -23,17 +36,19 @@ Now in your browser, go to `http://localhost:8081`.
 
 Notes:
 
--   Requests to DHIS2 will be transparently proxied (see `src/setupProxy.js`) from `http://localhost:8081/dhis2/path` to `http://localhost:8080/path` to avoid CORS and cross-domain problems.
+-   Requests to DHIS2 will be transparently proxied (see `config/dhis2Proxy.mjs`) from `http://localhost:8081/dhis2/path` to `http://localhost:8080/path` to avoid CORS and cross-domain problems.
 
 -   The optional environment variable `REACT_APP_DHIS2_AUTH=USERNAME:PASSWORD` forces some credentials to be used by the proxy. This variable is usually not set, so the app has the same user logged in at `REACT_APP_DHIS2_BASE_URL`.
 
--   The optional environment variable `REACT_APP_PROXY_LOG_LEVEL` can be helpful to debug the proxyfied requests (accepts: "warn" | "debug" | "info" | "error" | "silent")
+-   Vite reports proxy connection errors in the development server output. The former `REACT_APP_PROXY_LOG_LEVEL` option belonged to CRA's proxy middleware and is no longer used.
 
 -   The optional environment variable `REACT_APP_BASE_PATH` sets the basename for the SPA router. Defaults to `"/"` for local development. Set to `/dhis2/uhcwatch` for production deployment under a sub-path.
 
 -   Create a file `.env.local` (copy it from `.env`) to customize environment variables so you can simply run `yarn start`.
 
--   [why-did-you-render](https://github.com/welldone-software/why-did-you-render) is installed, but it does not work when using standard react scripts (`yarn start`). Instead, use `yarn start-profiling` to debug re-renders with WDYR. Note that hot reloading does not work out-of-the-box with [craco](https://github.com/gsoft-inc/craco).
+-   Use `yarn start-profiling` to debug re-renders with [why-did-you-render](https://github.com/welldone-software/why-did-you-render). Vite initializes it before loading the app and enables its JSX runtime only in profiling mode.
+
+-   Existing `REACT_APP_BASE_PATH` and `REACT_APP_MAPBOX_TOKEN` names remain supported. Only these public variables enter the browser bundle; DHIS2 credentials and the proxy target stay in server configuration.
 
 ## Integrated development (SPA + Astro)
 
@@ -65,6 +80,10 @@ To add more Astro pages to the proxy, edit `dev/httpd.conf` and add `ProxyPass`/
 
 ### Unit tests
 
+Unit and component tests run once with Vitest; use `yarn test:watch` for watch
+mode and `yarn test:coverage` for coverage. Run `yarn lint` and
+`node node_modules/typescript/bin/tsc --noEmit` for the other checks.
+
 ```
 $ yarn test
 ```
@@ -90,7 +109,7 @@ For production:
 
 ```
 $ yarn build:prod
-# or an alias:
+# with localization and unit tests first:
 $ yarn build
 ```
 
@@ -105,7 +124,8 @@ $ yarn build:test
 ### Structure
 
 -   `i18n/`: Contains literal translations (gettext format)
--   `public/`: Main app folder with a `index.html`, exposes the APP.
+-   `index.html`: Vite SPA entry document.
+-   `public/`: Static SPA assets copied into the build.
 -   `src/pages`: Main React components.
 -   `src/domain`: Domain layer of the app (clean architecture)
 -   `src/data`: Data of the app (clean architecture)

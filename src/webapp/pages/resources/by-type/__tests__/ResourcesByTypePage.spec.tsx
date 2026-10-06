@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { BoundFunctions, queries, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import moment from "moment";
@@ -453,7 +453,7 @@ async function selectFiltersAndSearch(options?: { theme?: string; country?: stri
 
     const searchButton = main.getByLabelText(/search/i);
 
-    userEvent.click(searchButton);
+    await userEvent.click(searchButton);
 }
 
 async function selectThemeFilter(scope: BoundFunctions<typeof queries>, value: string) {

@@ -1,7 +1,7 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Bubble } from "../../../assets/bubble-pattern.svg";
+import Bubble from "../../../assets/bubble-pattern.svg?react";
 import { ChevronRightIcon } from "../../icons/ChevronRightIcon";
 
 export interface SectionHeaderProps {

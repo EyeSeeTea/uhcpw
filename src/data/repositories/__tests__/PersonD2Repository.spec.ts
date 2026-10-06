@@ -87,7 +87,7 @@ describe("Person repository", () => {
 });
 
 function verifyPersonIsParsed(person?: Person) {
-    if (!person) fail("Person is undefined");
+    if (!person) throw new Error("Person is undefined");
 
     expect(person.firstName).toBe("Natalia");
     expect(person.lastName).toBe("Riabtseva");

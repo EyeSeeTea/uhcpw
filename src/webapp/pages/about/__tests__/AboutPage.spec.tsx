@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { screen, waitFor, within } from "@testing-library/react";
 import { instance, mock, when } from "ts-mockito";
 import { Future } from "../../../../domain/entities/Future";

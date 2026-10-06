@@ -1,4 +1,3 @@
-import "./webapp/utils/wdyr";
 import { Provider } from "@dhis2/app-runtime";
 import i18n from "@dhis2/d2-i18n";
 import { init } from "d2";
@@ -26,11 +25,11 @@ if (window.location.pathname.endsWith("/index.html")) {
     window.history.replaceState(null, "", stripped + window.location.search + window.location.hash);
 }
 
-const isDev = process.env.NODE_ENV === "development";
+const isDev = import.meta.env.DEV;
 
 async function getBaseUrl() {
     if (isDev) {
-        return `${window.location.origin}/dhis2`; // See src/setupProxy.js
+        return `${window.location.origin}/dhis2`; // See config/dhis2Proxy.mjs
     } else {
         const manifestUrl = `${appConfig.basePath.replace(/\/+$/, "")}/manifest.webapp`;
         const manifest = await fetch(manifestUrl).then(res => res.json());

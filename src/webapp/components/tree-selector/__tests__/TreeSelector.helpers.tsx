@@ -63,7 +63,7 @@ export async function collapseGroup(name: string) {
 export async function selectCountry(name: string) {
     const checkbox = await screen.findByRole("checkbox", { name });
 
-    userEvent.click(checkbox);
+    await userEvent.click(checkbox);
 }
 
 export async function verifyCountryIsChecked(name: string) {
@@ -74,7 +74,7 @@ export async function verifyCountryIsChecked(name: string) {
 
 export async function search(name: string) {
     const searchBox = await screen.findByRole("searchbox");
-    userEvent.type(searchBox, name);
+    await userEvent.type(searchBox, name);
 }
 
 export async function verifyChip(name: string) {

@@ -35,7 +35,8 @@ describe("Resource repository", () => {
             givenFavoritesResources();
             givenAComparativeAnalysis();
 
-            await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
+            const result = await resourceRepository.get({ category: "comparative-analysis" }).runAsync();
+            expect(result.error).toBeUndefined();
 
             expect(mockWebServer.lastRequest?.params.get("program")).toBe(resourcesProgram);
         });
@@ -335,7 +336,7 @@ function givenFavoritesResources(): FavoriteResources {
 }
 
 function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
-    if (!comparativeAnalysis) fail("Comparative analysis is undefined");
+    if (!comparativeAnalysis) throw new Error("Comparative analysis is undefined");
 
     expect(comparativeAnalysis.kind).toBe("comparative-analysis");
     expect(comparativeAnalysis.imageOriginal).toContain(
@@ -370,7 +371,7 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
 }
 
 function verifyNews(newsItem?: News) {
-    if (!newsItem) fail("News is undefined");
+    if (!newsItem) throw new Error("News is undefined");
 
     expect(newsItem.kind).toBe("news");
     expect(newsItem.imageOriginal).toContain("//api/events/files?dataElementUid=uund7zjS1Yt&eventUid=ckY8Z4ZmTDe");
@@ -388,7 +389,7 @@ function verifyNews(newsItem?: News) {
 }
 
 function verifyMultimedia(multimediaItem?: Multimedia) {
-    if (!multimediaItem) fail("Multimedia is undefined");
+    if (!multimediaItem) throw new Error("Multimedia is undefined");
 
     expect(multimediaItem.kind).toBe("multimedia");
     expect(multimediaItem.imageOriginal).toContain(
@@ -409,7 +410,7 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
 }
 
 function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
-    if (!countryAnalysis) fail("countryAnalysis is undefined");
+    if (!countryAnalysis) throw new Error("countryAnalysis is undefined");
 
     expect(countryAnalysis.kind).toBe("country-analysis");
     expect(countryAnalysis.imageOriginal).toContain(
@@ -447,14 +448,14 @@ function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
 }
 
 function verifyFavouriteHome(item?: BasicResource, expectedOrder = 0) {
-    if (!item) fail("Resource is undefined");
+    if (!item) throw new Error("Resource is undefined");
 
     expect(item.favouriteHome).toBe(true);
     expect(item.favouriteHomeOrder).toBe(expectedOrder);
 }
 
 function verifyFavouriteSectionResources(resources: ComparativeAnalysis[]) {
-    if (!resources.length) fail("Resources are undefined");
+    if (!resources.length) throw new Error("Resources are undefined");
     const allResourcesAreFavouriteSection = resources.every(({ favouriteSection }) => favouriteSection);
     expect(allResourcesAreFavouriteSection).toBe(true);
 }

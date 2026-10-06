@@ -46,7 +46,7 @@ describe("Policy explorer category repository", () => {
 });
 
 function verifyCategory(category?: PolicyExplorerCategory) {
-    if (!category) fail("Category is undefined");
+    if (!category) throw new Error("Category is undefined");
     expect(category.id).toBe("COMPARATIVE_POLICY_CHARTS_CATEGORY_GROUP_ID");
     expect(category.name).toBe("Comparative policy charts");
     // TODO: /api/events mockup overlap between event infos and event programs

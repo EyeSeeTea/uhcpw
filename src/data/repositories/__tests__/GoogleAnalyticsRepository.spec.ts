@@ -1,10 +1,11 @@
 import { GoogleAnalyticsRepository } from "../GoogleAnalyticsRepository";
+import { vi, Mock } from "vitest";
 
 describe("GoogleAnalyticsRepository internal-traffic flag", () => {
-    let gtagSpy: jest.Mock;
+    let gtagSpy: Mock;
 
     beforeEach(() => {
-        gtagSpy = jest.fn();
+        gtagSpy = vi.fn();
         (window as any).gtag = gtagSpy;
         (window as any).dataLayer = [];
         localStorage.clear();
