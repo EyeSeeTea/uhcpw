@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Typography, Link } from "@material-ui/core";
+import { Typography, Link } from "@material-ui/core";
 import styled from "styled-components";
 
 import i18n from "../../../../locales";
@@ -8,7 +8,7 @@ import europeFlag from "../../../assets/europe-flag.png";
 import { AboutUsInfo } from "./AboutUsInfo";
 import { ContactUs } from "./ContactUs";
 import { useAppContext } from "../../../contexts/app-context";
-import { getDesktopFundingLines, getDisclaimerLines } from "./footerTextLines";
+import { getDesktopFundingLines, getDisclaimerLines, getEuropeanUnionLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
 
 export const DesktopAppFooter: React.FC = () => {
@@ -17,45 +17,45 @@ export const DesktopAppFooter: React.FC = () => {
     return (
         <>
             <FooterTop>
-                <Container maxWidth="xl">
-                    <FooterGrid>
-                        <Logo src={whoLogoWhite} width={150} alt="WHO logo" loading="eager" decoding="async" />
+                <FooterGrid>
+                    <Logo src={whoLogoWhite} width={200} alt="WHO logo" loading="eager" decoding="async" />
 
-                        <FundingText variant="body1">
-                            <TextLines
-                                lines={getDesktopFundingLines(
-                                    i18n.t(
-                                        "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
-                                    )
-                                )}
-                            />
-                        </FundingText>
+                    <FundingText variant="body1">
+                        <TextLines
+                            lines={getDesktopFundingLines(
+                                i18n.t(
+                                    "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                                )
+                            )}
+                        />
+                    </FundingText>
 
-                        <InfoArea>
-                            <AboutUsInfo />
-                        </InfoArea>
+                    <InfoArea>
+                        <AboutUsInfo />
+                    </InfoArea>
 
-                        <Disclaimer variant="body1">
-                            <TextLines
-                                lines={getDisclaimerLines(
-                                    i18n.t(
-                                        generalContent?.footer.disclaimer ||
-                                            "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)"
-                                    )
-                                )}
-                            />
-                        </Disclaimer>
+                    <EuropeContainer>
+                        <img src={europeFlag} width={100} alt="European Union flag" />
+                        <EuropeText variant="body1">
+                            <TextLines lines={getEuropeanUnionLines(i18n.t("Co-funded by the European Union"))} />
+                        </EuropeText>
+                    </EuropeContainer>
 
-                        <EuropeContainer>
-                            <img src={europeFlag} width={100} alt="WHO logo" />
-                            <EuropeText variant="body1">{i18n.t("Co-funded by the European Union")}</EuropeText>
-                        </EuropeContainer>
+                    <Disclaimer variant="body1">
+                        <TextLines
+                            lines={getDisclaimerLines(
+                                i18n.t(
+                                    generalContent?.footer.disclaimer ||
+                                        "* All references to Kosovo should be understood to be in the context of the United Nations Security Council resolution 1244 (1999)"
+                                )
+                            )}
+                        />
+                    </Disclaimer>
 
-                        <ContactArea>
-                            <ContactUs showTitle={false} />
-                        </ContactArea>
-                    </FooterGrid>
-                </Container>
+                    <ContactArea>
+                        <ContactUs />
+                    </ContactArea>
+                </FooterGrid>
             </FooterTop>
 
             <FooterBottom>
@@ -69,22 +69,33 @@ export const DesktopAppFooter: React.FC = () => {
     );
 };
 
+// Each column is as wide as its content and the free space is shared out between them, so the gaps between
+// the columns are the same and the first and last ones touch the footer margins.
+// The client's lines never wrap: the columns need 968px plus the gaps, the margins and the scrollbar, so below 1160px
+// (a 1920px screen zoomed to 175%) the footer falls back to two columns, each one taking half the width.
 const FooterGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, max-content);
+    justify-content: space-between;
     grid-template-areas:
-        "logo  fund  info"
-        "discl flag  contact";
-    column-gap: 48px;
-    row-gap: 8px;
+        "logo fund  info"
+        "flag discl contact";
+    column-gap: 32px;
+    row-gap: 48px;
+    max-width: 1536px;
+    margin: 0 auto;
 
-    @media (max-width: 1200px) {
-        grid-template-columns: repeat(2, 1fr);
+    /* The client's banner spaces the lines more than the default body1 */
+    .MuiTypography-body1 {
+        line-height: 1.6;
+    }
+
+    @media (max-width: 1160px) {
+        grid-template-columns: repeat(2, minmax(max-content, 1fr));
         grid-template-areas:
-            "logo  fund"
-            "discl flag"
-            "info  contact";
-        row-gap: 24px;
+            "logo fund"
+            "flag discl"
+            "info contact";
     }
 `;
 
@@ -105,11 +116,11 @@ const EuropeContainer = styled.div`
     align-self: start;
     display: flex;
     flex-direction: row;
-    align-items: end;
+    align-items: center;
+    margin-block-start: 6px;
 `;
 
 const EuropeText = styled(Typography)`
-    width: 150px;
     margin-left: 16px;
 `;
 
@@ -137,11 +148,8 @@ const Cookies = styled(Link)`
 
 const Disclaimer = styled(Typography)`
     grid-area: discl;
-    padding-inline-start: 0.3125rem;
-    max-width: 43.75rem;
 `;
 
 const FundingText = styled(Typography)`
     grid-area: fund;
-    margin-block-end: 12px;
 `;
