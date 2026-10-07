@@ -117,6 +117,7 @@ const EuropeContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-block-start: 6px;
 `;
 
 const EuropeText = styled(Typography)`
