@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { anything, instance, mock, when } from "ts-mockito";
@@ -37,7 +37,7 @@ describe("ResourcesPage", () => {
 
         renderPage();
 
-        search();
+        await search();
 
         // country analysis flags depends on countries not on resources, that is why we expect 1 item
         expect(screen.queryAllByRole("listitem")).toHaveLength(1);
@@ -47,7 +47,7 @@ describe("ResourcesPage", () => {
 
         renderPage();
 
-        search();
+        await search();
 
         // country analysis flags depends on countries not on resources, that is why we expect 1 item
         expect(screen.queryAllByRole("listitem")).toHaveLength(1);
@@ -57,7 +57,7 @@ describe("ResourcesPage", () => {
 
         renderPage();
 
-        search();
+        await search();
 
         await verifyElementsInGroup("News", 1);
         await verifyElementsInGroup("Multimedia", 1);
@@ -142,10 +142,10 @@ function givenAResourceCategories(): ResourceCategory[] {
     return data;
 }
 
-function search() {
+async function search() {
     const searchButton = screen.getByLabelText(/search/i);
 
-    userEvent.click(searchButton);
+    await userEvent.click(searchButton);
 }
 
 async function verifyElementsInGroup(groupName: string, count: number) {

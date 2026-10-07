@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { useCallback } from "react";
@@ -95,7 +95,7 @@ describe("Given TreeSelector", () => {
             await selectCountry(getChild(0));
             await selectCountry(getChild(1));
 
-            userEvent.keyboard("{Escape}");
+            await userEvent.keyboard("{Escape}");
 
             await verifyChip(getChild(0));
             await verifyChip(getChild(1));
@@ -132,7 +132,7 @@ describe("Given TreeSelector", () => {
         });
         it("Then should select all countries from a parent when its checkbox it's clicked", async () => {
             await selectAllCountries();
-            userEvent.keyboard("{Escape}");
+            await userEvent.keyboard("{Escape}");
 
             await verifyChip(getChild(0));
             await verifyChip(getChild(1));
@@ -140,14 +140,14 @@ describe("Given TreeSelector", () => {
         });
         it("Then should show clear all button when there are something selected", async () => {
             await selectAllCountries();
-            userEvent.keyboard("{Escape}");
+            await userEvent.keyboard("{Escape}");
 
             const clearButtons = screen.getAllByText(/clear/i);
             expect(clearButtons[0]).toBeInTheDocument();
         });
         it("Then should clear all when click on clear all button", async () => {
             await selectAllCountries();
-            userEvent.keyboard("{Escape}");
+            await userEvent.keyboard("{Escape}");
             await clickOnClearAll();
 
             await verifyNotFoundChip(getChild(0));
@@ -172,10 +172,14 @@ describe("Given TreeSelector", () => {
             await focusComponent();
         });
         it("Should show parent as chip instead of children", async () => {
-            selectAllCountries();
-
-            getAllParents().forEach(async parent => {
-                await verifyChip(parent);
+            await selectAllCountries();
+            // EU27 has no parent, so selecting the country group excludes it.
+            await selectCountry(getChild(3));
+            await userEvent.keyboard("{Escape}");
+            await waitFor(() => {
+                getAllParents().forEach(parent => {
+                    expect(screen.getByRole("button", { name: parent })).toBeInTheDocument();
+                });
             });
         });
     });

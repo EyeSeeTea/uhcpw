@@ -690,7 +690,7 @@ function verifyPolicyExplorerTotalTables(
 }
 
 function verifyPolicyExplorerEmptyTable(tables: Record<string, PolicyExplorerCell[][]>) {
-    if (!tables) fail("Table is undefined");
+    if (!tables) throw new Error("Table is undefined");
     Object.keys(tables).forEach(tableId => {
         const table = tables[tableId] as PolicyExplorerCell[][];
 
@@ -702,7 +702,7 @@ function verifyPolicyExplorerTables(
     tables: Record<string, PolicyExplorerCell[][]>,
     expectedTables: Record<string, PolicyExplorerCell[][]>
 ) {
-    if (!tables) fail("Table is undefined");
+    if (!tables) throw new Error("Table is undefined");
     Object.keys(tables).forEach(tableId => {
         const table = tables[tableId] as PolicyExplorerCell[][];
         const expected = expectedTables[tableId] as PolicyExplorerCell[][];

@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import React, { useCallback } from "react";
@@ -141,7 +141,7 @@ describe("Given CategorySelector component", () => {
             await selectCategoryByName(firstCategoryName);
             await selectCategoryByName(secondCategoryName);
 
-            userEvent.keyboard("{Escape}");
+            await userEvent.keyboard("{Escape}");
 
             await verifyChip(firstCategoryName);
             await verifyChip(secondCategoryName);
@@ -188,7 +188,7 @@ async function verifyChip(name: string) {
 
 async function search(name: string) {
     const searchBox = await screen.findByRole("searchbox");
-    userEvent.type(searchBox, name);
+    await userEvent.type(searchBox, name);
 }
 
 async function selectCategoryByName(name: string) {

@@ -67,7 +67,7 @@ async function exportToCSVAsync(tabs: TabsWithStringOrNumbers[], fileName: strin
         }
     });
     const blob = await workbook.outputAsync();
-    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+    FileSaver.saveAs(new Blob([Uint8Array.from(blob)], { type: fileType }), fileName + fileExtension);
 }
 
 // Pivot output from pivotToCombinedMatrix: [Country, Abbreviation, Year, Abbreviation+Year, ...indicators].
@@ -87,7 +87,7 @@ export async function exportCombinedIndicatorsToXlsx(tabs: TabsWithStringOrNumbe
     });
 
     const blob = await workbook.outputAsync();
-    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+    FileSaver.saveAs(new Blob([Uint8Array.from(blob)], { type: fileType }), fileName + fileExtension);
 }
 
 function applyCombinedIndicatorStyles(sheet: XlsxPopulate.Sheet, tab: TabsWithStringOrNumbers): void {
@@ -186,7 +186,7 @@ export const exportToCSVWithStyles = async (tabs: Tab[], fileName: string) => {
 
     const blob = await workbook.outputAsync();
 
-    const data = new Blob([blob], { type: fileType });
+    const data = new Blob([Uint8Array.from(blob)], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
 };
 
@@ -226,7 +226,7 @@ export const exportToCSVIncludingChart = async (params: {
     }
 
     const blob = await workbook.outputAsync();
-    FileSaver.saveAs(new Blob([blob], { type: fileType }), fileName + fileExtension);
+    FileSaver.saveAs(new Blob([Uint8Array.from(blob)], { type: fileType }), fileName + fileExtension);
 };
 
 function addDataToSheet(sheet: XlsxPopulate.Sheet, data: TabsWithStringOrNumbers["data"], startRow = 1) {

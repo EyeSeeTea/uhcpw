@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import styled from "styled-components";
 import i18n from "../../../locales";
-import { ReactComponent as Bubble } from "../../assets/bubble-pattern.svg";
+import Bubble from "../../assets/bubble-pattern.svg?react";
 import { useCountryExpert } from "../../pages/country/useCountryExpert";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { Id } from "../../../domain/entities/Ref";
