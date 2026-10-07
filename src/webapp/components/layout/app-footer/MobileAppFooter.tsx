@@ -30,7 +30,7 @@ export const MobileAppFooter: React.FC = () => {
             {
                 id: "contact-our-office",
                 title: i18n.t("Contact our office"),
-                content: <ContactUs showTitle={false} isMobile />,
+                content: <ContactUs isMobile />,
             },
         ],
         []

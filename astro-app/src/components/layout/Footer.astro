@@ -3,8 +3,8 @@ import { Image } from "astro:assets";
 import whoLogoWhite from "@/assets/layout/who-logo-white.png";
 import europeFlag from "@/assets/layout/europe-flag.png";
 import { href } from "@/lib/href";
+import { whoBarcelonaOfficeUrl } from "@shared/webapp/components/layout/app-footer/footerLinks";
 import {
-    getBarcelonaOfficeLines,
     getDesktopFundingLines,
     getDisclaimerLines,
     getEuropeanUnionLines,
@@ -32,7 +32,6 @@ const policyUrl = privacyPolicyUrl || defaultPrivacyUrl;
 const disclaimerLines = getDisclaimerLines(disclaimerText);
 const desktopFundingLines = getDesktopFundingLines(fundingText);
 const mobileFundingLines = getMobileFundingLines(fundingText);
-const barcelonaOfficeLines = getBarcelonaOfficeLines("WHO Barcelona Office for Health Systems Financing");
 const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Union");
 ---
 
@@ -50,8 +49,8 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
                     src={whoLogoWhite}
                     alt="WHO logo"
                     class="footer-who-logo"
-                    widths={[100, 130, 150, 200, 300]}
-                    sizes="(max-width: 450px) 100px, (max-width: 500px) 130px, 150px"
+                    widths={[100, 130, 150, 200, 300, 400]}
+                    sizes="(max-width: 450px) 100px, (max-width: 500px) 130px, (max-width: 960px) 150px, 200px"
                     loading="lazy"
                     decoding="async"
                 />
@@ -86,8 +85,8 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
             <div class="footer-col footer-info-col">
                 <a href={href("/about")} class="footer-link footer-heading">About us</a>
                 <div class="footer-links">
-                    <a href="https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)" class="footer-link bcn-office-link" target="_blank" rel="noopener noreferrer">
-                        {barcelonaOfficeLines.map(line => <span class="text-line">{line}</span>)}
+                    <a href={whoBarcelonaOfficeUrl} class="footer-link bcn-office-link" target="_blank" rel="noopener noreferrer">
+                        <span class="text-line">WHO Barcelona Office for Health Systems Financing</span>
                     </a>
                 </div>
             </div>
@@ -97,7 +96,7 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
                     <span>Sant Pau Art Nouveau Site (La Merc&egrave;)</span>
                     <span>Sant Antoni Maria Claret 167</span>
                     <span>08025 Barcelona, Spain</span>
-                    <span class="contact-phone">Tel: +34 673 290 861</span>
+                    <span>Tel: +34 673 290 861</span>
                     <span>Email: <a href="mailto:uhcwatch@who.int" class="footer-link">uhcwatch@who.int</a></span>
                 </div>
             </div>
@@ -156,14 +155,17 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
     }
 
     /* ── Unified grid (desktop default) ──────────────────────────────────── */
+    /* Each column is as wide as its content and the free space is shared out between them, so the gaps between
+       the columns are the same and the first and last ones touch the footer margins */
     .footer-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, max-content);
+        justify-content: space-between;
         grid-template-areas:
-            "logo  fund  info"
-            "discl flag  contact";
-        column-gap: 48px;
-        row-gap: 0;
+            "logo fund  info"
+            "flag discl contact";
+        column-gap: 32px;
+        row-gap: 48px;
         max-width: 1536px;
         margin: 0 auto;
     }
@@ -174,7 +176,7 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
 
     .footer-who-logo {
         grid-area: logo;
-        width: 150px;
+        width: 200px;
         height: auto;
     }
 
@@ -192,24 +194,33 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
     }
 
     .europe-text {
-        width: 150px;
         margin-left: 16px;
         font-size: 1rem;
+    }
+
+    /* Without the paragraph margins the flag starts at the top of its row, level with the other two columns */
+    @media (min-width: 961px) {
+        .europe-text {
+            margin-block: 0;
+        }
+
+        .europe-container {
+            margin-block-start: 5px;
+        }
     }
 
     .funding-text {
         grid-area: fund;
         align-self: start;
-        margin-top: 0;
-        margin-bottom: 12px;
+        margin: 0;
         font-size: 1rem;
         line-height: 1.6;
     }
 
     .disclaimer {
         grid-area: discl;
-        padding-left: 5px;
-        max-width: 700px;
+        align-self: start;
+        margin: 0;
         font-size: 1rem;
         line-height: 1.6;
     }
@@ -228,10 +239,8 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         grid-area: info;
     }
 
-    /* Keeps the gap below the Barcelona Office link that the funding text's fourth line used to create */
     .footer-contact-col {
         grid-area: contact;
-        margin-top: 1.6rem;
     }
 
     .footer-col {
@@ -239,17 +248,19 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         flex-direction: column;
     }
 
+    /* Same line height as the funding text and the disclaimer, so every column keeps the same line spacing */
     .footer-heading {
-        margin: 0 0 12px;
+        margin: 0;
         font-size: 1rem;
         font-weight: 400;
+        line-height: 1.6;
     }
 
     .footer-links {
         display: flex;
         flex-direction: column;
-        gap: 4px;
         font-size: 1rem;
+        line-height: 1.6;
     }
 
     .bcn-office-link {
@@ -274,19 +285,15 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         display: none;
     }
 
-    /* ── Tablet (≤1200px): collapse to 2 columns ──────────────────────────── */
-    @media (max-width: 1200px) {
+    /* ── Tablet (≤1160px): collapse to 2 columns, each one taking half the width ── */
+    /* Same breakpoint as the SPA: the client's lines never wrap and the three columns need 968px plus gaps and margins */
+    @media (max-width: 1160px) {
         .footer-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(max-content, 1fr));
             grid-template-areas:
-                "logo  fund"
-                "discl flag"
-                "info  contact";
-            row-gap: 24px;
-        }
-
-        .footer-contact-col {
-            margin-top: 0;
+                "logo fund"
+                "flag discl"
+                "info contact";
         }
     }
 
@@ -348,7 +355,6 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
 
         /* 14px like the SPA's body2; as wide as its longest line, so it ends exactly at the right padding */
         .europe-text {
-            width: auto;
             font-size: var(--font-size-sm);
         }
 
