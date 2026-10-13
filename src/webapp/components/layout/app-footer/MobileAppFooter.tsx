@@ -13,7 +13,7 @@ import { PrivacyPolicyAndDisclaimer } from "./PrivacyPolicyAndDisclaimer";
 import { ContactUs } from "./ContactUs";
 import { getEuropeanUnionLines, getMobileFundingLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
-import { whoLogoEdgeAlignment } from "./whoLogoStyles";
+import { whoLogoEdgeAlignment } from "./footerStyles";
 
 export const MobileAppFooter: React.FC = () => {
     const items = useMemo(
