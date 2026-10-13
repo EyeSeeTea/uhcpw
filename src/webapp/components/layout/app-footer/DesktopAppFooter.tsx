@@ -10,6 +10,7 @@ import { ContactUs } from "./ContactUs";
 import { useAppContext } from "../../../contexts/app-context";
 import { getDesktopFundingLines, getDisclaimerLines, getEuropeanUnionLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
+import { whoLogoEdgeAlignment } from "./whoLogoStyles";
 
 export const DesktopAppFooter: React.FC = () => {
     const { generalContent } = useAppContext();
@@ -18,7 +19,7 @@ export const DesktopAppFooter: React.FC = () => {
         <>
             <FooterTop>
                 <FooterGrid>
-                    <Logo src={whoLogoWhite} width={200} alt="WHO logo" loading="eager" decoding="async" />
+                    <Logo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
 
                     <FundingText variant="body1">
                         <TextLines
@@ -69,21 +70,19 @@ export const DesktopAppFooter: React.FC = () => {
     );
 };
 
-// Each column is as wide as its content and the free space is shared out between them, so the gaps between
-// the columns are the same and the first and last ones touch the footer margins.
+// Three equal columns with the gap of the home page resources grid, so each column starts at the left edge of a
+// resource card. A column never gets narrower than its unbreakable lines: below about 1300px the widest one grows a
+// little and the other two share the rest.
 // The client's lines never wrap: the columns need 968px plus the gaps, the margins and the scrollbar, so below 1160px
 // (a 1920px screen zoomed to 175%) the footer falls back to two columns, each one taking half the width.
 const FooterGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, max-content);
-    justify-content: space-between;
+    grid-template-columns: repeat(3, minmax(max-content, 1fr));
     grid-template-areas:
         "logo fund  info"
         "flag discl contact";
-    column-gap: 32px;
+    column-gap: 40px;
     row-gap: 48px;
-    max-width: 1536px;
-    margin: 0 auto;
 
     /* The client's banner spaces the lines more than the default body1 */
     .MuiTypography-body1 {
@@ -100,7 +99,10 @@ const FooterGrid = styled.div`
 `;
 
 const Logo = styled.img`
+    --who-logo-width: 200px;
     grid-area: logo;
+    width: var(--who-logo-width);
+    ${whoLogoEdgeAlignment}
 `;
 
 const InfoArea = styled.div`
@@ -124,8 +126,9 @@ const EuropeText = styled(Typography)`
     margin-left: 16px;
 `;
 
+// Same side padding as the home page resources grid, so the footer columns start where the resource cards do
 const FooterTop = styled.div`
-    padding: 48px 32px;
+    padding: 48px;
     background: #0089d6;
     color: white;
 `;

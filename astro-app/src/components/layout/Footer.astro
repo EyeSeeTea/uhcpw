@@ -148,36 +148,39 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
     }
 
     /* ── Footer Top ──────────────────────────────────────────────────────── */
+    /* Same side padding as the home page resources grid, so the footer columns start where the resource cards do */
     .footer-top {
-        padding: 48px 32px;
+        padding: 48px;
         background: var(--footer-top-bg);
         color: var(--color-white);
     }
 
     /* ── Unified grid (desktop default) ──────────────────────────────────── */
-    /* Each column is as wide as its content and the free space is shared out between them, so the gaps between
-       the columns are the same and the first and last ones touch the footer margins */
+    /* Three equal columns with the gap of the home page resources grid, so each column starts at the left edge of
+       a resource card. A column never gets narrower than its unbreakable lines: below about 1300px the widest one
+       grows a little and the other two share the rest */
     .footer-grid {
         display: grid;
-        grid-template-columns: repeat(3, max-content);
-        justify-content: space-between;
+        grid-template-columns: repeat(3, minmax(max-content, 1fr));
         grid-template-areas:
             "logo fund  info"
             "flag discl contact";
-        column-gap: 32px;
+        column-gap: 40px;
         row-gap: 48px;
-        max-width: 1536px;
-        margin: 0 auto;
     }
 
     .logo-flag-group {
         display: contents;
     }
 
+    /* The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo
+       start at the column edge */
     .footer-who-logo {
+        --who-logo-width: 200px;
         grid-area: logo;
-        width: 200px;
+        width: var(--who-logo-width);
         height: auto;
+        margin-inline-start: calc(var(--who-logo-width) * -0.0337);
     }
 
     .europe-container {
@@ -299,6 +302,10 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
 
     /* ── Mobile (≤960px): logos row on top, accordions below ──────────────── */
     @media (max-width: 960px) {
+        .footer-top {
+            padding: 48px 32px;
+        }
+
         .footer-grid {
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
@@ -340,12 +347,9 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
             width: 100%;
         }
 
-        /* The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo touch the padding */
         .footer-who-logo {
             --who-logo-width: 150px;
-            width: var(--who-logo-width);
             flex-shrink: 0;
-            margin-inline-start: calc(var(--who-logo-width) * -0.0337);
         }
 
         .europe-container {
