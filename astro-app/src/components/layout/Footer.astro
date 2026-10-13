@@ -74,12 +74,12 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
 
             {/* Desktop and mobile break the funding text at different words; CSS shows one set of lines */}
             <p class="funding-text">
-                {desktopFundingLines.map(line => <span class="text-line desktop-line">{line}</span>)}
+                {desktopFundingLines.map(line => <span class="text-line desktop-line">{`${line} `}</span>)}
                 {mobileFundingLines.map(line => <span class="text-line mobile-line">{line}</span>)}
             </p>
 
             <p class="disclaimer">
-                {disclaimerLines.map(line => <span class="text-line">{line}</span>)}
+                {disclaimerLines.map(line => <span class="text-line">{`${line} `}</span>)}
             </p>
 
             <div class="footer-col footer-info-col">
@@ -157,11 +157,10 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
 
     /* ── Unified grid (desktop default) ──────────────────────────────────── */
     /* Three equal columns with the gap of the home page resources grid, so each column starts at the left edge of
-       a resource card. A column never gets narrower than its unbreakable lines: below about 1300px the widest one
-       grows a little and the other two share the rest */
+       a resource card at every desktop width and zoom */
     .footer-grid {
         display: grid;
-        grid-template-columns: repeat(3, minmax(max-content, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         grid-template-areas:
             "logo fund  info"
             "flag discl contact";
@@ -228,10 +227,19 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         line-height: 1.6;
     }
 
-    /* Unbreakable lines keep the client's line breaks at every width; on desktop the grid column grows to fit them */
+    /* Unbreakable lines keep the client's line breaks */
     .text-line {
         display: block;
         white-space: nowrap;
+    }
+
+    /* Same breakpoint as the SPA: the client's lines need columns at least 370px wide, so below 1320px the desktop
+       texts join their lines and flow like any other paragraph */
+    @media (min-width: 961px) and (max-width: 1319px) {
+        .text-line:not(.mobile-line) {
+            display: inline;
+            white-space: normal;
+        }
     }
 
     .mobile-line {
@@ -286,18 +294,6 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
     /* Mobile accordions hidden on desktop */
     .mobile-only {
         display: none;
-    }
-
-    /* ── Tablet (≤1160px): collapse to 2 columns, each one taking half the width ── */
-    /* Same breakpoint as the SPA: the client's lines never wrap and the three columns need 968px plus gaps and margins */
-    @media (max-width: 1160px) {
-        .footer-grid {
-            grid-template-columns: repeat(2, minmax(max-content, 1fr));
-            grid-template-areas:
-                "logo fund"
-                "flag discl"
-                "info contact";
-        }
     }
 
     /* ── Mobile (≤960px): logos row on top, accordions below ──────────────── */

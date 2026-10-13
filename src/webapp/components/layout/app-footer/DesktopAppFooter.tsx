@@ -10,7 +10,7 @@ import { ContactUs } from "./ContactUs";
 import { useAppContext } from "../../../contexts/app-context";
 import { getDesktopFundingLines, getDisclaimerLines, getEuropeanUnionLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
-import { whoLogoEdgeAlignment } from "./whoLogoStyles";
+import { whoLogoEdgeAlignment } from "./footerStyles";
 
 export const DesktopAppFooter: React.FC = () => {
     const { generalContent } = useAppContext();
@@ -23,6 +23,7 @@ export const DesktopAppFooter: React.FC = () => {
 
                     <FundingText variant="body1">
                         <TextLines
+                            isFlowingWhenNarrow
                             lines={getDesktopFundingLines(
                                 i18n.t(
                                     "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
@@ -38,12 +39,16 @@ export const DesktopAppFooter: React.FC = () => {
                     <EuropeContainer>
                         <img src={europeFlag} width={100} alt="European Union flag" />
                         <EuropeText variant="body1">
-                            <TextLines lines={getEuropeanUnionLines(i18n.t("Co-funded by the European Union"))} />
+                            <TextLines
+                                lines={getEuropeanUnionLines(i18n.t("Co-funded by the European Union"))}
+                                isFlowingWhenNarrow
+                            />
                         </EuropeText>
                     </EuropeContainer>
 
                     <Disclaimer variant="body1">
                         <TextLines
+                            isFlowingWhenNarrow
                             lines={getDisclaimerLines(
                                 i18n.t(
                                     generalContent?.footer.disclaimer ||
@@ -71,13 +76,10 @@ export const DesktopAppFooter: React.FC = () => {
 };
 
 // Three equal columns with the gap of the home page resources grid, so each column starts at the left edge of a
-// resource card. A column never gets narrower than its unbreakable lines: below about 1300px the widest one grows a
-// little and the other two share the rest.
-// The client's lines never wrap: the columns need 968px plus the gaps, the margins and the scrollbar, so below 1160px
-// (a 1920px screen zoomed to 175%) the footer falls back to two columns, each one taking half the width.
+// resource card at every desktop width and zoom.
 const FooterGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, minmax(max-content, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
         "logo fund  info"
         "flag discl contact";
@@ -87,14 +89,6 @@ const FooterGrid = styled.div`
     /* The client's banner spaces the lines more than the default body1 */
     .MuiTypography-body1 {
         line-height: 1.6;
-    }
-
-    @media (max-width: 1160px) {
-        grid-template-columns: repeat(2, minmax(max-content, 1fr));
-        grid-template-areas:
-            "logo fund"
-            "flag discl"
-            "info contact";
     }
 `;
 
