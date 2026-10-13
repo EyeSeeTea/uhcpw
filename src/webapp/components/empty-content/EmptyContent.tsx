@@ -2,35 +2,47 @@ import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
+import _ from "lodash";
 
 import i18n from "../../../locales";
 import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
-import { SelectCategoryContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
+import { InfoBoxContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
+import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
-export const EmptyContent: React.FC<{ info?: PolicyExplorerSelectCategoryInfo | SelectCategoryContent }> = React.memo(
-    ({ info }) => {
-        if (!info) return null;
+type EmptyContentInfo = PolicyExplorerSelectCategoryInfo | InfoBoxContent;
 
-        return (
-            <Container>
-                <Content>
-                    <Row>
-                        <TextWrapper>
-                            <Title variant="h5">{i18n.t(info.title)}</Title>
-                            <ReactMarkdown
-                                components={{
-                                    p: ({ children }) => <StyledParagraph variant="body1">{children}</StyledParagraph>,
-                                }}
-                            >
-                                {info.text}
-                            </ReactMarkdown>
-                        </TextWrapper>
-                    </Row>
-                </Content>
-            </Container>
-        );
-    }
-);
+type EmptyContentProps = { infos: ReadonlyArray<EmptyContentInfo | undefined> };
+
+export const EmptyContent: React.FC<EmptyContentProps> = React.memo(({ infos }) => {
+    const availableInfos = _.compact(infos);
+
+    if (availableInfos.length === 0) return null;
+
+    return (
+        <Container>
+            {availableInfos.map((info, index) => (
+                <InfoBox key={index} info={info} />
+            ))}
+        </Container>
+    );
+});
+
+const InfoBox: React.FC<{ info: EmptyContentInfo }> = React.memo(({ info }) => (
+    <Content>
+        <Row>
+            <TextWrapper>
+                <Title variant="h5">{i18n.t(info.title)}</Title>
+                <ReactMarkdown
+                    components={{
+                        p: ({ children }) => <StyledParagraph variant="body1">{children}</StyledParagraph>,
+                    }}
+                >
+                    {info.text}
+                </ReactMarkdown>
+            </TextWrapper>
+        </Row>
+    </Content>
+));
 
 const Row = styled.div`
     display: flex;
@@ -41,12 +53,19 @@ const Row = styled.div`
 
 const Container = styled.div`
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 32px;
     margin-top: 50px;
     margin-bottom: 50px;
     @media (max-width: 600px) {
         margin-top: 25px;
+    }
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
     }
 `;
 
@@ -56,6 +75,15 @@ const Content = styled.div`
     padding: 48px 32px;
     MuiSvgIcon-fontSizeLarge {
         font-size: 10rem;
+    }
+    &:not(:only-child) {
+        flex: 1 1 0;
+    }
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        &:not(:only-child) {
+            flex: 0 1 auto;
+            align-self: stretch;
+        }
     }
 `;
 
