@@ -5,6 +5,7 @@ import i18n from "../../../../locales";
 import { NavLink } from "react-router-dom";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { whoBarcelonaOfficeUrl } from "./footerLinks";
+import { narrowDesktopFooterQuery } from "./footerStyles";
 
 export const AboutUsInfo: React.FC = () => {
     const { redirectWithExternalLink } = useAnalytics();
@@ -37,7 +38,11 @@ const StyledLink = styled(Link)`
     text-decoration: none;
 `;
 
-// Unbreakable so the name keeps the single line the client asked for whatever the width of the column.
+// The single line the client asked for, as long as the columns are wide enough for it.
 const OfficeName = styled(Typography)`
     white-space: nowrap;
+
+    @media ${narrowDesktopFooterQuery} {
+        white-space: normal;
+    }
 `;
