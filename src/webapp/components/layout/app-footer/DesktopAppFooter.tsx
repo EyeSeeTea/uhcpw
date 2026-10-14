@@ -10,6 +10,7 @@ import { ContactUs } from "./ContactUs";
 import { useAppContext } from "../../../contexts/app-context";
 import { getDesktopFundingLines, getDisclaimerLines, getEuropeanUnionLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
+import { whoLogoEdgeAlignment } from "./footerStyles";
 
 export const DesktopAppFooter: React.FC = () => {
     const { generalContent } = useAppContext();
@@ -18,10 +19,11 @@ export const DesktopAppFooter: React.FC = () => {
         <>
             <FooterTop>
                 <FooterGrid>
-                    <Logo src={whoLogoWhite} width={200} alt="WHO logo" loading="eager" decoding="async" />
+                    <Logo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
 
                     <FundingText variant="body1">
                         <TextLines
+                            isFlowingWhenNarrow
                             lines={getDesktopFundingLines(
                                 i18n.t(
                                     "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
@@ -37,12 +39,16 @@ export const DesktopAppFooter: React.FC = () => {
                     <EuropeContainer>
                         <img src={europeFlag} width={100} alt="European Union flag" />
                         <EuropeText variant="body1">
-                            <TextLines lines={getEuropeanUnionLines(i18n.t("Co-funded by the European Union"))} />
+                            <TextLines
+                                lines={getEuropeanUnionLines(i18n.t("Co-funded by the European Union"))}
+                                isFlowingWhenNarrow
+                            />
                         </EuropeText>
                     </EuropeContainer>
 
                     <Disclaimer variant="body1">
                         <TextLines
+                            isFlowingWhenNarrow
                             lines={getDisclaimerLines(
                                 i18n.t(
                                     generalContent?.footer.disclaimer ||
@@ -69,38 +75,28 @@ export const DesktopAppFooter: React.FC = () => {
     );
 };
 
-// Each column is as wide as its content and the free space is shared out between them, so the gaps between
-// the columns are the same and the first and last ones touch the footer margins.
-// The client's lines never wrap: the columns need 968px plus the gaps, the margins and the scrollbar, so below 1160px
-// (a 1920px screen zoomed to 175%) the footer falls back to two columns, each one taking half the width.
+// Three equal columns with the gap of the home page resources grid, so each column starts at the left edge of a
+// resource card at every desktop width and zoom.
 const FooterGrid = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, max-content);
-    justify-content: space-between;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-template-areas:
         "logo fund  info"
         "flag discl contact";
-    column-gap: 32px;
+    column-gap: 40px;
     row-gap: 48px;
-    max-width: 1536px;
-    margin: 0 auto;
 
     /* The client's banner spaces the lines more than the default body1 */
     .MuiTypography-body1 {
         line-height: 1.6;
     }
-
-    @media (max-width: 1160px) {
-        grid-template-columns: repeat(2, minmax(max-content, 1fr));
-        grid-template-areas:
-            "logo fund"
-            "flag discl"
-            "info contact";
-    }
 `;
 
 const Logo = styled.img`
+    --who-logo-width: 200px;
     grid-area: logo;
+    width: var(--who-logo-width);
+    ${whoLogoEdgeAlignment}
 `;
 
 const InfoArea = styled.div`
@@ -124,8 +120,9 @@ const EuropeText = styled(Typography)`
     margin-left: 16px;
 `;
 
+// Same side padding as the home page resources grid, so the footer columns start where the resource cards do
 const FooterTop = styled.div`
-    padding: 48px 32px;
+    padding: 48px;
     background: #0089d6;
     color: white;
 `;

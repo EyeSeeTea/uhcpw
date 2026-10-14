@@ -74,12 +74,12 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
 
             {/* Desktop and mobile break the funding text at different words; CSS shows one set of lines */}
             <p class="funding-text">
-                {desktopFundingLines.map(line => <span class="text-line desktop-line">{line}</span>)}
+                {desktopFundingLines.map(line => <span class="text-line desktop-line">{`${line} `}</span>)}
                 {mobileFundingLines.map(line => <span class="text-line mobile-line">{line}</span>)}
             </p>
 
             <p class="disclaimer">
-                {disclaimerLines.map(line => <span class="text-line">{line}</span>)}
+                {disclaimerLines.map(line => <span class="text-line">{`${line} `}</span>)}
             </p>
 
             <div class="footer-col footer-info-col">
@@ -148,36 +148,38 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
     }
 
     /* ── Footer Top ──────────────────────────────────────────────────────── */
+    /* Same side padding as the home page resources grid, so the footer columns start where the resource cards do */
     .footer-top {
-        padding: 48px 32px;
+        padding: 48px;
         background: var(--footer-top-bg);
         color: var(--color-white);
     }
 
     /* ── Unified grid (desktop default) ──────────────────────────────────── */
-    /* Each column is as wide as its content and the free space is shared out between them, so the gaps between
-       the columns are the same and the first and last ones touch the footer margins */
+    /* Three equal columns with the gap of the home page resources grid, so each column starts at the left edge of
+       a resource card at every desktop width and zoom */
     .footer-grid {
         display: grid;
-        grid-template-columns: repeat(3, max-content);
-        justify-content: space-between;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         grid-template-areas:
             "logo fund  info"
             "flag discl contact";
-        column-gap: 32px;
+        column-gap: 40px;
         row-gap: 48px;
-        max-width: 1536px;
-        margin: 0 auto;
     }
 
     .logo-flag-group {
         display: contents;
     }
 
+    /* The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo
+       start at the column edge */
     .footer-who-logo {
+        --who-logo-width: 200px;
         grid-area: logo;
-        width: 200px;
+        width: var(--who-logo-width);
         height: auto;
+        margin-inline-start: calc(var(--who-logo-width) * -0.0337);
     }
 
     .europe-container {
@@ -225,10 +227,19 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         line-height: 1.6;
     }
 
-    /* Unbreakable lines keep the client's line breaks at every width; on desktop the grid column grows to fit them */
+    /* Unbreakable lines keep the client's line breaks */
     .text-line {
         display: block;
         white-space: nowrap;
+    }
+
+    /* Same breakpoint as the SPA: the client's lines need columns at least 370px wide, so below 1320px the desktop
+       texts join their lines and flow like any other paragraph */
+    @media (min-width: 961px) and (max-width: 1319px) {
+        .text-line:not(.mobile-line) {
+            display: inline;
+            white-space: normal;
+        }
     }
 
     .mobile-line {
@@ -285,20 +296,12 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         display: none;
     }
 
-    /* ── Tablet (≤1160px): collapse to 2 columns, each one taking half the width ── */
-    /* Same breakpoint as the SPA: the client's lines never wrap and the three columns need 968px plus gaps and margins */
-    @media (max-width: 1160px) {
-        .footer-grid {
-            grid-template-columns: repeat(2, minmax(max-content, 1fr));
-            grid-template-areas:
-                "logo fund"
-                "flag discl"
-                "info contact";
-        }
-    }
-
     /* ── Mobile (≤960px): logos row on top, accordions below ──────────────── */
     @media (max-width: 960px) {
+        .footer-top {
+            padding: 48px 32px;
+        }
+
         .footer-grid {
             grid-template-columns: 1fr 1fr;
             grid-template-areas:
@@ -340,12 +343,9 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
             width: 100%;
         }
 
-        /* The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo touch the padding */
         .footer-who-logo {
             --who-logo-width: 150px;
-            width: var(--who-logo-width);
             flex-shrink: 0;
-            margin-inline-start: calc(var(--who-logo-width) * -0.0337);
         }
 
         .europe-container {
