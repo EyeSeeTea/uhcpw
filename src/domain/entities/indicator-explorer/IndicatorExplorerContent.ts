@@ -1,9 +1,10 @@
-export type IndicatorExplorerContent = {
-    selectCategory: SelectCategoryContent;
+export type IndicatorExplorerContent = Readonly<{
+    selectCategory: InfoBoxContent;
+    dataSourcesAndAvailability: InfoBoxContent;
     noDataMessage: string;
-};
+}>;
 
-export type SelectCategoryContent = {
+export type InfoBoxContent = Readonly<{
     title: string;
     text: string;
-};
+}>;

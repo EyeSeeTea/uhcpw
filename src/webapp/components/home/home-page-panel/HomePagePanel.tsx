@@ -4,13 +4,12 @@ import styled from "styled-components";
 import veryWeakIconLegend from "../../../assets/map/icon-very-weak-legend.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import gapsIcon from "../../../assets/map/icon-gaps.svg";
-import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import i18n from "../../../../locales";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import ReactMarkdown from "react-markdown";
-import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
+import { YouTubeEmbed } from "../../youtube-embed/YouTubeEmbed";
+import { WelcomeVideoButton } from "./WelcomeVideoButton";
 
 type MainPanelProps = {
     mainPanelContent?: MainMapPanelContent;
@@ -18,12 +17,6 @@ type MainPanelProps = {
 };
 
 export const HomePagePanel: React.FC<MainPanelProps> = ({ mainPanelContent, isMobile = false }) => {
-    const { redirectWithPageView } = useAnalytics();
-
-    const welcomeVideo = redirectWithPageView({
-        title: "[Video] " + isMobile ? mainPanelContent?.videoLink : mainPanelContent?.buttonText,
-    });
-
     return (
         <Container>
             {!isMobile && (
@@ -63,20 +56,9 @@ export const HomePagePanel: React.FC<MainPanelProps> = ({ mainPanelContent, isMo
             )}
 
             {isMobile && mainPanelContent?.videoLink ? (
-                <VideoWrapper>
-                    <iframe
-                        src={mainPanelContent?.videoLink}
-                        title={i18n.t("UHC watch YouTube video player")}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                    />
-                </VideoWrapper>
+                <MobileVideo src={mainPanelContent.videoLink} title={i18n.t("UHC watch YouTube video player")} />
             ) : mainPanelContent?.buttonLink && mainPanelContent?.buttonText ? (
-                <VideoLink href={mainPanelContent?.buttonLink} target="_blank" rel="noreferrer" onClick={welcomeVideo}>
-                    <PlayCircleFilledIcon style={{ color: colors.accentPrimary }} />
-                    <Typography>{mainPanelContent?.buttonText}</Typography>
-                </VideoLink>
+                <WelcomeVideoButton link={mainPanelContent.buttonLink} text={mainPanelContent.buttonText} />
             ) : null}
         </Container>
     );
@@ -115,35 +97,7 @@ const Marker = styled.img`
     margin-bottom: 16px;
 `;
 
-const VideoLink = styled.a`
-    display: flex;
-    gap: 5px;
-    width: fit-content;
-    text-decoration: none;
-    background-color: white;
-    padding: 5px 15px;
-    color: ${colors.accentPrimary};
-    text-transform: initial;
-    border-radius: 40px;
-    &:hover {
-        background-color: ${colors.greyLight};
-    }
-`;
-
-const VideoWrapper = styled.div`
-    position: relative;
-    width: 100%;
+const MobileVideo = styled(YouTubeEmbed)`
     max-width: 70ch;
     margin: 40px auto;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-
-    iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
 `;

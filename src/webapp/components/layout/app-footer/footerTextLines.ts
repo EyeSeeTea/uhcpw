@@ -1,9 +1,8 @@
 // The footer breaks these texts at the points the client asked for: each entry opens a new line.
 // A text without those words (edited in DHIS2 or translated) stays in one piece and wraps naturally.
-const disclaimerLineStarts = ["understood", "Nations", "(1999)"] as const;
+const disclaimerLineStarts = ["be in", "Council"] as const;
 const desktopFundingLineStarts = ["acknowledges", "Autonomous"] as const;
 const mobileFundingLineStarts = ["acknowledges", "the Autonomous"] as const;
-const barcelonaOfficeLineStarts = ["Health"] as const;
 const europeanUnionLineStarts = ["European"] as const;
 
 export function getDisclaimerLines(text: string): ReadonlyArray<string> {
@@ -16,10 +15,6 @@ export function getDesktopFundingLines(text: string): ReadonlyArray<string> {
 
 export function getMobileFundingLines(text: string): ReadonlyArray<string> {
     return splitIntoLines(text, mobileFundingLineStarts);
-}
-
-export function getBarcelonaOfficeLines(text: string): ReadonlyArray<string> {
-    return splitIntoLines(text, barcelonaOfficeLineStarts);
 }
 
 export function getEuropeanUnionLines(text: string): ReadonlyArray<string> {
