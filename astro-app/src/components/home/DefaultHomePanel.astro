@@ -1,0 +1,262 @@
+---
+import { Image } from "astro:assets";
+import type { MainMapPanelContent } from "@shared/domain/entities/HomePageContent";
+import veryWeakIconLegend from "@/assets/map/icon-very-weak-legend.svg";
+import gapsIcon from "@/assets/map/icon-gaps.svg";
+import strongIcon from "@/assets/map/icon-strong.svg";
+import { renderMarkdown } from "@/lib/markdown";
+import i18n from "@shared/locales";
+import { YouTube } from "@astro-community/astro-embed-youtube";
+
+interface Props {
+    content: MainMapPanelContent;
+}
+
+const { content } = Astro.props;
+const descriptionHtml = renderMarkdown(content.description);
+const analyticsTitle = `[Video] ${content.buttonText}`;
+---
+
+<div class="default-home-panel">
+    <div class="default-home-panel-content">
+        <h1>{content.title}</h1>
+        {content.description && <div class="description" set:html={descriptionHtml} />}
+
+        <div class="legend" aria-label="Financial protection legend">
+            <div class="legend-item">
+                <Image src={veryWeakIconLegend} alt={i18n.t("Weaker financial protection")} />
+                <span aria-hidden="true">{i18n.t("Weaker financial protection")}</span>
+            </div>
+            <div class="legend-item">
+                <Image src={gapsIcon} alt="Gaps in financial protection" />
+            </div>
+            <div class="legend-item">
+                <Image src={strongIcon} alt={i18n.t("Stronger financial protection")} />
+                <span aria-hidden="true">{i18n.t("Stronger financial protection")}</span>
+            </div>
+        </div>
+
+        {content.buttonLink && content.buttonText && (
+            <a
+                class="video-link"
+                href={content.buttonLink}
+                target="_blank"
+                rel="noreferrer"
+                data-analytics-title={analyticsTitle}
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z" />
+                </svg>
+                <span>{content.buttonText}</span>
+            </a>
+        )}
+
+        {content.videoLink && (
+            <>
+                <div class="video-mount"></div>
+                <template class="video-template">
+                    <div class="video-wrapper">
+                        <YouTube id={content.videoLink} title="UHC watch YouTube video player" />
+                    </div>
+                </template>
+            </>
+        )}
+    </div>
+</div>
+
+<script>
+    import { getAnalytics } from "@/infra/analytics.client";
+
+    document.querySelectorAll<HTMLElement>(".default-home-panel").forEach(panel => {
+        const link = panel.querySelector<HTMLAnchorElement>(".video-link");
+        link?.addEventListener("click", () => {
+            const title = link.dataset.analyticsTitle;
+            void getAnalytics().sendPageView(title ? { title } : {});
+        });
+
+        const template = panel.querySelector<HTMLTemplateElement>(".video-template");
+        const mount = panel.querySelector<HTMLElement>(".video-mount");
+        if (!template || !mount) return;
+
+        const mobileViewport = window.matchMedia("(max-width: 959px)");
+        const syncVideo = () => {
+            if (mobileViewport.matches && !mount.hasChildNodes()) {
+                mount.appendChild(template.content.cloneNode(true));
+            } else if (!mobileViewport.matches) {
+                mount.replaceChildren();
+            }
+        };
+
+        syncVideo();
+        mobileViewport.addEventListener("change", syncVideo);
+    });
+</script>
+
+<style>
+    .default-home-panel {
+        display: block;
+        position: absolute;
+        inset: 0 auto 0 0;
+        z-index: 2;
+        box-sizing: content-box;
+        width: 500px;
+        max-width: 500px;
+        padding: 48px;
+        background: #0089d6;
+        color: white;
+        opacity: 0.9;
+    }
+
+    .default-home-panel-content {
+        overflow-y: auto;
+        box-sizing: border-box;
+        height: 100%;
+        padding: 16px;
+        font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    h1 {
+        margin: 0 0 0.35em;
+        font-size: 3.75rem;
+        font-weight: 400;
+        line-height: 1.2;
+        letter-spacing: -0.00833em;
+    }
+
+    .description {
+        max-width: 46ch;
+    }
+
+    .description :global(p) {
+        margin: 0 0 16px;
+    }
+
+    .description :global(a) {
+        color: white;
+    }
+
+    .legend {
+        display: flex;
+        justify-content: space-between;
+        margin-block: 48px 35px;
+    }
+
+    .legend-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 150px;
+        text-align: center;
+    }
+
+    .legend-item :global(img) {
+        width: 80px;
+        margin-bottom: 16px;
+    }
+
+    .video-link {
+        display: flex;
+        width: fit-content;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 15px;
+        border-radius: 40px;
+        background: white;
+        color: #0089d6;
+        text-decoration: none;
+        text-transform: initial;
+    }
+
+    .video-link:hover {
+        background: #e0e0e0;
+    }
+
+    .video-link svg {
+        width: 24px;
+        height: 24px;
+        fill: #0089d6;
+    }
+
+    .video-mount {
+        display: none;
+    }
+
+    .video-wrapper {
+        width: 100%;
+        max-width: 70ch;
+        margin: 40px 0;
+    }
+
+    .video-wrapper :global(lite-youtube) {
+        width: 100%;
+    }
+
+    :global(.map-section.is-country-selected) .default-home-panel {
+        visibility: hidden;
+    }
+
+    @media (max-width: 959px) {
+        .default-home-panel {
+            inset: 0;
+            width: auto;
+            max-width: none;
+            padding: 24px;
+            overflow-y: auto;
+            color: white;
+            z-index: 1;
+            background: transparent;
+            opacity: 1;
+            font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 24px;
+        }
+
+        .default-home-panel::before {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: #0089d6;
+            content: "";
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .default-home-panel-content {
+            height: auto;
+            min-height: 100%;
+        }
+
+        h1,
+        .legend,
+        .video-link {
+            display: none;
+        }
+
+        .description {
+            max-width: 100%;
+        }
+
+        .description :global(p) {
+            margin-bottom: 16px;
+            line-height: 24px;
+        }
+
+        .description :global(a) {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .video-mount {
+            display: block;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            max-width: 70ch;
+            margin: 40px 0;
+        }
+    }
+</style>

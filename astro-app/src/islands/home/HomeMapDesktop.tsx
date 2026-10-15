@@ -1,10 +1,9 @@
 import "mapbox-gl/dist/mapbox-gl.css";
 import "./HomeMap.css";
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { MuiThemeProvider, StylesProvider } from "@material-ui/core/styles";
 import type { Country } from "@shared/domain/entities/Country";
 import { AppContext } from "@shared/webapp/contexts/app-context";
-import { HomePagePanel } from "@shared/webapp/components/home/home-page-panel/HomePagePanel";
 import { CountryPanel } from "@shared/webapp/components/home/country-panel/CountryPanel";
 import { muiTheme } from "@shared/webapp/pages/app/themes/dhis2.theme";
 import { buildAstroAnalyticsContext } from "./analytics-context";
@@ -14,13 +13,17 @@ import type { HomeMarkerCountry } from "@/data/home/home-resource";
 
 export const HomeMapDesktop: React.FC<HomeMapProps> = ({
     markers,
-    homePagePanelContent,
     initialData,
 }) => {
     const [selectedCountry, setSelectedCountry] = useState<HomeMarkerCountry | undefined>();
 
     const onSelectedCountryChange = useCallback((country?: HomeMarkerCountry) => {
         setSelectedCountry(country);
+        document.getElementById("map-section")?.classList.toggle("is-country-selected", !!country);
+    }, []);
+
+    useEffect(() => {
+        return () => document.getElementById("map-section")?.classList.remove("is-country-selected");
     }, []);
 
     const analyticsContext = useMemo(() => buildAstroAnalyticsContext(), []);
@@ -39,9 +42,7 @@ export const HomeMapDesktop: React.FC<HomeMapProps> = ({
                                 // CountryPanel reads only {name, status, summary};
                                 // the rest of Country is never accessed at runtime.
                                 <CountryPanel country={selectedCountry as Country} />
-                            ) : (
-                                <HomePagePanel mainPanelContent={homePagePanelContent} />
-                            )}
+                            ) : null}
                         </MapView>
                     </div>
                 </AppContext.Provider>
