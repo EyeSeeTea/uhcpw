@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import { HomeMap } from "@/islands/home/HomeMap";
+import { YouTubeLinkDialog } from "@/islands/common/YouTubeLinkDialog";
 import Explorers from "@/components/home/Explorers.astro";
 import AnalysisSection from "@/components/home/AnalysisSection.astro";
 import MethodsSection from "@/components/home/MethodsSection.astro";
@@ -56,6 +57,8 @@ const seo = getSeoConfigForAstroRoute(Astro.url.pathname);
     <MobileNewsSection news={news} />
 
     <NewsletterButton content={homePageContent.newsletter} />
+
+    <YouTubeLinkDialog client:only="react" />
 </Layout>
 
 <style>
