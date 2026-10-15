@@ -1,6 +1,7 @@
 ---
 import { resourceTagHref, type HomeResourceState } from "@/data/home/home-resource";
 import { href } from "@/lib/href";
+import { getYouTubeEmbedUrl } from "@shared/domain/entities/YouTubeVideo";
 
 interface Props {
     resource: HomeResourceState;
@@ -9,10 +10,18 @@ interface Props {
 const { resource } = Astro.props;
 
 const year = new Date(resource.date).getFullYear();
+const youTubeEmbedUrl = resource.kind === "multimedia" ? getYouTubeEmbedUrl(resource.url) : undefined;
 ---
 
 <article class="resource-card">
-    <a href={resource.url} target="_blank" rel="noreferrer" class="image-link">
+    <a
+        href={resource.url}
+        target="_blank"
+        rel="noreferrer"
+        class="image-link"
+        data-youtube-embed={youTubeEmbedUrl}
+        data-youtube-title={resource.title}
+    >
         {resource.imageOriginal ? (
             <img
                 class="resource-image"
@@ -34,7 +43,15 @@ const year = new Date(resource.date).getFullYear();
         </div>
 
         <h3 class="title">
-            <a href={resource.url} target="_blank" rel="noreferrer">{resource.title}</a>
+            <a
+                href={resource.url}
+                target="_blank"
+                rel="noreferrer"
+                data-youtube-embed={youTubeEmbedUrl}
+                data-youtube-title={resource.title}
+            >
+                {resource.title}
+            </a>
         </h3>
     </div>
 </article>
