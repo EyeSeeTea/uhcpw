@@ -4,6 +4,7 @@ import { SectionHeader } from "../section-header/SectionHeader";
 import i18n from "../../../../locales";
 import styled from "styled-components";
 import { SimpleResourceItem } from "../../resources/common/SimpleResourceItem";
+import { MultimediaResourceItem } from "../../resources/common/MultimediaResourceItem";
 import { ResourceState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { Grid } from "@material-ui/core";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
@@ -71,10 +72,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                 case "news":
                     return redirectWithEvent(common);
                 case "multimedia":
-                    return redirectWithEvent({
-                        ...common,
-                        theme: resource.themeName,
-                    });
+                    return () => {};
             }
         }, [redirectWithEvent, resource]);
 
@@ -128,13 +126,9 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                 );
             case "multimedia": {
                 return (
-                    <SimpleResourceItem
-                        title={resource.title}
-                        url={resource.url}
-                        image={resource.imageOriginal}
-                        fallbackImage={resource.imageOriginal}
-                        date={resource.date}
-                        redirectWithEvent={analyticsEvent}
+                    <MultimediaResourceItem
+                        resource={resource}
+                        analyticsPageTitle="Homepage"
                         tag={i18n.t("Multimedia")}
                         onTagClick={goToCategory}
                         maintainAspectRatio
