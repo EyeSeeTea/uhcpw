@@ -5,6 +5,7 @@ import moment from "moment";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
 import { ResourceD2Repository } from "../../../../../data/repositories/resources/ResourceD2Repository";
+import { ResourceThemeD2Repository } from "../../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../../domain/entities/Future";
 import {
     ComparativeAnalysis,
@@ -14,7 +15,7 @@ import {
     Resource,
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
-import { customRenderWithRouterMatch, givenACountries } from "../../../../../utils/tests-ui";
+import { customRenderWithRouterMatch, givenACountries, givenAThemes } from "../../../../../utils/tests-ui";
 import {
     createComparativeAnalysisResources,
     createCountryAnalysisResources,
@@ -250,8 +251,18 @@ function renderPage(category: string) {
         {
             resource: resourceRepository,
             resourceCategory: resourceCategoryRepository,
+            resourceTheme: givenAResourceThemeRepository(),
         }
     );
+}
+
+// The theme filter is resolved to a theme code with the theme repository
+function givenAResourceThemeRepository(): ResourceThemeD2Repository {
+    const mockedRepository = mock(ResourceThemeD2Repository);
+
+    when(mockedRepository.getAll()).thenReturn(Future.success(givenAThemes()));
+
+    return instance(mockedRepository);
 }
 
 async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) {
