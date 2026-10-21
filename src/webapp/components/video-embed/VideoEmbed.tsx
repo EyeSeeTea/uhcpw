@@ -1,13 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 
-type YouTubeEmbedProps = {
+type VideoEmbedProps = {
     src: string;
     title: string;
     className?: string;
 };
 
-export const YouTubeEmbed: React.FC<YouTubeEmbedProps> = ({ src, title, className }) => (
+export const VideoEmbed: React.FC<VideoEmbedProps> = ({ src, title, className }) => (
     <Wrapper className={className}>
         <iframe
             src={src}
