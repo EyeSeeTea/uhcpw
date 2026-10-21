@@ -19,17 +19,13 @@ export function useExplainerVideo(page: ExplainerPage, enabled: boolean): Explai
         setError(undefined);
 
         return getExplainer.execute(page).run(
-            ({ video }) => setVideoUrl(URL.createObjectURL(video)),
+            explainer => setVideoUrl(explainer.videoUrl),
             message => {
                 console.error(message);
                 setError(message);
             }
         );
     }, [enabled, videoUrl, getExplainer, page]);
-
-    useEffect(() => {
-        return videoUrl ? () => URL.revokeObjectURL(videoUrl) : undefined;
-    }, [videoUrl]);
 
     if (videoUrl) return { kind: "loaded", videoUrl };
     if (error) return { kind: "error", message: error };

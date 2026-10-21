@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import i18n from "../../../locales";
 import { colors } from "../../pages/app/themes/dhis2.theme";
+import { VideoEmbed } from "../video-embed/VideoEmbed";
 import { ExplainerVideoState } from "./useExplainerVideo";
 
 type ExplainerVideoProps = {
@@ -26,7 +27,7 @@ export const ExplainerVideo: React.FC<ExplainerVideoProps> = React.memo(({ state
         );
     }
 
-    return <Video src={state.videoUrl} controls playsInline autoPlay />;
+    return <VideoEmbed src={state.videoUrl} title={i18n.t("Explainer video")} />;
 });
 
 const Message = styled.div`
@@ -34,11 +35,4 @@ const Message = styled.div`
     justify-content: center;
     align-items: center;
     min-height: 200px;
-`;
-
-const Video = styled.video`
-    display: block;
-    width: 100%;
-    max-height: 70vh;
-    background-color: black;
 `;

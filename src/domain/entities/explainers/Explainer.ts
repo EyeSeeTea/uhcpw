@@ -2,5 +2,5 @@ export type ExplainerPage = "resources" | "indicatorExplorer" | "policyExplorer"
 
 export type Explainer = Readonly<{
     page: ExplainerPage;
-    video: Blob;
+    videoUrl: string;
 }>;

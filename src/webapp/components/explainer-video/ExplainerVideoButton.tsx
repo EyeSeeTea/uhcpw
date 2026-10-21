@@ -15,7 +15,7 @@ export const ExplainerVideoButton: React.FC<ExplainerVideoButtonProps> = React.m
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { clickWithPageView } = useAnalytics();
 
-    // NOTICE: the video state lives here, not in the dialog, so the downloaded video is kept while the user stays
+    // NOTICE: the video state lives here, not in the dialog, so the video URL is fetched once while the user stays
     // in the page even if the dialog is closed
     const videoState = useExplainerVideo(page, isDialogOpen);
 
