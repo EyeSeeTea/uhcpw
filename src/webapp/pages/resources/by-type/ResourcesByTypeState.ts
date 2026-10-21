@@ -17,8 +17,8 @@ export type ResourcesByTypeState = {
 export type ResourceState = News | MultimediaState | CountryAnalysisState | ComparativeAnalysisState;
 
 export type ThemesState = Readonly<{
-    /** Name of the main theme, the one sent to analytics */
-    themeName: string;
+    /** Names of the main and secondary themes joined with commas, as sent to analytics */
+    analyticsTheme: string;
     /** Main and secondary themes, in display order */
     resourceThemes: ReadonlyArray<ResourceTheme>;
 }>;
@@ -35,5 +35,5 @@ export interface MultimediaState extends Multimedia, ThemesState {}
 export function buildThemesState(themes: ReadonlyArray<ResourceTheme>, themeCodes: ReadonlyArray<string>): ThemesState {
     const resourceThemes = getResourceThemes(themes, themeCodes);
 
-    return { themeName: resourceThemes[0]?.name ?? "", resourceThemes };
+    return { analyticsTheme: resourceThemes.map(theme => theme.name).join(", "), resourceThemes };
 }

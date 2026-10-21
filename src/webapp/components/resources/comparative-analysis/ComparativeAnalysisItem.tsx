@@ -27,7 +27,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
                 year: comparativeAnalysis.date.getFullYear(),
                 resourceName: comparativeAnalysis.title,
                 category: comparativeAnalysis.kind,
-                theme: comparativeAnalysis.themeName,
+                theme: comparativeAnalysis.analyticsTheme,
                 language: language,
             }),
         [analyticsPageTitle, comparativeAnalysis, redirectWithEvent]

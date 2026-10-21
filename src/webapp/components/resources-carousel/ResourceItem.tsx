@@ -29,13 +29,13 @@ export const ResourceItem: React.FC<ResourceItemProps> = React.memo(props => {
             case "comparative-analysis":
                 return redirectWithEvent({
                     ...common,
-                    theme: resource.themeName,
+                    theme: resource.analyticsTheme,
                     language: resource.links[0]?.language,
                 });
             case "country-analysis":
                 return redirectWithEvent({
                     ...common,
-                    theme: resource.themeName,
+                    theme: resource.analyticsTheme,
                     country: resource.countryName,
                     language: resource.links[0]?.language,
                 });
@@ -44,7 +44,7 @@ export const ResourceItem: React.FC<ResourceItemProps> = React.memo(props => {
             case "multimedia":
                 return redirectWithEvent({
                     ...common,
-                    theme: resource.themeName,
+                    theme: resource.analyticsTheme,
                 });
         }
     }, [redirectWithEvent, resource]);

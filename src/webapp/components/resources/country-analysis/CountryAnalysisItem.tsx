@@ -25,7 +25,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
                 year: countryAnalysis.date.getFullYear(),
                 resourceName: countryAnalysis.title,
                 category: countryAnalysis.kind,
-                theme: countryAnalysis.themeName,
+                theme: countryAnalysis.analyticsTheme,
                 language: language,
                 country: countryAnalysis.countryName,
             }),
