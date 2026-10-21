@@ -1,6 +1,6 @@
-import { useCallback, useMemo } from "react";
-import i18n from "../../../locales";
+import { useMemo } from "react";
 import { SimpleResourceItem } from "../resources/common/SimpleResourceItem";
+import { useCategoryTags } from "../resources/common/useCategoryTags";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import React from "react";
 import { ResourceState } from "../../pages/resources/by-type/ResourcesByTypeState";
@@ -49,10 +49,7 @@ export const ResourceItem: React.FC<ResourceItemProps> = React.memo(props => {
         }
     }, [redirectWithEvent, resource]);
 
-    const goToCategory = useCallback(
-        () => handleOnTagClick(`/resources/${resource.kind}`),
-        [handleOnTagClick, resource.kind]
-    );
+    const categoryTags = useCategoryTags(resource.kind, handleOnTagClick);
 
     switch (resource.kind) {
         case "comparative-analysis":
@@ -64,8 +61,7 @@ export const ResourceItem: React.FC<ResourceItemProps> = React.memo(props => {
                     fallbackImage={resource.imageOriginal}
                     date={resource.date}
                     redirectWithEvent={analyticsEvent}
-                    tag={i18n.t("Comparative analysis")}
-                    onTagClick={goToCategory}
+                    tags={categoryTags}
                     maintainAspectRatio
                     disableMainPadding={disableMainPadding}
                     hideTag={hideTag}
@@ -80,8 +76,7 @@ export const ResourceItem: React.FC<ResourceItemProps> = React.memo(props => {
                     fallbackImage={resource.imageOriginal}
                     date={resource.date}
                     redirectWithEvent={analyticsEvent}
-                    tag={i18n.t("Country or area analysis")}
-                    onTagClick={goToCategory}
+                    tags={categoryTags}
                     maintainAspectRatio
                     disableMainPadding={disableMainPadding}
                     hideTag={hideTag}
@@ -96,8 +91,7 @@ export const ResourceItem: React.FC<ResourceItemProps> = React.memo(props => {
                     fallbackImage={resource.imageOriginal}
                     date={resource.date}
                     redirectWithEvent={analyticsEvent}
-                    tag={i18n.t("News")}
-                    onTagClick={goToCategory}
+                    tags={categoryTags}
                     maintainAspectRatio
                     disableMainPadding={disableMainPadding}
                     hideTag={hideTag}
@@ -112,8 +106,7 @@ export const ResourceItem: React.FC<ResourceItemProps> = React.memo(props => {
                     fallbackImage={resource.imageOriginal}
                     date={resource.date}
                     redirectWithEvent={analyticsEvent}
-                    tag={i18n.t("Multimedia")}
-                    onTagClick={goToCategory}
+                    tags={categoryTags}
                     maintainAspectRatio
                     disableMainPadding={disableMainPadding}
                     hideTag={hideTag}

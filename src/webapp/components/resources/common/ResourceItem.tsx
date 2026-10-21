@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { useAppContext } from "../../../contexts/app-context";
 import { ResourceState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { ComparativeAnalysisItem } from "../comparative-analysis/ComparativeAnalysisItem";
 import { CountryAnalysisItem } from "../country-analysis/CountryAnalysisItem";
@@ -19,8 +18,15 @@ const themeColor: Readonly<Record<string, string>> = {
 export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitle: string; normalize?: boolean }> =
     React.memo(props => {
         const { resource, analyticsPageTitle } = props;
-        const { themes } = useAppContext();
         const { redirectWithEvent } = useAnalytics();
+
+        const themeTags = useMemo(
+            () =>
+                resource.kind === "multimedia"
+                    ? resource.resourceThemes.map(theme => ({ name: theme.name, color: themeColor[theme.code] }))
+                    : [],
+            [resource]
+        );
 
         const redirectToNews = useMemo(
             () =>
@@ -54,14 +60,12 @@ export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitl
                     </SimpleResourceItemContainer>
                 );
             case "multimedia": {
-                const theme = themes.find(theme => theme.code === resource.theme)?.name;
                 return (
                     <SimpleResourceItemContainer>
                         <MultimediaResourceItem
                             resource={resource}
                             analyticsPageTitle={analyticsPageTitle}
-                            tag={theme}
-                            tagColor={themeColor[resource.theme]}
+                            tags={themeTags}
                         />
                     </SimpleResourceItemContainer>
                 );

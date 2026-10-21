@@ -4,13 +4,14 @@ import styled from "styled-components";
 
 type TagProps = {
     theme: string;
+    title?: string;
     color?: string;
     onClick?: MouseEventHandler<HTMLButtonElement> | undefined;
 };
 
-export const Tag: React.FC<TagProps> = ({ theme, color, onClick }) => {
+export const Tag: React.FC<TagProps> = ({ theme, title, color, onClick }) => {
     return (
-        <Container background={color} onClick={onClick}>
+        <Container background={color} onClick={onClick} title={title}>
             <Typography variant="body2" style={{ color: "white" }} align="center">
                 {theme}
             </Typography>

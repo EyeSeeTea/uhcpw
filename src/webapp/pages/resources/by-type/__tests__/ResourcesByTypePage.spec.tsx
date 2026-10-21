@@ -270,7 +270,7 @@ async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) 
         expect(image.src).toContain(resource.imageOriginal);
 
         itemScope.getByText(resource.date.getFullYear());
-        itemScope.getByText(resource.theme);
+        expect(itemScope.getAllByRole("button").map(tag => tag.textContent)).toEqual(resource.themeCodes);
 
         resource.links.forEach(link => {
             expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
@@ -355,7 +355,7 @@ async function verifyCountryAnalysisItems(resources: CountryAnalysis[]) {
         expect(image.src).toContain(resource.imageOriginal);
 
         itemScope.getByText(resource.date.getFullYear());
-        itemScope.getByText(resource.theme);
+        expect(itemScope.getAllByRole("button").map(tag => tag.textContent)).toEqual(resource.themeCodes);
 
         resource.links.forEach(link => {
             expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);

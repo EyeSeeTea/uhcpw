@@ -5,7 +5,7 @@ import { Resource } from "../../entities/resources/Resource";
 export interface ResourceFilters {
     category?: string;
     searchTerm?: string;
-    theme?: string;
+    themeCode?: string;
     countries?: Id[];
     years?: string[];
     pageSize?: number;

@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { Country } from "../../../domain/entities/Country";
 import { ComparativeAnalysis, CountryAnalysis, Resource } from "../../../domain/entities/resources/Resource";
-import { ResourceTheme, getThemeName } from "../../../domain/entities/resources/ResourceTheme";
+import { ResourceTheme } from "../../../domain/entities/resources/ResourceTheme";
 import { useAppContext } from "../../contexts/app-context";
-import { ResourceState } from "../resources/by-type/ResourcesByTypeState";
+import { buildThemesState, ResourceState } from "../resources/by-type/ResourcesByTypeState";
 import {
     BOSNIA_AND_HERZEGOVINA_LEVEL_4,
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
@@ -117,10 +117,10 @@ function buildResourcesBySection(
                 ...item,
                 countryName: country?.name || "",
                 countryFlag: country?.flag || "",
-                themeName: getThemeName(themes, item.theme),
+                ...buildThemesState(themes, item.themeCodes),
             };
         }
 
-        return { ...item, themeName: getThemeName(themes, item.theme) };
+        return { ...item, ...buildThemesState(themes, item.themeCodes) };
     });
 }

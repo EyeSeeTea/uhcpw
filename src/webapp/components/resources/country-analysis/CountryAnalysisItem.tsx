@@ -44,8 +44,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
             <AnalysisItem
                 type="country-analysis"
                 title={countryAnalysis.title}
-                themeCode={countryAnalysis.theme}
-                themeName={countryAnalysis.themeName}
+                themes={countryAnalysis.resourceThemes}
                 links={countryAnalysis.links}
                 image={countryAnalysis.imageOriginal}
                 date={countryAnalysis.date}

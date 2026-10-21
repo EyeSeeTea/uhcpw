@@ -1,4 +1,5 @@
 import { ComparativeAnalysis, CountryAnalysis, Multimedia, News } from "../../../../domain/entities/resources/Resource";
+import { getResourceThemes, ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { ResourcesFiltersState } from "../common/ResourcesFiltersState";
 import { RefObject } from "react";
 
@@ -15,16 +16,24 @@ export type ResourcesByTypeState = {
 
 export type ResourceState = News | MultimediaState | CountryAnalysisState | ComparativeAnalysisState;
 
-export interface CountryAnalysisState extends CountryAnalysis {
+export type ThemesState = Readonly<{
+    /** Name of the main theme, the one sent to analytics */
+    themeName: string;
+    /** Main and secondary themes, in display order */
+    resourceThemes: ReadonlyArray<ResourceTheme>;
+}>;
+
+export interface CountryAnalysisState extends CountryAnalysis, ThemesState {
     countryName: string;
     countryFlag: string;
-    themeName: string;
 }
 
-export interface ComparativeAnalysisState extends ComparativeAnalysis {
-    themeName: string;
-}
+export interface ComparativeAnalysisState extends ComparativeAnalysis, ThemesState {}
 
-export interface MultimediaState extends Multimedia {
-    themeName: string;
+export interface MultimediaState extends Multimedia, ThemesState {}
+
+export function buildThemesState(themes: ReadonlyArray<ResourceTheme>, themeCodes: ReadonlyArray<string>): ThemesState {
+    const resourceThemes = getResourceThemes(themes, themeCodes);
+
+    return { themeName: resourceThemes[0]?.name ?? "", resourceThemes };
 }

@@ -20,6 +20,7 @@ export const resourceDataElements: Record<string, string> = {
     multimediaCategory: "awlsQKOwDgB",
     countryAnalysisCategory: "jwmMKDQrxhD",
     theme: "TTAQLTta8JS",
+    themeSecondary: "XmS4WVRTh29",
     imageOriginal: "uund7zjS1Yt",
     imageCustom: "UBAOd8omOog",
     title: "iBxOUseHUtO",
@@ -143,11 +144,13 @@ export class ResourceD2Repository implements ResourceRepository {
                 : undefined;
 
             const hasCountriesFilter = filters.countries && filters.countries.length > 0;
+            // A resource has a main and a secondary theme, and the events filter cannot match any of
+            // two data elements, so the theme is filtered in memory like the countries.
+            const hasInMemoryFilter = hasCountriesFilter || Boolean(filters.themeCode);
 
             //2:38 has a bug filtering events by data element value using eq operator. Like works!
             const filter = _([
                 filters.category ? this.getCategoriesFilter(filters.category) : undefined,
-                filters.theme ? `${resourceDataElements.theme}:like:${filters.theme.replace("-", " ")}` : undefined,
                 filters.searchTerm ? `${resourceDataElements.title}:like:${filters.searchTerm}` : undefined,
             ])
                 .compact()
@@ -163,15 +166,23 @@ export class ResourceD2Repository implements ResourceRepository {
                     program: resourcesProgram,
                     startDate: startYear ? `${startYear}-01-01` : undefined,
                     endDate: endYear ? `${endYear}-12-31` : undefined,
-                    skipPaging: filters.pageSize && !hasCountriesFilter ? false : true,
-                    pageSize: hasCountriesFilter ? undefined : filters.pageSize,
-                    page: filters.page && !hasCountriesFilter ? filters.page : 1,
+                    skipPaging: filters.pageSize && !hasInMemoryFilter ? false : true,
+                    pageSize: hasInMemoryFilter ? undefined : filters.pageSize,
+                    page: filters.page && !hasInMemoryFilter ? filters.page : 1,
                     filter,
                     order: "eventDate:desc,event:asc",
                     event: favoriteIdsFilter,
                 })
             ).flatMap(response => {
-                const events = hasCountriesFilter ? this.filterCountries(response.events, filters) : response.events;
+                const countryEvents = hasCountriesFilter
+                    ? this.filterCountries(response.events, filters)
+                    : response.events;
+                const themeEvents = filters.themeCode
+                    ? this.filterThemes(countryEvents, filters.themeCode)
+                    : countryEvents;
+                // With a countries filter resources are never paged, so only the theme filter pages in memory
+                const events =
+                    filters.themeCode && !hasCountriesFilter ? this.getPage(themeEvents, filters) : themeEvents;
 
                 return Future.success(this.buildResources(events, { filters, favorites, hasCountriesFilter }));
             });
@@ -287,15 +298,13 @@ export class ResourceD2Repository implements ResourceRepository {
     private buildMultimedia(event: D2Event, favorites: FavoriteResources): Multimedia {
         const media = this.buildMedia(event, favorites);
 
-        const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
-
         const favouriteSectionData = this.buildFavouriteSectionByKind(event, "multimedia", favorites);
 
         return {
             kind: "multimedia",
             ...media,
             ...favouriteSectionData,
-            theme,
+            themeCodes: this.getThemeCodes(event),
         };
     }
 
@@ -348,7 +357,6 @@ export class ResourceD2Repository implements ResourceRepository {
     }
 
     private buildAnalysis(event: D2Event, favorites: FavoriteResources): AnalysisResource {
-        const theme = event.dataValues.find(dv => dv.dataElement === resourceDataElements.theme)?.value || "";
         const title = event.dataValues.find(dv => dv.dataElement === resourceDataElements.title)?.value || "";
         const link = event.dataValues.find(dv => dv.dataElement === resourceDataElements.link)?.value || "";
         const linkLanguage =
@@ -370,7 +378,7 @@ export class ResourceD2Repository implements ResourceRepository {
             imageOriginal: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageOriginal}&eventUid=${event.event}`,
             imageCustom: `${this.api.baseUrl}/api/events/files?dataElementUid=${resourceDataElements.imageCustom}&eventUid=${event.event}`,
             id: event.event,
-            theme: theme,
+            themeCodes: this.getThemeCodes(event),
             links: _([
                 this.createLink(link, linkLanguage),
                 this.createLink(link2, link2Language),
@@ -451,6 +459,25 @@ export class ResourceD2Repository implements ResourceRepository {
 
             return foundCountry || foundRelatedCountry;
         });
+    }
+
+    private filterThemes(events: D2Event[], themeCode: string): D2Event[] {
+        return events.filter(event => this.getThemeCodes(event).includes(themeCode));
+    }
+
+    private getPage(events: D2Event[], filters: ResourceFilters): D2Event[] {
+        if (!filters.pageSize) return events;
+
+        const start = ((filters.page ?? 1) - 1) * filters.pageSize;
+        return events.slice(start, start + filters.pageSize);
+    }
+
+    private getThemeCodes(event: D2Event): string[] {
+        const themeCodes = [resourceDataElements.theme, resourceDataElements.themeSecondary].map(
+            dataElement => event.dataValues.find(dv => dv.dataElement === dataElement)?.value || ""
+        );
+
+        return _(themeCodes).compact().uniq().value();
     }
 
     private createLink(link?: string, language?: string) {
