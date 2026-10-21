@@ -86,9 +86,6 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
-msgid "The video could not be loaded"
-msgstr ""
-
 msgid "Explainer video"
 msgstr ""
 

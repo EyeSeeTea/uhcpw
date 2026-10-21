@@ -3,9 +3,9 @@ import { ExplainerPage } from "../../../domain/entities/explainers/Explainer";
 import i18n from "../../../locales";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import { VideoDialog } from "../video-dialog/VideoDialog";
+import { VideoEmbed } from "../video-embed/VideoEmbed";
 import { VideoPillButton } from "../video-pill/VideoPill";
-import { ExplainerVideo } from "./ExplainerVideo";
-import { useExplainerVideo } from "./useExplainerVideo";
+import { useExplainerVideoUrl } from "./useExplainerVideoUrl";
 
 type ExplainerVideoButtonProps = {
     page: ExplainerPage;
@@ -14,10 +14,7 @@ type ExplainerVideoButtonProps = {
 export const ExplainerVideoButton: React.FC<ExplainerVideoButtonProps> = React.memo(({ page }) => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { clickWithPageView } = useAnalytics();
-
-    // NOTICE: the video state lives here, not in the dialog, so the video URL is fetched once while the user stays
-    // in the page even if the dialog is closed
-    const videoState = useExplainerVideo(page, isDialogOpen);
+    const videoUrl = useExplainerVideoUrl(page);
 
     const openDialog = useCallback(
         () => clickWithPageView({ title: `[Video] Explainer video: ${page}` }, () => setIsDialogOpen(true)),
@@ -27,12 +24,15 @@ export const ExplainerVideoButton: React.FC<ExplainerVideoButtonProps> = React.m
 
     const label = i18n.t("Explainer video");
 
+    // NOTICE: the button is hidden while the URL loads and when the page has no explainer video configured
+    if (!videoUrl) return null;
+
     return (
         <>
             <VideoPillButton label={label} variant="filled" onClick={openDialog} />
 
             <VideoDialog open={isDialogOpen} title={label} onClose={closeDialog}>
-                <ExplainerVideo state={videoState} />
+                <VideoEmbed src={videoUrl} title={label} />
             </VideoDialog>
         </>
     );
