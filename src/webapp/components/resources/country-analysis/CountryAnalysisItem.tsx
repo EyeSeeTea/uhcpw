@@ -25,7 +25,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
                 year: countryAnalysis.date.getFullYear(),
                 resourceName: countryAnalysis.title,
                 category: countryAnalysis.kind,
-                theme: countryAnalysis.themeName,
+                theme: countryAnalysis.analyticsTheme,
                 language: language,
                 country: countryAnalysis.countryName,
             }),
@@ -44,8 +44,7 @@ export const CountryAnalysisItem: React.FC<CountryAnalysisItemProps> = React.mem
             <AnalysisItem
                 type="country-analysis"
                 title={countryAnalysis.title}
-                themeCode={countryAnalysis.theme}
-                themeName={countryAnalysis.themeName}
+                themes={countryAnalysis.resourceThemes}
                 links={countryAnalysis.links}
                 image={countryAnalysis.imageOriginal}
                 date={countryAnalysis.date}

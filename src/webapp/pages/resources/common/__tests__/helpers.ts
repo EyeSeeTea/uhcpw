@@ -5,7 +5,14 @@ import {
     News,
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
+import { ResourceTheme } from "../../../../../domain/entities/resources/ResourceTheme";
 import { givenAThemes } from "../../../../../utils/tests-ui";
+
+/** Even resources have only a main theme, odd resources have a main and a secondary theme */
+function getThemeCodes(themes: ReadonlyArray<ResourceTheme>, index: number): string[] {
+    const themeCodes = index % 2 === 0 ? [themes[0]?.code] : [themes[1]?.code, themes[2]?.code];
+    return themeCodes.flatMap(themeCode => (themeCode ? [themeCode] : []));
+}
 
 export function createComparativeAnalysisResources(count: number): ComparativeAnalysis[] {
     const themes = givenAThemes();
@@ -16,7 +23,7 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
             id: `id-comparative-analysis-${index}`,
             imageOriginal: `http://image${index}.png`,
             imageCustom: `http://image${index}.png`,
-            theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
+            themeCodes: getThemeCodes(themes, index),
             links: [
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
                 { url: `http://link${Math.random()}.pdf`, language: "Spain" },
@@ -43,7 +50,7 @@ export function createCountryAnalysisResources(count: number): CountryAnalysis[]
             id: `id-country-analysis-${index}`,
             imageOriginal: `http://image${index}.png`,
             imageCustom: `http://image${index}.png`,
-            theme: (index % 2 === 0 ? themes[0]?.name : themes[1]?.name) || "",
+            themeCodes: getThemeCodes(themes, index),
             links: [
                 { url: `http://link${Math.random()}.pdf`, language: "English" },
                 { url: `http://link${Math.random()}.pdf`, language: "Castellano" },
@@ -91,7 +98,7 @@ export function createMultimediaResources(count: number): Multimedia[] {
             title: `title ${index}`,
             date: new Date(`${index + 1} January 2023`),
             url: `http://news-${index}.html`,
-            theme: `test theme`,
+            themeCodes: [`test theme`],
             favouriteHome: true,
             favouriteHomeOrder: index,
             favouriteSection: true,

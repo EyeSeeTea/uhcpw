@@ -27,7 +27,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
                 year: comparativeAnalysis.date.getFullYear(),
                 resourceName: comparativeAnalysis.title,
                 category: comparativeAnalysis.kind,
-                theme: comparativeAnalysis.themeName,
+                theme: comparativeAnalysis.analyticsTheme,
                 language: language,
             }),
         [analyticsPageTitle, comparativeAnalysis, redirectWithEvent]
@@ -38,8 +38,7 @@ export const ComparativeAnalysisItem: React.FC<CountryAnalysisProps> = React.mem
             {normalize && <Row />}
             <AnalysisItem
                 title={comparativeAnalysis.title}
-                themeCode={comparativeAnalysis.theme}
-                themeName={comparativeAnalysis.themeName}
+                themes={comparativeAnalysis.resourceThemes}
                 links={comparativeAnalysis.links}
                 image={comparativeAnalysis.imageOriginal}
                 date={comparativeAnalysis.date}

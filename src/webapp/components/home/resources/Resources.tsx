@@ -5,6 +5,7 @@ import i18n from "../../../../locales";
 import styled from "styled-components";
 import { SimpleResourceItem } from "../../resources/common/SimpleResourceItem";
 import { MultimediaResourceItem } from "../../resources/common/MultimediaResourceItem";
+import { useCategoryTags } from "../../resources/common/useCategoryTags";
 import { ResourceState } from "../../../pages/resources/by-type/ResourcesByTypeState";
 import { Grid } from "@material-ui/core";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
@@ -59,13 +60,13 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                 case "comparative-analysis":
                     return redirectWithEvent({
                         ...common,
-                        theme: resource.themeName,
+                        theme: resource.analyticsTheme,
                         language: resource.links[0]?.language,
                     });
                 case "country-analysis":
                     return redirectWithEvent({
                         ...common,
-                        theme: resource.themeName,
+                        theme: resource.analyticsTheme,
                         country: resource.countryName,
                         language: resource.links[0]?.language,
                     });
@@ -76,10 +77,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
             }
         }, [redirectWithEvent, resource]);
 
-        const goToCategory = useCallback(
-            () => handleOnTagClick(`/resources/${resource.kind}`),
-            [handleOnTagClick, resource.kind]
-        );
+        const categoryTags = useCategoryTags(resource.kind, handleOnTagClick);
 
         switch (resource.kind) {
             case "comparative-analysis":
@@ -91,8 +89,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         redirectWithEvent={analyticsEvent}
-                        tag={i18n.t("Comparative analysis")}
-                        onTagClick={goToCategory}
+                        tags={categoryTags}
                         maintainAspectRatio
                     />
                 );
@@ -105,8 +102,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         redirectWithEvent={analyticsEvent}
-                        tag={i18n.t("Country or area analysis")}
-                        onTagClick={goToCategory}
+                        tags={categoryTags}
                         maintainAspectRatio
                     />
                 );
@@ -119,8 +115,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                         fallbackImage={resource.imageOriginal}
                         date={resource.date}
                         redirectWithEvent={analyticsEvent}
-                        tag={i18n.t("News")}
-                        onTagClick={goToCategory}
+                        tags={categoryTags}
                         maintainAspectRatio
                     />
                 );
@@ -129,8 +124,7 @@ const Item: React.FC<{ resource: ResourceState; handleOnTagClick: (url: string) 
                     <MultimediaResourceItem
                         resource={resource}
                         analyticsPageTitle="Homepage"
-                        tag={i18n.t("Multimedia")}
-                        onTagClick={goToCategory}
+                        tags={categoryTags}
                         maintainAspectRatio
                     />
                 );

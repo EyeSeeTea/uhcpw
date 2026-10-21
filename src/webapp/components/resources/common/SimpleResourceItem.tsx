@@ -6,6 +6,12 @@ import styled from "styled-components";
 import { Tag } from "../tag/Tag";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 
+export type ResourceItemTag = Readonly<{
+    name: string;
+    color?: string;
+    onClick?: () => void;
+}>;
+
 export interface SimpleResourceItemProps {
     title: string;
     url: string;
@@ -13,9 +19,7 @@ export interface SimpleResourceItemProps {
     fallbackImage?: string;
     date: Date;
     dateFormat?: string;
-    tag?: string;
-    tagColor?: string;
-    onTagClick?: () => void;
+    tags?: ReadonlyArray<ResourceItemTag>;
     maintainAspectRatio?: boolean;
     fullWidth?: boolean;
     redirectWithEvent: (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
@@ -31,9 +35,7 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
         fallbackImage,
         date,
         dateFormat,
-        tag,
-        tagColor,
-        onTagClick,
+        tags = [],
         redirectWithEvent,
         maintainAspectRatio = false,
         fullWidth = true,
@@ -71,7 +73,10 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
 
                     <Content $hasPadding={disableMainPadding}>
                         <Row>
-                            {tag && !hideTag && <Tag theme={tag} color={tagColor} onClick={onTagClick} />}
+                            {!hideTag &&
+                                tags.map(tag => (
+                                    <Tag key={tag.name} theme={tag.name} color={tag.color} onClick={tag.onClick} />
+                                ))}
 
                             <Text gutterBottom>{moment(date).format(dateFormat || "YYYY")}</Text>
                         </Row>

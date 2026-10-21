@@ -26,7 +26,7 @@ export const MultimediaResourceItem: React.FC<MultimediaResourceItemProps> = Rea
                 year: resource.date.getFullYear(),
                 resourceName: resource.title,
                 category: resource.kind,
-                theme: resource.themeName,
+                theme: resource.analyticsTheme,
             }),
             [resource, analyticsPageTitle]
         );
