@@ -17,7 +17,11 @@ export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitl
         const themeTags = useMemo(
             () =>
                 resource.kind === "multimedia"
-                    ? resource.resourceThemes.map(theme => ({ name: theme.name, color: getThemeColor(theme.code) }))
+                    ? resource.resourceThemes.map(theme => ({
+                          name: theme.name,
+                          color: getThemeColor(theme.code),
+                          compact: true,
+                      }))
                     : [],
             [resource]
         );

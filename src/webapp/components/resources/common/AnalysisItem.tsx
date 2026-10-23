@@ -63,6 +63,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => 
                             theme={theme.name}
                             title={theme.name}
                             color={getThemeColor(theme.code)}
+                            compact
                             onClick={() => handleTagClick(theme.name)}
                         />
                     ))
@@ -126,16 +127,10 @@ const StyledAnchor = styled.a`
     }
 `;
 
-// Cards are 180px wide: chips have less side padding than elsewhere, so the two longest theme names
-// ("Financing" and "Resilience") fit in one row, left to right. On small screens the country and regional
-// pages show two narrow cards per row, so there the second chip may wrap.
+// Cards are 180px wide: the two compact theme chips fit in one row, left to right. On small screens the
+// country and regional pages show two narrow cards per row, so there the second chip may wrap.
 const TagContainer = styled.div`
     white-space: nowrap;
-
-    && > * {
-        padding-inline: 8px;
-        margin-inline-end: 8px;
-    }
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-inline: 16px;
