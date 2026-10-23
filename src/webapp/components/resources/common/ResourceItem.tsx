@@ -7,13 +7,7 @@ import { MultimediaResourceItem } from "./MultimediaResourceItem";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import styled from "styled-components";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
-
-const themeColor: Readonly<Record<string, string>> = {
-    "Financial Protection": "#008ad7",
-    Resilience: "#4fad56",
-    "Spending on Health": "#0360a7",
-    "Voluntary Health Insurance": "#ff8d4e",
-};
+import { getThemeColor } from "../tag/themeColor";
 
 export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitle: string; normalize?: boolean }> =
     React.memo(props => {
@@ -23,7 +17,7 @@ export const ResourceItem: React.FC<{ resource: ResourceState; analyticsPageTitl
         const themeTags = useMemo(
             () =>
                 resource.kind === "multimedia"
-                    ? resource.resourceThemes.map(theme => ({ name: theme.name, color: themeColor[theme.code] }))
+                    ? resource.resourceThemes.map(theme => ({ name: theme.name, color: getThemeColor(theme.code) }))
                     : [],
             [resource]
         );

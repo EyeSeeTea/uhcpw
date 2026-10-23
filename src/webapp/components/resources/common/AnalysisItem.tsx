@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { ResourceLink } from "../../../../domain/entities/resources/Resource";
 import { ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { Tag } from "../tag/Tag";
+import { getThemeColor } from "../tag/themeColor";
 import { useHistory } from "react-router-dom";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 import { useAppContext } from "../../../contexts/app-context";
@@ -20,16 +21,6 @@ export interface CountryAnalysisProps {
     type: "country-analysis" | "comparative-analysis";
     redirectWithEvent: (language: string) => (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 }
-
-const themeColor: Readonly<Record<string, string>> = {
-    default: "#0360a7",
-    "financial protection": "#0360a7",
-    "health financing policy papers": "rgb(0, 138, 215, 0.5)",
-    "spending on health": "#002060",
-    resilience: "#4fad56",
-    "voluntary health insurance": "#ff8d4e",
-    "health and economy": "#c42929",
-};
 
 export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => {
     const { title, themes, links, image, date, minimalVersion, type, redirectWithEvent } = props;
@@ -71,7 +62,7 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => 
                             key={theme.id}
                             theme={theme.name}
                             title={theme.name}
-                            color={themeColor[theme.code.toLowerCase()] || themeColor.default}
+                            color={getThemeColor(theme.code)}
                             onClick={() => handleTagClick(theme.name)}
                         />
                     ))
