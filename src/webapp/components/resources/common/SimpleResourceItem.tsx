@@ -9,6 +9,7 @@ import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useI
 export type ResourceItemTag = Readonly<{
     name: string;
     color?: string;
+    compact?: boolean;
     onClick?: () => void;
 }>;
 
@@ -75,7 +76,13 @@ export const SimpleResourceItem: React.FC<SimpleResourceItemProps> = React.memo(
                         <Row>
                             {!hideTag &&
                                 tags.map(tag => (
-                                    <Tag key={tag.name} theme={tag.name} color={tag.color} onClick={tag.onClick} />
+                                    <Tag
+                                        key={tag.name}
+                                        theme={tag.name}
+                                        color={tag.color}
+                                        compact={tag.compact}
+                                        onClick={tag.onClick}
+                                    />
                                 ))}
 
                             <Text gutterBottom>{moment(date).format(dateFormat || "YYYY")}</Text>

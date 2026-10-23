@@ -18,7 +18,7 @@ export const ResourcesListBySection: React.FC<{
     <Container>
         {isSmallScreen && <ScrollToTopButton />}
         {resourcesBySection.map(section => (
-            <Grid item md={12} xs={12} key={`section-${section.resources.join("-")}`}>
+            <Grid item md={12} xs={12} key={section.kind}>
                 {section.resources.length > 0 && (
                     <ResourceGroup
                         title={section.title}
@@ -57,6 +57,7 @@ function getSectionGridSize(kind: ResourcesListBySectionState["kind"]): {
 }
 
 const Container = styled(Grid)`
+    width: 100%;
     padding-block-end: 32px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding-inline: 0;
