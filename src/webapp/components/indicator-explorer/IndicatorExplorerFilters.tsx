@@ -7,13 +7,13 @@ import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/In
 import { TreeSelector } from "../tree-selector/TreeSelector";
 import { IndicatorTreeSelector } from "./category-indicator-selector/tree/IndicatorTreeSelector";
 
-export interface ResourcesFiltersProps {
+export interface IndicatorExplorerFiltersProps {
     filters: IndicatorExplorerFiltersState;
     onGetChart: () => void;
     disableGet?: boolean;
 }
 
-export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(
+export const IndicatorExplorerFilters: React.FC<IndicatorExplorerFiltersProps> = React.memo(
     ({ filters, onGetChart, disableGet }) => {
         const theme = useTheme();
         const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
@@ -57,7 +57,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         />
                     </Center>
                 </Grid>
-                <Grid item md={3} sm={6} xs={12}>
+                <Grid item md sm={6} xs={12}>
                     <Center>
                         <TreeSelector
                             fullWidth
@@ -76,7 +76,7 @@ export const IndicatorExplorerFilters: React.FC<ResourcesFiltersProps> = React.m
                         />
                     </Center>
                 </Grid>
-                <GridGetChartButton item md={1} sm={6} xs={12}>
+                <GridGetChartButton item md="auto" sm={6} xs={12}>
                     <GetChartButton
                         aria-label="Get chart"
                         variant="contained"
