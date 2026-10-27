@@ -11,6 +11,7 @@ import { RegionalMenuItem, RegionalMenuItemConfig } from "./useRegionalPage";
 import { colors } from "../app/themes/dhis2.theme";
 import { getColorOfRegionByRegionId } from "./getColorOfRegion";
 import { ExplainerVideoButton } from "../../components/explainer-video/ExplainerVideoButton";
+import { useExplainer } from "../../components/explainer-video/useExplainer";
 
 type HeaderType = {
     selectedRegion: Id | undefined;
@@ -30,6 +31,7 @@ export const Header: React.FC<HeaderType> = props => {
         menuItemsConfig,
         isSmallScreen = false,
     } = props;
+    const explainer = useExplainer("regional");
 
     return (
         <Container aria-label="regional-page-header" backgroundColor={getColorOfRegionByRegionId(selectedRegion || "")}>
@@ -47,7 +49,7 @@ export const Header: React.FC<HeaderType> = props => {
                     />
                 </DropdownContainer>
 
-                {isSmallScreen && <ExplainerVideoButton page="regional" />}
+                {explainer && isSmallScreen && <ExplainerVideoButton explainer={explainer} />}
             </DropdownRow>
 
             <ButtonsContainer>
@@ -56,7 +58,7 @@ export const Header: React.FC<HeaderType> = props => {
                         <ButtonText>{item.label}</ButtonText>
                     </StyledButton>
                 ))}
-                {!isSmallScreen && <ExplainerVideoButton page="regional" />}
+                {explainer && !isSmallScreen && <ExplainerVideoButton explainer={explainer} />}
             </ButtonsContainer>
         </Container>
     );

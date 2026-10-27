@@ -3,6 +3,8 @@ import { Explainer, ExplainerPage } from "../../../domain/entities/explainers/Ex
 import { Maybe } from "../../../types/utils";
 import { useAppContext } from "../../contexts/app-context";
 
+// NOTICE: undefined while the explainer loads and when the page has no explainer video configured,
+// so pages show the button and its layout only when there is a video
 export function useExplainer(page: ExplainerPage): Maybe<Explainer> {
     const { compositionRoot } = useAppContext();
     const [explainer, setExplainer] = useState<Maybe<Explainer>>(undefined);

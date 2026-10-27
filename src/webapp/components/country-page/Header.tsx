@@ -12,6 +12,7 @@ import { UmbrellaIcon } from "../umbrella-icon/UmbrellaIcon";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Maybe } from "../../../types/utils";
 import { ExplainerVideoButton } from "../explainer-video/ExplainerVideoButton";
+import { useExplainer } from "../explainer-video/useExplainer";
 import { useFitsInOneLine } from "../../common/hooks/screen/useFitsInOneLine";
 
 const useStyles = makeStyles(theme => ({
@@ -52,6 +53,8 @@ export const Header: FC<HeaderType> = ({
     const isSmallScreen = useIsSmallScreen();
     const containerRef = useRef<HTMLDivElement>(null);
     const fitsInOneLine = useFitsInOneLine(containerRef);
+    const explainer = useExplainer("country");
+    const layout: HeaderLayout = !explainer ? "withoutExplainer" : fitsInOneLine ? "oneLine" : "twoLines";
 
     const handleClick = useCallback(
         (
@@ -71,10 +74,10 @@ export const Header: FC<HeaderType> = ({
             ref={containerRef}
             aria-label="country-page-header"
             status={country?.status}
-            $twoLines={!fitsInOneLine}
+            $layout={layout}
             className={classes.container}
         >
-            <DropdownContainer $twoLines={!fitsInOneLine}>
+            <DropdownContainer $layout={layout}>
                 <MenuDropdown
                     fullWidth
                     id="country"
@@ -88,13 +91,13 @@ export const Header: FC<HeaderType> = ({
                 {country && <UmbrellaIcon status={country?.status} />}
             </DropdownContainer>
 
-            {!fitsInOneLine && (
+            {explainer && layout === "twoLines" && (
                 <ExplainerContainer>
-                    <ExplainerVideoButton page="country" />
+                    <ExplainerVideoButton explainer={explainer} />
                 </ExplainerContainer>
             )}
 
-            <ButtonsContainer $twoLines={!fitsInOneLine}>
+            <ButtonsContainer $layout={layout}>
                 <Button>
                     <ButtonText onClick={() => handleClick(dashboardRef, "dashboard")}>
                         {i18n.t("Dashboard")}
@@ -111,15 +114,17 @@ export const Header: FC<HeaderType> = ({
                 <Button>
                     <ButtonText onClick={() => handleClick(expertRef, "expert")}>{i18n.t("Experts")}</ButtonText>
                 </Button>
-                {fitsInOneLine && <ExplainerVideoButton page="country" />}
+                {explainer && layout === "oneLine" && <ExplainerVideoButton explainer={explainer} />}
             </ButtonsContainer>
         </Container>
     );
 };
 
-type TwoLinesProps = { $twoLines: boolean };
+// NOTICE: without an explainer video the header keeps the layout it had before the explainer button existed
+type HeaderLayout = "withoutExplainer" | "oneLine" | "twoLines";
+type LayoutProps = { $layout: HeaderLayout };
 
-const Container = styled.div<{ status: FinancialProtectionStatus | undefined } & TwoLinesProps>`
+const Container = styled.div<{ status: FinancialProtectionStatus | undefined } & LayoutProps>`
     position: sticky;
     top: 0;
     z-index: 2;
@@ -134,7 +139,7 @@ const Container = styled.div<{ status: FinancialProtectionStatus | undefined } &
         flex-wrap: nowrap;
     }
     ${props =>
-        props.$twoLines &&
+        props.$layout === "twoLines" &&
         css`
             /* NOTICE: two rows sharing the first column, whose width is set by the menu buttons */
             display: grid;
@@ -148,22 +153,27 @@ const Container = styled.div<{ status: FinancialProtectionStatus | undefined } &
         `}
 `;
 
-const DropdownContainer = styled.div<TwoLinesProps>`
-    display: flex;
+// NOTICE: they keep their natural width so it can be measured to know whether the header fits in one line
+const notShrinkingStyles = css`
     flex-shrink: 0;
-    gap: 20px;
-    align-items: center;
     img {
         flex-shrink: 0;
     }
+`;
+
+const DropdownContainer = styled.div<LayoutProps>`
+    display: flex;
+    gap: 20px;
+    align-items: center;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         gap: 0px;
         img {
             width: 90px;
         }
     }
+    ${props => props.$layout !== "withoutExplainer" && notShrinkingStyles}
     ${props =>
-        props.$twoLines &&
+        props.$layout === "twoLines" &&
         css`
             grid-area: dropdown;
             /* NOTICE: it fills the column without widening it, so the umbrella ends where the menu buttons end */
@@ -176,16 +186,16 @@ const ExplainerContainer = styled.div`
     grid-area: explainer;
 `;
 
-const ButtonsContainer = styled.div<TwoLinesProps>`
+const ButtonsContainer = styled.div<LayoutProps>`
     display: flex;
-    flex-shrink: 0;
     gap: 20px;
     align-items: center;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         gap: 10px;
     }
+    ${props => props.$layout !== "withoutExplainer" && notShrinkingStyles}
     ${props =>
-        props.$twoLines &&
+        props.$layout === "twoLines" &&
         css`
             grid-area: menu;
         `}
