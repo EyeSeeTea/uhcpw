@@ -1,20 +1,18 @@
-import { Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { useMediaQuery, useTheme } from "@material-ui/core";
 import React, { useEffect, useMemo } from "react";
 import styled from "styled-components";
 import { useSnackbar } from "@eyeseetea/d2-ui-components";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
+import { ExplorerTitle } from "../../components/explorer-title/ExplorerTitle";
 import { IndicatorExplorerFilters } from "../../components/indicator-explorer/IndicatorExplorerFilters";
-import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
 import indicatorExplorer from "../../assets/indicator-explorer.svg";
 import { VisualizationPlugin } from "../../components/visualization/VisualizationPlugin";
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
-import mapBackground from "../../assets/map-background.jpg";
-import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import { useHistory } from "react-router-dom";
 
 export const IndicatorExplorerPage: React.FC = React.memo(() => {
@@ -95,10 +93,12 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
 
     return (
         <Layout>
-            <TitleContainer>
-                <Typography variant="h3">{i18n.t("Indicator explorer")}</Typography>
-                <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
-            </TitleContainer>
+            <ExplorerTitle
+                title={i18n.t("Indicator explorer")}
+                image={indicatorExplorer}
+                imageAlt={i18n.t("indicator explorer")}
+                page="indicatorExplorer"
+            />
 
             <MainSection>
                 <IndicatorExplorerFilters filters={filters} onGetChart={onGet} disableGet={chartPluginIsLoading} />
@@ -161,21 +161,4 @@ const MainSection = styled.div`
     @media (max-width: 600px) {
         padding: 34px 64px;
     }
-`;
-
-const TitleContainer = styled.div`
-    background: ${colors.gradientPrimary};
-    color: white;
-    padding: 24px 200px 24px 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        background: ${props => props.color} url(${mapBackground});
-        background-position: center;
-    }
-`;
-
-const Image = styled.img`
-    height: 56px;
 `;

@@ -4,7 +4,7 @@ import { apiToFuture } from "../../../utils/futures";
 
 export const mainPagesProgram = "ai5rB7mcqHH";
 
-export function getMainPagesContent(api: D2Api): FutureData<DataValue[]> {
+export function getMainPagesEvent(api: D2Api): FutureData<MainPagesEvent> {
     return apiToFuture(
         api.events.get({
             fields: eventsFields,
@@ -12,14 +12,16 @@ export function getMainPagesContent(api: D2Api): FutureData<DataValue[]> {
             program: mainPagesProgram,
         })
     ).flatMap(response => {
-        if (response.events.length === 0) {
-            return Future.error("No main pages found");
-        }
-
         const event = response.events[0];
 
-        return Future.success(event?.dataValues || []);
+        return event
+            ? Future.success({ event: event.event, dataValues: event.dataValues || [] })
+            : Future.error("No main pages found");
     });
+}
+
+export function getMainPagesContent(api: D2Api): FutureData<DataValue[]> {
+    return getMainPagesEvent(api).map(event => event.dataValues);
 }
 
 const eventsFields = {
@@ -38,3 +40,5 @@ export interface DataValue {
     dataElement: string;
     value: string;
 }
+
+export type MainPagesEvent = Pick<D2Event, "event" | "dataValues">;

@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-01T09:06:24.762Z\n"
-"PO-Revision-Date: 2026-10-01T09:06:24.762Z\n"
+"POT-Creation-Date: 2026-10-27T09:38:25.954Z\n"
+"PO-Revision-Date: 2026-10-27T09:38:25.955Z\n"
 
 msgid "404"
 msgstr ""
@@ -84,6 +84,12 @@ msgid "Save"
 msgstr ""
 
 msgid "Clear"
+msgstr ""
+
+msgid "Explainer video"
+msgstr ""
+
+msgid "The video could not be loaded"
 msgstr ""
 
 msgid "indicator explorer"

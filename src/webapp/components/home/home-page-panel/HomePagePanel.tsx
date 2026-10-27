@@ -8,7 +8,7 @@ import i18n from "../../../../locales";
 import { MainMapPanelContent } from "../../../../domain/entities/HomePageContent";
 import ReactMarkdown from "react-markdown";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
-import { YouTubeEmbed } from "../../youtube-embed/YouTubeEmbed";
+import { VideoEmbed } from "../../video-embed/VideoEmbed";
 import { WelcomeVideoButton } from "./WelcomeVideoButton";
 
 type MainPanelProps = {
@@ -97,7 +97,7 @@ const Marker = styled.img`
     margin-bottom: 16px;
 `;
 
-const MobileVideo = styled(YouTubeEmbed)`
+const MobileVideo = styled(VideoEmbed)`
     max-width: 70ch;
     margin: 40px auto;
 `;
