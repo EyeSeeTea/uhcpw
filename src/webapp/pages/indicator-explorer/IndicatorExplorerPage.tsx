@@ -5,6 +5,7 @@ import { useSnackbar } from "@eyeseetea/d2-ui-components";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
+import { ExplainerVideoButton } from "../../components/explainer-video/ExplainerVideoButton";
 import { IndicatorExplorerFilters } from "../../components/indicator-explorer/IndicatorExplorerFilters";
 import { colors } from "../app/themes/dhis2.theme";
 import { useIndicatorExplorer } from "./useIndicatorExplorer";
@@ -98,6 +99,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <TitleContainer>
                 <Typography variant="h3">{i18n.t("Indicator explorer")}</Typography>
                 <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
+                <ExplainerVideoButton page="indicatorExplorer" />
             </TitleContainer>
 
             <MainSection>
@@ -166,10 +168,12 @@ const MainSection = styled.div`
 const TitleContainer = styled.div`
     background: ${colors.gradientPrimary};
     color: white;
-    padding: 24px 200px 24px 64px;
+    padding: 24px 64px;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    gap: 16px 32px;
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${props => props.color} url(${mapBackground});
         background-position: center;
@@ -178,4 +182,5 @@ const TitleContainer = styled.div`
 
 const Image = styled.img`
     height: 56px;
+    margin-inline-start: auto;
 `;

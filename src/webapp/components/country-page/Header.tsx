@@ -11,6 +11,7 @@ import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/ho
 import { UmbrellaIcon } from "../umbrella-icon/UmbrellaIcon";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Maybe } from "../../../types/utils";
+import { ExplainerVideoButton } from "../explainer-video/ExplainerVideoButton";
 
 const useStyles = makeStyles(theme => ({
     container: {
@@ -91,6 +92,7 @@ export const Header: FC<HeaderType> = ({
                 <Button>
                     <ButtonText onClick={() => handleClick(expertRef, "expert")}>{i18n.t("Experts")}</ButtonText>
                 </Button>
+                <ExplainerVideoButton page="country" />
             </ButtonsContainer>
         </Container>
     );
