@@ -22,6 +22,8 @@ import { ResourceThemeD2Repository } from "./data/repositories/resources/Resourc
 import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
 import { ExplainerD2Repository } from "./data/repositories/explainers/ExplainerD2Repository";
 import { GetExplainerUseCase } from "./domain/usecases/explainers/GetExplainerUseCase";
+import { ExplainerVideoFileD2Repository } from "./data/repositories/explainers/ExplainerVideoFileD2Repository";
+import { GetExplainerVideoFileUseCase } from "./domain/usecases/explainers/GetExplainerVideoFileUseCase";
 import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
 import { AnalyticsD2Repository } from "./data/repositories/indicator-explorer/AnalyticsD2Repository";
 import { GetPersonsUseCase } from "./domain/usecases/GetPersonsUseCase";
@@ -73,6 +75,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         resourceCategory: new ResourceCategoryD2Repository(api),
         resourceTheme: new ResourceThemeD2Repository(api),
         explainer: new ExplainerD2Repository(api),
+        explainerVideoFile: new ExplainerVideoFileD2Repository(api),
         person: new PersonD2Repository(api),
         method: new MethodD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
@@ -144,6 +147,7 @@ export function getCompositionRoot(
         },
         explainers: {
             get: new GetExplainerUseCase(repositories.explainer),
+            getVideoFile: new GetExplainerVideoFileUseCase(repositories.explainerVideoFile),
         },
         about: {
             getPersons: new GetPersonsUseCase(repositories.person),
