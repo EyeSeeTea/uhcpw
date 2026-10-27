@@ -37,11 +37,11 @@ const CELLS_WIDTH_CATEGORY_BY_TYPE_OF_HEALTHCARE = {
     country: 10,
     year: 10,
     typeOfHealthCare: 10,
-    userChargesApply: 90,
+    userChargesApply: 20,
     typeOfUserCharge: 160,
     reducedUserCharges: 90,
     exemptionsFromUserCharges: 160,
-    capOnUserCharges: 90,
+    capOnUserCharges: 160,
 };
 const MIN_DATA_CELL_WIDTH = 200;
 const FIRST_COLUMN_SPECIAL_INVERTED_WIDTH = 180;

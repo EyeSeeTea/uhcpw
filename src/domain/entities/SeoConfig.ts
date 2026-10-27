@@ -68,11 +68,21 @@ export const seoRouteConfigs: SeoRouteConfig = {
 };
 
 /**
- * Get SEO configuration for a specific route
- * Falls back to default if route not found
+ * Returns SEO configuration for a root-relative route, defaulting when absent.
+ * Pass `basePath` when `pathname` includes a deployment subpath.
  */
-export function getSeoConfigForRoute(pathname: string): SeoConfig {
-    const cleanPath = pathname.replace("#", "");
+export function getSeoConfigForRoute(pathname: string, basePath = "/"): SeoConfig {
+    let cleanPath = pathname.replace("#", "");
+    const normalizedBase = basePath.replace(/^\/+|\/+$/g, "");
+
+    if (normalizedBase) {
+        const base = `/${normalizedBase}`;
+        if (cleanPath === base) {
+            cleanPath = "/";
+        } else if (cleanPath.startsWith(`${base}/`)) {
+            cleanPath = cleanPath.slice(base.length);
+        }
+    }
 
     if (seoRouteConfigs[cleanPath]) {
         return { ...defaultSeoConfig, ...seoRouteConfigs[cleanPath] };

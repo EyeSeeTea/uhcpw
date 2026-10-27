@@ -53,7 +53,7 @@ export function useResourcesFilters(params: {
     }, [compositionRoot.resources]);
 
     useEffect(() => {
-        // NOTICE: use theme name to filter resources by theme in ResourceRepository get()
+        // NOTICE: the theme name is the value GetResourcesUseCase expects to filter by theme
         setThemeFilters(
             themes
                 .map(theme => ({ value: theme.name, text: theme.displayedName }))

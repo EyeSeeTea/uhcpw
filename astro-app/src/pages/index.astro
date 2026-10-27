@@ -2,27 +2,28 @@
 import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import { HomeMap } from "@/islands/home/HomeMap";
+import { YouTubeLinkDialog } from "@/islands/common/YouTubeLinkDialog";
 import Explorers from "@/components/home/Explorers.astro";
 import AnalysisSection from "@/components/home/AnalysisSection.astro";
 import MethodsSection from "@/components/home/MethodsSection.astro";
 import ResourcesSection from "@/components/home/ResourcesSection.astro";
 import NewsletterButton from "@/components/home/NewsletterButton.astro";
 import MobileCardGrid from "@/components/home/MobileCardGrid.astro";
-import MobileMapHero from "@/components/home/MobileMapHero.astro";
 import MobileResourcesSection from "@/components/home/MobileResourcesSection.astro";
 import MobileNewsSection from "@/components/home/MobileNewsSection.astro";
+import DefaultHomePanel from "@/components/home/DefaultHomePanel.astro";
 import mapBackground from "@/assets/mapbox-map-background.png";
 import { getHomePageData } from "@/data/home/home-data";
-import { getSeoConfigForRoute } from "@shared/domain/entities/SeoConfig";
+import { getSeoConfigForAstroRoute } from "@/lib/seo";
 
 const { homePageContent, resources, mobileResources, news, markers, initialMapData, generalContent } =
     await getHomePageData();
 
-const seo = getSeoConfigForRoute(Astro.url.pathname);
+const seo = getSeoConfigForAstroRoute(Astro.url.pathname);
 ---
 
 <Layout seo={seo} generalContent={generalContent}>
-    <section class="map-section">
+    <section class="map-section" id="map-section">
         <Image
             class="mobile-map-static"
             src={mapBackground}
@@ -31,27 +32,10 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
             widths={[480, 768, 960]}
             sizes="(max-width: 959px) 100vw, 0px"
         />
-        <div class="mobile-only" id="mobile-hero-mount"></div>
-        <template id="mobile-hero-tpl">
-            <MobileMapHero content={homePageContent.mainMapPanel} />
-        </template>
-        <script>
-            // Gate render to mobile widths so the YouTube facade (lite-youtube)
-            // is never connected to the DOM on desktop, where it isn't shown.
-            const tpl = document.getElementById("mobile-hero-tpl");
-            const mount = document.getElementById("mobile-hero-mount");
-            if (
-                tpl instanceof HTMLTemplateElement &&
-                mount &&
-                window.matchMedia("(max-width: 959px)").matches
-            ) {
-                mount.appendChild(tpl.content.cloneNode(true));
-            }
-        </script>
+        <DefaultHomePanel content={homePageContent.mainMapPanel} />
         <HomeMap
             client:only="react"
             markers={markers}
-            homePagePanelContent={homePageContent.mainMapPanel}
             initialData={initialMapData}
         />
     </section>
@@ -73,6 +57,8 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
     <MobileNewsSection news={news} />
 
     <NewsletterButton content={homePageContent.newsletter} />
+
+    <YouTubeLinkDialog client:only="react" />
 </Layout>
 
 <style>
@@ -110,18 +96,11 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
         object-fit: cover;
     }
 
-    .mobile-only {
-        display: none;
-    }
-
     @media (max-width: 959px) {
         .mobile-map-static {
             display: block;
         }
 
-        .mobile-only {
-            display: block;
-        }
     }
 
     .desktop-sections {
@@ -134,4 +113,3 @@ const seo = getSeoConfigForRoute(Astro.url.pathname);
         }
     }
 </style>
-

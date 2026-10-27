@@ -40,18 +40,6 @@ describe("Resource repository", () => {
             expect(mockWebServer.lastRequest?.params.get("program")).toBe(resourcesProgram);
         });
 
-        it("theme in filter", async () => {
-            givenFavoritesResources();
-            givenAComparativeAnalysis();
-
-            await resourceRepository
-                .get({ category: "comparative-analysis", theme: "Financial Protection" })
-                .runAsync();
-
-            expect(mockWebServer.lastRequest?.params.get("filter")).toContain(
-                `${resourceDataElements.theme}:like:Financial Protection`
-            );
-        });
         it("searchTerm in filter", async () => {
             givenFavoritesResources();
             givenAComparativeAnalysis();
@@ -213,6 +201,55 @@ describe("Resource repository", () => {
         });
     });
 
+    describe("theme filter", () => {
+        it("should not send the theme to the server and should skip paging", async () => {
+            givenFavoritesResources();
+            givenAComparativeAnalysis();
+
+            await resourceRepository
+                .get({ category: "comparative-analysis", themeCode: financialProtectionTheme, pageSize: 6, page: 1 })
+                .runAsync();
+
+            expect(mockWebServer.lastRequest?.params.get("filter")).toBe(
+                `${resourceDataElements.comparativeAnalysisCategory}:eq:true`
+            );
+            expect(mockWebServer.lastRequest?.params.get("skipPaging")).toBe("true");
+        });
+
+        it("should return the resources whose main theme matches", async () => {
+            givenFavoritesResources();
+            givenAComparativeAnalysis();
+
+            const response = await resourceRepository
+                .get({ category: "comparative-analysis", themeCode: "Spending on Health" })
+                .runAsync();
+
+            expect(getIds(response.data)).toEqual(["eZhD2JgYvQB"]);
+        });
+
+        it("should return the resources whose secondary theme matches", async () => {
+            givenFavoritesResources();
+            givenAMultimedia();
+
+            const response = await resourceRepository
+                .get({ category: "multimedia", themeCode: "Resilience" })
+                .runAsync();
+
+            expect(getIds(response.data)).toEqual(["gGIXHvLl5Wl"]);
+        });
+
+        it("should return the requested page of the matching resources", async () => {
+            givenFavoritesResources();
+            givenAComparativeAnalysis();
+
+            const response = await resourceRepository
+                .get({ category: "comparative-analysis", themeCode: financialProtectionTheme, pageSize: 2, page: 2 })
+                .runAsync();
+
+            expect(getIds(response.data)).toEqual(["rCveu4PJ5Fx", "EQCYfQqCRpI"]);
+        });
+    });
+
     describe("isFavouriteSection", () => {
         it("when isFavouriteSection is true in filter then should return all favouriteSection resources", async () => {
             givenFavoritesResources();
@@ -228,6 +265,12 @@ describe("Resource repository", () => {
         });
     });
 });
+
+const financialProtectionTheme = "Financial Protection";
+
+function getIds(resources?: ReadonlyArray<{ id: string }>): string[] {
+    return (resources ?? []).map(resource => resource.id);
+}
 
 function givenAComparativeAnalysis() {
     mockWebServer.addRequestHandlers([
@@ -344,7 +387,7 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
     expect(comparativeAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Europe: summary"
     );
-    expect(comparativeAnalysis.theme).toBe("Financial Protection");
+    expect(comparativeAnalysis.themeCodes).toEqual([financialProtectionTheme]);
 
     expect(comparativeAnalysis.date.toISOString()).toBe(new Date("2024-04-02T00:00:00.000").toISOString());
 
@@ -401,7 +444,7 @@ function verifyMultimedia(multimediaItem?: Multimedia) {
 
     expect(multimediaItem.date.toISOString()).toBe(new Date("2023-01-01T00:00:00.000").toISOString());
 
-    expect(multimediaItem.theme).toBe("Financial Protection");
+    expect(multimediaItem.themeCodes).toEqual([financialProtectionTheme, "Resilience"]);
 
     expect(multimediaItem.favouriteSection).toBe(true);
     expect(multimediaItem.favouriteSectionOrder).toBe(1);
@@ -418,7 +461,7 @@ function verifyCountryAnalysis(countryAnalysis?: CountryAnalysis) {
     expect(countryAnalysis.title).toBe(
         "Can people afford to pay for health care? New evidence on financial protection in Belgium. Summary."
     );
-    expect(countryAnalysis.theme).toBe("Financial Protection");
+    expect(countryAnalysis.themeCodes).toEqual([financialProtectionTheme]);
     expect(countryAnalysis.date.toISOString()).toBe(new Date("2023-05-15T00:00:00.000").toISOString());
 
     const expectedLinks = [

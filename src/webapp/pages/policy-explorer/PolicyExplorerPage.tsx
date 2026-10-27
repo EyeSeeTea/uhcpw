@@ -190,7 +190,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                     </Content>
                 )}
 
-                {!isLoading && !(data && dataOrientationByTable) && <EmptyContent info={selectCategoryInfo} />}
+                {!isLoading && !(data && dataOrientationByTable) && <EmptyContent infos={[selectCategoryInfo]} />}
 
                 {!isLoading && (
                     <div ref={referencesRef}>

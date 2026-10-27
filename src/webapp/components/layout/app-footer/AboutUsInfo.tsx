@@ -4,39 +4,20 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { NavLink } from "react-router-dom";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
-import { getBarcelonaOfficeLines } from "./footerTextLines";
-import { TextLines } from "./TextLines";
+import { whoBarcelonaOfficeUrl } from "./footerLinks";
+import { narrowDesktopFooterQuery } from "./footerStyles";
 
-const URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING =
-    "https://www.who.int/europe/teams/office-for-health-systems-financing-(barcelona)";
-
-type AboutUsInfoProps = Readonly<{
-    showTitle?: boolean;
-}>;
-
-export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
-    const { showTitle = true } = props;
-
+export const AboutUsInfo: React.FC = () => {
     const { redirectWithExternalLink } = useAnalytics();
 
     return (
         <Container>
-            {showTitle && (
-                <StyledNavLink to={"/about"}>
-                    <Typography variant="body1">{i18n.t("About us")}</Typography>
-                </StyledNavLink>
-            )}
+            <StyledNavLink to={"/about"}>
+                <Typography variant="body1">{i18n.t("About us")}</Typography>
+            </StyledNavLink>
 
-            <StyledLink
-                href={URL_WHO_BCN_OFFICE_HEALTH_SYSTEMS_FINANCING}
-                target="_blank"
-                onClick={redirectWithExternalLink}
-            >
-                <StyledTypography variant="body1" gutterBottom>
-                    <TextLines
-                        lines={getBarcelonaOfficeLines(i18n.t("WHO Barcelona Office for Health Systems Financing"))}
-                    />
-                </StyledTypography>
+            <StyledLink href={whoBarcelonaOfficeUrl} target="_blank" onClick={redirectWithExternalLink}>
+                <OfficeName variant="body1">{i18n.t("WHO Barcelona Office for Health Systems Financing")}</OfficeName>
             </StyledLink>
         </Container>
     );
@@ -45,13 +26,11 @@ export const AboutUsInfo: React.FC<AboutUsInfoProps> = props => {
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 4px;
 `;
 
 const StyledNavLink = styled(NavLink)`
     color: white;
     text-decoration: none;
-    margin-bottom: 8px;
 `;
 
 const StyledLink = styled(Link)`
@@ -59,7 +38,11 @@ const StyledLink = styled(Link)`
     text-decoration: none;
 `;
 
-const StyledTypography = styled(Typography)`
-    color: white;
-    text-decoration: none;
+// The single line the client asked for, as long as the columns are wide enough for it.
+const OfficeName = styled(Typography)`
+    white-space: nowrap;
+
+    @media ${narrowDesktopFooterQuery} {
+        white-space: normal;
+    }
 `;

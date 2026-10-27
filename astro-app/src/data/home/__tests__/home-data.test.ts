@@ -47,7 +47,7 @@ function makeResource(overrides: Partial<Resource> & { kind: Resource["kind"] })
             return {
                 ...base,
                 url: "http://example.com/video",
-                theme: "t1",
+                themeCodes: ["t1"],
                 ...overrides,
                 kind: "multimedia",
             } as Resource;
@@ -55,7 +55,7 @@ function makeResource(overrides: Partial<Resource> & { kind: Resource["kind"] })
             return {
                 ...base,
                 links: [{ language: "en", url: "http://example.com/ca" }],
-                theme: "t1",
+                themeCodes: ["t1"],
                 relatedCountries: [],
                 ...overrides,
                 kind: "comparative-analysis",
@@ -64,7 +64,7 @@ function makeResource(overrides: Partial<Resource> & { kind: Resource["kind"] })
             return {
                 ...base,
                 links: [{ language: "en", url: "http://example.com/coa" }],
-                theme: "t1",
+                themeCodes: ["t1"],
                 countryId: "c1",
                 ...overrides,
                 kind: "country-analysis",

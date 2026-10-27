@@ -6,6 +6,7 @@ import styled from "styled-components";
 import i18n from "../../../../locales";
 import { ComparativeAnalysisItem } from "../../../components/resources/comparative-analysis/ComparativeAnalysisItem";
 import { SimpleResourceItem } from "../../../components/resources/common/SimpleResourceItem";
+import { MultimediaResourceItem } from "../../../components/resources/common/MultimediaResourceItem";
 import { ResourceGroup } from "../../../components/resources/resource-group/ResourceGroup";
 import { LandingResourcesState } from "./ResourcesState";
 import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
@@ -62,30 +63,16 @@ export const LandingResources: React.FC<{ resources: LandingResourcesState }> = 
             <Grid item md={6} xs={12}>
                 {resources.multimedia.length > 0 && (
                     <ResourceGroup title={i18n.t("Multimedia")} seeAllUrl={"/resources/multimedia"}>
-                        {resources.multimedia.map(multimediaItem => {
-                            const analyticsEvent = redirectWithEvent({
-                                name: "resource",
-                                pageTitle: "Resources",
-                                year: multimediaItem.date.getFullYear(),
-                                resourceName: multimediaItem.title,
-                                category: multimediaItem.kind,
-                                theme: multimediaItem.themeName,
-                            });
-
-                            return (
-                                <Grid item xs={12} key={multimediaItem.id}>
-                                    <SimpleResourceItem
-                                        title={multimediaItem.title}
-                                        url={multimediaItem.url}
-                                        image={multimediaItem.imageOriginal}
-                                        date={multimediaItem.date}
-                                        redirectWithEvent={analyticsEvent}
-                                        maintainAspectRatio
-                                        fullWidth
-                                    />
-                                </Grid>
-                            );
-                        })}
+                        {resources.multimedia.map(multimediaItem => (
+                            <Grid item xs={12} key={multimediaItem.id}>
+                                <MultimediaResourceItem
+                                    resource={multimediaItem}
+                                    analyticsPageTitle="Resources"
+                                    maintainAspectRatio
+                                    fullWidth
+                                />
+                            </Grid>
+                        ))}
                     </ResourceGroup>
                 )}
             </Grid>

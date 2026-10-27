@@ -3,7 +3,9 @@ import { Box, Typography } from "@material-ui/core";
 import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { ResourceLink } from "../../../../domain/entities/resources/Resource";
+import { ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { Tag } from "../tag/Tag";
+import { getThemeColor } from "../tag/themeColor";
 import { useHistory } from "react-router-dom";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../../common/hooks/screen/useIsSmallScreen";
 import { useAppContext } from "../../../contexts/app-context";
@@ -11,8 +13,7 @@ import { getParamFromThemes } from "../../../utils/formatResourcesThemeParamName
 
 export interface CountryAnalysisProps {
     title: string;
-    themeCode: string;
-    themeName: string;
+    themes: ReadonlyArray<ResourceTheme>;
     links: ResourceLink[];
     image: string;
     date: Date;
@@ -21,27 +22,20 @@ export interface CountryAnalysisProps {
     redirectWithEvent: (language: string) => (mouseEvent: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void;
 }
 
-const themeColor: Record<string, string> = {
-    default: "#0360a7",
-    "financial protection": "#0360a7",
-    "health financing policy papers": "rgb(0, 138, 215, 0.5)",
-    "spending on health": "#002060",
-    resilience: "#4fad56",
-    "voluntary health insurance": "#ff8d4e",
-    "health and economy": "#c42929",
-};
-
 export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => {
-    const { title, themeCode, themeName, links, image, date, minimalVersion, type, redirectWithEvent } = props;
+    const { title, themes, links, image, date, minimalVersion, type, redirectWithEvent } = props;
 
     const history = useHistory();
-    const { themes } = useAppContext();
+    const { themes: allThemes } = useAppContext();
 
-    const handleTagClick = useCallback(() => {
-        const themeParam = getParamFromThemes(themes, themeName);
+    const handleTagClick = useCallback(
+        (themeName: string) => {
+            const themeParam = getParamFromThemes(allThemes, themeName);
 
-        history.push(themeParam ? `/resources/${type}/${themeParam}` : `/resources/${type}`);
-    }, [history, themeName, themes, type]);
+            history.push(themeParam ? `/resources/${type}/${themeParam}` : `/resources/${type}`);
+        },
+        [history, allThemes, type]
+    );
 
     const redirectWithDefaultLangForEvent = useMemo(
         () => links[0] && redirectWithEvent(links[0].language),
@@ -62,12 +56,17 @@ export const AnalysisItem: React.FC<CountryAnalysisProps> = React.memo(props => 
             <Box height={20} />
 
             <TagContainer>
-                {themeName ? (
-                    <Tag
-                        theme={themeName}
-                        color={themeColor[themeCode?.toLowerCase()] || themeColor.default}
-                        onClick={handleTagClick}
-                    />
+                {themes.length > 0 ? (
+                    themes.map(theme => (
+                        <Tag
+                            key={theme.id}
+                            theme={theme.name}
+                            title={theme.name}
+                            color={getThemeColor(theme.code)}
+                            compact
+                            onClick={() => handleTagClick(theme.name)}
+                        />
+                    ))
                 ) : (
                     <EmptyTag />
                 )}
@@ -128,9 +127,14 @@ const StyledAnchor = styled.a`
     }
 `;
 
+// Cards are 180px wide: the two compact theme chips fit in one row, left to right. On small screens the
+// country and regional pages show two narrow cards per row, so there the second chip may wrap.
 const TagContainer = styled.div`
+    white-space: nowrap;
+
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-inline: 16px;
+        white-space: normal;
     }
 `;
 

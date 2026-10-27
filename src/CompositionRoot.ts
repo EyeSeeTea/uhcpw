@@ -141,7 +141,7 @@ export function getCompositionRoot(
             getPolicyExplorerChartData: new GetPolicyExplorerChartDataUseCase(repositories.policyExplorerChartData),
         },
         resources: {
-            get: new GetResourcesUseCase(repositories.resource),
+            get: new GetResourcesUseCase(repositories.resource, repositories.resourceTheme),
             getCategories: new GetResourceCategoriesUseCase(repositories.resourceCategory),
             getThemes: new GetResourceThemesUseCase(repositories.resourceTheme),
         },

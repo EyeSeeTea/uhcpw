@@ -13,6 +13,7 @@ import { PrivacyPolicyAndDisclaimer } from "./PrivacyPolicyAndDisclaimer";
 import { ContactUs } from "./ContactUs";
 import { getEuropeanUnionLines, getMobileFundingLines } from "./footerTextLines";
 import { TextLines } from "./TextLines";
+import { whoLogoEdgeAlignment } from "./footerStyles";
 
 export const MobileAppFooter: React.FC = () => {
     const items = useMemo(
@@ -30,7 +31,7 @@ export const MobileAppFooter: React.FC = () => {
             {
                 id: "contact-our-office",
                 title: i18n.t("Contact our office"),
-                content: <ContactUs showTitle={false} isMobile />,
+                content: <ContactUs isMobile />,
             },
         ],
         []
@@ -116,12 +117,11 @@ const EuropeFlag = styled.img`
     }
 `;
 
-// The PNG has a transparent strip on its left (3.37% of its width); the negative margin makes the visible logo touch the padding.
 const WhoLogo = styled.img`
     --who-logo-width: 150px;
     width: var(--who-logo-width);
     flex-shrink: 0;
-    margin-inline-start: calc(var(--who-logo-width) * -0.0337);
+    ${whoLogoEdgeAlignment}
 
     @media (max-width: 500px) {
         --who-logo-width: 130px;

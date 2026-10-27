@@ -5,6 +5,7 @@ import moment from "moment";
 import { anything, instance, mock, when } from "ts-mockito";
 import { ResourceCategoryD2Repository } from "../../../../../data/repositories/resources/ResourceCategoryD2Repository";
 import { ResourceD2Repository } from "../../../../../data/repositories/resources/ResourceD2Repository";
+import { ResourceThemeD2Repository } from "../../../../../data/repositories/resources/ResourceThemeD2Repository";
 import { Future } from "../../../../../domain/entities/Future";
 import {
     ComparativeAnalysis,
@@ -14,7 +15,7 @@ import {
     Resource,
 } from "../../../../../domain/entities/resources/Resource";
 import { ResourceCategory } from "../../../../../domain/entities/resources/ResourceCategory";
-import { customRenderWithRouterMatch, givenACountries } from "../../../../../utils/tests-ui";
+import { customRenderWithRouterMatch, givenACountries, givenAThemes } from "../../../../../utils/tests-ui";
 import {
     createComparativeAnalysisResources,
     createCountryAnalysisResources,
@@ -88,21 +89,21 @@ describe("ResourcesByTypePage for ", () => {
 
             expect(screen.getByRole("heading", { name: /news/i })).toBeInTheDocument();
         });
-        it("should has country selector disabled", async () => {
+        it("should have country selector enabled", async () => {
             givenANewsResources(0);
 
             renderPage("news");
 
             const input = await screen.findByLabelText(/input Select country or area/i);
 
-            expect(input).toBeDisabled();
+            expect(input).toBeEnabled();
         });
         it("should render any items if there not resources", async () => {
             givenANewsResources(0);
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -111,7 +112,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -120,7 +121,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await screen.findAllByRole("listitem");
 
@@ -131,7 +132,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("news");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await verifyNewsItems(resources);
         });
@@ -145,21 +146,21 @@ describe("ResourcesByTypePage for ", () => {
 
             expect(screen.getByRole("heading", { name: /multimedia/i })).toBeInTheDocument();
         });
-        it("should has country selector disabled", async () => {
+        it("should have country selector enabled", async () => {
             givenAMultimediaResources(0);
 
             renderPage("multimedia");
 
             const input = await screen.findByLabelText(/input Select country or area/i);
 
-            expect(input).toBeDisabled();
+            expect(input).toBeEnabled();
         });
         it("should render any items if there not resources", async () => {
             givenAMultimediaResources(0);
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -168,7 +169,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             expect(screen.queryAllByRole("listitem")).toHaveLength(0);
         });
@@ -177,7 +178,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await screen.findAllByRole("listitem");
 
@@ -188,7 +189,7 @@ describe("ResourcesByTypePage for ", () => {
 
             renderPage("multimedia");
 
-            await selectFiltersAndSearch({ isCountryDisabled: true });
+            await selectFiltersAndSearch();
 
             await verifyMultimediaItems(resources);
         });
@@ -250,8 +251,18 @@ function renderPage(category: string) {
         {
             resource: resourceRepository,
             resourceCategory: resourceCategoryRepository,
+            resourceTheme: givenAResourceThemeRepository(),
         }
     );
+}
+
+// The theme filter is resolved to a theme code with the theme repository
+function givenAResourceThemeRepository(): ResourceThemeD2Repository {
+    const mockedRepository = mock(ResourceThemeD2Repository);
+
+    when(mockedRepository.getAll()).thenReturn(Future.success(givenAThemes()));
+
+    return instance(mockedRepository);
 }
 
 async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) {
@@ -270,7 +281,7 @@ async function verifyComparativeAnalysisItems(resources: ComparativeAnalysis[]) 
         expect(image.src).toContain(resource.imageOriginal);
 
         itemScope.getByText(resource.date.getFullYear());
-        itemScope.getByText(resource.theme);
+        expect(itemScope.getAllByRole("button").map(tag => tag.textContent)).toEqual(resource.themeCodes);
 
         resource.links.forEach(link => {
             expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
@@ -355,7 +366,7 @@ async function verifyCountryAnalysisItems(resources: CountryAnalysis[]) {
         expect(image.src).toContain(resource.imageOriginal);
 
         itemScope.getByText(resource.date.getFullYear());
-        itemScope.getByText(resource.theme);
+        expect(itemScope.getAllByRole("button").map(tag => tag.textContent)).toEqual(resource.themeCodes);
 
         resource.links.forEach(link => {
             expect(itemScope.getByRole("link", { name: link.language })).toHaveAttribute("href", link.url);
@@ -441,12 +452,7 @@ function givenAResourceCategories(): ResourceCategory[] {
     return data;
 }
 
-async function selectFiltersAndSearch(options?: {
-    theme?: string;
-    country?: string;
-    year?: string;
-    isCountryDisabled?: boolean;
-}) {
+async function selectFiltersAndSearch(options?: { theme?: string; country?: string; year?: string }) {
     const mainElement = screen.getByRole("main");
     const main = within(mainElement);
 
@@ -454,9 +460,7 @@ async function selectFiltersAndSearch(options?: {
 
     await selectYearsFilter(main, options?.year || "2019");
 
-    if (!options?.isCountryDisabled) {
-        await selectCountry(main, options?.country || "Spain");
-    }
+    await selectCountry(main, options?.country || "Spain");
 
     const searchButton = main.getByLabelText(/search/i);
 

@@ -124,7 +124,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
                             forcePluginFullScreen={forcePluginFullScreen}
                         />
                     ) : (
-                        <EmptyContent info={pageContent?.selectCategory} />
+                        <EmptyContent infos={[pageContent?.selectCategory, pageContent?.dataSourcesAndAvailability]} />
                     )}
 
                     <ScreenshotModal
