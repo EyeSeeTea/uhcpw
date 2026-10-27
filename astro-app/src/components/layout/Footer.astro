@@ -209,6 +209,13 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
         .europe-container {
             margin-block-start: 5px;
         }
+
+        /* Same as the SPA: the client lines up the top of the emblem's olive branches, not the tip of the staff, with
+           the capitals of the first text line. The branches start 13px below the top of the logo and the capitals 7px
+           below the top of the line, so the logo moves up 6px without changing the row height. */
+        .footer-who-logo {
+            transform: translateY(-6px);
+        }
     }
 
     .funding-text {
