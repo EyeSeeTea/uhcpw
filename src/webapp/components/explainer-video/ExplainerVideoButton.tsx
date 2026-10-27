@@ -2,6 +2,7 @@ import React, { useCallback, useState } from "react";
 import { ExplainerPage } from "../../../domain/entities/explainers/Explainer";
 import i18n from "../../../locales";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { FullScreenVideoDialog } from "../video-dialog/FullScreenVideoDialog";
 import { VideoDialog } from "../video-dialog/VideoDialog";
 import { VideoEmbed } from "../video-embed/VideoEmbed";
 import { VideoPillButton, VideoPillVariant } from "../video-pill/VideoPill";
@@ -32,6 +33,7 @@ export const ExplainerVideoButton: React.FC<ExplainerVideoButtonProps> = React.m
     const closeDialog = useCallback(() => setIsDialogOpen(false), []);
 
     const label = i18n.t("Explainer video");
+    const Dialog = isSmallScreen ? FullScreenVideoDialog : VideoDialog;
 
     // NOTICE: the button is hidden while the explainer loads and when the page has no explainer video configured
     if (!explainer) return null;
@@ -44,13 +46,13 @@ export const ExplainerVideoButton: React.FC<ExplainerVideoButtonProps> = React.m
                 onClick={openDialog}
             />
 
-            <VideoDialog open={isDialogOpen} title={label} onClose={closeDialog}>
+            <Dialog open={isDialogOpen} title={label} onClose={closeDialog}>
                 {explainer.video.type === "file" ? (
                     <ExplainerVideoFile state={videoFileState} />
                 ) : (
                     <VideoEmbed src={explainer.video.url} title={label} />
                 )}
-            </VideoDialog>
+            </Dialog>
         </>
     );
 });
