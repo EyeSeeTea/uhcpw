@@ -4,7 +4,7 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 
-type VideoPillVariant = "light" | "filled";
+export type VideoPillVariant = "light" | "filled";
 
 type VideoPillProps = {
     label: string;

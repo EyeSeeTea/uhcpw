@@ -99,7 +99,7 @@ export const IndicatorExplorerPage: React.FC = React.memo(() => {
             <TitleContainer>
                 <Typography variant="h3">{i18n.t("Indicator explorer")}</Typography>
                 <Image src={indicatorExplorer} alt={i18n.t("indicator explorer")} />
-                <ExplainerVideoButton page="indicatorExplorer" />
+                <ExplainerVideoButton page="indicatorExplorer" smallScreenVariant="light" />
             </TitleContainer>
 
             <MainSection>
@@ -177,10 +177,17 @@ const TitleContainer = styled.div`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${props => props.color} url(${mapBackground});
         background-position: center;
+
+        > h3 {
+            flex-basis: 100%;
+        }
     }
 `;
 
 const Image = styled.img`
     height: 56px;
     margin-inline-start: auto;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        order: 1;
+    }
 `;

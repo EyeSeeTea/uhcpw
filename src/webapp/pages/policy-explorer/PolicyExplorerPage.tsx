@@ -152,7 +152,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
             <TitleContainer>
                 <Typography variant="h3">{i18n.t("Policy explorer")}</Typography>
                 <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
-                <ExplainerVideoButton page="policyExplorer" />
+                <ExplainerVideoButton page="policyExplorer" smallScreenVariant="light" />
             </TitleContainer>
 
             <MainSection>
@@ -387,12 +387,19 @@ const TitleContainer = styled.div`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         background: ${props => props.color} url(${mapBackground});
         background-position: center;
+
+        > h3 {
+            flex-basis: 100%;
+        }
     }
 `;
 
 const Image = styled.img`
     height: 56px;
     margin-inline-start: auto;
+    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
+        order: 1;
+    }
 `;
 
 const GeneralRow = styled.div`

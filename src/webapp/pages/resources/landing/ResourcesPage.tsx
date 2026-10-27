@@ -30,7 +30,7 @@ export const ResourcesPage: React.FC = React.memo(() => {
             <TitleAndSearchContainer>
                 <TitleContainer>
                     <Typography variant="h3">{i18n.t("Resources")}</Typography>
-                    <ExplainerVideoButton page="resources" />
+                    <ExplainerVideoButton page="resources" smallScreenVariant="light" />
                 </TitleContainer>
 
                 <SearchContainer>
