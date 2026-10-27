@@ -47,7 +47,9 @@ type PillStyleProps = { $variant: VideoPillVariant };
 
 const pillStyles = css<PillStyleProps>`
     display: flex;
+    align-items: center;
     gap: 5px;
+    text-align: start;
     width: fit-content;
     text-decoration: none;
     background-color: ${props => pillColors[props.$variant].background};
