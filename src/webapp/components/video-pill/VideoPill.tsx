@@ -49,7 +49,7 @@ const pillStyles = css<PillStyleProps>`
     display: flex;
     align-items: center;
     gap: 5px;
-    text-align: start;
+    white-space: nowrap;
     width: fit-content;
     text-decoration: none;
     background-color: ${props => pillColors[props.$variant].background};
