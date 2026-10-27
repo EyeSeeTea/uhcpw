@@ -97,6 +97,10 @@ const Logo = styled.img`
     grid-area: logo;
     width: var(--who-logo-width);
     ${whoLogoEdgeAlignment}
+    /* The client lines up the top of the emblem's olive branches, not the tip of the staff, with the capitals of the
+       first text line. The branches start 13px below the top of the logo and the capitals 7px below the top of the
+       line, so the logo moves up 6px without changing the row height. */
+    transform: translateY(-6px);
 `;
 
 const InfoArea = styled.div`
