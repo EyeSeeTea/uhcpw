@@ -6,7 +6,7 @@ import i18n from "../../../locales";
 
 const titleId = "video-dialog-title";
 
-type VideoDialogProps = {
+export type VideoDialogProps = {
     open: boolean;
     title: string;
     onClose: () => void;
@@ -14,14 +14,20 @@ type VideoDialogProps = {
 
 export const VideoDialog: React.FC<VideoDialogProps> = ({ open, title, onClose, children }) => (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" aria-labelledby={titleId}>
-        <TitleBar id={titleId} disableTypography>
-            <Typography variant="h6">{title}</Typography>
-            <IconButton aria-label={i18n.t("Close")} onClick={onClose}>
-                <CloseIcon />
-            </IconButton>
-        </TitleBar>
+        <VideoDialogTitle title={title} onClose={onClose} />
         <Content>{children}</Content>
     </Dialog>
+);
+
+type VideoDialogTitleProps = Omit<VideoDialogProps, "open"> & { className?: string };
+
+export const VideoDialogTitle: React.FC<VideoDialogTitleProps> = ({ title, onClose, className }) => (
+    <TitleBar id={titleId} className={className} disableTypography>
+        <Typography variant="h6">{title}</Typography>
+        <IconButton aria-label={i18n.t("Close")} onClick={onClose}>
+            <CloseIcon />
+        </IconButton>
+    </TitleBar>
 );
 
 const TitleBar = styled(DialogTitle)`

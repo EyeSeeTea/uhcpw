@@ -1,5 +1,5 @@
 import React from "react";
-import { YouTubeEmbed } from "../youtube-embed/YouTubeEmbed";
+import { VideoEmbed } from "../video-embed/VideoEmbed";
 import { VideoDialog } from "./VideoDialog";
 
 type YouTubeVideoDialogProps = {
@@ -11,6 +11,6 @@ type YouTubeVideoDialogProps = {
 
 export const YouTubeVideoDialog: React.FC<YouTubeVideoDialogProps> = ({ open, title, embedUrl, onClose }) => (
     <VideoDialog open={open} title={title} onClose={onClose}>
-        <YouTubeEmbed src={`${embedUrl}?autoplay=1`} title={title} />
+        <VideoEmbed src={`${embedUrl}?autoplay=1`} title={title} />
     </VideoDialog>
 );

@@ -10,6 +10,8 @@ import { MenuDropdown } from "../../components/menu-dropdown/MenuDropdown";
 import { RegionalMenuItem, RegionalMenuItemConfig } from "./useRegionalPage";
 import { colors } from "../app/themes/dhis2.theme";
 import { getColorOfRegionByRegionId } from "./getColorOfRegion";
+import { ExplainerVideoButton } from "../../components/explainer-video/ExplainerVideoButton";
+import { useExplainer } from "../../components/explainer-video/useExplainer";
 
 type HeaderType = {
     selectedRegion: Id | undefined;
@@ -29,21 +31,26 @@ export const Header: React.FC<HeaderType> = props => {
         menuItemsConfig,
         isSmallScreen = false,
     } = props;
+    const explainer = useExplainer("regional");
 
     return (
         <Container aria-label="regional-page-header" backgroundColor={getColorOfRegionByRegionId(selectedRegion || "")}>
-            <DropdownContainer>
-                <MenuDropdown
-                    id="region"
-                    fullWidth
-                    placeholder={i18n.t("Select region")}
-                    options={regionOptions}
-                    value={selectedRegion}
-                    onChange={onRegionChange}
-                    forceRotation={isSmallScreen}
-                    fullScreen={isSmallScreen}
-                />
-            </DropdownContainer>
+            <DropdownRow>
+                <DropdownContainer>
+                    <MenuDropdown
+                        id="region"
+                        fullWidth
+                        placeholder={i18n.t("Select region")}
+                        options={regionOptions}
+                        value={selectedRegion}
+                        onChange={onRegionChange}
+                        forceRotation={isSmallScreen}
+                        fullScreen={isSmallScreen}
+                    />
+                </DropdownContainer>
+
+                {explainer && isSmallScreen && <ExplainerVideoButton explainer={explainer} />}
+            </DropdownRow>
 
             <ButtonsContainer>
                 {menuItemsConfig.map(item => (
@@ -51,6 +58,7 @@ export const Header: React.FC<HeaderType> = props => {
                         <ButtonText>{item.label}</ButtonText>
                     </StyledButton>
                 ))}
+                {explainer && !isSmallScreen && <ExplainerVideoButton explainer={explainer} />}
             </ButtonsContainer>
         </Container>
     );
@@ -82,6 +90,13 @@ const Container = styled.div<{ backgroundColor?: string }>`
         padding-block: 8px;
         justify-content: flex-start;
     }
+`;
+
+const DropdownRow = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 20px;
 `;
 
 const DropdownContainer = styled.div`
