@@ -21,7 +21,7 @@ import { ResourceCategoryD2Repository } from "./data/repositories/resources/Reso
 import { ResourceThemeD2Repository } from "./data/repositories/resources/ResourceThemeD2Repository";
 import { GetResourceThemesUseCase } from "./domain/usecases/resources/GetResourceThemesUseCase";
 import { ExplainerD2Repository } from "./data/repositories/explainers/ExplainerD2Repository";
-import { GetExplainerUseCase } from "./domain/usecases/explainers/GetExplainerUseCase";
+import { GetExplainersUseCase } from "./domain/usecases/explainers/GetExplainersUseCase";
 import { ExplainerVideoFileD2Repository } from "./data/repositories/explainers/ExplainerVideoFileD2Repository";
 import { GetExplainerVideoFileUseCase } from "./domain/usecases/explainers/GetExplainerVideoFileUseCase";
 import { GetAnalyticsUseCase } from "./domain/usecases/indicator-explorer/GetAnalyticsUseCase";
@@ -146,7 +146,7 @@ export function getCompositionRoot(
             getThemes: new GetResourceThemesUseCase(repositories.resourceTheme),
         },
         explainers: {
-            get: new GetExplainerUseCase(repositories.explainer),
+            getAll: new GetExplainersUseCase(repositories.explainer),
             getVideoFile: new GetExplainerVideoFileUseCase(repositories.explainerVideoFile),
         },
         about: {

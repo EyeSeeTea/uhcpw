@@ -1,6 +1,8 @@
 import { getYouTubeEmbedUrl } from "../YouTubeVideo";
 
-export type ExplainerPage = "resources" | "indicatorExplorer" | "policyExplorer" | "country" | "regional";
+export const explainerPages = ["resources", "indicatorExplorer", "policyExplorer", "country", "regional"] as const;
+
+export type ExplainerPage = typeof explainerPages[number];
 
 export type ExplainerVideo = Readonly<{ type: "file" }> | Readonly<{ type: "url"; url: string }>;
 

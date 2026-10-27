@@ -1,8 +1,8 @@
 import { FutureData } from "../../../domain/entities/Future";
 import {
     Explainer,
-    ExplainerPage,
     ExplainerVideo,
+    explainerPages,
     getExplainerEmbedUrl,
 } from "../../../domain/entities/explainers/Explainer";
 import { Id } from "../../../domain/entities/Ref";
@@ -15,15 +15,17 @@ import { explainerDataElementsByPage } from "./explainerDataElements";
 export class ExplainerD2Repository implements ExplainerRepository {
     constructor(private api: D2Api) {}
 
-    get(page: ExplainerPage): FutureData<Maybe<Explainer>> {
-        const dataElements = explainerDataElementsByPage[page];
-
+    getAll(): FutureData<ReadonlyArray<Explainer>> {
         return getMainPagesContent(this.api).map(dataValues => {
             const getValue = (dataElementId: Id) =>
                 dataValues.find(dataValue => dataValue.dataElement === dataElementId)?.value;
-            const video = getVideo(getValue(dataElements.videoFile), getValue(dataElements.videoUrl));
 
-            return video ? { page, video } : undefined;
+            return explainerPages.flatMap(page => {
+                const dataElements = explainerDataElementsByPage[page];
+                const video = getVideo(getValue(dataElements.videoFile), getValue(dataElements.videoUrl));
+
+                return video ? [{ page, video }] : [];
+            });
         });
     }
 }

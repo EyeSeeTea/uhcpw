@@ -33,15 +33,15 @@ describe("Explainer repository", () => {
                 [videoUrlDataElement]: embedUrl,
             });
 
-            const explainer = await explainerRepository.get(page).runAsync();
+            const explainers = await explainerRepository.getAll().runAsync();
 
-            expect(explainer.data).toEqual({ page, video: { type: "file" } });
+            expect(explainers.data).toEqual([{ page, video: { type: "file" } }]);
         });
 
         it("does not download the file", async () => {
             givenAMainPagesEvent(mockWebServer, { [videoFileDataElement]: fileResourceId });
 
-            await explainerRepository.get(page).runAsync();
+            await explainerRepository.getAll().runAsync();
 
             expect(mockWebServer.allRequests?.map(request => request.url.pathname)).toEqual([eventsEndpoint]);
         });
@@ -51,9 +51,9 @@ describe("Explainer repository", () => {
         it("returns the URL as it is", async () => {
             givenAMainPagesEvent(mockWebServer, { [videoUrlDataElement]: embedUrl });
 
-            const explainer = await explainerRepository.get(page).runAsync();
+            const explainers = await explainerRepository.getAll().runAsync();
 
-            expect(explainer.data).toEqual({ page, video: { type: "url", url: embedUrl } });
+            expect(explainers.data).toEqual([{ page, video: { type: "url", url: embedUrl } }]);
         });
 
         it("returns the embed URL of a YouTube link", async () => {
@@ -61,12 +61,11 @@ describe("Explainer repository", () => {
                 [videoUrlDataElement]: "https://www.youtube.com/watch?v=71S7ekOSSzU",
             });
 
-            const explainer = await explainerRepository.get(page).runAsync();
+            const explainers = await explainerRepository.getAll().runAsync();
 
-            expect(explainer.data).toEqual({
-                page,
-                video: { type: "url", url: "https://www.youtube.com/embed/71S7ekOSSzU" },
-            });
+            expect(explainers.data).toEqual([
+                { page, video: { type: "url", url: "https://www.youtube.com/embed/71S7ekOSSzU" } },
+            ]);
         });
     });
 
@@ -74,9 +73,9 @@ describe("Explainer repository", () => {
         it("returns no explainer", async () => {
             givenAMainPagesEvent(mockWebServer, {});
 
-            const explainer = await explainerRepository.get(page).runAsync();
+            const explainers = await explainerRepository.getAll().runAsync();
 
-            expect(explainer.data).toBeUndefined();
+            expect(explainers.data).toEqual([]);
         });
     });
 });
