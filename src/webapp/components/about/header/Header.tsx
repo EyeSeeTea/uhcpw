@@ -9,7 +9,7 @@ import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { getYouTubeEmbedUrl } from "../../../../domain/entities/YouTubeVideo";
 import { useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { YouTubeVideoDialog } from "../../video-dialog/YouTubeVideoDialog";
-import { YouTubeEmbed } from "../../youtube-embed/YouTubeEmbed";
+import { VideoEmbed } from "../../video-embed/VideoEmbed";
 
 const videoPageView = { title: "[Video] WHO Barcelona Office" };
 
@@ -79,7 +79,7 @@ const HeaderGrid = styled(Grid)`
     padding: 32px;
 `;
 
-const OfficeVideo = styled(YouTubeEmbed)`
+const OfficeVideo = styled(VideoEmbed)`
     margin-block-start: 16px;
 `;
 
