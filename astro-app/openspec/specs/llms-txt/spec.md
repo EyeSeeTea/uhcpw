@@ -28,9 +28,9 @@ The `## Pages` section of `/llms.txt` SHALL contain one link per curated content
 #### Scenario: Home, About, Methods, and Area overview appear under Pages
 
 - **WHEN** `/llms.txt` is generated
-- **THEN** the `## Pages` section contains `[UHC Watch](/index.md)` with the default SEO description (home has no per-route override in `seoRouteConfigs`, so `getSeoConfigForRoute("/")` returns `defaultSeoConfig`)
-- **AND** the `## Pages` section contains `[UHC Watch - About](/about.md)` with the about route's SEO description
-- **AND** the `## Pages` section contains `[UHC Watch - Methods](/methods.md)` with the methods route's SEO description
+- **THEN** the `## Pages` section contains `[UHC Watch: tracking affordable access to health care](/index.md)` with the default SEO description (home has no per-route override in `seoRouteConfigs`, so `getSeoConfigForRoute("/")` returns `defaultSeoConfig`)
+- **AND** the `## Pages` section contains `[About the WHO Barcelona Office work & the UHC Watch network](/about.md)` with the about route's SEO description
+- **AND** the `## Pages` section contains `[UHC Watch methods: how do we monitor progress towards UHC?](/methods.md)` with the methods route's SEO description
 - **AND** the `## Pages` section contains `[UHC Watch - Area overview](/area-overview.md)` with the area-overview route's SEO description
 
 ### Requirement: llms.txt exposes external glossary resources under Optional
@@ -57,7 +57,7 @@ For every page listed in `llms.txt`, the build SHALL emit a markdown companion f
 #### Scenario: Methods companion contains all method sections without shortText/text duplication
 
 - **WHEN** `/methods.md` is generated from `getMethodsPageData()`
-- **THEN** the file contains an H1 with the methods route's SEO title (`"UHC Watch - Methods"`)
+- **THEN** the file contains an H1 with the methods route's SEO title (`"UHC Watch methods: how do we monitor progress towards UHC?"`)
 - **AND** for each method in `methods[]` the file contains an H2 with `method.sectionName`
 - **AND** each H2 section contains `method.text` as raw markdown (which is a superset of `shortText` in the CMS)
 - **AND** `method.shortText` is NOT emitted separately when `method.text` is non-empty

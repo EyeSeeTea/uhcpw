@@ -9,55 +9,55 @@ export interface SeoRouteConfig {
 }
 
 export const defaultSeoConfig: SeoConfig = {
-    title: "UHC Watch",
+    title: "UHC Watch: tracking affordable access to health care",
     description:
-        "UHC Watch monitors unmet need, financial hardship, spending on health and coverage policy in Europe and Central Asia",
+        "UHC Watch monitors progress on universal health coverage tracking unmet need, financial hardship, spending on health and coverage policy in Europe & Central Asia",
     image: "https://apps.who.int/dhis2/uhcwatch/uhcw.png",
 };
 
 export const seoRouteConfigs: SeoRouteConfig = {
     "/about": {
-        title: "UHC Watch - About",
+        title: "About the WHO Barcelona Office work & the UHC Watch network",
         description:
-            "Find out more about the team behind UHC Watch: the European Financial Protection network and the WHO Barcelona Office for Health Systems Financing",
+            "Find out more about the team analysing the evidence that feeds UHC Watch: the UHC Watch network and the WHO Barcelona Office for Health Systems Financing team",
     },
     "/policy-explorer": {
-        title: "UHC Watch - Policy Explorer",
+        title: "UHC Watch Policy Explorer: Information on coverage policy",
         description:
-            "UHC watch has up-to-date information on population coverage, service coverage, user charges and voluntary health insurance and changes in coverage policy over time",
+            "UHC watch has up-to-date information on population coverage, service coverage, user charges and voluntary health insurance and changes in coverage policy",
     },
     "/indicator-explorer": {
-        title: "UHC Watch - Indicator Explorer",
+        title: "UHC Watch Indicator Explorer: UHC & health financing data",
         description:
             "UHC Watch has over 50 indicators of financial hardship, unmet need for health care and spending on health across countries.",
     },
     "/resources": {
-        title: "UHC Watch - Resources",
+        title: "UHC Watch resources: financial protection & health financing",
         description:
-            "Find on UHC Watch over 150 country-specific and comparative reports on health financing, multimedia files and news articles in several languages.",
+            "Find on UHC Watch over 200 country-specific and comparative reports on health financing, multimedia files and news articles in several languages.",
     },
     "/resources/news": {
-        title: "UHC Watch - News",
+        title: "UHC Watch news: financial protection & health financing",
         description:
-            "Find on UHC watch multimedia (videos and presentations) insights on financial hardship, unmet need, access barriers and health spending across Europe and Central Asia.",
+            "Read the latest news on financial protection, health financing, coverage policy and affordable access to health care across Europe and Central Asia.",
     },
     "/resources/multimedia": {
-        title: "UHC Watch - Multimedia",
+        title: "UHC Watch multimedia: financial protection & health financing",
         description:
-            "Find on UHC watch multimedia (videos and presentations) insights on financial hardship, unmet need, access barriers and health spending across Europe and Central Asia.",
+            "Find on UHC Watch multimedia insights on financial hardship, unmet need, access barriers and health spending across Europe and Central Asia.",
     },
     "/resources/country-analysis": {
-        title: "UHC Watch - Country analysis",
+        title: "UHC Watch country analysis: financial protection & health financing",
         description:
             "Find on UHC Watch country-specific reports on financial protection, health financing, economy, resilience, spending and voluntary health insurance",
     },
     "/resources/comparative-analysis": {
-        title: "UHC Watch - Comparative analysis",
+        title: "UHC Watch comparative analysis: financial protection & health financing",
         description:
             "Find on UHC Watch comparative analysis on financial protection, health financing, economy, resilience, spending and voluntary health insurance",
     },
     "/methods": {
-        title: "UHC Watch - Methods",
+        title: "UHC Watch methods: how do we monitor progress towards UHC?",
         description:
             "Explore how UHC Watch monitors financial hardship, unmet need, coverage policy, and health spending to assess progress toward universal health coverage.",
     },
