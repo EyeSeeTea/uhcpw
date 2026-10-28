@@ -6,6 +6,7 @@ const themeColorByCode: Readonly<Record<string, string>> = {
     resilience: "#4fad56",
     "voluntary health insurance": "#ff8d4e",
     "health and economy": "#c42929",
+    "good practice briefs": "#2a5d2e",
 };
 
 const defaultThemeColor = "#0360a7";
