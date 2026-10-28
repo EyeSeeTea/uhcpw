@@ -1,16 +1,16 @@
 ## ADDED Requirements
 
 ### Requirement: Pages render title and description meta tags
-Every page SHALL render a `<title>` tag and a `<meta name="description">` tag in the document `<head>`. Values SHALL be determined by the route using the shared `getSeoConfigForRoute()` function. Pages without a specific config SHALL use the default SEO config (`title: "UHC Watch"`, `description: "UHC Watch monitors unmet need..."`).
+Every page SHALL render a `<title>` tag and a `<meta name="description">` tag in the document `<head>`. Values SHALL be determined by the route using the shared `getSeoConfigForRoute()` function. Pages without a specific config SHALL use the default SEO config (`title: "UHC Watch: tracking affordable access to health care"`, `description: "UHC Watch monitors progress on universal health coverage tracking unmet need, financial hardship, spending on health and coverage policy in Europe & Central Asia"`).
 
 #### Scenario: About page has route-specific title and description
 - **WHEN** the `/about` page is built
-- **THEN** the HTML `<title>` is "UHC Watch - About"
+- **THEN** the HTML `<title>` is "About the WHO Barcelona Office work & the UHC Watch network"
 - **AND** the `<meta name="description">` content matches the about route config
 
 #### Scenario: 404 page uses default SEO config
 - **WHEN** the `/404` page is built
-- **THEN** the HTML `<title>` is "UHC Watch"
+- **THEN** the HTML `<title>` is "UHC Watch - Page Not Found"
 - **AND** the `<meta name="description">` content matches the default config
 
 ### Requirement: Pages render Open Graph meta tags
@@ -18,7 +18,7 @@ Every page SHALL render Open Graph meta tags in the `<head>`: `og:type` (set to 
 
 #### Scenario: Methods page has OG tags
 - **WHEN** the `/methods` page is built
-- **THEN** the HTML contains `<meta property="og:title" content="UHC Watch - Methods">`
+- **THEN** the HTML contains `<meta property="og:title" content="UHC Watch methods: how do we monitor progress towards UHC?">`
 - **AND** the HTML contains `<meta property="og:description">` with the methods description
 - **AND** the HTML contains `<meta property="og:type" content="website">`
 - **AND** the HTML contains `<meta property="og:image">` with the default image URL
