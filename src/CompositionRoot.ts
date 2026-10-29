@@ -60,6 +60,9 @@ import { GetCountryExperiencesUseCase } from "./domain/usecases/region/GetCountr
 import { CountryExperienceD2Repository } from "./data/repositories/regions/CountryExperienceD2Repository";
 import { GetPolicyExplorerChartDataUseCase } from "./domain/usecases/indicator-explorer/GetPolicyExplorerChartDataUseCase";
 import { PolicyExplorerChartDataD2Repository } from "./data/repositories/indicator-explorer/PolicyExplorerChartDataD2Repository";
+import { ReferenceTermsD2Repository } from "./data/repositories/reference-terms/ReferenceTermsD2Repository";
+import { GetGlossaryUseCase } from "./domain/usecases/reference-terms/GetGlossaryUseCase";
+import { GetAbbreviationsUseCase } from "./domain/usecases/reference-terms/GetAbbreviationsUseCase";
 
 function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Instance) {
     const dataStoreClient = new DataStoreClient(api);
@@ -78,6 +81,7 @@ function initializeRepositories(api: D2Api, d2DataEngine: unknown, instance: Ins
         explainerVideoFile: new ExplainerVideoFileD2Repository(api),
         person: new PersonD2Repository(api),
         method: new MethodD2Repository(api),
+        referenceTerms: new ReferenceTermsD2Repository(api),
         legendSet: new LegendSetD2Repository(api),
         countryPageInfo: new CountryPageInfoD2Repository(api),
         aboutInfo: new AboutInfoD2Repository(api),
@@ -152,6 +156,10 @@ export function getCompositionRoot(
         about: {
             getPersons: new GetPersonsUseCase(repositories.person),
             getOfficeInfo: new GetOfficeInfoUseCase(repositories.aboutInfo),
+        },
+        referenceTerms: {
+            getGlossary: new GetGlossaryUseCase(repositories.referenceTerms),
+            getAbbreviations: new GetAbbreviationsUseCase(repositories.referenceTerms),
         },
         method: {
             get: new GetMethodsUseCase(repositories.method),

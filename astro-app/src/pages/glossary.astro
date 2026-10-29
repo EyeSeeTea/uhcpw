@@ -1,0 +1,16 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getGlossaryPageData } from "@/data/reference-terms/reference-terms-data";
+import { getGeneralContent } from "@/data/general-content";
+
+const [entries, generalContent] = await Promise.all([getGlossaryPageData(), getGeneralContent()]);
+---
+
+<Layout generalContent={generalContent}>
+    <h1>Glossary</h1>
+    {entries.length === 0 ? <p>No glossary entries available.</p> : (
+        <dl>
+            {entries.map(entry => <><dt>{entry.term}</dt><dd>{entry.definition}</dd></>)}
+        </dl>
+    )}
+</Layout>

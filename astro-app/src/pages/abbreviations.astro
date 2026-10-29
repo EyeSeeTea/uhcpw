@@ -1,0 +1,16 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getAbbreviationsPageData } from "@/data/reference-terms/reference-terms-data";
+import { getGeneralContent } from "@/data/general-content";
+
+const [{ entries, categories }, generalContent] = await Promise.all([getAbbreviationsPageData(), getGeneralContent()]);
+---
+
+<Layout generalContent={generalContent}>
+    <h1>Abbreviations</h1>
+    {entries.length === 0 ? <p>No abbreviations available.</p> : (
+        <dl>
+            {entries.map(entry => <><dt>{entry.abbreviation}</dt><dd>{entry.meaning} ({categories.find(category => category.code === entry.category)?.name})</dd></>)}
+        </dl>
+    )}
+</Layout>
