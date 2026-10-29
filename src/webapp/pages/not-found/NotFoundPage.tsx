@@ -1,14 +1,21 @@
 import React from "react";
 import { Typography, Button, Container } from "@material-ui/core";
 import styled from "styled-components";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Layout } from "../../components/layout/Layout";
 import { colors } from "../app/themes/dhis2.theme";
 import i18n from "../../../locales";
+import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
 import bubblePatternWhite from "../../assets/bubble-pattern-white.png";
 
 export const NotFoundPage: React.FC = () => {
     const history = useHistory();
+    const { pathname } = useLocation();
+    const { sendPageView } = useAnalytics();
+
+    React.useEffect(() => {
+        sendPageView({ title: "Page not found" });
+    }, [pathname, sendPageView]);
 
     const handleGoHome = () => {
         history.push("/");

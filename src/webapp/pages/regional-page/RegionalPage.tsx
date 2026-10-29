@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 import { Layout } from "../../components/layout/Layout";
 import { useRegionalPage } from "./useRegionalPage";
+import { useRegionalPageView } from "./useRegionalPageView";
 import { Header } from "./Header";
 import { Map } from "../../components/home/map/Map";
 import { useRegionalPageMap } from "./useRegionalPageMap";
@@ -44,6 +45,8 @@ export const RegionalPage: React.FC = () => {
         isLoadingContent,
         sidePanelWidth,
     } = useRegionalPage();
+
+    useRegionalPageView();
 
     const { onRegionChange, regionOptions, selectedRegion, selectedRegionId } = regionFilter;
     const { markers, mainPanelContent } = regionMap;

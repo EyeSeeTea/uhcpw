@@ -79,30 +79,30 @@ When a React island in the Astro site emits an analytics event, the event name a
 - **THEN** the island calls `sendEvent({ name: "external_link", href, text })`
 - **AND** GA4 receives an event named `external_link` with parameters `href` and `text`
 
-### Requirement: Page location tracking uses pathname
-The analytics system SHALL use `window.location.pathname` (instead of `window.location.hash`) to determine the current page location for all analytics events.
+### Requirement: Page location tracking uses full URLs
+Manual analytics events that specify a page location SHALL use the current origin, pathname, and query string without the URL fragment.
 
-#### Scenario: Page view event includes clean path
+#### Scenario: Page view event includes a full URL
 - **WHEN** a user navigates to `/about` and a page view event is sent
-- **THEN** the event's page location is `/about` (not `#/about`)
+- **THEN** the event's page location is the full URL including the origin and `/about`
 
-#### Scenario: Country page view tracks pathname
+#### Scenario: Country page view includes a full URL
 - **WHEN** a user navigates to `/brazil` and a country page view event is sent
-- **THEN** the event's page location is `/brazil`
+- **THEN** the event's page location is the full URL including the origin and `/brazil`
 
 ### Requirement: GA4 configuration compatible with BrowserRouter
-The GA4 initialization SHALL be configured for standard pathname-based routing. The `send_page_view` config option SHALL reflect that manual page view tracking is used (explicit `sendPageView()` calls per page component).
+The SPA SHALL use manual page view tracking and configure `send_page_view: false` without setting `page_title` or `page_location`. Astro retains automatic initial page views. Manual SPA tracking depends on disabling GA4 enhanced measurement for browser history page changes.
 
 #### Scenario: GA4 initializes with correct config
 - **WHEN** the GA4 tracking script initializes
-- **THEN** `page_location` uses `window.location.pathname` (not `window.location.hash`)
+- **THEN** neither `page_location` nor `page_title` is overridden
 
-### Requirement: Manual page view calls use pathname
-Each page component's `sendPageView()` call SHALL derive page location from `window.location.pathname` combined with `window.location.search`, not from the URL hash.
+### Requirement: Manual page view calls use full URLs
+Each page component's `sendPageView()` call SHALL use the current origin, pathname, and query string. Regional pages SHALL send a view for the region in the URL, and the SPA not-found page SHALL send a view for each unknown pathname that it handles; changes only to its query string SHALL NOT send another view. Events queued before GA initializes SHALL retain the location at the time they were created. Regional page views use the title `Regional overview - <region>` and SPA not-found views use `Page not found`.
 
 #### Scenario: sendPageView on indicator-explorer
 - **WHEN** IndicatorExplorerPage mounts and calls `sendPageView()`
-- **THEN** the tracked location is `/indicator-explorer` plus any query string
+- **THEN** the tracked location is the full URL including `/indicator-explorer` and any query string
 
 ### Requirement: Internal-traffic opt-in flag
 
@@ -153,5 +153,5 @@ When the React SPA's `GoogleAnalyticsRepository` performs its own `gtag("config"
 
 #### Scenario: SPA config without flag matches existing behavior
 - **WHEN** `GoogleAnalyticsRepository` is instantiated in a browser where the flag is absent
-- **THEN** its `gtag("config", ...)` call has the same parameters as before this change (`page_title`, `page_location`, `send_page_view`), with no `traffic_type` field
+- **THEN** its `gtag("config", ...)` call has `send_page_view: false`, with no `page_title`, `page_location`, or `traffic_type` field
 
