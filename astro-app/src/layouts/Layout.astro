@@ -6,7 +6,7 @@ import Header from "@/components/layout/Header.astro";
 import Footer from "@/components/layout/Footer.astro";
 import SeoHead from "@/components/seo/SeoHead.astro";
 import Analytics from "@/components/analytics/Analytics.astro";
-import { resolveGeneralContentUrls, resolveRegionalDisclaimer } from "@/data/general-content";
+import { resolveRegionalDisclaimer } from "@/data/general-content";
 import { getNavItems } from "@/data/navigation";
 import themeCSS from "@/styles/theme.css?inline";
 import faviconUrl from "@/assets/favicon.ico?url";
@@ -24,7 +24,6 @@ interface Props {
 
 const { seo = defaultSeoConfig, generalContent } = Astro.props;
 
-const { abbreviationsUrl, glossaryUrl } = resolveGeneralContentUrls(generalContent);
 const regionalDisclaimer = resolveRegionalDisclaimer(generalContent);
 const navItems = await getNavItems();
 
@@ -76,19 +75,15 @@ const fontFaceCSS = `
     </head>
     <body>
         <Header
-            abbreviationsUrl={abbreviationsUrl}
-            glossaryUrl={glossaryUrl}
             navItems={navItems}
             regionalDisclaimer={regionalDisclaimer}
         />
-        <main>
+        <main id="top">
             <slot />
         </main>
         <Footer
             disclaimer={generalContent?.footer.disclaimer}
             privacyPolicyUrl={generalContent?.cookies.policyUrl}
-            abbreviationsUrl={abbreviationsUrl}
-            glossaryUrl={glossaryUrl}
         />
     </body>
 </html>

@@ -1,35 +1,24 @@
 ---
-import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 import { getMethodsPageData } from "@/data/methods/methods-data";
 import { renderMarkdown } from "@/lib/markdown";
 import { getSeoConfigForAstroRoute } from "@/lib/seo";
 import { YouTubeLinkDialog } from "@/islands/common/YouTubeLinkDialog";
-import { resolveGeneralContentUrls } from "@/data/general-content";
-import bubblePattern from "@/assets/bubble-pattern-white.png";
+import { href } from "@/lib/href";
+import PageBanner from "@/components/layout/PageBanner.astro";
 import mapBackgroundUrl from "@/assets/map-background.jpg?url";
 
 const { methods, generalContent } = await getMethodsPageData();
 
 const seo = getSeoConfigForAstroRoute(Astro.url.pathname);
 
-const { abbreviationsUrl, glossaryUrl } = resolveGeneralContentUrls(generalContent);
 
 const gridRows = Math.ceil(methods.length / 2);
 ---
 
 <Layout seo={seo} generalContent={generalContent}>
     <link slot="head" rel="preload" href={mapBackgroundUrl} as="image" media="(max-width: 960px)" fetchpriority="high" />
-    <div class="title-banner" aria-label="Methods page header">
-        <Image
-            class="bubble-img"
-            src={bubblePattern}
-            alt=""
-            aria-hidden="true"
-            loading="eager"
-        />
-        <h1>Methods</h1>
-    </div>
+    <PageBanner title="Methods" />
 
     <div class="main-content">
         <div class="methods-grid" style={`--grid-rows: ${gridRows}`} aria-label="Methods list">
@@ -52,8 +41,8 @@ const gridRows = Math.ceil(methods.length / 2);
             ))}
 
             <div class="download-links" aria-label="Download links">
-                <a class="download-link" href={abbreviationsUrl} target="_blank" rel="noreferrer">Abbreviations</a>
-                <a class="download-link" href={glossaryUrl} target="_blank" rel="noreferrer">Glossary</a>
+                <a class="download-link" href={href("/abbreviations")}>Abbreviations</a>
+                <a class="download-link" href={href("/glossary")}>Glossary</a>
             </div>
         </div>
     </div>
@@ -61,45 +50,7 @@ const gridRows = Math.ceil(methods.length / 2);
     <YouTubeLinkDialog client:only="react" />
 </Layout>
 
-<style define:vars={{ mapBackground: `url("${mapBackgroundUrl}")` }}>
-    /* ── Title Banner ─────────────────────────────────────────────────────── */
-
-    .title-banner {
-        background-color: var(--color-accent-primary);
-        color: white;
-        padding: 24px 200px 24px 64px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .title-banner h1 {
-        margin: 0;
-        font-size: 3rem;
-        font-weight: 400;
-        line-height: 1.167;
-        z-index: 1;
-    }
-
-    .bubble-img {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: auto;
-        height: auto;
-        max-width: none;
-        pointer-events: none;
-        opacity: 0.9;
-    }
-
-    @media (max-width: 960px) {
-        .title-banner {
-            background: var(--mapBackground) center;
-        }
-    }
-
+<style>
     /* ── Main Content ─────────────────────────────────────────────────────── */
 
     .main-content {

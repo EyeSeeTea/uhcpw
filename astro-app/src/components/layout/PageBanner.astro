@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+import bubblePattern from "@/assets/bubble-pattern-white.png";
+import mapBackgroundUrl from "@/assets/map-background.jpg?url";
+
+interface Props { title: string }
+const { title } = Astro.props;
+---
+<div class="title-banner">
+    <Image class="bubble-img" src={bubblePattern} alt="" aria-hidden="true" loading="eager" />
+    <h1>{title}</h1>
+</div>
+<style define:vars={{ mapBackground: `url("${mapBackgroundUrl}")` }}>
+    .title-banner { background: var(--color-accent-primary); color: white; padding: 24px 200px 24px 64px; display: flex; align-items: center; position: relative; overflow: hidden; }
+    h1 { margin: 0; font-size: 3rem; font-weight: 400; line-height: 1.167; z-index: 1; }
+    .bubble-img { position: absolute; top: 0; right: 0; width: auto; height: auto; max-width: none; pointer-events: none; opacity: .9; }
+    @media (max-width: 960px) { .title-banner { background: var(--mapBackground) center; } }
+    @media (max-width: 600px) { .title-banner { padding: 24px 40px; } h1 { font-size: 2.25rem; overflow-wrap: anywhere; } }
+</style>

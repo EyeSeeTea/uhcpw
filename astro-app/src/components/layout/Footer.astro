@@ -14,11 +14,9 @@ import {
 interface Props {
     disclaimer?: string;
     privacyPolicyUrl?: string;
-    abbreviationsUrl?: string;
-    glossaryUrl?: string;
 }
 
-const { disclaimer, privacyPolicyUrl, abbreviationsUrl, glossaryUrl } = Astro.props;
+const { disclaimer, privacyPolicyUrl } = Astro.props;
 const currentYear = new Date().getFullYear();
 
 const defaultDisclaimer =
@@ -106,8 +104,8 @@ const europeanUnionLines = getEuropeanUnionLines("Co-funded by the European Unio
             <details class="accordion mobile-only mobile-accordion-glossary">
                 <summary class="accordion-summary">Abbreviations &amp; glossary</summary>
                 <div class="accordion-details">
-                    {abbreviationsUrl && <a href={abbreviationsUrl} class="footer-link" target="_blank" rel="noopener noreferrer">Abbreviations</a>}
-                    {glossaryUrl && <a href={glossaryUrl} class="footer-link" target="_blank" rel="noopener noreferrer">Glossary</a>}
+                    <a href={href("/abbreviations")} class="footer-link">Abbreviations</a>
+                    <a href={href("/glossary")} class="footer-link">Glossary</a>
                 </div>
             </details>
 
