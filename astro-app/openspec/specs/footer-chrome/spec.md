@@ -44,6 +44,13 @@ The Footer SHALL display a bottom bar with the copyright notice and a link to th
 - **WHEN** `GeneralContent.cookies.policyUrl` is empty or undefined
 - **THEN** the privacy policy link points to a reasonable default (e.g., `https://www.who.int/about/policies/privacy`)
 
+### Requirement: Mobile footer reference links
+The mobile footer SHALL link to the Astro Abbreviations and Glossary pages under the configured base path.
+
+#### Scenario: Reference links navigate to Astro pages
+- **WHEN** a user opens the mobile reference links
+- **THEN** each link opens its corresponding Astro page in the current tab
+
 ### Requirement: Footer adapts to mobile layout
 On viewports at or below the small-screen breakpoint (960px), the Footer SHALL reorganize its sections into a vertical layout. The "About us" section SHALL be rendered as a direct link to `/about` (not an accordion), styled consistently with the remaining accordion rows (same background, border-radius, and height). The "Abbreviations & glossary", "WHO privacy policy & disclaimer", and "Contact our office" sections SHALL remain collapsible `<details>`/`<summary>` accordion items. The About-us link and accordion summary rows SHALL each render at a minimum height of 56px, and the vertical gap between adjacent rows SHALL be 8px (not the accumulated margin+gap+margin that would otherwise stack). Accordion expand/collapse SHALL animate its content height instead of snapping open.
 

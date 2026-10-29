@@ -14,19 +14,14 @@ The Methods page SHALL fetch all method sections by calling `compositionRoot.met
 - **WHEN** `astro build` runs and the DHIS2 API is unreachable or returns an error
 - **THEN** the build fails with a descriptive error message (not a silent empty page)
 
-### Requirement: Fetch general content for reference links
+### Requirement: Fetch general content for shared layout
 
-The Methods page SHALL fetch general content by calling `compositionRoot.general.getContent.execute()` through the `runFuture()` bridge to obtain abbreviations and glossary URLs. This fetch SHALL run in parallel with the methods fetch using `Promise.all`.
+The Methods page SHALL fetch general content by calling `compositionRoot.general.getContent.execute()` through the `runFuture()` bridge for the shared layout. This fetch SHALL run in parallel with the methods fetch using `Promise.all`.
 
 #### Scenario: Parallel data fetching
 
 - **WHEN** the Methods page frontmatter executes during build
 - **THEN** both `method.get` and `general.getContent` calls are initiated concurrently via `Promise.all`
-
-#### Scenario: General content provides URLs
-
-- **WHEN** general content is fetched successfully and contains non-null abbreviations/glossary URLs
-- **THEN** those URLs are used for the download links in the rendered HTML
 
 ### Requirement: Reuse shared composition root
 

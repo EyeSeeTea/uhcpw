@@ -13,7 +13,7 @@ The Header SHALL display the WHO logo and the UHC Data Portal logo. Both logos S
 - **THEN** both logos remain visible (WHO logo at reduced size)
 
 ### Requirement: Header displays top bar with office title and reference links
-The Header SHALL display a gradient top bar containing the office title "WHO Barcelona Office for Health Systems Financing" (white text, 16px) on the left and "Abbreviations" and "Glossary" links (black text) on the right. The Abbreviations and Glossary link URLs SHALL be sourced from `GeneralContent` fetched at build time, not hardcoded. If a URL is not available, the corresponding link SHALL not be rendered. The top toolbar SHALL use asymmetric horizontal padding: `64px` on the left and `60px` on the right, matching the SPA's `theme.spacing(8)` / `theme.spacing(7.5)`.
+The Header SHALL display a gradient top bar containing the office title "WHO Barcelona Office for Health Systems Financing" (white text, 16px) on the left and "Abbreviations" and "Glossary" links (black text) on the right. The Abbreviations and Glossary links SHALL point to the Astro `/abbreviations` and `/glossary` pages, using the configured base path. The top toolbar SHALL use asymmetric horizontal padding: `64px` on the left and `60px` on the right, matching the SPA's `theme.spacing(8)` / `theme.spacing(7.5)`.
 
 #### Scenario: Top bar renders with title and links
 - **WHEN** the Header renders on a desktop viewport
@@ -25,14 +25,10 @@ The Header SHALL display a gradient top bar containing the office title "WHO Bar
 - **THEN** the office title is centered in white text
 - **AND** the Abbreviations and Glossary links are hidden
 
-#### Scenario: Reference links use dynamic URLs from GeneralContent
-- **WHEN** the Header renders and `GeneralContent` provides abbreviation and glossary URLs
-- **THEN** the Abbreviations link href matches the `GeneralContent.abbreviations.url` value
-- **AND** the Glossary link href matches the `GeneralContent.glossary.url` value
-
-#### Scenario: Reference link hidden when URL is unavailable
-- **WHEN** `GeneralContent.abbreviations.url` is null or undefined
-- **THEN** the Abbreviations link is not rendered
+#### Scenario: Reference links use internal routes
+- **WHEN** the Header renders under a configured base path
+- **THEN** the Abbreviations and Glossary links point to their corresponding Astro routes under that base path
+- **AND** the links open in the current tab
 
 #### Scenario: Top bar has correct asymmetric padding
 - **WHEN** the Header renders on a desktop viewport wider than 500px
@@ -74,11 +70,17 @@ Countries & areas items: fetched from DHIS2 countries where `isInCountryPage` is
 - **THEN** the "Regional overview" dropdown closes and the "Countries & areas" dropdown opens
 
 ### Requirement: Header displays mobile navigation
+The mobile menu SHALL also link to the Astro Abbreviations and Glossary pages under the configured base path.
+
 On viewports below the large-screen breakpoint (1280px), the Header SHALL display a hamburger menu icon that toggles a mobile navigation menu containing all navigation items. Items that have a `children` list (e.g., "Countries & areas") SHALL render as a button that opens a floating popup menu overlay, matching the SPA's `MobileMenuSubItem` pattern. The popup SHALL be scrollable, positioned relative to the trigger button, and styled consistently with the mobile menu (blue background, white text). The "Regional overview" item SHALL render as a button that opens a modal disclaimer dialog instead of navigating directly or expanding an accordion. Plain items without children SHALL remain as direct links. The breakpoint matches the React SPA's MUI `lgUp` boundary (`1280px`).
 
 #### Scenario: Mobile menu toggle
 - **WHEN** the viewport is less than 1280px and the user activates the hamburger icon
 - **THEN** the mobile navigation menu expands showing all navigation items
+
+#### Scenario: Mobile menu reference links
+- **WHEN** the mobile menu is open
+- **THEN** Abbreviations and Glossary link to their respective Astro pages under the configured base path
 
 #### Scenario: Mobile menu closes on link click
 - **WHEN** the mobile menu is open and the user clicks a plain (non-popup, non-modal) navigation link
