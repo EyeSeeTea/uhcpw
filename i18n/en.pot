@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-05-26T11:07:30.881Z\n"
-"PO-Revision-Date: 2026-05-26T11:07:30.881Z\n"
+"POT-Creation-Date: 2026-10-21T10:32:27.952Z\n"
+"PO-Revision-Date: 2026-10-21T10:32:27.952Z\n"
 
 msgid "404"
 msgstr ""
@@ -86,6 +86,12 @@ msgstr ""
 msgid "Clear"
 msgstr ""
 
+msgid "Explainer video"
+msgstr ""
+
+msgid "The video could not be loaded"
+msgstr ""
+
 msgid "indicator explorer"
 msgstr ""
 
@@ -105,12 +111,6 @@ msgid "Zoom in"
 msgstr ""
 
 msgid "Zoom out"
-msgstr ""
-
-msgid "News"
-msgstr ""
-
-msgid "Multimedia"
 msgstr ""
 
 msgid "Indicators"
@@ -140,9 +140,6 @@ msgstr ""
 msgid "About us"
 msgstr ""
 
-msgid "Contact our office"
-msgstr ""
-
 msgid "Sant Pau Art Nouveau Site (La Mercè)"
 msgstr ""
 
@@ -155,6 +152,11 @@ msgstr ""
 msgid "Tel: +34 673 290 861"
 msgstr ""
 
+msgid ""
+"The WHO Regional Office for Europe gratefully acknowledges funding from the "
+"Government of the Autonomous Community of Catalonia, Spain"
+msgstr ""
+
 msgid "Co-funded by the European Union"
 msgstr ""
 
@@ -165,6 +167,9 @@ msgid "Abbreviations & glossary"
 msgstr ""
 
 msgid "WHO privacy policy & disclaimer"
+msgstr ""
+
+msgid "Contact our office"
 msgstr ""
 
 msgid "Indicator explorer"
@@ -200,6 +205,12 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
+msgid "News"
+msgstr ""
+
+msgid "Multimedia"
+msgstr ""
+
 msgid "Select theme"
 msgstr ""
 
@@ -219,6 +230,9 @@ msgid "({{count}} selected)"
 msgid_plural "({{count}} selected)"
 msgstr[0] ""
 msgstr[1] ""
+
+msgid "Close"
+msgstr ""
 
 msgid "There may be no data"
 msgstr ""

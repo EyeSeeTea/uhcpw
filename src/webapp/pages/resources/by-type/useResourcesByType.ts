@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState, useRef } from "react";
-import { getThemeName, ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
+import { ResourceTheme } from "../../../../domain/entities/resources/ResourceTheme";
 import { Country } from "../../../../domain/entities/Country";
 import { Resource } from "../../../../domain/entities/resources/Resource";
 import { useAppContext } from "../../../contexts/app-context";
 import { useResourcesFilters } from "../common/useResourcesFilters";
-import { ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
+import { buildThemesState, ResourcesByTypeState, ResourceState } from "./ResourcesByTypeState";
 import { useInfiniteScroll } from "./useInfiniteScroll";
 
 const page_size = 5;
@@ -179,13 +179,13 @@ export function buildResourcesBySection(
                 ...item,
                 countryName: country?.name || "",
                 countryFlag: country?.flag || "",
-                themeName: getThemeName(themes, item.theme),
+                ...buildThemesState(themes, item.themeCodes),
             };
         }
 
         return {
             ...item,
-            themeName: getThemeName(themes, item.theme),
+            ...buildThemesState(themes, item.themeCodes),
         };
     });
 }

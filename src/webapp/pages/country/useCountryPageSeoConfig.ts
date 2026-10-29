@@ -7,7 +7,7 @@ export function useCountryPageSeoConfig(country?: Country): Partial<SeoConfig> |
         () =>
             country
                 ? {
-                      title: `UHC Watch - ${country.name}`,
+                      title: `UHC Watch - ${country.name}: evidence on universal health coverage`,
                       description: `UHC Watch shows the health system factors and policies that strengthen and undermine financial protection in ${country.name}`,
                   }
                 : undefined,

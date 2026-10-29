@@ -11,6 +11,9 @@ import europeFlag from "../../../assets/europe-flag.png";
 import { AbbreviationsAndGlossary } from "./AbbreviationsAndGlossary";
 import { PrivacyPolicyAndDisclaimer } from "./PrivacyPolicyAndDisclaimer";
 import { ContactUs } from "./ContactUs";
+import { getEuropeanUnionLines, getMobileFundingLines } from "./footerTextLines";
+import { TextLines } from "./TextLines";
+import { whoLogoEdgeAlignment } from "./footerStyles";
 
 export const MobileAppFooter: React.FC = () => {
     const items = useMemo(
@@ -28,7 +31,7 @@ export const MobileAppFooter: React.FC = () => {
             {
                 id: "contact-our-office",
                 title: i18n.t("Contact our office"),
-                content: <ContactUs showTitle={false} />,
+                content: <ContactUs isMobile />,
             },
         ],
         []
@@ -40,10 +43,24 @@ export const MobileAppFooter: React.FC = () => {
                 <FlexContainer>
                     <WhoLogo src={whoLogoWhite} alt="WHO logo" loading="eager" decoding="async" />
                     <EuropeContainer>
-                        <EuropeFlag src={europeFlag} alt="WHO logo" />
-                        <EuropeText variant="body2">{i18n.t("Co-funded by the European Union")}</EuropeText>
+                        <EuropeFlag src={europeFlag} alt="European Union flag" />
+                        <EuropeText variant="body2">
+                            {getEuropeanUnionLines(i18n.t("Co-funded by the European Union")).map(line => (
+                                <EuropeTextLine key={line}>{line} </EuropeTextLine>
+                            ))}
+                        </EuropeText>
                     </EuropeContainer>
                 </FlexContainer>
+
+                <FundingText variant="body2">
+                    <TextLines
+                        lines={getMobileFundingLines(
+                            i18n.t(
+                                "The WHO Regional Office for Europe gratefully acknowledges funding from the Government of the Autonomous Community of Catalonia, Spain"
+                            )
+                        )}
+                    />
+                </FundingText>
 
                 <AboutUsLink to="/about">
                     <Typography>{i18n.t("About us")}</Typography>
@@ -70,30 +87,22 @@ export const MobileAppFooter: React.FC = () => {
     );
 };
 
-const FlexContainer = styled.div<{ direction?: "row" | "column" }>`
+// The logos span the whole row: the WHO logo touches the left padding and the EU text the right one.
+const FlexContainer = styled.div`
     display: flex;
-    flex-direction: ${props => props.direction || "row"};
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
     height: 100%;
-    gap: 20px;
+    gap: 12px;
     margin-block-end: 16px;
-    padding-inline: 8px;
-
-    @media (max-width: 500px) {
-        gap: 16px;
-    }
-
-    @media (max-width: 360px) {
-        padding-inline: 0;
-    }
 `;
 
 const EuropeContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    flex-shrink: 0;
 `;
 
 const EuropeFlag = styled.img`
@@ -109,20 +118,41 @@ const EuropeFlag = styled.img`
 `;
 
 const WhoLogo = styled.img`
-    width: 150px;
+    --who-logo-width: 150px;
+    width: var(--who-logo-width);
+    flex-shrink: 0;
+    ${whoLogoEdgeAlignment}
 
     @media (max-width: 500px) {
-        width: 130px;
+        --who-logo-width: 130px;
     }
 
     @media (max-width: 450px) {
-        width: 100px;
+        --who-logo-width: 100px;
     }
 `;
 
 const EuropeText = styled(Typography)`
-    max-width: 150px;
     margin-left: 16px;
+`;
+
+// Unbreakable left-aligned lines keep the label as wide as its longest line, so it ends exactly at the right padding.
+// From 580px the row has room for the whole label (logo, flag and label need about 490px), so the lines join into one;
+// the trailing space inside each line separates the words then.
+const EuropeTextLine = styled.span`
+    display: block;
+    white-space: nowrap;
+
+    @media (min-width: 580px) {
+        display: inline;
+    }
+`;
+
+const FundingText = styled(Typography)`
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+    margin-block: 20px;
 `;
 
 const FooterTop = styled.div`

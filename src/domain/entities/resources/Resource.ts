@@ -10,7 +10,7 @@ export interface BasicResource {
 
 export interface AnalysisResource extends BasicResource {
     links: ResourceLink[];
-    theme: string;
+    themeCodes: ReadonlyArray<string>;
 }
 
 export interface MediaResource extends BasicResource {
@@ -25,7 +25,7 @@ export interface News extends MediaResource {
 
 export interface Multimedia extends MediaResource {
     kind: "multimedia";
-    theme: string;
+    themeCodes: ReadonlyArray<string>;
     favouriteSection: boolean;
     favouriteSectionOrder: number;
 }

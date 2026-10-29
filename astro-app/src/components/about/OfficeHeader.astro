@@ -1,6 +1,8 @@
 ---
+import { YouTube } from "@astro-community/astro-embed-youtube";
 import { renderMarkdown } from "@/lib/markdown";
 import { href } from "@/lib/href";
+import { getYouTubeEmbedUrl } from "@shared/domain/entities/YouTubeVideo";
 
 interface Props {
     officeImage: string;
@@ -13,12 +15,21 @@ interface Props {
 const { officeImage, officeImageWidth, officeVideo, officeText } = Astro.props;
 
 const textHtml = renderMarkdown(officeText);
+const caption = "WHO Barcelona Office for Health Systems Financing";
+const videoEmbedUrl = getYouTubeEmbedUrl(officeVideo);
 ---
 
 <section class="office-header" aria-label="WHO Barcelona Office">
     <div class="office-grid">
         <div class="image-column">
-            <a href={officeVideo} target="_blank" rel="noreferrer">
+            <a
+                id="office-video-link"
+                href={officeVideo}
+                target="_blank"
+                rel="noreferrer"
+                data-youtube-embed={videoEmbedUrl}
+                data-youtube-title={caption}
+            >
                 <img
                     src={href(officeImage)}
                     alt="WHO Barcelona Office"
@@ -29,7 +40,25 @@ const textHtml = renderMarkdown(officeText);
                     decoding="async"
                 />
             </a>
-            <p class="caption">WHO Barcelona Office for Health Systems Financing</p>
+            {
+                videoEmbedUrl && (
+                    <template id="office-video-tpl">
+                        <div class="office-video">
+                            <YouTube id={videoEmbedUrl} title={caption} />
+                        </div>
+                    </template>
+                )
+            }
+            <script>
+                // On mobile the office video plays embedded instead of behind the image link. Gate render
+                // so the YouTube facade (lite-youtube) is never connected to the DOM on desktop.
+                const tpl = document.getElementById("office-video-tpl");
+                const link = document.getElementById("office-video-link");
+                if (tpl instanceof HTMLTemplateElement && link && window.matchMedia("(max-width: 959px)").matches) {
+                    link.replaceWith(tpl.content.cloneNode(true));
+                }
+            </script>
+            <p class="caption">{caption}</p>
         </div>
 
         <div class="text-column">
@@ -64,6 +93,15 @@ const textHtml = renderMarkdown(officeText);
         width: 100%;
         height: auto;
         padding-block-start: 16px;
+    }
+
+    .office-video {
+        padding-block-start: 16px;
+    }
+
+    .office-video :global(lite-youtube) {
+        width: 100%;
+        max-width: 100%;
     }
 
     .caption {

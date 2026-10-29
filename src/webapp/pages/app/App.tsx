@@ -39,6 +39,7 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
             const countries = (await compositionRoot.countries.get.execute().runAsync()).data || [];
             const themes = (await compositionRoot.resources.getThemes.execute().runAsync()).data || [];
             const generalContent = (await compositionRoot.general.getContent.execute().runAsync()).data;
+            const explainers = (await compositionRoot.explainers.getAll.execute().runAsync()).data || [];
 
             const countriesSubregions = countries.flatMap(country => (country.children ? country.children : []));
             const regions: Region[] = (await compositionRoot.regions.get.execute().runAsync()).data || [];
@@ -58,6 +59,7 @@ export const App: React.FC<AppProps> = React.memo(function App({ api, d2, instan
                 generalContent,
                 countriesAndSubregions,
                 regions: regions,
+                explainers,
             });
             setLoading(false);
         }

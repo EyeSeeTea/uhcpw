@@ -1,10 +1,13 @@
-export type ResourceTheme = {
+export type ResourceTheme = Readonly<{
     id: string;
     code: string;
     name: string;
     displayedName: string;
-};
+}>;
 
-export function getThemeName(themes: ResourceTheme[], code: string): string {
-    return themes.find(theme => theme.code === code)?.name || "";
+export function getResourceThemes(
+    themes: ReadonlyArray<ResourceTheme>,
+    codes: ReadonlyArray<string>
+): ReadonlyArray<ResourceTheme> {
+    return codes.flatMap(code => themes.filter(theme => theme.code === code));
 }

@@ -5,9 +5,14 @@ import { IndicatorExplorerContentRepository } from "../../../domain/repositories
 import { D2Api } from "../../../types/d2-api";
 import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
 
-const selectCategoryInfoDataElements: Record<string, Id> = {
+const selectCategoryInfoDataElements: Readonly<Record<"title" | "text", Id>> = {
     title: "h5A4TCDMTHM",
     text: "XVZ0MsAkYaC",
+};
+
+const dataSourcesInfoDataElements: Readonly<Record<"title" | "text", Id>> = {
+    title: "UD3RlPzN605",
+    text: "EVfINfwONps",
 };
 
 const noDataDataElement: Id = "KvLqwZMVyUO";
@@ -19,13 +24,20 @@ export class IndicatorExplorerD2Repository implements IndicatorExplorerContentRe
         return getMainPagesContent(this.api).map(dataValues => this.buildContent(dataValues));
     }
 
-    private buildContent(dataValues: DataValue[]): IndicatorExplorerContent {
+    private buildContent(dataValues: ReadonlyArray<DataValue>): IndicatorExplorerContent {
+        const getValue = (dataElement: Id): string | undefined =>
+            dataValues.find(dv => dv.dataElement === dataElement)?.value;
+
         return {
             selectCategory: {
-                title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
-                text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
+                title: getValue(selectCategoryInfoDataElements.title) || "",
+                text: getValue(selectCategoryInfoDataElements.text) || "",
             },
-            noDataMessage: dataValues.find(dv => dv.dataElement === noDataDataElement)?.value || "",
+            dataSourcesAndAvailability: {
+                title: getValue(dataSourcesInfoDataElements.title) || "",
+                text: getValue(dataSourcesInfoDataElements.text) || "",
+            },
+            noDataMessage: getValue(noDataDataElement) || "",
         };
     }
 }

@@ -33,15 +33,17 @@ export class GoogleAnalyticsRepository implements AnalyticsRepository {
     }
 }
 
+type MappedAnalyticsEvent = ReturnType<typeof buildAnalyticsEvent>;
+
 class Analytics {
     initialized = false;
-    queue: AnalyticsEvent[] = [];
+    queue: MappedAnalyticsEvent[] = [];
     accessToConsole = false;
 
     constructor(private options: GoogleAnalyticsRepositoryOptions) {
         this.accessToConsole = localStorage.getItem("accessToConsole") === "true";
 
-        if (!window.gtag) this.intialize().then(() => this.queue.forEach(e => this.sendAnalytics(e)));
+        if (!window.gtag) this.intialize().then(() => this.queue.forEach(e => this.sendMappedAnalytics(e)));
         else {
             this.initialized = true;
             if (!this.options.skipInitialConfig) this.setAnalyticsConfig();
@@ -49,16 +51,17 @@ class Analytics {
     }
 
     sendAnalytics(event: AnalyticsEvent) {
+        const mappedEvent = buildAnalyticsEvent(event);
+        if (this.accessToConsole) console.debug("GA4: send analytics event", event.name, mappedEvent);
         if (!this.initialized) {
-            this.queue.push(event);
+            this.queue.push(mappedEvent);
             return;
         }
+        this.sendMappedAnalytics(mappedEvent);
+    }
 
-        if (this.accessToConsole) console.debug("GA4: send analytics event", event.name, buildAnalyticsEvent(event));
-
-        const mappedEvent = buildAnalyticsEvent(event);
+    private sendMappedAnalytics(mappedEvent: MappedAnalyticsEvent) {
         const { name, ...rest } = mappedEvent;
-
         window.gtag("event", name, rest);
     }
 
@@ -66,8 +69,6 @@ class Analytics {
         /** Manual page view tracking is used (explicit sendPageView() calls per page component),
          * so send_page_view remains false to avoid duplicate events. */
         const configParams: Record<string, unknown> = {
-            page_title: "Config",
-            page_location: window.location.pathname + window.location.search,
             send_page_view: false,
         };
 

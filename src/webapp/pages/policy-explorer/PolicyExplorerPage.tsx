@@ -9,7 +9,7 @@ import _ from "lodash";
 
 import i18n from "../../../locales";
 import { Layout } from "../../components/layout/Layout";
-import { colors } from "../app/themes/dhis2.theme";
+import { ExplorerTitle } from "../../components/explorer-title/ExplorerTitle";
 import { usePolicyExplorer } from "./usePolicyExplorer";
 import { PolicyExplorerFilters } from "../../components/policy-explorer/PolicyExplorerFilters";
 import { EmptyContent } from "../../components/empty-content/EmptyContent";
@@ -23,11 +23,7 @@ import {
 } from "../../../domain/entities/policy-explorer/PolicyExplorer";
 import { COUNTRY_HEADER_NAME } from "../../../data/repositories/policy-explorer/PolicyExplorerD2Repository";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
-import mapBackground from "../../assets/map-background.jpg";
-import {
-    BREAKPOINT_WIDTH_MOBILE_SCREEN,
-    BREAKPOINT_WIDTH_SMALL_SCREEN,
-} from "../../common/hooks/screen/useIsSmallScreen";
+import { BREAKPOINT_WIDTH_MOBILE_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 import {
     CategoryOption,
     CategorySelectableOption,
@@ -148,10 +144,12 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
 
     return (
         <Layout>
-            <TitleContainer>
-                <Typography variant="h3">{i18n.t("Policy explorer")}</Typography>
-                <Image src={policyExplorer} alt={i18n.t("policy explorer")} />
-            </TitleContainer>
+            <ExplorerTitle
+                title={i18n.t("Policy explorer")}
+                image={policyExplorer}
+                imageAlt={i18n.t("policy explorer")}
+                page="policyExplorer"
+            />
 
             <MainSection>
                 <PolicyExplorerFilters filters={filters} onGetTable={onGetTable} disableGet={isLoading} />
@@ -192,7 +190,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                     </Content>
                 )}
 
-                {!isLoading && !(data && dataOrientationByTable) && <EmptyContent info={selectCategoryInfo} />}
+                {!isLoading && !(data && dataOrientationByTable) && <EmptyContent infos={[selectCategoryInfo]} />}
 
                 {!isLoading && (
                     <div ref={referencesRef}>
@@ -371,23 +369,6 @@ const MainSection = styled.div`
     @media (max-width: 600px) {
         padding: 34px 64px;
     }
-`;
-
-const TitleContainer = styled.div`
-    background: ${colors.gradientPrimary};
-    color: white;
-    padding: 24px 200px 24px 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        background: ${props => props.color} url(${mapBackground});
-        background-position: center;
-    }
-`;
-
-const Image = styled.img`
-    height: 56px;
 `;
 
 const GeneralRow = styled.div`
