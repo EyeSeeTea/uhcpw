@@ -55,6 +55,16 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://apps.who.int/dhis2/uhcwatch/glossary/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://apps.who.int/dhis2/uhcwatch/abbreviations/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://apps.who.int/dhis2/uhcwatch/methods/</loc>
     <lastmod>2026-06-15</lastmod>
     <changefreq>monthly</changefreq>

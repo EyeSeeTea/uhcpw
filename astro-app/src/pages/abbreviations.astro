@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { getSeoConfigForAstroRoute } from "@/lib/seo";
 import PageBanner from "@/components/layout/PageBanner.astro";
 import { getAbbreviationsPageData } from "@/data/reference-terms/reference-terms-data";
 import { getGeneralContent } from "@/data/general-content";
@@ -9,7 +10,7 @@ import "@/styles/reference-terms.css";
 const [{ entries, categories }, generalContent] = await Promise.all([getAbbreviationsPageData(), getGeneralContent()]);
 const groups = buildAbbreviationGroups({ entries, categories });
 ---
-<Layout generalContent={generalContent} seo={{ title: "Abbreviations | UHC Watch", description: "Abbreviations used by UHC Watch." }}>
+<Layout generalContent={generalContent} seo={getSeoConfigForAstroRoute(Astro.url.pathname)}>
     <PageBanner title="Abbreviations" />
     <div class="reference-content" data-reference-page="abbreviations">
         <div class="reference-controls" hidden>

@@ -76,3 +76,13 @@ The pages SHALL use the shared site layout and title banner, rounded search cont
 - **WHEN** a reference page is displayed
 - **THEN** it has a page title and its reference controls and entries
 - **AND** it has no introductory paragraph or entry counts
+
+### Requirement: Reference pages are discoverable
+
+The glossary and abbreviations pages SHALL use their shared route-specific SEO configuration and appear in the production sitemap.
+
+#### Scenario: Reference page is built
+
+- **WHEN** either reference page is generated
+- **THEN** its title and description come from the shared SEO configuration
+- **AND** its public URL appears in the sitemap

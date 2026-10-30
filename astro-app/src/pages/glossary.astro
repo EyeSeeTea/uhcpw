@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
+import { getSeoConfigForAstroRoute } from "@/lib/seo";
 import PageBanner from "@/components/layout/PageBanner.astro";
 import { getGlossaryPageData } from "@/data/reference-terms/reference-terms-data";
 import { getGeneralContent } from "@/data/general-content";
@@ -11,7 +12,7 @@ const entries = [...data].sort((a, b) => a.term.localeCompare(b.term));
 const ids = uniqueReferenceIds(entries.map(entry => entry.term));
 const letters = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
 ---
-<Layout generalContent={generalContent} seo={{ title: "Glossary | UHC Watch", description: "Glossary of terms used by UHC Watch." }}>
+<Layout generalContent={generalContent} seo={getSeoConfigForAstroRoute(Astro.url.pathname)}>
     <PageBanner title="Glossary" />
     <div class="reference-content" data-reference-page="glossary">
         <div class="reference-controls" hidden>
