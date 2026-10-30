@@ -83,11 +83,29 @@ async function fetchImageBuffer(_api: D2Api, remoteUrl: string): Promise<Buffer 
     }
 }
 
+const buildDownloads = new Map<string, Promise<string | null>>();
+
 /**
  * Downloads a single image, optimizes it with sharp, and writes to disk.
  * Returns the public path on success, null on failure.
  */
-export async function downloadAndOptimizeImage(
+export function downloadAndOptimizeImage(
+    api: D2Api,
+    remoteUrl: string,
+    options: ImageDownloadOptions
+): Promise<string | null> {
+    if (!import.meta.env.PROD || !remoteUrl || typeof remoteUrl !== "string") {
+        return downloadImage(api, remoteUrl, options);
+    }
+    const key = JSON.stringify([normalizeUrl(remoteUrl), options.outputSubdir, options.width, options.height, options.fit, options.position, options.quality]);
+    const existing = buildDownloads.get(key);
+    if (existing) return existing;
+    const result = downloadImage(api, remoteUrl, options);
+    buildDownloads.set(key, result);
+    return result;
+}
+
+async function downloadImage(
     api: D2Api,
     remoteUrl: string,
     options: ImageDownloadOptions

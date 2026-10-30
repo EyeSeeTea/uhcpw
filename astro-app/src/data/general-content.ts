@@ -3,11 +3,11 @@ import { getServerCompositionRoot } from "@/infra/composition-root.server";
 import { runFuture } from "@/infra/future-bridge";
 import { normalizeUrl } from "@/lib/url";
 import { renderMarkdown } from "@/lib/markdown";
+import { buildCache } from "@/lib/build-cache";
 
-export async function getGeneralContent(): Promise<GeneralContent> {
-    const compositionRoot = getServerCompositionRoot();
-    return runFuture(compositionRoot.general.getContent.execute(), "generalContent.get");
-}
+export const getGeneralContent = buildCache((): Promise<GeneralContent> =>
+    runFuture(getServerCompositionRoot().general.getContent.execute(), "generalContent.get"),
+);
 
 const FALLBACK_ABBREVIATIONS_URL = "https://cmyn.short.gy/abbreviations";
 const FALLBACK_GLOSSARY_URL = "https://cmyn.short.gy/glossary";

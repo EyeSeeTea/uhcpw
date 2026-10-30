@@ -124,7 +124,7 @@ Markdown companion files SHALL contain only markdown content derived from the pa
 
 ### Requirement: Companion files and llms.txt reuse existing data loaders
 
-The endpoints emitting `/llms.txt` and `/<page>.md` SHALL call the same data-fetching functions used by the corresponding `.astro` pages (`getMethodsPageData`, `getAboutPageData`, `getGeneralContent`). They SHALL NOT introduce a second source of truth for CMS-authored content.
+The endpoints emitting `/llms.txt` and `/<page>.md` SHALL reuse the same CMS data sources used by the corresponding pages. The area overview companion SHALL load countries directly and derive its markers with `buildMapMarkers`, without loading unrelated home content or images.
 
 #### Scenario: Methods companion reflects a CMS content change
 
