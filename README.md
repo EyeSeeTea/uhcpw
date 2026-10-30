@@ -57,7 +57,7 @@ $ cd astro-app && yarn start
 $ docker compose up
 ```
 
-Then open `http://localhost:3000`. The proxy routes `/about` and `/methods` to Astro, and everything else to the SPA.
+Then open `http://localhost:3000`. The proxy routes Astro pages, including `/about`, `/methods`, `/glossary`, and `/abbreviations`, to Astro and remaining application routes to the SPA. The SPA's glossary and abbreviations links use the configured application base path and open the corresponding Astro pages.
 
 To add more Astro pages to the proxy, edit `dev/httpd.conf` and add `ProxyPass`/`ProxyPassReverse` entries before the SPA catch-all block.
 

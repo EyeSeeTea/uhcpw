@@ -86,3 +86,13 @@ The glossary and abbreviations pages SHALL use their shared route-specific SEO c
 - **WHEN** either reference page is generated
 - **THEN** its title and description come from the shared SEO configuration
 - **AND** its public URL appears in the sitemap
+
+### Requirement: SPA reference links open the Astro pages
+
+The SPA header, mobile footer and Methods page SHALL link to the glossary and abbreviations pages at the configured application base path. Links SHALL navigate in the same tab and allow the destination page to record its own page view.
+
+#### Scenario: A reference link is followed from the SPA
+
+- **WHEN** a user selects Glossary or Abbreviations in the SPA
+- **THEN** the browser opens the corresponding Astro page under the configured base path
+- **AND** no additional SPA page view is recorded for the destination
