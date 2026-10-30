@@ -70,7 +70,7 @@ Countries & areas items: fetched from DHIS2 countries where `isInCountryPage` is
 - **THEN** the "Regional overview" dropdown closes and the "Countries & areas" dropdown opens
 
 ### Requirement: Header displays mobile navigation
-The mobile menu SHALL also link to the Astro Abbreviations and Glossary pages under the configured base path.
+The mobile menu SHALL omit Abbreviations and Glossary links.
 
 On viewports below the large-screen breakpoint (1280px), the Header SHALL display a hamburger menu icon that toggles a mobile navigation menu containing all navigation items. Items that have a `children` list (e.g., "Countries & areas") SHALL render as a button that opens a floating popup menu overlay, matching the SPA's `MobileMenuSubItem` pattern. The popup SHALL be scrollable, positioned relative to the trigger button, and styled consistently with the mobile menu (blue background, white text). The "Regional overview" item SHALL render as a button that opens a modal disclaimer dialog instead of navigating directly or expanding an accordion. Plain items without children SHALL remain as direct links. The breakpoint matches the React SPA's MUI `lgUp` boundary (`1280px`).
 
