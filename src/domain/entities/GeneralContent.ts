@@ -1,11 +1,7 @@
-import { Maybe } from "../../types/utils";
-
 export type GeneralContent = {
     footer: FooterContent;
     aboutUs: AboutUsContent;
     cookies: CookiesDisclaimerContent;
-    abbreviations: FileUrl;
-    glossary: FileUrl;
     regionalPageMobilePopUp: RegionalPageMobilePopUpContent;
 };
 
@@ -26,8 +22,4 @@ export type AboutUsContent = {
 
 export type CookiesDisclaimerContent = {
     policyUrl: string;
-};
-
-export type FileUrl = {
-    url: Maybe<string>;
 };
