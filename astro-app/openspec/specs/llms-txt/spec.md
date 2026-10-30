@@ -23,7 +23,7 @@ The Astro build SHALL emit a static `/llms.txt` file at the site root that confo
 
 ### Requirement: llms.txt links each content page to its markdown companion
 
-The `## Pages` section of `/llms.txt` SHALL contain one link per curated content page (`/`, `/about`, `/methods`, `/area-overview`), each pointing to that page's `.md` companion file. Link text and description SHALL come from `getSeoConfigForRoute()` so `llms.txt` stays in sync with each page's SEO metadata — including companion-only routes (`/area-overview` is registered in `seoRouteConfigs` even though it has no HTML page).
+The `## Pages` section of `/llms.txt` SHALL contain one link per curated content page (`/`, `/about`, `/methods`, `/area-overview`, `/glossary`, `/abbreviations`), each pointing to that page's `.md` companion file. Link text and description SHALL come from `getSeoConfigForRoute()` so `llms.txt` stays in sync with each page's SEO metadata — including companion-only routes (`/area-overview` is registered in `seoRouteConfigs` even though it has no HTML page).
 
 #### Scenario: Home, About, Methods, and Area overview appear under Pages
 
@@ -33,22 +33,15 @@ The `## Pages` section of `/llms.txt` SHALL contain one link per curated content
 - **AND** the `## Pages` section contains `[UHC Watch methods: how do we monitor progress towards UHC?](/methods.md)` with the methods route's SEO description
 - **AND** the `## Pages` section contains `[UHC Watch - Area overview](/area-overview.md)` with the area-overview route's SEO description
 
-### Requirement: llms.txt exposes external glossary resources under Optional
+### Requirement: Reference pages are linked to local Markdown companions
 
-The `## Optional` section of `/llms.txt` SHALL list external resources that complement the site content. At minimum it SHALL include the abbreviations and glossary URLs resolved from `resolveGeneralContentUrls(generalContent)`. Link text SHALL be the human-readable label ("Abbreviations" / "Glossary") with no trailing description (the label is self-explanatory and a generic description would be noise).
+The `## Pages` section of `/llms.txt` SHALL link to the glossary and abbreviations Markdown companions. It SHALL NOT include the former external glossary or abbreviations resources.
 
-#### Scenario: Optional section lists abbreviations and glossary without descriptions
+#### Scenario: The index is generated
 
-- **WHEN** `/llms.txt` is generated with a `generalContent` that has abbreviation and glossary URLs
-- **THEN** the `## Optional` section contains a link labeled "Abbreviations" pointing at the resolved abbreviations URL
-- **AND** the `## Optional` section contains a link labeled "Glossary" pointing at the resolved glossary URL
-- **AND** each link renders as `- [Label](url)` with no `:`-separated description suffix (the label is self-explanatory; `serializeLlmsTxt` omits the suffix when `LlmsTxtExternalResource.description` is `undefined`)
-
-#### Scenario: Fallback URLs are used when generalContent values are missing
-
-- **WHEN** `generalContent.abbreviations.url` or `.glossary.url` is nullish (`undefined`) or `generalContent` itself is undefined
-- **THEN** `resolveGeneralContentUrls` returns the hardcoded fallback URLs (`https://cmyn.short.gy/abbreviations` / `https://cmyn.short.gy/glossary`)
-- **AND** those fallback URLs appear under `## Optional` in `/llms.txt`
+- **WHEN** `/llms.txt` is generated
+- **THEN** it links to `/glossary.md` and `/abbreviations.md` using the deployment base path
+- **AND** it does not contain the former external reference links
 
 ### Requirement: Each content page has a markdown companion at <path>.md
 
@@ -142,3 +135,13 @@ The change SHALL be reversible: deleting the new endpoint files, the serializer 
 - **THEN** no existing `.astro` page, layout, component, or React SPA rendering code is modified
 - **AND** `seoRouteConfigs` gains a new entry for `/area-overview` but existing entries are unchanged
 
+
+### Requirement: Reference pages have Markdown companions
+
+The build SHALL generate `/glossary.md` and `/abbreviations.md` using the same reference data as the corresponding HTML pages, and list them under Pages in `llms.txt` with deployment-aware links. Glossary terms SHALL be sorted alphabetically with their definitions. Abbreviations SHALL be grouped in category order and sorted alphabetically within each category.
+
+#### Scenario: Reference data is available
+
+- **WHEN** a reference Markdown companion is generated
+- **THEN** it contains a title and the same entries and definitions or meanings as its HTML page
+- **AND** `llms.txt` links to the companion using the configured base path

@@ -6,6 +6,8 @@ import {
     serializeHomeMarkdown,
     serializeAboutMarkdown,
     serializeMethodsMarkdown,
+    serializeGlossaryMarkdown,
+    serializeAbbreviationsMarkdown,
     serializeAreaOverviewMarkdown,
     serializeLlmsTxt,
 } from "../serializers";
@@ -189,6 +191,44 @@ describe("serializeMethodsMarkdown", () => {
     });
 });
 
+describe("reference Markdown companions", () => {
+    it("sorts glossary terms and includes their definitions", () => {
+        const body = serializeGlossaryMarkdown(
+            [
+                { term: "Zebra", definition: "A definition." },
+                { term: "Access", definition: "Ability to obtain care." },
+            ],
+            "Glossary"
+        );
+        expect(body).toContain("## Access\n\nAbility to obtain care.");
+        expect(body.indexOf("## Access")).toBeLessThan(body.indexOf("## Zebra"));
+        assertNoChrome(body);
+    });
+
+    it("uses category order and sorts abbreviations within each category", () => {
+        const body = serializeAbbreviationsMarkdown(
+            {
+                categories: [
+                    { code: "general", name: "General" },
+                    { code: "country", name: "Countries" },
+                ],
+                entries: [
+                    { category: "country", abbreviation: "GBR", meaning: "United Kingdom" },
+                    { category: "general", abbreviation: "WHO", meaning: "World Health Organization" },
+                    { category: "general", abbreviation: "UHC", meaning: "Universal health coverage" },
+                ],
+            },
+            "Abbreviations"
+        );
+        expect(body).toContain(
+            "## General\n\n- **UHC**: Universal health coverage\n- **WHO**: World Health Organization"
+        );
+        expect(body).toContain("## Countries\n\n- **GBR**: United Kingdom");
+        expect(body.indexOf("## General")).toBeLessThan(body.indexOf("## Countries"));
+        assertNoChrome(body);
+    });
+});
+
 describe("serializeAreaOverviewMarkdown", () => {
     const features: ReadonlyArray<AreaMarkerFeature> = [
         {
@@ -261,10 +301,6 @@ describe("serializeLlmsTxt", () => {
             { href: "/about.md", title: "UHC Watch - About", description: "About the team" },
             { href: "/methods.md", title: "UHC Watch - Methods", description: "Methodology" },
         ],
-        externalResources: [
-            { href: "https://example.org/abbr", label: "Abbreviations" },
-            { href: "https://example.org/gloss", label: "Glossary" },
-        ],
     };
 
     it("starts with the H1 title", () => {
@@ -285,27 +321,6 @@ describe("serializeLlmsTxt", () => {
         expect(body).toContain("- [UHC Watch](/index.md): Home");
         expect(body).toContain("- [UHC Watch - About](/about.md): About the team");
         expect(body).toContain("- [UHC Watch - Methods](/methods.md): Methodology");
-    });
-
-    it("lists external resources under ## Optional without descriptions when omitted", () => {
-        const body = serializeLlmsTxt(input);
-        expect(body).toContain("## Optional");
-        expect(body).toContain("- [Abbreviations](https://example.org/abbr)\n");
-        expect(body).toContain("- [Glossary](https://example.org/gloss)\n");
-        expect(body).not.toContain("External glossary resource");
-    });
-
-    it("renders external resource description when provided", () => {
-        const body = serializeLlmsTxt({
-            ...input,
-            externalResources: [{ href: "https://example.org/x", label: "Extra", description: "With description" }],
-        });
-        expect(body).toContain("- [Extra](https://example.org/x): With description");
-    });
-
-    it("omits the Optional section when no external resources are given", () => {
-        const body = serializeLlmsTxt({ ...input, externalResources: [] });
-        expect(body).not.toContain("## Optional");
     });
 
     it("contains no HTML chrome", () => {

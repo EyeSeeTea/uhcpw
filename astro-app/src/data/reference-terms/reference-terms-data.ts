@@ -1,11 +1,14 @@
 import type { Abbreviations, GlossaryEntry } from "@shared/domain/entities/ReferenceTerms";
 import { getServerCompositionRoot } from "@/infra/composition-root.server";
 import { runFuture } from "@/infra/future-bridge";
+import { buildCache } from "@/lib/build-cache";
 
-export function getGlossaryPageData(): Promise<GlossaryEntry[]> {
-    return runFuture(getServerCompositionRoot().referenceTerms.getGlossary.execute(), "glossary.get");
-}
+export const getGlossaryPageData = buildCache(
+    (): Promise<GlossaryEntry[]> =>
+        runFuture(getServerCompositionRoot().referenceTerms.getGlossary.execute(), "glossary.get")
+);
 
-export function getAbbreviationsPageData(): Promise<Abbreviations> {
-    return runFuture(getServerCompositionRoot().referenceTerms.getAbbreviations.execute(), "abbreviations.get");
-}
+export const getAbbreviationsPageData = buildCache(
+    (): Promise<Abbreviations> =>
+        runFuture(getServerCompositionRoot().referenceTerms.getAbbreviations.execute(), "abbreviations.get")
+);
