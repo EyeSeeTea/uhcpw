@@ -3,6 +3,7 @@ import {
     AbbreviationCategory,
     AbbreviationEntry,
     Abbreviations,
+    GlossaryEntries,
     GlossaryEntry,
 } from "../../../domain/entities/ReferenceTerms";
 import { ReferenceTermsRepository } from "../../../domain/repositories/ReferenceTermsRepository";
@@ -33,7 +34,7 @@ function requiredValue(event: Event, element: string): string | undefined {
 export class ReferenceTermsD2Repository implements ReferenceTermsRepository {
     constructor(private api: D2Api) {}
 
-    getGlossary(): FutureData<GlossaryEntry[]> {
+    getGlossary(): FutureData<GlossaryEntries> {
         return apiToFuture(this.api.events.get({ fields, skipPaging: true, program: programs.glossary })).flatMap(
             response => Future.sequential(response.events.map(mapGlossaryEntry))
         );
@@ -85,7 +86,10 @@ function mapGlossaryEntry(event: Event): FutureData<GlossaryEntry> {
         : Future.error(`Invalid glossary event ${event.event}`);
 }
 
-function mapAbbreviations(events: Event[], categories: AbbreviationCategory[]): FutureData<AbbreviationEntry[]> {
+function mapAbbreviations(
+    events: ReadonlyArray<Event>,
+    categories: ReadonlyArray<AbbreviationCategory>
+): FutureData<AbbreviationEntry[]> {
     const codes = new Set(categories.map(category => category.code));
     return Future.sequential(
         events.map(event => {

@@ -19,6 +19,13 @@ describe("reference entry identifiers", () => {
             "entry-entry",
         ]);
     });
+    it("allocates unique IDs across repeated and pre-suffixed terms", () => {
+        const values = ["term-2", ...Array.from({ length: 1000 }, () => "term")];
+        const ids = uniqueReferenceIds(values);
+        expect(ids.slice(0, 4)).toEqual(["entry-term-2", "entry-term", "entry-term-3", "entry-term-4"]);
+        expect(ids[1000]).toBe("entry-term-1001");
+        expect(new Set(ids).size).toBe(values.length);
+    });
     it("prepares ordered groups with unique entry links across categories", () => {
         const groups = buildAbbreviationGroups({
             categories: [

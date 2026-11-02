@@ -1,7 +1,7 @@
 import type { FinancialProtectionStatus } from "@shared/domain/entities/FinancialProtectionStatus";
 import type { AboutPageData, PersonState } from "@/data/about/about-data";
 import type { MethodsPageData } from "@/data/methods/methods-data";
-import type { Abbreviations, GlossaryEntry } from "@shared/domain/entities/ReferenceTerms";
+import type { Abbreviations, GlossaryEntries } from "@shared/domain/entities/ReferenceTerms";
 import { buildAbbreviationGroups } from "@/data/reference-terms/reference-terms-view";
 
 export type LlmsTxtPageEntry = Readonly<{
@@ -47,7 +47,7 @@ export function serializeMethodsMarkdown(data: MethodsPageData, title: string): 
     return `${sections.join("\n\n")}\n`;
 }
 
-export function serializeGlossaryMarkdown(entries: ReadonlyArray<GlossaryEntry>, title: string): string {
+export function serializeGlossaryMarkdown(entries: GlossaryEntries, title: string): string {
     const sections = [...entries]
         .sort((a, b) => a.term.localeCompare(b.term))
         .map(entry => `## ${entry.term}\n\n${entry.definition.trim()}`);

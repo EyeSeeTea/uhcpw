@@ -19,14 +19,20 @@ export function referenceId(value: string): string {
     );
 }
 
-export function uniqueReferenceIds(values: readonly string[], prefix = "entry"): string[] {
+export function uniqueReferenceIds(values: readonly string[], prefix = "entry"): ReadonlyArray<string> {
     const used = new Set<string>();
+    const nextSuffix = new Map<string, number>();
+
     return values.map(value => {
         const base = `${prefix}-${referenceId(value)}`;
-        let id = base;
-        let suffix = 2;
-        while (used.has(id)) id = `${base}-${suffix++}`;
+        let suffix = nextSuffix.get(base) ?? 1;
+        let id = suffix === 1 ? base : `${base}-${suffix}`;
+        while (used.has(id)) {
+            suffix += 1;
+            id = `${base}-${suffix}`;
+        }
         used.add(id);
+        nextSuffix.set(base, suffix + 1);
         return id;
     });
 }

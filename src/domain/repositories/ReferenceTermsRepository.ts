@@ -1,7 +1,7 @@
 import { FutureData } from "../entities/Future";
-import { Abbreviations, GlossaryEntry } from "../entities/ReferenceTerms";
+import { Abbreviations, GlossaryEntries } from "../entities/ReferenceTerms";
 
 export interface ReferenceTermsRepository {
-    getGlossary(): FutureData<GlossaryEntry[]>;
+    getGlossary(): FutureData<GlossaryEntries>;
     getAbbreviations(): FutureData<Abbreviations>;
 }
