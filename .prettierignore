@@ -3,3 +3,5 @@ node_modules
 *.min.js
 *.min.css
 astro-app
+.est_ai
+coverage
