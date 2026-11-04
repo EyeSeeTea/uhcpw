@@ -36,7 +36,7 @@ const groups = buildAbbreviationGroups({ entries, categories });
             </section>
         ))}
         {entries.length === 0 && <p>No abbreviations available.</p>}
-        <a class="back-to-top" href="#top">Back to top ↑</a>
+        <a class="back-to-top" href="#">Back to top ↑</a>
         <div class="mobile-back-to-top"><ScrollToTopButton client:only="react" threshold={0} /></div>
     </div>
 </Layout>
