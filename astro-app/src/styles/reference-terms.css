@@ -60,16 +60,13 @@
     border: 1px solid var(--color-accent-primary);
     border-radius: 20px;
     padding: 8px 14px;
-    background: white;
-    color: var(--color-accent-primary);
+    background: var(--color-accent-primary);
+    color: white;
     font: inherit;
     text-decoration: none;
     cursor: pointer;
 }
-.reference-group-nav a {
-    background: var(--color-accent-primary);
-    color: white;
-}
+.reference-alphabet button:not(:disabled):not([aria-pressed="true"]):hover,
 .reference-group-nav a:hover {
     background: var(--color-accent-primary-dark);
 }
@@ -93,8 +90,8 @@
     display: none;
 }
 .reference-alphabet button[aria-pressed="true"] {
-    color: white;
-    background: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+    background: white;
 }
 .reference-alphabet button:disabled {
     opacity: 0.4;
