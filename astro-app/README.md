@@ -10,7 +10,7 @@ Any static assets, like images, can be placed in the `public/` directory.
 
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
+All commands are run from `astro-app/`, using Node.js >=22.12.0:
 
 | Command                   | Action                                           |
 | :------------------------ | :----------------------------------------------- |
@@ -20,6 +20,19 @@ All commands are run from the root of the project, from a terminal:
 | `yarn run preview`         | Preview your build locally, before deploying     |
 | `yarn run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `yarn run astro -- --help` | Get help using the Astro CLI                     |
+
+### Sharp installation
+
+Sharp is a direct dependency used to optimize downloaded images. If a system-installed
+`libvips` makes Sharp attempt a source build, install with the bundled binaries instead:
+
+```sh
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 yarn install
+```
+
+Relying only on Astro's optional Sharp dependency can let Yarn skip it after a failed
+install, leading to `Cannot find package 'sharp'` during prerendering. Keep Sharp
+declared directly in this app's dependencies.
 
 ## Astro Documentation
 
@@ -135,11 +148,14 @@ companions so LLM crawlers can read clean page content without HTML chrome:
 | `/index.md`             | `text/markdown`  | `src/lib/llms-txt/home-summary.md`                    |
 | `/about.md`             | `text/markdown`  | Same loader as `/about` (`getAboutPageData`)          |
 | `/methods.md`           | `text/markdown`  | Same loader as `/methods` (`getMethodsPageData`)      |
+| `/glossary.md`          | `text/markdown`  | Same loader as `/glossary` (`getGlossaryPageData`)    |
+| `/abbreviations.md`     | `text/markdown`  | Same loader as `/abbreviations` (`getAbbreviationsPageData`) |
 | `/area-overview.md`  | `text/markdown`  | Map markers from `getHomePageData()` (no HTML route)  |
 
 Serializer logic lives in `src/lib/llms-txt/serializers.ts`; endpoints are
 plain Astro `GET` handlers under `src/pages/`. Editing CMS content
 automatically propagates to the markdown companions on the next build.
+The `/llms.txt` index includes the glossary and abbreviations companions.
 
 **Charset:** the endpoints emit `Content-Type: text/markdown; charset=utf-8`
 (and `text/plain; charset=utf-8` for `/llms.txt`), but most static hosts apply
