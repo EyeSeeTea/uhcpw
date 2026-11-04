@@ -66,6 +66,13 @@
     text-decoration: none;
     cursor: pointer;
 }
+.reference-group-nav a {
+    background: var(--color-accent-primary);
+    color: white;
+}
+.reference-group-nav a:hover {
+    background: var(--color-accent-primary-dark);
+}
 .reference-letter-select {
     display: none;
     font-size: 14px;
