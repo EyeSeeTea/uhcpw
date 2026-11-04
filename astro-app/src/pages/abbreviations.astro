@@ -2,6 +2,7 @@
 import Layout from "@/layouts/Layout.astro";
 import { getSeoConfigForAstroRoute } from "@/lib/seo";
 import PageBanner from "@/components/layout/PageBanner.astro";
+import { ScrollToTopButton } from "@shared/webapp/components/scroll-to-top-button/ScrollToTopButton";
 import { getAbbreviationsPageData } from "@/data/reference-terms/reference-terms-data";
 import { getGeneralContent } from "@/data/general-content";
 import { buildAbbreviationGroups } from "@/data/reference-terms/reference-terms-view";
@@ -36,6 +37,7 @@ const groups = buildAbbreviationGroups({ entries, categories });
         ))}
         {entries.length === 0 && <p>No abbreviations available.</p>}
         <a class="back-to-top" href="#top">Back to top ↑</a>
+        <div class="mobile-back-to-top"><ScrollToTopButton client:only="react" threshold={0} /></div>
     </div>
 </Layout>
 <script>import { initReferencePage } from "@/scripts/reference-terms/reference-terms-client"; initReferencePage("abbreviations");</script>

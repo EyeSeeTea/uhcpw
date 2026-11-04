@@ -214,9 +214,14 @@
     overflow-wrap: anywhere;
 }
 .back-to-top {
-    display: inline-block;
+    display: block;
+    width: fit-content;
     margin-top: 40px;
+    margin-left: auto;
     color: var(--color-accent-primary);
+}
+.mobile-back-to-top {
+    display: none;
 }
 .reference-content :focus-visible {
     outline: 3px solid var(--color-accent-secondary);
@@ -226,6 +231,12 @@
     outline: none;
 }
 @media (max-width: 960px) {
+    .back-to-top {
+        display: none;
+    }
+    .mobile-back-to-top {
+        display: block;
+    }
     .glossary-entries {
         grid-template-columns: 1fr;
     }
@@ -264,6 +275,7 @@
     .reference-actions,
     .reference-group-nav,
     .back-to-top,
+    .mobile-back-to-top,
     .entry-anchor,
     .glossary-entry summary {
         display: none !important;
