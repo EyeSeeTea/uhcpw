@@ -9,13 +9,11 @@ import uhcwHomeLogo from "@/assets/layout/uhcw-home-logo.png";
 import { href, isActivePath } from "@/lib/href";
 
 interface Props {
-    abbreviationsUrl?: string;
-    glossaryUrl?: string;
     navItems: readonly NavItem[];
     regionalDisclaimer?: RegionalDisclaimer;
 }
 
-const { abbreviationsUrl, glossaryUrl, navItems, regionalDisclaimer } = Astro.props;
+const { navItems, regionalDisclaimer } = Astro.props;
 
 const isHomePage = isActivePath(Astro.url.pathname, href("/"));
 ---
@@ -27,8 +25,8 @@ const isHomePage = isActivePath(Astro.url.pathname, href("/"));
                 WHO Barcelona Office for Health Systems Financing
             </span>
             <div class="top-links">
-                {abbreviationsUrl && <a href={abbreviationsUrl} class="top-link" target="_blank" rel="noopener noreferrer">Abbreviations</a>}
-                {glossaryUrl && <a href={glossaryUrl} class="top-link" target="_blank" rel="noopener noreferrer">Glossary</a>}
+                <a href={href("/abbreviations")} class="top-link">Abbreviations</a>
+                <a href={href("/glossary")} class="top-link">Glossary</a>
             </div>
         </div>
     </div>

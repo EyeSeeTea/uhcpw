@@ -1,3 +1,4 @@
+import { getCountries } from "@/data/countries";
 import type { Country } from "@shared/domain/entities/Country";
 import type { Region } from "@shared/domain/entities/region/Region";
 import { ORG_UNIT_GROUP_IDS } from "@shared/domain/entities/region/Region";
@@ -62,7 +63,7 @@ async function fetchNavItems(): Promise<readonly NavItem[]> {
     const compositionRoot = getServerCompositionRoot();
 
     const [countries, regions] = await Promise.all([
-        runFuture(compositionRoot.countries.get.execute(), "countries.get"),
+        getCountries(),
         runFuture(compositionRoot.regions.get.execute(), "regions.get"),
     ]);
 

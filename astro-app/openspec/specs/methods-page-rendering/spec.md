@@ -52,24 +52,14 @@ Each method section SHALL display the section name as an **H2** heading, followe
 - **WHEN** the user clicks "Read less" on an expanded method section
 - **THEN** the section collapses back to showing only the short text
 
-### Requirement: Abbreviations and Glossary download links
+### Requirement: Abbreviations and Glossary links
 
-The page SHALL render "Abbreviations" and "Glossary" links styled as pill-shaped buttons with accent-primary background. Links SHALL open in a new tab. URLs SHALL come from DHIS2 general content; if the DHIS2 URL is empty/null, the links SHALL fall back to `https://cmyn.short.gy/abbreviations` and `https://cmyn.short.gy/glossary` respectively.
+The page SHALL render "Abbreviations" and "Glossary" links styled as pill-shaped buttons with accent-primary background. The links SHALL point to the corresponding Astro routes under the configured base path and open in the current tab.
 
-#### Scenario: Download links with DHIS2 URLs
+#### Scenario: Reference links use internal routes
 
-- **WHEN** DHIS2 general content provides URLs for abbreviations and glossary
-- **THEN** the links use those DHIS2 URLs
-
-#### Scenario: Download links with fallback URLs
-
-- **WHEN** DHIS2 general content has empty/null URLs for abbreviations or glossary
-- **THEN** the links fall back to the hardcoded `cmyn.short.gy` URLs
-
-#### Scenario: Links open in new tab
-
-- **WHEN** a user clicks an Abbreviations or Glossary link
-- **THEN** the link opens in a new browser tab
+- **WHEN** a user selects Abbreviations or Glossary on the Methods page
+- **THEN** the corresponding Astro page opens under the configured base path in the current tab
 
 ### Requirement: Page content area with consistent padding
 
@@ -93,21 +83,6 @@ The rendered Methods page SHALL ship zero client-side JavaScript. All content is
 
 - **WHEN** `astro build` completes
 - **THEN** the generated `/methods/index.html` contains no `<script>` tags (excluding Astro's view transitions or other framework-level scripts if enabled)
-
-### Requirement: Centralized URL resolution for abbreviations and glossary
-The methods page SHALL use a shared data-layer function for resolving abbreviations and glossary URLs (including fallbacks and normalization), instead of computing them inline.
-
-#### Scenario: Methods page uses centralized URL resolution
-- **WHEN** methods.astro needs abbreviations and glossary URLs
-- **THEN** it calls `resolveGeneralContentUrls(generalContent)` from the data layer
-
-#### Scenario: Layout uses same URL resolution
-- **WHEN** Layout.astro passes URLs to Header and Footer
-- **THEN** it uses the same `resolveGeneralContentUrls` function
-
-#### Scenario: Fallback URLs applied consistently
-- **WHEN** generalContent has no abbreviations or glossary URL
-- **THEN** fallback URLs are applied by the shared function, ensuring consistency across page content and header/footer
 
 ### Requirement: Methods page heading hierarchy is sequential
 The Methods page SHALL have a sequential heading hierarchy with no skipped levels. The page title SHALL be H1, and method section names SHALL be H2.

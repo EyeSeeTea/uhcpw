@@ -853,8 +853,6 @@ export function givenAGeneralContent(): GeneralContent {
         cookies: {
             policyUrl: "https://www.who.int/about/policies/privacy",
         },
-        abbreviations: { url: undefined },
-        glossary: { url: undefined },
         regionalPageMobilePopUp: {
             disclaimer: "This is the regional page mobile pop-up disclaimer.",
             buttonText: "Learn More",

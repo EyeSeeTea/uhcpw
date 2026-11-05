@@ -1,3 +1,5 @@
+import { getGeneralContent } from "@/data/general-content";
+import { getCountries } from "@/data/countries";
 import type { HomePageContent } from "@shared/domain/entities/HomePageContent";
 import type { GeneralContent } from "@shared/domain/entities/GeneralContent";
 import { getServerCompositionRoot, getServerD2Api } from "@/infra/composition-root.server";
@@ -30,12 +32,12 @@ export async function getHomePageData(): Promise<HomePageData> {
 
     const [homePageContent, countries, resources, generalContent] = await Promise.all([
         runFuture(compositionRoot.home.getPageContent.execute(), "home.getPageContent"),
-        runFuture(compositionRoot.countries.get.execute(), "countries.get"),
+        getCountries(),
         runFuture(
             compositionRoot.resources.get.execute({ isFavouriteHome: true }),
             "resources.get(favouriteHome)",
         ),
-        runFuture(compositionRoot.general.getContent.execute(), "generalContent.get"),
+        getGeneralContent(),
     ]);
 
     const homeResources = buildHomeResources(resources);

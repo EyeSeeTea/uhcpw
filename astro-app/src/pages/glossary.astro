@@ -1,0 +1,52 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { getSeoConfigForAstroRoute } from "@/lib/seo";
+import PageBanner from "@/components/layout/PageBanner.astro";
+import { ScrollToTopButton } from "@shared/webapp/components/scroll-to-top-button/ScrollToTopButton";
+import { getGlossaryPageData } from "@/data/reference-terms/reference-terms-data";
+import { getGeneralContent } from "@/data/general-content";
+import { glossaryInitial, uniqueReferenceIds } from "@/data/reference-terms/reference-terms-view";
+import "@/styles/reference-terms.css";
+
+const [data, generalContent] = await Promise.all([getGlossaryPageData(), getGeneralContent()]);
+const entries = [...data].sort((a, b) => a.term.localeCompare(b.term));
+const ids = uniqueReferenceIds(entries.map(entry => entry.term));
+const letters = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+---
+<Layout generalContent={generalContent} seo={getSeoConfigForAstroRoute(Astro.url.pathname)}>
+    <PageBanner title="Glossary" />
+    <div class="reference-content" data-reference-page="glossary">
+        <div class="reference-controls" hidden>
+            <div class="reference-search">
+                <label for="reference-query">Search terms and definitions</label>
+                <input id="reference-query" type="search" placeholder="Try financial protection" autocomplete="off" />
+            </div>
+            <button type="button" class="reference-button" data-reset hidden>Clear filters</button>
+        </div>
+        <nav class="reference-alphabet" aria-label="Filter by initial letter" hidden>
+            <label class="reference-letter-select">Filter by initial letter
+                <select data-letter-select>
+                    {['All', ...letters].map(letter => <option value={letter} disabled={letter !== 'All' && !entries.some(entry => glossaryInitial(entry.term) === letter)}>{letter}</option>)}
+                </select>
+            </label>
+            {['All', ...letters].map(letter => <button type="button" data-letter={letter} aria-pressed={letter === 'All'} disabled={letter !== 'All' && !entries.some(entry => glossaryInitial(entry.term) === letter)}>{letter}</button>)}
+        </nav>
+        <div class="reference-actions" hidden><button type="button" class="reference-link" data-expand>Collapse definitions</button></div>
+        <div class="glossary-entries">
+            {entries.map((entry, index) => (
+                <article class="glossary-entry" id={ids[index]} data-entry data-search={`${entry.term} ${entry.definition}`} data-initial={glossaryInitial(entry.term)}>
+                    <h2>{entry.term} <a class="entry-anchor" href={`#${ids[index]}`} aria-label={`Link to ${entry.term}`}>#</a></h2>
+                    <details open>
+                        <summary><span class="closed-label">Show definition</span><span class="open-label">Hide definition</span><svg class="chevron" aria-hidden="true" viewBox="0 0 24 24"><path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" /></svg></summary>
+                        <p>{entry.definition}</p>
+                    </details>
+                </article>
+            ))}
+        </div>
+        <p data-empty role="status" hidden>{entries.length ? "No entries found. Try another search or clear the filters." : "No glossary entries available."}</p>
+        {entries.length === 0 && <p>No glossary entries available.</p>}
+        <a class="back-to-top" href="#">Back to top ↑</a>
+        <div class="mobile-back-to-top"><ScrollToTopButton client:only="react" threshold={0} /></div>
+    </div>
+</Layout>
+<script>import { initReferencePage } from "@/scripts/reference-terms/reference-terms-client"; initReferencePage("glossary");</script>

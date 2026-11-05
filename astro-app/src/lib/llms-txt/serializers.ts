@@ -1,6 +1,8 @@
 import type { FinancialProtectionStatus } from "@shared/domain/entities/FinancialProtectionStatus";
 import type { AboutPageData, PersonState } from "@/data/about/about-data";
 import type { MethodsPageData } from "@/data/methods/methods-data";
+import type { Abbreviations, GlossaryEntries } from "@shared/domain/entities/ReferenceTerms";
+import { buildAbbreviationGroups } from "@/data/reference-terms/reference-terms-view";
 
 export type LlmsTxtPageEntry = Readonly<{
     href: string;
@@ -8,17 +10,10 @@ export type LlmsTxtPageEntry = Readonly<{
     description: string;
 }>;
 
-export type LlmsTxtExternalResource = Readonly<{
-    href: string;
-    label: string;
-    description?: string;
-}>;
-
 export type LlmsTxtInput = Readonly<{
     title: string;
     summary: string;
     pages: ReadonlyArray<LlmsTxtPageEntry>;
-    externalResources: ReadonlyArray<LlmsTxtExternalResource>;
 }>;
 
 export type AreaMarkerFeature = Readonly<{
@@ -52,6 +47,21 @@ export function serializeMethodsMarkdown(data: MethodsPageData, title: string): 
     return `${sections.join("\n\n")}\n`;
 }
 
+export function serializeGlossaryMarkdown(entries: GlossaryEntries, title: string): string {
+    const sections = [...entries]
+        .sort((a, b) => a.term.localeCompare(b.term))
+        .map(entry => `## ${entry.term}\n\n${entry.definition.trim()}`);
+    return `${[`# ${title}`, ...sections].join("\n\n")}\n`;
+}
+
+export function serializeAbbreviationsMarkdown(data: Abbreviations, title: string): string {
+    const sections = buildAbbreviationGroups(data).map(group => {
+        const entries = group.entries.map(entry => `- **${entry.abbreviation}**: ${entry.meaning}`).join("\n");
+        return `## ${group.name}\n\n${entries}`;
+    });
+    return `${[`# ${title}`, ...sections].join("\n\n")}\n`;
+}
+
 export function serializeAreaOverviewMarkdown(features: ReadonlyArray<AreaMarkerFeature>, title: string): string {
     const areaSections = features
         .map(f => ({
@@ -76,18 +86,7 @@ export function serializeAreaOverviewMarkdown(features: ReadonlyArray<AreaMarker
 
 export function serializeLlmsTxt(input: LlmsTxtInput): string {
     const pageLines = input.pages.map(page => `- [${page.title}](${page.href}): ${page.description}`);
-    const optionalLines = input.externalResources.map(resource => {
-        const suffix = resource.description ? `: ${resource.description}` : "";
-        return `- [${resource.label}](${resource.href})${suffix}`;
-    });
-
-    const sections = [
-        `# ${input.title}`,
-        `> ${input.summary.trim()}`,
-        "## Pages",
-        pageLines.join("\n"),
-        ...(optionalLines.length > 0 ? ["## Optional", optionalLines.join("\n")] : []),
-    ];
+    const sections = [`# ${input.title}`, `> ${input.summary.trim()}`, "## Pages", pageLines.join("\n")];
 
     return `${sections.join("\n\n")}\n`;
 }

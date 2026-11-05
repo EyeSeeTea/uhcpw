@@ -121,3 +121,12 @@ When a home-page resource's remote image fails to prefetch at build time, the ge
 - **THEN** the returned `HomeResourceState.imageOriginal` is that local path
 - **AND** the card renders the `<img>` pointing at the local optimized file
 
+
+### Requirement: Deduplicate build-time remote image requests
+
+During a production build, requests for the same normalized remote URL and image transformation options SHALL share their in-flight or completed result, including failures. A new build SHALL retry failed images. Development requests SHALL retain their existing retry behavior.
+
+#### Scenario: Repeated missing image
+- **WHEN** the same image and transformation are requested more than once during a build and the fetch fails
+- **THEN** the build performs one fetch and emits one warning for that request
+- **AND** each caller receives the existing fallback result

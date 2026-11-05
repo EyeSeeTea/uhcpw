@@ -1,3 +1,6 @@
+import { getGeneralContent } from "@/data/general-content";
+import { buildCache } from "@/lib/build-cache";
+import { getCountries } from "@/data/countries";
 export const AVATAR_FALLBACK = "/images/avatar-empty.png";
 
 import type { Person } from "@shared/domain/entities/Person";
@@ -90,7 +93,7 @@ export type AboutPageData = {
     generalContent: GeneralContent;
 };
 
-export async function getAboutPageData(): Promise<AboutPageData> {
+export const getAboutPageData = buildCache(async (): Promise<AboutPageData> => {
     const endTimer = startTimer(log, "About page data load");
     const compositionRoot = getServerCompositionRoot();
 
@@ -98,8 +101,8 @@ export async function getAboutPageData(): Promise<AboutPageData> {
         runFuture(compositionRoot.about.getPersons.execute(true), "about.getTeam"),
         runFuture(compositionRoot.about.getPersons.execute(false), "about.getExperts"),
         runFuture(compositionRoot.about.getOfficeInfo.execute(), "about.getOfficeInfo"),
-        runFuture(compositionRoot.countries.get.execute(), "countries.get"),
-        runFuture(compositionRoot.general.getContent.execute(), "generalContent.get"),
+        getCountries(),
+        getGeneralContent(),
     ]);
 
     const team = sortTeam(mapPersonsWithCountry(teamRaw, countries));
@@ -126,4 +129,4 @@ export async function getAboutPageData(): Promise<AboutPageData> {
         parentSortOrder,
         generalContent,
     };
-}
+});

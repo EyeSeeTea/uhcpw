@@ -56,6 +56,16 @@ export const seoRouteConfigs: SeoRouteConfig = {
         description:
             "Find on UHC Watch comparative analysis on financial protection, health financing, economy, resilience, spending and voluntary health insurance",
     },
+    "/glossary": {
+        title: "UHC Watch glossary: financial protection & health financing terms",
+        description:
+            "Explore definitions of terms used in UHC Watch to describe financial protection, health financing and universal health coverage.",
+    },
+    "/abbreviations": {
+        title: "UHC Watch abbreviations: health coverage & health financing",
+        description:
+            "Find the meanings of abbreviations used in UHC Watch, including health financing terms, countries and territories, and languages.",
+    },
     "/methods": {
         title: "UHC Watch methods: how do we monitor progress towards UHC?",
         description:

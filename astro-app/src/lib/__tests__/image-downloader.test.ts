@@ -26,6 +26,7 @@ describe("image-downloader warn logging", () => {
 
     afterEach(() => {
         vi.restoreAllMocks();
+        vi.unstubAllEnvs();
     });
 
     it("warns once with url + status when the remote returns non-2xx", async () => {
@@ -40,6 +41,22 @@ describe("image-downloader warn logging", () => {
         expect(warnMock).toHaveBeenCalledTimes(1);
         const [payload] = warnMock.mock.calls[0] ?? [];
         expect(payload).toMatchObject({ url: "http://example.test/fail.png", status: 500 });
+    });
+
+    it("shares failed image requests within a production build", async () => {
+        vi.stubEnv("PROD", true);
+        const fetchMock = vi.fn(async () => new Response("missing", { status: 404 }));
+        vi.stubGlobal("fetch", fetchMock);
+
+        const url = "http://example.test/build-missing.png";
+        const results = await Promise.all([
+            downloadAndOptimizeImage(api, url, options),
+            downloadAndOptimizeImage(api, url, options),
+        ]);
+        expect(results).toEqual([null, null]);
+        expect(await downloadAndOptimizeImage(api, url, options)).toBeNull();
+        expect(fetchMock).toHaveBeenCalledTimes(1);
+        expect(warnMock).toHaveBeenCalledTimes(1);
     });
 
     it("warns with the error message when fetch throws", async () => {
