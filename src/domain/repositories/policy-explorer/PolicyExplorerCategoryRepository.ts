@@ -1,10 +1,8 @@
 import { FutureData } from "../../entities/Future";
-import {
-    PolicyExplorerCategory,
-    PolicyExplorerSelectCategoryInfo,
-} from "../../entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerCategory } from "../../entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerContent } from "../../entities/policy-explorer/PolicyExplorerContent";
 
 export interface PolicyExplorerCategoryRepository {
     getAll(isRegionalPage?: boolean): FutureData<PolicyExplorerCategory[]>;
-    getSelectCategoryInfo(): FutureData<PolicyExplorerSelectCategoryInfo>;
+    getPageContent(): FutureData<PolicyExplorerContent>;
 }

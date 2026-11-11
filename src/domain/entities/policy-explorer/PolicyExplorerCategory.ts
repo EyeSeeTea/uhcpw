@@ -20,8 +20,3 @@ export type PolicyExplorerSubcategory = {
     id: string;
     name: string;
 };
-
-export type PolicyExplorerSelectCategoryInfo = {
-    title: string;
-    text: string;
-};

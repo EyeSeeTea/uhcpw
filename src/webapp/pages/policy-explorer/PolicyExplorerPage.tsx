@@ -59,7 +59,7 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
         onSwitchRowColumn,
         onDownload,
         dataOrientationByTable,
-        selectCategoryInfo,
+        pageContent,
         errorMessage,
         isLoading,
     } = usePolicyExplorer({
@@ -190,7 +190,9 @@ export const PolicyExplorerPage: React.FC<{ searchParams?: string }> = React.mem
                     </Content>
                 )}
 
-                {!isLoading && !(data && dataOrientationByTable) && <EmptyContent infos={[selectCategoryInfo]} />}
+                {!isLoading && !(data && dataOrientationByTable) && (
+                    <EmptyContent infos={[pageContent?.selectCategory, pageContent?.dataSourcesAndAvailability]} />
+                )}
 
                 {!isLoading && (
                     <div ref={referencesRef}>

@@ -18,8 +18,8 @@ import { PolicyExplorerState } from "./PolicyExplorerState";
 import {
     PolicyExplorerCategory,
     PolicyExplorerSelectableCategory,
-    PolicyExplorerSelectCategoryInfo,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerContent } from "../../../domain/entities/policy-explorer/PolicyExplorerContent";
 import {
     CATEGORY_BY_TYPE_OF_HEALTHCARE,
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
@@ -59,9 +59,7 @@ export function usePolicyExplorer({
 
     const [policyExplorerCategories, setPolicyExplorerCategories] = useState<PolicyExplorerCategory[]>([]);
     const [categoryFilters, setCategoryFilters] = useState<CategoryOption[]>([]);
-    const [selectCategoryInfo, setSelectCategoryInfo] = useState<PolicyExplorerSelectCategoryInfo | undefined>(
-        undefined
-    );
+    const [pageContent, setPageContent] = useState<PolicyExplorerContent | undefined>(undefined);
     const [selectedCategoriesWithSubcategoriesFilter, setSelectedCategoriesWithSubcategoriesFilter] = useState<
         Record<string, string[]> | undefined
     >();
@@ -104,12 +102,12 @@ export function usePolicyExplorer({
     }, [compositionRoot.policyExplorer]);
 
     useEffect(() => {
-        compositionRoot.policyExplorer.getSelectCategoryInfo.execute().run(
-            info => {
-                setSelectCategoryInfo(info);
+        compositionRoot.policyExplorer.getPageContent.execute().run(
+            content => {
+                setPageContent(content);
             },
             error => {
-                setSelectCategoryInfo(undefined);
+                setPageContent(undefined);
                 setErrorMessage(error);
             }
         );
@@ -305,7 +303,7 @@ export function usePolicyExplorer({
         onGetTable,
         onSwitchRowColumn,
         onDownload,
-        selectCategoryInfo,
+        pageContent,
         errorMessage,
         isLoading: loading,
     };

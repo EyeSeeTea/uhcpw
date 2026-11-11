@@ -5,13 +5,10 @@ import ReactMarkdown from "react-markdown";
 import _ from "lodash";
 
 import i18n from "../../../locales";
-import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
-import { InfoBoxContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
+import { InfoBoxContent } from "../../../domain/entities/InfoBoxContent";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN } from "../../common/hooks/screen/useIsSmallScreen";
 
-type EmptyContentInfo = PolicyExplorerSelectCategoryInfo | InfoBoxContent;
-
-type EmptyContentProps = { infos: ReadonlyArray<EmptyContentInfo | undefined> };
+type EmptyContentProps = { infos: ReadonlyArray<InfoBoxContent | undefined> };
 
 export const EmptyContent: React.FC<EmptyContentProps> = React.memo(({ infos }) => {
     const availableInfos = _.compact(infos);
@@ -27,7 +24,7 @@ export const EmptyContent: React.FC<EmptyContentProps> = React.memo(({ infos }) 
     );
 });
 
-const InfoBox: React.FC<{ info: EmptyContentInfo }> = React.memo(({ info }) => (
+const InfoBox: React.FC<{ info: InfoBoxContent }> = React.memo(({ info }) => (
     <Content>
         <Row>
             <TextWrapper>

@@ -3,14 +3,19 @@ import { Id } from "../../../domain/entities/Ref";
 import { IndicatorExplorerContent } from "../../../domain/entities/indicator-explorer/IndicatorExplorerContent";
 import { IndicatorExplorerContentRepository } from "../../../domain/repositories/indicator-explorer/IndicatorExplorerContentRepository";
 import { D2Api } from "../../../types/d2-api";
-import { DataValue, getMainPagesContent } from "../common/getMainPagesContent";
+import {
+    buildInfoBoxContent,
+    DataValue,
+    getMainPagesContent,
+    InfoBoxDataElements,
+} from "../common/getMainPagesContent";
 
-const selectCategoryInfoDataElements: Readonly<Record<"title" | "text", Id>> = {
+const selectCategoryInfoDataElements: InfoBoxDataElements = {
     title: "h5A4TCDMTHM",
     text: "XVZ0MsAkYaC",
 };
 
-const dataSourcesInfoDataElements: Readonly<Record<"title" | "text", Id>> = {
+const dataSourcesInfoDataElements: InfoBoxDataElements = {
     title: "UD3RlPzN605",
     text: "EVfINfwONps",
 };
@@ -25,19 +30,10 @@ export class IndicatorExplorerD2Repository implements IndicatorExplorerContentRe
     }
 
     private buildContent(dataValues: ReadonlyArray<DataValue>): IndicatorExplorerContent {
-        const getValue = (dataElement: Id): string | undefined =>
-            dataValues.find(dv => dv.dataElement === dataElement)?.value;
-
         return {
-            selectCategory: {
-                title: getValue(selectCategoryInfoDataElements.title) || "",
-                text: getValue(selectCategoryInfoDataElements.text) || "",
-            },
-            dataSourcesAndAvailability: {
-                title: getValue(dataSourcesInfoDataElements.title) || "",
-                text: getValue(dataSourcesInfoDataElements.text) || "",
-            },
-            noDataMessage: getValue(noDataDataElement) || "",
+            selectCategory: buildInfoBoxContent(dataValues, selectCategoryInfoDataElements),
+            dataSourcesAndAvailability: buildInfoBoxContent(dataValues, dataSourcesInfoDataElements),
+            noDataMessage: dataValues.find(dv => dv.dataElement === noDataDataElement)?.value || "",
         };
     }
 }
