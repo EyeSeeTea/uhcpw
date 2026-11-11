@@ -54,7 +54,7 @@ export const chart_fnOIi0bdISn_Options: (chartSource: ChartSource) => Highcharts
         {
             name: "",
             id: ORG_UNIT_IDS.EU_CANDIDATE_COUNTRIES,
-            color: getColorOfRegionByRegionCode(REGION_CODES.EUROPEAN_REGION),
+            color: getColorOfRegionByRegionCode(REGION_CODES.EU_CANDIDATE_COUNTRIES),
         },
         {
             name: "",
