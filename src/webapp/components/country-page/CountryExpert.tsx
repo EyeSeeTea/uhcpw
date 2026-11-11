@@ -95,10 +95,10 @@ const StyledBubble = styled(Bubble)`
 
 const GridContainer = styled(Grid)`
     margin: 30px 0px;
+    width: 100%;
     color: ${colors.black};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
-        width: 100%;
         margin: 0;
     }
 `;

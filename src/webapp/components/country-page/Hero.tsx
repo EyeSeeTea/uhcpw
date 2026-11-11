@@ -1,10 +1,11 @@
-import { CircularProgress, Grid } from "@material-ui/core";
+import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import styled from "styled-components";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import ReactMarkdown from "react-markdown";
 import { ButtonItem } from "../home/country-panel/CountryPanel";
-import { VisualizationPlugin } from "../visualization/VisualizationPlugin";
+import { VISUALIZATION_PLUGIN_PADDING_END_PX, VisualizationPlugin } from "../visualization/VisualizationPlugin";
+import { PAGE_MARGIN_END_PX } from "../layout/pageMargins";
 import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
 import React from "react";
@@ -30,10 +31,27 @@ const ANALYTICS_CONTENT = {
     contentId: CHART_1_SCATTER_VISUALIZATION_NAME,
 };
 
+const INFO_PANEL_EXTRA_WIDTH_PX = 52;
+
+const useStyles = makeStyles(theme => ({
+    infoPanel: {
+        [theme.breakpoints.up("lg")]: columnWidth(4, INFO_PANEL_EXTRA_WIDTH_PX),
+    },
+    graphPanel: {
+        [theme.breakpoints.up("lg")]: columnWidth(8, -INFO_PANEL_EXTRA_WIDTH_PX),
+    },
+}));
+
+function columnWidth(columns: number, extraWidthPx: number): Readonly<{ flexBasis: string; maxWidth: string }> {
+    const width = `calc(${(columns / 12) * 100}% + ${extraWidthPx}px)`;
+    return { flexBasis: width, maxWidth: width };
+}
+
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndSubregions } = useAppContext();
     const country = useCountryInfo(countryId);
     const isSmallScreen = useIsSmallScreen();
+    const classes = useStyles();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
@@ -66,7 +84,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     return (
         <Grid container aria-label="country-page-hero">
             {country && (
-                <InfoGrid item md={5} lg={4} xs={12}>
+                <InfoGrid item xs={12} md={5} className={classes.infoPanel}>
                     <ReactMarkdown
                         components={{
                             a: ({ ...props }) => <ButtonItem {...props} />,
@@ -76,7 +94,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     </ReactMarkdown>
                 </InfoGrid>
             )}
-            <GraphGrid item xs={12} md={7} lg={8}>
+            <GraphGrid item xs={12} md={7} className={classes.graphPanel}>
                 <VisualizationContainer>
                     <VisualizationPlugin
                         key={countryIdSelected}
@@ -145,7 +163,7 @@ const InfoGrid = styled(Grid)`
 `;
 
 const GraphGrid = styled(Grid)`
-    padding: 20px 50px 30px 50px;
+    padding: 20px ${PAGE_MARGIN_END_PX - VISUALIZATION_PLUGIN_PADDING_END_PX}px 30px 50px;
     background-color: white;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
@@ -155,7 +173,6 @@ const GraphGrid = styled(Grid)`
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
-    padding-inline-end: 50px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 0;

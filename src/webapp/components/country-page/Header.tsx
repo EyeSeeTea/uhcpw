@@ -14,11 +14,12 @@ import { Maybe } from "../../../types/utils";
 import { ExplainerVideoButton } from "../explainer-video/ExplainerVideoButton";
 import { useExplainer } from "../explainer-video/useExplainer";
 import { useFitsInOneLine } from "../../common/hooks/screen/useFitsInOneLine";
+import { PAGE_MARGIN_END_PX } from "../layout/pageMargins";
 
 const useStyles = makeStyles(theme => ({
     container: {
         paddingLeft: theme.spacing(8),
-        paddingRight: theme.spacing(10),
+        paddingRight: PAGE_MARGIN_END_PX,
         "@media (max-width: 500px)": {
             flexWrap: "wrap",
             justifyContent: "flex-end",

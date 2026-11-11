@@ -15,6 +15,7 @@ import { VisualizationPlugin } from "../../components/visualization/Visualizatio
 import ScreenshotModal from "../../components/screenshot-modal/ScreenshotModal";
 import { PolicyExplorerTable } from "./PolicyExplorerTable";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
+import { PAGE_MARGIN_END_PX } from "../../components/layout/pageMargins";
 
 export type VisualContent = {
     visual?: string;
@@ -283,7 +284,7 @@ const VisualContentContainer = styled.div<{ hasChildren: boolean; $hasBlockStart
 
 const Container = styled.div<{ $displayflex?: boolean }>`
     max-width: 100%;
-    padding: 20px 50px 30px 50px;
+    padding: 20px ${PAGE_MARGIN_END_PX}px 30px 50px;
     display: ${props => (props.$displayflex ? "flex" : "block")};
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
