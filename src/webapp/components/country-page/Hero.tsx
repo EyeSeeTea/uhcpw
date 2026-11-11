@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { colors } from "../../pages/app/themes/dhis2.theme";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import ReactMarkdown from "react-markdown";
-import { ButtonItem } from "../home/country-panel/CountryPanel";
+import { countrySummaryMarkdownComponents } from "../country-summary/countrySummaryMarkdownComponents";
 import { VisualizationPlugin } from "../visualization/VisualizationPlugin";
 import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
@@ -67,13 +67,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
         <Grid container aria-label="country-page-hero">
             {country && (
                 <InfoGrid item md={5} lg={4} xs={12}>
-                    <ReactMarkdown
-                        components={{
-                            a: ({ ...props }) => <ButtonItem {...props} />,
-                        }}
-                    >
-                        {summary}
-                    </ReactMarkdown>
+                    <ReactMarkdown components={countrySummaryMarkdownComponents}>{summary}</ReactMarkdown>
                 </InfoGrid>
             )}
             <GraphGrid item xs={12} md={7} lg={8}>
