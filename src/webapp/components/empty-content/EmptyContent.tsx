@@ -72,10 +72,7 @@ const Container = styled.div`
 const Content = styled.div`
     border-radius: 10px;
     background: #cce8f7;
-    padding: 48px 32px;
-    MuiSvgIcon-fontSizeLarge {
-        font-size: 10rem;
-    }
+    padding: 32px;
     &:not(:only-child) {
         flex: 1 1 0;
     }
