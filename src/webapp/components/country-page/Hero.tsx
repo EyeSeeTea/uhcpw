@@ -1,6 +1,6 @@
-import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
+import { CircularProgress, Grid } from "@material-ui/core";
 import styled from "styled-components";
-import { colors } from "../../pages/app/themes/dhis2.theme";
+import { colors, muiTheme } from "../../pages/app/themes/dhis2.theme";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import ReactMarkdown from "react-markdown";
 import { ButtonItem } from "../home/country-panel/CountryPanel";
@@ -33,25 +33,10 @@ const ANALYTICS_CONTENT = {
 
 const INFO_PANEL_EXTRA_WIDTH_PX = 52;
 
-const useStyles = makeStyles(theme => ({
-    infoPanel: {
-        [theme.breakpoints.up("lg")]: columnWidth(4, INFO_PANEL_EXTRA_WIDTH_PX),
-    },
-    graphPanel: {
-        [theme.breakpoints.up("lg")]: columnWidth(8, -INFO_PANEL_EXTRA_WIDTH_PX),
-    },
-}));
-
-function columnWidth(columns: number, extraWidthPx: number): Readonly<{ flexBasis: string; maxWidth: string }> {
-    const width = `calc(${(columns / 12) * 100}% + ${extraWidthPx}px)`;
-    return { flexBasis: width, maxWidth: width };
-}
-
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndSubregions } = useAppContext();
     const country = useCountryInfo(countryId);
     const isSmallScreen = useIsSmallScreen();
-    const classes = useStyles();
 
     const [openScreenshot, setOpenScreenshot] = React.useState(false);
 
@@ -84,7 +69,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     return (
         <Grid container aria-label="country-page-hero">
             {country && (
-                <InfoGrid item xs={12} md={5} className={classes.infoPanel}>
+                <InfoGrid item xs={12} md={5}>
                     <ReactMarkdown
                         components={{
                             a: ({ ...props }) => <ButtonItem {...props} />,
@@ -94,7 +79,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
                     </ReactMarkdown>
                 </InfoGrid>
             )}
-            <GraphGrid item xs={12} md={7} className={classes.graphPanel}>
+            <GraphGrid item xs={12} md={7}>
                 <VisualizationContainer>
                     <VisualizationPlugin
                         key={countryIdSelected}
@@ -160,6 +145,11 @@ const InfoGrid = styled(Grid)`
             padding-inline-start: 7px;
         }
     }
+    ${muiTheme.breakpoints.up("lg")} {
+        && {
+            ${columnWidth(4, INFO_PANEL_EXTRA_WIDTH_PX)}
+        }
+    }
 `;
 
 const GraphGrid = styled(Grid)`
@@ -169,7 +159,17 @@ const GraphGrid = styled(Grid)`
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 20px 30px 30px 0px;
     }
+    ${muiTheme.breakpoints.up("lg")} {
+        && {
+            ${columnWidth(8, -INFO_PANEL_EXTRA_WIDTH_PX)}
+        }
+    }
 `;
+
+function columnWidth(columns: number, extraWidthPx: number): string {
+    const width = `calc(${(columns / 12) * 100}% + ${extraWidthPx}px)`;
+    return `flex-basis: ${width}; max-width: ${width};`;
+}
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
