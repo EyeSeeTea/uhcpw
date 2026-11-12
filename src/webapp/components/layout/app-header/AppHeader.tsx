@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import MuiAppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import { makeStyles } from "@material-ui/core/styles";
@@ -13,6 +13,7 @@ import { MobileMenu } from "./MobileMenu";
 import { useAppHeader } from "./useAppHeader";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
 import { DesktopMenu } from "./DesktopMenu";
+import { useShowsDesktopMenu } from "./useShowsDesktopMenu";
 import { useReferenceLinks } from "../../../common/hooks/analytics/useReferenceLinks";
 
 export const useStyles = makeStyles(theme => ({
@@ -79,6 +80,8 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
     const { abbreviationsLink, glossaryLink } = useReferenceLinks();
     const { goToHome, whoLogoWidth, uhcwLogoWidth, isHomePage, isCountryPage } = useAppHeader();
     const isSmallScreen = useIsSmallScreen();
+    const menuRowRef = useRef<HTMLDivElement>(null);
+    const showsDesktopMenu = useShowsDesktopMenu(menuRowRef);
 
     return (
         <div className={classes.root}>
@@ -100,7 +103,7 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
                 </Toolbar>
 
                 <Toolbar className={classes.toolbarBottom}>
-                    <FlexContainer isFullWidth>
+                    <FlexContainer isFullWidth ref={menuRowRef}>
                         <FlexLogoContainer isCountryPage={isCountryPage}>
                             <LogoContainer>
                                 <img
@@ -129,13 +132,7 @@ export const AppHeader: React.FC<AppHeaderProps> = props => {
 
                         <FlexContainer>
                             <MenuContainer>
-                                <Hidden lgUp>
-                                    <MobileMenu isScreenRotated={isScreenRotated} />
-                                </Hidden>
-
-                                <Hidden mdDown>
-                                    <DesktopMenu />
-                                </Hidden>
+                                {showsDesktopMenu ? <DesktopMenu /> : <MobileMenu isScreenRotated={isScreenRotated} />}
                             </MenuContainer>
                         </FlexContainer>
                     </FlexContainer>
