@@ -11,7 +11,9 @@ import { RegionalMenuItem, RegionalMenuItemConfig } from "./useRegionalPage";
 import { colors } from "../app/themes/dhis2.theme";
 import { getColorOfRegionByRegionId } from "./getColorOfRegion";
 import { ExplainerVideoButton } from "../../components/explainer-video/ExplainerVideoButton";
+import { HeaderExplainerVideoButton } from "../../components/explainer-video/HeaderExplainerVideoButton";
 import { useExplainer } from "../../components/explainer-video/useExplainer";
+import { PAGE_MARGIN_END_PX } from "../../components/layout/pageMargins";
 
 type HeaderType = {
     selectedRegion: Id | undefined;
@@ -58,7 +60,7 @@ export const Header: React.FC<HeaderType> = props => {
                         <ButtonText>{item.label}</ButtonText>
                     </StyledButton>
                 ))}
-                {explainer && !isSmallScreen && <ExplainerVideoButton explainer={explainer} />}
+                {explainer && !isSmallScreen && <HeaderExplainerVideoButton explainer={explainer} />}
             </ButtonsContainer>
         </Container>
     );
@@ -75,7 +77,7 @@ const Container = styled.div<{ backgroundColor?: string }>`
     align-items: center;
     background: ${props => props.backgroundColor || colors.navyBlue};
     padding-inline-start: 64px;
-    padding-inline-end: 80px;
+    padding-inline-end: ${PAGE_MARGIN_END_PX}px;
 
     @media (max-width: 500px) {
         flex-wrap: wrap;

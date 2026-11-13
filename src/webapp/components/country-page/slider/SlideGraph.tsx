@@ -3,7 +3,8 @@ import ReactMarkdown, { Components } from "react-markdown";
 import styled, { css } from "styled-components";
 import React from "react";
 
-import { VisualizationPlugin } from "../../visualization/VisualizationPlugin";
+import { VISUALIZATION_PLUGIN_PADDING_END_PX, VisualizationPlugin } from "../../visualization/VisualizationPlugin";
+import { PAGE_MARGIN_END_PX } from "../../layout/pageMargins";
 import ScreenshotModal from "../../screenshot-modal/ScreenshotModal";
 import { useIndicatorExplorer } from "../../../pages/indicator-explorer/useIndicatorExplorer";
 import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../../common/hooks/screen/useIsSmallScreen";
@@ -158,8 +159,7 @@ export const SlideGraph: React.FC<SlideGraphType> = ({
 
 const Container = styled.div<{ $isRegionalPage?: boolean }>`
     max-width: 100%;
-    padding: 20px 30px 30px 30px;
-    padding-inline: 30px;
+    padding: 20px ${PAGE_MARGIN_END_PX - VISUALIZATION_PLUGIN_PADDING_END_PX}px 30px 30px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 30px;
@@ -190,9 +190,8 @@ const Container = styled.div<{ $isRegionalPage?: boolean }>`
         `}
 `;
 
-const VisualizationContainer = styled.div<{ $hasMargin?: boolean; $isRegionalPage?: boolean }>`
+const VisualizationContainer = styled.div<{ $hasMargin?: boolean }>`
     max-width: 100%;
-    padding-inline-end: ${props => (props.$isRegionalPage ? "0px" : "50px")};
     display: block;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {

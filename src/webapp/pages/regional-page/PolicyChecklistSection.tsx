@@ -18,6 +18,7 @@ import i18n from "../../../locales";
 import { Maybe } from "../../../types/utils";
 import { Id } from "../../../domain/entities/Ref";
 import { colors } from "../app/themes/dhis2.theme";
+import { PAGE_MARGIN_END_PX } from "../../components/layout/pageMargins";
 import { ChecklistPolicyMakersWithCountries, CountryExperienceData } from "./useRegionalPolicyChecklist";
 import { CountryExperienceBox } from "./CountryExperienceBox";
 import { useAnalytics } from "../../common/hooks/analytics/useAnalytics";
@@ -228,7 +229,7 @@ export const PolicyChecklistSection: React.FC<PolicyChecklistSectionProps> = Rea
 });
 
 const Container = styled.div`
-    padding: 40px 64px 40px 64px;
+    padding: 40px ${PAGE_MARGIN_END_PX}px 40px 64px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         margin-block-end: 0;

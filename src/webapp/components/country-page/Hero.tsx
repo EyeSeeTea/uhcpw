@@ -1,9 +1,10 @@
 import { CircularProgress, Grid } from "@material-ui/core";
 import styled from "styled-components";
-import { colors } from "../../pages/app/themes/dhis2.theme";
+import { colors, muiTheme } from "../../pages/app/themes/dhis2.theme";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
 import { CountrySummary } from "../country-summary/CountrySummary";
-import { VisualizationPlugin } from "../visualization/VisualizationPlugin";
+import { VISUALIZATION_PLUGIN_PADDING_END_PX, VisualizationPlugin } from "../visualization/VisualizationPlugin";
+import { PAGE_MARGIN_END_PX } from "../layout/pageMargins";
 import { LatestAvailable } from "../../../domain/entities/Year";
 import { useAppContext } from "../../contexts/app-context";
 import React from "react";
@@ -28,6 +29,8 @@ const ANALYTICS_CONTENT = {
     contentGroup: "chart",
     contentId: CHART_1_SCATTER_VISUALIZATION_NAME,
 };
+
+const INFO_PANEL_EXTRA_WIDTH_PX = 52;
 
 export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     const { countriesAndSubregions } = useAppContext();
@@ -65,11 +68,11 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
     return (
         <Grid container aria-label="country-page-hero">
             {country && (
-                <InfoGrid item md={5} lg={4} xs={12}>
+                <InfoGrid item xs={12} md={5}>
                     <CountrySummary text={summary} />
                 </InfoGrid>
             )}
-            <GraphGrid item xs={12} md={7} lg={8}>
+            <GraphGrid item xs={12} md={7}>
                 <VisualizationContainer>
                     <VisualizationPlugin
                         key={countryIdSelected}
@@ -135,20 +138,34 @@ const InfoGrid = styled(Grid)`
             padding-inline-start: 7px;
         }
     }
+    ${muiTheme.breakpoints.up("lg")} {
+        && {
+            ${columnWidth(4, INFO_PANEL_EXTRA_WIDTH_PX)}
+        }
+    }
 `;
 
 const GraphGrid = styled(Grid)`
-    padding: 20px 50px 30px 50px;
+    padding: 20px ${PAGE_MARGIN_END_PX - VISUALIZATION_PLUGIN_PADDING_END_PX}px 30px 50px;
     background-color: white;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 20px 30px 30px 0px;
     }
+    ${muiTheme.breakpoints.up("lg")} {
+        && {
+            ${columnWidth(8, -INFO_PANEL_EXTRA_WIDTH_PX)}
+        }
+    }
 `;
+
+function columnWidth(columns: number, extraWidthPx: number): string {
+    const width = `calc(${(columns / 12) * 100}% + ${extraWidthPx}px)`;
+    return `flex-basis: ${width}; max-width: ${width};`;
+}
 
 const VisualizationContainer = styled.div`
     max-width: 100%;
-    padding-inline-end: 50px;
 
     @media (max-width: ${BREAKPOINT_WIDTH_SMALL_SCREEN}px) {
         padding: 0;

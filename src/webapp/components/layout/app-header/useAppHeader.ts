@@ -90,8 +90,6 @@ export function useAppHeader(isScreenRotated?: boolean) {
 
     const isCountryPage = useMemo(() => pageType === "country", [pageType]);
 
-    const isRegionalPage = useMemo(() => pageType === "region", [pageType]);
-
     const whoLogoWidth = useMemo(() => (isXs ? 100 : 150), [isXs]);
 
     const uhcwLogoWidth = useMemo(() => (isXs ? 130 : 180), [isXs]);
@@ -127,7 +125,6 @@ export function useAppHeader(isScreenRotated?: boolean) {
         uhcwLogoWidth,
         menuRef,
         open,
-        isRegionalPage,
         onToggleForSmallScreens,
         goToHome,
         handleCountryClick,

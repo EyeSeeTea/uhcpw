@@ -21,7 +21,6 @@ type MenuItemsProps = {
     handleMenuItemClick: (link: string) => void;
     handleResourcesMenuItemClick: () => void;
     handleRegionalClick: (region: Option<Id>) => void;
-    isRegionalPage?: boolean;
 };
 export const MenuItems: React.FC<MenuItemsProps> = props => {
     const {
@@ -32,7 +31,6 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
         handleMenuItemClick,
         handleResourcesMenuItemClick,
         handleRegionalClick,
-        isRegionalPage = false,
     } = props;
 
     const { countryFilter } = useCountryPage();
@@ -71,7 +69,7 @@ export const MenuItems: React.FC<MenuItemsProps> = props => {
 
             <StyledDivider />
 
-            {isRegionalPage && !isSmallScreen ? (
+            {!isSmallScreen ? (
                 <>
                     <MenuItem>
                         <MobileMenuSubItem item={i18n.t("Regional overview")}>

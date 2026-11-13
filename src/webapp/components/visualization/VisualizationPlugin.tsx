@@ -15,6 +15,7 @@ import { openInNewTab } from "../../utils/fullUrlForPath";
 const CHART_SCATTER_VISUALIZATION_ID = "kIpnMBaBvZ9";
 
 const EMPTY_REGIONS: Id[] = [];
+export const VISUALIZATION_PLUGIN_PADDING_END_PX = 32;
 
 interface VisualizationPluginProps {
     visualizationId: string;
@@ -347,7 +348,7 @@ const Container = styled.div<{
     margin-block-start: ${props => (props.$marginStart ? "25px" : "0px")};
     background: ${props => (props.$withoutBackground ? "white" : "#f1f9fc")};
     padding-block-end: ${props => (props.$paddingEnd ? "16px" : "0px")};
-    padding-inline: ${props => (props.$paddingInline ? "16px 32px" : "0")};
+    padding-inline: ${props => (props.$paddingInline ? `16px ${VISUALIZATION_PLUGIN_PADDING_END_PX}px` : "0")};
     display: flex;
     flex-direction: column;
     height: 100%;
