@@ -1,5 +1,5 @@
 import { PolicyExplorer, DataOrientationByTable } from "../../../domain/entities/policy-explorer/PolicyExplorer";
-import { PolicyExplorerSelectCategoryInfo } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerContent } from "../../../domain/entities/policy-explorer/PolicyExplorerContent";
 import {
     CountryFilterState,
     OptionsMultiFilterState,
@@ -13,7 +13,7 @@ export type PolicyExplorerState = {
     onGetTable: () => void;
     onSwitchRowColumn: (categoryId: string) => void;
     onDownload: () => void;
-    selectCategoryInfo: PolicyExplorerSelectCategoryInfo | undefined;
+    pageContent: PolicyExplorerContent | undefined;
     errorMessage: string;
     isLoading: boolean;
 };

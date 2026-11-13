@@ -290,8 +290,11 @@ function givenPolicyExplorerCategories(): PolicyExplorerSelectableCategory[] {
     const items = policyExplorerCategoriesData as unknown as PolicyExplorerSelectableCategory[];
 
     when(mockedRepository.getAll(false)).thenReturn(Future.success(items));
-    when(mockedRepository.getSelectCategoryInfo()).thenReturn(
-        Future.success({ title: "Select Category", text: "text" })
+    when(mockedRepository.getPageContent()).thenReturn(
+        Future.success({
+            selectCategory: { title: "Select Category", text: "text" },
+            dataSourcesAndAvailability: { title: "Data sources and availability", text: "text" },
+        })
     );
 
     policyExplorerCategoryRepository = instance(mockedRepository);

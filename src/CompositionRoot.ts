@@ -37,7 +37,7 @@ import { GetSliderInfoUseCase } from "./domain/usecases/country-page/GetSliderIn
 import { CountryPageInfoD2Repository } from "./data/repositories/country-page/CountryPageInfoD2Repository";
 import { GetOfficeInfoUseCase } from "./domain/usecases/about/GetOfficeInfoUseCase";
 import { AboutInfoD2Repository } from "./data/repositories/about/AboutInfoD2Repository";
-import { GetPolicyExplorerSelectCategoryInfoUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerSelectCategoryInfoUseCase";
+import { GetPolicyExplorerPageContentUseCase } from "./domain/usecases/policy-explorer/GetPolicyExplorerPageContentUseCase";
 import { GetIndicatorExplorerPageContentUseCase } from "./domain/usecases/indicator-explorer/GetIndicatorExplorerPageContentUseCase";
 import { IndicatorExplorerD2Repository } from "./data/repositories/indicator-explorer/IndicatorExplorerD2Repository";
 import { GetHomePageContentUseCase } from "./domain/usecases/GetHomePageContentUseCase";
@@ -126,7 +126,7 @@ export function getCompositionRoot(
         },
         policyExplorer: {
             getCategories: new GetPolicyExplorerCategoriesUseCase(repositories.policyExplorerCategory),
-            getSelectCategoryInfo: new GetPolicyExplorerSelectCategoryInfoUseCase(repositories.policyExplorerCategory),
+            getPageContent: new GetPolicyExplorerPageContentUseCase(repositories.policyExplorerCategory),
             get: new GetPolicyExplorerUseCase(repositories.policyExplorer),
             download: new DownloadPolicyExplorerUseCase(repositories.policyExplorer),
         },
