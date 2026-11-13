@@ -4,7 +4,7 @@ import { isOrgUnitRegionKey, ORG_UNIT_GROUP_IDS, ORG_UNIT_IDS, Region } from "..
 import { RegionRepository } from "../../../domain/repositories/region/RegionRepository";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { BOSNIA_AND_HERZEGOVINA_LEVEL_3, BOSNIA_AND_HERZEGOVINA_LEVEL_4 } from "../countries/CountryD2Repository";
+import { getCountryId } from "../countries/CountryD2Repository";
 import { getKeyById, getRegionCodeById, getRegionNameById } from "./utils";
 
 const REGION_INFO_PROGRAM_ID = "XAoS3zq3bZg";
@@ -69,11 +69,7 @@ export class RegionD2Repository implements RegionRepository {
                 id: id,
                 name: regionNameById.get(id) || orgUnit?.name || orgUnitGroup.shortName,
                 code: regionCodeById.get(id) || "Unknown Region Code",
-                countries: orgUnitGroup.organisationUnits.map(orgUnit => {
-                    const countryId =
-                        BOSNIA_AND_HERZEGOVINA_LEVEL_3 === orgUnit.id ? BOSNIA_AND_HERZEGOVINA_LEVEL_4 : orgUnit.id;
-                    return countryId;
-                }),
+                countries: orgUnitGroup.organisationUnits.map(orgUnit => getCountryId(orgUnit.id)),
                 linkedOrgUnitId: orgUnit?.id,
                 isInRegionalPage: !!events.find(event => event.orgUnit === orgUnit?.id),
             };
