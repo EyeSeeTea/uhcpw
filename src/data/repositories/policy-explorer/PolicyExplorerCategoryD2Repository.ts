@@ -1,17 +1,16 @@
 import { Future, FutureData } from "../../../domain/entities/Future";
-import { Id } from "../../../domain/entities/Ref";
 import {
     PolicyExplorerCategory,
     PolicyExplorerSelectableCategory,
-    PolicyExplorerSelectCategoryInfo,
     PolicyExplorerSubcategory,
     PolicyExplorerGroupCategory,
 } from "../../../domain/entities/policy-explorer/PolicyExplorerCategory";
+import { PolicyExplorerContent } from "../../../domain/entities/policy-explorer/PolicyExplorerContent";
 import { PolicyExplorerCategoryRepository } from "../../../domain/repositories/policy-explorer/PolicyExplorerCategoryRepository";
 import { policyExplorerProgram_ID } from "../utils";
 import { D2Api, MetadataPick } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
-import { getMainPagesContent } from "../common/getMainPagesContent";
+import { buildInfoBoxContent, getMainPagesContent, InfoBoxDataElements } from "../common/getMainPagesContent";
 import { InmemoryCache } from "../../cache/InmemoryCache";
 import { getInfoNotes, InfoNotes } from "../../common/getInfoNotes";
 import _ from "lodash";
@@ -126,9 +125,14 @@ const sectionsList = [
     CHANGES_IN_COVERAGE_POLICY_CATEGORY_ID,
 ];
 
-const selectCategoryInfoDataElements: Record<string, Id> = {
+const selectCategoryInfoDataElements: InfoBoxDataElements = {
     title: "yEaMMB7MXqI",
     text: "SAzOXqrxWfI",
+};
+
+const dataSourcesInfoDataElements: InfoBoxDataElements = {
+    title: "GG8DjEYUfvv",
+    text: "pyb609c9LxB",
 };
 
 const CATEGORIES_ONLY_IN_REGIONAL_PAGE: string[] = [];
@@ -186,15 +190,11 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
         });
     }
 
-    getSelectCategoryInfo(): FutureData<PolicyExplorerSelectCategoryInfo> {
-        return getMainPagesContent(this.api).map(dataValues => this.buildSelectCategoryInfo(dataValues));
-    }
-
-    private buildSelectCategoryInfo(dataValues: DataValue[]): PolicyExplorerSelectCategoryInfo {
-        return {
-            title: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.title)?.value || "",
-            text: dataValues.find(dv => dv.dataElement === selectCategoryInfoDataElements.text)?.value || "",
-        };
+    getPageContent(): FutureData<PolicyExplorerContent> {
+        return getMainPagesContent(this.api).map(dataValues => ({
+            selectCategory: buildInfoBoxContent(dataValues, selectCategoryInfoDataElements),
+            dataSourcesAndAvailability: buildInfoBoxContent(dataValues, dataSourcesInfoDataElements),
+        }));
     }
 
     private sortSubcategories(

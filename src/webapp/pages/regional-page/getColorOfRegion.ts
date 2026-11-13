@@ -12,6 +12,8 @@ export function getColorOfRegionByRegionId(regionId: Id, weight: ColorWeight = "
             return regionColors.EASTERN_EUROPE_AND_CENTRAL_ASIA[weight];
         case ORG_UNIT_GROUP_IDS.EUROPEAN_REGION:
             return regionColors.EUROPEAN_REGION[weight];
+        case ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES:
+            return regionColors.EU_CANDIDATE_COUNTRIES[weight];
         default:
             return regionColors.EUROPEAN_UNION[weight];
     }
@@ -27,6 +29,8 @@ export function getColorOfRegionByRegionCode(regionCode: string, weight: ColorWe
             return regionColors.EASTERN_EUROPE_AND_CENTRAL_ASIA[weight];
         case REGION_CODES.EUROPEAN_REGION:
             return regionColors.EUROPEAN_REGION[weight];
+        case REGION_CODES.EU_CANDIDATE_COUNTRIES:
+            return regionColors.EU_CANDIDATE_COUNTRIES[weight];
         default:
             return regionColors.EUROPEAN_UNION[weight];
     }

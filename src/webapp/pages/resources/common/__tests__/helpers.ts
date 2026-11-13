@@ -34,7 +34,6 @@ export function createComparativeAnalysisResources(count: number): ComparativeAn
             favouriteHomeOrder: index,
             favouriteSection: true,
             favouriteSectionOrder: index,
-            relatedCountries: ["DVnpk4xiXGJ"],
         };
     });
 

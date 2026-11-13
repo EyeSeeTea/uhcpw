@@ -83,4 +83,9 @@ export const regionColors = {
         medium: "#59ACE0",
         light: "#99D1F0",
     },
+    EU_CANDIDATE_COUNTRIES: {
+        base: "#FF8D4E",
+        medium: "#FFAF83",
+        light: "#FFCCAF",
+    },
 } as const;

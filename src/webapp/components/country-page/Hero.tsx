@@ -2,8 +2,7 @@ import { CircularProgress, Grid } from "@material-ui/core";
 import styled from "styled-components";
 import { colors, muiTheme } from "../../pages/app/themes/dhis2.theme";
 import { useCountryInfo } from "../../pages/country/useCountryInfo";
-import ReactMarkdown from "react-markdown";
-import { ButtonItem } from "../home/country-panel/CountryPanel";
+import { CountrySummary } from "../country-summary/CountrySummary";
 import { VISUALIZATION_PLUGIN_PADDING_END_PX, VisualizationPlugin } from "../visualization/VisualizationPlugin";
 import { PAGE_MARGIN_END_PX } from "../layout/pageMargins";
 import { LatestAvailable } from "../../../domain/entities/Year";
@@ -70,13 +69,7 @@ export const Hero: React.FC<HeroProps> = ({ countryId }) => {
         <Grid container aria-label="country-page-hero">
             {country && (
                 <InfoGrid item xs={12} md={5}>
-                    <ReactMarkdown
-                        components={{
-                            a: ({ ...props }) => <ButtonItem {...props} />,
-                        }}
-                    >
-                        {summary}
-                    </ReactMarkdown>
+                    <CountrySummary text={summary} />
                 </InfoGrid>
             )}
             <GraphGrid item xs={12} md={7}>
