@@ -1,9 +1,8 @@
 import React from "react";
-import { Button, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import styled from "styled-components";
 
 import { Country } from "../../../../domain/entities/Country";
-import ReactMarkdown from "react-markdown";
 import insufficientDataIcon from "../../../assets/map/icon-insufficient.svg";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import veryWeakIcon from "../../../assets/map/icon-very-weak.svg";
@@ -11,29 +10,13 @@ import gapsIcon from "../../../assets/map/icon-gaps.svg";
 import emergingIcon from "../../../assets/map/icon-emerging.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import { Divider } from "material-ui";
-import { colors } from "../../../pages/app/themes/dhis2.theme";
-import { useAnalytics } from "../../../common/hooks/analytics/useAnalytics";
 import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
+import { CountrySummary } from "../../country-summary/CountrySummary";
 
 export interface CountryPanelProps {
     country: Country;
     isRegionalPage?: boolean;
 }
-
-type ButtonItemType = {
-    href?: string | undefined;
-    children: React.ReactNode;
-};
-
-export const ButtonItem: React.FC<ButtonItemType> = ({ href, children }) => {
-    const { redirectWithExternalLink } = useAnalytics();
-
-    return (
-        <a href={href} target="_blank" rel="noreferrer" onClick={redirectWithExternalLink}>
-            <StyledButton>{children}</StyledButton>
-        </a>
-    );
-};
 
 const iconStatusMap: Record<FinancialProtectionStatus, string> = {
     Strong: strongIcon,
@@ -66,13 +49,7 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalP
 
             <Divider style={{ backgroundColor: "white", margin: "38px 0px" }} />
 
-            <ReactMarkdown
-                components={{
-                    a: ({ ...props }) => <ButtonItem {...props} />,
-                }}
-            >
-                {summary}
-            </ReactMarkdown>
+            <CountrySummary text={summary} />
         </Container>
     );
 };
@@ -113,16 +90,4 @@ const Marker = styled.img`
     background-size: cover;
     width: 80px;
     margin-right: 24px;
-`;
-
-const StyledButton = styled(Button)`
-    background-color: white;
-    opacity: 1;
-    padding: 5px 30px;
-    color: ${colors.accentPrimary};
-    text-transform: initial;
-    border-radius: 40px;
-    &:hover {
-        background-color: ${colors.greyLight};
-    }
 `;
