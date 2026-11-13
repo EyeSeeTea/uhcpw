@@ -3,7 +3,6 @@ import { Typography } from "@material-ui/core";
 import styled from "styled-components";
 
 import { Country } from "../../../../domain/entities/Country";
-import ReactMarkdown from "react-markdown";
 import insufficientDataIcon from "../../../assets/map/icon-insufficient.svg";
 import weakIcon from "../../../assets/map/icon-weak.svg";
 import veryWeakIcon from "../../../assets/map/icon-very-weak.svg";
@@ -12,7 +11,7 @@ import emergingIcon from "../../../assets/map/icon-emerging.svg";
 import strongIcon from "../../../assets/map/icon-strong.svg";
 import { Divider } from "material-ui";
 import { FinancialProtectionStatus } from "../../../../domain/entities/FinancialProtectionStatus";
-import { countrySummaryMarkdownComponents } from "../../country-summary/countrySummaryMarkdownComponents";
+import { CountrySummary } from "../../country-summary/CountrySummary";
 
 export interface CountryPanelProps {
     country: Country;
@@ -50,7 +49,7 @@ export const CountryPanel: React.FC<CountryPanelProps> = ({ country, isRegionalP
 
             <Divider style={{ backgroundColor: "white", margin: "38px 0px" }} />
 
-            <ReactMarkdown components={countrySummaryMarkdownComponents}>{summary}</ReactMarkdown>
+            <CountrySummary text={summary} />
         </Container>
     );
 };
