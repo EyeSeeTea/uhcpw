@@ -8,7 +8,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    master-workflow:
-        uses: EyeSeeTea/github-workflows/.github/workflows/master.yml@master
-        with:
-            runner: "general-runner"
+  master-workflow:
+    uses: EyeSeeTea/github-workflows/.github/workflows/master.yml@master
+    secrets: 
+      DTRACK_API_KEY: ${{ secrets.DTRACK_API_KEY }}
