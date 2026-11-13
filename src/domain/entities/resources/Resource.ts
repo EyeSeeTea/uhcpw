@@ -37,7 +37,6 @@ export interface ResourceLink {
 
 export interface ComparativeAnalysis extends AnalysisResource {
     kind: "comparative-analysis";
-    relatedCountries: string[];
     favouriteSection: boolean;
     favouriteSectionOrder: number;
 }

@@ -4,16 +4,26 @@ import {
     CountryAnalysis,
     Multimedia,
     News,
+    Resource,
 } from "../../../../domain/entities/resources/Resource";
+import { Id } from "../../../../domain/entities/Ref";
 import { getD2APiFromInstance } from "../../../../utils/d2-api";
 import { MockWebServer } from "../../../../utils/MockWebServer";
 import { Instance } from "../../../entities/Instance";
 import {
+    D2Event,
+    DataValue,
     FavoriteResources,
     ResourceD2Repository,
     resourceDataElements,
     resourcesProgram,
 } from "../ResourceD2Repository";
+import { ORG_UNIT_GROUP_IDS } from "../../../../domain/entities/region/Region";
+import {
+    BOSNIA_AND_HERZEGOVINA_LEVEL_3,
+    BOSNIA_AND_HERZEGOVINA_LEVEL_4,
+    KOSOVO,
+} from "../../countries/CountryD2Repository";
 import comparativeAnalysis from "./data/ComparativeAnalysis.json";
 import news from "./data/News.json";
 import multimedia from "./data/Multimedia.json";
@@ -250,6 +260,82 @@ describe("Resource repository", () => {
         });
     });
 
+    describe("countries filter", () => {
+        beforeEach(() => {
+            givenFavoritesResources();
+            givenCountryGroups();
+            givenNews(countryFilterEvents);
+        });
+
+        it("should return the resources of the country and of its groups, ignoring the country when a group overrules it", async () => {
+            const response = await resourceRepository.get({ countries: [spain] }).runAsync();
+
+            expect(getIds(response.data)).toEqual([
+                spainResourceId,
+                euGroupResourceId,
+                westernBalkansAndEuGroupsResourceId,
+                europeanRegionGroupResourceId,
+                allCountriesGroupResourceId,
+            ]);
+        });
+
+        it("should return the resources of every selected country group that contains the country", async () => {
+            const response = await resourceRepository.get({ countries: [serbia] }).runAsync();
+
+            expect(getIds(response.data)).toEqual([
+                westernBalkansGroupAndSpainResourceId,
+                westernBalkansAndEuGroupsResourceId,
+                europeanRegionGroupResourceId,
+                allCountriesGroupResourceId,
+            ]);
+        });
+
+        it("should return Kosovo only for the all countries group, since it is in no org unit group", async () => {
+            const response = await resourceRepository.get({ countries: [KOSOVO] }).runAsync();
+
+            expect(getIds(response.data)).toEqual([allCountriesGroupResourceId]);
+        });
+
+        it("should return Bosnia and Herzegovina by the country id the app uses", async () => {
+            const response = await resourceRepository.get({ countries: [BOSNIA_AND_HERZEGOVINA_LEVEL_4] }).runAsync();
+
+            expect(getIds(response.data)).toEqual([
+                westernBalkansGroupAndSpainResourceId,
+                westernBalkansAndEuGroupsResourceId,
+                europeanRegionGroupResourceId,
+                allCountriesGroupResourceId,
+            ]);
+        });
+
+        it("should not return resources whose countries and country groups do not contain the country", async () => {
+            const response = await resourceRepository.get({ countries: [malta] }).runAsync();
+
+            expect(getIds(response.data)).toEqual([]);
+        });
+    });
+
+    describe("countries filter on country analyses", () => {
+        beforeEach(() => {
+            givenFavoritesResources();
+            givenCountryGroups();
+            givenNews(countryAnalysisFilterEvents);
+        });
+
+        it("should return the country analysis only for its main country, ignoring its country groups", async () => {
+            const response = await resourceRepository.get({ countries: [serbia] }).runAsync();
+
+            expect(getIdsAndKinds(response.data)).toEqual([
+                { id: euGroupAndSerbiaResourceId, kind: "country-analysis" },
+            ]);
+        });
+
+        it("should return the other kinds of the same resource for the countries of its groups", async () => {
+            const response = await resourceRepository.get({ countries: [spain] }).runAsync();
+
+            expect(getIdsAndKinds(response.data)).toEqual([{ id: euGroupAndSerbiaResourceId, kind: "news" }]);
+        });
+    });
+
     describe("isFavouriteSection", () => {
         it("when isFavouriteSection is true in filter then should return all favouriteSection resources", async () => {
             givenFavoritesResources();
@@ -270,6 +356,106 @@ const financialProtectionTheme = "Financial Protection";
 
 function getIds(resources?: ReadonlyArray<{ id: string }>): string[] {
     return (resources ?? []).map(resource => resource.id);
+}
+
+function getIdsAndKinds(resources?: ReadonlyArray<Resource>): Array<{ id: string; kind: Resource["kind"] }> {
+    return (resources ?? []).map(({ id, kind }) => ({ id, kind }));
+}
+
+const spain = "spainOrgUnit";
+const serbia = "serbiaOrgUnit";
+const malta = "maltaOrgUnit";
+
+const spainResourceId = "spainResource";
+const euGroupResourceId = "euGroupResource";
+const westernBalkansGroupAndSpainResourceId = "westernBalkansGroupAndSpainResource";
+const westernBalkansAndEuGroupsResourceId = "westernBalkansAndEuGroupsResource";
+const europeanRegionGroupResourceId = "europeanRegionGroupResource";
+const allCountriesGroupResourceId = "allCountriesGroupResource";
+const unknownGroupResourceId = "unknownGroupResource";
+
+const countryFilterEvents: D2Event[] = [
+    buildNewsEvent(spainResourceId, [{ dataElement: resourceDataElements.relatedCountry2, value: spain }]),
+    buildNewsEvent(euGroupResourceId, [{ dataElement: resourceDataElements.countryGroup, value: "EU" }]),
+    buildNewsEvent(westernBalkansGroupAndSpainResourceId, [
+        { dataElement: resourceDataElements.countryGroup, value: "WB" },
+        { dataElement: resourceDataElements.relatedCountry1, value: spain },
+    ]),
+    buildNewsEvent(westernBalkansAndEuGroupsResourceId, [
+        { dataElement: resourceDataElements.countryGroup, value: "WB,EU" },
+    ]),
+    buildNewsEvent(europeanRegionGroupResourceId, [{ dataElement: resourceDataElements.countryGroup, value: "ER" }]),
+    buildNewsEvent(allCountriesGroupResourceId, [{ dataElement: resourceDataElements.countryGroup, value: "ALL" }]),
+    buildNewsEvent(unknownGroupResourceId, [{ dataElement: resourceDataElements.countryGroup, value: "UNKNOWN" }]),
+];
+
+const euGroupAndSerbiaResourceId = "euGroupAndSerbiaResource";
+const allCountriesGroupCountryAnalysisId = "allCountriesGroupCountryAnalysis";
+
+const countryAnalysisFilterEvents: D2Event[] = [
+    buildResourceEvent(
+        euGroupAndSerbiaResourceId,
+        [resourceDataElements.newsCategory, resourceDataElements.countryAnalysisCategory],
+        [
+            { dataElement: resourceDataElements.countryGroup, value: "EU" },
+            { dataElement: resourceDataElements.relatedCountry1, value: serbia },
+        ]
+    ),
+    buildResourceEvent(
+        allCountriesGroupCountryAnalysisId,
+        [resourceDataElements.countryAnalysisCategory],
+        [{ dataElement: resourceDataElements.countryGroup, value: "ALL" }]
+    ),
+];
+
+function buildNewsEvent(event: string, countryValues: DataValue[]): D2Event {
+    return buildResourceEvent(event, [resourceDataElements.newsCategory], countryValues);
+}
+
+function buildResourceEvent(event: string, categories: ReadonlyArray<Id>, countryValues: DataValue[]): D2Event {
+    return {
+        event,
+        eventDate: "2024-01-01T00:00:00.000",
+        dataValues: [...categories.map(dataElement => ({ dataElement, value: "true" })), ...countryValues],
+    };
+}
+
+function givenNews(events: D2Event[]) {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: "/api/events",
+            httpStatusCode: 200,
+            response: req => {
+                const program = req.url.searchParams.get("program");
+
+                return program === resourcesProgram ? { events } : favoritesResponse;
+            },
+        },
+    ]);
+}
+
+function givenCountryGroups() {
+    mockWebServer.addRequestHandlers([
+        {
+            method: "get",
+            endpoint: "/api/organisationUnitGroups",
+            httpStatusCode: 200,
+            response: {
+                organisationUnitGroups: [
+                    {
+                        id: ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
+                        organisationUnits: [{ id: spain }, { id: serbia }, { id: BOSNIA_AND_HERZEGOVINA_LEVEL_3 }],
+                    },
+                    { id: ORG_UNIT_GROUP_IDS.EUROPEAN_UNION, organisationUnits: [{ id: spain }] },
+                    {
+                        id: ORG_UNIT_GROUP_IDS.WESTERN_BALKANS,
+                        organisationUnits: [{ id: serbia }, { id: BOSNIA_AND_HERZEGOVINA_LEVEL_3 }],
+                    },
+                ],
+            },
+        },
+    ]);
 }
 
 function givenAComparativeAnalysis() {
@@ -397,8 +583,6 @@ function verifyComparativeAnalysis(comparativeAnalysis?: ComparativeAnalysis) {
             language: "English",
         },
     ];
-
-    expect(comparativeAnalysis.relatedCountries).toStrictEqual(["KwgjnBBpe5b", "DVnpk4xiXGJ"]);
 
     comparativeAnalysis.links.forEach((link, index) => {
         const expectedLink = expectedLinks[index];

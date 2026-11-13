@@ -13,8 +13,10 @@ import { ResourceFilters, ResourceRepository } from "../../../domain/repositorie
 import { D2Api } from "../../../types/d2-api";
 import { apiToFuture } from "../../../utils/futures";
 import { Id } from "../../../domain/entities/Ref";
+import { ORG_UNIT_GROUP_IDS } from "../../../domain/entities/region/Region";
+import { getCountryId, KOSOVO } from "../countries/CountryD2Repository";
 
-export const resourceDataElements: Record<string, string> = {
+export const resourceDataElements = {
     comparativeAnalysisCategory: "BBKWdyuSwkT",
     newsCategory: "AGWJYBEy90o",
     multimediaCategory: "awlsQKOwDgB",
@@ -92,7 +94,37 @@ export const resourceDataElements: Record<string, string> = {
     relatedCountry58: "CrBYPANirHP",
     relatedCountry59: "fol5rrUU53I",
     relatedCountry60: "rk5OFNGLSdK",
+    countryGroup: "jO5gRGncehx",
+} as const;
+
+const relatedCountryDataElements: ReadonlyArray<Id> = Object.entries(resourceDataElements)
+    .filter(([key]) => key.startsWith("relatedCountry"))
+    .map(([, dataElement]) => dataElement);
+
+/** Codes of the options of the country group data element */
+const countryGroupCodes = ["ALL", "ER", "EU", "EECA", "WB", "EUCC"] as const;
+type CountryGroupCode = typeof countryGroupCodes[number];
+
+const orgUnitGroupByCountryGroup: Readonly<Record<CountryGroupCode, Id>> = {
+    ALL: ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
+    ER: ORG_UNIT_GROUP_IDS.EUROPEAN_REGION,
+    EU: ORG_UNIT_GROUP_IDS.EUROPEAN_UNION,
+    EECA: ORG_UNIT_GROUP_IDS.EASTERN_EUROPE_AND_CENTRAL_ASIA,
+    WB: ORG_UNIT_GROUP_IDS.WESTERN_BALKANS,
+    EUCC: ORG_UNIT_GROUP_IDS.EU_CANDIDATE_COUNTRIES,
 };
+
+/** Kosovo is in no org unit group, so "All countries" adds it to the European Region countries */
+const extraCountriesByCountryGroup: Readonly<Partial<Record<CountryGroupCode, ReadonlyArray<Id>>>> = {
+    ALL: [KOSOVO],
+};
+
+type CountriesByCountryGroup = ReadonlyMap<CountryGroupCode, ReadonlyArray<Id>>;
+
+type CountriesFilter = Readonly<{
+    countries: ReadonlyArray<Id>;
+    countriesByCountryGroup: CountriesByCountryGroup;
+}>;
 
 const favoriteDataElements = {
     favoriteHomePage1: "fWy88oSclyV",
@@ -128,7 +160,16 @@ export class ResourceD2Repository implements ResourceRepository {
     constructor(private api: D2Api) {}
 
     public get(filters: ResourceFilters): FutureData<Resource[]> {
-        return this.getFavoritesResources().flatMap(favorites => {
+        const countries = filters.countries ?? [];
+        const hasCountriesFilter = countries.length > 0;
+        const noCountryGroups: CountriesByCountryGroup = new Map();
+
+        return Future.joinObj({
+            favorites: this.getFavoritesResources(),
+            countriesByCountryGroup: hasCountriesFilter
+                ? this.getCountriesByCountryGroup()
+                : Future.success<CountriesByCountryGroup, string>(noCountryGroups),
+        }).flatMap(({ favorites, countriesByCountryGroup }) => {
             const favoriteHomeResourcesIds = favorites.homePage.map(favorite => favorite.resourceId);
             const favoriteNewsIds = favorites.news.map(favorite => favorite.resourceId);
             const favoriteResourcesIds = [
@@ -143,7 +184,6 @@ export class ResourceD2Repository implements ResourceRepository {
                 ? favoriteResourcesIds.join(";")
                 : undefined;
 
-            const hasCountriesFilter = filters.countries && filters.countries.length > 0;
             // A resource has a main and a secondary theme, and the events filter cannot match any of
             // two data elements, so the theme is filtered in memory like the countries.
             const hasInMemoryFilter = hasCountriesFilter || Boolean(filters.themeCode);
@@ -174,18 +214,35 @@ export class ResourceD2Repository implements ResourceRepository {
                     event: favoriteIdsFilter,
                 })
             ).flatMap(response => {
-                const countryEvents = hasCountriesFilter
-                    ? this.filterCountries(response.events, filters)
-                    : response.events;
                 const themeEvents = filters.themeCode
-                    ? this.filterThemes(countryEvents, filters.themeCode)
-                    : countryEvents;
+                    ? this.filterThemes(response.events, filters.themeCode)
+                    : response.events;
                 // With a countries filter resources are never paged, so only the theme filter pages in memory
                 const events =
                     filters.themeCode && !hasCountriesFilter ? this.getPage(themeEvents, filters) : themeEvents;
+                const countriesFilter = hasCountriesFilter ? { countries, countriesByCountryGroup } : undefined;
 
-                return Future.success(this.buildResources(events, { filters, favorites, hasCountriesFilter }));
+                return Future.success(this.buildResources(events, { filters, favorites, countriesFilter }));
             });
+        });
+    }
+
+    private getCountriesByCountryGroup(): FutureData<CountriesByCountryGroup> {
+        return apiToFuture(
+            this.api.models.organisationUnitGroups.get({
+                fields: orgUnitGroupFields,
+                paging: false,
+                filter: { id: { in: _.uniq(Object.values(orgUnitGroupByCountryGroup)) } },
+            })
+        ).map(({ objects: orgUnitGroups }) => {
+            const entries = countryGroupCodes.map((code): [CountryGroupCode, ReadonlyArray<Id>] => {
+                const orgUnitGroup = orgUnitGroups.find(group => group.id === orgUnitGroupByCountryGroup[code]);
+                const groupCountries = (orgUnitGroup?.organisationUnits ?? []).map(({ id }) => getCountryId(id));
+
+                return [code, [...groupCountries, ...(extraCountriesByCountryGroup[code] ?? [])]];
+            });
+
+            return new Map(entries);
         });
     }
 
@@ -233,54 +290,60 @@ export class ResourceD2Repository implements ResourceRepository {
         options: {
             filters: ResourceFilters;
             favorites: FavoriteResources;
-            hasCountriesFilter?: boolean;
+            countriesFilter?: CountriesFilter;
         }
     ): Resource[] {
-        const { filters, favorites, hasCountriesFilter } = options;
+        const { filters, favorites, countriesFilter } = options;
+        const isKindRequested = (kind: Resource["kind"]) => !filters.category || filters.category === kind;
+
         return _.compact(
-            _(
-                events.flatMap(event => {
-                    const isComparativeAnalysisCategory =
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.comparativeAnalysisCategory)
-                            ?.value === "true";
+            events.flatMap(event => {
+                const isComparativeAnalysisCategory =
+                    event.dataValues.find(dv => dv.dataElement === resourceDataElements.comparativeAnalysisCategory)
+                        ?.value === "true";
 
-                    const isNewsCategory =
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.newsCategory)?.value ===
-                        "true";
+                const isNewsCategory =
+                    event.dataValues.find(dv => dv.dataElement === resourceDataElements.newsCategory)?.value === "true";
 
-                    const isMultimediaCategory =
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.multimediaCategory)
-                            ?.value === "true";
+                const isMultimediaCategory =
+                    event.dataValues.find(dv => dv.dataElement === resourceDataElements.multimediaCategory)?.value ===
+                    "true";
 
-                    const isCountryAnalysisCategory =
-                        event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryAnalysisCategory)
-                            ?.value === "true";
+                const isCountryAnalysisCategory =
+                    event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryAnalysisCategory)
+                        ?.value === "true";
 
-                    const mainCountryForCountryAnalysis = event.dataValues.find(
-                        dv => dv.dataElement === resourceDataElements.relatedCountry1
-                    )?.value;
+                const mainCountryForCountryAnalysis = event.dataValues.find(
+                    dv => dv.dataElement === resourceDataElements.relatedCountry1
+                )?.value;
 
-                    return [
-                        isComparativeAnalysisCategory &&
-                        (!filters.category || filters.category === "comparative-analysis")
-                            ? this.buildComparativeAnalysis(event, favorites)
-                            : undefined,
-                        isNewsCategory && (!filters.category || filters.category === "news")
-                            ? this.buildNews(event, favorites)
-                            : undefined,
-                        isMultimediaCategory && (!filters.category || filters.category === "multimedia")
-                            ? this.buildMultimedia(event, favorites)
-                            : undefined,
-                        isCountryAnalysisCategory &&
-                        (!filters.category || filters.category === "country-analysis") &&
-                        (!hasCountriesFilter ||
-                            (mainCountryForCountryAnalysis &&
-                                filters.countries?.includes(mainCountryForCountryAnalysis)))
-                            ? this.buildCountryAnalysis(event, favorites)
-                            : undefined,
-                    ];
-                })
-            ).value()
+                const isInCountriesFilter =
+                    !countriesFilter ||
+                    this.getResourceCountries(event, countriesFilter.countriesByCountryGroup).some(country =>
+                        countriesFilter.countries.includes(country)
+                    );
+
+                // A country analysis belongs only to its main country and ignores the country groups
+                const isMainCountryInCountriesFilter =
+                    !countriesFilter ||
+                    (mainCountryForCountryAnalysis !== undefined &&
+                        countriesFilter.countries.includes(mainCountryForCountryAnalysis));
+
+                return [
+                    isComparativeAnalysisCategory && isKindRequested("comparative-analysis") && isInCountriesFilter
+                        ? this.buildComparativeAnalysis(event, favorites)
+                        : undefined,
+                    isNewsCategory && isKindRequested("news") && isInCountriesFilter
+                        ? this.buildNews(event, favorites)
+                        : undefined,
+                    isMultimediaCategory && isKindRequested("multimedia") && isInCountriesFilter
+                        ? this.buildMultimedia(event, favorites)
+                        : undefined,
+                    isCountryAnalysisCategory && isKindRequested("country-analysis") && isMainCountryInCountriesFilter
+                        ? this.buildCountryAnalysis(event, favorites)
+                        : undefined,
+                ];
+            })
         );
     }
 
@@ -328,15 +391,12 @@ export class ResourceD2Repository implements ResourceRepository {
     private buildComparativeAnalysis(event: D2Event, favorites: FavoriteResources): ComparativeAnalysis {
         const analysis = this.buildAnalysis(event, favorites);
 
-        const relatedCountries = this.getRelatedCountries(event);
-
         const favouriteSectionData = this.buildFavouriteSectionByKind(event, "comparative-analysis", favorites);
 
         return {
             kind: "comparative-analysis",
             ...analysis,
             ...favouriteSectionData,
-            relatedCountries,
         };
     }
 
@@ -448,17 +508,19 @@ export class ResourceD2Repository implements ResourceRepository {
         }
     }
 
-    private filterCountries(events: D2Event[], filters: ResourceFilters) {
-        return events.filter(event => {
-            const relatedCountries = this.getRelatedCountries(event);
+    private getResourceCountries(event: D2Event, countriesByCountryGroup: CountriesByCountryGroup): ReadonlyArray<Id> {
+        const countryGroups = this.getCountryGroups(event);
 
-            const foundRelatedCountry = relatedCountries?.some(country => filters.countries?.includes(country));
-            const foundCountry = event.dataValues.some(
-                el => el.dataElement === resourceDataElements.countryId && filters.countries?.includes(el.value)
-            );
+        // A selected country group overrules the countries set one by one
+        return countryGroups.length > 0
+            ? countryGroups.flatMap(code => countriesByCountryGroup.get(code) ?? [])
+            : this.getRelatedCountries(event);
+    }
 
-            return foundCountry || foundRelatedCountry;
-        });
+    private getCountryGroups(event: D2Event): ReadonlyArray<CountryGroupCode> {
+        const value = event.dataValues.find(dv => dv.dataElement === resourceDataElements.countryGroup)?.value ?? "";
+
+        return _.compact(value.split(",").map(option => countryGroupCodes.find(code => code === option)));
     }
 
     private filterThemes(events: D2Event[], themeCode: string): D2Event[] {
@@ -484,192 +546,12 @@ export class ResourceD2Repository implements ResourceRepository {
         return link ? { url: link, language: language || "English" } : undefined;
     }
 
-    private getRelatedCountries(event: D2Event) {
-        const relatedCountry1 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry1)?.value || "";
-        const relatedCountry2 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry2)?.value || "";
-        const relatedCountry3 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry3)?.value || "";
-        const relatedCountry4 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry4)?.value || "";
-        const relatedCountry5 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry5)?.value || "";
-        const relatedCountry6 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry6)?.value || "";
-        const relatedCountry7 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry7)?.value || "";
-        const relatedCountry8 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry8)?.value || "";
-        const relatedCountry9 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry9)?.value || "";
-        const relatedCountry10 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry10)?.value || "";
-        const relatedCountry11 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry11)?.value || "";
-        const relatedCountry12 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry12)?.value || "";
-        const relatedCountry13 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry13)?.value || "";
-        const relatedCountry14 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry14)?.value || "";
-        const relatedCountry15 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry15)?.value || "";
-        const relatedCountry16 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry16)?.value || "";
-        const relatedCountry17 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry17)?.value || "";
-        const relatedCountry18 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry18)?.value || "";
-        const relatedCountry19 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry19)?.value || "";
-        const relatedCountry20 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry20)?.value || "";
-        const relatedCountry21 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry21)?.value || "";
-        const relatedCountry22 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry22)?.value || "";
-        const relatedCountry23 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry23)?.value || "";
-        const relatedCountry24 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry24)?.value || "";
-        const relatedCountry25 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry25)?.value || "";
-        const relatedCountry26 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry26)?.value || "";
-        const relatedCountry27 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry27)?.value || "";
-        const relatedCountry28 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry28)?.value || "";
-        const relatedCountry29 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry29)?.value || "";
-        const relatedCountry30 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry30)?.value || "";
-        const relatedCountry31 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry31)?.value || "";
-        const relatedCountry32 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry32)?.value || "";
-        const relatedCountry33 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry33)?.value || "";
-        const relatedCountry34 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry34)?.value || "";
-        const relatedCountry35 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry35)?.value || "";
-        const relatedCountry36 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry36)?.value || "";
-        const relatedCountry37 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry37)?.value || "";
-        const relatedCountry38 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry38)?.value || "";
-        const relatedCountry39 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry39)?.value || "";
-        const relatedCountry40 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry40)?.value || "";
-        const relatedCountry41 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry41)?.value || "";
-        const relatedCountry42 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry42)?.value || "";
-        const relatedCountry43 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry43)?.value || "";
-        const relatedCountry44 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry44)?.value || "";
-        const relatedCountry45 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry45)?.value || "";
-        const relatedCountry46 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry46)?.value || "";
-        const relatedCountry47 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry47)?.value || "";
-        const relatedCountry48 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry48)?.value || "";
-        const relatedCountry49 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry49)?.value || "";
-        const relatedCountry50 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry50)?.value || "";
-        const relatedCountry51 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry51)?.value || "";
-        const relatedCountry52 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry52)?.value || "";
-        const relatedCountry53 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry53)?.value || "";
-        const relatedCountry54 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry54)?.value || "";
-        const relatedCountry55 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry55)?.value || "";
-        const relatedCountry56 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry56)?.value || "";
-        const relatedCountry57 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry57)?.value || "";
-        const relatedCountry58 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry58)?.value || "";
-        const relatedCountry59 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry59)?.value || "";
-        const relatedCountry60 =
-            event.dataValues.find(dv => dv.dataElement === resourceDataElements.relatedCountry60)?.value || "";
-
-        return _([
-            relatedCountry1,
-            relatedCountry2,
-            relatedCountry3,
-            relatedCountry4,
-            relatedCountry5,
-            relatedCountry6,
-            relatedCountry7,
-            relatedCountry8,
-            relatedCountry9,
-            relatedCountry10,
-            relatedCountry11,
-            relatedCountry12,
-            relatedCountry13,
-            relatedCountry14,
-            relatedCountry15,
-            relatedCountry16,
-            relatedCountry17,
-            relatedCountry18,
-            relatedCountry19,
-            relatedCountry20,
-            relatedCountry21,
-            relatedCountry22,
-            relatedCountry23,
-            relatedCountry24,
-            relatedCountry25,
-            relatedCountry26,
-            relatedCountry27,
-            relatedCountry28,
-            relatedCountry29,
-            relatedCountry30,
-            relatedCountry31,
-            relatedCountry32,
-            relatedCountry33,
-            relatedCountry34,
-            relatedCountry35,
-            relatedCountry36,
-            relatedCountry37,
-            relatedCountry38,
-            relatedCountry39,
-            relatedCountry40,
-            relatedCountry41,
-            relatedCountry42,
-            relatedCountry43,
-            relatedCountry44,
-            relatedCountry45,
-            relatedCountry46,
-            relatedCountry47,
-            relatedCountry48,
-            relatedCountry49,
-            relatedCountry50,
-            relatedCountry51,
-            relatedCountry52,
-            relatedCountry53,
-            relatedCountry54,
-            relatedCountry55,
-            relatedCountry56,
-            relatedCountry57,
-            relatedCountry58,
-            relatedCountry59,
-            relatedCountry60,
-        ])
-            .compact()
-            .value();
+    private getRelatedCountries(event: D2Event): string[] {
+        return _.compact(
+            relatedCountryDataElements.map(
+                dataElement => event.dataValues.find(dv => dv.dataElement === dataElement)?.value
+            )
+        );
     }
 
     private buildFavoritesResources(event: D2Event): FavoriteResources {
@@ -877,6 +759,11 @@ export class ResourceD2Repository implements ResourceRepository {
         };
     }
 }
+
+const orgUnitGroupFields = {
+    id: true,
+    organisationUnits: { id: true },
+} as const;
 
 const eventsFields = {
     event: true,
