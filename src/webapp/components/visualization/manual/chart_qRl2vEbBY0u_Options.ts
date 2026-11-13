@@ -36,6 +36,11 @@ export const regionColorsBySeries: Record<string, Record<string, string>> = {
         Y0Qv2Xawfy4: regionColors.EUROPEAN_REGION.medium,
         dwxX1gLVrcF: regionColors.EUROPEAN_REGION.base,
     },
+    [REGION_CODES.EU_CANDIDATE_COUNTRIES]: {
+        XvkqQfvXFGB: regionColors.EU_CANDIDATE_COUNTRIES.light,
+        Y0Qv2Xawfy4: regionColors.EU_CANDIDATE_COUNTRIES.medium,
+        dwxX1gLVrcF: regionColors.EU_CANDIDATE_COUNTRIES.base,
+    },
 };
 
 export const chart_qRl2vEbBY0u_Options: (chartSource: ChartSource) => Highcharts.Options = chartSource => {
