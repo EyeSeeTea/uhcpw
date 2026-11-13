@@ -11,6 +11,7 @@ import { RegionalMenuItem, RegionalMenuItemConfig } from "./useRegionalPage";
 import { colors } from "../app/themes/dhis2.theme";
 import { getColorOfRegionByRegionId } from "./getColorOfRegion";
 import { ExplainerVideoButton } from "../../components/explainer-video/ExplainerVideoButton";
+import { HeaderExplainerVideoButton } from "../../components/explainer-video/HeaderExplainerVideoButton";
 import { useExplainer } from "../../components/explainer-video/useExplainer";
 import { PAGE_MARGIN_END_PX } from "../../components/layout/pageMargins";
 
@@ -59,7 +60,7 @@ export const Header: React.FC<HeaderType> = props => {
                         <ButtonText>{item.label}</ButtonText>
                     </StyledButton>
                 ))}
-                {explainer && !isSmallScreen && <ExplainerVideoButton explainer={explainer} />}
+                {explainer && !isSmallScreen && <HeaderExplainerVideoButton explainer={explainer} />}
             </ButtonsContainer>
         </Container>
     );

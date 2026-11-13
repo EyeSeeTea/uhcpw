@@ -11,7 +11,7 @@ import { BREAKPOINT_WIDTH_SMALL_SCREEN, useIsSmallScreen } from "../../common/ho
 import { UmbrellaIcon } from "../umbrella-icon/UmbrellaIcon";
 import { FinancialProtectionStatus } from "../../../domain/entities/FinancialProtectionStatus";
 import { Maybe } from "../../../types/utils";
-import { ExplainerVideoButton } from "../explainer-video/ExplainerVideoButton";
+import { HeaderExplainerVideoButton } from "../explainer-video/HeaderExplainerVideoButton";
 import { useExplainer } from "../explainer-video/useExplainer";
 import { useFitsInOneLine } from "../../common/hooks/screen/useFitsInOneLine";
 import { PAGE_MARGIN_END_PX } from "../layout/pageMargins";
@@ -94,7 +94,7 @@ export const Header: FC<HeaderType> = ({
 
             {explainer && layout === "twoLines" && (
                 <ExplainerContainer>
-                    <ExplainerVideoButton explainer={explainer} />
+                    <HeaderExplainerVideoButton explainer={explainer} />
                 </ExplainerContainer>
             )}
 
@@ -115,7 +115,7 @@ export const Header: FC<HeaderType> = ({
                 <Button>
                     <ButtonText onClick={() => handleClick(expertRef, "expert")}>{i18n.t("Experts")}</ButtonText>
                 </Button>
-                {explainer && layout === "oneLine" && <ExplainerVideoButton explainer={explainer} />}
+                {explainer && layout === "oneLine" && <HeaderExplainerVideoButton explainer={explainer} />}
             </ButtonsContainer>
         </Container>
     );
