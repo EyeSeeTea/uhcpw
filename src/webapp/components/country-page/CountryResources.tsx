@@ -136,6 +136,7 @@ export const CountryResources: React.FC<CountryResourcesProps> = ({ countryIds, 
 };
 
 const Container = styled.div<{ isRegionalPage?: boolean }>`
+    width: 100%;
     padding: ${props => (props.isRegionalPage ? "0 0 40px 0" : "40px 0px")};
     max-width: 80%;
 

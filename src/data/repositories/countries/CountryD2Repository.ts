@@ -109,6 +109,11 @@ export const BOSNIA_AND_HERZEGOVINA_LEVEL_4 = "rqaiYTAnMC6"; // Brcko District
 export const FEDERACIJA_BOSNE_I_HERCEGOVINE = "j44olg405lZ";
 export const REPUBLICA_SERPSKA = "FvoXRc5cEEk";
 
+/** The app identifies Bosnia and Herzegovina by its level 4 org unit, not by the country org unit */
+export function getCountryId(orgUnitId: Id): Id {
+    return orgUnitId === BOSNIA_AND_HERZEGOVINA_LEVEL_3 ? BOSNIA_AND_HERZEGOVINA_LEVEL_4 : orgUnitId;
+}
+
 export class CountryD2Repository implements CountryRepository {
     constructor(private api: D2Api) {}
 
@@ -205,8 +210,7 @@ export class CountryD2Repository implements CountryRepository {
         return orgUnits
             .filter(({ id }) => !COUNTRIES_NOT_SHOWN.includes(id))
             .map(orgUnit => {
-                const countryId =
-                    BOSNIA_AND_HERZEGOVINA_LEVEL_3 === orgUnit.id ? BOSNIA_AND_HERZEGOVINA_LEVEL_4 : orgUnit.id;
+                const countryId = getCountryId(orgUnit.id);
 
                 const additionalCountryInfo: D2Event | undefined = additionalCountriesInfo.find(
                     event => event.orgUnit === countryId

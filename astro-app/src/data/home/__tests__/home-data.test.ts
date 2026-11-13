@@ -56,7 +56,6 @@ function makeResource(overrides: Partial<Resource> & { kind: Resource["kind"] })
                 ...base,
                 links: [{ language: "en", url: "http://example.com/ca" }],
                 themeCodes: ["t1"],
-                relatedCountries: [],
                 ...overrides,
                 kind: "comparative-analysis",
             } as Resource;
