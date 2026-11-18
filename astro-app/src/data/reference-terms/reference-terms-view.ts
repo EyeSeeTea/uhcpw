@@ -1,4 +1,6 @@
-import type { Abbreviations } from "@shared/domain/entities/ReferenceTerms";
+import type { Abbreviations, GlossaryEntries } from "@shared/domain/entities/ReferenceTerms";
+
+export type GlossaryListEntry = Readonly<{ id: string; term: string; definition: string; initial: string }>;
 
 export function glossaryInitial(term: string): string {
     return term
@@ -35,6 +37,22 @@ export function uniqueReferenceIds(values: readonly string[], prefix = "entry"):
         nextSuffix.set(base, suffix + 1);
         return id;
     });
+}
+
+export function buildGlossaryEntries(entries: GlossaryEntries): ReadonlyArray<GlossaryListEntry> {
+    const sortedEntries = [...entries].sort((a, b) => a.term.localeCompare(b.term));
+    const ids = uniqueReferenceIds(sortedEntries.map(entry => entry.term));
+
+    return sortedEntries.map((entry, index) => ({
+        id: ids[index],
+        term: entry.term,
+        definition: startWithUpperCase(entry.definition),
+        initial: glossaryInitial(entry.term),
+    }));
+}
+
+function startWithUpperCase(text: string): string {
+    return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export function buildAbbreviationGroups({ entries, categories }: Abbreviations) {
