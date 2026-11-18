@@ -1,0 +1,31 @@
+---
+interface Props { label: string; placeholder?: string }
+const { label, placeholder = label } = Astro.props;
+---
+<div class="reference-controls" role="search" hidden>
+    <label class="visually-hidden" for="reference-query">{label}</label>
+    <input id="reference-query" type="search" placeholder={placeholder} autocomplete="off" />
+</div>
+<style>
+    /* Same look as the SearchInput of the Resources page */
+    .reference-controls[hidden] { display: none; }
+    input {
+        width: 100%;
+        height: 54px;
+        padding: 10px 10px 10px 44px;
+        border: 1px solid #d6d3d3;
+        border-radius: 20px;
+        background: white url("../../assets/search.svg") no-repeat 10px center / 24px;
+        font: inherit;
+        font-size: 16px;
+    }
+    input:focus-visible { outline: none; }
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+    }
+</style>

@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildAbbreviationGroups, glossaryInitial, uniqueReferenceIds } from "../reference-terms-view";
+import {
+    buildAbbreviationGroups,
+    buildGlossaryEntries,
+    glossaryInitial,
+    uniqueReferenceIds,
+} from "../reference-terms-view";
 
 describe("reference entry identifiers", () => {
     it("normalizes composed and decomposed accented glossary initials", () => {
@@ -48,6 +53,27 @@ describe("reference entry identifiers", () => {
                 ],
             ],
             ["category-languages", [["IT", "entry-it-2"]]],
+        ]);
+    });
+});
+
+describe("glossary entries", () => {
+    it("sorts terms and starts every definition with an upper-case letter", () => {
+        const entries = buildGlossaryEntries([
+            { term: "Budget", definition: "see household budget." },
+            { term: "Équité", definition: "Fairness in access." },
+            { term: "Asylum seeker", definition: "an individual who is seeking international protection." },
+        ]);
+
+        expect(entries).toEqual([
+            {
+                id: "entry-asylum-seeker",
+                term: "Asylum seeker",
+                definition: "An individual who is seeking international protection.",
+                initial: "A",
+            },
+            { id: "entry-budget", term: "Budget", definition: "See household budget.", initial: "B" },
+            { id: "entry-equite", term: "Équité", definition: "Fairness in access.", initial: "E" },
         ]);
     });
 });
