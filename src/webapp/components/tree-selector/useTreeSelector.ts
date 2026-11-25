@@ -7,7 +7,7 @@ import {
     BOSNIA_AND_HERZEGOVINA_LEVEL_4,
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
 } from "../../../data/repositories/countries/CountryD2Repository";
-import useWindowSize from "../../common/hooks/screen/useWindowSize";
+import { getFieldWidthMenuStyle } from "../dropdown/fieldWidthMenuStyle";
 import { TreeOption } from "./TreeSelector";
 
 type useTreeSelectorParams = {
@@ -41,7 +41,7 @@ type useTreeSelectorState = {
           }
     )[];
     handleSelectedChange: (nodeId: string, selected: boolean) => void;
-    containerWidth: string;
+    menuStyle: Readonly<React.CSSProperties>;
     expanded: boolean;
     anchorEl: HTMLElement | null;
     handleClose: () => void;
@@ -98,7 +98,6 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     } = params;
 
     const isSmallScreen = useMediaQuery("(max-width:700px)");
-    const { width } = useWindowSize();
 
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -377,16 +376,14 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         return selectedChips.length === 0 ? placeholder : "";
     }, [placeholder, selectedChips.length]);
 
-    const containerWidth = useMemo(() => {
-        return isSmallScreen ? `${width - 100}px` : "600px";
-    }, [isSmallScreen, width]);
+    const menuStyle = getFieldWidthMenuStyle(anchorEl);
 
     return {
         handleClick,
         finalPlaceholder,
         selectedChips,
         handleSelectedChange,
-        containerWidth,
+        menuStyle,
         expanded,
         anchorEl,
         handleClose,

@@ -1,26 +1,26 @@
-import { Button, Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import React from "react";
-import styled from "styled-components";
 import i18n from "../../../locales";
 import { PolicyExplorerFiltersState } from "../../pages/policy-explorer/PolicyExplorerState";
 import { TreeSelector } from "../tree-selector/TreeSelector";
 import { DropdownMultiple } from "../dropdown/DropdownMultiple";
 import { CategorySelector } from "./category-selector/CategorySelector";
 import { usePolicyExplorerFilters } from "./category-selector/usePolicyExplorerFilters";
+import { FilterContainer, GetResultsButton, GetResultsButtonGridItem } from "../explorer-filters/ExplorerFiltersStyles";
 
-export interface ResourcesFiltersProps {
+export interface PolicyExplorerFiltersProps {
     filters: PolicyExplorerFiltersState;
     onGetTable: () => void;
     disableGet?: boolean;
 }
 
-export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo(
+export const PolicyExplorerFilters: React.FC<PolicyExplorerFiltersProps> = React.memo(
     ({ filters, onGetTable, disableGet = false }) => {
         const { onCategoryChange, onCountryChange, onYearsChange, isMobile } = usePolicyExplorerFilters({ filters });
         return (
             <Grid container spacing={isMobile ? 2 : 5} alignItems="flex-end" justifyContent="center" wrap="wrap">
-                <Grid item md={4} sm={6} xs={12}>
-                    <Wrapper>
+                <Grid item md sm={6} xs={12}>
+                    <FilterContainer>
                         <CategorySelector
                             fullWidth
                             label={i18n.t("Categories")}
@@ -30,10 +30,10 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                             onSelect={onCategoryChange}
                             fullScreen={isMobile}
                         />
-                    </Wrapper>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={4} sm={6} xs={12}>
-                    <Wrapper>
+                <Grid item md sm={6} xs={12}>
+                    <FilterContainer>
                         <TreeSelector
                             fullWidth
                             hasClearAll
@@ -52,10 +52,10 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                             parentSort={filters.country.parentSort}
                             fullScreen={isMobile}
                         />
-                    </Wrapper>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={3} sm={6} xs={12}>
-                    <Wrapper>
+                <Grid item md sm={6} xs={12}>
+                    <FilterContainer>
                         <DropdownMultiple
                             fullWidth
                             label={i18n.t("Years")}
@@ -65,10 +65,10 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                             onChange={onYearsChange}
                             fullScreen={isMobile}
                         />
-                    </Wrapper>
+                    </FilterContainer>
                 </Grid>
-                <GridGetTableButton item md={1} sm={6} xs={12}>
-                    <GetTableButton
+                <GetResultsButtonGridItem item md="auto" sm={6} xs={12}>
+                    <GetResultsButton
                         aria-label="Get table"
                         variant="contained"
                         color="primary"
@@ -83,30 +83,9 @@ export const PolicyExplorerFilters: React.FC<ResourcesFiltersProps> = React.memo
                         $isMobile={isMobile}
                     >
                         <Typography>{i18n.t("Get table")}</Typography>
-                    </GetTableButton>
-                </GridGetTableButton>
+                    </GetResultsButton>
+                </GetResultsButtonGridItem>
             </Grid>
         );
     }
 );
-
-const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const GetTableButton = styled(Button)<{ $isMobile: boolean }>`
-    border-radius: 20px;
-    height: 50px;
-    text-transform: none;
-    white-space: nowrap;
-    background: #185698;
-    width: ${({ $isMobile }) => ($isMobile ? "100%" : "auto")};
-    margin-block-start: ${({ $isMobile }) => ($isMobile ? "10px" : "0")};
-`;
-
-const GridGetTableButton = styled(Grid)`
-    text-align: end;
-`;

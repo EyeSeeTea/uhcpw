@@ -7,7 +7,7 @@ export const SelectedChip = styled(Chip)`
     border: none;
     margin: 1px;
     max-width: 100%;
-    min-height: 32px;
+    min-height: 30px;
     height: fit-content;
     padding-block: 3px;
 

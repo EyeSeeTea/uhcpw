@@ -2,7 +2,6 @@ import React, { useCallback } from "react";
 
 import { IndicatorOption } from "../../../../pages/indicator-explorer/IndicatorExplorerState";
 import { useMediaQuery } from "@material-ui/core";
-import useWindowSize from "../../../../common/hooks/screen/useWindowSize";
 
 export type IndicatorTreeOptions = {
     [category: string]: {
@@ -31,7 +30,6 @@ type IndicatorTreeSelectorState = {
     onSearchIndicator: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleMenuClick: (event: React.MouseEvent<Element, MouseEvent>) => void;
     setOpenedMenu: (value: boolean) => void;
-    containerWidth: string;
     onSearchAndClearIndicator: (event: React.ChangeEvent<HTMLInputElement>) => void;
     isSmallScreen: boolean;
 };
@@ -42,7 +40,6 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
     const { options, selectedValue, onChange } = params;
 
     const isSmallScreen = useMediaQuery("(max-width:700px)");
-    const { width } = useWindowSize();
 
     const inputRef = React.useRef<HTMLDivElement>(null);
     const componentRef = React.useRef<HTMLDivElement>(null);
@@ -161,10 +158,6 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
         }
     }, []);
 
-    const containerWidth = React.useMemo(() => {
-        return isSmallScreen ? `${width - 130}px` : "600px";
-    }, [isSmallScreen, width]);
-
     return {
         inputRef,
         componentRef,
@@ -180,7 +173,6 @@ export const useIndicatorTreeSelector = (params: IndicatorTreeSelectorParams): I
         onSearchIndicator,
         handleMenuClick,
         setOpenedMenu,
-        containerWidth,
         onSearchAndClearIndicator,
         isSmallScreen,
     };

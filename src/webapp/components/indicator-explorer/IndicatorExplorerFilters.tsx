@@ -1,11 +1,11 @@
-import { Button, Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
+import { Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import React from "react";
-import styled from "styled-components";
 
 import i18n from "../../../locales";
 import { IndicatorExplorerFiltersState } from "../../pages/indicator-explorer/IndicatorExplorerState";
 import { TreeSelector } from "../tree-selector/TreeSelector";
 import { IndicatorTreeSelector } from "./category-indicator-selector/tree/IndicatorTreeSelector";
+import { FilterContainer, GetResultsButton, GetResultsButtonGridItem } from "../explorer-filters/ExplorerFiltersStyles";
 
 export interface IndicatorExplorerFiltersProps {
     filters: IndicatorExplorerFiltersState;
@@ -19,8 +19,8 @@ export const IndicatorExplorerFilters: React.FC<IndicatorExplorerFiltersProps> =
         const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
         return (
             <Grid container spacing={isMobile ? 2 : 5} alignItems="flex-end" justifyContent="center" wrap="wrap">
-                <Grid item md={4} sm={6} xs={12}>
-                    <Center>
+                <Grid item md sm={6} xs={12}>
+                    <FilterContainer>
                         <IndicatorTreeSelector
                             fullWidth
                             label={i18n.t("Indicators")}
@@ -30,10 +30,10 @@ export const IndicatorExplorerFilters: React.FC<IndicatorExplorerFiltersProps> =
                             onChange={filters.indicators.onSelectedChange}
                             fullScreen={isMobile}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <Grid item md={4} sm={6} xs={12}>
-                    <Center>
+                <Grid item md sm={6} xs={12}>
+                    <FilterContainer>
                         <TreeSelector
                             fullWidth
                             hasSelectAll={!filters.countryAndRegions.isOnlyEu27Comparison}
@@ -55,10 +55,10 @@ export const IndicatorExplorerFilters: React.FC<IndicatorExplorerFiltersProps> =
                             parentSort={filters.countryAndRegions.parentSort}
                             fullScreen={isMobile}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
                 <Grid item md sm={6} xs={12}>
-                    <Center>
+                    <FilterContainer>
                         <TreeSelector
                             fullWidth
                             hasClearAll
@@ -74,10 +74,10 @@ export const IndicatorExplorerFilters: React.FC<IndicatorExplorerFiltersProps> =
                             closeOnSelect={filters.year.isSingleSelection}
                             fullScreen={isMobile}
                         />
-                    </Center>
+                    </FilterContainer>
                 </Grid>
-                <GridGetChartButton item md="auto" sm={6} xs={12}>
-                    <GetChartButton
+                <GetResultsButtonGridItem item md="auto" sm={6} xs={12}>
+                    <GetResultsButton
                         aria-label="Get chart"
                         variant="contained"
                         color="primary"
@@ -91,30 +91,9 @@ export const IndicatorExplorerFilters: React.FC<IndicatorExplorerFiltersProps> =
                         $isMobile={isMobile}
                     >
                         <Typography>{i18n.t("Get chart")}</Typography>
-                    </GetChartButton>
-                </GridGetChartButton>
+                    </GetResultsButton>
+                </GetResultsButtonGridItem>
             </Grid>
         );
     }
 );
-
-const Center = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
-
-const GetChartButton = styled(Button)<{ $isMobile: boolean }>`
-    border-radius: 20px;
-    height: 50px;
-    text-transform: none;
-    white-space: nowrap;
-    background: #185698;
-    width: ${({ $isMobile }) => ($isMobile ? "100%" : "auto")};
-    margin-block-start: ${({ $isMobile }) => ($isMobile ? "10px" : "0")};
-`;
-
-const GridGetChartButton = styled(Grid)`
-    text-align: end;
-`;

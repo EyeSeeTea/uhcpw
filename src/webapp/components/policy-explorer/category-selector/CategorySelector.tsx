@@ -49,7 +49,7 @@ export const CategorySelector = React.memo(
             anchorEl,
             handleClose,
             handleClear,
-            containerWidth,
+            menuStyle,
             isSmallScreen,
         } = categorySelectorState;
 
@@ -104,7 +104,7 @@ export const CategorySelector = React.memo(
                     </FullScreenDialog>
                 ) : (
                     <StyledMenu
-                        PaperProps={{ style: { width: containerWidth, padding: "16px" } }}
+                        PaperProps={{ style: menuStyle }}
                         id="category-selector"
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}

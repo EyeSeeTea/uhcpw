@@ -81,7 +81,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
         handleClose,
         handleClear,
         anchorEl,
-        containerWidth,
+        menuStyle,
         isSmallScreen,
     } = useTreeSelectorState;
 
@@ -163,7 +163,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
             ) : (
                 <StyledMenu
                     id="tree-selector-menu"
-                    PaperProps={{ style: { width: containerWidth, padding: "16px" } }}
+                    PaperProps={{ style: menuStyle }}
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     getContentAnchorEl={null}

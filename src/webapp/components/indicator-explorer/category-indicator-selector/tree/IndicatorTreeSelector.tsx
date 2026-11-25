@@ -45,7 +45,6 @@ export const IndicatorTreeSelector = React.memo(
             handleMenuClick,
             handleClear,
             treeOptions,
-            containerWidth,
             onSearchAndClearIndicator,
             isSmallScreen,
         } = useIndicatorTreeSelector({ options, selectedValue, onChange });
@@ -110,7 +109,7 @@ export const IndicatorTreeSelector = React.memo(
                             </FullScreenContainer>
                         </FullScreenDialog>
                     ) : (
-                        <StyledMenu width={containerWidth}>
+                        <StyledMenu>
                             <IndicatorTreeSelectorList
                                 treeOptions={treeOptions}
                                 onOptionClick={onOptionClick}
@@ -145,12 +144,13 @@ const ClearButton = styled(Button)`
     top: 0;
 `;
 
-const StyledMenu = styled.div<{ width: string }>`
+const StyledMenu = styled.div`
     z-index: 1;
     position: absolute;
     background-color: #ffffff;
     border-radius: 4px;
-    width: ${props => props.width};
+    width: 100%;
+    box-sizing: border-box;
     padding: 16px;
     transition: opacity 345ms cubic-bezier(0.4, 0, 0.2, 1), transform 230ms cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14),
