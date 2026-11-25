@@ -1,12 +1,11 @@
 import React from "react";
 import { Button, TextField } from "@material-ui/core";
 import styled from "styled-components";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
 import i18n from "../../../../../locales";
 import { IndicatorOption } from "../../../../pages/indicator-explorer/IndicatorExplorerState";
 import { FullScreenDialog } from "../../../dialog/FullScreenDialog";
+import { DropdownArrowAdornment } from "../../../dropdown/DropdownArrowAdornment";
 import { useIndicatorTreeSelector } from "./useIndicatorTreeSelector";
 import { IndicatorTreeSelectorList } from "./IndicatorTreeSelectorList";
 
@@ -69,11 +68,7 @@ export const IndicatorTreeSelector = React.memo(
                     }}
                     InputProps={{
                         readOnly: isSmallScreen,
-                        endAdornment: expanded ? (
-                            <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                        ) : (
-                            <ArrowDropDownIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                        ),
+                        endAdornment: <DropdownArrowAdornment expanded={expanded} />,
                     }}
                 />
                 {openedMenu &&
@@ -175,7 +170,7 @@ const StyledTextField = styled(TextField)`
         background: #f2f9fd;
         border: 1px solid #cfe9f7;
         min-width: 200px;
-        padding: 8px 16px;
+        padding: 8px 20px 8px 16px;
 
         &:before,
         &:after {

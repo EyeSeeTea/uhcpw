@@ -173,7 +173,7 @@ const StyledAutocomplete = styled(Autocomplete)`
         border-radius: 20px !important;
     }
     .MuiAutocomplete-popupIndicator {
-        margin-right: 5px;
+        margin-right: -1px;
     }
 `;
 
