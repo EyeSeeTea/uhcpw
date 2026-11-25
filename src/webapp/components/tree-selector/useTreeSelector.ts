@@ -101,6 +101,8 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
 
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    // Kept after closing so the menu keeps its width during the closing transition
+    const [fieldWidth, setFieldWidth] = React.useState<number>();
     const [searchTerm, setSearchTerm] = React.useState<string>("");
     const [expandedParents, setExpandedParents] = React.useState<string[]>([ALL_NODE_ID, ...defaultExpanded]);
 
@@ -108,6 +110,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         (event: React.MouseEvent<HTMLInputElement>) => {
             if (disabled !== true) {
                 setAnchorEl(event.currentTarget);
+                setFieldWidth(event.currentTarget.clientWidth);
                 setExpanded(!expanded);
             }
         },
@@ -376,7 +379,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         return selectedChips.length === 0 ? placeholder : "";
     }, [placeholder, selectedChips.length]);
 
-    const menuStyle = getFieldWidthMenuStyle(anchorEl);
+    const menuStyle = getFieldWidthMenuStyle(fieldWidth);
 
     return {
         handleClick,
