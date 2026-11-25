@@ -80,20 +80,22 @@ export const TreeSelectorList: React.FC<TreeSelectorListProps> = React.memo(prop
     return (
         <div role="listbox">
             {!disableSearch && (
-                <SearchInput
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    style={{
-                        height: "20px",
-                        background: "#f2f9fd",
-                        border: "1px solid #cfe9f7",
-                        borderRadius: "20px",
-                    }}
-                />
+                <>
+                    <SearchInput
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        style={{
+                            height: "20px",
+                            background: "#f2f9fd",
+                            border: "1px solid #cfe9f7",
+                            borderRadius: "20px",
+                        }}
+                    />
+                    <br />
+                </>
             )}
 
-            <br />
-            <PlaceholderAndButtonsContainer $fullWidth={fullWidth}>
+            <PlaceholderAndButtonsContainer $fullWidth={fullWidth} $hasSearch={!disableSearch}>
                 {placeholder && <StyledTypography variant="body1">{placeholder}</StyledTypography>}
                 {hasSelectAll || hasClearAll ? (
                     <ButtonsContainer $isSmallScreen={isSmallScreen}>
@@ -217,17 +219,14 @@ function getSelectedCount(selectedIds: string[], children: TreeOption[]): number
     }, 0);
 }
 
-const Container = styled.div<{ $fullWidth: boolean }>`
+const PlaceholderAndButtonsContainer = styled.div<{ $fullWidth: boolean; $hasSearch: boolean }>`
     position: relative;
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    margin-block-start: 16px;
-`;
-
-const PlaceholderAndButtonsContainer = styled(Container)<{ $fullWidth: boolean }>`
+    margin-block-start: ${props => (props.$hasSearch ? "16px" : "0")};
     margin-block-end: 6px;
 `;
 
