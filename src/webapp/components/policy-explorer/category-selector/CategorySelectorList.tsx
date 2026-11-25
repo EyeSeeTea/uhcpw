@@ -1,12 +1,10 @@
 import React from "react";
-import { Typography, Button } from "@material-ui/core";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { TreeView } from "@material-ui/lab";
-import styled from "styled-components";
 
-import i18n from "../../../../locales";
 import SearchInput from "../../search-input/SearchInput";
+import { SelectionListHeader } from "../../selection-list-header/SelectionListHeader";
 import { Node } from "./Node";
 import { Leaf } from "./Leaf";
 import { CategoryOption, SubcategoryOption } from "./useCategorySelector";
@@ -25,6 +23,7 @@ interface CategorySelectorListProps {
     isAllCategorySelected: (categoryId: string) => boolean;
     isSubcategorySelected: (categoryId: string, subcategoryId: string) => boolean;
     fullScreen: boolean;
+    isSmallScreen: boolean;
 }
 
 export const CategorySelectorList = React.memo(
@@ -42,6 +41,7 @@ export const CategorySelectorList = React.memo(
         isAllCategorySelected,
         isSubcategorySelected,
         fullScreen,
+        isSmallScreen,
     }: CategorySelectorListProps) => {
         return (
             <div role="listbox">
@@ -56,17 +56,12 @@ export const CategorySelectorList = React.memo(
                     }}
                 />
                 <br />
-                <Container>
-                    <Typography variant="body1" gutterBottom>
-                        {placeholder}
-                    </Typography>
-                    <StyledButton variant="text" onClick={handleSelectAll} disabled={disableSelectAll} right={100}>
-                        {i18n.t("Select all")}
-                    </StyledButton>
-                    <StyledButton variant="text" onClick={handleClear} disabled={isClearDisabled} right={30}>
-                        {i18n.t("Clear")}
-                    </StyledButton>
-                </Container>
+                <SelectionListHeader
+                    title={placeholder}
+                    selectAll={{ onClick: handleSelectAll, disabled: disableSelectAll }}
+                    clear={{ onClick: handleClear, disabled: isClearDisabled }}
+                    isSmallScreen={isSmallScreen}
+                />
                 <TreeView
                     disableSelection
                     aria-label="Categories tree"
@@ -143,18 +138,3 @@ export const CategorySelectorList = React.memo(
         );
     }
 );
-
-const Container = styled.div<{ $fullWidth?: boolean }>`
-    position: relative;
-    width: ${props => (props.$fullWidth ? "100%" : "unset")};
-`;
-
-const StyledButton = styled(Button)<{ right?: number }>`
-    color: orange;
-    text-transform: none;
-    position: absolute;
-    top: 0;
-    right: ${props => props.right || 0}px;
-    padding: 0px;
-    font-weight: 400;
-`;
