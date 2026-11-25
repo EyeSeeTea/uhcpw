@@ -8,6 +8,7 @@ import { TreeSelector } from "../../tree-selector/TreeSelector";
 import { PersonState } from "../../../pages/about/AboutState";
 import { useAppContext } from "../../../contexts/app-context";
 import useBreakpoint from "../../../common/hooks/screen/useBreakpoint";
+import { muiTheme } from "../../../pages/app/themes/dhis2.theme";
 
 export interface ExpertsNetworkProps {
     members: PersonState[];
@@ -33,19 +34,21 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
             </ItemsTitleContainer>
 
             <Row style={{ padding: "16px 32px 32px 32px" }}>
-                <TreeSelector
-                    hasSelectAll
-                    hasClearAll
-                    topClearAll={-35}
-                    items={countryFilter.options}
-                    selectedIds={countryFilter.selected}
-                    onSelectedIdsChange={countryFilter.onSelectedChange}
-                    placeholder={i18n.t("Select country or area")}
-                    showParentIfChecked={true}
-                    showOnlyAllParentSelectedIfChecked={true}
-                    allSelectedLabel={i18n.t("All countries/areas")}
-                    parentSort={countryFilter.parentSort}
-                />
+                <CountrySelectorContainer>
+                    <TreeSelector
+                        hasSelectAll
+                        hasClearAll
+                        topClearAll={-35}
+                        items={countryFilter.options}
+                        selectedIds={countryFilter.selected}
+                        onSelectedIdsChange={countryFilter.onSelectedChange}
+                        placeholder={i18n.t("Select country or area")}
+                        showParentIfChecked={true}
+                        showOnlyAllParentSelectedIfChecked={true}
+                        allSelectedLabel={i18n.t("All countries/areas")}
+                        parentSort={countryFilter.parentSort}
+                    />
+                </CountrySelectorContainer>
             </Row>
 
             <Grid container spacing={6} style={{ marginBottom: 6 }}>
@@ -60,6 +63,17 @@ export const ExpertsNetwork: React.FC<ExpertsNetworkProps> = React.memo(({ membe
         </>
     );
 });
+
+const COUNTRY_SELECTOR_MIN_WIDTH = "360px";
+
+// From tablet up, so the field does not go past the screen edge on mobile
+const CountrySelectorContainer = styled.div`
+    ${muiTheme.breakpoints.up("sm")} {
+        && .MuiInput-underline {
+            min-width: ${COUNTRY_SELECTOR_MIN_WIDTH};
+        }
+    }
+`;
 
 const ItemsTitleContainer = styled.div`
     padding: 64px 32px 16px 32px;
