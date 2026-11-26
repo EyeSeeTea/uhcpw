@@ -348,7 +348,7 @@ export class PolicyExplorerCategoryD2Repository implements PolicyExplorerCategor
             },
             {
                 id: CATEGORY_BY_TYPE_OF_HEALTHCARE.USER_CHARGES_APPLY,
-                name: "User charges (co-payments) for covered health care by type of care",
+                name: "User charges (co-payments) by type of care",
                 subcategories: USER_CHARGES_APPLY_TYPES_OF_HEALTH_CARE.map(type => ({
                     id: type,
                     name: type,

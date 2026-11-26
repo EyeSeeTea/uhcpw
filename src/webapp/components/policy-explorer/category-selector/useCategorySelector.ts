@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { CATEGORIES_WITHOUT_SUBCATEGORIES } from "../../../pages/policy-explorer/usePolicyExplorer";
 import { useMediaQuery } from "@material-ui/core";
-import useWindowSize from "../../../common/hooks/screen/useWindowSize";
+import { getFieldWidthMenuStyle } from "../../dropdown/fieldWidthMenuStyle";
 
 export type SubcategoryOption = {
     value: string;
@@ -52,7 +52,7 @@ type State = {
     expanded: boolean;
     searchTerm: string;
     isClearDisabled: boolean;
-    containerWidth: string;
+    menuStyle: Readonly<React.CSSProperties>;
     isSmallScreen: boolean;
 };
 
@@ -63,16 +63,18 @@ export const useCategorySelector = ({
     disabled = false,
 }: useCategorySelectorParmas): State => {
     const isSmallScreen = useMediaQuery("(max-width:700px)");
-    const { width } = useWindowSize();
 
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    // Kept after closing so the menu keeps its width during the closing transition
+    const [fieldWidth, setFieldWidth] = React.useState<number>();
     const [searchTerm, setSearchTerm] = React.useState<string>("");
 
     const handleClick = useCallback(
         (event: React.MouseEvent<HTMLInputElement>) => {
             if (disabled !== true) {
                 setAnchorEl(event.currentTarget);
+                setFieldWidth(event.currentTarget.clientWidth);
                 setExpanded(!expanded);
             }
         },
@@ -263,9 +265,7 @@ export const useCategorySelector = ({
         return isEmpty(selectedCategoriesWithSubcategories);
     }, [selectedCategoriesWithSubcategories]);
 
-    const containerWidth = useMemo(() => {
-        return isSmallScreen ? `${width - 100}px` : "600px";
-    }, [isSmallScreen, width]);
+    const menuStyle = getFieldWidthMenuStyle(fieldWidth);
 
     return {
         handleClick,
@@ -285,7 +285,7 @@ export const useCategorySelector = ({
         expanded,
         searchTerm,
         isClearDisabled,
-        containerWidth,
+        menuStyle,
         isSmallScreen,
     };
 };

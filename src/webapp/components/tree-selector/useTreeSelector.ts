@@ -7,7 +7,7 @@ import {
     BOSNIA_AND_HERZEGOVINA_LEVEL_4,
     FEDERACIJA_BOSNE_I_HERCEGOVINE,
 } from "../../../data/repositories/countries/CountryD2Repository";
-import useWindowSize from "../../common/hooks/screen/useWindowSize";
+import { getFieldWidthMenuStyle } from "../dropdown/fieldWidthMenuStyle";
 import { TreeOption } from "./TreeSelector";
 
 type useTreeSelectorParams = {
@@ -41,7 +41,7 @@ type useTreeSelectorState = {
           }
     )[];
     handleSelectedChange: (nodeId: string, selected: boolean) => void;
-    containerWidth: string;
+    menuStyle: Readonly<React.CSSProperties>;
     expanded: boolean;
     anchorEl: HTMLElement | null;
     handleClose: () => void;
@@ -98,10 +98,11 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
     } = params;
 
     const isSmallScreen = useMediaQuery("(max-width:700px)");
-    const { width } = useWindowSize();
 
     const [expanded, setExpanded] = useState(false);
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    // Kept after closing so the menu keeps its width during the closing transition
+    const [fieldWidth, setFieldWidth] = React.useState<number>();
     const [searchTerm, setSearchTerm] = React.useState<string>("");
     const [expandedParents, setExpandedParents] = React.useState<string[]>([ALL_NODE_ID, ...defaultExpanded]);
 
@@ -109,6 +110,7 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         (event: React.MouseEvent<HTMLInputElement>) => {
             if (disabled !== true) {
                 setAnchorEl(event.currentTarget);
+                setFieldWidth(event.currentTarget.clientWidth);
                 setExpanded(!expanded);
             }
         },
@@ -377,16 +379,14 @@ export const useTreeSelector = (params: useTreeSelectorParams): useTreeSelectorS
         return selectedChips.length === 0 ? placeholder : "";
     }, [placeholder, selectedChips.length]);
 
-    const containerWidth = useMemo(() => {
-        return isSmallScreen ? `${width - 100}px` : "600px";
-    }, [isSmallScreen, width]);
+    const menuStyle = getFieldWidthMenuStyle(fieldWidth);
 
     return {
         handleClick,
         finalPlaceholder,
         selectedChips,
         handleSelectedChange,
-        containerWidth,
+        menuStyle,
         expanded,
         anchorEl,
         handleClose,

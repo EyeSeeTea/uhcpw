@@ -5,8 +5,8 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"POT-Creation-Date: 2026-10-21T10:32:27.952Z\n"
-"PO-Revision-Date: 2026-10-21T10:32:27.952Z\n"
+"POT-Creation-Date: 2026-11-25T14:08:06.146Z\n"
+"PO-Revision-Date: 2026-11-25T14:08:06.146Z\n"
 
 msgid "404"
 msgstr ""
@@ -202,9 +202,6 @@ msgstr ""
 msgid "Get table"
 msgstr ""
 
-msgid "Select all"
-msgstr ""
-
 msgid "News"
 msgstr ""
 
@@ -224,6 +221,9 @@ msgid "Download"
 msgstr ""
 
 msgid "Back to top"
+msgstr ""
+
+msgid "Select all"
 msgstr ""
 
 msgid "({{count}} selected)"

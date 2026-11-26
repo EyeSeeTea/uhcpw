@@ -1,13 +1,12 @@
 import React from "react";
-import { InputAdornment, Menu, Button } from "@material-ui/core";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import { Menu, Button } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 import { isEmpty } from "lodash";
 
 import i18n from "../../../../locales";
 import { DropdownTextField } from "../../dropdown/DropdownTextField";
+import { DropdownArrowAdornment } from "../../dropdown/DropdownArrowAdornment";
 import { SelectedChip } from "../../selected-chip/SelectedChip";
 import { CategoryOption, useCategorySelector } from "./useCategorySelector";
 import { CategorySelectorList } from "./CategorySelectorList";
@@ -49,7 +48,7 @@ export const CategorySelector = React.memo(
             anchorEl,
             handleClose,
             handleClear,
-            containerWidth,
+            menuStyle,
             isSmallScreen,
         } = categorySelectorState;
 
@@ -80,18 +79,7 @@ export const CategorySelector = React.memo(
                                 ))}
                             </SelectedContainer>
                         ),
-                        endAdornment: (
-                            <InputAdornment
-                                position="start"
-                                style={{ top: "calc(50% - 14px)", right: -7, position: "absolute", height: " 24px" }}
-                            >
-                                {expanded ? (
-                                    <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                                ) : (
-                                    <ArrowDropDownIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                                )}
-                            </InputAdornment>
-                        ),
+                        endAdornment: <DropdownArrowAdornment expanded={expanded} />,
                     }}
                 />
                 {fullScreen ? (
@@ -104,7 +92,7 @@ export const CategorySelector = React.memo(
                     </FullScreenDialog>
                 ) : (
                     <StyledMenu
-                        PaperProps={{ style: { width: containerWidth, padding: "16px" } }}
+                        PaperProps={{ style: menuStyle }}
                         id="category-selector"
                         anchorEl={anchorEl}
                         open={Boolean(anchorEl)}

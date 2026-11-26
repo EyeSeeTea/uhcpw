@@ -173,7 +173,7 @@ const StyledAutocomplete = styled(Autocomplete)`
         border-radius: 20px !important;
     }
     .MuiAutocomplete-popupIndicator {
-        margin-right: 5px;
+        margin-right: -1px;
     }
 `;
 
@@ -195,6 +195,6 @@ const StyledDropdownTextField = styled(DropdownTextField)`
         caret-color: transparent;
         flex: 1;
         min-width: 0;
-        padding: 6px 0;
+        padding: 6px 0 7px;
     }
 `;

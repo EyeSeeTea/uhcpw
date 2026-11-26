@@ -1,12 +1,11 @@
-import { Typography, Button } from "@material-ui/core";
 import React from "react";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import { TreeView } from "@material-ui/lab";
 import styled from "styled-components";
 
-import i18n from "../../../locales";
 import SearchInput from "../search-input/SearchInput";
+import { SelectionListHeader } from "../selection-list-header/SelectionListHeader";
 import { Node } from "./Node";
 import { Leaf } from "./Leaf";
 import { ChildAndSubChildren } from "./ChildAndSubChildren";
@@ -80,46 +79,39 @@ export const TreeSelectorList: React.FC<TreeSelectorListProps> = React.memo(prop
     return (
         <div role="listbox">
             {!disableSearch && (
-                <SearchInput
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    style={{
-                        height: "20px",
-                        background: "#f2f9fd",
-                        border: "1px solid #cfe9f7",
-                        borderRadius: "20px",
-                    }}
-                />
+                <>
+                    <SearchInput
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                        style={{
+                            height: "20px",
+                            background: "#f2f9fd",
+                            border: "1px solid #cfe9f7",
+                            borderRadius: "20px",
+                        }}
+                    />
+                    <br />
+                </>
             )}
 
-            <br />
-            <PlaceholderAndButtonsContainer $fullWidth={fullWidth}>
-                {placeholder && <StyledTypography variant="body1">{placeholder}</StyledTypography>}
-                {hasSelectAll || hasClearAll ? (
-                    <ButtonsContainer $isSmallScreen={isSmallScreen}>
-                        {hasSelectAll && (
-                            <StyledButton
-                                variant="text"
-                                onClick={handleSelectAll}
-                                disabled={
-                                    areAllItemsSelected || (!!maxSelection && maxSelection < itemsToSelect.length)
-                                }
-                            >
-                                {i18n.t("Select all")}
-                            </StyledButton>
-                        )}
-                        {hasClearAll && (
-                            <StyledButton
-                                variant="text"
-                                onClick={handleClear}
-                                disabled={(selectedIds || []).length === 0}
-                            >
-                                {i18n.t("Clear")}
-                            </StyledButton>
-                        )}
-                    </ButtonsContainer>
-                ) : null}
-            </PlaceholderAndButtonsContainer>
+            <HeaderContainer $fullWidth={fullWidth} $hasSearch={!disableSearch}>
+                <SelectionListHeader
+                    title={placeholder}
+                    selectAll={
+                        hasSelectAll
+                            ? {
+                                  onClick: handleSelectAll,
+                                  disabled:
+                                      areAllItemsSelected || (!!maxSelection && maxSelection < itemsToSelect.length),
+                              }
+                            : undefined
+                    }
+                    clear={
+                        hasClearAll ? { onClick: handleClear, disabled: (selectedIds || []).length === 0 } : undefined
+                    }
+                    isSmallScreen={isSmallScreen}
+                />
+            </HeaderContainer>
             <TreeView
                 disableSelection
                 defaultCollapseIcon={<ArrowDropUpIcon aria-label="collapse-icon" />}
@@ -217,39 +209,15 @@ function getSelectedCount(selectedIds: string[], children: TreeOption[]): number
     }, 0);
 }
 
-const Container = styled.div<{ $fullWidth: boolean }>`
+const HeaderContainer = styled.div<{ $fullWidth: boolean; $hasSearch: boolean }>`
     position: relative;
     width: ${props => (props.$fullWidth ? "100%" : "unset")};
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-block-start: 16px;
-`;
-
-const PlaceholderAndButtonsContainer = styled(Container)<{ $fullWidth: boolean }>`
+    margin-block-start: ${props => (props.$hasSearch ? "16px" : "0")};
     margin-block-end: 6px;
-`;
-
-const StyledButton = styled(Button)`
-    color: orange;
-    text-transform: none;
-    padding: 0px;
-    font-weight: 400;
 `;
 
 const FirstLevelLeafWrapper = styled.div`
     .MuiTreeItem-label {
         padding: 8px;
     }
-`;
-
-const ButtonsContainer = styled.div<{ $isSmallScreen: boolean }>`
-    padding-inline-end: ${props => (props.$isSmallScreen ? "5px" : "30px")};
-    white-space: nowrap;
-`;
-
-const StyledTypography = styled(Typography)`
-    white-space: nowrap;
-    margin-block-end: 4px;
 `;

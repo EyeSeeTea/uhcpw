@@ -1,8 +1,7 @@
-import { InputAdornment, Menu, Button } from "@material-ui/core";
+import { Menu, Button } from "@material-ui/core";
 import React from "react";
 import { DropdownTextField } from "../dropdown/DropdownTextField";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+import { DropdownArrowAdornment } from "../dropdown/DropdownArrowAdornment";
 import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components";
 
@@ -81,7 +80,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
         handleClose,
         handleClear,
         anchorEl,
-        containerWidth,
+        menuStyle,
         isSmallScreen,
     } = useTreeSelectorState;
 
@@ -123,22 +122,10 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
                         </SelectedContainer>
                     ),
                     endAdornment: (
-                        <InputAdornment
-                            position="start"
-                            aria-label={`expand-tree-${ariaLabel || placeholder || "icon"}`}
-                            style={{
-                                top: "calc(50% - 14px)",
-                                right: -7,
-                                position: "absolute",
-                                height: "24px",
-                            }}
-                        >
-                            {expanded ? (
-                                <ArrowDropUpIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                            ) : (
-                                <ArrowDropDownIcon htmlColor="black" style={{ cursor: "pointer" }} />
-                            )}
-                        </InputAdornment>
+                        <DropdownArrowAdornment
+                            expanded={expanded}
+                            ariaLabel={`expand-tree-${ariaLabel || placeholder || "icon"}`}
+                        />
                     ),
                 }}
             />
@@ -163,7 +150,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = React.memo(props => {
             ) : (
                 <StyledMenu
                     id="tree-selector-menu"
-                    PaperProps={{ style: { width: containerWidth, padding: "16px" } }}
+                    PaperProps={{ style: menuStyle }}
                     anchorEl={anchorEl}
                     open={Boolean(anchorEl)}
                     getContentAnchorEl={null}
