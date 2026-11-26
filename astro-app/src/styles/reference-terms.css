@@ -1,49 +1,19 @@
+/* Same paddings as the Methods page. On mobile the top is larger to leave room for the search box on the banner edge */
 .reference-content {
-    padding: 40px 64px 80px;
+    padding: 80px 64px;
 }
-.reference-controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    gap: 20px;
-    margin-bottom: 24px;
-}
-.reference-controls[hidden],
 .reference-alphabet[hidden],
 .reference-actions[hidden],
 [data-entry][hidden],
 [data-group][hidden],
-[data-empty][hidden] {
+[data-empty][hidden],
+[data-group-link][hidden] {
     display: none;
-}
-.reference-search {
-    flex: 1;
-    min-width: 220px;
-    max-width: 600px;
-}
-.reference-search label {
-    display: block;
-    font-weight: 700;
-    font-size: 14px;
-    margin-bottom: 7px;
-}
-.reference-search input {
-    width: 100%;
-    height: 50px;
-    padding: 10px 16px 10px 44px;
-    border: 1px solid #d6d3d3;
-    border-radius: 20px;
-    font: inherit;
-    background-image: url("../assets/search.svg");
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    background-size: 24px;
 }
 .reference-button {
     border: 0;
     border-radius: 20px;
-    height: 50px;
-    padding: 0 24px;
+    padding: 8px 14px;
     background: var(--color-accent-primary);
     color: white;
     font: inherit;
@@ -57,7 +27,7 @@
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    margin: 24px 0;
+    margin: 0 0 24px;
 }
 .reference-alphabet button,
 .reference-group-nav a {
@@ -90,9 +60,6 @@
     background: white;
     font: inherit;
 }
-[data-group-link][hidden] {
-    display: none;
-}
 .reference-alphabet button[aria-pressed="true"] {
     color: var(--color-accent-primary);
     background: white;
@@ -103,38 +70,63 @@
 }
 .reference-actions {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
 }
 .reference-link {
+    margin-left: auto;
     border: 0;
     background: none;
     color: var(--color-accent-primary);
     font: inherit;
     cursor: pointer;
 }
-.glossary-entries {
+
+/* Entries: same two-column grid and spacing as the Methods page, filled left to right */
+.reference-entries {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 48px;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 40px;
+    margin: 0;
 }
-.glossary-entry {
+.reference-entry {
     padding: 20px 0;
     border-bottom: 1px solid var(--color-grey-light);
     scroll-margin-top: 20px;
-    break-inside: avoid;
 }
-.glossary-entry h2 {
-    margin: 0 0 8px;
+.reference-entry h2,
+.reference-entry dt {
+    margin: 0 0 10px;
     font-size: 1.5rem;
     font-weight: 400;
     overflow-wrap: anywhere;
 }
-.entry-anchor {
-    float: right;
-    font-size: 14px;
-    color: var(--color-grey-black);
+.reference-entry h2 a,
+.reference-entry dt a {
+    color: inherit;
+    text-decoration: none;
 }
-.glossary-entry summary {
+.reference-entry h2 a:hover,
+.reference-entry dt a:hover {
+    text-decoration: underline;
+}
+.reference-entry details,
+.reference-entry dd {
+    width: 95%;
+}
+.reference-entry p,
+.reference-entry dd {
+    margin: 0;
+    font-size: var(--font-size-sm);
+    line-height: 1.43;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+.reference-entry p {
+    margin-top: 10px;
+}
+.reference-entry summary {
     display: inline-flex;
     align-items: center;
     color: var(--color-accent-primary);
@@ -143,118 +135,55 @@
     list-style: none;
     cursor: pointer;
 }
-.glossary-entry summary::-webkit-details-marker {
+.reference-entry summary::-webkit-details-marker {
     display: none;
 }
-.glossary-entry summary::marker {
+.reference-entry summary::marker {
     content: "";
 }
-.glossary-entry .chevron {
+.reference-entry .chevron {
     width: 20px;
     height: 20px;
     margin-left: 4px;
     fill: currentColor;
 }
-.glossary-entry details[open] .chevron {
+.reference-entry details[open] .chevron {
     transform: rotate(180deg);
 }
-.glossary-entry .open-label,
-.glossary-entry details[open] .closed-label {
+.reference-entry .open-label,
+.reference-entry details[open] .closed-label {
     display: none;
 }
-.glossary-entry details[open] .open-label {
+.reference-entry details[open] .open-label {
     display: inline;
 }
-.glossary-entry p {
-    font-size: var(--font-size-sm);
-    line-height: 1.43;
-    white-space: pre-line;
-}
+
+/* Category headings: same as the section headings of the Methods page */
 .abbreviation-group {
-    margin-top: 32px;
+    margin-top: 56px;
     scroll-margin-top: 20px;
 }
 .abbreviation-group h2 {
     margin: 0;
-    padding: 12px 16px;
     font-size: 1.5rem;
     font-weight: 400;
-    color: white;
-    background: var(--color-dark-blue);
-    border-radius: 20px;
 }
-.abbreviation-list {
-    columns: 2;
-    column-gap: 36px;
-    margin: 0;
+/* 10px from the heading to the first term, as in Methods: offsets the 20px top padding of the entries */
+.abbreviation-group .reference-entries {
+    margin-top: -10px;
 }
-.abbreviation-row {
-    display: grid;
-    grid-template-columns: 90px minmax(0, 1fr);
-    gap: 12px;
-    padding: 12px;
-    border-bottom: 1px solid var(--color-grey-light);
-    font-size: var(--font-size-sm);
-    break-inside: avoid;
-    scroll-margin-top: 20px;
-}
-.abbreviation-row dt {
-    font-weight: 700;
-    overflow-wrap: anywhere;
-}
-.abbreviation-row dt a {
-    color: var(--color-dark-blue);
-    text-decoration: none;
-}
-.abbreviation-row dt a:hover {
-    text-decoration: underline;
-}
-.abbreviation-row dd {
-    margin: 0;
-    overflow-wrap: anywhere;
-}
-.back-to-top {
-    display: block;
-    width: fit-content;
-    margin-top: 40px;
-    margin-left: auto;
-    color: var(--color-accent-primary);
-}
-.mobile-back-to-top {
-    display: none;
+
+/* Buttons do not inherit the font by default: keeps the "Back to top" button in Lato */
+[data-reference-page] button {
+    font-family: inherit;
 }
 .reference-content :focus-visible {
     outline: 3px solid var(--color-accent-secondary);
     outline-offset: 3px;
 }
-.reference-search input:focus-visible {
-    outline: none;
-}
-@media (max-width: 960px) {
-    .back-to-top {
-        display: none;
-    }
-    .mobile-back-to-top {
-        display: block;
-    }
-    .glossary-entries {
-        grid-template-columns: 1fr;
-    }
-}
 @media (max-width: 600px) {
     .reference-content {
-        padding: 24px 40px 40px;
-    }
-    .reference-controls {
-        gap: 10px;
-    }
-    .reference-search {
-        flex-basis: 100%;
-        min-width: 0;
-    }
-    .reference-button {
-        height: 40px;
-        padding: 0 18px;
+        padding: 64px 40px 40px;
     }
     .reference-alphabet button {
         display: none;
@@ -262,30 +191,23 @@
     .reference-letter-select {
         display: block;
     }
-    .abbreviation-list {
-        columns: 1;
-    }
-    .abbreviation-row {
-        grid-template-columns: 74px minmax(0, 1fr);
+    .reference-entries {
+        grid-template-columns: 1fr;
     }
 }
 @media print {
-    .reference-controls,
+    .page-banner .banner-search,
     .reference-alphabet,
     .reference-actions,
     .reference-group-nav,
     .back-to-top,
-    .mobile-back-to-top,
-    .entry-anchor,
-    .glossary-entry summary {
+    .reference-entry summary {
         display: none !important;
     }
-    .glossary-entry details:not([open]) > p {
+    .reference-entry details:not([open]) > p {
         display: block;
     }
-    .glossary-entries,
-    .abbreviation-list {
-        columns: 1;
+    .reference-entries {
         display: block;
     }
 }

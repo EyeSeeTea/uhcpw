@@ -3,11 +3,16 @@ import mapBackgroundUrl from "@/assets/map-background.jpg?url";
 
 interface Props { title: string }
 const { title } = Astro.props;
+const hasSearch = Astro.slots.has("search");
 ---
-<div class="title-banner">
-    <h1>{title}</h1>
+<div class="page-banner">
+    <div class:list={["title-banner", { "with-search": hasSearch }]}>
+        <h1>{title}</h1>
+    </div>
+    {hasSearch && <div class="banner-search"><slot name="search" /></div>}
 </div>
 <style define:vars={{ mapBackground: `url("${mapBackgroundUrl}")` }}>
+    .page-banner { position: relative; }
     .title-banner {
         background: var(--gradient-primary);
         color: white;
@@ -18,6 +23,20 @@ const { title } = Astro.props;
         overflow: hidden;
     }
     h1 { margin: 0; font-size: 3rem; font-weight: 400; line-height: 1.167; z-index: 1; }
-    @media (max-width: 960px) { .title-banner { background: var(--mapBackground) center; } }
-    @media (max-width: 600px) { .title-banner { padding: 24px 40px; } h1 { font-size: 2.25rem; overflow-wrap: anywhere; } }
+    /* Same placement as the search box of the Resources page: centred on the bottom edge of the banner */
+    .banner-search {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 442px;
+        max-width: 70%;
+        z-index: 1;
+    }
+    @media (max-width: 960px) {
+        .title-banner { background: var(--mapBackground) center; }
+        /* Room for the search box, as on the Resources page on small screens */
+        .title-banner.with-search { padding-block: 48px; }
+    }
+    @media (max-width: 600px) { .title-banner { padding-inline: 40px; } h1 { font-size: 2.25rem; overflow-wrap: anywhere; } }
 </style>

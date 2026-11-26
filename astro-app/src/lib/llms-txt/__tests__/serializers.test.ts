@@ -200,9 +200,13 @@ describe("reference Markdown companions", () => {
             ],
             "Glossary"
         );
-        expect(body).toContain("## Access\n\nAbility to obtain care.");
-        expect(body.indexOf("## Access")).toBeLessThan(body.indexOf("## Zebra"));
+        expect(body).toBe("# Glossary\n\n## Access\n\nAbility to obtain care.\n\n## Zebra\n\nA definition.\n");
         assertNoChrome(body);
+    });
+
+    it("starts every glossary definition with an upper-case letter", () => {
+        const body = serializeGlossaryMarkdown([{ term: "Budget", definition: "see household budget." }], "Glossary");
+        expect(body).toBe("# Glossary\n\n## Budget\n\nSee household budget.\n");
     });
 
     it("uses category order and sorts abbreviations within each category", () => {
